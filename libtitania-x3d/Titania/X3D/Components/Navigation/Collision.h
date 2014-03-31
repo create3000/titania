@@ -90,18 +90,22 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFTime &
 	collideTime ()
 	{ return *fields .collideTime; }
 
+	virtual
 	const SFTime &
 	collideTime () const
 	{ return *fields .collideTime; }
 
+	virtual
 	SFNode &
 	proxy ()
 	{ return *fields .proxy; }
 
+	virtual
 	const SFNode &
 	proxy () const
 	{ return *fields .proxy; }
@@ -115,16 +119,23 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	addTool () override;
+
+	virtual
+	void
+	traverse (const TraverseType) override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+protected:
 
 	///  @name Event handlers
 

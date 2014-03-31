@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
+#include "../../Tools/Navigation/CollisionTool.h"
 
 namespace titania {
 namespace X3D {
@@ -103,6 +104,12 @@ Collision::initialize ()
 	proxy () .addInterest (this, &Collision::set_proxy);
 
 	set_proxy ();
+}
+
+void
+Collision::addTool ()
+{
+	X3DGroupingNode::addTool (new CollisionTool (this));
 }
 
 void

@@ -90,18 +90,22 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	description ()
 	{ return *fields .description; }
 
+	virtual
 	const SFString &
 	description () const
 	{ return *fields .description; }
 
+	virtual
 	MFString &
 	parameter ()
 	{ return *fields .parameter; }
 
+	virtual
 	const MFString &
 	parameter () const
 	{ return *fields .parameter; }
@@ -118,26 +122,33 @@ public:
 
 	virtual
 	void
+	addTool () override;
+
+	virtual
+	void
 	requestImmediateLoad () final override;
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Static members
 
@@ -157,7 +168,7 @@ private:
 
 	Fields fields;
 
-	bool   isOver;
+	bool isOver;
 
 };
 

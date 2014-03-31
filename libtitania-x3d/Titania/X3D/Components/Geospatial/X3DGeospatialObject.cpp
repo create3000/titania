@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -180,7 +180,7 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 	const Vector3d y = elevationFrame -> normal (p);
 	Vector3d       x = cross (Vector3d (0, 0, 1), y);
 
-	// Handle poles
+	// Tool poles
 
 	if (x == Vector3d ())
 		x = Vector3d (1, 0, 0);

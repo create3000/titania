@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_GROUP_H__
 
 #include "../Grouping/X3DGroupingNode.h"
-#include "../../Handles/GroupHandle.h"
 
 namespace titania {
 namespace X3D {
@@ -92,7 +91,7 @@ public:
 
 	virtual
 	void
-	addHandle () override;
+	addTool () override;
 
 
 private:

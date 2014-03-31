@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Grouping/SwitchTool.h"
 
 namespace titania {
 namespace X3D {
@@ -103,6 +104,12 @@ Switch::getBBox () const
 	}
 
 	return Box3f (bboxSize (), bboxCenter ());
+}
+
+void
+Switch::addTool ()
+{
+	X3DGroupingNode::addTool (new SwitchTool (this));
 }
 
 void

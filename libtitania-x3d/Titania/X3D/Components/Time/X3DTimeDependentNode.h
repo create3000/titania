@@ -211,7 +211,7 @@ protected:
 
 private:
 
-	typedef void (X3DTimeDependentNode::* TimeoutHandler)();
+	typedef void (X3DTimeDependentNode::* TimeoutToolr)();
 
 	///  @name Event handling
 	
@@ -244,10 +244,10 @@ private:
 	// Timeout
 
 	bool
-	timeout (TimeoutHandler);
+	timeout (TimeoutToolr);
 
 	void
-	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
+	addTimeout (sigc::connection &, TimeoutToolr, const time_type);
 
 	void
 	removeTimeouts ();

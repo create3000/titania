@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -166,9 +166,9 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 				}
 			}
 
-			const bool eventHandled = buttonPressEvent (picked, event -> button);
+			const bool eventToold = buttonPressEvent (picked, event -> button);
 
-			if (eventHandled)
+			if (eventToold)
 				return not trackSensors ();
 
 			browser -> setCursor (Gdk::FLEUR);
@@ -178,9 +178,9 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 		case 2:
 		{
 			const bool picked       = pick (event -> x, event -> y);
-			const bool eventHandled = buttonPressEvent (picked, event -> button);
+			const bool eventToold = buttonPressEvent (picked, event -> button);
 
-			if (eventHandled)
+			if (eventToold)
 				return not trackSensors ();
 
 			browser -> setCursor (Gdk::FLEUR);

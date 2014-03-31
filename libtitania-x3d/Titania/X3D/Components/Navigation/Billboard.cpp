@@ -52,6 +52,7 @@
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Navigation/BillboardTool.h"
 
 namespace titania {
 namespace X3D {
@@ -88,6 +89,12 @@ X3DBaseNode*
 Billboard::create (X3DExecutionContext* const executionContext) const
 {
 	return new Billboard (executionContext);
+}
+
+void
+Billboard::addTool ()
+{
+	X3DGroupingNode::addTool (new BillboardTool (this));
 }
 
 void

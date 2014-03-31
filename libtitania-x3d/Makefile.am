@@ -384,8 +384,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/SFVec3.cpp \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
-	Titania/X3D/Handles/TransformHandle.cpp \
-	Titania/X3D/Handles/X3DHandleObject.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \
 	Titania/X3D/InputOutput/X3DBaseGenerator.cpp \
@@ -470,6 +468,14 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/SceneLoader.cpp \
 	Titania/X3D/Thread/Texture3DLoader.cpp \
 	Titania/X3D/Thread/TextureLoader.cpp \
+	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Grouping/GroupTool.cpp \
+	Titania/X3D/Tools/Grouping/SwitchTool.cpp \
+	Titania/X3D/Tools/Grouping/TransformTool.cpp \
+	Titania/X3D/Tools/Navigation/AnchorTool.cpp \
+	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
+	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
+	Titania/X3D/Tools/Navigation/LODTool.cpp \
 	Titania/X3D/Types/Image.cpp \
 	Titania/X3D/Types/Pointer.cpp
 

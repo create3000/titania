@@ -89,10 +89,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFInt32 &
 	whichChoice ()
 	{ return *fields .whichChoice; }
 
+	virtual
 	const SFInt32 &
 	whichChoice () const
 	{ return *fields .whichChoice; }
@@ -101,13 +103,17 @@ public:
 
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	addTool () override;
+
+	virtual
+	void
+	traverse (const TraverseType) override;
 
 
 private:

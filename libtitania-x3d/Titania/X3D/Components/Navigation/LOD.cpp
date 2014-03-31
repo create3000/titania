@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Navigation/LODTool.h"
 
 namespace titania {
 namespace X3D {
@@ -112,6 +113,12 @@ LOD::getBBox () const
 	}
 
 	return Box3f (bboxSize (), bboxCenter ());
+}
+
+void
+LOD::addTool ()
+{
+	X3DGroupingNode::addTool (new LODTool (this));
 }
 
 size_t

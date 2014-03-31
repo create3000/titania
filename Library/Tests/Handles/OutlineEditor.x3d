@@ -79,75 +79,14 @@
       <fieldValue name='xDimension' value='100'/>
       <fieldValue name='zDimension' value='100'/>
     </ProtoInstance>
-    <Transform DEF='Text1'
-        translation='0.673213 0.0817185 0'>
-      <Shape>
-        <Appearance>
-          <Material/>
-        </Appearance>
-        <Text DEF='Text'
-            string='"OutlineEditor"'>
-          <FontStyle
-              family='"PT Sans Narrow"'
-              style='BOLD'/>
-        </Text>
-      </Shape>
-    </Transform>
     <Transform DEF='Sensors'>
       <ProximitySensor DEF='_1'/>
       <VisibilitySensor DEF='_2'/>
     </Transform>
-    <Group>
-      <ProximitySensor USE='_1'/>
-      <Transform DEF='Box'
-          translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 2.45116'
-          scale='0.2 0.2 0.2'>
-        <Transform>
-          <Shape>
-            <Appearance>
-              <Material
-                  diffuseColor='0.8 0 0'/>
-            </Appearance>
-            <Box/>
-          </Shape>
-        </Transform>
-      </Transform>
-    </Group>
     <ProtoInstance name='Rotor' DEF='Rotor'>
       <fieldValue name='cycleInterval' value='10'/>
       <fieldValue name='loop' value='true'/>
     </ProtoInstance>
-    <Transform DEF='Sphere'
-        translation='2.22045 1.17457 6.31221e-08'
-        rotation='-3.46428e-13 -3.62463e-06 1 0.178426'
-        scale='0.2 0.2 0.2'>
-      <Transform>
-        <Shape>
-          <Appearance>
-            <Material
-                diffuseColor='0 0.8 0'/>
-          </Appearance>
-          <Sphere DEF='_3'/>
-        </Shape>
-      </Transform>
-    </Transform>
-    <Transform DEF='RoundedRectangle2D'
-        translation='2.91175 1.50513 0'
-        rotation='1.53721e-06 3.8065e-06 -1 4.14474'
-        scale='0.17606 0.17606 0.2'>
-      <Transform>
-        <Shape>
-          <Appearance>
-            <Material
-                diffuseColor='0 0 0.8'/>
-          </Appearance>
-          <ProtoInstance name='RoundedRectangle2D' containerField='geometry'>
-            <fieldValue name='size' value='4 2'/>
-          </ProtoInstance>
-        </Shape>
-      </Transform>
-    </Transform>
     <ProtoInstance name='Children1'>
       <fieldValue name='children1'>
         <Transform DEF='Cylinder'
@@ -173,6 +112,97 @@
       </fieldValue>
     </ProtoInstance>
     <ProtoInstance name='Rotor2' DEF='Rotor2'/>
+    <ImageTexture/>
+    <Transform DEF='Inline'
+        translation='5.51299 0.468949 1'
+        scale='0.329804 0.329803 1'
+        center='-1.99912 -0.520307 0'>
+      <Inline
+          url='"Inline.wrl"'/>
+    </Transform>
+    <Transform DEF='Text3'
+        translation='0.673213 -0.0752815 0'
+        scale='1 -1 1'>
+      <Shape>
+        <Appearance>
+          <Material
+              transparency='0.57'/>
+        </Appearance>
+        <Text DEF='Text'
+            string='"OutlineEditor"'>
+          <FontStyle
+              family='"PT Sans Narrow"'
+              style='BOLD'/>
+        </Text>
+      </Shape>
+    </Transform>
+    <Transform DEF='SnapTarget'>
+      <Inline
+          url='"SnapTarget.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"'/>
+    </Transform>
+    <Group>
+      <ProximitySensor USE='_1'/>
+      <Transform DEF='Box'
+          translation='1.40843 1.10727 0.193803'
+          rotation='0 0 1 4.3392'
+          scale='0.2 0.2 0.2'>
+        <Transform>
+          <Shape>
+            <Appearance>
+              <Material
+                  diffuseColor='0.8 0 0'/>
+            </Appearance>
+            <Box/>
+          </Shape>
+        </Transform>
+      </Transform>
+    </Group>
+    <Transform DEF='Sphere'
+        translation='2.22045 1.17457 6.31221e-08'
+        rotation='-3.38337e-13 -3.62463e-06 1 0.178426'
+        scale='0.2 0.2 0.2'>
+      <Transform>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0 0.8 0'/>
+          </Appearance>
+          <Sphere DEF='_3'/>
+        </Shape>
+      </Transform>
+    </Transform>
+    <Switch
+        whichChoice='0'>
+      <MetadataBoolean/>
+      <Transform DEF='RoundedRectangle2D'
+          translation='2.91175 1.50513 0'
+          rotation='-1.53721e-06 -3.8065e-06 1 2.13845'
+          scale='0.17606 0.17606 0.2'
+          scaleOrientation='2.51231e-12 -7.65059e-12 1 0.117763'>
+        <Transform>
+          <Shape>
+            <Appearance>
+              <Material
+                  diffuseColor='0 0 0.8'/>
+            </Appearance>
+            <ProtoInstance name='RoundedRectangle2D' containerField='geometry'>
+              <fieldValue name='size' value='4 2'/>
+            </ProtoInstance>
+          </Shape>
+        </Transform>
+      </Transform>
+    </Switch>
+    <LOD>
+      <Transform DEF='Text1'
+          translation='0.673213 0.0817185 0'>
+        <Shape>
+          <Appearance>
+            <Material/>
+          </Appearance>
+          <Text USE='Text'/>
+        </Shape>
+      </Transform>
+    </LOD>
     <Anchor
         description='Reload'
         url='"OutlineEditor.wrl"'>
@@ -191,29 +221,8 @@
         </Shape>
       </Transform>
     </Anchor>
-    <ImageTexture/>
-    <Transform DEF='Inline'
-        translation='5.51299 0.468949 1'
-        scale='0.329804 0.329803 1'
-        center='-1.99912 -0.520307 0'>
-      <Inline
-          url='"Inline.wrl"'/>
-    </Transform>
-    <Transform DEF='Text3'
-        translation='0.673213 -0.0752815 0'
-        scale='1 -1 1'>
-      <Shape>
-        <Appearance>
-          <Material
-              transparency='0.57'/>
-        </Appearance>
-        <Text USE='Text'/>
-      </Shape>
-    </Transform>
-    <Transform DEF='SnapTarget'>
-      <Inline
-          url='"SnapTarget.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"'/>
-    </Transform>
+    <Collision/>
+    <Billboard/>
     <ROUTE fromNode='_1' fromField='isActive' toNode='_2' toField='set_enabled'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
   </Scene>

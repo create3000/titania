@@ -52,7 +52,7 @@
 
 #include "../Basic/NodeSet.h"
 #include "../Components/Networking/Inline.h"
-#include "../Handles/X3DHandleObject.h"
+#include "../Tools/Core/X3DToolObject.h"
 
 namespace titania {
 namespace X3D {
@@ -207,11 +207,11 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 		}
 		else
 		{
-			X3DHandleObject* handle = dynamic_cast <X3DHandleObject*> (node);
+			X3DToolObject* tool = dynamic_cast <X3DToolObject*> (node);
 
-			if (handle)
+			if (tool)
 			{
-				for (const auto & rootNode : handle -> getRootNodes ())
+				for (const auto & rootNode : tool -> getRootNodes ())
 				{
 					if (find (rootNode, object, inScene, hierarchy, seen))
 						return true;

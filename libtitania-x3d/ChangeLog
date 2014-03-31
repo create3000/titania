@@ -1,5 +1,88 @@
 2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Linetypes.h:
+	* Traverse.cpp:
+	* ToolColors.h:
+	* X3DBaseNode.h:
+	* GroupHandle.h:
+	* X3DBaseNode.cpp:
+	* HandleColors.h:
+	* BoundingBox.wrl:
+	* X3DBaseHandle.h:
+	* X3DNodeTool.h:
+	* X3DBaseTool.h:
+	* TransformTool.wrl:
+	* TransformHandle.h:
+	* X3DNode.h:
+	* X3DHandleObject.h:
+	* X3DToolObject.h:
+	* LODTool.h:
+	* GroupTool.h:
+	* Group.h:
+	* SwitchTool.h:
+	* LOD.h:
+	* X3DHandleObject.cpp:
+	* LODHandle (Kopie).h:
+	* TransformHandle.cpp:
+	* Switch.h:
+	* LODTool.cpp:
+	* X3DToolObject.cpp:
+	* X3DBaseHandle.h:
+	* GroupTool.cpp:
+	* X3DNodeHandle.h:
+	* Selection.cpp:
+	* LOD.cpp:
+	* Group.cpp:
+	* SwitchTool.cpp:
+	* AnchorTool.h:
+	* TransformTool.h:
+	* Switch.cpp:
+	* LODHandle.h:
+	* X3DHandleObject.h:
+	* GroupHandle.h:
+	* Anchor.h:
+	* AnchorTool.cpp:
+	* SwitchHandle.h:
+	* X3DGroupingNodeHandle.h:
+	* Transform.h:
+	* CollisionTool.h:
+	* X3DHandleObject.cpp:
+	* TransformTool.cpp:
+	* Anchor.cpp:
+	* GroupHandle.cpp:
+	* LODHandle.cpp:
+	* PointingDevice.h:
+	* BillboardTool.h:
+	* Billboard.h:
+	* Collision.h:
+	* AnchorHandle.h:
+	* Transform.cpp:
+	* SwitchHandle.cpp:
+	* TransformHandle.h:
+	* BillboardTool.cpp:
+	* CollisionTool.cpp:
+	* jsContext.h:
+	* AnchorHandle.cpp:
+	* X3DPointingDevice.h:
+	* Billboard.cpp:
+	* Collision.cpp:
+	* CollisionHandle.h:
+	* BillboardHandle.h:
+	* X3DGroupingNodeTool.h:
+	* TransformHandle.cpp:
+	* X3DPointingDevice.cpp:
+	* jsContext.cpp:
+	* X3DTimeDependentNode.h:
+	* BillboardHandle.cpp:
+	* CollisionHandle.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DGroupingNodeHandle.h:
+	* X3DGeospatialObject.cpp: 
+
+2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* libtitania-x3d.cproj:
 	* MFNode.h:

@@ -73,10 +73,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFNode &
 	metadata ()
 	{ return *fields .metadata; }
 
+	virtual
 	const SFNode &
 	metadata () const
 	{ return *fields .metadata; }

@@ -89,34 +89,42 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	forceTransitions ()
 	{ return *fields .forceTransitions; }
 
+	virtual
 	const SFBool &
 	forceTransitions () const
 	{ return *fields .forceTransitions; }
 
+	virtual
 	SFVec3f &
 	center ()
 	{ return *fields .center; }
 
+	virtual
 	const SFVec3f &
 	center () const
 	{ return *fields .center; }
 
+	virtual
 	MFFloat &
 	range ()
 	{ return *fields .range; }
 
+	virtual
 	const MFFloat &
 	range () const
 	{ return *fields .range; }
 
+	virtual
 	SFInt32 &
 	level_changed ()
 	{ return *fields .level_changed; }
 
+	virtual
 	const SFInt32 &
 	level_changed () const
 	{ return *fields .level_changed; }
@@ -125,13 +133,17 @@ public:
 
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	addTool () override;
+
+	virtual
+	void
+	traverse (const TraverseType) override;
 
 
 private:

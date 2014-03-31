@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Handles/TransformHandle.h"
+#include "../../Tools/Grouping/TransformTool.h"
 
 namespace titania {
 namespace X3D {
@@ -85,9 +85,9 @@ Transform::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Transform::addHandle ()
+Transform::addTool ()
 {
-	X3DTransformNode::addHandle (new TransformHandle (this));
+	X3DTransformNode::addTool (new TransformTool (this));
 }
 
 } // X3D

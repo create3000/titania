@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -132,7 +132,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
 	               events (),
-	               handle (nullptr),
+	                 tool (nullptr),
 	             comments (),
 	       shutdownOutput ()
 {
@@ -674,22 +674,22 @@ X3DBaseNode::restoreState ()
 }
 
 void
-X3DBaseNode::addHandle (X3DBaseNode* const value)
+X3DBaseNode::addTool (X3DBaseNode* const value)
 {
-	handle = value;
-	handle -> setName (getName ());
-	handle -> setUserData (getUserData ());
-	handle -> replace (this);
-	handle -> setup ();
+	tool = value;
+	tool -> setName (getName ());
+	tool -> setUserData (getUserData ());
+	tool -> replace (this);
+	tool -> setup ();
 }
 
 void
-X3DBaseNode::removeHandle ()
+X3DBaseNode::removeTool ()
 {
-	if (handle)
+	if (tool)
 	{
-		replace (handle);
-		handle = nullptr;
+		replace (tool);
+		tool = nullptr;
 	}
 }
 

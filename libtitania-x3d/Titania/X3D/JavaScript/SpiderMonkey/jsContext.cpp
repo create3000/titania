@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -149,7 +149,7 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 
 	if (evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
 	{
-		initEventHandler ();
+		initEventToolr ();
 		return;
 	}
 
@@ -332,7 +332,7 @@ jsContext::defineProperty (JSContext* const context,
 }
 
 void
-jsContext::initEventHandler ()
+jsContext::initEventToolr ()
 {
 	initializeFn      = getFunction ("initialize");
 	prepareEventsFn   = getFunction ("prepareEvents");

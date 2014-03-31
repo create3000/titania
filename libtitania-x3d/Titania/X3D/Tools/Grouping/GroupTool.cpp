@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,54 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_X3DHANDLE_OBJECT_H__
-#define __TITANIA_X3D_HANDLES_X3DHANDLE_OBJECT_H__
+#include "GroupTool.h"
 
-#include "../Basic/X3DBaseNode.h"
-#include "../Fields.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DHandleObject :
-	virtual public X3DBaseNode
-{
-public:
-
-	///  @name Root node handling
-
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DHandleObject ();
-
-	virtual
-	void
-	initialize () override;
-
-};
+GroupTool::GroupTool (Group* const group) :
+	                  X3DBaseNode (group -> getExecutionContext () -> getBrowser (), group -> getExecutionContext ()),
+	        X3DBaseTool <Group> (group),
+	X3DGroupingNodeTool <Group> (ToolColors::GREEN)
+{ }
 
 } // X3D
 } // titania
-
-#endif

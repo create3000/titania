@@ -652,25 +652,6 @@ PROTO TransformTool [
           }
         ]
       }
-      Switch {
-        choice DEF PPoint Transform {
-          children Shape {
-            appearance Appearance {
-              lineProperties LineProperties {
-                linewidthScaleFactor 5
-              }
-              material Material {
-                emissiveColor 0 1 1
-              }
-            }
-            geometry PointSet {
-              coord Coordinate {
-                point 0 0 0
-              }
-            }
-          }
-        }
-      }
     ]
   }
 
@@ -1269,24 +1250,6 @@ function sgn (value)
   }
 
 
-  # Debug
-
-  ROUTE FrontSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE XTranslationSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE YTranslationSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE ZTranslationSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE XScaleSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE YScaleSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE ZScaleSensor.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor1.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor2.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor3.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor4.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor5.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor6.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor7.trackPoint_changed TO PPoint.set_translation
-  ROUTE ScaleSensor8.trackPoint_changed TO PPoint.set_translation
-
   # Mode translate, rotate or scale
 
   ROUTE FrontSensor.isActive TO ModeScript.set_active
@@ -1393,4 +1356,4 @@ function sgn (value)
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
 }
 
-DEF Handle TransformTool { }
+DEF Tool TransformTool { }

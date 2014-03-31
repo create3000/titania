@@ -48,47 +48,48 @@
  *
  ******************************************************************************/
 
-#include "TransformHandle.h"
+#include "TransformTool.h"
 
-#include "../Bits/config.h"
-#include "../Browser/Picking/Selection.h"
-#include "../Browser/X3DBrowser.h"
-#include "../Components/Grouping/Transform.h"
-#include "../Components/Layering/X3DLayerNode.h"
-#include "../Execution/Scene.h"
-#include "../Execution/X3DExecutionContext.h"
-#include "../Rendering/PolygonModeContainer.h"
+#include "../../Bits/config.h"
+#include "../../Browser/Picking/Selection.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Execution/Scene.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/PolygonModeContainer.h"
 
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const transform) :
-	           X3DBaseNode (transform -> getExecutionContext () -> getBrowser (), transform -> getExecutionContext ()),
-	X3DTransformHandleNode (transform),
-	                 scene (),
-	          parentMatrix (),
-	                matrix (),
-	        interestEvents (transform -> isTainted ())
+TransformTool::TransformTool (Transform* const transform) :
+	            X3DBaseNode (transform -> getExecutionContext () -> getBrowser (), transform -> getExecutionContext ()),
+	X3DBaseTool <Transform> (transform),
+	   X3DTransformToolNode (),
+	                  scene (),
+	           parentMatrix (),
+	                 matrix (),
+	         interestEvents (transform -> isTainted ())
 {
 	X3DChildObject::addChildren (scene);
 }
 
 void
-TransformHandle::initialize ()
+TransformTool::initialize ()
 {
-	X3DTransformHandleNode::initialize ();
+	X3DTransformToolNode::initialize ();
 
-	getNode () -> addInterest (this, &TransformHandle::interestsProcessed);
+	getNode () -> addInterest (this, &TransformTool::interestsProcessed);
 
 	try
 	{
 		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.wrl") .str () });
 
-		const SFNode handle = scene -> getNamedNode ("Handle");
+		const SFNode tool = scene -> getNamedNode ("Tool");
 
-		handle -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
+		tool -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
-		handle -> setField <SFNode> ("transform", getNode ());
+		tool -> setField <SFNode> ("transform", getNode ());
 	}
 	catch (const X3DError & error)
 	{
@@ -100,13 +101,13 @@ TransformHandle::initialize ()
 }
 
 Box3f
-TransformHandle::getBBox () const
+TransformTool::getBBox () const
 {
 	return getNode () -> getBBox ();
 }
 
 MFNode &
-TransformHandle::getRootNodes ()
+TransformTool::getRootNodes ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -114,7 +115,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 const MFNode &
-TransformHandle::getRootNodes () const
+TransformTool::getRootNodes () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -136,7 +137,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 // getNode () -> setMatrix (childModelViewMatrix);
 
 void
-TransformHandle::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
+TransformTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
 {
 	++ interestEvents;
 
@@ -144,7 +145,7 @@ TransformHandle::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
 }
 
 void
-TransformHandle::setMatrix (const Matrix4d & matrix)
+TransformTool::setMatrix (const Matrix4d & matrix)
 {
 	++ interestEvents;
 
@@ -152,7 +153,7 @@ TransformHandle::setMatrix (const Matrix4d & matrix)
 }
 
 void
-TransformHandle::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
+TransformTool::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
 {
 	++ interestEvents;
 
@@ -160,7 +161,7 @@ TransformHandle::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & 
 }
 
 void
-TransformHandle::interestsProcessed ()
+TransformTool::interestsProcessed ()
 {
 	if (interestEvents)
 		-- interestEvents;
@@ -174,26 +175,26 @@ TransformHandle::interestsProcessed ()
 			if (node == this)
 				continue;
 
-			const auto handle = dynamic_cast <TransformHandle*> (node .getValue ());
+			const auto tool = dynamic_cast <TransformTool*> (node .getValue ());
 
-			if (handle)
-				handle -> addAbsoluteMatrix (differenceMatrix);
+			if (tool)
+				tool -> addAbsoluteMatrix (differenceMatrix);
 		}
 	}
 }
 
 void
-TransformHandle::reshape ()
+TransformTool::reshape ()
 {
 	try
 	{
-		const auto handle = scene -> getNamedNode ("Handle");
+		const auto tool = scene -> getNamedNode ("Tool");
 		const auto bbox   = getNode () -> X3DGroupingNode::getBBox ();
 
-		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		handle -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
-		handle -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
-		handle -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
+		tool -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		tool -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		tool -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
+		tool -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 
 		getBrowser () -> getRouter () .processEvents ();
 	}
@@ -202,7 +203,7 @@ TransformHandle::reshape ()
 }
 
 void
-TransformHandle::traverse (const TraverseType type)
+TransformTool::traverse (const TraverseType type)
 {
 	getNode () -> traverse (type);
 
@@ -214,7 +215,7 @@ TransformHandle::traverse (const TraverseType type)
 		matrix       = getMatrix ();
 	}
 
-	// Handle
+	// Tool
 
 	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 

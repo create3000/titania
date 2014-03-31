@@ -48,34 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_X3DGROUPING_NODE_HANDLE_H__
-#define __TITANIA_X3D_HANDLES_X3DGROUPING_NODE_HANDLE_H__
+#ifndef __TITANIA_X3D_TOOLS_GROUPING_TRANSFORM_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GROUPING_TRANSFORM_TOOL_H__
 
-#include "../Handles/X3DBaseHandle.h"
+#include "../Core/X3DNodeTool.h"
 
-#include "../Bits/config.h"
-#include "../Browser/X3DBrowser.h"
-#include "../Components/Layering/X3DLayerNode.h"
-#include "../Execution/Scene.h"
-#include "../Execution/X3DExecutionContext.h"
-#include "../Rendering/PolygonModeContainer.h"
-#include "../Types/Pointer.h"
+#include "../../Components/Grouping/Transform.h"
+#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-using X3DGroupingNodeBaseHandle = class X3DBaseHandle <Type>;
+using X3DTransformToolNode = class X3DNodeTool <Transform>;
 
-template <class Type>
-class X3DGroupingNodeHandle :
-	public X3DGroupingNodeBaseHandle <Type>
+class TransformTool :
+	public X3DTransformToolNode
 {
 public:
 
 	///  @name Construction
 
-	X3DGroupingNodeHandle (Type* const);
+	TransformTool (Transform* const);
+
+	///  @name Fields
+
+	virtual
+	const SFVec3f &
+	translation () const final override
+	{ return getNode () -> translation (); }
+
+	virtual
+	SFVec3f &
+	translation () final override
+	{ return getNode () -> translation (); }
+
+	virtual
+	SFRotation &
+	rotation () final override
+	{ return getNode () -> rotation (); }
+
+	virtual
+	const SFRotation &
+	rotation () const final override
+	{ return getNode () -> rotation (); }
+
+	virtual
+	SFVec3f &
+	scale () final override
+	{ return getNode () -> scale (); }
+
+	virtual
+	const SFVec3f &
+	scale () const final override
+	{ return getNode () -> scale (); }
+
+	virtual
+	SFRotation &
+	scaleOrientation () final override
+	{ return getNode () -> scaleOrientation (); }
+
+	virtual
+	const SFRotation &
+	scaleOrientation () const final override
+	{ return getNode () -> scaleOrientation (); }
+
+	virtual
+	SFVec3f &
+	center () final override
+	{ return getNode () -> center (); }
+
+	virtual
+	const SFVec3f &
+	center () const final override
+	{ return getNode () -> center (); }
 
 	virtual
 	SFVec3f &
@@ -127,6 +172,21 @@ public:
 	children () const final override
 	{ return getNode () -> children (); }
 
+	///  @name Member access
+
+	virtual
+	void
+	setMatrix (const Matrix4d &) final override;
+
+	virtual
+	void
+	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
+
+	virtual
+	const Matrix4f &
+	getMatrix () const final override
+	{ return getNode () -> getMatrix (); }
+
 	///  @name Root node handling
 
 	virtual
@@ -145,8 +205,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () const final override
-	{ return getNode () -> getBBox (); }
+	getBBox () const final override;
 
 	virtual
 	void
@@ -155,15 +214,19 @@ public:
 
 private:
 
-	using X3DGroupingNodeBaseHandle <Type>::getBrowser;
-	using X3DGroupingNodeBaseHandle <Type>::getCurrentLayer;
-	using X3DGroupingNodeBaseHandle <Type>::getNode;
-
 	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+	void
+	interestsProcessed ();
+
+	///  @name Operatations
+
+	void
+	addAbsoluteMatrix (const Matrix4d &);
 
 	void
 	reshape ();
@@ -172,93 +235,11 @@ private:
 
 	ScenePtr scene;
 
+	Matrix4d parentMatrix;
+	Matrix4d matrix;
+	size_t   interestEvents;
+
 };
-
-template <class Type>
-X3DGroupingNodeHandle <Type>::X3DGroupingNodeHandle (Type* const group) :
-	                     X3DBaseNode (group -> getExecutionContext () -> getBrowser (), group -> getExecutionContext ()),
-	X3DGroupingNodeBaseHandle <Type> (group),
-	                           scene ()
-{
-	X3DChildObject::addChildren (scene);
-}
-
-template <class Type>
-void
-X3DGroupingNodeHandle <Type>::initialize ()
-{
-	X3DGroupingNodeBaseHandle <Type>::initialize ();
-
-	try
-	{
-		scene = getBrowser () -> createX3DFromURL ({ get_tool ("BoundingBox.wrl") .str () });
-	}
-	catch (const X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-
-		scene = getBrowser () -> createScene ();
-		scene -> setup ();
-	}
-}
-
-template <class Type>
-MFNode &
-X3DGroupingNodeHandle <Type>::getRootNodes ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return scene -> getRootNodes ();
-}
-
-template <class Type>
-const MFNode &
-X3DGroupingNodeHandle <Type>::getRootNodes () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return scene -> getRootNodes ();
-}
-
-template <class Type>
-void
-X3DGroupingNodeHandle <Type>::reshape ()
-{
-	try
-	{
-		const auto handle = scene -> getNamedNode ("Handle");
-		const auto bbox   = getNode () -> X3DGroupingNode::getBBox ();
-
-		handle -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
-		handle -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
-
-		getBrowser () -> getRouter () .processEvents ();
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-template <class Type>
-void
-X3DGroupingNodeHandle <Type>::traverse (const TraverseType type)
-{
-	getNode () -> traverse (type);
-
-	// Handle
-
-	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
-
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape ();
-
-	for (const auto & rootNode : scene -> getRootNodes ())
-	{
-		if (rootNode)
-			rootNode -> traverse (type);
-	}
-
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
-}
 
 } // X3D
 } // titania

@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
+#include "../../Tools/Navigation/AnchorTool.h"
 
 namespace titania {
 namespace X3D {
@@ -96,6 +97,12 @@ Anchor::initialize ()
 {
 	X3DGroupingNode::initialize ();
 	X3DUrlObject::initialize ();
+}
+
+void
+Anchor::addTool ()
+{
+	X3DGroupingNode::addTool (new AnchorTool (this));
 }
 
 void

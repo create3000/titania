@@ -48,37 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_CAST_H__
-#define __TITANIA_X3D_BITS_CAST_H__
+#ifndef __TITANIA_X3D_TOOLS_CORE_X3DNODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CORE_X3DNODE_TOOL_H__
 
-#include "../Rendering/OpenGL.h"
-
-#include <Titania/Math/Utility/strtol.h>
+#include "../Core/X3DBaseTool.h"
 
 namespace titania {
 namespace X3D {
 
-static const std::vector <GLushort> linetypes = {
-	math::strtol ("0000000000000000", 2), // 0 None
-	math::strtol ("1111111111111111", 2), // 1 Solid
-	math::strtol ("1111111110000000", 2), // 2 Dashed
-	math::strtol ("1100110011001100", 2), // 3 Dotted
-	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
-	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
+template <class Type>
+class X3DNodeTool :
+	virtual public X3DBaseTool <Type>
+{
+public:
 
-	math::strtol ("1111111111111111", 2), // 6 (single arrow)
-	math::strtol ("1111111111111111", 2), // 7 (single dot)
-	math::strtol ("1111111111111111", 2), // 8 (double arrow)
+	///  @name Fields
 
-	math::strtol ("1111111100000000", 2), // 9 (stitch line)
-	math::strtol ("1111111000111000", 2), // 10 (chain line)
-	math::strtol ("1111111110011100", 2), // 11 (center line)
-	math::strtol ("1111111111100000", 2), // 12 (hidden line)
-	math::strtol ("1111111011101110", 2)  // 13 (phantom line)
+	virtual
+	SFNode &
+	metadata () final override
+	{ return getNode () -> metadata (); }
 
-	// 14 (break line - style 1)
-	// 15 (break line - style 2)
-	// 16 User - specified dash pattern
+	virtual
+	const SFNode &
+	metadata () const final override
+	{ return getNode () -> metadata (); }
+
+
+protected:
+
+	using X3DBaseTool <Type>::getNode;
+
+	///  @name Construction
+
+	X3DNodeTool () :
+		X3DBaseTool <Type> ()
+	{ }
 
 };
 

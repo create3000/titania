@@ -48,22 +48,30 @@
  *
  ******************************************************************************/
 
-#include "X3DHandleObject.h"
+#ifndef __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
+#define __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
+
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-X3DHandleObject::X3DHandleObject () :
-	X3DBaseNode ()
-{ }
+namespace ToolColors {
 
-void
-X3DHandleObject::initialize ()
-{ }
+static constexpr Color3f GREEN  (0.35, 1, 0.7);  // Group
+static constexpr Color3f YELLOW (1, 1, 0.35);    // Switch
+static constexpr Color3f LILA   (0.7, 0.35, 1);  // Anchor
+static constexpr Color3f PINK   (1, 0.35, 0.7);  // Billboard
+static constexpr Color3f RED    (1, 0.35, 0.35); // Collision
+static constexpr Color3f CYAN   (0.35, 1, 1);    // LOD
 
-void
-X3DHandleObject::dispose ()
-{ }
+static constexpr Color3f WHITE  (1, 1, 1);       // Inline
+static constexpr Color3f ORANGE (1, 0.7, 0.35);  // Shape
+static constexpr Color3f BLUE   (0.35, 0.31, 1);
+
+}
 
 } // X3D
 } // titania
+
+#endif

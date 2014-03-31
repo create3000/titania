@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-class TransformHandle;
+class TransformTool;
 
 class Transform :
 	public X3DTransformNode
@@ -93,7 +93,7 @@ public:
 
 	virtual
 	void
-	addHandle () override;
+	addTool () override;
 
 
 private:

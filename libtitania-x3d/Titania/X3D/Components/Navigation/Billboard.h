@@ -89,10 +89,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	axisOfRotation ()
 	{ return *fields .axisOfRotation; }
 
+	virtual
 	const SFVec3f &
 	axisOfRotation () const
 	{ return *fields .axisOfRotation; }
@@ -101,7 +103,11 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	addTool () override;
+
+	virtual
+	void
+	traverse (const TraverseType) override;
 
 
 private:

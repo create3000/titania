@@ -78,7 +78,7 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Event Handlers
+	///  @name Event Toolrs
 
 	void
 	set_picking (bool);

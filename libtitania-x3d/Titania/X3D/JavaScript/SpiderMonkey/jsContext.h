@@ -166,7 +166,7 @@ private:
 	defineProperty (JSContext* const, JSObject* const, X3DFieldDefinition * const, const std::string &, const uintN);
 
 	void
-	initEventHandler ();
+	initEventToolr ();
 
 	JSBool
 	evaluate (const std::string &, const std::string &);

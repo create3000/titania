@@ -48,17 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_X3DBASE_HANDLE_H__
-#define __TITANIA_X3D_HANDLES_X3DBASE_HANDLE_H__
+#ifndef __TITANIA_X3D_TOOLS_CORE_X3DBASE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CORE_X3DBASE_TOOL_H__
 
-#include "../Handles/X3DHandleObject.h"
+#include "../Core/X3DToolObject.h"
+
+#include <cassert>
 
 namespace titania {
 namespace X3D {
 
 template <class Type>
-class X3DBaseHandle :
-	public Type, public X3DHandleObject
+class X3DBaseTool :
+	public Type, public X3DToolObject
 {
 public:
 
@@ -74,12 +76,12 @@ public:
 
 	virtual
 	void
-	addHandle () final override
+	addTool () final override
 	{ }
 
 	virtual
 	void
-	removeHandle () final override;
+	removeTool () final override;
 
 	virtual
 	void
@@ -112,7 +114,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBaseHandle (Type* const);
+	X3DBaseTool (Type* const = nullptr);
 
 	virtual
 	void
@@ -134,10 +136,13 @@ private:
 };
 
 template <class Type>
-X3DBaseHandle <Type>::X3DBaseHandle (Type* const node) :
-	Type (node -> getExecutionContext ()),
-	node (node)
+X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
+	           Type (node -> getExecutionContext ()),
+	X3DToolObject (),
+	           node (node)
 {
+	assert (node);
+
 	node -> addParent (this);
 
 	for (auto & field : node -> getFieldDefinitions ())
@@ -146,44 +151,44 @@ X3DBaseHandle <Type>::X3DBaseHandle (Type* const node) :
 
 template <class Type>
 void
-X3DBaseHandle <Type>::initialize ()
+X3DBaseTool <Type>::initialize ()
 {
 	Type::initialize ();
-	X3DHandleObject::initialize ();
+	X3DToolObject::initialize ();
 }
 
 template <class Type>
 void
-X3DBaseHandle <Type>::setName (const std::string & value)
+X3DBaseTool <Type>::setName (const std::string & value)
 {
 	node -> setName (value);
 
-	X3DHandleObject::setName (value);
+	X3DToolObject::setName (value);
 }
 
 template <class Type>
 void
-X3DBaseHandle <Type>::setUserData (const UserDataPtr & value)
+X3DBaseTool <Type>::setUserData (const UserDataPtr & value)
 {
 	node -> setUserData (value);
 
-	X3DHandleObject::setUserData (value);
+	X3DToolObject::setUserData (value);
 }
 
 template <class Type>
 void
-X3DBaseHandle <Type>::removeHandle ()
+X3DBaseTool <Type>::removeTool ()
 {
-	node -> removeHandle ();
+	node -> removeTool ();
 }
 
 template <class Type>
 void
-X3DBaseHandle <Type>::dispose ()
+X3DBaseTool <Type>::dispose ()
 {
 	node -> removeParent (this);
 
-	X3DHandleObject::dispose ();
+	X3DToolObject::dispose ();
 	Type::dispose ();
 }
 

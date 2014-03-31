@@ -48,37 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_CAST_H__
-#define __TITANIA_X3D_BITS_CAST_H__
+#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_COLLISION_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NAVIGATION_COLLISION_TOOL_H__
 
-#include "../Rendering/OpenGL.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
 
-#include <Titania/Math/Utility/strtol.h>
+#include "../../Components/Navigation/Collision.h"
 
 namespace titania {
 namespace X3D {
 
-static const std::vector <GLushort> linetypes = {
-	math::strtol ("0000000000000000", 2), // 0 None
-	math::strtol ("1111111111111111", 2), // 1 Solid
-	math::strtol ("1111111110000000", 2), // 2 Dashed
-	math::strtol ("1100110011001100", 2), // 3 Dotted
-	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
-	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
+class CollisionTool :
+	public X3DGroupingNodeTool <Collision>
+{
+public:
 
-	math::strtol ("1111111111111111", 2), // 6 (single arrow)
-	math::strtol ("1111111111111111", 2), // 7 (single dot)
-	math::strtol ("1111111111111111", 2), // 8 (double arrow)
+	///  @name Construction
 
-	math::strtol ("1111111100000000", 2), // 9 (stitch line)
-	math::strtol ("1111111000111000", 2), // 10 (chain line)
-	math::strtol ("1111111110011100", 2), // 11 (center line)
-	math::strtol ("1111111111100000", 2), // 12 (hidden line)
-	math::strtol ("1111111011101110", 2)  // 13 (phantom line)
+	CollisionTool (Collision* const);
 
-	// 14 (break line - style 1)
-	// 15 (break line - style 2)
-	// 16 User - specified dash pattern
+	///  @name Fields
+
+	virtual
+	SFTime &
+	collideTime () final override
+	{ return getNode () -> collideTime (); }
+
+	virtual
+	const SFTime &
+	collideTime () const final override
+	{ return getNode () -> collideTime (); }
+
+	virtual
+	SFNode &
+	proxy () final override
+	{ return getNode () -> proxy (); }
+
+	virtual
+	const SFNode &
+	proxy () const final override
+	{ return getNode () -> proxy (); }
 
 };
 

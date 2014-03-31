@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -311,7 +311,7 @@ X3DTimeDependentNode::stop ()
 // Timeout
 
 bool
-X3DTimeDependentNode::timeout (TimeoutHandler handler)
+X3DTimeDependentNode::timeout (TimeoutToolr handler)
 {
 	if (enabled ())
 	{
@@ -324,7 +324,7 @@ X3DTimeDependentNode::timeout (TimeoutHandler handler)
 }
 
 void
-X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
+X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutToolr callback, const time_type time)
 {
 	timeout .disconnect ();
 

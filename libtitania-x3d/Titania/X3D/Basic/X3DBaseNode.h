@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -223,16 +223,16 @@ public:
 	void
 	restoreState ();
 
-	///  @name Handle handling
+	///  @name Tool handling
 
 	virtual
 	void
-	addHandle ()
+	addTool ()
 	{ }
 
 	virtual
 	void
-	removeHandle ();
+	removeTool ();
 
 	///  @name Event handling
 
@@ -382,7 +382,7 @@ protected:
 	{ }
 
 	void
-	addHandle (X3DBaseNode* const);
+	addTool (X3DBaseNode* const);
 
 
 private:
@@ -426,11 +426,11 @@ private:
 
 	bool                  internal;              // Is this node interally used
 	bool                  saved;                 // Is this node hidden and saved
-	bool                  extendedEventHandling; // Handle initializeOnlys as input events
+	bool                  extendedEventHandling; // Tool initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;
 
-	X3DBaseNode*              handle;   // Does this node has a handle
+	X3DBaseNode*              tool;   // Does this node has a tool
 	std::vector <std::string> comments; // This nodes comments
 
 	Output shutdownOutput; // Shutdown service

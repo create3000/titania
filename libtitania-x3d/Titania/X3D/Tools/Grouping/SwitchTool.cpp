@@ -48,20 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_GROUP_HANDLE_H__
-#define __TITANIA_X3D_HANDLES_GROUP_HANDLE_H__
+#include "SwitchTool.h"
+
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
-class Group;
-
-template <class Type>
-class X3DGroupingNodeHandle;
-
-using GroupHandle = X3DGroupingNodeHandle <Group>;
+SwitchTool::SwitchTool (Switch* const _switch) :
+	                 X3DBaseNode (_switch -> getExecutionContext () -> getBrowser (), _switch -> getExecutionContext ()),
+	        X3DBaseTool <Switch> (_switch),
+	X3DGroupingNodeTool <Switch> (ToolColors::YELLOW)
+{ }
 
 } // X3D
 } // titania
-
-#endif

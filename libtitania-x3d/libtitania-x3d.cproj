@@ -508,7 +508,6 @@
     <None Include="Titania\X3D\Rendering\CollisionArray.h" />
     <None Include="Titania\X3D\Base\X3DBase.h" />
     <None Include="Titania\X3D\Browser\Console.h" />
-    <None Include="Titania\X3D\Handles\TransformHandle.h" />
     <None Include="Titania\X3D\Bits\config.h" />
     <None Include="Titania\X3D\Parser\Grammar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.h" />
@@ -533,7 +532,6 @@
     <None Include="Titania\X3D\Routing\NodeList.h" />
     <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
-    <None Include="Titania\X3D\Handles\X3DHandleObject.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Types\Set.h" />
     <None Include="Titania\X3D\Browser\Properties\X3DOptionNode.h" />
@@ -646,10 +644,19 @@
     <None Include="Titania\X3D\Fields\X3DPtr.h" />
     <None Include="Titania\X3D\Types\Pointer.h" />
     <None Include="Titania\X3D\Fields\X3DPtrArray.h" />
-    <None Include="Titania\X3D\Handles\X3DBaseHandle.h" />
     <None Include="share\titania\tools\BoundingBox.wrl" />
-    <None Include="Titania\X3D\Handles\GroupHandle.h" />
-    <None Include="Titania\X3D\Handles\X3DGroupingNodeHandle.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DBaseTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DToolObject.h" />
+    <None Include="Titania\X3D\Tools\Grouping\GroupTool.h" />
+    <None Include="Titania\X3D\Tools\Grouping\X3DGroupingNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Grouping\TransformTool.h" />
+    <None Include="Titania\X3D\Tools\Grouping\SwitchTool.h" />
+    <None Include="Titania\X3D\Tools\Navigation\LODTool.h" />
+    <None Include="Titania\X3D\Tools\Navigation\CollisionTool.h" />
+    <None Include="Titania\X3D\Tools\Navigation\AnchorTool.h" />
+    <None Include="Titania\X3D\Tools\Navigation\BillboardTool.h" />
+    <None Include="Titania\X3D\Tools\ToolColors.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1037,7 +1044,6 @@
     <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
-    <Compile Include="Titania\X3D\Handles\TransformHandle.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.cpp" />
@@ -1061,7 +1067,6 @@
     <Compile Include="Titania\X3D\Execution\ExportedNodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\World.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
-    <Compile Include="Titania\X3D\Handles\X3DHandleObject.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\X3DOptionNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.cpp" />
@@ -1119,6 +1124,14 @@
     <Compile Include="Titania\X3D\Execution\NamedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNode.cpp" />
     <Compile Include="Titania\X3D\Types\Pointer.cpp" />
+    <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grouping\GroupTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grouping\TransformTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grouping\SwitchTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Navigation\LODTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Navigation\CollisionTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Navigation\BillboardTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Navigation\AnchorTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1141,7 +1154,6 @@
     <Folder Include="Titania\X3D\Browser\Geometry3D\" />
     <Folder Include="Titania\X3D\Browser\Geometry2D\" />
     <Folder Include="Titania\X3D\Browser\Viewer\" />
-    <Folder Include="Titania\X3D\Handles\" />
     <Folder Include="share\" />
     <Folder Include="share\titania\" />
     <Folder Include="share\titania\pages\" />
@@ -1156,6 +1168,10 @@
     <Folder Include="share\titania\shaders\" />
     <Folder Include="share\titania\shaders\ParticleSystems\" />
     <Folder Include="share\titania\shaders\ParticleSystems\Bits\" />
+    <Folder Include="Titania\X3D\Tools\" />
+    <Folder Include="Titania\X3D\Tools\Grouping\" />
+    <Folder Include="Titania\X3D\Tools\Core\" />
+    <Folder Include="Titania\X3D\Tools\Navigation\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

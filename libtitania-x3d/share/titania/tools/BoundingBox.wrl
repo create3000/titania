@@ -67,6 +67,7 @@ void main (void)
 
 PROTO BoundingBox [
   # required fields
+  exposedField SFColor color 0.35 1 0.7
   exposedField SFVec3f bboxSize 0 0 0
   exposedField SFVec3f bboxCenter 0 0 0
 ]
@@ -81,9 +82,10 @@ PROTO BoundingBox [
             appearance Appearance {
               lineProperties LineProperties {
                 linetype 3
+                linewidthScaleFactor 2
               }
               material Material {
-                emissiveColor 0.35 1 0.7
+                emissiveColor IS color
               }
             }
             geometry IndexedLineSet {
@@ -107,6 +109,10 @@ PROTO BoundingBox [
           }
         ]
       }
+      Switch
+      {
+        children
+  
       DEF AdjustmentHandles Transform {
         translation IS bboxCenter
         children [
@@ -165,6 +171,8 @@ PROTO BoundingBox [
           }
         ]
       }
+
+      } # Switch
     ]
   }
 
@@ -224,4 +232,4 @@ function eventsProcessed ()
   }
 }
 
-DEF Handle BoundingBox { }
+DEF Tool BoundingBox { }
