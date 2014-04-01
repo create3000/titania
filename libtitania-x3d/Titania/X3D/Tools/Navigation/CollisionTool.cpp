@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-CollisionTool::CollisionTool (Collision* const collision) :
-	                    X3DBaseNode (collision -> getExecutionContext () -> getBrowser (), collision -> getExecutionContext ()),
-	        X3DBaseTool <Collision> (collision),
+CollisionTool::CollisionTool (Collision* const node) :
+	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <Collision> (node),
 	X3DGroupingNodeTool <Collision> (ToolColors::RED)
 { }
 

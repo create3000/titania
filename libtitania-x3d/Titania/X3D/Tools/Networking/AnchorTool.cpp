@@ -55,11 +55,33 @@
 namespace titania {
 namespace X3D {
 
-AnchorTool::AnchorTool (Anchor* const anchor) :
-	                 X3DBaseNode (anchor -> getExecutionContext () -> getBrowser (), anchor -> getExecutionContext ()),
-	        X3DBaseTool <Anchor> (anchor),
-	X3DGroupingNodeTool <Anchor> (ToolColors::LILA)
+AnchorTool::AnchorTool (Anchor* const node) :
+	                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <Anchor> (node),
+	X3DGroupingNodeTool <Anchor> (ToolColors::LILA),
+	   X3DUrlObjectTool <Anchor> ()
 { }
+
+void
+AnchorTool::initialize ()
+{
+	X3DGroupingNodeTool <Anchor>::initialize ();
+	X3DUrlObjectTool <Anchor>::initialize ();
+}
+
+void
+AnchorTool::traverse (const TraverseType type)
+{
+	X3DGroupingNodeTool <Anchor>::traverse (type);
+	X3DUrlObjectTool <Anchor>::traverse (type);
+}
+
+void
+AnchorTool::dispose ()
+{
+	X3DUrlObjectTool <Anchor>::dispose ();
+	X3DGroupingNodeTool <Anchor>::dispose ();
+}
 
 } // X3D
 } // titania

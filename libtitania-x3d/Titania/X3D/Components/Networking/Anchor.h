@@ -112,9 +112,11 @@ public:
 
 	///  @name Event handlers
 
+	virtual
 	void
 	set_over (const bool);
 
+	virtual
 	void
 	set_active (const bool);
 
@@ -122,15 +124,15 @@ public:
 
 	virtual
 	void
-	addTool () override;
-
-	virtual
-	void
-	requestImmediateLoad () final override;
+	requestImmediateLoad () override;
 
 	virtual
 	void
 	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 

@@ -107,12 +107,6 @@ Switch::getBBox () const
 }
 
 void
-Switch::addTool ()
-{
-	X3DGroupingNode::addTool (new SwitchTool (this));
-}
-
-void
 Switch::traverse (const TraverseType type)
 {
 	if (whichChoice () >= 0 and whichChoice () < (int32_t) children () .size ())
@@ -120,6 +114,12 @@ Switch::traverse (const TraverseType type)
 		if (children () [whichChoice ()])
 			children () [whichChoice ()] -> traverse (type);
 	}
+}
+
+void
+Switch::addTool ()
+{
+	X3DGroupingNode::addTool (new SwitchTool (this));
 }
 
 } // X3D

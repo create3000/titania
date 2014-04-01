@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-SwitchTool::SwitchTool (Switch* const _switch) :
-	                 X3DBaseNode (_switch -> getExecutionContext () -> getBrowser (), _switch -> getExecutionContext ()),
-	        X3DBaseTool <Switch> (_switch),
+SwitchTool::SwitchTool (Switch* const node) :
+	                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <Switch> (node),
 	X3DGroupingNodeTool <Switch> (ToolColors::YELLOW)
 { }
 

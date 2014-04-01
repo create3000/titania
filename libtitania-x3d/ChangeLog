@@ -1,3 +1,66 @@
+2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DObject.h:
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Statistics.wrl:
+	* X3DBrowser.cpp:
+	* Statistics.x3dv:
+	* ShapeTool.h:
+	* BoundingBox.wrl:
+	* Shape.h:
+	* X3DBaseTool.h:
+	* Notification.cpp:
+	* splash.wrl:
+	* BoundingBox.x3dv:
+	* Notification.wrl:
+	* TransformTool.wrl:
+	* ShapeTool.cpp:
+	* Notification.x3dv:
+	* splash.x3dv:
+	* Shape.cpp:
+	* TransformTool.x3dv:
+	* LOD.h:
+	* LODTool.cpp:
+	* Switch.h:
+	* GroupTool.cpp:
+	* SwitchTool.cpp:
+	* AnchorTool.h:
+	* X3DChildNodeTool.h:
+	* LOD.cpp:
+	* AnchorTool.h:
+	* InlineTool.h:
+	* Logo.wrl:
+	* Switch.cpp:
+	* Inline.h:
+	* Anchor.h:
+	* X3DShapeNodeTool.h:
+	* InlineTool.cpp:
+	* X3DShapeNode.h:
+	* AnchorTool.cpp:
+	* AnchorTool.cpp:
+	* Colors.wrl:
+	* TransformTool.cpp:
+	* Inline.cpp:
+	* Anchor.cpp:
+	* Collision.h:
+	* HandleShader.x3dv:
+	* Billboard.h:
+	* X3DExecutionContext.cpp:
+	* BillboardTool.cpp:
+	* LODTool (Kopie).h:
+	* CollisionTool.cpp:
+	* X3DUrlObjectTool.h:
+	* Billboard.cpp:
+	* Collision.cpp:
+	* X3DGroupingNodeTool.h:
+	* X3DUrlObject.h:
+	* X3DBoundedObjectTool.h:
+	* RenderingProperties.cpp: 
+
 2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

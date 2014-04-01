@@ -119,11 +119,11 @@ public:
 
 	virtual
 	void
-	addTool () override;
+	traverse (const TraverseType) override;
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	addTool () override;
 
 
 protected:

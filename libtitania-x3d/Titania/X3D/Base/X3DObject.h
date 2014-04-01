@@ -81,6 +81,7 @@ public:
 	setName (const std::string & value)
 	{ realize (); data -> name = value; }
 
+	virtual
 	const std::string &
 	getName () const
 	{ realize (); return data -> name; }
@@ -107,6 +108,7 @@ public:
 	setUserData (const UserDataPtr & value)
 	{ realize (); data -> userData = value; }
 
+	virtual
 	const UserDataPtr &
 	getUserData () const
 	{ realize (); return data -> userData; }

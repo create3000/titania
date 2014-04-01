@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-LODTool::LODTool (LOD* const lod) :
-	              X3DBaseNode (lod -> getExecutionContext () -> getBrowser (), lod -> getExecutionContext ()),
-	        X3DBaseTool <LOD> (lod),
+LODTool::LODTool (LOD* const node) :
+	              X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <LOD> (node),
 	X3DGroupingNodeTool <LOD> (ToolColors::CYAN)
 { }
 

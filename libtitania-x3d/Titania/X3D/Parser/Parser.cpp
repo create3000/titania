@@ -1254,16 +1254,11 @@ Parser::routeStatement ()
 										throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
 									}
 
-									if (_eventOut -> getType () == _eventIn -> getType ())
-									{
-										const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+									const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
-										_route -> addComments (getComments ());
+									_route -> addComments (getComments ());
 
-										return true;
-									}
-									else
-										throw Error <INVALID_X3D> ("ROUTE types " + _eventOut -> getTypeName () + " and " + _eventIn -> getTypeName () + " do not match.");
+									return true;
 								}
 								else
 									throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");

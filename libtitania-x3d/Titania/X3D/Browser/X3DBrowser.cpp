@@ -100,7 +100,7 @@ X3DBrowser::initialize ()
 		try
 		{
 			if (browserOptions -> splashScreen ())
-				replaceWorld (createX3DFromURL ({ get_page ("about/splash.wrl") .str () }));
+				replaceWorld (createX3DFromURL ({ get_page ("about/splash.x3dv") .str () }));
 		}
 		catch (const X3DError & error)
 		{

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-GroupTool::GroupTool (Group* const group) :
-	                  X3DBaseNode (group -> getExecutionContext () -> getBrowser (), group -> getExecutionContext ()),
-	        X3DBaseTool <Group> (group),
+GroupTool::GroupTool (Group* const node) :
+	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <Group> (node),
 	X3DGroupingNodeTool <Group> (ToolColors::GREEN)
 { }
 

@@ -107,12 +107,6 @@ Collision::initialize ()
 }
 
 void
-Collision::addTool ()
-{
-	X3DGroupingNode::addTool (new CollisionTool (this));
-}
-
-void
 Collision::set_active (bool value)
 {
 	if (isActive () not_eq value)
@@ -161,6 +155,12 @@ Collision::traverse (const TraverseType type)
 			break;
 		}
 	}
+}
+
+void
+Collision::addTool ()
+{
+	X3DGroupingNode::addTool (new CollisionTool (this));
 }
 
 } // X3D

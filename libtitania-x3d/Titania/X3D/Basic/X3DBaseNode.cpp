@@ -132,7 +132,6 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
 	               events (),
-	                 tool (nullptr),
 	             comments (),
 	       shutdownOutput ()
 {
@@ -674,23 +673,16 @@ X3DBaseNode::restoreState ()
 }
 
 void
-X3DBaseNode::addTool (X3DBaseNode* const value)
+X3DBaseNode::addTool (X3DBaseNode* const tool)
 {
-	tool = value;
-	tool -> setName (getName ());
-	tool -> setUserData (getUserData ());
 	tool -> replace (this);
 	tool -> setup ();
 }
 
 void
-X3DBaseNode::removeTool ()
+X3DBaseNode::removeTool (X3DBaseNode* const node)
 {
-	if (tool)
-	{
-		replace (tool);
-		tool = nullptr;
-	}
+	node -> replace (this);
 }
 
 void

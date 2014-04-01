@@ -91,25 +91,29 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const override;
 	
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	bool
-	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) final override;
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) override;
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
 
 	virtual
 	void
-	drawCollision () final override;
+	drawCollision () override;
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

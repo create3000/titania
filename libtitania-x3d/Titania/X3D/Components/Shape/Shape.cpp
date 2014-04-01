@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,6 +55,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
+#include "../../Tools/Shape/ShapeTool.h"
 #include "../../Types/Geometry.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -184,10 +185,10 @@ Shape::pick ()
 
 					// Find first point that is not greater than near plane;
 					const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
-					                                          [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
-					                                          {
-					                                             return lhs -> hitPoint .z () > rhs;
-																	      });
+					                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
+					                                           {
+					                                              return lhs -> hitPoint .z () > rhs;
+																			 });
 
 					if (itersection not_eq itersections .end ())
 						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this);
@@ -207,6 +208,12 @@ void
 Shape::drawGeometry ()
 {
 	getGeometry () -> draw ();
+}
+
+void
+Shape::addTool ()
+{
+	X3DShapeNode::addTool (new ShapeTool (this));
 }
 
 } // X3D

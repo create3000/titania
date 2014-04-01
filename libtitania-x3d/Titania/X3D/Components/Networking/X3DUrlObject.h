@@ -65,10 +65,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	MFString &
 	url ()
 	{ return *fields .url; }
 
+	virtual
 	const MFString &
 	url () const
 	{ return *fields .url; }
@@ -83,6 +85,7 @@ public:
 
 	///  @name Member access
 
+	virtual
 	const X3DScalar <LoadState> &
 	checkLoadState () const
 	{ return loadState; }

@@ -1,0 +1,308 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO HandleShader [ ]
+"library/HandleShader.x3dv"
+
+PROTO Interface [
+  # required fields
+  inputOutput SFBool  center FALSE
+  inputOutput SFColor color 0.35 1 0.7
+  inputOutput SFVec3f bboxSize 1 1 1
+  inputOutput SFVec3f bboxCenter 0 0 0
+]
+{
+  Group { }
+}
+
+DEF Tool Interface { }
+
+Collision {
+  enabled FALSE
+  children [
+    DEF BoundingBox Transform {
+      children [
+        DEF Box Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linetype 3
+              linewidthScaleFactor 2
+            }
+            material DEF BBoxMaterial Material {
+              emissiveColor 0.35 1 0.7
+            }
+          }
+          geometry IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              0,
+              -1,
+              4,
+              5,
+              6,
+              7,
+              4,
+              -1,
+              0,
+              4,
+              -1,
+              3,
+              7,
+              -1,
+              1,
+              5,
+              -1,
+              2,
+              6,
+              -1
+            ]
+            coord DEF BBox Coordinate {
+              point [
+                -0.5 0.5 0.5,
+                -0.5 -0.5 0.5,
+                0.5 -0.5 0.5,
+                0.5 0.5 0.5,
+                -0.5 0.5 -0.5,
+                -0.5 -0.5 -0.5,
+                0.5 -0.5 -0.5,
+                0.5 0.5 -0.5
+              ]
+            }
+          }
+        }
+        DEF Axes_1 Shape {
+          geometry IndexedLineSet {
+            colorPerVertex FALSE
+            coordIndex [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              -1,
+              0,
+              3,
+              -1
+            ]
+            color Color {
+              color [
+                1 0 0,
+                0 1 0,
+                0 0 1
+              ]
+            }
+            coord DEF AxesCoord Coordinate {
+              point [
+                0 0 0,
+                0.5 0 0,
+                0 0.5 0,
+                0 0 0.5,
+                0 0 0
+              ]
+            }
+          }
+        }
+      ]
+    }
+    DEF AdjustmentHandles Transform {
+      children [
+        DEF XHandle Transform {
+          translation 0.5 0 0
+          children ScreenGroup {
+            children Transform {
+              translation 6 0 0
+              rotation 0 0 -1 1.5708
+              children Shape {
+                appearance DEF Red Appearance {
+                  material Material {
+                    diffuseColor 1 0 0
+                  }
+                  shaders DEF HandleShader HandleShader { }
+                }
+                geometry DEF Arrow Cone {
+                  height 12
+                  bottomRadius 4
+                }
+              }
+            }
+          }
+        }
+        DEF YHandle Transform {
+          translation 0 0.5 0
+          children ScreenGroup {
+            children Transform {
+              translation 0 6 0
+              children Shape {
+                appearance DEF Green Appearance {
+                  material Material {
+                    diffuseColor 0 1 0
+                  }
+                  shaders USE HandleShader
+                }
+                geometry USE Arrow
+              }
+            }
+          }
+        }
+        DEF ZHandle Transform {
+          translation 0 0 0.5
+          children ScreenGroup {
+            children Transform {
+              translation 0 0 6
+              rotation 1 0 0 1.5708
+              children Shape {
+                appearance DEF Blue Appearance {
+                  material Material {
+                    diffuseColor 0 0 1
+                  }
+                  shaders USE HandleShader
+                }
+                geometry USE Arrow
+              }
+            }
+          }
+        }
+      ]
+    }
+    DEF Center Switch {
+      children [
+        DEF Empty Group { }
+        Transform {
+          children [
+            DEF CenterLine Shape {
+              appearance Appearance {
+                lineProperties LineProperties {
+                  linetype 3
+                }
+                material DEF Yellow Material {
+                  diffuseColor 1 1 0
+                }
+              }
+              geometry DEF CenterIndexedLineSet IndexedLineSet {
+                coordIndex [
+                  0,
+                  1,
+                  -1
+                ]
+                color Color {
+                  color [
+                    1 1 0,
+                    1 1 0
+                  ]
+                }
+                coord DEF CenterLineCoord Coordinate {
+                  point [
+                    0 0 0,
+                    0 0 0
+                  ]
+                }
+              }
+            }
+            DEF CenterPoint ScreenGroup {
+              children Shape {
+                appearance Appearance {
+                  material USE Yellow
+                  shaders USE HandleShader
+                }
+                geometry Sphere {
+                  radius 5
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+DEF BBoxScript Script {
+  inputOutput    SFVec3f bboxSize 1 1 1
+  initializeOnly SFNode  bbox USE BBox
+  initializeOnly SFNode  axes USE AxesCoord
+
+  url "vrmlscript:
+function eventsProcessed ()
+{
+	var bboxSize1_2 = bboxSize .divide (2);
+
+	// Axes
+	
+	axes .point = new MFVec3f (new SFVec3f (0, 0, 0),
+	                           new SFVec3f (bboxSize1_2 .x, 0, 0),
+	                           new SFVec3f (0, bboxSize1_2 .y, 0), 
+	                           new SFVec3f (0, 0, bboxSize1_2 .z), 
+	                           new SFVec3f (0, 0, 0));
+
+
+	// BBox
+
+	bbox .point = new MFVec3f (new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z),
+	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z));
+}
+"
+  directOutput TRUE
+}
+
+DEF ArrowsScript Script {
+  inputOutput    SFVec3f bboxSize 1 1 1
+  initializeOnly SFNode  x USE XHandle
+  initializeOnly SFNode  y USE YHandle
+  initializeOnly SFNode  z USE ZHandle
+
+  url "vrmlscript:
+function eventsProcessed ()
+{
+	// Position arrows
+	
+	var bboxSize1_2 = bboxSize .divide (2);
+
+	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
+	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
+	z .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
+}
+"
+  directOutput TRUE
+}
+
+DEF CenterScript Script {
+  inputOutput    SFBool  center FALSE
+  inputOutput    SFVec3f bboxSize 1 1 1
+  inputOutput    SFVec3f bboxCenter 0 0 0
+  outputOnly     SFInt32 whichChoice_changed
+  initializeOnly SFNode  point NULL
+  initializeOnly SFNode  coord USE CenterLineCoord
+
+  url "vrmlscript:
+function set_center (value)
+{
+	whichChoice_changed = value;
+}
+
+function eventsProcessed ()
+{
+	coord .point [1] = bboxCenter;
+}
+"
+  directOutput TRUE
+}
+
+ROUTE Tool.color_changed TO BBoxMaterial.set_emissiveColor
+ROUTE Tool.bboxSize_changed TO BBoxScript.set_bboxSize
+ROUTE Tool.bboxSize_changed TO ArrowsScript.set_bboxSize
+ROUTE Tool.bboxCenter_changed TO BoundingBox.set_translation
+ROUTE Tool.bboxCenter_changed TO AdjustmentHandles.set_translation
+ROUTE Tool.bboxCenter_changed TO CenterScript.set_bboxCenter
+ROUTE Tool.bboxSize_changed TO CenterScript.set_bboxSize
+ROUTE Tool.center_changed TO CenterScript.set_center
+ROUTE CenterScript.whichChoice_changed TO Center.set_whichChoice

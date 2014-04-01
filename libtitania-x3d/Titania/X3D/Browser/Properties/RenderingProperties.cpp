@@ -140,7 +140,7 @@ RenderingProperties::initialize ()
 
 		try
 		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.wrl") .str () });
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.x3dv") .str () });
 		}
 		catch (const X3DError & error)
 		{

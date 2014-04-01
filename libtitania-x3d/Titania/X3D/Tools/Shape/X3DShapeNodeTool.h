@@ -48,46 +48,101 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_ANCHOR_TOOL_H__
-#define __TITANIA_X3D_TOOLS_NAVIGATION_ANCHOR_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_SHAPE_X3DSHAPE_NODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_SHAPE_X3DSHAPE_NODE_TOOL_H__
 
-#include "../Grouping/X3DGroupingNodeTool.h"
-
-#include "../../Components/Networking/Anchor.h"
+#include "../Core/X3DChildNodeTool.h"
+#include "../Grouping/X3DBoundedObjectTool.h"
 
 namespace titania {
 namespace X3D {
 
-class AnchorTool :
-	public X3DGroupingNodeTool <Anchor>
+template <class Type>
+class X3DShapeNodeTool :
+	virtual public X3DChildNodeTool <Type>, public X3DBoundedObjectTool <Type>
 {
 public:
-
-	///  @name Construction
-
-	AnchorTool (Anchor* const);
 
 	///  @name Fields
 
 	virtual
-	SFString &
-	description () final override
-	{ return getNode () -> description (); }
+	SFNode &
+	appearance () final override
+	{ return getNode () -> appearance (); }
 
 	virtual
-	const SFString &
-	description () const final override
-	{ return getNode () -> description (); }
+	const SFNode &
+	appearance () const final override
+	{ return getNode () -> appearance (); }
 
 	virtual
-	MFString &
-	parameter () final override
-	{ return getNode () -> parameter (); }
+	SFNode &
+	geometry () final override
+	{ return getNode () -> geometry (); }
 
 	virtual
-	const MFString &
-	parameter () const final override
-	{ return getNode () -> parameter (); }
+	const SFNode &
+	geometry () const final override
+	{ return getNode () -> geometry (); }
+
+	/// @name Operations
+
+	virtual
+	bool
+	isTransparent () const final override
+	{ return getNode () -> isTransparent (); }
+
+	virtual
+	bool
+	intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & collectableObjects) final override
+	{ return getNode () -> intersect (sphere, matrix, collectableObjects); }
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{
+		X3DChildNodeTool <Type>::traverse (type);
+		X3DBoundedObjectTool <Type>::traverse (type);
+	}
+
+	virtual
+	void
+	draw () final override
+	{ return getNode () -> draw (); }
+
+	virtual
+	void
+	drawCollision () final override
+	{ return getNode () -> drawCollision (); }
+
+	/// @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{
+		X3DBoundedObjectTool <Type>::dispose ();
+		X3DChildNodeTool <Type>::dispose ();
+	}
+
+protected:
+
+	using X3DChildNodeTool <Type>::getNode;
+
+	///  @name Construction
+
+	X3DShapeNodeTool (const Color3f & color) :
+		    X3DChildNodeTool <Type> (),
+		X3DBoundedObjectTool <Type> (color, true)
+	{ }
+
+	virtual
+	void
+	initialize () final override
+	{
+		X3DChildNodeTool <Type>::initialize ();
+		X3DBoundedObjectTool <Type>::initialize ();
+	}
 
 };
 

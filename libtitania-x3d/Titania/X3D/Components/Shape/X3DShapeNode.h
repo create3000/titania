@@ -68,18 +68,22 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFNode &
 	appearance ()
 	{ return *fields .appearance; }
 
+	virtual
 	const SFNode &
 	appearance () const
 	{ return *fields .appearance; }
 
+	virtual
 	SFNode &
 	geometry ()
 	{ return *fields .geometry; }
 
+	virtual
 	const SFNode &
 	geometry () const
 	{ return *fields .geometry; }

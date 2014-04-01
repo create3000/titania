@@ -115,12 +115,6 @@ LOD::getBBox () const
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
-void
-LOD::addTool ()
-{
-	X3DGroupingNode::addTool (new LODTool (this));
-}
-
 size_t
 LOD::getLevel (const TraverseType type) const
 {
@@ -157,6 +151,12 @@ LOD::traverse (const TraverseType type)
 		if (children () [level])
 			children () [level] -> traverse (type);
 	}
+}
+
+void
+LOD::addTool ()
+{
+	X3DGroupingNode::addTool (new LODTool (this));
 }
 
 } // X3D

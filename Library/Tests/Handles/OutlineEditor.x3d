@@ -87,30 +87,6 @@
       <fieldValue name='cycleInterval' value='10'/>
       <fieldValue name='loop' value='true'/>
     </ProtoInstance>
-    <ProtoInstance name='Children1'>
-      <fieldValue name='children1'>
-        <Transform DEF='Cylinder'
-            translation='4.43586 1.20387 0'
-            scale='0.18003 0.18003 0.18003'>
-          <Shape>
-            <Appearance>
-              <Material/>
-            </Appearance>
-            <Cylinder/>
-          </Shape>
-        </Transform>
-        <Transform DEF='Cone1'
-            translation='3.31329 0.997151 0'
-            scale='0.197378 0.197378 0.197378'>
-          <Shape>
-            <Appearance>
-              <Material/>
-            </Appearance>
-            <Cone/>
-          </Shape>
-        </Transform>
-      </fieldValue>
-    </ProtoInstance>
     <ProtoInstance name='Rotor2' DEF='Rotor2'/>
     <ImageTexture/>
     <Transform DEF='Inline'
@@ -144,7 +120,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.3392'
+          rotation='0 0 1 0.255403'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -171,7 +147,7 @@
         </Shape>
       </Transform>
     </Transform>
-    <Switch
+    <Switch DEF='Yellow'
         whichChoice='0'>
       <MetadataBoolean/>
       <Transform DEF='RoundedRectangle2D'
@@ -204,7 +180,7 @@
       </Transform>
     </LOD>
     <Anchor
-        description='Reload'
+        description='Reload Now'
         url='"OutlineEditor.wrl"'>
       <Transform
           translation='4.41306 2.06142 0'
@@ -221,8 +197,45 @@
         </Shape>
       </Transform>
     </Anchor>
-    <Collision/>
-    <Billboard/>
+    <Collision>
+      <ProtoInstance name='Children1'>
+        <fieldValue name='children1'>
+          <Transform DEF='Cylinder'
+              translation='4.43586 1.20387 0'
+              scale='0.18003 0.18003 0.18003'>
+            <Shape>
+              <Appearance>
+                <Material/>
+              </Appearance>
+              <Cylinder/>
+            </Shape>
+          </Transform>
+          <Transform DEF='Cone1'
+              translation='3.31329 0.997151 0'
+              scale='0.197378 0.197378 0.197378'>
+            <Shape>
+              <Appearance>
+                <Material/>
+              </Appearance>
+              <Cone/>
+            </Shape>
+          </Transform>
+        </fieldValue>
+      </ProtoInstance>
+    </Collision>
+    <Billboard
+        axisOfRotation='1 0 0'>
+      <Transform DEF='Cylinder1'
+          scale='0.280526 0.280526 0.280526'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='1 0.295832 0.295832'/>
+          </Appearance>
+          <Cylinder/>
+        </Shape>
+      </Transform>
+    </Billboard>
     <ROUTE fromNode='_1' fromField='isActive' toNode='_2' toField='set_enabled'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
   </Scene>

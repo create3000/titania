@@ -232,7 +232,8 @@ public:
 
 	virtual
 	void
-	removeTool ();
+	removeTool ()
+	{ }
 
 	///  @name Event handling
 
@@ -384,6 +385,9 @@ protected:
 	void
 	addTool (X3DBaseNode* const);
 
+	void
+	removeTool (X3DBaseNode* const);
+
 
 private:
 
@@ -430,7 +434,6 @@ private:
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;
 
-	X3DBaseNode*              tool;   // Does this node has a tool
 	std::vector <std::string> comments; // This nodes comments
 
 	Output shutdownOutput; // Shutdown service

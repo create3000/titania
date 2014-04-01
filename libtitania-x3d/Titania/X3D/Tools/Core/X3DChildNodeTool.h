@@ -48,91 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
 
-#include "../Core/X3DChildNodeTool.h"
-#include "../Grouping/X3DBoundedObjectTool.h"
+#include "../Core/X3DNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
 template <class Type>
-class X3DGroupingNodeTool :
-	virtual public X3DChildNodeTool <Type>, public X3DBoundedObjectTool <Type>
+class X3DChildNodeTool :
+	virtual public X3DNodeTool <Type>
 {
-public:
-
-	///  @name Fields
-
-	virtual
-	MFNode &
-	addChildren () final override
-	{ return getNode () -> addChildren (); }
-
-	virtual
-	const MFNode &
-	addChildren () const final override
-	{ return getNode () -> addChildren (); }
-
-	virtual
-	MFNode &
-	removeChildren () final override
-	{ return getNode () -> removeChildren (); }
-
-	virtual
-	const MFNode &
-	removeChildren () const final override
-	{ return getNode () -> removeChildren (); }
-
-	virtual
-	MFNode &
-	children () final override
-	{ return getNode () -> children (); }
-
-	virtual
-	const MFNode &
-	children () const final override
-	{ return getNode () -> children (); }
-
-	/// @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type) override
-	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
-	}
-
-	/// @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
-	}
-
 protected:
-
-	using X3DChildNodeTool <Type>::getNode;
 
 	///  @name Construction
 
-	X3DGroupingNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
+	X3DChildNodeTool () :
+		X3DNodeTool <Type> ()
 	{ }
-
-	virtual
-	void
-	initialize () override
-	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
-	}
 
 };
 

@@ -1,0 +1,157 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO RoundedRectangle2D [
+  inputOutput    SFFloat cornerRadius
+  inputOutput    SFVec2f size
+  initializeOnly SFBool  solid
+]
+"library/RoundedRectangle2D.x3dv"
+
+PROTO Interface [
+  # Custom fields
+  inputOutput SFFloat  cornerRadius 5
+  inputOutput SFFloat  linewidthScaleFactor 1
+  inputOutput SFVec2f  borderWidth 10 10
+  # Required fields
+  inputOutput MFString string [ ]
+]
+{
+  Group { }
+}
+
+DEF StatisticsTool Interface { }
+
+Background {
+  transparency 1
+}
+
+OrthoViewpoint { }
+
+LayoutGroup {
+  layout Layout {
+    align [
+      "LEFT",
+      "BOTTOM"
+    ]
+    offsetUnits "PIXEL"
+    sizeUnits "PIXEL"
+    size [
+      0,
+      0
+    ]
+    scaleMode "PIXEL"
+  }
+  children [
+    DEF Background Transform {
+      translation 10 10 0
+      children [
+        DEF Surface Shape {
+          appearance Appearance {
+            material DEF BackgroundMaterial Material {
+              diffuseColor 0 0 0
+              transparency 0.5
+            }
+          }
+          geometry DEF BackgroundGeometry RoundedRectangle2D {
+            cornerRadius 5
+            size 27 27
+          }
+        }
+        DEF Border Shape {
+          appearance Appearance {
+            fillProperties FillProperties {
+              filled FALSE
+              hatched FALSE
+            }
+            lineProperties DEF LineProperties LineProperties {
+              linewidthScaleFactor 1
+            }
+            material DEF BorderMaterial Material {
+              diffuseColor 1 1 1
+            }
+          }
+          geometry USE BackgroundGeometry
+        }
+      ]
+    }
+    DEF Statistics Transform {
+      translation 10 10 0
+      children Shape {
+        appearance Appearance {
+          material DEF TextMaterial Material {
+            diffuseColor 1 1 1
+          }
+        }
+        geometry DEF Text Text {
+          fontStyle ScreenFontStyle {
+            family "TYPEWRITER"
+            pointSize 7.5
+            spacing 1.2
+            justify [
+              "BEGIN",
+              "END"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
+
+DEF NotificationScript Script {
+  inputOnly      SFVec2f set_textBounds
+  inputOutput    SFFloat cornerRadius 5
+  inputOutput    SFFloat linewidthScaleFactor 1
+  inputOutput    SFVec2f borderWidth 10 10
+  initializeOnly SFNode  statistics USE Statistics
+  initializeOnly SFNode  background USE Background
+  initializeOnly SFNode  geometry USE BackgroundGeometry
+  initializeOnly SFNode  text USE Text
+
+  url "vrmlscript:
+
+function set_textBounds (value, time)
+{
+	var bounds = value .add (borderWidth .multiply (2));
+
+	statistics .translation = new SFVec3f (borderWidth .x, borderWidth .y, 0);
+
+	var translation         = bounds .divide (2);
+	background .translation = new SFVec3f (Math .floor (translation .x), Math .floor (translation .y), 0);
+
+	geometry .size = bounds .add (new SFVec2f (cornerRadius + 1, cornerRadius + 1));
+
+	// Align background line geometry on whole pixel
+
+	if (is_odd (linewidthScaleFactor))
+	{
+		if (is_even (geometry .size .x))
+			++ geometry .size .x;
+		
+		if (is_even (geometry .size .y))
+			++ geometry .size .y;
+	}
+}
+
+function is_even (value)
+{
+	return ! is_odd (value);
+}
+
+function is_odd (value)
+{
+	return value & 1;
+}
+"
+  directOutput TRUE
+}
+
+ROUTE Text.textBounds TO NotificationScript.set_textBounds
+ROUTE StatisticsTool.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
+ROUTE StatisticsTool.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
+ROUTE StatisticsTool.string_changed TO Text.set_string
+ROUTE StatisticsTool.cornerRadius_changed TO NotificationScript.set_cornerRadius
+ROUTE StatisticsTool.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
+ROUTE StatisticsTool.borderWidth_changed TO NotificationScript.set_borderWidth

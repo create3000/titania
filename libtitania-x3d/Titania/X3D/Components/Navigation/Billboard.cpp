@@ -92,12 +92,6 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Billboard::addTool ()
-{
-	X3DGroupingNode::addTool (new BillboardTool (this));
-}
-
-void
 Billboard::rotate (const TraverseType type) const
 {
 	try
@@ -150,6 +144,12 @@ Billboard::traverse (const TraverseType type)
 	X3DGroupingNode::traverse (type);
 
 	getModelViewMatrix () .pop ();
+}
+
+void
+Billboard::addTool ()
+{
+	X3DGroupingNode::addTool (new BillboardTool (this));
 }
 
 } // X3D

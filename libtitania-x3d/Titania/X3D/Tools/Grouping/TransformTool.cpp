@@ -62,14 +62,14 @@
 namespace titania {
 namespace X3D {
 
-TransformTool::TransformTool (Transform* const transform) :
-	            X3DBaseNode (transform -> getExecutionContext () -> getBrowser (), transform -> getExecutionContext ()),
-	X3DBaseTool <Transform> (transform),
+TransformTool::TransformTool (Transform* const node) :
+	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	X3DBaseTool <Transform> (node),
 	   X3DTransformToolNode (),
 	                  scene (),
 	           parentMatrix (),
 	                 matrix (),
-	         interestEvents (transform -> isTainted ())
+	         interestEvents (node -> isTainted ())
 {
 	X3DChildObject::addChildren (scene);
 }
@@ -83,7 +83,7 @@ TransformTool::initialize ()
 
 	try
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.wrl") .str () });
+		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.x3dv") .str () });
 
 		const SFNode tool = scene -> getNamedNode ("Tool");
 

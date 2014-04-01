@@ -48,91 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_NETWORKING_INLINE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NETWORKING_INLINE_TOOL_H__
 
 #include "../Core/X3DChildNodeTool.h"
 #include "../Grouping/X3DBoundedObjectTool.h"
+#include "../Networking/X3DUrlObjectTool.h"
+
+#include "../../Components/Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DGroupingNodeTool :
-	virtual public X3DChildNodeTool <Type>, public X3DBoundedObjectTool <Type>
+class InlineTool :
+	public X3DChildNodeTool <Inline>, public X3DBoundedObjectTool <Inline>, public X3DUrlObjectTool <Inline>
 {
 public:
+
+	///  @name Construction
+
+	InlineTool (Inline* const);
 
 	///  @name Fields
 
 	virtual
+	SFBool &
+	load ()
+	{ return getNode () -> load (); }
+
+	virtual
+	const SFBool &
+	load () const
+	{ return getNode () -> load (); }
+
+	///  @name Exported node handling
+
+	virtual
+	SFNode
+	getExportedNode (const std::string & exportedName) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getNode () -> getExportedNode (exportedName); }
+
+	///  @name Root node handling
+
+	virtual
 	MFNode &
-	addChildren () final override
-	{ return getNode () -> addChildren (); }
+	getRootNodes ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getNode () -> getRootNodes (); }
 
 	virtual
 	const MFNode &
-	addChildren () const final override
-	{ return getNode () -> addChildren (); }
+	getRootNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getNode () -> getRootNodes (); }
 
-	virtual
-	MFNode &
-	removeChildren () final override
-	{ return getNode () -> removeChildren (); }
-
-	virtual
-	const MFNode &
-	removeChildren () const final override
-	{ return getNode () -> removeChildren (); }
-
-	virtual
-	MFNode &
-	children () final override
-	{ return getNode () -> children (); }
-
-	virtual
-	const MFNode &
-	children () const final override
-	{ return getNode () -> children (); }
-
-	/// @name Operations
+	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type) override
-	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
-	}
+	traverse (const TraverseType) final override;
 
-	/// @name Destruction
+	///  @name Destruction
 
 	virtual
 	void
-	dispose () override
-	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
-	}
+	dispose () final override;
 
-protected:
 
-	using X3DChildNodeTool <Type>::getNode;
+private:
+
+	using X3DChildNodeTool <Inline>::getNode;
 
 	///  @name Construction
 
-	X3DGroupingNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
-	{ }
-
 	virtual
 	void
-	initialize () override
-	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
-	}
+	initialize () final override;
 
 };
 

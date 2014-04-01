@@ -1,0 +1,212 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO RoundedRectangle2D [
+  inputOutput    SFFloat cornerRadius
+  inputOutput    SFVec2f size
+  initializeOnly SFBool  solid
+]
+"library/RoundedRectangle2D.x3dv"
+
+PROTO Interface [
+  # Custom fields
+  inputOutput SFTime   cycleInterval 3
+  inputOutput SFFloat  cornerRadius 4
+  inputOutput SFFloat  linewidthScaleFactor 1
+  inputOutput SFVec2f  borderWidth 10 5
+  # Required fields
+  inputOutput SFString string ""
+  inputOutput SFBool   isActive FALSE
+]
+{
+  Group { }
+}
+
+DEF Notification Interface {
+  string "123"
+}
+
+Background {
+  transparency 1
+}
+
+OrthoViewpoint { }
+
+LayoutGroup {
+  layout Layout {
+    align [
+      "CENTER",
+      "BOTTOM"
+    ]
+    offsetUnits "PIXEL"
+    offset [
+      0,
+      50
+    ]
+    sizeUnits "PIXEL"
+    size [
+      200,
+      26
+    ]
+    scaleMode "PIXEL"
+  }
+  children [
+    Shape {
+      appearance Appearance {
+        material DEF BackgroundMaterial Material {
+          diffuseColor 0 0 0
+          transparency 1
+        }
+      }
+      geometry DEF BackgroundGeometry RoundedRectangle2D {
+        cornerRadius 4
+        size 43 19
+      }
+    }
+    Shape {
+      appearance Appearance {
+        fillProperties FillProperties {
+          filled FALSE
+          hatched FALSE
+        }
+        lineProperties DEF LineProperties LineProperties {
+          linewidthScaleFactor 1
+        }
+        material DEF BorderMaterial Material {
+          diffuseColor 1 1 1
+          transparency 1
+        }
+      }
+      geometry USE BackgroundGeometry
+    }
+    Shape {
+      appearance Appearance {
+        material DEF TextMaterial Material {
+          diffuseColor 1 1 1
+          transparency 1
+        }
+      }
+      geometry DEF Text Text {
+        string "123"
+        fontStyle ScreenFontStyle {
+          family "SANS"
+          pointSize 9
+          justify [
+            "MIDDLE",
+            "MIDDLE"
+          ]
+        }
+      }
+    }
+  ]
+}
+
+DEF FadeIn ScalarInterpolator {
+  key [
+    0,
+    1
+  ]
+  keyValue [
+    1,
+    0
+  ]
+}
+
+DEF NotificationScript Script {
+  inputOnly      SFString set_string
+  inputOnly      SFVec2f  set_textBounds
+  inputOnly      SFBool   set_start
+  inputOnly      SFBool   set_end
+  inputOutput    SFTime   cycleInterval 3
+  inputOutput    SFFloat  linewidthScaleFactor 1
+  inputOutput    SFVec2f  borderWidth 10 5
+  outputOnly     SFBool   isActive
+  initializeOnly SFNode   background USE BackgroundGeometry
+  initializeOnly SFNode   text USE Text
+  initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
+    startTime 1396316049.08285
+  }
+  initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
+    cycleInterval 2
+    startTime 1396316053.08285
+    stopTime 1396316049.08285
+  }
+
+  url "vrmlscript:
+
+function set_string (value, time)
+{
+	text .string = new MFString (value);
+
+	if (!isActive || endTimer .isActive)
+		startTimer .startTime = time;
+
+	endTimer .stopTime  = time;
+	endTimer .startTime = time + startTimer .cycleInterval + cycleInterval;
+}
+
+function set_textBounds (value, time)
+{
+	background .size = value .add (borderWidth .multiply (2));
+	
+	// Align background line geometry on whole pixel
+	
+	if (is_odd (linewidthScaleFactor))
+	{
+		if (is_even (background .size .x))
+			++ background .size .x;
+		
+		if (is_even (background .size .y))
+			++ background .size .y;
+	}
+}
+
+function set_start (value, time)
+{
+	if (value)
+		isActive = true;
+}
+
+function set_end (value, time)
+{
+	if (!value && !startTimer .isActive)
+		isActive = false;
+}
+
+function is_even (value)
+{
+	return ! is_odd (value);
+}
+
+function is_odd (value)
+{
+	return value & 1;
+}
+"
+  directOutput TRUE
+}
+
+ROUTE Notification.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
+ROUTE Notification.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
+ROUTE Notification.string_changed TO NotificationScript.set_string
+ROUTE Notification.cycleInterval_changed TO NotificationScript.set_cycleInterval
+ROUTE Notification.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
+ROUTE Notification.borderWidth_changed TO NotificationScript.set_borderWidth
+
+# String
+
+ROUTE Text.textBounds TO NotificationScript.set_textBounds
+ROUTE StartTimer.isActive TO NotificationScript.set_start
+ROUTE EndTimer.isActive TO NotificationScript.set_end
+
+# FadeIn
+
+ROUTE StartTimer.fraction_changed TO FadeIn.set_fraction
+ROUTE FadeIn.value_changed TO BackgroundMaterial.set_transparency
+ROUTE FadeIn.value_changed TO BorderMaterial.set_transparency
+ROUTE FadeIn.value_changed TO TextMaterial.set_transparency
+ROUTE NotificationScript.isActive TO Notification.set_isActive
+ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
+ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
+ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency

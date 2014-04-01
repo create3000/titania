@@ -92,15 +92,23 @@ Notification::initialize ()
 
 		try
 		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Notification.wrl") .str () });
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
 
 			try
 			{
 				const auto notification = scene -> getNamedNode ("Notification");
+				
+				// isActive
 
-				SFBool & field = *static_cast <SFBool*> (notification -> getField ("isActive"));
+				SFBool & isActive = *static_cast <SFBool*> (notification -> getField ("isActive"));
 
-				field .addInterest (this, &Notification::set_active);
+				isActive .addInterest (this, &Notification::set_active);
+
+				// string
+				
+				SFString & set_string = *static_cast <SFString*> (notification -> getField ("set_string"));
+				
+				string () .addInterest (set_string);
 			}
 			catch (const X3DError &)
 			{ }
@@ -123,23 +131,6 @@ Notification::initialize ()
 void
 Notification::set_string ()
 {
-	try
-	{
-		const auto notification = world -> getExecutionContext () -> getNamedNode ("Notification");
-
-		try
-		{
-			SFString & field = *static_cast <SFString*> (notification -> getField ("set_string"));
-
-			field = string ();
-		}
-		catch (const X3DError &)
-		{ }
-	}
-	catch (const X3DError &)
-	{
-		// catch error from getNamedNode
-	}
 }
 
 void

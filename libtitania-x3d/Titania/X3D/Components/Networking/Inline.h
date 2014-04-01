@@ -95,10 +95,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	load ()
 	{ return *fields .load; }
 
+	virtual
 	const SFBool &
 	load () const
 	{ return *fields .load; }
@@ -107,14 +109,15 @@ public:
 
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
 
 	virtual
 	void
-	requestImmediateLoad () final override;
+	requestImmediateLoad () override;
 
 	///  @name Exported node handling
 
+	virtual
 	SFNode
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
@@ -123,12 +126,14 @@ public:
 
 	///  @name Root node handling
 
+	virtual
 	MFNode &
 	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return scene -> getRootNodes (); }
 
+	virtual
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -139,35 +144,44 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
+	
+	virtual
+	void
+	saveState () override;
+	
+	virtual
+	void
+	restoreState () override;
+
+	virtual
+	void
+	addTool () override;
+
+	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
 	{ X3DBaseNode::toStream (ostream); }
-	
-	virtual
-	void
-	saveState () final override;
-	
-	virtual
-	void
-	restoreState () final override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handling
 

@@ -472,10 +472,12 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Grouping/GroupTool.cpp \
 	Titania/X3D/Tools/Grouping/SwitchTool.cpp \
 	Titania/X3D/Tools/Grouping/TransformTool.cpp \
-	Titania/X3D/Tools/Navigation/AnchorTool.cpp \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/Networking/AnchorTool.cpp \
+	Titania/X3D/Tools/Networking/InlineTool.cpp \
+	Titania/X3D/Tools/Shape/ShapeTool.cpp \
 	Titania/X3D/Types/Image.cpp \
 	Titania/X3D/Types/Pointer.cpp
 

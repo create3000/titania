@@ -764,27 +764,36 @@ throw (Error <INVALID_NODE>,
 	if (not destinationNode .getValue ())
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: destination node is NULL.");
 
-	X3DFieldDefinition* sourceField = NULL;
+	X3DFieldDefinition* sourceField = nullptr;
 
 	try
 	{
 		sourceField = sourceNode -> getField (sourceFieldId);
+
+		if (not sourceField -> isOutput ())
+			throw Error <INVALID_FIELD> ("Bad ROUTE specification: Field named '" + sourceField -> getName () + "' in node named '" + sourceNode -> getName () + "' of type " + sourceNode -> getTypeName () + " is not an output field.");
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
-		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventOut '" + sourceFieldId + "' in node '" + sourceNode -> getName () + "'.");
+		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventOut '" + sourceFieldId + "' in node named '" + sourceNode -> getName () + "' of type " + sourceNode -> getTypeName () + ".");
 	}
 
-	X3DFieldDefinition* destinationField = NULL;
+	X3DFieldDefinition* destinationField = nullptr;
 
 	try
 	{
 		destinationField = destinationNode -> getField (destinationFieldId);
+
+		if (not destinationField -> isInput ())
+			throw Error <INVALID_FIELD> ("Bad ROUTE specification: Field named '" + destinationField -> getName () + "' in node named '" + destinationNode -> getName () + "' of type " + destinationNode -> getTypeName () + " is not an input field.");
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
-		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventIn '" + destinationFieldId + "' in node '" + destinationNode -> getName () + "'.");
+		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventIn '" + destinationFieldId + "' in node named '" + destinationNode -> getName () + "' of type " + destinationNode -> getTypeName () + ".");
 	}
+
+	if (sourceField -> getType () not_eq destinationField -> getType ())
+		throw Error <INVALID_FIELD> ("ROUTE types " + sourceField -> getTypeName () + " and " + destinationField -> getTypeName () + " do not match.");
 
 	return std::make_pair (sourceField, destinationField);
 }

@@ -48,91 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_NETWORKING_ANCHOR_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NETWORKING_ANCHOR_TOOL_H__
 
-#include "../Core/X3DChildNodeTool.h"
-#include "../Grouping/X3DBoundedObjectTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
+
+#include "../../Components/Networking/Anchor.h"
+#include "../Networking/X3DUrlObjectTool.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DGroupingNodeTool :
-	virtual public X3DChildNodeTool <Type>, public X3DBoundedObjectTool <Type>
+class AnchorTool :
+	public X3DGroupingNodeTool <Anchor>, public X3DUrlObjectTool <Anchor>
 {
 public:
+
+	///  @name Construction
+
+	AnchorTool (Anchor* const);
 
 	///  @name Fields
 
 	virtual
-	MFNode &
-	addChildren () final override
-	{ return getNode () -> addChildren (); }
+	SFString &
+	description () final override
+	{ return getNode () -> description (); }
 
 	virtual
-	const MFNode &
-	addChildren () const final override
-	{ return getNode () -> addChildren (); }
+	const SFString &
+	description () const final override
+	{ return getNode () -> description (); }
 
 	virtual
-	MFNode &
-	removeChildren () final override
-	{ return getNode () -> removeChildren (); }
+	MFString &
+	parameter () final override
+	{ return getNode () -> parameter (); }
 
 	virtual
-	const MFNode &
-	removeChildren () const final override
-	{ return getNode () -> removeChildren (); }
+	const MFString &
+	parameter () const final override
+	{ return getNode () -> parameter (); }
 
-	virtual
-	MFNode &
-	children () final override
-	{ return getNode () -> children (); }
-
-	virtual
-	const MFNode &
-	children () const final override
-	{ return getNode () -> children (); }
-
-	/// @name Operations
+	///  @name Event handlers
 
 	virtual
 	void
-	traverse (const TraverseType type) override
-	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
-	}
-
-	/// @name Destruction
+	set_over (const bool value) final override
+	{ return getNode () -> set_over (value); }
 
 	virtual
 	void
-	dispose () override
-	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
-	}
+	set_active (const bool value) final override
+	{ return getNode () -> set_over (value); }
 
-protected:
-
-	using X3DChildNodeTool <Type>::getNode;
-
-	///  @name Construction
-
-	X3DGroupingNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
-	{ }
+	///  @name Operations
 
 	virtual
 	void
-	initialize () override
-	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
-	}
+	traverse (const TraverseType) final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+
+private:
+
+	using X3DGroupingNodeTool <Anchor>::getNode;
+
+	///  @name Destruction
+
+	virtual
+	void
+	initialize () final override;
 
 };
 

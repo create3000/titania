@@ -586,10 +586,7 @@
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
     <None Include="share\titania\mime\model\x3d+binary.xml" />
     <None Include="share\titania\mime\model\x3d+binary.png" />
-    <None Include="share\titania\tools\Notification.wrl" />
     <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
-    <None Include="share\titania\tools\Statistics.wrl" />
-    <None Include="share\titania\tools\TransformTool.wrl" />
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
     <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
     <None Include="Titania\X3D\Rendering\ViewportContainer.h" />
@@ -644,7 +641,6 @@
     <None Include="Titania\X3D\Fields\X3DPtr.h" />
     <None Include="Titania\X3D\Types\Pointer.h" />
     <None Include="Titania\X3D\Fields\X3DPtrArray.h" />
-    <None Include="share\titania\tools\BoundingBox.wrl" />
     <None Include="Titania\X3D\Tools\Core\X3DBaseTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DNodeTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DToolObject.h" />
@@ -654,9 +650,20 @@
     <None Include="Titania\X3D\Tools\Grouping\SwitchTool.h" />
     <None Include="Titania\X3D\Tools\Navigation\LODTool.h" />
     <None Include="Titania\X3D\Tools\Navigation\CollisionTool.h" />
-    <None Include="Titania\X3D\Tools\Navigation\AnchorTool.h" />
     <None Include="Titania\X3D\Tools\Navigation\BillboardTool.h" />
     <None Include="Titania\X3D\Tools\ToolColors.h" />
+    <None Include="Titania\X3D\Tools\Grouping\X3DBoundedObjectTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DChildNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Shape\X3DShapeNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Shape\ShapeTool.h" />
+    <None Include="Titania\X3D\Tools\Networking\X3DUrlObjectTool.h" />
+    <None Include="Titania\X3D\Tools\Networking\InlineTool.h" />
+    <None Include="Titania\X3D\Tools\Networking\AnchorTool.h" />
+    <None Include="share\titania\tools\library\HandleShader.x3dv" />
+    <None Include="share\titania\tools\BoundingBox.x3dv" />
+    <None Include="share\titania\tools\TransformTool.x3dv" />
+    <None Include="share\titania\tools\Notification.x3dv" />
+    <None Include="share\titania\tools\Statistics.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1131,7 +1138,9 @@
     <Compile Include="Titania\X3D\Tools\Navigation\LODTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\CollisionTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\BillboardTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Navigation\AnchorTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Shape\ShapeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Networking\InlineTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Networking\AnchorTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1172,6 +1181,8 @@
     <Folder Include="Titania\X3D\Tools\Grouping\" />
     <Folder Include="Titania\X3D\Tools\Core\" />
     <Folder Include="Titania\X3D\Tools\Navigation\" />
+    <Folder Include="Titania\X3D\Tools\Shape\" />
+    <Folder Include="Titania\X3D\Tools\Networking\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1193,9 +1204,6 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <Content Include="share\titania\pages\about\splash.wrl" />
-    <Content Include="share\titania\pages\about\library\Logo.wrl" />
-    <Content Include="share\titania\pages\about\library\Colors.wrl" />
     <Content Include="share\titania\goldengate\image.wrl">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
@@ -1208,5 +1216,6 @@
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
     </Content>
+    <Content Include="share\titania\pages\about\splash.x3dv" />
   </ItemGroup>
 </Project>

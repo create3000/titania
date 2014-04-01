@@ -68,11 +68,23 @@ public:
 
 	virtual
 	void
-	setName (const std::string &) final override;
+	setName (const std::string & value) final override
+	{ node -> setName (value); }
+
+	virtual
+	const std::string &
+	getName () const final override
+	{ return node -> getName (); }
 
 	virtual
 	void
-	setUserData (const UserDataPtr &) final override;
+	setUserData (const UserDataPtr & value) final override
+	{ node -> setUserData (value); }
+
+	virtual
+	const UserDataPtr &
+	getUserData () const final override
+	{ return node -> getUserData (); }
 
 	virtual
 	void
@@ -97,6 +109,21 @@ public:
 	void
 	addEvent (X3DChildObject* const, const EventPtr &) final override
 	{ }
+	
+	virtual
+	void
+	traverse (const TraverseType) override
+	{ }
+
+	virtual
+	void
+	saveState () final override
+	{ return node -> saveState (); }
+	
+	virtual
+	void
+	restoreState () final override
+	{ return node -> restoreState (); }
 
 	///  @name Destruction
 
@@ -107,7 +134,7 @@ public:
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
 protected:
@@ -137,9 +164,9 @@ private:
 
 template <class Type>
 X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
-	           Type (node -> getExecutionContext ()),
+	         Type (node -> getExecutionContext ()),
 	X3DToolObject (),
-	           node (node)
+	         node (node)
 {
 	assert (node);
 
@@ -159,27 +186,9 @@ X3DBaseTool <Type>::initialize ()
 
 template <class Type>
 void
-X3DBaseTool <Type>::setName (const std::string & value)
-{
-	node -> setName (value);
-
-	X3DToolObject::setName (value);
-}
-
-template <class Type>
-void
-X3DBaseTool <Type>::setUserData (const UserDataPtr & value)
-{
-	node -> setUserData (value);
-
-	X3DToolObject::setUserData (value);
-}
-
-template <class Type>
-void
 X3DBaseTool <Type>::removeTool ()
 {
-	node -> removeTool ();
+	Type::removeTool (node);
 }
 
 template <class Type>
