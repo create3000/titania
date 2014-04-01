@@ -7,7 +7,10 @@ EXTERNPROTO HandleShader [ ]
 
 PROTO Interface [
   # required fields
-  inputOutput SFBool  center FALSE
+  inputOutput SFBool  displayCenter FALSE
+  inputOutput SFVec3f center 0 0 0
+  inputOutput SFVec3f axisOfRotation 0 0 0
+  inputOutput SFInt32 linetype 3
   inputOutput SFColor color 0.35 1 0.7
   inputOutput SFVec3f bboxSize 1 1 1
   inputOutput SFVec3f bboxCenter 0 0 0
@@ -25,7 +28,7 @@ Collision {
       children [
         DEF Box Shape {
           appearance Appearance {
-            lineProperties LineProperties {
+            lineProperties DEF _1 LineProperties {
               linetype 3
               linewidthScaleFactor 2
             }
@@ -202,16 +205,24 @@ Collision {
                 }
               }
             }
-            DEF CenterPoint ScreenGroup {
-              children Shape {
-                appearance Appearance {
-                  material USE Yellow
-                  shaders USE HandleShader
-                }
-                geometry Sphere {
-                  radius 5
+            DEF _2 Transform {
+              children [
+                DEF CenterPoint ScreenGroup {
+                children Shape {
+                  appearance Appearance {
+                    material USE Yellow
+                    shaders USE HandleShader
+                  }
+                  geometry Sphere {
+                    radius 5
+                  }
                 }
               }
+              DEF Vector Inline {
+              load FALSE
+                url "library/Vector.x3dv"
+              }
+              ]
             }
           ]
         }
@@ -276,22 +287,49 @@ function eventsProcessed ()
 }
 
 DEF CenterScript Script {
-  inputOutput    SFBool  center FALSE
+  inputOutput    SFBool  displayCenter FALSE
+  inputOutput    SFVec3f center 0 0 0
   inputOutput    SFVec3f bboxSize 1 1 1
   inputOutput    SFVec3f bboxCenter 0 0 0
   outputOnly     SFInt32 whichChoice_changed
-  initializeOnly SFNode  point NULL
   initializeOnly SFNode  coord USE CenterLineCoord
 
   url "vrmlscript:
-function set_center (value)
+function set_displayCenter (value)
 {
 	whichChoice_changed = value;
 }
 
 function eventsProcessed ()
 {
+	coord .point [0] = center;
 	coord .point [1] = bboxCenter;
+}
+"
+  directOutput TRUE
+}
+
+DEF AxisOfRotationScript Script {
+  inputOutput SFVec3f vector 0 0 0
+  initializeOnly SFVec3f zAxis 0 0 1
+  initializeOnly SFNode  transform USE _2
+  initializeOnly SFNode  inline USE Vector
+
+  url "vrmlscript:
+function eventsProcessed ()
+{
+	if (vector .x == 0 && vector .y == 0 && vector .z == 0)
+	{
+		if (inline .load)
+			inline .load = false;
+	}
+	else
+	{
+		if (!inline .load)
+			inline .load = true;
+		
+		transform .rotation = new SFRotation (zAxis, vector);
+	}
 }
 "
   directOutput TRUE
@@ -302,7 +340,11 @@ ROUTE Tool.bboxSize_changed TO BBoxScript.set_bboxSize
 ROUTE Tool.bboxSize_changed TO ArrowsScript.set_bboxSize
 ROUTE Tool.bboxCenter_changed TO BoundingBox.set_translation
 ROUTE Tool.bboxCenter_changed TO AdjustmentHandles.set_translation
+ROUTE Tool.center_changed TO CenterScript.set_center
 ROUTE Tool.bboxCenter_changed TO CenterScript.set_bboxCenter
 ROUTE Tool.bboxSize_changed TO CenterScript.set_bboxSize
-ROUTE Tool.center_changed TO CenterScript.set_center
+ROUTE Tool.displayCenter_changed TO CenterScript.set_displayCenter
 ROUTE CenterScript.whichChoice_changed TO Center.set_whichChoice
+ROUTE Tool.linetype_changed TO _1.set_linetype
+ROUTE Tool.center_changed TO _2.set_translation
+ROUTE Tool.axisOfRotation TO AxisOfRotationScript.vector

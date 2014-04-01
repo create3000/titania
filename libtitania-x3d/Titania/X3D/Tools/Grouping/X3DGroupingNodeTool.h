@@ -121,9 +121,9 @@ protected:
 
 	///  @name Construction
 
-	X3DGroupingNodeTool (const Color3f & color) :
+	X3DGroupingNodeTool (const Color3f & color, const bool displayCenter = false) :
 		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
+		X3DBoundedObjectTool <Type> (color, displayCenter)
 	{ }
 
 	virtual

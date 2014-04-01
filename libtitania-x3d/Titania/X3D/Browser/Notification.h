@@ -110,9 +110,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-	
-	void
-	set_string ();
 
 	void
 	set_active (const bool &);

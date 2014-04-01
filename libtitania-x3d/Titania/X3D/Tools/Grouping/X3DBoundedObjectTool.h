@@ -140,6 +140,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member acces
+
+	const ScenePtr
+	getScene () const
+	{ return scene; }
+
 
 private:
 
@@ -151,17 +157,17 @@ private:
 	///  @name Members
 
 	ScenePtr scene;
+	bool     displayCenter;
 	Color3f  color;
-	bool     center;
 
 };
 
 template <class Type>
-X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color, const bool center) :
+X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color, const bool displayCenter) :
 	X3DBaseTool <Type> (),
 	             scene (),
-	             color (color),
-	            center (center)
+	     displayCenter (displayCenter),
+	             color (color)
 {
 	X3DChildObject::addChildren (scene);
 }
@@ -176,8 +182,8 @@ X3DBoundedObjectTool <Type>::initialize ()
 
 		const SFNode tool = scene -> getNamedNode ("Tool");
 
-		tool -> setField <SFColor> ("color",  color);
-		tool -> setField <SFBool>  ("center", center);
+		tool -> setField <SFBool>  ("displayCenter", displayCenter);
+		tool -> setField <SFColor> ("color",         color);
 	}
 	catch (const X3DError & error)
 	{

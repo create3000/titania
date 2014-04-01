@@ -58,8 +58,27 @@ namespace X3D {
 LODTool::LODTool (LOD* const node) :
 	              X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <LOD> (node),
-	X3DGroupingNodeTool <LOD> (ToolColors::CYAN)
+	X3DGroupingNodeTool <LOD> (ToolColors::CYAN, true)
 { }
+
+void
+LODTool::initialize ()
+{
+	X3DGroupingNodeTool <LOD>::initialize ();
+
+	try
+	{
+		const auto tool = getScene () -> getNamedNode ("Tool");
+
+		auto & set_center = *static_cast <SFVec3f*> (tool -> getField ("set_center"));
+
+		getNode () -> center () .addInterest (set_center);
+		
+		set_center = getNode () -> center ();
+	}
+	catch (const X3DError & error)
+	{ }
+}
 
 } // X3D
 } // titania

@@ -58,8 +58,27 @@ namespace X3D {
 BillboardTool::BillboardTool (Billboard* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <Billboard> (node),
-	X3DGroupingNodeTool <Billboard> (ToolColors::PINK)
+	X3DGroupingNodeTool <Billboard> (ToolColors::PINK, true)
 { }
+
+void
+BillboardTool::initialize ()
+{
+	X3DGroupingNodeTool <Billboard>::initialize ();
+
+	try
+	{
+		const auto tool = getScene () -> getNamedNode ("Tool");
+
+		auto & set_axisOfRotation = *static_cast <SFVec3f*> (tool -> getField ("set_axisOfRotation"));
+
+		getNode () -> axisOfRotation () .addInterest (set_axisOfRotation);
+
+		set_axisOfRotation = getNode () -> axisOfRotation ();
+	}
+	catch (const X3DError & error)
+	{ }
+}
 
 } // X3D
 } // titania

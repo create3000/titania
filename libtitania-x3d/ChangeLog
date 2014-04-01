@@ -1,5 +1,24 @@
 2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Linetypes.h:
+	* Notification.h:
+	* BoundingBox.x3dv:
+	* Notification.cpp:
+	* LODTool.h:
+	* Vector.x3dv:
+	* LODTool.cpp:
+	* CollisionTool.h:
+	* BillboardTool.h:
+	* Billboard.h:
+	* BillboardTool.cpp:
+	* CollisionTool.cpp:
+	* Billboard.cpp:
+	* X3DGroupingNodeTool.h:
+	* X3DBoundedObjectTool.h: 
+
+2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DObject.h:

@@ -51,6 +51,7 @@
 #include "CollisionTool.h"
 
 #include "../ToolColors.h"
+#include "../../Bits/Linetypes.h"
 
 namespace titania {
 namespace X3D {
@@ -60,6 +61,29 @@ CollisionTool::CollisionTool (Collision* const node) :
 	        X3DBaseTool <Collision> (node),
 	X3DGroupingNodeTool <Collision> (ToolColors::RED)
 { }
+
+void
+CollisionTool::initialize ()
+{
+	X3DGroupingNodeTool <Collision>::initialize ();
+	
+	getNode () -> enabled () .addInterest (this, &CollisionTool::set_enabled);
+
+	set_enabled (getNode () -> enabled ());
+}
+
+void
+CollisionTool::set_enabled (const bool value)
+{
+	try
+	{
+		const auto tool = getScene () -> getNamedNode ("Tool");
+
+		tool -> setField <SFInt32> ("linetype", int (value ? LineType::SOLID : LineType::DOTTED));
+	}
+	catch (const X3DError & error)
+	{ }
+}
 
 } // X3D
 } // titania

@@ -102,6 +102,10 @@ public:
 	///  @name Operations
 
 	virtual
+	Box3f
+	getBBox () const override;
+
+	virtual
 	void
 	traverse (const TraverseType) override;
 
@@ -115,7 +119,7 @@ private:
 	///  @name Operations
 
 	void
-	rotate (const TraverseType) const;
+	rotate (const TraverseType);
 
 
 	///  @name Static members
@@ -134,6 +138,8 @@ private:
 	};
 
 	Fields fields;
+	
+	Matrix4f matrix;
 
 };
 

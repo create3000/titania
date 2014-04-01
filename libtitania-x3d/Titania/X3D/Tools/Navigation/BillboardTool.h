@@ -78,6 +78,13 @@ public:
 	const SFVec3f &
 	axisOfRotation () const final override
 	{ return getNode () -> axisOfRotation (); }
+	
+
+private:
+
+	virtual
+	void
+	initialize () final override;
 
 };
 

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_CAST_H__
-#define __TITANIA_X3D_BITS_CAST_H__
+#ifndef __TITANIA_X3D_BITS_LINETYPES_H__
+#define __TITANIA_X3D_BITS_LINETYPES_H__
 
 #include "../Rendering/OpenGL.h"
 
@@ -57,6 +57,31 @@
 
 namespace titania {
 namespace X3D {
+
+enum class LineType :
+	uint8_t
+{
+	NONE,
+	SOLID,
+	DASHED,
+	DOTTED,
+	DASHED_DOTTED,
+	DASH_DOT_DOT,
+
+	SINGLE_ARROW,
+	SINGLE_DOT,
+	DOUBLE_ARROW,
+
+	STITCH_LINE,
+	CHAIN_LINE,
+	CENTER_LINE,
+	HIDDEN_LINE,
+	PHANTOM_LINE,
+
+	BREAK_LINE_1,
+	BREAK_LINE_2
+
+};
 
 static const std::vector <GLushort> linetypes = {
 	math::strtol ("0000000000000000", 2), // 0 None

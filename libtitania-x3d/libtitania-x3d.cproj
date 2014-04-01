@@ -664,6 +664,7 @@
     <None Include="share\titania\tools\TransformTool.x3dv" />
     <None Include="share\titania\tools\Notification.x3dv" />
     <None Include="share\titania\tools\Statistics.x3dv" />
+    <None Include="share\titania\tools\library\Vector.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

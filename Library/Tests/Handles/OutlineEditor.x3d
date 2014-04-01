@@ -42,6 +42,13 @@
       <field accessType='inputOutput' type='SFVec2f' name='size'/>
       <field accessType='initializeOnly' type='SFBool' name='solid'/>
     </ExternProtoDeclare>
+    <ExternProtoDeclare name='Torus' url='"../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv", "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv", "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Torus.x3dv"'>
+      <field accessType='inputOutput' type='SFFloat' name='minorRadius'/>
+      <field accessType='inputOutput' type='SFFloat' name='majorRadius'/>
+      <field accessType='inputOutput' type='SFInt32' name='minorDimension'/>
+      <field accessType='inputOutput' type='SFInt32' name='majorDimension'/>
+      <field accessType='initializeOnly' type='SFBool' name='solid'/>
+    </ExternProtoDeclare>
     <ProtoDeclare name='Children1'>
       <ProtoInterface>
         <field accessType='inputOutput' type='MFNode' name='children1'/>
@@ -112,7 +119,8 @@
         </Text>
       </Shape>
     </Transform>
-    <Transform DEF='SnapTarget'>
+    <Transform DEF='SnapTarget'
+        translation='6.84977 0 -2.30566'>
       <Inline
           url='"SnapTarget.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"'/>
     </Transform>
@@ -120,7 +128,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 0.255403'
+          rotation='0 0 1 5.90597'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -167,8 +175,21 @@
           </Shape>
         </Transform>
       </Transform>
+      <Transform DEF='Torus'
+          translation='2.17447 1.89024 0.073832'
+          rotation='1 3.62462e-06 9.55666e-10 1.60984'
+          scale='0.17211 0.17211 0.17211'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0.540268 0.186765 0'/>
+          </Appearance>
+          <ProtoInstance name='Torus' containerField='geometry'/>
+        </Shape>
+      </Transform>
     </Switch>
-    <LOD>
+    <LOD
+        center='1 0 0'>
       <Transform DEF='Text1'
           translation='0.673213 0.0817185 0'>
         <Shape>
@@ -201,7 +222,7 @@
       <ProtoInstance name='Children1'>
         <fieldValue name='children1'>
           <Transform DEF='Cylinder'
-              translation='4.43586 1.20387 0'
+              translation='4.31363 1.17128 0'
               scale='0.18003 0.18003 0.18003'>
             <Shape>
               <Appearance>
@@ -223,16 +244,19 @@
         </fieldValue>
       </ProtoInstance>
     </Collision>
-    <Billboard
-        axisOfRotation='1 0 0'>
-      <Transform DEF='Cylinder1'
-          scale='0.280526 0.280526 0.280526'>
+    <Billboard>
+      <Transform DEF='Cone'
+          translation='-1.66427 0.177755 0'
+          scale='0.327988 0.327988 0.327988'>
         <Shape>
           <Appearance>
-            <Material
-                diffuseColor='1 0.295832 0.295832'/>
+            <Material DEF='Spring14'
+                ambientIntensity='0.258064'
+                diffuseColor='0.453686 0.462806 0.613468'
+                specularColor='0.101243 0.093899 0.0914149'
+                shininess='0.0432432'/>
           </Appearance>
-          <Cylinder/>
+          <Cone/>
         </Shape>
       </Transform>
     </Billboard>

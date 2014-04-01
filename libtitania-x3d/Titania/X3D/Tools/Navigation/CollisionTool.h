@@ -89,6 +89,15 @@ public:
 	proxy () const final override
 	{ return getNode () -> proxy (); }
 
+private:
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_enabled (const bool);
+
 };
 
 } // X3D

@@ -108,6 +108,13 @@ public:
 	const SFInt32 &
 	level_changed () const final override
 	{ return getNode () -> level_changed (); }
+	
+
+private:
+
+	virtual
+	void
+	initialize () final override;
 
 };
 
