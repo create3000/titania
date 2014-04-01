@@ -88,6 +88,7 @@ public:
 
 	///  @name Member access
 
+	virtual
 	const Box3f &
 	getBBox () const
 	{ return bbox; }
@@ -107,10 +108,10 @@ public:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, std::vector <IntersectionPtr> &) const;
+	intersect (Line3f, std::vector <IntersectionPtr> &) const;
 
 	bool
-	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) const;
+	intersect (const Sphere3f &, Matrix4f, const CollectableObjectArray &) const;
 
 	void
 	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
@@ -194,6 +195,11 @@ protected:
 	virtual
 	Box3f
 	createBBox ();
+
+	virtual
+	Matrix4f
+	getMatrix () const
+	{ return Matrix4f (); }
 
 	void
 	getTexCoordParams (Vector3f &, float &, int &, int &);

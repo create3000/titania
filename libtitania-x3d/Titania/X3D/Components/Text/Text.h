@@ -168,6 +168,10 @@ public:
 
 	///  @name Member access
 
+	virtual
+	const Box3f &
+	getBBox () const final override;
+
 	float
 	getLength (const size_t);
 
@@ -200,8 +204,8 @@ private:
 	///  @name Operations
 
 	virtual
-	Box3f
-	createBBox () final override;
+	Matrix4f
+	getMatrix () const final override;
 
 	virtual
 	void

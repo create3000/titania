@@ -1,5 +1,8 @@
 #VRML V2.0 utf8 Titania V0.6.7
 
+PROFILE Full
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
 META "title" "OutlineEditor"
 
 EXTERNPROTO Grid [
@@ -46,6 +49,19 @@ EXTERNPROTO RoundedRectangle2D [
 ]
 "http://titania.create3000.de/Library/Prototypes/0.1//Geometry2D/RoundedRectangle2D.x3dv"
 
+EXTERNPROTO Torus [
+  exposedField SFFloat minorRadius
+  exposedField SFFloat majorRadius
+  exposedField SFInt32 minorDimension
+  exposedField SFInt32 majorDimension
+  field        SFBool  solid
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Torus.x3dv"
+]
+
 PROTO Children1 [
   exposedField MFNode children1 [ ]
 ]
@@ -64,9 +80,7 @@ PROTO Children1 [
   }
 }
 
-DEF None NavigationInfo {
-  type "LOOKAT"
-}
+DEF None NavigationInfo { }
 
 DEF Sunset Background {
   skyAngle [
@@ -98,22 +112,6 @@ Grid {
   zDimension 100
 }
 
-DEF Text1 Transform {
-  translation 0.673213 0.0817185 0
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry DEF Text Text {
-      string "OutlineEditor"
-      fontStyle FontStyle {
-        family "PT Sans Narrow"
-        style "BOLD"
-      }
-    }
-  }
-}
-
 DEF Sensors Transform {
   children [
     DEF _1 ProximitySensor { }
@@ -121,111 +119,12 @@ DEF Sensors Transform {
   ]
 }
 
-Group {
-  children USE _1
-}
-
 DEF Rotor Rotor {
   cycleInterval 10
   loop TRUE
 }
 
-DEF Box Transform {
-  translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 4.77595
-  scale 0.2 0.2 0.2
-  children Transform {
-    children Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 0.8 0 0
-        }
-      }
-      geometry Box { }
-    }
-  }
-}
-
-DEF Sphere Transform {
-  translation 2.22045 1.17457 6.31221e-08
-  rotation -3.46428e-13 -3.62463e-06 1 0.178426
-  scale 0.2 0.2 0.2
-  children Transform {
-    children Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 0 0.8 0
-        }
-      }
-      geometry DEF _3 Sphere { }
-    }
-  }
-}
-
-DEF RoundedRectangle2D Transform {
-  translation 2.91175 1.50513 0
-  rotation 1.53721e-06 3.8065e-06 -1 4.14474
-  scale 0.17606 0.17606 0.2
-  children Transform {
-    children Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 0 0 0.8
-        }
-      }
-      geometry RoundedRectangle2D {
-        size 4 2
-      }
-    }
-  }
-}
-
-Children1 {
-  children1 [
-    DEF Cylinder Transform {
-      translation 4.17751 1.2077 0
-      scale 0.18003 0.18003 0.18003
-      children Shape {
-        appearance Appearance {
-          material Material { }
-        }
-        geometry Cylinder { }
-      }
-    }
-    DEF Cone1 Transform {
-      translation 3.31329 0.997151 0
-      scale 0.197378 0.197378 0.197378
-      children Shape {
-        appearance Appearance {
-          material Material { }
-        }
-        geometry Cone { }
-      }
-    }
-  ]
-}
-
 DEF Rotor2 Rotor2 { }
-
-Anchor {
-  description "Reload"
-  url "OutlineEditor.wrl"
-  children Transform {
-    translation 4.41306 2.06142 0
-    scale 0.1 0.1 0.1
-    children Shape {
-      appearance Appearance {
-        material Material {
-          ambientIntensity 0.25
-          diffuseColor 0.282435 0.0851587 0.134462
-          specularColor 0.276305 0.11431 0.139857
-          shininess 0.127273
-        }
-      }
-      geometry USE _3
-    }
-  }
-}
 
 ImageTexture { }
 
@@ -247,16 +146,218 @@ DEF Text3 Transform {
         transparency 0.57
       }
     }
-    geometry USE Text
+    geometry DEF Text Text {
+      string "OutlineEditor"
+      fontStyle FontStyle {
+        family "PT Sans Narrow"
+        style "BOLD"
+      }
+    }
   }
 }
 
 DEF SnapTarget Transform {
+  translation 6.84977 0 -2.30566
   children Inline {
     url [
       "SnapTarget.x3dv",
       "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"
     ]
+  }
+}
+
+Group {
+  children [
+    USE _1
+    DEF Box Transform {
+      translation 1.40843 1.10727 0.193803
+      rotation 0 0 1 1.25491
+      scale 0.2 0.2 0.2
+      children Transform {
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.8 0 0
+            }
+          }
+          geometry Box { }
+        }
+      }
+    }
+  ]
+}
+
+DEF Sphere Transform {
+  translation 2.22045 1.17457 6.31221e-08
+  rotation -3.38337e-13 -3.62463e-06 1 0.178426
+  scale 0.2 0.2 0.2
+  children Transform {
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0.8 0
+        }
+      }
+      geometry DEF _3 Sphere { }
+    }
+  }
+}
+
+DEF Yellow Switch {
+  metadata MetadataBoolean { }
+  whichChoice 0
+  choice [
+    DEF RoundedRectangle2D Transform {
+      translation 2.91175 1.50513 0
+      rotation -1.53721e-06 -3.8065e-06 1 2.13845
+      scale 0.17606 0.17606 0.2
+      scaleOrientation 2.51231e-12 -7.65059e-12 1 0.117763
+      children Transform {
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0.8
+            }
+          }
+          geometry RoundedRectangle2D {
+            size 4 2
+          }
+        }
+      }
+    }
+    DEF Torus Transform {
+      translation 2.17447 1.89024 0.073832
+      rotation 1 3.62462e-06 9.55666e-10 1.60984
+      scale 0.17211 0.17211 0.17211
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.540268 0.186765 0
+          }
+        }
+        geometry Torus { }
+      }
+    }
+  ]
+}
+
+LOD {
+  center 1 0 0
+  level DEF Text1 Transform {
+    translation 0.673213 0.0817185 0
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry USE Text
+    }
+  }
+}
+
+Anchor {
+  description "Reload Now"
+  url "OutlineEditor.wrl"
+  children Transform {
+    translation 4.41306 2.06142 0
+    scale 0.1 0.1 0.1
+    children Shape {
+      appearance Appearance {
+        material Material {
+          ambientIntensity 0.25
+          diffuseColor 0.282435 0.0851587 0.134462
+          specularColor 0.276305 0.11431 0.139857
+          shininess 0.127273
+        }
+      }
+      geometry USE _3
+    }
+  }
+}
+
+Collision {
+  children Children1 {
+    children1 [
+      DEF Cylinder Transform {
+        translation 4.36274 1.14674 0
+        scale 0.18003 0.18003 0.18003
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry Cylinder { }
+        }
+      }
+      DEF Cone1 Transform {
+        translation 3.31329 0.997151 0
+        scale 0.197378 0.197378 0.197378
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry Cone { }
+        }
+      }
+    ]
+  }
+}
+
+Billboard {
+  children DEF Cone Transform {
+    translation -1.66427 0.177755 0
+    scale 0.327988 0.327988 0.327988
+    children Shape {
+      appearance Appearance {
+        material DEF Spring14 Material {
+          ambientIntensity 0.258064
+          diffuseColor 0.453686 0.462806 0.613468
+          specularColor 0.101243 0.093899 0.0914149
+          shininess 0.0432432
+        }
+      }
+      geometry Cone { }
+    }
+  }
+}
+
+ScreenGroup {
+  children DEF Cone2 Transform {
+    translation -100 0 0
+    scale 20 20 20
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 1 0.00483249
+        }
+      }
+      geometry Cone { }
+    }
+  }
+}
+
+DEF ScreenText Transform {
+  translation 0.673213 1.51774 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF Text2 Text {
+      string "OutlineEditor"
+      fontStyle ScreenFontStyle {
+        family "SANS"
+        style "BOLD"
+      }
+    }
+  }
+}
+
+Shape {
+  appearance Appearance {
+    material Material {
+      diffuseColor 1 0.987806 0
+    }
+  }
+  geometry Sphere {
+    radius 0.1
   }
 }
 

@@ -86,6 +86,11 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	Matrix4f
+	getMatrix () const final override
+	{ return getNode () -> getMatrix (); }
+
 };
 
 } // X3D

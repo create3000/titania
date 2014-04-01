@@ -1,4 +1,4 @@
-#X3D V3.0 utf8 Titania 0.1
+#VRML V2.0 utf8 Titania V0.6.7
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -33,7 +33,10 @@ DEF Lena Anchor {
     children Shape {
       appearance Appearance {
         texture ImageTexture {
-          url [ "../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg" ]
+          url [
+            "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+            "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+          ]
           repeatS FALSE
           repeatT FALSE
         }
@@ -49,34 +52,63 @@ DEF Axes Transform {
   children Shape {
     geometry IndexedLineSet {
       colorPerVertex FALSE
-      colorIndex [ 0, 1 ]
-      coordIndex [ 0, 1, -1, 2, 3 ]
+      colorIndex [
+        0,
+        1
+      ]
+      coordIndex [
+        0,
+        1,
+        -1,
+        2,
+        3
+      ]
       color Color {
-        color [ 1 0 0, 0 1 0 ]
+        color [
+          1 0 0,
+          0 1 0
+        ]
       }
       coord Coordinate {
-        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0 ]
+        point [
+          -1 0 0,
+          1 0 0,
+          0 -1 0,
+          0 1 0
+        ]
       }
     }
   }
 }
 
 DEF Text Transform {
-  children Shape {
+  children DEF Shape Shape {
     appearance Appearance {
       material Material {
         diffuseColor 1 0 0
         specularColor 0 1 0
       }
     }
-    geometry Text {
-      string [ "上海市第二中级人民法院2月18日对“复旦投毒案”依法公开", "一审宣判，被告人林森浩犯故意杀人罪被判死刑，剥夺政治", "权利终身。2013年4月，复旦大学研究生黄洋因舍友投毒", "死亡，年仅28岁。!" ]
+    geometry DEF Geo Text {
+      string [
+        "上海市第二中级人民法院2月18日对“复旦投毒案”依法公开",
+        "一审宣判，被告人林森浩犯故意杀人罪被判死刑，剥夺政治",
+        "权利终身。2013年4月，复旦大学研究生黄洋因舍友投毒",
+        "死亡，年仅28岁。!"
+      ]
       fontStyle ScreenFontStyle {
-        family [ "Test-XXX", "-../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "Arial Unicode MS" ]
+        family [
+          "Test-XXX",
+          "-../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf",
+          "Arial Unicode MS"
+        ]
         pointSize 11
         spacing 1.8
         horizontal FALSE
-        justify [ "BEGIN", "BEGIN" ]
+        justify [
+          "BEGIN",
+          "BEGIN"
+        ]
       }
     }
   }

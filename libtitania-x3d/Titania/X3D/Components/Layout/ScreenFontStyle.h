@@ -73,6 +73,14 @@ public:
 	{ return true; }
 
 	virtual
+	const Box3f &
+	getBBox () const final override;
+
+	virtual
+	Matrix4f
+	getMatrix () const final override;
+
+	virtual
 	void
 	display () final override;
 
@@ -99,7 +107,7 @@ private:
 	draw () final override;
 
 	void
-	scale () const;
+	scale ();
 
 	Text* const                  text;
 	const ScreenFontStyle* const fontStyle;
@@ -107,8 +115,12 @@ private:
 	Cairo::RefPtr <Cairo::Context> context;
 	GLuint                         textureId;
 	
-	Vector3d min;
-	Vector3d max;
+	Vector3f min;
+	Vector3f max;
+	Box3f    bbox;
+	
+	Matrix4d modelViewMatrix;
+	Matrix4d screenMatrix;
 
 };
 

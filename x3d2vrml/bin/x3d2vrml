@@ -1014,7 +1014,7 @@ sub fields {
 			
 			$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $field);
 		}
-		elsif ($field -> {value})
+		elsif (defined $field -> {value})
 		{
 			print $self -> indent ();
 			print $field -> {name}, " ";
@@ -1050,7 +1050,7 @@ sub userDefinedFields {
 			print "\n";
 		}
 
-		if (not @{$field -> {references}} or $field -> {value})
+		if (not @{$field -> {references}} or defined $field -> {value})
 		{
 			print $self -> indent ();
 			print $field -> {accessType}, " ";

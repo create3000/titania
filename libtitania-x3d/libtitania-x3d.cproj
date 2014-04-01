@@ -665,6 +665,7 @@
     <None Include="share\titania\tools\Notification.x3dv" />
     <None Include="share\titania\tools\Statistics.x3dv" />
     <None Include="share\titania\tools\library\Vector.x3dv" />
+    <None Include="Titania\X3D\Tools\Layout\ScreenGroupTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1142,6 +1143,7 @@
     <Compile Include="Titania\X3D\Tools\Shape\ShapeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Networking\InlineTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Networking\AnchorTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Layout\ScreenGroupTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1184,6 +1186,7 @@
     <Folder Include="Titania\X3D\Tools\Navigation\" />
     <Folder Include="Titania\X3D\Tools\Shape\" />
     <Folder Include="Titania\X3D\Tools\Networking\" />
+    <Folder Include="Titania\X3D\Tools\Layout\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

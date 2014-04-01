@@ -130,6 +130,7 @@ public:
 protected:
 
 	using X3DBaseTool <Type>::getCurrentLayer;
+	using X3DBaseTool <Type>::getModelViewMatrix;
 	using X3DBaseTool <Type>::getNode;
 
 	///  @name Construction
@@ -145,6 +146,11 @@ protected:
 	const ScenePtr
 	getScene () const
 	{ return scene; }
+
+	virtual
+	Matrix4f
+	getMatrix () const
+	{ return Matrix4f (); }
 
 
 private:
@@ -201,7 +207,7 @@ X3DBoundedObjectTool <Type>::reshape ()
 	try
 	{
 		const auto tool = scene -> getNamedNode ("Tool");
-		const auto bbox = getNode () -> getBBox ();
+		const auto bbox = getNode () -> getBBox () * ~getMatrix ();
 
 		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
@@ -222,6 +228,9 @@ X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
 
 	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 
+	getModelViewMatrix () .push ();
+	getModelViewMatrix () .mult_left (getMatrix ());
+
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
@@ -230,6 +239,8 @@ X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
 		if (rootNode)
 			rootNode -> traverse (type);
 	}
+
+	getModelViewMatrix () .pop ();
 
 	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }

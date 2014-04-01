@@ -133,10 +133,16 @@ Text::getLength (const size_t index)
 	return 0;
 }
 
-Box3f
-Text::createBBox ()
+const Box3f &
+Text::getBBox () const
 {
 	return textGeometry -> getBBox ();
+}
+
+Matrix4f
+Text::getMatrix () const
+{
+	return textGeometry -> getMatrix ();
 }
 
 void

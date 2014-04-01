@@ -128,7 +128,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.22267'
+          rotation='0 0 1 2.96448'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -155,7 +155,8 @@
         </Shape>
       </Transform>
     </Transform>
-    <Switch DEF='Yellow'>
+    <Switch DEF='Yellow'
+        whichChoice='0'>
       <MetadataBoolean/>
       <Transform DEF='RoundedRectangle2D'
           translation='2.91175 1.50513 0'
@@ -259,6 +260,41 @@
         </Shape>
       </Transform>
     </Billboard>
+    <ScreenGroup>
+      <Transform DEF='Cone2'
+          translation='-100 0 0'
+          scale='20 20 20'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0 1 0.00483249'/>
+          </Appearance>
+          <Cone/>
+        </Shape>
+      </Transform>
+    </ScreenGroup>
+    <Transform DEF='ScreenText'
+        translation='0.673213 1.51774 0'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Text DEF='Text2'
+            string='"OutlineEditor"'>
+          <ScreenFontStyle
+              family='"SANS"'
+              style='BOLD'/>
+        </Text>
+      </Shape>
+    </Transform>
+    <Shape>
+      <Appearance>
+        <Material
+            diffuseColor='1 0.987806 0'/>
+      </Appearance>
+      <Sphere
+          radius='0.1'/>
+    </Shape>
     <ROUTE fromNode='_1' fromField='isActive' toNode='_2' toField='set_enabled'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
   </Scene>

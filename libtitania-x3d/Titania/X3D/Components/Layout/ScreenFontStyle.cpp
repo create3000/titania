@@ -70,7 +70,9 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 	        context (Cairo::Context::create (Cairo::ImageSurface::create (Cairo::FORMAT_RGB24, 0, 0))),
 	      textureId (0),
 	            min (),
-	            max ()
+	            max (),
+	modelViewMatrix (),
+	   screenMatrix ()
 {
 	glGenTextures (1, &textureId);
 
@@ -149,29 +151,9 @@ ScreenText::setTextBounds ()
 			break;
 	}
 
-	text -> origin () = Vector3d (min .x (), max .y (), 0);
+	text -> origin () = Vector3f (min .x (), max .y (), 0);
 
-	// FIX: This switch is not needed if screen elements picking is implemented properly.
-
-	switch (fontStyle -> getMajorAlignment ())
-	{
-		case X3DFontStyleNode::Alignment::BEGIN:
-		case X3DFontStyleNode::Alignment::FIRST:
-		{
-			if (fontStyle -> horizontal ())
-				min .x (std::min (0.0, min .x ()));
-			else
-				max .y (std::max (0.0, max .y ()));
-
-			break;
-		}
-		case X3DFontStyleNode::Alignment::MIDDLE:
-		case X3DFontStyleNode::Alignment::END:
-			break;
-	}
-
-	//setBBox (Box3d ());
-	setBBox (Box3d (min, max, extents_type ()));
+	setBBox (Box3f (min, max, extents_type ()));
 }
 
 void
@@ -382,11 +364,25 @@ ScreenText::draw ()
 	glDisable (GL_TEXTURE_2D);
 }
 
+const Box3f &
+ScreenText::getBBox () const
+{
+	const_cast <ScreenText*> (this) -> bbox = X3DTextGeometry::getBBox () * getMatrix ();
+	
+	return bbox;
+}
+
+Matrix4f
+ScreenText::getMatrix () const
+{
+	return screenMatrix * inverse (modelViewMatrix);
+}
+
 // Same as in ScreenGroup
 void
-ScreenText::scale () const
+ScreenText::scale ()
 {
-	const Matrix4d modelViewMatrix = ModelViewMatrix4d ();
+	modelViewMatrix = ModelViewMatrix4d ();
 
 	Vector3d   translation, scale;
 	Rotation4d rotation;
@@ -396,12 +392,11 @@ ScreenText::scale () const
 	const double   distance    = math::abs (modelViewMatrix .origin ());
 	const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
-	Matrix4d matrix;
-	matrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-	                                              screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-	                                              screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
-	glLoadMatrixd (matrix .data ());
+	glLoadMatrixd (screenMatrix .data ());
 }
 
 void

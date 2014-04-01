@@ -472,6 +472,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Grouping/GroupTool.cpp \
 	Titania/X3D/Tools/Grouping/SwitchTool.cpp \
 	Titania/X3D/Tools/Grouping/TransformTool.cpp \
+	Titania/X3D/Tools/Layout/ScreenGroupTool.cpp \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \

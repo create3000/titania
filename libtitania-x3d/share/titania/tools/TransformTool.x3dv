@@ -651,6 +651,9 @@ function set_whichChoice (value)
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
     field        SFFloat    offset 0.01
+    field        SFVec3f    xAxis 1 0 0
+    field        SFVec3f    yAxis 0 1 0
+    field        SFVec3f    zAxis 0 0 1
     field        SFNode     bbox USE BBox
     field        SFNode     axes USE Axes
     field        SFNode     front USE Front
@@ -659,6 +662,9 @@ function set_whichChoice (value)
     field        SFNode     left USE Left
     field        SFNode     top USE Top
     field        SFNode     bottom USE Bottom
+    field        SFNode     xHandle USE XHandle
+    field        SFNode     yHandle USE YHandle
+    field        SFNode     zHandle USE ZHandle
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -688,7 +694,8 @@ function eventsProcessed ()
 	// Position and scale planes
 
 	var scale = new SFVec3f ();
-	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
+	var m     = modelViewMatrix .multRight (cameraSpaceMatrix); // m = transformationMatrix
+	m .getTransform (null, null, scale);
 
 	var x = offset / Math .abs (scale .x);
 	var y = offset / Math .abs (scale .y);
@@ -707,27 +714,16 @@ function eventsProcessed ()
 	left   .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
 	top    .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
 	bottom .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
-}
-"
-    directOutput TRUE
-  }
 
-  DEF ArrowsScript Script {
-    exposedField SFVec3f bboxSize IS bboxSize
-    field        SFNode  x USE XHandle
-    field        SFNode  y USE YHandle
-    field        SFNode  z USE ZHandle
+	// Axes
 
-    url "vrmlscript:
-function eventsProcessed ()
-{
-	// Position arrows
-	
-	var bboxSize1_2 = bboxSize .divide (2);
+	xHandle .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
+	yHandle .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
+	zHandle .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
 
-	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
-	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
-	z .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
+	xHandle .rotation = new SFRotation (xAxis, new SFVec3f (m [0], m [1], m [ 2]));
+	yHandle .rotation = new SFRotation (yAxis, new SFVec3f (m [4], m [5], m [ 6]));
+	zHandle .rotation = new SFRotation (zAxis, new SFVec3f (m [8], m [9], m [10]));
 }
 "
     directOutput TRUE

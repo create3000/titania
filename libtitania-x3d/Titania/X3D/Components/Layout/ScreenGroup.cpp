@@ -52,6 +52,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Navigation/Viewpoint.h"
+#include "../../Tools/Layout/ScreenGroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -62,7 +63,9 @@ const std::string ScreenGroup::containerField = "children";
 
 ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode ()
+	X3DGroupingNode (),
+	modelViewMatrix (),
+	   screenMatrix ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
@@ -81,14 +84,20 @@ ScreenGroup::create (X3DExecutionContext* const executionContext) const
 Box3f
 ScreenGroup::getBBox () const
 {
-	return Box3f ();
+	return X3DGroupingNode::getBBox () * getMatrix ();
+}
+
+Matrix4f
+ScreenGroup::getMatrix () const
+{
+	return screenMatrix * inverse (modelViewMatrix);
 }
 
 // Same as in Text
 void
-ScreenGroup::scale (const TraverseType type) const
+ScreenGroup::scale (const TraverseType type)
 {
-	const Matrix4d modelViewMatrix = getModelViewMatrix (type);
+	modelViewMatrix = getModelViewMatrix (type);
 
 	Vector3d   translation, scale;
 	Rotation4d rotation;
@@ -98,12 +107,11 @@ ScreenGroup::scale (const TraverseType type) const
 	const double   distance    = math::abs (modelViewMatrix .origin ());
 	const Vector3d screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
-	Matrix4d matrix;
-	matrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-	                                              screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-	                                              screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
-	getModelViewMatrix () .set (matrix);
+	getModelViewMatrix () .set (screenMatrix);
 }
 
 void
@@ -116,6 +124,12 @@ ScreenGroup::traverse (const TraverseType type)
 	X3DGroupingNode::traverse (type);
 
 	getModelViewMatrix () .pop ();
+}
+
+void
+ScreenGroup::addTool ()
+{
+	//X3DGroupingNode::addTool (new ScreenGroupTool (this));
 }
 
 } // X3D

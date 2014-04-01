@@ -133,13 +133,16 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, std::vector <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersect (Line3f line, std::vector <IntersectionPtr> & intersections) const
 {
 	bool intersected = false;
 
-	if (bbox .intersect (line))
+	if (getBBox () .intersect (line))
 	{
-		const Matrix4f modelViewMatrix = getModelViewMatrix () .get ();
+		const Matrix4f matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
+		const Matrix4f modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
+
+		line *= ~matrix;
 
 		size_t first = 0;
 
@@ -243,10 +246,12 @@ X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMa
 }
 
 bool
-X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects) const
+X3DGeometryNode::intersect (const Sphere3f & sphere, Matrix4f modelViewMatrix, const CollectableObjectArray & localObjects) const
 {
-	if ((bbox * matrix) .intersect (sphere))
+	if ((getBBox () * modelViewMatrix) .intersect (sphere))
 	{
+		modelViewMatrix .mult_left (getMatrix ()); // Multiply by current matrix from screen nodes.
+
 		size_t first = 0;
 
 		for (const auto & element : elements)
@@ -257,10 +262,10 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 					{
 						for (size_t i = first, size = first + element .count; i < size; i += 3)
 						{
-							if (isClipped (vertices [i], matrix, localObjects))
+							if (isClipped (vertices [i], modelViewMatrix, localObjects))
 								continue;
 
-							if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+							if (sphere .intersect (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
 								return true;
 						}
 
@@ -270,13 +275,13 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
 					{
-						if (isClipped (vertices [i], matrix, localObjects))
+						if (isClipped (vertices [i], modelViewMatrix, localObjects))
 							continue;
 
-						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+						if (sphere .intersect (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
 							return true;
 
-						if (sphere .intersect (vertices [i] * matrix, vertices [i + 2] * matrix, vertices [i + 3] * matrix))
+						if (sphere .intersect (vertices [i] * modelViewMatrix, vertices [i + 2] * modelViewMatrix, vertices [i + 3] * modelViewMatrix))
 							return true;
 					}
 
@@ -286,13 +291,13 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 				{
 					for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
 					{
-						if (isClipped (vertices [i], matrix, localObjects))
+						if (isClipped (vertices [i], modelViewMatrix, localObjects))
 							continue;
 
-						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+						if (sphere .intersect (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
 							return true;
 
-						if (sphere .intersect (vertices [i + 1] * matrix, vertices [i + 3] * matrix, vertices [i + 2] * matrix))
+						if (sphere .intersect (vertices [i + 1] * modelViewMatrix, vertices [i + 3] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
 							return true;
 					}
 
@@ -302,10 +307,10 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 				{
 					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
 					{
-						if (isClipped (vertices [first], matrix, localObjects))
+						if (isClipped (vertices [first], modelViewMatrix, localObjects))
 							continue;
 
-						if (sphere .intersect (vertices [first] * matrix, vertices [i] * matrix, vertices [i + 1] * matrix))
+						if (sphere .intersect (vertices [first] * modelViewMatrix, vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix))
 							return true;
 					}
 

@@ -91,13 +91,20 @@ public:
 
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
+
+	Matrix4f
+	getMatrix () const;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
 
 
 private:
@@ -105,7 +112,7 @@ private:
 	///  @name Operations
 
 	void
-	scale (const TraverseType) const;	
+	scale (const TraverseType);	
 
 	///  @name Static members
 
@@ -113,6 +120,8 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	Matrix4f modelViewMatrix;
+	Matrix4f screenMatrix;
 
 };
 
