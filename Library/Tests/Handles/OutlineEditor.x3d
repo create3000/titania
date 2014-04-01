@@ -128,7 +128,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 5.90597'
+          rotation='0 0 1 4.22267'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -155,8 +155,7 @@
         </Shape>
       </Transform>
     </Transform>
-    <Switch DEF='Yellow'
-        whichChoice='0'>
+    <Switch DEF='Yellow'>
       <MetadataBoolean/>
       <Transform DEF='RoundedRectangle2D'
           translation='2.91175 1.50513 0'
@@ -222,7 +221,7 @@
       <ProtoInstance name='Children1'>
         <fieldValue name='children1'>
           <Transform DEF='Cylinder'
-              translation='4.31363 1.17128 0'
+              translation='4.36274 1.14674 0'
               scale='0.18003 0.18003 0.18003'>
             <Shape>
               <Appearance>

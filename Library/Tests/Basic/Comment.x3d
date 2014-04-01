@@ -2,17 +2,11 @@
 <!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
 <X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
   <head>
-    <component name='Core' level='1'/>
-    <unit category='angle' name='degree' conversionFactor='0.0174532925199433'/>
-    <unit category='mass' name='pound' conversionFactor='0.45359237'/>
     <meta name='generator' content='Titania V0.6.7, http://titania.create3000.de'/>
-    <meta name='title' content='Comments'/>
-    <meta name='utf8' content='äöü&apos;\\\\\"áóú&lt;&amp;\\>'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"../PROTO/Rotor.wrl"'>
       <field accessType='inputOutput' type='SFTime' name='cycleInterval'/>
-      <field accessType='inputOutput' type='SFBool' name='loop'/>
       <field accessType='outputOnly' type='SFRotation' name='value_changed'/>
     </ExternProtoDeclare>
     <ProtoDeclare name='Test-utf8-&lt;äöü&amp;>'>
@@ -43,15 +37,15 @@
         <TimeSensor
             enabled='false'>
           <IS>
-            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='enabled' protoField='set_bind'/>
+            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='isActive' protoField='isBound'/>
           </IS>
         </TimeSensor>
         <Script
             directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
-          <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
+          <field accessType='inputOutput' type='SFBool' name='enabled'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
           <field accessType='inputOutput' type='SFString' name='string'/>
           <field accessType='inputOutput' type='MFNode' name='children'>
@@ -62,8 +56,8 @@
             <MetadataBoolean USE='Meta'/>
           </field>
           <IS>
-            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='enabled' protoField='set_bind'/>
+            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='test' protoField='test'/>
             <connect nodeField='string' protoField='string'/>
           </IS>
@@ -146,9 +140,6 @@ function initialize ()
       <Inline DEF='Inline'
           url='"EXPORT.wrl"'/>
     </Transform>
-    <IMPORT inlineDEF='Inline' exportedDEF='CubeExport' AS='CubeImport'/>
     <ROUTE fromNode='Transform' fromField='translation_changed' toNode='Transform' toField='set_translation'/>
-    <EXPORT localDEF='Transform' AS='ColoredCube'/>
-    <EXPORT localDEF='Transform' AS='ColoredCube1'/>
   </Scene>
 </X3D>

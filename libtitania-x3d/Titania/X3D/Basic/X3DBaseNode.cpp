@@ -511,8 +511,16 @@ X3DBaseNode::getChangedFields () const
 			if (not field -> isInitializeable ())
 				continue;
 
-			if (isDefaultValue (field))
+			try
+			{
+				if (isDefaultValue (field))
+					continue;
+			}
+			catch (const X3DError &)
+			{
+				// This can happen if a ExternProto has less field than the proto.
 				continue;
+			}
 		}
 
 		changedFields .emplace_back (field);
@@ -523,34 +531,13 @@ X3DBaseNode::getChangedFields () const
 
 bool
 X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	try
-	{
-		const X3DFieldDefinition* const declarationField = getType () -> getField (field -> getName ());
+	const X3DFieldDefinition* const declarationField = getType () -> getField (field -> getName ());
 
-		return *field == *declarationField;
-	}
-	catch (const X3DError &)
-	{
-		try
-		{
-			// Fallback
-
-			X3DBaseNode* const type = create (executionContext);
-
-			const X3DFieldDefinition* const declarationField = type -> getField (field -> getName ());
-
-			const bool result = (*field == *declarationField);
-
-			const_cast <X3DBaseNode*> (this) -> getGarbageCollector () .addObject (type);
-
-			return result;
-		}
-		catch (const X3DError &)
-		{
-			return false;
-		}
-	}
+	return *field == *declarationField;
 }
 
 void
@@ -985,22 +972,30 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 				ostream << Generator::Break;
 		}
 
-		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
-		// for this field.
-
-		if (field -> getAccessType () == inputOutput and not initializableReference and not isDefaultValue (field))
+		try
 		{
-			// Output build in field
+			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+			// for this field.
 
-			ostream
-				<< Generator::Break
-				<< Generator::Indent;
+			if (field -> getAccessType () == inputOutput and not initializableReference and not isDefaultValue (field))
+			{
+				// Output build in field
 
-			ostream << getFieldName (field -> getName (), Generator::Version ());
+				ostream
+					<< Generator::Break
+					<< Generator::Indent;
 
-			ostream
-				<< Generator::Space
-				<< *field;
+				ostream << getFieldName (field -> getName (), Generator::Version ());
+
+				ostream
+					<< Generator::Space
+					<< *field;
+			}
+		}
+		catch (const X3DError &)
+		{
+			// Catch isDefaultValue, this can happen if the Externproto has less fields than the proto but should not happen here
+			// as the field has references.
 		}
 	}
 }
@@ -1082,7 +1077,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
 		// for this field.
 
-		if (field -> getAccessType () == inputOutput and not initializableReference)
+		if (field -> getAccessType () == inputOutput and not initializableReference and not field -> isDefaultValue ())
 		{
 			// Output user defined field
 
@@ -1218,8 +1213,15 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			for (const auto & reference : field -> getReferences ())
 				initializeableReference |= reference -> isInitializeable ();
 
-			if (not initializeableReference)
-				mustOutputValue = true;
+			try
+			{
+				if (not initializeableReference)
+					mustOutputValue = not isDefaultValue (field);
+			}
+			catch (const X3DError &)
+			{
+				mustOutputValue = false;
+			}
 		}
 
 		if (field -> getReferences () .empty () or mustOutputValue)
@@ -1304,7 +1306,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					initializeableReference |= reference -> isInitializeable ();
 
 				if (not initializeableReference)
-					mustOutputValue = true;
+					mustOutputValue = not field -> isDefaultValue ();
 			}
 
 			if (field -> getReferences () .empty () or mustOutputValue)

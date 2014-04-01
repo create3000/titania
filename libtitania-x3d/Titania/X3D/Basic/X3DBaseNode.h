@@ -194,7 +194,10 @@ public:
 	{ return false; }
 
 	bool
-	isDefaultValue (const X3DFieldDefinition* const) const;
+	isDefaultValue (const X3DFieldDefinition* const) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Special functions
 

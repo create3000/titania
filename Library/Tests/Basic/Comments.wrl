@@ -14,7 +14,6 @@
 EXTERNPROTO Rotor [
   # Field Comment
   exposedField SFTime     cycleInterval
-  exposedField SFBool     loop
   eventOut     SFRotation value_changed
   # Interface Comment
 ]
@@ -59,8 +58,8 @@ PROTO Test-utf8-<äöü&> [
   # Multiple References
   TimeSensor {
     # Multiple IS statements on build in field
-    enabled IS isBound
     enabled IS set_bind
+    enabled IS isBound
     enabled FALSE
     # IS statement on build in field
     isActive IS isBound
@@ -70,8 +69,8 @@ PROTO Test-utf8-<äöü&> [
     # Field with utf8 name and special characters
     eventIn      SFBool   set_utf8-is-gorgeous-&-nice!-<utf8-ist-älegant-&-schön!>
     # Multiple IS statements on user defined field
-    exposedField SFBool   enabled IS isBound
     exposedField SFBool   enabled IS set_bind
+    exposedField SFBool   enabled IS isBound
     exposedField SFBool   enabled TRUE
     # IS statement on user defined field
     exposedField SFString test IS test

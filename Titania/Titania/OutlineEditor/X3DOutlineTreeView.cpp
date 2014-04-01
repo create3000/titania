@@ -499,10 +499,17 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 						for (const auto & field : get_fields (node))
 						{
-							if (not field -> isInitializeable () or node -> isDefaultValue (field))
+							try
 							{
-								if (not get_model () -> get_input_routes_size (field) and not get_model () -> get_output_routes_size (field))
-									continue;
+								if (not field -> isInitializeable () or node -> isDefaultValue (field))
+								{
+									if (not get_model () -> get_input_routes_size (field) and not get_model () -> get_output_routes_size (field))
+										continue;
+								}
+							}
+							catch (const X3D::X3DError &)
+							{
+								continue;
 							}
 
 							get_model () -> append (iter, OutlineIterType::X3DField, field);

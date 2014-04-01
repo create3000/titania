@@ -367,8 +367,15 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				for (const auto & reference : field -> getReferences ())
 					initializeableReference |= reference -> isInitializeable ();
 
-				if (not initializeableReference)
-					mustOutputValue = true;
+				try
+				{
+					if (not initializeableReference)
+						mustOutputValue = not isDefaultValue (field);
+				}
+				catch (const X3DError &)
+				{
+					mustOutputValue = false;
+				}
 			}
 
 			if (field -> getReferences () .empty () or mustOutputValue)

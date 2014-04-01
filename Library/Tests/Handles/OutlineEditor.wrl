@@ -132,7 +132,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 4.04225
+  rotation 0 0 1 4.77595
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -183,7 +183,7 @@ DEF RoundedRectangle2D Transform {
 Children1 {
   children1 [
     DEF Cylinder Transform {
-      translation 4.06343 1.224 0
+      translation 4.17751 1.2077 0
       scale 0.18003 0.18003 0.18003
       children Shape {
         appearance Appearance {

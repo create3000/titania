@@ -119,7 +119,7 @@ Switch::traverse (const TraverseType type)
 void
 Switch::addTool ()
 {
-	X3DGroupingNode::addTool (new SwitchTool (this));
+	//X3DGroupingNode::addTool (new SwitchTool (this));
 }
 
 } // X3D

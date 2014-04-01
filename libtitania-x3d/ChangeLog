@@ -1,5 +1,19 @@
 2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Shape.cpp:
+	* LOD.cpp:
+	* Group.cpp:
+	* Switch.cpp:
+	* Anchor.cpp:
+	* Inline.cpp:
+	* Billboard.cpp:
+	* Collision.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Linetypes.h:
 	* Notification.h:

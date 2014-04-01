@@ -160,7 +160,7 @@ Collision::traverse (const TraverseType type)
 void
 Collision::addTool ()
 {
-	X3DGroupingNode::addTool (new CollisionTool (this));
+	//X3DGroupingNode::addTool (new CollisionTool (this));
 }
 
 } // X3D

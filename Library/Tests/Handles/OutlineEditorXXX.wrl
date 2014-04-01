@@ -1,7 +1,5 @@
 #VRML V2.0 utf8 Titania V0.6.7
 
-META "title" "OutlineEditor"
-
 EXTERNPROTO Rotor [
   exposedField SFBool     enabled
   exposedField SFTime     cycleInterval
@@ -17,15 +15,18 @@ EXTERNPROTO Rotor [
 
 DEF Rotor Rotor {
   cycleInterval 10
-  loop TRUE
+  pauseTime 0
+  resumeTime 0
+
+  #loop TRUE
 }
 
 DEF Box Transform {
-  translation 1.40643 1.10727 0.193803
-  rotation 0 0 1 5.11871
+  translation 1.40943 1.10727 0.193803
+  rotation 0 0 1 6.06127
   scale 0.2 0.2 0.2
   children DEF _1 Transform {
-    translation 0.001 0 0
+    translation 0.425143 0 2.35979
     children Shape {
       appearance Appearance {
         material Material {
