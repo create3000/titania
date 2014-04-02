@@ -136,7 +136,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.14561'
+          rotation='0 0 1 0.64704'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -309,6 +309,11 @@
     <VisibilitySensor
         size='1 1 1'
         center='3.77007 0 -2.89052'/>
+    <Viewpoint
+        description='OutlineEditor'
+        position='0.307405 1.46693 4.56711'
+        orientation='0.563368 0.806068 0.181301 5.84917'
+        centerOfRotation='1.83783 -0.942352 -0.631597'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
   </Scene>
 </X3D>
