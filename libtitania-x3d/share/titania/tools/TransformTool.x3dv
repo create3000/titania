@@ -721,9 +721,9 @@ function eventsProcessed ()
 	yHandle .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
 	zHandle .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
 
-	xHandle .rotation = new SFRotation (xAxis, new SFVec3f (m [0], m [1], m [ 2]));
-	yHandle .rotation = new SFRotation (yAxis, new SFVec3f (m [4], m [5], m [ 6]));
-	zHandle .rotation = new SFRotation (zAxis, new SFVec3f (m [8], m [9], m [10]));
+	//xHandle .rotation = new SFRotation (xAxis, new SFVec3f (m [0], m [1], m [ 2]));
+	//yHandle .rotation = new SFRotation (yAxis, new SFVec3f (m [4], m [5], m [ 6]));
+	//zHandle .rotation = new SFRotation (zAxis, new SFVec3f (m [8], m [9], m [10]));
 }
 "
     directOutput TRUE
@@ -1044,7 +1044,7 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_scale7
     eventIn      SFVec3f    set_scale8
     exposedField SFFloat    minScale 0.001
-    exposedField SFBool     scaleAroundBBoxCenter TRUE
+    exposedField SFBool     scaleAroundBBoxCenter FALSE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter

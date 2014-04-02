@@ -81,7 +81,7 @@ Group::create (X3DExecutionContext* const executionContext) const
 void
 Group::addTool ()
 {
-	//X3DGroupingNode::addTool (new GroupTool (this));
+	X3DGroupingNode::addTool (new GroupTool (this));
 }
 
 } // X3D

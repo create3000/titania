@@ -91,16 +91,23 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 

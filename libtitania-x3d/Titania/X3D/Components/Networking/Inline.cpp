@@ -352,7 +352,7 @@ Inline::traverse (const TraverseType type)
 void
 Inline::addTool ()
 {
-	//X3DChildNode::addTool (new InlineTool (this));
+	X3DChildNode::addTool (new InlineTool (this));
 }
 
 void

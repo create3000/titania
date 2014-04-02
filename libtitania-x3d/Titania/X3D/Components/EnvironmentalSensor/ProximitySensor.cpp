@@ -53,8 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
-
-#include <iostream>
+#include "../../Tools/EnvironmentalSensor/ProximitySensorTool.h"
 
 namespace titania {
 namespace X3D {
@@ -199,6 +198,12 @@ ProximitySensor::traverse (const TraverseType type)
 		default:
 			break;
 	}
+}
+
+void
+ProximitySensor::addTool ()
+{
+	X3DEnvironmentalSensorNode::addTool (new ProximitySensorTool (this));
 }
 
 } // X3D

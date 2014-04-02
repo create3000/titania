@@ -213,7 +213,7 @@ Shape::drawGeometry ()
 void
 Shape::addTool ()
 {
-	//X3DShapeNode::addTool (new ShapeTool (this));
+	X3DShapeNode::addTool (new ShapeTool (this));
 }
 
 } // X3D

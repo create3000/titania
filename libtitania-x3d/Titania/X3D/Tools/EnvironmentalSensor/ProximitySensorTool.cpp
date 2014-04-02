@@ -48,74 +48,18 @@
  *
  ******************************************************************************/
 
-#include "LineProperties.h"
+#include "ProximitySensorTool.h"
 
-#include "../../Bits/Linetypes.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string LineProperties::componentName  = "Shape";
-const std::string LineProperties::typeName       = "LineProperties";
-const std::string LineProperties::containerField = "lineProperties";
-
-LineProperties::Fields::Fields () :
-	             applied (new SFBool (true)),
-	            linetype (new SFInt32 (1)),
-	linewidthScaleFactor (new SFFloat ())
+ProximitySensorTool::ProximitySensorTool (ProximitySensor* const node) :
+	                                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	                   X3DBaseTool <ProximitySensor> (node),
+	X3DEnvironmentalSensorNodeTool <ProximitySensor> (Color3f (0.5, 0, 1))
 { }
-
-LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceChildNode (),
-	                fields ()
-{
-	addField (inputOutput, "metadata",             metadata ());
-	addField (inputOutput, "applied",              applied ());
-	addField (inputOutput, "linetype",             linetype ());
-	addField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor ());
-}
-
-X3DBaseNode*
-LineProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new LineProperties (executionContext);
-}
-
-void
-LineProperties::enable ()
-{
-	if (applied ())
-	{
-		glEnable (GL_LINE_STIPPLE);
-
-		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
-			glLineStipple (1, linetypes [linetype ()]);
-
-		else
-			glLineStipple (1, int (LineType::SOLID));
-
-		if (linewidthScaleFactor () > 0)
-		{
-			glLineWidth (linewidthScaleFactor ());
-			glPointSize (linewidthScaleFactor ());
-		}
-		else
-		{
-			glLineWidth (1);
-			glPointSize (1);
-		}
-	}
-}
-
-void
-LineProperties::disable ()
-{
-	glDisable (GL_LINE_STIPPLE);
-	glLineWidth (1);
-	glPointSize (1);
-}
 
 } // X3D
 } // titania

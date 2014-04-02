@@ -666,6 +666,11 @@
     <None Include="share\titania\tools\Statistics.x3dv" />
     <None Include="share\titania\tools\library\Vector.x3dv" />
     <None Include="Titania\X3D\Tools\Layout\ScreenGroupTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DSensorNodeTool.h" />
+    <None Include="Titania\X3D\Tools\EnvironmentalSensor\X3DEnvironmentalSensorNodeTool.h" />
+    <None Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.h" />
+    <None Include="share\titania\tools\EnvironmentalSensor.x3dv" />
+    <None Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1144,6 +1149,8 @@
     <Compile Include="Titania\X3D\Tools\Networking\InlineTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Networking\AnchorTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Layout\ScreenGroupTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1187,6 +1194,7 @@
     <Folder Include="Titania\X3D\Tools\Shape\" />
     <Folder Include="Titania\X3D\Tools\Networking\" />
     <Folder Include="Titania\X3D\Tools\Layout\" />
+    <Folder Include="Titania\X3D\Tools\EnvironmentalSensor\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

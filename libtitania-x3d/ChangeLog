@@ -1,3 +1,44 @@
+2014-04-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* HatchStyles.h:
+	* X3DBaseNode.h:
+	* X3DBaseTool.h:
+	* ExternProto.cpp:
+	* Shape.cpp:
+	* TransformTool.x3dv:
+	* Vector.x3dv:
+	* LODTool.cpp:
+	* Group.cpp:
+	* LOD.cpp:
+	* Switch.cpp:
+	* X3DSensorNodeTool.h:
+	* X3DSensorNode.h:
+	* Anchor.cpp:
+	* TransformTool.cpp:
+	* Inline.cpp:
+	* EnvironmentalSensor.x3dv:
+	* ScreenGroup.cpp:
+	* Transform.cpp:
+	* BillboardTool.cpp:
+	* LineProperties.cpp:
+	* Billboard.cpp:
+	* Collision.cpp:
+	* X3DBoundedObjectTool.h:
+	* X3DBoundedObject.cpp:
+	* ProximitySensorTool.h:
+	* VisibilitySensorTool.h:
+	* ProximitySensor.h:
+	* VisibilitySensor.h:
+	* ProximitySensorTool.cpp:
+	* VisibilitySensorTool.cpp:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp:
+	* X3DEnvironmentalSensorNodeTool.h:
+	* X3DEnvironmentalSensorNode.h: 
+
 2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

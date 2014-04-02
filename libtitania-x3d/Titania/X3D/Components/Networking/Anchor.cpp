@@ -162,7 +162,7 @@ Anchor::traverse (const TraverseType type)
 void
 Anchor::addTool ()
 {
-	//X3DGroupingNode::addTool (new AnchorTool (this));
+	X3DGroupingNode::addTool (new AnchorTool (this));
 }
 
 void

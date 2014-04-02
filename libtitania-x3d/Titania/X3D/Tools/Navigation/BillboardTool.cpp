@@ -71,10 +71,8 @@ BillboardTool::initialize ()
 		const auto tool = getScene () -> getNamedNode ("Tool");
 
 		auto & set_axisOfRotation = *static_cast <SFVec3f*> (tool -> getField ("set_axisOfRotation"));
-
-		getNode () -> axisOfRotation () .addInterest (set_axisOfRotation);
-
-		set_axisOfRotation = getNode () -> axisOfRotation ();
+		axisOfRotation () .addInterest (set_axisOfRotation);
+		set_axisOfRotation = axisOfRotation ();
 	}
 	catch (const X3DError & error)
 	{ }

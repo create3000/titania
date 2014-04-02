@@ -129,7 +129,7 @@ ScreenGroup::traverse (const TraverseType type)
 void
 ScreenGroup::addTool ()
 {
-	//X3DGroupingNode::addTool (new ScreenGroupTool (this));
+	X3DGroupingNode::addTool (new ScreenGroupTool (this));
 }
 
 } // X3D

@@ -87,7 +87,7 @@ Transform::create (X3DExecutionContext* const executionContext) const
 void
 Transform::addTool ()
 {
-	//X3DTransformNode::addTool (new TransformTool (this));
+	X3DTransformNode::addTool (new TransformTool (this));
 }
 
 } // X3D

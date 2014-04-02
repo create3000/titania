@@ -58,7 +58,32 @@
 namespace titania {
 namespace X3D {
 
-static const std::vector <std::vector <GLubyte>> hatchStyles = {
+enum class HatchStyle :
+	uint8_t
+{
+	HORIZONTAL_EQUALLY_SPACED_PARALLEL_LINES,
+	VERTICAL_EQUALLY_SPACED_PARALLEL_LINES,
+	POSITIVE_SLOPE_EQUALLY_SPACED_PARALLEL_LINES,
+	NEGATIVE_SLOPE_EQUALLY_SPACED_PARALLEL_LINES,
+	HORIZONTAL_VERTICAL_CROSSHATCH,
+	POSITIVE_SLOPE_NEGATIVE_SLOPE_CROSSHATCH,
+	CAST_IRON,
+	STEEL,
+	BRONZE,
+	WHITE_METAL,
+	MAGNESIUM,
+	RUBBER,
+	CORK,
+	THERMAL_INSULATION,
+	TITANIUM,
+	MARBLE,
+	EARTH,
+	SAND,
+	REPEATING_DOT
+
+};
+
+static const std::vector <std::vector <GLubyte>>  hatchStyles = {
 
 	// 0 - None
 

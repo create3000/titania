@@ -469,6 +469,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/Texture3DLoader.cpp \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.cpp \
+	Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.cpp \
 	Titania/X3D/Tools/Grouping/GroupTool.cpp \
 	Titania/X3D/Tools/Grouping/SwitchTool.cpp \
 	Titania/X3D/Tools/Grouping/TransformTool.cpp \

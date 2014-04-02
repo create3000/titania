@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,6 +59,8 @@
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
+#include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
+#include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
 
 namespace titania {
 namespace puck {
@@ -74,13 +76,13 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	   outlineEditor (this),
 	            keys (),
 	       shortcuts (true),
+	          toggle (true),
 	          viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
-		getBrowserSurface () -> set_antialiasing (4);  // 4 x Antialiasing
-
+		getBrowserSurface () -> set_antialiasing (4);                                                                                                                                                                 // 4 x Antialiasing
 }
 
 void
@@ -229,6 +231,26 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
 	getTextureEditorButton ()        .set_sensitive (haveSelection);
+
+	for (const auto & node : children)
+	{
+		if (dynamic_cast <X3D::ProximitySensor*> (node .getValue ()))
+		{
+			toggle = false;
+			getProximitySensorMenuItem () .set_active (true);
+			break;
+		}
+	}
+
+	for (const auto & node : children)
+	{
+		if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
+		{
+			toggle = false;
+			getVisibilitySensorMenuItem () .set_active (true);
+			break;
+		}
+	}
 }
 
 // Keys
@@ -546,7 +568,7 @@ BrowserWindow::on_save_as ()
 	fileSaveDialog -> set_filter (getFileFilterX3D ());
 
 	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-	
+
 	if (not worldURL .empty () and worldURL .is_local ())
 		fileSaveDialog -> set_uri (worldURL .filename () .str ());
 
@@ -888,6 +910,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getBrowserOptionsSeparator ()  .set_visible (enabled);
 	getShadingMenuItem ()          .set_visible (enabled);
 	getPrimitiveQualityMenuItem () .set_visible (enabled);
+	getObjectIconsMenuItem ()      .set_visible (enabled);
 	getSelectionMenuItem ()        .set_visible (enabled);
 
 	getImportButton ()               .set_visible (enabled);
@@ -902,6 +925,15 @@ BrowserWindow::enableEditor (const bool enabled)
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
+
+	if (not enabled)
+	{
+		if (getProximitySensorMenuItem () .get_active ())
+			getProximitySensorMenuItem () .set_active (false);
+
+		if (getVisibilitySensorMenuItem () .get_active ())
+			getVisibilitySensorMenuItem () .set_active (false);
+	}
 
 	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);
@@ -964,12 +996,12 @@ BrowserWindow::pointset_activate ()
 // Primitive Quality
 
 void
-BrowserWindow::on_low_quality_activate ()
+BrowserWindow::on_high_quality_activate ()
 {
-	if (getLowQualityMenuItem () .get_active ())
+	if (getHighQualityMenuItem () .get_active ())
 	{
-		getConfig () .setItem ("primitiveQuality", "LOW");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
+		getConfig () .setItem ("primitiveQuality", "HIGH");
+		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
 	}
 }
 
@@ -984,13 +1016,91 @@ BrowserWindow::on_medium_quality_activate ()
 }
 
 void
-BrowserWindow::on_high_quality_activate ()
+BrowserWindow::on_low_quality_activate ()
 {
-	if (getHighQualityMenuItem () .get_active ())
+	if (getLowQualityMenuItem () .get_active ())
 	{
-		getConfig () .setItem ("primitiveQuality", "HIGH");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
+		getConfig () .setItem ("primitiveQuality", "LOW");
+		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
 	}
+}
+
+// Object Icons
+
+void
+BrowserWindow::on_proximity_sensor_toggled ()
+{
+	if (toggle)
+	{
+		const auto scene = getBrowser () -> getExecutionContext ();
+
+		if (getProximitySensorMenuItem () .get_active ())
+		{
+			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			               {
+			                  const auto tool = dynamic_cast <X3D::ProximitySensor*> (node .getValue ());
+
+			                  if (tool)
+										tool -> addTool ();
+
+			                  return true;
+								});
+		}
+		else
+		{
+			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			               {
+			                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
+
+			                  if (tool)
+										tool -> removeTool (true);
+
+			                  return true;
+								});
+		}
+
+		getBrowser () -> update (); // Prevent OutlineEditor flickering.
+	}
+
+	toggle = true;
+}
+
+void
+BrowserWindow::on_visibility_sensor_toggled ()
+{
+	if (toggle)
+	{
+		const auto scene = getBrowser () -> getExecutionContext ();
+
+		if (getVisibilitySensorMenuItem () .get_active ())
+		{
+			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			               {
+			                  const auto tool = dynamic_cast <X3D::VisibilitySensor*> (node .getValue ());
+
+			                  if (tool)
+										tool -> addTool ();
+
+			                  return true;
+								});
+		}
+		else
+		{
+			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			               {
+			                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
+
+			                  if (tool)
+										tool -> removeTool (true);
+
+			                  return true;
+								});
+		}
+
+		getBrowser () -> update (); // Prevent OutlineEditor flickering.
+	}
+
+	toggle = true;
 }
 
 // RenderingProperties
@@ -1241,12 +1351,12 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 	bool plane   = false;
 	bool none    = false;
 	bool lookat  = false;
-	
+
 	for (const auto & viewer : availableViewers)
 	{
 		switch (viewer)
 		{
-			case X3D::ViewerType::EXAMINE:
+			case X3D::ViewerType::EXAMINE :
 				examine = true;
 				break;
 			case X3D::ViewerType::WALK:

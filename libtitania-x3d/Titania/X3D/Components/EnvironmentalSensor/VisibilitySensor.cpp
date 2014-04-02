@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../Layering/X3DLayerNode.h"
+#include "../../Tools/EnvironmentalSensor/VisibilitySensorTool.h"
 
 namespace titania {
 namespace X3D {
@@ -148,6 +149,12 @@ VisibilitySensor::update ()
 	}
 
 	visible = false;
+}
+
+void
+VisibilitySensor::addTool ()
+{
+	X3DEnvironmentalSensorNode::addTool (new VisibilitySensorTool (this));
 }
 
 } // X3D

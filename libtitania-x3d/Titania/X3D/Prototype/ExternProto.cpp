@@ -421,10 +421,10 @@ ExternProto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 void
 ExternProto::dispose ()
 {
-	removeChildren (url ());
-
 	X3DUrlObject::dispose ();
 	X3DProto::dispose ();
+
+	removeChildren (url ());
 }
 
 void

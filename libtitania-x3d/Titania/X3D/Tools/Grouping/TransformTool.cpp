@@ -189,7 +189,7 @@ TransformTool::reshape ()
 	try
 	{
 		const auto tool = scene -> getNamedNode ("Tool");
-		const auto bbox   = getNode () -> X3DGroupingNode::getBBox ();
+		const auto bbox = getNode () -> X3DGroupingNode::getBBox ();
 
 		tool -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
 		tool -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);

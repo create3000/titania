@@ -78,9 +78,9 @@ X3DBoundedObject::getBBox (const MFNode & boundedObjects)
 
 	// Add bounding boxes
 
-	for (const auto & field : boundedObjects)
+	for (const auto & node : boundedObjects)
 	{
-		const auto boundedObject = x3d_cast <X3DBoundedObject*> (field .getValue ());
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (node);
 
 		if (boundedObject)
 			bbox += boundedObject -> getBBox ();

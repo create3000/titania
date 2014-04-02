@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,7 +71,7 @@ public:
 	BrowserWindow (const X3D::BrowserPtr &, int, char**);
 
 	/// @name Widgets
-	
+
 	const X3D::BrowserPtr &
 	getBrowserSurface () const
 	{ return browserSurface; }
@@ -155,7 +155,7 @@ private:
 
 	void
 	set_selection (const X3D::MFNode & children);
-	
+
 	///  @name Key events
 
 	virtual
@@ -187,7 +187,7 @@ private:
 	virtual
 	void
 	on_import () final override;
-	
+
 	virtual
 	void
 	on_import_as_inline_toggled () final override;
@@ -197,7 +197,7 @@ private:
 	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	void
-	dragDataHandling (const Glib::RefPtr <Gdk::DragContext>&, const Gtk::SelectionData &, const guint, const bool);
+	dragDataHandling (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, const guint, const bool);
 
 	virtual
 	void
@@ -250,7 +250,7 @@ private:
 	void
 	on_paste_nodes_activate () final override;
 
-	///  @name Edit menu 
+	///  @name Edit menu
 
 	virtual
 	void
@@ -335,7 +335,7 @@ private:
 
 	virtual
 	void
-	on_low_quality_activate () final override;
+	on_high_quality_activate () final override;
 
 	virtual
 	void
@@ -343,7 +343,17 @@ private:
 
 	virtual
 	void
-	on_high_quality_activate () final override;
+	on_low_quality_activate () final override;
+
+	///  @name Object Icons
+
+	virtual
+	void
+	on_proximity_sensor_toggled () final override;
+
+	virtual
+	void
+	on_visibility_sensor_toggled () final override;
 
 	///  @name Rendering properties
 
@@ -402,15 +412,15 @@ private:
 	on_standard_size () final override;
 
 	/// Toolbar
-	
+
 	virtual
 	void
 	on_node_properties_editor () final override;
-	
+
 	virtual
 	void
 	on_material_editor () final override;
-	
+
 	virtual
 	void
 	on_texture_editor () final override;
@@ -487,7 +497,8 @@ private:
 
 	X3D::Keys keys;
 	bool      shortcuts;
-	
+	bool      toggle;
+
 	X3D::ViewerType viewer;
 
 };

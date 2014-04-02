@@ -156,7 +156,7 @@ LOD::traverse (const TraverseType type)
 void
 LOD::addTool ()
 {
-	//X3DGroupingNode::addTool (new LODTool (this));
+	X3DGroupingNode::addTool (new LODTool (this));
 }
 
 } // X3D

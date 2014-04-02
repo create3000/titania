@@ -80,15 +80,23 @@
         groundColor='0 0 0'/>
     <Viewpoint
         description='OutlineEditor'
-        position='2.37398 0.256043 5.7671'
-        centerOfRotation='2.37398 0.256043 0'/>
+        position='3.85705 3.78032 9.77786'
+        orientation='0.910754 -0.407048 -0.0695632 5.82368'
+        centerOfRotation='1.83783 -0.942352 -0.631597'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='100'/>
       <fieldValue name='zDimension' value='100'/>
     </ProtoInstance>
-    <Transform DEF='Sensors'>
-      <ProximitySensor DEF='_1'/>
-      <VisibilitySensor DEF='_2'/>
+    <Transform DEF='Sensors'
+        translation='4.71594 0 -21.2531'
+        rotation='0 -1 0 0.476176'
+        scale='-2.31689 2.48322 2.48322'
+        center='3.20255 0 -1.19209e-07'>
+      <ProximitySensor DEF='_1'
+          size='2 2 2'/>
+      <VisibilitySensor
+          size='2 2 2'
+          center='10 0 0'/>
     </Transform>
     <ProtoInstance name='Rotor' DEF='Rotor'>
       <fieldValue name='cycleInterval' value='10'/>
@@ -103,7 +111,7 @@
       <Inline
           url='"Inline.wrl"'/>
     </Transform>
-    <Transform DEF='Text3'
+    <Transform DEF='MirrorText'
         translation='0.673213 -0.0752815 0'
         scale='1 -1 1'>
       <Shape>
@@ -128,7 +136,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 2.96448'
+          rotation='0 0 1 2.85919'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -151,7 +159,7 @@
             <Material
                 diffuseColor='0 0.8 0'/>
           </Appearance>
-          <Sphere DEF='_3'/>
+          <Sphere DEF='_2'/>
         </Shape>
       </Transform>
     </Transform>
@@ -214,7 +222,7 @@
                 specularColor='0.276305 0.11431 0.139857'
                 shininess='0.127273'/>
           </Appearance>
-          <Sphere USE='_3'/>
+          <Sphere USE='_2'/>
         </Shape>
       </Transform>
     </Anchor>
@@ -295,7 +303,6 @@
       <Sphere
           radius='0.1'/>
     </Shape>
-    <ROUTE fromNode='_1' fromField='isActive' toNode='_2' toField='set_enabled'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
   </Scene>
 </X3D>

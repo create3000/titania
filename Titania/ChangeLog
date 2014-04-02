@@ -1,3 +1,50 @@
+2014-04-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* earth.wrl:
+	* Beethoven.wrl:
+	* coasts.wrl:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* Box.x3dv:
+	* Text.x3dv:
+	* Cone.x3dv:
+	* Arc2D.x3dv:
+	* Sphere.x3dv:
+	* Disk2D.x3dv:
+	* PointSet.x3dv:
+	* Cylinder.x3dv:
+	* Circle2D.x3dv:
+	* Extrusion.x3dv:
+	* Polyline2D.x3dv:
+	* ArcClose2D.x3dv:
+	* Box.x3dv:
+	* Rectangle2D.x3dv:
+	* Cone.x3dv:
+	* Polypoint2D.x3dv:
+	* Text.x3dv:
+	* Arc2D.x3dv:
+	* Disk2D.x3dv:
+	* Sphere.x3dv:
+	* ElevationGrid.x3dv:
+	* TriangleSet2D.x3dv:
+	* IndexedLineSet.x3dv:
+	* PointSet.x3dv:
+	* IndexedFaceSet.x3dv:
+	* Circle2D.x3dv:
+	* Cylinder.x3dv:
+	* Extrusion.x3dv:
+	* ArcClose2D.x3dv:
+	* Polyline2D.x3dv:
+	* Polypoint2D.x3dv:
+	* Rectangle2D.x3dv:
+	* IndexedLineSet.x3dv:
+	* TriangleSet2D.x3dv:
+	* ElevationGrid.x3dv:
+	* IndexedFaceSet.x3dv: 
+
 2014-04-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DOutlineTreeView.cpp: 

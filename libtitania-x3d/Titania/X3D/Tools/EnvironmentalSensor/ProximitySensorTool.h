@@ -48,158 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DBASE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DBASE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_PROXIMITY_SENSOR_TOOL_H__
+#define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_PROXIMITY_SENSOR_TOOL_H__
 
-#include "../Core/X3DToolObject.h"
+#include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
 
-#include <cassert>
+#include "../../Components/EnvironmentalSensor/ProximitySensor.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DBaseTool :
-	public Type, public X3DToolObject
+class ProximitySensorTool :
+	public X3DEnvironmentalSensorNodeTool <ProximitySensor>
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	void
-	setName (const std::string & value) final override
-	{ node -> setName (value); }
-
-	virtual
-	const std::string &
-	getName () const final override
-	{ return node -> getName (); }
-
-	virtual
-	void
-	setUserData (const UserDataPtr & value) final override
-	{ node -> setUserData (value); }
-
-	virtual
-	const UserDataPtr &
-	getUserData () const final override
-	{ return node -> getUserData (); }
-
-	virtual
-	void
-	addTool () final override
-	{ }
-
-	virtual
-	void
-	removeTool (const bool = false) override;
-
-	virtual
-	void
-	addEvent () final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
-	
-	virtual
-	void
-	traverse (const TraverseType) override
-	{ }
-
-	virtual
-	void
-	saveState () final override
-	{ return node -> saveState (); }
-	
-	virtual
-	void
-	restoreState () final override
-	{ return node -> restoreState (); }
-
-	///  @name Destruction
-
-	virtual
-	const Output &
-	shutdown () const final override
-	{ return node -> shutdown (); }
-
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
 	///  @name Construction
 
-	X3DBaseTool (Type* const = nullptr);
+	ProximitySensorTool (ProximitySensor* const);
+
+	///  @name Fields
 
 	virtual
-	void
-	initialize () override;
+	SFVec3f &
+	centerOfRotation_changed () final override
+	{ return getNode () -> centerOfRotation_changed (); }
 
-	///  @name Members
+	virtual
+	const SFVec3f &
+	centerOfRotation_changed () const final override
+	{ return getNode () -> centerOfRotation_changed (); }
 
-	Type*
-	getNode () const
-	{ return node; }
+	virtual
+	SFRotation &
+	orientation_changed () final override
+	{ return getNode () -> orientation_changed (); }
 
+	virtual
+	const SFRotation &
+	orientation_changed () const final override
+	{ return getNode () -> orientation_changed (); }
 
-private:
+	virtual
+	SFVec3f &
+	position_changed () final override
+	{ return getNode () -> position_changed (); }
 
-	///  @name Members
-
-	Type* const node;
+	virtual
+	const SFVec3f &
+	position_changed () const final override
+	{ return getNode () -> position_changed (); }
 
 };
-
-template <class Type>
-X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
-	         Type (node -> getExecutionContext ()),
-	X3DToolObject (),
-	         node (node)
-{
-	assert (node);
-
-	node -> addParent (this);
-
-	for (auto & field : node -> getFieldDefinitions ())
-		addField (field -> getAccessType (), field -> getName (), *field);
-}
-
-template <class Type>
-void
-X3DBaseTool <Type>::initialize ()
-{
-	Type::initialize ();
-	X3DToolObject::initialize ();
-}
-
-template <class Type>
-void
-X3DBaseTool <Type>::removeTool (const bool)
-{
-	Type::removeTool (node);
-}
-
-template <class Type>
-void
-X3DBaseTool <Type>::dispose ()
-{
-	node -> removeParent (this);
-
-	X3DToolObject::dispose ();
-	Type::dispose ();
-}
 
 } // X3D
 } // titania

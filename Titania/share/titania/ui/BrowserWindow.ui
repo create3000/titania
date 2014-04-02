@@ -1235,6 +1235,37 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="ObjectIconsMenuItem">
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Show/Hide Object Icons</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu100">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                              <child>
+                                <object class="GtkCheckMenuItem" id="ProximitySensorMenuItem">
+                                  <property name="visible">True</property>
+                                  <property name="can_focus">False</property>
+                                  <property name="label" translatable="yes">_ProximitySensor</property>
+                                  <property name="use_underline">True</property>
+                                  <signal name="toggled" handler="on_proximity_sensor_toggled" swapped="no"/>
+                                </object>
+                              </child>
+                              <child>
+                                <object class="GtkCheckMenuItem" id="VisibilitySensorMenuItem">
+                                  <property name="visible">True</property>
+                                  <property name="can_focus">False</property>
+                                  <property name="label" translatable="yes">_VisibilitySensor</property>
+                                  <property name="use_underline">True</property>
+                                  <signal name="toggled" handler="on_visibility_sensor_toggled" swapped="no"/>
+                                </object>
+                              </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

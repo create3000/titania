@@ -63,34 +63,42 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	center ()
 	{ return *fields .center; }
 
+	virtual
 	const SFVec3f &
 	center () const
 	{ return *fields .center; }
 
+	virtual
 	SFVec3f &
 	size ()
 	{ return *fields .size; }
 
+	virtual
 	const SFVec3f &
 	size () const
 	{ return *fields .size; }
 
+	virtual
 	SFTime &
 	enterTime ()
 	{ return *fields .enterTime; }
 
+	virtual
 	const SFTime &
 	enterTime () const
 	{ return *fields .enterTime; }
 
+	virtual
 	SFTime &
 	exitTime ()
 	{ return *fields .exitTime; }
 
+	virtual
 	const SFTime &
 	exitTime () const
 	{ return *fields .exitTime; }

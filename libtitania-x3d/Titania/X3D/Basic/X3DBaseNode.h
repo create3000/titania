@@ -235,7 +235,7 @@ public:
 
 	virtual
 	void
-	removeTool ()
+	removeTool (const bool = false)
 	{ }
 
 	///  @name Event handling

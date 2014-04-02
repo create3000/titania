@@ -1214,11 +1214,9 @@ Parser::routeStatement ()
 
 				if (outputOnlyId (_eventOutId))
 				{
-					X3DFieldDefinition* _eventOut = nullptr;
-
 					try
 					{
-						_eventOut = _fromNode -> getField (_eventOutId);
+						_fromNode -> getField (_eventOutId);
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
@@ -1243,11 +1241,9 @@ Parser::routeStatement ()
 
 								if (inputOnlyId (_eventInId))
 								{
-									X3DFieldDefinition* _eventIn = nullptr;
-
 									try
 									{
-										_eventIn = _toNode -> getField (_eventInId);
+										_toNode -> getField (_eventInId);
 									}
 									catch (const Error <INVALID_NAME> &)
 									{

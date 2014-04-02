@@ -63,18 +63,22 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
 
+	virtual
 	const SFBool &
 	enabled () const
 	{ return *fields .enabled; }
 
+	virtual
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
 
+	virtual
 	const SFBool &
 	isActive () const
 	{ return *fields .isActive; }

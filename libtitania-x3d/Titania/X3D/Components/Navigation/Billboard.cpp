@@ -154,7 +154,7 @@ Billboard::traverse (const TraverseType type)
 void
 Billboard::addTool ()
 {
-	//X3DGroupingNode::addTool (new BillboardTool (this));
+	X3DGroupingNode::addTool (new BillboardTool (this));
 }
 
 } // X3D

@@ -391,6 +391,18 @@ public:
 	getLowQualityMenuItem () const
 	{ return *m_lowQualityMenuItem; }
 
+	Gtk::MenuItem &
+	getObjectIconsMenuItem () const
+	{ return *m_objectIconsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getProximitySensorMenuItem () const
+	{ return *m_proximitySensorMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getVisibilitySensorMenuItem () const
+	{ return *m_visibilitySensorMenuItem; }
+
 	Gtk::CheckMenuItem &
 	getRenderingPropertiesMenuItem () const
 	{ return *m_renderingPropertiesMenuItem; }
@@ -777,6 +789,14 @@ public:
 
 	virtual
 	void
+	on_proximity_sensor_toggled () = 0;
+
+	virtual
+	void
+	on_visibility_sensor_toggled () = 0;
+
+	virtual
+	void
 	on_rendering_properties_toggled () = 0;
 
 	virtual
@@ -950,6 +970,9 @@ private:
 	Gtk::RadioMenuItem*             m_highQualityMenuItem;
 	Gtk::RadioMenuItem*             m_mediumQualityMenuItem;
 	Gtk::RadioMenuItem*             m_lowQualityMenuItem;
+	Gtk::MenuItem*                  m_objectIconsMenuItem;
+	Gtk::CheckMenuItem*             m_proximitySensorMenuItem;
+	Gtk::CheckMenuItem*             m_visibilitySensorMenuItem;
 	Gtk::CheckMenuItem*             m_renderingPropertiesMenuItem;
 	Gtk::ImageMenuItem*             m_fullScreenMenuItem;
 	Gtk::ImageMenuItem*             m_unFullScreenMenuItem;

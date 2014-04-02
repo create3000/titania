@@ -71,10 +71,8 @@ LODTool::initialize ()
 		const auto tool = getScene () -> getNamedNode ("Tool");
 
 		auto & set_center = *static_cast <SFVec3f*> (tool -> getField ("set_center"));
-
-		getNode () -> center () .addInterest (set_center);
-		
-		set_center = getNode () -> center ();
+		center () .addInterest (set_center);
+		set_center = center ();
 	}
 	catch (const X3DError & error)
 	{ }

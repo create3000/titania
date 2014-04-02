@@ -206,6 +206,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_mediumQualityMenuItem -> set_name ("MediumQualityMenuItem");
 	m_builder -> get_widget ("LowQualityMenuItem", m_lowQualityMenuItem);
 	m_lowQualityMenuItem -> set_name ("LowQualityMenuItem");
+	m_builder -> get_widget ("ObjectIconsMenuItem", m_objectIconsMenuItem);
+	m_objectIconsMenuItem -> set_name ("ObjectIconsMenuItem");
+	m_builder -> get_widget ("ProximitySensorMenuItem", m_proximitySensorMenuItem);
+	m_proximitySensorMenuItem -> set_name ("ProximitySensorMenuItem");
+	m_builder -> get_widget ("VisibilitySensorMenuItem", m_visibilitySensorMenuItem);
+	m_visibilitySensorMenuItem -> set_name ("VisibilitySensorMenuItem");
 	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_renderingPropertiesMenuItem);
 	m_renderingPropertiesMenuItem -> set_name ("RenderingPropertiesMenuItem");
 	m_builder -> get_widget ("FullScreenMenuItem", m_fullScreenMenuItem);
@@ -378,7 +384,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_mediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_medium_quality_activate));
 	m_lowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_low_quality_activate));
 
-	// Connect object Gtk::CheckMenuItem with id 'RenderingPropertiesMenuItem'.
+	// Connect object Gtk::CheckMenuItem with id 'ProximitySensorMenuItem'.
+	m_proximitySensorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensor_toggled));
+	m_visibilitySensorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensor_toggled));
 	m_renderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.

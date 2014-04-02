@@ -90,26 +90,32 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	centerOfRotation_changed ()
 	{ return *fields .centerOfRotation_changed; }
 
+	virtual
 	const SFVec3f &
 	centerOfRotation_changed () const
 	{ return *fields .centerOfRotation_changed; }
 
+	virtual
 	SFRotation &
 	orientation_changed ()
 	{ return *fields .orientation_changed; }
 
+	virtual
 	const SFRotation &
 	orientation_changed () const
 	{ return *fields .orientation_changed; }
 
+	virtual
 	SFVec3f &
 	position_changed ()
 	{ return *fields .position_changed; }
 
+	virtual
 	const SFVec3f &
 	position_changed () const
 	{ return *fields .position_changed; }
@@ -118,16 +124,23 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 
