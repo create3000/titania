@@ -116,9 +116,19 @@ public:
 	///  @name Member access
 
 	virtual
+	void
+	setPosition (const Vector3f & value) final override
+	{ position () = value; }
+
+	virtual
 	Vector3f
 	getPosition () const
 	{ return position (); }
+
+	virtual
+	void
+	setCenterOfRotation (const Vector3f & value) final override
+	{ centerOfRotation () = value; }
 
 	virtual
 	Vector3f

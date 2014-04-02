@@ -71,7 +71,7 @@ public:
 protected:
 
 	virtual
-	Matrix4f
+	const Matrix4f &
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
 

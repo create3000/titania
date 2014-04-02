@@ -403,6 +403,10 @@ public:
 	getVisibilitySensorMenuItem () const
 	{ return *m_visibilitySensorMenuItem; }
 
+	Gtk::MenuItem &
+	getHideAllObjectIconsMenuItem () const
+	{ return *m_hideAllObjectIconsMenuItem; }
+
 	Gtk::CheckMenuItem &
 	getRenderingPropertiesMenuItem () const
 	{ return *m_renderingPropertiesMenuItem; }
@@ -514,6 +518,10 @@ public:
 	Gtk::ToolButton &
 	getTextureEditorButton () const
 	{ return *m_textureEditorButton; }
+
+	Gtk::ToolButton &
+	getUpdateViewpointButton () const
+	{ return *m_updateViewpointButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -797,6 +805,10 @@ public:
 
 	virtual
 	void
+	on_hide_all_object_icons_activate () = 0;
+
+	virtual
+	void
 	on_rendering_properties_toggled () = 0;
 
 	virtual
@@ -854,6 +866,10 @@ public:
 	virtual
 	void
 	on_texture_editor () = 0;
+
+	virtual
+	void
+	on_update_viewpoint () = 0;
 
 	virtual
 	void
@@ -973,6 +989,7 @@ private:
 	Gtk::MenuItem*                  m_objectIconsMenuItem;
 	Gtk::CheckMenuItem*             m_proximitySensorMenuItem;
 	Gtk::CheckMenuItem*             m_visibilitySensorMenuItem;
+	Gtk::MenuItem*                  m_hideAllObjectIconsMenuItem;
 	Gtk::CheckMenuItem*             m_renderingPropertiesMenuItem;
 	Gtk::ImageMenuItem*             m_fullScreenMenuItem;
 	Gtk::ImageMenuItem*             m_unFullScreenMenuItem;
@@ -1001,6 +1018,7 @@ private:
 	Gtk::ToolButton*                m_nodePropertiesEditorButton;
 	Gtk::ToolButton*                m_materialEditorButton;
 	Gtk::ToolButton*                m_textureEditorButton;
+	Gtk::ToolButton*                m_updateViewpointButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;

@@ -150,6 +150,7 @@ BrowserWindow::initialize ()
 	updatePasteStatus ();
 
 	// Dashboard
+	getBrowser () -> initialized ()         .addInterest (this, &BrowserWindow::set_initialized);
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
 	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
@@ -204,6 +205,18 @@ BrowserWindow::hasShortcuts (bool value)
 	}
 }
 
+void
+BrowserWindow::set_initialized ()
+{
+	toggle = false;
+	getProximitySensorMenuItem () .set_active (false);
+
+	toggle = false;
+	getVisibilitySensorMenuItem () .set_active (false);
+
+	toggle = true;
+}
+
 // Selection
 
 void
@@ -232,6 +245,8 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
 	getTextureEditorButton ()        .set_sensitive (haveSelection);
 
+	//
+
 	for (const auto & node : children)
 	{
 		if (dynamic_cast <X3D::ProximitySensor*> (node .getValue ()))
@@ -251,6 +266,8 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 			break;
 		}
 	}
+
+	toggle = true;
 }
 
 // Keys
@@ -911,6 +928,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getShadingMenuItem ()          .set_visible (enabled);
 	getPrimitiveQualityMenuItem () .set_visible (enabled);
 	getObjectIconsMenuItem ()      .set_visible (enabled);
+	getObjectIconsMenuItem ()      .set_visible (enabled);
 	getSelectionMenuItem ()        .set_visible (enabled);
 
 	getImportButton ()               .set_visible (enabled);
@@ -921,6 +939,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getNodePropertiesEditorButton () .set_visible (enabled);
 	getMaterialEditorButton ()       .set_visible (enabled);
 	getTextureEditorButton ()        .set_visible (false);
+	getUpdateViewpointButton ()      .set_visible (enabled);
 	getArrowButton ()                .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
@@ -1103,6 +1122,16 @@ BrowserWindow::on_visibility_sensor_toggled ()
 	toggle = true;
 }
 
+void
+BrowserWindow::on_hide_all_object_icons_activate ()
+{
+	if (getProximitySensorMenuItem () .get_active ())
+		getProximitySensorMenuItem () .set_active (false);
+
+	if (getVisibilitySensorMenuItem () .get_active ())
+		getVisibilitySensorMenuItem () .set_active (false);
+}
+
 // RenderingProperties
 
 void
@@ -1222,6 +1251,25 @@ BrowserWindow::on_texture_editor ()
 
 	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
 		addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
+}
+
+void
+BrowserWindow::on_update_viewpoint ()
+{
+	__LOG__ << std::endl;
+
+	if (getBrowser () -> getActiveLayer ())
+	{
+		const auto viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
+
+		viewpoint -> setPosition (viewpoint -> getUserPosition ());
+		viewpoint -> setOrientation (viewpoint -> getUserOrientation ());
+		viewpoint -> setCenterOfRotation (viewpoint -> getCenterOfRotation ());
+
+		viewpoint -> resetUserOffsets ();
+
+		isModified (true);
+	}
 }
 
 // Browser dashboard handling

@@ -77,9 +77,7 @@ CollisionTool::set_enabled (const bool value)
 {
 	try
 	{
-		const auto tool = getScene () -> getNamedNode ("Tool");
-
-		tool -> setField <SFInt32> ("linetype", int (value ? LineType::SOLID : LineType::DOTTED));
+		getTool () -> setField <SFInt32> ("linetype", int (value ? LineType::SOLID : LineType::DOTTED));
 	}
 	catch (const X3DError & error)
 	{ }

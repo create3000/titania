@@ -62,15 +62,13 @@ BillboardTool::BillboardTool (Billboard* const node) :
 { }
 
 void
-BillboardTool::initialize ()
+BillboardTool::realize ()
 {
-	X3DGroupingNodeTool <Billboard>::initialize ();
+	X3DGroupingNodeTool <Billboard>::realize ();
 
 	try
 	{
-		const auto tool = getScene () -> getNamedNode ("Tool");
-
-		auto & set_axisOfRotation = *static_cast <SFVec3f*> (tool -> getField ("set_axisOfRotation"));
+		auto & set_axisOfRotation = *static_cast <SFVec3f*> (getTool () -> getField ("set_axisOfRotation"));
 		axisOfRotation () .addInterest (set_axisOfRotation);
 		set_axisOfRotation = axisOfRotation ();
 	}

@@ -93,7 +93,7 @@ public:
 	Box3f
 	getBBox () const override;
 
-	Matrix4f
+	const Matrix4f &
 	getMatrix () const;
 
 	///  @name Operations
@@ -122,6 +122,7 @@ private:
 
 	Matrix4f modelViewMatrix;
 	Matrix4f screenMatrix;
+	Matrix4f matrix;
 
 };
 

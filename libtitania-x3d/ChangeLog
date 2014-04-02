@@ -1,5 +1,30 @@
 2014-04-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DChildObject.cpp:
+	* X3DBaseTool.h:
+	* X3DToolObject.h:
+	* LODTool.h:
+	* X3DToolObject.cpp:
+	* LODTool.cpp:
+	* TransformTool.h:
+	* ScreenGroupTool.h:
+	* ScreenGroup.h:
+	* TransformTool.cpp:
+	* BillboardTool.h:
+	* Viewpoint.h:
+	* ScreenGroup.cpp:
+	* BillboardTool.cpp:
+	* CollisionTool.cpp:
+	* GeoViewpoint.h:
+	* X3DBoundedObjectTool.h:
+	* OrthoViewpoint.h:
+	* GeoViewpoint.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
+2014-04-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Parser.cpp:

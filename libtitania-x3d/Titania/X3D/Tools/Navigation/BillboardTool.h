@@ -84,10 +84,10 @@ private:
 
 	virtual
 	void
-	initialize () final override;
+	realize () final override;
 
 	virtual
-	Matrix4f
+	const Matrix4f &
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
 

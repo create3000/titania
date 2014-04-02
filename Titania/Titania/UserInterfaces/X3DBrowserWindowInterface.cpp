@@ -212,6 +212,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_proximitySensorMenuItem -> set_name ("ProximitySensorMenuItem");
 	m_builder -> get_widget ("VisibilitySensorMenuItem", m_visibilitySensorMenuItem);
 	m_visibilitySensorMenuItem -> set_name ("VisibilitySensorMenuItem");
+	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_hideAllObjectIconsMenuItem);
+	m_hideAllObjectIconsMenuItem -> set_name ("HideAllObjectIconsMenuItem");
 	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_renderingPropertiesMenuItem);
 	m_renderingPropertiesMenuItem -> set_name ("RenderingPropertiesMenuItem");
 	m_builder -> get_widget ("FullScreenMenuItem", m_fullScreenMenuItem);
@@ -268,6 +270,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_materialEditorButton -> set_name ("MaterialEditorButton");
 	m_builder -> get_widget ("TextureEditorButton", m_textureEditorButton);
 	m_textureEditorButton -> set_name ("TextureEditorButton");
+	m_builder -> get_widget ("UpdateViewpointButton", m_updateViewpointButton);
+	m_updateViewpointButton -> set_name ("UpdateViewpointButton");
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_vPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_hPaned);
@@ -387,6 +391,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckMenuItem with id 'ProximitySensorMenuItem'.
 	m_proximitySensorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensor_toggled));
 	m_visibilitySensorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensor_toggled));
+
+	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
+	m_hideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'RenderingPropertiesMenuItem'.
 	m_renderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.
@@ -427,6 +436,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_nodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor));
 	m_materialEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_material_editor));
 	m_textureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor));
+	m_updateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_update_viewpoint));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.
 	m_surfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));

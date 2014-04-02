@@ -56,10 +56,7 @@
 #include "../../Bits/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Execution/Scene.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/PolygonModeContainer.h"
-#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
@@ -94,22 +91,6 @@ public:
 	bboxSize () const final override
 	{ return getNode () -> bboxSize (); }
 
-	///  @name Root node handling
-
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override
-	{ return scene -> getRootNodes (); }
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override
-	{ return scene -> getRootNodes (); }
-
 	///  @name Operatations
 
 	virtual
@@ -134,6 +115,9 @@ protected:
 	using X3DBaseTool <Type>::getCurrentLayer;
 	using X3DBaseTool <Type>::getModelViewMatrix;
 	using X3DBaseTool <Type>::getNode;
+	using X3DToolObject::getTool;
+	using X3DToolObject::requestAsyncLoad;
+	using X3DToolObject::getRootNodes;
 
 	///  @name Construction
 
@@ -143,16 +127,16 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	realize () override;
+
 	///  @name Member acces
 
-	const ScenePtr
-	getScene () const
-	{ return scene; }
-
 	virtual
-	Matrix4f
+	const Matrix4f &
 	getMatrix () const
-	{ return Matrix4f (); }
+	{ return matrix; }
 
 
 private:
@@ -164,42 +148,39 @@ private:
 
 	///  @name Members
 
-	ScenePtr scene;
 	bool     displayCenter;
 	Color3f  color;
+	Matrix4f matrix;
 
 };
 
 template <class Type>
 X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color, const bool displayCenter) :
 	X3DBaseTool <Type> (),
-	             scene (),
 	     displayCenter (displayCenter),
 	             color (color)
-{
-	X3DChildObject::addChildren (scene);
-}
+{ }
 
 template <class Type>
 void
 X3DBoundedObjectTool <Type>::initialize ()
 {
+	requestAsyncLoad ({ get_tool ("BoundingBox.x3dv") .str () });
+}
+
+template <class Type>
+void
+X3DBoundedObjectTool <Type>::realize ()
+{
 	try
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_tool ("BoundingBox.x3dv") .str () });
-
-		const SFNode tool = scene -> getNamedNode ("Tool");
-
+		const SFNode & tool = getTool ();
+	
 		tool -> setField <SFBool>  ("displayCenter", displayCenter);
 		tool -> setField <SFColor> ("color",         color);
 	}
 	catch (const X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-
-		scene = getBrowser () -> createScene ();
-		scene -> setup ();
-	}
+	{ }
 }
 
 template <class Type>
@@ -208,7 +189,8 @@ X3DBoundedObjectTool <Type>::reshape ()
 {
 	try
 	{
-		const auto tool = scene -> getNamedNode ("Tool");
+		const SFNode & tool = getTool ();
+	
 		const auto bbox = getNode () -> getBBox () * ~getMatrix ();
 
 		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
@@ -236,7 +218,7 @@ X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	for (const auto & rootNode : scene -> getRootNodes ())
+	for (const auto & rootNode : getRootNodes ())
 	{
 		if (rootNode)
 			rootNode -> traverse (type);

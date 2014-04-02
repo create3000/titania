@@ -50,19 +50,73 @@
 
 #include "X3DToolObject.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Thread/SceneLoader.h"
+
 namespace titania {
 namespace X3D {
 
 X3DToolObject::X3DToolObject () :
-	X3DBaseNode ()
-{ }
+	X3DBaseNode (),
+	      scene (),
+	     future ()
+{
+	X3DChildObject::addChildren (scene, tool);
+}
 
 void
 X3DToolObject::initialize ()
-{ }
+{
+	scene = std::move (getBrowser () -> createScene ());
+}
+
+const SFNode &
+X3DToolObject::getTool () const
+throw (Error <DISPOSED>)
+{
+	if (tool)
+		return tool;
+	
+	throw Error <DISPOSED> ("X3DToolObject: The tool is disposed.");
+}
+
+void
+X3DToolObject::requestAsyncLoad (const MFString & url)
+{
+	using namespace std::placeholders;
+
+	if (future)
+		future -> dispose ();
+
+	future .reset (new SceneLoader (getExecutionContext (),
+	                                url,
+	                                std::bind (std::mem_fn (&X3DToolObject::set_scene), this, _1)));
+}
+
+void
+X3DToolObject::set_scene (ScenePtr && value)
+{
+	value -> setup ();
+	scene = std::move (value);
+
+	try
+	{
+		tool = scene -> getNamedNode ("Tool");
+
+		realize ();
+	}
+	catch (const X3DError &)
+	{ }
+}
 
 void
 X3DToolObject::dispose ()
+{
+	if (future)
+		future -> dispose ();
+}
+
+X3DToolObject::~X3DToolObject ()
 { }
 
 } // X3D

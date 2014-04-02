@@ -62,15 +62,13 @@ LODTool::LODTool (LOD* const node) :
 { }
 
 void
-LODTool::initialize ()
+LODTool::realize ()
 {
-	X3DGroupingNodeTool <LOD>::initialize ();
+	X3DGroupingNodeTool <LOD>::realize ();
 
 	try
 	{
-		const auto tool = getScene () -> getNamedNode ("Tool");
-
-		auto & set_center = *static_cast <SFVec3f*> (tool -> getField ("set_center"));
+		auto & set_center = *static_cast <SFVec3f*> (getTool () -> getField ("set_center"));
 		center () .addInterest (set_center);
 		set_center = center ();
 	}

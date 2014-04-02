@@ -180,7 +180,7 @@ template <class Type>
 void
 X3DBaseTool <Type>::initialize ()
 {
-	Type::initialize ();
+	X3DBaseNode::initialize ();
 	X3DToolObject::initialize ();
 }
 

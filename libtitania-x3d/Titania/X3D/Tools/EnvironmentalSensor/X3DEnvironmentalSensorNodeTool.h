@@ -57,10 +57,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Execution/Scene.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/PolygonModeContainer.h"
-#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
@@ -115,22 +112,6 @@ public:
 	exitTime () const final override
 	{ return getNode () -> exitTime (); }
 
-	///  @name Root node handling
-
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return scene -> getRootNodes (); }
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return scene -> getRootNodes (); }
-
 	///  @name Operations
 	
 	virtual
@@ -169,27 +150,26 @@ protected:
 	using X3DSensorNodeTool <Type>::getCameraSpaceMatrix;
 	using X3DSensorNodeTool <Type>::getModelViewMatrix;
 	using X3DSensorNodeTool <Type>::getNode;
+	using X3DToolObject::getTool;
+	using X3DToolObject::requestAsyncLoad;
+	using X3DToolObject::getRootNodes;
 
 	///  @name Construction
 
 	X3DEnvironmentalSensorNodeTool (const Color3f & color) :
 		X3DSensorNodeTool <Type> (),
-		                   scene (),
 		                   color (color)
 	{
 		X3DChildObject::addChildren (bboxSize (), bboxCenter ());
-		X3DChildObject::addChildren (scene);
 	}
 
 	virtual
 	void
 	initialize () override;
 
-	///  @name Member acces
-
-	const ScenePtr
-	getScene () const
-	{ return scene; }
+	virtual
+	void
+	realize () final override;
 
 
 private:
@@ -199,7 +179,6 @@ private:
 
 	///  @name Members
 
-	ScenePtr scene;
 	Color3f  color;
 
 };
@@ -210,31 +189,29 @@ X3DEnvironmentalSensorNodeTool <Type>::initialize ()
 {
 	X3DSensorNodeTool <Type>::initialize ();
 	X3DBoundedObject::initialize ();
+	
+	requestAsyncLoad ({ get_tool ("EnvironmentalSensor.x3dv") .str () });
+}
 
+template <class Type>
+void
+X3DEnvironmentalSensorNodeTool <Type>::realize ()
+{
 	try
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_tool ("EnvironmentalSensor.x3dv") .str () });
+		getTool () -> setField <SFColor> ("color", color);
+		getTool () -> setField <SFNode>  ("node",  getNode ());
 
-		const SFNode tool = scene -> getNamedNode ("Tool");
-
-		tool -> setField <SFColor> ("color", color);
-		tool -> setField <SFNode>  ("node",  getNode ());
-
-		auto & set_size = *static_cast <SFVec3f*> (tool -> getField ("set_size"));
+		auto & set_size = *static_cast <SFVec3f*> (getTool () -> getField ("set_size"));
 		size () .addInterest (set_size);
 		set_size = getNode () -> size ();
 
-		auto & set_center = *static_cast <SFVec3f*> (tool -> getField ("set_center"));
+		auto & set_center = *static_cast <SFVec3f*> (getTool () -> getField ("set_center"));
 		center () .addInterest (set_center);
 		set_center = getNode () -> center ();
 	}
 	catch (const X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-
-		scene = getBrowser () -> createScene ();
-		scene -> setup ();
-	}
+	{ }
 }
 
 template <class Type>
@@ -243,10 +220,8 @@ X3DEnvironmentalSensorNodeTool <Type>::reshape ()
 {
 	try
 	{
-		const auto tool = scene -> getNamedNode ("Tool");
-
-		tool -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		tool -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		getTool () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		getTool () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
 
 		getBrowser () -> getRouter () .processEvents ();
 	}
@@ -267,7 +242,7 @@ X3DEnvironmentalSensorNodeTool <Type>::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	for (const auto & rootNode : scene -> getRootNodes ())
+	for (const auto & rootNode : getRootNodes ())
 	{
 		if (rootNode)
 			rootNode -> traverse (type);

@@ -60,7 +60,12 @@ X3DChildObject::addEvent (X3DChildObject* const, const EventPtr & event)
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	if (not root)
+	if (root)
+	{
+		if (parent -> getParents () .size () < root -> getParents () .size ())
+			root = parent;
+	}
+	else
 		root = parent;
 
 	if (parents .emplace (parent) .second)
@@ -136,14 +141,12 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 
 	if (seen .emplace (this) .second)
 	{
-		// First test the good way
+		// First test the proved way.
 
 		if (root)
 		{
 			if (root -> hasRoots (seen))
 				return true;
-			else
-				root = nullptr;
 		}
 
 		// Test all other ways and save the good way.
@@ -156,6 +159,10 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 				return true;
 			}
 		}
+
+		// We have no root and must test the next time again as parents can change.
+
+		root = nullptr;
 	}
 
 	return false;

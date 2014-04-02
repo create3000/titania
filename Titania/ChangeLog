@@ -3,6 +3,14 @@
 	* BrowserWindow.h:
 	* BrowserWindow.ui:
 	* BrowserWindow.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-04-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
 	* earth.wrl:
 	* Beethoven.wrl:
 	* coasts.wrl:

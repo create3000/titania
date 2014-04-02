@@ -151,6 +151,9 @@ private:
 	std::string
 	getStyles () const;
 
+	void
+	set_initialized ();
+
 	///  @name Selection handling
 
 	void
@@ -355,6 +358,10 @@ private:
 	void
 	on_visibility_sensor_toggled () final override;
 
+	virtual
+	void
+	on_hide_all_object_icons_activate () final override;
+
 	///  @name Rendering properties
 
 	virtual
@@ -424,6 +431,10 @@ private:
 	virtual
 	void
 	on_texture_editor () final override;
+	
+	virtual
+	void
+	on_update_viewpoint () final override;
 
 	///  @name Browser dashboard handling
 

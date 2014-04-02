@@ -52,10 +52,13 @@
 #define __TITANIA_X3D_TOOLS_CORE_X3DTOOL_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Execution/Scene.h"
 #include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
+
+class SceneLoader;
 
 class X3DToolObject :
 	virtual public X3DBaseNode
@@ -68,19 +71,24 @@ public:
 	MFNode &
 	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	       Error <DISPOSED>)
+	{ return scene -> getRootNodes (); }
 
 	virtual
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	       Error <DISPOSED>)
+	{ return scene -> getRootNodes (); }
 
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () override;
+	
+	virtual
+	~X3DToolObject ();
 
 
 protected:
@@ -92,6 +100,37 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member acces
+
+	const SFNode &
+	getTool () const
+	throw (Error <DISPOSED>);
+
+	///  @name Operations
+
+	void
+	requestAsyncLoad (const MFString &);
+
+	virtual
+	void
+	realize ()
+	{ }
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_scene (ScenePtr &&);
+
+	///  @name Members
+
+	ScenePtr scene;
+	SFNode   tool;
+
+	std::unique_ptr <SceneLoader> future;
 
 };
 

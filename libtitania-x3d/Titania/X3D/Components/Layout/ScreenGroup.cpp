@@ -65,7 +65,8 @@ ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
 	modelViewMatrix (),
-	   screenMatrix ()
+	   screenMatrix (),
+	         matrix ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
@@ -87,10 +88,11 @@ ScreenGroup::getBBox () const
 	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
-Matrix4f
+const Matrix4f &
 ScreenGroup::getMatrix () const
 {
-	return screenMatrix * inverse (modelViewMatrix);
+	const_cast <ScreenGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
+	return matrix;
 }
 
 // Same as in Text

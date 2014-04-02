@@ -1261,6 +1261,15 @@
                                   <signal name="toggled" handler="on_visibility_sensor_toggled" swapped="no"/>
                                 </object>
                               </child>
+                             <child>
+                               <object class="GtkMenuItem" id="HideAllObjectIconsMenuItem">
+                                 <property name="visible">True</property>
+                                 <property name="can_focus">False</property>
+                                 <property name="label" translatable="yes">Hide All Object Icons</property>
+                                 <property name="use_underline">True</property>
+                                 <signal name="activate" handler="on_hide_all_object_icons_activate" swapped="no"/>
+                               </object>
+                             </child>
                           </object>
                         </child>
                       </object>
@@ -1469,6 +1478,9 @@
               <object class="GtkToolButton" id="NewButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Create new file (Ctrl-N).</property>
+                <property name="tooltip_text" translatable="yes">Create new file (Ctrl-N).</property>
                 <property name="label" translatable="yes">New file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-new</property>
@@ -1483,6 +1495,9 @@
               <object class="GtkMenuToolButton" id="OpenButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Open file or media (Ctrl-O).</property>
+                <property name="tooltip_text" translatable="yes">Open file or media (Ctrl-O).</property>
                 <property name="label" translatable="yes">Open file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-open</property>
@@ -1495,6 +1510,9 @@
             <child>
               <object class="GtkToolButton" id="ImportButton">
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Import file or media.</property>
+                <property name="tooltip_text" translatable="yes">Import file or media.</property>
                 <property name="label" translatable="yes">Import file.</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">document-import</property>
@@ -1509,6 +1527,9 @@
               <object class="GtkToolButton" id="SaveButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Save current file (Ctrl-S).</property>
+                <property name="tooltip_text" translatable="yes">Save current file (Ctrl-S).</property>
                 <property name="label" translatable="yes">Save file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-save</property>
@@ -1523,6 +1544,9 @@
               <object class="GtkToolButton" id="RefreshButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Reload file (F5).</property>
+                <property name="tooltip_text" translatable="yes">Reload file (F5).</property>
                 <property name="label" translatable="yes">Reload file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
@@ -1545,6 +1569,9 @@
               <object class="GtkToolButton" id="UndoButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Undo last action (Ctrl-Z).</property>
+                <property name="tooltip_text" translatable="yes">Undo last action (Ctrl-Z).</property>
                 <property name="label" translatable="yes">Undo last operation.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-undo</property>
@@ -1559,6 +1586,9 @@
               <object class="GtkToolButton" id="RedoButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
+                <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
                 <property name="label" translatable="yes">Redo last operation.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-redo</property>
@@ -1580,6 +1610,9 @@
             <child>
               <object class="GtkToolButton" id="NodePropertiesEditorButton">
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Open Node Properties Editor.</property>
+                <property name="tooltip_text" translatable="yes">Open Node Properties Editor.</property>
                 <property name="label" translatable="yes">Node Properties Editor</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-edit</property>
@@ -1593,6 +1626,9 @@
             <child>
               <object class="GtkToolButton" id="MaterialEditorButton">
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Open Material Editor.</property>
+                <property name="tooltip_text" translatable="yes">Open Material Editor.</property>
                 <property name="label" translatable="yes">Material Editor</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-select-color</property>
@@ -1606,10 +1642,29 @@
             <child>
               <object class="GtkToolButton" id="TextureEditorButton">
                 <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Open Texture Editor.</property>
+                <property name="tooltip_text" translatable="yes">Open Texture Editor.</property>
                 <property name="label" translatable="yes">Texture Editor</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-missing-image</property>
                 <signal name="clicked" handler="on_texture_editor" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="UpdateViewpointButton">
+                <property name="can_focus">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_markup" translatable="yes">Update active viewpoint from current view.</property>
+                <property name="tooltip_text" translatable="yes">Update active viewpoint from current view.</property>
+                <property name="label" translatable="yes">Update Active Viewpoint</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">ViewpointList</property>
+                <signal name="clicked" handler="on_update_viewpoint" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1675,6 +1730,9 @@
                                   <object class="GtkRadioToolButton" id="HandButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_markup" translatable="yes">Switch to browser mode.</property>
+                                    <property name="tooltip_text" translatable="yes">Switch to browser mode.</property>
                                     <property name="label" translatable="yes">Hand Tool</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Hand</property>
@@ -1689,6 +1747,9 @@
                                 <child>
                                   <object class="GtkRadioToolButton" id="ArrowButton">
                                     <property name="can_focus">True</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_markup" translatable="yes">Switch to selection mode.</property>
+                                    <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
                                     <property name="label" translatable="yes">Arrow Tool</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Arrow</property>
@@ -1713,6 +1774,9 @@
                                   <object class="GtkMenuToolButton" id="ViewerButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_markup" translatable="yes">Activate viewer.</property>
+                                    <property name="tooltip_text" translatable="yes">Activate viewer.</property>
                                     <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
                                     <property name="label" translatable="yes">Viewer Type</property>
                                     <property name="use_underline">True</property>
@@ -1976,7 +2040,7 @@
                           <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Outline Editor</property>
+                            <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
                             <property name="stock">ViewpointList</property>
                             <property name="icon-size">2</property>
                           </object>
@@ -2026,7 +2090,7 @@
                           <object class="GtkImage" id="image5">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">History Editor</property>
+                            <property name="tooltip_text" translatable="yes">Library</property>
                             <property name="stock">gtk-index</property>
                             <property name="icon-size">2</property>
                           </object>
@@ -2051,7 +2115,7 @@
                           <object class="GtkImage" id="image3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
+                            <property name="tooltip_text" translatable="yes">Outline Editor</property>
                             <property name="stock">OutlineEditor</property>
                             <property name="icon-size">2</property>
                           </object>

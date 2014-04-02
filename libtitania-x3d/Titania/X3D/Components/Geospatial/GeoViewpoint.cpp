@@ -154,6 +154,18 @@ GeoViewpoint::set_position ()
 	elevation = getElevation (coord + Vector3d (positionOffset () .getValue ()));
 }
 
+void
+GeoViewpoint::setPosition (const Vector3f & value)
+{
+
+}
+
+void
+GeoViewpoint::setOrientation (const Rotation4f & value)
+{
+
+}
+
 ///  Returns the resulting orientation for this viewpoint.
 Rotation4f
 GeoViewpoint::getOrientation () const

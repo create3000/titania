@@ -122,11 +122,20 @@ public:
 	///  @name Member access
 
 	virtual
+	void
+	setPosition (const Vector3f &) = 0;
+
+	virtual
 	Vector3f
 	getPosition () const = 0;
 
 	Vector3f
 	getUserPosition () const;
+
+	virtual
+	void
+	setOrientation (const Rotation4f & value)
+	{ orientation () = value; }
 
 	virtual
 	Rotation4f
@@ -135,6 +144,10 @@ public:
 
 	Rotation4f
 	getUserOrientation () const;
+
+	virtual
+	void
+	setCenterOfRotation (const Vector3f &) = 0;
 
 	virtual
 	Vector3f

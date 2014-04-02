@@ -114,7 +114,7 @@ private:
 
 	virtual
 	void
-	initialize () final override;
+	realize () final override;
 
 };
 

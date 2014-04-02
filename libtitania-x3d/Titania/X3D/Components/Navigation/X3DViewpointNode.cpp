@@ -284,14 +284,6 @@ X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighte
 {
 	try
 	{
-		std::clog
-			<< "Look at using viewpoint: " << description () << "." << std::endl
-			<< getTypeName () << " {" << std::endl
-			<< "  position " << getUserPosition () << std::endl
-			<< "  orientation " << getUserOrientation () << std::endl
-			<< "  centerOfRotation " << getUserCenterOfRotation () << std::endl
-			<< "}" << std::endl;
-
 		bbox *= ~getParentMatrix ();
 
 		for (const auto & layer : getLayers ())

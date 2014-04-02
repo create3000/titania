@@ -51,18 +51,15 @@
 #ifndef __TITANIA_X3D_TOOLS_GROUPING_TRANSFORM_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GROUPING_TRANSFORM_TOOL_H__
 
-#include "../Core/X3DNodeTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
 
 #include "../../Components/Grouping/Transform.h"
-#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
 
-using X3DTransformToolNode = class X3DNodeTool <Transform>;
-
 class TransformTool :
-	public X3DTransformToolNode
+	public X3DGroupingNodeTool <Transform>
 {
 public:
 
@@ -122,56 +119,6 @@ public:
 	center () const final override
 	{ return getNode () -> center (); }
 
-	virtual
-	SFVec3f &
-	bboxCenter () final override
-	{ return getNode () -> bboxCenter (); }
-
-	virtual
-	const SFVec3f &
-	bboxCenter () const final override
-	{ return getNode () -> bboxCenter (); }
-
-	virtual
-	SFVec3f &
-	bboxSize () final override
-	{ return getNode () -> bboxSize (); }
-
-	virtual
-	const SFVec3f &
-	bboxSize () const final override
-	{ return getNode () -> bboxSize (); }
-
-	virtual
-	MFNode &
-	addChildren () final override
-	{ return getNode () -> addChildren (); }
-
-	virtual
-	const MFNode &
-	addChildren () const final override
-	{ return getNode () -> addChildren (); }
-
-	virtual
-	MFNode &
-	removeChildren () final override
-	{ return getNode () -> removeChildren (); }
-
-	virtual
-	const MFNode &
-	removeChildren () const final override
-	{ return getNode () -> removeChildren (); }
-
-	virtual
-	MFNode &
-	children () final override
-	{ return getNode () -> children (); }
-
-	virtual
-	const MFNode &
-	children () const final override
-	{ return getNode () -> children (); }
-
 	///  @name Member access
 
 	virtual
@@ -187,25 +134,7 @@ public:
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
 
-	///  @name Root node handling
-
-	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
 	///  @name Operatations
-
-	virtual
-	Box3f
-	getBBox () const final override;
 
 	virtual
 	void
@@ -220,6 +149,10 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	realize () final override;
+
 	void
 	interestsProcessed ();
 
@@ -232,8 +165,6 @@ private:
 	reshape ();
 
 	///  @name Members
-
-	ScenePtr scene;
 
 	Matrix4d parentMatrix;
 	Matrix4d matrix;

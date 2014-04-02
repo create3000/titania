@@ -50,91 +50,50 @@
 
 #include "TransformTool.h"
 
+#include "../ToolColors.h"
+
 #include "../../Bits/config.h"
 #include "../../Browser/Picking/Selection.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Grouping/Transform.h"
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Execution/Scene.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/PolygonModeContainer.h"
 
 namespace titania {
 namespace X3D {
 
 TransformTool::TransformTool (Transform* const node) :
-	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	X3DBaseTool <Transform> (node),
-	   X3DTransformToolNode (),
-	                  scene (),
-	           parentMatrix (),
-	                 matrix (),
-	         interestEvents (node -> isTainted ())
-{
-	X3DChildObject::addChildren (scene);
-}
+	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <Transform> (node),
+	X3DGroupingNodeTool <Transform> (ToolColors::GREEN),
+	                   parentMatrix (),
+	                         matrix (),
+	                 interestEvents (node -> isTainted ())
+{ }
 
 void
 TransformTool::initialize ()
 {
-	X3DTransformToolNode::initialize ();
+	X3DBaseTool <Transform>::initialize ();
 
+	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
+}
+
+void
+TransformTool::realize ()
+{
 	getNode () -> addInterest (this, &TransformTool::interestsProcessed);
 
 	try
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.x3dv") .str () });
+		getTool () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
-		const SFNode tool = scene -> getNamedNode ("Tool");
-
-		tool -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
-
-		tool -> setField <SFNode> ("transform", getNode ());
+		getTool () -> setField <SFNode> ("transform", getNode ());
 	}
 	catch (const X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-
-		scene = getBrowser () -> createScene ();
-		scene -> setup ();
-	}
+	{ }
 }
 
-Box3f
-TransformTool::getBBox () const
-{
-	return getNode () -> getBBox ();
-}
-
-MFNode &
-TransformTool::getRootNodes ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return scene -> getRootNodes ();
-}
-
-const MFNode &
-TransformTool::getRootNodes () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return scene -> getRootNodes ();
-}
-
-// T  P
-// P  T'
-// I
-//
-// I * P * T * ~P = T'
-//
-// T = ~P * ~I * T' * P
-//
-// Add to group:
-//
-// childModelViewMatrix = childModelViewMatrix * ~groupModelViewMatrix
-//
-// getNode () -> setMatrix (childModelViewMatrix);
+// Functions for grouping TransformTools together
 
 void
 TransformTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
@@ -183,18 +142,19 @@ TransformTool::interestsProcessed ()
 	}
 }
 
+// Traverse
+
 void
 TransformTool::reshape ()
 {
 	try
 	{
-		const auto tool = scene -> getNamedNode ("Tool");
 		const auto bbox = getNode () -> X3DGroupingNode::getBBox ();
 
-		tool -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		tool -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
-		tool -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
-		tool -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
+		getTool () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		getTool () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		getTool () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
+		getTool () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 
 		getBrowser () -> getRouter () .processEvents ();
 	}
@@ -225,7 +185,7 @@ TransformTool::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	for (const auto & rootNode : scene -> getRootNodes ())
+	for (const auto & rootNode : getRootNodes ())
 	{
 		if (rootNode)
 			rootNode -> traverse (type);
