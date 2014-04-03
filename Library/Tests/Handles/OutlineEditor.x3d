@@ -136,7 +136,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 0.64704'
+          rotation='0 0 1 5.27679'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -152,12 +152,19 @@
     <Transform DEF='Sphere'
         translation='2.22045 1.17457 6.31221e-08'
         rotation='-3.38337e-13 -3.62463e-06 1 0.178426'
-        scale='0.2 0.2 0.2'>
-      <Transform>
+        scale='0.208036 0.208036 0.208036'>
+      <Transform
+          translation='0.233169 0.268277 0'
+          rotation='1 0 0 3.14159'
+          scale='-1.14473 -1.14473 -1.14473'>
         <Shape>
           <Appearance>
             <Material
                 diffuseColor='0 0.8 0'/>
+            <ImageTexture
+                url='"../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"'
+                repeatS='false'
+                repeatT='false'/>
           </Appearance>
           <Sphere DEF='_2'/>
         </Shape>
@@ -314,6 +321,8 @@
         position='0.307405 1.46693 4.56711'
         orientation='0.563368 0.806068 0.181301 5.84917'
         centerOfRotation='1.83783 -0.942352 -0.631597'/>
+    <TextureTransform/>
+    <TextureTransform/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
   </Scene>
 </X3D>
