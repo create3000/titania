@@ -1,5 +1,9 @@
 2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DToolObject.cpp: 
+
+2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.cpp:
 	* X3DOutput.cpp:
 	* X3DBaseNode.h:

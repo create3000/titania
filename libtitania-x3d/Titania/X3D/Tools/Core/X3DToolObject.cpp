@@ -92,17 +92,17 @@ X3DToolObject::requestAsyncLoad (const MFString & url)
 void
 X3DToolObject::set_loadState (const LoadState loadState)
 {
-	if (loadState == COMPLETE_STATE)
+	try
 	{
-		try
+		if (loadState == COMPLETE_STATE)
 		{
 			toolNode = inlineNode -> getExportedNode ("Tool");
 
 			realize ();
 		}
-		catch (const X3DError &)
-		{ }
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
