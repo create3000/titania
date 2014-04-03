@@ -54,7 +54,7 @@
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
-      <source stock-id="ViewpointList" filename="icons/Viewpoint.svg"/>
+      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
@@ -1663,7 +1663,7 @@
                 <property name="tooltip_text" translatable="yes">Update active viewpoint from current view.</property>
                 <property name="label" translatable="yes">Update Active Viewpoint</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">ViewpointList</property>
+                <property name="stock_id">Viewpoint</property>
                 <signal name="clicked" handler="on_update_viewpoint" swapped="no"/>
               </object>
               <packing>
@@ -2041,7 +2041,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
-                            <property name="stock">ViewpointList</property>
+                            <property name="stock">Viewpoint</property>
                             <property name="icon-size">2</property>
                           </object>
                           <packing>
