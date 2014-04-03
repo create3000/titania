@@ -205,17 +205,17 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 					return true;
 			}
 		}
-		else
-		{
-			X3DToolObject* const tool = dynamic_cast <X3DToolObject*> (node);
 
-			if (tool)
+		// Note: InlineTool is both Inline and X3DToolObject.
+
+		X3DToolObject* const tool = dynamic_cast <X3DToolObject*> (node);
+
+		if (tool)
+		{
+			for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
 			{
-				for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
-				{
-					if (find (rootNode, object, inScene, hierarchy, seen))
-						return true;
-				}
+				if (find (rootNode, object, inScene, hierarchy, seen))
+					return true;
 			}
 		}
 	}
