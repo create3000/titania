@@ -140,20 +140,21 @@ BrowserWindow::initialize ()
 	getToolBar ()    .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
-	// Selection
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
-
 	// Clipboard
 	// Gtk::Clipboard::get () -> set_can_store (); // not needed
 	Gtk::Clipboard::get () -> signal_owner_change ().connect (sigc::mem_fun (*this, &BrowserWindow::on_clipboard_owner_change));
 	updatePasteStatus ();
 
-	// Dashboard
-	getBrowser () -> initialized ()         .addInterest (this, &BrowserWindow::set_initialized);
+	// Browser Events
+	getBrowser () -> initialized ()               .addInterest (this, &BrowserWindow::set_initialized);
+	getBrowser () -> getActiveViewpointChanged () .addInterest (this, &BrowserWindow::set_active_viewpoint);
+	getBrowser () -> getViewer ()                 .addInterest (this, &BrowserWindow::set_viewer);
+	getBrowser () -> getAvailableViewers ()       .addInterest (this, &BrowserWindow::set_available_viewers);
+
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
-	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
+
+	set_selection (getBrowser () -> getSelection () -> getChildren ());
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Window
@@ -268,6 +269,19 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	}
 
 	toggle = true;
+}
+
+void
+BrowserWindow::set_active_viewpoint ()
+{
+	const auto activeLayer = getBrowser () -> getActiveLayer ();
+
+	bool haveViewpoint = false;
+
+	if (activeLayer)
+		haveViewpoint = (activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ());
+
+	getUpdateViewpointButton () .set_sensitive (haveViewpoint);	
 }
 
 // Keys
@@ -1263,27 +1277,27 @@ BrowserWindow::on_update_viewpoint ()
 		const auto undoStep = std::make_shared <UndoStep> (_ ("Update Active Viewpoint"));
 		
 		undoStep -> addVariables (viewpoint);
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::SFBool::setValue), std::ref (viewpoint -> set_bind ()), true);
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DViewpointNode::transitionStart), viewpoint, viewpoint);
+		undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
+		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
 		
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DViewpointNode::setPosition), viewpoint, viewpoint -> getPosition ());
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DViewpointNode::setPosition), viewpoint, viewpoint -> getUserPosition ());
+		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getPosition ());
+		undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getUserPosition ());
 		viewpoint -> setPosition (viewpoint -> getUserPosition ());
 
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DViewpointNode::setOrientation), viewpoint, viewpoint -> getOrientation ());
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DViewpointNode::setOrientation), viewpoint, viewpoint -> getUserOrientation ());
+		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, viewpoint -> getOrientation ());
+		undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, viewpoint -> getUserOrientation ());
 		viewpoint -> setOrientation (viewpoint -> getUserOrientation ());
 
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DViewpointNode::setCenterOfRotation), viewpoint, viewpoint -> getCenterOfRotation ());
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DViewpointNode::setCenterOfRotation), viewpoint, viewpoint -> getUserCenterOfRotation ());
+		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getCenterOfRotation ());
+		undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getUserCenterOfRotation ());
 		viewpoint -> setCenterOfRotation (viewpoint -> getUserCenterOfRotation ());
 
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DViewpointNode::resetUserOffsets), viewpoint);
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DViewpointNode::resetUserOffsets), viewpoint);
+		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
+		undoStep -> addRedoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
 		viewpoint -> resetUserOffsets ();
 
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DViewpointNode::transitionStart), viewpoint, viewpoint);
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::SFBool::setValue), std::ref (viewpoint -> set_bind ()), true);
+		undoStep -> addRedoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
+		undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
 
 		addUndoStep (undoStep);
 	}

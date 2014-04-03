@@ -159,6 +159,9 @@ private:
 	void
 	set_selection (const X3D::MFNode & children);
 
+	void
+	set_active_viewpoint ();
+
 	///  @name Key events
 
 	virtual
