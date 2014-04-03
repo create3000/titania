@@ -262,20 +262,19 @@ X3DFieldDefinition::dispose ()
 {
 	if (io)
 	{
-		for (const auto & route : RouteSet (std::move (io -> inputRoutes)))
+		std::unique_ptr <IO> temp = std::move (io);
+
+		for (const auto & route : temp -> inputRoutes)
 			route -> erase ();
 
-		for (const auto & route : RouteSet (std::move (io -> outputRoutes)))
+		for (const auto & route : temp -> outputRoutes)
 			route -> erase ();
 
-		for (auto & fieldDefinition : FieldDefinitionSet (std::move (io -> inputInterests)))
+		for (auto & fieldDefinition : temp -> inputInterests)
 			fieldDefinition -> removeInterest (this);
 
-		for (auto & fieldDefinition : io -> outputInterests) // No copy is made
+		for (auto & fieldDefinition : temp -> outputInterests)
 			fieldDefinition -> removeInputInterest (this);
-
-		io -> inputRoutes  .dispose ();
-		io -> outputRoutes .dispose ();
 	}
 
 	X3DChildObject::dispose ();

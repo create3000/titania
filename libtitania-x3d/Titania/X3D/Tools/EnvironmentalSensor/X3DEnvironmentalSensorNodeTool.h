@@ -150,9 +150,8 @@ protected:
 	using X3DSensorNodeTool <Type>::getCameraSpaceMatrix;
 	using X3DSensorNodeTool <Type>::getModelViewMatrix;
 	using X3DSensorNodeTool <Type>::getNode;
-	using X3DToolObject::getTool;
+	using X3DToolObject::getToolNode;
 	using X3DToolObject::requestAsyncLoad;
-	using X3DToolObject::getRootNodes;
 
 	///  @name Construction
 
@@ -199,14 +198,14 @@ X3DEnvironmentalSensorNodeTool <Type>::realize ()
 {
 	try
 	{
-		getTool () -> setField <SFColor> ("color", color);
-		getTool () -> setField <SFNode>  ("node",  getNode ());
+		getToolNode () -> setField <SFColor> ("color", color);
+		getToolNode () -> setField <SFNode>  ("node",  getNode ());
 
-		auto & set_size = *static_cast <SFVec3f*> (getTool () -> getField ("set_size"));
+		auto & set_size = getToolNode () -> getField <SFVec3f> ("set_size");
 		size () .addInterest (set_size);
 		set_size = getNode () -> size ();
 
-		auto & set_center = *static_cast <SFVec3f*> (getTool () -> getField ("set_center"));
+		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
 		center () .addInterest (set_center);
 		set_center = getNode () -> center ();
 	}
@@ -220,8 +219,8 @@ X3DEnvironmentalSensorNodeTool <Type>::reshape ()
 {
 	try
 	{
-		getTool () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		getTool () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
 
 		getBrowser () -> getRouter () .processEvents ();
 	}
@@ -242,11 +241,7 @@ X3DEnvironmentalSensorNodeTool <Type>::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	for (const auto & rootNode : getRootNodes ())
-	{
-		if (rootNode)
-			rootNode -> traverse (type);
-	}
+	X3DToolObject::traverse (type);
 
 	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }

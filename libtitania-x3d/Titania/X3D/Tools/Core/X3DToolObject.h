@@ -65,30 +65,28 @@ class X3DToolObject :
 {
 public:
 
-	///  @name Root node handling
+	///  @name Member access
+
+	InlinePtr &
+	getInlineNode ()
+	{ return inlineNode; }
+
+	const InlinePtr &
+	getInlineNode () const
+	{ return inlineNode; }
+
+	///  @name Operations
 
 	virtual
-	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return scene -> getRootNodes (); }
-
-	virtual
-	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return scene -> getRootNodes (); }
+	void
+	traverse (const TraverseType) override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () override;
-	
-	virtual
-	~X3DToolObject ();
+	dispose () override
+	{ }
 
 
 protected:
@@ -104,7 +102,7 @@ protected:
 	///  @name Member acces
 
 	const SFNode &
-	getTool () const
+	getToolNode () const
 	throw (Error <DISPOSED>);
 
 	///  @name Operations
@@ -123,14 +121,12 @@ private:
 	///  @name Event handlers
 
 	void
-	set_scene (ScenePtr &&);
+	set_loadState (const LoadState);
 
 	///  @name Members
 
-	ScenePtr scene;
-	SFNode   tool;
-
-	std::unique_ptr <SceneLoader> future;
+	InlinePtr inlineNode;
+	SFNode    toolNode;
 
 };
 

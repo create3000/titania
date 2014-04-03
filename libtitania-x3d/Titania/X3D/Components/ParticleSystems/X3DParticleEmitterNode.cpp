@@ -77,8 +77,15 @@ X3DParticleEmitterNode::addShaderFields (const X3DPtr <ComposedShader> & shader)
 void
 X3DParticleEmitterNode::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
-	shader -> setField <SFFloat> ("speed",     std::max <float> (0, speed ()),     true);
-	shader -> setField <SFFloat> ("variation", std::max <float> (0, variation ()), true);
+	try
+	{
+		shader -> setField <SFFloat> ("speed",     std::max <float> (0, speed ()),     true);
+		shader -> setField <SFFloat> ("variation", std::max <float> (0, variation ()), true);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 } // X3D

@@ -1,3 +1,51 @@
+2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Traverse.cpp:
+	* X3DOutput.cpp:
+	* X3DBaseNode.h:
+	* SceneLoader.cpp:
+	* Statistics.x3dv:
+	* TextureLoader.cpp:
+	* BoundingBox.x3dv:
+	* Notification.cpp:
+	* Notification.x3dv:
+	* TransformTool.x3dv:
+	* X3DToolObject.h:
+	* Texture3DLoader.cpp:
+	* X3DToolObject.cpp:
+	* LODTool.cpp:
+	* X3DFieldDefinition.cpp:
+	* Inline.cpp:
+	* TransformTool.cpp:
+	* EnvironmentalSensor.x3dv:
+	* BillboardTool.cpp:
+	* CollisionTool.cpp:
+	* jsBrowser.h:
+	* MovieTexture.h:
+	* ImageTexture.h:
+	* X3DUrlObjectTool.h:
+	* PixelTexture.h:
+	* MultiTexture.h:
+	* X3DUrlObject.h:
+	* jsContext.cpp:
+	* X3DTextureNode.h:
+	* X3DBoundedObjectTool.h:
+	* jsBrowser.cpp:
+	* PixelTexture3D.h:
+	* ImageTexture3D.h:
+	* ConeEmitter.cpp:
+	* ComposedTexture3D.h:
+	* RenderingProperties.cpp:
+	* PointEmitter.cpp:
+	* VolumeEmitter.cpp:
+	* ParticleSystem.cpp:
+	* SurfaceEmitter.cpp:
+	* PolylineEmitter.cpp:
+	* ExplosionEmitter.cpp:
+	* X3DParticleEmitterNode.cpp:
+	* X3DEnvironmentTextureNode.h:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
 2014-04-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DChildObject.cpp:

@@ -64,7 +64,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const X3DScalar <LoadState> &
+	const SFEnum <LoadState> &
 	checkLoadState () const final override
 	{ return loadState; }
 
@@ -78,7 +78,7 @@ protected:
 
 private:
 	
-	X3DScalar <LoadState> loadState;
+	SFEnum <LoadState> loadState;
 
 };
 

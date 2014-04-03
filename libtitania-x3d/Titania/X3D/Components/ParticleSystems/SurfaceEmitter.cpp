@@ -233,10 +233,17 @@ SurfaceEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 void
 SurfaceEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
-	X3DParticleEmitterNode::setShaderFields (shader);
+	try
+	{
+		X3DParticleEmitterNode::setShaderFields (shader);
 
-	shader -> setField <SFBool> ("pointEmitter", pointEmitter, true);
-	shader -> setField <SFBool> ("solid",        solid,        true);
+		shader -> setField <SFBool> ("pointEmitter", pointEmitter, true);
+		shader -> setField <SFBool> ("solid",        solid,        true);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

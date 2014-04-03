@@ -235,10 +235,17 @@ VolumeEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 void
 VolumeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
-	X3DParticleEmitterNode::setShaderFields (shader);
+	try
+	{
+		X3DParticleEmitterNode::setShaderFields (shader);
 
-	shader -> setField <SFBool>  ("pointEmitter", pointEmitter, true);
-	shader -> setField <SFVec3f> ("direction",    normalize (direction () .getValue ()), true);
+		shader -> setField <SFBool>  ("pointEmitter", pointEmitter, true);
+		shader -> setField <SFVec3f> ("direction",    normalize (direction () .getValue ()), true);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

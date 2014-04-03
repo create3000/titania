@@ -101,7 +101,7 @@ public:
 	{ return false; }
 
 	virtual
-	const X3DScalar <LoadState> &
+	const SFEnum <LoadState> &
 	checkLoadState () const final override
 	{ return X3DUrlObject::checkLoadState (); }
 

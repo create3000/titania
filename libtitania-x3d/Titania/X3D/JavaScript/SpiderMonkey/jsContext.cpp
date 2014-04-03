@@ -699,7 +699,8 @@ jsContext::dispose ()
 	{
 		//std::lock_guard <std::mutex> lock (mutex);
 
-		future .reset ();
+		if (future)
+			future -> dispose ();
 
 		shutdown ();
 

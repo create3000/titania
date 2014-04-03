@@ -131,7 +131,7 @@ private:
 
 	static
 	void
-	setSceneAsync (const SFNode &, MFNode &, ScenePtr &&);
+	setSceneAsync (const SFNode &, MFNode* const, ScenePtr &&);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

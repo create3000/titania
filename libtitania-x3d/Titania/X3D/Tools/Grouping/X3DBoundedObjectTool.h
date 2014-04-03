@@ -115,9 +115,8 @@ protected:
 	using X3DBaseTool <Type>::getCurrentLayer;
 	using X3DBaseTool <Type>::getModelViewMatrix;
 	using X3DBaseTool <Type>::getNode;
-	using X3DToolObject::getTool;
+	using X3DToolObject::getToolNode;
 	using X3DToolObject::requestAsyncLoad;
-	using X3DToolObject::getRootNodes;
 
 	///  @name Construction
 
@@ -174,7 +173,7 @@ X3DBoundedObjectTool <Type>::realize ()
 {
 	try
 	{
-		const SFNode & tool = getTool ();
+		const SFNode & tool = getToolNode ();
 	
 		tool -> setField <SFBool>  ("displayCenter", displayCenter);
 		tool -> setField <SFColor> ("color",         color);
@@ -189,7 +188,7 @@ X3DBoundedObjectTool <Type>::reshape ()
 {
 	try
 	{
-		const SFNode & tool = getTool ();
+		const SFNode & tool = getToolNode ();
 	
 		const auto bbox = getNode () -> getBBox () * ~getMatrix ();
 
@@ -218,11 +217,7 @@ X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	for (const auto & rootNode : getRootNodes ())
-	{
-		if (rootNode)
-			rootNode -> traverse (type);
-	}
+	X3DToolObject::traverse (type);
 
 	getModelViewMatrix () .pop ();
 

@@ -163,9 +163,44 @@ public:
 	template <class FieldType, class ValueType>
 	void
 	setField (const std::string &, const ValueType &, const bool = false)
-	throw (Error <INVALID_NAME>,
+	throw (Error <INVALID_FIELD>,
+	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+
+	template <class Type>
+	Type &
+	getField (const std::string & name)
+	throw (Error <INVALID_FIELD>,
+	       Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{
+		X3DFieldDefinition* const field = getField (name);
+		Type* const               type  = dynamic_cast <Type*> (field);
+
+		if (type)
+			return *type;
+
+		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + field -> getTypeName () + ".");
+	}
+
+	template <class Type>
+	const Type &
+	getField (const std::string & name) const
+	throw (Error <INVALID_FIELD>,
+	       Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{
+		X3DFieldDefinition* const field = getField (name);
+		Type* const               type  = dynamic_cast <Type*> (field);
+
+		if (type)
+			return *type;
+
+		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + field -> getTypeName () + ".");
+	}
 
 	X3DFieldDefinition*
 	getField (const std::string &) const
@@ -443,29 +478,23 @@ private:
 
 };
 
-template <class FieldType, class ValueType>
+template <class Type, class ValueType>
 void
-X3DBaseNode::setField (const std::string & name, const ValueType & value, const bool check)
-throw (Error <INVALID_NAME>,
+X3DBaseNode::setField (const std::string & name, const ValueType & value, const bool compare)
+throw (Error <INVALID_FIELD>,
+       Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	FieldType* field = dynamic_cast <FieldType*> (getField (name));
-	
-	if (field)
+	Type & field = getField <Type> (name);
+
+	if (compare)
 	{
-		if (check)
-		{
-			if (*field not_eq value)
-				*field = value;
-		}
-		else
-			*field = value;
-
-		return;
+		if (field not_eq value)
+			field = value;
 	}
-
-	throw Error <INVALID_NAME> ("Invalid type: Field " + name + " has type " + getField (name) -> getTypeName () + ".");
+	else
+		field = value;
 }
 
 } // X3D

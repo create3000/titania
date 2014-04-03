@@ -348,3 +348,5 @@ ROUTE CenterScript.whichChoice_changed TO Center.set_whichChoice
 ROUTE Tool.linetype_changed TO _1.set_linetype
 ROUTE Tool.center_changed TO _2.set_translation
 ROUTE Tool.axisOfRotation TO AxisOfRotationScript.vector
+
+EXPORT Tool

@@ -144,7 +144,7 @@ public:
 	isTransparent () const final override;
 
 	virtual
-	const X3DScalar <LoadState> &
+	const SFEnum <LoadState> &
 	checkLoadState () const final override
 	{ return loadState; }
 
@@ -247,7 +247,7 @@ private:
 	std::vector <SourceType>   sources;
 	std::vector <FunctionType> functions;
 	
-	X3DScalar <LoadState> loadState;
+	SFEnum <LoadState> loadState;
 
 };
 

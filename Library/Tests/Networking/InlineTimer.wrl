@@ -2,10 +2,10 @@
 
 DEF _1 Inline {
   url [
+    "../PROTO/GoldenSpheresProto.wrl"
     "../Handles/OutlineEditor.wrl",
     "../../Examples/Vattenfall/stage/index.wrl",
     "../../Examples/TreasureIsland/stage/index.wrl",
-    "../PROTO/GoldenSpheresProto.wrl"
     "../Texturing/MovieTexture.wrl"
     "../Geospatial/GeoCoordinate.wrl"
     "../Scripting/Script-vrmlscript1.wrl"

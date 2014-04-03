@@ -98,13 +98,13 @@ Notification::initialize ()
 			
 			// isActive
 
-			SFBool & isActive = *static_cast <SFBool*> (notification -> getField ("isActive"));
+			SFBool & isActive = notification -> getField <SFBool> ("isActive");
 
 			isActive .addInterest (this, &Notification::set_active);
 
 			// string
 			
-			SFString & set_string = *static_cast <SFString*> (notification -> getField ("set_string"));
+			SFString & set_string = notification -> getField <SFString> ("set_string");
 			
 			string () .addInterest (set_string);
 		}

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,7 +68,7 @@ LODTool::realize ()
 
 	try
 	{
-		auto & set_center = *static_cast <SFVec3f*> (getTool () -> getField ("set_center"));
+		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
 		center () .addInterest (set_center);
 		set_center = center ();
 	}

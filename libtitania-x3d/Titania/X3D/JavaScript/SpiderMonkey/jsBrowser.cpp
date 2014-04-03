@@ -877,7 +877,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 						                                                    *url,
 						                                                    std::bind (&jsBrowser::setSceneAsync,
 						                                                               *sfnode,
-						                                                               std::ref (*static_cast <MFNode*> (field)),
+						                                                               static_cast <MFNode*> (field),
 						                                                               _1)));
 
 						JS_SET_RVAL (context, vp, JSVAL_VOID);
@@ -905,12 +905,12 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsBrowser::setSceneAsync (const SFNode & node, MFNode & field, ScenePtr && scene)
+jsBrowser::setSceneAsync (const SFNode & node, MFNode* const field, ScenePtr && scene)
 {
 	if (scene)
 	{
 		scene -> setup ();
-		field = scene -> getRootNodes ();
+		*field = scene -> getRootNodes ();
 	}
 }
 

@@ -85,9 +85,9 @@ TransformTool::realize ()
 
 	try
 	{
-		getTool () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
+		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
-		getTool () -> setField <SFNode> ("transform", getNode ());
+		getToolNode () -> setField <SFNode> ("transform", getNode ());
 	}
 	catch (const X3DError & error)
 	{ }
@@ -151,10 +151,10 @@ TransformTool::reshape ()
 	{
 		const auto bbox = getNode () -> X3DGroupingNode::getBBox ();
 
-		getTool () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		getTool () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
-		getTool () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
-		getTool () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
+		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
+		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 
 		getBrowser () -> getRouter () .processEvents ();
 	}
@@ -185,11 +185,7 @@ TransformTool::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	for (const auto & rootNode : getRootNodes ())
-	{
-		if (rootNode)
-			rootNode -> traverse (type);
-	}
+	X3DToolObject::traverse (type);
 
 	getModelViewMatrix () .pop ();
 

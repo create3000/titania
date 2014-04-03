@@ -196,7 +196,7 @@ X3DOutput::processInterests () const
 {
 	if (data)
 	{
-		// The requesters have to be copied, due to the fact that the requester could
+		// The requesters have to be copied, as the requester could
 		// remove itself from the output during the loop call.
 
 		const std::vector <Requester> copy (data -> requesters .cbegin (), data -> requesters .cend ());
@@ -211,13 +211,10 @@ X3DOutput::clear ()
 {
 	if (data)
 	{
-		data -> requesters .clear ();
-		data -> requesterIndex .clear ();
+		std::unique_ptr <Data> temp = std::move (data);
 
-		for (const auto & input : data -> inputs)
+		for (const auto & input : temp -> inputs)
 			input .first -> deleted () .removeDeleter (this, input .first, input .second);
-
-		data -> inputs .clear ();
 	}
 }
 

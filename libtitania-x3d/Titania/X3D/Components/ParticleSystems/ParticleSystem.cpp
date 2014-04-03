@@ -180,13 +180,20 @@ ParticleSystem::OddEvenMergeSort::setup (X3DProgrammableShaderObject* const shad
 void
 ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const shader, const int32_t currentSize)
 {
-	if (stepsLeft <= 0)
-		reset (shader, currentSize);
+	try
+	{
+		if (stepsLeft <= 0)
+			reset (shader, currentSize);
 
-	if (currentSize < size)
-		shader -> setField <SFInt32> ("sortSize", currentSize, true);
+		if (currentSize < size)
+			shader -> setField <SFInt32> ("sortSize", currentSize, true);
 
-	sortStep (shader);
+		sortStep (shader);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -502,125 +509,139 @@ ParticleSystem::set_enabled ()
 void
 ParticleSystem::set_geometryType ()
 {
-	static const std::map <std::string, GeometryType> geometryTypes = {
-		std::make_pair ("POINT",    GeometryType::POINT),
-		std::make_pair ("LINE",     GeometryType::LINE),
-		std::make_pair ("TRIANGLE", GeometryType::TRIANGLE),
-		std::make_pair ("QUAD",     GeometryType::QUAD),
-		std::make_pair ("GEOMETRY", GeometryType::GEOMETRY),
-		std::make_pair ("SPRITE",   GeometryType::SPRITE)
-	};
-
-	auto iter = geometryTypes .find (geometryType ());
-
-	if (iter not_eq geometryTypes .end ())
-		geometryTypeId = iter -> second;
-
-	else
-		geometryTypeId = GeometryType::QUAD;
-
-	//
-
-	MFVec4f                texCoord;
-	std::vector <Vector3f> vertices;
-
-	Vector2f particleSize1_2 = particleSize () / 2.0f;
-
-	switch (geometryTypeId)
+	try
 	{
-		case GeometryType::POINT:
+		static const std::map <std::string, GeometryType> geometryTypes = {
+			std::make_pair ("POINT",    GeometryType::POINT),
+			std::make_pair ("LINE",     GeometryType::LINE),
+			std::make_pair ("TRIANGLE", GeometryType::TRIANGLE),
+			std::make_pair ("QUAD",     GeometryType::QUAD),
+			std::make_pair ("GEOMETRY", GeometryType::GEOMETRY),
+			std::make_pair ("SPRITE",   GeometryType::SPRITE)
+		};
+
+		auto iter = geometryTypes .find (geometryType ());
+
+		if (iter not_eq geometryTypes .end ())
+			geometryTypeId = iter -> second;
+
+		else
+			geometryTypeId = GeometryType::QUAD;
+
+		//
+
+		MFVec4f                texCoord;
+		std::vector <Vector3f> vertices;
+
+		Vector2f particleSize1_2 = particleSize () / 2.0f;
+
+		switch (geometryTypeId)
 		{
-			glGeometryType = GL_POINTS;
-			numVertices    = 0;
-			break;
+			case GeometryType::POINT:
+			{
+				glGeometryType = GL_POINTS;
+				numVertices    = 0;
+				break;
+			}
+			case GeometryType::LINE:
+			{
+				glGeometryType = GL_LINES;
+				numVertices    = 2;
+
+				texCoord .emplace_back (0, 0, 0, 1);
+				texCoord .emplace_back (0, 1, 0, 1);
+
+				vertices .reserve (numVertices);
+				vertices .emplace_back (0, 0, -particleSize1_2 .y ());
+				vertices .emplace_back (0, 0,  particleSize1_2 .y ());
+				break;
+			}
+			case GeometryType::TRIANGLE:
+			{
+				glGeometryType = GL_TRIANGLES;
+				numVertices    = 6;
+
+				texCoord .emplace_back (0, 0, 0, 1);
+				texCoord .emplace_back (1, 0, 0, 1);
+				texCoord .emplace_back (1, 1, 0, 1);
+
+				texCoord .emplace_back (0, 0, 0, 1);
+				texCoord .emplace_back (1, 1, 0, 1);
+				texCoord .emplace_back (0, 1, 0, 1);
+
+				vertices .reserve (numVertices);
+				vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+				vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+				vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+
+				vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+				vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+				vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+				break;
+			}
+			case GeometryType::QUAD:
+			case GeometryType::SPRITE:
+			{
+				glGeometryType = GL_QUADS;
+				numVertices    = 4;
+
+				texCoord .emplace_back (0, 0, 0, 1);
+				texCoord .emplace_back (1, 0, 0, 1);
+				texCoord .emplace_back (1, 1, 0, 1);
+				texCoord .emplace_back (0, 1, 0, 1);
+
+				vertices .reserve (numVertices);
+				vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+				vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+				vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+				vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+				break;
+			}
+			case GeometryType::GEOMETRY:
+			{
+				glGeometryType = GL_TRIANGLES;
+				numVertices    = 0;
+
+				vertices .resize (numVertices);
+				break;
+			}
 		}
-		case GeometryType::LINE:
+
+		if (numVertices)
 		{
-			glGeometryType = GL_LINES;
-			numVertices    = 2;
+			glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
+			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_COPY);
 
-			texCoord .emplace_back (0, 0, 0, 1);
-			texCoord .emplace_back (0, 1, 0, 1);
+			glBindBuffer (GL_ARRAY_BUFFER, 0);
 
-			vertices .reserve (numVertices);
-			vertices .emplace_back (0, 0, -particleSize1_2 .y ());
-			vertices .emplace_back (0, 0,  particleSize1_2 .y ());
-			break;
+			// Vertex buffer
+
+			set_vertex_buffer ();
 		}
-		case GeometryType::TRIANGLE:
-		{
-			glGeometryType = GL_TRIANGLES;
-			numVertices    = 6;
 
-			texCoord .emplace_back (0, 0, 0, 1);
-			texCoord .emplace_back (1, 0, 0, 1);
-			texCoord .emplace_back (1, 1, 0, 1);
+		set_texCoord ();
 
-			texCoord .emplace_back (0, 0, 0, 1);
-			texCoord .emplace_back (1, 1, 0, 1);
-			texCoord .emplace_back (0, 1, 0, 1);
-
-			vertices .reserve (numVertices);
-			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-
-			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			break;
-		}
-		case GeometryType::QUAD:
-		case GeometryType::SPRITE:
-		{
-			glGeometryType = GL_QUADS;
-			numVertices    = 4;
-
-			texCoord .emplace_back (0, 0, 0, 1);
-			texCoord .emplace_back (1, 0, 0, 1);
-			texCoord .emplace_back (1, 1, 0, 1);
-			texCoord .emplace_back (0, 1, 0, 1);
-
-			vertices .reserve (numVertices);
-			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			break;
-		}
-		case GeometryType::GEOMETRY:
-		{
-			glGeometryType = GL_TRIANGLES;
-			numVertices    = 0;
-
-			vertices .resize (numVertices);
-			break;
-		}
+		geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
+		geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
+		geometryShader -> setField <MFVec4f> ("texCoord",     texCoord);
 	}
-
-	if (numVertices)
+	catch (const X3DError & error)
 	{
-		glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_COPY);
-
-		glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-		// Vertex buffer
-
-		set_vertex_buffer ();
+		__LOG__ << error .what () << std::endl;
 	}
-
-	set_texCoord ();
-
-	geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
-	geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
-	geometryShader -> setField <MFVec4f> ("texCoord",     texCoord);
 }
 
 void
 ParticleSystem::set_createParticles ()
 {
-	transformShader -> setField <SFBool> ("createParticles", createParticles ());
+	try
+	{
+		transformShader -> setField <SFBool> ("createParticles", createParticles ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -667,59 +688,66 @@ ParticleSystem::set_colorRamp ()
 void
 ParticleSystem::set_color ()
 {
-	if (colorRampNode and not colorKey () .empty () and not colorRampNode -> isEmpty ())
+	try
 	{
-		numColors = std::min (colorKey () .size (), colorRampNode -> getSize ());
-
-		// Keys
-
-		std::vector <float> colorKeysArray (colorKey () .begin (), colorKey () .end ());
-		colorKeysArray .resize (numColors);
-
-		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
-		glBufferData (GL_TEXTURE_BUFFER, numColors * sizeof (float), colorKeysArray .data (), GL_STATIC_COPY);
-
-		// Values
-
-		std::vector <Vector4f> colorValuesArray;
-
-		colorRampNode -> getHSVA (colorValuesArray);
-		colorValuesArray .resize (numColors);
-
-		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
-		glBufferData (GL_TEXTURE_BUFFER, numColors * sizeof (Vector4f), colorValuesArray .data (), GL_STATIC_COPY);
-
-		// Shader
-
-		transformShader -> setField <SFInt32> ("numColors", int32_t (numColors));
-	}
-	else
-	{
-		numColors = 0;
-
-		// Clear buffers
-
-		for (size_t i = 0; i < 2; ++ i)
+		if (colorRampNode and not colorKey () .empty () and not colorRampNode -> isEmpty ())
 		{
-			glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [i]);
-			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+			numColors = std::min (colorKey () .size (), colorRampNode -> getSize ());
+
+			// Keys
+
+			std::vector <float> colorKeysArray (colorKey () .begin (), colorKey () .end ());
+			colorKeysArray .resize (numColors);
+
+			glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
+			glBufferData (GL_TEXTURE_BUFFER, numColors * sizeof (float), colorKeysArray .data (), GL_STATIC_COPY);
+
+			// Values
+
+			std::vector <Vector4f> colorValuesArray;
+
+			colorRampNode -> getHSVA (colorValuesArray);
+			colorValuesArray .resize (numColors);
+
+			glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
+			glBufferData (GL_TEXTURE_BUFFER, numColors * sizeof (Vector4f), colorValuesArray .data (), GL_STATIC_COPY);
+
+			// Shader
+
+			transformShader -> setField <SFInt32> ("numColors", int32_t (numColors));
+		}
+		else
+		{
+			numColors = 0;
+
+			// Clear buffers
+
+			for (size_t i = 0; i < 2; ++ i)
+			{
+				glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [i]);
+				glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+			}
+
+			// Shader
+
+			transformShader -> setField <SFInt32> ("numColors", 0);
 		}
 
-		// Shader
+		// Update textures
 
-		transformShader -> setField <SFInt32> ("numColors", 0);
+		glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, colorRampBufferId [COLOR_RAMP_KEYS]);
+
+		glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, colorRampBufferId [COLOR_RAMP_VALUES]);
+
+		glBindTexture (GL_TEXTURE_BUFFER, 0);
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
 	}
-
-	// Update textures
-
-	glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, colorRampBufferId [COLOR_RAMP_KEYS]);
-
-	glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, colorRampBufferId [COLOR_RAMP_VALUES]);
-
-	glBindTexture (GL_TEXTURE_BUFFER, 0);
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -739,81 +767,88 @@ ParticleSystem::set_texCoordRamp ()
 void
 ParticleSystem::set_texCoord ()
 {
-	if (texCoordRampNode and not texCoordKey () .empty () and not texCoordRampNode -> isEmpty () and numVertices)
+	try
 	{
-		numTexCoord = std::min (texCoordKey () .size (), texCoordRampNode -> getSize ());
-
-		// Keys
-
-		std::vector <float> texCoordKeysArray (texCoordKey () .begin (), texCoordKey () .end ());
-		texCoordKeysArray .resize (numTexCoord);
-
-		glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
-		glBufferData (GL_TEXTURE_BUFFER, numTexCoord * sizeof (float), texCoordKeysArray .data (), GL_STATIC_COPY);
-
-		// Values
-
-		std::vector <Vector4f> texCoord;
-		std::vector <Vector4f> texCoordValuesArray;
-
-		texCoordRampNode -> getTexCoord (texCoord);
-
-		if (geometryTypeId == GeometryType::TRIANGLE)
+		if (texCoordRampNode and not texCoordKey () .empty () and not texCoordRampNode -> isEmpty () and numVertices)
 		{
-			static constexpr size_t numVertices = 4;
+			numTexCoord = std::min (texCoordKey () .size (), texCoordRampNode -> getSize ());
 
-			texCoord .resize (numTexCoord * numVertices);
+			// Keys
 
-			for (size_t n = 0, size = texCoordKey () .size () * numVertices; n < size; n += numVertices)
+			std::vector <float> texCoordKeysArray (texCoordKey () .begin (), texCoordKey () .end ());
+			texCoordKeysArray .resize (numTexCoord);
+
+			glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
+			glBufferData (GL_TEXTURE_BUFFER, numTexCoord * sizeof (float), texCoordKeysArray .data (), GL_STATIC_COPY);
+
+			// Values
+
+			std::vector <Vector4f> texCoord;
+			std::vector <Vector4f> texCoordValuesArray;
+
+			texCoordRampNode -> getTexCoord (texCoord);
+
+			if (geometryTypeId == GeometryType::TRIANGLE)
 			{
-				for (size_t i = 1; i < 3; ++ i)
+				static constexpr size_t numVertices = 4;
+
+				texCoord .resize (numTexCoord * numVertices);
+
+				for (size_t n = 0, size = texCoordKey () .size () * numVertices; n < size; n += numVertices)
 				{
-					texCoordValuesArray .emplace_back (texCoord [n]);
-					texCoordValuesArray .emplace_back (texCoord [n + i]);
-					texCoordValuesArray .emplace_back (texCoord [n + i + 1]);
+					for (size_t i = 1; i < 3; ++ i)
+					{
+						texCoordValuesArray .emplace_back (texCoord [n]);
+						texCoordValuesArray .emplace_back (texCoord [n + i]);
+						texCoordValuesArray .emplace_back (texCoord [n + i + 1]);
+					}
 				}
 			}
+			else
+			{
+				texCoordValuesArray = std::move (texCoord);
+				texCoordValuesArray .resize (numTexCoord * numVertices);
+			}
+
+			glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
+			glBufferData (GL_TEXTURE_BUFFER, texCoordValuesArray .size () * sizeof (Vector4f), texCoordValuesArray .data (), GL_STATIC_COPY);
+
+			// Shader
+
+			geometryShader -> setField <SFInt32> ("numTexCoord", int32_t (numTexCoord));
 		}
 		else
 		{
-			texCoordValuesArray = std::move (texCoord);
-			texCoordValuesArray .resize (numTexCoord * numVertices);
+			numTexCoord = 0;
+
+			// Clear buffers
+
+			for (size_t i = 0; i < 2; ++ i)
+			{
+				glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [i]);
+				glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+			}
+
+			// Shader
+
+			geometryShader -> setField <SFInt32> ("numTexCoord", 0);
 		}
 
-		glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
-		glBufferData (GL_TEXTURE_BUFFER, texCoordValuesArray .size () * sizeof (Vector4f), texCoordValuesArray .data (), GL_STATIC_COPY);
+		// Update textures
 
-		// Shader
+		glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
 
-		geometryShader -> setField <SFInt32> ("numTexCoord", int32_t (numTexCoord));
+		glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
+
+		glBindTexture (GL_TEXTURE_BUFFER, 0);
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
 	}
-	else
+	catch (const X3DError & error)
 	{
-		numTexCoord = 0;
-
-		// Clear buffers
-
-		for (size_t i = 0; i < 2; ++ i)
-		{
-			glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [i]);
-			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
-		}
-
-		// Shader
-
-		geometryShader -> setField <SFInt32> ("numTexCoord", 0);
+		__LOG__ << error .what () << std::endl;
 	}
-
-	// Update textures
-
-	glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
-
-	glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
-
-	glBindTexture (GL_TEXTURE_BUFFER, 0);
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
 void
@@ -857,47 +892,54 @@ ParticleSystem::set_physics ()
 void
 ParticleSystem::set_boundedPhysicsModel ()
 {
-	// Triangulate
+	try
+	{
+		// Triangulate
 
-	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+		std::vector <Vector3f> normals;
+		std::vector <Vector3f> vertices;
 
-	for (auto & physicsNode : boundedPhysicsModelNodes)
-		physicsNode -> addTriangles (normals, vertices);
+		for (auto & physicsNode : boundedPhysicsModelNodes)
+			physicsNode -> addTriangles (normals, vertices);
 
-	// Update shader
+		// Update shader
 
-	transformShader -> setField <SFBool> ("boundedVolume", not vertices .empty (), true);
+		transformShader -> setField <SFBool> ("boundedVolume", not vertices .empty (), true);
 
-	// Upload
+		// Upload
 
-	glBindBuffer (GL_TEXTURE_BUFFER, boundedNormalBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), normals .empty () ? 0 : normals .data (), GL_STATIC_COPY);
+		glBindBuffer (GL_TEXTURE_BUFFER, boundedNormalBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), normals .empty () ? 0 : normals .data (), GL_STATIC_COPY);
 
-	glBindBuffer (GL_TEXTURE_BUFFER, boundedSurfaceBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), vertices .empty () ? 0 : vertices .data (), GL_STATIC_COPY);
+		glBindBuffer (GL_TEXTURE_BUFFER, boundedSurfaceBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), vertices .empty () ? 0 : vertices .data (), GL_STATIC_COPY);
 
-	// BVH
+		// BVH
 
-	const BVH  tree (std::move (vertices));
-	const auto treeArray = tree .toArray ();
+		const BVH  tree (std::move (vertices));
+		const auto treeArray = tree .toArray ();
 
-	glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), treeArray .empty () ? 0 : treeArray .data (), GL_STATIC_COPY);
+		glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), treeArray .empty () ? 0 : treeArray .data (), GL_STATIC_COPY);
 
-	// Update textures
+		// Update textures
 
-	glBindTexture (GL_TEXTURE_BUFFER, boundedNormalMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, boundedNormalBufferId);
+		glBindTexture (GL_TEXTURE_BUFFER, boundedNormalMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, boundedNormalBufferId);
 
-	glBindTexture (GL_TEXTURE_BUFFER, boundedSurfaceMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, boundedSurfaceBufferId);
+		glBindTexture (GL_TEXTURE_BUFFER, boundedSurfaceMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, boundedSurfaceBufferId);
 
-	glBindTexture (GL_TEXTURE_BUFFER, boundedVolumeMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, boundedVolumeBufferId);
+		glBindTexture (GL_TEXTURE_BUFFER, boundedVolumeMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, boundedVolumeBufferId);
 
-	glBindTexture (GL_TEXTURE_BUFFER, 0);
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+		glBindTexture (GL_TEXTURE_BUFFER, 0);
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -1118,72 +1160,79 @@ ParticleSystem::traverse (const TraverseType type)
 void
 ParticleSystem::prepareEvents ()
 {
-	// Create new particles if possible.
-
-	if (emitterNode -> isExplosive ())
+	try
 	{
-		const time_type now = chrono::now ();
+		// Create new particles if possible.
 
-		if (numParticles < maxParticles ())
+		if (emitterNode -> isExplosive ())
 		{
-			creationTime = now;
-			numParticles = maxParticles ();
-			emitterNode -> resetShader ();
+			const time_type now = chrono::now ();
+
+			if (numParticles < maxParticles ())
+			{
+				creationTime = now;
+				numParticles = maxParticles ();
+				emitterNode -> resetShader ();
+			}
+			else
+			{
+				if (now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
+				{
+					creationTime = now;
+					emitterNode -> resetShader ();
+				}
+			}
 		}
 		else
 		{
-			if (now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
+			if (numParticles < maxParticles ())
 			{
-				creationTime = now;
-				emitterNode -> resetShader ();
+				const time_type now          = chrono::now ();
+				int32_t         newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+
+				if (newParticles)
+					creationTime = now;
+
+				numParticles = std::min (std::max (0, maxParticles () .getValue ()), newParticles + numParticles);
 			}
 		}
-	}
-	else
-	{
-		if (numParticles < maxParticles ())
+
+		// Update shader
+
+		const float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
+
+		transformShader -> setField <SFFloat> ("deltaTime",         deltaTime);
+		transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
+		transformShader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
+
+		emitterNode -> setShaderFields (transformShader);
+
+		if (emitterNode -> mass ())
 		{
-			const time_type now          = chrono::now ();
-			int32_t         newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+			MFVec3f velocity;
+			MFFloat turbulence;
 
-			if (newParticles)
-				creationTime = now;
+			for (const auto & physicsModelNode : physicsModelNodes)
+				physicsModelNode -> addForce (emitterNode, velocity, turbulence);
 
-			numParticles = std::min (std::max (0, maxParticles () .getValue ()), newParticles + numParticles);
+			for (auto & v : velocity)
+				v *= deltaTime / emitterNode -> mass ();
+
+			transformShader -> setField <MFVec3f> ("velocity",   velocity,                    true);
+			transformShader -> setField <MFFloat> ("turbulence", turbulence,                  true);
+			transformShader -> setField <SFInt32> ("numForces",  int32_t (velocity .size ()), true);
 		}
+		else
+			transformShader -> setField <SFInt32> ("numForces", 0, true);
+
+		// Update sort algorithm
+
+		sortAlgorithm -> sortStep (transformShader, numParticles);
 	}
-
-	// Update shader
-
-	const float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
-
-	transformShader -> setField <SFFloat> ("deltaTime",         deltaTime);
-	transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
-	transformShader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
-
-	emitterNode -> setShaderFields (transformShader);
-
-	if (emitterNode -> mass ())
+	catch (const X3DError & error)
 	{
-		MFVec3f velocity;
-		MFFloat turbulence;
-
-		for (const auto & physicsModelNode : physicsModelNodes)
-			physicsModelNode -> addForce (emitterNode, velocity, turbulence);
-
-		for (auto & v : velocity)
-			v *= deltaTime / emitterNode -> mass ();
-
-		transformShader -> setField <MFVec3f> ("velocity",   velocity,                    true);
-		transformShader -> setField <MFFloat> ("turbulence", turbulence,                  true);
-		transformShader -> setField <SFInt32> ("numForces",  int32_t (velocity .size ()), true);
+		__LOG__ << error .what () << std::endl;
 	}
-	else
-		transformShader -> setField <SFInt32> ("numForces", 0, true);
-
-	// Update sort algorithm
-
-	sortAlgorithm -> sortStep (transformShader, numParticles);
 }
 
 void
@@ -1286,131 +1335,138 @@ ParticleSystem::drawCollision ()
 void
 ParticleSystem::drawGeometry ()
 {
-	const bool   solid     = false;
-	const GLenum frontFace = GL_CCW;
-
-	if (solid)
-		glEnable (GL_CULL_FACE);
-
-	else
-		glDisable (GL_CULL_FACE);
-
-	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
-
-	glNormal3f (0, 0, 1);
-
-	switch (geometryTypeId)
+	try
 	{
-		case GeometryType::POINT:
+		const bool   solid     = false;
+		const GLenum frontFace = GL_CCW;
+
+		if (solid)
+			glEnable (GL_CULL_FACE);
+
+		else
+			glDisable (GL_CULL_FACE);
+
+		glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+
+		glNormal3f (0, 0, 1);
+
+		switch (geometryTypeId)
 		{
-			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-
-			if (numColors)
+			case GeometryType::POINT:
 			{
-				if (glIsEnabled (GL_LIGHTING))
-					glEnable (GL_COLOR_MATERIAL);
-
-				glEnableClientState (GL_COLOR_ARRAY);
-				glColorPointer (4, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
-			}
-
-			glEnableClientState (GL_VERTEX_ARRAY);
-			glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
-
-			glDrawArrays (GL_POINTS, 0, numParticles);
-
-			glDisableClientState (GL_COLOR_ARRAY);
-			glDisableClientState (GL_VERTEX_ARRAY);
-			glBindBuffer (GL_ARRAY_BUFFER, 0);
-			break;
-		}
-		case GeometryType::SPRITE:
-		{
-			try
-			{
-				Matrix3f rotation = getScreenAlignedRotation ();
-
-				glNormal3fv (rotation [2] .data ());
-
-				geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
-			}
-			catch (const std::domain_error &)
-			{ }
-
-			// Proceed with next case.
-		}
-		case GeometryType::LINE:
-		case GeometryType::TRIANGLE:
-		case GeometryType::QUAD:
-		{
-			glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-
-			if (numColors)
-			{
-				if (glIsEnabled (GL_LIGHTING))
-					glEnable (GL_COLOR_MATERIAL);
-
-				glEnableClientState (GL_COLOR_ARRAY);
-				glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
-			}
-
-			if (getBrowser () -> isEnabledTexture ())
-				enableTexCoord ();
-
-			glEnableClientState (GL_VERTEX_ARRAY);
-			glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
-
-			glDrawArrays (glGeometryType, 0, numParticles * numVertices);
-
-			if (getBrowser () -> isEnabledTexture ())
-				disableTexCoord ();
-
-			glDisableClientState (GL_COLOR_ARRAY);
-			glDisableClientState (GL_VERTEX_ARRAY);
-			glBindBuffer (GL_ARRAY_BUFFER, 0);
-			break;
-		}
-		case GeometryType::GEOMETRY:
-		{
-			const auto geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
-
-			if (geometryNode)
-			{
-				std::vector <Vector3f> positions;
-				positions .reserve (numParticles);
-
-				// Copy positions
-
 				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-				const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
 
-				for (const auto & particle : basic::adapter (particles, particles + numParticles))
-					positions .emplace_back (particle .position);
-
-				glUnmapBuffer (GL_ARRAY_BUFFER);
-				glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-				// Draw geometries
-
-				for (const auto & position : positions)
+				if (numColors)
 				{
-					glPushMatrix ();
+					if (glIsEnabled (GL_LIGHTING))
+						glEnable (GL_COLOR_MATERIAL);
 
-					glTranslatef (position .x (),
-					              position .y (),
-					              position .z ());
-
-					geometryNode -> draw ();
-
-					glPopMatrix ();
+					glEnableClientState (GL_COLOR_ARRAY);
+					glColorPointer (4, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
 				}
+
+				glEnableClientState (GL_VERTEX_ARRAY);
+				glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
+
+				glDrawArrays (GL_POINTS, 0, numParticles);
+
+				glDisableClientState (GL_COLOR_ARRAY);
+				glDisableClientState (GL_VERTEX_ARRAY);
+				glBindBuffer (GL_ARRAY_BUFFER, 0);
+				break;
 			}
+			case GeometryType::SPRITE:
+			{
+				try
+				{
+					Matrix3f rotation = getScreenAlignedRotation ();
 
-			break;
+					glNormal3fv (rotation [2] .data ());
+
+					geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
+				}
+				catch (const std::exception &)
+				{ }
+
+				// Proceed with next case.
+			}
+			case GeometryType::LINE:
+			case GeometryType::TRIANGLE:
+			case GeometryType::QUAD:
+			{
+				glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+
+				if (numColors)
+				{
+					if (glIsEnabled (GL_LIGHTING))
+						glEnable (GL_COLOR_MATERIAL);
+
+					glEnableClientState (GL_COLOR_ARRAY);
+					glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
+				}
+
+				if (getBrowser () -> isEnabledTexture ())
+					enableTexCoord ();
+
+				glEnableClientState (GL_VERTEX_ARRAY);
+				glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
+
+				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
+
+				if (getBrowser () -> isEnabledTexture ())
+					disableTexCoord ();
+
+				glDisableClientState (GL_COLOR_ARRAY);
+				glDisableClientState (GL_VERTEX_ARRAY);
+				glBindBuffer (GL_ARRAY_BUFFER, 0);
+				break;
+			}
+			case GeometryType::GEOMETRY:
+			{
+				const auto geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+
+				if (geometryNode)
+				{
+					std::vector <Vector3f> positions;
+					positions .reserve (numParticles);
+
+					// Copy positions
+
+					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+					const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
+
+					for (const auto & particle : basic::adapter (particles, particles + numParticles))
+						positions .emplace_back (particle .position);
+
+					glUnmapBuffer (GL_ARRAY_BUFFER);
+					glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+					// Draw geometries
+
+					for (const auto & position : positions)
+					{
+						glPushMatrix ();
+
+						glTranslatef (position .x (),
+						              position .y (),
+						              position .z ());
+
+						geometryNode -> draw ();
+
+						glPopMatrix ();
+					}
+				}
+
+				break;
+			}
 		}
-	}
 
-	transformShader -> setField <SFMatrix4f> ("modelViewMatrix", ModelViewMatrix4f ());
+		transformShader -> setField <SFMatrix4f> ("modelViewMatrix", ModelViewMatrix4f ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 Matrix3f

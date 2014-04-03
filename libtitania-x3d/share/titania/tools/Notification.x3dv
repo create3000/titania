@@ -210,3 +210,5 @@ ROUTE NotificationScript.isActive TO Notification.set_isActive
 ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency
+
+EXPORT Notification

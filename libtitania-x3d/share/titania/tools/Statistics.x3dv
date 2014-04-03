@@ -155,3 +155,5 @@ ROUTE StatisticsTool.string_changed TO Text.set_string
 ROUTE StatisticsTool.cornerRadius_changed TO NotificationScript.set_cornerRadius
 ROUTE StatisticsTool.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
 ROUTE StatisticsTool.borderWidth_changed TO NotificationScript.set_borderWidth
+
+EXPORT StatisticsTool AS Statistics

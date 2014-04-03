@@ -100,7 +100,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const X3DScalar <LoadState> &
+	const SFEnum <LoadState> &
 	checkLoadState () const final override
 	{ return loadState; }
 
@@ -132,7 +132,7 @@ private:
 
 	Fields fields;
 	
-	X3DScalar <LoadState> loadState;
+	SFEnum <LoadState> loadState;
 
 };
 

@@ -155,13 +155,17 @@ Inline::setScene (ScenePtr && value)
 	if (scene)
 		scene -> getRootNodes () .removeInterest (group -> children ());
 
-	scene = std::move (value);
+	// First initialize,
 
 	if (initialized)
-		scene -> setup ();
+		value -> setup ();
 
 	else
-		getExecutionContext () -> addUninitializedNode (scene);
+		getExecutionContext () -> addUninitializedNode (value);
+
+	// then assign.
+
+	scene = std::move (value);
 
 	scene -> getRootNodes () .addInterest (group -> children ());
 	group -> children () = scene -> getRootNodes ();

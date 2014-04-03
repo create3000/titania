@@ -172,3 +172,5 @@ ROUTE Tool.node_changed TO BBoxScript.set_node
 ROUTE Tool.cameraSpaceMatrix_changed TO BBoxScript.set_cameraSpaceMatrix
 ROUTE Tool.modelViewMatrix_changed TO BBoxScript.set_modelViewMatrix
 ROUTE Tool.size_changed TO BBoxScript.set_size
+
+EXPORT Tool

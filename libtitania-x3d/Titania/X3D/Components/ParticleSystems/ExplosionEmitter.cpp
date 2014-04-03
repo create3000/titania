@@ -102,12 +102,19 @@ ExplosionEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 ExplosionEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
-	X3DParticleEmitterNode::setShaderFields (shader);
+	try
+	{
+		X3DParticleEmitterNode::setShaderFields (shader);
 
-	shader -> setField <SFVec3f> ("position", position (), true);
-	shader -> setField <SFBool>  ("reset",    reset,       true);
-	
-	const_cast <ExplosionEmitter*> (this) -> reset = false;
+		shader -> setField <SFVec3f> ("position", position (), true);
+		shader -> setField <SFBool>  ("reset",    reset,       true);
+		
+		const_cast <ExplosionEmitter*> (this) -> reset = false;
+	}
+	catch (const X3DError & error)
+	{
+		std::clog << "ConeEmitter: " << error .what () << std::endl;
+	}
 }
 
 void

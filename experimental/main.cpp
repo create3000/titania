@@ -288,7 +288,19 @@ class A :
 
 class B :
 	public A <X>
-{ };
+{
+public:
+
+	X*
+	get ()
+	{ return (X*) 0x123; }
+	
+	template <class Type>
+	Type*
+	get ()
+	{ return (Type*) 0x999;  }
+
+};
 
 int
 main (int argc, char** argv)
@@ -341,11 +353,12 @@ main (int argc, char** argv)
 	
 	std::clog << std::endl;
 	std::clog << std::endl;
+
+	B b;
+
+	std::clog << b .get () << std::endl;
+	std::clog << b .get <B> () << std::endl;
 	
-	for (int i = 0; i < 1000000000; ++ i)
-	{
-		f (Type ());
-	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

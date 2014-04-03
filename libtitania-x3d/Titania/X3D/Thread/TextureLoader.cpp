@@ -153,7 +153,7 @@ TextureLoader::dispose ()
 
 		X3DInput::dispose ();
 		
-		// This must be the last command.
+		// Clear the bound callback arguments.
 
 		callback = [ ] (const TexturePtr &) { };
 	}

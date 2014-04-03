@@ -1291,3 +1291,5 @@ function sgn (value)
 }
 
 DEF Tool TransformTool { }
+
+EXPORT Tool

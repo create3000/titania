@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,7 +72,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			{
 				case X3DConstants::SFNode :
 					{
-						auto sfnode = static_cast <X3D::SFNode*> (field);
+						const auto sfnode = static_cast <X3D::SFNode*> (field);
 
 						if (traverse (*sfnode, callback, distinct, seen))
 							continue;
@@ -81,7 +81,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 					}
 				case X3DConstants::MFNode:
 				{
-					auto mfnode = static_cast <X3D::MFNode*> (field);
+					const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 					for (auto & value : *mfnode)
 					{
@@ -195,7 +195,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 		if (find (node -> getInnerNode (), object, inScene, hierarchy, seen))
 			return true;
 
-		Inline* inlineNode = dynamic_cast <Inline*> (node);
+		Inline* const inlineNode = dynamic_cast <Inline*> (node);
 
 		if (inlineNode)
 		{
@@ -207,11 +207,11 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 		}
 		else
 		{
-			X3DToolObject* tool = dynamic_cast <X3DToolObject*> (node);
+			X3DToolObject* const tool = dynamic_cast <X3DToolObject*> (node);
 
 			if (tool)
 			{
-				for (const auto & rootNode : tool -> getRootNodes ())
+				for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
 				{
 					if (find (rootNode, object, inScene, hierarchy, seen))
 						return true;

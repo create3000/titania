@@ -106,11 +106,18 @@ ConeEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 ConeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
-	X3DParticleEmitterNode::setShaderFields (shader);
+	try
+	{
+		X3DParticleEmitterNode::setShaderFields (shader);
 
-	shader -> setField <SFVec3f> ("position",  position (), true);
-	shader -> setField <SFVec3f> ("direction", normalize (direction () .getValue ()), true);
-	shader -> setField <SFFloat> ("angle",     clamp <float> (angle (), 0, M_PI), true);
+		shader -> setField <SFVec3f> ("position",  position (), true);
+		shader -> setField <SFVec3f> ("direction", normalize (direction () .getValue ()), true);
+		shader -> setField <SFFloat> ("angle",     clamp <float> (angle (), 0, M_PI), true);
+	}
+	catch (const X3DError & error)
+	{
+		std::clog << "ConeEmitter: " << error .what () << std::endl;
+	}
 }
 
 } // X3D
