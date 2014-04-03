@@ -75,11 +75,6 @@ throw (Error <INVALID_NAME>,
 	importedName (importedName)
 {
 	addChildren (inlineNode, exportedNode);
-
-	inlineNode   .addInterest (this, &ImportedNode::set_node);
-	exportedNode .addInterest (this, &ImportedNode::set_node);
-
-	setup ();
 }
 
 X3DBaseNode*
@@ -112,6 +107,17 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("Bad IMPORT specification in copy: " + std::string (error .what ()));
 	}
+}
+
+void
+ImportedNode::initialize ()
+{
+	X3DBaseNode::initialize ();
+
+	inlineNode   .addInterest (this, &ImportedNode::set_node);
+	exportedNode .addInterest (this, &ImportedNode::set_node);
+
+	set_node ();
 }
 
 InlinePtr

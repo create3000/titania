@@ -71,15 +71,10 @@ Route::Route (X3DExecutionContext* const executionContext,
 	       sourceField (_sourceField),
 	   destinationNode (_destinationNode),
 	  destinationField (_destinationField),
+	         connected (false),
 	disconnectedOutput ()
 {
 	addChildren (sourceNode, destinationNode);
-
-	sourceNode      .addInterest (this, &Route::set_node);
-	destinationNode .addInterest (this, &Route::set_node);
-
-	setup ();
-	connect ();
 }
 
 Route*
@@ -112,6 +107,19 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("Bad ROUTE specification in copy: " + std::string (error .what ()));
 	}
+}
+
+void
+Route::initialize ()
+{
+	X3DBaseNode::initialize ();
+
+	sourceNode      .addInterest (this, &Route::set_node);
+	destinationNode .addInterest (this, &Route::set_node);
+
+	connect ();
+
+	set_node ();
 }
 
 RouteId
@@ -171,25 +179,35 @@ throw (Error <DISPOSED>)
 void
 Route::connect ()
 {
-	sourceField -> addInterest (destinationField);
-	sourceField -> addOutputRoute (this);
-	destinationField -> addInputRoute (this);
+	if (sourceNode and destinationNode)
+	{
+		connected = true;
+
+		sourceField -> addInterest (destinationField);
+		sourceField -> addOutputRoute (this);
+		destinationField -> addInputRoute (this);
+	}
 }
 
 void
 Route::disconnect ()
 {
-	if (sourceNode or destinationNode)
+	if (connected)
 	{
-		sourceNode      .dispose ();
-		destinationNode .dispose ();
+		connected = false;
 
-		sourceField -> removeInterest (destinationField);
-		sourceField -> removeOutputRoute (this);
-		destinationField -> removeInputRoute  (this);
+		if (sourceNode or destinationNode)
+		{
+			sourceNode      .dispose ();
+			destinationNode .dispose ();
 
-		disconnectedOutput .processInterests ();
-		disconnectedOutput .dispose ();
+			sourceField -> removeInterest (destinationField);
+			sourceField -> removeOutputRoute (this);
+			destinationField -> removeInputRoute  (this);
+
+			disconnectedOutput .processInterests ();
+			disconnectedOutput .dispose ();
+		}
 	}
 }
 

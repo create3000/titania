@@ -138,12 +138,20 @@ throw (Error <NODE_IN_USE>,
 		throw Error <INVALID_NODE> ("Couldn't add exported node: node is NULL.");
 
 	exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
-	exportedNodes .back () .isTainted (true);
-	exportedNodes .back () .addParent (this);
+
+	auto & exportedNode = exportedNodes .back ();
+
+	exportedNode .isTainted (true);
+	exportedNode .addParent (this);
+
+	if (isInitialized ())
+		exportedNode -> setup ();
+	else
+		addUninitializedNode (exportedNode);
 
 	exportedNames [node] = exportedName;
 
-	return exportedNodes .back ();
+	return exportedNode;
 }
 
 void

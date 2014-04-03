@@ -114,31 +114,30 @@ X3DExecutionContext::initialize ()
 {
 	//__LOG__ << "Initialize: " << getWorldURL () << std::endl;
 
-	if (not initialized)
-	{
-		X3DNode::initialize ();
+	X3DNode::initialize ();
 
-		initialized = true;
-		
+	initialized = true;
+
+	uninitializedNodes .isTainted (true); // Protos are initialized immediatily.
+
+	if (not isProto ())
+	{
+		while (not uninitializedNodes .empty ())
+		{
+			for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+				uninitializedNode -> setup ();
+		}
+	}
+	else
+	{
+		uninitializedNodes .clear ();
+
 		// To remove this below:
-		// add setup to NamedNode
-		// remove setup from addNamedNode
 		// add addUnititializedNode to Proto
 		// change SFNode copy = create ... <- replace SFNode by X3DBaseNode
 		// change addNamedNode (X3DBaseNode* const)
 		// change NamedNode constructor (X3DBaseNode* const)
 		// probably this works.
-		
-		for (const auto & namedNode : namedNodes)
-			namedNode .second -> setup ();
-	}
-
-	uninitializedNodes .isTainted (true);
-
-	while (not uninitializedNodes .empty ())
-	{
-		for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
-			uninitializedNode -> setup ();
 	}
 
 	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl;
@@ -304,6 +303,8 @@ throw (Error <IMPORTED_NODE>,
 
 	if (initialized)
 		namedNode -> second -> setup ();
+	else
+		addUninitializedNode (namedNode -> second);
 }
 
 void
@@ -431,12 +432,20 @@ throw (Error <INVALID_NODE>,
 	catch (const std::out_of_range &)
 	{
 		importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
-		importedNodes .back () .isTainted (true);
-		importedNodes .back () .addParent (this);
+		
+		auto & importedNode = importedNodes .back ();
+		
+		importedNode .isTainted (true);
+		importedNode .addParent (this);
+
+		if (initialized)
+			importedNode -> setup ();
+		else
+			addUninitializedNode (importedNode);
 
 		importedNames [inlineNode -> getExportedNode (exportedName)] = importedName;
 
-		return importedNodes .back ();
+		return importedNode;
 	}
 }
 
@@ -709,10 +718,18 @@ throw (Error <INVALID_NODE>,
 		// Add route.
 
 		routes .push_back (routeId, new Route (this, sourceNode, routeId .first, destinationNode, routeId .second));
-		routes .back () .isTainted (true);
-		routes .back () .addParent (this);
+		
+		auto & route = routes .back ();
 
-		return routes .back ();
+		route .isTainted (true);
+		route .addParent (this);
+
+		if (isInitialized ())
+			route -> setup ();
+		else
+			addUninitializedNode (route);
+
+		return route;
 	}
 }
 

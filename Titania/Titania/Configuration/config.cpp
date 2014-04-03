@@ -95,12 +95,6 @@ get_ui (const std::string & filename)
 }
 
 std::string
-get_icon (const std::string & filename)
-{
-	return find_data_file ("icons/" + filename);
-}
-
-std::string
 find_data_file (const std::string & filename)
 {
 	return os::find_data_file (TITANIA_DATA_DIR + filename);

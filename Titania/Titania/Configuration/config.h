@@ -75,9 +75,6 @@ std::string
 get_ui (const std::string &);
 
 std::string
-get_icon (const std::string &);
-
-std::string
 find_data_file (const std::string &);
 
 } // puck

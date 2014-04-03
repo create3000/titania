@@ -165,6 +165,10 @@ private:
 	Route*
 	create (X3DExecutionContext* const) const final override;
 
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Operations
 
 	bool
@@ -188,6 +192,7 @@ private:
 	X3DFieldDefinition*      sourceField;
 	X3DWeakPtr <X3DBaseNode> destinationNode;
 	X3DFieldDefinition*      destinationField;
+	bool                     connected;
 
 	Output disconnectedOutput;
 

@@ -1,3 +1,55 @@
+2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Papers.mdproj:
+	* Node.png:
+	* SFNode.png:
+	* SFTime.png:
+	* MFNode.png:
+	* SFBool.png:
+	* MFTime.png:
+	* MFBool.png:
+	* Fields.xcf:
+	* SFVec4f.png:
+	* SFFloat.png:
+	* MFVec4f.png:
+	* SFColor.png:
+	* SFImage.png:
+	* SFVec3d.png:
+	* SFVec2d.png:
+	* SFVec2f.png:
+	* SFVec4d.png:
+	* SFInt32.png:
+	* SFVec3f.png:
+	* MFVec4d.png:
+	* MFInt32.png:
+	* MFColor.png:
+	* MFFloat.png:
+	* MFImage.png:
+	* MFVec3d.png:
+	* MFVec3f.png:
+	* MFVec2f.png:
+	* MFVec2d.png:
+	* MFDouble.png:
+	* SFString.png:
+	* node.0.0.png:
+	* MFString.png:
+	* SFDouble.png:
+	* node.1.1.png:
+	* node.0.1.png:
+	* node.1.0.png:
+	* MFMatrix3d.png:
+	* SFMatrix3d.png:
+	* SFMatrix3f.png:
+	* MFRotation.png:
+	* MFMatrix4f.png:
+	* SFMatrix4d.png:
+	* SFRotation.png:
+	* MFMatrix3f.png:
+	* MFMatrix4d.png:
+	* SFMatrix4f.png:
+	* SFColorRGBA.png:
+	* MFColorRGBA.png: 
+
 2014-02-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Geospatial.php: 

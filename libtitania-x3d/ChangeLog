@@ -1,5 +1,18 @@
 2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Route.h:
+	* Route.cpp:
+	* NamedNode.h:
+	* X3DScene.cpp:
+	* NamedNode.cpp:
+	* ExportedNode.h:
+	* ImportedNode.h:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.cpp: 
 
 2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>

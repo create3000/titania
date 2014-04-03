@@ -217,6 +217,10 @@
     <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.vs" />
     <None Include="xxx\UniversalTransverseMercator.h" />
     <None Include="xxx\Geospatial.php" />
+    <None Include="CosmoWorlds\icons\node.0.0.png" />
+    <None Include="CosmoWorlds\icons\node.0.1.png" />
+    <None Include="CosmoWorlds\icons\node.1.0.png" />
+    <None Include="CosmoWorlds\icons\node.1.1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -240,5 +244,51 @@
     <Compile Include="xxx\Stream\InputUrlStream.cpp" />
     <Compile Include="xxx\Box3.cpp" />
     <Compile Include="xxx\PointingDevice.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CosmoWorlds\icons\Fields.xcf" />
+    <Content Include="CosmoWorlds\icons\MFBool.png" />
+    <Content Include="CosmoWorlds\icons\MFColor.png" />
+    <Content Include="CosmoWorlds\icons\MFColorRGBA.png" />
+    <Content Include="CosmoWorlds\icons\MFDouble.png" />
+    <Content Include="CosmoWorlds\icons\MFFloat.png" />
+    <Content Include="CosmoWorlds\icons\MFImage.png" />
+    <Content Include="CosmoWorlds\icons\MFInt32.png" />
+    <Content Include="CosmoWorlds\icons\MFMatrix3d.png" />
+    <Content Include="CosmoWorlds\icons\MFMatrix3f.png" />
+    <Content Include="CosmoWorlds\icons\MFMatrix4d.png" />
+    <Content Include="CosmoWorlds\icons\MFMatrix4f.png" />
+    <Content Include="CosmoWorlds\icons\MFNode.png" />
+    <Content Include="CosmoWorlds\icons\MFRotation.png" />
+    <Content Include="CosmoWorlds\icons\MFString.png" />
+    <Content Include="CosmoWorlds\icons\MFTime.png" />
+    <Content Include="CosmoWorlds\icons\MFVec2d.png" />
+    <Content Include="CosmoWorlds\icons\MFVec2f.png" />
+    <Content Include="CosmoWorlds\icons\MFVec3d.png" />
+    <Content Include="CosmoWorlds\icons\MFVec3f.png" />
+    <Content Include="CosmoWorlds\icons\MFVec4d.png" />
+    <Content Include="CosmoWorlds\icons\MFVec4f.png" />
+    <Content Include="CosmoWorlds\icons\Node.png" />
+    <Content Include="CosmoWorlds\icons\SFBool.png" />
+    <Content Include="CosmoWorlds\icons\SFColor.png" />
+    <Content Include="CosmoWorlds\icons\SFColorRGBA.png" />
+    <Content Include="CosmoWorlds\icons\SFDouble.png" />
+    <Content Include="CosmoWorlds\icons\SFFloat.png" />
+    <Content Include="CosmoWorlds\icons\SFImage.png" />
+    <Content Include="CosmoWorlds\icons\SFInt32.png" />
+    <Content Include="CosmoWorlds\icons\SFMatrix3d.png" />
+    <Content Include="CosmoWorlds\icons\SFMatrix3f.png" />
+    <Content Include="CosmoWorlds\icons\SFMatrix4d.png" />
+    <Content Include="CosmoWorlds\icons\SFMatrix4f.png" />
+    <Content Include="CosmoWorlds\icons\SFNode.png" />
+    <Content Include="CosmoWorlds\icons\SFRotation.png" />
+    <Content Include="CosmoWorlds\icons\SFString.png" />
+    <Content Include="CosmoWorlds\icons\SFTime.png" />
+    <Content Include="CosmoWorlds\icons\SFVec2d.png" />
+    <Content Include="CosmoWorlds\icons\SFVec2f.png" />
+    <Content Include="CosmoWorlds\icons\SFVec3d.png" />
+    <Content Include="CosmoWorlds\icons\SFVec3f.png" />
+    <Content Include="CosmoWorlds\icons\SFVec4d.png" />
+    <Content Include="CosmoWorlds\icons\SFVec4f.png" />
   </ItemGroup>
 </Project>

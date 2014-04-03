@@ -69,10 +69,6 @@ ExportedNode::ExportedNode (X3DScene* const scene,
 	        node (_node)
 {
 	addChildren (node);
-
-	node .addInterest (this, &ExportedNode::set_node);
-
-	setup ();
 }
 
 X3DBaseNode*
@@ -112,6 +108,16 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("Bad EXPORT specification in copy: " + std::string (error .what ()));
 	}
+}
+
+void
+ExportedNode::initialize ()
+{
+	X3DBaseNode::initialize ();
+
+	node .addInterest (this, &ExportedNode::set_node);
+
+	set_node ();
 }
 
 SFNode

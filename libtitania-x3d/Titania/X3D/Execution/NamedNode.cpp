@@ -65,8 +65,6 @@ NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode 
 	        name (_node -> getName ())
 {
 	addChildren (node);
-
-	node .addInterest (this, &NamedNode::set_node);
 }
 
 X3DBaseNode*
@@ -89,6 +87,16 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Copying named nodes to execution context is not supported.");
+}
+
+void
+NamedNode::initialize ()
+{
+	X3DBaseNode::initialize ();
+
+	node .addInterest (this, &NamedNode::set_node);
+
+	set_node ();
 }
 
 SFNode
