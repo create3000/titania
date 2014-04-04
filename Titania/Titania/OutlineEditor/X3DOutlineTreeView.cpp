@@ -62,7 +62,7 @@ namespace puck {
 
 X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & executionContext) :
 	              Gtk::TreeView (),
-	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
+	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.xml"), gconf_dir ()),
 	               treeObserver (new OutlineTreeObserver (this)),
 	                 routeGraph (new OutlineRouteGraph (this)),
 	                      model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),

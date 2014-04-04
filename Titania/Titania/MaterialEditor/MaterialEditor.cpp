@@ -58,7 +58,7 @@ namespace puck {
 
 MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode nodes) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.ui"), gconf_dir ()),
+	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.xml"), gconf_dir ()),
 	            browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
 	               appearances (),
 	                  material (new X3D::Material (browserWindow -> getBrowser () -> getExecutionContext ())),

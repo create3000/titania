@@ -58,7 +58,7 @@ namespace puck {
 
 MotionBlurEditor::MotionBlurEditor (BrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.ui"), gconf_dir ())
+	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.xml"), gconf_dir ())
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 }

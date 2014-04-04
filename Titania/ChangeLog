@@ -1,5 +1,40 @@
 2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Console.ui:
+	* Console.xml:
+	* LibraryView.ui:
+	* LibraryView.xml:
+	* ViewpointList.ui:
+	* BrowserWindow.ui:
+	* HistoryEditor.ui:
+	* OutlineEditor.ui:
+	* ViewpointList.xml:
+	* HistoryEditor.xml:
+	* BrowserWindow.xml:
+	* OutlineEditor.xml:
+	* OutlineTreeView.ui:
+	* LibraryView.cpp:
+	* X3DBrowserWidget.cpp:
+	* OutlineTreeView.xml:
+	* MotionBlurEditor.ui:
+	* MotionBlurEditor.xml:
+	* ViewpointList.cpp:
+	* TextureEditor.cpp:
+	* HistoryEditor.cpp:
+	* OutlineEditor.cpp:
+	* MaterialEditor.cpp:
+	* TextureEditor.ui:
+	* TextureEditor.xml:
+	* MaterialEditor.ui:
+	* MaterialEditor.xml:
+	* X3DOutlineTreeView.cpp:
+	* MotionBlurEditor.cpp:
+	* NodePropertiesEditor.ui:
+	* NodePropertiesEditor.xml:
+	* NodePropertiesEditor.cpp: 
+
+2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DDialogInterface.cpp:
 	* MaterialEditor.ui:
 	* TextViewEditable.cpp: 

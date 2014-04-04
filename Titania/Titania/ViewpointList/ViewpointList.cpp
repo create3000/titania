@@ -73,7 +73,7 @@ static constexpr int Bold   = 700;
 
 ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DViewpointListInterface (get_ui ("ViewpointList.ui"), gconf_dir ()),
+	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
 	              activeLayer ()
 { }
 

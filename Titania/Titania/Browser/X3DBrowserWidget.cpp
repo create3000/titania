@@ -66,7 +66,7 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
-	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ())
+	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ())
 {
 	parseOptions (argc, argv);
 

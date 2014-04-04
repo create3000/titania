@@ -62,7 +62,7 @@ static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DHistoryEditorInterface (get_ui ("HistoryEditor.ui"), gconf_dir ()),
+	X3DHistoryEditorInterface (get_ui ("HistoryEditor.xml"), gconf_dir ()),
 	                  history ()
 {
 	// Fill model

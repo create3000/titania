@@ -58,7 +58,7 @@ namespace puck {
 
 TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.ui"), gconf_dir ()),
+	X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
 	           browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
 	              initialized (false)
 {
