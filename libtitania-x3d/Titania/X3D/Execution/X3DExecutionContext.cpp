@@ -117,7 +117,7 @@ X3DExecutionContext::initialize ()
 
 	initialized = true;
 
-	uninitializedNodes .isTainted (true); // Protos are initialized immediatily.
+	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
 
 	if (not isProto ())
 	{
@@ -129,17 +129,9 @@ X3DExecutionContext::initialize ()
 	}
 	else
 	{
-		uninitializedNodes .clear ();
+		rootNodes .isTainted (true); // !!! Prevent generating events.
 
-		// To remove this block and only this else block:
-		// add addUnititializedNode to Proto
-		// change SFNode copy = create ... <- replace SFNode by X3DBaseNode
-		// change addNamedNode (X3DBaseNode* const)
-		// change NamedNode constructor (X3DBaseNode* const)
-		// remove Proto copy:  getUnititializedNodes () .clear ()
-		// remove X3DExecutionContext::getUnititializedNodes
-		// changed Proto setup and initialize
-		// probably this works.
+		uninitializedNodes .clear ();
 	}
 }
 

@@ -1,29 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/share/titania/tools/BoundingBox.x3dv" Line="115" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="307" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Group.cpp" Line="52" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Switch.cpp" Line="122" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Billboard.cpp" Line="157" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Collision.cpp" Line="163" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="124" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Anchor.cpp" Line="165" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="335" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="160" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="376" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="60" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="137" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="114" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="209" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="141" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="78" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="1" Column="1" />
+      <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="6" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/Proto.cpp" Line="146" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="133" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix2.h" Line="430" Column="22" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="115" Column="60" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="Documentation" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
@@ -31,7 +21,16 @@
               <Node name="Geometry3D" expanded="True" />
               <Node name="Handles" expanded="True" />
               <Node name="Networking" expanded="True" />
+              <Node name="PROTO" expanded="True" />
               <Node name="Shaders" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Numbers" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -47,50 +46,45 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="EnvironmentalEffects" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True">
-                    <Node name="X3DGeometryNode.cpp" selected="True" />
+                  <Node name="PointingDeviceSensor" expanded="True">
+                    <Node name="CylinderSensor.cpp" selected="True" />
                   </Node>
                   <Node name="Shape" expanded="True" />
-                  <Node name="Text" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
-                <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Thread" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Shape" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True" />
                 </Node>
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
+          </Node>
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True" />
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="Configuration" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True" />
-              <Node name="Undo" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>
@@ -114,6 +108,8 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Execution/ExportedNode.cpp" line="105" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/Parser.cpp" line="708" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -91,6 +91,8 @@ TextViewEditable::on_reset_activate ()
 		const auto defaultField = node -> getType () -> getField (field -> getName ());
 
 		set_text (get_field_value (defaultField, false));
+		
+		editing_done ();
 	}
 	catch (...)
 	{ }

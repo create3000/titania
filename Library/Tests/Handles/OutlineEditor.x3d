@@ -136,7 +136,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 5.27679'
+          rotation='0 0 1 2.65871'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -151,12 +151,9 @@
     </Group>
     <Transform DEF='Sphere'
         translation='2.22045 1.17457 6.31221e-08'
-        rotation='-3.38337e-13 -3.62463e-06 1 0.178426'
         scale='0.208036 0.208036 0.208036'>
-      <Transform
-          translation='0.233169 0.268277 0'
-          rotation='1 0 0 3.14159'
-          scale='-1.14473 -1.14473 -1.14473'>
+      <Transform DEF='_2'
+          translation='0.233169 0.268277 0'>
         <Shape>
           <Appearance>
             <Material
@@ -166,7 +163,7 @@
                 repeatS='false'
                 repeatT='false'/>
           </Appearance>
-          <Sphere DEF='_2'/>
+          <Sphere DEF='_3'/>
         </Shape>
       </Transform>
     </Transform>
@@ -229,7 +226,7 @@
                 specularColor='0.276305 0.11431 0.139857'
                 shininess='0.127273'/>
           </Appearance>
-          <Sphere USE='_2'/>
+          <Sphere USE='_3'/>
         </Shape>
       </Transform>
     </Anchor>

@@ -460,10 +460,6 @@ protected:
 
 	///  @name Import handling
 
-	MFNode &
-	getUninitializedNodes ()
-	{ return uninitializedNodes; }
-
 	void
 	importExternProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,

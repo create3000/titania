@@ -1,5 +1,11 @@
 2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DDialogInterface.cpp:
+	* MaterialEditor.ui:
+	* TextViewEditable.cpp: 
+
+2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MagicImport.cpp:
 	* X3DBrowserEditor.cpp:
 	* BrowserSelection.cpp:

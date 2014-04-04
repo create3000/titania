@@ -110,6 +110,9 @@ CylinderSensor::isBehind (const Line3d & hitRay, const Vector3d & hitPoint) cons
 	cylinder .intersect (hitRay, enter, exit);
 
 	return abs (hitPoint - enter) > abs (hitPoint - exit);
+	
+	if (disk)
+		return dot (yPlane .normal (), hitRay .direction ()) < 0;
 }
 
 bool

@@ -127,7 +127,7 @@ throw (Error <INVALID_NAME>,
 	copy -> importImportedNodes (this);
 	copy -> importRoutes (this);
 
-	copy -> getUninitializedNodes () .clear ();
+	copy -> setup (); // Do it again.
 
 	return copy;
 }
@@ -137,17 +137,12 @@ Proto::createInstance (X3DExecutionContext* const executionContext)
 {
 	return new X3DPrototypeInstance (executionContext, this);
 }
-
-void
-Proto::setup ()
-{
-	getExecutionContext () -> addParent (this);
-}
 	
 void
 Proto::initialize ()
 {
-
+	X3DExecutionContext::initialize ();
+	X3DProtoObject::initialize ();
 }
 
 X3DBaseNode*

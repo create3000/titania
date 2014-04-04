@@ -85,10 +85,6 @@ public:
 	throw (Error <INVALID_NAME>,
           Error <NOT_SUPPORTED>) final override;
 
-	virtual
-	void
-	setup () final override;
-
 	///  @name Instance construction
 
 	virtual

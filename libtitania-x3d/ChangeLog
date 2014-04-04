@@ -1,5 +1,15 @@
 2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* Proto.h:
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* CylinderSensor.cpp: 
+
+2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* CylinderSensor.cpp: 
 
 2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>

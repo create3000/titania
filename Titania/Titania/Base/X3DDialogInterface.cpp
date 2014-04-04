@@ -63,7 +63,7 @@ void
 X3DDialogInterface::restoreSession ()
 {
 	setupGridLabels (getWidget ());
-	//restoreExpander (getWidget ());
+	restoreExpander (getWidget ());
 
 	X3DUserInterface::restoreSession ();
 }
@@ -135,7 +135,10 @@ X3DDialogInterface::restoreExpander (Gtk::Widget & widget) const
 	getWidgets <Gtk::Expander> (&widget, expanders);
 
 	for (auto & expander : expanders)
-		expander -> set_expanded (getConfig () .getBoolean (expander -> get_name ()));
+	{
+		if (not expander -> get_name () .empty ())
+			expander -> set_expanded (getConfig () .getBoolean (expander -> get_name ()));
+	}
 }
 
 void
@@ -146,7 +149,10 @@ X3DDialogInterface::saveExpander (Gtk::Widget & widget)
 	getWidgets <Gtk::Expander> (&widget, expanders);
 
 	for (auto & expander : expanders)
-		getConfig () .setItem (expander -> get_name (), expander -> get_expanded ());
+	{
+		if (not expander -> get_name () .empty ())
+			getConfig () .setItem (expander -> get_name (), expander -> get_expanded ());
+	}
 }
 
 X3DDialogInterface::~X3DDialogInterface ()

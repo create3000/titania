@@ -221,7 +221,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	const SFNode copy = create (executionContext);
+	const SFNode copy = create (executionContext); // Never try to optimize this.
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
