@@ -1,5 +1,9 @@
 2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* CylinderSensor.cpp: 
+
+2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Pointer.h:
