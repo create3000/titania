@@ -117,6 +117,20 @@ namespace X3D {
  *    shutdown ()
  */
 
+
+/**
+ *  Contructs a new X3DBaseNode into @a browser and @a executionContext.
+ *
+ *  Important: a in this way newly created X3DBaseNode must be setuped manually. On setup there must be a
+ *  OpenGL context available.
+ *
+ *  You can use:
+ *
+ *      auto node = new Transform (executionContext);
+ *      executionContext -> addUninitalizedNode (node);
+ *      executionContext -> setup ();
+ */
+
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
 	       X3DChildObject (),
 	              browser (browser),
@@ -159,6 +173,17 @@ X3DBaseNode::setup ()
 	initialize ();
 }
 
+/**
+ *
+ *  Creates either a clone or a copy of this node. If the named node already exists in @a executionContext this node is
+ *  returned otherwise a copy of this node and all of its children is made.  See copy ().
+ *
+ *  The nodes must be setuped with:
+ *
+ *      auto clone = node -> clone ();
+ *      executionContext -> setup ();
+ */
+
 X3DBaseNode*
 X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
@@ -179,6 +204,17 @@ throw (Error <INVALID_NAME>,
 		}
 	}
 }
+
+/**
+ *
+ *  Creates a copy of this node and all of its child nodes into @a executionContext. If a named node of one of this
+ *  node children already exists in @a executionContext then only a clone is created.
+ *
+ *  The nodes must be setuped with:
+ *
+ *      auto copy = node -> copy ();
+ *      executionContext -> setup ();
+ */
 
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext) const

@@ -176,6 +176,10 @@ public:
 
 protected:
 
+	virtual
+	void
+	initialize () override;
+
 	void
 	importMetaData (const X3DScene* const)
 	throw (Error <INVALID_NAME>,

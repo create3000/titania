@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DProto;
+class X3DProtoObject;
 
 class X3DPrototypeInstance :
 	public X3DExecutionContext
@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoPtr &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoObjectPtr &);
 
 	virtual
 	X3DPrototypeInstance*
@@ -103,7 +103,7 @@ public:
 	X3DBaseNode*
 	getRootNode () const;
 
-	const X3DProtoPtr &
+	const X3DProtoObjectPtr &
 	getProtoDeclaration () const
 	{ return protoDeclaration; }
 
@@ -153,7 +153,7 @@ private:
 
 	///  @name Members
 
-	X3DProtoPtr protoDeclaration;
+	X3DProtoObjectPtr protoDeclaration;
 
 	MFNode savedChildren;
 };

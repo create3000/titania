@@ -69,7 +69,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DProto;
+class X3DProtoObject;
 class X3DPrototypeInstance;
 
 class X3DExecutionContext :
@@ -329,7 +329,7 @@ public:
 	       Error <DISPOSED>)
 	{ return protos; }
 
-	X3DProto*
+	X3DProtoObject*
 	findProtoDeclaration (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,

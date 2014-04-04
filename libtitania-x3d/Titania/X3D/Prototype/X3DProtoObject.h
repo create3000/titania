@@ -59,7 +59,7 @@ namespace X3D {
 class Proto;
 class X3DPrototypeInstance;
 
-class X3DProto :
+class X3DProtoObject :
 	virtual public X3DNode
 {
 public:
@@ -101,12 +101,24 @@ public:
 	getInterfaceComments () const
 	{ return comments; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
 
 protected:
 
 	///  @name Construction
 
-	X3DProto ();
+	X3DProtoObject ();
+	
+	virtual
+	void
+	initialize () override
+	{ }
 
 
 private:

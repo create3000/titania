@@ -68,7 +68,7 @@ namespace X3D {
 const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoPtr & prototype) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DExecutionContext (),
 	   protoDeclaration (prototype),
@@ -122,7 +122,7 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
 	if (executionContext -> isScene ())
 	{
-		X3DProto* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
+		X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
 
 		protoDeclaration -> requestImmediateLoad ();
 
@@ -135,8 +135,6 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 void
 X3DPrototypeInstance::initialize ()
 {
-	X3DExecutionContext::initialize ();
-
 	if (not getExecutionContext () -> isProto ())
 	{
 		// Defer assigning imports and routes until now
@@ -146,6 +144,8 @@ X3DPrototypeInstance::initialize ()
 		importImportedNodes (proto);
 		importRoutes (proto);
 	}
+
+	X3DExecutionContext::initialize ();
 }
 
 const std::string &

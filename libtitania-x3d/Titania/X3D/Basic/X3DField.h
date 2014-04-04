@@ -230,11 +230,6 @@ protected:
 	get ()
 	{ return value; }
 
-	///  Move @a _value.
-	void
-	move (ValueType && _value)
-	{ value = std::move (_value); }
-
 	///  Set this field to its default value.
 	virtual
 	void

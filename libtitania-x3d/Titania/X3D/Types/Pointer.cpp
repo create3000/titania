@@ -102,7 +102,7 @@ template class X3DPtr <World>;
 template class X3DPtr <Scene>;
 template class X3DPtr <X3DExecutionContext>;
 template class X3DPtr <Proto>;
-template class X3DPtr <X3DProto>;
+template class X3DPtr <X3DProtoObject>;
 template class X3DPtr <X3DPrototypeInstance>;
 template class X3DPtr <ExternProto>;
 template class X3DPtr <NamedNode>;

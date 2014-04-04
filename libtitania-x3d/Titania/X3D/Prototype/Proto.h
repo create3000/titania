@@ -52,17 +52,17 @@
 #define __TITANIA_X3D_PROTOTYPE_PROTO_H__
 
 #include "../Execution/X3DExecutionContext.h"
-#include "../Prototype/X3DProto.h"
+#include "../Prototype/X3DProtoObject.h"
 
 namespace titania {
 namespace X3D {
 
 class Proto :
-	public X3DProto, public X3DExecutionContext
+	public X3DExecutionContext, public X3DProtoObject
 {
 public:
 
-	using X3DProto::createInstance;
+	using X3DProtoObject::createInstance;
 	using X3DExecutionContext::dispose;
 
 	///  @name Construction
@@ -147,8 +147,20 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
+	///  @name Destuction
+	
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
+	
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Input/Output
 

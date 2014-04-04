@@ -60,8 +60,8 @@ using namespace std::placeholders;
 
 MagicImport::MagicImport (BrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 importFunctions ({ std::make_pair ("Material", std::bind (std::mem_fn (&MagicImport::material), this, _1, _2, _3)),
-	                    std::make_pair ("Texture",  std::bind (std::mem_fn (&MagicImport::texture),  this, _1, _2, _3)) })
+	 importFunctions ({ std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3)),
+	                    std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3)) })
 { }
 
 bool
@@ -104,7 +104,6 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 	                     
 	                     importProtoDeclaration (appearance -> material (), undoStep);
 	                     material = appearance -> material () -> copy (getBrowser () -> getExecutionContext ());
-	                     material -> setup ();
 	                     
 	                     X3D::popContext ();
 	                     return false;
@@ -115,7 +114,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 
 	// Assign material to all appearances in selection
 
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	X3D::traverse (selection, [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
@@ -129,8 +128,9 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 
 	getBrowserWindow () -> getSelection () -> setChildren (selection, undoStep);
 
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
+	getBrowser () -> getExecutionContext () -> setup ();
 	getBrowser () -> update ();
 
 	return true;
@@ -154,7 +154,6 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 	                     
 	                     importProtoDeclaration (appearance -> texture (), undoStep);
 	                     texture = appearance -> texture () -> copy (getBrowser () -> getExecutionContext ());
-	                     texture -> setup ();
 	                     
 	                     X3D::popContext ();
 	                     return false;
@@ -165,7 +164,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	// Assign material to all appearances in selection
 
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	X3D::traverse (selection, [this, &texture, &undoStep] (X3D::SFNode & node)
 	               {
@@ -179,8 +178,9 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	getBrowserWindow () -> getSelection () -> setChildren (selection, undoStep);
 
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
+	getBrowser () -> getExecutionContext () -> setup ();
 	getBrowser () -> update ();
 
 	return true;
@@ -200,7 +200,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 		{
 			const auto protoDeclaration = getBrowser () -> getExecutionContext () -> getProtoDeclaration (name);
 			
-			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateProtoDeclaration),
+			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
 			                             getBrowser () -> getExecutionContext (),
 			                             name,
 			                             protoDeclaration);
@@ -211,7 +211,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			{
 				const auto externProtoDeclaration = getBrowser () -> getExecutionContext () -> getExternProtoDeclaration (name);
 				
-				undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateExternProtoDeclaration),
+				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
 				                             getBrowser () -> getExecutionContext (),
 				                             name,
 				                             externProtoDeclaration);
@@ -220,13 +220,13 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			{
 				if (isExternProto)
 				{
-					undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::removeExternProtoDeclaration),
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration,
 					                             getBrowser () -> getExecutionContext (),
 					                             name);
 				}
 				else
 				{
-					undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::removeProtoDeclaration),
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration,
 					                             getBrowser () -> getExecutionContext (),
 					                             name);
 				}
@@ -237,14 +237,14 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 		
 		if (isExternProto)
 		{
-			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateExternProtoDeclaration),
+			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
 			                             getBrowser () -> getExecutionContext (),
 			                             name,
 			                             X3D::ExternProtoPtr (proto));
 		}
 		else
 		{
-			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateProtoDeclaration),
+			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
 			                             getBrowser () -> getExecutionContext (),
 			                             name,
 			                             X3D::ProtoPtr (proto));

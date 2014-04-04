@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="SFMatrix3d.svg">
+   sodipodi:docname="MFMatrix3d.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -48,10 +48,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="32"
-     inkscape:cx="0.1409311"
-     inkscape:cy="6.944375"
+     inkscape:cx="-1.6300467"
+     inkscape:cy="0.61185217"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="text4292"
      showgrid="true"
      inkscape:snap-page="true"
      showguides="true"
@@ -105,7 +105,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -119,7 +119,7 @@
        id="text4292"
        transform="matrix(1.0831916,0,0,1.0831916,0.04908308,-0.9313307)">
       <rect
-         style="fill:#000000;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+         style="fill:#000000;fill-opacity:1;stroke:none"
          id="rect5256"
          width="2"
          height="2"
@@ -177,10 +177,11 @@
          y="4.5525932" />
       <path
          style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 11,10.5 -3,0"
+         d="m 11,10.5 -4,0"
          id="path5384"
          inkscape:connector-curvature="0"
-         transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980237)" />
+         transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980237)"
+         sodipodi:nodetypes="cc" />
       <rect
          style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
          id="rect5256-2-5-3-0-7"
@@ -198,15 +199,21 @@
      sodipodi:insensitive="true">
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
-       d="m 15.5,1 0,10"
+       d="m 13,8.5 3,0"
        id="path3862"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
-       d="m 13.5,1 0,10"
+       d="m 13,10.5 3,0"
        id="path3864"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3000"
+       d="m 13,6.5 3,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
   </g>
 </svg>

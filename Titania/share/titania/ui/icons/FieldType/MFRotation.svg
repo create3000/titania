@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="SFRotation.svg">
+   sodipodi:docname="MFRotation.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -58,11 +58,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="-95.297157"
-     inkscape:cy="5.9286111"
+     inkscape:zoom="32"
+     inkscape:cx="11.119378"
+     inkscape:cy="1.4279098"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:snap-page="true"
      showguides="false"
@@ -116,7 +116,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -124,7 +124,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Field"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <g
        style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
        id="text4292"
@@ -138,7 +139,7 @@
          sodipodi:cy="6"
          sodipodi:rx="4.5"
          sodipodi:ry="4.5"
-         d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z" />
+         d="m 10.5,6 a 4.5,4.5 0 1 1 -9,0 4.5,4.5 0 1 1 9,0 z" />
       <path
          style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
          d="m 4.5,1.5 3,9"
@@ -151,19 +152,24 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Array"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
-       d="m 15.5,1 0,10"
+       d="m 13,8.5 3,0"
        id="path3862"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
-       d="m 13.5,1 0,10"
+       d="m 13,10.5 3,0"
        id="path3864"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3000"
+       d="m 13,6.5 3,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
   </g>
 </svg>

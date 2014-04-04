@@ -542,12 +542,11 @@ MaterialEditor::updateAppearance ()
 	{
 		undoStep = std::make_shared <UndoStep> (_ ("Material Change"));
 
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+		undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 		if (getFrontAndBackButton () .get_active ())
 		{
 			twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
-			twoSidedMaterial -> setup ();
 			
 			updateMaterial ();
 
@@ -557,7 +556,6 @@ MaterialEditor::updateAppearance ()
 		else
 		{
 			material = material -> copy (material -> getExecutionContext ());
-			material -> setup ();
 			
 			updateMaterial ();
 
@@ -565,8 +563,9 @@ MaterialEditor::updateAppearance ()
 	         getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), appearance -> material (), X3D::SFNode (material), undoStep);
 		}
 
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+		undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
+		getBrowser () -> getExecutionContext () -> setup ();
 		getBrowser () -> update ();
 
 		getBrowserWindow () -> addUndoStep (undoStep);

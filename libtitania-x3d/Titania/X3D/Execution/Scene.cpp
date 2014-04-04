@@ -108,11 +108,11 @@ throw (Error <INVALID_NAME>,
 		updateNamedNodes (scene);
 		importRootNodes (scene);
 
-		initialize ();
-
 		importImportedNodes (scene);
 		importRoutes (scene);
 		importExportedNodes (scene);
+
+		setup ();
 
 		return;
 	}

@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="MFNode.svg">
+   sodipodi:docname="SFNode.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -59,14 +59,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.627417"
-     inkscape:cx="7.0358425"
-     inkscape:cy="3.4847754"
+     inkscape:zoom="8"
+     inkscape:cx="-1.7481146"
+     inkscape:cy="17.415043"
      inkscape:document-units="px"
-     inkscape:current-layer="text4292"
-     showgrid="true"
+     inkscape:current-layer="layer2"
+     showgrid="false"
      inkscape:snap-page="true"
-     showguides="true"
+     showguides="false"
      inkscape:guide-bbox="true"
      inkscape:window-width="1861"
      inkscape:window-height="1056"
@@ -117,7 +117,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -447,7 +447,6 @@ public:
 protected:
 
 	using X3DField <internal_type>::get;
-	using X3DField <internal_type>::move;
 
 	///  @name Element access
 
@@ -502,7 +501,7 @@ X3DArrayField <ValueType>::operator = (X3DArrayField && field)
 
 	clear (); // addEvent ();
 
-	move (std::move (field .get ()));
+	std::swap (get (), field .get ());
 
 	for (const auto & value : getValue ())
 		value -> replaceParent (&field, this);

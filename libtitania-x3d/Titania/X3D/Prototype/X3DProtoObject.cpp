@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#include "X3DProto.h"
+#include "X3DProtoObject.h"
 
 namespace titania {
 namespace X3D {
 
-X3DProto::X3DProto () :
+X3DProtoObject::X3DProtoObject () :
 	 X3DNode (),
 	comments ()
 { }

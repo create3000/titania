@@ -1,3 +1,30 @@
+2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Pointer.h:
+	* X3DField.h:
+	* Pointer.cpp:
+	* Proto.h:
+	* Scene.cpp:
+	* Proto.cpp:
+	* X3DScene.h:
+	* X3DProto.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* X3DProto.cpp:
+	* X3DScene.cpp:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* X3DProtoObject.h:
+	* TransformTool.x3dv:
+	* X3DProtoObject.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp: 
+
 2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TransformTool.x3dv: 

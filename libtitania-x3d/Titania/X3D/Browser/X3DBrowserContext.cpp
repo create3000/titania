@@ -73,7 +73,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr int32_t MAX_DOWNLOAD_THREADS = 8;
+static constexpr int32_t MAX_DOWNLOAD_THREADS = 4;
 
 X3DBrowserContext::X3DBrowserContext () :
 	        X3DExecutionContext (),

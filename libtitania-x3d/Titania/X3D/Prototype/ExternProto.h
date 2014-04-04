@@ -62,11 +62,11 @@ namespace X3D {
 class Loader;
 
 class ExternProto :
-	public X3DProto, public X3DUrlObject
+	virtual public X3DBaseNode, public X3DProtoObject, public X3DUrlObject
 {
 public:
 
-	using X3DProto::createInstance;
+	using X3DProtoObject::createInstance;
 
 	///  @name Construction
 

@@ -1,3 +1,37 @@
+2014-04-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MagicImport.cpp:
+	* X3DBrowserEditor.cpp:
+	* BrowserSelection.cpp:
+	* MaterialEditor.cpp:
+	* MFNode.svg:
+	* SFNode.svg:
+	* MFTime.svg:
+	* X3DBaseNode.svg:
+	* MFBool.svg:
+	* MFVec4f.svg:
+	* MFVec4d.svg:
+	* MFVec3d.svg:
+	* MFVec3f.svg:
+	* MFVec2d.svg:
+	* MFVec2f.svg:
+	* MFFloat.svg:
+	* MFImage.svg:
+	* MFColor.svg:
+	* SFVec4d.svg:
+	* MFInt32.svg:
+	* MFDouble.svg:
+	* MFString.svg:
+	* SFMatrix3d.svg:
+	* SFMatrix4d.svg:
+	* MFMatrix3f.svg:
+	* MFMatrix3d.svg:
+	* MFMatrix4d.svg:
+	* MFRotation.svg:
+	* MFMatrix4f.svg:
+	* MFColorRGBA.svg:
+	* OutlineCellRenderer.cpp: 
+
 2014-04-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFFloat.svg:

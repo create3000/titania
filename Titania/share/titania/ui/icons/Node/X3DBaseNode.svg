@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="SFNode.svg">
+   sodipodi:docname="X3DBaseNode.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -59,14 +59,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.627417"
-     inkscape:cx="7.0358425"
-     inkscape:cy="3.5068725"
+     inkscape:zoom="45.254834"
+     inkscape:cx="8.3615405"
+     inkscape:cy="4.9639341"
      inkscape:document-units="px"
      inkscape:current-layer="text4292"
      showgrid="true"
      inkscape:snap-page="true"
-     showguides="false"
+     showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1861"
      inkscape:window-height="1056"
@@ -117,7 +117,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -131,16 +131,6 @@
        id="text4292"
        transform="matrix(1.0831916,0,0,1.0831916,0.04908308,-0.9313307)">
       <path
-         sodipodi:type="arc"
-         style="fill:url(#radialGradient4395);fill-opacity:1;stroke:none"
-         id="path4369"
-         sodipodi:cx="6"
-         sodipodi:cy="6"
-         sodipodi:rx="4.5"
-         sodipodi:ry="4.5"
-         d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
-         transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980237)" />
-      <path
          transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980236)"
          sodipodi:type="arc"
          style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999522999999613%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:none;fill-opacity:1;stroke:#000000;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,';stroke-opacity:1"
@@ -150,6 +140,16 @@
          sodipodi:rx="4.5"
          sodipodi:ry="4.5"
          d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z" />
+      <path
+         sodipodi:type="arc"
+         style="fill:url(#radialGradient4395);fill-opacity:1;stroke:none"
+         id="path4369"
+         sodipodi:cx="6"
+         sodipodi:cy="6"
+         sodipodi:rx="4.5"
+         sodipodi:ry="4.5"
+         d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
+         transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980237)" />
     </g>
   </g>
   <g

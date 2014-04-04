@@ -65,8 +65,8 @@ const std::string Proto::containerField = "proto";
 
 Proto::Proto (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	           X3DProto (),
-	X3DExecutionContext ()
+	X3DExecutionContext (),
+	     X3DProtoObject ()
 {
 	addField (inputOutput, "metadata", metadata ());
 
@@ -142,6 +142,12 @@ void
 Proto::setup ()
 {
 	getExecutionContext () -> addParent (this);
+}
+	
+void
+Proto::initialize ()
+{
+
 }
 
 X3DBaseNode*
@@ -436,6 +442,13 @@ Proto::toXMLStream (std::ostream & ostream) const
 	ostream
 		<< Generator::Indent
 		<< "</ProtoDeclare>";
+}
+
+void
+Proto::dispose ()
+{
+	X3DProtoObject::dispose ();
+	X3DExecutionContext::dispose ();
 }
 
 } // X3D

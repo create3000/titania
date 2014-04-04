@@ -112,9 +112,8 @@ X3DExecutionContext::X3DExecutionContext () :
 void
 X3DExecutionContext::initialize ()
 {
-	//__LOG__ << "Initialize: " << getWorldURL () << std::endl;
-
-	X3DNode::initialize ();
+	if (not initialized)
+		X3DNode::initialize ();
 
 	initialized = true;
 
@@ -132,15 +131,16 @@ X3DExecutionContext::initialize ()
 	{
 		uninitializedNodes .clear ();
 
-		// To remove this below:
+		// To remove this block and only this else block:
 		// add addUnititializedNode to Proto
 		// change SFNode copy = create ... <- replace SFNode by X3DBaseNode
 		// change addNamedNode (X3DBaseNode* const)
 		// change NamedNode constructor (X3DBaseNode* const)
+		// remove Proto copy:  getUnititializedNodes () .clear ()
+		// remove X3DExecutionContext::getUnititializedNodes
+		// changed Proto setup and initialize
 		// probably this works.
 	}
-
-	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl;
 }
 
 VersionType
@@ -591,7 +591,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return proto;
 }
 
-X3DProto*
+X3DProtoObject*
 X3DExecutionContext::findProtoDeclaration (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_X3D>,

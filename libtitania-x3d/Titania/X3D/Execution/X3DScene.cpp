@@ -48,6 +48,8 @@
  *
  ******************************************************************************/
 
+#include "../../X3D.h"
+
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
@@ -66,6 +68,17 @@ X3DScene::X3DScene () :
 	      exportedNodes (),
 	      exportedNames ()
 { }
+
+void
+X3DScene::initialize ()
+{
+	X3D::pushContext ();
+	getBrowser () -> makeCurrent ();
+
+	X3DExecutionContext::initialize ();
+
+	X3D::popContext ();
+}
 
 std::string
 X3DScene::getTitle () const
