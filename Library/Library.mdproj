@@ -2433,6 +2433,7 @@
     <None Include="Tests\Handles\SnapTarget.x3dv" />
     <None Include="Tests\Handles\OutlineEditorXXX.wrl" />
     <None Include="Tests\Basic\RuntimeNameScopeDEF.x3dv" />
+    <None Include="Tests\Scripting\URL.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

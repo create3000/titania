@@ -443,11 +443,12 @@ X3DBaseNode::removeField (const std::string & name)
 		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 		{
 			-- numUserDefinedFields;
+			field -> second -> removeParent (this);
 		}
+		else
+			shutdownOutput .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
 
 		fieldDefinitions .erase (iter);
-
-		field -> second -> removeParent (this);
 		fields .erase (field);
 	}
 }

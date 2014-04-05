@@ -9,6 +9,7 @@ Transform {
       shaders [
       
       ComposedShader {
+        field SFFloat isValid 0
         initializeOnly MFColorRGBA color [ 1 1 0 1, 1 0 0 1 ]
 
         language "GLSL"
