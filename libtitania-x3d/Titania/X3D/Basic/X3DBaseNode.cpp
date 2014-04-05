@@ -527,7 +527,23 @@ X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string
 FieldDefinitionArray
 X3DBaseNode::getPreDefinedFields () const
 {
-	return FieldDefinitionArray (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields);
+	FieldDefinitionArray predefinedFields;
+
+	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
+	{
+		try
+		{
+			getType () -> getField (field -> getName ());
+	
+			predefinedFields .emplace_back (field);
+		}
+		catch (const X3D::X3DError &)
+		{
+			// Field is not defined in ExternProto but in Proto.
+		}
+	}
+
+	return predefinedFields;
 }
 
 FieldDefinitionArray

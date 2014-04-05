@@ -533,24 +533,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 X3D::FieldDefinitionArray
 X3DOutlineTreeView::get_fields (X3D::X3DBaseNode* const node) const
 {
-	X3D::FieldDefinitionArray fields;
-
-	for (const auto & field : node -> getPreDefinedFields ())
-	{
-		try
-		{
-			node -> getType () -> getField (field -> getName ());
-			fields .emplace_back (field);
-		}
-		catch (const X3D::X3DError &)
-		{
-			// Field is not defined in ExternProto.
-		}
-	}
+	auto       fields            = node -> getPreDefinedFields ();
+	const auto userDefinedFields = node -> getUserDefinedFields ();
 
 	// If X3DNode, insert userDefined fields after metadata otherwise prepend.
-
-	const auto userDefinedFields = node -> getUserDefinedFields ();
 
 	if (dynamic_cast <X3D::X3DNode*> (node))
 		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());

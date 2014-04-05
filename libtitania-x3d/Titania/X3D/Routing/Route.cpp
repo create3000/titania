@@ -196,6 +196,9 @@ Route::disconnect ()
 	{
 		connected = false;
 
+		disconnectedOutput .processInterests ();
+		disconnectedOutput .dispose ();
+
 		if (sourceNode or destinationNode)
 		{
 			sourceNode      .dispose ();
@@ -204,9 +207,6 @@ Route::disconnect ()
 			sourceField -> removeInterest (destinationField);
 			sourceField -> removeOutputRoute (this);
 			destinationField -> removeInputRoute  (this);
-
-			disconnectedOutput .processInterests ();
-			disconnectedOutput .dispose ();
 		}
 	}
 }
