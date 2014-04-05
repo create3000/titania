@@ -39,7 +39,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
 	Titania/X3D/Browser/Notification.cpp \
-	Titania/X3D/Browser/Picking/Hit.cpp \
 	Titania/X3D/Browser/Picking/HitArray.cpp \
 	Titania/X3D/Browser/Picking/Selection.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \

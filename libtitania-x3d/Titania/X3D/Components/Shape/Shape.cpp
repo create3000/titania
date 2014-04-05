@@ -191,7 +191,7 @@ Shape::pick ()
 																			 });
 
 					if (itersection not_eq itersections .end ())
-						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this);
+						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 				}
 			}
 		}

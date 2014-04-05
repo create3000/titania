@@ -62,11 +62,9 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 { }
 
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
-	   X3DSensorNode (),
-	          fields (),
-	 modelViewMatrix (),
-	projectionMatrix (),
-	        viewport ()
+	X3DSensorNode (),
+	       fields (),
+	     matrices ()
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
 }
@@ -118,10 +116,23 @@ X3DPointingDeviceSensorNode::push ()
 	{
 		getBrowser () -> getSensors () .back () .emplace (this);
 
-		projectionMatrix = ProjectionMatrix4d ();
-		modelViewMatrix  = getModelViewMatrix () .get ();
-		viewport         = Viewport4i ();
+		auto iter = matrices .find (getCurrentLayer ());
+
+		if (iter == matrices .end ())
+		{
+			iter = matrices .emplace (getCurrentLayer (), Matrices { }) .first;
+
+			getCurrentLayer () -> shutdown () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, getCurrentLayer ());
+		}
+
+		iter -> second = Matrices { getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i () };
 	}
+}
+
+void
+X3DPointingDeviceSensorNode::eraseMatrices (X3DLayerNode* const layer)
+{
+	matrices .erase (layer);
 }
 
 } // X3D

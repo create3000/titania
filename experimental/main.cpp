@@ -211,6 +211,7 @@ using Box2f       = math::box2 <float>;
 using Box3f       = math::box3 <float>;
 using Cylinder3f  = math::cylinder3 <float>;
 using Plane3f     = math::plane3 <float>;
+using Line3d      = math::line3 <double>;
 using Line3f      = math::line3 <float>;
 using Sphere3f    = math::sphere3 <float>;
 using Matrix3f    = math::matrix3 <float>;
@@ -302,6 +303,18 @@ public:
 
 };
 
+template <class Type>
+vector3 <Type>
+mult_dir_matrix (const matrix4 <Type> & m, const vector3 <Type> & vector)
+{
+	std::clog << vector .x () << " : " << m .data () [1] << " : " << vector .y () << " : " << m .data () [5] << " : " << vector .z () << " : " << m .data () [ 9] << std::endl;
+	std::clog << vector .x () * m .data () [1] << " : " << vector .y () * m .data () [5] << " : " << vector .z () * m .data () [ 9] << std::endl;
+
+	return vector3 <Type> (vector .x () * m .data () [0] + vector .y () * m .data () [4] + vector .z () * m .data () [ 8],
+	                       vector .x () * m .data () [1] + vector .y () * m .data () [5] + vector .z () * m .data () [ 9],
+	                       vector .x () * m .data () [2] + vector .y () * m .data () [6] + vector .z () * m .data () [10]);
+}
+
 int
 main (int argc, char** argv)
 {
@@ -358,6 +371,21 @@ main (int argc, char** argv)
 
 	std::clog << b .get () << std::endl;
 	std::clog << b .get <B> () << std::endl;
+	
+//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:234: in function 'set_motion': 797.819
+Matrix4d m1 (-0.989024, -0.00441032, -0.14769, -0, -0.0442208, 0.962575, 0.267385, 0, 0.140983, 0.270982, -0.952204, -0, 1.40885, 2.73116, -9.51611, 1);
+Vector3d d1 (-0.512762, 0.23317, -0.826261);
+std::clog << mult_dir_matrix (m1, d1) << std::endl;
+//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:237: in function 'set_motion': 1.46639 2.73159 -9.37619 0.380334 0.00280351 0.924845
+//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:238: in function 'set_motion': 0 1 0 0.0241612
+
+//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:234: in function 'set_motion': -1105.39
+Matrix4d m2 (-0.989024, -0.00441032, -0.14769, -0, -0.0442208, 0.962575, 0.267385, 0, 0.140983, 0.270982, -0.952204, -0, 1.40885, 2.73116, -9.51611, 1);
+Vector3d d2 (-0.513357, 0.22842, -0.827218);
+std::clog << mult_dir_matrix (m2, d2) << std::endl;
+//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:237: in function 'set_motion': 1.46643 2.73086 -9.3764 0.380997 -0.00202579 0.924574
+//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:238: in function 'set_motion': 0 1 0 0.0241612
+
 	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

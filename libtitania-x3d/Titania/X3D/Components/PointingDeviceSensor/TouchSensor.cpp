@@ -98,12 +98,14 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 
 		if (isOver ())
 		{
+			const Matrix4d & modelViewMatrix = getMatrices () .at (hit -> layer) .modelViewMatrix;
+
 			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
 			hitNormal_changed ()   = hit -> normal;
-			hitPoint_changed ()    = hit -> point * ~getLastModelViewMatrix ();
+			hitPoint_changed ()    = hit -> point * ~modelViewMatrix;
 		}
 	}
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 

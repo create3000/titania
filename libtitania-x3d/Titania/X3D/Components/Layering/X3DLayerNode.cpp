@@ -325,6 +325,19 @@ X3DLayerNode::pick ()
 {
 	if (isPickable ())
 	{
+		if (getBrowser () -> getPickingLayer ())
+		{
+			if (getBrowser () -> getPickingLayer () not_eq this)
+				return;
+		}
+		else
+		{
+			// if x and y not in Viewport return.
+
+			if (not getBrowser () -> getHits () .empty ())
+				return;
+		}
+
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
 		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getViewport ());

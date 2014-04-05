@@ -60,17 +60,31 @@ namespace titania {
 namespace X3D {
 
 class X3DShapeNode;
+class X3DLayerNode;
 
 class Hit
 {
 public:
 
-	Hit (const double, const double,
-	     const Matrix4d &,
-	     const Line3d &,
-	     const IntersectionPtr &,
-	     const NodeSet &,
-	     X3DShapeNode* const);
+	Hit (const double x, const double y,
+	     const Matrix4d & modelViewMatrix,
+	     const Line3d & hitRay,
+	     const IntersectionPtr & intersection,
+	     const NodeSet & sensors,
+	     X3DShapeNode* const shape,
+	     X3DLayerNode* const layer) :
+		              x (x),
+		              y (y),
+		modelViewMatrix (modelViewMatrix),
+		            ray (hitRay),
+		       texCoord (intersection -> hitTexCoord),
+		         normal (intersection -> hitNormal),
+		          point (intersection -> hitPoint),
+		       distance (std::abs (point .z ())),
+		        sensors (sensors),
+		          shape (shape),
+		          layer (layer)
+	{ }
 
 	const double        x;
 	const double        y;
@@ -82,6 +96,7 @@ public:
 	const float         distance;
 	const NodeSet       sensors;
 	X3DShapeNode* const shape;
+	X3DLayerNode* const layer;
 
 };
 

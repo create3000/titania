@@ -2,6 +2,26 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* TransformTool.x3dv:
+	* Shape.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DLayerNode.cpp:
+	* GeoTouchSensor.cpp:
+	* PlaneSensor.h:
+	* PlaneSensor.cpp:
+	* TouchSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Pointer.h:
 	* Traverse.h:
 	* Proto.h:

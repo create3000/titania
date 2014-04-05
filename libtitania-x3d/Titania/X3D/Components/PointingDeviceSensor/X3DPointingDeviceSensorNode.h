@@ -62,6 +62,8 @@ class X3DPointingDeviceSensorNode :
 {
 public:
 
+	///  @name Fields
+
 	SFString &
 	description ()
 	{ return *fields .description; }
@@ -78,6 +80,8 @@ public:
 	isOver () const
 	{ return *fields .isOver; }
 
+	///  @name Event handlers
+
 	virtual
 	void
 	set_touch ()
@@ -91,11 +95,24 @@ public:
 	void
 	set_active (const HitPtr &, const bool);
 
+	///  @name Operations
+
 	void
 	push ();
 
 
 protected:
+
+	struct Matrices
+	{
+		Matrix4d modelViewMatrix;
+		Matrix4d projectionMatrix;
+		Vector4i viewport;
+	};
+
+	using MatrixIndex = std::map <X3DLayerNode*, Matrices>;
+
+	///  @name Construction
 
 	X3DPointingDeviceSensorNode ();
 
@@ -103,23 +120,24 @@ protected:
 	void
 	initialize () override;
 
-	Matrix4d
-	getLastProjectionMatrix () const
-	{ return projectionMatrix; }
+	///  @name Member access
 
-	Matrix4d
-	getLastModelViewMatrix () const
-	{ return modelViewMatrix; }
-
-	Vector4i
-	getLastViewport () const
-	{ return viewport; }
+	const MatrixIndex &
+	getMatrices () const
+	{ return matrices; }
 
 
 private:
 
+	///  @name Event handlers
+
 	void
 	set_enabled ();
+
+	void
+	eraseMatrices (X3DLayerNode* const);
+
+	///  @name Members
 
 	struct Fields
 	{
@@ -131,9 +149,7 @@ private:
 
 	Fields fields;
 
-	Matrix4d modelViewMatrix;
-	Matrix4d projectionMatrix;
-	Vector4i viewport;
+	MatrixIndex matrices;
 
 };
 

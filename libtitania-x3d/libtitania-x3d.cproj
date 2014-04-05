@@ -1103,7 +1103,6 @@
     <Compile Include="Titania\X3D\Browser\Devices\KeyDevice.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
     <Compile Include="Titania\X3D\Browser\Notification.cpp" />
-    <Compile Include="Titania\X3D\Browser\Picking\Hit.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\Selection.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />

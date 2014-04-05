@@ -157,7 +157,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getLastModelViewMatrix ();
+			inverseModelViewMatrix = ~getMatrices () .at (hit -> layer) .modelViewMatrix;
 
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
@@ -202,7 +202,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 				offset () = getAngle (rotation_changed () .getValue ());
 		}
 	}
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -225,8 +225,22 @@ CylinderSensor::set_motion (const HitPtr & hit)
 		const auto toVector = -cylinder .axis () .perpendicular_vector (trackPoint);
 		auto       rotation = Rotation4d (fromVector, toVector);
 
-		if (behind and not disk)
-			rotation .inverse ();
+		if (disk)
+		{
+			// The trackpoint can swap behind the viewpoint if viewpoint is a Viewpoint node
+			// as the viewing volume is not a cube where the picking ray goes straight up.
+			// This phenomenon is very clear on the viewport corners.
+
+			const auto trackPoint_ = trackPoint * ~inverseModelViewMatrix;
+		
+			if (trackPoint_ .z () > 0)
+				rotation *= Rotation4d (yPlane .normal (), M_PI);
+		}
+		else
+		{
+			if (behind)
+				rotation .inverse ();
+		}
 
 		rotation = startOffset * rotation;
 

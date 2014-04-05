@@ -118,7 +118,7 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getLastModelViewMatrix ();
+			inverseModelViewMatrix = ~getMatrices () .at (hit -> layer) .modelViewMatrix;
 
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 			const auto center   = Vector3d ();
@@ -139,7 +139,7 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 				offset () = rotation_changed ();
 		}
 	}
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 

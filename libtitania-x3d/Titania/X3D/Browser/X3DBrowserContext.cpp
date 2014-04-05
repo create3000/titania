@@ -78,18 +78,18 @@ static constexpr int32_t MAX_DOWNLOAD_THREADS = 4;
 X3DBrowserContext::X3DBrowserContext () :
 	                X3DBaseNode (),
 	        X3DExecutionContext (),
-	        renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
-	          browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
-	             browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
-	           javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
-	          initializedOutput (),                                        // SFTime [out]  initialized
-	               pickedOutput (),                                        // [out]  picked
-	             reshapedOutput (),                                        // [out]  reshaped
-	              sensorsOutput (),                                        // [out]  sensors
-	        prepareEventsOutput (),                                        // [out]  prepareEvents
-	            displayedOutput (),                                        // [out]  displayed
-	             finishedOutput (),                                        // [out]  finished
-	              changedOutput (),                                        // [out]  changed
+	        renderingProperties (new RenderingProperties (this)),
+	          browserProperties (new BrowserProperties   (this)),
+	             browserOptions (new BrowserOptions      (this)),
+	           javaScriptEngine (new SpiderMonkey        (this)),
+	          initializedOutput (),
+	               pickedOutput (),
+	             reshapedOutput (),
+	              sensorsOutput (),
+	        prepareEventsOutput (),
+	            displayedOutput (),
+	             finishedOutput (),
+	              changedOutput (),
 	                      clock (new chrono::system_clock <time_type> ()),
 	                     router (),
 	                   viewport (),
@@ -117,7 +117,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	             enabledSensors ({ NodeSet () }),
 	                overSensors (),
 	              activeSensors (),
-	                  selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
+	               pickingLayer (nullptr),
+	                  selection (new Selection (this)),
 	                changedTime (clock -> cycle ()),
 	               currentSpeed (0),
 	           currentFrameRate (0),
@@ -125,7 +126,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	            downloadMutexes (1),
 	              downloadMutex (),
 	               notification (new Notification (this)),
-	                    console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
+	                    console (new Console (this))
 {
 	initialized () .setName ("initialized");
 
@@ -566,9 +567,9 @@ X3DBrowserContext::getHitRay (const Matrix4d & modelViewMatrix, const Matrix4d &
 }
 
 void
-X3DBrowserContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const node)
+X3DBrowserContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
-	hits .emplace_front (new Hit (x, y, transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
+	hits .emplace_front (new Hit (x, y, transformationMatrix, hitRay, intersection, enabledSensors .back (), shape, layer));
 }
 
 void
@@ -642,7 +643,7 @@ X3DBrowserContext::motionNotifyEvent ()
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (getHits () .empty ()
-			                              ? std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr)
+			                              ? std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr)
 													: getHits () .front ());
 		}
 	}
@@ -651,6 +652,8 @@ X3DBrowserContext::motionNotifyEvent ()
 void
 X3DBrowserContext::buttonPressEvent ()
 {
+	pickingLayer = getHits () .front () -> layer;
+
 	activeSensors .assign (getHits () .front () -> sensors .begin (),
 	                       getHits () .front () -> sensors .end ());
 
@@ -674,12 +677,14 @@ X3DBrowserContext::buttonPressEvent ()
 void
 X3DBrowserContext::buttonReleaseEvent ()
 {
+	pickingLayer = nullptr;
+
 	for (const auto & node : activeSensors)
 	{
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr),
 			                                        false);
 
 		else

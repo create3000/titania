@@ -289,11 +289,15 @@ public:
 	getHitRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
 
 	void
-	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const);
+	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
 
 	const HitArray &
 	getHits () const
 	{ return hits; }
+	
+	X3DLayerNode*
+	getPickingLayer () const
+	{ return pickingLayer; }
 
 	void
 	motionNotifyEvent ();
@@ -461,6 +465,7 @@ private:
 	std::vector <NodeSet> enabledSensors;
 	MFNode                overSensors;
 	MFNode                activeSensors;
+	X3DLayerNode*         pickingLayer;
 	SelectionPtr          selection;
 
 	time_type      changedTime;

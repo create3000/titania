@@ -181,6 +181,8 @@ private:
 	Vector3d startPoint;
 	Vector3d startOffset;
 	Matrix4d modelViewMatrix;
+	Matrix4d projectionMatrix;
+	Vector4i viewport;
 	Matrix4d inverseModelViewMatrix;
 
 };

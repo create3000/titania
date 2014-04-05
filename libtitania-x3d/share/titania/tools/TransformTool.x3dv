@@ -472,7 +472,7 @@ PROTO TransformTool [
                     children [
                       DEF XRotationSensor CylinderSensor {
                         axisRotation 0 0 1 1.5708
-                        diskAngle 1.5708
+                        diskAngle 1.3
                         autoOffset FALSE
                         isActive IS isActive
                       }
@@ -517,7 +517,7 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF YRotationSensor CylinderSensor {
-                        diskAngle 1.5708
+                        diskAngle 1.3
                         autoOffset FALSE
                         isActive IS isActive
                       }
@@ -553,7 +553,7 @@ PROTO TransformTool [
                     children [
                       DEF ZRotationSensor CylinderSensor {
                         axisRotation 1 0 0 1.5708
-                        diskAngle 1.5708
+                        diskAngle 1.3
                         autoOffset FALSE
                         isActive IS isActive
                       }

@@ -80,6 +80,8 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	            startPoint (),
 	           startOffset (),
 	       modelViewMatrix (),
+	      projectionMatrix (),
+	              viewport (),
 	inverseModelViewMatrix ()
 {
 	addField (inputOutput, "metadata",            metadata ());
@@ -106,9 +108,9 @@ bool
 PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3d & trackPoint)
 throw (std::domain_error)
 {
-	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, getLastProjectionMatrix (), getLastViewport ());
+	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
 	auto       trackPoint1    = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
-	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), modelViewMatrix, getLastProjectionMatrix (), getLastViewport ());
+	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), modelViewMatrix, projectionMatrix, viewport);
 
 	return line .closest_point (trackPointLine, trackPoint);
 }
@@ -122,8 +124,12 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			modelViewMatrix        = getLastModelViewMatrix ();
-			inverseModelViewMatrix = ~getLastModelViewMatrix ();
+			const auto & matrices = getMatrices () .at (hit -> layer);
+	
+			modelViewMatrix        = matrices .modelViewMatrix;
+			projectionMatrix       = matrices .projectionMatrix;
+			viewport               = matrices .viewport;
+			inverseModelViewMatrix = ~modelViewMatrix;
 
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
@@ -188,7 +194,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 				offset () = translation_changed ();
 		}
 	}
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 
