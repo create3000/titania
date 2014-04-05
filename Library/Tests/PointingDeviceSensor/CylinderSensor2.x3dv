@@ -5,12 +5,13 @@ META "generator" "Titania V0.6.7, http://titania.create3000.de"
 DEF Wheel Transform {
   translation 4 0 0
   rotation 1 0 0 1.5708
+  scale 1 -1 1
   children [
     DEF _1 CylinderSensor {
-      offset 2.08118
+      offset 2.00997
     }
     DEF XForm Transform {
-      rotation 0 1 0 2.08118
+      rotation 0 1 0 2.00997
       children Shape {
         appearance Appearance {
           material Material { }
@@ -30,7 +31,7 @@ DEF Wheel Transform {
       }
     }
     DEF PointSet Transform {
-      translation -0.931366 -5.61722 -0.33249
+      translation -0.865576 0.5 -1.29766
       children Shape {
         appearance Appearance {
           lineProperties LineProperties {
