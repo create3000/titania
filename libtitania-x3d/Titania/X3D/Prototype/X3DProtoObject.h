@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PROTOTYPE_X3DPROTO_H__
 #define __TITANIA_X3D_PROTOTYPE_X3DPROTO_H__
 
-#include "../Components/Core/X3DNode.h"
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
@@ -60,7 +60,7 @@ class Proto;
 class X3DPrototypeInstance;
 
 class X3DProtoObject :
-	virtual public X3DNode
+	virtual public X3DBaseNode
 {
 public:
 
@@ -113,8 +113,12 @@ protected:
 
 	///  @name Construction
 
-	X3DProtoObject ();
-	
+
+	X3DProtoObject () :
+		X3DBaseNode (),
+		   comments ()
+	{ }
+
 	virtual
 	void
 	initialize () override

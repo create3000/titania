@@ -167,7 +167,7 @@ Shape::pick ()
 
 			if (getCurrentLayer () -> getViewVolumeStack () .top () .intersect (bbox))
 			{
-				const Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
+				const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
 
 				std::vector <IntersectionPtr> itersections;
 

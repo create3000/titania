@@ -7,6 +7,7 @@
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFInt32' name='xDimension'/>
       <field accessType='inputOutput' type='SFFloat' name='xSpacing'/>
       <field accessType='inputOutput' type='SFInt32' name='zDimension'/>
@@ -16,6 +17,7 @@
       <field accessType='initializeOnly' type='SFBool' name='solid'/>
     </ExternProtoDeclare>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFBool' name='enabled'/>
       <field accessType='inputOutput' type='SFTime' name='cycleInterval'/>
       <field accessType='inputOutput' type='SFVec3f' name='axis'/>
@@ -27,6 +29,7 @@
       <field accessType='outputOnly' type='SFRotation' name='rotation_changed'/>
     </ExternProtoDeclare>
     <ExternProtoDeclare name='Rotor2' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv#Rotor"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFBool' name='enabled'/>
       <field accessType='inputOutput' type='SFTime' name='cycleInterval'/>
       <field accessType='inputOutput' type='SFVec3f' name='axis'/>
@@ -38,11 +41,13 @@
       <field accessType='outputOnly' type='SFRotation' name='rotation_changed'/>
     </ExternProtoDeclare>
     <ExternProtoDeclare name='RoundedRectangle2D' url='"http://titania.create3000.de/Library/Prototypes/0.1//Geometry2D/RoundedRectangle2D.x3dv"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFFloat' name='cornerRadius'/>
       <field accessType='inputOutput' type='SFVec2f' name='size'/>
       <field accessType='initializeOnly' type='SFBool' name='solid'/>
     </ExternProtoDeclare>
     <ExternProtoDeclare name='Torus' url='"../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv", "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv", "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Torus.x3dv"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFFloat' name='minorRadius'/>
       <field accessType='inputOutput' type='SFFloat' name='majorRadius'/>
       <field accessType='inputOutput' type='SFInt32' name='minorDimension'/>
@@ -51,11 +56,13 @@
     </ExternProtoDeclare>
     <ProtoDeclare name='Children1'>
       <ProtoInterface>
+        <field accessType='inputOutput' type='SFNode' name='metadata'/>
         <field accessType='inputOutput' type='MFNode' name='children1'/>
       </ProtoInterface>
       <ProtoBody>
         <ProtoDeclare name='Children2'>
           <ProtoInterface>
+            <field accessType='inputOutput' type='SFNode' name='metadata'/>
             <field accessType='inputOutput' type='MFNode' name='children2'/>
           </ProtoInterface>
           <ProtoBody>
@@ -99,10 +106,17 @@
           center='10 0 0'/>
     </Transform>
     <ProtoInstance name='Rotor' DEF='Rotor'>
+      <fieldValue name='metadata'>
+        <MetadataDouble/>
+      </fieldValue>
       <fieldValue name='cycleInterval' value='10'/>
       <fieldValue name='loop' value='true'/>
     </ProtoInstance>
-    <ProtoInstance name='Rotor2' DEF='Rotor2'/>
+    <ProtoInstance name='Rotor2' DEF='Rotor2'>
+      <fieldValue name='metadata'>
+        <MetadataBoolean/>
+      </fieldValue>
+    </ProtoInstance>
     <ImageTexture/>
     <Transform DEF='Inline'
         translation='5.51299 0.468949 1'
@@ -136,7 +150,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 1.68235'
+          rotation='0 0 1 5.47141'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -152,7 +166,7 @@
     <Transform DEF='Sphere'
         translation='2.22045 1.17457 6.31221e-08'
         scale='0.208036 0.208036 -0.208036'>
-      <Transform DEF='_2'
+      <Transform
           translation='0.233169 0.268277 0'>
         <Shape>
           <Appearance>
@@ -163,7 +177,7 @@
                 repeatS='false'
                 repeatT='false'/>
           </Appearance>
-          <Sphere DEF='_3'/>
+          <Sphere DEF='_2'/>
         </Shape>
       </Transform>
     </Transform>
@@ -226,7 +240,7 @@
                 specularColor='0.276305 0.11431 0.139857'
                 shininess='0.127273'/>
           </Appearance>
-          <Sphere USE='_3'/>
+          <Sphere USE='_2'/>
         </Shape>
       </Transform>
     </Anchor>

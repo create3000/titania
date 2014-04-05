@@ -242,11 +242,21 @@ sub statement {
 sub externProtoDeclare {
 	my ($self, $xml) = @_;
 
+	my $metadata = {
+		userDefined   => 1,
+		appinfo       => "",
+		documentation => "",
+		accessType    => "inputOutput",
+		type          => "SFNode",
+		name          => "metadata",
+		value         => "NULL"
+	};
+
 	my $externProto = {
 		name          => $xml -> getAttribute ("name"),
 		appinfo       => $xml -> getAttribute ("appinfo"),
 		documentation => $xml -> getAttribute ("documentation"),
-		fieldIndex    => { },
+		fieldIndex    => { metadata => $metadata },
 		interface     => [ ],
 		url           => $xml -> getAttribute ("url")
 	};
@@ -269,12 +279,22 @@ sub externProtoDeclare {
 sub protoDeclare {
 	my ($self, $xml) = @_;
 
+	my $metadata = {
+		userDefined   => 1,
+		appinfo       => "",
+		documentation => "",
+		accessType    => "inputOutput",
+		type          => "SFNode",
+		name          => "metadata",
+		value         => "NULL"
+	};
+
 	my $proto = {
 		context           => $self -> {contexts} -> [0],
 		name              => $xml -> getAttribute ("name"),
 		appinfo           => $xml -> getAttribute ("appinfo"),
 		documentation     => $xml -> getAttribute ("documentation"),
-		fieldIndex        => { },
+		fieldIndex        => { metadata => $metadata },
 		interface         => [ ],
 		externProtos      => [ ],
 		externProtosIndex => { },

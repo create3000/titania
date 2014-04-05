@@ -66,7 +66,7 @@ public:
 
 	virtual
 	Vector4i
-	getViewport (int, int) const = 0;
+	getViewport (const int, const int) const = 0;
 
 	virtual
 	void

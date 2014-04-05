@@ -76,6 +76,7 @@ namespace X3D {
 static constexpr int32_t MAX_DOWNLOAD_THREADS = 4;
 
 X3DBrowserContext::X3DBrowserContext () :
+	                X3DBaseNode (),
 	        X3DExecutionContext (),
 	        renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
 	          browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
@@ -150,6 +151,7 @@ X3DBrowserContext::X3DBrowserContext () :
 void
 X3DBrowserContext::initialize ()
 {
+	X3DBaseNode::initialize ();
 	X3DExecutionContext::initialize ();
 
 	// Initialize clock
@@ -551,11 +553,11 @@ X3DBrowserContext::intersect (const Vector4i & scissor) const
 }
 
 Line3d
-X3DBrowserContext::getHitRay () const
+X3DBrowserContext::getHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
 {
 	try
 	{
-		return ViewVolume::unProjectLine (x, y, getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ());
+		return ViewVolume::unProjectLine (x, y, modelViewMatrix, projectionMatrix, viewport);
 	}
 	catch (const std::domain_error &)
 	{
@@ -800,6 +802,7 @@ X3DBrowserContext::dispose ()
 	changedOutput       .dispose ();
 
 	X3DExecutionContext::dispose ();
+	X3DBaseNode::dispose ();
 }
 
 X3DBrowserContext::~X3DBrowserContext ()

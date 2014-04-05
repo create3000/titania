@@ -85,7 +85,7 @@ const UnitArray X3DExecutionContext::standardUnits = {
 };
 
 X3DExecutionContext::X3DExecutionContext () :
-	             X3DNode (),
+	         X3DBaseNode (),
 	            worldURL (),
 	            encoding ("X3D"),
 	specificationVersion ("3.3"),
@@ -112,9 +112,6 @@ X3DExecutionContext::X3DExecutionContext () :
 void
 X3DExecutionContext::initialize ()
 {
-	if (not initialized)
-		X3DNode::initialize ();
-
 	initialized = true;
 
 	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
@@ -1062,8 +1059,6 @@ X3DExecutionContext::dispose ()
 	protos        .clear ();
 	externProtos  .clear ();
 	routes        .clear ();
-
-	X3DNode::dispose ();
 }
 
 X3DExecutionContext::~X3DExecutionContext ()

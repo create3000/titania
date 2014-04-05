@@ -70,6 +70,7 @@ const std::string X3DPrototypeInstance::containerField = "children";
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DNode (),
 	X3DExecutionContext (),
 	   protoDeclaration (prototype),
 	      savedChildren ()
@@ -145,6 +146,7 @@ X3DPrototypeInstance::initialize ()
 		importRoutes (proto);
 	}
 
+	X3DNode::initialize ();
 	X3DExecutionContext::initialize ();
 }
 
@@ -192,7 +194,7 @@ X3DPrototypeInstance::saveState ()
 	if (isSaved ())
 		return;
 
-	X3DExecutionContext::saveState ();
+	X3DBaseNode::saveState ();
 
 	// Delete children of node if not in scene
 
@@ -233,7 +235,7 @@ X3DPrototypeInstance::restoreState ()
 	if (not isSaved ())
 		return;
 
-	X3DExecutionContext::restoreState ();
+	X3DBaseNode::restoreState ();
 
 	for (const auto & child : savedChildren)
 		child -> restoreState ();
@@ -521,6 +523,7 @@ void
 X3DPrototypeInstance::dispose ()
 {
 	X3DExecutionContext::dispose ();
+	X3DNode::dispose ();
 }
 
 } // X3D

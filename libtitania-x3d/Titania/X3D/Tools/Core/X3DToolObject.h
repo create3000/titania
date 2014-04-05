@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_CORE_X3DTOOL_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Components/Networking/Inline.h"
 #include "../../Execution/Scene.h"
 #include "../../Fields.h"
 

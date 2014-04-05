@@ -82,7 +82,7 @@ using TextureUnitStack = std::stack <int32_t>;
 using TextureArray     = std::vector <int32_t>;
 
 class X3DBrowserContext :
-	public X3DExecutionContext
+	virtual public X3DBaseNode, public X3DExecutionContext
 {
 public:
 
@@ -282,11 +282,11 @@ public:
 	{ return enabledSensors; }
 
 	void
-	updateHitRay ()
-	{ hitRay = getHitRay (); }
+	setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
+	{ hitRay = getHitRay (modelViewMatrix, projectionMatrix, viewport); }
 
 	Line3d
-	getHitRay () const;
+	getHitRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
 
 	void
 	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const);

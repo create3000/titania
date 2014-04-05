@@ -62,6 +62,7 @@ namespace titania {
 namespace X3D {
 
 X3DScene::X3DScene () :
+	        X3DBaseNode (),
 	X3DExecutionContext (),
 	         compressed (false),
 	          metadatas (),
@@ -75,6 +76,7 @@ X3DScene::initialize ()
 	X3D::pushContext ();
 	getBrowser () -> makeCurrent ();
 
+	X3DBaseNode::initialize ();
 	X3DExecutionContext::initialize ();
 
 	X3D::popContext ();
@@ -545,6 +547,7 @@ X3DScene::dispose ()
 	exportedNames .clear ();
 
 	X3DExecutionContext::dispose ();
+	X3DBaseNode::dispose ();
 }
 
 } // X3D

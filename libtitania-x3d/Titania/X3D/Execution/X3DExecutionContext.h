@@ -51,12 +51,13 @@
 #ifndef __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
-#include "../Components/Core/X3DNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/UnitArray.h"
 #include "../Execution/ImportedNodeArray.h"
 #include "../Execution/NamedNodeIndex.h"
+#include "../Fields.h"
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
 #include "../Routing/Route.h"
@@ -73,7 +74,7 @@ class X3DProtoObject;
 class X3DPrototypeInstance;
 
 class X3DExecutionContext :
-	virtual public X3DNode
+	virtual public X3DBaseNode
 {
 public:
 

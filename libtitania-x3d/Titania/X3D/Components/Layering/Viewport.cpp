@@ -86,14 +86,14 @@ Viewport::create (X3DExecutionContext* const executionContext) const
 }
 
 Vector4i
-Viewport::getViewport (int width, int height) const
+Viewport::getViewport (const int width, const int height) const
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	int left   = width  * getLeft ();
-	int right  = width  * getRight ();
-	int bottom = height * getBottom ();
-	int top    = height * getTop ();
+	const int left   = width  * getLeft ();
+	const int right  = width  * getRight ();
+	const int bottom = height * getBottom ();
+	const int top    = height * getTop ();
 
 	return Vector4i (left, bottom, right - left, top - bottom);
 }

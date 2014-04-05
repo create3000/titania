@@ -64,7 +64,7 @@ using math::M_PI1_2;
 using math::M_PI2;
 using math::M_PI3_2;
 
-static constexpr double ICON_X_PAD        = 1;
+static constexpr double ICON_X_PAD        = 3;
 static constexpr double NAME_X_PAD        = 1;
 static constexpr double ACCESS_TYPE_X_PAD = 8;
 

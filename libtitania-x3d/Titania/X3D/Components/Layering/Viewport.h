@@ -106,7 +106,7 @@ public:
 
 	virtual
 	Vector4i
-	getViewport (int, int) const final override;
+	getViewport (const int, const int) const final override;
 
 	///  @name Operations
 

@@ -60,7 +60,7 @@ namespace X3D {
 class X3DProtoObject;
 
 class X3DPrototypeInstance :
-	public X3DExecutionContext
+	public X3DNode, public X3DExecutionContext
 {
 public:
 

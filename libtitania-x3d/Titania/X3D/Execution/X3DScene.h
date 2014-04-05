@@ -62,7 +62,7 @@ namespace X3D {
 using MetaDataIndex = std::multimap <std::string, std::string>;
 
 class X3DScene :
-	public X3DExecutionContext
+	virtual public X3DBaseNode, public X3DExecutionContext
 {
 public:
 

@@ -3,14 +3,15 @@
  */
 
 /*
-* {
-	-GtkTreeView-expander-size: 6;
-}
 
 GtkSeparator {
 	border-width: 1px;
 }
 */
+
+* {
+	-GtkTreeView-expander-size: 5;
+}
 
 GtkExpander > GtkLabel {
 	font-weight: bold;

@@ -65,6 +65,7 @@ const std::string Proto::containerField = "proto";
 
 Proto::Proto (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DNode (),
 	X3DExecutionContext (),
 	     X3DProtoObject ()
 {
@@ -141,6 +142,7 @@ Proto::createInstance (X3DExecutionContext* const executionContext)
 void
 Proto::initialize ()
 {
+	X3DNode::initialize ();
 	X3DExecutionContext::initialize ();
 	X3DProtoObject::initialize ();
 }
@@ -444,6 +446,7 @@ Proto::dispose ()
 {
 	X3DProtoObject::dispose ();
 	X3DExecutionContext::dispose ();
+	X3DNode::dispose ();
 }
 
 } // X3D

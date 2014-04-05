@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BITS_TRAVERSE_H__
 
 #include "../Base/X3DChildObject.h"
+#include "../Components/Core/X3DNode.h"
 #include "../Execution/Scene.h"
 
 #include "../Fields/MFNode.h"

@@ -327,7 +327,7 @@ X3DLayerNode::pick ()
 	{
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
-		getBrowser ()   -> updateHitRay ();
+		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getViewport ());
 		getViewpoint () -> transform ();
 
 		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());

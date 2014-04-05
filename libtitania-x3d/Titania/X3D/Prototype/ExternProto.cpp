@@ -68,6 +68,7 @@ const std::string ExternProto::containerField = "externProto";
 
 ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DNode (),
  X3DProtoObject (),
 	X3DUrlObject (),
 	       scene (),
@@ -131,7 +132,7 @@ ExternProto::createInstance (X3DExecutionContext* const executionContext)
 void
 ExternProto::initialize ()
 {
-	X3DBaseNode::initialize ();
+	X3DNode::initialize ();
 	X3DProtoObject::initialize ();
 	X3DUrlObject::initialize ();
 
@@ -424,7 +425,7 @@ ExternProto::dispose ()
 {
 	X3DUrlObject::dispose ();
 	X3DProtoObject::dispose ();
-	X3DBaseNode::dispose ();
+	X3DNode::dispose ();
 
 	removeChildren (url ());
 }

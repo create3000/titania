@@ -122,62 +122,62 @@ class Appearance;
 class Material;
 class TwoSidedMaterial;
 
-// Extern instantiations of required templates
-
-extern template class X3DPtr <BrowserApplication>;
-extern template class X3DPtr <Browser>;
-extern template class X3DPtr <RenderingProperties>;
-extern template class X3DPtr <BrowserProperties>;
-extern template class X3DPtr <BrowserOptions>;
-extern template class X3DPtr <X3DJavaScriptEngine>;
-extern template class X3DPtr <Selection>;
-extern template class X3DPtr <Notification>;
-extern template class X3DPtr <Console>;
-
+//// Extern instantiations of required templates
 //
-extern template class X3DPtr <World>;
-extern template class X3DPtr <Scene>;
-extern template class X3DPtr <X3DExecutionContext>;
-extern template class X3DPtr <Proto>;
-extern template class X3DPtr <X3DProtoObject>;
-extern template class X3DPtr <X3DPrototypeInstance>;
-extern template class X3DPtr <ExternProto>;
-extern template class X3DPtr <NamedNode>;
-extern template class X3DPtr <ImportedNode>;
-extern template class X3DPtr <Route>;
-extern template class X3DPtr <ExportedNode>;
-
+//extern template class X3DPtr <BrowserApplication>;
+//extern template class X3DPtr <Browser>;
+//extern template class X3DPtr <RenderingProperties>;
+//extern template class X3DPtr <BrowserProperties>;
+//extern template class X3DPtr <BrowserOptions>;
+//extern template class X3DPtr <X3DJavaScriptEngine>;
+//extern template class X3DPtr <Selection>;
+//extern template class X3DPtr <Notification>;
+//extern template class X3DPtr <Console>;
 //
-extern template class X3DPtr <LayerSet>;
-extern template class X3DPtr <X3DLayerNode>;
-extern template class X3DPtr <NavigationInfoStack>;
-extern template class X3DPtr <BackgroundStack>;
-extern template class X3DPtr <FogStack>;
-extern template class X3DPtr <ViewpointStack>;
-extern template class X3DPtr <NavigationInfoList>;
-extern template class X3DPtr <BackgroundList>;
-extern template class X3DPtr <FogList>;
-extern template class X3DPtr <ViewpointList>;
-extern template class X3DPtr <NavigationInfo>;
-extern template class X3DPtr <X3DBackgroundNode>;
-extern template class X3DPtr <Fog>;
-extern template class X3DPtr <X3DViewpointNode>;
-extern template class X3DPtr <X3DViewportNode>;
-extern template class X3DPtr <X3DLayoutNode>;
-
+////
+//extern template class X3DPtr <World>;
+//extern template class X3DPtr <Scene>;
+//extern template class X3DPtr <X3DExecutionContext>;
+//extern template class X3DPtr <Proto>;
+//extern template class X3DPtr <X3DProtoObject>;
+//extern template class X3DPtr <X3DPrototypeInstance>;
+//extern template class X3DPtr <ExternProto>;
+//extern template class X3DPtr <NamedNode>;
+//extern template class X3DPtr <ImportedNode>;
+//extern template class X3DPtr <Route>;
+//extern template class X3DPtr <ExportedNode>;
 //
-extern template class X3DPtr <X3DNode>;
-extern template class X3DPtr <Group>;
-extern template class X3DPtr <Transform>;
-extern template class X3DPtr <X3DTransformNode>;
-extern template class X3DPtr <X3DTransformMatrix4DNode>;
-extern template class X3DPtr <X3DGroupingNode>;
-extern template class X3DPtr <Inline>;
-
+////
+//extern template class X3DPtr <LayerSet>;
+//extern template class X3DPtr <X3DLayerNode>;
+//extern template class X3DPtr <NavigationInfoStack>;
+//extern template class X3DPtr <BackgroundStack>;
+//extern template class X3DPtr <FogStack>;
+//extern template class X3DPtr <ViewpointStack>;
+//extern template class X3DPtr <NavigationInfoList>;
+//extern template class X3DPtr <BackgroundList>;
+//extern template class X3DPtr <FogList>;
+//extern template class X3DPtr <ViewpointList>;
+//extern template class X3DPtr <NavigationInfo>;
+//extern template class X3DPtr <X3DBackgroundNode>;
+//extern template class X3DPtr <Fog>;
+//extern template class X3DPtr <X3DViewpointNode>;
+//extern template class X3DPtr <X3DViewportNode>;
+//extern template class X3DPtr <X3DLayoutNode>;
 //
-extern template class X3DPtr <Appearance>;
-extern template class X3DPtr <Material>;
-extern template class X3DPtr <TwoSidedMaterial>;
+////
+//extern template class X3DPtr <X3DNode>;
+//extern template class X3DPtr <Group>;
+//extern template class X3DPtr <Transform>;
+//extern template class X3DPtr <X3DTransformNode>;
+//extern template class X3DPtr <X3DTransformMatrix4DNode>;
+//extern template class X3DPtr <X3DGroupingNode>;
+//extern template class X3DPtr <Inline>;
+//
+////
+//extern template class X3DPtr <Appearance>;
+//extern template class X3DPtr <Material>;
+//extern template class X3DPtr <TwoSidedMaterial>;
 
 // typedef's
 
