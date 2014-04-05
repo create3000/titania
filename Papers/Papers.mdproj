@@ -221,6 +221,23 @@
     <None Include="CosmoWorlds\icons\node.0.1.png" />
     <None Include="CosmoWorlds\icons\node.1.0.png" />
     <None Include="CosmoWorlds\icons\node.1.1.png" />
+    <None Include="CosmoWorlds\icons\AccessType\initializeOnly.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOnly.0.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOnly.1.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOnly.2.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.0.0.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.0.1.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.0.2.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.1.0.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.1.1.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.1.2.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.2.0.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.2.1.png" />
+    <None Include="CosmoWorlds\icons\AccessType\inputOutput.2.2.png" />
+    <None Include="CosmoWorlds\icons\AccessType\outputOnly.0.png" />
+    <None Include="CosmoWorlds\icons\AccessType\outputOnly.1.png" />
+    <None Include="CosmoWorlds\icons\AccessType\outputOnly.2.png" />
+    <None Include="CosmoWorlds\icons\AccessType\AccessTypes.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

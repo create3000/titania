@@ -437,7 +437,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			if (get_shift_key () or is_full_expanded (iter))
 			{
 				expand_routes (iter, field);
-				is_full_expanded (iter, true);
+				is_full_expanded (iter, iter -> children () .size ());
 			}
 			else
 				is_full_expanded (iter, false);
@@ -456,7 +456,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					if (mfnode -> empty () and not is_full_expanded (iter))
 					{
 						expand_routes (iter, field);
-						is_full_expanded (iter, true);
+						is_full_expanded (iter, iter -> children () .size ());
 					}
 
 					for (auto & value : *mfnode)

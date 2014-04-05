@@ -1,5 +1,26 @@
 2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.cpp:
+	* inputOnly.1.png:
+	* inputOnly.2.png:
+	* inputOnly.0.png:
+	* outputOnly.0.png:
+	* outputOnly.1.png:
+	* outputOnly.2.png:
+	* inputOutput.2.0.png:
+	* inputOutput.2.1.png:
+	* inputOutput.2.2.png:
+	* inputOutput.1.2.png:
+	* inputOutput.0.1.png:
+	* inputOutput.0.0.png:
+	* inputOutput.0.2.png:
+	* inputOutput.1.1.png:
+	* inputOutput.1.0.png:
+	* OutlineCellRenderer.cpp: 
+
+2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* style.css:
 	* X3DBaseNode.svg:
 	* OutlineCellRenderer.cpp: 

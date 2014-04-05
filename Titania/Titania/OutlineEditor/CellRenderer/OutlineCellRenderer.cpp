@@ -66,7 +66,7 @@ using math::M_PI3_2;
 
 static constexpr double ICON_X_PAD        = 3;
 static constexpr double NAME_X_PAD        = 1;
-static constexpr double ACCESS_TYPE_X_PAD = 8;
+static constexpr double ACCESS_TYPE_X_PAD = 5;
 
 static constexpr double INPUT_WIDTH      = 13;   // Depends on image
 static constexpr double OUTPUT_WIDTH     = 14;   // Depends on image
@@ -971,6 +971,8 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	context -> set_operator (Cairo::OPERATOR_OVER);
 	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 
+	constexpr double radius = 5.5;
+
 	switch (get_data_type ())
 	{
 		case OutlineIterType::X3DField:
@@ -980,7 +982,12 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
 			{
-				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+				context -> begin_new_sub_path ();
+				context -> arc_negative (field_x + radius, field_y + radius, radius, M_PI3_2, M_PI1_2);
+				context -> rel_line_to (FIELD_WIDTH - radius, 0);
+				context -> rel_line_to (0, -field_height);
+	
+				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 				context -> fill ();
 			}
 
@@ -991,7 +998,12 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
 			{
-				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+				context -> begin_new_sub_path ();
+				context -> arc_negative (field_x + FIELD_WIDTH - radius, field_y + radius, radius, M_PI1_2, M_PI3_2);
+				context -> rel_line_to (-(FIELD_WIDTH - radius), 0);
+				context -> rel_line_to (0, field_height);
+	
+				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 				context -> fill ();
 			}
 
@@ -1001,7 +1013,12 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		{
 			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
 			{
-				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+				context -> begin_new_sub_path ();
+				context -> arc_negative (field_x + radius, field_y + radius, radius, M_PI3_2, M_PI1_2);
+				context -> rel_line_to (FIELD_WIDTH - radius, 0);
+				context -> rel_line_to (0, -field_height);
+	
+				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 				context -> fill ();
 			}
 
@@ -1011,7 +1028,12 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		{
 			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
 			{
-				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+				context -> begin_new_sub_path ();
+				context -> arc_negative (field_x + FIELD_WIDTH - radius, field_y + radius, radius, M_PI1_2, M_PI3_2);
+				context -> rel_line_to (-(FIELD_WIDTH - radius), 0);
+				context -> rel_line_to (0, field_height);
+	
+				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 				context -> fill ();
 			}
 

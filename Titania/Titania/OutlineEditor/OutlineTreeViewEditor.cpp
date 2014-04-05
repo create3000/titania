@@ -409,6 +409,43 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 						break;
 				}
 			}
+			case OutlineIterType::X3DInputRoute:
+			case OutlineIterType::X3DOutputRoute:
+			{
+				overUserData = data -> get_user_data ();
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					{
+						if (not matchingAccessType)
+						{
+							overUserData -> selected |= OUTLINE_OVER_INPUT;
+							get_model () -> row_changed (path, iter);
+							return true;
+						}
+
+						break;
+					}
+					case OutlineCellContent::OUTPUT:
+					{
+						if (not matchingAccessType)
+						{
+							overUserData -> selected |= OUTLINE_OVER_OUTPUT;
+							get_model () -> row_changed (path, iter);
+							return true;
+						}
+
+						break;
+					}
+					default:
+						break;
+				}
+			}
 			default:
 				break;
 		}
