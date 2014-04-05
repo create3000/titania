@@ -484,7 +484,7 @@ PROTO TransformTool [
                             children Shape {
                               appearance USE Transparent
                               geometry Cylinder {
-                                height 0.01
+                                height 0.02
                               }
                             }
                           }

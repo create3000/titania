@@ -1,5 +1,9 @@
 2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformTool.x3dv: 
+
+2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Hit.h:
