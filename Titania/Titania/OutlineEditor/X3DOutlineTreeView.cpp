@@ -495,7 +495,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					}
 					else
 					{
-						bool visibles = false;
+						bool visibleFields = false;
 
 						for (const auto & field : get_fields (node))
 						{
@@ -513,10 +513,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 							}
 
 							get_model () -> append (iter, OutlineIterType::X3DField, field);
-							visibles = true;
+							visibleFields = true;
 						}
 
-						if (not visibles)
+						if (not visibleFields)
 						{
 							for (const auto & field : get_fields (node))
 								get_model () -> append (iter, OutlineIterType::X3DField, field);
@@ -533,7 +533,23 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 X3D::FieldDefinitionArray
 X3DOutlineTreeView::get_fields (X3D::X3DBaseNode* const node) const
 {
-	auto       fields            = node -> getPreDefinedFields ();
+	X3D::FieldDefinitionArray fields;
+
+	for (const auto & field : node -> getPreDefinedFields ())
+	{
+		try
+		{
+			node -> getType () -> getField (field -> getName ());
+			fields .emplace_back (field);
+		}
+		catch (const X3D::X3DError &)
+		{
+			// Field is not defined in ExternProto.
+		}
+	}
+
+	// If X3DNode, insert userDefined fields after metadata otherwise prepend.
+
 	const auto userDefinedFields = node -> getUserDefinedFields ();
 
 	if (dynamic_cast <X3D::X3DNode*> (node))
