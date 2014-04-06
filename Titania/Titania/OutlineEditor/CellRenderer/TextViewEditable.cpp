@@ -73,14 +73,30 @@ TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
 	const auto separator = Gtk::manage (new Gtk::SeparatorMenuItem ());
 
 	separator -> show ();
+	menu -> append (*separator);
+	
+	if (field -> getType () == X3D::X3DConstants::SFBool)
+	{
+		const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Toggle Value")));
+
+		toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_toggle_value));
+		toggleMenuItem -> show ();
+		menu -> append (*toggleMenuItem);
+	}
 
 	const auto resetMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Reset To Default Value")));
 
 	resetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_reset_activate));
 	resetMenuItem -> show ();
-
-	menu -> append (*separator);
 	menu -> append (*resetMenuItem);
+}
+
+void
+TextViewEditable::on_toggle_value ()
+{
+	set_text (*static_cast <X3D::SFBool*> (field) ? "FALSE" : "TRUE");
+		
+	editing_done ();
 }
 
 void

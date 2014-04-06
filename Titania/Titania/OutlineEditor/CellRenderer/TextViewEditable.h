@@ -87,6 +87,9 @@ private:
 	on_textview_populate_popup (Gtk::Menu*);
 
 	void
+	on_toggle_value ();
+	
+	void
 	on_reset_activate ();
 	
 	virtual
