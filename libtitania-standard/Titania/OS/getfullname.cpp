@@ -48,23 +48,39 @@
  *
  ******************************************************************************/
 
-#include "System.h"
+#include "getfullname.h"
 
-#include "../String/join.h"
-#include "../String/split.h"
+#include "env.h"
+
+#include <errno.h>
+#include <pwd.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
 
 namespace titania {
 namespace os {
-namespace system_utility {
 
 std::string
-escape_argument (const std::string & argument)
+getfullname ()
 {
-	const auto array = basic::split (argument, " ");
-
-	return basic::join (array, "\\ ");
+	return getfullname (env ("USER"));
 }
 
-} // system_utility
+std::string
+getfullname (const std::string & username)
+{
+	errno = 0;
+
+	struct passwd* p = getpwnam (username .c_str ());
+
+	if (p == nullptr or errno)
+		return "";
+
+	const size_t size = strcspn (p -> pw_gecos, ",");
+
+	return std::string (p -> pw_gecos, p -> pw_gecos + size);
+}
+
 } // os
 } // titania

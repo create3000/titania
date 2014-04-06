@@ -48,85 +48,26 @@
  *
  ******************************************************************************/
 
-#include "FindDataFile.h"
+#include "env.h"
 
-#include <giomm/file.h>
-#include <glibmm/miscutils.h>
-#include <glibmm/refptr.h>
+#include <cstdlib>
+#include <stdlib.h>
 
 namespace titania {
 namespace os {
 
-typedef Glib::RefPtr <Gio::File> File;
-
-typedef std::deque <File> FileArray;
-
-static
-File
-find_file (const std::string & file, const FileArray & directories);
-
-static
-const FileArray &
-get_data_directories ();
-
-static
-FileArray
-create_data_directories ();
-
 std::string
-find_data_file (const std::string & file)
+env (const std::string & value)
 {
-	try
-	{
-		return find_file (file, get_data_directories ()) -> get_path ();
-	}
-	catch (const std::ios_base::failure & exception)
-	{
-		throw std::ios_base::failure (exception);
-	}
+	char* string = std::getenv (value .c_str ());
+
+	return string ? string : "";
 }
 
-static
-File
-find_file (const std::string & file, const FileArray & directories)
+void
+env (const std::string & key, const std::string & value)
 {
-	for (const auto & directory : directories)
-	{
-		File fullPath = directory -> resolve_relative_path (file);
-
-		if (fullPath -> query_exists ())
-			return fullPath;
-	}
-
-	std::string dirs;
-
-	for (auto d : directories)
-		dirs += "  " + d -> get_path () + "\n";
-
-	throw std::ios_base::failure ("Error: Couldn't find '" + file + "' in specified directories:\n" + dirs);
-}
-
-static
-const FileArray &
-get_data_directories ()
-{
-	static const FileArray directories = create_data_directories ();
-
-	return directories;
-}
-
-static
-FileArray
-create_data_directories ()
-{
-	FileArray directories;
-
-	directories .emplace_back (Gio::File::create_for_path (Glib::get_user_data_dir ()));
-
-	for (int i = 0; g_get_system_data_dirs () [i]; ++ i)
-		directories .emplace_back (Gio::File::create_for_path (g_get_system_data_dirs () [i]));
-
-	return directories;
+	setenv (key .c_str (), value .c_str (), 1);
 }
 
 } // os

@@ -48,23 +48,23 @@
  *
  ******************************************************************************/
 
-#include "IsDirectory.h"
+#include "system.h"
 
-#include <sys/stat.h>
+#include "../String/join.h"
+#include "../String/split.h"
 
 namespace titania {
 namespace os {
+namespace system_utility {
 
-size_t
-file_size (const std::string & pathname)
+std::string
+escape_argument (const std::string & argument)
 {
-	static struct stat sb;
-	
-	if (stat (pathname .c_str (), &sb) == 0)
-		return sb .st_size;
+	const auto array = basic::split (argument, " ");
 
-	return 0;
+	return basic::join (array, "\\ ");
 }
 
+} // system_utility
 } // os
 } // titania

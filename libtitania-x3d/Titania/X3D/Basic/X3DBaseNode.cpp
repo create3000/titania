@@ -814,6 +814,8 @@ throw (Error <INVALID_X3D>,
 void
 X3DBaseNode::toStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	if (Generator::IsSharedNode (this))
 	{
 		ostream << "NULL";
@@ -1162,6 +1164,8 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 void
 X3DBaseNode::toXMLStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	if (Generator::IsSharedNode (this))
 	{
 		ostream

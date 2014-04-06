@@ -60,7 +60,7 @@ extern "C"
 }
 
 #include <Titania/LOG.h>
-#include <Titania/OS/System.h>
+#include <Titania/OS/system.h>
 
 using namespace titania;
 using namespace titania::X3D;

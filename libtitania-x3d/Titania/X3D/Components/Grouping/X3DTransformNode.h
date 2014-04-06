@@ -142,10 +142,6 @@ protected:
 
 private:
 
-	static
-	bool
-	isUniform (const Vector3f &);
-
 	///  @name Members
 
 	struct Fields

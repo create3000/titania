@@ -91,6 +91,8 @@ void
 ihttpstream::send ()
 {
 	std::ostringstream request;
+	
+	request .imbue (std::locale::classic ());
 
 	request
 		<< methods [http_method] << " " << url () .path (true) << " HTTP/1.0\r\n"
@@ -118,6 +120,7 @@ void
 ihttpstream::parse_status_line ()
 {
 	std::stringstream line;
+	line .imbue (std::locale::classic ());
 
 	get (*line .rdbuf (), widen ('\n'));
 
@@ -128,6 +131,7 @@ ihttpstream::parse_status_line ()
 	sentry s (line);
 
 	std::ostringstream oss_reason;
+	oss_reason .imbue (std::locale::classic ());
 	oss_reason << line .rdbuf ();
 
 	response_reason = oss_reason .str ();

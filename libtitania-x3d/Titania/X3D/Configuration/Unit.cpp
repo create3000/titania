@@ -81,6 +81,8 @@ Unit::operator = (const Unit & unit)
 void
 Unit::toStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	ostream
 		<< "UNIT"
 		<< Generator::Space
@@ -95,6 +97,8 @@ Unit::toStream (std::ostream & ostream) const
 void
 Unit::toXMLStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	ostream
 		<< Generator::Indent
 		<< "<unit"

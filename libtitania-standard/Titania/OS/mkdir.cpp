@@ -48,24 +48,17 @@
  *
  ******************************************************************************/
 
-#include "LoadFile.h"
+#include "mkdir.h"
 
-#include <fstream>
-#include <sstream>
+#include <sys/stat.h>
 
 namespace titania {
 namespace os {
 
-std::string
-load_file (const std::string & filename)
+bool
+mkdir (const std::string & path)
 {
-	std::ifstream ifstream (filename);
-
-	std::ostringstream osstream;
-
-	osstream << ifstream .rdbuf ();
-
-	return osstream .str ();
+	return ::mkdir (path .c_str (), 0700) not_eq - 1;
 }
 
 } // os

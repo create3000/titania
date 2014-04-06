@@ -41,6 +41,8 @@ componentIndex ()
 
 	const X3D::ComponentInfoArray & components = browser -> getSupportedComponents ();
 
+	std::cout .imbue (std::locale::classic ());
+
 	for (const auto & component : components)
 	{
 		std::cout << component -> getName () << std::endl;
@@ -53,6 +55,8 @@ int
 nodeIndex ()
 {
 	X3D::Generator::Style ("compact");
+
+	std::cout .imbue (std::locale::classic ());
 
 	for (const auto & node : X3D::getBrowser () -> getSupportedNodes ())
 	{
@@ -98,6 +102,8 @@ nodeIndex ()
 int
 x3d ()
 {
+	std::cout .imbue (std::locale::classic ());
+
 	for (const auto & node : X3D::getBrowser () -> getSupportedNodes ())
 		std::cout << node << std::endl;
 
@@ -108,6 +114,8 @@ int
 fields ()
 {
 	X3D::Generator::Style ("compact");
+
+	std::cout .imbue (std::locale::classic ());
 
 	for (const auto & field : X3D::getBrowser () -> getSupportedFields ())
 	{

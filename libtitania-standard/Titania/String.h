@@ -54,3 +54,4 @@
 #include "String/strfsize.h"
 #include "String/sprintf.h"
 #include "String/naturally_compare.h"
+#include "String/to_string.h"

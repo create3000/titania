@@ -167,7 +167,7 @@ get_field_value (X3D::X3DFieldDefinition* const field, const bool ellipsize)
 			return array_to_string (*static_cast <X3D::MFVec4f*> (field), ellipsize);
 
 		default:
-			return field -> toString ();
+			return field -> toString (std::locale ());
 	}
 }
 

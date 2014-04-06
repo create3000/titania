@@ -275,6 +275,8 @@ ExternProto::rewrite (Loader & loader)
 void
 ExternProto::toStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	if (not getComments () .empty ())
 	{
 		for (const auto & comment : getComments ())
@@ -433,6 +435,8 @@ ExternProto::dispose ()
 void
 ExternProto::toXMLStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	ostream
 		<< Generator::Indent
 		<< "<ExternProtoDeclare"

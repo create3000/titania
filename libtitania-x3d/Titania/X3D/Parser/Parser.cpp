@@ -132,6 +132,8 @@ Parser::getMessageFromError (const X3DError & error)
 	filter_bad_utf8_characters (string);
 
 	std::ostringstream stringstream;
+	
+	stringstream .imbue (std::locale::classic ());
 
 	try
 	{
@@ -288,6 +290,8 @@ void
 Parser::x3dScene ()
 {
 	//__LOG__ << this << " " << std::endl;
+
+	istream .imbue (std::locale::classic ());
 
 	pushExecutionContext (scene);
 

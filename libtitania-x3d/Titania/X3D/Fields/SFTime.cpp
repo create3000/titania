@@ -50,6 +50,8 @@
 
 #include "SFTime.h"
 
+#include <iomanip>
+
 namespace titania {
 namespace X3D {
 
@@ -71,14 +73,48 @@ SFTime::SFTime (const time_type value) :
 std::string
 SFTime::toLocaleString () const
 {
+//	const std::time_t time = getValue ();
+//
+//	std::ostringstream ostream;
+//	
+//	ostream << std::put_time (std::localtime (&time), "%a, %d %b %Y %H:%M:%S %Z");
+//
+//	return ostream .str ();
+
+
 	constexpr size_t BUFFER_SIZE = 128;
 
-	time_t time = getValue ();
+	const std::time_t time = getValue ();
 
 	char   buffer [BUFFER_SIZE];
-	size_t size = std::strftime (buffer, BUFFER_SIZE, "%a, %d %b %Y %H:%M:%S %Z", std::localtime (&time));
+	const size_t size = std::strftime (buffer, BUFFER_SIZE, "%a, %d %b %Y %H:%M:%S %Z", std::localtime (&time));
+	const std::string string (buffer, buffer + size);
 
-	std::string string (buffer, buffer + size);
+	return string;
+}
+
+std::string
+SFTime::toUTCString () const
+{
+//	const std::time_t time = getValue ();
+//
+//	std::ostringstream ostream;
+//
+//	ostream .imbue (std::locale::classic ());
+//	ostream << std::put_time (std::gmtime (&time), "%a, %d %b %Y %H:%M:%S %Z");
+//
+//	return ostream .str ();
+
+	constexpr size_t BUFFER_SIZE = 128;
+
+	const auto        locale = std::locale::global (std::locale::classic ());
+	const std::time_t time   = getValue ();
+
+	char buffer [BUFFER_SIZE];
+	const size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::gmtime (&time));
+	const std::string string (buffer, buffer + size);
+
+	std::locale::global (locale);
 
 	return string;
 }

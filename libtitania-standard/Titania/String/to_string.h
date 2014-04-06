@@ -51,6 +51,9 @@
 #ifndef __TITANIA_STRING_TO_STRING_H__
 #define __TITANIA_STRING_TO_STRING_H__
 
+#include <locale>
+#include <sstream>
+
 namespace titania {
 namespace basic {
 
@@ -59,6 +62,7 @@ std::string
 to_string (const int value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -68,6 +72,7 @@ std::string
 to_string (const long value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -77,6 +82,7 @@ std::string
 to_string (const long long value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -86,6 +92,7 @@ std::string
 to_string (const unsigned value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -95,6 +102,7 @@ std::string
 to_string (const unsigned long value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -104,6 +112,7 @@ std::string
 to_string (const unsigned long long value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -113,6 +122,7 @@ std::string
 to_string (const float value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -122,6 +132,7 @@ std::string
 to_string (const double value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -131,6 +142,7 @@ std::string
 to_string (const long double value)
 {
 	std::ostringstream ostream;
+	ostream .imbue (std::locale::classic ());
 	ostream << value;
 	return ostream .str ();
 }
@@ -143,11 +155,11 @@ template <
 std::basic_string <CharT, Traits, Allocator>
 to_string (std::basic_istream <CharT, Traits> & istream)
 {
-	std::basic_ostringstream <CharT, Traits, Allocator> ostringstream;
+	std::basic_ostringstream <CharT, Traits, Allocator> ostream;
 
-	ostringstream << istream .rdbuf ();
+	ostream << istream .rdbuf ();
 
-	return ostringstream .str ();
+	return ostream .str ();
 }
 
 } // basic

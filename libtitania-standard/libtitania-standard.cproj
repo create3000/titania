@@ -66,11 +66,6 @@
     <None Include="Titania\Math\Geometry\Line3.h" />
     <None Include="Titania\Math\Geometry\Plane3.h" />
     <None Include="Titania\Math\Geometry\Sphere3.h" />
-    <None Include="Titania\OS\Env.h" />
-    <None Include="Titania\OS\FindDataFile.h" />
-    <None Include="Titania\OS\System.h" />
-    <None Include="Titania\OS\CWD.h" />
-    <None Include="Titania\OS\Home.h" />
     <None Include="Titania\LOG.h" />
     <None Include="Titania\Chrono\SystemClock.h" />
     <None Include="Titania\Chrono\ClockBase.h" />
@@ -94,9 +89,6 @@
     <None Include="Titania\Math\Geometry\Box2.h" />
     <None Include="Titania\Math\Geometry\Box3.h" />
     <None Include="Titania\Math\Image.h" />
-    <None Include="Titania\OS\IsDirectory.h" />
-    <None Include="Titania\OS\IsFile.h" />
-    <None Include="Titania\OS\Mkdir.h" />
     <None Include="Titania\Math\Constants.h" />
     <None Include="Titania\Math\Functional.h" />
     <None Include="Titania\Physics\Constants.h" />
@@ -111,11 +103,7 @@
     <None Include="Titania\Math\Algorithms\SquadInterpolator.h" />
     <None Include="Titania\Basic\ReferenceIterator.h" />
     <None Include="Titania\Backtrace.h" />
-    <None Include="Titania\OS\FileSize.h" />
-    <None Include="Titania\OS\LoadFile.h" />
     <None Include="Titania\Chrono.h" />
-    <None Include="Titania\OS\FileExists.h" />
-    <None Include="Titania\OS\Popen2.h" />
     <None Include="Titania\String\sprintf.h" />
     <None Include="Titania\String\join.h" />
     <None Include="Titania\String\split.h" />
@@ -135,6 +123,19 @@
     <None Include="Titania\Math\Utility\MatrixStack.h" />
     <None Include="Titania\Math\Geometry\Camera.h" />
     <None Include="Titania\Geospatial\Interpolation.h" />
+    <None Include="Titania\OS\getfullname.h" />
+    <None Include="Titania\OS\cwd.h" />
+    <None Include="Titania\OS\env.h" />
+    <None Include="Titania\OS\file_exists.h" />
+    <None Include="Titania\OS\file_size.h" />
+    <None Include="Titania\OS\find_data_file.h" />
+    <None Include="Titania\OS\home.h" />
+    <None Include="Titania\OS\is_directory.h" />
+    <None Include="Titania\OS\is_file.h" />
+    <None Include="Titania\OS\load_file.h" />
+    <None Include="Titania\OS\mkdir.h" />
+    <None Include="Titania\OS\popen2.h" />
+    <None Include="Titania\OS\system.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -151,11 +152,6 @@
     <Compile Include="Titania\Math\Geometry\Line3.cpp" />
     <Compile Include="Titania\Math\Geometry\Plane3.cpp" />
     <Compile Include="Titania\Math\Geometry\Sphere3.cpp" />
-    <Compile Include="Titania\OS\Env.cpp" />
-    <Compile Include="Titania\OS\FindDataFile.cpp" />
-    <Compile Include="Titania\OS\System.cpp" />
-    <Compile Include="Titania\OS\CWD.cpp" />
-    <Compile Include="Titania\OS\Home.cpp" />
     <Compile Include="Titania\Chrono\SystemClock.cpp" />
     <Compile Include="Titania\Chrono\ClockBase.cpp" />
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
@@ -166,9 +162,6 @@
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
     <Compile Include="Titania\Math\Image.cpp" />
-    <Compile Include="Titania\OS\IsDirectory.cpp" />
-    <Compile Include="Titania\OS\IsFile.cpp" />
-    <Compile Include="Titania\OS\Mkdir.cpp" />
     <Compile Include="Titania\Math\Geometry\Cylinder3.cpp" />
     <Compile Include="Titania\InputOutput\Character.cpp" />
     <Compile Include="Titania\InputOutput\Comment.cpp" />
@@ -177,10 +170,6 @@
     <Compile Include="Titania\InputOutput\String.cpp" />
     <Compile Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.cpp" />
     <Compile Include="Titania\Math\Algorithms\SquadInterpolator.cpp" />
-    <Compile Include="Titania\OS\FileSize.cpp" />
-    <Compile Include="Titania\OS\LoadFile.cpp" />
-    <Compile Include="Titania\OS\FileExists.cpp" />
-    <Compile Include="Titania\OS\Popen2.cpp" />
     <Compile Include="Titania\Backtrace.cpp" />
     <Compile Include="Titania\String\sprintf.cpp" />
     <Compile Include="Titania\String\split.cpp" />
@@ -192,6 +181,19 @@
     <Compile Include="Titania\Geospatial\UniversalTransverseMercator.cpp" />
     <Compile Include="Titania\Geospatial\BasicConverter.cpp" />
     <Compile Include="Titania\Math\Utility\MatrixStack.cpp" />
+    <Compile Include="Titania\OS\getfullname.cpp" />
+    <Compile Include="Titania\OS\cwd.cpp" />
+    <Compile Include="Titania\OS\env.cpp" />
+    <Compile Include="Titania\OS\file_exists.cpp" />
+    <Compile Include="Titania\OS\file_size.cpp" />
+    <Compile Include="Titania\OS\find_data_file.cpp" />
+    <Compile Include="Titania\OS\home.cpp" />
+    <Compile Include="Titania\OS\is_directory.cpp" />
+    <Compile Include="Titania\OS\is_file.cpp" />
+    <Compile Include="Titania\OS\load_file.cpp" />
+    <Compile Include="Titania\OS\mkdir.cpp" />
+    <Compile Include="Titania\OS\popen2.cpp" />
+    <Compile Include="Titania\OS\system.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

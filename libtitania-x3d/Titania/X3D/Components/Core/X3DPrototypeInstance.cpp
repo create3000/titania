@@ -260,6 +260,8 @@ void
 X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 //throw (Error <DISPOSED>)
 {
+	ostream .imbue (std::locale::classic ());
+
 	if (Generator::IsSharedNode (this))
 	{
 		ostream

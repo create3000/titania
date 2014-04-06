@@ -48,81 +48,22 @@
  *
  ******************************************************************************/
 
-#include "Popen2.h"
+#include "file_size.h"
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <mutex>
+#include <sys/stat.h>
 
 namespace titania {
 namespace os {
 
-static constexpr size_t READ  = 0;
-static constexpr size_t WRITE = 1;
-
-pid_t
-popen2 (const char* const command, int* const stdin, int* const stdout)
+size_t
+file_size (const std::string & pathname)
 {
-	return popen3 (command, stdin, stdout, nullptr);
-}
+	struct stat sb;
+	
+	if (stat (pathname .c_str (), &sb) == 0)
+		return sb .st_size;
 
-pid_t
-popen3 (const char* const command, int* const stdin, int* const stdout, int* const stderr)
-{
-	static std::mutex mutex;
-
-	std::lock_guard <std::mutex> lock (mutex);
-
-	int input [2], output [2], error [2];
-
-	if (pipe (output) not_eq 0 or pipe (input) not_eq 0 or pipe (error) not_eq 0)
-		return -1;
-
-	const pid_t pid = fork ();
-
-	if (pid < 0)
-		return pid;
-
-	if (pid == 0)
-	{
-		close (output [WRITE]);
-		dup2 (output [READ], STDIN_FILENO);
-
-		close (input [READ]);
-		dup2 (input [WRITE], STDOUT_FILENO);
-		
-		close (error [READ]);
-		dup2 (error [WRITE], STDERR_FILENO);
-
-		execl ("/bin/sh", "sh", "-c", command, nullptr);
-		perror ("execl");
-		exit (1);
-	}
-
-	close (output [READ]);
-
-	if (stdin)
-		*stdin = output [WRITE];
-	else
-		close (output [WRITE]);
-
-	close (input [WRITE]);
-
-	if (stdout)
-		*stdout = input [READ];
-	else
-		close (input [READ]);
-
-	close (error [WRITE]);
-
-	if (stderr)
-		*stderr = error [READ];
-	else
-		close (error [READ]);
-
-	return pid;
+	return 0;
 }
 
 } // os

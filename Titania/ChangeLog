@@ -1,3 +1,13 @@
+2014-04-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* style.css:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* Configuration.cpp:
+	* Array.h:
+	* OutlineCellRenderer.cpp: 
+
 2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DOutlineTreeView.cpp: 

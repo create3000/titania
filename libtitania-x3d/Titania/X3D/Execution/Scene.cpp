@@ -54,6 +54,8 @@
 #include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
 
+#include <Titania/String/to_string.h>
+
 namespace titania {
 namespace X3D {
 
@@ -160,7 +162,7 @@ Scene::getUniqueName (const ScenePtr & scene, std::string name) const
 				}
 			}
 
-			newName = name + std::to_string (++ i);
+			newName = name + basic::to_string (++ i);
 		}
 
 		return newName;
@@ -175,7 +177,7 @@ Scene::getUniqueName (const ScenePtr & scene) const
 
 	for ( ; ;)
 	{
-		name = '_' + std::to_string (++ i);
+		name = '_' + basic::to_string (++ i);
 
 		try
 		{

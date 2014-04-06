@@ -51,17 +51,18 @@
 #ifndef __TITANIA_OS_H__
 #define __TITANIA_OS_H__
 
-#include "OS/CWD.h"
-#include "OS/Env.h"
-#include "OS/FileExists.h"
-#include "OS/FileSize.h"
-#include "OS/FindDataFile.h"
-#include "OS/Home.h"
-#include "OS/IsDirectory.h"
-#include "OS/IsFile.h"
-#include "OS/LoadFile.h"
-#include "OS/Mkdir.h"
-#include "OS/Popen2.h"
-#include "OS/System.h"
+#include "OS/cwd.h"
+#include "OS/env.h"
+#include "OS/file_exists.h"
+#include "OS/file_size.h"
+#include "OS/find_data_file.h"
+#include "OS/getfullname.h"
+#include "OS/home.h"
+#include "OS/is_directory.h"
+#include "OS/is_file.h"
+#include "OS/load_file.h"
+#include "OS/mkdir.h"
+#include "OS/popen2.h"
+#include "OS/system.h"
 
 #endif

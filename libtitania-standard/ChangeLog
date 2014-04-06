@@ -1,3 +1,61 @@
+2014-04-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* OS.h:
+	* String.h:
+	* cwd.h:
+	* Env.h:
+	* CWD.h:
+	* env.h:
+	* Home.h:
+	* home.h:
+	* env.cpp:
+	* cwd.cpp:
+	* Mkdir.h:
+	* mkdir.h:
+	* CWD.cpp:
+	* Env.cpp:
+	* System.h:
+	* Popen2.h:
+	* system.h:
+	* popen2.h:
+	* home.cpp:
+	* IsFile.h:
+	* Home.cpp:
+	* is_file.h:
+	* mkdir.cpp:
+	* Mkdir.cpp:
+	* FileSize.h:
+	* IsFile.cpp:
+	* LoadFile.h:
+	* popen2.cpp:
+	* Popen2.cpp:
+	* System.cpp:
+	* system.cpp:
+	* is_file.cpp:
+	* file_size.h:
+	* load_file.h:
+	* FileSize.cpp:
+	* FileExists.h:
+	* LoadFile.cpp:
+	* IsDirectory.h:
+	* file_size.cpp:
+	* load_file.cpp:
+	* getfullname.h:
+	* file_exists.h:
+	* FileExists.cpp:
+	* libtitania-standard.cproj:
+	* is_directory.h:
+	* FindDataFile.h:
+	* file_exists.cpp:
+	* getfullname.cpp:
+	* IsDirectory.cpp:
+	* to_string.h:
+	* find_data_file.h:
+	* FindDataFile.cpp:
+	* is_directory.cpp:
+	* find_data_file.cpp: 
+
 2014-03-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Types.h:

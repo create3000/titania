@@ -122,10 +122,10 @@ public:
 	///  @name String Creation
 
 	bool
-	fromString (const std::string &);
+	fromString (const std::string &, const std::locale & = std::locale::classic ());
 
 	std::string
-	toString () const;
+	toString (const std::locale & = std::locale::classic ()) const;
 
 	std::string
 	toXMLString () const;

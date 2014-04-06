@@ -271,6 +271,29 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);
 
+	try
+	{
+		executionContext -> getMetaData ("creator");
+	}
+	catch (const X3D::X3DError &)
+	{
+		const std::string fullname = os::getfullname ();
+
+		if (not fullname .empty ())
+			executionContext -> setMetaData ("creator", os::getfullname ());
+	}
+
+	try
+	{
+		executionContext -> getMetaData ("created");
+	}
+	catch (const X3D::X3DError &)
+	{
+		executionContext -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
+	}
+
+	executionContext -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
+
 	if (suffix == ".x3d")
 	{
 		if (executionContext -> getVersion () == X3D::VRML_V2_0)
@@ -306,7 +329,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 		else if (suffix == ".wrl" and executionContext -> getVersion () not_eq X3D::VRML_V2_0)
 		{
 			executionContext -> setEncoding ("VRML");
-			executionContext -> setSpecificationVersion ("2.0");		
+			executionContext -> setSpecificationVersion ("2.0");
 		}
 
 		if (compressed)
@@ -344,7 +367,7 @@ X3DBrowserWidget::set_initialized ()
 
 	loadIcon ();
 	updateTitle (false);
-	
+
 	// Remember last local file
 
 	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();

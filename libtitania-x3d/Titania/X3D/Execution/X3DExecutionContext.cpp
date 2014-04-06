@@ -62,6 +62,7 @@
 #include "../Prototype/Proto.h"
 
 #include <Titania/Utility/Adapter.h>
+#include <Titania/String/to_string.h>
 
 #include <algorithm>
 
@@ -362,7 +363,7 @@ X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 				if (hidden)
 					newName += '_';
 
-				newName += std::to_string (++ i);
+				newName += basic::to_string (++ i);
 			}
 		}
 		catch (const X3DError &)
@@ -382,7 +383,7 @@ X3DExecutionContext::getUniqueName () const
 	{
 		for ( ; ;)
 		{
-			name = '_' + std::to_string (++ i);
+			name = '_' + basic::to_string (++ i);
 
 			getNamedNode (name);
 		}
@@ -909,8 +910,12 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::toStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
+
+	const auto version = getVersion ();
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -945,18 +950,21 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	if (not getImportedNodes () .empty ())
+	if (version not_eq VRML_V2_0)
 	{
-		ostream << Generator::TidyBreak;
-
-		for (const auto & importedNode : getImportedNodes ())
+		if (not getImportedNodes () .empty ())
 		{
-			try
+			ostream << Generator::TidyBreak;
+
+			for (const auto & importedNode : getImportedNodes ())
 			{
-				ostream << importedNode;
+				try
+				{
+					ostream << importedNode;
+				}
+				catch (const X3DError &)
+				{ }
 			}
-			catch (const X3DError &)
-			{ }
 		}
 	}
 
@@ -998,6 +1006,8 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 void
 X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
 

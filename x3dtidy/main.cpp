@@ -51,6 +51,7 @@
 #include <iostream>
 
 #include <Titania/X3D.h>
+#include <Titania/String/to_string.h>
 #include <unistd.h>
 
 #include "anyoption.h"
@@ -135,7 +136,7 @@ main (int argc, char** argv)
 
 			if (options .getArgc () > 1)
 			{
-				std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + uri .suffix ();
+				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid ()) + uri .suffix ();
 
 				try
 				{

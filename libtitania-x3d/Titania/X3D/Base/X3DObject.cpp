@@ -75,9 +75,11 @@ X3DObject::realize () const
 // String
 
 bool
-X3DObject::fromString (const std::string & string)
+X3DObject::fromString (const std::string & string, const std::locale & locale)
 {
 	std::istringstream istringstream (string);
+
+	istringstream .imbue (locale);
 
 	fromStream (istringstream);
 
@@ -85,9 +87,11 @@ X3DObject::fromString (const std::string & string)
 }
 
 std::string
-X3DObject::toString () const
+X3DObject::toString (const std::locale & locale) const
 {
 	std::ostringstream ostringstream;
+
+	ostringstream .imbue (locale);
 
 	toStream (ostringstream);
 
@@ -98,6 +102,8 @@ std::string
 X3DObject::toXMLString () const
 {
 	std::ostringstream ostringstream;
+
+	ostringstream .imbue (std::locale::classic ());
 
 	toXMLStream (ostringstream);
 

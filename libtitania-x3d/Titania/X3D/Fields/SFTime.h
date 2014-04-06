@@ -99,6 +99,9 @@ public:
 	std::string
 	toLocaleString () const;
 
+	std::string
+	toUTCString () const;
+
 	///  6.7.7 Add field interest.
 
 	template <class Class>

@@ -1,3 +1,29 @@
+2014-04-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Debug.h:
+	* SFTime.h:
+	* X3DObject.h:
+	* SFTime.cpp:
+	* Parser.cpp:
+	* X3DObject.cpp:
+	* Scene.cpp:
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* Unit.cpp:
+	* X3DScene.cpp:
+	* Shader.cpp:
+	* ExternProto.cpp:
+	* Generator.cpp:
+	* ComponentInfo.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DFontStyleNode.cpp:
+	* SupportedComponents.cpp:
+	* X3DTransformNode.h:
+	* X3DPrototypeInstance.cpp:
+	* X3DTransformNode.cpp:
+	* RenderingProperties.cpp:
+	* X3DProgrammableShaderObject.cpp: 
+
 2014-04-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Route.cpp:

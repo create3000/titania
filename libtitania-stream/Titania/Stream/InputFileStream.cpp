@@ -28,7 +28,8 @@
 
 #include "InputFileStream.h"
 
-#include <Titania/OS/IsFile.h>
+#include <Titania/OS/is_file.h>
+#include <Titania/String/to_string.h>
 
 #include <glibmm/main.h>
 #include <giomm.h>
@@ -77,7 +78,7 @@ ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
 ifilestream::ifilestream (const std::string & string) :
 	ifilestream ()
 {
-	file_response_headers .emplace ("Content-Length", std::to_string (string .size ()));
+	file_response_headers .emplace ("Content-Length", basic::to_string (string .size ()));
 	data_istream .reset (new std::istringstream (string));
 
 	rdbuf (data_istream -> rdbuf ());
@@ -162,7 +163,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 			if (not content_type .empty ())
 				file_response_headers .emplace ("Content-Type", content_type);
 
-			file_response_headers .emplace ("Content-Length", std::to_string (length));
+			file_response_headers .emplace ("Content-Length", basic::to_string (length));
 
 			// stream
 

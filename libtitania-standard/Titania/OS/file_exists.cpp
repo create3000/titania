@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "IsDirectory.h"
+#include "file_exists.h"
 
 #include <sys/stat.h>
 
@@ -56,11 +56,11 @@ namespace titania {
 namespace os {
 
 bool
-is_directory (const std::string & pathname)
+file_exists (const std::string & pathname)
 {
-	static struct stat sb;
+	struct stat sb;
 
-	return stat (pathname .c_str (), &sb) == 0 && S_ISDIR (sb .st_mode);
+	return stat (pathname .c_str (), &sb) == 0;
 }
 
 } // os

@@ -53,6 +53,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Parser/RegEx.h"
 
+#include <Titania/String/to_string.h>
 #include <cassert>
 
 namespace titania {
@@ -403,7 +404,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 	else
 	{
 		size_t      i       = 0;
-		std::string newName = hasNumber ? name + '_' + std::to_string (++ i) : name;
+		std::string newName = hasNumber ? name + '_' + basic::to_string (++ i) : name;
 
 		try
 		{
@@ -411,7 +412,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 			{
 				names .at (newName);
 
-				newName = name + '_' + std::to_string (++ i);
+				newName = name + '_' + basic::to_string (++ i);
 			}
 		}
 		catch (const std::out_of_range &)
@@ -435,7 +436,7 @@ Generator::getUniqueName ()
 	{
 		for ( ; ;)
 		{
-			name = '_' + std::to_string (++ newName);
+			name = '_' + basic::to_string (++ newName);
 
 			names .at (name);
 		}

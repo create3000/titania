@@ -155,7 +155,7 @@ Configuration::remove ()
 Configuration
 Configuration::getSession (size_t id)
 {
-	return getDirectory ("Sessions/" + std::to_string (id));
+	return getDirectory ("Sessions/" + basic::to_string (id));
 }
 
 Configuration

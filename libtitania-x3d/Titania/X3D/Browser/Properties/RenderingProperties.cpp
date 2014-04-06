@@ -315,24 +315,24 @@ RenderingProperties::build ()
 
 		std::ostringstream stringstream;
 
-		string .emplace_back ("Current Graphics Renderer");
-		string .emplace_back (basic::sprintf ("  Name: %s", renderer () .c_str ()));
+		string .emplace_back (_ ("Current Graphics Renderer"));
+		string .emplace_back (basic::sprintf (_ ("  Name: %s"), renderer () .c_str ()));
 		string .emplace_back ();
-		string .emplace_back ("Rendering properties");
-		string .emplace_back (basic::sprintf ("Max threads:               %d", maxThreads () .getValue ()));
-		string .emplace_back (basic::sprintf ("Texture units:             %d / %d", textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
-		string .emplace_back (basic::sprintf ("Max texture size:          %d × %d pixel", maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
-		string .emplace_back (basic::sprintf ("Antialiased:               %s (%d/%d)", antialiased () .toString () .c_str (), sampleBuffers, samples));
-		string .emplace_back (basic::sprintf ("Max lights:                %d", maxLights () .getValue ()));
-		string .emplace_back (basic::sprintf ("Max clip planes:           %d", maxClipPlanes () .getValue ()));
-		string .emplace_back (basic::sprintf ("Color depth:               %d bits", colorDepth () .getValue ()));
-		string .emplace_back (basic::sprintf ("Texture memory:            %s", textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
-		string .emplace_back (basic::sprintf ("Available texture memory:  %s", strfsize (getAvailableTextureMemory ()) .c_str ()));
-		string .emplace_back (basic::sprintf ("Memory usage:              %s", strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
+		string .emplace_back (_ ("Rendering properties"));
+		string .emplace_back (basic::sprintf (_ ("Max threads:               %d"), maxThreads () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Texture units:             %d / %d"), textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
+		string .emplace_back (basic::sprintf (_ ("Max texture size:          %d × %d pixel"), maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), antialiased () .toString () .c_str (), sampleBuffers, samples));
+		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), maxLights () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %d"), maxClipPlanes () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), colorDepth () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
+		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getAvailableTextureMemory ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
-		string .emplace_back (basic::sprintf ("Frame rate:                %.1f fps", fps ()));
-		string .emplace_back (basic::sprintf ("Display:                   %.2f %", 100 * renderClock .average () / clock .average ()));
-		string .emplace_back (basic::sprintf ("Sensors:                   %zd", getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
+		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), fps ()));
+		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %"), 100 * renderClock .average () / clock .average ()));
+		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
 	}
 	catch (const X3DError &)
 	{

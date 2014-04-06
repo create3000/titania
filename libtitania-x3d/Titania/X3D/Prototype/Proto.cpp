@@ -156,6 +156,8 @@ Proto::getRootNode () const
 void
 Proto::toStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	if (not getComments () .empty ())
 	{
 		for (const auto & comment : getComments ())
@@ -315,6 +317,8 @@ Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, c
 void
 Proto::toXMLStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	ostream
 		<< Generator::Indent
 		<< "<ProtoDeclare"

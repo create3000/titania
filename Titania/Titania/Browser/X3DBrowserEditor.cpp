@@ -512,6 +512,8 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	// Generate text
 
 	std::ostringstream text;
+	
+	text .imbue (std::locale::classic ());
 
 	text
 		<< "#X3D V3.3 utf8 Titania"
@@ -558,6 +560,8 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 		if (clipboard -> wait_is_text_available ())
 		{
 			basic::ifilestream text (clipboard -> wait_for_text ());
+			
+			text .imbue (std::locale::classic ());
 
 			std::string header;
 
@@ -604,6 +608,8 @@ X3DBrowserEditor::getPasteStatus () const
 	if (clipboard -> wait_is_text_available ())
 	{
 		std::istringstream text (clipboard -> wait_for_text ());
+		
+		text .imbue (std::locale::classic ());
 
 		std::string header;
 

@@ -56,6 +56,8 @@
 #include "../Texturing/X3DTexture2DNode.h"
 #include "../Texturing3D/X3DTexture3DNode.h"
 
+#include <Titania/String/to_string.h>
+
 namespace titania {
 namespace X3D {
 
@@ -341,7 +343,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 					{
 						GLint textureUnit = 0;
 
-						const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + std::to_string (i) + "]") .c_str ());
+						const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i) + "]") .c_str ());
 
 						if (location not_eq - 1)
 						{

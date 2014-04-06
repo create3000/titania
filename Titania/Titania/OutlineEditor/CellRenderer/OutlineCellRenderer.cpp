@@ -57,6 +57,8 @@
 #include "../X3DOutlineTreeView.h"
 #include "Array.h"
 
+#include <Titania/String/to_string.h>
+
 namespace titania {
 namespace puck {
 
@@ -326,7 +328,7 @@ OutlineCellRenderer::get_node_name () const
 		std::string string = "<b>" + typeName + "</b> " + name;
 
 		if (numClones > 1)
-			string += " [" + std::to_string (numClones) + "]";
+			string += " [" + basic::to_string (numClones) + "]";
 
 		return string;
 	}
@@ -656,9 +658,10 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		return true;
 	}
 
-	const std::string currentValue = field -> toString ();
+	const auto currentValue = field -> toString ();
+	const auto locale       = std::locale ();
 
-	if (field -> fromString (string))
+	if (field -> fromString (string, locale))
 	{
 		if (field -> toString () not_eq currentValue)
 		{
@@ -666,8 +669,8 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 			undoStep -> addVariables (node);
 
-			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue);
-			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, string);
+			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue, std::locale::classic ());
+			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, string, locale);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}

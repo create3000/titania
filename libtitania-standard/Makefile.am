@@ -43,18 +43,19 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Numbers/Vector3.cpp \
 	Titania/Math/Numbers/Vector4.cpp \
 	Titania/Math/Utility/MatrixStack.cpp \
-	Titania/OS/CWD.cpp \
-	Titania/OS/Env.cpp \
-	Titania/OS/FileExists.cpp \
-	Titania/OS/FileSize.cpp \
-	Titania/OS/FindDataFile.cpp \
-	Titania/OS/Home.cpp \
-	Titania/OS/IsDirectory.cpp \
-	Titania/OS/IsFile.cpp \
-	Titania/OS/LoadFile.cpp \
-	Titania/OS/Mkdir.cpp \
-	Titania/OS/Popen2.cpp \
-	Titania/OS/System.cpp \
+	Titania/OS/cwd.cpp \
+	Titania/OS/env.cpp \
+	Titania/OS/file_exists.cpp \
+	Titania/OS/file_size.cpp \
+	Titania/OS/find_data_file.cpp \
+	Titania/OS/getfullname.cpp \
+	Titania/OS/home.cpp \
+	Titania/OS/is_directory.cpp \
+	Titania/OS/is_file.cpp \
+	Titania/OS/load_file.cpp \
+	Titania/OS/mkdir.cpp \
+	Titania/OS/popen2.cpp \
+	Titania/OS/system.cpp \
 	Titania/String/naturally_compare.cpp \
 	Titania/String/split.cpp \
 	Titania/String/sprintf.cpp \

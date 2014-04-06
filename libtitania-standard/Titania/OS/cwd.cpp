@@ -48,27 +48,30 @@
  *
  ******************************************************************************/
 
-#include "Env.h"
+#include "cwd.h"
 
-#include <cstdlib>
-#include <stdlib.h>
+#include "env.h"
 
 namespace titania {
 namespace os {
 
 std::string
-env (const std::string & value)
+cwd ()
 {
-	char* string = std::getenv (value .c_str ());
-
-	return string ? string : "";
-}
-
-void
-env (const std::string & key, const std::string & value)
-{
-	setenv (key .c_str (), value .c_str (), 1);
+	return env ("PWD");
 }
 
 } // os
 } // titania
+
+// #include <unistd.h>
+//
+// http://pubs.opengroup.org/onlinepubs/7908799/xsh/unistd.h.html
+//
+//static
+//constexpr MAX_PATH = 1024
+//
+//std::clog << MAX_PATH << std::endl;
+//
+//static char buffer [MAX_PATH];
+//return getcwd (buffer, MAX_PATH);

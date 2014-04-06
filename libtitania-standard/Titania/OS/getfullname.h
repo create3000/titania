@@ -48,20 +48,21 @@
  *
  ******************************************************************************/
 
-#include "IsDirectory.h"
+#ifndef __TITANIA_OS_GETFULLNAME_H__
+#define __TITANIA_OS_GETFULLNAME_H__
 
-#include <sys/stat.h>
+#include <string>
 
 namespace titania {
 namespace os {
 
-bool
-is_file (const std::string & pathname)
-{
-	static struct stat sb;
+std::string
+getfullname ();
 
-	return stat (pathname .c_str (), &sb) == 0 and S_ISREG (sb .st_mode);
-}
+std::string
+getfullname (const std::string & username);
 
 } // os
 } // titania
+
+#endif

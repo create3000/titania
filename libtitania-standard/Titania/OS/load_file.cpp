@@ -48,68 +48,25 @@
  *
  ******************************************************************************/
 
-#include "Shader.h"
+#include "load_file.h"
 
-#include "../InputOutput/Loader.h"
-#include <pcrecpp.h>
+#include <fstream>
+#include <sstream>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
 std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+load_file (const std::string & filename)
 {
-	if (not files .insert (worldURL) .second)
-		return "";
+	std::ifstream ifstream (filename);
 
-	if (level > 1024)
-		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
+	std::ostringstream osstream;
 
-	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
+	osstream << ifstream .rdbuf ();
 
-	std::istringstream input (string);
-	std::ostringstream output;
-
-	input  .imbue (std::locale::classic ());
-	output .imbue (std::locale::classic ());
-
-	size_t      lineNumber = 1;
-	std::string line;
-	
-	output << "#line "<< lineNumber << " \"" << worldURL << "\""  << std::endl;
-
-	while (std::getline (input, line))
-	{
-		std::string filename;
-
-		if (include .FullMatch (line, &filename))
-		{
-			Loader loader (executionContext);
-			output << preProcessShaderSource (executionContext, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
-			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
-		}
-		else
-		{
-			output << line << std::endl;
-		}
-
-		++ lineNumber;
-	}
-
-	return output .str ();
+	return osstream .str ();
 }
 
-std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, const size_t level)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
-{
-	std::set <basic::uri> files;
-	
-	return preProcessShaderSource (executionContext, string, worldURL, level, files);
-}
-
-} // X3D
+} // os
 } // titania

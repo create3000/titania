@@ -50,6 +50,7 @@
 
 #include "SupportedComponents.h"
 
+#include <Titania/String/to_string.h>
 #include <iostream>
 
 namespace titania {
@@ -141,7 +142,7 @@ throw (Error <NOT_SUPPORTED>)
 		return ComponentInfoPtr (new ComponentInfo (component -> getTitle (), name, level));
 
 	else
-		throw Error <NOT_SUPPORTED> ("Component '" + name + "' at level '" + std::to_string (level) + "' is not supported.");
+		throw Error <NOT_SUPPORTED> ("Component '" + name + "' at level '" + basic::to_string (level) + "' is not supported.");
 }
 
 const ComponentInfoPtr &

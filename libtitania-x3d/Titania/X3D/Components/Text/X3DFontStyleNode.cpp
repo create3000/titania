@@ -53,7 +53,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Text/Text.h"
 
-#include <Titania/OS/FileExists.h>
+#include <Titania/OS/file_exists.h>
 
 namespace titania {
 namespace X3D {

@@ -1,11 +1,7 @@
 #VRML V2.0 utf8 Titania V0.6.7
 
-PROFILE Full
-
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
-META "title" "OutlineEditor"
-
 EXTERNPROTO Grid [
+  exposedField SFNode  metadata
   exposedField SFInt32 xDimension
   exposedField SFFloat xSpacing
   exposedField SFInt32 zDimension
@@ -17,6 +13,7 @@ EXTERNPROTO Grid [
 "Grid.wrl"
 
 EXTERNPROTO Rotor [
+  exposedField SFNode     metadata
   exposedField SFBool     enabled
   exposedField SFTime     cycleInterval
   exposedField SFVec3f    axis
@@ -30,6 +27,7 @@ EXTERNPROTO Rotor [
 "http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"
 
 EXTERNPROTO Rotor2 [
+  exposedField SFNode     metadata
   exposedField SFBool     enabled
   exposedField SFTime     cycleInterval
   exposedField SFVec3f    axis
@@ -43,6 +41,7 @@ EXTERNPROTO Rotor2 [
 "http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv#Rotor"
 
 EXTERNPROTO RoundedRectangle2D [
+  exposedField SFNode  metadata
   exposedField SFFloat cornerRadius
   exposedField SFVec2f size
   field        SFBool  solid
@@ -50,6 +49,7 @@ EXTERNPROTO RoundedRectangle2D [
 "http://titania.create3000.de/Library/Prototypes/0.1//Geometry2D/RoundedRectangle2D.x3dv"
 
 EXTERNPROTO Torus [
+  exposedField SFNode  metadata
   exposedField SFFloat minorRadius
   exposedField SFFloat majorRadius
   exposedField SFInt32 minorDimension
@@ -63,10 +63,12 @@ EXTERNPROTO Torus [
 ]
 
 PROTO Children1 [
+  exposedField SFNode metadata NULL
   exposedField MFNode children1 [ ]
 ]
 {
   PROTO Children2 [
+    exposedField SFNode metadata NULL
     exposedField MFNode children2 [ ]
   ]
   {
@@ -101,26 +103,38 @@ DEF Sunset Background {
   groundColor 0 0 0
 }
 
-Viewpoint {
+DEF xxx Viewpoint {
   description "OutlineEditor"
-  position 2.37398 0.256043 5.7671
-  centerOfRotation 2.37398 0.256043 0
+  position 1.46307 2.24268 0.93119
+  orientation 0.657858 0.711081 0.248166 5.17775
+  centerOfRotation 2.26896 1.23038 0.218036
 }
 
 Grid {
-  xDimension 100
-  zDimension 100
+  xDimension 40
+  zDimension 40
 }
 
 DEF Sensors Transform {
+  translation 8.69733 0 -12.5955
+  rotation 0 -1 0 0.476176
+  scale -1.01808 1.09117 1.09117
+  center 3.20255 0 -1.19209e-07
   children [
-    DEF _1 ProximitySensor { }
-    DEF _2 VisibilitySensor { }
+    DEF _1 ProximitySensor {
+      size 2 2 2
+    }
+    VisibilitySensor {
+      size 2 2 2
+      center 10 0 0
+    }
   ]
 }
 
 DEF Rotor Rotor {
+  metadata MetadataDouble { }
   cycleInterval 10
+  angle 1.5708
   loop TRUE
 }
 
@@ -137,7 +151,7 @@ DEF Inline Transform {
   }
 }
 
-DEF Text3 Transform {
+DEF MirrorText Transform {
   translation 0.673213 -0.0752815 0
   scale 1 -1 1
   children Shape {
@@ -171,7 +185,7 @@ Group {
     USE _1
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 1.25491
+      rotation 0 0 1 4.68252
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -189,16 +203,24 @@ Group {
 
 DEF Sphere Transform {
   translation 2.22045 1.17457 6.31221e-08
-  rotation -3.38337e-13 -3.62463e-06 1 0.178426
-  scale 0.2 0.2 0.2
+  scale 0.208036 0.208036 -0.208036
   children Transform {
+    translation 0.233169 0.268277 0
     children Shape {
       appearance Appearance {
         material Material {
           diffuseColor 0 0.8 0
         }
+        texture ImageTexture {
+          url [
+            "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+            "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+          ]
+          repeatS FALSE
+          repeatT FALSE
+        }
       }
-      geometry DEF _3 Sphere { }
+      geometry DEF _2 Sphere { }
     }
   }
 }
@@ -269,12 +291,12 @@ Anchor {
           shininess 0.127273
         }
       }
-      geometry USE _3
+      geometry USE _2
     }
   }
 }
 
-Collision {
+DEF sss Collision {
   children Children1 {
     children1 [
       DEF Cylinder Transform {
@@ -361,5 +383,28 @@ Shape {
   }
 }
 
-ROUTE _1.isActive TO _2.set_enabled
+ProximitySensor {
+  size 1 1 1
+  center -1.03768 0 -2.93338
+}
+
+VisibilitySensor {
+  size 1 1 1
+  center 3.77007 0 -2.89052
+}
+
+Viewpoint {
+  description "OutlineEditor"
+  position 0.307405 1.46693 4.56711
+  orientation 0.563368 0.806068 0.181301 5.84917
+  centerOfRotation 1.83783 -0.942352 -0.631597
+}
+
+TextureTransform { }
+
+TextureTransform { }
+
 ROUTE Rotor.rotation_changed TO Box.set_rotation
+ROUTE Sensors.translation_changed TO Inline.set_translation
+ROUTE xxx.position_changed TO xxx.set_centerOfRotation
+ROUTE Rotor2.pauseTime_changed TO Rotor2.set_resumeTime

@@ -48,20 +48,30 @@
  *
  ******************************************************************************/
 
-#include "IsDirectory.h"
+#include "home.h"
 
-#include <sys/stat.h>
+#include "env.h"
 
 namespace titania {
 namespace os {
 
-bool
-file_exists (const std::string & pathname)
+std::string
+home ()
 {
-	static struct stat sb;
-
-	return stat (pathname .c_str (), &sb) == 0;
+	return env ("HOME");
 }
 
 } // os
 } // titania
+
+// #include <unistd.h>
+//
+// http://pubs.opengroup.org/onlinepubs/7908799/xsh/unistd.h.html
+//
+//static
+//constexpr MAX_PATH = 1024
+//
+//std::clog << MAX_PATH << std::endl;
+//
+//static char buffer [MAX_PATH];
+//return getcwd (buffer, MAX_PATH);

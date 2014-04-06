@@ -65,6 +65,8 @@ ComponentInfo::ComponentInfo (const std::string & title, const std::string & nam
 void
 ComponentInfo::toStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	ostream
 		<< "COMPONENT"
 		<< Generator::Space
@@ -78,6 +80,8 @@ ComponentInfo::toStream (std::ostream & ostream) const
 void
 ComponentInfo::toXMLStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	ostream
 		<< Generator::Indent
 		<< "<component"
