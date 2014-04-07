@@ -1,5 +1,16 @@
 2014-04-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.cpp:
+	* X3DBrowserEditor.h:
+	* MaterialEditor.cpp:
+	* Array.h:
+	* OutlineFields.h:
+	* TextViewEditable.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
+2014-04-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* X3DBrowserWidget.cpp:
 	* OutlineTreeModel.h:

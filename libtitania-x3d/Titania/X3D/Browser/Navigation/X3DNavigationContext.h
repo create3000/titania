@@ -48,26 +48,116 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_HIT_PTR_H__
-#define __TITANIA_X3D_BROWSER_PICKING_HIT_PTR_H__
+#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_X3DNAVIGATION_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_NAVIGATION_X3DNAVIGATION_CONTEXT_H__
 
-#include "../Picking/Hit.h"
-#include <memory>
+#include "../../Types/Pointer.h"
+#include "../../Fields.h"
+#include "../Viewer/ViewerType.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::shared_ptr <Hit> HitPtr;
-
-class HitComp
+class X3DNavigationContext :
+	virtual public X3DBaseNode
 {
 public:
+	
+	virtual
+	SFTime &
+	initialized () = 0;
 
-	bool
-	operator () (const HitPtr & lhs, const HitPtr & rhs) const
-	{
-		return lhs -> distance < rhs -> distance;
-	}
+	virtual
+	const SFTime &
+	initialized () const = 0;
+
+	const X3DLayerNodePtr &
+	getActiveLayer () const
+	{ return activeLayer; }
+
+	const SFTime &
+	getActiveNavigationInfoChanged () const
+	{ return activeNavigationInfoChanged; }
+
+	const SFTime &
+	getActiveViewpointChanged () const
+	{ return activeViewpointChanged; }
+
+	virtual
+	void
+	setViewer (const ViewerType value)
+	{ viewer = value; }
+
+	virtual
+	const SFEnum <ViewerType> &
+	getViewer () const
+	{ return viewer; }
+
+	const MFEnum <ViewerType> &
+	getAvailableViewers () const
+	{ return availableViewers; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DNavigationContext ();
+
+protected:
+
+	///  @name Constructor
+
+	X3DNavigationContext ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Members access
+
+	virtual
+	const WorldPtr &
+	getWorld () const = 0;
+
+	NavigationInfo*
+	getActiveNavigationInfo () const
+	{ return activeNavigationInfo; }
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_initialized ();
+
+	void
+	set_activeLayer ();
+
+	void
+	set_navigationInfo ();
+
+	void
+	remove_navigationInfo ();
+
+	void
+	set_viewpoint ();
+
+	void
+	set_navigationInfo_type ();
+	
+	///  @name Members
+
+	X3DLayerNodePtr     activeLayer;
+	NavigationInfo*     activeNavigationInfo;
+	SFTime              activeNavigationInfoChanged;
+	SFEnum <ViewerType> viewer;
+	MFEnum <ViewerType> availableViewers;
+	SFTime              activeViewpointChanged;
 
 };
 

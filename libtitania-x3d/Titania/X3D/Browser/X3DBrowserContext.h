@@ -53,13 +53,12 @@
 
 #include "../Execution/X3DExecutionContext.h"
 
-#include "../Browser/Picking/HitArray.h"
-#include "../Browser/Viewer/ViewerType.h"
+#include "../Browser/Navigation/X3DNavigationContext.h"
+#include "../Browser/Picking/X3DPickingContext.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Components/Layout/X3DLayoutNode.h"
 #include "../Types/Pointer.h"
 
-#include "../Rendering/X3DRenderer.h"
 #include "../Routing/Router.h"
 #include "../Types/Speed.h"
 
@@ -73,7 +72,6 @@ namespace titania {
 namespace X3D {
 
 using X3DClock         = chrono::clock_base <time_type>;
-using RendererStack    = std::stack <X3DRenderer*>;
 using LayerStack       = std::stack <X3DLayerNode*>;
 using LayoutStack      = std::stack <X3DLayoutNode*>;
 using LightStack       = std::stack <GLenum>;
@@ -82,23 +80,24 @@ using TextureUnitStack = std::stack <int32_t>;
 using TextureArray     = std::vector <int32_t>;
 
 class X3DBrowserContext :
-	virtual public X3DBaseNode, public X3DExecutionContext
+	virtual public X3DBaseNode,
+	public X3DExecutionContext,
+	public X3DPickingContext,
+	public X3DNavigationContext
 {
 public:
 
 	///  @name Outputs
 
+	virtual
 	SFTime &
-	initialized ()
+	initialized () final override
 	{ return initializedOutput; }
 
+	virtual
 	const SFTime &
-	initialized () const
+	initialized () const final override
 	{ return initializedOutput; }
-
-	const Output &
-	picked () const
-	{ return pickedOutput; }
 
 	const Output &
 	reshaped () const
@@ -159,18 +158,6 @@ public:
 	getViewport () const
 	{ return viewport; }
 
-	const X3DLayerNodePtr &
-	getActiveLayer () const
-	{ return activeLayer; }
-
-	const SFTime &
-	getActiveNavigationInfoChanged () const
-	{ return activeNavigationInfoChanged; }
-
-	const SFTime &
-	getActiveViewpointChanged () const
-	{ return activeViewpointChanged; }
-
 	///  @name Event handling
 
 	Router &
@@ -183,12 +170,6 @@ public:
 	getJavaScriptEngine () const
 	{ return javaScriptEngine; }
 
-	///  @name Renderer handling
-
-	RendererStack &
-	getRenderers ()
-	{ return renderers; }
-
 	///  @name Layer handling
 
 	LayerStack &
@@ -198,22 +179,6 @@ public:
 	LayoutStack &
 	getLayouts ()
 	{ return layouts; }
-
-	///  @name Navigation handling
-
-	virtual
-	void
-	setViewer (const ViewerType value)
-	{ viewer = value; }
-
-	virtual
-	const SFEnum <ViewerType> &
-	getViewer () const
-	{ return viewer; }
-
-	const MFEnum <ViewerType> &
-	getAvailableViewers () const
-	{ return availableViewers; }
 
 	///  @name Light stack handling
 
@@ -261,67 +226,15 @@ public:
 	getKeyDeviceSensorNode () const
 	{ return keyDeviceSensorNode; }
 
-	///  @name Picking
-
-	void
-	setPicking (bool value)
-	{ picking = value; }
-
-	const SFBool &
-	getPicking () const
-	{ return picking; }
-
-	void
-	pick (const double, const double);
-
-	bool
-	intersect (const Vector4i &) const;
-
-	std::vector <NodeSet> &
-	getSensors ()
-	{ return enabledSensors; }
-
-	void
-	setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	{ hitRay = getHitRay (modelViewMatrix, projectionMatrix, viewport); }
-
-	Line3d
-	getHitRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
-
-	void
-	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
-
-	const HitArray &
-	getHits () const
-	{ return hits; }
-	
-	X3DLayerNode*
-	getPickingLayer () const
-	{ return pickingLayer; }
-
-	void
-	motionNotifyEvent ();
-
-	void
-	buttonPressEvent ();
-
-	void
-	buttonReleaseEvent ();
-
-	void
-	leaveNotifyEvent ();
+	///  @name Children
 
 	const SelectionPtr &
 	getSelection ()
 	{ return selection; }
 
-	///  @name Notification handling
-
 	const NotificationPtr &
 	getNotification () const
 	{ return notification; }
-
-	///  @name Console handling
 
 	const ConsolePtr &
 	getConsole () const
@@ -385,10 +298,6 @@ protected:
 	const WorldPtr &
 	getWorld () const = 0;
 
-	NavigationInfo*
-	getActiveNavigationInfo () const
-	{ return activeNavigationInfo; }
-
 	void
 	lock ();
 
@@ -397,29 +306,6 @@ protected:
 
 
 private:
-
-	// Event handlers
-
-	void
-	set_initialized ();
-
-	void
-	set_shutdown ();
-
-	void
-	set_activeLayer ();
-
-	void
-	set_navigationInfo ();
-
-	void
-	remove_navigationInfo ();
-
-	void
-	set_viewpoint ();
-
-	void
-	set_navigationInfo_type ();
 
 	// Members
 
@@ -435,7 +321,6 @@ private:
 	std::unique_ptr <X3DClock> clock;
 
 	Router           router;
-	RendererStack    renderers;
 	Vector4i         viewport;
 	LayerStack       layers;
 	LayoutStack      layouts;
@@ -446,27 +331,8 @@ private:
 	TextureArray     textureStages;
 	bool             texture;
 
-	X3DLayerNodePtr     activeLayer;
-	NavigationInfo*     activeNavigationInfo;
-	SFTime              activeNavigationInfoChanged;
-	SFEnum <ViewerType> viewer;
-	MFEnum <ViewerType> availableViewers;
-	SFTime              activeViewpointChanged;
-
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
-
-	SFBool                picking;
-	double                x;
-	double                y;
-	Line3d                hitRay;
-	HitArray              hits;
-	HitComp               hitComp;
-	std::vector <NodeSet> enabledSensors;
-	MFNode                overSensors;
-	MFNode                activeSensors;
-	X3DLayerNode*         pickingLayer;
-	SelectionPtr          selection;
 
 	time_type      changedTime;
 	Speed <double> currentSpeed;
@@ -476,6 +342,7 @@ private:
 	std::deque <std::mutex> downloadMutexes;
 	std::mutex              downloadMutex;
 
+	SelectionPtr    selection;
 	NotificationPtr notification;
 	ConsolePtr      console;
 

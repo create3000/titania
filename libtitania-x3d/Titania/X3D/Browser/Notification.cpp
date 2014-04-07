@@ -50,6 +50,7 @@
 
 #include "Notification.h"
 
+#include "../Context.h"
 #include "../Bits/config.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../Browser/X3DBrowser.h"
@@ -145,6 +146,8 @@ Notification::display ()
 void
 Notification::dispose ()
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	getBrowser () -> makeCurrent ();
 
 	X3DBaseNode::dispose ();

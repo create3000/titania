@@ -131,7 +131,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 			viewport               = matrices .viewport;
 			inverseModelViewMatrix = ~modelViewMatrix;
 
-			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
+			const auto pickRay  = hit -> pickRay * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
@@ -160,11 +160,11 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 
 			if (planeSensor)
 			{
-				if (plane .intersect (hitRay, startPoint))
+				if (plane .intersect (pickRay, startPoint))
 				{
 					Vector3d trackPoint;
 
-					Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
+					Plane3d (Vector3d (), plane .normal ()) .intersect (pickRay, trackPoint);
 
 					trackStart (trackPoint);
 				}
@@ -213,13 +213,13 @@ PlaneSensor::set_motion (const HitPtr & hit)
 	{
 		if (planeSensor)
 		{
-			const auto hitRay = hit -> ray * inverseModelViewMatrix;
+			const auto pickRay = hit -> pickRay * inverseModelViewMatrix;
 
 			Vector3d endPoint, trackPoint;
 
-			if (plane .intersect (hitRay, endPoint))
+			if (plane .intersect (pickRay, endPoint))
 			{
-				Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
+				Plane3d (Vector3d (), plane .normal ()) .intersect (pickRay, trackPoint);
 
 				track (endPoint, trackPoint);
 			}

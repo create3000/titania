@@ -174,9 +174,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whitespaces;
+	std::string spaces;
 
-	Grammar::whitespaces (istream, whitespaces);
+	Grammar::spaces (istream, spaces);
 
 	uint32_t value;
 

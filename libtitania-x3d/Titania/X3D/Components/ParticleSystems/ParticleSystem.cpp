@@ -58,6 +58,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
 #include "../../Miscellaneous/Random.h"
+#include "../Layering/X3DLayerNode.h"
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
@@ -1148,7 +1149,7 @@ ParticleSystem::traverse (const TraverseType type)
 		case TraverseType::DISPLAY:
 		{
 			if (isActive ())
-				getBrowser () -> getRenderers () .top () -> addShape (this);
+				getCurrentLayer () -> addShape (this);
 
 			break;
 		}

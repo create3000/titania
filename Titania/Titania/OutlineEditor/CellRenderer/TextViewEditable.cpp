@@ -50,7 +50,7 @@
 
 #include "TextViewEditable.h"
 
-#include "Array.h"
+#include "OutlineFields.h"
 
 #include <Titania/LOG.h>
 

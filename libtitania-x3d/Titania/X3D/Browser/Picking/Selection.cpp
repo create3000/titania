@@ -50,6 +50,7 @@
 
 #include "Selection.h"
 
+#include "../../Context.h"
 #include "../../Execution/Scene.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
@@ -92,6 +93,8 @@ Selection::isSelected (const SFNode & node) const
 void
 Selection::addChildren (const MFNode & value)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (getBrowser () -> makeCurrent ())
 	{
 		for (const auto & child : value)
@@ -113,6 +116,8 @@ Selection::addChildren (const MFNode & value)
 void
 Selection::removeChildren (const MFNode & value)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (getBrowser () -> makeCurrent ())
 	{
 		for (const auto & child : value)

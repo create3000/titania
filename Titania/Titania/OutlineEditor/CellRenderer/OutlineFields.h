@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_ARRAY_H__
-#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_ARRAY_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_FIELDS_H__
+#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_FIELDS_H__
 
 #include <Titania/X3D.h>
 
@@ -58,35 +58,101 @@ namespace puck {
 
 static constexpr int VALUES_MAX = 64;
 
+static constexpr X3D::Image::size_type WIDTH_MAX  = 16;
+static constexpr X3D::Image::size_type HEIGHT_MAX = 16;
+
+static
+std::string
+get_field_value (const X3D::SFImage & field, const bool ellipsize)
+{
+	if (ellipsize)
+	{
+		const X3D::Image & image = field .getValue ();
+
+		if (image .width () > WIDTH_MAX or image .height () > HEIGHT_MAX)
+		{
+			std::ostringstream ostream;
+
+			ostream
+				<< image .width ()
+				<< X3D::Generator::Space
+				<< image .height ()
+				<< X3D::Generator::Space
+				<< image .components ()
+				<< X3D::Generator::ForceBreak
+				<< "…";
+
+			return ostream .str ();
+		}
+	}
+
+	return field .toString ();
+}
+
 template <class Type>
 static
 std::string
 array_to_string (const Type & array, const bool ellipsize)
 {
-	std::ostringstream stream;
+	std::ostringstream ostream;
 
 	if (array .empty ())
-		return stream .str ();
+		return ostream .str ();
 
 	const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
 
 	for (const auto & value : basic::adapter (array .begin (), array .begin () + lines - 1))
 	{
-		stream
+		ostream
 			<< value
 			<< X3D::Generator::ForceBreak;
 	}
 
-	stream << array [lines - 1];
+	ostream << array [lines - 1];
 
 	if (lines < array .size ())
 	{
-		stream
+		ostream
 			<< X3D::Generator::ForceBreak
 			<< "…";
 	}
 
-	return stream .str ();
+	return ostream .str ();
+}
+
+static
+std::string
+array_to_string (const X3D::MFImage & array, const bool ellipsize)
+{
+	if (ellipsize)
+	{
+		std::ostringstream ostream;
+
+		if (array .empty ())
+			return ostream .str ();
+
+		const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
+
+		for (const auto & value : basic::adapter (array .begin (), array .begin () + lines - 1))
+		{
+			ostream
+				<< get_field_value (value, true)
+				<< X3D::Generator::ForceBreak;
+		}
+
+		ostream << array [lines - 1];
+
+		if (lines < array .size ())
+		{
+			ostream
+				<< X3D::Generator::ForceBreak
+				<< "…";
+		}
+
+		return ostream .str ();
+	}
+
+	return array_to_string <X3D::MFImage> (array, false);
 }
 
 static
@@ -99,6 +165,9 @@ get_field_value (X3D::X3DFieldDefinition* const field, const bool ellipsize)
 	{
 		case X3D::X3DConstants::SFNode:
 			return "";
+
+		case X3D::X3DConstants::SFImage:
+			return get_field_value (*static_cast <X3D::SFImage*> (field), ellipsize);
 
 		case X3D::X3DConstants::SFString:
 			return static_cast <X3D::SFString*> (field) -> getValue ();

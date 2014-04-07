@@ -120,6 +120,10 @@ public:
 	static io::quoted_string string;
 	static io::sequence      ComponentName;
 
+	// Locale
+
+	static io::sequence spaces; // Whitespaces without comma
+
 private:
 
 	static

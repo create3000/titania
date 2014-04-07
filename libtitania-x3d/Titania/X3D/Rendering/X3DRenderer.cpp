@@ -157,8 +157,6 @@ X3DRenderer::render (const TraverseType type)
 	numTransparentShapes = 0;
 	numCollisionShapes   = 0;
 
-	getBrowser () -> getRenderers () .emplace (this);
-
 	switch (type)
 	{
 		case TraverseType::NAVIGATION:
@@ -194,7 +192,6 @@ X3DRenderer::render (const TraverseType type)
 	}
 
 	getGlobalObjects () .clear ();
-	getBrowser () -> getRenderers () .pop ();
 }
 
 void

@@ -53,6 +53,8 @@
 
 #include "../../Types/Numbers.h"
 
+#include <memory>
+
 namespace titania {
 namespace X3D {
 
@@ -65,6 +67,8 @@ public:
 	Vector3f hitPoint;
 
 };
+
+using IntersectionPtr = std::shared_ptr <Intersection>;
 
 } // X3D
 } // titania

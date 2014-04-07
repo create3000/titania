@@ -170,7 +170,7 @@ public:
 
 	/// @name Selection operations
 
-	const std::shared_ptr <BrowserSelection> &
+	const std::unique_ptr <BrowserSelection> &
 	getSelection () const
 	{ return selection; }
 
@@ -306,10 +306,10 @@ private:
 	int           savedIndex;
 	X3D::ScenePtr scene;
 
-	std::shared_ptr <MagicImport>      magicImport;
+	std::unique_ptr <MagicImport>      magicImport;
 	UndoHistory                        undoHistory;
 	UndoMatrixIndex                    undoMatrices;
-	std::shared_ptr <BrowserSelection> selection;
+	std::unique_ptr <BrowserSelection> selection;
 
 };
 

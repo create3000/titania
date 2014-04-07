@@ -30,6 +30,7 @@
 
 #include "X3DBrowser.h"
 
+#include "../Context.h"
 #include "../Bits/config.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Properties/BrowserOptions.h"
@@ -49,6 +50,7 @@ const std::string X3DBrowser::typeName       = "Browser";
 const std::string X3DBrowser::containerField = "browser";
 
 X3DBrowser::X3DBrowser () :
+	        X3DBaseNode (),
 	  X3DBrowserContext (),
 	    supportedFields (),
 	     supportedNodes (this),
@@ -83,6 +85,7 @@ X3DBrowser::initialize ()
 {
 	std::clog << "Initializing Browser ..." << std::endl;
 
+	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();
 
 	// Replace world service.
@@ -239,6 +242,8 @@ X3DBrowser::replaceWorld (const ScenePtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (makeCurrent ())
 	{
 		// Process shutdown.
@@ -329,6 +334,8 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (makeCurrent ())
 	{
 		// where parameter is "target=nameOfFrame"
@@ -368,6 +375,8 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromString (string);
 
@@ -381,6 +390,8 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (istream);
 
@@ -394,6 +405,8 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (worldURL, istream);
 
@@ -580,6 +593,7 @@ X3DBrowser::dispose ()
 	supportedNodes  .dispose ();
 
 	X3DBrowserContext::dispose ();
+	X3DBaseNode::dispose ();
 
 	unlock ();
 

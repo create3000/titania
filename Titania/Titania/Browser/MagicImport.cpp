@@ -99,13 +99,13 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
-	                     X3D::pushContext ();
+	                     std::lock_guard <X3D::ContextMutex> contextLock (X3D::contextMutex);
+
 	                     getBrowser () -> makeCurrent ();
 	                     
 	                     importProtoDeclaration (appearance -> material (), undoStep);
 	                     material = appearance -> material () -> copy (getBrowser () -> getExecutionContext ());
-	                     
-	                     X3D::popContext ();
+
 	                     return false;
 							}
 
@@ -149,13 +149,13 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
-	                     X3D::pushContext ();
+	                     std::lock_guard <X3D::ContextMutex> contextLock (X3D::contextMutex);
+
 	                     getBrowser () -> makeCurrent ();
 	                     
 	                     importProtoDeclaration (appearance -> texture (), undoStep);
 	                     texture = appearance -> texture () -> copy (getBrowser () -> getExecutionContext ());
-	                     
-	                     X3D::popContext ();
+
 	                     return false;
 							}
 

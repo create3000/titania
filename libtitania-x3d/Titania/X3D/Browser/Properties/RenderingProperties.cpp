@@ -50,6 +50,7 @@
 
 #include "RenderingProperties.h"
 
+#include "../../Context.h"
 #include "../../Bits/config.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -211,6 +212,8 @@ RenderingProperties::hasExtension (const std::string & name)
 size_t
 RenderingProperties::getAvailableTextureMemory ()
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	if (getBrowser () -> makeCurrent ())
 	{
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
@@ -362,6 +365,8 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	getBrowser () -> makeCurrent ();
 
 	X3DNode::dispose ();

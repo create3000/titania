@@ -1,5 +1,58 @@
 2014-04-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* X3D.cpp:
+	* libtitania-x3d.cproj:
+	* Context.h:
+	* Context.cpp:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFVec2.h:
+	* Grammar.h:
+	* SFTime.cpp:
+	* SFColor.cpp:
+	* SFMatrix3.h:
+	* SFImage.cpp:
+	* Grammar.cpp:
+	* SFMatrix4.h:
+	* Scene.cpp:
+	* SFString.cpp:
+	* X3DScalar.cpp:
+	* SFRotation4.h:
+	* X3DBrowser.h:
+	* Hit.h:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* SFColorRGBA.cpp:
+	* HitPtr.h:
+	* Notification.cpp:
+	* X3DRenderer.cpp:
+	* Shape.cpp:
+	* HitArray.h:
+	* X3DBrowserContext.h:
+	* X3DViewer.cpp:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp:
+	* X3DBrowserSurface.cpp:
+	* Intersection.h:
+	* LookAtViewer.cpp:
+	* IntersectionPtr.h:
+	* X3DPickingContext.h:
+	* X3DLayerNode.cpp:
+	* X3DPickingContext.cpp:
+	* X3DGeometryNode.h:
+	* X3DNavigationContext.h:
+	* RenderingProperties.cpp:
+	* X3DNavigationContext.cpp:
+	* ParticleSystem.cpp:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DPointingDeviceSensorNode.h: 
+
+2014-04-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFTime.h:
 	* X3DObject.h:
 	* SFTime.cpp:

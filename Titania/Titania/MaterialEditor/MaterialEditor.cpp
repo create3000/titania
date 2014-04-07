@@ -568,7 +568,8 @@ MaterialEditor::updateAppearance ()
 		getBrowser () -> getExecutionContext () -> setup ();
 		getBrowser () -> update ();
 
-		getBrowserWindow () -> addUndoStep (undoStep);
+		if (initialized or appearances .size () > 1)
+			getBrowserWindow () -> addUndoStep (undoStep);
 
 		browserSurface -> addEvent ();
 	}

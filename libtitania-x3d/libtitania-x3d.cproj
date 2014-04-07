@@ -561,9 +561,7 @@
     <None Include="Titania\X3D\Browser\Notification.h" />
     <None Include="Titania\X3D\Browser\Picking\Hit.h" />
     <None Include="Titania\X3D\Browser\Picking\HitArray.h" />
-    <None Include="Titania\X3D\Browser\Picking\HitPtr.h" />
     <None Include="Titania\X3D\Browser\Picking\Intersection.h" />
-    <None Include="Titania\X3D\Browser\Picking\IntersectionPtr.h" />
     <None Include="Titania\X3D\Browser\Picking\Selection.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
@@ -671,6 +669,9 @@
     <None Include="share\titania\tools\EnvironmentalSensor.x3dv" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoObject.h" />
+    <None Include="Titania\X3D\Context.h" />
+    <None Include="Titania\X3D\Browser\Picking\X3DPickingContext.h" />
+    <None Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1149,6 +1150,9 @@
     <Compile Include="Titania\X3D\Tools\Layout\ScreenGroupTool.cpp" />
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.cpp" />
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.cpp" />
+    <Compile Include="Titania\X3D\Context.cpp" />
+    <Compile Include="Titania\X3D\Browser\Picking\X3DPickingContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1193,6 +1197,7 @@
     <Folder Include="Titania\X3D\Tools\Networking\" />
     <Folder Include="Titania\X3D\Tools\Layout\" />
     <Folder Include="Titania\X3D\Tools\EnvironmentalSensor\" />
+    <Folder Include="Titania\X3D\Browser\Navigation\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

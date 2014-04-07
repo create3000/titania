@@ -72,6 +72,7 @@ enum class OutlineCellContent {
 };
 
 class X3DOutlineTreeView;
+class OutlineTreeModel;
 
 class OutlineCellRenderer :
 	public Gtk::CellRendererText
@@ -174,8 +175,9 @@ private:
 	bool
 	set_field_value (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const std::string &, const bool);
 
+	static
 	void
-	row_changed (const Glib::ustring &);
+	row_changed (const Glib::RefPtr <OutlineTreeModel> &, const Glib::ustring &);
 
 	virtual
 	void

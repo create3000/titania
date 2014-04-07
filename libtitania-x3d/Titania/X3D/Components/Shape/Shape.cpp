@@ -138,14 +138,14 @@ Shape::traverse (const TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			if (getGeometry ())
-				getBrowser () -> getRenderers () .top () -> addCollision (this);
+				getCurrentLayer () -> addCollision (this);
 
 			break;
 		}
 		case TraverseType::DISPLAY:
 		{
 			if (getGeometry ())
-				getBrowser () -> getRenderers () .top () -> addShape (this);
+				getCurrentLayer () -> addShape (this);
 
 			break;
 		}
@@ -167,11 +167,11 @@ Shape::pick ()
 
 			if (getCurrentLayer () -> getViewVolumeStack () .top () .intersect (bbox))
 			{
-				const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
+				const Line3f pickRay = getBrowser () -> getPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
 
 				std::vector <IntersectionPtr> itersections;
 
-				if (getGeometry () -> intersect (hitRay, itersections))
+				if (getGeometry () -> intersect (pickRay, itersections))
 				{
 					for (auto & itersection : itersections)
 						itersection -> hitPoint = itersection -> hitPoint * getModelViewMatrix () .get ();

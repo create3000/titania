@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 
 #include "X3DScene.h"
 
+#include "../Context.h"
 #include "../Bits/Error.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/ExportedNode.h"
@@ -73,13 +74,12 @@ X3DScene::X3DScene () :
 void
 X3DScene::initialize ()
 {
-	X3D::pushContext ();
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	getBrowser () -> makeCurrent ();
 
 	X3DBaseNode::initialize ();
 	X3DExecutionContext::initialize ();
-
-	X3D::popContext ();
 }
 
 std::string

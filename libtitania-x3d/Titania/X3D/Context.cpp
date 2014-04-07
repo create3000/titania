@@ -48,80 +48,39 @@
  *
  ******************************************************************************/
 
-#include "X3D.h"
+#include "Context.h"
+
+#include "Rendering/OpenGL.h"
+
+#include <tuple>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
-///  requests may be processed.  This is a unique identifier per application instance.
-const BrowserApplicationPtr &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>)
+ContextMutex contextMutex;
+
+static std::vector <std::tuple <Display*, GLXDrawable, GLXContext>> contextStack;
+
+void
+ContextMutex::pushContext ()
+noexcept (true)
 {
-	static BrowserApplicationPtr browserApplication;
-
-	if (not browserApplication)
-	{
-		std::clog << "Creating BrowserApplication ..." << std::endl;
-
-		browserApplication = new BrowserApplication ();
-
-		browserApplication -> setup ();
-
-		std::clog << "Done creating BrowserApplication." << std::endl;
-	}
-
-	return browserApplication;
-}
-
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
-BrowserPtr
-createBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>)
-{
-	std::clog << "Creating Browser ..." << std::endl;
-	BrowserPtr browser = new Browser ();
-
-	std::clog << "Done creating Browser." << std::endl;
-	return browser;
-}
-
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
-BrowserPtr
-createBrowser (const BrowserPtr & sharingBrowser)
-throw (Error <INVALID_NODE>,
-       Error <BROWSER_UNAVAILABLE>)
-{
-	if (not sharingBrowser)
-		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
-
-	std::clog << "Creating Browser ..." << std::endl;
-	BrowserPtr browser = new Browser (*sharingBrowser);
-
-	std::clog << "Done creating Browser." << std::endl;
-	return browser;
+	contextStack .emplace_back (glXGetCurrentDisplay (), glXGetCurrentDrawable (), glXGetCurrentContext ());
 }
 
 void
-removeBrowser (BrowserPtr & browser)
+ContextMutex::popContext ()
 noexcept (true)
 {
-	if (not browser)
-		return;
+	const auto & tuple = contextStack .back ();
 
-	const auto xDisplay  = glXGetCurrentDisplay ();
-	const auto xDrawable = glXGetCurrentDrawable ();
-	const auto xContext  = glXGetCurrentContext ();
+	if (std::get <0> (tuple))
+		glXMakeCurrent (std::get <0> (tuple),
+		                std::get <1> (tuple),
+		                std::get <2> (tuple));
 
-	browser -> makeCurrent ();
-
-	const auto xBrowserContext = glXGetCurrentContext ();
-
-	browser = nullptr;
-
-	if (xDisplay and xContext not_eq xBrowserContext)
-		glXMakeCurrent (xDisplay, xDrawable, xContext);
+	contextStack .pop_back ();
 }
 
 } // X3D

@@ -81,6 +81,8 @@
 #include "X3D/Parser/Filter.h"
 #include "X3D/Parser/RegEx.h"
 
+#include "X3D/Context.h"
+
 namespace titania {
 namespace X3D {
 
@@ -99,14 +101,6 @@ throw (Error <INVALID_NODE>,
 
 void
 removeBrowser (BrowserPtr &)
-noexcept (true);
-
-void
-pushContext ()
-noexcept (true);
-
-void
-popContext ()
 noexcept (true);
 
 } // X3D

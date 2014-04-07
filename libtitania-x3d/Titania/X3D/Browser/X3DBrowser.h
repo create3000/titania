@@ -42,7 +42,7 @@ namespace titania {
 namespace X3D {
 
 class X3DBrowser :
-	public X3DBrowserContext
+	virtual public X3DBaseNode, public X3DBrowserContext
 {
 public:
 

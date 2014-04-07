@@ -48,81 +48,132 @@
  *
  ******************************************************************************/
 
-#include "X3D.h"
+#ifndef __TITANIA_X3D_BROWSER_X3DPICKING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_X3DPICKING_CONTEXT_H__
+
+#include "../../Basic/NodeSet.h"
+#include "../../Fields.h"
+#include "../../Types/Geometry.h"
+#include "../../Types/Pointer.h"
+#include "Intersection.h"
+#include "HitArray.h"
 
 namespace titania {
 namespace X3D {
 
-///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
-///  requests may be processed.  This is a unique identifier per application instance.
-const BrowserApplicationPtr &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>)
+class X3DPickingContext :
+	virtual public X3DBaseNode
 {
-	static BrowserApplicationPtr browserApplication;
+public:
 
-	if (not browserApplication)
-	{
-		std::clog << "Creating BrowserApplication ..." << std::endl;
+	///  @name Outputs
 
-		browserApplication = new BrowserApplication ();
+	const Output &
+	picked () const
+	{ return pickedOutput; }
 
-		browserApplication -> setup ();
+	void
+	setPicking (bool value)
+	{ picking = value; }
 
-		std::clog << "Done creating BrowserApplication." << std::endl;
-	}
+	const SFBool &
+	getPicking () const
+	{ return picking; }
 
-	return browserApplication;
-}
+	///  @name Operations
 
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
-BrowserPtr
-createBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>)
-{
-	std::clog << "Creating Browser ..." << std::endl;
-	BrowserPtr browser = new Browser ();
+	void
+	pick (const double, const double);
 
-	std::clog << "Done creating Browser." << std::endl;
-	return browser;
-}
+	bool
+	intersect (const Vector4i &) const;
 
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
-BrowserPtr
-createBrowser (const BrowserPtr & sharingBrowser)
-throw (Error <INVALID_NODE>,
-       Error <BROWSER_UNAVAILABLE>)
-{
-	if (not sharingBrowser)
-		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
+	std::vector <NodeSet> &
+	getSensors ()
+	{ return enabledSensors; }
 
-	std::clog << "Creating Browser ..." << std::endl;
-	BrowserPtr browser = new Browser (*sharingBrowser);
+	void
+	setPickRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
+	{ pickRay = getPickRay (modelViewMatrix, projectionMatrix, viewport); }
 
-	std::clog << "Done creating Browser." << std::endl;
-	return browser;
-}
+	Line3d
+	getPickRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
 
-void
-removeBrowser (BrowserPtr & browser)
-noexcept (true)
-{
-	if (not browser)
-		return;
+	void
+	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
 
-	const auto xDisplay  = glXGetCurrentDisplay ();
-	const auto xDrawable = glXGetCurrentDrawable ();
-	const auto xContext  = glXGetCurrentContext ();
+	const HitArray &
+	getHits () const
+	{ return hits; }
 
-	browser -> makeCurrent ();
+	X3DLayerNode*
+	getPickingLayer () const
+	{ return pickingLayer; }
 
-	const auto xBrowserContext = glXGetCurrentContext ();
+	void
+	motionNotifyEvent ();
 
-	browser = nullptr;
+	void
+	buttonPressEvent ();
 
-	if (xDisplay and xContext not_eq xBrowserContext)
-		glXMakeCurrent (xDisplay, xDrawable, xContext);
-}
+	void
+	buttonReleaseEvent ();
+
+	void
+	leaveNotifyEvent ();
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DPickingContext ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DPickingContext ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Members access
+
+	virtual
+	const WorldPtr &
+	getWorld () const = 0;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_shutdown ();
+
+	//  @name Members
+
+	Output pickedOutput;
+
+	SFBool                picking;
+	double                x;
+	double                y;
+	Line3d                pickRay;
+	HitArray              hits;
+	HitComp               hitComp;
+	std::vector <NodeSet> enabledSensors;
+	MFNode                overSensors;
+	MFNode                activeSensors;
+	X3DLayerNode*         pickingLayer;
+
+};
 
 } // X3D
 } // titania
+
+#endif

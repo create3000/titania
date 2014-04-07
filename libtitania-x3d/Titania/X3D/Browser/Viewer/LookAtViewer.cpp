@@ -52,6 +52,8 @@
 
 #include "LookAtViewer.h"
 
+#include "../../Components/Shape/X3DShapeNode.h"
+
 namespace titania {
 namespace X3D {
 

@@ -110,6 +110,10 @@ io::quoted_string Grammar::string ('\"');
 
 io::sequence Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
 
+// Locale
+
+io::sequence Grammar::spaces ("\r\n \t");
+
 bool
 Grammar::Int32 (std::istream & istream, int32_t & _value)
 {

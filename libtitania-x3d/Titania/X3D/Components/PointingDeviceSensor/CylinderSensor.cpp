@@ -103,21 +103,21 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-CylinderSensor::isBehind (const Line3d & hitRay, const Vector3d & hitPoint) const
+CylinderSensor::isBehind (const Line3d & pickRay, const Vector3d & hitPoint) const
 {
 	Vector3d enter, exit;
 
-	cylinder .intersect (hitRay, enter, exit);
+	cylinder .intersect (pickRay, enter, exit);
 
 	return abs (hitPoint - enter) > abs (hitPoint - exit);
 }
 
 bool
-CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const bool) const
+CylinderSensor::getTrackPoint (const Line3d & pickRay, Vector3d & trackPoint, const bool) const
 {
 	Vector3d zPoint;
 
-	zPlane .intersect (hitRay, zPoint);
+	zPlane .intersect (pickRay, zPoint);
 
 	const auto axisPoint = zPoint + cylinder .axis () .perpendicular_vector (zPoint);
 	const auto distance  = sxPlane .distance (zPoint) / cylinder .radius ();
@@ -159,7 +159,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 		{
 			inverseModelViewMatrix = ~getMatrices () .at (hit -> layer) .modelViewMatrix;
 
-			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
+			const auto pickRay  = hit -> pickRay * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const auto     yAxis      = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
@@ -171,7 +171,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			cylinder = Cylinder3d (axis, radius);
 
 			disk   = std::abs (dot (cameraBack, yAxis)) > std::cos (diskAngle ());
-			behind = isBehind (hitRay, hitPoint);
+			behind = isBehind (pickRay, hitPoint);
 
 			yPlane = Plane3d (hitPoint, yAxis);             // Sensor aligned y-plane
 			zPlane = Plane3d (hitPoint, cameraBack);        // Screen aligned z-plane
@@ -186,9 +186,9 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			Vector3d trackPoint;
 
 			if (disk)
-				yPlane .intersect (hitRay, trackPoint);
+				yPlane .intersect (pickRay, trackPoint);
 			else
-				getTrackPoint (hitRay, trackPoint, behind);
+				getTrackPoint (pickRay, trackPoint, behind);
 
 			fromVector = -cylinder .axis () .perpendicular_vector (trackPoint);
 
@@ -211,14 +211,14 @@ CylinderSensor::set_motion (const HitPtr & hit)
 {
 	try
 	{
-		const auto hitRay = hit -> ray * inverseModelViewMatrix;
+		const auto pickRay = hit -> pickRay * inverseModelViewMatrix;
 
 		Vector3d trackPoint;
 
 		if (disk)
-			yPlane .intersect (hitRay, trackPoint);
+			yPlane .intersect (pickRay, trackPoint);
 		else
-			getTrackPoint (hitRay, trackPoint, behind);
+			getTrackPoint (pickRay, trackPoint, behind);
 
 		trackPoint_changed () = trackPoint;
 

@@ -48,16 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_INTERSECTION_PTR_H__
-#define __TITANIA_X3D_BROWSER_PICKING_INTERSECTION_PTR_H__
+#ifndef __TITANIA_X3D_CONTEXT_H__
+#define __TITANIA_X3D_CONTEXT_H__
 
-#include "../Picking/Intersection.h"
-#include <memory>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
 
-typedef std::shared_ptr <Intersection> IntersectionPtr;
+class ContextMutex
+{
+public:
+
+	void
+	lock ()
+	{ pushContext (); }
+
+	void
+	unlock ()
+	{ popContext (); }
+
+
+private:
+
+	void
+	pushContext ()
+	noexcept (true);
+
+	void
+	popContext ()
+	noexcept (true);
+
+};
+
+extern ContextMutex contextMutex;
 
 } // X3D
 } // titania

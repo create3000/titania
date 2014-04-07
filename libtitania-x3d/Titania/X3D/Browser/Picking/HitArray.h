@@ -51,13 +51,14 @@
 #ifndef __TITANIA_X3D_BROWSER_PICKING_HIT_ARRAY_H__
 #define __TITANIA_X3D_BROWSER_PICKING_HIT_ARRAY_H__
 
-#include "HitPtr.h"
+#include "Hit.h"
+
 #include <deque>
 
 namespace titania {
 namespace X3D {
 
-typedef std::deque <HitPtr> HitArray;
+using HitArray = std::deque <HitPtr>;
 
 } // X3D
 } // titania

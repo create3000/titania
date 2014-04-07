@@ -54,7 +54,9 @@
 #include "../../Basic/NodeSet.h"
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
-#include "../Picking/IntersectionPtr.h"
+#include "Intersection.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -68,7 +70,7 @@ public:
 
 	Hit (const double x, const double y,
 	     const Matrix4d & modelViewMatrix,
-	     const Line3d & hitRay,
+	     const Line3d & pickRay,
 	     const IntersectionPtr & intersection,
 	     const NodeSet & sensors,
 	     X3DShapeNode* const shape,
@@ -76,7 +78,7 @@ public:
 		              x (x),
 		              y (y),
 		modelViewMatrix (modelViewMatrix),
-		            ray (hitRay),
+		        pickRay (pickRay),
 		       texCoord (intersection -> hitTexCoord),
 		         normal (intersection -> hitNormal),
 		          point (intersection -> hitPoint),
@@ -89,7 +91,7 @@ public:
 	const double        x;
 	const double        y;
 	const Matrix4d      modelViewMatrix;
-	const Line3d        ray;
+	const Line3d        pickRay;
 	const Vector4d      texCoord;
 	const Vector3d      normal;
 	const Vector3d      point;
@@ -97,6 +99,20 @@ public:
 	const NodeSet       sensors;
 	X3DShapeNode* const shape;
 	X3DLayerNode* const layer;
+
+};
+
+using HitPtr = std::shared_ptr <Hit>;
+
+class HitComp
+{
+public:
+
+	bool
+	operator () (const HitPtr & lhs, const HitPtr & rhs) const
+	{
+		return lhs -> distance < rhs -> distance;
+	}
 
 };
 

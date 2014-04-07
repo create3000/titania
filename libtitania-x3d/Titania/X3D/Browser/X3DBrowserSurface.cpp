@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,6 +50,7 @@
 
 #include "X3DBrowserSurface.h"
 
+#include "../Context.h"
 #include "../Browser/Viewer/ExamineViewer.h"
 #include "../Browser/Viewer/FlyViewer.h"
 #include "../Browser/Viewer/NoneViewer.h"
@@ -177,6 +178,8 @@ X3DBrowserSurface::set_viewer (ViewerType type)
 void
 X3DBrowserSurface::dispose ()
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	makeCurrent ();
 
 	viewer .reset ();
