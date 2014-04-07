@@ -97,9 +97,6 @@ public:
 	{ return type; }
 
 	std::string
-	toLocaleString () const;
-
-	std::string
 	toUTCString () const;
 
 	///  6.7.7 Add field interest.

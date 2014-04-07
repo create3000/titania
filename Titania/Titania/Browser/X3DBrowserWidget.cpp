@@ -271,28 +271,39 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);
 
-	try
-	{
-		executionContext -> getMetaData ("creator");
-	}
-	catch (const X3D::X3DError &)
-	{
-		const std::string fullname = os::getfullname ();
+	// MetaData
 
-		if (not fullname .empty ())
-			executionContext -> setMetaData ("creator", os::getfullname ());
+	if (suffix not_eq ".wrl")
+	{
+		// VRML files are saved as is, but we do not add extra stuff!
+
+		executionContext -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
+
+		try
+		{
+			executionContext -> getMetaData ("creator");
+		}
+		catch (const X3D::X3DError &)
+		{
+			const std::string fullname = os::getfullname ();
+
+			if (not fullname .empty ())
+				executionContext -> setMetaData ("creator", os::getfullname ());
+		}
+
+		try
+		{
+			executionContext -> getMetaData ("created");
+		}
+		catch (const X3D::X3DError &)
+		{
+			executionContext -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
+		}
+
+		executionContext -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
 	}
 
-	try
-	{
-		executionContext -> getMetaData ("created");
-	}
-	catch (const X3D::X3DError &)
-	{
-		executionContext -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
-	}
-
-	executionContext -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
+	// Save
 
 	if (suffix == ".x3d")
 	{
@@ -321,15 +332,21 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	}
 	else
 	{
-		if (suffix == ".x3dv" and executionContext -> getVersion () == X3D::VRML_V2_0)
+		if (suffix == ".wrl")
 		{
-			executionContext -> setEncoding ("X3D");
-			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+			if (executionContext -> getVersion () not_eq X3D::VRML_V2_0)
+			{
+				executionContext -> setEncoding ("VRML");
+				executionContext -> setSpecificationVersion ("2.0");
+			}
 		}
-		else if (suffix == ".wrl" and executionContext -> getVersion () not_eq X3D::VRML_V2_0)
+		else  // ".x3dv"
 		{
-			executionContext -> setEncoding ("VRML");
-			executionContext -> setSpecificationVersion ("2.0");
+			if (executionContext -> getVersion () == X3D::VRML_V2_0)
+			{
+				executionContext -> setEncoding ("X3D");
+				executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+			}
 		}
 
 		if (compressed)

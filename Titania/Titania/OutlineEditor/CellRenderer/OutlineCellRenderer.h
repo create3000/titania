@@ -174,6 +174,9 @@ private:
 	bool
 	set_field_value (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const std::string &, const bool);
 
+	void
+	row_changed (const Glib::ustring &);
+
 	virtual
 	void
 	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;

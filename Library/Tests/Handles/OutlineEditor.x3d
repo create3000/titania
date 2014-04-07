@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.7, http://titania.create3000.de'/>
-    <meta name='modified' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
+    <meta name='modified' content='Mon, 07 Apr 2014 07:24:53 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -90,9 +90,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='xxx'
         description='OutlineEditor'
-        position='1.46307 2.24268 0.93119'
-        orientation='0.657858 0.711081 0.248166 5.17775'
-        centerOfRotation='2.26896 1.23038 0.218036'/>
+        position='1.83068 1.51013 2.60705'
+        orientation='0.965483 -0.253482 -0.059908 6.1394'
+        centerOfRotation='1.83068 1.51013 2.60705'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -150,7 +150,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 3.02064'
+          rotation='0 0 1 4.79794'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -306,7 +306,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"OutlineEditor"'>
+            string='"modified", "So 06 Apr 2014 13:10:03 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -334,9 +334,20 @@
         centerOfRotation='1.83783 -0.942352 -0.631597'/>
     <TextureTransform/>
     <TextureTransform/>
+    <Script DEF='_3'>
+      <field accessType='outputOnly' type='MFString' name='string_changed'/>
+<![CDATA[javascript:
+function initialize ()
+{
+	var modified = Browser .currentScene .getMetaData ("modified");
+	var date = new Date (Date .parse (modified));
+	string_changed = new MFString ("modified", date .toLocaleString ());
+}]]> 
+    </Script>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
     <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <ROUTE fromNode='xxx' fromField='position_changed' toNode='xxx' toField='set_centerOfRotation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
+    <ROUTE fromNode='_3' fromField='string_changed' toNode='Text2' toField='set_string'/>
   </Scene>
 </X3D>

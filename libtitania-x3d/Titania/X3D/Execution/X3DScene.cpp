@@ -271,8 +271,12 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	Generator::Version (version);
 
-	const_cast <X3DScene*> (this) -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
-	const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
+	if (version not_eq VRML_V2_0)
+	{
+		// VRML files are saved as is, but we do not add extra stuff!
+
+		const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
+	}
 
 	ostream
 		<< '#'
@@ -312,63 +316,60 @@ X3DScene::toStream (std::ostream & ostream) const
 		ostream << Generator::TidyBreak;
 	}
 
-	if (version not_eq VRML_V2_0)
+	if (getProfile ())
 	{
-		if (getProfile ())
+		ostream
+			<< *getProfile ()
+			<< Generator::Break
+			<< Generator::TidyBreak;
+	}
+
+	if (not getComponents () .empty ())
+	{
+		for (const auto & component : getComponents ())
 		{
 			ostream
-				<< *getProfile ()
-				<< Generator::Break
-				<< Generator::TidyBreak;
+				<< *component
+				<< Generator::Break;
 		}
 
-		if (not getComponents () .empty ())
+		ostream << Generator::TidyBreak;
+	}
+
+	// Unit
+	{
+		bool empty = true;
+
+		for (const auto & unit : getUnits ())
 		{
-			for (const auto & component : getComponents ())
+			if (unit .getConversion () not_eq 1)
 			{
+				empty = false;
+
 				ostream
-					<< *component
+					<< unit
 					<< Generator::Break;
 			}
+		}
 
+		if (not empty)
 			ostream << Generator::TidyBreak;
-		}
+	}
 
-		// Unit
+	if (not getMetaDatas () .empty ())
+	{
+		for (const auto & metaData : getMetaDatas ())
 		{
-			bool empty = true;
-
-			for (const auto & unit : getUnits ())
-			{
-				if (unit .getConversion () not_eq 1)
-				{
-					empty = false;
-
-					ostream
-						<< unit
-						<< Generator::Break;
-				}
-			}
-
-			if (not empty)
-				ostream << Generator::TidyBreak;
+			ostream
+				<< "META"
+				<< Generator::Space
+				<< SFString (metaData .first)
+				<< Generator::Space
+				<< SFString (metaData .second)
+				<< Generator::Break;
 		}
 
-		if (not getMetaDatas () .empty ())
-		{
-			for (const auto & metaData : getMetaDatas ())
-			{
-				ostream
-					<< "META"
-					<< Generator::Space
-					<< SFString (metaData .first)
-					<< Generator::Space
-					<< SFString (metaData .second)
-					<< Generator::Break;
-			}
-
-			ostream << Generator::TidyBreak;
-		}
+		ostream << Generator::TidyBreak;
 	}
 
 	// Scene
@@ -377,21 +378,18 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	X3DExecutionContext::toStream (ostream);
 
-	if (version not_eq VRML_V2_0)
+	if (not getExportedNodes () .empty ())
 	{
-		if (not getExportedNodes () .empty ())
-		{
-			ostream << Generator::TidyBreak;
+		ostream << Generator::TidyBreak;
 
-			for (const auto & exportedNode : getExportedNodes ())
+		for (const auto & exportedNode : getExportedNodes ())
+		{
+			try
 			{
-				try
-				{
-					ostream << exportedNode;
-				}
-				catch (const X3DError &)
-				{ }
+				ostream << exportedNode;
 			}
+			catch (const X3DError &)
+			{ }
 		}
 	}
 
@@ -430,7 +428,6 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	Generator::Version (version);
 
-	const_cast <X3DScene*> (this) -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
 	const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
 
 	ostream

@@ -648,9 +648,13 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
 			undoStep -> addVariables (node);
+			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, this, textview -> get_path ());
 
 			undoStep -> addUndoFunction (&X3D::SFString::setValue, sfstring, currentValue);
 			undoStep -> addRedoFunction (&X3D::SFString::setValue, sfstring, string);
+
+			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, this, textview -> get_path ());
+			row_changed (textview -> get_path ());
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -661,16 +665,20 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 	const auto currentValue = field -> toString ();
 	const auto locale       = std::locale ();
 
-	if (field -> fromString (string, locale))
+	if (field -> fromLocaleString (string, locale))
 	{
 		if (field -> toString () not_eq currentValue)
 		{
 			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
 			undoStep -> addVariables (node);
+			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, this, textview -> get_path ());
 
-			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue, std::locale::classic ());
-			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, string, locale);
+			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue);
+			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromLocaleString, field, string, locale);
+
+			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, this, textview -> get_path ());
+			row_changed (textview -> get_path ());
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -679,6 +687,16 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 	}
 
 	return false;
+}
+
+void
+OutlineCellRenderer::row_changed (const Glib::ustring & string_path)
+{
+	const Gtk::TreeModel::Path path (string_path);
+	const auto iter = treeView -> get_model () -> get_iter (path);
+	
+	if (treeView -> get_model () -> iter_is_valid (iter))
+		treeView -> get_model () -> row_changed (path, iter);
 }
 
 OutlineCellContent

@@ -784,7 +784,7 @@ X3DBrowserContext::update ()
 			GLenum errorNum = glGetError ();
 
 			if (errorNum not_eq GL_NO_ERROR)
-				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
+				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
 		}
 	}
 	catch (const std::exception & exception)

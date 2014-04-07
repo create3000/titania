@@ -168,6 +168,9 @@ public:
 	void
 	clear (const iterator &);
 
+	bool
+	iter_is_valid (const iterator & iter) const;
+
 	///  @name Destruction
 
 	virtual
@@ -177,9 +180,6 @@ public:
 private:
 
 	OutlineTreeModel (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
-
-	bool
-	iter_is_valid (const iterator & iter) const;
 
 	void
 	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path) const;

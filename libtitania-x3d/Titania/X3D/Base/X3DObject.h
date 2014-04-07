@@ -122,10 +122,24 @@ public:
 	///  @name String Creation
 
 	bool
-	fromString (const std::string &, const std::locale & = std::locale::classic ());
+	fromString (const std::string &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	bool
+	fromLocaleString (const std::string &, const std::locale &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	std::string
-	toString (const std::locale & = std::locale::classic ()) const;
+	toString () const;
+
+	std::string
+	toLocaleString (const std::locale &) const;
 
 	std::string
 	toXMLString () const;

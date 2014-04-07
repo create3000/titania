@@ -339,10 +339,9 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 void
 OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib::ustring & text)
 {
-	Gtk::TreeModel::Path     path (string_path);
-	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+	const Gtk::TreeModel::Path     path (string_path);
+	const Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
 
-	get_model () -> row_changed (path, iter);
 	get_tree_observer () -> watch_child (iter, path);
 
 	getBrowserWindow () -> hasShortcuts (true);

@@ -75,7 +75,21 @@ X3DObject::realize () const
 // String
 
 bool
-X3DObject::fromString (const std::string & string, const std::locale & locale)
+X3DObject::fromString (const std::string & string)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return fromLocaleString (string, std::locale::classic ());
+}
+
+bool
+X3DObject::fromLocaleString (const std::string & string, const std::locale & locale)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	std::istringstream istringstream (string);
 
@@ -87,7 +101,13 @@ X3DObject::fromString (const std::string & string, const std::locale & locale)
 }
 
 std::string
-X3DObject::toString (const std::locale & locale) const
+X3DObject::toString () const
+{
+	return toLocaleString (std::locale::classic ());
+}
+
+std::string
+X3DObject::toLocaleString (const std::locale & locale) const
 {
 	std::ostringstream ostringstream;
 

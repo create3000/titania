@@ -1316,8 +1316,6 @@ BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
 	{
-		std::clog << "Hand button clicked." << std::endl;
-
 		getConfig () .setItem ("arrow", false);
 		getSelection () -> setEnabled (false);
 	}
@@ -1328,8 +1326,6 @@ BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
 	{
-		std::clog << "Arrow button clicked." << std::endl;
-
 		getConfig () .setItem ("arrow", true);
 		getSelection () -> setEnabled (true);
 	}

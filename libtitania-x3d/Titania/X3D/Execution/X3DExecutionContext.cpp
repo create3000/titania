@@ -915,8 +915,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
 
-	const auto version = getVersion ();
-
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
 		ostream
@@ -950,21 +948,18 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	if (version not_eq VRML_V2_0)
+	if (not getImportedNodes () .empty ())
 	{
-		if (not getImportedNodes () .empty ())
-		{
-			ostream << Generator::TidyBreak;
+		ostream << Generator::TidyBreak;
 
-			for (const auto & importedNode : getImportedNodes ())
+		for (const auto & importedNode : getImportedNodes ())
+		{
+			try
 			{
-				try
-				{
-					ostream << importedNode;
-				}
-				catch (const X3DError &)
-				{ }
+				ostream << importedNode;
 			}
+			catch (const X3DError &)
+			{ }
 		}
 	}
 
