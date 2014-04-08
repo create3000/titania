@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,95 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_SELECTION_H__
-#define __TITANIA_X3D_BROWSER_PICKING_SELECTION_H__
+#ifndef __TITANIA_X3D_BROWSER_LAYOUT_X3DLAYOUT_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_LAYOUT_X3DLAYOUT_CONTEXT_H__
 
-#include "../../Components/Core/X3DNode.h"
+#include <stack>
 
 namespace titania {
 namespace X3D {
 
-class Selection :
+class X3DLayoutNode;
+
+using LayoutStack = std::stack <X3DLayoutNode*>;
+
+class X3DLayoutContext :
 	virtual public X3DBaseNode
 {
 public:
 
-	///  @name Construction
+	LayoutStack &
+	getLayouts ()
+	{ return layouts; }
 
-	Selection (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
+	///  @name Destruction
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	void
+	dispose () override
+	{ }
+
+
+protected:
+
+	///  @name Constructor
+
+	X3DLayoutContext () :
+		  X3DBaseNode (),
+		      layouts ()
+	{ }
 
 	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Member access
-	
-	SFBool &
-	isActive ()
-	{ return active; }
-
-	const SFBool &
-	isActive () const
-	{ return active; }
-
-	///  @name Member access
-
-	bool
-	isSelected (const SFNode &) const;
-
 	void
-	addChildren (const MFNode &);
-
-	void
-	removeChildren (const MFNode &);
-
-	void
-	setChildren (const MFNode &);
-
-	const MFNode &
-	getChildren () const
-	{ return children; }
-
-	///  @name Operations
-
-	void
-	clear ();
+	initialize () override
+	{ }
 
 
 private:
 
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	SFBool active;
-	MFNode children;
+	LayoutStack layouts;
 
 };
 

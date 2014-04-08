@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,13 +50,13 @@
 
 #include "X3DBrowserContext.h"
 
-#include "../Context.h"
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
-#include "../Browser/Picking/Selection.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
+#include "../Browser/Selection.h"
+#include "../Context.h"
 #include "../JavaScript/SpiderMonkey.h"
 #include "../Rendering/ViewVolume.h"
 
@@ -68,45 +68,39 @@
 namespace titania {
 namespace X3D {
 
-static constexpr int32_t MAX_DOWNLOAD_THREADS = 4;
-
 X3DBrowserContext::X3DBrowserContext () :
-	                X3DBaseNode (),
-	        X3DExecutionContext (),
-	          X3DPickingContext (),
-	       X3DNavigationContext (),
-	        renderingProperties (new RenderingProperties (this)),
-	          browserProperties (new BrowserProperties   (this)),
-	             browserOptions (new BrowserOptions      (this)),
-	           javaScriptEngine (new SpiderMonkey        (this)),
-	          initializedOutput (),
-	             reshapedOutput (),
-	              sensorsOutput (),
-	        prepareEventsOutput (),
-	            displayedOutput (),
-	             finishedOutput (),
-	              changedOutput (),
-	                      clock (new chrono::system_clock <time_type> ()),
-	                     router (),
-	                   viewport (),
-	                     layers (),
-	                    layouts (),
-	                     lights (),
-	                 clipPlanes (),
-	               textureUnits (),
-	       combinedTextureUnits (),
-	              textureStages (),
-	                    texture (false),
-	        keyDeviceSensorNode (nullptr),
-	                changedTime (clock -> cycle ()),
-	               currentSpeed (0),
-	           currentFrameRate (0),
-	         downloadMutexIndex (0),
-	            downloadMutexes (1),
-	              downloadMutex (),
-	                  selection (new Selection (this)),
-	               notification (new Notification (this)),
-	                    console (new Console (this))
+	              X3DBaseNode (),
+	      X3DExecutionContext (),
+	          X3DRouterObject (),
+	      X3DCoreContext (),
+	X3DKeyDeviceSensorContext (),
+	         X3DLayoutContext (),
+	          X3DLightContext (),
+	     X3DNavigationContext (),
+	     X3DNetworkingContext (),
+	        X3DPickingContext (),
+	        X3DTextureContext (),
+	      renderingProperties (new RenderingProperties (this)),
+	        browserProperties (new BrowserProperties   (this)),
+	           browserOptions (new BrowserOptions      (this)),
+	         javaScriptEngine (new SpiderMonkey        (this)),
+	        initializedOutput (),
+	           reshapedOutput (),
+	            sensorsOutput (),
+	      prepareEventsOutput (),
+	          displayedOutput (),
+	           finishedOutput (),
+	            changedOutput (),
+	                    clock (new chrono::system_clock <time_type> ()),
+	              changedTime (clock -> cycle ()),
+	             currentSpeed (0),
+	         currentFrameRate (0),
+	                 viewport (),
+	                   layers (),
+	               clipPlanes (),
+	                selection (new Selection (this)),
+	             notification (new Notification (this)),
+	                  console (new Console (this))
 {
 	initialized () .setName ("initialized");
 
@@ -115,7 +109,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	             browserProperties,
 	             browserOptions,
 	             javaScriptEngine,
-	             keyDeviceSensorNodeOutput,
 	             selection,
 	             notification,
 	             console);
@@ -125,8 +118,15 @@ void
 X3DBrowserContext::initialize ()
 {
 	X3DExecutionContext::initialize ();
-	X3DPickingContext::initialize ();
+	X3DRouterObject::initialize ();
+	X3DCoreContext::initialize ();
+	X3DKeyDeviceSensorContext::initialize ();
+	X3DLayoutContext::initialize ();
+	X3DLightContext::initialize ();
 	X3DNavigationContext::initialize ();
+	X3DNetworkingContext::initialize ();
+	X3DPickingContext::initialize ();
+	X3DTextureContext::initialize ();
 
 	// Initialize clock
 
@@ -148,18 +148,9 @@ X3DBrowserContext::initialize ()
 		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
 
-		GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
-
-		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
-		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
-		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
-
 		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 
 		glHint (GL_FOG_HINT, GL_NICEST);
-
-		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
 		// Properties
 
@@ -171,25 +162,10 @@ X3DBrowserContext::initialize ()
 		notification        -> setup ();
 		console             -> setup ();
 
-		// Lights
-
-		for (int32_t i = renderingProperties -> maxLights () - 1; i >= 0; -- i)
-			lights .push (GL_LIGHT0 + i);
-
 		// ClipPlanes
 
 		for (int32_t i = renderingProperties -> maxClipPlanes () - 1; i >= 0; -- i)
 			clipPlanes .push (GL_CLIP_PLANE0 + i);
-
-		// TextureUnits
-
-		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
-			textureUnits .push (i);                                                                                                                                                                                                                       // Don't add GL_TEXTURE0
-
-		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);                                                                                                                                                                                                               // Don't add GL_TEXTURE0
-
-		downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
 	}
 }
 
@@ -231,45 +207,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return currentFrameRate;
 }
 
-std::mutex &
-X3DBrowserContext::getDownloadMutex ()
-{
-	std::lock_guard <std::mutex> lock (downloadMutex);
-
-	downloadMutexIndex = (downloadMutexIndex + 1) % downloadMutexes .size ();
-
-	return downloadMutexes [downloadMutexIndex];
-}
-
-void
-X3DBrowserContext::lock ()
-{
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .lock ();
-}
-
-void
-X3DBrowserContext::unlock ()
-{
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .unlock ();
-}
-
-// Key device
-
-void
-X3DBrowserContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
-{
-	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> shutdown () .removeInterest (this, &X3DBrowserContext::setKeyDeviceSensorNode);
-
-	keyDeviceSensorNode         = value;
-	keyDeviceSensorNodeEvent () = getCurrentTime ();
-
-	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> shutdown () .addInterest (this, &X3DBrowserContext::setKeyDeviceSensorNode, nullptr);
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
@@ -285,7 +222,7 @@ X3DBrowserContext::addEvent ()
 void
 X3DBrowserContext::reshape ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 	{
@@ -309,7 +246,7 @@ X3DBrowserContext::update ()
 {
 	try
 	{
-		std::lock_guard <ContextMutex> contextLock (contextMutex);
+		std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 		if (makeCurrent ())
 		{
@@ -318,19 +255,18 @@ X3DBrowserContext::update ()
 			advanceClock ();
 
 			prepareEvents () .processInterests ();
-			router .processEvents ();
+			processEvents ();
 
 			getWorld () -> traverse (TraverseType::CAMERA);
 			getWorld () -> traverse (TraverseType::COLLISION);
 
 			sensors () .processInterests ();
-			router .processEvents ();
+			processEvents ();
 
 			getGarbageCollector () .dispose ();
 
 			// Debug
-			router .debug ();
-			assert (router .empty ());
+			debugRouter ();
 
 			// Display
 
@@ -370,8 +306,15 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
-	X3DNavigationContext::dispose ();
+	X3DTextureContext::dispose ();
 	X3DPickingContext::dispose ();
+	X3DNetworkingContext::dispose ();
+	X3DNavigationContext::dispose ();
+	X3DLightContext::dispose ();
+	X3DLayoutContext::dispose ();
+	X3DKeyDeviceSensorContext::dispose ();
+	X3DCoreContext::dispose ();
+	X3DRouterObject::dispose ();
 	X3DExecutionContext::dispose ();
 }
 

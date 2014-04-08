@@ -48,130 +48,33 @@
  *
  ******************************************************************************/
 
-#include "Router.h"
+#include "X3DCoreContext.h"
 
-#include <Titania/Chrono.h>
+#include "../../Rendering/OpenGL.h"
+
+#include <Titania/String.h>
 
 namespace titania {
 namespace X3D {
 
-Router::Router () :
-	   events (),
-	    nodes (),
-	eventTime (chrono::now ()),
-	 nodeTime (chrono::now ()),
-	    mutex ()
+X3DCoreContext::X3DCoreContext () :
+	X3DBaseNode (),
+	 extensions ()
 { }
 
-EventId
-Router::addEvent (X3DChildObject* const object, const EventPtr & event)
-{
-	events .emplace_back (object, event);
-
-	return { eventTime, -- events .end () };
-}
-
 void
-Router::removeEvent (const EventId & event)
+X3DCoreContext::initialize ()
 {
-	if (event .time == eventTime)
-		events .erase (event .iter);
-}
-
-EventList
-Router::getEvents ()
-{
-	// Invalidate all iterators
-
-	eventTime = chrono::now ();
-
-	return std::move (events);
-}
-
-NodeId
-Router::addNode (X3DBaseNode* node)
-{
-	nodes .emplace_back (node);
-
-	return { nodeTime, -- nodes .end () };
-}
-
-void
-Router::removeNode (const NodeId & node)
-{
-	if (node .time == nodeTime)
-		nodes .erase (node .iter);
-}
-
-NodeList
-Router::getNodes ()
-{
-	// Invalidate all iterators
-
-	nodeTime = chrono::now ();
-
-	return std::move (nodes);
-}
-
-void
-Router::processEvents ()
-{
-	do
+	if (glXGetCurrentContext ())
 	{
-		do
-		{
-			for (auto & event : getEvents ())
-			{
-				event .first -> processEvent (event .second);
-			}
-		}
-		while (not empty ());
-
-		eventsProcessed ();
+		extensions = basic::ssplit ((const char*) glGetString (GL_EXTENSIONS), " ");
 	}
-	while (not empty ());
-}
-
-void
-Router::eventsProcessed ()
-{
-	do
-	{
-		for (const auto & node : getNodes ())
-			node -> processEvents ();
-	}
-	while (not nodes .empty () and empty ());
 }
 
 bool
-Router::empty () const
+X3DCoreContext::hasExtension (const std::string & name)
 {
-	return events .empty ();
-}
-
-size_t
-Router::size () const
-{
-	return events .size ();
-}
-
-void
-Router::debug ()
-{
-	for (auto & event : events)
-	{
-		__LOG__ << event .first -> getName () << " : " << event .first -> getTypeName () << std::endl;
-
-		for (const auto & parent : event .first -> getParents ())
-		{
-			auto node = dynamic_cast <X3DBaseNode*> (parent);
-
-			if (node)
-			{
-				__LOG__ << "\t" << node -> getTypeName () << std::endl;
-			}
-		}
-	}
+	return extensions .find (name) not_eq extensions .end ();
 }
 
 } // X3D

@@ -146,7 +146,7 @@ Notification::display ()
 void
 Notification::dispose ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	getBrowser () -> makeCurrent ();
 

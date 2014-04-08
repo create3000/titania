@@ -51,6 +51,6 @@
 #ifndef __TITANIA_CHRONO_H__
 #define __TITANIA_CHRONO_H__
 
-#include "Chrono/Now.h"
+#include "Chrono/now.h"
 
 #endif

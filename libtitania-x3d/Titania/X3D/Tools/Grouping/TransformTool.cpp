@@ -53,7 +53,7 @@
 #include "../ToolColors.h"
 
 #include "../../Bits/config.h"
-#include "../../Browser/Picking/Selection.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/PolygonModeContainer.h"
@@ -156,7 +156,7 @@ TransformTool::reshape ()
 		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
 		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 
-		getBrowser () -> getRouter () .processEvents ();
+		getBrowser () -> processEvents ();
 	}
 	catch (const X3DError & error)
 	{ }

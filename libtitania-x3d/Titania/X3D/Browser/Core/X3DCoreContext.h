@@ -48,12 +48,52 @@
  *
  ******************************************************************************/
 
-#include "Now.h"
+#ifndef __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
+
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
-namespace chrono {
+namespace X3D {
 
-template double basic_now <double> ();
+class X3DCoreContext :
+	virtual public X3DBaseNode
+{
+public:
 
-} // chrono
+	///  @name Member access
+
+	bool
+	hasExtension (const std::string &);
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+
+protected:
+
+	///  @name Constructor
+
+	X3DCoreContext ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	// Members
+
+	std::set <std::string> extensions;
+
+};
+
+} // X3D
 } // titania
+
+#endif

@@ -69,11 +69,11 @@
 #include "X3D/Execution/NamedNode.h"
 
 #include "X3D/Browser/Notification.h"
-#include "X3D/Browser/Picking/Selection.h"
 #include "X3D/Browser/Properties/BrowserOptions.h"
 #include "X3D/Browser/Properties/BrowserProperties.h"
 #include "X3D/Browser/Properties/MotionBlur.h"
 #include "X3D/Browser/Properties/RenderingProperties.h"
+#include "X3D/Browser/Selection.h"
 #include "X3D/InputOutput/Loader.h"
 #include "X3D/Miscellaneous/GoldenGate.h"
 #include "X3D/Miscellaneous/Keys.h"

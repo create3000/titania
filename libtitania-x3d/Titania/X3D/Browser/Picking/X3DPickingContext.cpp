@@ -50,12 +50,13 @@
 
 #include "X3DPickingContext.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Networking/Anchor.h"
 #include "../../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Context.h"
-#include "../../Rendering/ViewVolume.h"
 #include "../../Execution/World.h"
+#include "../../Rendering/ViewVolume.h"
 
 namespace titania {
 namespace X3D {
@@ -82,7 +83,7 @@ X3DPickingContext::X3DPickingContext () :
 void
 X3DPickingContext::initialize ()
 {
-	shutdown () .addInterest (this, &X3DPickingContext::set_shutdown);
+	getBrowser () -> shutdown () .addInterest (this, &X3DPickingContext::set_shutdown);
 }
 
 void

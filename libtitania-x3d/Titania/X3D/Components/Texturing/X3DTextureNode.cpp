@@ -78,16 +78,16 @@ void
 X3DTextureNode::updateTextureProperties (const GLenum target,
                                          const bool haveTextureProperties,
                                          const X3DPtr <TextureProperties> & textureProperties,
-                                         const int32_t width, 
-                                         const int32_t height, 
+                                         const size_t width, 
+                                         const size_t height, 
                                          const bool repeatS, 
                                          const bool repeatT, 
                                          const bool repeatR)
 {
 	glBindTexture (target, getTextureId ());
 
-	if (std::max (width, height) < getBrowser () -> getBrowserOptions () -> minTextureSize ()
-	    and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
+	if (std::max (width, height) < getBrowser () -> getMinTextureSize ()
+	    and textureProperties == getBrowser () -> getTextureProperties ())
 	{
 		glTexParameteri (target, GL_GENERATE_MIPMAP, false);
 		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

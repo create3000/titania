@@ -242,7 +242,7 @@ X3DBrowser::replaceWorld (const ScenePtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 	{
@@ -334,7 +334,7 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 	{
@@ -375,7 +375,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromString (string);
@@ -390,7 +390,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (istream);
@@ -405,7 +405,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (worldURL, istream);

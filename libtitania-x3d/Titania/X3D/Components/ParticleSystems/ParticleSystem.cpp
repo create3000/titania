@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -354,10 +354,10 @@ ParticleSystem::initialize ()
 	if (not glXGetCurrentContext ())
 		return;
 
-	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
+	if (not getBrowser () -> hasExtension ("GL_ARB_texture_buffer_object"))
 		return;
 
-	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_transform_feedback3"))
+	if (not getBrowser () -> hasExtension ("GL_ARB_transform_feedback3"))
 		return;
 
 	// Generate transform buffers
@@ -1406,7 +1406,7 @@ ParticleSystem::drawGeometry ()
 					glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
 				}
 
-				if (getBrowser () -> isEnabledTexture ())
+				if (getBrowser () -> getTexture ())
 					enableTexCoord ();
 
 				glEnableClientState (GL_VERTEX_ARRAY);
@@ -1414,7 +1414,7 @@ ParticleSystem::drawGeometry ()
 
 				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 
-				if (getBrowser () -> isEnabledTexture ())
+				if (getBrowser () -> getTexture ())
 					disableTexCoord ();
 
 				glDisableClientState (GL_COLOR_ARRAY);

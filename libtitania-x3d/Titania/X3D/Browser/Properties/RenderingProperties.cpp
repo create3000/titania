@@ -50,8 +50,8 @@
 
 #include "RenderingProperties.h"
 
-#include "../../Context.h"
 #include "../../Bits/config.h"
+#include "../../Context.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
@@ -59,9 +59,6 @@
 #include <Titania/String.h>
 
 #include <iomanip>
-#include <iostream>
-#include <malloc.h>
-#include <omp.h>
 
 namespace titania {
 namespace X3D {
@@ -81,38 +78,31 @@ const std::string RenderingProperties::typeName       = "RenderingProperties";
 const std::string RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	             enabled (),
-	       cycleInterval (1),
-	              vendor (new SFString ()),
-	            renderer (new SFString ()),
-	             version (new SFString ()),
-	          maxThreads (new SFInt32 (1)),
-	             shading (new SFString ("GOURAUD")),
-	      maxTextureSize (new SFInt32 ()),
-	        textureUnits (new SFInt32 ()),
-	combinedTextureUnits (new SFInt32 ()),
-	           maxLights (new SFInt32 ()),
-	       maxClipPlanes (new SFInt32 ()),
-	         antialiased (new SFBool ()),
-	          colorDepth (new SFInt32 ()),
-	       textureMemory (new SFDouble ())
+	       enabled (),
+	 cycleInterval (1),
+	        vendor (new SFString ()),
+	      renderer (new SFString ()),
+	       version (new SFString ()),
+	       shading (new SFString ("GOURAUD")),
+	maxTextureSize (new SFInt32 ()),
+	     maxLights (new SFInt32 ()),
+	 maxClipPlanes (new SFInt32 ()),
+	   antialiased (new SFBool ()),
+	    colorDepth (new SFInt32 ()),
+	 textureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNode (),
 	     fields (),
-	 extensions (),
 	      world ()
 {
 	addField (outputOnly, "Vendor",         vendor ());
 	addField (outputOnly, "Renderer",       renderer ());
 	addField (outputOnly, "Version",        version ());
-	addField (outputOnly, "MaxThreads",     maxThreads ());
 	addField (outputOnly, "Shading",        shading ());
 	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
-	addField (outputOnly, "TextureCoord",   textureUnits ());
-	addField (outputOnly, "TextureUnits",   combinedTextureUnits ());
 	addField (outputOnly, "MaxLights",      maxLights ());
 	addField (outputOnly, "MaxClipPlanes",  maxClipPlanes ());
 	addField (outputOnly, "Antialiased",    antialiased ());
@@ -141,7 +131,7 @@ RenderingProperties::initialize ()
 
 		try
 		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.x3dv") .str () });
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
 		}
 		catch (const X3DError & error)
 		{
@@ -158,92 +148,26 @@ RenderingProperties::initialize ()
 		renderer () = (const char*) glGetString (GL_RENDERER);
 		version ()  = (const char*) glGetString (GL_VERSION);
 
-		extensions = std::move (basic::ssplit ((char*) glGetString (GL_EXTENSIONS), " "));
+		int32_t glMaxClipPlanes;
+		int32_t redBits, greenBits, blueBits, alphaBits;
 
-		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
+		glGetIntegerv (GL_MAX_CLIP_PLANES, &glMaxClipPlanes);
 
-		GLint glMaxTextureSize, glTextureCoords, glTextureUnits, glCombinedTextureUnits, glMaxLights, glMaxClipPlanes;
-		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
-		GLint glPolygonSmooth;
-		GLint glTextureMemory = -1;
+		glGetIntegerv (GL_RED_BITS,   &redBits);
+		glGetIntegerv (GL_GREEN_BITS, &greenBits);
+		glGetIntegerv (GL_BLUE_BITS,  &blueBits);
+		glGetIntegerv (GL_ALPHA_BITS, &alphaBits);
 
-		glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &glMaxTextureSize);
-		glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &glTextureCoords);
-		glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &glTextureUnits);
-		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glCombinedTextureUnits);
-		glGetIntegerv (GL_MAX_LIGHTS,                       &glMaxLights);
-		glGetIntegerv (GL_MAX_CLIP_PLANES,                  &glMaxClipPlanes);
-
-		glGetIntegerv (GL_RED_BITS,   &glRedBits);
-		glGetIntegerv (GL_GREEN_BITS, &glGreen);
-		glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
-		glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
-
-		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
-
-		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // in KBytes
-
-		maxThreads ()           = omp_get_max_threads ();
-		textureUnits ()         = std::min (glCombinedTextureUnits / 2, std::min (glTextureCoords, glTextureUnits));
-		combinedTextureUnits () = glCombinedTextureUnits;
-		maxTextureSize ()       = glMaxTextureSize;
-		maxLights ()            = glMaxLights;
-		maxClipPlanes ()        = glMaxClipPlanes;
-		antialiased ()          = glPolygonSmooth;
-		colorDepth ()           = glRedBits + glGreen + glBlueBits + glAlphaBits;
-		textureMemory ()        = glTextureMemory * 1024;
+		maxTextureSize () = getBrowser () -> getMaxTextureSize ();
+		maxLights ()      = getBrowser () -> getMaxLights ();
+		maxClipPlanes ()  = glMaxClipPlanes;
+		colorDepth ()     = redBits + greenBits + blueBits + alphaBits;
+		textureMemory ()  = getBrowser () -> getTextureMemory ();
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
+
 		set_enabled ();
 	}
-}
-
-//
-//http://developer.download.nvidia.com/opengl/specs/GL_NVX_gpu_memory_info.txt
-//A call to glGetString(GL_EXTENSIONS) will return a space-separated string of extension names, which your application can parse at runtime.
-
-bool
-RenderingProperties::hasExtension (const std::string & name)
-{
-	return extensions .find (name) not_eq extensions .end ();
-}
-
-size_t
-RenderingProperties::getAvailableTextureMemory ()
-{
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
-
-	if (getBrowser () -> makeCurrent ())
-	{
-		if (hasExtension ("GL_NVX_gpu_memory_info"))
-		{
-			GLint kbytes = 0;
-
-			glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
-			return 1024 * kbytes;
-		}
-
-		//http://www.opengl.org/registry/specs/ATI/meminfo.txt
-		if (hasExtension ("GL_ATI_meminfo"))
-		{
-			// VBO_FREE_MEMORY_ATI                     0x87FB
-			// TEXTURE_FREE_MEMORY_ATI                 0x87FC
-			// RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
-			//
-			// param[0] - total memory free in the pool
-			// param[1] - largest available free block in the pool
-			// param[2] - total auxiliary memory free
-			// param[3] - largest auxiliary free block
-
-			GLint kbytes [4] = { 0, 0, 0, 0 };
-
-			// glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, &kbytes); // in KBytes
-			return 1024 * kbytes [0];
-		}
-	}
-
-	return 0;
 }
 
 void
@@ -251,22 +175,22 @@ RenderingProperties::set_enabled ()
 {
 	if (enabled ())
 	{
-		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::reset);
-		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::set_initialized);
+		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepareEvents);
 		getBrowser () -> displayed ()     .addInterest (this, &RenderingProperties::display);
 
-		reset ();
+		prepareEvents ();
 	}
 	else
 	{
-		getBrowser () -> initialized ()   .removeInterest (this, &RenderingProperties::reset);
-		getBrowser () -> prepareEvents () .removeInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> initialized ()   .removeInterest (this, &RenderingProperties::set_initialized);
+		getBrowser () -> prepareEvents () .removeInterest (this, &RenderingProperties::prepareEvents);
 		getBrowser () -> displayed ()     .removeInterest (this, &RenderingProperties::display);
 	}
 }
 
 void
-RenderingProperties::reset ()
+RenderingProperties::set_initialized ()
 {
 	clock       .reset ();
 	renderClock .reset ();
@@ -275,7 +199,7 @@ RenderingProperties::reset ()
 }
 
 void
-RenderingProperties::prepare ()
+RenderingProperties::prepareEvents ()
 {
 	renderClock .start ();
 }
@@ -311,7 +235,7 @@ RenderingProperties::build ()
 
 	try
 	{
-		const auto statistics = world -> getExecutionContext () -> getNamedNode ("StatisticsTool");
+		const auto statistics = world -> getExecutionContext () -> getNamedNode ("RenderingProperties");
 		auto &     string     = statistics -> getField <MFString> ("string");
 
 		string .clear ();
@@ -322,15 +246,14 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("  Name: %s"), renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
-		string .emplace_back (basic::sprintf (_ ("Max threads:               %d"), maxThreads () .getValue ()));
-		string .emplace_back (basic::sprintf (_ ("Texture units:             %d / %d"), textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
-		string .emplace_back (basic::sprintf (_ ("Max texture size:          %d × %d pixel"), maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Texture units:             %d / %d"), getBrowser () -> getMaxTextureUnits (), getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits ()));
+		string .emplace_back (basic::sprintf (_ ("Max texture size:          %d × %d pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), antialiased () .toString () .c_str (), sampleBuffers, samples));
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), maxLights () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %d"), maxClipPlanes () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), colorDepth () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
-		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getAvailableTextureMemory ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), fps ()));
@@ -352,8 +275,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tOpenGL extension version: " << version () .getValue () << std::endl
 
 		<< "\tRendering properties" << std::endl
-		<< "\t\tMax threads: " << maxThreads () << std::endl
-		<< "\t\tTexture units: " << textureUnits () << " / " << combinedTextureUnits () - textureUnits () << std::endl
+		<< "\t\tTexture units: " << getBrowser () -> getMaxTextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl
 		<< "\t\tMax clip planes: " << maxClipPlanes () << std::endl
@@ -365,7 +287,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	getBrowser () -> makeCurrent ();
 

@@ -176,7 +176,7 @@ TextureProperties::getMinificationFilter () const
 		return GL_NEAREST;
 
 	// DEFAULT
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMinificationFilter ();
+	return getBrowser () -> getTextureProperties () -> getMinificationFilter ();
 }
 
 GLenum
@@ -195,7 +195,7 @@ TextureProperties::getMagnificationFilter () const
 		return GL_NEAREST;
 
 	// DEFAULT
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMagnificationFilter ();
+	return getBrowser () -> getTextureProperties () -> getMagnificationFilter ();
 }
 
 CompressionMode
@@ -217,7 +217,7 @@ TextureProperties::getTextureCompression () const
 		return CompressionMode::NICEST;
 
 	// DEFAULT
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getTextureCompression ();
+	return getBrowser () -> getTextureProperties () -> getTextureCompression ();
 }
 
 GLenum

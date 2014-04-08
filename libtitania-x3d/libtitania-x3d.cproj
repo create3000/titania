@@ -429,7 +429,6 @@
     <None Include="Titania\X3D\Execution\X3DExecutionContext.h" />
     <None Include="Titania\X3D\Routing\Route.h" />
     <None Include="Titania\X3D\Routing\RouteArray.h" />
-    <None Include="Titania\X3D\Routing\Router.h" />
     <None Include="Titania\X3D\Routing\RouteSet.h" />
     <None Include="Titania\X3D\Parser\Parser.h" />
     <None Include="Titania\X3D\Parser\RegEx.h" />
@@ -562,7 +561,6 @@
     <None Include="Titania\X3D\Browser\Picking\Hit.h" />
     <None Include="Titania\X3D\Browser\Picking\HitArray.h" />
     <None Include="Titania\X3D\Browser\Picking\Intersection.h" />
-    <None Include="Titania\X3D\Browser\Picking\Selection.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
@@ -660,7 +658,6 @@
     <None Include="share\titania\tools\BoundingBox.x3dv" />
     <None Include="share\titania\tools\TransformTool.x3dv" />
     <None Include="share\titania\tools\Notification.x3dv" />
-    <None Include="share\titania\tools\Statistics.x3dv" />
     <None Include="share\titania\tools\library\Vector.x3dv" />
     <None Include="Titania\X3D\Tools\Layout\ScreenGroupTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DSensorNodeTool.h" />
@@ -672,6 +669,15 @@
     <None Include="Titania\X3D\Context.h" />
     <None Include="Titania\X3D\Browser\Picking\X3DPickingContext.h" />
     <None Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.h" />
+    <None Include="Titania\X3D\Browser\Selection.h" />
+    <None Include="Titania\X3D\Browser\KeyDeviceSensor\X3DKeyDeviceSensorContext.h" />
+    <None Include="Titania\X3D\Routing\X3DRouterObject.h" />
+    <None Include="Titania\X3D\Browser\Texturing2D\X3DTextureContext.h" />
+    <None Include="Titania\X3D\Browser\Lighting\X3DLightContext.h" />
+    <None Include="Titania\X3D\Browser\Layout\X3DLayoutContext.h" />
+    <None Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.h" />
+    <None Include="Titania\X3D\Browser\Core\X3DCoreContext.h" />
+    <None Include="share\titania\tools\RenderingProperties.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -721,7 +727,6 @@
     <Compile Include="Titania\X3D\Rendering\X3DRenderer.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteArray.cpp" />
     <Compile Include="Titania\X3D\Routing\Route.cpp" />
-    <Compile Include="Titania\X3D\Routing\Router.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteSet.cpp" />
     <Compile Include="Titania\X3D\Types\Image.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\CADAssembly.cpp" />
@@ -1105,7 +1110,6 @@
     <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
     <Compile Include="Titania\X3D\Browser\Notification.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\HitArray.cpp" />
-    <Compile Include="Titania\X3D\Browser\Picking\Selection.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserSurface.cpp" />
@@ -1153,6 +1157,13 @@
     <Compile Include="Titania\X3D\Context.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\X3DPickingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Selection.cpp" />
+    <Compile Include="Titania\X3D\Browser\KeyDeviceSensor\X3DKeyDeviceSensorContext.cpp" />
+    <Compile Include="Titania\X3D\Routing\X3DRouterObject.cpp" />
+    <Compile Include="Titania\X3D\Browser\Texturing2D\X3DTextureContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Lighting\X3DLightContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Core\X3DCoreContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1198,6 +1209,13 @@
     <Folder Include="Titania\X3D\Tools\Layout\" />
     <Folder Include="Titania\X3D\Tools\EnvironmentalSensor\" />
     <Folder Include="Titania\X3D\Browser\Navigation\" />
+    <Folder Include="Titania\X3D\Browser\KeyDeviceSensor\" />
+    <Folder Include="Titania\X3D\Browser\Texturing2D\" />
+    <Folder Include="Titania\X3D\Browser\Lighting\" />
+    <Folder Include="Titania\X3D\Browser\Layout\" />
+    <Folder Include="Titania\X3D\Browser\Networking\" />
+    <Folder Include="Titania\X3D\Browser\Core\" />
+    <Folder Include="Titania\X3D\Browser\Layering\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -129,7 +129,7 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 		texCoordNode .set (value);
 
 	else
-		texCoordNode .set (getBrowser () -> getBrowserOptions () -> texCoord ());
+		texCoordNode .set (getBrowser () -> getTexCoord ());
 }
 
 bool
@@ -638,7 +638,7 @@ X3DGeometryNode::clear ()
 void
 X3DGeometryNode::draw ()
 {
-	draw (solid, getBrowser () -> isEnabledTexture (), glIsEnabled (GL_LIGHTING));
+	draw (solid, getBrowser () -> getTexture (), glIsEnabled (GL_LIGHTING));
 }
 
 void

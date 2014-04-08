@@ -52,7 +52,7 @@
 
 #include "../X3DBrowserSurface.h"
 
-#include <Titania/Chrono/Now.h>
+#include <Titania/Chrono/now.h>
 #include <cmath>
 #include <glibmm/main.h>
 
@@ -89,7 +89,7 @@ ExamineViewer::initialize ()
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
 	getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::set_transitionStart);
-	getBrowser () -> getActiveViewpointChanged () .addInterest (this, &ExamineViewer::set_viewpoint);
+	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ExamineViewer::set_viewpoint);
 }
 
 void

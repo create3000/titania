@@ -74,7 +74,7 @@ X3DScene::X3DScene () :
 void
 X3DScene::initialize ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	getBrowser () -> makeCurrent ();
 

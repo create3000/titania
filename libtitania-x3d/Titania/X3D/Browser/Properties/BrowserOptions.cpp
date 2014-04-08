@@ -56,9 +56,7 @@
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Text/FontStyle.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
-#include "../../Components/Texturing/TextureTransform.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
@@ -71,7 +69,6 @@
 #include "../Properties/MotionBlur.h"
 #include "../Properties/RenderingProperties.h"
 #include "../X3DBrowser.h"
-
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/Physics/Constants.h>
@@ -113,13 +110,10 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	               shading (new SFString ("GOURAUD")),
 	     animateStairWalks (new SFBool ()),
 	               gravity (new SFFloat (P_GN)),
-	        minTextureSize (new SFInt32 (16)),
 	     motionBlurOptions (new MotionBlur (executionContext)),
 	            appearance (new Appearance (executionContext)),
 	        lineProperties (new LineProperties (executionContext)),
 	        fillProperties (new FillProperties (executionContext)),
-	     textureProperties (new TextureProperties (executionContext)),
-	      textureTransform (new TextureTransform (executionContext)),
 	               emitter (new PointEmitter (executionContext)),
 	                 arc2D (new Arc2DOptions (executionContext)),
 	            arcClose2D (new ArcClose2DOptions (executionContext)),
@@ -128,7 +122,6 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	           rectangle2D (new Rectangle2DOptions (executionContext)),
 	                   box (new BoxOptions (executionContext)),
 	                sphere (new QuadSphereOptions (executionContext)),
-	              texCoord (new TextureCoordinate (executionContext)),
 	             fontStyle (new FontStyle (executionContext)),
 	              viewport (new Viewport (executionContext))
 { }
@@ -150,7 +143,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
 	addField (inputOutput, "Gravity",                gravity ());
-	addField (inputOutput, "MinTextureSize",         minTextureSize ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
@@ -158,8 +150,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             appearance (),
 	             lineProperties (),
 	             fillProperties (),
-	             textureProperties (),
-	             textureTransform (),
 	             emitter (),
 	             arc2D (),
 	             arcClose2D (),
@@ -168,7 +158,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             rectangle2D (),
 	             box (),
 	             sphere (),
-	             texCoord (),
 	             fontStyle (),
 	             viewport ());
 }
@@ -188,8 +177,6 @@ BrowserOptions::initialize ()
 	appearance ()        -> setup ();
 	lineProperties ()    -> setup ();
 	fillProperties ()    -> setup ();
-	textureProperties () -> setup ();
-	textureTransform ()  -> setup ();
 	emitter ()           -> setup ();
 	arc2D ()             -> setup ();
 	arcClose2D ()        -> setup ();
@@ -198,7 +185,6 @@ BrowserOptions::initialize ()
 	rectangle2D ()       -> setup ();
 	box ()               -> setup ();
 	sphere ()            -> setup ();
-	texCoord ()          -> setup ();
 	fontStyle ()         -> setup ();
 	viewport ()          -> setup ();
 
@@ -267,10 +253,10 @@ BrowserOptions::set_textureQuality ()
 {
 	if (textureQuality () == "HIGH")
 	{
-		textureProperties () -> magnificationFilter () = "NICEST";
-		textureProperties () -> minificationFilter ()  = "NICEST";
-		textureProperties () -> textureCompression ()  = "NICEST";
-		textureProperties () -> generateMipMaps ()     = true;
+		getBrowser () -> getTextureProperties () -> magnificationFilter () = "NICEST";
+		getBrowser () -> getTextureProperties () -> minificationFilter ()  = "NICEST";
+		getBrowser () -> getTextureProperties () -> textureCompression ()  = "NICEST";
+		getBrowser () -> getTextureProperties () -> generateMipMaps ()     = true;
 
 		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -279,10 +265,10 @@ BrowserOptions::set_textureQuality ()
 
 	if (textureQuality () == "LOW")
 	{
-		textureProperties () -> magnificationFilter () = "FASTEST";
-		textureProperties () -> minificationFilter ()  = "FASTEST";
-		textureProperties () -> textureCompression ()  = "FASTEST";
-		textureProperties () -> generateMipMaps ()     = false;
+		getBrowser () -> getTextureProperties () -> magnificationFilter () = "FASTEST";
+		getBrowser () -> getTextureProperties () -> minificationFilter ()  = "FASTEST";
+		getBrowser () -> getTextureProperties () -> textureCompression ()  = "FASTEST";
+		getBrowser () -> getTextureProperties () -> generateMipMaps ()     = false;
 
 		glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
@@ -291,10 +277,10 @@ BrowserOptions::set_textureQuality ()
 
 	// MEDIUM
 
-	textureProperties () -> magnificationFilter () = "NICEST";
-	textureProperties () -> minificationFilter ()  = "AVG_PIXEL_AVG_MIPMAP";
-	textureProperties () -> textureCompression ()  = "NICEST";
-	textureProperties () -> generateMipMaps ()     = true;
+	getBrowser () -> getTextureProperties () -> magnificationFilter () = "NICEST";
+	getBrowser () -> getTextureProperties () -> minificationFilter ()  = "AVG_PIXEL_AVG_MIPMAP";
+	getBrowser () -> getTextureProperties () -> textureCompression ()  = "NICEST";
+	getBrowser () -> getTextureProperties () -> generateMipMaps ()     = true;
 
 	glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
 	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);

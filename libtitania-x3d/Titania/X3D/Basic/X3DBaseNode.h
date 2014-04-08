@@ -318,7 +318,7 @@ public:
 	addEvent () override;
 
 	void
-	processEvents ();
+	eventsProcessed ();
 
 	///  @name Traversal handling
 

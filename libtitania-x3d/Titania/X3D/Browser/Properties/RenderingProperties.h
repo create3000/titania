@@ -75,6 +75,8 @@ class RenderingProperties :
 {
 public:
 
+	///  @name Construction
+
 	RenderingProperties (X3DExecutionContext* const);
 
 	///  @name Common members
@@ -137,14 +139,6 @@ public:
 	version () const
 	{ return *fields .version; }
 
-	SFInt32 &
-	maxThreads ()
-	{ return *fields .maxThreads; }
-
-	const SFInt32 &
-	maxThreads () const
-	{ return *fields .maxThreads; }
-
 	SFString &
 	shading ()
 	{ return *fields .shading; }
@@ -160,22 +154,6 @@ public:
 	const SFInt32 &
 	maxTextureSize () const
 	{ return *fields .maxTextureSize; }
-
-	SFInt32 &
-	textureUnits ()
-	{ return *fields .textureUnits; }
-
-	const SFInt32 &
-	textureUnits () const
-	{ return *fields .textureUnits; }
-
-	SFInt32 &
-	combinedTextureUnits ()
-	{ return *fields .combinedTextureUnits; }
-
-	const SFInt32 &
-	combinedTextureUnits () const
-	{ return *fields .combinedTextureUnits; }
 
 	SFInt32 &
 	maxLights ()
@@ -217,25 +195,19 @@ public:
 	textureMemory () const
 	{ return *fields .textureMemory; }
 
+	///  @name Operations
+
 	double
 	fps () const
 	{ return 1 / clock .average (); }
 
-	bool
-	hasExtension (const std::string &);
-
-	size_t
-	getAvailableTextureMemory ();
-
-	void
-	prepare ();
-
-	void
-	display ();
+	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -243,6 +215,8 @@ public:
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	RenderingProperties*
@@ -252,11 +226,19 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	void
 	set_enabled ();
 
 	void
-	reset ();
+	set_initialized ();
+
+	void
+	prepareEvents ();
+
+	void
+	display ();
 
 	void
 	build ();
@@ -278,11 +260,8 @@ private:
 		SFString* const vendor;
 		SFString* const renderer;
 		SFString* const version;
-		SFInt32* const maxThreads;
 		SFString* const shading;
 		SFInt32* const maxTextureSize;
-		SFInt32* const textureUnits;
-		SFInt32* const combinedTextureUnits;
 		SFInt32* const maxLights;
 		SFInt32* const maxClipPlanes;
 		SFBool* const antialiased;
@@ -291,8 +270,6 @@ private:
 	};
 
 	Fields fields;
-
-	std::set <std::string> extensions;
 
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,19 +53,22 @@
 
 #include "../Execution/X3DExecutionContext.h"
 
+#include "../Browser/Core/X3DCoreContext.h"
+#include "../Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.h"
 #include "../Browser/Navigation/X3DNavigationContext.h"
 #include "../Browser/Picking/X3DPickingContext.h"
-#include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
-#include "../Components/Layout/X3DLayoutNode.h"
+#include "../Browser/Layout/X3DLayoutContext.h"
+#include "../Browser/Lighting/X3DLightContext.h"
+#include "../Browser/Texturing2D/X3DTextureContext.h"
+#include "../Browser/Networking/X3DNetworkingContext.h"
+#include "../Rendering/OpenGL.h"
+#include "../Routing/X3DRouterObject.h"
 #include "../Types/Pointer.h"
-
-#include "../Routing/Router.h"
 #include "../Types/Speed.h"
 
 #include <Titania/Chrono/ClockBase.h>
 
 #include <memory>
-#include <mutex>
 #include <stack>
 
 namespace titania {
@@ -73,30 +76,31 @@ namespace X3D {
 
 using X3DClock         = chrono::clock_base <time_type>;
 using LayerStack       = std::stack <X3DLayerNode*>;
-using LayoutStack      = std::stack <X3DLayoutNode*>;
-using LightStack       = std::stack <GLenum>;
 using ClipPlaneStack   = std::stack <GLenum>;
-using TextureUnitStack = std::stack <int32_t>;
-using TextureArray     = std::vector <int32_t>;
 
 class X3DBrowserContext :
 	virtual public X3DBaseNode,
 	public X3DExecutionContext,
+	public X3DRouterObject,
+	public X3DCoreContext,
+	public X3DKeyDeviceSensorContext,
+	public X3DLayoutContext,
+	public X3DLightContext,
+	public X3DNavigationContext,
+	public X3DNetworkingContext,
 	public X3DPickingContext,
-	public X3DNavigationContext
+	public X3DTextureContext
 {
 public:
 
 	///  @name Outputs
 
-	virtual
 	SFTime &
-	initialized () final override
+	initialized ()
 	{ return initializedOutput; }
 
-	virtual
 	const SFTime &
-	initialized () const final override
+	initialized () const
 	{ return initializedOutput; }
 
 	const Output &
@@ -123,14 +127,6 @@ public:
 	changed () const
 	{ return changedOutput; }
 
-	SFTime &
-	keyDeviceSensorNodeEvent ()
-	{ return keyDeviceSensorNodeOutput; }
-
-	const SFTime &
-	keyDeviceSensorNodeEvent () const
-	{ return keyDeviceSensorNodeOutput; }
-
 	///  @name Time handling
 
 	void
@@ -140,7 +136,7 @@ public:
 	time_type
 	getCurrentTime () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	       Error <DISPOSED>) final override;
 
 	double
 	getCurrentSpeed () const
@@ -152,18 +148,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Layer handling
-
-	const Vector4i
-	getViewport () const
-	{ return viewport; }
-
-	///  @name Event handling
-
-	Router &
-	getRouter ()
-	{ return router; }
-
 	///  @name JavaScript handling
 
 	const X3DJavaScriptEnginePtr &
@@ -172,59 +156,19 @@ public:
 
 	///  @name Layer handling
 
+	const Vector4i
+	getViewport () const
+	{ return viewport; }
+
 	LayerStack &
 	getLayers ()
 	{ return layers; }
 
-	LayoutStack &
-	getLayouts ()
-	{ return layouts; }
-
 	///  @name Light stack handling
-
-	LightStack &
-	getLights ()
-	{ return lights; }
 
 	ClipPlaneStack &
 	getClipPlanes ()
 	{ return clipPlanes; }
-
-	///  @name Texture unit stack handling
-
-	TextureUnitStack &
-	getTextureUnits ()
-	{ return textureUnits; }
-
-	TextureUnitStack &
-	getCombinedTextureUnits ()
-	{ return combinedTextureUnits; }
-
-	TextureArray &
-	getTextureStages ()
-	{ return textureStages; }
-
-	void
-	isEnabledTexture (bool value)
-	{ texture = value; }
-
-	bool
-	isEnabledTexture () const
-	{ return texture; }
-
-	///  @name Thread handling
-
-	std::mutex &
-	getDownloadMutex ();
-
-	///  @name Key device handling
-
-	void
-	setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const);
-
-	X3DKeyDeviceSensorNode*
-	getKeyDeviceSensorNode () const
-	{ return keyDeviceSensorNode; }
 
 	///  @name Children
 
@@ -298,19 +242,12 @@ protected:
 	const WorldPtr &
 	getWorld () const = 0;
 
-	void
-	lock ();
-
-	void
-	unlock ();
-
 
 private:
 
 	// Members
 
 	SFTime initializedOutput;
-	Output pickedOutput;
 	Output reshapedOutput;
 	Output sensorsOutput;
 	Output prepareEventsOutput;
@@ -320,27 +257,13 @@ private:
 
 	std::unique_ptr <X3DClock> clock;
 
-	Router           router;
-	Vector4i         viewport;
-	LayerStack       layers;
-	LayoutStack      layouts;
-	LightStack       lights;
-	ClipPlaneStack   clipPlanes;
-	TextureUnitStack textureUnits;
-	TextureUnitStack combinedTextureUnits;
-	TextureArray     textureStages;
-	bool             texture;
-
-	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
-	SFTime                  keyDeviceSensorNodeOutput;
-
 	time_type      changedTime;
 	Speed <double> currentSpeed;
 	double         currentFrameRate;
 
-	size_t                  downloadMutexIndex;
-	std::deque <std::mutex> downloadMutexes;
-	std::mutex              downloadMutex;
+	Vector4i         viewport;
+	LayerStack       layers;
+	ClipPlaneStack   clipPlanes;
 
 	SelectionPtr    selection;
 	NotificationPtr notification;

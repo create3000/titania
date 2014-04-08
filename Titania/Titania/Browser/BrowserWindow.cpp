@@ -146,10 +146,10 @@ BrowserWindow::initialize ()
 	updatePasteStatus ();
 
 	// Browser Events
-	getBrowser () -> initialized ()               .addInterest (this, &BrowserWindow::set_initialized);
-	getBrowser () -> getActiveViewpointChanged () .addInterest (this, &BrowserWindow::set_active_viewpoint);
-	getBrowser () -> getViewer ()                 .addInterest (this, &BrowserWindow::set_viewer);
-	getBrowser () -> getAvailableViewers ()       .addInterest (this, &BrowserWindow::set_available_viewers);
+	getBrowser () -> initialized ()             .addInterest (this, &BrowserWindow::set_initialized);
+	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &BrowserWindow::set_active_viewpoint);
+	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
+	getBrowser () -> getAvailableViewers ()     .addInterest (this, &BrowserWindow::set_available_viewers);
 
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);

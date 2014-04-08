@@ -1,3 +1,77 @@
+2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Context.h:
+	* Context.cpp:
+	* Router.h:
+	* Router.cpp:
+	* X3DBaseNode.h:
+	* Selection.h:
+	* Scene.cpp:
+	* X3DBaseNode.cpp:
+	* Selection.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* Statistics.x3dv:
+	* Notification.cpp:
+	* X3DRouterObject.h:
+	* X3DBrowserContext.h:
+	* Selection.h:
+	* X3DRouterObject.cpp:
+	* X3DViewer.cpp:
+	* Selection.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DBrowserSurface.cpp:
+	* KeyDevice.cpp:
+	* X3DCoreContext.h:
+	* X3DFlyViewer.cpp:
+	* Appearance.cpp:
+	* X3DCoreContext.cpp:
+	* ExamineViewer.cpp:
+	* TransformTool.cpp:
+	* RenderingProperties.x3dv:
+	* X3DLayoutContext.h:
+	* X3DShapeNode.cpp:
+	* X3DLightContext.h:
+	* X3DPickingContext.h:
+	* BrowserOptions.h:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* X3DLightContext.cpp:
+	* X3DShaderNode.cpp:
+	* X3DLayerNode.cpp:
+	* X3DBoundedObjectTool.h:
+	* ImageTexture.cpp:
+	* PixelTexture.cpp:
+	* X3DTextureNode.h:
+	* X3DPickingContext.cpp:
+	* BrowserOptions.cpp:
+	* X3DTextureContext.h:
+	* X3DTextureNode.cpp:
+	* X3DGeometryNode.cpp:
+	* RenderingProperties.h:
+	* X3DNavigationContext.h:
+	* X3DNetworkingContext.h:
+	* PixelTexture3D.cpp:
+	* ImageTexture3D.cpp:
+	* X3DTextureContext.cpp:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp:
+	* TextureProperties.cpp:
+	* X3DTexture3DNode.cpp:
+	* X3DNetworkingContext.cpp:
+	* X3DNavigationContext.cpp:
+	* VolumeEmitter.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* MultiTextureTransform.cpp:
+	* PolylineEmitter.cpp:
+	* X3DKeyDeviceSensorContext.h:
+	* X3DKeyDeviceSensorContext.cpp:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
 2014-04-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

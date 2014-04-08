@@ -53,6 +53,7 @@
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Browser/X3DBrowser.h"
 
 // First include X3DExecutionContext
 #include "../../Execution/BindableNodeStack.h"
@@ -61,25 +62,25 @@ namespace titania {
 namespace X3D {
 
 X3DNavigationContext::X3DNavigationContext () :
-	                X3DBaseNode (),
-	                activeLayer (),
-	       activeNavigationInfo (nullptr),
-	activeNavigationInfoChanged (),
-	                     viewer (ViewerType::NONE),
-	           availableViewers (),
-	     activeViewpointChanged ()
+	               X3DBaseNode (),
+	               activeLayer (),
+	      activeNavigationInfo (nullptr),
+	activeNavigationInfoOutput (),
+	                    viewer (ViewerType::NONE),
+	          availableViewers (),
+	     activeViewpointOutput ()
 {
 	addChildren (activeLayer,
-	             activeNavigationInfoChanged,
+	             activeNavigationInfoOutput,
 	             viewer,
 	             availableViewers,
-	             activeViewpointChanged);
+	             activeViewpointOutput);
 }
 
 void
 X3DNavigationContext::initialize ()
 {
-	initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
 }
 
 void
@@ -123,8 +124,8 @@ X3DNavigationContext::set_navigationInfo ()
 		activeNavigationInfo -> type ()     .removeInterest (this, &X3DNavigationContext::set_navigationInfo_type);
 	}
 
-	activeNavigationInfo        = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
-	activeNavigationInfoChanged = getCurrentTime ();
+	activeNavigationInfo       = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
+	activeNavigationInfoOutput = getCurrentTime ();
 
 	if (activeNavigationInfo)
 	{
@@ -138,15 +139,15 @@ X3DNavigationContext::set_navigationInfo ()
 void
 X3DNavigationContext::remove_navigationInfo ()
 {
-	activeNavigationInfo        = nullptr;
-	activeNavigationInfoChanged = getCurrentTime ();
+	activeNavigationInfo       = nullptr;
+	activeNavigationInfoOutput = getCurrentTime ();
 	set_navigationInfo_type ();
 }
 
 void
 X3DNavigationContext::set_viewpoint ()
 {
-	activeViewpointChanged = getCurrentTime ();
+	activeViewpointOutput = getCurrentTime ();
 }
 
 void

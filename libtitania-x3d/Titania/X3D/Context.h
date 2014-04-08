@@ -60,6 +60,14 @@ class ContextMutex
 {
 public:
 
+	ContextMutex ()
+	{ }
+
+	ContextMutex (const ContextMutex &) = delete;
+
+	ContextMutex &
+	operator = (const ContextMutex &) = delete;
+
 	void
 	lock ()
 	{ pushContext (); }
@@ -81,7 +89,8 @@ private:
 
 };
 
-extern ContextMutex contextMutex;
+ContextMutex &
+getContextMutex ();
 
 } // X3D
 } // titania

@@ -178,7 +178,7 @@ X3DBrowserSurface::set_viewer (ViewerType type)
 void
 X3DBrowserSurface::dispose ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	makeCurrent ();
 

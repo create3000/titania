@@ -62,26 +62,18 @@ class X3DNavigationContext :
 	virtual public X3DBaseNode
 {
 public:
-	
-	virtual
-	SFTime &
-	initialized () = 0;
-
-	virtual
-	const SFTime &
-	initialized () const = 0;
 
 	const X3DLayerNodePtr &
 	getActiveLayer () const
 	{ return activeLayer; }
 
 	const SFTime &
-	getActiveNavigationInfoChanged () const
-	{ return activeNavigationInfoChanged; }
+	getActiveNavigationInfoEvent () const
+	{ return activeNavigationInfoOutput; }
 
 	const SFTime &
-	getActiveViewpointChanged () const
-	{ return activeViewpointChanged; }
+	getActiveViewpointEvent () const
+	{ return activeViewpointOutput; }
 
 	virtual
 	void
@@ -119,16 +111,18 @@ protected:
 
 	///  @name Members access
 
-	virtual
-	const WorldPtr &
-	getWorld () const = 0;
-
 	NavigationInfo*
 	getActiveNavigationInfo () const
 	{ return activeNavigationInfo; }
 
 
 private:
+	
+	///  @name Member access
+
+	virtual
+	const WorldPtr &
+	getWorld () const = 0;
 
 	///  @name Event handlers
 
@@ -154,10 +148,10 @@ private:
 
 	X3DLayerNodePtr     activeLayer;
 	NavigationInfo*     activeNavigationInfo;
-	SFTime              activeNavigationInfoChanged;
+	SFTime              activeNavigationInfoOutput;
 	SFEnum <ViewerType> viewer;
 	MFEnum <ViewerType> availableViewers;
-	SFTime              activeViewpointChanged;
+	SFTime              activeViewpointOutput;
 
 };
 

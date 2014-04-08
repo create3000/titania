@@ -52,6 +52,9 @@
 
 #include "../X3DBrowserSurface.h"
 
+// Include X3DBrowserSurface before this header.
+#include "../../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,8 +66,7 @@ KeyDevice::KeyDevice (X3DBrowserSurface* const browser) :
 	            keyRelease (),
 	  key_press_connection (),
 	key_release_connection ()
-{
-}
+{ }
 
 void
 KeyDevice::initialize ()
@@ -72,7 +74,7 @@ KeyDevice::initialize ()
 	X3DWidget::initialize ();
 
 	getBrowser () -> keyDeviceSensorNodeEvent () .addInterest (this, &KeyDevice::set_keyDeviceSensorNodeEvent);
-	
+
 	g_signal_connect (imContextPress,   "commit", G_CALLBACK (&KeyDevice::on_commit), &this -> keyPress);
 	g_signal_connect (imContextRelease, "commit", G_CALLBACK (&KeyDevice::on_commit), &this -> keyRelease);
 }
@@ -107,7 +109,7 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 			return true;
 		}
 	}
-	
+
 	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyPressEvent (event -> keyval);
 	return true;
 }
@@ -128,7 +130,7 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 			return true;
 		}
 	}
-	
+
 	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyReleaseEvent (event -> keyval);
 	return true;
 }

@@ -21,7 +21,7 @@ PROTO Interface [
   Group { }
 }
 
-DEF StatisticsTool Interface { }
+DEF RenderingProperties Interface { }
 
 Background {
   transparency 1
@@ -149,11 +149,11 @@ function is_odd (value)
 }
 
 ROUTE Text.textBounds TO NotificationScript.set_textBounds
-ROUTE StatisticsTool.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
-ROUTE StatisticsTool.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
-ROUTE StatisticsTool.string_changed TO Text.set_string
-ROUTE StatisticsTool.cornerRadius_changed TO NotificationScript.set_cornerRadius
-ROUTE StatisticsTool.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
-ROUTE StatisticsTool.borderWidth_changed TO NotificationScript.set_borderWidth
+ROUTE RenderingProperties.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
+ROUTE RenderingProperties.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
+ROUTE RenderingProperties.string_changed TO Text.set_string
+ROUTE RenderingProperties.cornerRadius_changed TO NotificationScript.set_cornerRadius
+ROUTE RenderingProperties.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
+ROUTE RenderingProperties.borderWidth_changed TO NotificationScript.set_borderWidth
 
-EXPORT StatisticsTool AS Statistics
+EXPORT RenderingProperties

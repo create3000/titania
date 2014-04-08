@@ -74,7 +74,7 @@ X3DViewer::getActiveViewpoint () const
 Vector3f
 X3DViewer::getPointOnCenterPlane (const double x, const double y)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (getBrowser () -> makeCurrent ())
 	{

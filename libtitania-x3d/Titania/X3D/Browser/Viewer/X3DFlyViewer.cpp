@@ -55,7 +55,7 @@
 #include "../Properties/BrowserOptions.h"
 #include "../X3DBrowserSurface.h"
 
-#include <Titania/Chrono/Now.h>
+#include <Titania/Chrono/now.h>
 #include <Titania/Math/Geometry/Camera.h>
 
 #include <cmath>

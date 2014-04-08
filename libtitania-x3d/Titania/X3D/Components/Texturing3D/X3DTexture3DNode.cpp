@@ -100,7 +100,7 @@ X3DTexture3DNode::set_textureProperties ()
 	texturePropertiesNode .set (x3d_cast <TextureProperties*> (textureProperties ()));
 
 	if (not texturePropertiesNode)
-		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()));
+		texturePropertiesNode .set (getBrowser () -> getTextureProperties ());
 
 	texturePropertiesNode -> addInterest (this, &X3DTexture3DNode::updateTextureProperties);
 

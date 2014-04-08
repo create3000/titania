@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-ContextMutex contextMutex;
-
 static std::vector <std::tuple <Display*, GLXDrawable, GLXContext>> contextStack;
+
+static ContextMutex contextMutex;
 
 void
 ContextMutex::pushContext ()
@@ -81,6 +81,12 @@ noexcept (true)
 		                std::get <2> (tuple));
 
 	contextStack .pop_back ();
+}
+
+ContextMutex &
+getContextMutex ()
+{
+	return contextMutex;
 }
 
 } // X3D

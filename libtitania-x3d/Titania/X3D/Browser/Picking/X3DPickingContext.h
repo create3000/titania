@@ -142,14 +142,14 @@ protected:
 	void
 	initialize () override;
 
+
+private:
+
 	///  @name Members access
 
 	virtual
 	const WorldPtr &
 	getWorld () const = 0;
-
-
-private:
 
 	///  @name Event handlers
 

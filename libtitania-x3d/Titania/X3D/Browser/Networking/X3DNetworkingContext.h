@@ -48,71 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
-#define __TITANIA_X3D_ROUTING_ROUTER_H__
+#ifndef __TITANIA_X3D_BROWSER_NETWORKING_X3DNETWORKING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_NETWORKING_X3DNETWORKING_CONTEXT_H__
 
-#include "../Basic/NodeSet.h"
-#include "../Basic/X3DBaseNode.h"
-#include "../Routing/EventList.h"
-#include "../Routing/NodeList.h"
+#include "../../Basic/X3DBaseNode.h"
 
+#include <deque>
 #include <mutex>
 
 namespace titania {
 namespace X3D {
 
-class Router
+class X3DNetworkingContext :
+	virtual public X3DBaseNode
 {
 public:
 
-	Router ();
+	///  @name Member access
 
-	EventId
-	addEvent (X3DChildObject* const, const EventPtr &);
-	
+	std::mutex &
+	getDownloadMutex ();
+
+	///  @name Destruction
+
+	virtual
 	void
-	removeEvent (const EventId &);
+	dispose () override
+	{ }
 
-	NodeId
-	addNode (X3DBaseNode*);
+
+protected:
+
+	///  @name Constructor
+
+	X3DNetworkingContext ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Operations
 
 	void
-	removeNode (const NodeId &);
+	lock ();
 
 	void
-	processEvents ();
-
-	bool
-	empty () const;
-
-	size_t
-	size () const;
-
-	void
-	debug ();
+	unlock ();
 
 
 private:
 
-	Router (const Router &) = delete;
+	// Members
 
-	Router &
-	operator = (const Router &) = delete;
-
-	EventList
-	getEvents ();
-
-	NodeList
-	getNodes ();
-
-	void
-	eventsProcessed ();
-
-	EventList          events;
-	NodeList           nodes;
-	time_type          eventTime;
-	time_type          nodeTime;
-	mutable std::mutex mutex;
+	size_t                  downloadMutexIndex;
+	std::deque <std::mutex> downloadMutexes;
+	std::mutex              downloadMutex;
 
 };
 
