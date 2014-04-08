@@ -63,6 +63,7 @@
 #include <iostream>
 
 #include <Titania/Backtrace.h>
+#include <thread>
 
 namespace titania {
 namespace X3D {
@@ -1507,6 +1508,9 @@ X3DBaseNode::dispose ()
 	X3DChildObject::dispose ();
 
 	removeEvents ();
+	
+	for (const auto & field : fieldDefinitions)
+		__LOG__ << std::this_thread::get_id() << " : " << (X3DChildObject*) field << std::endl;
 
 	for (const auto & field : fieldDefinitions)
 		field -> removeParent (this);

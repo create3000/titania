@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #include "ProgramShader.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Browser/RenderingProperties.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderProgram.h"
 
@@ -141,7 +141,7 @@ ProgramShader::requestExplicitRelink ()
 	if (loadSensor -> isActive ())
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
 	{
 		isValid () = false;
 		return;

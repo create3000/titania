@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
 #define __TITANIA_X3D_PARSER_X3DPARSER_H__
 
-#include "../Base/X3DBaseNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include "../Fields/SFNode.h"
 
 namespace titania {

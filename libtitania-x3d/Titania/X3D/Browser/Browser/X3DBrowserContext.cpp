@@ -177,6 +177,14 @@ X3DBrowserContext::update ()
 			sensors () .processInterests ();
 			processEvents ();
 
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
 			deleteObjectsAsync ();
 
 			// Debug

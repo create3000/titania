@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
 #define __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
 
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
 #include "../Miscellaneous/Texture.h"
 

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_FIELDS_SFSTRING_H__
 #define __TITANIA_X3D_FIELDS_SFSTRING_H__
 
-#include "../Base/X3DField.h"
+#include "../Basic/X3DField.h"
 #include "../Types/String.h"
 
 namespace titania {

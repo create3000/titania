@@ -11,7 +11,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Basic/URI.cpp \
 	Titania/Chrono/ClockBase.cpp \
 	Titania/Chrono/CountingClock.cpp \
-	Titania/Chrono/now.cpp \
+	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
 	Titania/Geospatial/BasicConverter.cpp \

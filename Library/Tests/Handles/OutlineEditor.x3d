@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.7, http://titania.create3000.de'/>
-    <meta name='modified' content='Tue, 08 Apr 2014 04:12:07 GMT'/>
+    <meta name='modified' content='Mon, 07 Apr 2014 13:26:21 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -91,9 +91,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='xxx'
         description='OutlineEditor'
-        position='2.34616 0.788644 6.32777'
-        orientation='9.55461e-06 1 8.39158e-07 6.26419'
-        centerOfRotation='2.47381 0.788643 -0.387709'/>
+        position='2.3667 1.41197 5.82153'
+        orientation='0.988291 0.11298 0.102554 6.11535'
+        centerOfRotation='2.86706 1.77025 -0.358055'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -151,7 +151,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='-0 -0 -1 5.78693'
+          rotation='-0 -0 -1 5.44313'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -301,13 +301,13 @@
       </Transform>
     </ScreenGroup>
     <Transform DEF='ScreenText'
-        translation='0.673213 1.75217 0'>
+        translation='0.673213 1.51774 0'>
       <Shape>
         <Appearance>
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified", "Mo 07 Apr 2014 21:33:37 CEST"'>
+            string='"modified", "Mo 07 Apr 2014 10:48:32 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -345,35 +345,6 @@ function initialize ()
 	string_changed = new MFString ("modified", date .toLocaleString ());
 }]]> 
     </Script>
-    <ParticleSystem DEF='Fire'
-        geometryType='POINT'
-        maxParticles='2000'
-        particleLifetime='4'
-        lifetimeVariation='0.5'
-        particleSize='1 1'
-        colorKey='0, 0.2, 0.5, 0.7, 0.8, 1'>
-      <PointEmitter
-          direction='0 0 0'
-          speed='0.2'
-          variation='0.5'
-          mass='0.1'
-          surfaceArea='0.1'/>
-      <ColorRGBA containerField='colorRamp'
-          color='1 0.38 0 0, 1 0.58 0.06 0.01, 1 0.37 0 0.1, 1 0.05 0 0, 0 0 0 0.015, 0 0 0 0'/>
-      <Appearance>
-        <LineProperties
-            linewidthScaleFactor='10'/>
-      </Appearance>
-      <WindPhysicsModel
-          direction='0 1 0'
-          speed='0.5'
-          gustiness='1.7'
-          turbulence='0.3'/>
-      <WindPhysicsModel
-          direction='1 0 0'
-          speed='0.34'
-          gustiness='2'/>
-    </ParticleSystem>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
     <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>

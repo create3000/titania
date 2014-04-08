@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #include "X3DLayerNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -217,7 +217,11 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, c
 
 	// Traverse and get distance
 
+	getBrowser () -> getLayers () .push (this);
+
 	traverse (TraverseType::NAVIGATION);
+
+	getBrowser () -> getLayers () .pop ();
 
 	return X3DRenderer::getDistance ();
 }
@@ -275,7 +279,7 @@ X3DLayerNode::set_viewport ()
 	currentViewport .set (x3d_cast <X3DViewportNode*> (viewport ()));
 
 	if (not currentViewport)
-		currentViewport .set (getBrowser () -> getViewport ());
+		currentViewport .set (getBrowser () -> getBrowserOptions () -> viewport ());
 }
 
 void
@@ -340,10 +344,10 @@ X3DLayerNode::pick ()
 
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
-		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getViewport ());
 		getViewpoint () -> transform ();
 
-		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 		group -> traverse (TraverseType::PICKING);
 
@@ -363,7 +367,7 @@ X3DLayerNode::camera ()
 	defaultFog            -> traverse (TraverseType::CAMERA);
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 	group -> traverse (TraverseType::CAMERA);
 
@@ -379,7 +383,7 @@ void
 X3DLayerNode::navigation ()
 {
 	// Render
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 	render (TraverseType::NAVIGATION);
 
@@ -417,7 +421,7 @@ X3DLayerNode::collision ()
 	getModelViewMatrix () .set (modelViewMatrix);
 
 	// Render
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 	render (TraverseType::COLLISION);
 
@@ -436,7 +440,7 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 	render (TraverseType::DISPLAY);
 

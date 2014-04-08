@@ -53,7 +53,7 @@
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Browser/X3DBrowser.h"
+#include "../X3DBrowser.h"
 
 // First include X3DExecutionContext
 #include "../../Execution/BindableNodeStack.h"

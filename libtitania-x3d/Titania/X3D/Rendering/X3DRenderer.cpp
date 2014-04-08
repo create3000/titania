@@ -50,8 +50,8 @@
 
 #include "X3DRenderer.h"
 
-#include "../Browser/Browser/BrowserOptions.h"
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
@@ -171,7 +171,7 @@ X3DRenderer::render (const TraverseType type)
 		}
 		case TraverseType::COLLISION:
 		{
-			// Collect for collide and gravite.
+			// Collect for collide and gravite
 
 			depthBuffer -> bind ();
 
@@ -197,16 +197,16 @@ X3DRenderer::render (const TraverseType type)
 void
 X3DRenderer::draw ()
 {
-	// Enable global lights.
+	// Enable global lights
 
 	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
 	if (1)
 	{
-		// SORTED BLEND
+		// Sorted blend
 
-		// Render opaque objects first.
+		// Render opaque objects first
 
 		glEnable (GL_DEPTH_TEST);
 		glDepthMask (GL_TRUE);
@@ -215,7 +215,7 @@ X3DRenderer::draw ()
 		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
 			shape -> draw ();
 
-		// Render transparent objects.
+		// Render transparent objects
 
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
@@ -232,11 +232,11 @@ X3DRenderer::draw ()
 	{
 		//	http://wiki.delphigl.com/index.php/Blenden
 
-		// DOUBLE BLEND
+		// Double blend
 
 		glEnable (GL_DEPTH_TEST);
 
-		// Render transparent objects.
+		// Render transparent objects
 
 		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, shapeComare);
 
@@ -257,7 +257,7 @@ X3DRenderer::draw ()
 			shape -> draw ();
 		}
 
-		// Render opaque objects.
+		// Render opaque objects
 
 		glDepthFunc (GL_GREATER);
 		glDepthMask (GL_FALSE);
@@ -275,14 +275,14 @@ X3DRenderer::draw ()
 			shape -> draw ();
 	}
 
-	// Disable global lights.
+	// Disable global lights
 
 	for (const auto & object : basic::reverse_adapter (getGlobalObjects ()))
 		object -> disable ();
 
-	// Reset to default browser appearance.
+	// Reset to default OpenGL appearance
 
-	getBrowser () -> getAppearance () -> draw ();
+	getBrowser () -> getBrowserOptions () -> appearance () -> draw ();
 }
 
 void
@@ -290,7 +290,7 @@ X3DRenderer::navigation ()
 {
 	// Measure distance
 
-	// Get NavigationInfo values.
+	// Get NavigationInfo values
 
 	const auto navigationInfo = getCurrentNavigationInfo ();
 	const auto viewpoint      = getCurrentViewpoint ();
@@ -298,7 +298,7 @@ X3DRenderer::navigation ()
 	const double zNear = navigationInfo -> getNearPlane ();
 	const double zFar  = navigationInfo -> getFarPlane (viewpoint);
 
-	// Render all objects.
+	// Render all objects
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();
@@ -324,7 +324,7 @@ X3DRenderer::collide ()
 		}
 	}
 
-	// Set isActive to FALSE for appropriate nodes.
+	// Set isActive to FALSE for appropriate nodes
 
 	std::vector <Collision*> difference;
 
@@ -346,7 +346,7 @@ X3DRenderer::collide ()
 		collision -> removeParent (this);
 	}
 
-	// Set isActive to TRUE for appropriate nodes.
+	// Set isActive to TRUE for appropriate nodes
 
 	activeCollisions = std::move (collisions);
 
@@ -365,7 +365,7 @@ X3DRenderer::gravite ()
 	if (getBrowser () -> getViewer () not_eq ViewerType::WALK)
 		return;
 
-	// Get NavigationInfo values.
+	// Get NavigationInfo values
 
 	const auto navigationInfo = getCurrentNavigationInfo ();
 	const auto viewpoint      = getCurrentViewpoint ();
@@ -379,20 +379,20 @@ X3DRenderer::gravite ()
 
 	depthBuffer -> bind ();
 
-	// Render as opaque objects.
+	// Render as opaque objects
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();
 
-	// Get distance and unbind buffer.
+	// Get distance and unbind buffer
 
 	float distance = depthBuffer -> getDistance (zNear, zFar);
 
 	depthBuffer -> unbind ();
 
-	// Gravite or step up.
+	// Gravite or step up
 
-	if (zFar - distance > 0) // Are there polygons under the viewer?
+	if (zFar - distance > 0) // Are there polygons under the viewer
 	{
 		distance -= height;
 
@@ -400,7 +400,7 @@ X3DRenderer::gravite ()
 
 		if (distance > 0)
 		{
-			// Gravite and fall down the floor.
+			// Gravite and fall down the floor
 
 			const float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 
@@ -423,12 +423,10 @@ X3DRenderer::gravite ()
 
 			if (-distance > 0.01 and - distance < stepHeight)
 			{
-				// Get size of camera.
-				
+				// Get size of camera
 				const float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
 
-				// Step up.
-				
+				// Step up
 				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0) * up);
 
 				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())

@@ -99,7 +99,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
-	                     std::lock_guard <X3D::ContextMutex> contextLock (X3D::getContextMutex ());
+	                     std::lock_guard <X3D::ContextMutex> contextLock (X3D::contextMutex);
 
 	                     getBrowser () -> makeCurrent ();
 	                     
@@ -149,7 +149,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
-	                     std::lock_guard <X3D::ContextMutex> contextLock (X3D::getContextMutex ());
+	                     std::lock_guard <X3D::ContextMutex> contextLock (X3D::contextMutex);
 
 	                     getBrowser () -> makeCurrent ();
 	                     

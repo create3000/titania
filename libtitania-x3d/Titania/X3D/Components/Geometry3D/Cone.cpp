@@ -50,7 +50,7 @@
 
 #include "Cone.h"
 
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #define SEGMENTS 16.0

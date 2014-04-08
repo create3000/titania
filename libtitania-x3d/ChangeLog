@@ -1,5 +1,6 @@
-2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
+2014-04-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ChangeLog:
 	* Makefile.am:
 	* X3D.h:
 	* findNode:
@@ -8,480 +9,389 @@
 	* Context.cpp:
 	* Set.h:
 	* Event.h:
-	* Event.h:
 	* Output.h:
 	* Event.h:
-	* Output.h:
 	* NodeSet.h:
-	* X3DBase.h:
-	* X3DBase.h:
 	* Output.h:
-	* Output.cpp:
-	* SFVec3.h:
-	* Traverse.h:
 	* X3DBase.h:
+	* X3DBase.h:
+	* Traverse.h:
+	* SFVec2.h:
+	* SFVec3.h:
 	* X3DField.h:
 	* SFTime.h:
 	* Route.h:
-	* SFVec2.h:
+	* Pointer.h:
+	* SFVec4.h:
+	* X3DPtr.h:
 	* Output.cpp:
 	* X3DInput.h:
-	* SFVec4.h:
-	* Pointer.h:
-	* X3DPtr.h:
 	* NodeSet.h:
+	* X3DObject.h:
+	* Output.cpp:
+	* X3DOutput.h:
 	* X3DInput.h:
+	* SFColor.h:
+	* NodeSet.cpp:
+	* Router.h:
+	* X3DField.h:
 	* MFInt32.h:
 	* SFImage.h:
-	* X3DObject.h:
-	* X3DOutput.h:
-	* X3DInput.h:
-	* Requester.h:
-	* X3DObject.h:
-	* X3DOutput.h:
-	* Output.cpp:
-	* Requester.h:
-	* NodeSet.cpp:
-	* SFColor.h:
-	* X3DField.h:
+	* Traverse.cpp:
 	* Pointer.cpp:
 	* X3DInput.cpp:
-	* X3DOutput.h:
-	* X3DInput.cpp:
-	* Parser.cpp:
-	* NodeSet.cpp:
-	* Requester.h:
-	* X3DObject.h:
 	* SFString.h:
-	* Traverse.cpp:
-	* Console.h:
+	* NodeSet.cpp:
+	* Parser.cpp:
+	* X3DOutput.h:
+	* X3DObject.h:
 	* Browser.h:
-	* X3DScalar.h:
+	* Console.h:
+	* Requester.h:
+	* X3DBaseNode.h:
 	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* X3DScalar.h:
+	* X3DOutput.cpp:
 	* X3DParser.h:
 	* Grammar.cpp:
-	* SFMatrix4.h:
-	* X3DObject.cpp:
-	* X3DOutput.cpp:
 	* X3DInput.cpp:
-	* X3DBaseNode.h:
-	* RequesterId.h:
-	* RequesterId.h:
+	* Router.cpp:
 	* X3DObject.cpp:
 	* X3DOutput.cpp:
+	* X3DObject.cpp:
 	* X3DWidget.h:
-	* Selection.h:
-	* X3DBaseNode.h:
-	* RequesterId.h:
-	* X3DObject.cpp:
-	* X3DOutput.cpp:
 	* EventList.h:
+	* Proto.cpp:
+	* X3DBaseNode.h:
+	* Console.cpp:
+	* RequesterId.h:
 	* Context.h:
 	* World.cpp:
-	* Scene.cpp:
-	* Proto.cpp:
 	* Browser.cpp:
-	* Console.cpp:
-	* ArrayFields.h:
+	* Scene.cpp:
 	* SFColorRGBA.h:
+	* ArrayFields.h:
 	* X3DBrowser.h:
 	* SFRotation4.h:
+	* X3DBaseNode.cpp:
 	* X3DPtrArray.h:
+	* RouteArray.h:
 	* X3DArrayField.h:
 	* NodeTypeArray.h:
-	* RouteArray.h:
-	* X3DBaseNode.cpp:
+	* X3DWidget.cpp:
 	* BasicNodeArray.h:
 	* NodeTypeArray.h:
-	* X3DBaseNode.cpp:
-	* Context.cpp:
-	* ChildObjectSet.h:
-	* X3DChildObject.h:
-	* X3DChildObject.h:
-	* X3DArrayField.h:
-	* Selection.cpp:
-	* X3DWidget.cpp:
 	* NamedNode.h:
-	* Hit.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
 	* ChildObjectSet.h:
+	* Context.cpp:
+	* Hit.h:
+	* X3DArrayField.h:
+	* X3DChildObject.h:
+	* Notification.h:
 	* Unit.cpp:
 	* NodeTypeArray.cpp:
-	* X3DChildObject.h:
-	* BasicNodeArray.h:
-	* Loader.cpp:
 	* ChildObjectSet.h:
 	* X3DBrowser.cpp:
 	* X3DScene.cpp:
-	* Notification.h:
+	* Loader.cpp:
 	* TextureLoader.h:
 	* SceneLoader.cpp:
-	* X3DChildObject.cpp:
+	* BasicNodeArray.h:
 	* BasicNodeArray.cpp:
-	* X3DChildObject.cpp:
-	* ChildObjectSet.cpp:
-	* GarbageCollector.h:
-	* X3DRenderer.h:
-	* ChildObjectSet.cpp:
 	* NodeTypeArray.cpp:
+	* ChildObjectSet.cpp:
+	* X3DRenderer.h:
+	* Statistics.x3dv:
+	* X3DChildObject.cpp:
+	* GarbageCollector.h:
 	* ImportedNode.h:
-	* ExportedNode.h:
 	* X3DChildObject.cpp:
 	* Notification.cpp:
 	* Texture3DLoader.h:
 	* Text.cpp:
+	* ExportedNode.h:
 	* ChildObjectSet.cpp:
 	* BasicNodeArray.cpp:
-	* ExternProto.cpp:
-	* FieldDefinitionSet.h:
-	* X3DFieldDefinition.h:
-	* X3DNode.h:
-	* Generator.cpp:
 	* Browser.h:
 	* X3DRouterObject.h:
-	* Console.h:
 	* X3DRenderer.cpp:
-	* GarbargeCollector.cpp:
-	* X3DGarbageCollector.h:
-	* FlyViewer.h:
-	* Shape.cpp:
+	* Generator.cpp:
 	* X3DFieldDefinition.h:
-	* X3DViewer.h:
-	* X3DProtoObject.h:
-	* X3DToolObject.h:
 	* FieldDefinitionSet.h:
+	* Console.h:
+	* X3DNode.h:
+	* ExternProto.cpp:
+	* FlyViewer.h:
+	* X3DProtoObject.h:
+	* X3DViewer.h:
+	* X3DFieldDefinition.h:
+	* GarbargeCollector.cpp:
+	* X3DToolObject.h:
 	* HitArray.h:
-	* WalkViewer.h:
-	* FieldDefinitionArray.h:
-	* X3DGarbageCollector.h:
-	* FieldDefinitionSet.cpp:
-	* NoneViewer.h:
-	* ViewerType.h:
-	* Browser.cpp:
-	* Console.cpp:
-	* Selection.h:
-	* KeyDevice.h:
-	* GarbageCollector.h.~1~:
-	* X3DBrowserContext.h:
-	* X3DRouterObject.cpp:
+	* FieldDefinitionSet.h:
+	* Shape.cpp:
 	* X3DNode.cpp:
-	* X3DBrowserSurface.h:
-	* X3DFieldDefinition.cpp:
-	* GarbageCollector.h.~1~:
-	* X3DBrowser.h:
-	* X3DToolObject.cpp:
-	* Layout.cpp:
-	* FieldDefinitionSet.cpp:
-	* LightContainer.cpp:
+	* Browser.cpp:
+	* ViewerType.h:
+	* NoneViewer.h:
+	* Console.cpp:
 	* FieldDefinitionArray.h:
+	* FieldDefinitionSet.cpp:
 	* X3DFieldDefinition.cpp:
-	* MotionBlur.h:
-	* PlaneViewer.h:
-	* HitArray.cpp:
+	* Selection.h:
+	* X3DRouterObject.cpp:
+	* X3DBrowserContext.h:
+	* KeyDevice.h:
+	* WalkViewer.h:
+	* X3DGarbageCollector.h:
+	* X3DBrowserSurface.h:
+	* Selection.h:
 	* BindableNodeList.h:
-	* BrowserApplication.h:
+	* MotionBlur.h:
+	* X3DBrowser.h:
 	* X3DViewer.cpp:
+	* PlaneViewer.h:
+	* FieldDefinitionSet.cpp:
+	* X3DToolObject.cpp:
+	* FieldDefinitionArray.h:
+	* BrowserApplication.h:
+	* X3DFieldDefinition.cpp:
+	* HitArray.cpp:
 	* FlyViewer.cpp:
-	* WalkViewer.cpp:
-	* BindableNodeStack.h:
+	* GarbageCollector.h.~1~:
+	* LightContainer.cpp:
+	* Layout.cpp:
 	* X3DFlyViewer.h:
+	* WalkViewer.cpp:
+	* NoneViewer.cpp:
+	* X3DBrowserContext.cpp:
 	* Appearance.h:
 	* Material.cpp:
-	* NoneViewer.cpp:
+	* X3DBrowserSurface.cpp:
 	* LookAtViewer.h:
+	* BindableNodeStack.h:
+	* Selection.cpp:
 	* KeyDevice.cpp:
-	* X3DGarbargeCollector.cpp:
 	* X3DTimeContext.h:
 	* X3DCoreContext.h:
-	* Box.cpp:
+	* FieldDefinitionArray.cpp:
+	* X3DTextContext.h:
 	* WorldInfo.cpp:
 	* Selection.cpp:
-	* FieldDefinitionArray.cpp:
-	* X3DBrowserSurface.cpp:
-	* X3DTextContext.h:
-	* X3DBrowserContext.cpp:
-	* FlyViewer.h:
+	* Box.cpp:
 	* MotionBlur.cpp:
-	* X3DViewer.h:
-	* SupportedNodes.h:
-	* Intersection.h:
-	* PlaneViewer.cpp:
-	* Cone.cpp:
-	* X3DBrowser.cpp:
-	* Viewport.h:
-	* TimeSensor.cpp:
-	* X3DGarbargeCollector.cpp:
-	* FieldDefinitionArray.cpp:
 	* Notification.h:
+	* Viewport.h:
+	* PlaneViewer.cpp:
+	* TimeSensor.cpp:
+	* FlyViewer.h:
 	* ExamineViewer.h:
-	* X3DExecutionContext.h:
+	* SupportedNodes.h:
+	* X3DViewer.h:
+	* Cone.cpp:
+	* X3DGarbargeCollector.cpp:
+	* X3DBrowser.cpp:
+	* Intersection.h:
+	* FieldDefinitionArray.cpp:
 	* ViewportContainer.cpp:
-	* LookAtViewer.cpp:
+	* X3DTimeContext.cpp:
+	* X3DCoreContext.cpp:
 	* Arc2D.cpp:
+	* X3DOptionNode.h:
+	* MotionBlur.h:
+	* X3DExecutionContext.h:
+	* WalkViewer.h:
+	* X3DFlyViewer.cpp:
+	* X3DTextContext.cpp:
+	* Appearance.cpp:
+	* X3DShapeContext.h:
+	* NoneViewer.h:
+	* Script.cpp:
 	* FieldTypesArray.h:
 	* ViewerType.h:
-	* X3DOptionNode.h:
-	* X3DTextContext.cpp:
-	* X3DFlyViewer.cpp:
-	* X3DShapeContext.h:
-	* Script.cpp:
-	* WalkViewer.h:
-	* X3DTimeContext.cpp:
-	* NoneViewer.h:
-	* Appearance.cpp:
-	* MotionBlur.h:
+	* LookAtViewer.cpp:
+	* X3DJavaScriptEngine.h:
+	* TransformTool.cpp:
+	* ClipPlaneContainer.cpp:
+	* Anchor.cpp:
+	* Notification.cpp:
+	* LayerSet.cpp:
+	* PlaneViewer.h:
+	* Sphere.cpp:
+	* Inline.cpp:
+	* FlyViewer.cpp:
+	* Disk2D.cpp:
+	* Viewport.cpp:
+	* ExamineViewer.cpp:
+	* BrowserOptions.h:
 	* X3DViewer.cpp:
 	* PointingDevice.h:
-	* Anchor.cpp:
-	* Inline.cpp:
-	* X3DJavaScriptEngine.h:
-	* ClipPlaneContainer.cpp:
-	* ExamineViewer.cpp:
-	* BrowserOptions.h:
-	* Sphere.cpp:
-	* PlaneViewer.h:
-	* Viewport.cpp:
-	* LayerSet.cpp:
-	* TransformTool.cpp:
-	* Disk2D.cpp:
-	* Notification.cpp:
-	* FlyViewer.cpp:
-	* NoneViewer.cpp:
-	* Transform.cpp:
-	* LayoutGroup.cpp:
-	* ShaderPart.cpp:
-	* MotionBlur.cpp:
-	* WalkViewer.cpp:
-	* X3DOptionNode.cpp:
-	* X3DShapeContext.cpp:
-	* LookAtViewer.h:
-	* X3DExecutionContext.cpp:
+	* RenderingProperties.x3dv:
 	* X3DJavaScriptContext.h:
-	* X3DFlyViewer.h:
-	* SupportedFields.cpp:
+	* Transform.cpp:
 	* jsfield.h:
-	* X3DShapeNode.cpp:
+	* X3DLayoutContext.h:
+	* X3DShapeContext.cpp:
 	* Arc2DOptions.h:
+	* MotionBlur.cpp:
+	* X3DFlyViewer.h:
+	* LookAtViewer.h:
+	* NoneViewer.cpp:
+	* WalkViewer.cpp:
+	* LayoutGroup.cpp:
+	* X3DShapeNode.cpp:
+	* ShaderPart.cpp:
+	* X3DExecutionContext.cpp:
+	* SupportedFields.cpp:
+	* X3DOptionNode.cpp:
 	* SpotLight.cpp:
-	* ExamineViewer.h:
-	* Hit.h:
-	* PointLight.cpp:
-	* PlaneViewer.cpp:
-	* Cylinder.cpp:
-	* X3DOptionNode.h:
-	* X3DLightContext.h:
-	* BrowserOptions.cpp:
-	* PointingDevice.cpp:
-	* PolygonModeContainer.cpp:
 	* Circle2D.cpp:
-	* BrowserProperties.h:
-	* X3DMetadataObject.h:
-	* X3DBindableNode.cpp:
-	* KeyDevice.h:
+	* PlaneViewer.cpp:
+	* ExamineViewer.h:
+	* PointLight.cpp:
+	* PointingDevice.cpp:
+	* X3DOptionNode.h:
+	* Hit.h:
+	* BrowserOptions.cpp:
+	* Cylinder.cpp:
+	* PolygonModeContainer.cpp:
 	* X3DBrowserSurface.h:
-	* X3DBrowserContext.h:
-	* BrowserOptions.h:
-	* X3DPointingDevice.h:
+	* X3DBindableNode.cpp:
 	* X3DFlyViewer.cpp:
+	* X3DMetadataObject.h:
+	* BrowserProperties.h:
+	* X3DPointingDevice.h:
 	* Viewpoint.cpp:
-	* LookAtViewer.cpp:
 	* X3DPickingContext.h:
-	* ExamineViewer.cpp:
-	* X3DAppearanceNode.h:
+	* KeyDevice.h:
+	* BrowserOptions.h:
+	* X3DBrowserContext.h:
+	* LookAtViewer.cpp:
 	* X3DLayerNode.cpp:
 	* ArcClose2D.cpp:
-	* X3DShaderNode.cpp:
-	* ProgramShader.cpp:
-	* ShaderProgram.cpp:
+	* ExamineViewer.cpp:
 	* BrowserApplication.h:
 	* X3DOptionNode.cpp:
+	* X3DAppearanceNode.h:
+	* ShaderProgram.cpp:
+	* X3DShaderNode.cpp:
 	* X3DUrlObject.h:
+	* ProgramShader.cpp:
 	* ColorDamper.cpp:
-	* X3DLightContext.cpp:
-	* X3DBoundedObjectTool.h:
-	* X3DPointingDevice.cpp:
-	* BrowserOptions.cpp:
-	* BrowserProperties.cpp:
-	* X3DBrowserContext.cpp:
-	* RenderingProperties.h:
-	* X3DBrowserSurface.cpp:
-	* X3DViewportNode.h:
-	* ScalarDamper.cpp:
-	* jsBrowser.cpp:
-	* X3DPickingContext.cpp:
-	* Rectangle2D.cpp:
-	* ImageTexture.cpp:
-	* ComposedShader.cpp:
-	* PixelTexture.cpp:
-	* MultiTexture.cpp:
-	* jsContext.cpp:
 	* KeyDevice.cpp:
-	* jsX3DObject.h:
+	* BrowserProperties.cpp:
+	* X3DBrowserSurface.cpp:
 	* X3DLayeringContext.h:
 	* X3DLightingContext.h:
+	* RenderingProperties.h:
+	* PixelTexture.cpp:
+	* MultiTexture.cpp:
+	* Rectangle2D.cpp:
+	* X3DTextureNode.h:
+	* ScalarDamper.cpp:
+	* BrowserOptions.cpp:
+	* X3DViewportNode.h:
+	* X3DPickingContext.cpp:
+	* ImageTexture.cpp:
+	* ComposedShader.cpp:
+	* jsBrowser.cpp:
+	* jsX3DObject.h:
+	* jsContext.cpp:
+	* X3DBrowserContext.cpp:
 	* jsGlobals.cpp:
+	* X3DBoundedObjectTool.h:
+	* X3DPointingDevice.cpp:
 	* GeoViewpoint.cpp:
-	* ArcClose2DOptions.h:
-	* X3DPickableObject.h:
-	* X3DGeometryNode.h:
 	* jsX3DField.cpp:
 	* BrowserProperties.h:
-	* CosmoWorlds.wrl:
+	* X3DPickableObject.h:
 	* X3DBoundedObject.h:
-	* X3DLayeringContext.cpp:
-	* X3DSoundSourceNode.cpp:
-	* X3DGroupingNode.cpp:
-	* X3DScriptingContext.h:
+	* X3DGeometryNode.h:
+	* ArcClose2DOptions.h:
+	* CosmoWorlds.wrl:
 	* RenderingProperties.cpp:
-	* X3DRenderingContext.h:
-	* HitArray.h:
-	* X3DTextureContext.h:
-	* X3DTextureNode.cpp:
-	* X3DLightingContext.cpp:
 	* PositionDamper.cpp:
-	* X3DViewportNode.cpp:
 	* Fog.cpp:
+	* HitArray.h:
+	* X3DViewportNode.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DSoundSourceNode.cpp:
+	* X3DRenderingContext.h:
+	* X3DLightingContext.cpp:
+	* X3DTextureNode.cpp:
+	* X3DScriptingContext.h:
+	* X3DLayeringContext.cpp:
 	* NavigationInfo.cpp:
-	* X3DGeometryNode.cpp:
-	* X3DTimeDependentNode.cpp:
-	* X3DPrototypeInstance.cpp:
-	* X3DFollowerNode.cpp:
 	* DirectionalLight.cpp:
+	* X3DPrototypeInstance.cpp:
 	* RenderingProperties.h:
 	* BrowserProperties.cpp:
-	* X3DTexture2DNode.cpp:
-	* X3DNetworkingContext.h:
-	* TexCoordDamper2D.cpp:
-	* PositionDamper2D.cpp:
-	* CoordinateDamper.cpp:
-	* X3DNavigationContext.h:
-	* X3DTextureContext.cpp:
-	* HitArray.cpp:
-	* X3DBrowserSurfaceObject.h:
-	* X3DRenderingContext.cpp:
-	* PixelTexture3D.cpp:
-	* ImageTexture3D.cpp:
+	* X3DFollowerNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DGeometryNode.cpp:
 	* X3DScriptingContext.cpp:
-	* X3DViewpointObject.h:
-	* X3DViewpointNode.cpp:
+	* ImageTexture3D.cpp:
+	* PixelTexture3D.cpp:
+	* X3DTexture2DNode.cpp:
+	* TexCoordDamper2D.cpp:
+	* X3DRenderingContext.cpp:
+	* HitArray.cpp:
+	* CoordinateDamper.cpp:
+	* X3DBrowserSurfaceObject.h:
+	* X3DNavigationContext.h:
+	* PositionDamper2D.cpp:
+	* X3DNetworkingContext.h:
 	* OrientationDamper.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DViewpointObject.h:
 	* RenderingProperties.cpp:
-	* jsX3DConstants.cpp:
 	* TextureProperties.cpp:
-	* X3DGeometricOptionNode.h:
-	* X3DNetworkingContext.cpp:
-	* X3DNavigationContext.cpp:
-	* X3DTexturing2DContext.h:
-	* Intersection.h:
-	* X3DBrowserSurfaceObject.cpp:
+	* jsX3DConstants.cpp:
 	* X3DTexture3DNode.cpp:
+	* X3DGeometricOptionNode.h:
+	* X3DNavigationContext.cpp:
+	* X3DNetworkingContext.cpp:
+	* X3DBrowserSurfaceObject.cpp:
+	* Intersection.h:
+	* X3DTexturing2DContext.h:
 	* jsSFNode.cpp:
-	* LocalFog.cpp:
 	* VolumeEmitter.cpp:
-	* SurfaceEmitter.cpp:
-	* PointingDevice.h:
-	* X3DTexturing2DContext.cpp:
+	* LocalFog.cpp:
 	* ParticleSystem.cpp:
-	* MultiTextureTransform.cpp:
+	* SurfaceEmitter.cpp:
+	* X3DTexturing2DContext.cpp:
+	* PointingDevice.h:
 	* jsX3DFieldDefinition.h:
-	* X3DFogObject.h:
 	* PolylineEmitter.cpp:
+	* MultiTextureTransform.cpp:
+	* X3DFogObject.h:
 	* PointingDevice.cpp:
 	* MultiTextureCoordinate.cpp:
-	* X3DPointingDevice.h:
-	* jsFieldDefinitionArray.h:
 	* X3DProgrammableShaderObject.h:
-	* X3DTextureTransformNode.cpp:
+	* jsFieldDefinitionArray.h:
 	* X3DFogObject.cpp:
+	* X3DPointingDevice.h:
+	* X3DTextureTransformNode.cpp:
 	* X3DTextureCoordinateNode.cpp:
-	* jsFieldDefinitionArray.cpp:
-	* X3DPointingDevice.cpp:
-	* ProximitySensor.cpp:
 	* X3DProgrammableShaderObject.cpp:
-	* X3DKeyDeviceSensorContext.h:
+	* ProximitySensor.cpp:
+	* X3DPointingDevice.cpp:
+	* jsFieldDefinitionArray.cpp:
 	* VisibilitySensor.cpp:
+	* X3DKeyDeviceSensorContext.h:
 	* X3DParticleSystemsContext.h:
-	* X3DBackgroundNode.cpp:
+	* X3DKeyDeviceSensorContext.cpp:
 	* X3DKeyDeviceSensorNode.cpp:
+	* X3DBackgroundNode.cpp:
 	* X3DParticleSystemsContext.cpp:
 	* X3DEnvironmentalSensorNodeTool.h:
-	* X3DPointingDeviceSensorContext.h:
 	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorContext.h:
 	* X3DPointingDeviceSensorContext.cpp:
 	* X3DPointingDeviceSensorNode.cpp: 
-
-2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
-
-	* Makefile.am:
-	* X3D.h:
-	* libtitania-x3d.cproj:
-	* Context.h:
-	* Context.cpp:
-	* Router.h:
-	* Router.cpp:
-	* X3DBaseNode.h:
-	* Selection.h:
-	* Scene.cpp:
-	* X3DBaseNode.cpp:
-	* Selection.cpp:
-	* X3DScene.cpp:
-	* X3DBrowser.cpp:
-	* Statistics.x3dv:
-	* Notification.cpp:
-	* X3DRouterObject.h:
-	* X3DBrowserContext.h:
-	* Selection.h:
-	* X3DRouterObject.cpp:
-	* X3DViewer.cpp:
-	* Selection.cpp:
-	* X3DBrowserContext.cpp:
-	* X3DBrowserSurface.cpp:
-	* KeyDevice.cpp:
-	* X3DCoreContext.h:
-	* X3DFlyViewer.cpp:
-	* Appearance.cpp:
-	* X3DCoreContext.cpp:
-	* ExamineViewer.cpp:
-	* TransformTool.cpp:
-	* RenderingProperties.x3dv:
-	* X3DLayoutContext.h:
-	* X3DShapeNode.cpp:
-	* X3DLightContext.h:
-	* X3DPickingContext.h:
-	* BrowserOptions.h:
-	* ShaderProgram.cpp:
-	* ProgramShader.cpp:
-	* X3DLightContext.cpp:
-	* X3DShaderNode.cpp:
-	* X3DLayerNode.cpp:
-	* X3DBoundedObjectTool.h:
-	* ImageTexture.cpp:
-	* PixelTexture.cpp:
-	* X3DTextureNode.h:
-	* X3DPickingContext.cpp:
-	* BrowserOptions.cpp:
-	* X3DTextureContext.h:
-	* X3DTextureNode.cpp:
-	* X3DGeometryNode.cpp:
-	* RenderingProperties.h:
-	* X3DNavigationContext.h:
-	* X3DNetworkingContext.h:
-	* PixelTexture3D.cpp:
-	* ImageTexture3D.cpp:
-	* X3DTextureContext.cpp:
-	* X3DTexture2DNode.cpp:
-	* RenderingProperties.cpp:
-	* TextureProperties.cpp:
-	* X3DTexture3DNode.cpp:
-	* X3DNetworkingContext.cpp:
-	* X3DNavigationContext.cpp:
-	* VolumeEmitter.cpp:
-	* SurfaceEmitter.cpp:
-	* ParticleSystem.cpp:
-	* MultiTextureTransform.cpp:
-	* PolylineEmitter.cpp:
-	* X3DKeyDeviceSensorContext.h:
-	* X3DKeyDeviceSensorContext.cpp:
-	* X3DEnvironmentalSensorNodeTool.h: 
 
 2014-04-07  Holger Seelig  <holger.seelig@yahoo.de>
 

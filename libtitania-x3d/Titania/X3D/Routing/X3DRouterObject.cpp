@@ -53,6 +53,7 @@
 #include <Titania/Chrono/now.h>
 
 #include <cassert>
+#include <thread>
 
 namespace titania {
 namespace X3D {
@@ -122,13 +123,24 @@ X3DRouterObject::getTaintedNodes ()
 void
 X3DRouterObject::processEvents ()
 {
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+	__LOG__ << std::string (120, '#') << std::endl;
+
 	do
 	{
 		do
 		{
 			for (auto & event : getTaintedFields ())
 			{
+				__LOG__ << std::this_thread::get_id() << " : " << event .first << std::endl;
 				event .first -> processEvent (event .second);
+				__LOG__ << event .first << std::endl;
 			}
 		}
 		while (not empty ());

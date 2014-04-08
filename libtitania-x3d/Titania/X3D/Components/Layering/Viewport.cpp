@@ -50,7 +50,7 @@
 
 #include "Viewport.h"
 
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../Layering/X3DLayerNode.h"
 
 namespace titania {
@@ -86,7 +86,7 @@ Viewport::create (X3DExecutionContext* const executionContext) const
 }
 
 Vector4i
-Viewport::getRectangle (const int width, const int height) const
+Viewport::getViewport (const int width, const int height) const
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
@@ -153,7 +153,7 @@ Viewport::push (const TraverseType)
 {
 	viewports .emplace_back (new ViewportContainer (this));
 
-	getCurrentLayer () -> getViewVolumeStack () .emplace (ProjectionMatrix4d (), getRectangle ());
+	getCurrentLayer () -> getViewVolumeStack () .emplace (ProjectionMatrix4d (), getViewport ());
 	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back ());
 }
 

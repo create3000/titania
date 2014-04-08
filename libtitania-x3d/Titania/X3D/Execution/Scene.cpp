@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,8 @@
 
 #include "Scene.h"
 
-#include "../Rendering/Context.h"
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Context.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
 
@@ -82,7 +82,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
 
 	if (getBrowser () -> makeCurrent ())
 	{
@@ -206,7 +206,7 @@ Scene::~Scene ()
 {
 	__LOG__ << getWorldURL () << std::endl;
 
-	trimFreeMemory ();
+	getGarbageCollector () .trimFreeMemory ();
 }
 
 } // X3D

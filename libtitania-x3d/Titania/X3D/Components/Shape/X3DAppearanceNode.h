@@ -73,11 +73,11 @@ public:
 	///  @name Member access
 
 	virtual
-	const X3DPtr <FillProperties> &
+	FillProperties*
 	getFillProperties () const = 0;
 
 	virtual
-	const X3DPtr <LineProperties> &
+	LineProperties*
 	getLineProperties () const = 0;
 
 	///  @name Operations

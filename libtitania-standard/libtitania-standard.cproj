@@ -53,6 +53,7 @@
     <None Include="Titania\OS.h" />
     <None Include="Titania\Basic\BindStack.h" />
     <None Include="Titania\Basic\URI.h" />
+    <None Include="Titania\Chrono\Now.h" />
     <None Include="Titania\Math\Numbers\Color3.h" />
     <None Include="Titania\Math\Numbers\Color4.h" />
     <None Include="Titania\Math\Numbers\Matrix3.h" />
@@ -135,7 +136,6 @@
     <None Include="Titania\OS\mkdir.h" />
     <None Include="Titania\OS\popen2.h" />
     <None Include="Titania\OS\system.h" />
-    <None Include="Titania\Chrono\now.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -155,6 +155,7 @@
     <Compile Include="Titania\Chrono\SystemClock.cpp" />
     <Compile Include="Titania\Chrono\ClockBase.cpp" />
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
+    <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\Basic\IndexedMultiMap.cpp" />
     <Compile Include="Titania\Basic\Path.cpp" />
     <Compile Include="Titania\String\strfsize.cpp" />
@@ -193,7 +194,6 @@
     <Compile Include="Titania\OS\mkdir.cpp" />
     <Compile Include="Titania\OS\popen2.cpp" />
     <Compile Include="Titania\OS\system.cpp" />
-    <Compile Include="Titania\Chrono\now.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

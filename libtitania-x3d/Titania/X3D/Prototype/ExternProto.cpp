@@ -51,7 +51,7 @@
 #include "ExternProto.h"
 
 #include "../Bits/Error.h"
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Execution/Scene.h"
 #include "../InputOutput/Loader.h"

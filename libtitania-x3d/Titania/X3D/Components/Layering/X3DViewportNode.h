@@ -62,11 +62,11 @@ class X3DViewportNode :
 public:
 
 	Vector4i
-	getRectangle () const;
+	getViewport () const;
 
 	virtual
 	Vector4i
-	getRectangle (const int, const int) const = 0;
+	getViewport (const int, const int) const = 0;
 
 	virtual
 	void

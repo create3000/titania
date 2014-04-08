@@ -50,7 +50,7 @@
 
 #include "PolygonModeContainer.h"
 
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {

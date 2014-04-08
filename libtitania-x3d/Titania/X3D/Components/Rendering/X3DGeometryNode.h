@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
-#include "../../Browser/PointingDeviceSensor/Intersection.h"
+#include "../../Browser/Picking/Intersection.h"
 #include "../../Rendering/TexCoordArray.h"
 #include "../../Rendering/X3DCollectableObject.h"
 #include "../../Types/Geometry.h"

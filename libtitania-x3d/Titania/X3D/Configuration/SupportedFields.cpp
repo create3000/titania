@@ -149,9 +149,7 @@ SupportedFields::dispose ()
 }
 
 SupportedFields::~SupportedFields ()
-{
-	dispose ();
-}
+{ }
 
 } // X3D
 } // titania

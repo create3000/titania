@@ -1,17 +1,15 @@
-2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
+2014-04-09  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* strfsize.h:
-	* strfsize.cpp: 
-
-2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
-
+	* ChangeLog:
 	* Makefile.am:
 	* Chrono.h:
-	* Now.h:
 	* now.h:
-	* Now.cpp:
+	* Now.h:
 	* now.cpp:
+	* Now.cpp:
 	* libtitania-standard.cproj:
+	* strfsize.h:
+	* strfsize.cpp:
 	* SystemClock.h: 
 
 2014-04-06  Holger Seelig  <holger.seelig@yahoo.de>

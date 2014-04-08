@@ -54,7 +54,7 @@
 #include <Titania/Algorithm/Remove.h>
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
-#include <Titania/Chrono/now.h>
+#include <Titania/Chrono/Now.h>
 #include <Titania/InputOutput.h>
 #include <Titania/Math/Functional.h>
 #include <Titania/Math/Geometry/Box2.h>

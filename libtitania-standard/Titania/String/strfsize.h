@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-std::string strfsize (const size_t);
+std::string strfsize (size_t);
 
 } // X3D
 } // titania

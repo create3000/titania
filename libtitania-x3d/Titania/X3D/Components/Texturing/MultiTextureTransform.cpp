@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #include "MultiTextureTransform.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -84,7 +84,7 @@ MultiTextureTransform::create (X3DExecutionContext* const executionContext) cons
 void
 MultiTextureTransform::draw ()
 {
-	X3DTextureTransformNode* defaultTextureTransform = getBrowser () -> getTextureTransform ();
+	X3DTextureTransformNode* defaultTextureTransform = getBrowser () -> getBrowserOptions () -> textureTransform ();
 	X3DTextureTransformNode* last                    = defaultTextureTransform;
 	size_t                   channel                 = 0;
 	size_t                   size                    = getBrowser () -> getTextureStages () .size ();

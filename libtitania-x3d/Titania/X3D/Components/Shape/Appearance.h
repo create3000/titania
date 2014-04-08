@@ -151,14 +151,30 @@ public:
 	///  @name MemberAccess
 
 	virtual
-	const X3DPtr <FillProperties> &
+	FillProperties*
 	getFillProperties () const final override
 	{ return fillPropertiesNode; }
 
 	virtual
-	const X3DPtr <LineProperties> &
+	LineProperties*
 	getLineProperties () const final override
 	{ return linePropertiesNode; }
+
+	X3DMaterialNode*
+	getMaterial () const
+	{ return materialNode; }
+
+	X3DTextureNode*
+	getTexture () const
+	{ return textureNode; }
+
+	X3DTextureTransformNode*
+	getTextureTransform () const
+	{ return textureTransformNode; }
+
+	X3DShaderNode*
+	getShader () const
+	{ return shaderNode; }
 
 	///  @name Tests
 

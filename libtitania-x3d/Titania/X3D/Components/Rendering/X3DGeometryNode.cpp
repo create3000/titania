@@ -50,8 +50,8 @@
 
 #include "X3DGeometryNode.h"
 
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 
@@ -129,7 +129,7 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 		texCoordNode .set (value);
 
 	else
-		texCoordNode .set (getBrowser () -> getTexCoord ());
+		texCoordNode .set (getBrowser () -> getBrowserOptions () -> texCoord ());
 }
 
 bool
@@ -638,7 +638,7 @@ X3DGeometryNode::clear ()
 void
 X3DGeometryNode::draw ()
 {
-	draw (solid, getBrowser () -> getTexture (), glIsEnabled (GL_LIGHTING));
+	draw (solid, getBrowser () -> isEnabledTexture (), glIsEnabled (GL_LIGHTING));
 }
 
 void

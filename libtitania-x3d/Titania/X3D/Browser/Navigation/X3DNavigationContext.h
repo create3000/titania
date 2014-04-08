@@ -53,7 +53,7 @@
 
 #include "../../Fields.h"
 #include "../../Types/Pointer.h"
-#include "../Navigation/ViewerType.h"
+#include "../Viewer/ViewerType.h"
 
 namespace titania {
 namespace X3D {

@@ -52,7 +52,7 @@
 #define __TITANIA_CHRONO_SYSTEM_CLOCK_H__
 
 #include "ClockBase.h"
-#include "now.h"
+#include "Now.h"
 
 #include <chrono>
 

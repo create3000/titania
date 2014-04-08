@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 std::string
-strfsize (const size_t bytes)
+strfsize (size_t bytes)
 {
 	// Create human readable storage unit string.
 

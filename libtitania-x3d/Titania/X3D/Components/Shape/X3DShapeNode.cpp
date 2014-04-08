@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,9 +51,9 @@
 #include "X3DShapeNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/RenderingProperties.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../Shape/Appearance.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
@@ -87,7 +87,7 @@ X3DShapeNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	if (getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
 		glBindProgramPipeline = ::glBindProgramPipeline;
 	else
 		glBindProgramPipeline = [ ] (GLuint) { };
@@ -107,7 +107,7 @@ X3DShapeNode::set_appearance ()
 	if (appearanceNode)
 		return;
 
-	appearanceNode .set (getBrowser () -> getAppearance ());
+	appearanceNode .set (getBrowser () -> getBrowserOptions () -> appearance ());
 }
 
 void
@@ -120,21 +120,18 @@ void
 X3DShapeNode::draw ()
 {
 	appearanceNode -> draw ();
-	
-	const auto & lineProperties = appearanceNode -> getLineProperties ();
-	const auto & fillProperties = appearanceNode -> getFillProperties ();
 
 	if (isLineGeometry ())
 	{
-		lineProperties -> enable ();
+		appearanceNode -> getLineProperties () -> enable ();
 		glDisable (GL_LIGHTING);
 		drawGeometry ();
 		disableTextures ();
-		lineProperties -> disable ();
+		appearanceNode -> getLineProperties () -> disable ();
 	}
 	else
 	{
-		if (fillProperties -> filled ())
+		if (appearanceNode -> getFillProperties () -> filled ())
 		{
 			drawGeometry ();
 			disableTextures ();
@@ -147,24 +144,24 @@ X3DShapeNode::draw ()
 
 		if (polygonMode [0] == GL_FILL)
 		{
-			if (fillProperties -> hatched ())
+			if (appearanceNode -> getFillProperties () -> hatched ())
 			{
-				fillProperties -> enable ();
+				appearanceNode -> getFillProperties () -> enable ();
 				drawGeometry ();
-				fillProperties -> disable ();
+				appearanceNode -> getFillProperties () -> disable ();
 			}
 		}
 
 		// Draw line geometry on top of whatever appearance is specified.
 
-		if (lineProperties -> applied ())
+		if (appearanceNode -> getLineProperties () -> applied ())
 		{
 			if (polygonMode [0] == GL_FILL)
 				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 
-			lineProperties -> enable ();
+			appearanceNode -> getLineProperties () -> enable ();
 			drawGeometry ();
-			lineProperties -> disable ();
+			appearanceNode -> getLineProperties () -> disable ();
 
 			glPolygonMode (GL_FRONT, polygonMode [0]);
 			glPolygonMode (GL_BACK,  polygonMode [1]);
@@ -207,7 +204,7 @@ X3DShapeNode::disableTextures ()
 		glActiveTexture (GL_TEXTURE0);
 	}
 
-	getBrowser () -> setTexture (false);
+	getBrowser () -> isEnabledTexture (false);
 }
 
 void

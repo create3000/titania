@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "ViewportContainer.h"
 
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Layering/Viewport.h"
 
 namespace titania {
@@ -65,7 +65,7 @@ ViewportContainer::ViewportContainer (Viewport* const node) :
 void
 ViewportContainer::apply ()
 {
-	const Vector4i viewport = node -> getRectangle ();
+	const Vector4i viewport = node -> getViewport ();
 
 	glViewport (viewport [0],
 	            viewport [1],
@@ -85,7 +85,7 @@ ViewportContainer::restore ()
 void
 ViewportContainer::enable ()
 {
-	const Vector4i scissor = node -> getRectangle ();
+	const Vector4i scissor = node -> getViewport ();
 
 	if (scissor not_eq viewport)
 	{

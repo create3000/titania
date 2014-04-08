@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,9 +50,9 @@
 
 #include "ImageTexture.h"
 
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/RenderingProperties.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -126,8 +126,8 @@ ImageTexture::requestAsyncLoad ()
 
 	future .reset (new TextureLoader (getExecutionContext (),
 	                                  url (),
-	                                  getBrowser () -> getMinTextureSize (),
-	                                  getBrowser () -> getMaxTextureSize (),
+	                                  getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                                  getBrowser () -> getRenderingProperties () -> maxTextureSize (),
 	                                  std::bind (std::mem_fn (&ImageTexture::setTexture), this, _1)));
 }
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,9 +50,9 @@
 
 #include "PixelTexture.h"
 
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/RenderingProperties.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -196,8 +196,8 @@ PixelTexture::update ()
 
 	TexturePtr texture (new Texture (std::move (mimages)));
 
-	texture -> process (getBrowser () -> getMinTextureSize (),
-	                    getBrowser () -> getMaxTextureSize ());
+	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
 
 	texture -> setComponents (image () .getComponents ());
 

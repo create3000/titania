@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_STACK_H__
 
-#include "../Base/X3DBaseNode.h"
+#include "../Basic/X3DBaseNode.h"
 
 #include <Titania/Basic/BindStack.h>
 #include <initializer_list>

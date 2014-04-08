@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_SHADERS_X3DPROGRAMMABLE_SHADER_OBJECT_H__
 #define __TITANIA_X3D_COMPONENTS_SHADERS_X3DPROGRAMMABLE_SHADER_OBJECT_H__
 
-#include "../../Base/X3DBaseNode.h"
+#include "../../Basic/X3DBaseNode.h"
 #include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 

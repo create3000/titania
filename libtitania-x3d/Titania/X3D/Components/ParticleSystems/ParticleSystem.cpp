@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,9 +52,9 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Bits/config.h"
-#include "../../Browser/Browser/BrowserOptions.h"
-#include "../../Browser/Browser/RenderingProperties.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
 #include "../../Miscellaneous/Random.h"
@@ -354,10 +354,10 @@ ParticleSystem::initialize ()
 	if (not glXGetCurrentContext ())
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_texture_buffer_object"))
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_transform_feedback3"))
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_transform_feedback3"))
 		return;
 
 	// Generate transform buffers
@@ -665,7 +665,7 @@ ParticleSystem::set_emitter ()
 	emitterNode .set (x3d_cast <X3DParticleEmitterNode*> (emitter ()));
 
 	if (not emitterNode)
-		emitterNode .set (getBrowser () -> getEmitter ());
+		emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
 
 	// Shader
 
@@ -1406,7 +1406,7 @@ ParticleSystem::drawGeometry ()
 					glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
 				}
 
-				if (getBrowser () -> getTexture ())
+				if (getBrowser () -> isEnabledTexture ())
 					enableTexCoord ();
 
 				glEnableClientState (GL_VERTEX_ARRAY);
@@ -1414,7 +1414,7 @@ ParticleSystem::drawGeometry ()
 
 				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 
-				if (getBrowser () -> getTexture ())
+				if (getBrowser () -> isEnabledTexture ())
 					disableTexCoord ();
 
 				glDisableClientState (GL_COLOR_ARRAY);

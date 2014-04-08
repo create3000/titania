@@ -52,9 +52,9 @@
 
 #include "X3DScene.h"
 
-#include "../Rendering/Context.h"
+#include "../Context.h"
 #include "../Bits/Error.h"
-#include "../Browser/Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Execution/ExportedNode.h"
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"
@@ -74,7 +74,7 @@ X3DScene::X3DScene () :
 void
 X3DScene::initialize ()
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
 
 	getBrowser () -> makeCurrent ();
 

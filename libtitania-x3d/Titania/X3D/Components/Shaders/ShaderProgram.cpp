@@ -50,8 +50,8 @@
 
 #include "ShaderProgram.h"
 
-#include "../../Browser/Browser/RenderingProperties.h"
-#include "../../Browser/Browser/X3DBrowser.h"
+#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
 #include "../../Miscellaneous/Shader.h"
@@ -145,7 +145,7 @@ ShaderProgram::getShaderType () const
 void
 ShaderProgram::requestImmediateLoad ()
 {
-	if (not getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
 	{
 		setLoadState (FAILED_STATE);
 		return;

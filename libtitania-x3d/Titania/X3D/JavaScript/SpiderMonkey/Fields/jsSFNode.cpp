@@ -50,7 +50,7 @@
 
 #include "jsSFNode.h"
 
-#include "../../../Browser/Browser/X3DBrowser.h"
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Scripting/Script.h"
 #include "../../../Execution/Scene.h"
 #include "../../../InputOutput/Loader.h"
