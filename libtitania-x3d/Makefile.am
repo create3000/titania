@@ -6,30 +6,38 @@ lib_LTLIBRARIES =  \
 
 libtitania_x3d_la_SOURCES =  \
 	Titania/X3D.cpp \
-	Titania/X3D/Base/ChildObjectSet.cpp \
-	Titania/X3D/Base/GarbargeCollector.cpp \
-	Titania/X3D/Base/Output.cpp \
-	Titania/X3D/Base/X3DChildObject.cpp \
-	Titania/X3D/Base/X3DInput.cpp \
-	Titania/X3D/Base/X3DObject.cpp \
-	Titania/X3D/Base/X3DOutput.cpp \
-	Titania/X3D/Basic/BasicNodeArray.cpp \
-	Titania/X3D/Basic/FieldDefinitionArray.cpp \
-	Titania/X3D/Basic/FieldDefinitionSet.cpp \
-	Titania/X3D/Basic/NodeSet.cpp \
-	Titania/X3D/Basic/NodeTypeArray.cpp \
-	Titania/X3D/Basic/X3DBaseNode.cpp \
-	Titania/X3D/Basic/X3DFieldDefinition.cpp \
+	Titania/X3D/Basal/ChildObjectSet.cpp \
+	Titania/X3D/Basal/Output.cpp \
+	Titania/X3D/Basal/X3DChildObject.cpp \
+	Titania/X3D/Basal/X3DGarbargeCollector.cpp \
+	Titania/X3D/Basal/X3DInput.cpp \
+	Titania/X3D/Basal/X3DObject.cpp \
+	Titania/X3D/Basal/X3DOutput.cpp \
+	Titania/X3D/Base/BasicNodeArray.cpp \
+	Titania/X3D/Base/FieldDefinitionArray.cpp \
+	Titania/X3D/Base/FieldDefinitionSet.cpp \
+	Titania/X3D/Base/NodeSet.cpp \
+	Titania/X3D/Base/NodeTypeArray.cpp \
+	Titania/X3D/Base/X3DBaseNode.cpp \
+	Titania/X3D/Base/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/Geospatial.cpp \
 	Titania/X3D/Bits/Traverse.cpp \
-	Titania/X3D/Browser/Browser.cpp \
-	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/Browser/Browser.cpp \
+	Titania/X3D/Browser/Browser/BrowserOptions.cpp \
+	Titania/X3D/Browser/Browser/BrowserProperties.cpp \
+	Titania/X3D/Browser/Browser/Console.cpp \
+	Titania/X3D/Browser/Browser/MotionBlur.cpp \
+	Titania/X3D/Browser/Browser/Notification.cpp \
+	Titania/X3D/Browser/Browser/RenderingProperties.cpp \
+	Titania/X3D/Browser/Browser/Selection.cpp \
+	Titania/X3D/Browser/Browser/X3DBrowser.cpp \
+	Titania/X3D/Browser/Browser/X3DBrowserContext.cpp \
+	Titania/X3D/Browser/Browser/X3DBrowserSurface.cpp \
+	Titania/X3D/Browser/Browser/X3DBrowserSurfaceObject.cpp \
+	Titania/X3D/Browser/Browser/X3DOptionNode.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
-	Titania/X3D/Browser/Devices/KeyDevice.cpp \
-	Titania/X3D/Browser/Devices/PointingDevice.cpp \
-	Titania/X3D/Browser/Devices/X3DPointingDevice.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
@@ -39,32 +47,31 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
+	Titania/X3D/Browser/KeyDeviceSensor/KeyDevice.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
-	Titania/X3D/Browser/Lighting/X3DLightContext.cpp \
+	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
+	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
+	Titania/X3D/Browser/Navigation/ExamineViewer.cpp \
+	Titania/X3D/Browser/Navigation/FlyViewer.cpp \
+	Titania/X3D/Browser/Navigation/LookAtViewer.cpp \
+	Titania/X3D/Browser/Navigation/NoneViewer.cpp \
+	Titania/X3D/Browser/Navigation/PlaneViewer.cpp \
+	Titania/X3D/Browser/Navigation/WalkViewer.cpp \
+	Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \
+	Titania/X3D/Browser/Navigation/X3DViewer.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
-	Titania/X3D/Browser/Notification.cpp \
-	Titania/X3D/Browser/Picking/HitArray.cpp \
-	Titania/X3D/Browser/Picking/X3DPickingContext.cpp \
-	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
-	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
-	Titania/X3D/Browser/Properties/MotionBlur.cpp \
-	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
-	Titania/X3D/Browser/Properties/X3DOptionNode.cpp \
-	Titania/X3D/Browser/Selection.cpp \
-	Titania/X3D/Browser/Texturing2D/X3DTextureContext.cpp \
-	Titania/X3D/Browser/Viewer/ExamineViewer.cpp \
-	Titania/X3D/Browser/Viewer/FlyViewer.cpp \
-	Titania/X3D/Browser/Viewer/LookAtViewer.cpp \
-	Titania/X3D/Browser/Viewer/NoneViewer.cpp \
-	Titania/X3D/Browser/Viewer/PlaneViewer.cpp \
-	Titania/X3D/Browser/Viewer/WalkViewer.cpp \
-	Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp \
-	Titania/X3D/Browser/Viewer/X3DViewer.cpp \
-	Titania/X3D/Browser/X3DBrowser.cpp \
-	Titania/X3D/Browser/X3DBrowserContext.cpp \
-	Titania/X3D/Browser/X3DBrowserSurface.cpp \
-	Titania/X3D/Browser/X3DWidget.cpp \
+	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDevice.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
+	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
+	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
+	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
+	Titania/X3D/Browser/Text/X3DTextContext.cpp \
+	Titania/X3D/Browser/Texturing2D/X3DTexturing2DContext.cpp \
+	Titania/X3D/Browser/Time/X3DTimeContext.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
 	Titania/X3D/Components/CADGeometry/CADFace.cpp \
 	Titania/X3D/Components/CADGeometry/CADLayer.cpp \
@@ -364,7 +371,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
-	Titania/X3D/Context.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
 	Titania/X3D/Execution/ExportedNodeArray.cpp \
 	Titania/X3D/Execution/ImportedNode.cpp \
@@ -460,6 +466,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionShape.cpp \
+	Titania/X3D/Rendering/Context.cpp \
 	Titania/X3D/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \
@@ -487,8 +494,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Networking/AnchorTool.cpp \
 	Titania/X3D/Tools/Networking/InlineTool.cpp \
 	Titania/X3D/Tools/Shape/ShapeTool.cpp \
-	Titania/X3D/Types/Image.cpp \
-	Titania/X3D/Types/Pointer.cpp
+	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_OPENGL_SURFACE_LIBS) \

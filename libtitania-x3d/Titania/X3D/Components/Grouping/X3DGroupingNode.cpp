@@ -51,7 +51,7 @@
 #include "X3DGroupingNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 
 #include <Titania/Utility/Adapter.h>
 

@@ -51,8 +51,8 @@
 #include "Text.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -118,7 +118,7 @@ Text::set_fontStyle ()
 	fontStyleNode .set (x3d_cast <X3DFontStyleNode*> (fontStyle ()));
 
 	if (not fontStyleNode)
-		fontStyleNode .set (getBrowser () -> getBrowserOptions () -> fontStyle ());
+		fontStyleNode .set (getBrowser () -> getFontStyle ());
 
 	if (fontStyleNode)
 		fontStyleNode -> addInterest (this);

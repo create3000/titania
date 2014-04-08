@@ -1,5 +1,10 @@
 2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* strfsize.h:
+	* strfsize.cpp: 
+
+2014-04-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* Chrono.h:
 	* Now.h:

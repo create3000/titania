@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_ENGINE_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_ENGINE_H__
 
-#include "../Basic/X3DBaseNode.h"
+#include "../Base/X3DBaseNode.h"
 #include "../Fields.h"
 #include "../Components/Scripting/Script.h"
 #include "../JavaScript/X3DJavaScriptContext.h"

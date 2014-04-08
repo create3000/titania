@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_FIELDS_SFTIME_H__
 #define __TITANIA_X3D_FIELDS_SFTIME_H__
 
-#include "../Basic/X3DField.h"
+#include "../Base/X3DField.h"
 #include "../Fields/X3DScalar.h"
 #include "../Types/Numbers.h"
 

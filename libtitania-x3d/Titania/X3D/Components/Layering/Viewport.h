@@ -64,7 +64,7 @@ class Viewport :
 {
 public:
 
-	using X3DViewportNode::getViewport;
+	using X3DViewportNode::getRectangle;
 
 	///  @name Construction
 
@@ -106,7 +106,7 @@ public:
 
 	virtual
 	Vector4i
-	getViewport (const int, const int) const final override;
+	getRectangle (const int, const int) const final override;
 
 	///  @name Operations
 

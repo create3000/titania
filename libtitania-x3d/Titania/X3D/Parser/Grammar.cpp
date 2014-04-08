@@ -135,12 +135,12 @@ Grammar::Hex (std::istream & istream, uint32_t & value)
 std::set <std::string>
 Grammar::getFieldType ()
 {
-	std::set <std::string> FieldType;
+	std::set <std::string> fieldTypes;
 
 	for (const auto & field : getBrowser () -> getSupportedFields ())
-		FieldType .emplace (field -> getTypeName ());
+		fieldTypes .emplace (field -> getTypeName ());
 
-	return FieldType;
+	return fieldTypes;
 }
 
 } // X3D

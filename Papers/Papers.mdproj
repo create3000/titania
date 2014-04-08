@@ -238,6 +238,7 @@
     <None Include="CosmoWorlds\icons\AccessType\outputOnly.1.png" />
     <None Include="CosmoWorlds\icons\AccessType\outputOnly.2.png" />
     <None Include="CosmoWorlds\icons\AccessType\AccessTypes.xcf" />
+    <None Include="CosmoWorlds\Extensions\CosmoWorlds\CosmoWorlds.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

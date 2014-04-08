@@ -51,8 +51,8 @@
 #include "X3DTextureNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {

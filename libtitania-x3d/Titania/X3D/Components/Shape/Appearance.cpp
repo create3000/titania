@@ -51,8 +51,8 @@
 #include "Appearance.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/X3DShaderNode.h"
 #include "../Shape/FillProperties.h"
@@ -157,7 +157,7 @@ Appearance::set_fillProperties ()
 	if (fillPropertiesNode)
 		return;
 
-	fillPropertiesNode .set (getBrowser () -> getBrowserOptions () -> fillProperties ());
+	fillPropertiesNode .set (getBrowser () -> getFillProperties ());
 }
 
 void
@@ -168,7 +168,7 @@ Appearance::set_lineProperties ()
 	if (linePropertiesNode)
 		return;
 
-	linePropertiesNode .set (getBrowser () -> getBrowserOptions () -> lineProperties ());
+	linePropertiesNode .set (getBrowser () -> getLineProperties ());
 }
 
 void
@@ -258,7 +258,7 @@ Appearance::draw ()
 	if (textureNode)
 	{
 		textureNode -> draw ();
-		getBrowser () -> getTexture (true);
+		getBrowser () -> setTexture (true);
 	}
 
 	// TextureTransform

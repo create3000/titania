@@ -50,7 +50,7 @@
 
 #include "jsX3DConstants.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
 #include "Fields/jsMFNode.h"

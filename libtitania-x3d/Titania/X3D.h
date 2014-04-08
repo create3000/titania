@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_H__
 
 // Include Browser at first.
-#include "X3D/Browser/Browser.h"
-#include "X3D/Browser/BrowserApplication.h"
+#include "X3D/Browser/Browser/Browser.h"
+#include "X3D/Browser/Browser/BrowserApplication.h"
 
 #include "X3D/Bits/Cast.h"
 #include "X3D/Bits/Error.h"
@@ -68,12 +68,12 @@
 #include "X3D/Execution/ImportedNode.h"
 #include "X3D/Execution/NamedNode.h"
 
-#include "X3D/Browser/Notification.h"
-#include "X3D/Browser/Properties/BrowserOptions.h"
-#include "X3D/Browser/Properties/BrowserProperties.h"
-#include "X3D/Browser/Properties/MotionBlur.h"
-#include "X3D/Browser/Properties/RenderingProperties.h"
-#include "X3D/Browser/Selection.h"
+#include "X3D/Browser/Browser/Notification.h"
+#include "X3D/Browser/Browser/BrowserOptions.h"
+#include "X3D/Browser/Browser/BrowserProperties.h"
+#include "X3D/Browser/Browser/MotionBlur.h"
+#include "X3D/Browser/Browser/RenderingProperties.h"
+#include "X3D/Browser/Browser/Selection.h"
 #include "X3D/InputOutput/Loader.h"
 #include "X3D/Miscellaneous/GoldenGate.h"
 #include "X3D/Miscellaneous/Keys.h"
@@ -81,7 +81,7 @@
 #include "X3D/Parser/Filter.h"
 #include "X3D/Parser/RegEx.h"
 
-#include "X3D/Context.h"
+#include "X3D/Rendering/Context.h"
 
 namespace titania {
 namespace X3D {

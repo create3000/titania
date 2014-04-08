@@ -50,7 +50,7 @@
 
 #include "X3DShaderNode.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
@@ -95,7 +95,7 @@ void
 X3DShaderNode::draw ()
 {
 	glEnable (GL_LIGHTING);
-	getBrowser () -> getTexture (true);
+	getBrowser () -> setTexture (true);
 }
 
 } // X3D

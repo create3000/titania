@@ -50,7 +50,7 @@
 
 #include "Inline.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
 #include "../../Thread/SceneLoader.h"
 #include "../../Tools/Networking/InlineTool.h"
@@ -116,7 +116,7 @@ Inline::initialize ()
 	if (X3D_PARALLEL)
 	{
 		if (checkLoadState () == NOT_STARTED_STATE)
-			setScene (getBrowser () -> createScene ());
+			scene = getBrowser () -> getEmptyScene ();
 
 		if (load ())
 			requestAsyncLoad ();
@@ -127,7 +127,7 @@ Inline::initialize ()
 			requestImmediateLoad ();
 
 		else
-			setScene (getBrowser () -> createScene ());
+			scene = getBrowser () -> getEmptyScene ();
 	}
 
 	group -> isInternal (true);

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DNODE_H__
 #define __TITANIA_X3D_COMPONENTS_CORE_X3DNODE_H__
 
-#include "../../Basic/X3DBaseNode.h"
+#include "../../Base/X3DBaseNode.h"
 #include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 

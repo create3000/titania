@@ -50,8 +50,8 @@
 
 #include "X3DGeometryNode.h"
 
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 

@@ -51,7 +51,7 @@
 #include "World.h"
 
 #include "../Bits/Cast.h"
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/Browser/X3DBrowser.h"
 #include "../Components/Layering/Layer.h"
 #include "../Execution/BindableNodeList.h"
 #include "../Execution/BindableNodeStack.h"

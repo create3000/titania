@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTE_ARRAY_H__
 #define __TITANIA_X3D_ROUTING_ROUTE_ARRAY_H__
 
-#include "../Basic/X3DFieldDefinition.h"
+#include "../Base/X3DFieldDefinition.h"
 #include "../Types/Pointer.h"
 
 #include <Titania/Basic/IndexedMultiMap.h>

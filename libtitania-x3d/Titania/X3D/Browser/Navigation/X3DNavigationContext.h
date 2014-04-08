@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_BROWSER_NAVIGATION_X3DNAVIGATION_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_NAVIGATION_X3DNAVIGATION_CONTEXT_H__
 
-#include "../../Types/Pointer.h"
 #include "../../Fields.h"
-#include "../Viewer/ViewerType.h"
+#include "../../Types/Pointer.h"
+#include "../Navigation/ViewerType.h"
 
 namespace titania {
 namespace X3D {
@@ -99,6 +99,7 @@ public:
 	virtual
 	~X3DNavigationContext ();
 
+
 protected:
 
 	///  @name Constructor
@@ -117,7 +118,7 @@ protected:
 
 
 private:
-	
+
 	///  @name Member access
 
 	virtual
@@ -143,7 +144,7 @@ private:
 
 	void
 	set_navigationInfo_type ();
-	
+
 	///  @name Members
 
 	X3DLayerNodePtr     activeLayer;

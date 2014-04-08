@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowser.h"
 
 // First include X3DExecutionContext
 #include "../../Execution/BindableNodeStack.h"

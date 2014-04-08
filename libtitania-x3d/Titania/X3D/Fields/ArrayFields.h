@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@
 #include "../Fields/SFVec4.h"
 #include "../Fields/X3DScalar.h"
 
-#include "../Basic/X3DArrayField.h"
+#include "../Base/X3DArrayField.h"
 
 //  Inhibit implicit instantiation for required instantiations.
 extern template class std::vector <titania::X3D::SFBool*>;

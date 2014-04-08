@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_FIELDS_X3DPTR_H__
 #define __TITANIA_X3D_FIELDS_X3DPTR_H__
 
-#include "../Basic/X3DBaseNode.h"
-#include "../Basic/X3DField.h"
+#include "../Base/X3DBaseNode.h"
+#include "../Base/X3DField.h"
 
 namespace titania {
 namespace X3D {

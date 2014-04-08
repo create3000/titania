@@ -61,13 +61,15 @@ X3DRouterObject::X3DRouterObject () :
 	X3DBaseNode (),
 	     events (),
 	      nodes (),
-	  eventTime (0),
-	   nodeTime (0)
+	  eventTime (chrono::now ()),
+	   nodeTime (chrono::now ())
 { }
 
 EventId
 X3DRouterObject::addTaintedField (X3DChildObject* const object, const EventPtr & event)
 {
+	addEvent ();
+
 	events .emplace_back (object, event);
 
 	return EventId { eventTime, -- events .end () };
@@ -93,6 +95,8 @@ X3DRouterObject::getTaintedFields ()
 NodeId
 X3DRouterObject::addTaintedNode (X3DBaseNode* const node)
 {
+	addEvent ();
+
 	nodes .emplace_back (node);
 
 	return NodeId { nodeTime, -- nodes .end () };

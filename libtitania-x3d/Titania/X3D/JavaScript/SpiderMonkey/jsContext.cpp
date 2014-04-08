@@ -50,7 +50,7 @@
 
 #include "jsContext.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
 #include "../../Thread/SceneLoader.h"
 

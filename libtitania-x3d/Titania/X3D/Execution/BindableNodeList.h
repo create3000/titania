@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 
-#include "../Basic/X3DBaseNode.h"
+#include "../Base/X3DBaseNode.h"
 
 #include <vector>
 

@@ -50,7 +50,7 @@
 
 #include "Loader.h"
 
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/Browser/X3DBrowser.h"
 #include "../Execution/Scene.h"
 #include "../Miscellaneous/GoldenGate.h"
 

@@ -52,9 +52,9 @@
 
 #include "X3DScene.h"
 
-#include "../Context.h"
+#include "../Rendering/Context.h"
 #include "../Bits/Error.h"
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/Browser/X3DBrowser.h"
 #include "../Execution/ExportedNode.h"
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "X3DViewportNode.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
@@ -62,11 +62,11 @@ X3DViewportNode::X3DViewportNode () :
 }
 
 Vector4i
-X3DViewportNode::getViewport () const
+X3DViewportNode::getRectangle () const
 {
-	const auto & browserViewport = getBrowser () -> getViewport ();
+	const auto & browserViewport = getBrowser () -> getViewportRectangle ();
 
-	return getViewport (browserViewport [2], browserViewport [3]);
+	return getRectangle (browserViewport [2], browserViewport [3]);
 }
 
 } // X3D

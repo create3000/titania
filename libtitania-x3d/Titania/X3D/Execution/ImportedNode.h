@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_IMPORTED_NODE_H__
 #define __TITANIA_X3D_EXECUTION_IMPORTED_NODE_H__
 
-#include "../Basic/X3DBaseNode.h"
+#include "../Base/X3DBaseNode.h"
 #include "../Fields/SFNode.h"
 #include "../Fields/X3DWeakPtr.h"
 #include "../Types/Pointer.h"

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
 #define __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
 
-#include "../Properties/X3DOptionNode.h"
+#include "../Browser/X3DOptionNode.h"
 
 #include "../../Rendering/OpenGL.h"
 

@@ -50,8 +50,8 @@
 
 #include "Scene.h"
 
-#include "../Context.h"
-#include "../Browser/X3DBrowser.h"
+#include "../Rendering/Context.h"
+#include "../Browser/Browser/X3DBrowser.h"
 #include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
 
@@ -206,7 +206,7 @@ Scene::~Scene ()
 {
 	__LOG__ << getWorldURL () << std::endl;
 
-	getGarbageCollector () .trimFreeMemory ();
+	trimFreeMemory ();
 }
 
 } // X3D

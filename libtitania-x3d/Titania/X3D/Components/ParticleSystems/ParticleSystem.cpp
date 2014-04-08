@@ -52,9 +52,9 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Bits/config.h"
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/Properties/RenderingProperties.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/RenderingProperties.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
 #include "../../Miscellaneous/Random.h"
@@ -665,7 +665,7 @@ ParticleSystem::set_emitter ()
 	emitterNode .set (x3d_cast <X3DParticleEmitterNode*> (emitter ()));
 
 	if (not emitterNode)
-		emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
+		emitterNode .set (getBrowser () -> getEmitter ());
 
 	// Shader
 

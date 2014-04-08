@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 #include "Parser.h"
 
 #include "../Bits/Cast.h"
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ExportedNode.h"
@@ -1518,7 +1518,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 				{
 					_existingField -> write (*_field);
 
-					getGarbageCollector () .addObject (_field);
+					addDisposedObject (_field);
 
 					return true;
 				}

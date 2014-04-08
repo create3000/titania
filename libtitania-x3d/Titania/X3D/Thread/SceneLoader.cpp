@@ -50,7 +50,7 @@
 
 #include "SceneLoader.h"
 
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/Browser/X3DBrowser.h"
 #include "../Execution/Scene.h"
 #include "../InputOutput/Loader.h"
 

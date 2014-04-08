@@ -50,10 +50,10 @@
 
 #include "jsBrowser.h"
 
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/Properties/BrowserProperties.h"
-#include "../../Browser/Properties/RenderingProperties.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/BrowserProperties.h"
+#include "../../Browser/Browser/RenderingProperties.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
 #include "../../InputOutput/Loader.h"

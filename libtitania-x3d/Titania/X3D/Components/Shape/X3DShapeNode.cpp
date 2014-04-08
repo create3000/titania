@@ -51,9 +51,9 @@
 #include "X3DShapeNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/Properties/RenderingProperties.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Browser/BrowserOptions.h"
+#include "../../Browser/Browser/RenderingProperties.h"
+#include "../../Browser/Browser/X3DBrowser.h"
 #include "../Shape/Appearance.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
@@ -107,7 +107,7 @@ X3DShapeNode::set_appearance ()
 	if (appearanceNode)
 		return;
 
-	appearanceNode .set (getBrowser () -> getBrowserOptions () -> appearance ());
+	appearanceNode .set (getBrowser () -> getAppearance ());
 }
 
 void
@@ -120,18 +120,21 @@ void
 X3DShapeNode::draw ()
 {
 	appearanceNode -> draw ();
+	
+	const auto & lineProperties = appearanceNode -> getLineProperties ();
+	const auto & fillProperties = appearanceNode -> getFillProperties ();
 
 	if (isLineGeometry ())
 	{
-		appearanceNode -> getLineProperties () -> enable ();
+		lineProperties -> enable ();
 		glDisable (GL_LIGHTING);
 		drawGeometry ();
 		disableTextures ();
-		appearanceNode -> getLineProperties () -> disable ();
+		lineProperties -> disable ();
 	}
 	else
 	{
-		if (appearanceNode -> getFillProperties () -> filled ())
+		if (fillProperties -> filled ())
 		{
 			drawGeometry ();
 			disableTextures ();
@@ -144,24 +147,24 @@ X3DShapeNode::draw ()
 
 		if (polygonMode [0] == GL_FILL)
 		{
-			if (appearanceNode -> getFillProperties () -> hatched ())
+			if (fillProperties -> hatched ())
 			{
-				appearanceNode -> getFillProperties () -> enable ();
+				fillProperties -> enable ();
 				drawGeometry ();
-				appearanceNode -> getFillProperties () -> disable ();
+				fillProperties -> disable ();
 			}
 		}
 
 		// Draw line geometry on top of whatever appearance is specified.
 
-		if (appearanceNode -> getLineProperties () -> applied ())
+		if (lineProperties -> applied ())
 		{
 			if (polygonMode [0] == GL_FILL)
 				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 
-			appearanceNode -> getLineProperties () -> enable ();
+			lineProperties -> enable ();
 			drawGeometry ();
-			appearanceNode -> getLineProperties () -> disable ();
+			lineProperties -> disable ();
 
 			glPolygonMode (GL_FRONT, polygonMode [0]);
 			glPolygonMode (GL_BACK,  polygonMode [1]);
@@ -204,7 +207,7 @@ X3DShapeNode::disableTextures ()
 		glActiveTexture (GL_TEXTURE0);
 	}
 
-	getBrowser () -> getTexture (false);
+	getBrowser () -> setTexture (false);
 }
 
 void

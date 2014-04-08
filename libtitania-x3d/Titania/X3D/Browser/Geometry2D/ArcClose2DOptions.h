@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DPROPERTIES_H__
 #define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DPROPERTIES_H__
 
-#include "../Properties/X3DOptionNode.h"
+#include "../Browser/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
