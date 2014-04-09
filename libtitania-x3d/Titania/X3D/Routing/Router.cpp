@@ -68,7 +68,7 @@ Router::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
 	events .emplace_back (object, event);
 
-	return { eventTime, -- events .end () };
+	return EventId { eventTime, -- events .end () };
 }
 
 void
@@ -93,7 +93,7 @@ Router::addNode (X3DBaseNode* node)
 {
 	nodes .emplace_back (node);
 
-	return { nodeTime, -- nodes .end () };
+	return NodeId { nodeTime, -- nodes .end () };
 }
 
 void

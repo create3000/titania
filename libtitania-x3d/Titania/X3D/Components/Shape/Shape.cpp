@@ -51,7 +51,7 @@
 #include "Shape.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Picking/Hit.h"
+#include "../../Browser/PointingDeviceSensor/Hit.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"

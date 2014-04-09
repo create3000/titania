@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
       <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="6" Column="49" />
       <File FileName="libtitania-x3d/Titania/X3D/Routing/X3DRouterObject.cpp" Line="153" Column="5" />
@@ -8,10 +8,8 @@
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser/X3DBrowserContext.cpp" Line="179" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="112" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="113" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Context.h" Line="100" Column="7" />
-      <File FileName="libtitania-x3d/Titania/X3D/Context.cpp" Line="63" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.h" Line="56" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp" Line="79" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="118" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="65" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,10 +25,12 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
-                  <Node name="Navigation" expanded="True">
-                    <Node name="X3DNavigationContext.cpp" selected="True" />
-                  </Node>
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Picking" expanded="True" />
+                  <Node name="Viewer" expanded="True" />
                 </Node>
+                <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -40,7 +40,12 @@
               <Node name="titania" expanded="True" />
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.cpp" selected="True" />
+              </Node>
+              <Node name="OutlineEditor" expanded="True">
+                <Node name="CellRenderer" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>

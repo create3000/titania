@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,21 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_HIT_ARRAY_H__
-#define __TITANIA_X3D_BROWSER_PICKING_HIT_ARRAY_H__
+#ifndef __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
 
-#include "Hit.h"
-
-#include <deque>
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-using HitArray = std::deque <HitPtr>;
+class X3DCoreContext :
+	virtual public X3DBaseNode
+{
+public:
+
+	///  @name Member access
+
+	bool
+	hasExtension (const std::string &);
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+
+protected:
+
+	///  @name Constructor
+
+	X3DCoreContext ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	// Members
+
+	std::set <std::string> extensions;
+
+};
 
 } // X3D
 } // titania
-
-extern template class std::deque <titania::X3D::HitPtr>;
 
 #endif

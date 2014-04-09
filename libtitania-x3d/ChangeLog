@@ -1,5 +1,58 @@
 2014-04-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Pointer.h:
+	* Pointer.cpp:
+	* Router.cpp:
+	* Hit.h:
+	* HitArray.h:
+	* Shape.cpp:
+	* X3DRouterObject.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserSurface.h:
+	* Selection.h:
+	* HitArray.cpp:
+	* X3DCoreContext.h:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp:
+	* Intersection.h:
+	* X3DCoreContext.cpp:
+	* TransformTool.cpp:
+	* PointingDevice.h:
+	* X3DShapeNode.cpp:
+	* PointingDevice.cpp:
+	* Hit.h:
+	* X3DPointingDevice.h:
+	* X3DPickingContext.h:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* X3DPointingDevice.cpp:
+	* X3DPickingContext.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DGeometryNode.h:
+	* HitArray.h:
+	* Selection.h:
+	* RenderingProperties.h:
+	* HitArray.cpp:
+	* RenderingProperties.cpp:
+	* Selection.cpp:
+	* Intersection.h:
+	* VolumeEmitter.cpp:
+	* ParticleSystem.cpp:
+	* SurfaceEmitter.cpp:
+	* PointingDevice.h:
+	* PolylineEmitter.cpp:
+	* PointingDevice.cpp:
+	* X3DPointingDevice.h:
+	* X3DPointingDevice.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorContext.cpp: 
+
+2014-04-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* Makefile.am:
 	* X3D.h:

@@ -221,9 +221,6 @@ public:
 	fps () const
 	{ return 1 / clock .average (); }
 
-	bool
-	hasExtension (const std::string &);
-
 	size_t
 	getAvailableTextureMemory ();
 
@@ -291,8 +288,6 @@ private:
 	};
 
 	Fields fields;
-
-	std::set <std::string> extensions;
 
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;

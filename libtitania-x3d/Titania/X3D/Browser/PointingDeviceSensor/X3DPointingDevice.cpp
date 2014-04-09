@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -159,7 +159,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 					browser -> buttonPressEvent ();
 
 					browser -> setCursor (Gdk::HAND1);
-					
+
 					browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
 					return true;
@@ -172,12 +172,12 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 				return not trackSensors ();
 
 			browser -> setCursor (Gdk::FLEUR);
-			
+
 			break;
 		}
 		case 2:
 		{
-			const bool picked       = pick (event -> x, event -> y);
+			const bool picked     = pick (event -> x, event -> y);
 			const bool eventToold = buttonPressEvent (picked, event -> button);
 
 			if (eventToold)
@@ -203,7 +203,7 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 		case 1:
 		{
 			browser -> buttonReleaseEvent ();
-					
+
 			browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
 			if (not browser -> getHits () .empty ())
@@ -221,7 +221,7 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 
 			else
 				browser -> setCursor (Gdk::ARROW);
-			
+
 			break;
 		}
 		case 2:
@@ -240,7 +240,6 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 
 	return false;
 }
-
 
 bool
 X3DPointingDevice::on_leave_notify_event (GdkEventCrossing*)

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_HIT_H__
-#define __TITANIA_X3D_BROWSER_PICKING_HIT_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_H__
 
 #include "../../Basic/NodeSet.h"
 #include "../../Fields.h"

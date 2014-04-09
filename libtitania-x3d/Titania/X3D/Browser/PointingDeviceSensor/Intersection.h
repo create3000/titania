@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_INTERSECTION_H__
-#define __TITANIA_X3D_BROWSER_PICKING_INTERSECTION_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_INTERSECTION_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_INTERSECTION_H__
 
 #include "../../Types/Numbers.h"
 

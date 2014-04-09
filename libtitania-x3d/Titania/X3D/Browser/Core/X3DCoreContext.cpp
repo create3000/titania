@@ -48,44 +48,33 @@
  *
  ******************************************************************************/
 
-#include "PointingDevice.h"
+#include "X3DCoreContext.h"
 
-#include "../X3DBrowserSurface.h"
+#include "../../Rendering/OpenGL.h"
+
+#include <Titania/String.h>
 
 namespace titania {
 namespace X3D {
 
-PointingDevice::PointingDevice (X3DBrowserSurface* const browser) :
-	        X3DWidget (browser),
-	X3DPointingDevice (browser)
+X3DCoreContext::X3DCoreContext () :
+	X3DBaseNode (),
+	 extensions ()
 { }
 
 void
-PointingDevice::initialize ()
+X3DCoreContext::initialize ()
 {
-	X3DWidget::initialize ();
-	
-	getBrowser () -> getPicking () .addInterest (this, &PointingDevice::set_picking);
-
-	set_picking (getBrowser () -> getPicking ());
+	if (glXGetCurrentContext ())
+	{
+		extensions = basic::ssplit ((const char*) glGetString (GL_EXTENSIONS), " ");
+	}
 }
 
-void
-PointingDevice::set_picking (bool value)
+bool
+X3DCoreContext::hasExtension (const std::string & name)
 {
-	if (value)
-	{
-		connect ();
-	}
-	else
-	{
-		disconnect ();
-
-		getBrowser () -> setCursor (Gdk::ARROW);
-
-		getBrowser () -> leaveNotifyEvent ();
-		getBrowser () -> buttonReleaseEvent ();
-	}
+	return extensions .find (name) not_eq extensions .end ();
 }
 
 } // X3D

@@ -69,7 +69,7 @@
 #include "X3D/Execution/NamedNode.h"
 
 #include "X3D/Browser/Notification.h"
-#include "X3D/Browser/Picking/Selection.h"
+#include "X3D/Browser/PointingDeviceSensor/Selection.h"
 #include "X3D/Browser/Properties/BrowserOptions.h"
 #include "X3D/Browser/Properties/BrowserProperties.h"
 #include "X3D/Browser/Properties/MotionBlur.h"

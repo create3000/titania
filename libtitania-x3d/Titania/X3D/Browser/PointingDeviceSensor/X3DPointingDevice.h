@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,97 +48,105 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
-#define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
 
-#include <Titania/OpenGL/Surface.h>
+#include "../X3DWidget.h"
 
-#include "../Browser/Devices/KeyDevice.h"
-#include "../Browser/PointingDeviceSensor/PointingDevice.h"
-#include "../Browser/Viewer/X3DViewer.h"
-#include "../Browser/X3DBrowser.h"
+#include <gdk/gdk.h>
+#include <sigc++/sigc++.h>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface :
-	public opengl::Surface, public X3DBrowser
+class X3DBrowserSurface;
+
+class X3DPointingDevice :
+	virtual public sigc::trackable
 {
-public:
-
-	using X3DBrowser::update;
-
-	///  @name Member access
-
-	void
-	setCursor (Gdk::CursorType cursor_type)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
-
-	///  @name Operations
-
-	virtual
-	bool
-	makeCurrent () const final override
-	{ return opengl::Surface::makeCurrent (); }
-
-	virtual
-	void
-	swapBuffers () const final override
-	{ opengl::Surface::swapBuffers (); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 protected:
 
 	///  @name Construction
 
-	X3DBrowserSurface ();
+	X3DPointingDevice (X3DBrowserSurface* const);
 
-	X3DBrowserSurface (const X3DBrowserSurface &);
+	void
+	connect ();
+
+	void
+	disconnect ();
+
+	///  @name Options
+
+	virtual
+	bool
+	trackSensors ()
+	{ return true; }
+
+	///  @name Event Toolrs
 
 	virtual
 	void
-	initialize () override;
+	motionNotifyEvent (const bool)
+	{ }
+
+	virtual
+	bool
+	buttonPressEvent (const bool, const int)
+	{ return false; }
+
+	virtual
+	void
+	buttonReleaseEvent (const bool, const int)
+	{ }
+
+	virtual
+	void
+	leaveNotifyEvent ()
+	{ }
 
 
 private:
 
-	///  @name Construction
+	///  @name Event Toolrs
 
-	virtual
-	void
-	construct () final override
-	{ setup (); }
-
-	///  @name Event handler
+	bool
+	on_motion_notify_event (GdkEventMotion*);
 
 	void
-	set_changed ();
+	set_motion (const double, const double);
 
 	void
-	set_viewer (ViewerType);
-	
+	set_verify_motion (const double, const double);
+
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_leave_notify_event (GdkEventCrossing*);
+
 	///  @name Operations
 
-	virtual
-	void
-	reshape () final override
-	{ X3DBrowser::reshape (); }
+	bool
+	pick (const double, const double);
 
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final override
-	{ update (); }
+	bool
+	haveSensor ();
 
 	///  @name Members
 
-	std::unique_ptr <X3DViewer> viewer;
-	KeyDevice                   keyDevice;
-	PointingDevice              pointingDevice;
+	X3DBrowserSurface* const browser;
+
+	sigc::connection button_press_conncection;
+	sigc::connection button_release_conncection;
+	sigc::connection motion_notify_conncection;
+	sigc::connection leave_notify_conncection;
+
+	size_t button;
+	bool   isOver;
 
 };
 

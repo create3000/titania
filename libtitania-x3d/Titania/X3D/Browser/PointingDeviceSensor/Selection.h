@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,105 +48,95 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_DEVICES_X3DPOINTING_DEVICE_H__
-#define __TITANIA_X3D_BROWSER_DEVICES_X3DPOINTING_DEVICE_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_SELECTION_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_SELECTION_H__
 
-#include "../X3DWidget.h"
-
-#include <sigc++/sigc++.h>
-#include <gdk/gdk.h>
+#include "../../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface;
-
-class X3DPointingDevice :
-	virtual public sigc::trackable
+class Selection :
+	virtual public X3DBaseNode
 {
-protected:
+public:
 
 	///  @name Construction
 
-	X3DPointingDevice (X3DBrowserSurface* const);
-
-	void
-	connect ();
-
-	void
-	disconnect ();
-
-	///  @name Options
+	Selection (X3DExecutionContext* const);
 
 	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Member access
+
+	SFBool &
+	isActive ()
+	{ return active; }
+
+	const SFBool &
+	isActive () const
+	{ return active; }
+
+	///  @name Member access
+
 	bool
-	trackSensors ()
-	{ return true; }
+	isSelected (const SFNode &) const;
 
-	///  @name Event Toolrs
-
-	virtual
 	void
-	motionNotifyEvent (const bool)
-	{ }
+	addChildren (const MFNode &);
 
-	virtual
-	bool
-	buttonPressEvent (const bool, const int)
-	{ return false; }
+	void
+	removeChildren (const MFNode &);
 
-	virtual
 	void
-	buttonReleaseEvent (const bool, const int)
-	{ }
-	
-	virtual
+	setChildren (const MFNode &);
+
+	const MFNode &
+	getChildren () const
+	{ return children; }
+
+	///  @name Operations
+
 	void
-	leaveNotifyEvent ()
-	{ }
+	clear ();
 
 
 private:
 
-	///  @name Event Toolrs
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
+	virtual
 	void
-	set_motion (const double, const double);
+	initialize () final override;
 
-	void
-	set_verify_motion (const double, const double);
+	///  @name Static members
 
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_leave_notify_event (GdkEventCrossing*);
-
-	///  @name Operations
-
-	bool
-	pick (const double, const double);
-
-	bool
-	haveSensor ();
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
 
 	///  @name Members
-	
-	X3DBrowserSurface* const browser;
 
-	sigc::connection button_press_conncection;
-	sigc::connection button_release_conncection;
-	sigc::connection motion_notify_conncection;
-	sigc::connection leave_notify_conncection;
-
-	size_t button;
-	bool   isOver;
+	SFBool active;
+	MFNode children;
 
 };
 

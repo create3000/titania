@@ -113,7 +113,7 @@ VolumeEmitter::initialize ()
 	if (not glXGetCurrentContext ())
 		return;
 
-	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
+	if (not getBrowser () -> hasExtension ("GL_ARB_texture_buffer_object"))
 		return;
 
 	// Surface map

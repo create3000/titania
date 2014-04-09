@@ -53,7 +53,7 @@
 #include "../Context.h"
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
-#include "../Browser/Picking/Selection.h"
+#include "../Browser/PointingDeviceSensor/Selection.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
@@ -73,8 +73,9 @@ static constexpr int32_t MAX_DOWNLOAD_THREADS = 4;
 X3DBrowserContext::X3DBrowserContext () :
 	                X3DBaseNode (),
 	        X3DExecutionContext (),
-	          X3DPickingContext (),
+	        X3DCoreContext (),
 	       X3DNavigationContext (),
+	          X3DPointingDeviceSensorContext (),
 	        renderingProperties (new RenderingProperties (this)),
 	          browserProperties (new BrowserProperties   (this)),
 	             browserOptions (new BrowserOptions      (this)),
@@ -125,8 +126,9 @@ void
 X3DBrowserContext::initialize ()
 {
 	X3DExecutionContext::initialize ();
-	X3DPickingContext::initialize ();
+	X3DCoreContext::initialize ();
 	X3DNavigationContext::initialize ();
+	X3DPointingDeviceSensorContext::initialize ();
 
 	// Initialize clock
 
@@ -370,8 +372,9 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
+	X3DPointingDeviceSensorContext::dispose ();
 	X3DNavigationContext::dispose ();
-	X3DPickingContext::dispose ();
+	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();
 }
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,99 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PICKING_SELECTION_H__
-#define __TITANIA_X3D_BROWSER_PICKING_SELECTION_H__
+#include "PointingDevice.h"
 
-#include "../../Components/Core/X3DNode.h"
+#include "../X3DBrowserSurface.h"
 
 namespace titania {
 namespace X3D {
 
-class Selection :
-	virtual public X3DBaseNode
+PointingDevice::PointingDevice (X3DBrowserSurface* const browser) :
+	        X3DWidget (browser),
+	X3DPointingDevice (browser)
+{ }
+
+void
+PointingDevice::initialize ()
 {
-public:
+	X3DWidget::initialize ();
 
-	///  @name Construction
+	getBrowser () -> getPicking () .addInterest (this, &PointingDevice::set_picking);
 
-	Selection (X3DExecutionContext* const);
+	set_picking (getBrowser () -> getPicking ());
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+void
+PointingDevice::set_picking (bool value)
+{
+	if (value)
+	{
+		connect ();
+	}
+	else
+	{
+		disconnect ();
 
-	///  @name Common members
+		getBrowser () -> setCursor (Gdk::ARROW);
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Member access
-	
-	SFBool &
-	isActive ()
-	{ return active; }
-
-	const SFBool &
-	isActive () const
-	{ return active; }
-
-	///  @name Member access
-
-	bool
-	isSelected (const SFNode &) const;
-
-	void
-	addChildren (const MFNode &);
-
-	void
-	removeChildren (const MFNode &);
-
-	void
-	setChildren (const MFNode &);
-
-	const MFNode &
-	getChildren () const
-	{ return children; }
-
-	///  @name Operations
-
-	void
-	clear ();
-
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	SFBool active;
-	MFNode children;
-
-};
+		getBrowser () -> leaveNotifyEvent ();
+		getBrowser () -> buttonReleaseEvent ();
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

@@ -141,7 +141,7 @@ ProgramShader::requestExplicitRelink ()
 	if (loadSensor -> isActive ())
 		return;
 
-	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (not getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
 	{
 		isValid () = false;
 		return;

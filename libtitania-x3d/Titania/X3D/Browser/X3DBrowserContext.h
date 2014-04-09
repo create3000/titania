@@ -53,8 +53,9 @@
 
 #include "../Execution/X3DExecutionContext.h"
 
+#include "../Browser/Core/X3DCoreContext.h"
 #include "../Browser/Navigation/X3DNavigationContext.h"
-#include "../Browser/Picking/X3DPickingContext.h"
+#include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Components/Layout/X3DLayoutNode.h"
 #include "../Types/Pointer.h"
@@ -82,8 +83,9 @@ using TextureArray     = std::vector <int32_t>;
 class X3DBrowserContext :
 	virtual public X3DBaseNode,
 	public X3DExecutionContext,
-	public X3DPickingContext,
-	public X3DNavigationContext
+	public X3DCoreContext,
+	public X3DNavigationContext,
+	public X3DPointingDeviceSensorContext
 {
 public:
 

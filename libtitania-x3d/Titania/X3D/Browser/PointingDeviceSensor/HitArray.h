@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,44 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_DEVICES_POINTING_DEVICE_H__
-#define __TITANIA_X3D_BROWSER_DEVICES_POINTING_DEVICE_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_ARRAY_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_ARRAY_H__
 
-#include "../X3DWidget.h"
-#include "X3DPointingDevice.h"
+#include "Hit.h"
+
+#include <deque>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface;
-
-class PointingDevice :
-	public X3DWidget,
-	public X3DPointingDevice
-{
-public:
-
-	///  @name Construction
-
-	PointingDevice (X3DBrowserSurface* const);
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event Toolrs
-
-	void
-	set_picking (bool);
-
-};
+using HitArray = std::deque <HitPtr>;
 
 } // X3D
 } // titania
+
+extern template class std::deque <titania::X3D::HitPtr>;
 
 #endif

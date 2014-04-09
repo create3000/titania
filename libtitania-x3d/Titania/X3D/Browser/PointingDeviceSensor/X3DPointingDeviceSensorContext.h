@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DPickingContext :
+class X3DPointingDeviceSensorContext :
 	virtual public X3DBaseNode
 {
 public:
@@ -131,14 +131,14 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DPickingContext ();
+	~X3DPointingDeviceSensorContext ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DPickingContext ();
+	X3DPointingDeviceSensorContext ();
 
 	virtual
 	void

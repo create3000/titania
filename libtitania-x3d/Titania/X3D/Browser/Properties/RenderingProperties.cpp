@@ -102,7 +102,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNode (),
 	     fields (),
-	 extensions (),
 	      world ()
 {
 	addField (outputOnly, "Vendor",         vendor ());
@@ -158,8 +157,6 @@ RenderingProperties::initialize ()
 		renderer () = (const char*) glGetString (GL_RENDERER);
 		version ()  = (const char*) glGetString (GL_VERSION);
 
-		extensions = std::move (basic::ssplit ((char*) glGetString (GL_EXTENSIONS), " "));
-
 		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
 
 		GLint glMaxTextureSize, glTextureCoords, glTextureUnits, glCombinedTextureUnits, glMaxLights, glMaxClipPlanes;
@@ -181,7 +178,7 @@ RenderingProperties::initialize ()
 
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
-		if (hasExtension ("GL_NVX_gpu_memory_info"))
+		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
 			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // in KBytes
 
 		maxThreads ()           = omp_get_max_threads ();
@@ -192,21 +189,11 @@ RenderingProperties::initialize ()
 		maxClipPlanes ()        = glMaxClipPlanes;
 		antialiased ()          = glPolygonSmooth;
 		colorDepth ()           = glRedBits + glGreen + glBlueBits + glAlphaBits;
-		textureMemory ()        = glTextureMemory * 1024;
+		textureMemory ()        = double (glTextureMemory) * 1024;
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 		set_enabled ();
 	}
-}
-
-//
-//http://developer.download.nvidia.com/opengl/specs/GL_NVX_gpu_memory_info.txt
-//A call to glGetString(GL_EXTENSIONS) will return a space-separated string of extension names, which your application can parse at runtime.
-
-bool
-RenderingProperties::hasExtension (const std::string & name)
-{
-	return extensions .find (name) not_eq extensions .end ();
 }
 
 size_t
@@ -216,30 +203,23 @@ RenderingProperties::getAvailableTextureMemory ()
 
 	if (getBrowser () -> makeCurrent ())
 	{
-		if (hasExtension ("GL_NVX_gpu_memory_info"))
+		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
 		{
 			GLint kbytes = 0;
 
 			glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
-			return 1024 * kbytes;
+			return size_t (kbytes) * 1024;
 		}
 
 		//http://www.opengl.org/registry/specs/ATI/meminfo.txt
-		if (hasExtension ("GL_ATI_meminfo"))
+		if (getBrowser () -> hasExtension ("GL_ATI_meminfo"))
 		{
-			// VBO_FREE_MEMORY_ATI                     0x87FB
-			// TEXTURE_FREE_MEMORY_ATI                 0x87FC
-			// RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
-			//
-			// param[0] - total memory free in the pool
-			// param[1] - largest available free block in the pool
-			// param[2] - total auxiliary memory free
-			// param[3] - largest auxiliary free block
+			static constexpr GLenum TEXTURE_FREE_MEMORY_ATI = 0x87FC;
 
 			GLint kbytes [4] = { 0, 0, 0, 0 };
 
-			// glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, &kbytes); // in KBytes
-			return 1024 * kbytes [0];
+			glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, kbytes); // in KBytes
+			return size_t (kbytes [0]) * 1024;
 		}
 	}
 

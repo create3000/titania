@@ -87,7 +87,7 @@ X3DShapeNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	if (getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
 		glBindProgramPipeline = ::glBindProgramPipeline;
 	else
 		glBindProgramPipeline = [ ] (GLuint) { };

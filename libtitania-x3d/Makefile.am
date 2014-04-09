@@ -26,9 +26,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Devices/KeyDevice.cpp \
-	Titania/X3D/Browser/Devices/PointingDevice.cpp \
-	Titania/X3D/Browser/Devices/X3DPointingDevice.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
@@ -40,9 +39,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
-	Titania/X3D/Browser/Picking/HitArray.cpp \
-	Titania/X3D/Browser/Picking/Selection.cpp \
-	Titania/X3D/Browser/Picking/X3DPickingContext.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/Selection.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDevice.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
@@ -482,8 +483,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Networking/AnchorTool.cpp \
 	Titania/X3D/Tools/Networking/InlineTool.cpp \
 	Titania/X3D/Tools/Shape/ShapeTool.cpp \
-	Titania/X3D/Types/Image.cpp \
-	Titania/X3D/Types/Pointer.cpp
+	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_OPENGL_SURFACE_LIBS) \

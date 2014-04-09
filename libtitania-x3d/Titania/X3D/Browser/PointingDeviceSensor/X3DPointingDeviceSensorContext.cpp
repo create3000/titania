@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,20 +48,20 @@
  *
  ******************************************************************************/
 
-#include "X3DPickingContext.h"
+#include "X3DPointingDeviceSensorContext.h"
 
-#include "../X3DBrowser.h"
 #include "../../Components/Networking/Anchor.h"
 #include "../../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Context.h"
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
+#include "../X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-X3DPickingContext::X3DPickingContext () :
+X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   X3DBaseNode (),
 	  pickedOutput (),
 	       picking (true),
@@ -81,13 +81,13 @@ X3DPickingContext::X3DPickingContext () :
 }
 
 void
-X3DPickingContext::initialize ()
+X3DPointingDeviceSensorContext::initialize ()
 {
-	getBrowser () -> shutdown () .addInterest (this, &X3DPickingContext::set_shutdown);
+	getBrowser () -> shutdown () .addInterest (this, &X3DPointingDeviceSensorContext::set_shutdown);
 }
 
 void
-X3DPickingContext::set_shutdown ()
+X3DPointingDeviceSensorContext::set_shutdown ()
 {
 	hits .clear ();
 
@@ -96,7 +96,7 @@ X3DPickingContext::set_shutdown ()
 }
 
 void
-X3DPickingContext::pick (const double _x, const double _y)
+X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 {
 	x = _x;
 	y = _y;
@@ -121,14 +121,14 @@ X3DPickingContext::pick (const double _x, const double _y)
 }
 
 bool
-X3DPickingContext::intersect (const Vector4i & scissor) const
+X3DPointingDeviceSensorContext::intersect (const Vector4i & scissor) const
 {
 	return x > scissor .x () and x <scissor .x () + scissor .z () and
 	                                y> scissor .y () and y < scissor .y () + scissor .w ();
 }
 
 Line3d
-X3DPickingContext::getPickRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
+X3DPointingDeviceSensorContext::getPickRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
 {
 	try
 	{
@@ -141,13 +141,13 @@ X3DPickingContext::getPickRay (const Matrix4d & modelViewMatrix, const Matrix4d 
 }
 
 void
-X3DPickingContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
+X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
 	hits .emplace_front (new Hit (x, y, transformationMatrix, pickRay, intersection, enabledSensors .back (), shape, layer));
 }
 
 void
-X3DPickingContext::motionNotifyEvent ()
+X3DPointingDeviceSensorContext::motionNotifyEvent ()
 {
 	// Set isOver to FALSE for appropriate nodes
 
@@ -224,7 +224,7 @@ X3DPickingContext::motionNotifyEvent ()
 }
 
 void
-X3DPickingContext::buttonPressEvent ()
+X3DPointingDeviceSensorContext::buttonPressEvent ()
 {
 	pickingLayer = getHits () .front () -> layer;
 
@@ -249,7 +249,7 @@ X3DPickingContext::buttonPressEvent ()
 }
 
 void
-X3DPickingContext::buttonReleaseEvent ()
+X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 {
 	pickingLayer = nullptr;
 
@@ -274,7 +274,7 @@ X3DPickingContext::buttonReleaseEvent ()
 }
 
 void
-X3DPickingContext::leaveNotifyEvent ()
+X3DPointingDeviceSensorContext::leaveNotifyEvent ()
 {
 	// Clear hits.
 
@@ -284,12 +284,12 @@ X3DPickingContext::leaveNotifyEvent ()
 }
 
 void
-X3DPickingContext::dispose ()
+X3DPointingDeviceSensorContext::dispose ()
 {
 	pickedOutput .dispose ();
 }
 
-X3DPickingContext::~X3DPickingContext ()
+X3DPointingDeviceSensorContext::~X3DPointingDeviceSensorContext ()
 { }
 
 } // X3D
