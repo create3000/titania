@@ -82,7 +82,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
-		getBrowserSurface () -> set_antialiasing (4);                                                                                                                                                                 // 4 x Antialiasing
+		getBrowserSurface () -> set_antialiasing (4);
 }
 
 void
@@ -92,10 +92,14 @@ BrowserWindow::initialize ()
 
 	// User interface
 
+	// Not rea?ly working anymore.
 	Gtk::Settings::get_default () -> property_gtk_menu_images ()       = true;
 	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
+	
+	getToolBar () .set_toolbar_style (Gtk::TOOLBAR_ICONS);
+	getDashboardToolBar () .set_toolbar_style (Gtk::TOOLBAR_ICONS);
 
 	// FileFilter
 	getFileFilterX3D   () -> set_name (_ ("X3D"));

@@ -81,7 +81,7 @@ public:
 	///  @name Operations
 
 	void
-	reparent (Gtk::Widget &, Gtk::Window &);
+	reparent (Gtk::Box &, Gtk::Window &);
 
 	void
 	toggleWidget (Gtk::Widget &, bool);

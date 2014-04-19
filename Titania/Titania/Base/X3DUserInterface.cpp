@@ -137,10 +137,12 @@ X3DUserInterface::removeDialog (const std::string & key)
 }
 
 void
-X3DUserInterface::reparent (Gtk::Widget & widget, Gtk::Window & window)
+X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 {
+	getWidget () .unparent ();
+
 	getWindow () .set_transient_for (window);
-	getWidget () .reparent (widget);
+	box .pack_start (getWidget (), true, true);
 }
 
 void
