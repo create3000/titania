@@ -22,7 +22,8 @@ if ($min > 16 and $min < 20)
 	}
 }
 
-$ENV {UBUNTU_MENUPROXY} = "libappmenu.so";
+$ENV {GTK_MODULES}      = "overlay-scrollbar:unity-gtk-module";
+$ENV {UBUNTU_MENUPROXY} = 1;
 $ENV {XDG_DATA_DIRS}    = "/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 
 system "./titania", @ARGV;

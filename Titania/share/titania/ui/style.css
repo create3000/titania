@@ -25,7 +25,7 @@ GtkExpander > GtkLabel {
 }
 
 #Console {
-	font-family: monospace;
+	font: monospace;
 }
 
 .titania-header {

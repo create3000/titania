@@ -1473,6 +1473,7 @@
         <child>
           <object class="GtkToolbar" id="ToolBar">
             <property name="can_focus">False</property>
+            <property name="icon_size">1</property>
             <signal name="drag-data-received" handler="on_toolbar_drag_data_received" swapped="no"/>
             <child>
               <object class="GtkToolButton" id="NewButton">
