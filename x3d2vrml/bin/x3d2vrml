@@ -13,7 +13,7 @@ use Glib;
 #libglib-perl
 
 use Switch;
-
+#libswitch-perl
 
 my $Share        = "/usr/share/titania";
 my $DTDDirectory = "$Share/dtd";

@@ -47,7 +47,8 @@ Depends: ${shlibs:Depends},
          gettext,
          perl,
          libxml-libxml-perl,
-         libglib-perl
+         libglib-perl,
+         libswitch-perl
 Conflicts:
 Replaces:
 Provides: titania
