@@ -28,12 +28,12 @@ sub namespace {
 
 	my $headerId = uc "__${path}__";
 
-	$contents =~ /#ifndef\s+(.+)/;
+	$contents =~ /#ifndef\s+(.+?)\n/;
 	my $oldHeaderId = $1;
 	
 	return say STDERR $file, ": no header guards found!" unless $oldHeaderId;
 	
-	$contents =~ /#define\s+(.+)/;
+	$contents =~ /#define\s+(.+?)\n/;
 	my $oldHeaderId2 = $1;
 
 	$contents =~ s/#ifndef\s+($oldHeaderId)/#ifndef $headerId/;

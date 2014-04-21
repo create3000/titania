@@ -1,3 +1,15 @@
+2014-04-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBrowserContext.h:
+	* X3DCoreContext.h:
+	* X3DBrowserContext.cpp:
+	* RenderingProperties.h:
+	* X3DNetworkingContext.h:
+	* RenderingProperties.cpp:
+	* X3DNetworkingContext.cpp: 
+
 2014-04-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

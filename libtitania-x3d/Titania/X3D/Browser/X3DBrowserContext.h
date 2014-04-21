@@ -55,6 +55,7 @@
 
 #include "../Browser/Core/X3DCoreContext.h"
 #include "../Browser/Navigation/X3DNavigationContext.h"
+#include "../Browser/Networking/X3DNetworkingContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Components/Layout/X3DLayoutNode.h"
@@ -66,7 +67,6 @@
 #include <Titania/Chrono/ClockBase.h>
 
 #include <memory>
-#include <mutex>
 #include <stack>
 
 namespace titania {
@@ -85,6 +85,7 @@ class X3DBrowserContext :
 	public X3DExecutionContext,
 	public X3DCoreContext,
 	public X3DNavigationContext,
+	public X3DNetworkingContext,
 	public X3DPointingDeviceSensorContext
 {
 public:
@@ -214,11 +215,6 @@ public:
 	isEnabledTexture () const
 	{ return texture; }
 
-	///  @name Thread handling
-
-	std::mutex &
-	getDownloadMutex ();
-
 	///  @name Key device handling
 
 	void
@@ -300,12 +296,6 @@ protected:
 	const WorldPtr &
 	getWorld () const = 0;
 
-	void
-	lock ();
-
-	void
-	unlock ();
-
 
 private:
 
@@ -339,10 +329,6 @@ private:
 	time_type      changedTime;
 	Speed <double> currentSpeed;
 	double         currentFrameRate;
-
-	size_t                  downloadMutexIndex;
-	std::deque <std::mutex> downloadMutexes;
-	std::mutex              downloadMutex;
 
 	SelectionPtr    selection;
 	NotificationPtr notification;

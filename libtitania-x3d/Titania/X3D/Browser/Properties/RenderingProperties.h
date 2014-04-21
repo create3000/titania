@@ -137,14 +137,6 @@ public:
 	version () const
 	{ return *fields .version; }
 
-	SFInt32 &
-	maxThreads ()
-	{ return *fields .maxThreads; }
-
-	const SFInt32 &
-	maxThreads () const
-	{ return *fields .maxThreads; }
-
 	SFString &
 	shading ()
 	{ return *fields .shading; }
@@ -275,7 +267,6 @@ private:
 		SFString* const vendor;
 		SFString* const renderer;
 		SFString* const version;
-		SFInt32* const maxThreads;
 		SFString* const shading;
 		SFInt32* const maxTextureSize;
 		SFInt32* const textureUnits;

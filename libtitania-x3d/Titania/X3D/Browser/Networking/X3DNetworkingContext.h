@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,23 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_NETWORKING_X3DNETWORKING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_NETWORKING_X3DNETWORKING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+
+#include <mutex>
 
 namespace titania {
 namespace X3D {
 
-class X3DCoreContext :
+class X3DNetworkingContext :
 	virtual public X3DBaseNode
 {
 public:
 
 	///  @name Member access
 
-	bool
-	hasExtension (const std::string &);
+	std::mutex &
+	getDownloadMutex ();
 
 	///  @name Destruction
 
@@ -78,18 +80,28 @@ protected:
 
 	///  @name Construction
 
-	X3DCoreContext ();
+	X3DNetworkingContext ();
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Operations
+
+	void
+	lock ();
+
+	void
+	unlock ();
 
 
 private:
 
 	// Members
 
-	std::set <std::string> extensions;
+	size_t                  downloadMutexIndex;
+	std::deque <std::mutex> downloadMutexes;
+	std::mutex              downloadMutex;
 
 };
 

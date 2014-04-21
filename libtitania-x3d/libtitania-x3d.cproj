@@ -13,21 +13,21 @@
     </Compiler>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/mozjs185.pc" name="SpiderMonkey 1.8.5" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/gl.pc" name="gl" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glew.pc" name="glew" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glu.pc" name="glu" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libpcrecpp.pc" name="libpcrecpp" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="false" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/Magick++.pc" name="Magick++" IsProject="false" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
-        <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="false" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/mozjs185.pc" name="SpiderMonkey 1.8.5" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/gl.pc" name="gl" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glew.pc" name="glew" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glu.pc" name="glu" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc" name="libcurl" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libpcrecpp.pc" name="libpcrecpp" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/Magick++.pc" name="Magick++" IsProject="False" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="True" />
+        <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="False" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -673,6 +673,7 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.h" />
     <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
+    <None Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1154,6 +1155,7 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\ExamineViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1200,6 +1202,7 @@
     <Folder Include="Titania\X3D\Browser\Navigation\" />
     <Folder Include="Titania\X3D\Browser\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Browser\Core\" />
+    <Folder Include="Titania\X3D\Browser\Networking\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1207,8 +1210,8 @@
         <Policies>
           <StandardHeader Text="/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */&#xA;&#xA;namespace Titania {&#xA;namespace X3D {&#xA;&#xA;} // X3D&#xA;} // Titania&#xA;" IncludeInNewFiles="True" />
         </Policies>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="libtitania_x3d_la_SOURCES" />
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="True" Name="libtitania_x3d_la_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />
@@ -1223,15 +1226,15 @@
   <ItemGroup>
     <Content Include="share\titania\goldengate\image.wrl">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </Content>
     <Content Include="share\titania\goldengate\audio.wrl">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </Content>
     <Content Include="share\titania\goldengate\video.wrl">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </Content>
     <Content Include="share\titania\pages\about\splash.x3dv" />
   </ItemGroup>

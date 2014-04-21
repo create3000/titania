@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,52 +48,51 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
+#include "X3DNetworkingContext.h"
 
-#include "../../Basic/X3DBaseNode.h"
+#include <omp.h>
 
 namespace titania {
 namespace X3D {
 
-class X3DCoreContext :
-	virtual public X3DBaseNode
+static constexpr int32_t DOWNLOAD_THREADS_MAX = 8;
+
+X3DNetworkingContext::X3DNetworkingContext () :
+	       X3DBaseNode (),
+	downloadMutexIndex (0),
+	   downloadMutexes (1),
+	     downloadMutex ()
+{ }
+
+void
+X3DNetworkingContext::initialize ()
 {
-public:
+	downloadMutexes .resize (std::min <int32_t> (omp_get_max_threads () * 2, DOWNLOAD_THREADS_MAX));
+}
 
-	///  @name Member access
+std::mutex &
+X3DNetworkingContext::getDownloadMutex ()
+{
+	std::lock_guard <std::mutex> lock (downloadMutex);
 
-	bool
-	hasExtension (const std::string &);
+	downloadMutexIndex = (downloadMutexIndex + 1) % downloadMutexes .size ();
 
-	///  @name Destruction
+	return downloadMutexes [downloadMutexIndex];
+}
 
-	virtual
-	void
-	dispose () override
-	{ }
+void
+X3DNetworkingContext::lock ()
+{
+	for (auto & downloadMutex : downloadMutexes)
+		downloadMutex .lock ();
+}
 
-
-protected:
-
-	///  @name Construction
-
-	X3DCoreContext ();
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	// Members
-
-	std::set <std::string> extensions;
-
-};
+void
+X3DNetworkingContext::unlock ()
+{
+	for (auto & downloadMutex : downloadMutexes)
+		downloadMutex .unlock ();
+}
 
 } // X3D
 } // titania
-
-#endif

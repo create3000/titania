@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,13 +50,13 @@
 
 #include "X3DBrowserContext.h"
 
-#include "../Context.h"
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
 #include "../Browser/PointingDeviceSensor/Selection.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
+#include "../Context.h"
 #include "../JavaScript/SpiderMonkey.h"
 #include "../Rendering/ViewVolume.h"
 
@@ -68,46 +68,42 @@
 namespace titania {
 namespace X3D {
 
-static constexpr int32_t MAX_DOWNLOAD_THREADS = 4;
-
 X3DBrowserContext::X3DBrowserContext () :
-	                X3DBaseNode (),
-	        X3DExecutionContext (),
-	        X3DCoreContext (),
-	       X3DNavigationContext (),
-	          X3DPointingDeviceSensorContext (),
-	        renderingProperties (new RenderingProperties (this)),
-	          browserProperties (new BrowserProperties   (this)),
-	             browserOptions (new BrowserOptions      (this)),
-	           javaScriptEngine (new SpiderMonkey        (this)),
-	          initializedOutput (),
-	             reshapedOutput (),
-	              sensorsOutput (),
-	        prepareEventsOutput (),
-	            displayedOutput (),
-	             finishedOutput (),
-	              changedOutput (),
-	                      clock (new chrono::system_clock <time_type> ()),
-	                     router (),
-	                   viewport (),
-	                     layers (),
-	                    layouts (),
-	                     lights (),
-	                 clipPlanes (),
-	               textureUnits (),
-	       combinedTextureUnits (),
-	              textureStages (),
-	                    texture (false),
-	        keyDeviceSensorNode (nullptr),
-	                changedTime (clock -> cycle ()),
-	               currentSpeed (0),
-	           currentFrameRate (0),
-	         downloadMutexIndex (0),
-	            downloadMutexes (1),
-	              downloadMutex (),
-	                  selection (new Selection (this)),
-	               notification (new Notification (this)),
-	                    console (new Console (this))
+	                   X3DBaseNode (),
+	           X3DExecutionContext (),
+	                X3DCoreContext (),
+	          X3DNavigationContext (),
+	          X3DNetworkingContext (),
+	X3DPointingDeviceSensorContext (),
+	           renderingProperties (new RenderingProperties (this)),
+	             browserProperties (new BrowserProperties   (this)),
+	                browserOptions (new BrowserOptions      (this)),
+	              javaScriptEngine (new SpiderMonkey        (this)),
+	             initializedOutput (),
+	                reshapedOutput (),
+	                 sensorsOutput (),
+	           prepareEventsOutput (),
+	               displayedOutput (),
+	                finishedOutput (),
+	                 changedOutput (),
+	                         clock (new chrono::system_clock <time_type> ()),
+	                        router (),
+	                      viewport (),
+	                        layers (),
+	                       layouts (),
+	                        lights (),
+	                    clipPlanes (),
+	                  textureUnits (),
+	          combinedTextureUnits (),
+	                 textureStages (),
+	                       texture (false),
+	           keyDeviceSensorNode (nullptr),
+	                   changedTime (clock -> cycle ()),
+	                  currentSpeed (0),
+	              currentFrameRate (0),
+	                     selection (new Selection (this)),
+	                  notification (new Notification (this)),
+	                       console (new Console (this))
 {
 	initialized () .setName ("initialized");
 
@@ -128,6 +124,7 @@ X3DBrowserContext::initialize ()
 	X3DExecutionContext::initialize ();
 	X3DCoreContext::initialize ();
 	X3DNavigationContext::initialize ();
+	X3DNetworkingContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
 
 	// Initialize clock
@@ -186,12 +183,10 @@ X3DBrowserContext::initialize ()
 		// TextureUnits
 
 		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
-			textureUnits .push (i);                                                                                                                                                                                                                       // Don't add GL_TEXTURE0
+			textureUnits .push (i);                                                                                                                                                                                                                                                         // Don't add GL_TEXTURE0
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);                                                                                                                                                                                                               // Don't add GL_TEXTURE0
-
-		downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
+			combinedTextureUnits .push (i);                                                                                                                                                                                                                                                 // Don't add GL_TEXTURE0
 	}
 }
 
@@ -231,30 +226,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	return currentFrameRate;
-}
-
-std::mutex &
-X3DBrowserContext::getDownloadMutex ()
-{
-	std::lock_guard <std::mutex> lock (downloadMutex);
-
-	downloadMutexIndex = (downloadMutexIndex + 1) % downloadMutexes .size ();
-
-	return downloadMutexes [downloadMutexIndex];
-}
-
-void
-X3DBrowserContext::lock ()
-{
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .lock ();
-}
-
-void
-X3DBrowserContext::unlock ()
-{
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .unlock ();
 }
 
 // Key device
@@ -374,6 +345,7 @@ X3DBrowserContext::dispose ()
 
 	X3DPointingDeviceSensorContext::dispose ();
 	X3DNavigationContext::dispose ();
+	X3DNetworkingContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();
 }

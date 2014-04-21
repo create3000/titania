@@ -61,7 +61,6 @@
 #include <iomanip>
 #include <iostream>
 #include <malloc.h>
-#include <omp.h>
 
 namespace titania {
 namespace X3D {
@@ -86,7 +85,6 @@ RenderingProperties::Fields::Fields () :
 	              vendor (new SFString ()),
 	            renderer (new SFString ()),
 	             version (new SFString ()),
-	          maxThreads (new SFInt32 (1)),
 	             shading (new SFString ("GOURAUD")),
 	      maxTextureSize (new SFInt32 ()),
 	        textureUnits (new SFInt32 ()),
@@ -107,7 +105,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "Vendor",         vendor ());
 	addField (outputOnly, "Renderer",       renderer ());
 	addField (outputOnly, "Version",        version ());
-	addField (outputOnly, "MaxThreads",     maxThreads ());
 	addField (outputOnly, "Shading",        shading ());
 	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
 	addField (outputOnly, "TextureCoord",   textureUnits ());
@@ -181,7 +178,6 @@ RenderingProperties::initialize ()
 		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
 			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // in KBytes
 
-		maxThreads ()           = omp_get_max_threads ();
 		textureUnits ()         = std::min (glCombinedTextureUnits / 2, std::min (glTextureCoords, glTextureUnits));
 		combinedTextureUnits () = glCombinedTextureUnits;
 		maxTextureSize ()       = glMaxTextureSize;
@@ -302,7 +298,6 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("  Name: %s"), renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
-		string .emplace_back (basic::sprintf (_ ("Max threads:               %d"), maxThreads () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Texture units:             %d / %d"), textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %d × %d pixel"), maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), antialiased () .toString () .c_str (), sampleBuffers, samples));
@@ -332,7 +327,6 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tOpenGL extension version: " << version () .getValue () << std::endl
 
 		<< "\tRendering properties" << std::endl
-		<< "\t\tMax threads: " << maxThreads () << std::endl
 		<< "\t\tTexture units: " << textureUnits () << " / " << combinedTextureUnits () - textureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl
