@@ -72,6 +72,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                   X3DBaseNode (),
 	           X3DExecutionContext (),
 	                X3DCoreContext (),
+	              X3DLayoutContext (),
 	          X3DNavigationContext (),
 	          X3DNetworkingContext (),
 	X3DPointingDeviceSensorContext (),
@@ -90,7 +91,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	                        router (),
 	                      viewport (),
 	                        layers (),
-	                       layouts (),
 	                        lights (),
 	                    clipPlanes (),
 	                  textureUnits (),
@@ -123,6 +123,7 @@ X3DBrowserContext::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DCoreContext::initialize ();
+	X3DLayoutContext::initialize ();
 	X3DNavigationContext::initialize ();
 	X3DNetworkingContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
@@ -183,10 +184,11 @@ X3DBrowserContext::initialize ()
 		// TextureUnits
 
 		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
-			textureUnits .push (i);                                                                                                                                                                                                                                                         // Don't add GL_TEXTURE0
+			textureUnits .push (i);          // Don't add GL_TEXTURE0
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);                                                                                                                                                                                                                                                 // Don't add GL_TEXTURE0
+			combinedTextureUnits .push (i);  // Don't add GL_TEXTURE0
+
 	}
 }
 
@@ -344,8 +346,9 @@ X3DBrowserContext::dispose ()
 	changedOutput       .dispose ();
 
 	X3DPointingDeviceSensorContext::dispose ();
-	X3DNavigationContext::dispose ();
 	X3DNetworkingContext::dispose ();
+	X3DNavigationContext::dispose ();
+	X3DLayoutContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();
 }

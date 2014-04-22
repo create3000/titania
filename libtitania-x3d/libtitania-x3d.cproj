@@ -674,6 +674,7 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.h" />
     <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
     <None Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.h" />
+    <None Include="Titania\X3D\Browser\Layout\X3DLayoutContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1203,6 +1204,7 @@
     <Folder Include="Titania\X3D\Browser\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Browser\Core\" />
     <Folder Include="Titania\X3D\Browser\Networking\" />
+    <Folder Include="Titania\X3D\Browser\Layout\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -1,36 +1,30 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Core/X3DCoreContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h">
     <Files>
       <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="256" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="188" Column="101" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Core/X3DCoreContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Core/X3DCoreContext.cpp" Line="30" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Core/X3DCoreContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Networking/X3DNetworkingContext.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="experimental" expanded="True" />
-          <Node name="Library" expanded="True">
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="Handles" expanded="True" />
-              <Node name="Networking" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True" />
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
-                  <Node name="Core" expanded="True">
-                    <Node name="X3DCoreContext.cpp" selected="True" />
-                  </Node>
-                  <Node name="Devices" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                   <Node name="Properties" expanded="True" />
-                  <Node name="Viewer" expanded="True" />
+                  <Node name="X3DBrowserContext.h" selected="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="ParticleSystems" expanded="True" />
@@ -59,6 +53,9 @@
                 <Node name="CellRenderer" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="x3d2vrml" expanded="True">
+            <Node name="bin" expanded="True" />
           </Node>
         </State>
       </Pad>

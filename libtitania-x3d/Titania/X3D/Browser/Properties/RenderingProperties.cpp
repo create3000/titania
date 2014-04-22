@@ -50,8 +50,8 @@
 
 #include "RenderingProperties.h"
 
-#include "../../Context.h"
 #include "../../Bits/config.h"
+#include "../../Context.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
@@ -176,7 +176,7 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // in KBytes
 
 		textureUnits ()         = std::min (glCombinedTextureUnits / 2, std::min (glTextureCoords, glTextureUnits));
 		combinedTextureUnits () = glCombinedTextureUnits;
@@ -214,7 +214,7 @@ RenderingProperties::getAvailableTextureMemory ()
 
 			GLint kbytes [4] = { 0, 0, 0, 0 };
 
-			glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, kbytes); // in KBytes
+			glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, kbytes);                          // in KBytes
 			return size_t (kbytes [0]) * 1024;
 		}
 	}
