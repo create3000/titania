@@ -90,7 +90,6 @@ class BoxOptions;
 class X3DSphereOptionNode;
 class X3DTextureCoordinateNode;
 class MotionBlur;
-class Viewport;
 
 class BrowserOptions :
 	virtual public X3DBaseNode
@@ -355,14 +354,6 @@ public:
 	fontStyle () const
 	{ return fields .fontStyle; }
 
-	X3DPtr <Viewport> &
-	viewport ()
-	{ return fields .viewport; }
-
-	const X3DPtr <Viewport> &
-	viewport () const
-	{ return fields .viewport; }
-
 
 private:
 
@@ -426,7 +417,6 @@ private:
 		X3DPtr <X3DSphereOptionNode> sphere;
 		X3DPtr <X3DTextureCoordinateNode> texCoord;
 		X3DPtr <X3DFontStyleNode> fontStyle;
-		X3DPtr <Viewport> viewport;
 	};
 
 	Fields fields;

@@ -58,6 +58,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DLayoutNode;
+
 using LayoutStack = std::stack <X3DLayoutNode*>;
 
 class X3DLayoutContext :

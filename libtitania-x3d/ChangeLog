@@ -3,6 +3,26 @@
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DBrowserContext.h:
+	* X3DViewer.cpp:
+	* X3DBrowserContext.cpp:
+	* Viewport.h:
+	* ViewportContainer.cpp:
+	* Viewport.cpp:
+	* X3DLayoutContext.h:
+	* BrowserOptions.h:
+	* X3DLayerNode.cpp:
+	* X3DViewportNode.h:
+	* BrowserOptions.cpp:
+	* X3DLayeringContext.h:
+	* X3DViewportNode.cpp:
+	* X3DLayeringContext.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
+2014-04-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBrowserContext.h:
 	* X3DBrowserContext.cpp:
 	* X3DLightingContext.h:
 	* X3DLightingContext.cpp:

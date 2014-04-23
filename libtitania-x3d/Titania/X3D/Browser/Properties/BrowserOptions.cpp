@@ -50,7 +50,6 @@
 
 #include "BrowserOptions.h"
 
-#include "../../Components/Layering/Viewport.h"
 #include "../../Components/ParticleSystems/PointEmitter.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/FillProperties.h"
@@ -129,8 +128,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	                   box (new BoxOptions (executionContext)),
 	                sphere (new QuadSphereOptions (executionContext)),
 	              texCoord (new TextureCoordinate (executionContext)),
-	             fontStyle (new FontStyle (executionContext)),
-	              viewport (new Viewport (executionContext))
+	             fontStyle (new FontStyle (executionContext))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -169,8 +167,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             box (),
 	             sphere (),
 	             texCoord (),
-	             fontStyle (),
-	             viewport ());
+	             fontStyle ());
 }
 
 BrowserOptions*
@@ -200,7 +197,6 @@ BrowserOptions::initialize ()
 	sphere ()            -> setup ();
 	texCoord ()          -> setup ();
 	fontStyle ()         -> setup ();
-	viewport ()          -> setup ();
 
 	lineProperties () -> applied () = false;
 	fillProperties () -> hatched () = false;

@@ -98,6 +98,8 @@ X3DPointingDeviceSensorContext::set_shutdown ()
 void
 X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 {
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
 	x = _x;
 	y = _y;
 
@@ -113,7 +115,7 @@ X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 
 	picked () .processInterests ();
 
-	// Selection end.
+	// Picking end.
 
 	std::stable_sort (hits .begin (), hits .end (), hitComp);
 

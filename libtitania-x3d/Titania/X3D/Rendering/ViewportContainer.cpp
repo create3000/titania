@@ -65,7 +65,7 @@ ViewportContainer::ViewportContainer (Viewport* const node) :
 void
 ViewportContainer::apply ()
 {
-	const Vector4i viewport = node -> getViewport ();
+	const Vector4i viewport = node -> getRectangle ();
 
 	glViewport (viewport [0],
 	            viewport [1],
@@ -85,7 +85,7 @@ ViewportContainer::restore ()
 void
 ViewportContainer::enable ()
 {
-	const Vector4i scissor = node -> getViewport ();
+	const Vector4i scissor = node -> getRectangle ();
 
 	if (scissor not_eq viewport)
 	{

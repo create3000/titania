@@ -87,8 +87,8 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 			const Matrix4d modelview; // Use identity
 			const Matrix4d projection = ProjectionMatrix4d ();
 
-			const auto viewport = getBrowser () -> getActiveLayer () -> getViewport () -> getViewport (getBrowser () -> get_width (),
-			                                                                                           getBrowser () -> get_height ());
+			const auto viewport = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle (getBrowser () -> get_width (),
+			                                                                                            getBrowser () -> get_height ());
 	
 			// Far plane point
 			const Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);

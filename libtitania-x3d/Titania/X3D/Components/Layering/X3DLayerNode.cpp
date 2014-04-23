@@ -279,7 +279,7 @@ X3DLayerNode::set_viewport ()
 	currentViewport .set (x3d_cast <X3DViewportNode*> (viewport ()));
 
 	if (not currentViewport)
-		currentViewport .set (getBrowser () -> getBrowserOptions () -> viewport ());
+		currentViewport .set (getBrowser () -> getViewport ());
 }
 
 void
@@ -344,10 +344,10 @@ X3DLayerNode::pick ()
 
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
-		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getViewport ());
+		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
 
-		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 		group -> traverse (TraverseType::PICKING);
 
@@ -367,7 +367,7 @@ X3DLayerNode::camera ()
 	defaultFog            -> traverse (TraverseType::CAMERA);
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	group -> traverse (TraverseType::CAMERA);
 
@@ -383,7 +383,7 @@ void
 X3DLayerNode::navigation ()
 {
 	// Render
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	render (TraverseType::NAVIGATION);
 
@@ -421,7 +421,7 @@ X3DLayerNode::collision ()
 	getModelViewMatrix () .set (modelViewMatrix);
 
 	// Render
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	render (TraverseType::COLLISION);
 
@@ -440,7 +440,7 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	render (TraverseType::DISPLAY);
 

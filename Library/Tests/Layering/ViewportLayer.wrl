@@ -12,7 +12,7 @@ EXTERNPROTO Rotor [
   inputOutput SFTime     stopTime
   outputOnly  SFRotation rotation_changed
 ]
-[ "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv", "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv" ]
+[ "../../../Titania/share/titania/Prototypes/0.1/Engines/Rotor.x3dv", "file:///usr/share/titania/Prototypes/0.1/Engines/Rotor.x3dv" ]
 
 LayerSet {
   activeLayer 2

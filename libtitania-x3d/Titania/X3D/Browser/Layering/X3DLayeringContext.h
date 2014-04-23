@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,121 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
-#define __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
+#ifndef __TITANIA_X3D_BROWSER_LAYERING_X3DLAYERING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_LAYERING_X3DLAYERING_CONTEXT_H__
 
-#include "../../Rendering/ViewportContainer.h"
-#include "../Layering/X3DViewportNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtr.h"
 
-#include <memory>
+#include <stack>
 
 namespace titania {
 namespace X3D {
 
-class Viewport :
-	public X3DViewportNode
+class X3DLayerNode;
+class X3DViewportNode;
+
+using LayerStack = std::stack <X3DLayerNode*>;
+
+class X3DLayeringContext :
+	virtual public X3DBaseNode
 {
 public:
 
-	using X3DViewportNode::getRectangle;
+	///  @name Member access
+
+	LayerStack &
+	getLayers ()
+	{ return layers; }
+
+	const Vector4i &
+	getViewportRectangle () const
+	{ return viewportRectangle; }
+
+	const X3DPtr <X3DViewportNode> &
+	getViewport () const
+	{ return viewport; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DLayeringContext ();
+
+
+protected:
 
 	///  @name Construction
 
-	Viewport (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFFloat &
-	clipBoundary ()
-	{ return *fields .clipBoundary; }
-
-	const MFFloat &
-	clipBoundary () const
-	{ return *fields .clipBoundary; }
-
-	///  @name Member access
-
-	virtual
-	Vector4i
-	getRectangle (const int, const int) const final override;
-
-	///  @name Operations
+	X3DLayeringContext ();
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
-
-	virtual
-	void
-	enable () final override;
-
-	virtual
-	void
-	disable () final override;
+	initialize () override;
 
 
 private:
 
-	///  @name Member access
-
-	float
-	getLeft () const;
-
-	float
-	getRight () const;
-
-	float
-	getBottom () const;
-
-	float
-	getTop () const;
+	///  @name Event handlers
 
 	void
-	push (const TraverseType);
-
-	void
-	pop (const TraverseType);
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
+	set_reshaped ();
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
+	LayerStack layers;
+	Vector4i   viewportRectangle;
 
-		MFFloat* const clipBoundary;
-	};
-
-	Fields fields;
-
-	std::vector <std::shared_ptr <ViewportContainer>>  viewports;
+	X3DPtr <X3DViewportNode> viewport;
 
 };
 

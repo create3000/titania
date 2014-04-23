@@ -62,11 +62,11 @@ X3DViewportNode::X3DViewportNode () :
 }
 
 Vector4i
-X3DViewportNode::getViewport () const
+X3DViewportNode::getRectangle () const
 {
-	const auto & browserViewport = getBrowser () -> getViewport ();
+	const auto & browserViewport = getBrowser () -> getViewportRectangle ();
 
-	return getViewport (browserViewport [2], browserViewport [3]);
+	return getRectangle (browserViewport [2], browserViewport [3]);
 }
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,125 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
-#define __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
+#include "X3DLayeringContext.h"
 
-#include "../../Rendering/ViewportContainer.h"
-#include "../Layering/X3DViewportNode.h"
-
-#include <memory>
+#include "../../Components/Layering/Viewport.h"
+#include "../X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class Viewport :
-	public X3DViewportNode
+X3DLayeringContext::X3DLayeringContext () :
+	      X3DBaseNode (),
+	           layers (),
+	viewportRectangle (),
+	         viewport (new Viewport (getExecutionContext ()))
 {
-public:
+	addChildren (viewport);
+}
 
-	using X3DViewportNode::getRectangle;
+void
+X3DLayeringContext::initialize ()
+{
+	viewport -> setup ();
 
-	///  @name Construction
+	getBrowser () -> reshaped () .addInterest (this, &X3DLayeringContext::set_reshaped);
 
-	Viewport (X3DExecutionContext* const);
+	set_reshaped ();
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+void
+X3DLayeringContext::set_reshaped ()
+{
+	viewportRectangle = Viewport4i ();
+}
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFFloat &
-	clipBoundary ()
-	{ return *fields .clipBoundary; }
-
-	const MFFloat &
-	clipBoundary () const
-	{ return *fields .clipBoundary; }
-
-	///  @name Member access
-
-	virtual
-	Vector4i
-	getRectangle (const int, const int) const final override;
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) final override;
-
-	virtual
-	void
-	enable () final override;
-
-	virtual
-	void
-	disable () final override;
-
-
-private:
-
-	///  @name Member access
-
-	float
-	getLeft () const;
-
-	float
-	getRight () const;
-
-	float
-	getBottom () const;
-
-	float
-	getTop () const;
-
-	void
-	push (const TraverseType);
-
-	void
-	pop (const TraverseType);
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		MFFloat* const clipBoundary;
-	};
-
-	Fields fields;
-
-	std::vector <std::shared_ptr <ViewportContainer>>  viewports;
-
-};
+X3DLayeringContext::~X3DLayeringContext ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

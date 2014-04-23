@@ -54,6 +54,7 @@
 #include "../Execution/X3DExecutionContext.h"
 
 #include "../Browser/Core/X3DCoreContext.h"
+#include "../Browser/Layering/X3DLayeringContext.h"
 #include "../Browser/Layout/X3DLayoutContext.h"
 #include "../Browser/Lighting/X3DLightingContext.h"
 #include "../Browser/Navigation/X3DNavigationContext.h"
@@ -61,7 +62,6 @@
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
-#include "../Components/Layout/X3DLayoutNode.h"
 #include "../Types/Pointer.h"
 
 #include "../Routing/Router.h"
@@ -76,7 +76,6 @@ namespace titania {
 namespace X3D {
 
 using X3DClock         = chrono::clock_base <time_type>;
-using LayerStack       = std::stack <X3DLayerNode*>;
 using TextureUnitStack = std::stack <int32_t>;
 using TextureArray     = std::vector <int32_t>;
 
@@ -84,6 +83,7 @@ class X3DBrowserContext :
 	virtual public X3DBaseNode,
 	public X3DExecutionContext,
 	public X3DCoreContext,
+	public X3DLayeringContext,
 	public X3DLayoutContext,
 	public X3DLightingContext,
 	public X3DNavigationContext,
@@ -158,12 +158,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Layer handling
-
-	const Vector4i
-	getViewport () const
-	{ return viewport; }
-
 	///  @name Event handling
 
 	Router &
@@ -175,12 +169,6 @@ public:
 	const X3DJavaScriptEnginePtr &
 	getJavaScriptEngine () const
 	{ return javaScriptEngine; }
-
-	///  @name Layer handling
-
-	LayerStack &
-	getLayers ()
-	{ return layers; }
 
 	///  @name Texture unit stack handling
 
@@ -302,8 +290,6 @@ private:
 	std::unique_ptr <X3DClock> clock;
 
 	Router           router;
-	Vector4i         viewport;
-	LayerStack       layers;
 	TextureUnitStack textureUnits;
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;

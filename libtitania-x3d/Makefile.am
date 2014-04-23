@@ -37,6 +37,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
+	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \

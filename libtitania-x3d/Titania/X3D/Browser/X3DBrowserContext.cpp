@@ -72,6 +72,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                   X3DBaseNode (),
 	           X3DExecutionContext (),
 	                X3DCoreContext (),
+	            X3DLayeringContext (),
 	              X3DLayoutContext (),
 	            X3DLightingContext (),
 	          X3DNavigationContext (),
@@ -91,8 +92,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	                 changedOutput (),
 	                         clock (new chrono::system_clock <time_type> ()),
 	                        router (),
-	                      viewport (),
-	                        layers (),
 	                  textureUnits (),
 	          combinedTextureUnits (),
 	                 textureStages (),
@@ -123,6 +122,7 @@ X3DBrowserContext::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DCoreContext::initialize ();
+	X3DLayeringContext::initialize ();
 	X3DLayoutContext::initialize ();
 	X3DLightingContext::initialize ();
 	X3DNavigationContext::initialize ();
@@ -231,11 +231,7 @@ X3DBrowserContext::reshape ()
 	std::lock_guard <ContextMutex> contextLock (contextMutex);
 
 	if (makeCurrent ())
-	{
-		viewport = Viewport4i ();
-
 		reshaped () .processInterests ();
-	}
 }
 
 /*
@@ -319,6 +315,7 @@ X3DBrowserContext::dispose ()
 	X3DNavigationContext::dispose ();
 	X3DLightingContext::dispose ();
 	X3DLayoutContext::dispose ();
+	X3DLayeringContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();
 }
