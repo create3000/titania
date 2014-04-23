@@ -55,9 +55,11 @@
 
 #include "../Browser/Core/X3DCoreContext.h"
 #include "../Browser/Layout/X3DLayoutContext.h"
+#include "../Browser/Lighting/X3DLightingContext.h"
 #include "../Browser/Navigation/X3DNavigationContext.h"
 #include "../Browser/Networking/X3DNetworkingContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
+#include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Components/Layout/X3DLayoutNode.h"
 #include "../Types/Pointer.h"
@@ -75,8 +77,6 @@ namespace X3D {
 
 using X3DClock         = chrono::clock_base <time_type>;
 using LayerStack       = std::stack <X3DLayerNode*>;
-using LightStack       = std::stack <GLenum>;
-using ClipPlaneStack   = std::stack <GLenum>;
 using TextureUnitStack = std::stack <int32_t>;
 using TextureArray     = std::vector <int32_t>;
 
@@ -85,9 +85,11 @@ class X3DBrowserContext :
 	public X3DExecutionContext,
 	public X3DCoreContext,
 	public X3DLayoutContext,
+	public X3DLightingContext,
 	public X3DNavigationContext,
 	public X3DNetworkingContext,
-	public X3DPointingDeviceSensorContext
+	public X3DPointingDeviceSensorContext,
+	public X3DRenderingContext
 {
 public:
 
@@ -179,16 +181,6 @@ public:
 	LayerStack &
 	getLayers ()
 	{ return layers; }
-
-	///  @name Light stack handling
-
-	LightStack &
-	getLights ()
-	{ return lights; }
-
-	ClipPlaneStack &
-	getClipPlanes ()
-	{ return clipPlanes; }
 
 	///  @name Texture unit stack handling
 
@@ -312,8 +304,6 @@ private:
 	Router           router;
 	Vector4i         viewport;
 	LayerStack       layers;
-	LightStack       lights;
-	ClipPlaneStack   clipPlanes;
 	TextureUnitStack textureUnits;
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;

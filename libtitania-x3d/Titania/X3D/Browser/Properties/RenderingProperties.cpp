@@ -90,7 +90,6 @@ RenderingProperties::Fields::Fields () :
 	        textureUnits (new SFInt32 ()),
 	combinedTextureUnits (new SFInt32 ()),
 	           maxLights (new SFInt32 ()),
-	       maxClipPlanes (new SFInt32 ()),
 	         antialiased (new SFBool ()),
 	          colorDepth (new SFInt32 ()),
 	       textureMemory (new SFDouble ())
@@ -110,7 +109,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "TextureCoord",   textureUnits ());
 	addField (outputOnly, "TextureUnits",   combinedTextureUnits ());
 	addField (outputOnly, "MaxLights",      maxLights ());
-	addField (outputOnly, "MaxClipPlanes",  maxClipPlanes ());
 	addField (outputOnly, "Antialiased",    antialiased ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
 	addField (outputOnly, "TextureMemory",  textureMemory ());
@@ -156,7 +154,7 @@ RenderingProperties::initialize ()
 
 		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
 
-		GLint glMaxTextureSize, glTextureCoords, glTextureUnits, glCombinedTextureUnits, glMaxLights, glMaxClipPlanes;
+		GLint glMaxTextureSize, glTextureCoords, glTextureUnits, glCombinedTextureUnits;
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 		GLint glPolygonSmooth;
 		GLint glTextureMemory = -1;
@@ -165,8 +163,6 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &glTextureCoords);
 		glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &glTextureUnits);
 		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glCombinedTextureUnits);
-		glGetIntegerv (GL_MAX_LIGHTS,                       &glMaxLights);
-		glGetIntegerv (GL_MAX_CLIP_PLANES,                  &glMaxClipPlanes);
 
 		glGetIntegerv (GL_RED_BITS,   &glRedBits);
 		glGetIntegerv (GL_GREEN_BITS, &glGreen);
@@ -181,8 +177,7 @@ RenderingProperties::initialize ()
 		textureUnits ()         = std::min (glCombinedTextureUnits / 2, std::min (glTextureCoords, glTextureUnits));
 		combinedTextureUnits () = glCombinedTextureUnits;
 		maxTextureSize ()       = glMaxTextureSize;
-		maxLights ()            = glMaxLights;
-		maxClipPlanes ()        = glMaxClipPlanes;
+		maxLights ()            = getBrowser () -> getMaxLights ();
 		antialiased ()          = glPolygonSmooth;
 		colorDepth ()           = glRedBits + glGreen + glBlueBits + glAlphaBits;
 		textureMemory ()        = double (glTextureMemory) * 1024;
@@ -302,7 +297,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %d × %d pixel"), maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), antialiased () .toString () .c_str (), sampleBuffers, samples));
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), maxLights () .getValue ()));
-		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %d"), maxClipPlanes () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %zd"), getBrowser () -> getMaxClipPlanes ()));
 		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), colorDepth () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getAvailableTextureMemory ()) .c_str ()));
@@ -330,7 +325,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\t\tTexture units: " << textureUnits () << " / " << combinedTextureUnits () - textureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl
-		<< "\t\tMax clip planes: " << maxClipPlanes () << std::endl
+		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
 		<< "\t\tAntialiased: " << antialiased () .getValue () << std::endl
 		<< "\t\tColor depth: " << colorDepth () << " bits" << std::endl
 		<< "\t\tTexture memory: " << (textureMemory () > 0 ? strfsize (textureMemory ()) : "n/a");

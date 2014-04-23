@@ -73,9 +73,11 @@ X3DBrowserContext::X3DBrowserContext () :
 	           X3DExecutionContext (),
 	                X3DCoreContext (),
 	              X3DLayoutContext (),
+	            X3DLightingContext (),
 	          X3DNavigationContext (),
 	          X3DNetworkingContext (),
 	X3DPointingDeviceSensorContext (),
+	           X3DRenderingContext (),
 	           renderingProperties (new RenderingProperties (this)),
 	             browserProperties (new BrowserProperties   (this)),
 	                browserOptions (new BrowserOptions      (this)),
@@ -91,8 +93,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	                        router (),
 	                      viewport (),
 	                        layers (),
-	                        lights (),
-	                    clipPlanes (),
 	                  textureUnits (),
 	          combinedTextureUnits (),
 	                 textureStages (),
@@ -124,9 +124,11 @@ X3DBrowserContext::initialize ()
 	X3DExecutionContext::initialize ();
 	X3DCoreContext::initialize ();
 	X3DLayoutContext::initialize ();
+	X3DLightingContext::initialize ();
 	X3DNavigationContext::initialize ();
 	X3DNetworkingContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
+	X3DRenderingContext::initialize ();
 
 	// Initialize clock
 
@@ -136,29 +138,6 @@ X3DBrowserContext::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		glClearColor (0, 0, 0, 0);
-		glClearDepth (1);
-
-		glCullFace (GL_BACK);
-		glEnable (GL_NORMALIZE);
-
-		glDepthFunc (GL_LEQUAL);
-
-		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
-
-		GLfloat light_model_ambient [ ] = { 0, 0, 0, 1 };
-
-		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
-		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
-		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
-
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-
-		glHint (GL_FOG_HINT, GL_NICEST);
-
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
 		// Properties
@@ -171,16 +150,6 @@ X3DBrowserContext::initialize ()
 		notification        -> setup ();
 		console             -> setup ();
 
-		// Lights
-
-		for (int32_t i = renderingProperties -> maxLights () - 1; i >= 0; -- i)
-			lights .push (GL_LIGHT0 + i);
-
-		// ClipPlanes
-
-		for (int32_t i = renderingProperties -> maxClipPlanes () - 1; i >= 0; -- i)
-			clipPlanes .push (GL_CLIP_PLANE0 + i);
-
 		// TextureUnits
 
 		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
@@ -188,7 +157,6 @@ X3DBrowserContext::initialize ()
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
 			combinedTextureUnits .push (i);  // Don't add GL_TEXTURE0
-
 	}
 }
 
@@ -345,9 +313,11 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
+	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();
 	X3DNetworkingContext::dispose ();
 	X3DNavigationContext::dispose ();
+	X3DLightingContext::dispose ();
 	X3DLayoutContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();

@@ -675,6 +675,8 @@
     <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
     <None Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.h" />
     <None Include="Titania\X3D\Browser\Layout\X3DLayoutContext.h" />
+    <None Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.h" />
+    <None Include="Titania\X3D\Browser\Lighting\X3DLightingContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1157,6 +1159,8 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\ExamineViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Lighting\X3DLightingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1205,6 +1209,8 @@
     <Folder Include="Titania\X3D\Browser\Core\" />
     <Folder Include="Titania\X3D\Browser\Networking\" />
     <Folder Include="Titania\X3D\Browser\Layout\" />
+    <Folder Include="Titania\X3D\Browser\Rendering\" />
+    <Folder Include="Titania\X3D\Browser\Lighting\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
