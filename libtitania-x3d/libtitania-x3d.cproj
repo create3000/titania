@@ -678,6 +678,7 @@
     <None Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.h" />
     <None Include="Titania\X3D\Browser\Lighting\X3DLightingContext.h" />
     <None Include="Titania\X3D\Browser\Layering\X3DLayeringContext.h" />
+    <None Include="Titania\X3D\Browser\Time\X3DTimeContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1214,6 +1215,7 @@
     <Folder Include="Titania\X3D\Browser\Rendering\" />
     <Folder Include="Titania\X3D\Browser\Lighting\" />
     <Folder Include="Titania\X3D\Browser\Layering\" />
+    <Folder Include="Titania\X3D\Browser\Time\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

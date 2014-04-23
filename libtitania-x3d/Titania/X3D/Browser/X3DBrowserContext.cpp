@@ -79,6 +79,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	          X3DNetworkingContext (),
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
+	                X3DTimeContext (),
 	           renderingProperties (new RenderingProperties (this)),
 	             browserProperties (new BrowserProperties   (this)),
 	                browserOptions (new BrowserOptions      (this)),
@@ -90,16 +91,13 @@ X3DBrowserContext::X3DBrowserContext () :
 	               displayedOutput (),
 	                finishedOutput (),
 	                 changedOutput (),
-	                         clock (new chrono::system_clock <time_type> ()),
 	                        router (),
 	                  textureUnits (),
 	          combinedTextureUnits (),
 	                 textureStages (),
 	                       texture (false),
 	           keyDeviceSensorNode (nullptr),
-	                   changedTime (clock -> cycle ()),
-	                  currentSpeed (0),
-	              currentFrameRate (0),
+	                   changedTime (0),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
 	                       console (new Console (this))
@@ -129,10 +127,7 @@ X3DBrowserContext::initialize ()
 	X3DNetworkingContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
-
-	// Initialize clock
-
-	advanceClock ();
+	X3DTimeContext::initialize ();
 
 	// Initialize OpenGL context
 
@@ -158,44 +153,6 @@ X3DBrowserContext::initialize ()
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
 			combinedTextureUnits .push (i);  // Don't add GL_TEXTURE0
 	}
-}
-
-void
-X3DBrowserContext::advanceClock ()
-{
-	clock -> advance ();
-
-	if (getActiveLayer ())
-		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getTransformationMatrix () .origin (), currentFrameRate);
-
-	else
-		currentSpeed .setPosition (Vector3f (), 0);
-
-	currentFrameRate = 1 / clock -> interval ();
-}
-
-time_type
-X3DBrowserContext::getCurrentTime () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return clock -> cycle ();
-}
-
-double
-X3DBrowserContext::getCurrentSpeed () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return currentSpeed;
-}
-
-double
-X3DBrowserContext::getCurrentFrameRate () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return currentFrameRate;
 }
 
 // Key device
@@ -254,7 +211,7 @@ X3DBrowserContext::update ()
 		{
 			// Prepare
 
-			advanceClock ();
+			getClock () -> advance ();
 
 			prepareEvents () .processInterests ();
 			router .processEvents ();
@@ -309,6 +266,7 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
+	X3DTimeContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();
 	X3DNetworkingContext::dispose ();

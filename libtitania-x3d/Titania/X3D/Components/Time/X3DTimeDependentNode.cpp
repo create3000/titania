@@ -315,7 +315,7 @@ X3DTimeDependentNode::timeout (TimeoutToolr handler)
 {
 	if (enabled ())
 	{
-		getBrowser () -> advanceClock ();
+		getBrowser () -> getClock () -> advance ();
 
 		(this ->* handler)();
 	}

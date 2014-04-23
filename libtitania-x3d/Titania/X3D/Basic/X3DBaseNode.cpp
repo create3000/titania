@@ -390,7 +390,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 time_type
 X3DBaseNode::getCurrentTime () const
 {
-	return getBrowser () -> getCurrentTime ();
+	return getBrowser () -> getClock () -> cycle ();
 }
 
 const X3DBaseNode*

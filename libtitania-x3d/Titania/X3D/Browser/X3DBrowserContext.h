@@ -61,21 +61,18 @@
 #include "../Browser/Networking/X3DNetworkingContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
+#include "../Browser/Time/X3DTimeContext.h"
+
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Types/Pointer.h"
 
 #include "../Routing/Router.h"
-#include "../Types/Speed.h"
 
-#include <Titania/Chrono/ClockBase.h>
-
-#include <memory>
 #include <stack>
 
 namespace titania {
 namespace X3D {
 
-using X3DClock         = chrono::clock_base <time_type>;
 using TextureUnitStack = std::stack <int32_t>;
 using TextureArray     = std::vector <int32_t>;
 
@@ -89,7 +86,8 @@ class X3DBrowserContext :
 	public X3DNavigationContext,
 	public X3DNetworkingContext,
 	public X3DPointingDeviceSensorContext,
-	public X3DRenderingContext
+	public X3DRenderingContext,
+	public X3DTimeContext
 {
 public:
 
@@ -136,27 +134,6 @@ public:
 	const SFTime &
 	keyDeviceSensorNodeEvent () const
 	{ return keyDeviceSensorNodeOutput; }
-
-	///  @name Time handling
-
-	void
-	advanceClock ();
-
-	virtual
-	time_type
-	getCurrentTime () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
-
-	double
-	getCurrentSpeed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	double
-	getCurrentFrameRate () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
 
 	///  @name Event handling
 
@@ -287,8 +264,6 @@ private:
 	Output finishedOutput;
 	Output changedOutput;
 
-	std::unique_ptr <X3DClock> clock;
-
 	Router           router;
 	TextureUnitStack textureUnits;
 	TextureUnitStack combinedTextureUnits;
@@ -298,9 +273,7 @@ private:
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
 
-	time_type      changedTime;
-	Speed <double> currentSpeed;
-	double         currentFrameRate;
+	time_type changedTime;
 
 	SelectionPtr    selection;
 	NotificationPtr notification;

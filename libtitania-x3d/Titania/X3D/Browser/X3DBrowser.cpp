@@ -58,6 +58,8 @@ X3DBrowser::X3DBrowser () :
 	  supportedProfiles (supportedComponents),
 	          userAgent (),
 	        description (),
+	       currentSpeed (0),
+	   currentFrameRate (0),
 	              scene (createScene ()),
 	              world (),
 	               root (),
@@ -88,11 +90,13 @@ X3DBrowser::initialize ()
 	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();
 
-	// Replace world service.
+	// Add necessary routes.
+
+	prepareEvents () .addInterest (this, &X3DBrowser::set_prepareEvents);
 
 	scene .addInterest (this, &X3DBrowser::set_scene);
 
-	// Initialize scene
+	// Show splash screen or proceed with empty scene.
 
 	replaceWorld (scene);
 
@@ -131,6 +135,18 @@ X3DBrowser::initialize ()
 	       '\n');
 
 	initialized () = getCurrentTime ();
+}
+
+void
+X3DBrowser::set_prepareEvents ()
+{
+	if (getActiveLayer ())
+		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getTransformationMatrix () .origin (), currentFrameRate);
+
+	else
+		currentSpeed .setPosition (Vector3f (), 0);
+
+	currentFrameRate = 1 / getClock () -> interval ();
 }
 
 X3DBrowser*
@@ -254,7 +270,7 @@ throw (Error <INVALID_SCENE>,
 			{
 				++ inShutdown;
 
-				//advanceClock ();
+				//getClock () -> advance ();
 
 				shutdown () .processInterests ();
 
@@ -350,7 +366,7 @@ throw (Error <INVALID_URL>,
 
 			replaceWorld (scene);
 
-			advanceClock ();
+			getClock () -> advance ();
 
 			return;
 		}

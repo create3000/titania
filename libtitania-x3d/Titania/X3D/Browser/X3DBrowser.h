@@ -35,6 +35,7 @@
 #include "../Configuration/SupportedFields.h"
 #include "../Configuration/SupportedNodes.h"
 #include "../Configuration/SupportedProfiles.h"
+#include "../Types/Speed.h"
 
 #include <Titania/Stream/InputFileStream.h>
 
@@ -90,6 +91,18 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return description; }
+
+	double
+	getCurrentSpeed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return currentSpeed; }
+
+	double
+	getCurrentFrameRate () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return currentFrameRate; }
 
 	virtual
 	const basic::uri &
@@ -288,17 +301,23 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DBrowser ();
 
 	virtual
 	void
 	initialize () override;
 
+	///  @name Destruction
+
 	virtual
 	~X3DBrowser ();
 
 
 private:
+
+	///  @name Member access
 
 	void
 	setUserAgent (const std::string & value)
@@ -308,6 +327,8 @@ private:
 	const WorldPtr &
 	getWorld () const final override
 	{ return world; }
+
+	///  @name Operations
 
 	void
 	bindViewpoint (X3DViewpointNode* const);
@@ -319,6 +340,11 @@ private:
 	void
 	print (std::ostringstream &)
 	{ }
+
+	///  @name Event handlers
+
+	void
+	set_prepareEvents ();
 
 	void
 	set_scene ();
@@ -337,8 +363,10 @@ private:
 	SupportedComponents supportedComponents;
 	SupportedProfiles   supportedProfiles;
 
-	std::string userAgent;
-	SFString    description;
+	std::string    userAgent;
+	SFString       description;
+	Speed <double> currentSpeed;
+	double         currentFrameRate;
 
 	ScenePtr scene;
 	WorldPtr world;

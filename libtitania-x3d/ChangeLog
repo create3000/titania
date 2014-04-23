@@ -1,5 +1,17 @@
 2014-04-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* X3DBaseNode.h:
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DTimeContext.h:
+	* X3DTimeDependentNode.cpp: 
+
+2014-04-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DBrowserContext.h:

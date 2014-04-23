@@ -123,7 +123,6 @@ public:
 
 	///  @name Commons members
 
-	virtual
 	time_type
 	getCurrentTime () const;
 
