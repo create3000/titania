@@ -54,6 +54,7 @@
 #include "../Execution/X3DExecutionContext.h"
 
 #include "../Browser/Core/X3DCoreContext.h"
+#include "../Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.h"
 #include "../Browser/Layering/X3DLayeringContext.h"
 #include "../Browser/Layout/X3DLayoutContext.h"
 #include "../Browser/Lighting/X3DLightingContext.h"
@@ -63,7 +64,6 @@
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
-#include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Types/Pointer.h"
 
 #include "../Routing/Router.h"
@@ -80,6 +80,7 @@ class X3DBrowserContext :
 	virtual public X3DBaseNode,
 	public X3DExecutionContext,
 	public X3DCoreContext,
+	public X3DKeyDeviceSensorContext,
 	public X3DLayeringContext,
 	public X3DLayoutContext,
 	public X3DLightingContext,
@@ -127,14 +128,6 @@ public:
 	changed () const
 	{ return changedOutput; }
 
-	SFTime &
-	keyDeviceSensorNodeEvent ()
-	{ return keyDeviceSensorNodeOutput; }
-
-	const SFTime &
-	keyDeviceSensorNodeEvent () const
-	{ return keyDeviceSensorNodeOutput; }
-
 	///  @name Event handling
 
 	Router &
@@ -168,15 +161,6 @@ public:
 	bool
 	isEnabledTexture () const
 	{ return texture; }
-
-	///  @name Key device handling
-
-	void
-	setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const);
-
-	X3DKeyDeviceSensorNode*
-	getKeyDeviceSensorNode () const
-	{ return keyDeviceSensorNode; }
 
 	///  @name Children
 
@@ -269,9 +253,6 @@ private:
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;
 	bool             texture;
-
-	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
-	SFTime                  keyDeviceSensorNodeOutput;
 
 	time_type changedTime;
 

@@ -1,3 +1,21 @@
+2014-04-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserSurface.h:
+	* X3DBrowserContext.h:
+	* KeyDevice.h:
+	* KeyDevice.cpp:
+	* X3DBrowserContext.cpp:
+	* KeyDevice.h:
+	* KeyDevice.cpp:
+	* X3DNetworkingContext.h:
+	* X3DNetworkingContext.cpp:
+	* X3DKeyDeviceSensorContext.h:
+	* X3DKeyDeviceSensorContext.cpp: 
+
 2014-04-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

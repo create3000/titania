@@ -27,7 +27,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
-	Titania/X3D/Browser/Devices/KeyDevice.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
@@ -37,6 +36,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
+	Titania/X3D/Browser/KeyDeviceSensor/KeyDevice.cpp \
+	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \

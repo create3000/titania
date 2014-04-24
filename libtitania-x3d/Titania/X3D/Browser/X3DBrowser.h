@@ -76,11 +76,6 @@ public:
 	throw (Error <DISPOSED>)
 	{ return version; }
 
-	const std::string &
-	getUserAgent () const
-	throw (Error <DISPOSED>)
-	{ return userAgent; }
-
 	void
 	setDescription (const std::string & value)
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -319,10 +314,6 @@ private:
 
 	///  @name Member access
 
-	void
-	setUserAgent (const std::string & value)
-	{ userAgent = value; }
-
 	virtual
 	const WorldPtr &
 	getWorld () const final override
@@ -363,7 +354,6 @@ private:
 	SupportedComponents supportedComponents;
 	SupportedProfiles   supportedProfiles;
 
-	std::string    userAgent;
 	SFString       description;
 	Speed <double> currentSpeed;
 	double         currentFrameRate;

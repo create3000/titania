@@ -52,7 +52,9 @@
 #define __TITANIA_X3D_BROWSER_NETWORKING_X3DNETWORKING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Types/Pointer.h"
 
+#include <deque>
 #include <mutex>
 
 namespace titania {
@@ -65,6 +67,18 @@ public:
 
 	///  @name Member access
 
+	const std::string &
+	getProviderUrl () const
+	{ return providerUrl; }
+
+	const std::string &
+	getUserAgent () const
+	{ return userAgent; }
+
+	const ScenePtr &
+	getEmptyScene () const
+	{ return emptyScene; }
+
 	std::mutex &
 	getDownloadMutex ();
 
@@ -74,6 +88,9 @@ public:
 	void
 	dispose () override
 	{ }
+	
+	virtual
+	~X3DNetworkingContext ();
 
 
 protected:
@@ -97,7 +114,15 @@ protected:
 
 private:
 
-	// Members
+	///  @name Static Members
+
+	static const std::string providerUrl;
+
+	///  @name Members
+
+	std::string userAgent;
+
+	ScenePtr emptyScene;
 
 	size_t                  downloadMutexIndex;
 	std::deque <std::mutex> downloadMutexes;

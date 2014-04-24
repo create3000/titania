@@ -72,6 +72,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                   X3DBaseNode (),
 	           X3DExecutionContext (),
 	                X3DCoreContext (),
+	     X3DKeyDeviceSensorContext (),
 	            X3DLayeringContext (),
 	              X3DLayoutContext (),
 	            X3DLightingContext (),
@@ -96,7 +97,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	          combinedTextureUnits (),
 	                 textureStages (),
 	                       texture (false),
-	           keyDeviceSensorNode (nullptr),
 	                   changedTime (0),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
@@ -109,7 +109,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	             browserProperties,
 	             browserOptions,
 	             javaScriptEngine,
-	             keyDeviceSensorNodeOutput,
 	             selection,
 	             notification,
 	             console);
@@ -120,6 +119,7 @@ X3DBrowserContext::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DCoreContext::initialize ();
+	X3DKeyDeviceSensorContext::initialize ();
 	X3DLayeringContext::initialize ();
 	X3DLayoutContext::initialize ();
 	X3DLightingContext::initialize ();
@@ -148,26 +148,12 @@ X3DBrowserContext::initialize ()
 		// TextureUnits
 
 		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
-			textureUnits .push (i);          // Don't add GL_TEXTURE0
+			textureUnits .push (i);                                            // Don't add GL_TEXTURE0
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);  // Don't add GL_TEXTURE0
+			combinedTextureUnits .push (i);                                    // Don't add GL_TEXTURE0
+
 	}
-}
-
-// Key device
-
-void
-X3DBrowserContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
-{
-	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> shutdown () .removeInterest (this, &X3DBrowserContext::setKeyDeviceSensorNode);
-
-	keyDeviceSensorNode         = value;
-	keyDeviceSensorNodeEvent () = getCurrentTime ();
-
-	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> shutdown () .addInterest (this, &X3DBrowserContext::setKeyDeviceSensorNode, nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,6 +260,7 @@ X3DBrowserContext::dispose ()
 	X3DLightingContext::dispose ();
 	X3DLayoutContext::dispose ();
 	X3DLayeringContext::dispose ();
+	X3DKeyDeviceSensorContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();
 }

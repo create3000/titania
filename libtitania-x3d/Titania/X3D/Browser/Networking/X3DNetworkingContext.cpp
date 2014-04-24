@@ -50,6 +50,9 @@
 
 #include "X3DNetworkingContext.h"
 
+#include "../X3DBrowser.h"
+#include "../../Execution/Scene.h"
+
 #include <omp.h>
 
 namespace titania {
@@ -57,16 +60,27 @@ namespace X3D {
 
 static constexpr int32_t DOWNLOAD_THREADS_MAX = 8;
 
+const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000.de";
+
 X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
+	         userAgent (),
+	        emptyScene (),
 	downloadMutexIndex (0),
 	   downloadMutexes (1),
 	     downloadMutex ()
-{ }
+{
+	addChildren (emptyScene);
+}
 
 void
 X3DNetworkingContext::initialize ()
 {
+	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +" + providerUrl + ")";
+
+	emptyScene = getBrowser () -> createScene ();
+	emptyScene -> setup ();
+
 	downloadMutexes .resize (std::min <int32_t> (omp_get_max_threads () * 2, DOWNLOAD_THREADS_MAX));
 }
 
@@ -93,6 +107,9 @@ X3DNetworkingContext::unlock ()
 	for (auto & downloadMutex : downloadMutexes)
 		downloadMutex .unlock ();
 }
+
+X3DNetworkingContext::~X3DNetworkingContext ()
+{ }
 
 } // X3D
 } // titania

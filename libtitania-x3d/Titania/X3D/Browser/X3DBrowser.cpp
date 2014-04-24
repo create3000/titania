@@ -56,7 +56,6 @@ X3DBrowser::X3DBrowser () :
 	     supportedNodes (this),
 	supportedComponents (true),
 	  supportedProfiles (supportedComponents),
-	          userAgent (),
 	        description (),
 	       currentSpeed (0),
 	   currentFrameRate (0),
@@ -71,7 +70,6 @@ X3DBrowser::X3DBrowser () :
 	enable_backtrace ();
 
 	setName ("Titania");
-	setUserAgent (getName () + "/" + getVersion () + " (X3D Browser; +http://titania.create3000.de)");
 
 	addChildren (description,
 	             scene,

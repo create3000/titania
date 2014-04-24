@@ -552,7 +552,6 @@
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
     <None Include="Titania\X3D\InputOutput\Loader.h" />
-    <None Include="Titania\X3D\Browser\Devices\KeyDevice.h" />
     <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
     <None Include="Titania\X3D\Bits\HatchStyles.h" />
     <None Include="Titania\X3D\Bits\Linetypes.h" />
@@ -679,6 +678,8 @@
     <None Include="Titania\X3D\Browser\Lighting\X3DLightingContext.h" />
     <None Include="Titania\X3D\Browser\Layering\X3DLayeringContext.h" />
     <None Include="Titania\X3D\Browser\Time\X3DTimeContext.h" />
+    <None Include="Titania\X3D\Browser\KeyDeviceSensor\X3DKeyDeviceSensorContext.h" />
+    <None Include="Titania\X3D\Browser\KeyDeviceSensor\KeyDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1106,7 +1107,6 @@
     <Compile Include="Titania\X3D\Miscellaneous\FontConfig.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\MediaStream.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Loader.cpp" />
-    <Compile Include="Titania\X3D\Browser\Devices\KeyDevice.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
     <Compile Include="Titania\X3D\Browser\Notification.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
@@ -1164,6 +1164,8 @@
     <Compile Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Lighting\X3DLightingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Layering\X3DLayeringContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\KeyDeviceSensor\X3DKeyDeviceSensorContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\KeyDeviceSensor\KeyDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1216,6 +1218,7 @@
     <Folder Include="Titania\X3D\Browser\Lighting\" />
     <Folder Include="Titania\X3D\Browser\Layering\" />
     <Folder Include="Titania\X3D\Browser\Time\" />
+    <Folder Include="Titania\X3D\Browser\KeyDeviceSensor\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,97 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
-#define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
+#ifndef __TITANIA_X3D_BROWSER_KEY_DEVICE_SENSOR_X3DKEY_DEVICE_SENSOR_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_KEY_DEVICE_SENSOR_X3DKEY_DEVICE_SENSOR_CONTEXT_H__
 
-#include <Titania/OpenGL/Surface.h>
-
-#include "../Browser/KeyDeviceSensor/KeyDevice.h"
-#include "../Browser/PointingDeviceSensor/PointingDevice.h"
-#include "../Browser/Viewer/X3DViewer.h"
-#include "../Browser/X3DBrowser.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface :
-	public opengl::Surface, public X3DBrowser
+class X3DKeyDeviceSensorNode;
+
+class X3DKeyDeviceSensorContext :
+	virtual public X3DBaseNode
 {
 public:
-
-	using X3DBrowser::update;
 
 	///  @name Member access
 
 	void
-	setCursor (Gdk::CursorType cursor_type)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+	setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const);
 
-	///  @name Operations
+	X3DKeyDeviceSensorNode*
+	getKeyDeviceSensorNode () const
+	{ return keyDeviceSensorNode; }
 
-	virtual
-	bool
-	makeCurrent () const final override
-	{ return opengl::Surface::makeCurrent (); }
+	SFTime &
+	keyDeviceSensorNodeEvent ()
+	{ return keyDeviceSensorNodeOutput; }
 
-	virtual
-	void
-	swapBuffers () const final override
-	{ opengl::Surface::swapBuffers (); }
+	const SFTime &
+	keyDeviceSensorNodeEvent () const
+	{ return keyDeviceSensorNodeOutput; }
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override
+	{ }
+
 
 protected:
 
 	///  @name Construction
 
-	X3DBrowserSurface ();
-
-	X3DBrowserSurface (const X3DBrowserSurface &);
+	X3DKeyDeviceSensorContext ();
 
 	virtual
 	void
-	initialize () override;
+	initialize () override
+	{ }
 
 
 private:
 
-	///  @name Construction
+	// Members
 
-	virtual
-	void
-	construct () final override
-	{ setup (); }
-
-	///  @name Event handler
-
-	void
-	set_changed ();
-
-	void
-	set_viewer (ViewerType);
-	
-	///  @name Operations
-
-	virtual
-	void
-	reshape () final override
-	{ X3DBrowser::reshape (); }
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final override
-	{ update (); }
-
-	///  @name Members
-
-	std::unique_ptr <X3DViewer> viewer;
-	KeyDevice                   keyDevice;
-	PointingDevice              pointingDevice;
+	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
+	SFTime                  keyDeviceSensorNodeOutput;
 
 };
 

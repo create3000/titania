@@ -51,6 +51,7 @@
 #include "KeyDevice.h"
 
 #include "../X3DBrowserSurface.h"
+#include "../../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 
 namespace titania {
 namespace X3D {
