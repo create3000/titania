@@ -252,7 +252,7 @@ private:
 	void
 	removeTimeouts ();
 	
-	// Members
+	///  @name Members
 
 	struct Fields
 	{

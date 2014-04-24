@@ -57,11 +57,6 @@
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
 #include "../Context.h"
-#include "../JavaScript/SpiderMonkey.h"
-#include "../Rendering/ViewVolume.h"
-
-#include <Titania/Chrono/CountingClock.h>
-#include <Titania/Chrono/SystemClock.h>
 
 #include <cassert>
 
@@ -80,15 +75,15 @@ X3DBrowserContext::X3DBrowserContext () :
 	          X3DNetworkingContext (),
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
+	           X3DScriptingContext (),
 	                X3DTimeContext (),
 	           renderingProperties (new RenderingProperties (this)),
 	             browserProperties (new BrowserProperties   (this)),
 	                browserOptions (new BrowserOptions      (this)),
-	              javaScriptEngine (new SpiderMonkey        (this)),
 	             initializedOutput (),
 	                reshapedOutput (),
-	                 sensorsOutput (),
 	           prepareEventsOutput (),
+	                 sensorsOutput (),
 	               displayedOutput (),
 	                finishedOutput (),
 	                 changedOutput (),
@@ -108,7 +103,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	             renderingProperties,
 	             browserProperties,
 	             browserOptions,
-	             javaScriptEngine,
 	             selection,
 	             notification,
 	             console);
@@ -127,6 +121,7 @@ X3DBrowserContext::initialize ()
 	X3DNetworkingContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
+	X3DScriptingContext::initialize ();
 	X3DTimeContext::initialize ();
 
 	// Initialize OpenGL context
@@ -140,7 +135,6 @@ X3DBrowserContext::initialize ()
 		renderingProperties -> setup ();
 		browserProperties   -> setup ();
 		browserOptions      -> setup ();
-		javaScriptEngine    -> setup ();
 		selection           -> setup ();
 		notification        -> setup ();
 		console             -> setup ();
@@ -248,11 +242,13 @@ X3DBrowserContext::dispose ()
 	initializedOutput   .dispose ();
 	reshapedOutput      .dispose ();
 	prepareEventsOutput .dispose ();
+	sensorsOutput       .dispose ();
 	displayedOutput     .dispose ();
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
 	X3DTimeContext::dispose ();
+	X3DScriptingContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();
 	X3DNetworkingContext::dispose ();

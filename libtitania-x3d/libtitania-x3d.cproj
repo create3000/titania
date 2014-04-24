@@ -680,6 +680,7 @@
     <None Include="Titania\X3D\Browser\Time\X3DTimeContext.h" />
     <None Include="Titania\X3D\Browser\KeyDeviceSensor\X3DKeyDeviceSensorContext.h" />
     <None Include="Titania\X3D\Browser\KeyDeviceSensor\KeyDevice.h" />
+    <None Include="Titania\X3D\Browser\Scripting\X3DScriptingContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1166,6 +1167,7 @@
     <Compile Include="Titania\X3D\Browser\Layering\X3DLayeringContext.cpp" />
     <Compile Include="Titania\X3D\Browser\KeyDeviceSensor\X3DKeyDeviceSensorContext.cpp" />
     <Compile Include="Titania\X3D\Browser\KeyDeviceSensor\KeyDevice.cpp" />
+    <Compile Include="Titania\X3D\Browser\Scripting\X3DScriptingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1219,6 +1221,7 @@
     <Folder Include="Titania\X3D\Browser\Layering\" />
     <Folder Include="Titania\X3D\Browser\Time\" />
     <Folder Include="Titania\X3D\Browser\KeyDeviceSensor\" />
+    <Folder Include="Titania\X3D\Browser\Scripting\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

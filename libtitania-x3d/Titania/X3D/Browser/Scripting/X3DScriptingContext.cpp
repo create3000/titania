@@ -48,67 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_BVH_H__
-#define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
+#include "X3DScriptingContext.h"
 
-#include "../Types/Numbers.h"
-
-#include <memory>
-#include <vector>
+#include "../../JavaScript/SpiderMonkey.h"
 
 namespace titania {
 namespace X3D {
 
-/**
- *  BVH - class to represent a Bounded volume hierarchy.
- */
-
-class BVH
+X3DScriptingContext::X3DScriptingContext () :
+	     X3DBaseNode (),
+	javaScriptEngine (new SpiderMonkey (getExecutionContext ()))
 {
-public:
+	addChildren (javaScriptEngine);
+}
 
-	struct ArrayValue
-	{
-		ArrayValue (int32_t type, Vector3f min, Vector3f max, int32_t left, int32_t right) :
-			 type (type),
-			  min (min),
-			  max (max),
-			 left (left),
-			right (right)
-	     	{ }
+void
+X3DScriptingContext::initialize ()
+{
+	javaScriptEngine -> setup ();
+}
 
-		int32_t type;
-		Vector3f min;
-		Vector3f max;
-		int32_t left;
-		int32_t right;
-	};
-
-	BVH (std::vector <Vector3f>&&);
-
-	std::vector <ArrayValue>
-	toArray () const;
-
-	virtual
-	~BVH ();
-
-private:
-
-	class SortComparator;
-	class MedianComparator;
-
-	class X3DNode;
-	class Triangle;
-	class Node;
-
-	///  @name Members
-
-	std::vector <Vector3f>    vertices;
-	std::unique_ptr <X3DNode> root;
-
-};
+X3DScriptingContext::~X3DScriptingContext ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

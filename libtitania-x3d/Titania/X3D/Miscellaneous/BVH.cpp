@@ -142,7 +142,7 @@ public:
 	size_t
 	toArray (std::vector <ArrayValue> &) const = 0;
 
-	// Members
+	///  @name Members
 
 	BVH* const tree;
 
@@ -286,7 +286,7 @@ private:
 		}
 	}
 
-	// Members
+	///  @name Members
 
 	Vector3f min;
 	Vector3f max;

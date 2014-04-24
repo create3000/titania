@@ -2,6 +2,26 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* BVH.h:
+	* BVH.cpp:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DTimeContext.h:
+	* X3DCoreContext.h:
+	* X3DLayoutContext.h:
+	* X3DLightingContext.h:
+	* X3DTimeDependentNode.h:
+	* X3DRenderingContext.h:
+	* X3DScriptingContext.h:
+	* jsX3DConstants.h:
+	* X3DScriptingContext.cpp:
+	* X3DKeyDeviceSensorContext.h: 
+
+2014-04-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* X3DBrowser.h:
 	* X3DBrowser.cpp:
 	* X3DBrowserSurface.h:

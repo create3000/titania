@@ -62,6 +62,7 @@
 #include "../Browser/Networking/X3DNetworkingContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
+#include "../Browser/Scripting/X3DScriptingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
 #include "../Types/Pointer.h"
@@ -88,6 +89,7 @@ class X3DBrowserContext :
 	public X3DNetworkingContext,
 	public X3DPointingDeviceSensorContext,
 	public X3DRenderingContext,
+	public X3DScriptingContext,
 	public X3DTimeContext
 {
 public:
@@ -133,12 +135,6 @@ public:
 	Router &
 	getRouter ()
 	{ return router; }
-
-	///  @name JavaScript handling
-
-	const X3DJavaScriptEnginePtr &
-	getJavaScriptEngine () const
-	{ return javaScriptEngine; }
 
 	///  @name Texture unit stack handling
 
@@ -220,7 +216,6 @@ protected:
 	RenderingPropertiesPtr renderingProperties;
 	BrowserPropertiesPtr   browserProperties;
 	BrowserOptionsPtr      browserOptions;
-	X3DJavaScriptEnginePtr javaScriptEngine;
 
 	///  @name Constructor
 
@@ -237,13 +232,13 @@ protected:
 
 private:
 
-	// Members
+	///  @name Members
 
 	SFTime initializedOutput;
 	Output pickedOutput;
 	Output reshapedOutput;
-	Output sensorsOutput;
 	Output prepareEventsOutput;
+	Output sensorsOutput;
 	Output displayedOutput;
 	Output finishedOutput;
 	Output changedOutput;

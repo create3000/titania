@@ -98,7 +98,7 @@ protected:
 
 private:
 
-	// Members
+	///  @name Members
 
 	LayoutStack layouts;
 

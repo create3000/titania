@@ -103,7 +103,7 @@ protected:
 
 private:
 
-	// Members
+	///  @name Members
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;

@@ -87,7 +87,7 @@ protected:
 
 private:
 
-	// Members
+	///  @name Members
 
 	std::set <std::string> extensions;
 

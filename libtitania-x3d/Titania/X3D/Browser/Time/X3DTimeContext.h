@@ -100,7 +100,7 @@ protected:
 
 private:
 
-	// Members
+	///  @name Members
 
 	std::unique_ptr <X3DClock> clock;
 

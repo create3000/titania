@@ -48,63 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_BVH_H__
-#define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
+#ifndef __TITANIA_X3D_BROWSER_SCRIPTING_X3DSCRIPTING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_SCRIPTING_X3DSCRIPTING_CONTEXT_H__
 
-#include "../Types/Numbers.h"
-
-#include <memory>
-#include <vector>
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
 
-/**
- *  BVH - class to represent a Bounded volume hierarchy.
- */
-
-class BVH
+class X3DScriptingContext :
+	virtual public X3DBaseNode
 {
 public:
 
-	struct ArrayValue
-	{
-		ArrayValue (int32_t type, Vector3f min, Vector3f max, int32_t left, int32_t right) :
-			 type (type),
-			  min (min),
-			  max (max),
-			 left (left),
-			right (right)
-	     	{ }
+	///  @name Member access
 
-		int32_t type;
-		Vector3f min;
-		Vector3f max;
-		int32_t left;
-		int32_t right;
-	};
+	const X3DJavaScriptEnginePtr &
+	getJavaScriptEngine () const
+	{ return javaScriptEngine; }
 
-	BVH (std::vector <Vector3f>&&);
-
-	std::vector <ArrayValue>
-	toArray () const;
+	///  @name Destruction
 
 	virtual
-	~BVH ();
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DScriptingContext ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DScriptingContext ();
+
+	virtual
+	void
+	initialize () override;
+
 
 private:
 
-	class SortComparator;
-	class MedianComparator;
-
-	class X3DNode;
-	class Triangle;
-	class Node;
-
 	///  @name Members
 
-	std::vector <Vector3f>    vertices;
-	std::unique_ptr <X3DNode> root;
+	X3DJavaScriptEnginePtr javaScriptEngine;
 
 };
 

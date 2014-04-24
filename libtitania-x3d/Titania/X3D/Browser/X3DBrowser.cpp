@@ -124,7 +124,7 @@ X3DBrowser::initialize ()
 	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
 
 	       renderingProperties, '\n',
-	       javaScriptEngine, '\n',
+	       getJavaScriptEngine (), '\n',
 
 	       "\tId: ", this, '\n',
 

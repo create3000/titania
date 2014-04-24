@@ -351,7 +351,7 @@ private:
 	static JSBool X3DViewpointNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DViewportNode              (JSContext *, JSObject *, jsid, jsval*);
 
-	// Members
+	///  @name Static Members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

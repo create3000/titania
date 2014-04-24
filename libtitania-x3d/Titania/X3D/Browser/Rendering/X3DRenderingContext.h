@@ -97,7 +97,7 @@ protected:
 
 private:
 
-	// Members
+	///  @name Members
 
 	int32_t        maxClipPlanes;
 	ClipPlaneStack clipPlanes;
