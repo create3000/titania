@@ -69,17 +69,15 @@ namespace X3D {
 // QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   Render quality while camera is moving
 // Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
 // MotionBlur              Boolean                                  False                        Render animations with motion blur
+//
 // MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
-// MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
 
 class Appearance;
 class LineProperties;
 class FillProperties;
 class X3DFontStyleNode;
-class TextureProperties;
-class X3DTextureTransformNode;
 class X3DParticleEmitterNode;
 class Arc2DOptions;
 class ArcClose2DOptions;
@@ -88,7 +86,6 @@ class Disk2DOptions;
 class Rectangle2DOptions;
 class BoxOptions;
 class X3DSphereOptionNode;
-class X3DTextureCoordinateNode;
 class MotionBlur;
 
 class BrowserOptions :
@@ -218,14 +215,6 @@ public:
 	gravity () const
 	{ return *fields .gravity; }
 
-	SFInt32 &
-	minTextureSize ()
-	{ return *fields .minTextureSize; }
-
-	const SFInt32 &
-	minTextureSize () const
-	{ return *fields .minTextureSize; }
-
 	X3DPtr <MotionBlur> &
 	motionBlurOptions ()
 	{ return fields .motionBlurOptions; }
@@ -257,22 +246,6 @@ public:
 	const X3DPtr <FillProperties> &
 	fillProperties () const
 	{ return fields .fillProperties; }
-
-	X3DPtr <TextureProperties> &
-	textureProperties ()
-	{ return fields .textureProperties; }
-
-	const X3DPtr <TextureProperties> &
-	textureProperties () const
-	{ return fields .textureProperties; }
-
-	X3DPtr <X3DTextureTransformNode> &
-	textureTransform ()
-	{ return fields .textureTransform; }
-
-	const X3DPtr <X3DTextureTransformNode> &
-	textureTransform () const
-	{ return fields .textureTransform; }
 
 	X3DPtr <X3DParticleEmitterNode> &
 	emitter ()
@@ -338,14 +311,6 @@ public:
 	sphere () const
 	{ return fields .sphere; }
 
-	X3DPtr <X3DTextureCoordinateNode> &
-	texCoord ()
-	{ return fields .texCoord; }
-
-	const X3DPtr <X3DTextureCoordinateNode> &
-	texCoord () const
-	{ return fields .texCoord; }
-
 	X3DPtr <X3DFontStyleNode> &
 	fontStyle ()
 	{ return fields .fontStyle; }
@@ -400,13 +365,10 @@ private:
 		SFString* const shading;
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
-		SFInt32* const minTextureSize;
 		X3DPtr <MotionBlur> motionBlurOptions;
 		X3DPtr <Appearance> appearance;
 		X3DPtr <LineProperties> lineProperties;
 		X3DPtr <FillProperties> fillProperties;
-		X3DPtr <TextureProperties> textureProperties;
-		X3DPtr <X3DTextureTransformNode> textureTransform;
 		X3DPtr <X3DParticleEmitterNode> emitter;
 		X3DPtr <Arc2DOptions> arc2D;
 		X3DPtr <ArcClose2DOptions> arcClose2D;
@@ -415,7 +377,6 @@ private:
 		X3DPtr <Rectangle2DOptions> rectangle2D;
 		X3DPtr <BoxOptions> box;
 		X3DPtr <X3DSphereOptionNode> sphere;
-		X3DPtr <X3DTextureCoordinateNode> texCoord;
 		X3DPtr <X3DFontStyleNode> fontStyle;
 	};
 

@@ -1406,7 +1406,7 @@ ParticleSystem::drawGeometry ()
 					glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
 				}
 
-				if (getBrowser () -> isEnabledTexture ())
+				if (getBrowser () -> getTexture ())
 					enableTexCoord ();
 
 				glEnableClientState (GL_VERTEX_ARRAY);
@@ -1414,7 +1414,7 @@ ParticleSystem::drawGeometry ()
 
 				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 
-				if (getBrowser () -> isEnabledTexture ())
+				if (getBrowser () -> getTexture ())
 					disableTexCoord ();
 
 				glDisableClientState (GL_COLOR_ARRAY);

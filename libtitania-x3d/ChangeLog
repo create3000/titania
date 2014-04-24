@@ -2,6 +2,36 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* Appearance.cpp:
+	* X3DShapeNode.cpp:
+	* BrowserOptions.h:
+	* X3DShaderNode.cpp:
+	* X3DTextureNode.h:
+	* PixelTexture.cpp:
+	* ImageTexture.cpp:
+	* BrowserOptions.cpp:
+	* X3DTextureNode.cpp:
+	* X3DTexturingContext.h:
+	* RenderingProperties.h:
+	* X3DGeometryNode.cpp:
+	* ImageTexture3D.cpp:
+	* PixelTexture3D.cpp:
+	* X3DTexture3DNode.h:
+	* X3DTexture2DNode.cpp:
+	* X3DTexturingContext.cpp:
+	* TextureProperties.cpp:
+	* RenderingProperties.cpp:
+	* X3DTexture3DNode.cpp:
+	* ParticleSystem.cpp:
+	* MultiTextureTransform.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
+2014-04-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* BVH.h:
 	* BVH.cpp:
 	* X3DBrowser.cpp:

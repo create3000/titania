@@ -109,11 +109,14 @@ X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 
 	// Pick.
 
-	//update (); // We cannot make an update here because of gravity.
+	if (getBrowser () -> makeCurrent ())
+	{
+		//update (); // We cannot make an update here because of gravity.
 
-	getWorld () -> traverse (TraverseType::PICKING);
+		getWorld () -> traverse (TraverseType::PICKING);
 
-	picked () .processInterests ();
+		picked () .processInterests ();
+	}
 
 	// Picking end.
 

@@ -191,7 +191,7 @@ Appearance::set_textureTransform ()
 	if (textureTransformNode)
 		return;
 
-	textureTransformNode .set (getBrowser () -> getBrowserOptions () -> textureTransform ());
+	textureTransformNode .set (getBrowser () -> getTextureTransform ());
 }
 
 void
@@ -258,7 +258,7 @@ Appearance::draw ()
 	if (textureNode)
 	{
 		textureNode -> draw ();
-		getBrowser () -> isEnabledTexture (true);
+		getBrowser () -> setTexture (true);
 	}
 
 	// TextureTransform

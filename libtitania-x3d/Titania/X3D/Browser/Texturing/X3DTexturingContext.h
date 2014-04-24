@@ -48,55 +48,130 @@
  *
  ******************************************************************************/
 
-#include "X3DShaderNode.h"
+#ifndef __TITANIA_X3D_BROWSER_TEXTURING_X3DTEXTURING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_TEXTURING_X3DTEXTURING_CONTEXT_H__
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
+
+#include <stack>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-X3DShaderNode::Fields::Fields () :
-	  activate (new SFBool ()),
-	isSelected (new SFBool ()),
-	   isValid (new SFBool ()),
-	  language (new SFString ())
-{ }
+class TextureProperties;
+class X3DTextureCoordinateNode;
+class X3DTextureTransformNode;
 
-X3DShaderNode::X3DShaderNode () :
-	X3DAppearanceChildNode (),
-	                fields (),
-	              selected (0)
+using TextureUnitStack = std::stack <int32_t>;
+using TextureArray     = std::vector <int32_t>;
+
+class X3DTexturingContext :
+	virtual public X3DBaseNode
 {
-	addNodeType (X3DConstants::X3DShaderNode);
-}
+public:
 
-void
-X3DShaderNode::select ()
-{
-	++ selected;
+	///  @name Member access
 
-	if (not isSelected ())
-		isSelected () = true;
-}
+	void
+	setTexture (const bool value)
+	{ texture = value; }
 
-void
-X3DShaderNode::deselect ()
-{
-	-- selected;
-	
-	if (not selected)
-	{
-		if (isSelected ())
-			isSelected () = false;	
-	}
-}
+	bool
+	getTexture () const
+	{ return texture; }
 
-void
-X3DShaderNode::draw ()
-{
-	glEnable (GL_LIGHTING);
-	getBrowser () -> setTexture (true);
-}
+	size_t
+	getTextureMemory () const
+	{ return textureMemory; }
+
+	size_t
+	getAvailableTextureMemory () const;
+
+	size_t
+	getMinTextureSize () const
+	{ return minTextureSize; }
+
+	size_t
+	getMaxTextureSize () const
+	{ return maxTextureSize; }
+
+	size_t
+	getMaxTextureUnits () const
+	{ return maxTextureUnits; }
+
+	size_t
+	getMaxCombinedTextureUnits () const
+	{ return maxCombinedTextureUnits; }
+
+	TextureUnitStack &
+	getTextureUnits ()
+	{ return textureUnits; }
+
+	TextureUnitStack &
+	getCombinedTextureUnits ()
+	{ return combinedTextureUnits; }
+
+	TextureArray &
+	getTextureStages ()
+	{ return textureStages; }
+
+	const X3DPtr <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoord; }
+
+	const X3DPtr <TextureProperties> &
+	getTextureProperties () const
+	{ return textureProperties; }
+
+	const X3DPtr <X3DTextureTransformNode> &
+	getTextureTransform () const
+	{ return textureTransform; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DTexturingContext ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTexturingContext ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Members
+
+	bool             texture;
+	size_t           textureMemory;
+	size_t           minTextureSize;
+	int32_t          maxTextureSize;
+	int32_t          maxTextureUnits;
+	int32_t          maxCombinedTextureUnits;
+	TextureUnitStack textureUnits;
+	TextureUnitStack combinedTextureUnits;
+	TextureArray     textureStages;
+
+	X3DPtr <X3DTextureCoordinateNode> texCoord;
+	X3DPtr <TextureProperties>        textureProperties;
+	X3DPtr <X3DTextureTransformNode>  textureTransform;
+
+};
 
 } // X3D
 } // titania
+
+#endif

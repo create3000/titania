@@ -162,8 +162,8 @@ private:
 
 	Fields fields;
 
-	int32_t                    width;
-	int32_t                    height;
+	size_t                     width;
+	size_t                     height;
 	size_t                     components;
 	bool                       transparent;
 	X3DPtr <TextureProperties> texturePropertiesNode;

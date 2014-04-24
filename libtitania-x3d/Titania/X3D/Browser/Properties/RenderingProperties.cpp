@@ -88,7 +88,6 @@ RenderingProperties::Fields::Fields () :
 	             shading (new SFString ("GOURAUD")),
 	      maxTextureSize (new SFInt32 ()),
 	        textureUnits (new SFInt32 ()),
-	combinedTextureUnits (new SFInt32 ()),
 	           maxLights (new SFInt32 ()),
 	         antialiased (new SFBool ()),
 	          colorDepth (new SFInt32 ()),
@@ -104,10 +103,10 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "Vendor",         vendor ());
 	addField (outputOnly, "Renderer",       renderer ());
 	addField (outputOnly, "Version",        version ());
+
 	addField (outputOnly, "Shading",        shading ());
 	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
-	addField (outputOnly, "TextureCoord",   textureUnits ());
-	addField (outputOnly, "TextureUnits",   combinedTextureUnits ());
+	addField (outputOnly, "TextureUnits",   textureUnits ());
 	addField (outputOnly, "MaxLights",      maxLights ());
 	addField (outputOnly, "Antialiased",    antialiased ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
@@ -152,69 +151,23 @@ RenderingProperties::initialize ()
 		renderer () = (const char*) glGetString (GL_RENDERER);
 		version ()  = (const char*) glGetString (GL_VERSION);
 
-		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
-
-		GLint glMaxTextureSize, glTextureCoords, glTextureUnits, glCombinedTextureUnits;
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
-		GLint glPolygonSmooth;
-		GLint glTextureMemory = -1;
-
-		glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &glMaxTextureSize);
-		glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &glTextureCoords);
-		glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &glTextureUnits);
-		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glCombinedTextureUnits);
 
 		glGetIntegerv (GL_RED_BITS,   &glRedBits);
 		glGetIntegerv (GL_GREEN_BITS, &glGreen);
 		glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
 		glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
 
-		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
-
-		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // in KBytes
-
-		textureUnits ()         = std::min (glCombinedTextureUnits / 2, std::min (glTextureCoords, glTextureUnits));
-		combinedTextureUnits () = glCombinedTextureUnits;
-		maxTextureSize ()       = glMaxTextureSize;
-		maxLights ()            = getBrowser () -> getMaxLights ();
-		antialiased ()          = glPolygonSmooth;
-		colorDepth ()           = glRedBits + glGreen + glBlueBits + glAlphaBits;
-		textureMemory ()        = double (glTextureMemory) * 1024;
+		textureUnits ()   = getBrowser () -> getMaxTextureUnits ();
+		maxTextureSize () = getBrowser () -> getMaxTextureSize ();
+		textureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
+		maxLights ()      = getBrowser () -> getMaxLights ();
+		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
+
 		set_enabled ();
 	}
-}
-
-size_t
-RenderingProperties::getAvailableTextureMemory ()
-{
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
-
-	if (getBrowser () -> makeCurrent ())
-	{
-		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
-		{
-			GLint kbytes = 0;
-
-			glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
-			return size_t (kbytes) * 1024;
-		}
-
-		//http://www.opengl.org/registry/specs/ATI/meminfo.txt
-		if (getBrowser () -> hasExtension ("GL_ATI_meminfo"))
-		{
-			static constexpr GLenum TEXTURE_FREE_MEMORY_ATI = 0x87FC;
-
-			GLint kbytes [4] = { 0, 0, 0, 0 };
-
-			glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, kbytes);                          // in KBytes
-			return size_t (kbytes [0]) * 1024;
-		}
-	}
-
-	return 0;
 }
 
 void
@@ -293,14 +246,14 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("  Name: %s"), renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
-		string .emplace_back (basic::sprintf (_ ("Texture units:             %d / %d"), textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
-		string .emplace_back (basic::sprintf (_ ("Max texture size:          %d × %d pixel"), maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getMaxTextureUnits (), getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits ()));
+		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), antialiased () .toString () .c_str (), sampleBuffers, samples));
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), maxLights () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %zd"), getBrowser () -> getMaxClipPlanes ()));
 		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), colorDepth () .getValue ()));
-		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
-		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getAvailableTextureMemory ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), strfsize (getBrowser () -> getTextureMemory ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), fps ()));
@@ -322,7 +275,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tOpenGL extension version: " << version () .getValue () << std::endl
 
 		<< "\tRendering properties" << std::endl
-		<< "\t\tTexture units: " << textureUnits () << " / " << combinedTextureUnits () - textureUnits () << std::endl
+		<< "\t\tTexture units: " << textureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl
 		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl

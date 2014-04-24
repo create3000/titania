@@ -204,7 +204,7 @@ X3DShapeNode::disableTextures ()
 		glActiveTexture (GL_TEXTURE0);
 	}
 
-	getBrowser () -> isEnabledTexture (false);
+	getBrowser () -> setTexture (false);
 }
 
 void

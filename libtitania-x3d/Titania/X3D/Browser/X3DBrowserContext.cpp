@@ -76,6 +76,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
 	           X3DScriptingContext (),
+	           X3DTexturingContext (),
 	                X3DTimeContext (),
 	           renderingProperties (new RenderingProperties (this)),
 	             browserProperties (new BrowserProperties   (this)),
@@ -88,10 +89,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	                finishedOutput (),
 	                 changedOutput (),
 	                        router (),
-	                  textureUnits (),
-	          combinedTextureUnits (),
-	                 textureStages (),
-	                       texture (false),
 	                   changedTime (0),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
@@ -122,31 +119,17 @@ X3DBrowserContext::initialize ()
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
 	X3DScriptingContext::initialize ();
+	X3DTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
-
-	// Initialize OpenGL context
 
 	if (glXGetCurrentContext ())
 	{
-		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-
-		// Properties
-
 		renderingProperties -> setup ();
 		browserProperties   -> setup ();
 		browserOptions      -> setup ();
 		selection           -> setup ();
 		notification        -> setup ();
 		console             -> setup ();
-
-		// TextureUnits
-
-		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
-			textureUnits .push (i);                                            // Don't add GL_TEXTURE0
-
-		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);                                    // Don't add GL_TEXTURE0
-
 	}
 }
 
@@ -248,6 +231,7 @@ X3DBrowserContext::dispose ()
 	changedOutput       .dispose ();
 
 	X3DTimeContext::dispose ();
+	X3DTexturingContext::dispose ();
 	X3DScriptingContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();

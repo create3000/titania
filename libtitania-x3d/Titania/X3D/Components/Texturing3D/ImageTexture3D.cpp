@@ -127,8 +127,8 @@ ImageTexture3D::requestAsyncLoad ()
 
 	future .reset (new Texture3DLoader (getExecutionContext (),
 	                                    url (),
-	                                    getBrowser () -> getBrowserOptions () -> minTextureSize (),
-	                                    getBrowser () -> getRenderingProperties () -> maxTextureSize (),
+	                                    getBrowser () -> getMinTextureSize (),
+	                                    getBrowser () -> getMaxTextureSize (),
 	                                    std::bind (std::mem_fn (&ImageTexture3D::setTexture), this, _1)));
 }
 

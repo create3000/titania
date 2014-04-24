@@ -55,6 +55,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Properties/X3DOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
+	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
 	Titania/X3D/Browser/Viewer/ExamineViewer.cpp \
 	Titania/X3D/Browser/Viewer/FlyViewer.cpp \
 	Titania/X3D/Browser/Viewer/LookAtViewer.cpp \

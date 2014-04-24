@@ -196,8 +196,8 @@ PixelTexture::update ()
 
 	TexturePtr texture (new Texture (std::move (mimages)));
 
-	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
-	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
+	texture -> process (getBrowser () -> getMinTextureSize (),
+	                    getBrowser () -> getMaxTextureSize ());
 
 	texture -> setComponents (image () .getComponents ());
 

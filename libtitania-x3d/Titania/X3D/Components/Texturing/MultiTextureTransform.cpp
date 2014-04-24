@@ -84,7 +84,7 @@ MultiTextureTransform::create (X3DExecutionContext* const executionContext) cons
 void
 MultiTextureTransform::draw ()
 {
-	X3DTextureTransformNode* defaultTextureTransform = getBrowser () -> getBrowserOptions () -> textureTransform ();
+	X3DTextureTransformNode* defaultTextureTransform = getBrowser () -> getTextureTransform ();
 	X3DTextureTransformNode* last                    = defaultTextureTransform;
 	size_t                   channel                 = 0;
 	size_t                   size                    = getBrowser () -> getTextureStages () .size ();

@@ -63,19 +63,15 @@
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
+#include "../Browser/Texturing/X3DTexturingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
 #include "../Types/Pointer.h"
 
 #include "../Routing/Router.h"
 
-#include <stack>
-
 namespace titania {
 namespace X3D {
-
-using TextureUnitStack = std::stack <int32_t>;
-using TextureArray     = std::vector <int32_t>;
 
 class X3DBrowserContext :
 	virtual public X3DBaseNode,
@@ -90,6 +86,7 @@ class X3DBrowserContext :
 	public X3DPointingDeviceSensorContext,
 	public X3DRenderingContext,
 	public X3DScriptingContext,
+	public X3DTexturingContext,
 	public X3DTimeContext
 {
 public:
@@ -135,28 +132,6 @@ public:
 	Router &
 	getRouter ()
 	{ return router; }
-
-	///  @name Texture unit stack handling
-
-	TextureUnitStack &
-	getTextureUnits ()
-	{ return textureUnits; }
-
-	TextureUnitStack &
-	getCombinedTextureUnits ()
-	{ return combinedTextureUnits; }
-
-	TextureArray &
-	getTextureStages ()
-	{ return textureStages; }
-
-	void
-	isEnabledTexture (bool value)
-	{ texture = value; }
-
-	bool
-	isEnabledTexture () const
-	{ return texture; }
 
 	///  @name Children
 
@@ -243,11 +218,7 @@ private:
 	Output finishedOutput;
 	Output changedOutput;
 
-	Router           router;
-	TextureUnitStack textureUnits;
-	TextureUnitStack combinedTextureUnits;
-	TextureArray     textureStages;
-	bool             texture;
+	Router router;
 
 	time_type changedTime;
 
