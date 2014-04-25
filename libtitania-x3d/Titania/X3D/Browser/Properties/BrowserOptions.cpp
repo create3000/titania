@@ -50,7 +50,6 @@
 
 #include "BrowserOptions.h"
 
-#include "../../Components/ParticleSystems/PointEmitter.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
@@ -107,7 +106,6 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	     animateStairWalks (new SFBool ()),
 	               gravity (new SFFloat (P_GN)),
 	     motionBlurOptions (new MotionBlur (executionContext)),
-	               emitter (new PointEmitter (executionContext)),
 	                 arc2D (new Arc2DOptions (executionContext)),
 	            arcClose2D (new ArcClose2DOptions (executionContext)),
 	              circle2D (new Circle2DOptions (executionContext)),
@@ -138,7 +136,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
 	addChildren (motionBlurOptions (),
-	             emitter (),
 	             arc2D (),
 	             arcClose2D (),
 	             circle2D (),
@@ -160,7 +157,6 @@ BrowserOptions::initialize ()
 	X3DBaseNode::initialize ();
 
 	motionBlurOptions () -> setup ();
-	emitter ()           -> setup ();
 	arc2D ()             -> setup ();
 	arcClose2D ()        -> setup ();
 	circle2D ()          -> setup ();

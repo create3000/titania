@@ -74,7 +74,6 @@ namespace X3D {
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
-class X3DParticleEmitterNode;
 class Arc2DOptions;
 class ArcClose2DOptions;
 class Circle2DOptions;
@@ -219,14 +218,6 @@ public:
 	motionBlurOptions () const
 	{ return fields .motionBlurOptions; }
 
-	X3DPtr <X3DParticleEmitterNode> &
-	emitter ()
-	{ return fields .emitter; }
-
-	const X3DPtr <X3DParticleEmitterNode> &
-	emitter () const
-	{ return fields .emitter; }
-
 	X3DPtr <Arc2DOptions> &
 	arc2D ()
 	{ return fields .arc2D; }
@@ -330,7 +321,6 @@ private:
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
 		X3DPtr <MotionBlur> motionBlurOptions;
-		X3DPtr <X3DParticleEmitterNode> emitter;
 		X3DPtr <Arc2DOptions> arc2D;
 		X3DPtr <ArcClose2DOptions> arcClose2D;
 		X3DPtr <Circle2DOptions> circle2D;

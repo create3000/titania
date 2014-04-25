@@ -684,6 +684,7 @@
     <None Include="Titania\X3D\Browser\Texturing\X3DTexturingContext.h" />
     <None Include="Titania\X3D\Browser\Shape\X3DShapeContext.h" />
     <None Include="Titania\X3D\Browser\Text\X3DTextContext.h" />
+    <None Include="Titania\X3D\Browser\ParticleSystems\X3DParticleSystemsContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1174,6 +1175,7 @@
     <Compile Include="Titania\X3D\Browser\Texturing\X3DTexturingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Shape\X3DShapeContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\X3DTextContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\ParticleSystems\X3DParticleSystemsContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1230,6 +1232,7 @@
     <Folder Include="Titania\X3D\Browser\Texturing\" />
     <Folder Include="Titania\X3D\Browser\Shape\" />
     <Folder Include="Titania\X3D\Browser\Text\" />
+    <Folder Include="Titania\X3D\Browser\ParticleSystems\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

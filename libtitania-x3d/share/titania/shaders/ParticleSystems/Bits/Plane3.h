@@ -45,7 +45,7 @@ intersect (in Plane3 plane, in Line3 line, out vec3 point)
 
 /* Find find the first point that is farther to the plane than value. */
 int
-upper_bound (inout vec3 points [ARRAY_SIZE], in int count, in float value, in Plane3 plane)
+upper_bound (in vec3 points [ARRAY_SIZE], in int count, in float value, in Plane3 plane)
 {
 	int first = 0;
 	int step  = 0;

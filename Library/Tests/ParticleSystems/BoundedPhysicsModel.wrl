@@ -6,7 +6,7 @@ EXTERNPROTO IcoSphere [
   inputOutput    SFFloat  radius
   initializeOnly SFBool   solid
 ]
-[ "../../../Titania/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv", "file:///usr/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv" ]
+[ "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/IcoSphere.x3dv", "file:///usr/share/titania/Prototypes/0.1/Geometry3D/IcoSphere.x3dv" ]
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2

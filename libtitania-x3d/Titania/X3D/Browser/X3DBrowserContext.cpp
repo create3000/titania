@@ -73,6 +73,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	            X3DLightingContext (),
 	          X3DNavigationContext (),
 	          X3DNetworkingContext (),
+	     X3DParticleSystemsContext (),
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
 	           X3DScriptingContext (),
@@ -118,6 +119,7 @@ X3DBrowserContext::initialize ()
 	X3DLightingContext::initialize ();
 	X3DNavigationContext::initialize ();
 	X3DNetworkingContext::initialize ();
+	X3DParticleSystemsContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
 	X3DScriptingContext::initialize ();
@@ -241,6 +243,7 @@ X3DBrowserContext::dispose ()
 	X3DScriptingContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();
+	X3DParticleSystemsContext::dispose ();
 	X3DNetworkingContext::dispose ();
 	X3DNavigationContext::dispose ();
 	X3DLightingContext::dispose ();

@@ -665,7 +665,7 @@ ParticleSystem::set_emitter ()
 	emitterNode .set (x3d_cast <X3DParticleEmitterNode*> (emitter ()));
 
 	if (not emitterNode)
-		emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
+		emitterNode .set (getBrowser () -> getEmitter ());
 
 	// Shader
 
