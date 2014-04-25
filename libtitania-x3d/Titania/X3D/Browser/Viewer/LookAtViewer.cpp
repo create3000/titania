@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 #include "LookAtViewer.h"
 
@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-LookAtViewer::LookAtViewer (X3DBrowserSurface* const browser) :
+LookAtViewer::LookAtViewer (Browser* const browser) :
 	  X3DViewer (browser),
 	    picking (browser -> getPicking ()),
 	     isOver (false),

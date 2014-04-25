@@ -48,71 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_OBJECT_H__
+#define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_OBJECT_H__
 
-#include "../Viewer/X3DViewer.h"
+#include "../Base/X3DInput.h"
+#include <sigc++/trackable.h>
 
 namespace titania {
 namespace X3D {
 
 class Browser;
 
-class PlaneViewer :
-	public X3DViewer
+class X3DBrowserObject :
+	virtual public X3DInput, virtual public sigc::trackable
 {
 public:
 
 	///  @name Construction
 
-	PlaneViewer (Browser* const, NavigationInfo* const);
+	X3DBrowserObject (Browser* const browser = nullptr) :
+		       X3DInput (),
+		sigc::trackable (),
+		        browser (browser)
+	{ }
+
+	void
+	setup ()
+   { initialize (); }
 
 	///  @name Member access
 
-	virtual
-	ViewerType
-	getType () const final override
-	{ return ViewerType::PLANE; }
-
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return navigationInfo; }
+	Browser*
+	getBrowser () const
+	{ return browser; }
 
 	///  @name Destruction
 
-	~PlaneViewer ();
+	virtual
+	~X3DBrowserObject ()
+	{ }
+
+
+protected:
+
+	virtual
+	void
+	initialize ()
+	{ }
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	void
-	constrainFieldOfViewScale () const;
-
-	///  @name Members
-
-	NavigationInfo* const navigationInfo;
-
-	Vector3f fromPoint;
-	guint    button;
+	Browser* const browser;
 
 };
 

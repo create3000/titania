@@ -53,7 +53,7 @@
 namespace titania {
 namespace X3D {
 
-NoneViewer::NoneViewer (X3DBrowserSurface* const browser) :
+NoneViewer::NoneViewer (Browser* const browser) :
 	X3DViewer (browser)
 { }
 

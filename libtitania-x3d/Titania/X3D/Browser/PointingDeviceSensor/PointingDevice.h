@@ -51,23 +51,22 @@
 #ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_POINTING_DEVICE_H__
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_POINTING_DEVICE_H__
 
-#include "../X3DWidget.h"
+#include "../X3DBrowserObject.h"
 #include "X3DPointingDevice.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface;
+class Browser;
 
 class PointingDevice :
-	public X3DWidget,
 	public X3DPointingDevice
 {
 public:
 
 	///  @name Construction
 
-	PointingDevice (X3DBrowserSurface* const);
+	PointingDevice (Browser* const);
 
 
 private:

@@ -50,20 +50,19 @@
 
 #include "PointingDevice.h"
 
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 namespace titania {
 namespace X3D {
 
-PointingDevice::PointingDevice (X3DBrowserSurface* const browser) :
-	        X3DWidget (browser),
+PointingDevice::PointingDevice (Browser* const browser) :
 	X3DPointingDevice (browser)
 { }
 
 void
 PointingDevice::initialize ()
 {
-	X3DWidget::initialize ();
+	X3DPointingDevice::initialize ();
 
 	getBrowser () -> getPicking () .addInterest (this, &PointingDevice::set_picking);
 

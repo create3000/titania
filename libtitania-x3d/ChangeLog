@@ -1,5 +1,33 @@
 2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBrowserObject.h:
+	* FlyViewer.h:
+	* X3DViewer.h:
+	* WalkViewer.h:
+	* NoneViewer.h:
+	* PlaneViewer.h:
+	* X3DViewer.cpp:
+	* FlyViewer.cpp:
+	* WalkViewer.cpp:
+	* NoneViewer.cpp:
+	* LookAtViewer.h:
+	* X3DFlyViewer.h:
+	* PlaneViewer.cpp:
+	* ExamineViewer.h:
+	* LookAtViewer.cpp:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* KeyDevice.h:
+	* KeyDevice.cpp:
+	* PointingDevice.h:
+	* PointingDevice.cpp:
+	* X3DPointingDevice.h:
+	* X3DPointingDevice.cpp: 
+
+2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTextContext.h:
 	* X3DShapeContext.h:
 	* X3DNetworkingContext.h:

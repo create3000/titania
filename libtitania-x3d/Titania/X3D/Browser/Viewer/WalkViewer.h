@@ -61,7 +61,7 @@ class WalkViewer :
 {
 public:
 
-	WalkViewer (X3DBrowserSurface* const, NavigationInfo* const);
+	WalkViewer (Browser* const, NavigationInfo* const);
 
 	virtual
 	ViewerType

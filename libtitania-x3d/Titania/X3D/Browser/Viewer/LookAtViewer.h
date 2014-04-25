@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	LookAtViewer (X3DBrowserSurface* const);
+	LookAtViewer (Browser* const);
 
 	///  @name Member access
 

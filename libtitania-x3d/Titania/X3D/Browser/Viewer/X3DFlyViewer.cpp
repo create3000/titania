@@ -53,7 +53,7 @@
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../Properties/BrowserOptions.h"
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 #include <Titania/Chrono/Now.h>
 #include <Titania/Math/Geometry/Camera.h>
@@ -76,7 +76,7 @@ static constexpr time_type FRAME_RATE             = 60;
 
 static constexpr Vector3f yAxis (0, 1, 0);
 
-X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
+X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* const navigationInfo) :
 	          X3DViewer (browser),
 	     navigationInfo (navigationInfo),
 	        orientation (),

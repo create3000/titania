@@ -50,7 +50,7 @@
 
 #include "ExamineViewer.h"
 
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 #include <Titania/Chrono/Now.h>
 #include <cmath>
@@ -66,7 +66,7 @@ static constexpr float     SPIN_FACTOR       = 0.6;
 static constexpr float     SCROLL_FACTOR     = 1.0f / 50.0f;
 static constexpr time_type FRAME_RATE        = 60;
 
-ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
+ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* const navigationInfo) :
 	     X3DViewer (browser),
 	navigationInfo (navigationInfo),
 	      distance (),

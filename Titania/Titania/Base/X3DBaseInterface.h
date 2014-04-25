@@ -95,7 +95,7 @@ private:
 
 	///  @name Members
 
-	BrowserWindow*                browserWindow;
+	BrowserWindow*  browserWindow;
 	X3D::BrowserPtr browser;
 
 };

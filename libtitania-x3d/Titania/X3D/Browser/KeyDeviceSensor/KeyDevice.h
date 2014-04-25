@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 #define __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 
-#include "../X3DWidget.h"
+#include "../X3DBrowserObject.h"
 #include "../../Types/String.h"
 
 #include <sigc++/sigc++.h>
@@ -60,14 +60,14 @@
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface;
+class Browser;
 
 class KeyDevice :
-	public X3DWidget
+	public X3DBrowserObject
 {
 public:
 
-	KeyDevice (X3DBrowserSurface* const);
+	KeyDevice (Browser* const);
 
 	virtual
 	~KeyDevice ();

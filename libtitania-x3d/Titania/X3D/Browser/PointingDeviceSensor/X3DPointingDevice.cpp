@@ -50,14 +50,13 @@
 
 #include "X3DPointingDevice.h"
 
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 namespace titania {
 namespace X3D {
 
-X3DPointingDevice::X3DPointingDevice (X3DBrowserSurface* const browser) :
-	           sigc::trackable (),
-	                   browser (browser),
+X3DPointingDevice::X3DPointingDevice (Browser* const browser) :
+	          X3DBrowserObject (browser),
 	  button_press_conncection (),
 	button_release_conncection (),
 	 motion_notify_conncection (),
@@ -71,10 +70,10 @@ X3DPointingDevice::connect ()
 {
 	disconnect ();
 
-	button_press_conncection   = browser -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
-	button_release_conncection = browser -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
-	motion_notify_conncection  = browser -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
-	leave_notify_conncection   = browser -> signal_leave_notify_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_leave_notify_event));
+	button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
+	button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
+	motion_notify_conncection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
+	leave_notify_conncection   = getBrowser () -> signal_leave_notify_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_leave_notify_event));
 
 	isOver = false;
 }
@@ -108,11 +107,11 @@ X3DPointingDevice::set_motion (const double x, const double y)
 		{
 			if (not isOver)
 			{
-				browser -> setCursor (Gdk::HAND2);
+				getBrowser () -> setCursor (Gdk::HAND2);
 				isOver = true;
 			}
 
-			browser -> motionNotifyEvent ();
+			getBrowser () -> motionNotifyEvent ();
 
 			return;
 		}
@@ -120,11 +119,11 @@ X3DPointingDevice::set_motion (const double x, const double y)
 
 	if (isOver)
 	{
-		browser -> setCursor (Gdk::ARROW);
+		getBrowser () -> setCursor (Gdk::ARROW);
 		isOver = false;
 	}
 
-	browser -> motionNotifyEvent ();
+	getBrowser () -> motionNotifyEvent ();
 	motionNotifyEvent (picked);
 }
 
@@ -135,7 +134,7 @@ X3DPointingDevice::set_verify_motion (const double x, const double y)
 	// and the new child has a sensor node inside. This sensor node must be update to
 	// reflect the correct isOver state.
 
-	browser -> finished () .removeInterest (this, &X3DPointingDevice::set_verify_motion);
+	getBrowser () -> finished () .removeInterest (this, &X3DPointingDevice::set_verify_motion);
 	set_motion (x, y);
 }
 
@@ -144,7 +143,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
 
-	browser -> grab_focus ();
+	getBrowser () -> grab_focus ();
 
 	switch (button)
 	{
@@ -156,11 +155,11 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 			{
 				if (haveSensor ())
 				{
-					browser -> buttonPressEvent ();
+					getBrowser () -> buttonPressEvent ();
 
-					browser -> setCursor (Gdk::HAND1);
+					getBrowser () -> setCursor (Gdk::HAND1);
 
-					browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
+					getBrowser () -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
 					return true;
 				}
@@ -171,7 +170,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 			if (eventToold)
 				return not trackSensors ();
 
-			browser -> setCursor (Gdk::FLEUR);
+			getBrowser () -> setCursor (Gdk::FLEUR);
 
 			break;
 		}
@@ -183,7 +182,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 			if (eventToold)
 				return not trackSensors ();
 
-			browser -> setCursor (Gdk::FLEUR);
+			getBrowser () -> setCursor (Gdk::FLEUR);
 			break;
 		}
 		default:
@@ -202,11 +201,11 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 	{
 		case 1:
 		{
-			browser -> buttonReleaseEvent ();
+			getBrowser () -> buttonReleaseEvent ();
 
-			browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
+			getBrowser () -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
-			if (not browser -> getHits () .empty ())
+			if (not getBrowser () -> getHits () .empty ())
 			{
 				if (not haveSensor ())
 					buttonReleaseEvent (true, event -> button);
@@ -217,20 +216,20 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 			// Set cursor
 
 			if (isOver)
-				browser -> setCursor (Gdk::HAND2);
+				getBrowser () -> setCursor (Gdk::HAND2);
 
 			else
-				browser -> setCursor (Gdk::ARROW);
+				getBrowser () -> setCursor (Gdk::ARROW);
 
 			break;
 		}
 		case 2:
 		{
 			if (isOver)
-				browser -> setCursor (Gdk::HAND2);
+				getBrowser () -> setCursor (Gdk::HAND2);
 
 			else
-				browser -> setCursor (Gdk::ARROW);
+				getBrowser () -> setCursor (Gdk::ARROW);
 
 			break;
 		}
@@ -244,10 +243,10 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 bool
 X3DPointingDevice::on_leave_notify_event (GdkEventCrossing*)
 {
-	browser -> leaveNotifyEvent ();
+	getBrowser () -> leaveNotifyEvent ();
 	leaveNotifyEvent ();
 
-	browser -> setCursor (Gdk::ARROW);
+	getBrowser () -> setCursor (Gdk::ARROW);
 	isOver = false;
 
 	return false;
@@ -256,15 +255,15 @@ X3DPointingDevice::on_leave_notify_event (GdkEventCrossing*)
 bool
 X3DPointingDevice::pick (const double x, const double y)
 {
-	browser -> pick (x, browser -> get_height () - y);
+	getBrowser () -> pick (x, getBrowser () -> get_height () - y);
 
-	return not browser -> getHits () .empty ();
+	return not getBrowser () -> getHits () .empty ();
 }
 
 bool
 X3DPointingDevice::haveSensor ()
 {
-	return not browser -> getHits () .front () -> sensors .empty ()
+	return not getBrowser () -> getHits () .front () -> sensors .empty ()
 	       and trackSensors ();
 }
 

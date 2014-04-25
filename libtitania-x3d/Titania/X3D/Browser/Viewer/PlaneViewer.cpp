@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 #include "PlaneViewer.h"
 
@@ -61,7 +61,7 @@ namespace X3D {
 
 static constexpr float SCROLL_FACTOR = 0.05;
 
-PlaneViewer::PlaneViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
+PlaneViewer::PlaneViewer (Browser* const browser, NavigationInfo* const navigationInfo) :
 	     X3DViewer (browser),
 	navigationInfo (navigationInfo),
 	     fromPoint (),

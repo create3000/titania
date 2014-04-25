@@ -53,20 +53,20 @@
 
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
-#include "../X3DWidget.h"
+#include "../X3DBrowserObject.h"
 #include "ViewerType.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DViewer :
-	public X3DWidget
+	public X3DBrowserObject
 {
 public:
 
 	///  @name Constructors
 
-	X3DViewer (X3DBrowserSurface* const);
+	X3DViewer (Browser* const);
 
 	virtual
 	ViewerType

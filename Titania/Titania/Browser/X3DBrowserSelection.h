@@ -65,7 +65,11 @@ public:
 	using X3D::X3DPointingDevice::connect;
 	using X3D::X3DPointingDevice::disconnect;
 
-	///  @name Operations
+	///  @name Member access
+
+	const X3D::BrowserPtr &
+	getBrowser () const
+	{ return X3DBaseInterface::getBrowser (); }
 
 	void
 	setEnabled (const bool);

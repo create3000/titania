@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "../X3DBrowserSurface.h"
+#include "../Browser.h"
 
 #include "X3DViewer.h"
 
@@ -60,8 +60,8 @@
 namespace titania {
 namespace X3D {
 
-X3DViewer::X3DViewer (X3DBrowserSurface* const browser) :
-	X3DWidget (browser)
+X3DViewer::X3DViewer (Browser* const browser) :
+	X3DBrowserObject (browser)
 { }
 
 X3DViewpointNode*

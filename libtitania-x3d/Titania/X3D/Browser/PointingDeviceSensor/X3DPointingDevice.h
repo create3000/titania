@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
 
-#include "../X3DWidget.h"
+#include "../X3DBrowserObject.h"
 
 #include <gdk/gdk.h>
 #include <sigc++/sigc++.h>
@@ -59,16 +59,16 @@
 namespace titania {
 namespace X3D {
 
-class X3DBrowserSurface;
+class Browser;
 
 class X3DPointingDevice :
-	virtual public sigc::trackable
+	public X3DBrowserObject
 {
 protected:
 
 	///  @name Construction
 
-	X3DPointingDevice (X3DBrowserSurface* const);
+	X3DPointingDevice (Browser* const);
 
 	void
 	connect ();
@@ -137,8 +137,6 @@ private:
 	haveSensor ();
 
 	///  @name Members
-
-	X3DBrowserSurface* const browser;
 
 	sigc::connection button_press_conncection;
 	sigc::connection button_release_conncection;
