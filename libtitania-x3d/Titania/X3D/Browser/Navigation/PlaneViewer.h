@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,32 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_WALK_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_WALK_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
 
-#include "../Viewer/X3DFlyViewer.h"
+#include "../Navigation/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class WalkViewer :
-	public X3DFlyViewer
+class Browser;
+
+class PlaneViewer :
+	public X3DViewer
 {
 public:
 
-	WalkViewer (Browser* const, NavigationInfo* const);
+	///  @name Construction
+
+	PlaneViewer (Browser* const, NavigationInfo* const);
+
+	///  @name Member access
 
 	virtual
 	ViewerType
 	getType () const final override
-	{ return ViewerType::WALK; }
+	{ return ViewerType::PLANE; }
+
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final override
+	{ return navigationInfo; }
+
+	///  @name Destruction
+
+	~PlaneViewer ();
 
 
 private:
 
+	///  @name Construction
+
 	virtual
-	Vector3f
-	getTranslationOffset (const Vector3f &) final override;
+	void
+	initialize () final override;
+
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_motion_notify_event (GdkEventMotion*);
+
+	bool
+	on_scroll_event (GdkEventScroll*);
+
+	void
+	constrainFieldOfViewScale () const;
+
+	///  @name Members
+
+	NavigationInfo* const navigationInfo;
+
+	Vector3f fromPoint;
+	guint    button;
 
 };
 

@@ -48,84 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_EXAMINE_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_EXAMINE_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_NONE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_NONE_VIEWER_H__
 
-#include <gdkmm.h>
-
-#include "../../Components/Navigation/Viewpoint.h"
-#include "../../Components/Navigation/X3DViewpointNode.h"
-#include "../../Fields/SFNode.h"
-#include "../Viewer/X3DViewer.h"
+#include "../Navigation/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class ExamineViewer :
+class Browser;
+
+class NoneViewer :
 	public X3DViewer
 {
 public:
 
-	ExamineViewer (Browser* const, NavigationInfo* const);
+	NoneViewer (Browser* const);
 
 	virtual
 	ViewerType
 	getType () const final override
-	{ return ViewerType::EXAMINE; }
+	{ return ViewerType::NONE; }
 
 	virtual
 	NavigationInfo*
 	getNavigationInfo () const final override
-	{ return navigationInfo; }
-
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_transitionStart ();
-
-	void
-	set_viewpoint ();
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	bool
-	spin ();
-
-	void
-	addSpinning ();
-
-	Vector3f
-	getPositionOffset () const;
-
-	Rotation4f
-	getOrientationOffset ();
-
-	NavigationInfo* const navigationInfo;
-	
-	Vector3f         distance;
-	Rotation4f       orientation;
-	Rotation4f       rotation;
-	Vector3f         fromVector;
-	Vector3f         fromPoint;
-	time_type        pressTime;
-	time_type        motionTime;
-	guint            button;
-	sigc::connection spin_id;
+	{ return nullptr; }
 
 };
 

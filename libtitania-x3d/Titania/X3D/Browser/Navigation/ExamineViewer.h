@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,49 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_EXAMINE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_EXAMINE_VIEWER_H__
 
-#include "../Viewer/X3DViewer.h"
+#include <gdkmm.h>
+
+#include "../../Components/Navigation/Viewpoint.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Fields/SFNode.h"
+#include "../Navigation/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class Browser;
-
-class PlaneViewer :
+class ExamineViewer :
 	public X3DViewer
 {
 public:
 
-	///  @name Construction
-
-	PlaneViewer (Browser* const, NavigationInfo* const);
-
-	///  @name Member access
+	ExamineViewer (Browser* const, NavigationInfo* const);
 
 	virtual
 	ViewerType
 	getType () const final override
-	{ return ViewerType::PLANE; }
+	{ return ViewerType::EXAMINE; }
 
 	virtual
 	NavigationInfo*
 	getNavigationInfo () const final override
 	{ return navigationInfo; }
 
-	///  @name Destruction
-
-	~PlaneViewer ();
-
 
 private:
-
-	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+	void
+	set_transitionStart ();
+
+	void
+	set_viewpoint ();
 
 	bool
 	on_button_press_event (GdkEventButton*);
@@ -104,15 +103,29 @@ private:
 	bool
 	on_scroll_event (GdkEventScroll*);
 
-	void
-	constrainFieldOfViewScale () const;
+	bool
+	spin ();
 
-	///  @name Members
+	void
+	addSpinning ();
+
+	Vector3f
+	getPositionOffset () const;
+
+	Rotation4f
+	getOrientationOffset ();
 
 	NavigationInfo* const navigationInfo;
-
-	Vector3f fromPoint;
-	guint    button;
+	
+	Vector3f         distance;
+	Rotation4f       orientation;
+	Rotation4f       rotation;
+	Vector3f         fromVector;
+	Vector3f         fromPoint;
+	time_type        pressTime;
+	time_type        motionTime;
+	guint            button;
+	sigc::connection spin_id;
 
 };
 

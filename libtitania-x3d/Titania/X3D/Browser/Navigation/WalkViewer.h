@@ -48,25 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_FLY_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_FLY_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_WALK_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_WALK_VIEWER_H__
 
-#include "../Viewer/X3DFlyViewer.h"
+#include "../Navigation/X3DFlyViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class FlyViewer :
+class WalkViewer :
 	public X3DFlyViewer
 {
 public:
 
-	FlyViewer (Browser* const, NavigationInfo*);
+	WalkViewer (Browser* const, NavigationInfo* const);
 
 	virtual
 	ViewerType
 	getType () const final override
-	{ return ViewerType::FLY; }
+	{ return ViewerType::WALK; }
 
 
 private:

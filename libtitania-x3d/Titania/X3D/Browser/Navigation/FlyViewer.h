@@ -48,108 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_X3DFLY_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_X3DFLY_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_FLY_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_FLY_VIEWER_H__
 
-#include <gdkmm.h>
-
-#include "../../Components/Navigation/Viewpoint.h"
-#include "../../Components/Navigation/X3DViewpointNode.h"
-#include "../../Fields/SFNode.h"
-#include "../../Miscellaneous/Keys.h"
-#include "../Viewer/X3DViewer.h"
+#include "../Navigation/X3DFlyViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DFlyViewer :
-	public X3DViewer
+class FlyViewer :
+	public X3DFlyViewer
 {
 public:
 
-	X3DFlyViewer (Browser* const, NavigationInfo* const);
+	FlyViewer (Browser* const, NavigationInfo*);
 
 	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return navigationInfo; }
-
-
-protected:
-
-	virtual
-	Vector3f
-	getTranslationOffset (const Vector3f &) = 0;
+	ViewerType
+	getType () const final override
+	{ return ViewerType::FLY; }
 
 
 private:
 
 	virtual
-	void
-	initialize () override;
-
-	void
-	set_collisionNormal ();
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
-
-	bool
-	fly ();
-
-	bool
-	pan ();
-
-	bool
-	roll ();
-
 	Vector3f
-	getTranslation (const Vector3f &) const;
-
-	void
-	addFly ();
-
-	void
-	addPan ();
-
-	void
-	addRoll ();
-
-	void
-	disconnect ();
-
-	void
-	display ();
-
-	NavigationInfo* const navigationInfo;
-
-	Rotation4f       orientation;
-	Vector3f         fromVector;
-	Vector3f         toVector;
-	Vector3f         direction;
-	Rotation4f       sourceRotation;
-	Rotation4f       destinationRotation;
-	time_type        startTime;
-	guint            button;
-	Keys             keys;
-	sigc::connection fly_id;
-	sigc::connection pan_id;
-	sigc::connection roll_id;
+	getTranslationOffset (const Vector3f &) final override;
 
 };
 

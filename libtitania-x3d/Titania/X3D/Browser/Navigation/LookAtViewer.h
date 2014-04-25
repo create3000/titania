@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_VIEWER_LOOCK_AT_H__
 #define __TITANIA_X3D_BROWSER_VIEWER_LOOCK_AT_H__
 
-#include "../Viewer/X3DViewer.h"
+#include "../Navigation/X3DViewer.h"
 
 namespace titania {
 namespace X3D {

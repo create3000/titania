@@ -40,7 +40,15 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
+	Titania/X3D/Browser/Navigation/ExamineViewer.cpp \
+	Titania/X3D/Browser/Navigation/FlyViewer.cpp \
+	Titania/X3D/Browser/Navigation/LookAtViewer.cpp \
+	Titania/X3D/Browser/Navigation/NoneViewer.cpp \
+	Titania/X3D/Browser/Navigation/PlaneViewer.cpp \
+	Titania/X3D/Browser/Navigation/WalkViewer.cpp \
+	Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \
+	Titania/X3D/Browser/Navigation/X3DViewer.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
@@ -59,14 +67,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Text/X3DTextContext.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
-	Titania/X3D/Browser/Viewer/ExamineViewer.cpp \
-	Titania/X3D/Browser/Viewer/FlyViewer.cpp \
-	Titania/X3D/Browser/Viewer/LookAtViewer.cpp \
-	Titania/X3D/Browser/Viewer/NoneViewer.cpp \
-	Titania/X3D/Browser/Viewer/PlaneViewer.cpp \
-	Titania/X3D/Browser/Viewer/WalkViewer.cpp \
-	Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp \
-	Titania/X3D/Browser/Viewer/X3DViewer.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \

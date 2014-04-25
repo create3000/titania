@@ -55,7 +55,7 @@
 
 #include "../Browser/KeyDeviceSensor/KeyDevice.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
-#include "../Browser/Viewer/X3DViewer.h"
+#include "../Browser/Navigation/X3DViewer.h"
 #include "../Browser/X3DBrowser.h"
 
 namespace titania {

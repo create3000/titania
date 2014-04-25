@@ -492,12 +492,6 @@
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
     <None Include="Titania\X3D\Bits\Cast.h" />
-    <None Include="Titania\X3D\Browser\Viewer\FlyViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\NoneViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\ViewerType.h" />
-    <None Include="Titania\X3D\Browser\Viewer\WalkViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.h" />
-    <None Include="Titania\X3D\Browser\Viewer\X3DViewer.h" />
     <None Include="Titania\X3D\Bits\TraverseType.h" />
     <None Include="Titania\X3D\Types\Speed.h" />
     <None Include="Titania\X3D\Rendering\CollisionShape.h" />
@@ -586,9 +580,7 @@
     <None Include="Titania\X3D\Rendering\Tessellator.h" />
     <None Include="Titania\X3D\Rendering\PolygonModeContainer.h" />
     <None Include="Titania\X3D\Rendering\X3DCollectableObject.h" />
-    <None Include="Titania\X3D\Browser\Viewer\LookAtViewer.h" />
     <None Include="Titania\X3D\Miscellaneous\Texture3D.h" />
-    <None Include="Titania\X3D\Browser\Viewer\PlaneViewer.h" />
     <None Include="Titania\X3D\Thread\Texture3DLoader.h" />
     <None Include="Titania\X3D\Miscellaneous\X3DTexture.h" />
     <None Include="share\titania\shaders\ParticleSystems\PointEmitter.vs" />
@@ -666,7 +658,6 @@
     <None Include="Titania\X3D\Browser\Core\X3DCoreContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.h" />
-    <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
     <None Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.h" />
     <None Include="Titania\X3D\Browser\Layout\X3DLayoutContext.h" />
     <None Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.h" />
@@ -684,6 +675,15 @@
     <None Include="Titania\X3D\Browser\X3DBrowserObject.h" />
     <None Include="Titania\X3D\Rendering\Context.h" />
     <None Include="Titania\X3D\Browser\Selection.h" />
+    <None Include="Titania\X3D\Browser\Navigation\ExamineViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\FlyViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\LookAtViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\NoneViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\PlaneViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\ViewerType.h" />
+    <None Include="Titania\X3D\Browser\Navigation\WalkViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\X3DFlyViewer.h" />
+    <None Include="Titania\X3D\Browser\Navigation\X3DViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1060,11 +1060,6 @@
     <Compile Include="Titania\X3D\Browser\Properties\MotionBlur.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\FlyViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\NoneViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\WalkViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
@@ -1123,9 +1118,7 @@
     <Compile Include="Titania\X3D\Components\Followers\CoordinateChaser.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\TexCoordChaser2D.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonModeContainer.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\LookAtViewer.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Texture3D.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\PlaneViewer.cpp" />
     <Compile Include="Titania\X3D\Thread\Texture3DLoader.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\X3DTexture.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Random.cpp" />
@@ -1158,7 +1151,6 @@
     <Compile Include="Titania\X3D\Browser\Core\X3DCoreContext.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.cpp" />
-    <Compile Include="Titania\X3D\Browser\Viewer\ExamineViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Lighting\X3DLightingContext.cpp" />
@@ -1173,6 +1165,14 @@
     <Compile Include="Titania\X3D\Browser\Browser.cpp" />
     <Compile Include="Titania\X3D\Rendering\Context.cpp" />
     <Compile Include="Titania\X3D\Browser\Selection.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\ExamineViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\FlyViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\LookAtViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\NoneViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\PlaneViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\WalkViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\X3DFlyViewer.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\X3DViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1194,7 +1194,6 @@
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
     <Folder Include="Titania\X3D\Browser\Geometry3D\" />
     <Folder Include="Titania\X3D\Browser\Geometry2D\" />
-    <Folder Include="Titania\X3D\Browser\Viewer\" />
     <Folder Include="share\" />
     <Folder Include="share\titania\" />
     <Folder Include="share\titania\pages\" />
