@@ -66,10 +66,6 @@ public:
 
 	///  @name Member access
 
-	X3DPtr <X3DFontStyleNode> &
-	getFontStyle ()
-	{ return fontStyle; }
-
 	const X3DPtr <X3DFontStyleNode> &
 	getFontStyle () const
 	{ return fontStyle; }

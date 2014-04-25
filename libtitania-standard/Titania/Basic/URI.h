@@ -485,7 +485,7 @@ std::map <typename basic_uri <StringT>::string_type, typename basic_uri <StringT
 template <class StringT>
 inline
 basic_uri <StringT>::basic_uri (Value && value) :
-	value (value)
+	value (std::move (value))
 {
 	if (value .string .empty ())
 		this -> value .string = std::move (to_string ());
@@ -967,7 +967,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 	if (last == string_type::npos)
 		last = string .length ();
 
-	string_type authority = std::move (string .substr (first, last - first));
+	string_type authority = string .substr (first, last - first);
 
 	const size_type colon = authority .find (Signs::Colon);
 
@@ -998,7 +998,7 @@ basic_uri <StringT>::parser::port (string_type & authority, const size_type firs
 {
 	size_type pos = first;
 
-	string_type portString = std::move (authority .substr (first));
+	string_type portString = authority .substr (first);
 
 	try
 	{

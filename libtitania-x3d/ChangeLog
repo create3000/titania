@@ -1,5 +1,12 @@
 2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DTextContext.h:
+	* X3DShapeContext.h:
+	* X3DNetworkingContext.h:
+	* X3DParticleSystemsContext.h: 
+
+2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DBrowserContext.h:

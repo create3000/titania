@@ -68,25 +68,13 @@ public:
 
 	///  @name Member access
 
-	X3DPtr <LineProperties> &
-	getLineProperties ()
-	{ return lineProperties; }
-
 	const X3DPtr <LineProperties> &
 	getLineProperties () const
 	{ return lineProperties; }
 
-	X3DPtr <FillProperties> &
-	getFillProperties ()
-	{ return fillProperties; }
-
 	const X3DPtr <FillProperties> &
 	getFillProperties () const
 	{ return fillProperties; }
-
-	X3DPtr <X3DAppearanceNode> &
-	getAppearance ()
-	{ return appearance; }
 
 	const X3DPtr <X3DAppearanceNode> &
 	getAppearance () const
