@@ -63,6 +63,7 @@
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
+#include "../Browser/Shape/X3DShapeContext.h"
 #include "../Browser/Texturing/X3DTexturingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
@@ -86,6 +87,7 @@ class X3DBrowserContext :
 	public X3DPointingDeviceSensorContext,
 	public X3DRenderingContext,
 	public X3DScriptingContext,
+	public X3DShapeContext,
 	public X3DTexturingContext,
 	public X3DTimeContext
 {

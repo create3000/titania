@@ -223,30 +223,6 @@ public:
 	motionBlurOptions () const
 	{ return fields .motionBlurOptions; }
 
-	X3DPtr <Appearance> &
-	appearance ()
-	{ return fields .appearance; }
-
-	const X3DPtr <Appearance> &
-	appearance () const
-	{ return fields .appearance; }
-
-	X3DPtr <LineProperties> &
-	lineProperties ()
-	{ return fields .lineProperties; }
-
-	const X3DPtr <LineProperties> &
-	lineProperties () const
-	{ return fields .lineProperties; }
-
-	X3DPtr <FillProperties> &
-	fillProperties ()
-	{ return fields .fillProperties; }
-
-	const X3DPtr <FillProperties> &
-	fillProperties () const
-	{ return fields .fillProperties; }
-
 	X3DPtr <X3DParticleEmitterNode> &
 	emitter ()
 	{ return fields .emitter; }
@@ -366,9 +342,6 @@ private:
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
 		X3DPtr <MotionBlur> motionBlurOptions;
-		X3DPtr <Appearance> appearance;
-		X3DPtr <LineProperties> lineProperties;
-		X3DPtr <FillProperties> fillProperties;
 		X3DPtr <X3DParticleEmitterNode> emitter;
 		X3DPtr <Arc2DOptions> arc2D;
 		X3DPtr <ArcClose2DOptions> arcClose2D;

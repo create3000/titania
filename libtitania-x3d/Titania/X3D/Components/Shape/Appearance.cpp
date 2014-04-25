@@ -157,7 +157,7 @@ Appearance::set_fillProperties ()
 	if (fillPropertiesNode)
 		return;
 
-	fillPropertiesNode .set (getBrowser () -> getBrowserOptions () -> fillProperties ());
+	fillPropertiesNode .set (getBrowser () -> getFillProperties ());
 }
 
 void
@@ -168,7 +168,7 @@ Appearance::set_lineProperties ()
 	if (linePropertiesNode)
 		return;
 
-	linePropertiesNode .set (getBrowser () -> getBrowserOptions () -> lineProperties ());
+	linePropertiesNode .set (getBrowser () -> getLineProperties ());
 }
 
 void

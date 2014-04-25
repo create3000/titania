@@ -76,6 +76,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
 	           X3DScriptingContext (),
+	               X3DShapeContext (),
 	           X3DTexturingContext (),
 	                X3DTimeContext (),
 	           renderingProperties (new RenderingProperties (this)),
@@ -119,6 +120,7 @@ X3DBrowserContext::initialize ()
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
 	X3DScriptingContext::initialize ();
+	X3DShapeContext::initialize ();
 	X3DTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
 
@@ -232,6 +234,7 @@ X3DBrowserContext::dispose ()
 
 	X3DTimeContext::dispose ();
 	X3DTexturingContext::dispose ();
+	X3DShapeContext::dispose ();
 	X3DScriptingContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();

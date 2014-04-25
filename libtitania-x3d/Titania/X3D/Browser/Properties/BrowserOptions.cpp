@@ -113,9 +113,6 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	     animateStairWalks (new SFBool ()),
 	               gravity (new SFFloat (P_GN)),
 	     motionBlurOptions (new MotionBlur (executionContext)),
-	            appearance (new Appearance (executionContext)),
-	        lineProperties (new LineProperties (executionContext)),
-	        fillProperties (new FillProperties (executionContext)),
 	               emitter (new PointEmitter (executionContext)),
 	                 arc2D (new Arc2DOptions (executionContext)),
 	            arcClose2D (new ArcClose2DOptions (executionContext)),
@@ -148,9 +145,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
 	addChildren (motionBlurOptions (),
-	             appearance (),
-	             lineProperties (),
-	             fillProperties (),
 	             emitter (),
 	             arc2D (),
 	             arcClose2D (),
@@ -174,9 +168,6 @@ BrowserOptions::initialize ()
 	X3DBaseNode::initialize ();
 
 	motionBlurOptions () -> setup ();
-	appearance ()        -> setup ();
-	lineProperties ()    -> setup ();
-	fillProperties ()    -> setup ();
 	emitter ()           -> setup ();
 	arc2D ()             -> setup ();
 	arcClose2D ()        -> setup ();
@@ -186,9 +177,6 @@ BrowserOptions::initialize ()
 	box ()               -> setup ();
 	sphere ()            -> setup ();
 	fontStyle ()         -> setup ();
-
-	lineProperties () -> applied () = false;
-	fillProperties () -> hatched () = false;
 
 	antialiased ()      .addInterest (this, &BrowserOptions::set_antialiased);
 	textureQuality ()   .addInterest (this, &BrowserOptions::set_textureQuality);
@@ -299,7 +287,7 @@ BrowserOptions::set_primitiveQuality ()
 		circle2D ()   -> segments () = 100;
 		disc2D ()     -> segments () = 100;
 
-		auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
+		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
 
 		if (quadSphere)
 		{
@@ -317,7 +305,7 @@ BrowserOptions::set_primitiveQuality ()
 		circle2D ()   -> segments () = 20;
 		disc2D ()     -> segments () = 20;
 
-		auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
+		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
 
 		if (quadSphere)
 		{
@@ -335,7 +323,7 @@ BrowserOptions::set_primitiveQuality ()
 	circle2D ()   -> segments () = 60;
 	disc2D ()     -> segments () = 60;
 
-	auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
+	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
 
 	if (quadSphere)
 	{

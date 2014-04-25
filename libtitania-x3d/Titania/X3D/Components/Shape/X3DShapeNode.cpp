@@ -107,7 +107,7 @@ X3DShapeNode::set_appearance ()
 	if (appearanceNode)
 		return;
 
-	appearanceNode .set (getBrowser () -> getBrowserOptions () -> appearance ());
+	appearanceNode .set (getBrowser () -> getAppearance ());
 }
 
 void
