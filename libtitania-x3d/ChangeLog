@@ -1,5 +1,10 @@
 2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Selection.h:
+	* Selection.cpp: 
+
+2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* X3D.h:
 	* libtitania-x3d.cproj:
