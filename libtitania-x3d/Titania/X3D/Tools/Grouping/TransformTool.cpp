@@ -81,7 +81,7 @@ TransformTool::initialize ()
 void
 TransformTool::realize ()
 {
-	getNode () -> addInterest (this, &TransformTool::interestsProcessed);
+	getNode () -> addInterest (this, &TransformTool::eventsProcessed);
 
 	try
 	{
@@ -120,7 +120,7 @@ TransformTool::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & ce
 }
 
 void
-TransformTool::interestsProcessed ()
+TransformTool::eventsProcessed ()
 {
 	if (interestEvents)
 		-- interestEvents;

@@ -154,7 +154,7 @@ private:
 	realize () final override;
 
 	void
-	interestsProcessed ();
+	eventsProcessed ();
 
 	///  @name Operatations
 
