@@ -64,6 +64,7 @@
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
 #include "../Browser/Shape/X3DShapeContext.h"
+#include "../Browser/Text/X3DTextContext.h"
 #include "../Browser/Texturing/X3DTexturingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
@@ -88,6 +89,7 @@ class X3DBrowserContext :
 	public X3DRenderingContext,
 	public X3DScriptingContext,
 	public X3DShapeContext,
+	public X3DTextContext,
 	public X3DTexturingContext,
 	public X3DTimeContext
 {

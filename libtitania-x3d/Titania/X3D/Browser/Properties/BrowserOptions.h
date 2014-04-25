@@ -74,10 +74,6 @@ namespace X3D {
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
-class Appearance;
-class LineProperties;
-class FillProperties;
-class X3DFontStyleNode;
 class X3DParticleEmitterNode;
 class Arc2DOptions;
 class ArcClose2DOptions;
@@ -287,14 +283,6 @@ public:
 	sphere () const
 	{ return fields .sphere; }
 
-	X3DPtr <X3DFontStyleNode> &
-	fontStyle ()
-	{ return fields .fontStyle; }
-
-	const X3DPtr <X3DFontStyleNode> &
-	fontStyle () const
-	{ return fields .fontStyle; }
-
 
 private:
 
@@ -350,7 +338,6 @@ private:
 		X3DPtr <Rectangle2DOptions> rectangle2D;
 		X3DPtr <BoxOptions> box;
 		X3DPtr <X3DSphereOptionNode> sphere;
-		X3DPtr <X3DFontStyleNode> fontStyle;
 	};
 
 	Fields fields;

@@ -118,7 +118,7 @@ Text::set_fontStyle ()
 	fontStyleNode .set (x3d_cast <X3DFontStyleNode*> (fontStyle ()));
 
 	if (not fontStyleNode)
-		fontStyleNode .set (getBrowser () -> getBrowserOptions () -> fontStyle ());
+		fontStyleNode .set (getBrowser () -> getFontStyle ());
 
 	if (fontStyleNode)
 		fontStyleNode -> addInterest (this);

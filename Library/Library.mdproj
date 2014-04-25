@@ -2434,6 +2434,7 @@
     <None Include="Tests\Handles\OutlineEditorXXX.wrl" />
     <None Include="Tests\Basic\RuntimeNameScopeDEF.x3dv" />
     <None Include="Tests\Scripting\URL.wrl" />
+    <None Include="Tests\Text\DefaultText.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

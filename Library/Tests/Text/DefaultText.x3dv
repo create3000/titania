@@ -1,0 +1,18 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "comment" "World of Titania"
+META "created" "Fri, 25 Apr 2014 01:31:19 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "modified" "Fri, 25 Apr 2014 01:31:19 GMT"
+
+DEF Text Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Text {
+      string "3D Text"
+    }
+  }
+}

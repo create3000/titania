@@ -3,14 +3,14 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp">
     <Files>
       <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="89" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="234" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="68" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="90" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="237" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="278" Column="146" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="367" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="303" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Core/X3DCoreContext.h" Line="90" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Core/X3DCoreContext.cpp" Line="73" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.h" Line="225" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="121" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shape/X3DShapeContext.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shape/X3DShapeContext.cpp" Line="82" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,12 +20,9 @@
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Properties" expanded="True">
-                    <Node name="BrowserOptions.cpp" selected="True" />
+                  <Node name="Shape" expanded="True">
+                    <Node name="X3DShapeContext.cpp" selected="True" />
                   </Node>
-                  <Node name="Scripting" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="ParticleSystems" expanded="True" />

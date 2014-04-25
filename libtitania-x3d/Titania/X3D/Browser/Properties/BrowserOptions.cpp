@@ -51,13 +51,7 @@
 #include "BrowserOptions.h"
 
 #include "../../Components/ParticleSystems/PointEmitter.h"
-#include "../../Components/Shape/Appearance.h"
-#include "../../Components/Shape/FillProperties.h"
-#include "../../Components/Shape/LineProperties.h"
-#include "../../Components/Text/FontStyle.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
-#include "../../Components/Texturing/TextureTransform.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
@@ -120,8 +114,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	                disc2D (new Disk2DOptions (executionContext)),
 	           rectangle2D (new Rectangle2DOptions (executionContext)),
 	                   box (new BoxOptions (executionContext)),
-	                sphere (new QuadSphereOptions (executionContext)),
-	             fontStyle (new FontStyle (executionContext))
+	                sphere (new QuadSphereOptions (executionContext))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -152,8 +145,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             disc2D (),
 	             rectangle2D (),
 	             box (),
-	             sphere (),
-	             fontStyle ());
+	             sphere ());
 }
 
 BrowserOptions*
@@ -176,7 +168,6 @@ BrowserOptions::initialize ()
 	rectangle2D ()       -> setup ();
 	box ()               -> setup ();
 	sphere ()            -> setup ();
-	fontStyle ()         -> setup ();
 
 	antialiased ()      .addInterest (this, &BrowserOptions::set_antialiased);
 	textureQuality ()   .addInterest (this, &BrowserOptions::set_textureQuality);

@@ -683,6 +683,7 @@
     <None Include="Titania\X3D\Browser\Scripting\X3DScriptingContext.h" />
     <None Include="Titania\X3D\Browser\Texturing\X3DTexturingContext.h" />
     <None Include="Titania\X3D\Browser\Shape\X3DShapeContext.h" />
+    <None Include="Titania\X3D\Browser\Text\X3DTextContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1172,6 +1173,7 @@
     <Compile Include="Titania\X3D\Browser\Scripting\X3DScriptingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Texturing\X3DTexturingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Shape\X3DShapeContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Text\X3DTextContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1199,7 +1201,6 @@
     <Folder Include="share\titania\pages\" />
     <Folder Include="share\titania\pages\about\" />
     <Folder Include="Titania\X3D\Miscellaneous\" />
-    <Folder Include="Titania\X3D\Browser\Devices\" />
     <Folder Include="Titania\X3D\Thread\" />
     <Folder Include="share\icons\" />
     <Folder Include="share\titania\tools\" />
@@ -1228,6 +1229,7 @@
     <Folder Include="Titania\X3D\Browser\Scripting\" />
     <Folder Include="Titania\X3D\Browser\Texturing\" />
     <Folder Include="Titania\X3D\Browser\Shape\" />
+    <Folder Include="Titania\X3D\Browser\Text\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
