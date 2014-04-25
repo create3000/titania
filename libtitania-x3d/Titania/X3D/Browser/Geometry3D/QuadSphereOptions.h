@@ -56,10 +56,6 @@
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
-//	U_DIMESIONS             Boolean              The browser implementation supports the ab
-//	V_DIMESIONS             Boolean              The browser implementation supports the ab
-
 class QuadSphereOptions :
 	public X3DSphereOptionNode
 {

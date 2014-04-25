@@ -51,12 +51,10 @@
 #ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
 #define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
 
-#include "../Properties/X3DOptionNode.h"
+#include "../Core/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
-
-//	Property Name           Value data type      Description
 
 class Arc2DOptions :
 	public X3DOptionNode

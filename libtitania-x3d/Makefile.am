@@ -27,6 +27,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
+	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
@@ -60,7 +61,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
-	Titania/X3D/Browser/Properties/X3DOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \

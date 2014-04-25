@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
-
 class Rectangle2DOptions :
 	public X3DGeometricOptionNode
 {

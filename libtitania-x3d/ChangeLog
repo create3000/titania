@@ -2,6 +2,23 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* X3DOptionNode.h:
+	* X3DOptionNode.cpp:
+	* BoxOptions.h:
+	* Arc2DOptions.h:
+	* X3DOptionNode.h:
+	* Disk2DOptions.h:
+	* Circle2DOptions.h:
+	* X3DOptionNode.cpp:
+	* ArcClose2DOptions.h:
+	* QuadSphereOptions.h:
+	* Rectangle2DOptions.h:
+	* X3DGeometricOptionNode.h: 
+
+2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Browser.h:
 	* Browser.cpp:
 	* FlyViewer.h:
