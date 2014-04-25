@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra?e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,23 +50,151 @@
 
 #include "Browser.h"
 
+#include "../Context.h"
+#include "../Browser/Viewer/ExamineViewer.h"
+#include "../Browser/Viewer/FlyViewer.h"
+#include "../Browser/Viewer/NoneViewer.h"
+#include "../Browser/Viewer/WalkViewer.h"
+#include "../Browser/Viewer/LookAtViewer.h"
+#include "../Browser/Viewer/PlaneViewer.h"
+#include "../Components/EnvironmentalEffects/Fog.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Components/Layering/X3DLayerNode.h"
+#include "../Components/Navigation/NavigationInfo.h"
+
+#include <glibmm/main.h>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+
 namespace titania {
 namespace X3D {
 
 Browser::Browser () :
-	      X3DBaseNode (this, this),
-	X3DBrowserSurface ()
+       X3DBaseNode (this, this),
+	     X3DBrowser (),
+	opengl::Surface (),
+	        viewer  (new NoneViewer (this)),
+	      keyDevice (this),
+	pointingDevice  (this)
 { }
 
-Browser::Browser (const Browser & sharingBrowser) :
-	      X3DBaseNode (this, this),
-	X3DBrowserSurface (sharingBrowser)
+
+Browser::Browser (const Browser & sharingSurface) :
+       X3DBaseNode (this, this),
+	     X3DBrowser (),
+	opengl::Surface (sharingSurface),
+	        viewer  (new NoneViewer (this)),
+	      keyDevice (this),
+	pointingDevice  (this)
 { }
 
-X3DBaseNode*
+Browser*
 Browser::create (X3DExecutionContext* const) const
 {
 	return new Browser ();
+}
+
+void
+Browser::initialize ()
+{
+	X3DBrowser::initialize ();
+
+	//swapInterval (0);
+
+	keyDevice      .setup ();
+	pointingDevice .setup ();
+
+	getViewer () .addInterest (this, &Browser::set_viewer);
+	changed ()   .addInterest (this, &Gtk::Widget::queue_draw);
+	//changed ()   .addInterest (this, &Browser::set_changed);
+
+	setCursor (Gdk::ARROW);
+
+	add_events (Gdk::BUTTON_PRESS_MASK |
+	            Gdk::POINTER_MOTION_MASK |
+	            Gdk::POINTER_MOTION_HINT_MASK |
+	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::LEAVE_NOTIFY_MASK |
+	            Gdk::SCROLL_MASK |
+	            Gdk::KEY_PRESS_MASK |
+	            Gdk::KEY_RELEASE_MASK);
+
+	set_can_focus (true);
+	grab_focus ();
+}
+
+void
+Browser::set_changed ()
+{
+	//Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &Gtk::Widget::queue_draw));
+	
+	//queue_draw ();
+
+	//get_window () -> invalidate_rect (get_allocation (), false);
+
+	//get_window () -> process_updates (false);
+}
+
+void
+Browser::set_viewer (ViewerType type)
+{
+	setCursor (Gdk::ARROW);
+
+	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
+	{
+		switch (type)
+		{
+			case ViewerType::NONE:
+			{
+				viewer .reset (new NoneViewer (this));
+				break;
+			}
+			case ViewerType::EXAMINE:
+			{
+				viewer .reset (new ExamineViewer (this, getActiveNavigationInfo ()));
+				break;
+			}
+			case ViewerType::WALK:
+			{
+				viewer .reset (new WalkViewer (this, getActiveNavigationInfo ()));
+				break;
+			}
+			case ViewerType::FLY:
+			{
+				viewer .reset (new FlyViewer (this, getActiveNavigationInfo ()));
+				break;
+			}
+			case ViewerType::PLANE:
+			{
+				viewer .reset (new PlaneViewer (this, getActiveNavigationInfo ()));
+				break;
+			}
+			case ViewerType::LOOKAT:
+			{
+				viewer .reset (new LookAtViewer (this));
+				break;
+			}
+		}
+
+		viewer -> setup ();
+	}
+}
+
+void
+Browser::dispose ()
+{
+	std::lock_guard <ContextMutex> contextLock (contextMutex);
+
+	makeCurrent ();
+
+	viewer .reset ();
+	pointingDevice .dispose ();
+
+	X3DBrowser::dispose ();
+	opengl::Surface::dispose (); /// XXX
 }
 
 } // X3D

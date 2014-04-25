@@ -1,5 +1,14 @@
 2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.h:
+	* Browser.cpp:
+	* X3DWidget.h:
+	* X3DWidget.cpp:
+	* X3DBrowserSurface.h:
+	* X3DBrowserSurface.cpp: 
+
+2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DBrowserObject.h:

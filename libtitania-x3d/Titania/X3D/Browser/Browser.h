@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,18 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_BROWSER_H__
-#define __TITANIA_X3D_BROWSER_BROWSER_H__
+#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
+#define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
 
-#include "../Browser/X3DBrowserSurface.h"
+#include <Titania/OpenGL/Surface.h>
+
+#include "../Browser/KeyDeviceSensor/KeyDevice.h"
+#include "../Browser/PointingDeviceSensor/PointingDevice.h"
+#include "../Browser/Viewer/X3DViewer.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
 class Browser :
-	public X3DBrowserSurface
+	public X3DBrowser, public opengl::Surface
 {
 public:
+
+	using X3DBrowser::update;
 
 	///  @name Construction
 
@@ -67,14 +74,77 @@ public:
 
 	Browser (const Browser &);
 
+	Browser*
+	create (X3DExecutionContext* const) const;
+
+	///  @name Member access
+
+	void
+	setCursor (Gdk::CursorType cursor_type)
+	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+
+	///  @name Operations
+
+	virtual
+	bool
+	makeCurrent () const final override
+	{ return opengl::Surface::makeCurrent (); }
+
+	virtual
+	void
+	swapBuffers () const final override
+	{ opengl::Surface::swapBuffers (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
 
 private:
 
 	///  @name Construction
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	void
+	construct () final override
+	{ setup (); }
+
+	///  @name Event handler
+
+	void
+	set_changed ();
+
+	void
+	set_viewer (ViewerType);
+
+	///  @name Operations
+
+	virtual
+	void
+	reshape () final override
+	{ X3DBrowser::reshape (); }
+
+	virtual
+	void
+	update (const Cairo::RefPtr <Cairo::Context> &) final override
+	{ update (); }
+
+	///  @name Members
+
+	std::unique_ptr <X3DViewer> viewer;
+	KeyDevice                   keyDevice;
+	PointingDevice              pointingDevice;
 
 };
 
