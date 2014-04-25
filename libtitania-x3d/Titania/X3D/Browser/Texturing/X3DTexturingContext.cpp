@@ -53,7 +53,7 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
-#include "../../Context.h"
+#include "../../Rendering/Context.h"
 #include "../../Rendering/OpenGL.h"
 #include "../X3DBrowser.h"
 

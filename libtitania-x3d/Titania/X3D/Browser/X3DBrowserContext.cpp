@@ -56,7 +56,7 @@
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
-#include "../Context.h"
+#include "../Rendering/Context.h"
 
 #include <cassert>
 
@@ -154,7 +154,7 @@ X3DBrowserContext::addEvent ()
 void
 X3DBrowserContext::reshape ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (makeCurrent ())
 		reshaped () .processInterests ();
@@ -174,7 +174,7 @@ X3DBrowserContext::update ()
 {
 	try
 	{
-		std::lock_guard <ContextMutex> contextLock (contextMutex);
+		std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 		if (makeCurrent ())
 		{

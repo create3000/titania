@@ -52,7 +52,7 @@
 
 #include "X3DViewer.h"
 
-#include "../../Context.h"
+#include "../../Rendering/Context.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/ViewVolume.h"
@@ -74,7 +74,7 @@ X3DViewer::getActiveViewpoint () const
 Vector3f
 X3DViewer::getPointOnCenterPlane (const double x, const double y)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	if (getBrowser () -> makeCurrent ())
 	{

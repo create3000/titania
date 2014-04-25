@@ -92,8 +92,6 @@ private:
 ContextMutex &
 getContextMutex ();
 
-extern ContextMutex contextMutex;
-
 } // X3D
 } // titania
 

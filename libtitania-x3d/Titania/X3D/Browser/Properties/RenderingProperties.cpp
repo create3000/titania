@@ -51,7 +51,7 @@
 #include "RenderingProperties.h"
 
 #include "../../Bits/config.h"
-#include "../../Context.h"
+#include "../../Rendering/Context.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
@@ -287,7 +287,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	getBrowser () -> makeCurrent ();
 

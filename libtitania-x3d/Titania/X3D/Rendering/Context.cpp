@@ -50,7 +50,7 @@
 
 #include "Context.h"
 
-#include "Rendering/OpenGL.h"
+#include "../Rendering/OpenGL.h"
 
 #include <tuple>
 #include <vector>

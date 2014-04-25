@@ -50,7 +50,7 @@
 
 #include "Browser.h"
 
-#include "../Context.h"
+#include "../Rendering/Context.h"
 #include "../Browser/Viewer/ExamineViewer.h"
 #include "../Browser/Viewer/FlyViewer.h"
 #include "../Browser/Viewer/NoneViewer.h"
@@ -186,7 +186,7 @@ Browser::set_viewer (ViewerType type)
 void
 Browser::dispose ()
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	makeCurrent ();
 

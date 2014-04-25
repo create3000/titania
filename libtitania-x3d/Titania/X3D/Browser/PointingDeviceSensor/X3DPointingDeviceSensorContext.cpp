@@ -53,7 +53,7 @@
 #include "../../Components/Networking/Anchor.h"
 #include "../../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
-#include "../../Context.h"
+#include "../../Rendering/Context.h"
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../X3DBrowser.h"
@@ -98,7 +98,7 @@ X3DPointingDeviceSensorContext::set_shutdown ()
 void
 X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 {
-	std::lock_guard <ContextMutex> contextLock (contextMutex);
+	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
 
 	x = _x;
 	y = _y;
