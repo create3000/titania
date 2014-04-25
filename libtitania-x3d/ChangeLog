@@ -3,6 +3,16 @@
 	* Makefile.am:
 	* X3D.h:
 	* libtitania-x3d.cproj:
+	* Selection.h:
+	* Selection.cpp:
+	* X3DBrowserContext.cpp:
+	* TransformTool.cpp: 
+
+2014-04-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
 	* Context.h:
 	* Context.cpp:
 	* Browser.cpp:

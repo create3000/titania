@@ -662,7 +662,6 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Intersection.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\Selection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.h" />
     <None Include="Titania\X3D\Browser\Core\X3DCoreContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
@@ -684,6 +683,7 @@
     <None Include="Titania\X3D\Browser\Browser.h" />
     <None Include="Titania\X3D\Browser\X3DBrowserObject.h" />
     <None Include="Titania\X3D\Rendering\Context.h" />
+    <None Include="Titania\X3D\Browser\Selection.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1154,7 +1154,6 @@
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Selection.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\X3DCoreContext.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
@@ -1173,6 +1172,7 @@
     <Compile Include="Titania\X3D\Browser\ParticleSystems\X3DParticleSystemsContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Browser.cpp" />
     <Compile Include="Titania\X3D\Rendering\Context.cpp" />
+    <Compile Include="Titania\X3D\Browser\Selection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

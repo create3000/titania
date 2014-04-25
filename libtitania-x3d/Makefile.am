@@ -46,7 +46,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/Selection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
@@ -56,6 +55,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Properties/X3DOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
+	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Text/X3DTextContext.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \

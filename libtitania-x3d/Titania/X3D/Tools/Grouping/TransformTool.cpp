@@ -53,7 +53,7 @@
 #include "../ToolColors.h"
 
 #include "../../Bits/config.h"
-#include "../../Browser/PointingDeviceSensor/Selection.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/PolygonModeContainer.h"

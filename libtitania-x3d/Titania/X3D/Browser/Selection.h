@@ -48,60 +48,97 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_H__
-#define __TITANIA_X3D_H__
+#ifndef __TITANIA_X3D_BROWSER_SELECTION_H__
+#define __TITANIA_X3D_BROWSER_SELECTION_H__
 
-// Include Browser at first.
-#include "X3D/Browser/Browser.h"
-#include "X3D/Browser/BrowserApplication.h"
-
-#include "X3D/Bits/Cast.h"
-#include "X3D/Bits/Error.h"
-#include "X3D/Bits/Traverse.h"
-#include "X3D/Components.h"
-#include "X3D/Prototype/ExternProto.h"
-#include "X3D/Prototype/Proto.h"
-
-#include "X3D/Execution/BindableNodeList.h"
-#include "X3D/Execution/BindableNodeStack.h"
-#include "X3D/Execution/ExportedNode.h"
-#include "X3D/Execution/ImportedNode.h"
-#include "X3D/Execution/NamedNode.h"
-
-#include "X3D/Browser/Notification.h"
-#include "X3D/Browser/Properties/BrowserOptions.h"
-#include "X3D/Browser/Properties/BrowserProperties.h"
-#include "X3D/Browser/Properties/MotionBlur.h"
-#include "X3D/Browser/Properties/RenderingProperties.h"
-#include "X3D/Browser/Selection.h"
-#include "X3D/InputOutput/Loader.h"
-#include "X3D/Miscellaneous/GoldenGate.h"
-#include "X3D/Miscellaneous/Keys.h"
-#include "X3D/Miscellaneous/MediaStream.h"
-#include "X3D/Parser/Filter.h"
-#include "X3D/Parser/RegEx.h"
-
-#include "X3D/Rendering/Context.h"
+#include "../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-const BrowserApplicationPtr &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>);
+class Selection :
+	virtual public X3DBaseNode
+{
+public:
 
-BrowserPtr
-createBrowser ()
-throw (Error <BROWSER_UNAVAILABLE>);
+	///  @name Construction
 
-BrowserPtr
-createBrowser (const BrowserPtr &)
-throw (Error <INVALID_NODE>,
-       Error <BROWSER_UNAVAILABLE>);
+	Selection (X3DExecutionContext* const);
 
-void
-removeBrowser (BrowserPtr &)
-noexcept (true);
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Member access
+
+	SFBool &
+	isActive ()
+	{ return active; }
+
+	const SFBool &
+	isActive () const
+	{ return active; }
+
+	///  @name Member access
+
+	bool
+	isSelected (const SFNode &) const;
+
+	void
+	addChildren (const MFNode &);
+
+	void
+	removeChildren (const MFNode &);
+
+	void
+	setChildren (const MFNode &);
+
+	const MFNode &
+	getChildren () const
+	{ return children; }
+
+	///  @name Operations
+
+	void
+	clear ();
+
+
+private:
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	SFBool active;
+	MFNode children;
+
+};
 
 } // X3D
 } // titania

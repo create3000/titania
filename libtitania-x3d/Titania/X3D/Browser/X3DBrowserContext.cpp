@@ -52,7 +52,7 @@
 
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
-#include "../Browser/PointingDeviceSensor/Selection.h"
+#include "../Browser/Selection.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
