@@ -50,7 +50,7 @@
 
 #include "X3DRenderer.h"
 
-#include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/BrowserOptions.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"

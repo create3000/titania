@@ -48,13 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_VIEWER_TYPE_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_VIEWER_TYPE_H__
+#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_VIEWER_TYPE_H__
+#define __TITANIA_X3D_BROWSER_NAVIGATION_VIEWER_TYPE_H__
 
 namespace titania {
 namespace X3D {
 
-enum class ViewerType : uint8_t
+enum class ViewerType :
+	uint8_t
 {
 	NONE,
 	EXAMINE,

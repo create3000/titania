@@ -349,14 +349,18 @@ private:
 
 	///  @name Members
 
+	SFString       description;
+	Speed <double> currentSpeed;
+	double         currentFrameRate;
+
 	SupportedFields     supportedFields;
 	SupportedNodes      supportedNodes;
 	SupportedComponents supportedComponents;
 	SupportedProfiles   supportedProfiles;
 
-	SFString       description;
-	Speed <double> currentSpeed;
-	double         currentFrameRate;
+	BrowserOptionsPtr      browserOptions;
+	BrowserPropertiesPtr   browserProperties;
+	RenderingPropertiesPtr renderingProperties;
 
 	ScenePtr scene;
 	WorldPtr world;

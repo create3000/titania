@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_PLANE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_NAVIGATION_PLANE_VIEWER_H__
 
 #include "../Navigation/X3DViewer.h"
 

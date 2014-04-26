@@ -52,8 +52,8 @@
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/ViewVolume.h"
-#include "../Properties/BrowserOptions.h"
 #include "../Browser.h"
+#include "../BrowserOptions.h"
 
 #include <Titania/Chrono/Now.h>
 #include <Titania/Math/Geometry/Camera.h>

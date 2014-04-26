@@ -1,6 +1,51 @@
 2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* Statistics.x3dv:
+	* BrowserOptions.h:
+	* Text.cpp:
+	* X3DRenderer.cpp:
+	* BrowserOptions.cpp:
+	* BrowserProperties.h:
+	* X3DBrowserContext.h:
+	* RenderingProperties.h:
+	* BrowserProperties.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DViewer.h:
+	* FlyViewer.h:
+	* RenderingProperties.cpp:
+	* NoneViewer.h:
+	* Appearance.cpp:
+	* ViewerType.h:
+	* WalkViewer.h:
+	* RenderingProperties.x3dv:
+	* PlaneViewer.h:
+	* LookAtViewer.h:
+	* X3DFlyViewer.h:
+	* ExamineViewer.h:
+	* BrowserOptions.h:
+	* X3DFlyViewer.cpp:
+	* X3DLayerNode.cpp:
+	* jsBrowser.cpp:
+	* BrowserOptions.cpp:
+	* BrowserProperties.h:
+	* X3DTextureNode.cpp:
+	* RenderingProperties.h:
+	* BrowserProperties.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp:
+	* TextureProperties.cpp:
+	* X3DTexture3DNode.cpp:
+	* MultiTextureTransform.cpp: 
+
+2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DBrowserContext.h:
 	* Box.h:

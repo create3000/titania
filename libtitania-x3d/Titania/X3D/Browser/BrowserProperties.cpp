@@ -50,7 +50,7 @@
 
 #include "BrowserProperties.h"
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -75,7 +75,7 @@ BrowserProperties::Fields::Fields () :
 	externalInteractions (new SFBool ()),
 	     prototypeCreate (new SFBool (true)),
 	           domImport (new SFBool ()),
-	         xmlEncoding (new SFBool ()),
+	         xmlEncoding (new SFBool (true)),
 	 classicVrmlEncoding (new SFBool (true)),
 	      binaryEncoding (new SFBool ())
 { }

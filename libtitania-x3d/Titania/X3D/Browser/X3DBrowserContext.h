@@ -71,9 +71,9 @@
 #include "../Browser/Texturing/X3DTexturingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
-#include "../Types/Pointer.h"
-
 #include "../Routing/Router.h"
+
+#include "../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
@@ -197,10 +197,6 @@ public:
 
 
 protected:
-
-	RenderingPropertiesPtr renderingProperties;
-	BrowserPropertiesPtr   browserProperties;
-	BrowserOptionsPtr      browserOptions;
 
 	///  @name Constructor
 

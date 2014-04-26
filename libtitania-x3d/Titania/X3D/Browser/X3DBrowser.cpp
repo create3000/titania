@@ -30,13 +30,15 @@
 
 #include "X3DBrowser.h"
 
-#include "../Rendering/Context.h"
 #include "../Bits/config.h"
+#include "../Browser/BrowserOptions.h"
+#include "../Browser/BrowserProperties.h"
 #include "../Browser/Notification.h"
-#include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/RenderingProperties.h"
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
 #include "../InputOutput/Loader.h"
+#include "../Rendering/Context.h"
 
 #include <Titania/Backtrace.h>
 
@@ -52,13 +54,16 @@ const std::string X3DBrowser::containerField = "browser";
 X3DBrowser::X3DBrowser () :
 	        X3DBaseNode (),
 	  X3DBrowserContext (),
+	        description (),
+	       currentSpeed (0),
+	   currentFrameRate (0),
 	    supportedFields (),
 	     supportedNodes (this),
 	supportedComponents (true),
 	  supportedProfiles (supportedComponents),
-	        description (),
-	       currentSpeed (0),
-	   currentFrameRate (0),
+	     browserOptions (new BrowserOptions      (this)),
+	  browserProperties (new BrowserProperties   (this)),
+	renderingProperties (new RenderingProperties (this)),
 	              scene (createScene ()),
 	              world (),
 	               root (),
@@ -72,6 +77,9 @@ X3DBrowser::X3DBrowser () :
 	setName ("Titania");
 
 	addChildren (description,
+	             browserOptions,
+	             browserProperties,
+	             renderingProperties,
 	             scene,
 	             world,
 	             root,
@@ -87,6 +95,10 @@ X3DBrowser::initialize ()
 
 	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();
+
+	browserOptions      -> setup ();
+	browserProperties   -> setup ();
+	renderingProperties -> setup ();
 
 	// Add necessary routes.
 

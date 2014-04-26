@@ -25,6 +25,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Geospatial.cpp \
 	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
+	Titania/X3D/Browser/BrowserOptions.cpp \
+	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
@@ -58,12 +60,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
-	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
-	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
-	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
+	Titania/X3D/Browser/RenderingProperties.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \

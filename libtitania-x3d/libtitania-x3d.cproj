@@ -442,9 +442,6 @@
     <None Include="Titania\X3D\Basic\BasicNodeArray.h" />
     <None Include="Titania\X3D\Types\Geometry.h" />
     <None Include="Titania\X3D\Types\Numbers.h" />
-    <None Include="Titania\X3D\Browser\Properties\BrowserProperties.h" />
-    <None Include="Titania\X3D\Browser\Properties\RenderingProperties.h" />
-    <None Include="Titania\X3D\Browser\Properties\BrowserOptions.h" />
     <None Include="libtitania-x3d.md.pc" />
     <None Include="Titania\X3D\Execution\BindableNodeStack.h" />
     <None Include="Titania\X3D\Base\Output.h" />
@@ -638,7 +635,6 @@
     <None Include="share\titania\tools\BoundingBox.x3dv" />
     <None Include="share\titania\tools\TransformTool.x3dv" />
     <None Include="share\titania\tools\Notification.x3dv" />
-    <None Include="share\titania\tools\Statistics.x3dv" />
     <None Include="share\titania\tools\library\Vector.x3dv" />
     <None Include="Titania\X3D\Tools\Layout\ScreenGroupTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DSensorNodeTool.h" />
@@ -686,6 +682,10 @@
     <None Include="Titania\X3D\Browser\Geometry3D\X3DGeometry3DContext.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\X3DGeometry2DContext.h" />
     <None Include="Titania\X3D\Browser\Rendering\X3DGeometricOptionNode.h" />
+    <None Include="Titania\X3D\Browser\BrowserOptions.h" />
+    <None Include="Titania\X3D\Browser\BrowserProperties.h" />
+    <None Include="Titania\X3D\Browser\RenderingProperties.h" />
+    <None Include="share\titania\tools\RenderingProperties.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1020,9 +1020,6 @@
     <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
     <Compile Include="Titania\X3D\Configuration\FieldTypesArray.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeArray.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\RenderingProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\BrowserOptions.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.cpp" />
@@ -1177,6 +1174,9 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DGeometry3DContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometry2DContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\X3DGeometricOptionNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\BrowserOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\BrowserProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\RenderingProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

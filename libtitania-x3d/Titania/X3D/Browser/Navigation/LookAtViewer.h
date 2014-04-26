@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_LOOCK_AT_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_LOOCK_AT_H__
+#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_LOOK_AT_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_NAVIGATION_LOOK_AT_VIEWER_H__
 
 #include "../Navigation/X3DViewer.h"
 
@@ -78,11 +78,12 @@ public:
 	NavigationInfo*
 	getNavigationInfo () const final override
 	{ return nullptr; }
-	
+
 	///  @name Destruction
-	
+
 	~LookAtViewer ();
-	
+
+
 private:
 
 	///  @name Construction
@@ -99,7 +100,7 @@ private:
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);
-	
+
 	Rotation4f
 	getOrientationOffset ();
 

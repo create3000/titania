@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,9 +50,9 @@
 
 #include "jsBrowser.h"
 
-#include "../../Browser/Properties/BrowserOptions.h"
-#include "../../Browser/Properties/BrowserProperties.h"
-#include "../../Browser/Properties/RenderingProperties.h"
+#include "../../Browser/BrowserOptions.h"
+#include "../../Browser/BrowserProperties.h"
+#include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
@@ -609,7 +609,7 @@ jsBrowser::firstViewpoint (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		script -> getBrowser () -> firstViewpoint ();
 
 		return JS_TRUE;
@@ -626,7 +626,7 @@ jsBrowser::previousViewpoint (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		script -> getBrowser () -> previousViewpoint ();
 
 		return JS_TRUE;
@@ -643,7 +643,7 @@ jsBrowser::nextViewpoint (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		script -> getBrowser () -> nextViewpoint ();
 
 		return JS_TRUE;
@@ -660,7 +660,7 @@ jsBrowser::lastViewpoint (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 0)
 	{
 		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		script -> getBrowser () -> lastViewpoint ();
 
 		return JS_TRUE;
@@ -870,7 +870,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 					{
 						if (javaScript -> getFuture ())
 							javaScript -> getFuture () -> wait ();
-							
+
 						using namespace std::placeholders;
 
 						javaScript -> getFuture () .reset (new SceneLoader (script -> getExecutionContext (),
@@ -892,7 +892,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 			}
 			catch (const Error <INVALID_NAME> &)
 			{
-				JS_ReportError (context, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
+			JS_ReportError (context, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
 			}
 		}
 		else

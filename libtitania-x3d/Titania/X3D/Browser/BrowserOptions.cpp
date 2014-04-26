@@ -50,19 +50,18 @@
 
 #include "BrowserOptions.h"
 
-#include "../../Components/Texturing/TextureProperties.h"
-#include "../Geometry2D/Arc2DOptions.h"
-#include "../Geometry2D/ArcClose2DOptions.h"
-#include "../Geometry2D/Circle2DOptions.h"
-#include "../Geometry2D/Disk2DOptions.h"
-#include "../Geometry2D/Rectangle2DOptions.h"
-#include "../Geometry3D/BoxOptions.h"
-#include "../Geometry3D/QuadSphereOptions.h"
-#include "../Properties/RenderingProperties.h"
-#include "../Rendering/MotionBlur.h"
-#include "../X3DBrowser.h"
-
-#include "../../Rendering/OpenGL.h"
+#include "../Browser/Geometry2D/Arc2DOptions.h"
+#include "../Browser/Geometry2D/ArcClose2DOptions.h"
+#include "../Browser/Geometry2D/Circle2DOptions.h"
+#include "../Browser/Geometry2D/Disk2DOptions.h"
+#include "../Browser/Geometry2D/Rectangle2DOptions.h"
+#include "../Browser/Geometry3D/BoxOptions.h"
+#include "../Browser/Geometry3D/QuadSphereOptions.h"
+#include "../Browser/Rendering/MotionBlur.h"
+#include "../Browser/RenderingProperties.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Components/Texturing/TextureProperties.h"
+#include "../Rendering/OpenGL.h"
 
 #include <Titania/Physics/Constants.h>
 
@@ -277,10 +276,10 @@ BrowserOptions::set_primitiveQuality ()
 
 	// MEDIUM
 
-	getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 20;
-	getBrowser () -> getArcClose2DOptions () -> minAngle () = M_PI / 20;
-	getBrowser () -> getCircle2DOptions()    -> segments () = 60;
-	getBrowser () -> getDisk2DOptions ()     -> segments () = 60;
+	getBrowser () -> getArc2DOptions ()      -> minAngle ()  = M_PI / 20;
+	getBrowser () -> getArcClose2DOptions () -> minAngle ()  = M_PI / 20;
+	getBrowser () -> getCircle2DOptions ()    -> segments () = 60;
+	getBrowser () -> getDisk2DOptions ()     -> segments ()  = 60;
 
 	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
@@ -320,7 +319,7 @@ BrowserOptions::set_shading ()
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
 	}
-	else // GOURAUD
+	else  // GOURAUD
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);

@@ -50,11 +50,11 @@
 
 #include "RenderingProperties.h"
 
-#include "../../Bits/config.h"
-#include "../../Rendering/Context.h"
-#include "../../Execution/World.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../Bits/config.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Execution/World.h"
+#include "../Execution/X3DExecutionContext.h"
+#include "../Rendering/Context.h"
 
 #include <Titania/String.h>
 
@@ -79,18 +79,18 @@ const std::string RenderingProperties::typeName       = "RenderingProperties";
 const std::string RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	             enabled (),
-	       cycleInterval (1),
-	              vendor (new SFString ()),
-	            renderer (new SFString ()),
-	             version (new SFString ()),
-	             shading (new SFString ("GOURAUD")),
-	      maxTextureSize (new SFInt32 ()),
-	        textureUnits (new SFInt32 ()),
-	           maxLights (new SFInt32 ()),
-	         antialiased (new SFBool ()),
-	          colorDepth (new SFInt32 ()),
-	       textureMemory (new SFDouble ())
+	       enabled (),
+	 cycleInterval (1),
+	        vendor (new SFString ()),
+	      renderer (new SFString ()),
+	       version (new SFString ()),
+	       shading (new SFString ("GOURAUD")),
+	maxTextureSize (new SFInt32 ()),
+	  textureUnits (new SFInt32 ()),
+	     maxLights (new SFInt32 ()),
+	   antialiased (new SFBool ()),
+	    colorDepth (new SFInt32 ()),
+	 textureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -152,7 +152,7 @@ RenderingProperties::initialize ()
 
 		try
 		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.x3dv") .str () });
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
 		}
 		catch (const X3DError & error)
 		{
@@ -236,7 +236,7 @@ RenderingProperties::build ()
 
 	try
 	{
-		const auto statistics = world -> getExecutionContext () -> getNamedNode ("StatisticsTool");
+		const auto statistics = world -> getExecutionContext () -> getNamedNode ("RenderingProperties");
 		auto &     string     = statistics -> getField <MFString> ("string");
 
 		string .clear ();

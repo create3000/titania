@@ -53,9 +53,6 @@
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Selection.h"
-#include "../Browser/Properties/BrowserOptions.h"
-#include "../Browser/Properties/BrowserProperties.h"
-#include "../Browser/Properties/RenderingProperties.h"
 #include "../Rendering/Context.h"
 
 #include <cassert>
@@ -83,9 +80,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	                X3DTextContext (),
 	           X3DTexturingContext (),
 	                X3DTimeContext (),
-	           renderingProperties (new RenderingProperties (this)),
-	             browserProperties (new BrowserProperties   (this)),
-	                browserOptions (new BrowserOptions      (this)),
 	             initializedOutput (),
 	                reshapedOutput (),
 	           prepareEventsOutput (),
@@ -102,9 +96,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	initialized () .setName ("initialized");
 
 	addChildren (initialized (),
-	             renderingProperties,
-	             browserProperties,
-	             browserOptions,
 	             selection,
 	             notification,
 	             console);
@@ -132,15 +123,9 @@ X3DBrowserContext::initialize ()
 	X3DTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
 
-	if (glXGetCurrentContext ())
-	{
-		renderingProperties -> setup ();
-		browserProperties   -> setup ();
-		browserOptions      -> setup ();
-		selection           -> setup ();
-		notification        -> setup ();
-		console             -> setup ();
-	}
+	selection           -> setup ();
+	notification        -> setup ();
+	console             -> setup ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
