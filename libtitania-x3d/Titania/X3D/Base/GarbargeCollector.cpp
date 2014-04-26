@@ -132,6 +132,21 @@ GarbageCollector::size () const
 GarbageCollector::~GarbageCollector ()
 {
 	// Let the system delete all remaining objects.
+
+	//	ObjectArray final;
+	//
+	//	while (not empty ())
+	//	{
+	//		{
+	//			std::lock_guard <std::mutex> lock (mutex);
+	//
+	//			final = std::move (objects);
+	//		}
+	//
+	//		deleteObjects (std::move (final));
+	//	}
+	//
+	//	__LOG__ << std::endl;
 }
 
 } // X3D

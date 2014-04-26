@@ -127,6 +127,7 @@ public:
 	void
 	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
 
+	virtual
 	~X3DViewpointListInterface ();
 
 

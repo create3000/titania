@@ -331,6 +331,7 @@ public:
 	bool
 	on_backEmissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
+	virtual
 	~X3DMaterialEditorInterface ();
 
 

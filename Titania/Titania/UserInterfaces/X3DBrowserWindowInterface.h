@@ -899,6 +899,7 @@ public:
 	void
 	on_look_at_toggled () = 0;
 
+	virtual
 	~X3DBrowserWindowInterface ();
 
 

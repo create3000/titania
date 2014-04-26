@@ -462,12 +462,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 {
 	delete m_window;
-	delete m_openLocationDialog;
-	delete m_fileOpenDialog;
+	delete m_fileSaveWarningDialog;
 	delete m_fileImportDialog;
+	delete m_openLocationDialog;
 	delete m_messageDialog;
 	delete m_fileSaveDialog;
-	delete m_fileSaveWarningDialog;
+	delete m_fileOpenDialog;
 }
 
 } // puck

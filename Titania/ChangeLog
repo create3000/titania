@@ -1,5 +1,22 @@
 2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DConsoleInterface.h:
+	* X3DLibraryViewInterface.h:
+	* X3DViewpointListInterface.h:
+	* X3DOutlineEditorInterface.h:
+	* X3DTextureEditorInterface.h:
+	* X3DHistoryEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DMaterialEditorInterface.h:
+	* X3DOutlineTreeViewInterface.h:
+	* X3DViewpointListInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DMotionBlurEditorInterface.h:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h: 
+
+2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp: 
 
 2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>

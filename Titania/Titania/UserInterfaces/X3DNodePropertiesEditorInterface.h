@@ -155,6 +155,7 @@ public:
 	void
 	on_name_delete_text (int start_pos, int end_pos) = 0;
 
+	virtual
 	~X3DNodePropertiesEditorInterface ();
 
 

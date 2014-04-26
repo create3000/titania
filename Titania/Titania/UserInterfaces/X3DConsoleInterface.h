@@ -103,6 +103,7 @@ public:
 	getWidget () const
 	{ return *m_widget; }
 
+	virtual
 	~X3DConsoleInterface ();
 
 

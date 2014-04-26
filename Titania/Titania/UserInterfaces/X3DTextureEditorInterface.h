@@ -223,6 +223,7 @@ public:
 	getScaleTButton () const
 	{ return *m_scaleTButton; }
 
+	virtual
 	~X3DTextureEditorInterface ();
 
 
