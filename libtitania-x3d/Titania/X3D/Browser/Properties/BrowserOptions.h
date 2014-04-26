@@ -81,7 +81,6 @@ class Disk2DOptions;
 class Rectangle2DOptions;
 class BoxOptions;
 class X3DSphereOptionNode;
-class MotionBlur;
 
 class BrowserOptions :
 	virtual public X3DBaseNode
@@ -210,14 +209,6 @@ public:
 	gravity () const
 	{ return *fields .gravity; }
 
-	X3DPtr <MotionBlur> &
-	motionBlurOptions ()
-	{ return fields .motionBlurOptions; }
-
-	const X3DPtr <MotionBlur> &
-	motionBlurOptions () const
-	{ return fields .motionBlurOptions; }
-
 	X3DPtr <Arc2DOptions> &
 	arc2D ()
 	{ return fields .arc2D; }
@@ -320,7 +311,6 @@ private:
 		SFString* const shading;
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
-		X3DPtr <MotionBlur> motionBlurOptions;
 		X3DPtr <Arc2DOptions> arc2D;
 		X3DPtr <ArcClose2DOptions> arcClose2D;
 		X3DPtr <Circle2DOptions> circle2D;

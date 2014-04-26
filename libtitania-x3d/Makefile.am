@@ -59,8 +59,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
-	Titania/X3D/Browser/Properties/MotionBlur.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
+	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \

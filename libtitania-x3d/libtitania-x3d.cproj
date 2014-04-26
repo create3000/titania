@@ -488,7 +488,6 @@
     <None Include="Titania\X3D\Base\X3DObject.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsX3DScalar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.h" />
-    <None Include="Titania\X3D\Browser\Properties\MotionBlur.h" />
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
     <None Include="Titania\X3D\Bits\Cast.h" />
@@ -684,6 +683,7 @@
     <None Include="Titania\X3D\Browser\Navigation\X3DFlyViewer.h" />
     <None Include="Titania\X3D\Browser\Navigation\X3DViewer.h" />
     <None Include="Titania\X3D\Browser\Core\X3DOptionNode.h" />
+    <None Include="Titania\X3D\Browser\Rendering\MotionBlur.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1057,7 +1057,6 @@
     <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DArrayField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\MotionBlur.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
@@ -1173,6 +1172,7 @@
     <Compile Include="Titania\X3D\Browser\Navigation\X3DFlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Navigation\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\X3DOptionNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Rendering\MotionBlur.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

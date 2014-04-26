@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,86 +48,99 @@
  *
  ******************************************************************************/
 
-#include "MotionBlur.h"
+#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_MOTION_BLUR_H__
+#define __TITANIA_X3D_BROWSER_PROPERTIES_MOTION_BLUR_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
 
-MotionBlur::Fields::Fields () :
-	enabled (new SFBool ()),
-	intensity (new SFFloat (0.25))
-{ }
-
-const std::string MotionBlur::componentName  = "Browser";
-const std::string MotionBlur::typeName       = "MotionBlur";
-const std::string MotionBlur::containerField = "motionBlur";
-
-MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	     fields ()
+class MotionBlur :
+	virtual public X3DBaseNode
 {
-	addField (inputOutput, "metadata",   metadata ());
-	addField (inputOutput, "enabled",     enabled ());
-	addField (inputOutput, "intensity", intensity ());
-}
+public:
 
-X3DBaseNode*
-MotionBlur::create (X3DExecutionContext* const executionContext) const
-{
-	return new MotionBlur (executionContext);
-}
+	MotionBlur (X3DExecutionContext* const);
 
-void
-MotionBlur::initialize ()
-{
-	X3DNode::initialize ();
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
 
-	enabled () .addInterest (this, &MotionBlur::set_enabled);
+	///  @name Common members
 
-	set_enabled ();
-}
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
 
-void
-MotionBlur::set_enabled ()
-{
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+	void
 	clear ();
 
-	if (enabled ())
+	void
+	display ();
+
+
+private:
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_enabled ();
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	struct Fields
 	{
-		getBrowser () -> reshaped ()  .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed () .addInterest (this, &MotionBlur::display);
-	}
-	else
-	{
-		getBrowser () -> reshaped ()  .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed () .removeInterest (this, &MotionBlur::display);
-	}
-}
+		Fields ();
 
-void
-MotionBlur::clear ()
-{
-	glClearAccum (0, 0, 0, 1);
+		SFBool* const enabled;
+		SFFloat* const intensity;
+	};
 
-	glClear (GL_ACCUM_BUFFER_BIT);
-}
+	Fields fields;
 
-void
-MotionBlur::display ()
-{
-	if (enabled ())
-	{
-		glAccum (GL_MULT, intensity ());
-
-		glAccum (GL_ACCUM, 1 - intensity ());
-
-		glAccum (GL_RETURN, 1);
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

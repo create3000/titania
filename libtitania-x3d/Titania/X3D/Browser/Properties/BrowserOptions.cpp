@@ -60,7 +60,7 @@
 #include "../Geometry3D/BoxOptions.h"
 #include "../Geometry3D/QuadSphereOptions.h"
 #include "../Geometry3D/X3DSphereOptionNode.h"
-#include "../Properties/MotionBlur.h"
+#include "../Rendering/MotionBlur.h"
 #include "../Properties/RenderingProperties.h"
 #include "../X3DBrowser.h"
 
@@ -105,7 +105,6 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	               shading (new SFString ("GOURAUD")),
 	     animateStairWalks (new SFBool ()),
 	               gravity (new SFFloat (P_GN)),
-	     motionBlurOptions (new MotionBlur (executionContext)),
 	                 arc2D (new Arc2DOptions (executionContext)),
 	            arcClose2D (new ArcClose2DOptions (executionContext)),
 	              circle2D (new Circle2DOptions (executionContext)),
@@ -135,8 +134,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildren (motionBlurOptions (),
-	             arc2D (),
+	addChildren (arc2D (),
 	             arcClose2D (),
 	             circle2D (),
 	             disc2D (),
@@ -156,14 +154,13 @@ BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	motionBlurOptions () -> setup ();
-	arc2D ()             -> setup ();
-	arcClose2D ()        -> setup ();
-	circle2D ()          -> setup ();
-	disc2D ()            -> setup ();
-	rectangle2D ()       -> setup ();
-	box ()               -> setup ();
-	sphere ()            -> setup ();
+	arc2D ()       -> setup ();
+	arcClose2D ()  -> setup ();
+	circle2D ()    -> setup ();
+	disc2D ()      -> setup ();
+	rectangle2D () -> setup ();
+	box ()         -> setup ();
+	sphere ()      -> setup ();
 
 	antialiased ()      .addInterest (this, &BrowserOptions::set_antialiased);
 	textureQuality ()   .addInterest (this, &BrowserOptions::set_textureQuality);
@@ -179,25 +176,25 @@ BrowserOptions::initialize ()
 SFBool &
 BrowserOptions::motionBlur ()
 {
-	return motionBlurOptions () -> enabled ();
+	return getBrowser () -> getMotionBlur () -> enabled ();
 }
 
 const SFBool &
 BrowserOptions::motionBlur () const
 {
-	return motionBlurOptions () -> enabled ();
+	return getBrowser () -> getMotionBlur () -> enabled ();
 }
 
 SFFloat &
 BrowserOptions::motionBlurIntensity ()
 {
-	return motionBlurOptions () -> intensity ();
+	return getBrowser () -> getMotionBlur () -> intensity ();
 }
 
 const SFFloat &
 BrowserOptions::motionBlurIntensity () const
 {
-	return motionBlurOptions () -> intensity ();
+	return getBrowser () -> getMotionBlur () -> intensity ();
 }
 
 void

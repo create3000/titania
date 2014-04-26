@@ -50,6 +50,7 @@
 
 #include "X3DRenderingContext.h"
 
+#include "../Rendering/MotionBlur.h"
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/String.h>
@@ -60,8 +61,11 @@ namespace X3D {
 X3DRenderingContext::X3DRenderingContext () :
 	  X3DBaseNode (),
 	maxClipPlanes (0),
-	   clipPlanes ()
-{ }
+	   clipPlanes (),
+	   motionBlur (new MotionBlur (getExecutionContext ()))
+{
+	addChildren (motionBlur);
+}
 
 void
 X3DRenderingContext::initialize ()
@@ -91,7 +95,12 @@ X3DRenderingContext::initialize ()
 		for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
 			clipPlanes .push (GL_CLIP_PLANE0 + i);
 	}
+
+	motionBlur -> setup ();
 }
+
+X3DRenderingContext::~X3DRenderingContext ()
+{ }
 
 } // X3D
 } // titania

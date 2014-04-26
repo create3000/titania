@@ -52,12 +52,15 @@
 #define __TITANIA_X3D_BROWSER_RENDERING_X3DRENDERING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtr.h"
 #include "../../Rendering/OpenGL.h"
 
 #include <stack>
 
 namespace titania {
 namespace X3D {
+
+class MotionBlur;
 
 using ClipPlaneStack = std::stack <GLenum>;
 
@@ -76,12 +79,18 @@ public:
 	getClipPlanes ()
 	{ return clipPlanes; }
 
+	const X3DPtr <MotionBlur> &
+	getMotionBlur () const
+	{ return motionBlur; }
+
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () override
 	{ }
+
+	~X3DRenderingContext ();
 
 
 protected:
@@ -99,8 +108,9 @@ private:
 
 	///  @name Members
 
-	int32_t        maxClipPlanes;
-	ClipPlaneStack clipPlanes;
+	int32_t             maxClipPlanes;
+	ClipPlaneStack      clipPlanes;
+	X3DPtr <MotionBlur> motionBlur;
 
 };
 
