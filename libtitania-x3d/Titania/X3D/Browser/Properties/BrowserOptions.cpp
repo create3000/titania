@@ -51,7 +51,6 @@
 #include "BrowserOptions.h"
 
 #include "../../Components/Texturing/TextureProperties.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
 #include "../Geometry2D/Circle2DOptions.h"
@@ -59,15 +58,13 @@
 #include "../Geometry2D/Rectangle2DOptions.h"
 #include "../Geometry3D/BoxOptions.h"
 #include "../Geometry3D/QuadSphereOptions.h"
-#include "../Geometry3D/X3DSphereOptionNode.h"
-#include "../Rendering/MotionBlur.h"
 #include "../Properties/RenderingProperties.h"
+#include "../Rendering/MotionBlur.h"
 #include "../X3DBrowser.h"
 
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/Physics/Constants.h>
-#include <Titania/String/join.h>
 
 namespace titania {
 namespace X3D {
@@ -84,10 +81,10 @@ namespace X3D {
 // QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   Render quality while camera is moving
 // Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
 // MotionBlur              Boolean                                  False                        Render animations with motion blur
+//
 // MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
-// MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
 
 const std::string BrowserOptions::componentName  = "Browser";
 const std::string BrowserOptions::typeName       = "BrowserOptions";
@@ -104,14 +101,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	     qualityWhenMoving (new SFString ("MEDIUM")),
 	               shading (new SFString ("GOURAUD")),
 	     animateStairWalks (new SFBool ()),
-	               gravity (new SFFloat (P_GN)),
-	                 arc2D (new Arc2DOptions (executionContext)),
-	            arcClose2D (new ArcClose2DOptions (executionContext)),
-	              circle2D (new Circle2DOptions (executionContext)),
-	                disc2D (new Disk2DOptions (executionContext)),
-	           rectangle2D (new Rectangle2DOptions (executionContext)),
-	                   box (new BoxOptions (executionContext)),
-	                sphere (new QuadSphereOptions (executionContext))
+	               gravity (new SFFloat (P_GN))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -128,19 +118,13 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "QualityWhenMoving",      qualityWhenMoving ());
 	addField (inputOutput, "Shading",                shading ());
 	addField (inputOutput, "MotionBlur",             motionBlur ());
+
+	// Non standard options
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
 	addField (inputOutput, "Gravity",                gravity ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
-
-	addChildren (arc2D (),
-	             arcClose2D (),
-	             circle2D (),
-	             disc2D (),
-	             rectangle2D (),
-	             box (),
-	             sphere ());
 }
 
 BrowserOptions*
@@ -153,14 +137,6 @@ void
 BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
-
-	arc2D ()       -> setup ();
-	arcClose2D ()  -> setup ();
-	circle2D ()    -> setup ();
-	disc2D ()      -> setup ();
-	rectangle2D () -> setup ();
-	box ()         -> setup ();
-	sphere ()      -> setup ();
 
 	antialiased ()      .addInterest (this, &BrowserOptions::set_antialiased);
 	textureQuality ()   .addInterest (this, &BrowserOptions::set_textureQuality);
@@ -216,7 +192,6 @@ BrowserOptions::set_antialiased ()
 		glDisable (GL_MULTISAMPLE);
 		getBrowser () -> getRenderingProperties () -> antialiased () = false;
 	}
-
 }
 
 void
@@ -266,12 +241,12 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality () == "HIGH")
 	{
-		arc2D ()      -> minAngle () = M_PI / 40;
-		arcClose2D () -> minAngle () = M_PI / 40;
-		circle2D ()   -> segments () = 100;
-		disc2D ()     -> segments () = 100;
+		getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 40;
+		getBrowser () -> getArcClose2DOptions () -> minAngle () = M_PI / 40;
+		getBrowser () -> getCircle2DOptions ()   -> segments () = 100;
+		getBrowser () -> getDisk2DOptions ()     -> segments () = 100;
 
-		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
+		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
@@ -284,12 +259,12 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality () == "LOW")
 	{
-		arc2D ()      -> minAngle () = M_PI / 10;
-		arcClose2D () -> minAngle () = M_PI / 10;
-		circle2D ()   -> segments () = 20;
-		disc2D ()     -> segments () = 20;
+		getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 10;
+		getBrowser () -> getArcClose2DOptions () -> minAngle () = M_PI / 10;
+		getBrowser () -> getCircle2DOptions ()   -> segments () = 20;
+		getBrowser () -> getDisk2DOptions ()     -> segments () = 20;
 
-		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
+		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
@@ -302,12 +277,12 @@ BrowserOptions::set_primitiveQuality ()
 
 	// MEDIUM
 
-	arc2D ()      -> minAngle () = M_PI / 20;
-	arcClose2D () -> minAngle () = M_PI / 20;
-	circle2D ()   -> segments () = 60;
-	disc2D ()     -> segments () = 60;
+	getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 20;
+	getBrowser () -> getArcClose2DOptions () -> minAngle () = M_PI / 20;
+	getBrowser () -> getCircle2DOptions()    -> segments () = 60;
+	getBrowser () -> getDisk2DOptions ()     -> segments () = 60;
 
-	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
+	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 	if (quadSphere)
 	{
@@ -345,7 +320,7 @@ BrowserOptions::set_shading ()
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
 	}
-	else  // GOURAUD
+	else // GOURAUD
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);

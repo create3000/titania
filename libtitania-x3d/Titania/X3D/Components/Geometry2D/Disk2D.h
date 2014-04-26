@@ -135,11 +135,6 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
-	void
-	set_properties ();
-
 	///  @name Operations
 
 	virtual

@@ -48,72 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
+#ifndef __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
+#define __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
 
 #include "../Core/X3DOptionNode.h"
+
+#include "../../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
 
-class ArcClose2DOptions :
+class X3DGeometricOptionNode :
 	public X3DOptionNode
 {
 public:
 
-	ArcClose2DOptions (X3DExecutionContext* const);
+	///  @name Member access
 
-	///  @name Common members
+	const std::vector <Vector4f> &
+	getTexCoords () const
+	{ return texCoord; }
+
+	const std::vector <Vector3f> &
+	getNormals () const
+	{ return normals; }
+
+	const std::vector <Vector3f> &
+	getVertices () const
+	{ return vertices; }
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	GLenum
+	getVertexMode () const = 0;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DGeometricOptionNode ();
 
 	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+	void
+	initialize () override;
+
+	///  @name Member access
+
+	std::vector <Vector4f> &
+	getTexCoords ()
+	{ return texCoord; }
+
+	std::vector <Vector3f> &
+	getNormals ()
+	{ return normals; }
+
+	std::vector <Vector3f> &
+	getVertices ()
+	{ return vertices; }
+
+	///  @name Operations
+
+	void
+	update ();
 
 	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
-
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
+	void
+	build () = 0;
 
 
 private:
 
-	virtual
-	ArcClose2DOptions*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const minAngle;
-	};
-
-	Fields fields;
+	std::vector <Vector4f> texCoord;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
 
 };
 

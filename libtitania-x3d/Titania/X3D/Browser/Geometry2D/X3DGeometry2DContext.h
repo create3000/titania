@@ -48,72 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_X3DGEOMETRY2DCONTEXT_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_X3DGEOMETRY2DCONTEXT_H__
 
-#include "../Core/X3DOptionNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 
-class ArcClose2DOptions :
-	public X3DOptionNode
+class Arc2DOptions;
+class ArcClose2DOptions;
+class Circle2DOptions;
+class Disk2DOptions;
+class Rectangle2DOptions;
+
+class X3DGeometry2DContext :
+	virtual public X3DBaseNode
 {
 public:
 
-	ArcClose2DOptions (X3DExecutionContext* const);
+	///  @name Member access
 
-	///  @name Common members
+	const X3DPtr <Arc2DOptions> &
+	getArc2DOptions () const
+	{ return arc2DOptions; }
+
+	const X3DPtr <ArcClose2DOptions> &
+	getArcClose2DOptions () const
+	{ return arcClose2DOptions; }
+
+	const X3DPtr <Circle2DOptions> &
+	getCircle2DOptions () const
+	{ return circle2DOptions; }
+
+	const X3DPtr <Disk2DOptions> &
+	getDisk2DOptions () const
+	{ return disk2DOptions; }
+
+	const X3DPtr <Rectangle2DOptions> &
+	getRectangle2DOptions () const
+	{ return rectangle2DOptions; }
+
+	///  @name Destruction
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	void
+	dispose () override
+	{ }
+
+	~X3DGeometry2DContext ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DGeometry2DContext ();
 
 	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
-
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
+	void
+	initialize () override;
 
 
 private:
 
-	virtual
-	ArcClose2DOptions*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const minAngle;
-	};
-
-	Fields fields;
+	X3DPtr <Arc2DOptions>       arc2DOptions;
+	X3DPtr <ArcClose2DOptions>  arcClose2DOptions;
+	X3DPtr <Circle2DOptions>    circle2DOptions;
+	X3DPtr <Disk2DOptions>      disk2DOptions;
+	X3DPtr <Rectangle2DOptions> rectangle2DOptions;
 
 };
 

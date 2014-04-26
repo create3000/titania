@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DOPTION_NODE_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_X3DOPTION_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_CORE_X3DOPTION_NODE_H__
+#define __TITANIA_X3D_BROWSER_CORE_X3DOPTION_NODE_H__
 
 #include "../../Basic/X3DBaseNode.h"
 

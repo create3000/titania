@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTION_NODE_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTION_NODE_H__
 
-#include "../Geometry2D/X3DGeometricOptionNode.h"
+#include "../Rendering/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {

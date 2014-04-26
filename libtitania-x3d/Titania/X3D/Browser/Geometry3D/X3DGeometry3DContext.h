@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,81 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DGEOMETRY3DCONTEXT_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DGEOMETRY3DCONTEXT_H__
 
-#include "../Core/X3DOptionNode.h"
-
-#include "../../Rendering/OpenGL.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGeometricOptionNode :
-	public X3DOptionNode
+class BoxOptions;
+class X3DSphereOptionNode;
+
+class X3DGeometry3DContext :
+	virtual public X3DBaseNode
 {
 public:
 
 	///  @name Member access
 
-	const std::vector <Vector4f> &
-	getTexCoords () const
-	{ return texCoord; }
+	const X3DPtr <BoxOptions> &
+	getBoxOptions () const
+	{ return boxOptions; }
 
-	const std::vector <Vector3f> &
-	getNormals () const
-	{ return normals; }
+	const X3DPtr <X3DSphereOptionNode> &
+	getSphereOptions () const
+	{ return sphereOptions; }
 
-	const std::vector <Vector3f> &
-	getVertices () const
-	{ return vertices; }
+	///  @name Destruction
 
 	virtual
-	GLenum
-	getVertexMode () const = 0;
+	void
+	dispose () override
+	{ }
+
+	~X3DGeometry3DContext ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DGeometricOptionNode ();
+	X3DGeometry3DContext ();
 
 	virtual
 	void
 	initialize () override;
-
-	///  @name Member access
-
-	std::vector <Vector4f> &
-	getTexCoords ()
-	{ return texCoord; }
-
-	std::vector <Vector3f> &
-	getNormals ()
-	{ return normals; }
-
-	std::vector <Vector3f> &
-	getVertices ()
-	{ return vertices; }
-
-	///  @name Operations
-
-	void
-	update ();
-
-	virtual
-	void
-	build () = 0;
 
 
 private:
 
 	///  @name Members
 
-	std::vector <Vector4f> texCoord;
-	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+	X3DPtr <BoxOptions>          boxOptions;
+	X3DPtr <X3DSphereOptionNode> sphereOptions;
 
 };
 

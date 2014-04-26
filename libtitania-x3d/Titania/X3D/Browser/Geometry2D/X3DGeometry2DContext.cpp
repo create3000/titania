@@ -48,76 +48,44 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
+#include "X3DGeometry2DContext.h"
 
-#include "../Core/X3DOptionNode.h"
+#include "../Geometry2D/Arc2DOptions.h"
+#include "../Geometry2D/ArcClose2DOptions.h"
+#include "../Geometry2D/Circle2DOptions.h"
+#include "../Geometry2D/Disk2DOptions.h"
+#include "../Geometry2D/Rectangle2DOptions.h"
 
 namespace titania {
 namespace X3D {
 
-class ArcClose2DOptions :
-	public X3DOptionNode
+X3DGeometry2DContext::X3DGeometry2DContext () :
+	       X3DBaseNode (),
+	      arc2DOptions (new Arc2DOptions (getExecutionContext ())),
+	 arcClose2DOptions (new ArcClose2DOptions (getExecutionContext ())),
+	   circle2DOptions (new Circle2DOptions (getExecutionContext ())),
+	     disk2DOptions (new Disk2DOptions (getExecutionContext ())),
+	rectangle2DOptions (new Rectangle2DOptions (getExecutionContext ()))
 {
-public:
+	addChildren (arc2DOptions,
+	             arcClose2DOptions,
+	             circle2DOptions,
+	             disk2DOptions,
+	             rectangle2DOptions);
+}
 
-	ArcClose2DOptions (X3DExecutionContext* const);
+void
+X3DGeometry2DContext::initialize ()
+{
+	arc2DOptions       -> setup ();
+	arcClose2DOptions  -> setup ();
+	circle2DOptions    -> setup ();
+	disk2DOptions      -> setup ();
+	rectangle2DOptions -> setup ();
+}
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
-
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
-
-
-private:
-
-	virtual
-	ArcClose2DOptions*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const minAngle;
-	};
-
-	Fields fields;
-
-};
+X3DGeometry2DContext::~X3DGeometry2DContext ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

@@ -51,7 +51,6 @@
 #include "Arc2D.h"
 
 #include "../../Browser/Geometry2D/Arc2DOptions.h"
-#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -90,13 +89,7 @@ Arc2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2D () .addInterest (this, &Arc2D::set_properties);
-}
-
-void
-Arc2D::set_properties ()
-{
-	addEvent ();
+	getBrowser () -> getArcClose2DOptions () .addInterest (this, &Arc2D::update);
 }
 
 float
@@ -119,10 +112,10 @@ Arc2D::getAngle ()
 void
 Arc2D::build ()
 {
-	const Arc2DOptions* properties = getBrowser () -> getBrowserOptions () -> arc2D ();
+	const Arc2DOptions* const options = getBrowser () -> getArc2DOptions ();
 
 	const float difference = getAngle ();
-	size_t      segments   = std::ceil (difference / properties -> minAngle ());
+	size_t      segments   = std::ceil (difference / options -> minAngle ());
 	const float angle      = difference / segments;
 	GLenum      vertexMode = GL_LINE_LOOP;
 

@@ -74,20 +74,18 @@ namespace X3D {
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
-class Arc2DOptions;
-class ArcClose2DOptions;
-class Circle2DOptions;
-class Disk2DOptions;
-class Rectangle2DOptions;
-class BoxOptions;
-class X3DSphereOptionNode;
-
 class BrowserOptions :
 	virtual public X3DBaseNode
 {
 public:
 
+	///  @name Construction
+
 	BrowserOptions (X3DExecutionContext* const);
+
+	virtual
+	BrowserOptions*
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
@@ -209,72 +207,16 @@ public:
 	gravity () const
 	{ return *fields .gravity; }
 
-	X3DPtr <Arc2DOptions> &
-	arc2D ()
-	{ return fields .arc2D; }
-
-	const X3DPtr <Arc2DOptions> &
-	arc2D () const
-	{ return fields .arc2D; }
-
-	X3DPtr <ArcClose2DOptions> &
-	arcClose2D ()
-	{ return fields .arcClose2D; }
-
-	const X3DPtr <ArcClose2DOptions> &
-	arcClose2D () const
-	{ return fields .arcClose2D; }
-
-	X3DPtr <Circle2DOptions> &
-	circle2D ()
-	{ return fields .circle2D; }
-
-	const X3DPtr <Circle2DOptions> &
-	circle2D () const
-	{ return fields .circle2D; }
-
-	X3DPtr <Disk2DOptions> &
-	disc2D ()
-	{ return fields .disc2D; }
-
-	const X3DPtr <Disk2DOptions> &
-	disc2D () const
-	{ return fields .disc2D; }
-
-	X3DPtr <Rectangle2DOptions> &
-	rectangle2D ()
-	{ return fields .rectangle2D; }
-
-	const X3DPtr <Rectangle2DOptions> &
-	rectangle2D () const
-	{ return fields .rectangle2D; }
-
-	X3DPtr <BoxOptions> &
-	box ()
-	{ return fields .box; }
-
-	const X3DPtr <BoxOptions> &
-	box () const
-	{ return fields .box; }
-
-	X3DPtr <X3DSphereOptionNode> &
-	sphere ()
-	{ return fields .sphere; }
-
-	const X3DPtr <X3DSphereOptionNode> &
-	sphere () const
-	{ return fields .sphere; }
-
 
 private:
 
-	virtual
-	BrowserOptions*
-	create (X3DExecutionContext* const) const final override;
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_antialiased ();
@@ -311,13 +253,6 @@ private:
 		SFString* const shading;
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
-		X3DPtr <Arc2DOptions> arc2D;
-		X3DPtr <ArcClose2DOptions> arcClose2D;
-		X3DPtr <Circle2DOptions> circle2D;
-		X3DPtr <Disk2DOptions> disc2D;
-		X3DPtr <Rectangle2DOptions> rectangle2D;
-		X3DPtr <BoxOptions> box;
-		X3DPtr <X3DSphereOptionNode> sphere;
 	};
 
 	Fields fields;

@@ -51,7 +51,6 @@
 #include "Circle2D.h"
 
 #include "../../Browser/Geometry2D/Circle2DOptions.h"
-#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -86,13 +85,7 @@ Circle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> circle2D () .addInterest (this, &Circle2D::set_properties);
-}
-
-void
-Circle2D::set_properties ()
-{
-	addEvent ();
+	getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
 }
 
 Box3f
@@ -106,20 +99,20 @@ Circle2D::createBBox ()
 void
 Circle2D::build ()
 {
-	const Circle2DOptions* const properties = getBrowser () -> getBrowserOptions () -> circle2D ();
+	const Circle2DOptions* const options = getBrowser () -> getCircle2DOptions ();
 
 	if (std::abs (radius ()) == 1.0f)
-		getVertices () = properties -> getVertices ();
+		getVertices () = options -> getVertices ();
 
 	else
 	{
-		getVertices () .reserve (properties -> getVertices () .size ());
+		getVertices () .reserve (options -> getVertices () .size ());
 
-		for (const auto & vertex : properties -> getVertices ())
+		for (const auto & vertex : options -> getVertices ())
 			getVertices () .emplace_back (vertex * std::abs (radius ()));
 	}
 
-	addElements (properties -> getVertexMode (), getVertices () .size ());
+	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (false);
 }
 

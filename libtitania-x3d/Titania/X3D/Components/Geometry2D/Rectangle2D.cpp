@@ -51,7 +51,6 @@
 #include "Rectangle2D.h"
 
 #include "../../Browser/Geometry2D/Rectangle2DOptions.h"
-#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -88,13 +87,7 @@ Rectangle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> rectangle2D () .addInterest (this, &Rectangle2D::set_properties);
-}
-
-void
-Rectangle2D::set_properties ()
-{
-	addEvent ();
+	getBrowser () -> getRectangle2DOptions () .addInterest (this, &Rectangle2D::update);
 }
 
 Box3f
@@ -106,38 +99,38 @@ Rectangle2D::createBBox ()
 void
 Rectangle2D::build ()
 {
-	const Rectangle2DOptions* const properties = getBrowser () -> getBrowserOptions () -> rectangle2D ();
+	const Rectangle2DOptions* const options = getBrowser () -> getRectangle2DOptions ();
 
 	size_t elements = solid () ? 1 : 2;
 
 	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (elements * properties -> getTexCoords () .size ());
-	getTexCoords () [0] = properties -> getTexCoords ();
+	getTexCoords () [0] .reserve (elements * options -> getTexCoords () .size ());
+	getTexCoords () [0] = options -> getTexCoords ();
 
-	getNormals () .reserve (elements * properties -> getNormals  () .size ());
-	getNormals () = properties -> getNormals  ();
+	getNormals () .reserve (elements * options -> getNormals  () .size ());
+	getNormals () = options -> getNormals  ();
 
-	getVertices () .reserve (elements * properties -> getVertices () .size ());
+	getVertices () .reserve (elements * options -> getVertices () .size ());
 
 	if (size () == Vector2f (2, 2))
-		getVertices () = properties -> getVertices ();
+		getVertices () = options -> getVertices ();
 
 	else
 	{
-		getVertices () .reserve (properties -> getVertices () .size ());
+		getVertices () .reserve (options -> getVertices () .size ());
 
 		const auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
 
-		for (const auto & vertex : properties -> getVertices ())
+		for (const auto & vertex : options -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);
 	}
 
-	addElements (properties -> getVertexMode (), getVertices () .size ());
+	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (true);
 	setTextureCoordinate (nullptr);
 
 	if (not solid ())
-		addMirrorVertices (properties -> getVertexMode (), true);
+		addMirrorVertices (options -> getVertexMode (), true);
 }
 
 } // X3D

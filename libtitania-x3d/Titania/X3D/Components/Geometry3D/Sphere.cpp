@@ -50,8 +50,7 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Geometry3D/QuadSphereOptions.h"
-#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Geometry3D/X3DSphereOptionNode.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -88,13 +87,7 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> sphere () .addInterest (this, &Sphere::set_properties);
-}
-
-void
-Sphere::set_properties ()
-{
-	addEvent ();
+	getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
 }
 
 Box3f
@@ -108,27 +101,27 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSphereOptionNode* const properties = getBrowser () -> getBrowserOptions () -> sphere ();
+	const X3DSphereOptionNode* const options = getBrowser () -> getSphereOptions ();
 
 	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (properties -> getTexCoords () .size ());
-	getTexCoords () [0] = properties -> getTexCoords ();
+	getTexCoords () [0] .reserve (options -> getTexCoords () .size ());
+	getTexCoords () [0] = options -> getTexCoords ();
 
-	getNormals () .reserve (properties -> getNormals () .size ());
-	getNormals () = properties -> getNormals  ();
+	getNormals () .reserve (options -> getNormals () .size ());
+	getNormals () = options -> getNormals  ();
 
 	if (radius () == 1.0f)
-		getVertices () = properties -> getVertices ();
+		getVertices () = options -> getVertices ();
 
 	else
 	{
-		getVertices () .reserve (properties -> getVertices () .size ());
+		getVertices () .reserve (options -> getVertices () .size ());
 
-		for (const auto & vertex : properties -> getVertices ())
+		for (const auto & vertex : options -> getVertices ())
 			getVertices () .emplace_back (vertex * radius () .getValue ());
 	}
 
-	addElements (properties -> getVertexMode (), getVertices () .size ());
+	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
 	setTextureCoordinate (nullptr);
 }

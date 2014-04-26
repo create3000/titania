@@ -51,7 +51,6 @@
 #include "Disk2D.h"
 
 #include "../../Browser/Geometry2D/Disk2DOptions.h"
-#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -91,13 +90,7 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> disc2D () .addInterest (this, &Disk2D::set_properties);
-}
-
-void
-Disk2D::set_properties ()
-{
-	addEvent ();
+	getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
 }
 
 Box3f
@@ -111,7 +104,7 @@ Disk2D::createBBox ()
 void
 Disk2D::build ()
 {
-	const Disk2DOptions* const properties = getBrowser () -> getBrowserOptions () -> disc2D ();
+	const Disk2DOptions* const options = getBrowser () -> getDisk2DOptions ();
 
 	if (innerRadius () == outerRadius ())
 	{
@@ -120,13 +113,13 @@ Disk2D::build ()
 		const auto radius = std::abs (outerRadius ());
 
 		if (radius == 1)
-			getVertices () = properties -> getVertices ();
+			getVertices () = options -> getVertices ();
 
 		else
 		{
-			getVertices () .reserve (properties -> getVertices () .size ());
+			getVertices () .reserve (options -> getVertices () .size ());
 
-			for (const auto & vertex : properties -> getVertices ())
+			for (const auto & vertex : options -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
 		}
 
@@ -147,31 +140,31 @@ Disk2D::build ()
 		const size_t elements = solid () ? 1 : 2;
 
 		getTexCoords () .emplace_back ();
-		getTexCoords () [0] .reserve (elements * properties -> getTexCoords () .size ());
-		getTexCoords () [0] = properties -> getTexCoords ();
+		getTexCoords () [0] .reserve (elements * options -> getTexCoords () .size ());
+		getTexCoords () [0] = options -> getTexCoords ();
 
-		getNormals () .reserve (elements * properties -> getNormals  () .size ());
-		getNormals () = properties -> getNormals  ();
+		getNormals () .reserve (elements * options -> getNormals  () .size ());
+		getNormals () = options -> getNormals  ();
 
-		getVertices () .reserve (elements * properties -> getVertices () .size ());
+		getVertices () .reserve (elements * options -> getVertices () .size ());
 
 		if (radius == 1)
-			getVertices () = properties -> getVertices ();
+			getVertices () = options -> getVertices ();
 
 		else
 		{
-			getVertices () .reserve (properties -> getVertices () .size ());
+			getVertices () .reserve (options -> getVertices () .size ());
 
-			for (const auto & vertex : properties -> getVertices ())
+			for (const auto & vertex : options -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
 		}
 
-		addElements (properties -> getVertexMode (), getVertices () .size ());
+		addElements (options -> getVertexMode (), getVertices () .size ());
 		setSolid (true);
 		setTextureCoordinate (nullptr);
 
 		if (not solid ())
-			addMirrorVertices (properties -> getVertexMode (), true);
+			addMirrorVertices (options -> getVertexMode (), true);
 
 		lineGeometry = false;
 
@@ -183,10 +176,10 @@ Disk2D::build ()
 	const size_t elements = solid () ? 1 : 2;
 
 	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (elements * (properties -> getTexCoords () .size () + 2));
+	getTexCoords () [0] .reserve (elements * (options -> getTexCoords () .size () + 2));
 
-	getNormals  () .reserve (elements * (properties -> getNormals  () .size () + 2));
-	getVertices () .reserve (elements * (properties -> getVertices () .size () + 2));
+	getNormals  () .reserve (elements * (options -> getNormals  () .size () + 2));
+	getVertices () .reserve (elements * (options -> getVertices () .size () + 2));
 
 	// Texture Coordinates
 
@@ -194,7 +187,7 @@ Disk2D::build ()
 	const auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	const auto scale     = minRadius / maxRadius;
 
-	for (const auto & texCoord : properties -> getTexCoords ())
+	for (const auto & texCoord : options -> getTexCoords ())
 	{
 		getTexCoords () [0] .emplace_back (texCoord .x () * scale + (1 - scale) / 2, texCoord .y () * scale + (1 - scale) / 2, 0, 1);
 		getTexCoords () [0] .emplace_back (texCoord);
@@ -202,7 +195,7 @@ Disk2D::build ()
 
 	// Normals
 
-	for (const auto & normal : properties -> getNormals ())
+	for (const auto & normal : options -> getNormals ())
 	{
 		getNormals () .emplace_back (normal);
 		getNormals () .emplace_back (normal);
@@ -210,7 +203,7 @@ Disk2D::build ()
 
 	// Vertices
 
-	for (const auto & vertex : properties -> getVertices ())
+	for (const auto & vertex : options -> getVertices ())
 	{
 		getVertices () .emplace_back (vertex * minRadius);
 		getVertices () .emplace_back (vertex * maxRadius);

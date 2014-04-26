@@ -407,7 +407,7 @@ X3DBrowserWidget::statistics ()
 	{ }
 
 	std::clog << "Load Time: " << loadTime << std::endl;
-	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> fps () << std::endl;
+	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> getFPS () << std::endl;
 
 	return false;
 }

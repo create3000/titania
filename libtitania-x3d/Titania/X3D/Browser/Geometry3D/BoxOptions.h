@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_PROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_PROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_OPTIONS_H__
 
-#include "../Geometry2D/X3DGeometricOptionNode.h"
+#include "../Rendering/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
@@ -84,7 +84,7 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-	
+
 	virtual
 	GLenum
 	getVertexMode () const final override

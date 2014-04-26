@@ -33,9 +33,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Disk2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Rectangle2DOptions.cpp \
-	Titania/X3D/Browser/Geometry2D/X3DGeometricOptionNode.cpp \
+	Titania/X3D/Browser/Geometry2D/X3DGeometry2DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/KeyDevice.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
@@ -61,6 +62,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
+	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \

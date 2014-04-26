@@ -48,76 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DOPTIONS_H__
+#include "X3DGeometry3DContext.h"
 
-#include "../Core/X3DOptionNode.h"
+#include "../Geometry3D/BoxOptions.h"
+#include "../Geometry3D/QuadSphereOptions.h"
 
 namespace titania {
 namespace X3D {
 
-class ArcClose2DOptions :
-	public X3DOptionNode
+X3DGeometry3DContext::X3DGeometry3DContext () :
+	  X3DBaseNode (),
+	   boxOptions (new BoxOptions (getExecutionContext ())),
+	sphereOptions (new QuadSphereOptions (getExecutionContext ()))
 {
-public:
+	addChildren (boxOptions,
+	             sphereOptions);
+}
 
-	ArcClose2DOptions (X3DExecutionContext* const);
+void
+X3DGeometry3DContext::initialize ()
+{
+	boxOptions    -> setup ();
+	sphereOptions -> setup ();
+}
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
-
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
-
-
-private:
-
-	virtual
-	ArcClose2DOptions*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const minAngle;
-	};
-
-	Fields fields;
-
-};
+X3DGeometry3DContext::~X3DGeometry3DContext ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

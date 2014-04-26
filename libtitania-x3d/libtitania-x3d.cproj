@@ -523,7 +523,6 @@
     <None Include="Titania\X3D\Base\Event.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Types\Set.h" />
-    <None Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Circle2DOptions.h" />
@@ -684,6 +683,9 @@
     <None Include="Titania\X3D\Browser\Navigation\X3DViewer.h" />
     <None Include="Titania\X3D\Browser\Core\X3DOptionNode.h" />
     <None Include="Titania\X3D\Browser\Rendering\MotionBlur.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\X3DGeometry3DContext.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\X3DGeometry2DContext.h" />
+    <None Include="Titania\X3D\Browser\Rendering\X3DGeometricOptionNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1085,7 +1087,6 @@
     <Compile Include="Titania\X3D\Execution\World.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DOptions.cpp" />
@@ -1173,6 +1174,9 @@
     <Compile Include="Titania\X3D\Browser\Navigation\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\X3DOptionNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\MotionBlur.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\X3DGeometry3DContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometry2DContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Rendering\X3DGeometricOptionNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

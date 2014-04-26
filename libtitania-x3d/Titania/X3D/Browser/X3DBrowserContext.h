@@ -54,6 +54,8 @@
 #include "../Execution/X3DExecutionContext.h"
 
 #include "../Browser/Core/X3DCoreContext.h"
+#include "../Browser/Geometry2D/X3DGeometry2DContext.h"
+#include "../Browser/Geometry3D/X3DGeometry3DContext.h"
 #include "../Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.h"
 #include "../Browser/Layering/X3DLayeringContext.h"
 #include "../Browser/Layout/X3DLayoutContext.h"
@@ -80,6 +82,8 @@ class X3DBrowserContext :
 	virtual public X3DBaseNode,
 	public X3DExecutionContext,
 	public X3DCoreContext,
+	public X3DGeometry2DContext,
+	public X3DGeometry3DContext,
 	public X3DKeyDeviceSensorContext,
 	public X3DLayeringContext,
 	public X3DLayoutContext,

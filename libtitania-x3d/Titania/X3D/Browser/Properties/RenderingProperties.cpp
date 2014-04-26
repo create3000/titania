@@ -66,7 +66,6 @@ namespace titania {
 namespace X3D {
 
 // Property Name     Value data type      Description
-// MaxThreads        Integer              The maximum number of parallel threads supported.
 // Shading           String               The type of shading algorithm in use. Typical values are Flat, Gouraud, Phong, Wireframe.
 // MaxTextureSize    String               The maximum texture size supported. The format shall be WIDTHxHEIGHT describing the number of pixels in each direction (for example 1024x1024).
 // TextureUnits      Integer              The number of texture units supported for doing multitexture.
@@ -130,23 +129,6 @@ RenderingProperties::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		ScenePtr scene;
-
-		try
-		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.x3dv") .str () });
-		}
-		catch (const X3DError & error)
-		{
-			std::clog << error .what () << std::endl;
-
-			scene = getBrowser () -> createScene ();
-			scene -> setup ();
-		}
-
-		world = new World (scene);
-		world -> setup ();
-
 		vendor ()   = (const char*) glGetString (GL_VENDOR);
 		renderer () = (const char*) glGetString (GL_RENDERER);
 		version ()  = (const char*) glGetString (GL_VERSION);
@@ -163,6 +145,25 @@ RenderingProperties::initialize ()
 		textureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
 		maxLights ()      = getBrowser () -> getMaxLights ();
 		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
+
+		// Visual display of RenderingProperties
+
+		ScenePtr scene;
+
+		try
+		{
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.x3dv") .str () });
+		}
+		catch (const X3DError & error)
+		{
+			std::clog << error .what () << std::endl;
+
+			scene = getBrowser () -> createScene ();
+			scene -> setup ();
+		}
+
+		world = new World (scene);
+		world -> setup ();
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 
@@ -256,7 +257,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
-		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), fps ()));
+		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %"), 100 * renderClock .average () / clock .average ()));
 		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
 	}

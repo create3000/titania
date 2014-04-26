@@ -1,6 +1,59 @@
 2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBrowserContext.h:
+	* Box.h:
+	* X3DOptionNode.h:
+	* Arc2D.h:
+	* X3DBrowserContext.cpp:
+	* Box.cpp:
+	* Sphere.h:
+	* Disk2D.h:
+	* BoxOptions.h:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* Circle2D.h:
+	* Sphere.cpp:
+	* Arc2DOptions.h:
+	* X3DShapeNode.cpp:
+	* Circle2D.cpp:
+	* Disk2DOptions.h:
+	* ArcClose2D.h:
+	* Rectangle2D.h:
+	* BrowserOptions.h:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* Circle2DOptions.h:
+	* ArcClose2D.cpp:
+	* Rectangle2D.cpp:
+	* BrowserOptions.cpp:
+	* ImageTexture.cpp:
+	* PixelTexture.cpp:
+	* QuadSphereOptions.h:
+	* ArcClose2DOptions.h:
+	* Rectangle2DOptions.h:
+	* RenderingProperties.h:
+	* X3DSphereOptionNode.h:
+	* X3DGeometry2DContext.h:
+	* X3DGeometry3DContext.h:
+	* PixelTexture3D.cpp:
+	* ImageTexture3D.cpp:
+	* X3DGeometricOptionNode.h:
+	* RenderingProperties.cpp:
+	* X3DGeometry3DContext.cpp:
+	* X3DGeometry2DContext.cpp:
+	* X3DGeometricOptionNode.h:
+	* VolumeEmitter.cpp:
+	* X3DGeometricOptionNode.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* X3DGeometricOptionNode.cpp:
+	* PolylineEmitter.cpp: 
+
+2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
 	* X3D.h:
 	* libtitania-x3d.cproj:
 	* MotionBlur.h:

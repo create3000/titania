@@ -51,7 +51,6 @@
 #include "Box.h"
 
 #include "../../Browser/Geometry3D/BoxOptions.h"
-#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -88,13 +87,7 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	//getBrowser () -> getBrowserOptions () -> box () .addInterest (this, &Box::set_properties);
-}
-
-void
-Box::set_properties ()
-{
-	//addEvent ();
+	//getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
 }
 
 Box3f
@@ -106,29 +99,29 @@ Box::createBBox ()
 void
 Box::build ()
 {
-	const BoxOptions* const properties = getBrowser () -> getBrowserOptions () -> box ();
+	const BoxOptions* const options = getBrowser () -> getBoxOptions ();
 
 	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (properties -> getTexCoords () .size ());
-	getTexCoords () [0] = properties -> getTexCoords ();
+	getTexCoords () [0] .reserve (options -> getTexCoords () .size ());
+	getTexCoords () [0] = options -> getTexCoords ();
 
-	getNormals () .reserve (properties -> getNormals () .size ());
-	getNormals  () = properties -> getNormals  ();
+	getNormals () .reserve (options -> getNormals () .size ());
+	getNormals  () = options -> getNormals  ();
 
 	if (size () == Vector3f (2, 2, 2))
-		getVertices () = properties -> getVertices ();
+		getVertices () = options -> getVertices ();
 
 	else
 	{
-		getVertices () .reserve (properties -> getVertices () .size ());
+		getVertices () .reserve (options -> getVertices () .size ());
 
 		const auto size1_2 = size () / 2.0f;
 
-		for (const auto & vertex : properties -> getVertices ())
+		for (const auto & vertex : options -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);
 	}
 
-	addElements (properties -> getVertexMode (), getVertices () .size ());
+	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
 	setTextureCoordinate (nullptr);
 }

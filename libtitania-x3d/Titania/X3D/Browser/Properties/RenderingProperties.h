@@ -74,7 +74,13 @@ class RenderingProperties :
 {
 public:
 
+	///  @name Construction
+
 	RenderingProperties (X3DExecutionContext* const);
+
+	virtual
+	RenderingProperties*
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
@@ -192,19 +198,19 @@ public:
 	textureMemory () const
 	{ return *fields .textureMemory; }
 
+	///  @name Member access
+
 	double
-	fps () const
+	getFPS () const
 	{ return 1 / clock .average (); }
 
-	void
-	prepare ();
-
-	void
-	display ();
+	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -213,19 +219,25 @@ public:
 
 private:
 
-	virtual
-	RenderingProperties*
-	create (X3DExecutionContext* const) const final override;
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+	
+	///  @name Event handlers
 
 	void
 	set_enabled ();
 
 	void
 	reset ();
+
+	void
+	prepare ();
+
+	void
+	display ();
 
 	void
 	build ();

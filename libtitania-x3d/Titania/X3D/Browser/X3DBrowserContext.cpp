@@ -67,6 +67,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	                   X3DBaseNode (),
 	           X3DExecutionContext (),
 	                X3DCoreContext (),
+	          X3DGeometry2DContext (),
+	          X3DGeometry3DContext (),
 	     X3DKeyDeviceSensorContext (),
 	            X3DLayeringContext (),
 	              X3DLayoutContext (),
@@ -113,6 +115,8 @@ X3DBrowserContext::initialize ()
 {
 	X3DExecutionContext::initialize ();
 	X3DCoreContext::initialize ();
+	X3DGeometry2DContext::initialize ();
+	X3DGeometry3DContext::initialize ();
 	X3DKeyDeviceSensorContext::initialize ();
 	X3DLayeringContext::initialize ();
 	X3DLayoutContext::initialize ();
@@ -250,6 +254,8 @@ X3DBrowserContext::dispose ()
 	X3DLayoutContext::dispose ();
 	X3DLayeringContext::dispose ();
 	X3DKeyDeviceSensorContext::dispose ();
+	X3DGeometry3DContext::dispose ();
+	X3DGeometry2DContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DExecutionContext::dispose ();
 }
