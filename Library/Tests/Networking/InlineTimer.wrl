@@ -1,17 +1,19 @@
-#X3D V3.3 utf8 Titania
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 DEF _1 Inline {
   url [
-    "/home/holger/X3D/test/Vattenfall/stage/index.wrl"
+    "/home/holger/X3D/test/Vattenfall/stage/index.wrl",
     "../../Examples/Vattenfall/stage/index.wrl",
-    "../PROTO/GoldenSpheresProto.wrl"
+    "../PROTO/GoldenSpheresProto.wrl",
     "../Handles/OutlineEditor.wrl",
     "../../Examples/TreasureIsland/stage/index.wrl",
-    "../Texturing/MovieTexture.wrl"
-    "../Geospatial/GeoCoordinate.wrl"
-    "../Scripting/Script-vrmlscript1.wrl"
-   "../Geometry3D/QuadSphere.wrl"
-    "../CADGeometry/CADGeometry.wrl"
+    "../Texturing/MovieTexture.wrl",
+    "../Geospatial/GeoCoordinate.wrl",
+    "../Scripting/Script-vrmlscript1.wrl",
+    "../Geometry3D/QuadSphere.wrl",
+    "../CADGeometry/CADGeometry.wrl",
     "../../Examples/MetalBeast/stage/index.wrl"
   ]
 }
@@ -22,8 +24,8 @@ DEF Timer TimeSensor {
 }
 
 DEF Debug Script {
-  eventIn SFTime set_time
-  field   SFNode inlineNode USE _1
+  inputOnly      SFTime set_time
+  initializeOnly SFNode inlineNode USE _1
 
   url "vrmlscript:
 

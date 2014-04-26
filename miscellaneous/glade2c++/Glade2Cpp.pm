@@ -420,6 +420,7 @@ sub generate
 	#say OUT "  dispose ();";
 
 	# Destructor
+	say OUT "  virtual";
 	say OUT "  ~$self->{class_name} ();";
 	say OUT "";
 

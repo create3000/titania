@@ -59,8 +59,7 @@ Router::Router () :
 	   events (),
 	    nodes (),
 	eventTime (chrono::now ()),
-	 nodeTime (chrono::now ()),
-	    mutex ()
+	 nodeTime (chrono::now ())
 { }
 
 EventId

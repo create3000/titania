@@ -1,5 +1,14 @@
 2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* Router.cpp:
+	* GarbargeCollector.cpp:
+	* X3DBrowserContext.h:
+	* RenderingProperties.cpp: 
+
+2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* X3D.h:
 	* libtitania-x3d.cproj:

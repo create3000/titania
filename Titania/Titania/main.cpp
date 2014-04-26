@@ -54,6 +54,7 @@ int
 main (int argc, char** argv)
 {
 	using namespace titania;
+	using namespace titania::puck;
 
 	std::clog
 		<< "Titania started ..." << std::endl
@@ -66,7 +67,7 @@ main (int argc, char** argv)
 	{
 		Gtk::Main kit (argc, argv);
 
-		puck::BrowserWindow browserWindow (X3D::createBrowser (), argc, argv);
+		BrowserWindow browserWindow (X3D::createBrowser (), argc, argv);
 
 		Gtk::Main::run (browserWindow .getWindow ());
 	}

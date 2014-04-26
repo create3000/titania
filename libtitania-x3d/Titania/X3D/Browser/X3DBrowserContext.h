@@ -159,8 +159,9 @@ public:
 
 	///  @name Event handling
 
+	virtual
 	void
-	addEvent ();
+	addEvent () final override;
 
 	///  @name Rendering
 
@@ -173,7 +174,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override
+	traverse (const TraverseType) final override
 	{ update (); }
 
 	virtual

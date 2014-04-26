@@ -1194,7 +1194,6 @@
     <Folder Include="Titania\X3D\Execution\" />
     <Folder Include="Titania\X3D\Routing\" />
     <Folder Include="Titania\X3D\Parser\" />
-    <Folder Include="Titania\X3D\Browser\Properties\" />
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
     <Folder Include="Titania\X3D\Browser\Geometry3D\" />
     <Folder Include="Titania\X3D\Browser\Geometry2D\" />
