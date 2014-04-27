@@ -1,5 +1,9 @@
 2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGarbageCollector.h: 
+
+2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DObject.h:

@@ -67,9 +67,13 @@ class X3DGarbageCollector :
 {
 protected:
 
+	///  @name Construction
+
 	X3DGarbageCollector () :
 		X3DBase ()
 	{ }
+
+	///  @name Operations
 
 	static
 	void
