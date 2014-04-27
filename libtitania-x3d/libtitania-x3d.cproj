@@ -686,6 +686,7 @@
     <None Include="Titania\X3D\Browser\BrowserProperties.h" />
     <None Include="Titania\X3D\Browser\RenderingProperties.h" />
     <None Include="share\titania\tools\RenderingProperties.x3dv" />
+    <None Include="Titania\X3D\Routing\X3DRouterObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1177,6 +1178,7 @@
     <Compile Include="Titania\X3D\Browser\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\RenderingProperties.cpp" />
+    <Compile Include="Titania\X3D\Routing\X3DRouterObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

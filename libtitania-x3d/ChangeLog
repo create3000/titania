@@ -1,5 +1,20 @@
 2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Router.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DRouterObject.h:
+	* X3DRouterObject.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* TransformTool.cpp:
+	* X3DBoundedObjectTool.h:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
+2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GarbageCollector.h:
 	* GarbargeCollector.cpp:
 	* X3DCoreContext.h:

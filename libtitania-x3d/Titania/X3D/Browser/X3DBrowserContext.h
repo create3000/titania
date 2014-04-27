@@ -71,7 +71,7 @@
 #include "../Browser/Texturing/X3DTexturingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 
-#include "../Routing/Router.h"
+#include "../Routing/X3DRouterObject.h"
 
 #include "../Types/Pointer.h"
 
@@ -97,7 +97,8 @@ class X3DBrowserContext :
 	public X3DShapeContext,
 	public X3DTextContext,
 	public X3DTexturingContext,
-	public X3DTimeContext
+	public X3DTimeContext,
+	public X3DRouterObject
 {
 public:
 
@@ -136,12 +137,6 @@ public:
 	const Output &
 	changed () const
 	{ return changedOutput; }
-
-	///  @name Event handling
-
-	Router &
-	getRouter ()
-	{ return router; }
 
 	///  @name Children
 
@@ -224,8 +219,6 @@ private:
 	Output displayedOutput;
 	Output finishedOutput;
 	Output changedOutput;
-
-	Router router;
 
 	time_type changedTime;
 

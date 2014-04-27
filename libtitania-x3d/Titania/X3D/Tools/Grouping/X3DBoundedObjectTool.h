@@ -195,7 +195,7 @@ X3DBoundedObjectTool <Type>::reshape ()
 		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 
-		getBrowser () -> getRouter () .processEvents ();
+		getBrowser () -> processEvents ();
 	}
 	catch (const X3DError & error)
 	{ }

@@ -743,11 +743,11 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 
 	getBrowser () -> addEvent ();
 
-	// Register for processEvents
+	// Register for processEvent
 
-	events .emplace_back (getBrowser () -> getRouter () .addEvent (object, event));
+	events .emplace_back (getBrowser () -> addTaintedObject (object, event));
 
-	// Register for processEvents
+	// Register for eventsProcessed
 
 	if (not isTainted ())
 	{
@@ -755,7 +755,7 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 		{
 			isTainted (true);
 
-			nodeId = getBrowser () -> getRouter () .addNode (this);
+			nodeId = getBrowser () -> addTaintedNode (this);
 		}
 	}
 }
@@ -769,12 +769,12 @@ X3DBaseNode::addEvent ()
 
 		getBrowser () -> addEvent ();
 
-		nodeId = getBrowser () -> getRouter () .addNode (this);
+		nodeId = getBrowser () -> addTaintedNode (this);
 	}
 }
 
 void
-X3DBaseNode::processEvents ()
+X3DBaseNode::eventsProcessed ()
 {
 	events .clear ();
 	nodeId .time = 0;
@@ -790,13 +790,13 @@ void
 X3DBaseNode::removeEvents ()
 {
 	for (const auto & event : events)
-		getBrowser () -> getRouter () .removeEvent (event);
+		getBrowser () -> removeTaintedObject (event);
 
 	events .clear ();
 
 	if (nodeId .time)
 	{
-		getBrowser () -> getRouter () .removeNode (nodeId);
+		getBrowser () -> removeTaintedNode (nodeId);
 		nodeId .time = 0;
 	}
 }

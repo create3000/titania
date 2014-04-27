@@ -48,130 +48,95 @@
  *
  ******************************************************************************/
 
-#include "Router.h"
+#ifndef __TITANIA_X3D_ROUTING_X3DROUTER_OBJECT_H__
+#define __TITANIA_X3D_ROUTING_X3DROUTER_OBJECT_H__
 
-#include <Titania/Chrono.h>
+#include "../Basic/NodeSet.h"
+#include "../Basic/X3DBaseNode.h"
+#include "../Routing/EventList.h"
+#include "../Routing/NodeList.h"
+
+#include <mutex>
 
 namespace titania {
 namespace X3D {
 
-Router::Router () :
-	   events (),
-	    nodes (),
-	eventTime (chrono::now ()),
-	 nodeTime (chrono::now ())
-{ }
-
-EventId
-Router::addEvent (X3DChildObject* const object, const EventPtr & event)
+class X3DRouterObject :
+	virtual public X3DBaseNode
 {
-	events .emplace_back (object, event);
+public:
 
-	return EventId { eventTime, -- events .end () };
-}
+	///  @name Operations
 
-void
-Router::removeEvent (const EventId & event)
-{
-	if (event .time == eventTime)
-		events .erase (event .iter);
-}
+	EventId
+	addTaintedObject (X3DChildObject* const, const EventPtr &);
 
-EventList
-Router::getEvents ()
-{
-	// Invalidate all iterators
+	void
+	removeTaintedObject (const EventId &);
 
-	eventTime = chrono::now ();
+	NodeId
+	addTaintedNode (X3DBaseNode* const);
 
-	return std::move (events);
-}
+	void
+	removeTaintedNode (const NodeId &);
 
-NodeId
-Router::addNode (X3DBaseNode* node)
-{
-	nodes .emplace_back (node);
+	void
+	processEvents ();
 
-	return NodeId { nodeTime, -- nodes .end () };
-}
+	///  @name Destruction
 
-void
-Router::removeNode (const NodeId & node)
-{
-	if (node .time == nodeTime)
-		nodes .erase (node .iter);
-}
+	virtual
+	void
+	dispose () override
+	{ }
 
-NodeList
-Router::getNodes ()
-{
-	// Invalidate all iterators
 
-	nodeTime = chrono::now ();
+protected:
 
-	return std::move (nodes);
-}
+	///  @name Construction
 
-void
-Router::processEvents ()
-{
-	do
-	{
-		do
-		{
-			for (auto & event : getEvents ())
-			{
-				event .first -> processEvent (event .second);
-			}
-		}
-		while (not empty ());
+	X3DRouterObject ();
 
-		eventsProcessed ();
-	}
-	while (not empty ());
-}
+	virtual
+	void
+	initialize () override
+	{ }
 
-void
-Router::eventsProcessed ()
-{
-//	do
-//	{
-//		for (const auto & node : getNodes ())
-//			node -> processEvents ();
-//	}
-//	while (not nodes .empty () and empty ());
-}
+	///  @name Operations
 
-bool
-Router::empty () const
-{
-	return events .empty ();
-}
+	void
+	debugRouter () const;
 
-size_t
-Router::size () const
-{
-	return events .size ();
-}
 
-void
-Router::debug ()
-{
-	for (auto & event : events)
-	{
-		__LOG__ << event .first -> getName () << " : " << event .first -> getTypeName () << std::endl;
+private:
 
-		for (const auto & parent : event .first -> getParents ())
-		{
-			auto node = dynamic_cast <X3DBaseNode*> (parent);
+	///  @name Operations
 
-			if (node)
-			{
-				__LOG__ << "\t" << node -> getTypeName () << std::endl;
-			}
-		}
-	}
-}
+	EventList
+	getTaintedObjects ();
+
+	NodeList
+	getTaintedNodes ();
+
+	void
+	eventsProcessed ();
+
+	size_t
+	size () const;
+
+	bool
+	empty () const;
+
+	///  @name Members
+
+	EventList events;
+	NodeList  nodes;
+	time_type eventTime;
+	time_type nodeTime;
+
+};
 
 } // X3D
 } // titania
+
+#endif

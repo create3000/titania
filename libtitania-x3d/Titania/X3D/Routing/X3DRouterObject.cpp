@@ -48,22 +48,24 @@
  *
  ******************************************************************************/
 
-#include "Router.h"
+#include "X3DRouterObject.h"
 
 #include <Titania/Chrono.h>
+#include <cassert>
 
 namespace titania {
 namespace X3D {
 
-Router::Router () :
-	   events (),
-	    nodes (),
-	eventTime (chrono::now ()),
-	 nodeTime (chrono::now ())
+X3DRouterObject::X3DRouterObject () :
+	X3DBaseNode (),
+	     events (),
+	      nodes (),
+	  eventTime (chrono::now ()),
+	   nodeTime (chrono::now ())
 { }
 
 EventId
-Router::addEvent (X3DChildObject* const object, const EventPtr & event)
+X3DRouterObject::addTaintedObject (X3DChildObject* const object, const EventPtr & event)
 {
 	events .emplace_back (object, event);
 
@@ -71,14 +73,14 @@ Router::addEvent (X3DChildObject* const object, const EventPtr & event)
 }
 
 void
-Router::removeEvent (const EventId & event)
+X3DRouterObject::removeTaintedObject (const EventId & event)
 {
 	if (event .time == eventTime)
 		events .erase (event .iter);
 }
 
 EventList
-Router::getEvents ()
+X3DRouterObject::getTaintedObjects ()
 {
 	// Invalidate all iterators
 
@@ -88,7 +90,7 @@ Router::getEvents ()
 }
 
 NodeId
-Router::addNode (X3DBaseNode* node)
+X3DRouterObject::addTaintedNode (X3DBaseNode* const node)
 {
 	nodes .emplace_back (node);
 
@@ -96,14 +98,14 @@ Router::addNode (X3DBaseNode* node)
 }
 
 void
-Router::removeNode (const NodeId & node)
+X3DRouterObject::removeTaintedNode (const NodeId & node)
 {
 	if (node .time == nodeTime)
 		nodes .erase (node .iter);
 }
 
 NodeList
-Router::getNodes ()
+X3DRouterObject::getTaintedNodes ()
 {
 	// Invalidate all iterators
 
@@ -113,13 +115,13 @@ Router::getNodes ()
 }
 
 void
-Router::processEvents ()
+X3DRouterObject::processEvents ()
 {
 	do
 	{
 		do
 		{
-			for (auto & event : getEvents ())
+			for (const auto & event : getTaintedObjects ())
 			{
 				event .first -> processEvent (event .second);
 			}
@@ -132,30 +134,30 @@ Router::processEvents ()
 }
 
 void
-Router::eventsProcessed ()
+X3DRouterObject::eventsProcessed ()
 {
-//	do
-//	{
-//		for (const auto & node : getNodes ())
-//			node -> processEvents ();
-//	}
-//	while (not nodes .empty () and empty ());
+	do
+	{
+		for (const auto & node : getTaintedNodes ())
+			node -> eventsProcessed ();
+	}
+	while (not nodes .empty () and empty ());
 }
 
 bool
-Router::empty () const
+X3DRouterObject::empty () const
 {
 	return events .empty ();
 }
 
 size_t
-Router::size () const
+X3DRouterObject::size () const
 {
 	return events .size ();
 }
 
 void
-Router::debug ()
+X3DRouterObject::debugRouter () const
 {
 	for (auto & event : events)
 	{
@@ -163,7 +165,7 @@ Router::debug ()
 
 		for (const auto & parent : event .first -> getParents ())
 		{
-			auto node = dynamic_cast <X3DBaseNode*> (parent);
+			const auto node = dynamic_cast <X3DBaseNode*> (parent);
 
 			if (node)
 			{
@@ -171,6 +173,8 @@ Router::debug ()
 			}
 		}
 	}
+
+	assert (empty ());
 }
 
 } // X3D

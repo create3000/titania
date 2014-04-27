@@ -80,6 +80,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                X3DTextContext (),
 	           X3DTexturingContext (),
 	                X3DTimeContext (),
+	               X3DRouterObject (),
 	             initializedOutput (),
 	                reshapedOutput (),
 	           prepareEventsOutput (),
@@ -87,7 +88,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	               displayedOutput (),
 	                finishedOutput (),
 	                 changedOutput (),
-	                        router (),
 	                   changedTime (0),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
@@ -122,6 +122,7 @@ X3DBrowserContext::initialize ()
 	X3DTextContext::initialize ();
 	X3DTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
+	X3DRouterObject::initialize ();
 
 	selection           -> setup ();
 	notification        -> setup ();
@@ -172,19 +173,18 @@ X3DBrowserContext::update ()
 			getClock () -> advance ();
 
 			prepareEvents () .processInterests ();
-			router .processEvents ();
+			processEvents ();
 
 			getWorld () -> traverse (TraverseType::CAMERA);
 			getWorld () -> traverse (TraverseType::COLLISION);
 
 			sensors () .processInterests ();
-			router .processEvents ();
+			processEvents ();
 
 			getGarbageCollector () .dispose ();
 
 			// Debug
-			router .debug ();
-			assert (router .empty ());
+			debugRouter ();
 
 			// Display
 
@@ -225,6 +225,7 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
+	X3DRouterObject::dispose ();
 	X3DTimeContext::dispose ();
 	X3DTexturingContext::dispose ();
 	X3DTextContext::dispose ();
