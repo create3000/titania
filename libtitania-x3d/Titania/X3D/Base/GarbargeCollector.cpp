@@ -116,6 +116,8 @@ GarbageCollector::size () const
 GarbageCollector::~GarbageCollector ()
 {
 	// Let the system delete all remaining objects.
+	
+	std::lock_guard <std::mutex> lock (mutex);
 
 	//	ObjectArray final;
 	//

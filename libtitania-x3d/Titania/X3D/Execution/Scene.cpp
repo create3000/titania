@@ -206,7 +206,7 @@ Scene::~Scene ()
 {
 	__LOG__ << getWorldURL () << std::endl;
 
-	GarbageCollector::trimFreeMemory ();
+	trimFreeMemory ();
 }
 
 } // X3D

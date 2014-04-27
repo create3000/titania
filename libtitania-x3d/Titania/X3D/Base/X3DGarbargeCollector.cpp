@@ -48,52 +48,52 @@
  *
  ******************************************************************************/
 
-#include "Backtrace.h"
+#include "X3DGarbageCollector.h"
 
-#include <csignal>
-#include <execinfo.h>
-#include <iostream>
+#include "../Base/X3DObject.h"
+
+#include <malloc.h>
+#include <thread>
 
 namespace titania {
+namespace X3D {
+
+// Important: std::deque is used here for objects because it is much more faster than std::vector!
+
+X3DGarbageCollector::ObjectArray X3DGarbageCollector::objects;
+std::mutex                       X3DGarbageCollector::mutex;
 
 void
-backtrace_fn (size_t size, int sig)
+X3DGarbageCollector::trimFreeMemory ()
 {
-	std::clog
-		<< std::string (80, '#') << std::endl
-		<< "#" << std::endl
-		<< "# Backtrace" << std::endl
-		<< "#" << std::endl
-		<< "# Error: signal " << sig << std::endl
-		<< "#" << std::endl
-		<< std::string (80, '#') << std::endl;
-
-	void* array [size];
-
-	// get void*'s for all entries on the stack
-	size = ::backtrace (array, size);
-
-	// print out all the frames to stderr
-	backtrace_symbols_fd (array, size, 2);
-
-	std::clog << std::endl;
-}
-
-static
-void
-backtrace_signal_handler (int sig)
-{
-	// print out all the frames to stderr
-	backtrace_fn (100, sig);
-	exit (1);
+	malloc_trim (0);
 }
 
 void
-enable_backtrace ()
+X3DGarbageCollector::addDisposedObject (const X3DObject* const object)
 {
-	// install our handler
-	std::signal (SIGSEGV, backtrace_signal_handler);
-	std::signal (SIGABRT, backtrace_signal_handler);
+	std::lock_guard <std::mutex> lock (mutex);
+
+	objects .emplace_back (object);
 }
 
+void
+X3DGarbageCollector::deleteObjectsAsync ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	if (objects .empty ())
+		return;
+
+	std::thread (&X3DGarbageCollector::deleteObjects, std::move (objects)) .detach ();
+}
+
+void
+X3DGarbageCollector::deleteObjects (ObjectArray objects)
+{
+	for (const auto & object : objects)
+		delete object;
+}
+
+} // X3D
 } // titania

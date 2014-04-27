@@ -181,7 +181,7 @@ X3DBrowserContext::update ()
 			sensors () .processInterests ();
 			processEvents ();
 
-			getGarbageCollector () .dispose ();
+			deleteObjectsAsync ();
 
 			// Debug
 			debugRouter ();

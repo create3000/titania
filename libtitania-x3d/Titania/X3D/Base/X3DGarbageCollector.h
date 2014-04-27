@@ -48,52 +48,70 @@
  *
  ******************************************************************************/
 
-#include "Backtrace.h"
+#ifndef __TITANIA_X3D_BASE_X3DGARBAGE_COLLECTOR_H__
+#define __TITANIA_X3D_BASE_X3DGARBAGE_COLLECTOR_H__
 
-#include <csignal>
-#include <execinfo.h>
-#include <iostream>
+#include "../Base/X3DBase.h"
+
+#include <cstddef>
+#include <deque>
+#include <mutex>
 
 namespace titania {
+namespace X3D {
 
-void
-backtrace_fn (size_t size, int sig)
+class X3DObject;
+
+class X3DGarbageCollector :
+	virtual public X3DBase
 {
-	std::clog
-		<< std::string (80, '#') << std::endl
-		<< "#" << std::endl
-		<< "# Backtrace" << std::endl
-		<< "#" << std::endl
-		<< "# Error: signal " << sig << std::endl
-		<< "#" << std::endl
-		<< std::string (80, '#') << std::endl;
+protected:
 
-	void* array [size];
+	X3DGarbageCollector () :
+		X3DBase ()
+	{ }
 
-	// get void*'s for all entries on the stack
-	size = ::backtrace (array, size);
+	static
+	void
+	addDisposedObject (const X3DObject* const);
 
-	// print out all the frames to stderr
-	backtrace_symbols_fd (array, size, 2);
+	template <class InputIt>
+	static
+	void
+	addDisposedObjects (const InputIt & first, const InputIt & last)
+	{
+		std::lock_guard <std::mutex> lock (mutex);
 
-	std::clog << std::endl;
-}
+		objects .insert (objects .end (), first, last);
+	}
 
-static
-void
-backtrace_signal_handler (int sig)
-{
-	// print out all the frames to stderr
-	backtrace_fn (100, sig);
-	exit (1);
-}
+	static
+	void
+	deleteObjectsAsync ();
 
-void
-enable_backtrace ()
-{
-	// install our handler
-	std::signal (SIGSEGV, backtrace_signal_handler);
-	std::signal (SIGABRT, backtrace_signal_handler);
-}
+	static
+	void
+	trimFreeMemory ();
 
+
+private:
+
+	using ObjectArray = std::deque <const X3DObject*>;
+
+	///  @name Operations
+
+	static
+	void
+	deleteObjects (ObjectArray);
+
+	///  @name Static members
+
+	static ObjectArray objects;
+	static std::mutex  mutex;
+
+};
+
+} // X3D
 } // titania
+
+#endif

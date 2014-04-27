@@ -19,7 +19,7 @@ DEF _1 Inline {
 }
 
 DEF Timer TimeSensor {
-  cycleInterval 0.05
+  cycleInterval 0.06
   loop TRUE
 }
 

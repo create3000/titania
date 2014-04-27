@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BASE_X3DOBJECT_H__
 #define __TITANIA_X3D_BASE_X3DOBJECT_H__
 
-#include "../Base/GarbageCollector.h"
+#include "../Base/X3DGarbageCollector.h"
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
 #include "../Bits/Error.h"
@@ -70,7 +70,7 @@ namespace X3D {
 typedef std::shared_ptr <X3DBase> UserDataPtr;
 
 class X3DObject :
-	public X3DInput, public X3DOutput
+	public X3DInput, public X3DOutput, public X3DGarbageCollector
 {
 public:
 
@@ -112,12 +112,6 @@ public:
 	const UserDataPtr &
 	getUserData () const
 	{ realize (); return data -> userData; }
-
-	///  @name Garbage Collection
-
-	GarbageCollector &
-	getGarbageCollector ()
-	{ return garbageCollector; }
 
 	///  @name String Creation
 
@@ -185,10 +179,6 @@ private:
 
 	void
 	realize () const;
-
-	///  @name Static members
-
-	static GarbageCollector garbageCollector;
 
 	///  @name Members
 

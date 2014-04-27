@@ -84,7 +84,6 @@ public:
 	using X3DField <internal_type>::getType;
 	using X3DField <internal_type>::getValue;
 	using X3DField <internal_type>::operator =;
-	using X3DField <internal_type>::getGarbageCollector;
 
 	///  @name Construction
 

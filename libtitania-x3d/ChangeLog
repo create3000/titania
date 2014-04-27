@@ -2,6 +2,21 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* X3DObject.h:
+	* Parser.cpp:
+	* X3DObject.cpp:
+	* Scene.cpp:
+	* X3DArrayField.h:
+	* X3DChildObject.cpp:
+	* X3DGarbageCollector.h:
+	* GarbargeCollector.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DGarbargeCollector.cpp: 
+
+2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Router.cpp:
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:

@@ -1516,11 +1516,16 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 				if (_existingField -> getAccessType () == inputOutput)
 				{
-					_existingField -> write (*_field);
+					if (_field -> getType () == _existingField -> getType ())
+					{
+						_existingField -> write (*_field);
 
-					getGarbageCollector () .addObject (_field);
+						_field -> dispose ();
 
-					return true;
+						addDisposedObject (_field);
+
+						return true;
+					}
 				}
 			}
 		}

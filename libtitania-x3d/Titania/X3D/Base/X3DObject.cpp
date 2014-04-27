@@ -55,12 +55,11 @@
 namespace titania {
 namespace X3D {
 
-GarbageCollector X3DObject::garbageCollector;
-
 X3DObject::X3DObject () :
-	 X3DInput (),
-	X3DOutput (),
-	     data ()
+	           X3DInput (),
+	          X3DOutput (),
+	X3DGarbageCollector (),
+	               data ()
 { }
 
 void
