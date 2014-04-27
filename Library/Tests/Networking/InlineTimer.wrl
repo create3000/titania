@@ -4,9 +4,9 @@ META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 DEF _1 Inline {
   url [
+    "../PROTO/GoldenSpheresProto.wrl",
     "/home/holger/X3D/test/Vattenfall/stage/index.wrl",
     "../../Examples/Vattenfall/stage/index.wrl",
-    "../PROTO/GoldenSpheresProto.wrl",
     "../Handles/OutlineEditor.wrl",
     "../../Examples/TreasureIsland/stage/index.wrl",
     "../Texturing/MovieTexture.wrl",
@@ -19,7 +19,7 @@ DEF _1 Inline {
 }
 
 DEF Timer TimeSensor {
-  cycleInterval 3
+  cycleInterval 0.05
   loop TRUE
 }
 

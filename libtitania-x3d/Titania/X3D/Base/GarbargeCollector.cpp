@@ -52,12 +52,8 @@
 
 #include "../Base/X3DObject.h"
 
-#include <glibtop.h>
-#include <glibtop/procmem.h>
-
 #include <malloc.h>
 #include <thread>
-#include <unistd.h>
 
 namespace titania {
 namespace X3D {
@@ -67,19 +63,7 @@ namespace X3D {
 GarbageCollector::GarbageCollector () :
 	objects (),
 	  mutex ()
-{
-	glibtop_init ();
-}
-
-size_t
-GarbageCollector::getMemoryUsage ()
-{
-	glibtop_proc_mem memory;
-
-	glibtop_get_proc_mem (&memory, getpid ());
-
-	return memory .rss;
-}
+{ }
 
 void
 GarbageCollector::trimFreeMemory ()

@@ -54,13 +54,19 @@
 
 #include <Titania/String.h>
 
+#include <glibtop.h>
+#include <glibtop/procmem.h>
+#include <unistd.h>
+
 namespace titania {
 namespace X3D {
 
 X3DCoreContext::X3DCoreContext () :
 	X3DBaseNode (),
 	 extensions ()
-{ }
+{
+	glibtop_init ();
+}
 
 void
 X3DCoreContext::initialize ()
@@ -75,6 +81,16 @@ bool
 X3DCoreContext::hasExtension (const std::string & name)
 {
 	return extensions .find (name) not_eq extensions .end ();
+}
+
+size_t
+X3DCoreContext::getMemoryUsage ()
+{
+	glibtop_proc_mem memory;
+
+	glibtop_get_proc_mem (&memory, getpid ());
+
+	return memory .rss;
 }
 
 } // X3D

@@ -67,10 +67,6 @@ public:
 	GarbageCollector ();
 
 	static
-	size_t
-	getMemoryUsage ();
-
-	static
 	void
 	trimFreeMemory ();
 

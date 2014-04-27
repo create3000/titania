@@ -255,7 +255,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), colorDepth () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), strfsize (getBrowser () -> getTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
-		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getBrowser () -> getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f fps"), getBrowser () -> getCurrentSpeed ()));
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));

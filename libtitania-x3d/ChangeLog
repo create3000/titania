@@ -1,3 +1,11 @@
+2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GarbageCollector.h:
+	* GarbargeCollector.cpp:
+	* X3DCoreContext.h:
+	* X3DCoreContext.cpp:
+	* RenderingProperties.cpp: 
+
 2014-04-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Scene.cpp:

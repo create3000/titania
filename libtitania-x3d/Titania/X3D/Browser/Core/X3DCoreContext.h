@@ -66,6 +66,10 @@ public:
 	bool
 	hasExtension (const std::string &);
 
+	static
+	size_t
+	getMemoryUsage ();
+
 	///  @name Destruction
 
 	virtual
