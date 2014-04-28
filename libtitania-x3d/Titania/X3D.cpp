@@ -120,8 +120,13 @@ noexcept (true)
 
 	browser = nullptr;
 
-	if (xDisplay and xContext not_eq xBrowserContext)
-		glXMakeCurrent (xDisplay, xDrawable, xContext);
+	if (xDisplay)
+	{
+		if (xContext not_eq xBrowserContext)
+			glXMakeCurrent (xDisplay, xDrawable, xContext);
+		else
+			glXMakeCurrent (xDisplay, None, nullptr);
+	}
 }
 
 } // X3D

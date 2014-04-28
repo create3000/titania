@@ -51,7 +51,8 @@
 #ifndef __TITANIA_X3D_BROWSER_RENDERING_PROPERTIES_H__
 #define __TITANIA_X3D_BROWSER_RENDERING_PROPERTIES_H__
 
-#include "../Components/Core/X3DNode.h"
+#include "../Basic/X3DBaseNode.h"
+#include "../Fields.h"
 #include "../Types/Pointer.h"
 
 #include <Titania/Chrono/StopWatch.h>
@@ -70,7 +71,7 @@ namespace X3D {
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
 
 class RenderingProperties :
-	public X3DNode
+	public X3DBaseNode
 {
 public:
 

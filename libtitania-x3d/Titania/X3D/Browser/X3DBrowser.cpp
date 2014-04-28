@@ -38,7 +38,6 @@
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
 #include "../InputOutput/Loader.h"
-#include "../Rendering/Context.h"
 
 #include <Titania/Backtrace.h>
 
@@ -268,8 +267,6 @@ X3DBrowser::replaceWorld (const ScenePtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (makeCurrent ())
 	{
 		// Process shutdown.
@@ -360,8 +357,6 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (makeCurrent ())
 	{
 		// where parameter is "target=nameOfFrame"
@@ -401,8 +396,6 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromString (string);
 
@@ -416,8 +409,6 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (istream);
 
@@ -431,8 +422,6 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (worldURL, istream);
 

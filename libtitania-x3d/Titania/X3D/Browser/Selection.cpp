@@ -53,7 +53,6 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/Scene.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Rendering/Context.h"
 
 namespace titania {
 namespace X3D {
@@ -93,8 +92,6 @@ Selection::isSelected (const SFNode & node) const
 void
 Selection::addChildren (const MFNode & value)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (getBrowser () -> makeCurrent ())
 	{
 		for (const auto & child : value)
@@ -116,8 +113,6 @@ Selection::addChildren (const MFNode & value)
 void
 Selection::removeChildren (const MFNode & value)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (getBrowser () -> makeCurrent ())
 	{
 		for (const auto & child : value)

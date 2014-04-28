@@ -1,69 +1,59 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/Context.cpp">
     <Files>
-      <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="2" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="63" Column="56" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="126" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="229" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="102" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/tools/RenderingProperties.x3dv" Line="127" Column="1" />
+      <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="22" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="184" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="617" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/Context.cpp" Line="67" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
+          </Node>
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Networking" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True">
+                <Node name="Context" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="tools" expanded="True">
-                  <Node name="RenderingProperties.x3dv" selected="True" />
+                  <Node name="library" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
-                  <Node name="Navigation" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
                   <Node name="Layering" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
-                  <Node name="Texturing3D" expanded="True" />
                 </Node>
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Rendering" expanded="True">
+                  <Node name="Context.cpp" selected="True" />
                 </Node>
-                <Node name="Rendering" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="Prototypes" expanded="True">
-                  <Node name="0.1" expanded="True">
-                    <Node name="Engines" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="ui" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="MotionBlurEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="CellRenderer" expanded="True" />
-              </Node>
-            </Node>
+            <Node name="Titania" expanded="True" />
           </Node>
           <Node name="x3d2vrml" expanded="True">
             <Node name="bin" expanded="True" />
@@ -83,8 +73,6 @@
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Execution/ExportedNode.cpp" line="105" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/Parser.cpp" line="712" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/Library/Tests/Networking/InlineTimer.wrl" line="2" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/Library/Tests/Networking/InlineTimer.wrl" line="1" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

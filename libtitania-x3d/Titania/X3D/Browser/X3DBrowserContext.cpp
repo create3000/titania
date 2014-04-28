@@ -53,7 +53,6 @@
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Selection.h"
-#include "../Rendering/Context.h"
 
 #include <cassert>
 
@@ -144,8 +143,6 @@ X3DBrowserContext::addEvent ()
 void
 X3DBrowserContext::reshape ()
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (makeCurrent ())
 		reshaped () .processInterests ();
 }
@@ -164,8 +161,6 @@ X3DBrowserContext::update ()
 {
 	try
 	{
-		std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 		if (makeCurrent ())
 		{
 			// Prepare

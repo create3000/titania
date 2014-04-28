@@ -54,7 +54,6 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/World.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Rendering/Context.h"
 
 #include <Titania/String.h>
 
@@ -95,7 +94,6 @@ RenderingProperties::Fields::Fields () :
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
 	     fields (),
 	      world ()
 {
@@ -289,11 +287,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
-	getBrowser () -> makeCurrent ();
-
-	X3DNode::dispose ();
+	X3DBaseNode::dispose ();
 }
 
 } // X3D

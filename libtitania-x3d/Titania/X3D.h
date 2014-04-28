@@ -81,8 +81,6 @@
 #include "X3D/Parser/Filter.h"
 #include "X3D/Parser/RegEx.h"
 
-#include "X3D/Rendering/Context.h"
-
 namespace titania {
 namespace X3D {
 

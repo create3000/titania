@@ -50,7 +50,6 @@
 
 #include "Scene.h"
 
-#include "../Rendering/Context.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
@@ -82,8 +81,6 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (getBrowser () -> makeCurrent ())
 	{
 		if (scene -> getProfile () or not scene -> getComponents () .empty ())

@@ -466,7 +466,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionShape.cpp \
-	Titania/X3D/Rendering/Context.cpp \
 	Titania/X3D/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \

@@ -53,7 +53,6 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
-#include "../../Rendering/Context.h"
 #include "../../Rendering/OpenGL.h"
 #include "../X3DBrowser.h"
 
@@ -120,8 +119,6 @@ X3DTexturingContext::initialize ()
 size_t
 X3DTexturingContext::getAvailableTextureMemory () const
 {
-	std::lock_guard <ContextMutex> contextLock (getContextMutex ());
-
 	if (getBrowser () -> makeCurrent ())
 	{
 		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))

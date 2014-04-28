@@ -1,3 +1,24 @@
+2014-04-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.h:
+	* X3D.cpp:
+	* libtitania-x3d.cproj:
+	* Scene.cpp:
+	* Context.h:
+	* Browser.cpp:
+	* Context.cpp:
+	* Selection.cpp:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* Notification.cpp:
+	* X3DBrowserContext.cpp:
+	* RenderingProperties.h:
+	* RenderingProperties.cpp:
+	* X3DViewer.cpp:
+	* X3DTexturingContext.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-04-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DGarbageCollector.h: 
