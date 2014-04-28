@@ -149,7 +149,7 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 
 	if (evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
 	{
-		initEventToolr ();
+		initEventHandler ();
 		return;
 	}
 
@@ -332,7 +332,7 @@ jsContext::defineProperty (JSContext* const context,
 }
 
 void
-jsContext::initEventToolr ()
+jsContext::initEventHandler ()
 {
 	initializeFn      = getFunction ("initialize");
 	prepareEventsFn   = getFunction ("prepareEvents");

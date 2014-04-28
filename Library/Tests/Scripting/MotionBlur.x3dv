@@ -1,0 +1,94 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "comment" "World of Titania"
+META "created" "Mon, 28 Apr 2014 22:27:02 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "modified" "Mon, 28 Apr 2014 22:37:51 GMT"
+META "title" "Antialiasing"
+
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
+]
+[
+  "../../../../../../../usr/share/titania/Prototypes/0.1/Engines/Rotor.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Engines/Rotor.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"
+]
+
+Background {
+  skyColor 1 0 0
+  transparency 0.5
+}
+
+DEF _1 Rotor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Touch TouchSensor {
+  description "Toggle Motion Blur"
+}
+
+DEF Box Transform {
+  rotation 0 0 1 1.26807
+  scale 1 1 1
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+Anchor {
+  description "Anchor"
+  children DEF Sphere Transform {
+    translation 0 -2.79706 0
+    scale 0.31969 0.31969 0.31969
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Sphere { }
+    }
+  }
+}
+
+DEF Script Script {
+  inputOnly SFTime set_time
+
+  url "javascript:
+function initialize ()
+{
+	print ('MotionBlur: ', Browser .getBrowserOption ('MotionBlur'));
+
+	set_time ();
+}
+
+function set_time ()
+{
+	var motionBlur = Browser .getBrowserOption ('MotionBlur');
+
+	Browser .setBrowserOption ('MotionBlur', ! motionBlur);
+	Browser .setBrowserOption ('MotionBlurIntensity', 0.98);
+
+	print ('MotionBlur: ', Browser .getBrowserOption ('MotionBlur'));
+}
+"
+  directOutput TRUE
+}
+
+ROUTE Touch.touchTime TO Script.set_time
+ROUTE _1.rotation_changed TO Box.set_rotation
