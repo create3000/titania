@@ -1,5 +1,9 @@
 2014-04-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Inline.cpp: 
+
+2014-04-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* RenderingProperties.cpp:
 	* jsContext.h:
 	* jsContext.cpp: 

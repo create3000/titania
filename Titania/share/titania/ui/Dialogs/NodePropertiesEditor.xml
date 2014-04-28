@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkDialog" id="Window">
     <property name="width_request">500</property>
     <property name="can_focus">False</property>
@@ -81,7 +82,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="stock">gtk-properties</property>
-                    <property name="icon-size">6</property>
+                    <property name="icon_size">6</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -103,13 +104,13 @@
                         <property name="label" translatable="yes">Edit node properties</property>
                         <property name="wrap">True</property>
                         <property name="max_width_chars">46</property>
-                        <style>
-                          <class name="titania-header"/>
-                        </style>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                           <attribute name="scale" value="1.2"/>
                         </attributes>
+                        <style>
+                          <class name="titania-header"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -215,10 +216,9 @@
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
                             <property name="text" translatable="yes">Transform</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="caps_lock_warning">False</property>
-                            <signal name="insert-text" handler="on_type_name_insert_text" after="yes" swapped="no"/>
                             <signal name="delete-text" handler="on_type_name_delete_text" after="yes" swapped="no"/>
+                            <signal name="insert-text" handler="on_type_name_insert_text" after="yes" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -233,10 +233,9 @@
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
                             <property name="text" translatable="yes">Cube</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="caps_lock_warning">False</property>
-                            <signal name="insert-text" handler="on_name_insert_text" after="yes" swapped="no"/>
                             <signal name="delete-text" handler="on_name_delete_text" after="yes" swapped="no"/>
+                            <signal name="insert-text" handler="on_name_insert_text" after="yes" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>

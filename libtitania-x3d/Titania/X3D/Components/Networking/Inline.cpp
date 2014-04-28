@@ -116,7 +116,7 @@ Inline::initialize ()
 	if (X3D_PARALLEL)
 	{
 		if (checkLoadState () == NOT_STARTED_STATE)
-			setScene (getBrowser () -> createScene ());
+			setScene (ScenePtr (getBrowser () -> getScene ()));
 
 		if (load ())
 			requestAsyncLoad ();
@@ -127,7 +127,7 @@ Inline::initialize ()
 			requestImmediateLoad ();
 
 		else
-			setScene (getBrowser () -> createScene ());
+			setScene (ScenePtr (getBrowser () -> getScene ()));
 	}
 
 	group -> isInternal (true);
@@ -144,7 +144,7 @@ Inline::setSceneAsync (ScenePtr && value)
 	}
 	else
 	{
-		setScene (getBrowser () -> createScene ());
+		setScene (ScenePtr (getBrowser () -> getScene ()));
 		setLoadState (FAILED_STATE);
 	}
 }
@@ -284,7 +284,7 @@ Inline::requestUnload ()
 	if (future)
 		future -> dispose ();
 
-	setScene (getBrowser () -> createScene ());
+	setScene (ScenePtr (getBrowser () -> getScene ()));
 
 	setLoadState (NOT_STARTED_STATE);
 }
