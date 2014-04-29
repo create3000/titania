@@ -1,5 +1,20 @@
 2014-04-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* X3DUserInterface.cpp:
+	* inputOnly.png:
+	* outputOnly.png:
+	* inputOutput.png:
+	* NodePropertiesEditor.xml:
+	* NodePropertiesEditor.h:
+	* X3DBrowserWindowInterface.cpp:
+	* NodePropertiesEditor.cpp:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
+2014-04-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NodePropertiesEditor.xml: 
 
 2014-04-28  Holger Seelig  <holger.seelig@yahoo.de>

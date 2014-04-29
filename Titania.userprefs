@@ -1,14 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/Context.cpp">
-    <Files>
-      <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="22" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="184" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="617" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/Context.cpp" Line="67" Column="16" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
@@ -21,6 +13,7 @@
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Networking" expanded="True" />
+              <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
@@ -41,19 +34,20 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Rendering" expanded="True">
-                  <Node name="Context.cpp" selected="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Networking" expanded="True">
+                    <Node name="Inline.cpp" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="Titania" expanded="True" />
+            <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True" />
+            </Node>
           </Node>
           <Node name="x3d2vrml" expanded="True">
             <Node name="bin" expanded="True" />

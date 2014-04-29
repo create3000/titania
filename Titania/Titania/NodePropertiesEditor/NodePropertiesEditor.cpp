@@ -56,17 +56,36 @@
 namespace titania {
 namespace puck {
 
+static constexpr int TYPE_NAME_COLUMN   = 0;
+static constexpr int NAME_COLUMN        = 1;
+static constexpr int ACCESS_TYPE_COLUMN = 2;
+
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodePropertiesEditorInterface (get_ui ("Dialogs/NodePropertiesEditor.xml"), gconf_dir ()),
-	                            node (node)
+	                            node (node),
+	        userDefinedFieldsColumns (),
+	      userDefinedFieldsListStore (Gtk::ListStore::create (userDefinedFieldsColumns))
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 
-	getHeaderLabel () .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
-
+	getHeaderLabel ()   .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
 	getTypeNameEntry () .set_text (node -> getTypeName ());
 	getNameEntry ()     .set_text (node -> getName ());
+
+	getUserDefinedFieldsExpander () .set_visible (node -> hasUserDefinedFields ());
+	getUserDefinedFieldsTreeView () .set_model (userDefinedFieldsListStore);
+
+	for (const auto & field : node -> getUserDefinedFields ())
+	{
+		const auto iter = userDefinedFieldsListStore -> append ();
+		(*iter) [userDefinedFieldsColumns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
+		(*iter) [userDefinedFieldsColumns .name]       = field -> getName ();
+		(*iter) [userDefinedFieldsColumns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [field] + ".png"));
+	}
+
+	getCellRendererAccessType () -> property_xalign () = 0;
+	getCellRendererAccessType () -> property_xpad ()   = 4;
 }
 
 void
@@ -150,7 +169,7 @@ NodePropertiesEditor::updateNamedNode (const std::string & name, const X3D::SFNo
 	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
 
 	if (not name .empty ())
-		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);	
+		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
 
 	browserWindow -> getOutlineTreeView () .queue_draw ();
 }

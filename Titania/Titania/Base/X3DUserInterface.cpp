@@ -63,7 +63,10 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::s
 	constructed_connection (),
 	         userInterface (),
 	               dialogs ()
-{ }
+{
+	userInterfaces .emplace_back (this);
+	userInterface = -- userInterfaces .end ();
+}
 
 void
 X3DUserInterface::construct ()
@@ -73,9 +76,6 @@ X3DUserInterface::construct ()
 	getWidget () .signal_map ()                .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
-
-	userInterfaces .emplace_back (this);
-	userInterface = -- userInterfaces .end ();
 
 	restoreInterface ();
 }

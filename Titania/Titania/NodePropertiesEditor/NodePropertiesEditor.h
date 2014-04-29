@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,6 +71,24 @@ public:
 
 private:
 
+	class UserDefinedFieldsColumns :
+		public Gtk::TreeModel::ColumnRecord
+	{
+	public:
+
+		UserDefinedFieldsColumns ()
+		{
+			add (type);
+			add (name);
+			add (accessType);
+		}
+
+		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
+		Gtk::TreeModelColumn <std::string>                 name;
+		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
+
+	};
+
 	void
 	validateIdOnInsert (Gtk::Entry &, const Glib::ustring &, int);
 
@@ -106,8 +124,10 @@ private:
 	updateNamedNode (const std::string &, const X3D::SFNode &, BrowserWindow* const);
 
 	///  @name Members
-	
-	const X3D::SFNode node;
+
+	const X3D::SFNode             node;
+	UserDefinedFieldsColumns      userDefinedFieldsColumns;
+	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
 
 };
 

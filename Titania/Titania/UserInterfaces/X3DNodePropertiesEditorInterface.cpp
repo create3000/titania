@@ -61,6 +61,12 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_accessTypeIconFactory      = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("AccessTypeIconFactory"));
+	m_fieldTypeIconFactory       = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("FieldTypeIconFactory"));
+	m_userDefinedFieldsListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("UserDefinedFieldsListStore"));
+	m_cellRendererType           = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererType"));
+	m_cellRendererName           = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererName"));
+	m_cellRendererAccessType     = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererAccessType"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
@@ -83,16 +89,20 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_typeNameEntry -> set_name ("TypeNameEntry");
 	m_builder -> get_widget ("NameEntry", m_nameEntry);
 	m_nameEntry -> set_name ("NameEntry");
+	m_builder -> get_widget ("UserDefinedFieldsExpander", m_userDefinedFieldsExpander);
+	m_userDefinedFieldsExpander -> set_name ("UserDefinedFieldsExpander");
+	m_builder -> get_widget ("UserDefinedFieldsTreeView", m_userDefinedFieldsTreeView);
+	m_userDefinedFieldsTreeView -> set_name ("UserDefinedFieldsTreeView");
 
 	// Connect object Gtk::Button with id 'CancelButton'.
 	m_cancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_cancel));
 	m_okButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_ok));
 
 	// Connect object Gtk::Entry with id 'TypeNameEntry'.
-	m_typeNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_insert_text), false);
 	m_typeNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_delete_text), false);
-	m_nameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false);
+	m_typeNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_insert_text), false);
 	m_nameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false);
+	m_nameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false);
 
 	// Call construct handler of base class.
 	construct ();

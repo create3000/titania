@@ -91,6 +91,30 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getAccessTypeIconFactory () const
+	{ return m_accessTypeIconFactory; }
+
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getFieldTypeIconFactory () const
+	{ return m_fieldTypeIconFactory; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getUserDefinedFieldsListStore () const
+	{ return m_userDefinedFieldsListStore; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getCellRendererType () const
+	{ return m_cellRendererType; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getCellRendererName () const
+	{ return m_cellRendererName; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getCellRendererAccessType () const
+	{ return m_cellRendererAccessType; }
+
 	Gtk::Dialog &
 	getWindow () const
 	{ return *m_window; }
@@ -131,6 +155,14 @@ public:
 	getNameEntry () const
 	{ return *m_nameEntry; }
 
+	Gtk::Expander &
+	getUserDefinedFieldsExpander () const
+	{ return *m_userDefinedFieldsExpander; }
+
+	Gtk::TreeView &
+	getUserDefinedFieldsTreeView () const
+	{ return *m_userDefinedFieldsTreeView; }
+
 	virtual
 	void
 	on_cancel () = 0;
@@ -141,19 +173,19 @@ public:
 
 	virtual
 	void
-	on_type_name_insert_text (const Glib::ustring & text, int* position) = 0;
-
-	virtual
-	void
 	on_type_name_delete_text (int start_pos, int end_pos) = 0;
 
 	virtual
 	void
-	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
+	on_type_name_insert_text (const Glib::ustring & text, int* position) = 0;
 
 	virtual
 	void
 	on_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
 
 	virtual
 	~X3DNodePropertiesEditorInterface ();
@@ -166,18 +198,26 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Dialog*                m_window;
-	Gtk::Button*                m_cancelButton;
-	Gtk::Button*                m_okButton;
-	Gtk::Box*                   m_widget;
-	Gtk::Label*                 m_headerLabel;
-	Gtk::Expander*              m_nodePropertiesExpander;
-	Gtk::Label*                 m_typeNameLabel;
-	Gtk::Label*                 m_nameLabel;
-	Gtk::Entry*                 m_typeNameEntry;
-	Gtk::Entry*                 m_nameEntry;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::IconFactory>        m_accessTypeIconFactory;
+	Glib::RefPtr <Gtk::IconFactory>        m_fieldTypeIconFactory;
+	Glib::RefPtr <Gtk::ListStore>          m_userDefinedFieldsListStore;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_cellRendererType;
+	Glib::RefPtr <Gtk::CellRendererText>   m_cellRendererName;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_cellRendererAccessType;
+	Gtk::Dialog*                           m_window;
+	Gtk::Button*                           m_cancelButton;
+	Gtk::Button*                           m_okButton;
+	Gtk::Box*                              m_widget;
+	Gtk::Label*                            m_headerLabel;
+	Gtk::Expander*                         m_nodePropertiesExpander;
+	Gtk::Label*                            m_typeNameLabel;
+	Gtk::Label*                            m_nameLabel;
+	Gtk::Entry*                            m_typeNameEntry;
+	Gtk::Entry*                            m_nameEntry;
+	Gtk::Expander*                         m_userDefinedFieldsExpander;
+	Gtk::TreeView*                         m_userDefinedFieldsTreeView;
 
 };
 

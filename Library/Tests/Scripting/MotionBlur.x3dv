@@ -5,7 +5,6 @@ META "created" "Mon, 28 Apr 2014 22:27:02 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 META "modified" "Mon, 28 Apr 2014 22:37:51 GMT"
-META "title" "Antialiasing"
 
 EXTERNPROTO Rotor [
   inputOutput SFBool     enabled
