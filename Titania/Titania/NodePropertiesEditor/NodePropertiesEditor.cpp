@@ -62,7 +62,8 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                            node (node),
 	        userDefinedFieldsColumns (),
 	      userDefinedFieldsListStore (Gtk::ListStore::create (userDefinedFieldsColumns)),
-	               userDefinedFields (node -> getUserDefinedFields ()),
+	     userDefinedFieldDefinitions (),
+	                          fields (),
 	                   fieldsChanged (false)
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
@@ -70,24 +71,22 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	getHeaderLabel ()   .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
 	getTypeNameEntry () .set_text (node -> getTypeName ());
 	getNameEntry ()     .set_text (node -> getName ());
-	
+
 	// User defined fields
 
 	getUserDefinedFieldsExpander () .set_visible (node -> hasUserDefinedFields ());
 	getUserDefinedFieldsTreeView () .get_selection () -> set_mode (Gtk::SELECTION_SINGLE);
 	getUserDefinedFieldsTreeView () .set_model (userDefinedFieldsListStore);
 
+	for (const auto & field : node -> getPreDefinedFields ())
+		addField (field);
+
 	for (const auto & field : node -> getUserDefinedFields ())
-	{
-		const auto iter = userDefinedFieldsListStore -> append ();
-		(*iter) [userDefinedFieldsColumns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
-		(*iter) [userDefinedFieldsColumns .name]       = field -> getName ();
-		(*iter) [userDefinedFieldsColumns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [field] + ".png"));
-	}
+		addUserDefinedField (field);
 
 	getCellRendererAccessType () -> property_xalign () = 0;
 	getCellRendererAccessType () -> property_xpad ()   = 4;
-	
+
 	getInitializeOnlyMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "initializeOnly"));
 	getInputOnlyMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "inputOnly"));
 	getOutputOnlyMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "outputOnly"));
@@ -188,6 +187,8 @@ NodePropertiesEditor::on_add_field_clicked ()
 	getFieldNameEntry () .set_text ("");
 
 	getAddFieldDialog () .present ();
+
+	getFieldNameEntry () .grab_focus ();
 }
 
 void
@@ -223,19 +224,71 @@ NodePropertiesEditor::on_field_name_delete_text (int start_pos, int end_pos)
 void
 NodePropertiesEditor::on_field_name_changed ()
 {
-	getAddFieldOkButton () .set_sensitive (not getFieldNameEntry () .get_text () .empty ());
+	const std::string name   = getFieldNameEntry () .get_text ();
+	bool              exists = fields .find (name) not_eq fields .end ();
+
+	if (getAccessTypeLabel () .get_text () == "inputOutput")
+	{
+		exists |= fields .find ("set_" + name) not_eq fields .end ();
+		exists |= fields .find (name + "_changed") not_eq fields .end ();
+	}
+
+	getAddFieldOkButton () .set_sensitive (not name .empty () and not exists);
 }
 
 void
 NodePropertiesEditor::on_add_field_ok_clicked ()
 {
+	static const std::map <std::string, X3D::AccessType> accessTypes = {
+		std::make_pair ("initializeOnly", X3D::initializeOnly),
+		std::make_pair ("inputOnly",      X3D::inputOnly),
+		std::make_pair ("outputOnly",     X3D::outputOnly),
+		std::make_pair ("inputOutput",    X3D::inputOutput)
+	};
+
 	getAddFieldDialog () .hide ();
+
+	// Create field
+
+	X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
+
+	field -> setName (getFieldNameEntry () .get_text ());
+	field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+
+	// Add user defined field
+
+	addUserDefinedField (field);
 }
 
 void
 NodePropertiesEditor::on_add_field_cancel_clicked ()
 {
 	getAddFieldDialog () .hide ();
+}
+
+void
+NodePropertiesEditor::addField (X3D::X3DFieldDefinition* const field)
+{
+	fields .emplace (field -> getName (), field);
+	
+	if (field -> getAccessType () == X3D::inputOutput)
+	{
+		fields .emplace ("set_" + field -> getName (), field);
+		fields .emplace (field -> getName () + "_changed", field);
+	}
+}
+
+void
+NodePropertiesEditor::addUserDefinedField (X3D::X3DFieldDefinition* const field)
+{
+	addField (field);
+
+	userDefinedFieldDefinitions .emplace_back (field);
+
+	const auto iter = userDefinedFieldsListStore -> append ();
+	(*iter) [userDefinedFieldsColumns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
+	(*iter) [userDefinedFieldsColumns .name]       = field -> getName ();
+	(*iter) [userDefinedFieldsColumns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [field] + ".png"));
 }
 
 void

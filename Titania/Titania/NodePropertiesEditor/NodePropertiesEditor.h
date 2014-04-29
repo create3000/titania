@@ -145,6 +145,12 @@ private:
 	void
 	on_add_field_cancel_clicked () final override;
 
+	void
+	addField (X3D::X3DFieldDefinition* const);
+
+	void
+	addUserDefinedField (X3D::X3DFieldDefinition* const);
+
 	virtual
 	void
 	on_ok () final override;
@@ -162,7 +168,8 @@ private:
 	const X3D::SFNode             node;
 	UserDefinedFieldsColumns      userDefinedFieldsColumns;
 	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
-	X3D::FieldDefinitionArray     userDefinedFields;
+	X3D::FieldDefinitionArray     userDefinedFieldDefinitions;
+	X3D::FieldIndex               fields;
 	bool                          fieldsChanged;
 
 };

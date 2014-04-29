@@ -70,7 +70,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::map <std::string, X3DFieldDefinition*> FieldsMap;
+typedef std::map <std::string, X3DFieldDefinition*> FieldIndex;
 
 class X3DBrowser;
 class X3DExecutionContext;
@@ -460,7 +460,7 @@ private:
 	NodeTypeArray nodeType;
 
 	FieldDefinitionArray fieldDefinitions;      // Pre-defined and user-defined field definitions
-	FieldsMap            fields;                // Pre-defined and user-defined fields
+	FieldIndex           fields;                // Pre-defined and user-defined fields
 	FieldAliasIndex      fieldAliases;          // VRML names
 	size_t               numUserDefinedFields;  // Number of user defined fields
 	ChildObjectSet       children;              // Internal used fields
