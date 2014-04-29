@@ -113,6 +113,40 @@ private:
 
 	virtual
 	void
+	on_add_field_clicked () final override;
+
+	virtual
+	void
+	on_remove_field_clicked () final override;
+
+	void
+	on_access_type_activate (const std::string &);
+
+	void
+	on_field_type_activate (const std::string &);
+
+	virtual
+	void
+	on_field_name_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_field_name_delete_text (int, int) final override;
+
+	virtual
+	void
+	on_field_name_changed () final override;
+
+	virtual
+	void
+	on_add_field_ok_clicked () final override;
+
+	virtual
+	void
+	on_add_field_cancel_clicked () final override;
+
+	virtual
+	void
 	on_ok () final override;
 
 	virtual
@@ -128,6 +162,8 @@ private:
 	const X3D::SFNode             node;
 	UserDefinedFieldsColumns      userDefinedFieldsColumns;
 	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
+	X3D::FieldDefinitionArray     userDefinedFields;
+	bool                          fieldsChanged;
 
 };
 

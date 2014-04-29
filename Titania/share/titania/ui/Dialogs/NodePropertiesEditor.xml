@@ -2,6 +2,342 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+  <object class="GtkMenu" id="AccessTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="InitializeOnlyMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">initializeOnly</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="InputOnlyMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">inputOnly</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="OutputOnlyMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">outputOnly</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="InputOutputMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">inputOutput</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="FieldTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="SFBoolMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFBool</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFColorMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFColor</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFColorRGBAMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFColorRGBA</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFDoubleMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFDouble</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFFloatMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFFloat</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFImageMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFImage</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFInt32MenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFInt32</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFMatrix3dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFMatrix3d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFMatrix3fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFMatrix3f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFMatrix4dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFMatrix4d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFMatrix4fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFMatrix4f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFNodeMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFNode</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFRotationMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFRotation</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFStringMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFString</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFTimeMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFTime</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFVec2dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFVec2d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFVec2fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFVec2f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFVec3dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFVec3d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFVec3fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFVec3f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFVec4dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFVec4d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="SFVec4fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">SFVec4f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFBoolMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFBool</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFColorMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFColor</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFColorRGBAMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFColorRGBA</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFDoubleMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFDouble</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFFloatMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFFloat</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFImageMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFImage</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFInt32MenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFInt32</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFMatrix3dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFMatrix3d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFMatrix3fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFMatrix3f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFMatrix4dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFMatrix4d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFMatrix4fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFMatrix4f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFNodeMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFNode</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFRotationMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFRotation</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFStringMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFString</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFTimeMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFTime</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFVec2dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFVec2d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFVec2fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFVec2f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFVec3dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFVec3d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFVec3fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFVec3f</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFVec4dMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFVec4d</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="MFVec4fMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">MFVec4f</property>
+      </object>
+    </child>
+  </object>
   <object class="GtkDialog" id="Window">
     <property name="width_request">500</property>
     <property name="can_focus">False</property>
@@ -32,6 +368,7 @@
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_cancel" swapped="no"/>
               </object>
               <packing>
@@ -49,6 +386,7 @@
                 <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_ok" swapped="no"/>
               </object>
               <packing>
@@ -337,13 +675,14 @@
                             <property name="can_focus">False</property>
                             <property name="layout_style">start</property>
                             <child>
-                              <object class="GtkButton" id="button1">
-                                <property name="label">gtk-new</property>
+                              <object class="GtkButton" id="AddFieldButton">
+                                <property name="label">gtk-add</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="on_add_field_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -352,13 +691,14 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button2">
-                                <property name="label">gtk-delete</property>
+                              <object class="GtkButton" id="RemoveFieldButton">
+                                <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="on_remove_field_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -409,5 +749,136 @@
       <action-widget response="-6">CancelButton</action-widget>
       <action-widget response="-5">OkButton</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkDialog" id="AddFieldDialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add User Defined Field</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox2">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area2">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="AddFieldCancelButton">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_add_field_cancel_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="AddFieldOkButton">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_add_field_ok_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuButton" id="AccessTypeMenuButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="popup">AccessTypeMenu</property>
+                <child>
+                  <object class="GtkLabel" id="AccessTypeLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">initializeOnly</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkMenuButton" id="FieldTypeMenuButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="popup">FieldTypeMenu</property>
+                <child>
+                  <object class="GtkLabel" id="FieldTypeLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">SFBool</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="FieldNameEntry">
+                <property name="width_request">200</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">fieldName</property>
+                <signal name="changed" handler="on_field_name_changed" swapped="no"/>
+                <signal name="delete-text" handler="on_field_name_delete_text" after="yes" swapped="no"/>
+                <signal name="insert-text" handler="on_field_name_insert_text" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

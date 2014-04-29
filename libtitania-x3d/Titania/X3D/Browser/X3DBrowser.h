@@ -378,6 +378,8 @@ throw (Error <DISPOSED>)
 {
 	std::ostringstream ostream;
 
+	ostream .imbue (std::locale::classic ());
+
 	print (ostream, args ...);
 
 	getConsole () -> set_string () .emplace_back (ostream .str ());
