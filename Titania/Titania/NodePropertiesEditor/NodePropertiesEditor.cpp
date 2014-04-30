@@ -296,11 +296,11 @@ NodePropertiesEditor::on_remove_field_clicked ()
 
 	X3D::X3DFieldDefinition* const field = userDefinedFields [index];
 
-	// Erase from list store
+	// Erase from list store.
 
 	userDefinedFieldsListStore -> erase (selected);
 
-	// Erase from index
+	// Erase from index.
 
 	fields .erase (field -> getName ());
 
@@ -310,7 +310,7 @@ NodePropertiesEditor::on_remove_field_clicked ()
 		fields .erase (field -> getName () + "_changed");
 	}
 
-	// Erase from array
+	// Erase from array.
 
 	const auto iter = std::find (userDefinedFields .begin (),
 	                             userDefinedFields .end (),
@@ -319,7 +319,7 @@ NodePropertiesEditor::on_remove_field_clicked ()
 	if (iter not_eq userDefinedFields .end ())
 		userDefinedFields .erase (iter);
 
-	// Store node field or delete field immediately
+	// Store node field or delete field immediately.
 
 	try
 	{
@@ -328,7 +328,7 @@ NodePropertiesEditor::on_remove_field_clicked ()
 		if (field == fieldDefinition)
 			fieldsToRemove .emplace_back (field);
 		else
-			delete field;
+			throw X3D::Error <X3D::INVALID_FIELD> ("Field does not exists.");
 	}
 	catch (const X3D::X3DError &)
 	{
@@ -394,7 +394,7 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 
 	if (editUserDefinedField)
 	{
-		// Edit field
+		// Edit field.
 
 		X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
 
@@ -405,14 +405,14 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 	}
 	else
 	{
-		// Create field
+		// Create field.
 
 		X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
 
 		field -> setName (getFieldNameEntry () .get_text ());
 		field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
 
-		// Add user defined field
+		// Add user defined field.
 
 		addUserDefinedField (field);
 	}
@@ -475,7 +475,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 	                                                              userDefinedFields .end (),
 	                                                              oldField);
 
-	// Replace in list store
+	// Replace in list store.
 
 	const auto iter = userDefinedFieldsListStore -> children () [index];
 
@@ -483,7 +483,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 	(*iter) [userDefinedFieldsColumns .name]       = newField -> getName ();
 	(*iter) [userDefinedFieldsColumns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [newField] + ".png"));
 
-	// Replace in index
+	// Replace in index.
 
 	fields .erase (oldField -> getName ());
 
@@ -501,7 +501,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 		fields .emplace (newField -> getName () + "_changed", newField);
 	}
 
-	// Replace in array
+	// Replace in array.
 
 	userDefinedFields [index] = newField;
 
@@ -533,7 +533,7 @@ NodePropertiesEditor::on_ok ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
 
-	// Apply name change
+	// Apply name change.
 
 	const std::string name = getNameEntry () .get_text ();
 
