@@ -93,35 +93,35 @@ public:
 
 	const Glib::RefPtr <Gtk::TreeStore> &
 	getTreeStore () const
-	{ return m_treeStore; }
+	{ return m_TreeStore; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getFile () const
-	{ return m_file; }
+	{ return m_File; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getIconRenderer () const
-	{ return m_iconRenderer; }
+	{ return m_IconRenderer; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getNameRenderer () const
-	{ return m_nameRenderer; }
+	{ return m_NameRenderer; }
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
-	{ return *m_scrolledWindow; }
+	{ return *m_ScrolledWindow; }
 
 	Gtk::TreeView &
 	getTreeView () const
-	{ return *m_treeView; }
+	{ return *m_TreeView; }
 
 	virtual
 	void
@@ -144,14 +144,14 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::TreeStore>          m_treeStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_file;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_iconRenderer;
-	Glib::RefPtr <Gtk::CellRendererText>   m_nameRenderer;
-	Gtk::Window*                           m_window;
-	Gtk::Box*                              m_widget;
-	Gtk::ScrolledWindow*                   m_scrolledWindow;
-	Gtk::TreeView*                         m_treeView;
+	Glib::RefPtr <Gtk::TreeStore>          m_TreeStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_File;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
+	Glib::RefPtr <Gtk::CellRendererText>   m_NameRenderer;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::ScrolledWindow*                   m_ScrolledWindow;
+	Gtk::TreeView*                         m_TreeView;
 
 };
 

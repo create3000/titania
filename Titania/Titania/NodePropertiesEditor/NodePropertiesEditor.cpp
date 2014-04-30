@@ -64,7 +64,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	      userDefinedFieldsListStore (Gtk::ListStore::create (userDefinedFieldsColumns)),
 	     userDefinedFieldDefinitions (),
 	                          fields (),
-	                   fieldsChanged (false)
+	                  fieldsToRemove ()
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 
@@ -180,6 +180,12 @@ NodePropertiesEditor::on_name_delete_text (int start_pos, int end_pos)
 }
 
 void
+NodePropertiesEditor::on_user_defined_field_changed ()
+{
+	getRemoveFieldButton () .set_sensitive (not getUserDefinedFieldsTreeView () .get_selection () -> get_selected_rows () .empty ());
+}
+
+void
 NodePropertiesEditor::on_add_field_clicked ()
 {
 	getInitializeOnlyMenuItem () .activate ();
@@ -194,13 +200,54 @@ NodePropertiesEditor::on_add_field_clicked ()
 void
 NodePropertiesEditor::on_remove_field_clicked ()
 {
-	__LOG__ << std::endl;
+	const auto selected = getUserDefinedFieldsTreeView () .get_selection () -> get_selected ();
+	const auto path     = userDefinedFieldsListStore -> get_path (selected);
+	const auto index    = path .front ();
+
+	X3D::X3DFieldDefinition* const field = userDefinedFieldDefinitions [index];
+
+	// Erase from list
+
+	userDefinedFieldsListStore -> erase (selected);
+
+	// Erase from index
+
+	fields .erase (field -> getName ());
+	
+	if (field -> getAccessType () == X3D::inputOutput)
+	{
+		fields .erase ("set_" + field -> getName ());
+		fields .erase (field -> getName () + "_changed");
+	}
+
+	// Erase from array
+
+	const auto iter = std::find (userDefinedFieldDefinitions .begin (),
+	                             userDefinedFieldDefinitions .end (),
+	                             field);
+
+	if (iter not_eq userDefinedFieldDefinitions .end ())
+		userDefinedFieldDefinitions .erase (iter);
+
+	// Store node field or delete field immediately
+
+	try
+	{
+		fieldsToRemove .emplace_back (node -> getField (field -> getName ()));
+	}
+	catch (const X3D::X3DError &)
+	{
+		// Delete field immediately if field is not a child of node.
+		delete field;
+	}
 }
 
 void
 NodePropertiesEditor::on_access_type_activate (const std::string & accessType)
 {
 	getAccessTypeLabel () .set_text (accessType);
+
+	on_field_name_changed ();
 }
 
 void
@@ -224,6 +271,8 @@ NodePropertiesEditor::on_field_name_delete_text (int start_pos, int end_pos)
 void
 NodePropertiesEditor::on_field_name_changed ()
 {
+	// Set Ok button sensitive or not.
+
 	const std::string name   = getFieldNameEntry () .get_text ();
 	bool              exists = fields .find (name) not_eq fields .end ();
 
@@ -270,7 +319,7 @@ void
 NodePropertiesEditor::addField (X3D::X3DFieldDefinition* const field)
 {
 	fields .emplace (field -> getName (), field);
-	
+
 	if (field -> getAccessType () == X3D::inputOutput)
 	{
 		fields .emplace ("set_" + field -> getName (), field);

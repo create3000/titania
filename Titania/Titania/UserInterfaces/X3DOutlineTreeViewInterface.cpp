@@ -63,19 +63,19 @@ X3DOutlineTreeViewInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
-	m_builder -> get_widget ("PopupMenu", m_popupMenu);
-	m_popupMenu -> set_name ("PopupMenu");
-	m_builder -> get_widget ("RenameNodeMenuItem", m_renameNodeMenuItem);
-	m_renameNodeMenuItem -> set_name ("RenameNodeMenuItem");
-	m_builder -> get_widget ("EditNodeMenuItem", m_editNodeMenuItem);
-	m_editNodeMenuItem -> set_name ("EditNodeMenuItem");
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
+	m_PopupMenu -> set_name ("PopupMenu");
+	m_builder -> get_widget ("RenameNodeMenuItem", m_RenameNodeMenuItem);
+	m_RenameNodeMenuItem -> set_name ("RenameNodeMenuItem");
+	m_builder -> get_widget ("EditNodeMenuItem", m_EditNodeMenuItem);
+	m_EditNodeMenuItem -> set_name ("EditNodeMenuItem");
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
 
 	// Connect object Gtk::MenuItem with id 'RenameNodeMenuItem'.
-	m_renameNodeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineTreeViewInterface::on_rename_node_activate));
+	m_RenameNodeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineTreeViewInterface::on_rename_node_activate));
 
 	// Call construct handler of base class.
 	construct ();
@@ -83,7 +83,7 @@ X3DOutlineTreeViewInterface::create (const std::string & filename)
 
 X3DOutlineTreeViewInterface::~X3DOutlineTreeViewInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

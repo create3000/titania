@@ -61,23 +61,23 @@ X3DViewpointListInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_listStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
-	m_descriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
-	m_cellRendererDescription = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererDescription"));
+	m_ListStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_DescriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
+	m_CellRendererDescription = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererDescription"));
 
 	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
-	m_scrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("TreeView", m_treeView);
-	m_treeView -> set_name ("TreeView");
-	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_map));
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_ScrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_TreeView -> set_name ("TreeView");
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_map));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated));
 
 	// Call construct handler of base class.
 	construct ();
@@ -85,7 +85,7 @@ X3DViewpointListInterface::create (const std::string & filename)
 
 X3DViewpointListInterface::~X3DViewpointListInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

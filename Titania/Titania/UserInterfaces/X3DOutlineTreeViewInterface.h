@@ -93,23 +93,23 @@ public:
 
 	Gtk::Menu &
 	getPopupMenu () const
-	{ return *m_popupMenu; }
+	{ return *m_PopupMenu; }
 
 	Gtk::MenuItem &
 	getRenameNodeMenuItem () const
-	{ return *m_renameNodeMenuItem; }
+	{ return *m_RenameNodeMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getEditNodeMenuItem () const
-	{ return *m_editNodeMenuItem; }
+	{ return *m_EditNodeMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	virtual
 	void
@@ -128,11 +128,11 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Menu*                  m_popupMenu;
-	Gtk::MenuItem*              m_renameNodeMenuItem;
-	Gtk::ImageMenuItem*         m_editNodeMenuItem;
-	Gtk::Window*                m_window;
-	Gtk::Box*                   m_widget;
+	Gtk::Menu*                  m_PopupMenu;
+	Gtk::MenuItem*              m_RenameNodeMenuItem;
+	Gtk::ImageMenuItem*         m_EditNodeMenuItem;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
 
 };
 

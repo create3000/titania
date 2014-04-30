@@ -93,15 +93,15 @@ public:
 
 	const Glib::RefPtr <Gtk::TextBuffer> &
 	getTextbuffer () const
-	{ return m_textbuffer; }
+	{ return m_Textbuffer; }
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	virtual
 	~X3DConsoleInterface ();
@@ -116,9 +116,9 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::TextBuffer> m_textbuffer;
-	Gtk::Window*                   m_window;
-	Gtk::Box*                      m_widget;
+	Glib::RefPtr <Gtk::TextBuffer> m_Textbuffer;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
 
 };
 

@@ -93,47 +93,47 @@ public:
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getListStore () const
-	{ return m_listStore; }
+	{ return m_ListStore; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getIcon () const
-	{ return m_icon; }
+	{ return m_Icon; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getIconRenderer () const
-	{ return m_iconRenderer; }
+	{ return m_IconRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getTitleColumn () const
-	{ return m_titleColumn; }
+	{ return m_TitleColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getTitleRenderer () const
-	{ return m_titleRenderer; }
+	{ return m_TitleRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getLocationColumn () const
-	{ return m_locationColumn; }
+	{ return m_LocationColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getLocationRenderer () const
-	{ return m_locationRenderer; }
+	{ return m_LocationRenderer; }
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
-	{ return *m_scrolledWindow; }
+	{ return *m_ScrolledWindow; }
 
 	Gtk::TreeView &
 	getTreeView () const
-	{ return *m_treeView; }
+	{ return *m_TreeView; }
 
 	virtual
 	void
@@ -156,17 +156,17 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::ListStore>          m_listStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_icon;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_iconRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_titleColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_titleRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_locationColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_locationRenderer;
-	Gtk::Window*                           m_window;
-	Gtk::Box*                              m_widget;
-	Gtk::ScrolledWindow*                   m_scrolledWindow;
-	Gtk::TreeView*                         m_treeView;
+	Glib::RefPtr <Gtk::ListStore>          m_ListStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_Icon;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_TitleColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_TitleRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_LocationColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_LocationRenderer;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::ScrolledWindow*                   m_ScrolledWindow;
+	Gtk::TreeView*                         m_TreeView;
 
 };
 

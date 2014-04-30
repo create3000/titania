@@ -93,19 +93,19 @@ public:
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Table &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::HScale &
 	getIntensity () const
-	{ return *m_intensity; }
+	{ return *m_Intensity; }
 
 	Gtk::CheckButton &
 	getEnabled () const
-	{ return *m_enabled; }
+	{ return *m_Enabled; }
 
 	virtual
 	void
@@ -128,10 +128,10 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_window;
-	Gtk::Table*                 m_widget;
-	Gtk::HScale*                m_intensity;
-	Gtk::CheckButton*           m_enabled;
+	Gtk::Window*                m_Window;
+	Gtk::Table*                 m_Widget;
+	Gtk::HScale*                m_Intensity;
+	Gtk::CheckButton*           m_Enabled;
 
 };
 

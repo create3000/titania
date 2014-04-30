@@ -61,29 +61,29 @@ X3DHistoryEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_listStore        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
-	m_icon             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("Icon"));
-	m_iconRenderer     = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
-	m_titleColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TitleColumn"));
-	m_titleRenderer    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TitleRenderer"));
-	m_locationColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("LocationColumn"));
-	m_locationRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("LocationRenderer"));
+	m_ListStore        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_Icon             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("Icon"));
+	m_IconRenderer     = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
+	m_TitleColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TitleColumn"));
+	m_TitleRenderer    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TitleRenderer"));
+	m_LocationColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("LocationColumn"));
+	m_LocationRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("LocationRenderer"));
 
 	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
-	m_scrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("TreeView", m_treeView);
-	m_treeView -> set_name ("TreeView");
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_ScrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_TreeView -> set_name ("TreeView");
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DHistoryEditorInterface::on_map));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DHistoryEditorInterface::on_map));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryEditorInterface::on_row_activated));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryEditorInterface::on_row_activated));
 
 	// Call construct handler of base class.
 	construct ();
@@ -91,7 +91,7 @@ X3DHistoryEditorInterface::create (const std::string & filename)
 
 X3DHistoryEditorInterface::~X3DHistoryEditorInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

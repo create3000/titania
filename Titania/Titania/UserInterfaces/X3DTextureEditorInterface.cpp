@@ -61,57 +61,57 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_alphaAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AlphaAdjustment"));
-	m_anisotropicDegreeAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AnisotropicDegreeAdjustment"));
-	m_borderWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BorderWidthAdjustment"));
-	m_boundryModeListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("BoundryModeListStore"));
-	m_functionListStore            = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FunctionListStore"));
-	m_magnificationFilterListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MagnificationFilterListStore"));
-	m_minificationFilterListStore  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MinificationFilterListStore"));
-	m_modeListStore                = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ModeListStore"));
-	m_rotationAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RotationAdjustment"));
-	m_scaleSAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ScaleSAdjustment"));
-	m_scaleTdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ScaleTdjustment"));
-	m_sourceListStore              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("SourceListStore"));
-	m_textureCompressionListStore  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureCompressionListStore"));
-	m_texturePriorityAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePriorityAdjustment"));
-	m_textureUnitListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureUnitListStore"));
-	m_translateSAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslateSAdjustment"));
-	m_translateTAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslateTAdjustment"));
+	m_AlphaAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AlphaAdjustment"));
+	m_AnisotropicDegreeAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AnisotropicDegreeAdjustment"));
+	m_BorderWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BorderWidthAdjustment"));
+	m_BoundryModeListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("BoundryModeListStore"));
+	m_FunctionListStore            = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FunctionListStore"));
+	m_MagnificationFilterListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MagnificationFilterListStore"));
+	m_MinificationFilterListStore  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MinificationFilterListStore"));
+	m_ModeListStore                = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ModeListStore"));
+	m_RotationAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RotationAdjustment"));
+	m_ScaleSAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ScaleSAdjustment"));
+	m_ScaleTdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ScaleTdjustment"));
+	m_SourceListStore              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("SourceListStore"));
+	m_TextureCompressionListStore  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureCompressionListStore"));
+	m_TexturePriorityAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePriorityAdjustment"));
+	m_TextureUnitListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureUnitListStore"));
+	m_TranslateSAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslateSAdjustment"));
+	m_TranslateTAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslateTAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("CopyMenuItem", m_copyMenuItem);
-	m_copyMenuItem -> set_name ("CopyMenuItem");
-	m_builder -> get_widget ("PasteMenuItem", m_pasteMenuItem);
-	m_pasteMenuItem -> set_name ("PasteMenuItem");
-	m_builder -> get_widget ("PreviewBox", m_previewBox);
-	m_previewBox -> set_name ("PreviewBox");
-	m_builder -> get_widget ("MultiTextureExpander", m_multiTextureExpander);
-	m_multiTextureExpander -> set_name ("MultiTextureExpander");
-	m_builder -> get_widget ("TextureExpander", m_textureExpander);
-	m_textureExpander -> set_name ("TextureExpander");
-	m_builder -> get_widget ("TextureGrid", m_textureGrid);
-	m_textureGrid -> set_name ("TextureGrid");
-	m_builder -> get_widget ("TexturePropertiesExpander", m_texturePropertiesExpander);
-	m_texturePropertiesExpander -> set_name ("TexturePropertiesExpander");
-	m_builder -> get_widget ("TextureTransformExpander", m_textureTransformExpander);
-	m_textureTransformExpander -> set_name ("TextureTransformExpander");
-	m_builder -> get_widget ("TextureTranformGrid", m_textureTranformGrid);
-	m_textureTranformGrid -> set_name ("TextureTranformGrid");
-	m_builder -> get_widget ("TranslateSButton", m_translateSButton);
-	m_translateSButton -> set_name ("TranslateSButton");
-	m_builder -> get_widget ("TranslateTButton", m_translateTButton);
-	m_translateTButton -> set_name ("TranslateTButton");
-	m_builder -> get_widget ("RotationScale", m_rotationScale);
-	m_rotationScale -> set_name ("RotationScale");
-	m_builder -> get_widget ("ScaleSButton", m_scaleSButton);
-	m_scaleSButton -> set_name ("ScaleSButton");
-	m_builder -> get_widget ("ScaleTButton", m_scaleTButton);
-	m_scaleTButton -> set_name ("ScaleTButton");
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
+	m_CopyMenuItem -> set_name ("CopyMenuItem");
+	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
+	m_PasteMenuItem -> set_name ("PasteMenuItem");
+	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_PreviewBox -> set_name ("PreviewBox");
+	m_builder -> get_widget ("MultiTextureExpander", m_MultiTextureExpander);
+	m_MultiTextureExpander -> set_name ("MultiTextureExpander");
+	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
+	m_TextureExpander -> set_name ("TextureExpander");
+	m_builder -> get_widget ("TextureGrid", m_TextureGrid);
+	m_TextureGrid -> set_name ("TextureGrid");
+	m_builder -> get_widget ("TexturePropertiesExpander", m_TexturePropertiesExpander);
+	m_TexturePropertiesExpander -> set_name ("TexturePropertiesExpander");
+	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
+	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
+	m_builder -> get_widget ("TextureTranformGrid", m_TextureTranformGrid);
+	m_TextureTranformGrid -> set_name ("TextureTranformGrid");
+	m_builder -> get_widget ("TranslateSButton", m_TranslateSButton);
+	m_TranslateSButton -> set_name ("TranslateSButton");
+	m_builder -> get_widget ("TranslateTButton", m_TranslateTButton);
+	m_TranslateTButton -> set_name ("TranslateTButton");
+	m_builder -> get_widget ("RotationScale", m_RotationScale);
+	m_RotationScale -> set_name ("RotationScale");
+	m_builder -> get_widget ("ScaleSButton", m_ScaleSButton);
+	m_ScaleSButton -> set_name ("ScaleSButton");
+	m_builder -> get_widget ("ScaleTButton", m_ScaleTButton);
+	m_ScaleTButton -> set_name ("ScaleTButton");
 
 	// Call construct handler of base class.
 	construct ();
@@ -119,7 +119,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 X3DTextureEditorInterface::~X3DTextureEditorInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

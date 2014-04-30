@@ -93,527 +93,527 @@ public:
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const
-	{ return m_fileFilterAllFiles; }
+	{ return m_FileFilterAllFiles; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAudio () const
-	{ return m_fileFilterAudio; }
+	{ return m_FileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterImage () const
-	{ return m_fileFilterImage; }
+	{ return m_FileFilterImage; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterVideo () const
-	{ return m_fileFilterVideo; }
+	{ return m_FileFilterVideo; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterX3D () const
-	{ return m_fileFilterX3D; }
+	{ return m_FileFilterX3D; }
 
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const
-	{ return m_iconFactory; }
+	{ return m_IconFactory; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const
-	{ return m_menuAccelGroup; }
+	{ return m_MenuAccelGroup; }
 
 	Gtk::Image &
 	getExamineViewerImage () const
-	{ return *m_examineViewerImage; }
+	{ return *m_ExamineViewerImage; }
 
 	Gtk::FileChooserDialog &
 	getFileImportDialog () const
-	{ return *m_fileImportDialog; }
+	{ return *m_FileImportDialog; }
 
 	Gtk::Image &
 	getFileImportImage () const
-	{ return *m_fileImportImage; }
+	{ return *m_FileImportImage; }
 
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const
-	{ return *m_fileOpenDialog; }
+	{ return *m_FileOpenDialog; }
 
 	Gtk::FileChooserDialog &
 	getFileSaveDialog () const
-	{ return *m_fileSaveDialog; }
+	{ return *m_FileSaveDialog; }
 
 	Gtk::CheckButton &
 	getSaveCompressedButton () const
-	{ return *m_saveCompressedButton; }
+	{ return *m_SaveCompressedButton; }
 
 	Gtk::Dialog &
 	getFileSaveWarningDialog () const
-	{ return *m_fileSaveWarningDialog; }
+	{ return *m_FileSaveWarningDialog; }
 
 	Gtk::Image &
 	getFlyViewerImage () const
-	{ return *m_flyViewerImage; }
+	{ return *m_FlyViewerImage; }
 
 	Gtk::Image &
 	getPlaneViewerImage () const
-	{ return *m_planeViewerImage; }
+	{ return *m_PlaneViewerImage; }
 
 	Gtk::Image &
 	getImportImage () const
-	{ return *m_importImage; }
+	{ return *m_ImportImage; }
 
 	Gtk::MessageDialog &
 	getMessageDialog () const
-	{ return *m_messageDialog; }
+	{ return *m_MessageDialog; }
 
 	Gtk::Image &
 	getNoneViewerImage () const
-	{ return *m_noneViewerImage; }
+	{ return *m_NoneViewerImage; }
 
 	Gtk::Dialog &
 	getOpenLocationDialog () const
-	{ return *m_openLocationDialog; }
+	{ return *m_OpenLocationDialog; }
 
 	Gtk::Entry &
 	getOpenLocationEntry () const
-	{ return *m_openLocationEntry; }
+	{ return *m_OpenLocationEntry; }
 
 	Gtk::Image &
 	getOpenLocationImage () const
-	{ return *m_openLocationImage; }
+	{ return *m_OpenLocationImage; }
 
 	Gtk::Image &
 	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
+	{ return *m_WalkViewerImage; }
 
 	Gtk::Menu &
 	getViewerTypeMenu () const
-	{ return *m_viewerTypeMenu; }
+	{ return *m_ViewerTypeMenu; }
 
 	Gtk::ImageMenuItem &
 	getExamineViewerMenuItem () const
-	{ return *m_examineViewerMenuItem; }
+	{ return *m_ExamineViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getWalkViewerMenuItem () const
-	{ return *m_walkViewerMenuItem; }
+	{ return *m_WalkViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getFlyViewerMenuItem () const
-	{ return *m_flyViewerMenuItem; }
+	{ return *m_FlyViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getPlaneViewerMenuItem () const
-	{ return *m_planeViewerMenuItem; }
+	{ return *m_PlaneViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
-	{ return *m_noneViewerMenuItem; }
+	{ return *m_NoneViewerMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::VBox &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::MenuBar &
 	getMenuBar () const
-	{ return *m_menuBar; }
+	{ return *m_MenuBar; }
 
 	Gtk::MenuItem &
 	getFileMenuItem () const
-	{ return *m_fileMenuItem; }
+	{ return *m_FileMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getNewMenuItem () const
-	{ return *m_newMenuItem; }
+	{ return *m_NewMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getOpenMenuItem () const
-	{ return *m_openMenuItem; }
+	{ return *m_OpenMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getOpenLocationMenuItem () const
-	{ return *m_openLocationMenuItem; }
+	{ return *m_OpenLocationMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getImportMenuItem () const
-	{ return *m_importMenuItem; }
+	{ return *m_ImportMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getImportAsInlineMenuItem () const
-	{ return *m_importAsInlineMenuItem; }
+	{ return *m_ImportAsInlineMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getSaveMenuItem () const
-	{ return *m_saveMenuItem; }
+	{ return *m_SaveMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getSaveAsMenuItem () const
-	{ return *m_saveAsMenuItem; }
+	{ return *m_SaveAsMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getRevertMenuItem () const
-	{ return *m_revertMenuItem; }
+	{ return *m_RevertMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getQuitMenuItem () const
-	{ return *m_quitMenuItem; }
+	{ return *m_QuitMenuItem; }
 
 	Gtk::MenuItem &
 	getEditMenuItem () const
-	{ return *m_editMenuItem; }
+	{ return *m_EditMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getUndoMenuItem () const
-	{ return *m_undoMenuItem; }
+	{ return *m_UndoMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getRedoMenuItem () const
-	{ return *m_redoMenuItem; }
+	{ return *m_RedoMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getCutMenuItem () const
-	{ return *m_cutMenuItem; }
+	{ return *m_CutMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getCopyMenuItem () const
-	{ return *m_copyMenuItem; }
+	{ return *m_CopyMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getPasteMenuItem () const
-	{ return *m_pasteMenuItem; }
+	{ return *m_PasteMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getDeleteMenuItem () const
-	{ return *m_deleteMenuItem; }
+	{ return *m_DeleteMenuItem; }
 
 	Gtk::MenuItem &
 	getCloneMenuItem () const
-	{ return *m_cloneMenuItem; }
+	{ return *m_CloneMenuItem; }
 
 	Gtk::MenuItem &
 	getCreateCloneMenuItem () const
-	{ return *m_createCloneMenuItem; }
+	{ return *m_CreateCloneMenuItem; }
 
 	Gtk::MenuItem &
 	getUnlinkCloneMenuItem () const
-	{ return *m_unlinkCloneMenuItem; }
+	{ return *m_UnlinkCloneMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getGroupSelectedNodesMenuItem () const
-	{ return *m_groupSelectedNodesMenuItem; }
+	{ return *m_GroupSelectedNodesMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getUngroupMenuItem () const
-	{ return *m_ungroupMenuItem; }
+	{ return *m_UngroupMenuItem; }
 
 	Gtk::MenuItem &
 	getAddToGroupMenuItem () const
-	{ return *m_addToGroupMenuItem; }
+	{ return *m_AddToGroupMenuItem; }
 
 	Gtk::MenuItem &
 	getDetachFromGroupMenuItem () const
-	{ return *m_detachFromGroupMenuItem; }
+	{ return *m_DetachFromGroupMenuItem; }
 
 	Gtk::MenuItem &
 	getCreateParentGroupMenuItem () const
-	{ return *m_createParentGroupMenuItem; }
+	{ return *m_CreateParentGroupMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
-	{ return *m_viewMenuItem; }
+	{ return *m_ViewMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getToolBarMenuItem () const
-	{ return *m_toolBarMenuItem; }
+	{ return *m_ToolBarMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getSideBarMenuItem () const
-	{ return *m_sideBarMenuItem; }
+	{ return *m_SideBarMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getFooterMenuItem () const
-	{ return *m_footerMenuItem; }
+	{ return *m_FooterMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getWorkspacesMenuItem () const
-	{ return *m_workspacesMenuItem; }
+	{ return *m_WorkspacesMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getBrowserMenuItem () const
-	{ return *m_browserMenuItem; }
+	{ return *m_BrowserMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getEditorMenuItem () const
-	{ return *m_editorMenuItem; }
+	{ return *m_EditorMenuItem; }
 
 	Gtk::SeparatorMenuItem &
 	getBrowserOptionsSeparator () const
-	{ return *m_browserOptionsSeparator; }
+	{ return *m_BrowserOptionsSeparator; }
 
 	Gtk::MenuItem &
 	getShadingMenuItem () const
-	{ return *m_shadingMenuItem; }
+	{ return *m_ShadingMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getPhongMenuItem () const
-	{ return *m_phongMenuItem; }
+	{ return *m_PhongMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getGouraudMenuItem () const
-	{ return *m_gouraudMenuItem; }
+	{ return *m_GouraudMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getFlatMenuItem () const
-	{ return *m_flatMenuItem; }
+	{ return *m_FlatMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getWireFrameMenuItem () const
-	{ return *m_wireFrameMenuItem; }
+	{ return *m_WireFrameMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getPointSetMenuItem () const
-	{ return *m_pointSetMenuItem; }
+	{ return *m_PointSetMenuItem; }
 
 	Gtk::MenuItem &
 	getPrimitiveQualityMenuItem () const
-	{ return *m_primitiveQualityMenuItem; }
+	{ return *m_PrimitiveQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getHighQualityMenuItem () const
-	{ return *m_highQualityMenuItem; }
+	{ return *m_HighQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getMediumQualityMenuItem () const
-	{ return *m_mediumQualityMenuItem; }
+	{ return *m_MediumQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getLowQualityMenuItem () const
-	{ return *m_lowQualityMenuItem; }
+	{ return *m_LowQualityMenuItem; }
 
 	Gtk::MenuItem &
 	getObjectIconsMenuItem () const
-	{ return *m_objectIconsMenuItem; }
+	{ return *m_ObjectIconsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getProximitySensorMenuItem () const
-	{ return *m_proximitySensorMenuItem; }
+	{ return *m_ProximitySensorMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getVisibilitySensorMenuItem () const
-	{ return *m_visibilitySensorMenuItem; }
+	{ return *m_VisibilitySensorMenuItem; }
 
 	Gtk::MenuItem &
 	getHideAllObjectIconsMenuItem () const
-	{ return *m_hideAllObjectIconsMenuItem; }
+	{ return *m_HideAllObjectIconsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getRenderingPropertiesMenuItem () const
-	{ return *m_renderingPropertiesMenuItem; }
+	{ return *m_RenderingPropertiesMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getFullScreenMenuItem () const
-	{ return *m_fullScreenMenuItem; }
+	{ return *m_FullScreenMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getUnFullScreenMenuItem () const
-	{ return *m_unFullScreenMenuItem; }
+	{ return *m_UnFullScreenMenuItem; }
 
 	Gtk::MenuItem &
 	getSelectionMenuItem () const
-	{ return *m_selectionMenuItem; }
+	{ return *m_SelectionMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getSelectAllMenuItem () const
-	{ return *m_selectAllMenuItem; }
+	{ return *m_SelectAllMenuItem; }
 
 	Gtk::MenuItem &
 	getDeselectAllMenuItem () const
-	{ return *m_deselectAllMenuItem; }
+	{ return *m_DeselectAllMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getSelectLowestMenuItem () const
-	{ return *m_selectLowestMenuItem; }
+	{ return *m_SelectLowestMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getFollowPrimarySelectionMenuItem () const
-	{ return *m_followPrimarySelectionMenuItem; }
+	{ return *m_FollowPrimarySelectionMenuItem; }
 
 	Gtk::MenuItem &
 	getNavigationMenuItem () const
-	{ return *m_navigationMenuItem; }
+	{ return *m_NavigationMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getRubberbandMenuItem () const
-	{ return *m_rubberbandMenuItem; }
+	{ return *m_RubberbandMenuItem; }
 
 	Gtk::MenuItem &
 	getToolsMenuItem () const
-	{ return *m_toolsMenuItem; }
+	{ return *m_ToolsMenuItem; }
 
 	Gtk::MenuItem &
 	getMotionBlurMenuItem () const
-	{ return *m_motionBlurMenuItem; }
+	{ return *m_MotionBlurMenuItem; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const
-	{ return *m_helpMenuItem; }
+	{ return *m_HelpMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getStandardSizeMenuItem () const
-	{ return *m_standardSizeMenuItem; }
+	{ return *m_StandardSizeMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
-	{ return *m_infoMenuItem; }
+	{ return *m_InfoMenuItem; }
 
 	Gtk::Toolbar &
 	getToolBar () const
-	{ return *m_toolBar; }
+	{ return *m_ToolBar; }
 
 	Gtk::ToolButton &
 	getNewButton () const
-	{ return *m_newButton; }
+	{ return *m_NewButton; }
 
 	Gtk::MenuToolButton &
 	getOpenButton () const
-	{ return *m_openButton; }
+	{ return *m_OpenButton; }
 
 	Gtk::ToolButton &
 	getImportButton () const
-	{ return *m_importButton; }
+	{ return *m_ImportButton; }
 
 	Gtk::ToolButton &
 	getSaveButton () const
-	{ return *m_saveButton; }
+	{ return *m_SaveButton; }
 
 	Gtk::ToolButton &
 	getRefreshButton () const
-	{ return *m_refreshButton; }
+	{ return *m_RefreshButton; }
 
 	Gtk::SeparatorToolItem &
 	getSeparatorToolItem1 () const
-	{ return *m_separatorToolItem1; }
+	{ return *m_SeparatorToolItem1; }
 
 	Gtk::ToolButton &
 	getUndoButton () const
-	{ return *m_undoButton; }
+	{ return *m_UndoButton; }
 
 	Gtk::ToolButton &
 	getRedoButton () const
-	{ return *m_redoButton; }
+	{ return *m_RedoButton; }
 
 	Gtk::SeparatorToolItem &
 	getSeparatorToolItem2 () const
-	{ return *m_separatorToolItem2; }
+	{ return *m_SeparatorToolItem2; }
 
 	Gtk::ToolButton &
 	getNodePropertiesEditorButton () const
-	{ return *m_nodePropertiesEditorButton; }
+	{ return *m_NodePropertiesEditorButton; }
 
 	Gtk::ToolButton &
 	getMaterialEditorButton () const
-	{ return *m_materialEditorButton; }
+	{ return *m_MaterialEditorButton; }
 
 	Gtk::ToolButton &
 	getTextureEditorButton () const
-	{ return *m_textureEditorButton; }
+	{ return *m_TextureEditorButton; }
 
 	Gtk::ToolButton &
 	getUpdateViewpointButton () const
-	{ return *m_updateViewpointButton; }
+	{ return *m_UpdateViewpointButton; }
 
 	Gtk::Paned &
 	getVPaned () const
-	{ return *m_vPaned; }
+	{ return *m_VPaned; }
 
 	Gtk::Paned &
 	getHPaned () const
-	{ return *m_hPaned; }
+	{ return *m_HPaned; }
 
 	Gtk::HBox &
 	getSurfaceBox () const
-	{ return *m_surfaceBox; }
+	{ return *m_SurfaceBox; }
 
 	Gtk::Box &
 	getDashboard () const
-	{ return *m_dashboard; }
+	{ return *m_Dashboard; }
 
 	Gtk::Toolbar &
 	getDashboardToolBar () const
-	{ return *m_dashboardToolBar; }
+	{ return *m_DashboardToolBar; }
 
 	Gtk::RadioToolButton &
 	getHandButton () const
-	{ return *m_handButton; }
+	{ return *m_HandButton; }
 
 	Gtk::RadioToolButton &
 	getArrowButton () const
-	{ return *m_arrowButton; }
+	{ return *m_ArrowButton; }
 
 	Gtk::MenuToolButton &
 	getViewerButton () const
-	{ return *m_viewerButton; }
+	{ return *m_ViewerButton; }
 
 	Gtk::ToolButton &
 	getStraightenButton () const
-	{ return *m_straightenButton; }
+	{ return *m_StraightenButton; }
 
 	Gtk::ToolButton &
 	getLookAtAllButton () const
-	{ return *m_lookAtAllButton; }
+	{ return *m_LookAtAllButton; }
 
 	Gtk::ToggleToolButton &
 	getLookAtButton () const
-	{ return *m_lookAtButton; }
+	{ return *m_LookAtButton; }
 
 	Gtk::Box &
 	getFooter () const
-	{ return *m_footer; }
+	{ return *m_Footer; }
 
 	Gtk::Notebook &
 	getFooterNotebook () const
-	{ return *m_footerNotebook; }
+	{ return *m_FooterNotebook; }
 
 	Gtk::Box &
 	getConsoleBox () const
-	{ return *m_consoleBox; }
+	{ return *m_ConsoleBox; }
 
 	Gtk::TextView &
 	getConsole () const
-	{ return *m_console; }
+	{ return *m_Console; }
 
 	Gtk::Box &
 	getSideBar () const
-	{ return *m_sideBar; }
+	{ return *m_SideBar; }
 
 	Gtk::Label &
 	getSideBarLabel () const
-	{ return *m_sideBarLabel; }
+	{ return *m_SideBarLabel; }
 
 	Gtk::Notebook &
 	getSideBarNotebook () const
-	{ return *m_sideBarNotebook; }
+	{ return *m_SideBarNotebook; }
 
 	Gtk::Box &
 	getViewpointListBox () const
-	{ return *m_viewpointListBox; }
+	{ return *m_ViewpointListBox; }
 
 	Gtk::Box &
 	getHistoryEditorBox () const
-	{ return *m_historyEditorBox; }
+	{ return *m_HistoryEditorBox; }
 
 	Gtk::Box &
 	getLibraryViewBox () const
-	{ return *m_libraryViewBox; }
+	{ return *m_LibraryViewBox; }
 
 	Gtk::Box &
 	getOutlineEditorBox () const
-	{ return *m_outlineEditorBox; }
+	{ return *m_OutlineEditorBox; }
 
 	Gtk::Image &
 	getWorkspacesImage () const
-	{ return *m_workspacesImage; }
+	{ return *m_WorkspacesImage; }
 
 	virtual
 	void
@@ -912,137 +912,137 @@ private:
 
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
-	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
-	Gtk::Image*                     m_examineViewerImage;
-	Gtk::FileChooserDialog*         m_fileImportDialog;
-	Gtk::Image*                     m_fileImportImage;
-	Gtk::FileChooserDialog*         m_fileOpenDialog;
-	Gtk::FileChooserDialog*         m_fileSaveDialog;
-	Gtk::CheckButton*               m_saveCompressedButton;
-	Gtk::Dialog*                    m_fileSaveWarningDialog;
-	Gtk::Image*                     m_flyViewerImage;
-	Gtk::Image*                     m_planeViewerImage;
-	Gtk::Image*                     m_importImage;
-	Gtk::MessageDialog*             m_messageDialog;
-	Gtk::Image*                     m_noneViewerImage;
-	Gtk::Dialog*                    m_openLocationDialog;
-	Gtk::Entry*                     m_openLocationEntry;
-	Gtk::Image*                     m_openLocationImage;
-	Gtk::Image*                     m_walkViewerImage;
-	Gtk::Menu*                      m_viewerTypeMenu;
-	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
-	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
-	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
-	Gtk::ImageMenuItem*             m_planeViewerMenuItem;
-	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
-	Gtk::Window*                    m_window;
-	Gtk::VBox*                      m_widget;
-	Gtk::MenuBar*                   m_menuBar;
-	Gtk::MenuItem*                  m_fileMenuItem;
-	Gtk::ImageMenuItem*             m_newMenuItem;
-	Gtk::ImageMenuItem*             m_openMenuItem;
-	Gtk::ImageMenuItem*             m_openLocationMenuItem;
-	Gtk::ImageMenuItem*             m_importMenuItem;
-	Gtk::CheckMenuItem*             m_importAsInlineMenuItem;
-	Gtk::ImageMenuItem*             m_saveMenuItem;
-	Gtk::ImageMenuItem*             m_saveAsMenuItem;
-	Gtk::ImageMenuItem*             m_revertMenuItem;
-	Gtk::ImageMenuItem*             m_quitMenuItem;
-	Gtk::MenuItem*                  m_editMenuItem;
-	Gtk::ImageMenuItem*             m_undoMenuItem;
-	Gtk::ImageMenuItem*             m_redoMenuItem;
-	Gtk::ImageMenuItem*             m_cutMenuItem;
-	Gtk::ImageMenuItem*             m_copyMenuItem;
-	Gtk::ImageMenuItem*             m_pasteMenuItem;
-	Gtk::ImageMenuItem*             m_deleteMenuItem;
-	Gtk::MenuItem*                  m_cloneMenuItem;
-	Gtk::MenuItem*                  m_createCloneMenuItem;
-	Gtk::MenuItem*                  m_unlinkCloneMenuItem;
-	Gtk::ImageMenuItem*             m_groupSelectedNodesMenuItem;
-	Gtk::ImageMenuItem*             m_ungroupMenuItem;
-	Gtk::MenuItem*                  m_addToGroupMenuItem;
-	Gtk::MenuItem*                  m_detachFromGroupMenuItem;
-	Gtk::MenuItem*                  m_createParentGroupMenuItem;
-	Gtk::MenuItem*                  m_viewMenuItem;
-	Gtk::CheckMenuItem*             m_toolBarMenuItem;
-	Gtk::CheckMenuItem*             m_sideBarMenuItem;
-	Gtk::CheckMenuItem*             m_footerMenuItem;
-	Gtk::ImageMenuItem*             m_workspacesMenuItem;
-	Gtk::RadioMenuItem*             m_browserMenuItem;
-	Gtk::RadioMenuItem*             m_editorMenuItem;
-	Gtk::SeparatorMenuItem*         m_browserOptionsSeparator;
-	Gtk::MenuItem*                  m_shadingMenuItem;
-	Gtk::RadioMenuItem*             m_phongMenuItem;
-	Gtk::RadioMenuItem*             m_gouraudMenuItem;
-	Gtk::RadioMenuItem*             m_flatMenuItem;
-	Gtk::RadioMenuItem*             m_wireFrameMenuItem;
-	Gtk::RadioMenuItem*             m_pointSetMenuItem;
-	Gtk::MenuItem*                  m_primitiveQualityMenuItem;
-	Gtk::RadioMenuItem*             m_highQualityMenuItem;
-	Gtk::RadioMenuItem*             m_mediumQualityMenuItem;
-	Gtk::RadioMenuItem*             m_lowQualityMenuItem;
-	Gtk::MenuItem*                  m_objectIconsMenuItem;
-	Gtk::CheckMenuItem*             m_proximitySensorMenuItem;
-	Gtk::CheckMenuItem*             m_visibilitySensorMenuItem;
-	Gtk::MenuItem*                  m_hideAllObjectIconsMenuItem;
-	Gtk::CheckMenuItem*             m_renderingPropertiesMenuItem;
-	Gtk::ImageMenuItem*             m_fullScreenMenuItem;
-	Gtk::ImageMenuItem*             m_unFullScreenMenuItem;
-	Gtk::MenuItem*                  m_selectionMenuItem;
-	Gtk::ImageMenuItem*             m_selectAllMenuItem;
-	Gtk::MenuItem*                  m_deselectAllMenuItem;
-	Gtk::CheckMenuItem*             m_selectLowestMenuItem;
-	Gtk::CheckMenuItem*             m_followPrimarySelectionMenuItem;
-	Gtk::MenuItem*                  m_navigationMenuItem;
-	Gtk::CheckMenuItem*             m_rubberbandMenuItem;
-	Gtk::MenuItem*                  m_toolsMenuItem;
-	Gtk::MenuItem*                  m_motionBlurMenuItem;
-	Gtk::MenuItem*                  m_helpMenuItem;
-	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
-	Gtk::ImageMenuItem*             m_infoMenuItem;
-	Gtk::Toolbar*                   m_toolBar;
-	Gtk::ToolButton*                m_newButton;
-	Gtk::MenuToolButton*            m_openButton;
-	Gtk::ToolButton*                m_importButton;
-	Gtk::ToolButton*                m_saveButton;
-	Gtk::ToolButton*                m_refreshButton;
-	Gtk::SeparatorToolItem*         m_separatorToolItem1;
-	Gtk::ToolButton*                m_undoButton;
-	Gtk::ToolButton*                m_redoButton;
-	Gtk::SeparatorToolItem*         m_separatorToolItem2;
-	Gtk::ToolButton*                m_nodePropertiesEditorButton;
-	Gtk::ToolButton*                m_materialEditorButton;
-	Gtk::ToolButton*                m_textureEditorButton;
-	Gtk::ToolButton*                m_updateViewpointButton;
-	Gtk::Paned*                     m_vPaned;
-	Gtk::Paned*                     m_hPaned;
-	Gtk::HBox*                      m_surfaceBox;
-	Gtk::Box*                       m_dashboard;
-	Gtk::Toolbar*                   m_dashboardToolBar;
-	Gtk::RadioToolButton*           m_handButton;
-	Gtk::RadioToolButton*           m_arrowButton;
-	Gtk::MenuToolButton*            m_viewerButton;
-	Gtk::ToolButton*                m_straightenButton;
-	Gtk::ToolButton*                m_lookAtAllButton;
-	Gtk::ToggleToolButton*          m_lookAtButton;
-	Gtk::Box*                       m_footer;
-	Gtk::Notebook*                  m_footerNotebook;
-	Gtk::Box*                       m_consoleBox;
-	Gtk::TextView*                  m_console;
-	Gtk::Box*                       m_sideBar;
-	Gtk::Label*                     m_sideBarLabel;
-	Gtk::Notebook*                  m_sideBarNotebook;
-	Gtk::Box*                       m_viewpointListBox;
-	Gtk::Box*                       m_historyEditorBox;
-	Gtk::Box*                       m_libraryViewBox;
-	Gtk::Box*                       m_outlineEditorBox;
-	Gtk::Image*                     m_workspacesImage;
+	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterAllFiles;
+	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterImage;
+	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterVideo;
+	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterX3D;
+	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
+	Glib::RefPtr <Gtk::AccelGroup>  m_MenuAccelGroup;
+	Gtk::Image*                     m_ExamineViewerImage;
+	Gtk::FileChooserDialog*         m_FileImportDialog;
+	Gtk::Image*                     m_FileImportImage;
+	Gtk::FileChooserDialog*         m_FileOpenDialog;
+	Gtk::FileChooserDialog*         m_FileSaveDialog;
+	Gtk::CheckButton*               m_SaveCompressedButton;
+	Gtk::Dialog*                    m_FileSaveWarningDialog;
+	Gtk::Image*                     m_FlyViewerImage;
+	Gtk::Image*                     m_PlaneViewerImage;
+	Gtk::Image*                     m_ImportImage;
+	Gtk::MessageDialog*             m_MessageDialog;
+	Gtk::Image*                     m_NoneViewerImage;
+	Gtk::Dialog*                    m_OpenLocationDialog;
+	Gtk::Entry*                     m_OpenLocationEntry;
+	Gtk::Image*                     m_OpenLocationImage;
+	Gtk::Image*                     m_WalkViewerImage;
+	Gtk::Menu*                      m_ViewerTypeMenu;
+	Gtk::ImageMenuItem*             m_ExamineViewerMenuItem;
+	Gtk::ImageMenuItem*             m_WalkViewerMenuItem;
+	Gtk::ImageMenuItem*             m_FlyViewerMenuItem;
+	Gtk::ImageMenuItem*             m_PlaneViewerMenuItem;
+	Gtk::ImageMenuItem*             m_NoneViewerMenuItem;
+	Gtk::Window*                    m_Window;
+	Gtk::VBox*                      m_Widget;
+	Gtk::MenuBar*                   m_MenuBar;
+	Gtk::MenuItem*                  m_FileMenuItem;
+	Gtk::ImageMenuItem*             m_NewMenuItem;
+	Gtk::ImageMenuItem*             m_OpenMenuItem;
+	Gtk::ImageMenuItem*             m_OpenLocationMenuItem;
+	Gtk::ImageMenuItem*             m_ImportMenuItem;
+	Gtk::CheckMenuItem*             m_ImportAsInlineMenuItem;
+	Gtk::ImageMenuItem*             m_SaveMenuItem;
+	Gtk::ImageMenuItem*             m_SaveAsMenuItem;
+	Gtk::ImageMenuItem*             m_RevertMenuItem;
+	Gtk::ImageMenuItem*             m_QuitMenuItem;
+	Gtk::MenuItem*                  m_EditMenuItem;
+	Gtk::ImageMenuItem*             m_UndoMenuItem;
+	Gtk::ImageMenuItem*             m_RedoMenuItem;
+	Gtk::ImageMenuItem*             m_CutMenuItem;
+	Gtk::ImageMenuItem*             m_CopyMenuItem;
+	Gtk::ImageMenuItem*             m_PasteMenuItem;
+	Gtk::ImageMenuItem*             m_DeleteMenuItem;
+	Gtk::MenuItem*                  m_CloneMenuItem;
+	Gtk::MenuItem*                  m_CreateCloneMenuItem;
+	Gtk::MenuItem*                  m_UnlinkCloneMenuItem;
+	Gtk::ImageMenuItem*             m_GroupSelectedNodesMenuItem;
+	Gtk::ImageMenuItem*             m_UngroupMenuItem;
+	Gtk::MenuItem*                  m_AddToGroupMenuItem;
+	Gtk::MenuItem*                  m_DetachFromGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGroupMenuItem;
+	Gtk::MenuItem*                  m_ViewMenuItem;
+	Gtk::CheckMenuItem*             m_ToolBarMenuItem;
+	Gtk::CheckMenuItem*             m_SideBarMenuItem;
+	Gtk::CheckMenuItem*             m_FooterMenuItem;
+	Gtk::ImageMenuItem*             m_WorkspacesMenuItem;
+	Gtk::RadioMenuItem*             m_BrowserMenuItem;
+	Gtk::RadioMenuItem*             m_EditorMenuItem;
+	Gtk::SeparatorMenuItem*         m_BrowserOptionsSeparator;
+	Gtk::MenuItem*                  m_ShadingMenuItem;
+	Gtk::RadioMenuItem*             m_PhongMenuItem;
+	Gtk::RadioMenuItem*             m_GouraudMenuItem;
+	Gtk::RadioMenuItem*             m_FlatMenuItem;
+	Gtk::RadioMenuItem*             m_WireFrameMenuItem;
+	Gtk::RadioMenuItem*             m_PointSetMenuItem;
+	Gtk::MenuItem*                  m_PrimitiveQualityMenuItem;
+	Gtk::RadioMenuItem*             m_HighQualityMenuItem;
+	Gtk::RadioMenuItem*             m_MediumQualityMenuItem;
+	Gtk::RadioMenuItem*             m_LowQualityMenuItem;
+	Gtk::MenuItem*                  m_ObjectIconsMenuItem;
+	Gtk::CheckMenuItem*             m_ProximitySensorMenuItem;
+	Gtk::CheckMenuItem*             m_VisibilitySensorMenuItem;
+	Gtk::MenuItem*                  m_HideAllObjectIconsMenuItem;
+	Gtk::CheckMenuItem*             m_RenderingPropertiesMenuItem;
+	Gtk::ImageMenuItem*             m_FullScreenMenuItem;
+	Gtk::ImageMenuItem*             m_UnFullScreenMenuItem;
+	Gtk::MenuItem*                  m_SelectionMenuItem;
+	Gtk::ImageMenuItem*             m_SelectAllMenuItem;
+	Gtk::MenuItem*                  m_DeselectAllMenuItem;
+	Gtk::CheckMenuItem*             m_SelectLowestMenuItem;
+	Gtk::CheckMenuItem*             m_FollowPrimarySelectionMenuItem;
+	Gtk::MenuItem*                  m_NavigationMenuItem;
+	Gtk::CheckMenuItem*             m_RubberbandMenuItem;
+	Gtk::MenuItem*                  m_ToolsMenuItem;
+	Gtk::MenuItem*                  m_MotionBlurMenuItem;
+	Gtk::MenuItem*                  m_HelpMenuItem;
+	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
+	Gtk::ImageMenuItem*             m_InfoMenuItem;
+	Gtk::Toolbar*                   m_ToolBar;
+	Gtk::ToolButton*                m_NewButton;
+	Gtk::MenuToolButton*            m_OpenButton;
+	Gtk::ToolButton*                m_ImportButton;
+	Gtk::ToolButton*                m_SaveButton;
+	Gtk::ToolButton*                m_RefreshButton;
+	Gtk::SeparatorToolItem*         m_SeparatorToolItem1;
+	Gtk::ToolButton*                m_UndoButton;
+	Gtk::ToolButton*                m_RedoButton;
+	Gtk::SeparatorToolItem*         m_SeparatorToolItem2;
+	Gtk::ToolButton*                m_NodePropertiesEditorButton;
+	Gtk::ToolButton*                m_MaterialEditorButton;
+	Gtk::ToolButton*                m_TextureEditorButton;
+	Gtk::ToolButton*                m_UpdateViewpointButton;
+	Gtk::Paned*                     m_VPaned;
+	Gtk::Paned*                     m_HPaned;
+	Gtk::HBox*                      m_SurfaceBox;
+	Gtk::Box*                       m_Dashboard;
+	Gtk::Toolbar*                   m_DashboardToolBar;
+	Gtk::RadioToolButton*           m_HandButton;
+	Gtk::RadioToolButton*           m_ArrowButton;
+	Gtk::MenuToolButton*            m_ViewerButton;
+	Gtk::ToolButton*                m_StraightenButton;
+	Gtk::ToolButton*                m_LookAtAllButton;
+	Gtk::ToggleToolButton*          m_LookAtButton;
+	Gtk::Box*                       m_Footer;
+	Gtk::Notebook*                  m_FooterNotebook;
+	Gtk::Box*                       m_ConsoleBox;
+	Gtk::TextView*                  m_Console;
+	Gtk::Box*                       m_SideBar;
+	Gtk::Label*                     m_SideBarLabel;
+	Gtk::Notebook*                  m_SideBarNotebook;
+	Gtk::Box*                       m_ViewpointListBox;
+	Gtk::Box*                       m_HistoryEditorBox;
+	Gtk::Box*                       m_LibraryViewBox;
+	Gtk::Box*                       m_OutlineEditorBox;
+	Gtk::Image*                     m_WorkspacesImage;
 
 };
 

@@ -63,17 +63,17 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
-	m_scrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("Viewport", m_viewport);
-	m_viewport -> set_name ("Viewport");
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_ScrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("Viewport", m_Viewport);
+	m_Viewport -> set_name ("Viewport");
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
 
 	// Call construct handler of base class.
 	construct ();
@@ -81,7 +81,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 
 X3DOutlineEditorInterface::~X3DOutlineEditorInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

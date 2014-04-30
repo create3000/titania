@@ -61,13 +61,13 @@ X3DConsoleInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_textbuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("Textbuffer"));
+	m_Textbuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("Textbuffer"));
 
 	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
 
 	// Call construct handler of base class.
 	construct ();
@@ -75,7 +75,7 @@ X3DConsoleInterface::create (const std::string & filename)
 
 X3DConsoleInterface::~X3DConsoleInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

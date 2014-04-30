@@ -91,297 +91,301 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getUserDefinedFieldsTreeviewSelection () const
+	{ return m_UserDefinedFieldsTreeviewSelection; }
+
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getCellRendererType () const
-	{ return m_cellRendererType; }
+	{ return m_CellRendererType; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getCellRendererName () const
-	{ return m_cellRendererName; }
+	{ return m_CellRendererName; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getCellRendererAccessType () const
-	{ return m_cellRendererAccessType; }
+	{ return m_CellRendererAccessType; }
 
 	Gtk::Menu &
 	getAccessTypeMenu () const
-	{ return *m_accessTypeMenu; }
+	{ return *m_AccessTypeMenu; }
 
 	Gtk::MenuItem &
 	getInitializeOnlyMenuItem () const
-	{ return *m_initializeOnlyMenuItem; }
+	{ return *m_InitializeOnlyMenuItem; }
 
 	Gtk::MenuItem &
 	getInputOnlyMenuItem () const
-	{ return *m_inputOnlyMenuItem; }
+	{ return *m_InputOnlyMenuItem; }
 
 	Gtk::MenuItem &
 	getOutputOnlyMenuItem () const
-	{ return *m_outputOnlyMenuItem; }
+	{ return *m_OutputOnlyMenuItem; }
 
 	Gtk::MenuItem &
 	getInputOutputMenuItem () const
-	{ return *m_inputOutputMenuItem; }
+	{ return *m_InputOutputMenuItem; }
 
 	Gtk::Menu &
 	getFieldTypeMenu () const
-	{ return *m_fieldTypeMenu; }
+	{ return *m_FieldTypeMenu; }
 
 	Gtk::MenuItem &
 	getSFBoolMenuItem () const
-	{ return *m_sFBoolMenuItem; }
+	{ return *m_SFBoolMenuItem; }
 
 	Gtk::MenuItem &
 	getSFColorMenuItem () const
-	{ return *m_sFColorMenuItem; }
+	{ return *m_SFColorMenuItem; }
 
 	Gtk::MenuItem &
 	getSFColorRGBAMenuItem () const
-	{ return *m_sFColorRGBAMenuItem; }
+	{ return *m_SFColorRGBAMenuItem; }
 
 	Gtk::MenuItem &
 	getSFDoubleMenuItem () const
-	{ return *m_sFDoubleMenuItem; }
+	{ return *m_SFDoubleMenuItem; }
 
 	Gtk::MenuItem &
 	getSFFloatMenuItem () const
-	{ return *m_sFFloatMenuItem; }
+	{ return *m_SFFloatMenuItem; }
 
 	Gtk::MenuItem &
 	getSFImageMenuItem () const
-	{ return *m_sFImageMenuItem; }
+	{ return *m_SFImageMenuItem; }
 
 	Gtk::MenuItem &
 	getSFInt32MenuItem () const
-	{ return *m_sFInt32MenuItem; }
-
-	Gtk::MenuItem &
-	getSFMatrix3fMenuItem () const
-	{ return *m_sFMatrix3fMenuItem; }
+	{ return *m_SFInt32MenuItem; }
 
 	Gtk::MenuItem &
 	getSFMatrix3dMenuItem () const
-	{ return *m_sFMatrix3dMenuItem; }
+	{ return *m_SFMatrix3dMenuItem; }
 
 	Gtk::MenuItem &
-	getSFMatrix4fMenuItem () const
-	{ return *m_sFMatrix4fMenuItem; }
+	getSFMatrix3fMenuItem () const
+	{ return *m_SFMatrix3fMenuItem; }
 
 	Gtk::MenuItem &
 	getSFMatrix4dMenuItem () const
-	{ return *m_sFMatrix4dMenuItem; }
+	{ return *m_SFMatrix4dMenuItem; }
+
+	Gtk::MenuItem &
+	getSFMatrix4fMenuItem () const
+	{ return *m_SFMatrix4fMenuItem; }
 
 	Gtk::MenuItem &
 	getSFNodeMenuItem () const
-	{ return *m_sFNodeMenuItem; }
+	{ return *m_SFNodeMenuItem; }
 
 	Gtk::MenuItem &
 	getSFRotationMenuItem () const
-	{ return *m_sFRotationMenuItem; }
+	{ return *m_SFRotationMenuItem; }
 
 	Gtk::MenuItem &
 	getSFStringMenuItem () const
-	{ return *m_sFStringMenuItem; }
+	{ return *m_SFStringMenuItem; }
 
 	Gtk::MenuItem &
 	getSFTimeMenuItem () const
-	{ return *m_sFTimeMenuItem; }
-
-	Gtk::MenuItem &
-	getSFVec2fMenuItem () const
-	{ return *m_sFVec2fMenuItem; }
+	{ return *m_SFTimeMenuItem; }
 
 	Gtk::MenuItem &
 	getSFVec2dMenuItem () const
-	{ return *m_sFVec2dMenuItem; }
+	{ return *m_SFVec2dMenuItem; }
 
 	Gtk::MenuItem &
-	getSFVec3fMenuItem () const
-	{ return *m_sFVec3fMenuItem; }
+	getSFVec2fMenuItem () const
+	{ return *m_SFVec2fMenuItem; }
 
 	Gtk::MenuItem &
 	getSFVec3dMenuItem () const
-	{ return *m_sFVec3dMenuItem; }
+	{ return *m_SFVec3dMenuItem; }
 
 	Gtk::MenuItem &
-	getSFVec4fMenuItem () const
-	{ return *m_sFVec4fMenuItem; }
+	getSFVec3fMenuItem () const
+	{ return *m_SFVec3fMenuItem; }
 
 	Gtk::MenuItem &
 	getSFVec4dMenuItem () const
-	{ return *m_sFVec4dMenuItem; }
+	{ return *m_SFVec4dMenuItem; }
+
+	Gtk::MenuItem &
+	getSFVec4fMenuItem () const
+	{ return *m_SFVec4fMenuItem; }
 
 	Gtk::MenuItem &
 	getMFBoolMenuItem () const
-	{ return *m_mFBoolMenuItem; }
+	{ return *m_MFBoolMenuItem; }
 
 	Gtk::MenuItem &
 	getMFColorMenuItem () const
-	{ return *m_mFColorMenuItem; }
+	{ return *m_MFColorMenuItem; }
 
 	Gtk::MenuItem &
 	getMFColorRGBAMenuItem () const
-	{ return *m_mFColorRGBAMenuItem; }
+	{ return *m_MFColorRGBAMenuItem; }
 
 	Gtk::MenuItem &
 	getMFDoubleMenuItem () const
-	{ return *m_mFDoubleMenuItem; }
+	{ return *m_MFDoubleMenuItem; }
 
 	Gtk::MenuItem &
 	getMFFloatMenuItem () const
-	{ return *m_mFFloatMenuItem; }
+	{ return *m_MFFloatMenuItem; }
 
 	Gtk::MenuItem &
 	getMFImageMenuItem () const
-	{ return *m_mFImageMenuItem; }
+	{ return *m_MFImageMenuItem; }
 
 	Gtk::MenuItem &
 	getMFInt32MenuItem () const
-	{ return *m_mFInt32MenuItem; }
-
-	Gtk::MenuItem &
-	getMFMatrix3fMenuItem () const
-	{ return *m_mFMatrix3fMenuItem; }
+	{ return *m_MFInt32MenuItem; }
 
 	Gtk::MenuItem &
 	getMFMatrix3dMenuItem () const
-	{ return *m_mFMatrix3dMenuItem; }
+	{ return *m_MFMatrix3dMenuItem; }
 
 	Gtk::MenuItem &
-	getMFMatrix4fMenuItem () const
-	{ return *m_mFMatrix4fMenuItem; }
+	getMFMatrix3fMenuItem () const
+	{ return *m_MFMatrix3fMenuItem; }
 
 	Gtk::MenuItem &
 	getMFMatrix4dMenuItem () const
-	{ return *m_mFMatrix4dMenuItem; }
+	{ return *m_MFMatrix4dMenuItem; }
+
+	Gtk::MenuItem &
+	getMFMatrix4fMenuItem () const
+	{ return *m_MFMatrix4fMenuItem; }
 
 	Gtk::MenuItem &
 	getMFNodeMenuItem () const
-	{ return *m_mFNodeMenuItem; }
+	{ return *m_MFNodeMenuItem; }
 
 	Gtk::MenuItem &
 	getMFRotationMenuItem () const
-	{ return *m_mFRotationMenuItem; }
+	{ return *m_MFRotationMenuItem; }
 
 	Gtk::MenuItem &
 	getMFStringMenuItem () const
-	{ return *m_mFStringMenuItem; }
+	{ return *m_MFStringMenuItem; }
 
 	Gtk::MenuItem &
 	getMFTimeMenuItem () const
-	{ return *m_mFTimeMenuItem; }
-
-	Gtk::MenuItem &
-	getMFVec2fMenuItem () const
-	{ return *m_mFVec2fMenuItem; }
+	{ return *m_MFTimeMenuItem; }
 
 	Gtk::MenuItem &
 	getMFVec2dMenuItem () const
-	{ return *m_mFVec2dMenuItem; }
+	{ return *m_MFVec2dMenuItem; }
 
 	Gtk::MenuItem &
-	getMFVec3fMenuItem () const
-	{ return *m_mFVec3fMenuItem; }
+	getMFVec2fMenuItem () const
+	{ return *m_MFVec2fMenuItem; }
 
 	Gtk::MenuItem &
 	getMFVec3dMenuItem () const
-	{ return *m_mFVec3dMenuItem; }
+	{ return *m_MFVec3dMenuItem; }
 
 	Gtk::MenuItem &
-	getMFVec4fMenuItem () const
-	{ return *m_mFVec4fMenuItem; }
+	getMFVec3fMenuItem () const
+	{ return *m_MFVec3fMenuItem; }
 
 	Gtk::MenuItem &
 	getMFVec4dMenuItem () const
-	{ return *m_mFVec4dMenuItem; }
+	{ return *m_MFVec4dMenuItem; }
+
+	Gtk::MenuItem &
+	getMFVec4fMenuItem () const
+	{ return *m_MFVec4fMenuItem; }
 
 	Gtk::Dialog &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Button &
 	getCancelButton () const
-	{ return *m_cancelButton; }
+	{ return *m_CancelButton; }
 
 	Gtk::Button &
 	getOkButton () const
-	{ return *m_okButton; }
+	{ return *m_OkButton; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::Label &
 	getHeaderLabel () const
-	{ return *m_headerLabel; }
+	{ return *m_HeaderLabel; }
 
 	Gtk::Expander &
 	getNodePropertiesExpander () const
-	{ return *m_nodePropertiesExpander; }
+	{ return *m_NodePropertiesExpander; }
 
 	Gtk::Label &
 	getTypeNameLabel () const
-	{ return *m_typeNameLabel; }
+	{ return *m_TypeNameLabel; }
 
 	Gtk::Label &
 	getNameLabel () const
-	{ return *m_nameLabel; }
+	{ return *m_NameLabel; }
 
 	Gtk::Entry &
 	getTypeNameEntry () const
-	{ return *m_typeNameEntry; }
+	{ return *m_TypeNameEntry; }
 
 	Gtk::Entry &
 	getNameEntry () const
-	{ return *m_nameEntry; }
+	{ return *m_NameEntry; }
 
 	Gtk::Expander &
 	getUserDefinedFieldsExpander () const
-	{ return *m_userDefinedFieldsExpander; }
+	{ return *m_UserDefinedFieldsExpander; }
 
 	Gtk::TreeView &
 	getUserDefinedFieldsTreeView () const
-	{ return *m_userDefinedFieldsTreeView; }
+	{ return *m_UserDefinedFieldsTreeView; }
 
 	Gtk::Button &
 	getAddFieldButton () const
-	{ return *m_addFieldButton; }
+	{ return *m_AddFieldButton; }
 
 	Gtk::Button &
 	getRemoveFieldButton () const
-	{ return *m_removeFieldButton; }
+	{ return *m_RemoveFieldButton; }
 
 	Gtk::Dialog &
 	getAddFieldDialog () const
-	{ return *m_addFieldDialog; }
+	{ return *m_AddFieldDialog; }
 
 	Gtk::Button &
 	getAddFieldCancelButton () const
-	{ return *m_addFieldCancelButton; }
+	{ return *m_AddFieldCancelButton; }
 
 	Gtk::Button &
 	getAddFieldOkButton () const
-	{ return *m_addFieldOkButton; }
+	{ return *m_AddFieldOkButton; }
 
 	Gtk::MenuButton &
 	getAccessTypeMenuButton () const
-	{ return *m_accessTypeMenuButton; }
+	{ return *m_AccessTypeMenuButton; }
 
 	Gtk::Label &
 	getAccessTypeLabel () const
-	{ return *m_accessTypeLabel; }
+	{ return *m_AccessTypeLabel; }
 
 	Gtk::MenuButton &
 	getFieldTypeMenuButton () const
-	{ return *m_fieldTypeMenuButton; }
+	{ return *m_FieldTypeMenuButton; }
 
 	Gtk::Label &
 	getFieldTypeLabel () const
-	{ return *m_fieldTypeLabel; }
+	{ return *m_FieldTypeLabel; }
 
 	Gtk::Entry &
 	getFieldNameEntry () const
-	{ return *m_fieldNameEntry; }
+	{ return *m_FieldNameEntry; }
 
 	virtual
 	void
@@ -406,6 +410,10 @@ public:
 	virtual
 	void
 	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_user_defined_field_changed () = 0;
 
 	virtual
 	void
@@ -448,79 +456,80 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_cellRendererType;
-	Glib::RefPtr <Gtk::CellRendererText>   m_cellRendererName;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_cellRendererAccessType;
-	Gtk::Menu*                             m_accessTypeMenu;
-	Gtk::MenuItem*                         m_initializeOnlyMenuItem;
-	Gtk::MenuItem*                         m_inputOnlyMenuItem;
-	Gtk::MenuItem*                         m_outputOnlyMenuItem;
-	Gtk::MenuItem*                         m_inputOutputMenuItem;
-	Gtk::Menu*                             m_fieldTypeMenu;
-	Gtk::MenuItem*                         m_sFBoolMenuItem;
-	Gtk::MenuItem*                         m_sFColorMenuItem;
-	Gtk::MenuItem*                         m_sFColorRGBAMenuItem;
-	Gtk::MenuItem*                         m_sFDoubleMenuItem;
-	Gtk::MenuItem*                         m_sFFloatMenuItem;
-	Gtk::MenuItem*                         m_sFImageMenuItem;
-	Gtk::MenuItem*                         m_sFInt32MenuItem;
-	Gtk::MenuItem*                         m_sFMatrix3fMenuItem;
-	Gtk::MenuItem*                         m_sFMatrix3dMenuItem;
-	Gtk::MenuItem*                         m_sFMatrix4fMenuItem;
-	Gtk::MenuItem*                         m_sFMatrix4dMenuItem;
-	Gtk::MenuItem*                         m_sFNodeMenuItem;
-	Gtk::MenuItem*                         m_sFRotationMenuItem;
-	Gtk::MenuItem*                         m_sFStringMenuItem;
-	Gtk::MenuItem*                         m_sFTimeMenuItem;
-	Gtk::MenuItem*                         m_sFVec2fMenuItem;
-	Gtk::MenuItem*                         m_sFVec2dMenuItem;
-	Gtk::MenuItem*                         m_sFVec3fMenuItem;
-	Gtk::MenuItem*                         m_sFVec3dMenuItem;
-	Gtk::MenuItem*                         m_sFVec4fMenuItem;
-	Gtk::MenuItem*                         m_sFVec4dMenuItem;
-	Gtk::MenuItem*                         m_mFBoolMenuItem;
-	Gtk::MenuItem*                         m_mFColorMenuItem;
-	Gtk::MenuItem*                         m_mFColorRGBAMenuItem;
-	Gtk::MenuItem*                         m_mFDoubleMenuItem;
-	Gtk::MenuItem*                         m_mFFloatMenuItem;
-	Gtk::MenuItem*                         m_mFImageMenuItem;
-	Gtk::MenuItem*                         m_mFInt32MenuItem;
-	Gtk::MenuItem*                         m_mFMatrix3fMenuItem;
-	Gtk::MenuItem*                         m_mFMatrix3dMenuItem;
-	Gtk::MenuItem*                         m_mFMatrix4fMenuItem;
-	Gtk::MenuItem*                         m_mFMatrix4dMenuItem;
-	Gtk::MenuItem*                         m_mFNodeMenuItem;
-	Gtk::MenuItem*                         m_mFRotationMenuItem;
-	Gtk::MenuItem*                         m_mFStringMenuItem;
-	Gtk::MenuItem*                         m_mFTimeMenuItem;
-	Gtk::MenuItem*                         m_mFVec2fMenuItem;
-	Gtk::MenuItem*                         m_mFVec2dMenuItem;
-	Gtk::MenuItem*                         m_mFVec3fMenuItem;
-	Gtk::MenuItem*                         m_mFVec3dMenuItem;
-	Gtk::MenuItem*                         m_mFVec4fMenuItem;
-	Gtk::MenuItem*                         m_mFVec4dMenuItem;
-	Gtk::Dialog*                           m_window;
-	Gtk::Button*                           m_cancelButton;
-	Gtk::Button*                           m_okButton;
-	Gtk::Box*                              m_widget;
-	Gtk::Label*                            m_headerLabel;
-	Gtk::Expander*                         m_nodePropertiesExpander;
-	Gtk::Label*                            m_typeNameLabel;
-	Gtk::Label*                            m_nameLabel;
-	Gtk::Entry*                            m_typeNameEntry;
-	Gtk::Entry*                            m_nameEntry;
-	Gtk::Expander*                         m_userDefinedFieldsExpander;
-	Gtk::TreeView*                         m_userDefinedFieldsTreeView;
-	Gtk::Button*                           m_addFieldButton;
-	Gtk::Button*                           m_removeFieldButton;
-	Gtk::Dialog*                           m_addFieldDialog;
-	Gtk::Button*                           m_addFieldCancelButton;
-	Gtk::Button*                           m_addFieldOkButton;
-	Gtk::MenuButton*                       m_accessTypeMenuButton;
-	Gtk::Label*                            m_accessTypeLabel;
-	Gtk::MenuButton*                       m_fieldTypeMenuButton;
-	Gtk::Label*                            m_fieldTypeLabel;
-	Gtk::Entry*                            m_fieldNameEntry;
+	Glib::RefPtr <Gtk::TreeSelection>      m_UserDefinedFieldsTreeviewSelection;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererType;
+	Glib::RefPtr <Gtk::CellRendererText>   m_CellRendererName;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererAccessType;
+	Gtk::Menu*                             m_AccessTypeMenu;
+	Gtk::MenuItem*                         m_InitializeOnlyMenuItem;
+	Gtk::MenuItem*                         m_InputOnlyMenuItem;
+	Gtk::MenuItem*                         m_OutputOnlyMenuItem;
+	Gtk::MenuItem*                         m_InputOutputMenuItem;
+	Gtk::Menu*                             m_FieldTypeMenu;
+	Gtk::MenuItem*                         m_SFBoolMenuItem;
+	Gtk::MenuItem*                         m_SFColorMenuItem;
+	Gtk::MenuItem*                         m_SFColorRGBAMenuItem;
+	Gtk::MenuItem*                         m_SFDoubleMenuItem;
+	Gtk::MenuItem*                         m_SFFloatMenuItem;
+	Gtk::MenuItem*                         m_SFImageMenuItem;
+	Gtk::MenuItem*                         m_SFInt32MenuItem;
+	Gtk::MenuItem*                         m_SFMatrix3dMenuItem;
+	Gtk::MenuItem*                         m_SFMatrix3fMenuItem;
+	Gtk::MenuItem*                         m_SFMatrix4dMenuItem;
+	Gtk::MenuItem*                         m_SFMatrix4fMenuItem;
+	Gtk::MenuItem*                         m_SFNodeMenuItem;
+	Gtk::MenuItem*                         m_SFRotationMenuItem;
+	Gtk::MenuItem*                         m_SFStringMenuItem;
+	Gtk::MenuItem*                         m_SFTimeMenuItem;
+	Gtk::MenuItem*                         m_SFVec2dMenuItem;
+	Gtk::MenuItem*                         m_SFVec2fMenuItem;
+	Gtk::MenuItem*                         m_SFVec3dMenuItem;
+	Gtk::MenuItem*                         m_SFVec3fMenuItem;
+	Gtk::MenuItem*                         m_SFVec4dMenuItem;
+	Gtk::MenuItem*                         m_SFVec4fMenuItem;
+	Gtk::MenuItem*                         m_MFBoolMenuItem;
+	Gtk::MenuItem*                         m_MFColorMenuItem;
+	Gtk::MenuItem*                         m_MFColorRGBAMenuItem;
+	Gtk::MenuItem*                         m_MFDoubleMenuItem;
+	Gtk::MenuItem*                         m_MFFloatMenuItem;
+	Gtk::MenuItem*                         m_MFImageMenuItem;
+	Gtk::MenuItem*                         m_MFInt32MenuItem;
+	Gtk::MenuItem*                         m_MFMatrix3dMenuItem;
+	Gtk::MenuItem*                         m_MFMatrix3fMenuItem;
+	Gtk::MenuItem*                         m_MFMatrix4dMenuItem;
+	Gtk::MenuItem*                         m_MFMatrix4fMenuItem;
+	Gtk::MenuItem*                         m_MFNodeMenuItem;
+	Gtk::MenuItem*                         m_MFRotationMenuItem;
+	Gtk::MenuItem*                         m_MFStringMenuItem;
+	Gtk::MenuItem*                         m_MFTimeMenuItem;
+	Gtk::MenuItem*                         m_MFVec2dMenuItem;
+	Gtk::MenuItem*                         m_MFVec2fMenuItem;
+	Gtk::MenuItem*                         m_MFVec3dMenuItem;
+	Gtk::MenuItem*                         m_MFVec3fMenuItem;
+	Gtk::MenuItem*                         m_MFVec4dMenuItem;
+	Gtk::MenuItem*                         m_MFVec4fMenuItem;
+	Gtk::Dialog*                           m_Window;
+	Gtk::Button*                           m_CancelButton;
+	Gtk::Button*                           m_OkButton;
+	Gtk::Box*                              m_Widget;
+	Gtk::Label*                            m_HeaderLabel;
+	Gtk::Expander*                         m_NodePropertiesExpander;
+	Gtk::Label*                            m_TypeNameLabel;
+	Gtk::Label*                            m_NameLabel;
+	Gtk::Entry*                            m_TypeNameEntry;
+	Gtk::Entry*                            m_NameEntry;
+	Gtk::Expander*                         m_UserDefinedFieldsExpander;
+	Gtk::TreeView*                         m_UserDefinedFieldsTreeView;
+	Gtk::Button*                           m_AddFieldButton;
+	Gtk::Button*                           m_RemoveFieldButton;
+	Gtk::Dialog*                           m_AddFieldDialog;
+	Gtk::Button*                           m_AddFieldCancelButton;
+	Gtk::Button*                           m_AddFieldOkButton;
+	Gtk::MenuButton*                       m_AccessTypeMenuButton;
+	Gtk::Label*                            m_AccessTypeLabel;
+	Gtk::MenuButton*                       m_FieldTypeMenuButton;
+	Gtk::Label*                            m_FieldTypeLabel;
+	Gtk::Entry*                            m_FieldNameEntry;
 
 };
 

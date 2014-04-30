@@ -95,6 +95,8 @@ private:
 	void
 	validateIdOnDelete (Gtk::Entry &, int, int);
 
+	///  @name TypeName
+
 	virtual
 	void
 	on_type_name_insert_text (const Glib::ustring &, int*) final override;
@@ -103,6 +105,8 @@ private:
 	void
 	on_type_name_delete_text (int, int) final override;
 
+	///  @name Name
+
 	virtual
 	void
 	on_name_insert_text (const Glib::ustring &, int*) final override;
@@ -110,6 +114,12 @@ private:
 	virtual
 	void
 	on_name_delete_text (int, int) final override;
+
+	///  @name User defined fields
+
+	virtual
+	void
+	on_user_defined_field_changed () final override;
 
 	virtual
 	void
@@ -151,6 +161,8 @@ private:
 	void
 	addUserDefinedField (X3D::X3DFieldDefinition* const);
 
+	///  @name Dialog buttons
+
 	virtual
 	void
 	on_ok () final override;
@@ -165,12 +177,15 @@ private:
 
 	///  @name Members
 
-	const X3D::SFNode             node;
+	const X3D::SFNode node;
+	
+	// User defined fields
+	
 	UserDefinedFieldsColumns      userDefinedFieldsColumns;
 	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
 	X3D::FieldDefinitionArray     userDefinedFieldDefinitions;
 	X3D::FieldIndex               fields;
-	bool                          fieldsChanged;
+	X3D::FieldDefinitionArray     fieldsToRemove;
 
 };
 

@@ -38,6 +38,7 @@ $objects {$_} = true foreach qw(
 	Gtk::TreeViewColumn
 	Gtk::CellRendererText
 	Gtk::CellRendererPixbuf
+	Gtk::TreeSelection
 );
 
 sub new
@@ -116,7 +117,7 @@ sub h_object_getters
 	return if not isObject ($attributes {class});
 
 	say $file "const Glib::RefPtr <$attributes{class}> &";
-	say $file "get$attributes{id} () const\n{ return m_" . lcfirst ($attributes {id}) . "; }";
+	say $file "get$attributes{id} () const\n{ return m_" . $attributes {id} . "; }";
 }
 
 sub h_widget_getters
@@ -130,11 +131,11 @@ sub h_widget_getters
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
 
-	$self -> {windows} -> {"m_" . lcfirst ($attributes {id})} = 1
+	$self -> {windows} -> {"m_" . $attributes {id}} = 1
 		if isWindow ($attributes {class});
 
 	say $file "$attributes{class} &";
-	say $file "get$attributes{id} () const\n{ return *m_" . lcfirst ($attributes {id}) . "; }";
+	say $file "get$attributes{id} () const\n{ return *m_" . $attributes {id} . "; }";
 }
 
 sub h_objects
@@ -148,7 +149,7 @@ sub h_objects
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isObject ($attributes {class});
 
-	say $file "Glib::RefPtr <$attributes{class}> m_" . lcfirst ($attributes {id}) . ";";
+	say $file "Glib::RefPtr <$attributes{class}> m_" . $attributes {id} . ";";
 }
 
 sub h_widgets
@@ -162,7 +163,7 @@ sub h_widgets
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
 
-	say $file "$attributes{class}* m_" . lcfirst ($attributes {id}) . ";";
+	say $file "$attributes{class}* m_" . $attributes {id} . ";";
 }
 
 sub h_signal_handler
@@ -203,7 +204,7 @@ sub cpp_get_objects
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isObject ($attributes {class});
 	
-	say $file "m_" . lcfirst ($attributes {id}) . " = Glib::RefPtr <$attributes{class}>::cast_dynamic (m_builder -> get_object (\"$attributes{id}\"));";
+	say $file "m_" . $attributes {id} . " = Glib::RefPtr <$attributes{class}>::cast_dynamic (m_builder -> get_object (\"$attributes{id}\"));";
 }
 
 sub cpp_get_widgets
@@ -217,8 +218,8 @@ sub cpp_get_widgets
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
 	
-	say $file "m_builder -> get_widget (\"$attributes{id}\", m_" . lcfirst ($attributes {id}) . ");";
-	say $file "m_" . lcfirst ($attributes {id}) . " -> set_name (\"" . $attributes {id} . "\");";
+	say $file "m_builder -> get_widget (\"$attributes{id}\", m_" . $attributes {id} . ");";
+	say $file "m_" . $attributes {id} . " -> set_name (\"" . $attributes {id} . "\");";
 }
 
 sub cpp_signals
@@ -247,7 +248,7 @@ sub cpp_signals
 	
 	$attributes {name} =~ s/-/_/sgo;
 	
-	my $signal = "m_" . lcfirst ($self -> {id}) . " -> signal_$attributes{name} ()";
+	my $signal = "m_" . $self -> {id} . " -> signal_$attributes{name} ()";
 
 	if (exists $attributes {after})
 	{
@@ -545,7 +546,7 @@ sub generate
 	# Destructor
 	say OUT "$self->{class_name}\::~$self->{class_name} ()";
 	say OUT "{";
-	say OUT "delete $_;" foreach keys %{$self -> {windows}};
+	say OUT "delete $_;" foreach sort keys %{$self -> {windows}};
 	say OUT "}";
 
 	# Namespaces end

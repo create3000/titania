@@ -61,26 +61,26 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_treeStore    = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
-	m_file         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("File"));
-	m_iconRenderer = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
-	m_nameRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
+	m_TreeStore    = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_File         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("File"));
+	m_IconRenderer = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
+	m_NameRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
 	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
-	m_scrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("TreeView", m_treeView);
-	m_treeView -> set_name ("TreeView");
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_ScrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_TreeView -> set_name ("TreeView");
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_map));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_map));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated));
 
 	// Call construct handler of base class.
 	construct ();
@@ -88,7 +88,7 @@ X3DLibraryViewInterface::create (const std::string & filename)
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()
 {
-	delete m_window;
+	delete m_Window;
 }
 
 } // puck

@@ -93,135 +93,135 @@ public:
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAlphaAdjustment () const
-	{ return m_alphaAdjustment; }
+	{ return m_AlphaAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAnisotropicDegreeAdjustment () const
-	{ return m_anisotropicDegreeAdjustment; }
+	{ return m_AnisotropicDegreeAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getBorderWidthAdjustment () const
-	{ return m_borderWidthAdjustment; }
+	{ return m_BorderWidthAdjustment; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getBoundryModeListStore () const
-	{ return m_boundryModeListStore; }
+	{ return m_BoundryModeListStore; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getFunctionListStore () const
-	{ return m_functionListStore; }
+	{ return m_FunctionListStore; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getMagnificationFilterListStore () const
-	{ return m_magnificationFilterListStore; }
+	{ return m_MagnificationFilterListStore; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getMinificationFilterListStore () const
-	{ return m_minificationFilterListStore; }
+	{ return m_MinificationFilterListStore; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getModeListStore () const
-	{ return m_modeListStore; }
+	{ return m_ModeListStore; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getRotationAdjustment () const
-	{ return m_rotationAdjustment; }
+	{ return m_RotationAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getScaleSAdjustment () const
-	{ return m_scaleSAdjustment; }
+	{ return m_ScaleSAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getScaleTdjustment () const
-	{ return m_scaleTdjustment; }
+	{ return m_ScaleTdjustment; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getSourceListStore () const
-	{ return m_sourceListStore; }
+	{ return m_SourceListStore; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getTextureCompressionListStore () const
-	{ return m_textureCompressionListStore; }
+	{ return m_TextureCompressionListStore; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTexturePriorityAdjustment () const
-	{ return m_texturePriorityAdjustment; }
+	{ return m_TexturePriorityAdjustment; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getTextureUnitListStore () const
-	{ return m_textureUnitListStore; }
+	{ return m_TextureUnitListStore; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslateSAdjustment () const
-	{ return m_translateSAdjustment; }
+	{ return m_TranslateSAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslateTAdjustment () const
-	{ return m_translateTAdjustment; }
+	{ return m_TranslateTAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::ImageMenuItem &
 	getCopyMenuItem () const
-	{ return *m_copyMenuItem; }
+	{ return *m_CopyMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getPasteMenuItem () const
-	{ return *m_pasteMenuItem; }
+	{ return *m_PasteMenuItem; }
 
 	Gtk::Box &
 	getPreviewBox () const
-	{ return *m_previewBox; }
+	{ return *m_PreviewBox; }
 
 	Gtk::Expander &
 	getMultiTextureExpander () const
-	{ return *m_multiTextureExpander; }
+	{ return *m_MultiTextureExpander; }
 
 	Gtk::Expander &
 	getTextureExpander () const
-	{ return *m_textureExpander; }
+	{ return *m_TextureExpander; }
 
 	Gtk::Grid &
 	getTextureGrid () const
-	{ return *m_textureGrid; }
+	{ return *m_TextureGrid; }
 
 	Gtk::Expander &
 	getTexturePropertiesExpander () const
-	{ return *m_texturePropertiesExpander; }
+	{ return *m_TexturePropertiesExpander; }
 
 	Gtk::Expander &
 	getTextureTransformExpander () const
-	{ return *m_textureTransformExpander; }
+	{ return *m_TextureTransformExpander; }
 
 	Gtk::Grid &
 	getTextureTranformGrid () const
-	{ return *m_textureTranformGrid; }
+	{ return *m_TextureTranformGrid; }
 
 	Gtk::SpinButton &
 	getTranslateSButton () const
-	{ return *m_translateSButton; }
+	{ return *m_TranslateSButton; }
 
 	Gtk::SpinButton &
 	getTranslateTButton () const
-	{ return *m_translateTButton; }
+	{ return *m_TranslateTButton; }
 
 	Gtk::Scale &
 	getRotationScale () const
-	{ return *m_rotationScale; }
+	{ return *m_RotationScale; }
 
 	Gtk::SpinButton &
 	getScaleSButton () const
-	{ return *m_scaleSButton; }
+	{ return *m_ScaleSButton; }
 
 	Gtk::SpinButton &
 	getScaleTButton () const
-	{ return *m_scaleTButton; }
+	{ return *m_ScaleTButton; }
 
 	virtual
 	~X3DTextureEditorInterface ();
@@ -236,39 +236,39 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_alphaAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_anisotropicDegreeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_borderWidthAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_boundryModeListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_functionListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_magnificationFilterListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_minificationFilterListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_modeListStore;
-	Glib::RefPtr <Gtk::Adjustment> m_rotationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_scaleSAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_scaleTdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_sourceListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_textureCompressionListStore;
-	Glib::RefPtr <Gtk::Adjustment> m_texturePriorityAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_textureUnitListStore;
-	Glib::RefPtr <Gtk::Adjustment> m_translateSAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_translateTAdjustment;
-	Gtk::Window*                   m_window;
-	Gtk::Box*                      m_widget;
-	Gtk::ImageMenuItem*            m_copyMenuItem;
-	Gtk::ImageMenuItem*            m_pasteMenuItem;
-	Gtk::Box*                      m_previewBox;
-	Gtk::Expander*                 m_multiTextureExpander;
-	Gtk::Expander*                 m_textureExpander;
-	Gtk::Grid*                     m_textureGrid;
-	Gtk::Expander*                 m_texturePropertiesExpander;
-	Gtk::Expander*                 m_textureTransformExpander;
-	Gtk::Grid*                     m_textureTranformGrid;
-	Gtk::SpinButton*               m_translateSButton;
-	Gtk::SpinButton*               m_translateTButton;
-	Gtk::Scale*                    m_rotationScale;
-	Gtk::SpinButton*               m_scaleSButton;
-	Gtk::SpinButton*               m_scaleTButton;
+	Glib::RefPtr <Gtk::Adjustment> m_AlphaAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AnisotropicDegreeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BorderWidthAdjustment;
+	Glib::RefPtr <Gtk::ListStore>  m_BoundryModeListStore;
+	Glib::RefPtr <Gtk::ListStore>  m_FunctionListStore;
+	Glib::RefPtr <Gtk::ListStore>  m_MagnificationFilterListStore;
+	Glib::RefPtr <Gtk::ListStore>  m_MinificationFilterListStore;
+	Glib::RefPtr <Gtk::ListStore>  m_ModeListStore;
+	Glib::RefPtr <Gtk::Adjustment> m_RotationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ScaleSAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ScaleTdjustment;
+	Glib::RefPtr <Gtk::ListStore>  m_SourceListStore;
+	Glib::RefPtr <Gtk::ListStore>  m_TextureCompressionListStore;
+	Glib::RefPtr <Gtk::Adjustment> m_TexturePriorityAdjustment;
+	Glib::RefPtr <Gtk::ListStore>  m_TextureUnitListStore;
+	Glib::RefPtr <Gtk::Adjustment> m_TranslateSAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TranslateTAdjustment;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::ImageMenuItem*            m_CopyMenuItem;
+	Gtk::ImageMenuItem*            m_PasteMenuItem;
+	Gtk::Box*                      m_PreviewBox;
+	Gtk::Expander*                 m_MultiTextureExpander;
+	Gtk::Expander*                 m_TextureExpander;
+	Gtk::Grid*                     m_TextureGrid;
+	Gtk::Expander*                 m_TexturePropertiesExpander;
+	Gtk::Expander*                 m_TextureTransformExpander;
+	Gtk::Grid*                     m_TextureTranformGrid;
+	Gtk::SpinButton*               m_TranslateSButton;
+	Gtk::SpinButton*               m_TranslateTButton;
+	Gtk::Scale*                    m_RotationScale;
+	Gtk::SpinButton*               m_ScaleSButton;
+	Gtk::SpinButton*               m_ScaleTButton;
 
 };
 

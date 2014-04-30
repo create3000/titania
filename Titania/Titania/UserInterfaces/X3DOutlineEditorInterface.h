@@ -93,19 +93,19 @@ public:
 
 	Gtk::Window &
 	getWindow () const
-	{ return *m_window; }
+	{ return *m_Window; }
 
 	Gtk::Box &
 	getWidget () const
-	{ return *m_widget; }
+	{ return *m_Widget; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
-	{ return *m_scrolledWindow; }
+	{ return *m_ScrolledWindow; }
 
 	Gtk::Viewport &
 	getViewport () const
-	{ return *m_viewport; }
+	{ return *m_Viewport; }
 
 	virtual
 	void
@@ -124,10 +124,10 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_window;
-	Gtk::Box*                   m_widget;
-	Gtk::ScrolledWindow*        m_scrolledWindow;
-	Gtk::Viewport*              m_viewport;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::ScrolledWindow*        m_ScrolledWindow;
+	Gtk::Viewport*              m_Viewport;
 
 };
 
