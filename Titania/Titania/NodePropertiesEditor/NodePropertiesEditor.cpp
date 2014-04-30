@@ -64,9 +64,12 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                            node (node),
 	        userDefinedFieldsColumns (),
 	      userDefinedFieldsListStore (Gtk::ListStore::create (userDefinedFieldsColumns)),
-	     userDefinedFieldDefinitions (),
+	                userDefinedField (nullptr),
+	               userDefinedFields (),
 	                          fields (),
-	                  fieldsToRemove ()
+	                 fieldsToReplace (),
+	                  fieldsToRemove (),
+	            editUserDefinedField (false)
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 
@@ -142,13 +145,13 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 
 	// Drag targets
 	getUserDefinedFieldsTreeView () .enable_model_drag_source ({
-		Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
-	}, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+	                                                              Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
+																				  }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
 
 	// Drop targets
 	getUserDefinedFieldsTreeView () .enable_model_drag_dest ({
-		Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
-	}, Gdk::ACTION_MOVE);
+	                                                            Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
+																				}, Gdk::ACTION_MOVE);
 }
 
 void
@@ -209,7 +212,7 @@ NodePropertiesEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContex
 	const auto   selected = getUserDefinedFieldsTreeView () .get_selection () -> get_selected ();
 	const size_t index    = userDefinedFieldsListStore -> get_path (selected) .front ();
 
-	X3D::X3DFieldDefinition* const field = userDefinedFieldDefinitions [index];
+	X3D::X3DFieldDefinition* const field = userDefinedFields [index];
 
 	Gtk::TreeModel::Path      destinationPath;
 	Gtk::TreeViewDropPosition position;
@@ -218,7 +221,7 @@ NodePropertiesEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContex
 	if (getUserDefinedFieldsTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
 	{
 		auto destination = userDefinedFieldsListStore -> get_iter (destinationPath);
-		dest             = userDefinedFieldsListStore -> get_path (destination) .front ();
+		dest = userDefinedFieldsListStore -> get_path (destination) .front ();
 
 		switch (position)
 		{
@@ -242,25 +245,44 @@ NodePropertiesEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContex
 
 	if (index < dest)
 	{
-		userDefinedFieldDefinitions .insert (userDefinedFieldDefinitions .begin () + dest, field);
-		userDefinedFieldDefinitions .erase (userDefinedFieldDefinitions .begin () + index);
+		userDefinedFields .insert (userDefinedFields .begin () + dest, field);
+		userDefinedFields .erase (userDefinedFields .begin () + index);
 	}
 	else
 	{
-		userDefinedFieldDefinitions .erase (userDefinedFieldDefinitions .begin () + index);
-		userDefinedFieldDefinitions .insert (userDefinedFieldDefinitions .begin () + dest, field);
+		userDefinedFields .erase (userDefinedFields .begin () + index);
+		userDefinedFields .insert (userDefinedFields .begin () + dest, field);
 	}
 
 	context -> drag_finish (false, false, time);
 }
 
 void
+NodePropertiesEditor::on_user_defined_field_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
+{
+	editUserDefinedField = true;
+	userDefinedField     = userDefinedFields [path .front ()];
+
+	getAccessTypeLabel () .set_text (X3D::Generator::X3DAccessTypes [userDefinedField]);
+	getFieldTypeLabel () .set_text (userDefinedField -> getTypeName ());
+	getFieldNameEntry () .set_text (userDefinedField -> getName ());
+
+	getAddFieldDialog () .set_title (_ ("Edit User Defined Field"));
+	getAddFieldDialog () .present ();
+
+	getFieldNameEntry () .grab_focus ();
+}
+
+void
 NodePropertiesEditor::on_add_field_clicked ()
 {
+	editUserDefinedField = false;
+
 	getInitializeOnlyMenuItem () .activate ();
 	getSFBoolMenuItem () .activate ();
 	getFieldNameEntry () .set_text ("");
 
+	getAddFieldDialog () .set_title (_ ("Add User Defined Field"));
 	getAddFieldDialog () .present ();
 
 	getFieldNameEntry () .grab_focus ();
@@ -272,9 +294,9 @@ NodePropertiesEditor::on_remove_field_clicked ()
 	const auto selected = getUserDefinedFieldsTreeView () .get_selection () -> get_selected ();
 	const auto index    = userDefinedFieldsListStore -> get_path (selected) .front ();
 
-	X3D::X3DFieldDefinition* const field = userDefinedFieldDefinitions [index];
+	X3D::X3DFieldDefinition* const field = userDefinedFields [index];
 
-	// Erase from list
+	// Erase from list store
 
 	userDefinedFieldsListStore -> erase (selected);
 
@@ -290,12 +312,12 @@ NodePropertiesEditor::on_remove_field_clicked ()
 
 	// Erase from array
 
-	const auto iter = std::find (userDefinedFieldDefinitions .begin (),
-	                             userDefinedFieldDefinitions .end (),
+	const auto iter = std::find (userDefinedFields .begin (),
+	                             userDefinedFields .end (),
 	                             field);
 
-	if (iter not_eq userDefinedFieldDefinitions .end ())
-		userDefinedFieldDefinitions .erase (iter);
+	if (iter not_eq userDefinedFields .end ())
+		userDefinedFields .erase (iter);
 
 	// Store node field or delete field immediately
 
@@ -319,9 +341,9 @@ NodePropertiesEditor::on_access_type_activate (const std::string & accessType)
 }
 
 void
-NodePropertiesEditor::on_field_type_activate (const std::string & accessType)
+NodePropertiesEditor::on_field_type_activate (const std::string & fieldType)
 {
-	getFieldTypeLabel () .set_text (accessType);
+	getFieldTypeLabel () .set_text (fieldType);
 }
 
 void
@@ -342,12 +364,12 @@ NodePropertiesEditor::on_field_name_changed ()
 	// Set Ok button sensitive or not.
 
 	const std::string name   = getFieldNameEntry () .get_text ();
-	bool              exists = fields .find (name) not_eq fields .end ();
+	bool              exists = existsField (name);
 
 	if (getAccessTypeLabel () .get_text () == "inputOutput")
 	{
-		exists |= fields .find ("set_" + name) not_eq fields .end ();
-		exists |= fields .find (name + "_changed") not_eq fields .end ();
+		exists |= existsField ("set_" + name);
+		exists |= existsField (name + "_changed");
 	}
 
 	getAddFieldOkButton () .set_sensitive (not name .empty () and not exists);
@@ -365,22 +387,55 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 
 	getAddFieldDialog () .hide ();
 
-	// Create field
+	if (editUserDefinedField)
+	{
+		// Edit field
 
-	X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
+		X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
 
-	field -> setName (getFieldNameEntry () .get_text ());
-	field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+		field -> setName (getFieldNameEntry () .get_text ());
+		field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
 
-	// Add user defined field
+		replaceUserDefinedField (userDefinedField, field);
+	}
+	else
+	{
+		// Create field
 
-	addUserDefinedField (field);
+		X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
+
+		field -> setName (getFieldNameEntry () .get_text ());
+		field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+
+		// Add user defined field
+
+		addUserDefinedField (field);
+	}
 }
 
 void
 NodePropertiesEditor::on_add_field_cancel_clicked ()
 {
 	getAddFieldDialog () .hide ();
+}
+
+bool
+NodePropertiesEditor::existsField (const std::string & name) const
+{
+	const auto iter = fields .find (name);
+
+	if (iter not_eq fields .end ())
+	{
+		if (editUserDefinedField)
+		{
+			if (iter -> second not_eq userDefinedField)
+				return true;
+		}
+		else
+			return true;
+	}
+
+	return false;
 }
 
 void
@@ -400,7 +455,7 @@ NodePropertiesEditor::addUserDefinedField (X3D::X3DFieldDefinition* const field)
 {
 	addField (field);
 
-	userDefinedFieldDefinitions .emplace_back (field);
+	userDefinedFields .emplace_back (field);
 
 	const auto iter = userDefinedFieldsListStore -> append ();
 	(*iter) [userDefinedFieldsColumns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
@@ -409,14 +464,85 @@ NodePropertiesEditor::addUserDefinedField (X3D::X3DFieldDefinition* const field)
 }
 
 void
+NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField)
+{
+	const size_t index = userDefinedFields .begin () - std::find (userDefinedFields .begin (),
+	                                                              userDefinedFields .end (),
+	                                                              oldField);
+
+	// Replace in list store
+
+	const auto iter = userDefinedFieldsListStore -> children () [index];
+
+	(*iter) [userDefinedFieldsColumns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + newField -> getTypeName () + ".svg"));
+	(*iter) [userDefinedFieldsColumns .name]       = newField -> getName ();
+	(*iter) [userDefinedFieldsColumns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [newField] + ".png"));
+
+	// Replace in index
+
+	fields .erase (oldField -> getName ());
+
+	if (oldField -> getAccessType () == X3D::inputOutput)
+	{
+		fields .erase ("set_" + oldField -> getName ());
+		fields .erase (oldField -> getName () + "_changed");
+	}
+
+	fields .emplace (newField -> getName (), newField);
+
+	if (newField -> getAccessType () == X3D::inputOutput)
+	{
+		fields .emplace ("set_" + newField -> getName (), newField);
+		fields .emplace (newField -> getName () + "_changed", newField);
+	}
+
+	// Replace in array
+
+	userDefinedFields [index] = newField;
+
+	// Remember old existing node fields that should be replaced by newField.
+
+	bool exists = false; // Already exist in node.
+
+	try
+	{
+		exists = (oldField == node -> getField (oldField -> getName ()));
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	if (exists)
+	{
+		fieldsToReplace [newField] = oldField;
+		fieldsToRemove .emplace_back (oldField);
+	}
+	else
+	{
+		// Check if oldField should replace a node field.
+
+		const auto iter = fieldsToReplace .find (oldField);
+
+		if (iter not_eq fieldsToReplace .end ())
+		{
+			fieldsToReplace [newField] = iter -> second;
+			fieldsToReplace .erase (iter);
+		}
+
+		delete oldField;
+	}
+}
+
+void
 NodePropertiesEditor::on_ok ()
 {
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
+
+	// Apply name change
+
 	const std::string name = getNameEntry () .get_text ();
 
 	if (name not_eq node -> getName ())
 	{
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
-
 		undoStep -> addUndoFunction (&NodePropertiesEditor::updateNamedNode,
 		                             node -> getName (),
 		                             node,
@@ -428,9 +554,14 @@ NodePropertiesEditor::on_ok ()
 		                             getBrowserWindow ());
 
 		updateNamedNode (name, node, getBrowserWindow ());
-
-		getBrowserWindow () -> addUndoStep (undoStep);
 	}
+
+	if (node -> getUserDefinedFields () not_eq userDefinedFields)
+	{
+		__LOG__ << std::endl;
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 
 	close ();
 }

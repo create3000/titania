@@ -417,6 +417,10 @@ public:
 
 	virtual
 	void
+	on_user_defined_field_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+
+	virtual
+	void
 	on_user_defined_field_changed () = 0;
 
 	virtual

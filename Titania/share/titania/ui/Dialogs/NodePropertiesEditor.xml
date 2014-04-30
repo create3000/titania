@@ -624,6 +624,7 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">1</property>
                                 <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
+                                <signal name="row-activated" handler="on_user_defined_field_activated" swapped="no"/>
                                 <child internal-child="selection">
                                   <object class="GtkTreeSelection" id="UserDefinedFieldsTreeviewSelection">
                                     <signal name="changed" handler="on_user_defined_field_changed" swapped="no"/>
@@ -760,6 +761,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Add User Defined Field</property>
     <property name="resizable">False</property>
+    <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">normal</property>

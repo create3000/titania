@@ -126,6 +126,10 @@ private:
 
 	virtual
 	void
+	on_user_defined_field_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	virtual
+	void
 	on_add_field_clicked () final override;
 
 	virtual
@@ -158,11 +162,17 @@ private:
 	void
 	on_add_field_cancel_clicked () final override;
 
+	bool
+	existsField (const std::string &) const;
+
 	void
 	addField (X3D::X3DFieldDefinition* const);
 
 	void
 	addUserDefinedField (X3D::X3DFieldDefinition* const);
+
+	void
+	replaceUserDefinedField (X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const);
 
 	///  @name Dialog buttons
 
@@ -178,6 +188,8 @@ private:
 	void
 	updateNamedNode (const std::string &, const X3D::SFNode &, BrowserWindow* const);
 
+	using FieldToFieldIndex = std::map <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>;
+
 	///  @name Static members
 
 	static const std::string userDefinedFieldsDragDataType;
@@ -190,9 +202,12 @@ private:
 
 	UserDefinedFieldsColumns      userDefinedFieldsColumns;
 	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
-	X3D::FieldDefinitionArray     userDefinedFieldDefinitions;
+	X3D::X3DFieldDefinition*      userDefinedField;
+	X3D::FieldDefinitionArray     userDefinedFields;
 	X3D::FieldIndex               fields;
+	FieldToFieldIndex             fieldsToReplace;
 	X3D::FieldDefinitionArray     fieldsToRemove;
+	bool                          editUserDefinedField;
 
 };
 
