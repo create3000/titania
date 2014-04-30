@@ -323,7 +323,12 @@ NodePropertiesEditor::on_remove_field_clicked ()
 
 	try
 	{
-		fieldsToRemove .emplace_back (node -> getField (field -> getName ()));
+		X3D::X3DFieldDefinition* const fieldDefinition = node -> getField (field -> getName ());
+
+		if (field == fieldDefinition)
+			fieldsToRemove .emplace_back (field);
+		else
+			delete field;
 	}
 	catch (const X3D::X3DError &)
 	{
@@ -502,16 +507,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 
 	// Remember old existing node fields that should be replaced by newField.
 
-	bool exists = false; // Already exist in node.
-
-	try
-	{
-		exists = (oldField == node -> getField (oldField -> getName ()));
-	}
-	catch (const X3D::X3DError &)
-	{ }
-
-	if (exists)
+	if (node -> existsField (oldField))
 	{
 		fieldsToReplace [newField] = oldField;
 		fieldsToRemove .emplace_back (oldField);

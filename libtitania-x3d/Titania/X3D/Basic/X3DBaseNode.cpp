@@ -406,6 +406,19 @@ throw (Error <DISPOSED>)
 		return this;
 	}
 }
+	
+bool
+X3DBaseNode::existsField (X3DFieldDefinition* const field) const
+{
+	try
+	{
+		return field == getField (field -> getName ());
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
+}
 
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
