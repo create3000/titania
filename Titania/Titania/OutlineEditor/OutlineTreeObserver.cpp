@@ -250,19 +250,9 @@ OutlineTreeObserver::update_field (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << path .to_string () << std::endl;
 
-	const Gtk::TreeModel::iterator iter         = treeView -> get_model () -> get_iter (path);
-	const bool                     full_expanded = treeView -> is_full_expanded (iter);
+	const Gtk::TreeModel::iterator iter = treeView -> get_model () -> get_iter (path);
 
-	treeView -> collapse_row (path);
-
-	treeView -> get_model () -> row_has_child_toggled (path, iter);
-
-	treeView -> disable_shift_key ();
-
-	treeView -> is_full_expanded (iter, full_expanded);
-	treeView -> expand_row (path, false);
-
-	treeView -> enable_shift_key ();
+	treeView -> update_row (iter, path);
 }
 
 void

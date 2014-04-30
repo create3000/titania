@@ -558,6 +558,8 @@ NodePropertiesEditor::on_ok ()
 		
 		for (const auto & field : userDefinedFields)
 			node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+		getBrowserWindow () -> getOutlineTreeView () .update (node);
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

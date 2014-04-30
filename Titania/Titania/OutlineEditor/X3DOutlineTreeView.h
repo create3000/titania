@@ -118,6 +118,12 @@ public:
 	get_path_at_position (const double, const double, Gtk::TreeViewColumn* &) const;
 
 	void
+	update (X3D::X3DChildObject* const);
+
+	void
+	update_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
 	expand_to (X3D::X3DChildObject* const);
 
 	void

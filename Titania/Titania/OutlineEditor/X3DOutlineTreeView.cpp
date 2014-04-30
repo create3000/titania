@@ -136,6 +136,30 @@ X3DOutlineTreeView::get_path_at_position (const double x, const double y, Gtk::T
 }
 
 void
+X3DOutlineTreeView::update (X3D::X3DChildObject* const object)
+{
+	for (const auto & iter : get_iters (object))
+		update_row (iter, get_model () -> get_path (iter));
+}
+
+void
+X3DOutlineTreeView::update_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	const bool full_expanded = is_full_expanded (iter);
+
+	collapse_row (path);
+
+	get_model () -> row_has_child_toggled (path, iter);
+
+	disable_shift_key ();
+
+	is_full_expanded (iter, full_expanded);
+	expand_row (path, false);
+
+	enable_shift_key ();
+}
+
+void
 X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 {
 	Gtk::TreeModel::Path path;
