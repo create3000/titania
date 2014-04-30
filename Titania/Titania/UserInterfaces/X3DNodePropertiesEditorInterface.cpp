@@ -218,6 +218,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_NameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false);
 	m_NameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false);
 
+	// Connect object Gtk::TreeView with id 'UserDefinedFieldsTreeView'.
+	m_UserDefinedFieldsTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_drag_data_received));
+
 	// Connect object Gtk::TreeSelection with id 'UserDefinedFieldsTreeviewSelection'.
 	m_UserDefinedFieldsTreeviewSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_changed));
 

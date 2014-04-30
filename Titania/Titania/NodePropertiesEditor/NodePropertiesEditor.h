@@ -121,6 +121,9 @@ private:
 	void
 	on_user_defined_field_changed () final override;
 
+	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint,  guint);
+
 	virtual
 	void
 	on_add_field_clicked () final override;
@@ -175,12 +178,16 @@ private:
 	void
 	updateNamedNode (const std::string &, const X3D::SFNode &, BrowserWindow* const);
 
+	///  @name Static members
+
+	static const std::string userDefinedFieldsDragDataType;
+
 	///  @name Members
 
 	const X3D::SFNode node;
-	
+
 	// User defined fields
-	
+
 	UserDefinedFieldsColumns      userDefinedFieldsColumns;
 	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
 	X3D::FieldDefinitionArray     userDefinedFieldDefinitions;

@@ -620,8 +620,10 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="headers_clickable">False</property>
+                                <property name="reorderable">True</property>
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">1</property>
+                                <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
                                 <child internal-child="selection">
                                   <object class="GtkTreeSelection" id="UserDefinedFieldsTreeviewSelection">
                                     <signal name="changed" handler="on_user_defined_field_changed" swapped="no"/>

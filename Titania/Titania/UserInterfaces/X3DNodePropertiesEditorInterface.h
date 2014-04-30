@@ -413,6 +413,10 @@ public:
 
 	virtual
 	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
 	on_user_defined_field_changed () = 0;
 
 	virtual

@@ -56,6 +56,8 @@
 namespace titania {
 namespace puck {
 
+const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "titania/node-properties/user-defined-field";
+
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodePropertiesEditorInterface (get_ui ("Dialogs/NodePropertiesEditor.xml"), gconf_dir ()),
@@ -135,6 +137,18 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	getMFVec3fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec3f"));
 	getMFVec4dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec4d"));
 	getMFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec4f"));
+
+	//  Drag & Drop
+
+	// Drag targets
+	getUserDefinedFieldsTreeView () .enable_model_drag_source ({
+		Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
+	}, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+
+	// Drop targets
+	getUserDefinedFieldsTreeView () .enable_model_drag_dest ({
+		Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
+	}, Gdk::ACTION_MOVE);
 }
 
 void
@@ -186,6 +200,61 @@ NodePropertiesEditor::on_user_defined_field_changed ()
 }
 
 void
+NodePropertiesEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                             int x, int y,
+                                             const Gtk::SelectionData & selection_data,
+                                             guint info,
+                                             guint time)
+{
+	const auto   selected = getUserDefinedFieldsTreeView () .get_selection () -> get_selected ();
+	const size_t index    = userDefinedFieldsListStore -> get_path (selected) .front ();
+
+	X3D::X3DFieldDefinition* const field = userDefinedFieldDefinitions [index];
+
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
+	size_t                    dest = 0;
+
+	if (getUserDefinedFieldsTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
+	{
+		auto destination = userDefinedFieldsListStore -> get_iter (destinationPath);
+		dest             = userDefinedFieldsListStore -> get_path (destination) .front ();
+
+		switch (position)
+		{
+			case Gtk::TREE_VIEW_DROP_BEFORE:
+			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+				userDefinedFieldsListStore -> move (selected, destination);
+				break;
+			case Gtk::TREE_VIEW_DROP_AFTER:
+			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+				userDefinedFieldsListStore -> move (selected, ++ destination);
+				++ dest;
+				break;
+		}
+	}
+	else
+	{
+		const auto children = userDefinedFieldsListStore -> children ();
+		userDefinedFieldsListStore -> move (selected, children .end ());
+		dest = children .size ();
+	}
+
+	if (index < dest)
+	{
+		userDefinedFieldDefinitions .insert (userDefinedFieldDefinitions .begin () + dest, field);
+		userDefinedFieldDefinitions .erase (userDefinedFieldDefinitions .begin () + index);
+	}
+	else
+	{
+		userDefinedFieldDefinitions .erase (userDefinedFieldDefinitions .begin () + index);
+		userDefinedFieldDefinitions .insert (userDefinedFieldDefinitions .begin () + dest, field);
+	}
+
+	context -> drag_finish (false, false, time);
+}
+
+void
 NodePropertiesEditor::on_add_field_clicked ()
 {
 	getInitializeOnlyMenuItem () .activate ();
@@ -201,8 +270,7 @@ void
 NodePropertiesEditor::on_remove_field_clicked ()
 {
 	const auto selected = getUserDefinedFieldsTreeView () .get_selection () -> get_selected ();
-	const auto path     = userDefinedFieldsListStore -> get_path (selected);
-	const auto index    = path .front ();
+	const auto index    = userDefinedFieldsListStore -> get_path (selected) .front ();
 
 	X3D::X3DFieldDefinition* const field = userDefinedFieldDefinitions [index];
 
@@ -213,7 +281,7 @@ NodePropertiesEditor::on_remove_field_clicked ()
 	// Erase from index
 
 	fields .erase (field -> getName ());
-	
+
 	if (field -> getAccessType () == X3D::inputOutput)
 	{
 		fields .erase ("set_" + field -> getName ());
@@ -389,5 +457,6 @@ NodePropertiesEditor::~NodePropertiesEditor ()
 	__LOG__ << std::endl;
 }
 
-} // puck
-} // titania
+}  // puck
+
+}    // titania
