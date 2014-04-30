@@ -1,6 +1,12 @@
 2014-04-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* jsContext.h: 
+
+2014-04-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
 	* X3DBaseNode.cpp: 
 
 2014-04-29  Holger Seelig  <holger.seelig@yahoo.de>

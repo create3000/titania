@@ -423,8 +423,10 @@ X3DBaseNode::existsField (X3DFieldDefinition* const field) const
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
 {
-	if (fields .find (name) not_eq fields .end ())
-		removeField (name);
+	const auto iter = fields .find (name);
+
+	if (iter not_eq fields .end ())
+		removeField (iter, iter -> second not_eq &field);
 
 	field .isTainted (true);
 	field .addParent (this);
@@ -447,23 +449,32 @@ X3DBaseNode::addField (const VersionType version, const std::string & alias, con
 void
 X3DBaseNode::removeField (const std::string & name)
 {
-	const auto field = fields .find (name);
+	removeField (fields .find (name), true);
+}
 
-	if (field not_eq fields .end ())
+void
+X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool removeParent)
+{
+	if (field == fields .end ())
+		return;
+
+	const auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+
+	if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 	{
-		const auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+		-- numUserDefinedFields;
 
-		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
-		{
-			-- numUserDefinedFields;
+		if (removeParent)
 			field -> second -> removeParent (this);
-		}
-		else
-			shutdownOutput .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
-
-		fieldDefinitions .erase (iter);
-		fields .erase (field);
 	}
+	else
+	{
+		// If field is a pre defined field, we defer dispose.
+		shutdownOutput .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
+	}
+
+	fieldDefinitions .erase (iter);
+	fields .erase (field);
 }
 
 X3DFieldDefinition*

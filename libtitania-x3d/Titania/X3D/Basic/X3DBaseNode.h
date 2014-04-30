@@ -438,6 +438,9 @@ private:
 	void
 	replace (X3DBaseNode* const, const std::set <const X3DFieldDefinition*> & = { });
 
+	void
+	removeField (const FieldIndex::iterator &, const bool);
+
 	const std::string &
 	getFieldName (const std::string &) const;
 

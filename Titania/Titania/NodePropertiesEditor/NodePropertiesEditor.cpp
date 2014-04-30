@@ -555,6 +555,9 @@ NodePropertiesEditor::on_ok ()
 	if (node -> getUserDefinedFields () not_eq userDefinedFields)
 	{
 		__LOG__ << std::endl;
+		
+		for (const auto & field : userDefinedFields)
+			node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

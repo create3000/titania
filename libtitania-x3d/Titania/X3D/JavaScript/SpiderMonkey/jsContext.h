@@ -70,9 +70,6 @@ class jsContext :
 {
 public:
 
-	using X3DJavaScriptContext::addField;
-	using X3DJavaScriptContext::removeField;
-
 	///  @name Construction
 
 	jsContext (Script* const, const std::string &, const basic::uri &, const size_t);
