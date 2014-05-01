@@ -561,7 +561,7 @@ NodePropertiesEditor::on_ok ()
 	{
 		if (node -> getUserDefinedFields () not_eq userDefinedFields)
 		{
-			X3D::X3DPtr <X3D::Script> root = new X3D::Script (getBrowser () -> getExecutionContext ());
+			X3D::X3DPtr <X3D::Script> root = new X3D::Script (node -> getExecutionContext ());
 
 			for (const auto & field : fieldsToRemove)
 				root -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
