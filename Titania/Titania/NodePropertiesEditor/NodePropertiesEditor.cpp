@@ -702,31 +702,24 @@ NodePropertiesEditor::on_ok ()
 				}
 			}
 
-			// Update OutlineTreeView
-
-			undoStep -> addUndoFunction (&OutlineTreeViewEditor::update, &getBrowserWindow () -> getOutlineTreeView (), node);
-
 			// Set user defined fields
 
 			undoStep -> addUndoFunction (&NodePropertiesEditor::setUserDefinedFields,
+			                             getBrowserWindow (),
 			                             node,
 			                             node -> getUserDefinedFields (),
 			                             undoFieldsToRemove);
 
 			undoStep -> addRedoFunction (&NodePropertiesEditor::setUserDefinedFields,
+			                             getBrowserWindow (),
 			                             node,
 			                             userDefinedFields,
 			                             fieldsToRemove);
 
-			setUserDefinedFields (node,
+			setUserDefinedFields (getBrowserWindow (),
+			                      node,
 			                      userDefinedFields,
 			                      fieldsToRemove);
-			
-			// Update OutlineTreeView
-			
-			undoStep -> addRedoFunction (&OutlineTreeViewEditor::update, &getBrowserWindow () -> getOutlineTreeView (), node);
-			
-			getBrowserWindow () -> getOutlineTreeView () .update (node);
 
 			// Add routes to fieldsToReplace
 
@@ -765,7 +758,8 @@ NodePropertiesEditor::updateNamedNode (const std::string & name, const X3D::SFNo
 }
 
 void
-NodePropertiesEditor::setUserDefinedFields (const X3D::SFNode & node,
+NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
+                                            const X3D::SFNode & node,
                                             const X3D::FieldDefinitionArray & userDefinedFields,
                                             const X3D::FieldDefinitionArray & fieldsToRemove)
 {
@@ -778,6 +772,8 @@ NodePropertiesEditor::setUserDefinedFields (const X3D::SFNode & node,
 
 	for (const auto & field : fieldsToRemove)
 		node -> removeUserDefinedField (field);
+
+	browserWindow -> getOutlineTreeView () .update (node);
 }
 
 NodePropertiesEditor::~NodePropertiesEditor ()

@@ -1,5 +1,11 @@
 2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DOutlineTreeView.cpp:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp: 
+
+2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NodePropertiesEditor.h:
 	* NodePropertiesEditor.cpp: 
 
