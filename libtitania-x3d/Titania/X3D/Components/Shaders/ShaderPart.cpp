@@ -104,7 +104,7 @@ ShaderPart::initialize ()
 void
 ShaderPart::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
-	X3DNode::addUserDefinedField (accessType, name, field, shaderId);
+	X3DNode::addUserDefinedField (accessType, name, field);
 	
 	if (shaderId)
 		url () .addEvent ();

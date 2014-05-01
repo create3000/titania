@@ -103,7 +103,7 @@ Script::initialize ()
 void
 Script::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
-	X3DScriptNode::addUserDefinedField (accessType, name, field, javaScript);
+	X3DScriptNode::addUserDefinedField (accessType, name, field);
 	
 	if (javaScript)
 		url () .addEvent ();

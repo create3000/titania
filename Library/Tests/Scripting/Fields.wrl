@@ -5,8 +5,9 @@ DEF Timer TimeSensor {
 }
 
 DEF Debug Script {
-  eventIn SFTime   set_time
-  field   SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
+  exposedField SFBool   enabled TRUE
+  eventIn      SFTime   set_time
+  field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
 
   url "vrmlscript:
  

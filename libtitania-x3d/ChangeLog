@@ -1,5 +1,18 @@
 2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* FieldContainer.h:
+	* FieldContainer.cpp:
+	* Script.cpp:
+	* ShaderPart.cpp:
+	* ShaderProgram.cpp: 
+
+2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* Script.cpp:

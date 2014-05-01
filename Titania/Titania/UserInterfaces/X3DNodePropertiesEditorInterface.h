@@ -340,6 +340,18 @@ public:
 	{ return *m_NameEntry; }
 
 	Gtk::Expander &
+	getCommonPropertiesExpander () const
+	{ return *m_CommonPropertiesExpander; }
+
+	Gtk::Entry &
+	getComponentEntry () const
+	{ return *m_ComponentEntry; }
+
+	Gtk::Entry &
+	getContainerFieldEntry () const
+	{ return *m_ContainerFieldEntry; }
+
+	Gtk::Expander &
 	getUserDefinedFieldsExpander () const
 	{ return *m_UserDefinedFieldsExpander; }
 
@@ -526,6 +538,9 @@ private:
 	Gtk::Label*                            m_NameLabel;
 	Gtk::Entry*                            m_TypeNameEntry;
 	Gtk::Entry*                            m_NameEntry;
+	Gtk::Expander*                         m_CommonPropertiesExpander;
+	Gtk::Entry*                            m_ComponentEntry;
+	Gtk::Entry*                            m_ContainerFieldEntry;
 	Gtk::Expander*                         m_UserDefinedFieldsExpander;
 	Gtk::TreeView*                         m_UserDefinedFieldsTreeView;
 	Gtk::Button*                           m_AddFieldButton;

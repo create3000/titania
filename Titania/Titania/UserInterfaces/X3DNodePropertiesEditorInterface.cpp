@@ -183,6 +183,12 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_TypeNameEntry -> set_name ("TypeNameEntry");
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_NameEntry -> set_name ("NameEntry");
+	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
+	m_CommonPropertiesExpander -> set_name ("CommonPropertiesExpander");
+	m_builder -> get_widget ("ComponentEntry", m_ComponentEntry);
+	m_ComponentEntry -> set_name ("ComponentEntry");
+	m_builder -> get_widget ("ContainerFieldEntry", m_ContainerFieldEntry);
+	m_ContainerFieldEntry -> set_name ("ContainerFieldEntry");
 	m_builder -> get_widget ("UserDefinedFieldsExpander", m_UserDefinedFieldsExpander);
 	m_UserDefinedFieldsExpander -> set_name ("UserDefinedFieldsExpander");
 	m_builder -> get_widget ("UserDefinedFieldsTreeView", m_UserDefinedFieldsTreeView);

@@ -89,6 +89,10 @@ private:
 
 	};
 
+	using FieldToFieldIndex = std::map <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>;
+
+	///  @name Operations
+
 	void
 	validateIdOnInsert (Gtk::Entry &, const Glib::ustring &, int);
 
@@ -188,7 +192,14 @@ private:
 	void
 	updateNamedNode (const std::string &, const X3D::SFNode &, BrowserWindow* const);
 
-	using FieldToFieldIndex = std::map <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>;
+	static
+	void
+	setUserDefinedFields (BrowserWindow* const,
+	                      const X3D::BrowserPtr &,
+	                      const X3D::SFNode &,
+	                      const X3D::FieldDefinitionArray &,
+	                      const FieldToFieldIndex &,
+	                      const X3D::FieldDefinitionArray &);
 
 	///  @name Static members
 

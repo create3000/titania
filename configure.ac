@@ -90,6 +90,7 @@ if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4  -D_GLIBCXX_PARALLEL"
 fi
 
+LDFLAGS="-rdynamic"
 
 dnl ***************************************************************************
 dnl Internationalization
