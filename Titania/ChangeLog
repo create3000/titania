@@ -1,5 +1,10 @@
 2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* NodePropertiesEditor.xml:
 	* NodePropertiesEditor.h:

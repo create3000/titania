@@ -986,7 +986,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	const double field_height = minimum_height;
 
 	const auto      data     = property_data () .get_value ();
-	const int       selected = data -> get_user_data () -> selected;
+	const int       selected = data -> get_user_data () -> selected | property_cell_background_set ();
 	const Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
 
 	context -> reset_clip ();
@@ -1132,7 +1132,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
-	const int  selected      = data -> get_user_data () -> selected;
+	const int  selected      = data -> get_user_data () -> selected | property_cell_background_set ();
 	const auto color         = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
 	const auto selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 

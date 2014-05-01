@@ -6,8 +6,10 @@ DEF Timer TimeSensor {
 
 DEF Debug Script {
   exposedField SFBool   enabled TRUE
-  eventIn      SFTime   set_time
+  eventIn      SFTime   set_time1
   field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
+  eventIn      SFBool   in
+  eventOut     SFBool   out
 
   url "vrmlscript:
  
@@ -83,4 +85,6 @@ function set_time (value)
 "
 }
 
-ROUTE Timer.time TO Debug.set_time
+ROUTE Timer.time TO Debug.set_time1
+ROUTE Debug.out TO Timer.set_enabled
+ROUTE Debug.out TO Debug.in
