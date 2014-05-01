@@ -561,10 +561,10 @@ NodePropertiesEditor::on_ok ()
 	{
 		if (node -> getUserDefinedFields () not_eq userDefinedFields)
 		{
-			X3D::SFBool root;
+			X3D::X3DPtr <X3D::Script> root = new X3D::Script (getBrowser () -> getExecutionContext ());
 
 			for (const auto & field : fieldsToRemove)
-				field -> addParent (&root);
+				root -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
 			for (const auto & field : userDefinedFields)
 				node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
@@ -573,11 +573,13 @@ NodePropertiesEditor::on_ok ()
 			{
 				const auto & newField = iter .first;
 				const auto & oldField = iter .second;
-				
+
+				newField -> setUserData (oldField -> getUserData ());
+
 				if (newField -> getType () == oldField -> getType ())
 				{
 					newField -> write (*oldField);
-					
+
 					if (newField -> isInput () and oldField -> isInput ())
 					{
 						for (const auto & route : oldField -> getInputRoutes ())
@@ -593,7 +595,7 @@ NodePropertiesEditor::on_ok ()
 							{ }
 						}
 					}
-					
+
 					if (newField -> isOutput () and oldField -> isOutput ())
 					{
 						for (const auto & route : oldField -> getOutputRoutes ())
@@ -613,11 +615,7 @@ NodePropertiesEditor::on_ok ()
 			}
 
 			for (const auto & field : fieldsToRemove)
-			{
 				node -> removeUserDefinedField (field);
-
-				field -> removeParent (&root);
-			}
 
 			getBrowserWindow () -> getOutlineTreeView () .update (node);
 		}
