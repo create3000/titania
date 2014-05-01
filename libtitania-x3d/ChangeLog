@@ -1,5 +1,14 @@
 2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ShaderPart.h:
+	* Script.cpp:
+	* ShaderPart.cpp:
+	* ComposedShader.h:
+	* ShaderProgram.cpp:
+	* ComposedShader.cpp: 
+
+2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* Inline.h:

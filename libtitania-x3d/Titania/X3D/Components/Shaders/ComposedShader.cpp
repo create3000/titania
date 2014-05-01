@@ -106,6 +106,24 @@ ComposedShader::initialize ()
 }
 
 void
+ComposedShader::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+{
+	X3DShaderNode::addUserDefinedField (accessType, name, field);
+
+	if (isInitialized ())
+		loadSensor -> isActive () .addEvent ();
+}
+
+void
+ComposedShader::removeUserDefinedField (X3DFieldDefinition* const field)
+{
+	X3DShaderNode::removeUserDefinedField (field);
+
+	if (isInitialized ())
+		loadSensor -> isActive () .addEvent ();
+}
+
+void
 ComposedShader::requestExplicitRelink ()
 {
 	if (loadSensor -> isActive ())

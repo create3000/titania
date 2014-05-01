@@ -105,7 +105,7 @@ Script::addUserDefinedField (const AccessType accessType, const std::string & na
 {
 	X3DScriptNode::addUserDefinedField (accessType, name, field);
 	
-	if (javaScript)
+	if (isInitialized ())
 		url () .addEvent ();
 }
 
@@ -114,7 +114,7 @@ Script::removeUserDefinedField (X3DFieldDefinition* const field)
 {
 	X3DScriptNode::removeUserDefinedField (field);
 
-	if (javaScript)
+	if (isInitialized ())
 		url () .addEvent ();
 }
 

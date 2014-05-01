@@ -101,24 +101,6 @@ ShaderPart::initialize ()
 	}
 }
 
-void
-ShaderPart::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-{
-	X3DNode::addUserDefinedField (accessType, name, field);
-
-	if (shaderId)
-		url () .addEvent ();
-}
-
-void
-ShaderPart::removeUserDefinedField (X3DFieldDefinition* const field)
-{
-	X3DNode::removeUserDefinedField (field);
-
-	if (shaderId)
-		url () .addEvent ();
-}
-
 const MFString*
 ShaderPart::getCDataField () const
 {
