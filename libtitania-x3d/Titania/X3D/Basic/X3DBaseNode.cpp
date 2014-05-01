@@ -147,6 +147,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	               nodeId ({ 0 }),
 	               events (),
 	             comments (),
+	          initialized (false),
 	       shutdownOutput ()
 {
 	assert (browser);
@@ -169,6 +170,8 @@ X3DBaseNode::setup ()
 
 	for (const auto & child : children)
 		child -> isTainted (false);
+
+	initialized = true;
 
 	initialize ();
 }
@@ -428,7 +431,9 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	if (iter not_eq fields .end ())
 		removeField (iter, iter -> second not_eq &field);
 
-	field .isTainted (true);
+	if (not isInitialized ())
+		field .isTainted (true);
+
 	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);

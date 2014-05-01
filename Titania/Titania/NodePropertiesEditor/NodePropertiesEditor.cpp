@@ -709,26 +709,17 @@ NodePropertiesEditor::on_ok ()
 			// Set user defined fields
 
 			undoStep -> addUndoFunction (&NodePropertiesEditor::setUserDefinedFields,
-			                             getBrowserWindow (),
-			                             getBrowser (),
 			                             node,
 			                             node -> getUserDefinedFields (),
-			                             undoFieldsToReplace,
 			                             undoFieldsToRemove);
 
 			undoStep -> addRedoFunction (&NodePropertiesEditor::setUserDefinedFields,
-			                             getBrowserWindow (),
-			                             getBrowser (),
 			                             node,
 			                             userDefinedFields,
-			                             fieldsToReplace,
 			                             fieldsToRemove);
 
-			setUserDefinedFields (getBrowserWindow (),
-			                      getBrowser (),
-			                      node,
+			setUserDefinedFields (node,
 			                      userDefinedFields,
-			                      fieldsToReplace,
 			                      fieldsToRemove);
 			
 			// Update OutlineTreeView
@@ -774,21 +765,13 @@ NodePropertiesEditor::updateNamedNode (const std::string & name, const X3D::SFNo
 }
 
 void
-NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
-                                            const X3D::BrowserPtr & browser,
-                                            const X3D::SFNode & node,
+NodePropertiesEditor::setUserDefinedFields (const X3D::SFNode & node,
                                             const X3D::FieldDefinitionArray & userDefinedFields,
-                                            const FieldToFieldIndex & fieldsToReplace,
                                             const X3D::FieldDefinitionArray & fieldsToRemove)
 {
-	for (const auto & field : fieldsToRemove)
-		field -> isTainted (true);
-
 	for (const auto & field : userDefinedFields)
 	{
 		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-		field -> isTainted (false);
 
 		OutlineTreeData::get_user_data (field) -> selected |= OutlineTreeData::get_user_data (node) -> selected & OUTLINE_SELECTED;
 	}

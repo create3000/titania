@@ -80,10 +80,6 @@ public:
 
 	///  @name Tests
 
-	bool
-	isInitialized () const
-	{ return initialized; }
-
 	virtual
 	bool
 	isScene () const
@@ -545,7 +541,6 @@ private:
 	MFNode             rootNodes;
 
 	MFNode uninitializedNodes;
-	bool   initialized;
 
 };
 

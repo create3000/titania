@@ -120,6 +120,10 @@ public:
 	virtual
 	void
 	setup ();
+	
+	bool
+	isInitialized () const
+	{ return initialized; }
 
 	///  @name Commons members
 
@@ -484,6 +488,7 @@ private:
 
 	std::vector <std::string> comments; // This nodes comments
 
+	bool   initialized;
 	Output shutdownOutput; // Shutdown service
 
 };

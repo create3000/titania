@@ -77,7 +77,6 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	           scene (),
 	           group (new Group (executionContext)),
 	          future (),
-	     initialized (false),
 	       wasLoaded (false)
 {
 	addField (inputOutput,    "metadata",   metadata ());
@@ -101,8 +100,6 @@ Inline::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
-
-	initialized = true;
 
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
@@ -157,7 +154,7 @@ Inline::setScene (ScenePtr && value)
 
 	// First initialize,
 
-	if (initialized)
+	if (isInitialized ())
 		value -> setup ();
 
 	else
@@ -188,7 +185,7 @@ throw (Error <INVALID_NAME>,
 {
 	if (load ())
 	{
-		if (initialized)
+		if (isInitialized ())
 		{
 			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
 				future -> wait ();

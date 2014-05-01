@@ -107,7 +107,7 @@ void
 ShaderProgram::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
 	X3DNode::addUserDefinedField (accessType, name, field);
-	
+
 	if (programId)
 		url () .addEvent ();
 }

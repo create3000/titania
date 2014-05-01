@@ -102,8 +102,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	        externProtos (),
 	              routes (),
 	           rootNodes (),
-	  uninitializedNodes (),
-	         initialized (false)
+	  uninitializedNodes ()
 {
 	rootNodes .setName ("rootNodes"); // Set this for numClones.
 
@@ -113,8 +112,6 @@ X3DExecutionContext::X3DExecutionContext () :
 void
 X3DExecutionContext::initialize ()
 {
-	initialized = true;
-
 	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
 
 	if (not isProto ())
@@ -291,7 +288,7 @@ throw (Error <IMPORTED_NODE>,
 	namedNode -> second .isTainted (true);
 	namedNode -> second .addParent (this);
 
-	if (initialized)
+	if (isInitialized ())
 		namedNode -> second -> setup ();
 	else
 		addUninitializedNode (namedNode -> second);
@@ -428,7 +425,7 @@ throw (Error <INVALID_NODE>,
 		importedNode .isTainted (true);
 		importedNode .addParent (this);
 
-		if (initialized)
+		if (isInitialized ())
 			importedNode -> setup ();
 		else
 			addUninitializedNode (importedNode);

@@ -224,7 +224,6 @@ private:
 	GroupPtr group;
 
 	std::unique_ptr <SceneLoader> future;
-	bool                          initialized;
 	bool                          wasLoaded;
 
 };

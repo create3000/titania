@@ -194,11 +194,8 @@ private:
 
 	static
 	void
-	setUserDefinedFields (BrowserWindow* const,
-	                      const X3D::BrowserPtr &,
-	                      const X3D::SFNode &,
+	setUserDefinedFields (const X3D::SFNode &,
 	                      const X3D::FieldDefinitionArray &,
-	                      const FieldToFieldIndex &,
 	                      const X3D::FieldDefinitionArray &);
 
 	///  @name Static members
