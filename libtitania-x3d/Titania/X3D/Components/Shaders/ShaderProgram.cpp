@@ -106,13 +106,10 @@ ShaderProgram::initialize ()
 void
 ShaderProgram::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
-	X3DNode::addUserDefinedField (accessType, name, field);
+	X3DNode::addUserDefinedField (accessType, name, field, programId);
 	
 	if (programId)
-	{
-		field -> isTainted (false);
 		url () .addEvent ();
-	}
 }
 
 void

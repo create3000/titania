@@ -2,6 +2,14 @@
 
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
+	* Script.cpp:
+	* ShaderPart.cpp:
+	* ShaderProgram.cpp: 
+
+2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
 	* Script.h:
 	* Script.cpp:
 	* ShaderPart.h:

@@ -549,6 +549,17 @@ X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string
 }
 
 void
+X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field, const bool initialized)
+{
+	const bool tainted = isTainted ();
+
+	X3DBaseNode::addUserDefinedField (accessType, name, field);
+
+	if (initialized)
+		isTainted (tainted);
+}
+
+void
 X3DBaseNode::removeUserDefinedField (X3DFieldDefinition* const field)
 {
 	// Test if field is a user defined field.

@@ -398,6 +398,9 @@ protected:
 	void
 	removeField (const std::string &);
 
+	void
+	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const, const bool);
+
 	FieldDefinitionArray
 	getChangedFields () const;
 

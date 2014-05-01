@@ -103,13 +103,10 @@ Script::initialize ()
 void
 Script::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
-	X3DScriptNode::addUserDefinedField (accessType, name, field);
+	X3DScriptNode::addUserDefinedField (accessType, name, field, javaScript);
 	
 	if (javaScript)
-	{
-		field -> isTainted (false);
 		url () .addEvent ();
-	}
 }
 
 void
