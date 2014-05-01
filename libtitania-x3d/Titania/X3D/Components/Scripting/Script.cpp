@@ -100,6 +100,27 @@ Script::initialize ()
 	requestImmediateLoad ();
 }
 
+void
+Script::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+{
+	X3DScriptNode::addUserDefinedField (accessType, name, field);
+	
+	if (javaScript)
+	{
+		field -> isTainted (false);
+		url () .addEvent ();
+	}
+}
+
+void
+Script::removeUserDefinedField (X3DFieldDefinition* const field)
+{
+	X3DScriptNode::removeUserDefinedField (field);
+
+	if (javaScript)
+		url () .addEvent ();
+}
+
 const MFString*
 Script::getCDataField () const
 {

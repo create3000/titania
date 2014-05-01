@@ -548,6 +548,22 @@ X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string
 	++ numUserDefinedFields;
 }
 
+void
+X3DBaseNode::removeUserDefinedField (X3DFieldDefinition* const field)
+{
+	// Test if field is a user defined field.
+
+	const auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field);
+	
+	if (iter == fieldDefinitions .end ())
+		return;
+
+	if (not (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields)))
+		return;
+
+	removeField (field -> getName ());
+}
+
 FieldDefinitionArray
 X3DBaseNode::getPreDefinedFields () const
 {

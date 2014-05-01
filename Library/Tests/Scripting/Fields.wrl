@@ -1,20 +1,21 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.6.8
 
 DEF Timer TimeSensor {
   loop TRUE
 }
 
 DEF Debug Script {
-  field SFString    fSFString "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
-
-  eventIn SFTime set_time
+  eventIn SFTime   set_time
+  field   SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
 
   url "vrmlscript:
  
 var utf8_string = 'abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–';
 
-function set_time ()
+function set_time (value)
 {
+	//print (value);
+
 	var f01 = new SFColor     ();
 	var f02 = new SFColorRGBA ();
 	var f03 = new SFImage     ();
@@ -76,7 +77,7 @@ function set_time ()
    f36 .length = 10;
    f37 .length = 10;
 
-   fSFString = fSFString;
+   utf8 = utf8;
 }
 "
 }

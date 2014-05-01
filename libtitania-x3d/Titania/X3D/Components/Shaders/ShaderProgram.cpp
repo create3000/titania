@@ -103,6 +103,27 @@ ShaderProgram::initialize ()
 	}
 }
 
+void
+ShaderProgram::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+{
+	X3DNode::addUserDefinedField (accessType, name, field);
+	
+	if (programId)
+	{
+		field -> isTainted (false);
+		url () .addEvent ();
+	}
+}
+
+void
+ShaderProgram::removeUserDefinedField (X3DFieldDefinition* const field)
+{
+	X3DNode::removeUserDefinedField (field);
+
+	if (programId)
+		url () .addEvent ();
+}
+
 const MFString*
 ShaderProgram::getCDataField () const
 {
@@ -155,17 +176,17 @@ ShaderProgram::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (programId)
-	{
-		glDeleteProgram (programId);
-
-		programId = 0;
-	}
-
 	for (const auto & URL : url ())
 	{
 		try
 		{
+			if (programId)
+			{
+				glDeleteProgram (programId);
+
+				programId = 0;
+			}
+
 			// Create shader program
 
 			Loader            loader (getExecutionContext ());

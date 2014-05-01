@@ -471,9 +471,14 @@ NodePropertiesEditor::addUserDefinedField (X3D::X3DFieldDefinition* const field)
 void
 NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField)
 {
-	const size_t index = userDefinedFields .begin () - std::find (userDefinedFields .begin (),
-	                                                              userDefinedFields .end (),
-	                                                              oldField);
+	const auto pos = std::find (userDefinedFields .begin (),
+	                            userDefinedFields .end (),
+	                            oldField);
+
+	if (pos == userDefinedFields .end ())
+		return;
+
+	const size_t index = pos - userDefinedFields .begin ();
 
 	// Replace in list store.
 
@@ -552,14 +557,70 @@ NodePropertiesEditor::on_ok ()
 		updateNamedNode (name, node, getBrowserWindow ());
 	}
 
-	if (node -> getUserDefinedFields () not_eq userDefinedFields)
+	if (node -> hasUserDefinedFields ())
 	{
-		__LOG__ << std::endl;
-		
-		for (const auto & field : userDefinedFields)
-			node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+		if (node -> getUserDefinedFields () not_eq userDefinedFields)
+		{
+			X3D::SFBool root;
 
-		getBrowserWindow () -> getOutlineTreeView () .update (node);
+			for (const auto & field : fieldsToRemove)
+				field -> addParent (&root);
+
+			for (const auto & field : userDefinedFields)
+				node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+			for (const auto & iter : fieldsToReplace)
+			{
+				const auto & newField = iter .first;
+				const auto & oldField = iter .second;
+				
+				if (newField -> getType () == oldField -> getType ())
+				{
+					newField -> write (*oldField);
+					
+					if (newField -> isInput () and oldField -> isInput ())
+					{
+						for (const auto & route : oldField -> getInputRoutes ())
+						{
+							try
+							{
+								getBrowser () -> getExecutionContext () -> addRoute (route -> getSourceNode (),
+								                                                     route -> getSourceField (),
+								                                                     node,
+								                                                     newField -> getName ());
+							}
+							catch (const X3D::X3DError &)
+							{ }
+						}
+					}
+					
+					if (newField -> isOutput () and oldField -> isOutput ())
+					{
+						for (const auto & route : oldField -> getOutputRoutes ())
+						{
+							try
+							{
+								getBrowser () -> getExecutionContext () -> addRoute (node,
+								                                                     newField -> getName (),
+								                                                     route -> getDestinationNode (),
+								                                                     route -> getDestinationField ());
+							}
+							catch (const X3D::X3DError &)
+							{ }
+						}
+					}
+				}
+			}
+
+			for (const auto & field : fieldsToRemove)
+			{
+				node -> removeUserDefinedField (field);
+
+				field -> removeParent (&root);
+			}
+
+			getBrowserWindow () -> getOutlineTreeView () .update (node);
+		}
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

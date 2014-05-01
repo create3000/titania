@@ -108,6 +108,14 @@ public:
 
 	///  @name Operations
 
+	virtual
+	void
+	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const) final override;
+
+	virtual
+	void
+	removeUserDefinedField (X3DFieldDefinition* const) final override;
+
 	bool
 	loadDocument (const SFString &, std::string &);
 

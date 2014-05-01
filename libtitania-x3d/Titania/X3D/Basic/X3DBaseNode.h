@@ -216,8 +216,13 @@ public:
 	       Error <DISPOSED>)
 	{ return fieldDefinitions; }
 
+	virtual
 	void
 	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const);
+
+	virtual
+	void
+	removeUserDefinedField (X3DFieldDefinition* const);
 
 	FieldDefinitionArray
 	getPreDefinedFields () const;

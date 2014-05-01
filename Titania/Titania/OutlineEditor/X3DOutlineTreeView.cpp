@@ -145,6 +145,9 @@ X3DOutlineTreeView::update (X3D::X3DChildObject* const object)
 void
 X3DOutlineTreeView::update_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
+	if (not row_expanded (path))
+		return;
+
 	const bool full_expanded = is_full_expanded (iter);
 
 	collapse_row (path);
