@@ -1,3 +1,15 @@
+2014-05-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* GoldenGate.cpp:
+	* Script.h:
+	* ShaderPart.h:
+	* Script.cpp:
+	* ShaderPart.cpp:
+	* ShaderProgram.h:
+	* ShaderProgram.cpp: 
+
 2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ShaderPart.h:

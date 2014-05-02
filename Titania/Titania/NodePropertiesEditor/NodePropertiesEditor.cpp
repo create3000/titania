@@ -111,7 +111,9 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	getComponentEntry ()      .set_text (node -> getComponentName ());
 	getContainerFieldEntry () .set_text (node -> getContainerField ());
 
-	// User defined fields
+	/**
+	 * User defined fields
+	 **/
 
 	getUserDefinedFieldsExpander () .set_visible (node -> hasUserDefinedFields ());
 	getUserDefinedFieldsTreeView () .get_selection () -> set_mode (Gtk::SELECTION_SINGLE);
@@ -186,6 +188,12 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	getUserDefinedFieldsTreeView () .enable_model_drag_dest ({
 	                                                            Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
 																				}, Gdk::ACTION_MOVE);
+
+	/**
+	 * CDATA field
+	 **/
+
+	getCDataFieldExpander () .set_visible (node -> getCData ());
 }
 
 void
@@ -565,6 +573,12 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 
 		delete oldField;
 	}
+}
+
+void
+NodePropertiesEditor::on_edit_cdata_clicked ()
+{
+	getBrowserWindow () -> editCData (node);
 }
 
 void

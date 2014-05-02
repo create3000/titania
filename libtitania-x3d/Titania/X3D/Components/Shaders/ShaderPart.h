@@ -108,6 +108,16 @@ public:
 	getShaderId () const
 	{ return shaderId; }
 
+	virtual
+	MFString*
+	getCData () final override
+	{	return &url (); }
+
+	virtual
+	const MFString*
+	getCData () const final override
+	{	return &url (); }
+
 	///  @name Operations
 
 	virtual
@@ -130,10 +140,6 @@ private:
 	initialize () final override;
 
 	///  @name Operations
-
-	virtual
-	const MFString*
-	getCDataField () const final override;
 
 	GLenum
 	getShaderType () const;

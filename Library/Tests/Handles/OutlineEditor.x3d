@@ -5,8 +5,8 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V0.6.7, http://titania.create3000.de'/>
-    <meta name='modified' content='Mon, 07 Apr 2014 13:26:21 GMT'/>
+    <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
+    <meta name='modified' content='Fri, 02 May 2014 01:21:01 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -151,7 +151,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='-0 -0 -1 5.44313'
+          rotation='0 0 1 5.92372'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -307,7 +307,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified", "Mo 07 Apr 2014 10:48:32 CEST"'>
+            string='"modified", "Mo 07 Apr 2014 15:26:21 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>

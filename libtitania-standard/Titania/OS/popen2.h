@@ -51,6 +51,7 @@
 #ifndef __TITANIA_OS_POPEN2_H__
 #define __TITANIA_OS_POPEN2_H__
 
+#include <string>
 #include <unistd.h>
 
 namespace titania {
@@ -61,6 +62,20 @@ popen2 (const char* const, int* const, int* const);
 
 pid_t
 popen3 (const char*, int* const, int* const, int* const);
+
+inline
+pid_t
+popen2 (const std::string & command, int* const stdin, int* const stdout)
+{
+	return popen2 (command .c_str (), stdin, stdout);
+}
+
+inline
+pid_t
+popen3 (const std::string & command, int* const stdin, int* const stdout, int* const stderr)
+{
+	return popen3 (command .c_str (), stdin, stdout, stderr);
+}
 
 } // os
 } // titania

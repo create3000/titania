@@ -53,6 +53,8 @@
 #include "BrowserSelection.h"
 #include "MagicImport.h"
 
+#include <Titania/OS.h>
+
 namespace titania {
 namespace puck {
 
@@ -61,10 +63,11 @@ X3DBrowserEditor::X3DBrowserEditor (int argc, char** argv) :
 	        modified (false),
 	   saveConfirmed (false),
 	           scene (),
+	       selection (new BrowserSelection (getBrowserWindow ())),
 	     magicImport (new MagicImport (getBrowserWindow ())),
 	     undoHistory (),
 	    undoMatrices (),
-	       selection (new BrowserSelection (getBrowserWindow ()))
+	    fileMonitors ()
 { }
 
 void
@@ -1820,6 +1823,52 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	}
 
 	throw X3D::Error <X3D::INVALID_NODE> ("No appropriate container field found.");
+}
+
+void
+X3DBrowserEditor::editCData (const X3D::SFNode & node)
+{
+	X3D::MFString* const cdata          = node -> getCData ();
+	std::string          filename       = "/tmp/titania-XXXXXX.js";
+	const int            fileDescriptor = mkstemps (&filename [0], 3);
+
+	__LOG__ << filename << std::endl;
+
+	if (not cdata or fileDescriptor == -1)
+		return;
+
+	std::ofstream ostream (filename);
+
+	for (const auto & string : *cdata)
+	{
+		ostream
+			<< "<![CDATA["
+			<< string .getValue ()
+			<< "]]>"
+			<< std::endl;
+	}
+
+	Glib::RefPtr <Gio::File>        file        = Gio::File::create_for_path (filename);
+	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
+
+	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserEditor::on_cdata_changed), node));
+
+	fileMonitors .emplace (filename, fileMonitor);
+
+	os::popen2 ("gnome-text-editor " + filename, nullptr, nullptr); 
+
+	::close (fileDescriptor);
+}
+
+void
+X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode & node)
+{
+	__LOG__ << int (event) << std::endl;
+
+	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+		return;
+
+	__LOG__ << std::endl;
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

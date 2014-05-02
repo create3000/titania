@@ -197,6 +197,10 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_AddFieldButton -> set_name ("AddFieldButton");
 	m_builder -> get_widget ("RemoveFieldButton", m_RemoveFieldButton);
 	m_RemoveFieldButton -> set_name ("RemoveFieldButton");
+	m_builder -> get_widget ("CDataFieldExpander", m_CDataFieldExpander);
+	m_CDataFieldExpander -> set_name ("CDataFieldExpander");
+	m_builder -> get_widget ("EditCDataButton", m_EditCDataButton);
+	m_EditCDataButton -> set_name ("EditCDataButton");
 	m_builder -> get_widget ("AddFieldDialog", m_AddFieldDialog);
 	m_AddFieldDialog -> set_name ("AddFieldDialog");
 	m_builder -> get_widget ("AddFieldCancelButton", m_AddFieldCancelButton);
@@ -234,6 +238,7 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'AddFieldButton'.
 	m_AddFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_clicked));
 	m_RemoveFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_field_clicked));
+	m_EditCDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_edit_cdata_clicked));
 	m_AddFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));
 	m_AddFieldOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_ok_clicked));
 

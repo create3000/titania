@@ -367,6 +367,14 @@ public:
 	getRemoveFieldButton () const
 	{ return *m_RemoveFieldButton; }
 
+	Gtk::Expander &
+	getCDataFieldExpander () const
+	{ return *m_CDataFieldExpander; }
+
+	Gtk::Button &
+	getEditCDataButton () const
+	{ return *m_EditCDataButton; }
+
 	Gtk::Dialog &
 	getAddFieldDialog () const
 	{ return *m_AddFieldDialog; }
@@ -442,6 +450,10 @@ public:
 	virtual
 	void
 	on_remove_field_clicked () = 0;
+
+	virtual
+	void
+	on_edit_cdata_clicked () = 0;
 
 	virtual
 	void
@@ -545,6 +557,8 @@ private:
 	Gtk::TreeView*                         m_UserDefinedFieldsTreeView;
 	Gtk::Button*                           m_AddFieldButton;
 	Gtk::Button*                           m_RemoveFieldButton;
+	Gtk::Expander*                         m_CDataFieldExpander;
+	Gtk::Button*                           m_EditCDataButton;
 	Gtk::Dialog*                           m_AddFieldDialog;
 	Gtk::Button*                           m_AddFieldCancelButton;
 	Gtk::Button*                           m_AddFieldOkButton;

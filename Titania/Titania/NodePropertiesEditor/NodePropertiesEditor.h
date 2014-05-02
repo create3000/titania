@@ -178,6 +178,12 @@ private:
 	void
 	replaceUserDefinedField (X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const);
 
+	///  @name CDATA field
+
+	virtual
+	void
+	on_edit_cdata_clicked () final override;
+
 	///  @name Dialog buttons
 
 	virtual

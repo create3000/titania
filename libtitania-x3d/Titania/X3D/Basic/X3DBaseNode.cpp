@@ -1295,7 +1295,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 	FieldDefinitionArray references;
 	FieldDefinitionArray childNodes;
 
-	const MFString* const cdata = static_cast <const MFString*> (getCDataField ());
+	const MFString* cdata = getCData ();
+
+	if (cdata and cdata -> empty ())
+		cdata = nullptr;
 
 	ostream
 		<< Generator::IncIndent

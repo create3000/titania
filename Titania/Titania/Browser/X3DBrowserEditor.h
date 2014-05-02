@@ -166,18 +166,21 @@ public:
 	translateSelection (const X3D::Vector3f &, const bool);
 
 	void
+	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
 	setMatrix (const X3D::X3DTransformNodePtr &, const X3D::Matrix4d &, const UndoStepPtr &) const;
+
+	/// @name CDATA field operations
+
+	void
+	editCData (const X3D::SFNode &);
 
 	/// @name Selection operations
 
 	const std::unique_ptr <BrowserSelection> &
 	getSelection () const
 	{ return selection; }
-
-	///  @name Misc
-
-	void
-	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
 
 	///  @name Destruction
 
@@ -297,6 +300,11 @@ private:
 	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
+	///  @name CDATA field
+
+	void
+	on_cdata_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode &);
+
 	///  @name Members
 
 	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
@@ -306,10 +314,12 @@ private:
 	int           savedIndex;
 	X3D::ScenePtr scene;
 
+	std::unique_ptr <BrowserSelection> selection;
 	std::unique_ptr <MagicImport>      magicImport;
 	UndoHistory                        undoHistory;
 	UndoMatrixIndex                    undoMatrices;
-	std::unique_ptr <BrowserSelection> selection;
+
+	std::map <std::string, Glib::RefPtr <Gio::FileMonitor>> fileMonitors;
 
 };
 

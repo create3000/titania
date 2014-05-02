@@ -121,15 +121,6 @@ ShaderProgram::removeUserDefinedField (X3DFieldDefinition* const field)
 		url () .addEvent ();
 }
 
-const MFString*
-ShaderProgram::getCDataField () const
-{
-	if (url () .empty ())
-		return nullptr;
-
-	return &url ();
-}
-
 GLenum
 ShaderProgram::getShaderType () const
 {

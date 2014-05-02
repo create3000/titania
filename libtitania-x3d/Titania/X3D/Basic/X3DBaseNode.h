@@ -61,6 +61,7 @@
 #include "../Bits/X3DConstants.h"
 #include "../Fields/X3DScalar.h"
 #include "../Fields/SFTime.h"
+#include "../Fields/ArrayFields.h"
 #include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 #include "../Types/Time.h"
@@ -219,6 +220,16 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return fieldDefinitions; }
+
+	virtual
+	MFString*
+	getCData ()
+	{ return nullptr; }
+
+	virtual
+	const MFString*
+	getCData () const
+	{ return nullptr; }
 
 	virtual
 	void
@@ -404,11 +415,6 @@ protected:
 
 	FieldDefinitionArray
 	getChangedFields () const;
-
-	virtual
-	const X3DFieldDefinition*
-	getCDataField () const
-	{ return nullptr; }
 
 	virtual
 	void

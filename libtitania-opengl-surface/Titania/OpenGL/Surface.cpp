@@ -79,6 +79,7 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 
 	// Connect to map_event.
 	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
+	signal_unrealize () .connect (sigc::mem_fun (*this, &Surface::dispose));
 }
 
 Surface::Surface (const Surface & sharingSurface) :

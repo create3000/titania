@@ -106,7 +106,26 @@ public:
 	mustEvaluate () const
 	{ return *fields .mustEvaluate; }
 
+	///  @name Member access
+
+	virtual
+	MFString*
+	getCData () final override
+	{	return &url (); }
+
+	virtual
+	const MFString*
+	getCData () const final override
+	{	return &url (); }
+
 	///  @name Operations
+
+	bool
+	loadDocument (const SFString &, std::string &);
+
+	virtual
+	void
+	requestImmediateLoad () final override;
 
 	virtual
 	void
@@ -115,13 +134,6 @@ public:
 	virtual
 	void
 	removeUserDefinedField (X3DFieldDefinition* const) final override;
-
-	bool
-	loadDocument (const SFString &, std::string &);
-
-	virtual
-	void
-	requestImmediateLoad () final override;
 	
 	virtual
 	void
@@ -147,12 +159,6 @@ private:
 
 	void
 	eventsProcessed ();
-
-	///  @name Member access
-
-	virtual
-	const MFString*
-	getCDataField () const final override;
 
 	///  @name Static members
 

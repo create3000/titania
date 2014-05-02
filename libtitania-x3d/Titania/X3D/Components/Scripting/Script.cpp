@@ -118,15 +118,6 @@ Script::removeUserDefinedField (X3DFieldDefinition* const field)
 		url () .addEvent ();
 }
 
-const MFString*
-Script::getCDataField () const
-{
-	if (url () .empty ())
-		return nullptr;
-
-	return &url ();
-}
-
 bool
 Script::loadDocument (const SFString & URL, std::string & ecmascript)
 {

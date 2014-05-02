@@ -101,15 +101,6 @@ ShaderPart::initialize ()
 	}
 }
 
-const MFString*
-ShaderPart::getCDataField () const
-{
-	if (url () .empty ())
-		return nullptr;
-
-	return &url ();
-}
-
 GLenum
 ShaderPart::getShaderType () const
 {

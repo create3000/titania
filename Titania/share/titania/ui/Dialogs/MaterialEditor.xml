@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkAdjustment" id="AmbientAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -11,74 +12,20 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
   </object>
-  <object class="GtkColorSelectionDialog" id="BackDiffuseDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
-  </object>
-  <object class="GtkColorSelectionDialog" id="BackEmissiveDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
-  </object>
   <object class="GtkAdjustment" id="BackShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkColorSelectionDialog" id="BackSpecularDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
   </object>
   <object class="GtkAdjustment" id="BackTransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
   </object>
-  <object class="GtkColorSelectionDialog" id="DiffuseDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
-  </object>
-  <object class="GtkColorSelectionDialog" id="EmissiveDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
-  </object>
   <object class="GtkAdjustment" id="ShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkColorSelectionDialog" id="SpecularDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
   </object>
   <object class="GtkAdjustment" id="TransparencyAdjustment">
     <property name="upper">1</property>
@@ -100,7 +47,6 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
-            <property name="visible">False</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="EditMenuItem">
@@ -119,8 +65,8 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_copy" swapped="no"/>
+                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -130,8 +76,8 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_paste" swapped="no"/>
+                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                   </object>
@@ -176,13 +122,13 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Edit Material</property>
-                    <style>
-                      <class name="titania-header"/>
-                    </style>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                       <attribute name="scale" value="1.2"/>
                     </attributes>
+                    <style>
+                      <class name="titania-header"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -454,7 +400,6 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
-                    <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <child>
                       <object class="GtkGrid" id="grid2">
@@ -704,6 +649,438 @@
           </object>
           <packing>
             <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkColorSelectionDialog" id="BackDiffuseDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="colorselectiondialog-vbox1">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="colorselectiondialog-action_area1">
+            <property name="can_focus">False</property>
+            <child internal-child="cancel_button">
+              <object class="GtkButton" id="colorselectiondialog-cancel_button1">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="ok_button">
+              <object class="GtkButton" id="colorselectiondialog-ok_button1">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child internal-child="help_button">
+              <object class="GtkButton" id="colorselectiondialog-help_button1">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="color_selection">
+          <object class="GtkColorSelection" id="colorselectiondialog-color_selection1">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkColorSelectionDialog" id="BackEmissiveDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="colorselectiondialog-vbox2">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="colorselectiondialog-action_area2">
+            <property name="can_focus">False</property>
+            <child internal-child="cancel_button">
+              <object class="GtkButton" id="colorselectiondialog-cancel_button2">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="ok_button">
+              <object class="GtkButton" id="colorselectiondialog-ok_button2">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child internal-child="help_button">
+              <object class="GtkButton" id="colorselectiondialog-help_button2">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="color_selection">
+          <object class="GtkColorSelection" id="colorselectiondialog-color_selection2">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkColorSelectionDialog" id="BackSpecularDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="colorselectiondialog-vbox3">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="colorselectiondialog-action_area3">
+            <property name="can_focus">False</property>
+            <child internal-child="cancel_button">
+              <object class="GtkButton" id="colorselectiondialog-cancel_button3">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="ok_button">
+              <object class="GtkButton" id="colorselectiondialog-ok_button3">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child internal-child="help_button">
+              <object class="GtkButton" id="colorselectiondialog-help_button3">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="color_selection">
+          <object class="GtkColorSelection" id="colorselectiondialog-color_selection3">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkColorSelectionDialog" id="DiffuseDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="colorselectiondialog-vbox4">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="colorselectiondialog-action_area4">
+            <property name="can_focus">False</property>
+            <child internal-child="cancel_button">
+              <object class="GtkButton" id="colorselectiondialog-cancel_button4">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="ok_button">
+              <object class="GtkButton" id="colorselectiondialog-ok_button4">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child internal-child="help_button">
+              <object class="GtkButton" id="colorselectiondialog-help_button4">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="color_selection">
+          <object class="GtkColorSelection" id="colorselectiondialog-color_selection4">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkColorSelectionDialog" id="EmissiveDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="colorselectiondialog-vbox5">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="colorselectiondialog-action_area5">
+            <property name="can_focus">False</property>
+            <child internal-child="cancel_button">
+              <object class="GtkButton" id="colorselectiondialog-cancel_button5">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="ok_button">
+              <object class="GtkButton" id="colorselectiondialog-ok_button5">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child internal-child="help_button">
+              <object class="GtkButton" id="colorselectiondialog-help_button5">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="color_selection">
+          <object class="GtkColorSelection" id="colorselectiondialog-color_selection5">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkColorSelectionDialog" id="SpecularDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="colorselectiondialog-vbox6">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="colorselectiondialog-action_area6">
+            <property name="can_focus">False</property>
+            <child internal-child="cancel_button">
+              <object class="GtkButton" id="colorselectiondialog-cancel_button6">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="ok_button">
+              <object class="GtkButton" id="colorselectiondialog-ok_button6">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child internal-child="help_button">
+              <object class="GtkButton" id="colorselectiondialog-help_button6">
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="color_selection">
+          <object class="GtkColorSelection" id="colorselectiondialog-color_selection6">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>

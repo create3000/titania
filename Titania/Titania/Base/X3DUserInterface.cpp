@@ -201,12 +201,8 @@ X3DUserInterface::saveInterface ()
 bool
 X3DUserInterface::close ()
 {
-	for (const auto & dialog : dialogs)
-	{
-		dialog .second -> saveInterfaces ();
-		dialog .second -> saveInterface ();
-		dialog .second -> saveSession ();
-	}
+	for (const auto & pair : dialogs)
+		pair .second -> close ();
 
 	dialogs .clear ();
 

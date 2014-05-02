@@ -1,3 +1,17 @@
+2014-05-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* history.db:
+	* X3DUserInterface.cpp:
+	* X3DBrowserEditor.h:
+	* X3DDialogInterface.cpp:
+	* X3DBrowserEditor.cpp:
+	* MaterialEditor.xml:
+	* NodePropertiesEditor.xml:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
 2014-05-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DOutlineTreeView.cpp:
