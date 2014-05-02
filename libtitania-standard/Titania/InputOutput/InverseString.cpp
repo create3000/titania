@@ -48,101 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
-#define __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
-
-#include <istream>
-#include <string>
-#include <Titania/LOG.h>
+#include "InverseString.h"
 
 namespace titania {
 namespace io {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_quoted_string
-{
-public:
-
-	constexpr
-	basic_quoted_string (const CharT &);
-
-	bool
-	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
-
-
-private:
-
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
-
-	const CharT delimiter;
-
-};
-
-template <class CharT, class Traits>
-inline
-constexpr
-basic_quoted_string <CharT, Traits>::basic_quoted_string (const CharT & delimiter) :
-	delimiter (delimiter)
-{ }
-
-template <class CharT, class Traits>
-bool
-basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
-{
-	std::basic_string <CharT> parsed;
-
-	if (istream .peek () == (int_type) delimiter)
-	{
-		istream .get ();
-
-		while (istream)
-		{
-			const int_type c = istream .peek ();
-	
-			if (istream .eof ())
-			{
-				istream .setstate (std::ios_base::failbit);
-				return false;
-			}
-
-			if (c == '\\')
-			{
-				istream .get ();
-
-				const int_type c = istream .peek ();
-
-				if (istream .eof ())
-				{
-					istream .setstate (std::ios_base::failbit);
-					return false;
-				}
-
-				if (not (c == (int_type) delimiter or c == (int_type) '\\'))
-					parsed .push_back ('\\');
-			}
-			else if (c == (int_type) delimiter)
-			{
-				istream .get ();
-				string = std::move (parsed);
-				return true;
-			}
-
-			parsed .push_back (istream .get ());
-		}
-	}
-
-	istream .setstate (std::ios_base::failbit);
-
-	return false;
-}
-
-typedef basic_quoted_string <char>    quoted_string;
-typedef basic_quoted_string <wchar_t> wquoted_string;
-
-extern template class basic_quoted_string <char>;
-extern template class basic_quoted_string <wchar_t>;
+template class basic_inverse_string <char>;
+template class basic_inverse_string <wchar_t>;
 
 } // io
 } // titania
-
-#endif

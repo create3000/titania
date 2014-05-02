@@ -71,13 +71,38 @@ SFString::SFString (const SFString & field) :
 	X3DField <String> (field)
 { }
 
+SFString::SFString (SFString && field) :
+	SFString (std::move (field .get ()))
+{ }
+
 SFString::SFString (const String & value) :
 	X3DField <String> (value)
 { }
 
+SFString::SFString (String && value) :
+	X3DField <String> ()
+{
+	get () .swap (value);
+	value .clear ();
+}
+
 SFString::SFString (const char_type* const value) :
 	X3DField <String> (value)
 { }
+
+SFString &
+SFString::operator = (SFString && field)
+{
+	return *this = std::move (field .get ());
+}
+
+SFString &
+SFString::operator = (String && value)
+{
+	get () .swap (value);
+	value .clear ();
+	return *this;
+}
 
 SFString &
 SFString::operator = (const char_type* const value)

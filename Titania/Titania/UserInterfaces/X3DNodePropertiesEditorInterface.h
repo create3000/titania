@@ -308,6 +308,10 @@ public:
 	{ return *m_CancelButton; }
 
 	Gtk::Button &
+	getCancelButton1 () const
+	{ return *m_CancelButton1; }
+
+	Gtk::Button &
 	getOkButton () const
 	{ return *m_OkButton; }
 
@@ -410,6 +414,10 @@ public:
 	virtual
 	void
 	on_cancel () = 0;
+
+	virtual
+	void
+	on_apply () = 0;
 
 	virtual
 	void
@@ -542,6 +550,7 @@ private:
 	Gtk::MenuItem*                         m_MFVec4fMenuItem;
 	Gtk::Dialog*                           m_Window;
 	Gtk::Button*                           m_CancelButton;
+	Gtk::Button*                           m_CancelButton1;
 	Gtk::Button*                           m_OkButton;
 	Gtk::Box*                              m_Widget;
 	Gtk::Label*                            m_HeaderLabel;

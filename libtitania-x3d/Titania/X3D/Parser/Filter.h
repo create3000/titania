@@ -65,6 +65,9 @@ filter_control_characters (std::string &);
 void
 filter_bad_utf8_characters (std::string &);
 
+std::string
+escape_cdata (std::string);
+
 } // X3D
 } // titania
 

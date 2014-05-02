@@ -53,3 +53,4 @@
 #include "InputOutput/QuotedString.h"
 #include "InputOutput/String.h"
 #include "InputOutput/Sequence.h"
+#include "InputOutput/InverseString.h"

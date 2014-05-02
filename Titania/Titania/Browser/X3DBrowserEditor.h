@@ -305,6 +305,11 @@ private:
 	void
 	on_cdata_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode &);
 
+	///  @name Destruction
+
+	void
+	dispose ();
+
 	///  @name Members
 
 	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
@@ -319,7 +324,7 @@ private:
 	UndoHistory                        undoHistory;
 	UndoMatrixIndex                    undoMatrices;
 
-	std::map <std::string, Glib::RefPtr <Gio::FileMonitor>> fileMonitors;
+	std::map <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>> fileMonitors;
 
 };
 

@@ -13,9 +13,9 @@
     </Compiler>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/giomm-2.4.pc" name="giomm" IsProject="false" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/cairomm-1.0.pc" name="cairomm" IsProject="false" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glibmm-2.4.pc" name="glibmm" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/giomm-2.4.pc" name="giomm" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/cairomm-1.0.pc" name="cairomm" IsProject="False" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -136,6 +136,7 @@
     <None Include="Titania\OS\mkdir.h" />
     <None Include="Titania\OS\popen2.h" />
     <None Include="Titania\OS\system.h" />
+    <None Include="Titania\InputOutput\InverseString.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -194,12 +195,13 @@
     <Compile Include="Titania\OS\mkdir.cpp" />
     <Compile Include="Titania\OS\popen2.cpp" />
     <Compile Include="Titania\OS\system.cpp" />
+    <Compile Include="Titania\InputOutput\InverseString.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="libtitania_standard_la_SOURCES" />
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="True" Name="libtitania_standard_la_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />

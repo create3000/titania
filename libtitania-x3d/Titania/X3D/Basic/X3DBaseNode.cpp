@@ -55,6 +55,7 @@
 #include "../Fields/ArrayFields.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
+#include "../Parser/Filter.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -1524,16 +1525,11 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		if (cdata)
 		{
-			static const pcrecpp::RE cdata_end_pattern ("(\\]\\]\\>)");
-			static const std::string cdata_end_subs ("\\\\]\\\\]\\\\>");
-
 			for (std::string value : *cdata)
 			{
-				cdata_end_pattern .GlobalReplace (cdata_end_subs, &value);
-			
 				ostream
 					<< "<![CDATA["
-					<< value
+					<< escape_cdata (value)
 					<< "]]> "
 					<< Generator::Break;
 			}

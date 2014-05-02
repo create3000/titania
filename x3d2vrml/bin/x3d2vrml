@@ -556,9 +556,6 @@ sub cdata {
 
 	my $value = $xml -> getValue ();
 
-	$value =~ s/\A\s*//sgo;      # Remove spaces from beginning
-	$value =~ s/\s*$//sgo;       # Remove spaces from end
-
 	$fieldIndex -> {url} -> {value} .= ' "' . escape ($value) . '"';
 }
 

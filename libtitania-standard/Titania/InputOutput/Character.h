@@ -68,7 +68,7 @@ public:
 	basic_character (const CharT &);
 
 	bool
-	operator () (std::basic_istream <CharT, Traits> &);
+	operator () (std::basic_istream <CharT, Traits> &) const;
 
 
 private:
@@ -88,7 +88,7 @@ basic_character <CharT, Traits>::basic_character (const CharT & value) :
 
 template <class CharT, class Traits>
 bool
-basic_character <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
+basic_character <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream) const
 {
 	if (istream .peek () == (int_type) value)
 	{

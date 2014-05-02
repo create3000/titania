@@ -53,8 +53,6 @@
 #include "BrowserSelection.h"
 #include "MagicImport.h"
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace puck {
 
@@ -126,7 +124,7 @@ X3DBrowserEditor::set_shutdown ()
 {
 	if (isSaved ())
 	{
-		undoHistory .clear ();
+		dispose ();
 		return;
 	}
 
@@ -357,7 +355,7 @@ X3DBrowserEditor::close ()
 
 	if (isSaved ())
 	{
-		undoHistory .clear ();
+		dispose ();
 
 		return X3DBrowserWidget::close ();
 	}
@@ -464,7 +462,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 {
 	// Find proto declarations
 
-	std::set <X3D::X3DProtoObjectPtr>  protoDeclarations;
+	std::set <X3D::X3DProtoObjectPtr> protoDeclarations;
 
 	X3D::traverse (nodes, [&protoDeclarations] (X3D::SFNode & node)
 	               {
@@ -515,7 +513,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	// Generate text
 
 	std::ostringstream text;
-	
+
 	text .imbue (std::locale::classic ());
 
 	text
@@ -563,7 +561,7 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 		if (clipboard -> wait_is_text_available ())
 		{
 			basic::ifilestream text (clipboard -> wait_for_text ());
-			
+
 			text .imbue (std::locale::classic ());
 
 			std::string header;
@@ -611,7 +609,7 @@ X3DBrowserEditor::getPasteStatus () const
 	if (clipboard -> wait_is_text_available ())
 	{
 		std::istringstream text (clipboard -> wait_for_text ());
-		
+
 		text .imbue (std::locale::classic ());
 
 		std::string header;
@@ -739,8 +737,8 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::ScenePtr & scene, X3D::SFNode 
 
 		using isInternal = void (X3D::X3DBaseNode::*) (const bool);
 
-		undoStep -> addUndoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, child, false);
-		undoStep -> addRedoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, child, true);
+		undoStep -> addUndoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, child, false);
+		undoStep -> addRedoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, child, true);
 		child -> isInternal (true);
 	}
 }
@@ -784,8 +782,8 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 
 	using isInternal = void (X3D::X3DBaseNode::*) (const bool);
 
-	undoStep -> addUndoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, node, false);
-	undoStep -> addRedoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, node, true);
+	undoStep -> addUndoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, node, false);
+	undoStep -> addRedoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, node, true);
 	node -> isInternal (true);
 }
 
@@ -984,7 +982,7 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 void
 X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionContext, X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
-	std::set <X3D::X3DProtoObjectPtr>  protoDeclarations;
+	std::set <X3D::X3DProtoObjectPtr> protoDeclarations;
 
 	// Find proto declaration used in node and children of node
 
@@ -1829,33 +1827,47 @@ void
 X3DBrowserEditor::editCData (const X3D::SFNode & node)
 {
 	X3D::MFString* const cdata          = node -> getCData ();
-	std::string          filename       = "/tmp/titania-XXXXXX.js";
+	std::string          filename       = node -> getName () .empty () ? "/tmp/titania-XXXXXX.js" : "/tmp/titania-" + node -> getName () + "-XXXXXX.js";
 	const int            fileDescriptor = mkstemps (&filename [0], 3);
-
-	__LOG__ << filename << std::endl;
 
 	if (not cdata or fileDescriptor == -1)
 		return;
+
+	// Output file
 
 	std::ofstream ostream (filename);
 
 	for (const auto & string : *cdata)
 	{
 		ostream
+			<< std::endl
 			<< "<![CDATA["
-			<< string .getValue ()
+			<< X3D::escape_cdata (string)
 			<< "]]>"
 			<< std::endl;
 	}
+
+	// Launch TextEditor
 
 	Glib::RefPtr <Gio::File>        file        = Gio::File::create_for_path (filename);
 	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
 
 	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserEditor::on_cdata_changed), node));
+	fileMonitors .emplace (file, fileMonitor);
 
-	fileMonitors .emplace (filename, fileMonitor);
-
-	os::popen2 ("gnome-text-editor " + filename, nullptr, nullptr); 
+	try
+	{
+		Gio::AppInfo::create_from_commandline ("-gedit", "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
+	}
+	catch (...)
+	{
+		try
+		{
+			Gio::AppInfo::create_from_commandline ("gnome-text-editor", "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
+		}
+		catch (...)
+		{ }
+	}
 
 	::close (fileDescriptor);
 }
@@ -1863,12 +1875,73 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 void
 X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode & node)
 {
-	__LOG__ << int (event) << std::endl;
+	io::sequence       whitespaces ("\r\n \t");
+	io::string         cdata_start ("<![CDATA[");
+	io::inverse_string contents ("]]>");
 
 	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
 		return;
 
-	__LOG__ << std::endl;
+	// Parse file
+
+	X3D::MFString string;
+
+	std::ifstream istream (file -> get_path ());
+
+	std::string ws;
+
+	while (istream)
+	{
+		whitespaces (istream, ws);
+
+		if (cdata_start (istream))
+		{
+			std::string value;
+
+			contents (istream, value);
+
+			string .emplace_back (std::move (value));
+		}
+		else
+			break;
+	}
+
+	// Set value.
+
+	X3D::MFString* const cdata = node -> getCData ();
+
+	if (string not_eq *cdata)
+	{
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit CDATA Field"));
+
+		undoStep -> addVariables (node);
+		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, std::ref (getBrowserWindow () -> getOutlineTreeView ()));
+
+		undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
+		undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, string);
+		cdata -> setValue (string);
+
+		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, std::ref (getBrowserWindow () -> getOutlineTreeView ()));
+		getBrowserWindow () -> getOutlineTreeView () .queue_draw ();
+
+		addUndoStep (undoStep);
+	}
+	else
+		__LOG__ << std::endl;
+}
+
+void
+X3DBrowserEditor::dispose ()
+{
+	undoHistory  .clear ();
+	
+	for (const auto & fileMonitor : fileMonitors)
+	{
+		fileMonitor .second -> cancel ();
+		fileMonitor .first -> remove ();
+	}
+
+	fileMonitors .clear ();
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

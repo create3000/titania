@@ -57,62 +57,62 @@ namespace X3D {
 
 // VRML lexical elements
 // General
-io::sequence Grammar::whitespaces ("\r\n \t,");
-io::comment  Grammar::comment ('#');
+const io::sequence Grammar::whitespaces ("\r\n \t,");
+const io::comment  Grammar::comment ('#');
 
 // Header
 const pcrecpp::RE Grammar::Header ("(VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?");
 
 // Keywords
-io::string Grammar::AS ("AS");
-io::string Grammar::COMPONENT ("COMPONENT");
-io::string Grammar::DEF ("DEF");
-io::string Grammar::EXPORT ("EXPORT");
-io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
-io::string Grammar::_false ("FALSE");
-io::string Grammar::IMPORT ("IMPORT");
-io::string Grammar::IS ("IS");
-io::string Grammar::META ("META");
-io::string Grammar::_null ("NULL");
-io::string Grammar::PROFILE ("PROFILE");
-io::string Grammar::PROTO ("PROTO");
-io::string Grammar::ROUTE ("ROUTE");
-io::string Grammar::TO ("TO");
-io::string Grammar::_true ("TRUE");
-io::string Grammar::UNIT ("UNIT");
-io::string Grammar::USE ("USE");
+const io::string Grammar::AS ("AS");
+const io::string Grammar::COMPONENT ("COMPONENT");
+const io::string Grammar::DEF ("DEF");
+const io::string Grammar::EXPORT ("EXPORT");
+const io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
+const io::string Grammar::_false ("FALSE");
+const io::string Grammar::IMPORT ("IMPORT");
+const io::string Grammar::IS ("IS");
+const io::string Grammar::META ("META");
+const io::string Grammar::_null ("NULL");
+const io::string Grammar::PROFILE ("PROFILE");
+const io::string Grammar::PROTO ("PROTO");
+const io::string Grammar::ROUTE ("ROUTE");
+const io::string Grammar::TO ("TO");
+const io::string Grammar::_true ("TRUE");
+const io::string Grammar::UNIT ("UNIT");
+const io::string Grammar::USE ("USE");
 
-io::string Grammar::initializeOnly ("initializeOnly");
-io::string Grammar::inputOnly ("inputOnly");
-io::string Grammar::outputOnly ("outputOnly");
-io::string Grammar::inputOutput ("inputOutput");
+const io::string Grammar::initializeOnly ("initializeOnly");
+const io::string Grammar::inputOnly ("inputOnly");
+const io::string Grammar::outputOnly ("outputOnly");
+const io::string Grammar::inputOutput ("inputOutput");
 
-io::string Grammar::field ("field");
-io::string Grammar::eventIn ("eventIn");
-io::string Grammar::eventOut ("eventOut");
-io::string Grammar::exposedField ("exposedField");
+const io::string Grammar::field ("field");
+const io::string Grammar::eventIn ("eventIn");
+const io::string Grammar::eventOut ("eventOut");
+const io::string Grammar::exposedField ("exposedField");
 
-std::set <std::string> Grammar::FieldType = getFieldType ();
+const std::set <std::string> Grammar::FieldType = getFieldType ();
 
 // Terminal symbols
-io::character Grammar::OpenBrace ('{');
-io::character Grammar::CloseBrace ('}');
-io::character Grammar::OpenBracket ('[');
-io::character Grammar::CloseBracket (']');
-io::character Grammar::Period ('.');
-io::character Grammar::Colon (':');
+const io::character Grammar::OpenBrace ('{');
+const io::character Grammar::CloseBrace ('}');
+const io::character Grammar::OpenBracket ('[');
+const io::character Grammar::CloseBracket (']');
+const io::character Grammar::Period ('.');
+const io::character Grammar::Colon (':');
+
+// Misc
+const io::quoted_string Grammar::string ('\"');
+const io::sequence      Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
 
 // Values
-io::string Grammar::hex ("0x");
-io::string Grammar::HEX ("0X");
-
-io::quoted_string Grammar::string ('\"');
-
-io::sequence Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
+const io::string Grammar::hex ("0x");
+const io::string Grammar::HEX ("0X");
 
 // Locale
 
-io::sequence Grammar::spaces ("\r\n \t");
+const io::sequence Grammar::spaces ("\r\n \t");
 
 bool
 Grammar::Int32 (std::istream & istream, int32_t & _value)

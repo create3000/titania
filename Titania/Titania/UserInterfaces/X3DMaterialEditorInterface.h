@@ -115,30 +115,6 @@ public:
 	getTransparencyAdjustment () const
 	{ return m_TransparencyAdjustment; }
 
-	Gtk::ColorSelectionDialog &
-	getBackDiffuseDialog () const
-	{ return *m_BackDiffuseDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getBackEmissiveDialog () const
-	{ return *m_BackEmissiveDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getBackSpecularDialog () const
-	{ return *m_BackSpecularDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getDiffuseDialog () const
-	{ return *m_DiffuseDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getEmissiveDialog () const
-	{ return *m_EmissiveDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getSpecularDialog () const
-	{ return *m_SpecularDialog; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -247,6 +223,30 @@ public:
 	getBackEmissiveArea () const
 	{ return *m_BackEmissiveArea; }
 
+	Gtk::ColorSelectionDialog &
+	getBackDiffuseDialog () const
+	{ return *m_BackDiffuseDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getBackEmissiveDialog () const
+	{ return *m_BackEmissiveDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getBackSpecularDialog () const
+	{ return *m_BackSpecularDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getDiffuseDialog () const
+	{ return *m_DiffuseDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getEmissiveDialog () const
+	{ return *m_EmissiveDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getSpecularDialog () const
+	{ return *m_SpecularDialog; }
+
 	virtual
 	void
 	on_copy () = 0;
@@ -350,12 +350,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BackTransparencyAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShininessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
-	Gtk::ColorSelectionDialog*     m_BackDiffuseDialog;
-	Gtk::ColorSelectionDialog*     m_BackEmissiveDialog;
-	Gtk::ColorSelectionDialog*     m_BackSpecularDialog;
-	Gtk::ColorSelectionDialog*     m_DiffuseDialog;
-	Gtk::ColorSelectionDialog*     m_EmissiveDialog;
-	Gtk::ColorSelectionDialog*     m_SpecularDialog;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::MenuItem*                 m_EditMenuItem;
@@ -383,6 +377,12 @@ private:
 	Gtk::DrawingArea*              m_BackSpecularArea;
 	Gtk::Button*                   m_BackEmissiveButton;
 	Gtk::DrawingArea*              m_BackEmissiveArea;
+	Gtk::ColorSelectionDialog*     m_BackDiffuseDialog;
+	Gtk::ColorSelectionDialog*     m_BackEmissiveDialog;
+	Gtk::ColorSelectionDialog*     m_BackSpecularDialog;
+	Gtk::ColorSelectionDialog*     m_DiffuseDialog;
+	Gtk::ColorSelectionDialog*     m_EmissiveDialog;
+	Gtk::ColorSelectionDialog*     m_SpecularDialog;
 
 };
 

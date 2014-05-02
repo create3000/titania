@@ -90,5 +90,16 @@ filter_bad_utf8_characters (std::string & string)
 	UTF8Characters .GlobalReplace ("\\1", &string);
 }
 
+std::string
+escape_cdata (std::string string)
+{
+	static const pcrecpp::RE cdata_end_pattern (R"/((\]\]\>))/");
+	static const std::string cdata_end_subs (R"/(\\]\\]\\>)/");
+
+	cdata_end_pattern .GlobalReplace (cdata_end_subs, &string);
+
+	return string;
+}
+
 } // X3D
 } // titania

@@ -584,6 +584,13 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 void
 NodePropertiesEditor::on_ok ()
 {
+	on_apply ();
+	close ();
+}
+
+void
+NodePropertiesEditor::on_apply ()
+{
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
 
 	// Apply name change.
@@ -750,8 +757,6 @@ NodePropertiesEditor::on_ok ()
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
-
-	close ();
 }
 
 void

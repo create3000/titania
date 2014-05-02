@@ -75,8 +75,13 @@ public:
 
 	SFString (const SFString &);
 
+	SFString (SFString &&);
+
 	explicit
 	SFString (const String &);
+
+	explicit
+	SFString (String &&);
 
 	explicit
 	SFString (const char_type* const);
@@ -105,6 +110,26 @@ public:
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  Functions
+
+	SFString &
+	operator = (const SFString & field)
+	{
+		setValue (field);
+		return *this;
+	}
+
+	SFString &
+	operator = (SFString &&);
+
+	SFString &
+	operator = (const String & value)
+	{
+		setValue (value);
+		return *this;
+	}
+
+	SFString &
+	operator = (String &&);
 
 	SFString &
 	operator = (const char_type* const);
@@ -140,6 +165,11 @@ public:
 	virtual
 	void
 	toXMLStream (std::ostream &) const final override;
+
+
+private:
+
+	using X3DField <String>::get;
 
 };
 

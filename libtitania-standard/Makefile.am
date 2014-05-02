@@ -19,6 +19,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Geospatial/UniversalTransverseMercator.cpp \
 	Titania/InputOutput/Character.cpp \
 	Titania/InputOutput/Comment.cpp \
+	Titania/InputOutput/InverseString.cpp \
 	Titania/InputOutput/QuotedString.cpp \
 	Titania/InputOutput/Sequence.cpp \
 	Titania/InputOutput/String.cpp \

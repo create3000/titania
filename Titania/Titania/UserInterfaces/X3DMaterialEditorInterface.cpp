@@ -69,18 +69,6 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_TransparencyAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("BackDiffuseDialog", m_BackDiffuseDialog);
-	m_BackDiffuseDialog -> set_name ("BackDiffuseDialog");
-	m_builder -> get_widget ("BackEmissiveDialog", m_BackEmissiveDialog);
-	m_BackEmissiveDialog -> set_name ("BackEmissiveDialog");
-	m_builder -> get_widget ("BackSpecularDialog", m_BackSpecularDialog);
-	m_BackSpecularDialog -> set_name ("BackSpecularDialog");
-	m_builder -> get_widget ("DiffuseDialog", m_DiffuseDialog);
-	m_DiffuseDialog -> set_name ("DiffuseDialog");
-	m_builder -> get_widget ("EmissiveDialog", m_EmissiveDialog);
-	m_EmissiveDialog -> set_name ("EmissiveDialog");
-	m_builder -> get_widget ("SpecularDialog", m_SpecularDialog);
-	m_SpecularDialog -> set_name ("SpecularDialog");
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -135,6 +123,18 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_BackEmissiveButton -> set_name ("BackEmissiveButton");
 	m_builder -> get_widget ("BackEmissiveArea", m_BackEmissiveArea);
 	m_BackEmissiveArea -> set_name ("BackEmissiveArea");
+	m_builder -> get_widget ("BackDiffuseDialog", m_BackDiffuseDialog);
+	m_BackDiffuseDialog -> set_name ("BackDiffuseDialog");
+	m_builder -> get_widget ("BackEmissiveDialog", m_BackEmissiveDialog);
+	m_BackEmissiveDialog -> set_name ("BackEmissiveDialog");
+	m_builder -> get_widget ("BackSpecularDialog", m_BackSpecularDialog);
+	m_BackSpecularDialog -> set_name ("BackSpecularDialog");
+	m_builder -> get_widget ("DiffuseDialog", m_DiffuseDialog);
+	m_DiffuseDialog -> set_name ("DiffuseDialog");
+	m_builder -> get_widget ("EmissiveDialog", m_EmissiveDialog);
+	m_EmissiveDialog -> set_name ("EmissiveDialog");
+	m_builder -> get_widget ("SpecularDialog", m_SpecularDialog);
+	m_SpecularDialog -> set_name ("SpecularDialog");
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_copy));

@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Fri, 02 May 2014 01:21:01 GMT'/>
+    <meta name='modified' content='Fri, 02 May 2014 17:33:42 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -151,7 +151,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 5.92372'
+          rotation='0 0 1 2.79983'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -307,7 +307,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified", "Mo 07 Apr 2014 15:26:21 CEST"'>
+            string='"modified...", "Fr 02 Mai 2014 19:31:11 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -335,19 +335,20 @@
         centerOfRotation='1.83783 -0.942352 -0.631597'/>
     <TextureTransform/>
     <TextureTransform/>
-    <Script DEF='_3'>
+    <Script DEF='ModifiedScript'>
       <field accessType='outputOnly' type='MFString' name='string_changed'/>
 <![CDATA[javascript:
 function initialize ()
 {
 	var modified = Browser .currentScene .getMetaData ("modified");
 	var date = new Date (Date .parse (modified));
-	string_changed = new MFString ("modified", date .toLocaleString ());
-}]]> 
+	string_changed = new MFString ("modified...", date .toLocaleString ());
+}
+]]> 
     </Script>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
     <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
-    <ROUTE fromNode='_3' fromField='string_changed' toNode='Text2' toField='set_string'/>
+    <ROUTE fromNode='ModifiedScript' fromField='string_changed' toNode='Text2' toField='set_string'/>
   </Scene>
 </X3D>

@@ -67,7 +67,7 @@ public:
 	basic_string (const std::basic_string <CharT> &);
 
 	bool
-	operator () (std::basic_istream <CharT, Traits> &);
+	operator () (std::basic_istream <CharT, Traits> &) const;
 
 
 private:
@@ -88,7 +88,7 @@ basic_string <CharT, Traits>::basic_string (const std::basic_string <CharT> & va
 
 template <class CharT, class Traits>
 bool
-basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
+basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream) const
 {
 	const auto state = istream .rdstate ();
 

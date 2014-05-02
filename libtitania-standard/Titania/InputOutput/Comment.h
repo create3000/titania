@@ -65,7 +65,7 @@ public:
 	basic_comment (const CharT &);
 
 	bool
-	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &);
+	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
 
 private:
@@ -85,7 +85,7 @@ basic_comment <CharT, Traits>::basic_comment (const CharT & start) :
 
 template <class CharT, class Traits>
 bool
-basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string)
+basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
 	if (istream .peek () == (int_type) start)
 	{

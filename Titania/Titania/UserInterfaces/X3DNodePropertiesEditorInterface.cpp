@@ -167,6 +167,8 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("CancelButton", m_CancelButton);
 	m_CancelButton -> set_name ("CancelButton");
+	m_builder -> get_widget ("CancelButton1", m_CancelButton1);
+	m_CancelButton1 -> set_name ("CancelButton1");
 	m_builder -> get_widget ("OkButton", m_OkButton);
 	m_OkButton -> set_name ("OkButton");
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -220,6 +222,7 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'CancelButton'.
 	m_CancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_cancel));
+	m_CancelButton1 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_apply));
 	m_OkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_ok));
 
 	// Connect object Gtk::Entry with id 'TypeNameEntry'.

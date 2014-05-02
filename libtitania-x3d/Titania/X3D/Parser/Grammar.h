@@ -72,57 +72,57 @@ public:
 	Hex (std::istream &, uint32_t &);
 
 	///  @name General
-	static io::sequence whitespaces;
-	static io::comment  comment;
+	static const io::sequence whitespaces;
+	static const io::comment  comment;
 
 	///  @name Header
 	static const pcrecpp::RE Header;
 
 	///  @name Keywords
-	static io::string AS;
-	static io::string COMPONENT;
-	static io::string DEF;
-	static io::string EXPORT;
-	static io::string EXTERNPROTO;
-	static io::string _false;
-	static io::string IMPORT;
-	static io::string IS;
-	static io::string META;
-	static io::string _null;
-	static io::string PROFILE;
-	static io::string PROTO;
-	static io::string ROUTE;
-	static io::string TO;
-	static io::string _true;
-	static io::string UNIT;
-	static io::string USE;
+	static const io::string AS;
+	static const io::string COMPONENT;
+	static const io::string DEF;
+	static const io::string EXPORT;
+	static const io::string EXTERNPROTO;
+	static const io::string _false;
+	static const io::string IMPORT;
+	static const io::string IS;
+	static const io::string META;
+	static const io::string _null;
+	static const io::string PROFILE;
+	static const io::string PROTO;
+	static const io::string ROUTE;
+	static const io::string TO;
+	static const io::string _true;
+	static const io::string UNIT;
+	static const io::string USE;
 
-	static io::string initializeOnly;
-	static io::string inputOnly;
-	static io::string outputOnly;
-	static io::string inputOutput;
+	static const io::string initializeOnly;
+	static const io::string inputOnly;
+	static const io::string outputOnly;
+	static const io::string inputOutput;
 
-	static io::string field;
-	static io::string eventIn;
-	static io::string eventOut;
-	static io::string exposedField;
+	static const io::string field;
+	static const io::string eventIn;
+	static const io::string eventOut;
+	static const io::string exposedField;
 
-	static std::set <std::string> FieldType;
+	static const std::set <std::string> FieldType;
 
 	///  @name Terminal symbols
-	static io::character OpenBrace;
-	static io::character CloseBrace;
-	static io::character OpenBracket;
-	static io::character CloseBracket;
-	static io::character Period;
-	static io::character Colon;
+	static const io::character OpenBrace;
+	static const io::character CloseBrace;
+	static const io::character OpenBracket;
+	static const io::character CloseBracket;
+	static const io::character Period;
+	static const io::character Colon;
 
-	static io::quoted_string string;
-	static io::sequence      ComponentName;
+	static const io::quoted_string string;
+	static const io::sequence      ComponentName;
 
 	// Locale
 
-	static io::sequence spaces; // Whitespaces without comma
+	static const io::sequence spaces; // Whitespaces without comma
 
 private:
 
@@ -131,8 +131,8 @@ private:
 	getFieldType ();
 
 	///  @name Values
-	static io::string hex;
-	static io::string HEX;
+	static const io::string hex;
+	static const io::string HEX;
 
 };
 

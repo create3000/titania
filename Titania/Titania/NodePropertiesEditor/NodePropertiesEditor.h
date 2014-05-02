@@ -192,6 +192,10 @@ private:
 
 	virtual
 	void
+	on_apply () final override;
+
+	virtual
+	void
 	on_cancel () final override;
 
 	static

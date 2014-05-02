@@ -6,18 +6,18 @@ DEF Timer TimeSensor {
 
 DEF Debug Script {
   exposedField SFBool   enabled TRUE
-  eventIn      SFTime   set_time1
+  eventIn      SFTime   set_time
   field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
   eventIn      SFBool   in
   eventOut     SFBool   out
 
-  url "vrmlscript:
- 
+  url "javascript:
+
 var utf8_string = 'abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–';
 
 function set_time (value)
 {
-	//print (value);
+	print (value);
 
 	var f01 = new SFColor     ();
 	var f02 = new SFColorRGBA ();
@@ -36,53 +36,53 @@ function set_time (value)
 	var f15 = new SFVec4f     ();
 	var f16 = new VrmlMatrix  ();
 
-   var f17 = new MFBool      ();
-   var f18 = new MFColor     ();
-   var f19 = new MFColorRGBA ();
-   var f20 = new MFDouble    ();
-   var f21 = new MFFloat     ();
-   var f22 = new MFImage     ();
-   var f23 = new MFInt32     ();
-   var f24 = new MFMatrix3d  ();
-   var f25 = new MFMatrix3f  ();
-   var f26 = new MFMatrix4d  ();
-   var f27 = new MFMatrix4f  ();
-   var f28 = new MFNode      ();
-   var f29 = new MFRotation  ();
-   var f30 = new MFString    ();
-   var f31 = new MFTime      ();
-   var f32 = new MFVec2d     ();
-   var f33 = new MFVec2f     ();
-   var f34 = new MFVec3d     ();
-   var f35 = new MFVec3f     ();
-   var f36 = new MFVec4d     ();
-   var f37 = new MFVec4f     ();
- 
-   f17 .length = 10;
-   f18 .length = 10;
-   f19 .length = 10;
-   f20 .length = 10;
-   f21 .length = 10;
-   f22 .length = 10;
-   f23 .length = 10;
-   f24 .length = 10;
-   f25 .length = 10;
-   f26 .length = 10;
-   f27 .length = 10;
-   f28 .length = 10;
-   f29 .length = 10;
-   f30 .length = 10;
-   f31 .length = 10;
-   f32 .length = 10;
-   f33 .length = 10;
-   f34 .length = 10;
-   f35 .length = 10;
-   f36 .length = 10;
-   f37 .length = 10;
+	var f17 = new MFBool      ();
+	var f18 = new MFColor     ();
+	var f19 = new MFColorRGBA ();
+	var f20 = new MFDouble    ();
+	var f21 = new MFFloat     ();
+	var f22 = new MFImage     ();
+	var f23 = new MFInt32     ();
+	var f24 = new MFMatrix3d  ();
+	var f25 = new MFMatrix3f  ();
+	var f26 = new MFMatrix4d  ();
+	var f27 = new MFMatrix4f  ();
+	var f28 = new MFNode      ();
+	var f29 = new MFRotation  ();
+	var f30 = new MFString    ();
+	var f31 = new MFTime      ();
+	var f32 = new MFVec2d     ();
+	var f33 = new MFVec2f     ();
+	var f34 = new MFVec3d     ();
+	var f35 = new MFVec3f     ();
+	var f36 = new MFVec4d     ();
+	var f37 = new MFVec4f     ();
 
-   utf8 = utf8;
+	f17 .length = 10;
+	f18 .length = 10;
+	f19 .length = 10;
+	f20 .length = 10;
+	f21 .length = 10;
+	f22 .length = 10;
+	f23 .length = 10;
+	f24 .length = 10;
+	f25 .length = 10;
+	f26 .length = 10;
+	f27 .length = 10;
+	f28 .length = 10;
+	f29 .length = 10;
+	f30 .length = 10;
+	f31 .length = 10;
+	f32 .length = 10;
+	f33 .length = 10;
+	f34 .length = 10;
+	f35 .length = 10;
+	f36 .length = 10;
+	f37 .length = 10;
+
+	utf8 = utf8;
 }
 "
 }
 
-ROUTE Timer.time TO Debug.set_time1
+ROUTE Timer.time TO Debug.set_time

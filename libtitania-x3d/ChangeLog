@@ -1,5 +1,16 @@
 2014-05-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Filter.h:
+	* Grammar.h:
+	* RegEx.cpp:
+	* Filter.cpp:
+	* SFString.h:
+	* Grammar.cpp:
+	* SFString.cpp:
+	* X3DBaseNode.cpp: 
+
+2014-05-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* GoldenGate.cpp:
