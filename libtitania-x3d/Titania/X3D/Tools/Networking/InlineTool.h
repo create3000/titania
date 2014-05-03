@@ -87,9 +87,18 @@ public:
 	SFNode
 	getExportedNode (const std::string & exportedName) const
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
 	{ return getNode () -> getExportedNode (exportedName); }
+
+	virtual
+	const ExportedNodeArray &
+	getExportedNodes () const
+	throw (Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return getNode () -> getExportedNodes (); }
 
 	///  @name Root node handling
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -75,7 +75,8 @@ public:
 	Background*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 

@@ -158,6 +158,8 @@ X3DBrowserWidget::set_splashScreen ()
 void
 X3DBrowserWidget::restoreSession ()
 {
+	X3DBrowserWindowInterface::restoreSession ();
+
 	// Restore Menu Configuration from Config
 
 	// ToolBar
@@ -229,6 +231,8 @@ X3DBrowserWidget::saveSession ()
 
 	if (getBrowser () -> getExecutionContext () -> getWorldURL () .size ())
 		getConfig () .setItem ("worldURL", getBrowser () -> getExecutionContext () -> getWorldURL ());
+
+	X3DBrowserWindowInterface::saveSession ();
 }
 
 void

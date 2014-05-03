@@ -66,6 +66,7 @@ ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
                             const std::string & exportedName,
                             const std::string & importedName)
 throw (Error <INVALID_NAME>,
+       Error <NODE_NOT_AVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
@@ -86,7 +87,8 @@ ImportedNode::create (X3DExecutionContext* const executionContext) const
 ImportedNode*
 ImportedNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Cloning imported nodes is not supported.");
 }
@@ -94,7 +96,8 @@ throw (Error <INVALID_NAME>,
 ImportedNode*
 ImportedNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	try
 	{

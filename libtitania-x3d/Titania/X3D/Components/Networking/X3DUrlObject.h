@@ -81,7 +81,8 @@ public:
 	X3DUrlObject*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) override;
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <NOT_SUPPORTED>) override;
 
 	///  @name Member access
 
@@ -120,7 +121,7 @@ protected:
 	{ loadState = value; }
 
 	///  @name Operations
-	
+
 	void
 	disableEvents ();
 

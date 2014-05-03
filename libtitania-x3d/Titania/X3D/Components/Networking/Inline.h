@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -121,6 +121,14 @@ public:
 	SFNode
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	const ExportedNodeArray &
+	getExportedNodes () const
+	throw (Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -145,11 +153,11 @@ public:
 	virtual
 	void
 	traverse (const TraverseType) override;
-	
+
 	virtual
 	void
 	saveState () override;
-	
+
 	virtual
 	void
 	restoreState () override;
@@ -183,13 +191,19 @@ protected:
 
 private:
 
-	///  @name Event handling
+	///  @name Event handlers
 
 	void
 	setSceneAsync (ScenePtr &&);
 
 	void
 	setScene (ScenePtr &&);
+
+	const ScenePtr &
+	getScene () const
+	throw (Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	void
 	requestAsyncLoad ();

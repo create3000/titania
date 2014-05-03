@@ -95,7 +95,8 @@ Proto::create (X3DExecutionContext* const executionContext) const
 Proto*
 Proto::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	executionContext -> updateProtoDeclaration (this -> getName (), const_cast <Proto*> (this));
 
@@ -105,7 +106,8 @@ throw (Error <INVALID_NAME>,
 Proto*
 Proto::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	Proto* const copy = create (executionContext);
 

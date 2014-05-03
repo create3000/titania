@@ -60,12 +60,18 @@ X3DDialogInterface::X3DDialogInterface (const std::string & widgetName, const st
 { }
 
 void
+X3DDialogInterface::construct ()
+{
+	X3DUserInterface::construct ();
+}
+
+void
 X3DDialogInterface::restoreSession ()
 {
-	setupGridLabels (getWidget ());
-	restoreExpander (getWidget ());
-
 	X3DUserInterface::restoreSession ();
+
+	restoreExpander (getWidget ());
+	//setupGridLabels (getWidget ()); // XXX does not realy work.
 }
 
 void
@@ -77,20 +83,51 @@ X3DDialogInterface::saveSession ()
 }
 
 void
+X3DDialogInterface::restoreExpander (Gtk::Widget & widget) const
+{
+	std::vector <Gtk::Expander*> expanders;
+
+	getWidgets <Gtk::Expander> (&widget, expanders);
+
+	for (auto & expander : expanders)
+	{
+		if (not expander -> get_name () .empty ())
+		{
+			if (getConfig () .hasItem (expander -> get_name ()))
+				expander -> set_expanded (getConfig () .getBoolean (expander -> get_name ()));
+		}
+	}
+}
+
+void
+X3DDialogInterface::saveExpander (Gtk::Widget & widget)
+{
+	std::vector <Gtk::Expander*> expanders;
+
+	getWidgets <Gtk::Expander> (&widget, expanders);
+
+	for (auto & expander : expanders)
+	{
+		if (not expander -> get_name () .empty ())
+			getConfig () .setItem (expander -> get_name (), expander -> get_expanded ());
+	}
+}
+
+void
 X3DDialogInterface::setupGridLabels (Gtk::Widget & widget)
 {
 	std::vector <Gtk::Label*> labels;
 
 	getLabels (&widget, labels);
 
-	int maxWidth = 0;
+	int width = 0;
 
 	for (auto & label : labels)
-		maxWidth = std::max (maxWidth, label -> get_width ());
+		width = std::max (width, label -> get_width ());
 
 	for (auto & label : labels)
 	{
-		label -> set_size_request (maxWidth, -1);
+		label -> set_size_request (width, -1);
 		label -> set_alignment (1, 0.5);
 	}
 }
@@ -124,37 +161,6 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 			getLabels (child, labels);
 
 		return;
-	}
-}
-
-void
-X3DDialogInterface::restoreExpander (Gtk::Widget & widget) const
-{
-	std::vector <Gtk::Expander*> expanders;
-
-	getWidgets <Gtk::Expander> (&widget, expanders);
-
-	for (auto & expander : expanders)
-	{
-		if (not expander -> get_name () .empty ())
-		{
-			if (getConfig () .hasItem (expander -> get_name ()))
-				expander -> set_expanded (getConfig () .getBoolean (expander -> get_name ()));
-		}
-	}
-}
-
-void
-X3DDialogInterface::saveExpander (Gtk::Widget & widget)
-{
-	std::vector <Gtk::Expander*> expanders;
-
-	getWidgets <Gtk::Expander> (&widget, expanders);
-
-	for (auto & expander : expanders)
-	{
-		if (not expander -> get_name () .empty ())
-			getConfig () .setItem (expander -> get_name (), expander -> get_expanded ());
 	}
 }
 

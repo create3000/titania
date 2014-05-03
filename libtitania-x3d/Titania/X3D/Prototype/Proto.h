@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,13 +78,15 @@ public:
 	Proto*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	Proto*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Instance construction
 
@@ -145,7 +147,7 @@ public:
 	toXMLStream (std::ostream &) const final override;
 
 	///  @name Destuction
-	
+
 	virtual
 	void
 	dispose () final override;
@@ -154,7 +156,7 @@ public:
 private:
 
 	///  @name Construction
-	
+
 	virtual
 	void
 	initialize () final override;

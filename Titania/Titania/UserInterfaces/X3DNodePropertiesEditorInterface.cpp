@@ -61,10 +61,14 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_UserDefinedFieldsTreeviewSelection = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("UserDefinedFieldsTreeviewSelection"));
-	m_CellRendererType                   = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererType"));
-	m_CellRendererName                   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererName"));
-	m_CellRendererAccessType             = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererAccessType"));
+	m_ImportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ImportedNodesListStore"));
+	m_UserDefinedFieldsTreeviewSelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("UserDefinedFieldsTreeviewSelection"));
+	m_CellRendererType                          = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererType"));
+	m_CellRendererName                          = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererName"));
+	m_CellRendererAccessType                    = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererAccessType"));
+	m_ImportedNodesImportedCellrendererToggle   = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedCellrendererToggle"));
+	m_ImportedNodesExportedNameCellrendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesExportedNameCellrendererText"));
+	m_ImportedNodesImportedNameCellrendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedNameCellrendererText"));
 
 	// Get widgets.
 	m_builder -> get_widget ("AccessTypeMenu", m_AccessTypeMenu);
@@ -203,6 +207,10 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_CDataFieldExpander -> set_name ("CDataFieldExpander");
 	m_builder -> get_widget ("EditCDataButton", m_EditCDataButton);
 	m_EditCDataButton -> set_name ("EditCDataButton");
+	m_builder -> get_widget ("ImportedNodesExpander", m_ImportedNodesExpander);
+	m_ImportedNodesExpander -> set_name ("ImportedNodesExpander");
+	m_builder -> get_widget ("ImportedNodesTreeView", m_ImportedNodesTreeView);
+	m_ImportedNodesTreeView -> set_name ("ImportedNodesTreeView");
 	m_builder -> get_widget ("AddFieldDialog", m_AddFieldDialog);
 	m_AddFieldDialog -> set_name ("AddFieldDialog");
 	m_builder -> get_widget ("AddFieldCancelButton", m_AddFieldCancelButton);

@@ -76,6 +76,10 @@ protected:
 
 	virtual
 	void
+	construct ();
+
+	virtual
+	void
 	restoreSession () override;
 
 	virtual
@@ -85,6 +89,12 @@ protected:
 
 private:
 	
+	void
+	restoreExpander (Gtk::Widget &) const;
+
+	void
+	saveExpander (Gtk::Widget &);
+
 	static
 	void
 	setupGridLabels (Gtk::Widget &);
@@ -92,12 +102,6 @@ private:
 	static
 	void
 	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels);
-	
-	void
-	restoreExpander (Gtk::Widget &) const;
-
-	void
-	saveExpander (Gtk::Widget &);
 
 	template <class Type>
 	static

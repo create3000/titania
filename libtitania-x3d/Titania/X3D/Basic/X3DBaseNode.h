@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,9 +59,9 @@
 #include "../Bits/Error.h"
 #include "../Bits/TraverseType.h"
 #include "../Bits/X3DConstants.h"
-#include "../Fields/X3DScalar.h"
-#include "../Fields/SFTime.h"
 #include "../Fields/ArrayFields.h"
+#include "../Fields/SFTime.h"
+#include "../Fields/X3DScalar.h"
 #include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 #include "../Types/Time.h"
@@ -97,13 +97,15 @@ public:
 	X3DBaseNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>);
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <NOT_SUPPORTED>);
 
 	virtual
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>);
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <NOT_SUPPORTED>);
 
 	X3DBaseNode*
 	copy (X3DExecutionContext* const, const FlattCopyType &) const
@@ -116,12 +118,12 @@ public:
 	void
 	assign (const X3DBaseNode* const)
 	throw (Error <INVALID_NODE>,
-          Error <INVALID_FIELD>);
+	       Error <INVALID_FIELD>);
 
 	virtual
 	void
 	setup ();
-	
+
 	bool
 	isInitialized () const
 	{ return initialized; }
@@ -163,7 +165,7 @@ public:
 	{ return this; }
 
 	///  @name Field handling
-	
+
 	bool
 	existsField (X3DFieldDefinition* const) const;
 
@@ -270,7 +272,7 @@ public:
 
 	void
 	isInternal (const bool);
-	
+
 	bool
 	isSaved () const
 	{ return saved; }
@@ -299,34 +301,34 @@ public:
 
 	void
 	addInterest (X3DBaseNode* const object) const
-	{ addInterest (object, (void (X3DBaseNode::*) ()) &X3DBaseNode::addEvent); }
-	
+	{ addInterest (object, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
+
 	template <class ValueType>
 	void
 	addInterest (X3DField <ValueType>* const object) const
-	{ addInterest (object, (void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent); }
+	{ addInterest (object, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
 	template <class ValueType>
 	void
 	addInterest (X3DField <ValueType> & object) const
-	{ addInterest (&object);}
+	{ addInterest (&object); }
 
 	void
 	removeInterest (X3DBaseNode* const object) const
-	{ removeInterest (object, (void (X3DBaseNode::*) ()) &X3DBaseNode::addEvent); }
+	{ removeInterest (object, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
 
 	template <class ValueType>
 	void
 	removeInterest (X3DField <ValueType>* const object) const
-	{ removeInterest (object, (void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent); }
+	{ removeInterest (object, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
 	template <class ValueType>
 	void
 	removeInterest (X3DField <ValueType> & object) const
-	{ removeInterest (&object);}
+	{ removeInterest (&object); }
 
 	///  @name Event handling
-	
+
 	virtual
 	void
 	addEvent (X3DChildObject* const) override;
@@ -446,7 +448,7 @@ protected:
 
 private:
 
-	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
+	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>  >;
 
 	///  @name Misc
 
@@ -480,11 +482,11 @@ private:
 
 	NodeTypeArray nodeType;
 
-	FieldDefinitionArray fieldDefinitions;      // Pre-defined and user-defined field definitions
-	FieldIndex           fields;                // Pre-defined and user-defined fields
-	FieldAliasIndex      fieldAliases;          // VRML names
-	size_t               numUserDefinedFields;  // Number of user defined fields
-	ChildObjectSet       children;              // Internal used fields
+	FieldDefinitionArray fieldDefinitions;       // Pre-defined and user-defined field definitions
+	FieldIndex           fields;                 // Pre-defined and user-defined fields
+	FieldAliasIndex      fieldAliases;           // VRML names
+	size_t               numUserDefinedFields;   // Number of user defined fields
+	ChildObjectSet       children;               // Internal used fields
 
 	bool                  internal;              // Is this node interally used
 	bool                  saved;                 // Is this node hidden and saved
@@ -492,10 +494,10 @@ private:
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;
 
-	std::vector <std::string> comments; // This nodes comments
+	std::vector <std::string> comments;          // This nodes comments
 
 	bool   initialized;
-	Output shutdownOutput; // Shutdown service
+	Output shutdownOutput;                       // Shutdown service
 
 };
 

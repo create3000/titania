@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -101,6 +101,7 @@ public:
 	void
 	importScene (const ScenePtr &)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

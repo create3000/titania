@@ -191,7 +191,8 @@ X3DBaseNode::setup ()
 X3DBaseNode*
 X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	if (getName () .empty ())
 		return copy (executionContext);
@@ -223,7 +224,8 @@ throw (Error <INVALID_NAME>,
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	const SFNode copy = create (executionContext); // Never try to optimize this.
 

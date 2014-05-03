@@ -109,22 +109,23 @@ Inline::initialize ()
 		setScene (std::move (scene));
 		setLoadState (COMPLETE_STATE);
 	}
-
-	if (X3D_PARALLEL)
-	{
-		if (checkLoadState () == NOT_STARTED_STATE)
-			setScene (ScenePtr (getBrowser () -> getScene ()));
-
-		if (load ())
-			requestAsyncLoad ();
-	}
 	else
 	{
-		if (load ())
-			requestImmediateLoad ();
-
-		else
+		if (X3D_PARALLEL)
+		{
 			setScene (ScenePtr (getBrowser () -> getScene ()));
+
+			if (load ())
+				requestAsyncLoad ();
+		}
+		else
+		{
+			if (load ())
+				requestImmediateLoad ();
+
+			else
+				setScene (ScenePtr (getBrowser () -> getScene ()));
+		}
 	}
 
 	group -> isInternal (true);
@@ -168,19 +169,10 @@ Inline::setScene (ScenePtr && value)
 	group -> children () = scene -> getRootNodes ();
 }
 
-Box3f
-Inline::getBBox () const
-{
-	if (bboxSize () == Vector3f (-1, -1, -1))
-		return group -> getBBox ();
-
-	return Box3f (bboxSize (), bboxCenter ());
-}
-
-SFNode
-Inline::getExportedNode (const std::string & exportedName) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
+const ScenePtr &
+Inline::getScene () const
+throw (Error <NODE_NOT_AVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (load ())
@@ -191,7 +183,7 @@ throw (Error <INVALID_NAME>,
 				future -> wait ();
 
 			if (checkLoadState () == COMPLETE_STATE)
-				return scene -> getExportedNode (exportedName);
+				return scene;
 		}
 		else
 		{
@@ -212,13 +204,41 @@ throw (Error <INVALID_NAME>,
 			{ }
 
 			if (scene)
-				return scene -> getExportedNode (exportedName);
+				return scene;
 
 			// End thread save part
 		}
 	}
 
-	throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
+	throw Error <NODE_NOT_AVAILABLE> ("Inline node '" + getName () + "' has not yet been loaded.");
+}
+
+Box3f
+Inline::getBBox () const
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+		return group -> getBBox ();
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
+SFNode
+Inline::getExportedNode (const std::string & exportedName) const
+throw (Error <INVALID_NAME>,
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return getScene () -> getExportedNode (exportedName);
+}
+
+const ExportedNodeArray &
+Inline::getExportedNodes () const
+throw (Error <NODE_NOT_AVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return getScene () -> getExportedNodes ();
 }
 
 void

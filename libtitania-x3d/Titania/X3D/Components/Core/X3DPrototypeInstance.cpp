@@ -69,6 +69,10 @@ const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & prototype) :
+//throw (Error <INVALID_NAME>,
+//       Error <NODE_NOT_AVAILABLE>,
+//       Error <INVALID_OPERATION_TIMING>,
+//       Error <DISPOSED>) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
@@ -108,9 +112,14 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 		setUnits (proto -> getUnits ());
 
-		importExternProtos (proto, CloneType ());
-		importProtos (proto, CloneType ());
-		importRootNodes (proto);
+		try
+		{
+			importExternProtos (proto, CloneType ());
+			importProtos (proto, CloneType ());
+			importRootNodes (proto);
+		}
+		catch (const X3DError &)
+		{ }
 	}
 
 	setExtendedEventHandling (false);
@@ -136,15 +145,20 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 void
 X3DPrototypeInstance::initialize ()
 {
-	if (not getExecutionContext () -> isProto ())
+	try
 	{
-		// Defer assigning imports and routes until now
+		if (not getExecutionContext () -> isProto ())
+		{
+			// Defer assigning imports and routes until now
 
-		Proto* const proto = protoDeclaration -> getProto ();
+			Proto* const proto = protoDeclaration -> getProto ();
 
-		importImportedNodes (proto);
-		importRoutes (proto);
+			importImportedNodes (proto);
+			importRoutes (proto);
+		}
 	}
+	catch (const X3DError &)
+	{ }
 
 	X3DNode::initialize ();
 	X3DExecutionContext::initialize ();

@@ -329,9 +329,9 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 
 			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}
-		catch (const X3DError & exception)
+		catch (const X3DError & error)
 		{
-			JS_ReportError (context, exception .what ());
+			JS_ReportError (context, error .what ());
 			return JS_FALSE;
 		}
 	}

@@ -91,6 +91,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getImportedNodesListStore () const
+	{ return m_ImportedNodesListStore; }
+
 	const Glib::RefPtr <Gtk::TreeSelection> &
 	getUserDefinedFieldsTreeviewSelection () const
 	{ return m_UserDefinedFieldsTreeviewSelection; }
@@ -106,6 +110,18 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getCellRendererAccessType () const
 	{ return m_CellRendererAccessType; }
+
+	const Glib::RefPtr <Gtk::CellRendererToggle> &
+	getImportedNodesImportedCellrendererToggle () const
+	{ return m_ImportedNodesImportedCellrendererToggle; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getImportedNodesExportedNameCellrendererText () const
+	{ return m_ImportedNodesExportedNameCellrendererText; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getImportedNodesImportedNameCellrendererText () const
+	{ return m_ImportedNodesImportedNameCellrendererText; }
 
 	Gtk::Menu &
 	getAccessTypeMenu () const
@@ -379,6 +395,14 @@ public:
 	getEditCDataButton () const
 	{ return *m_EditCDataButton; }
 
+	Gtk::Expander &
+	getImportedNodesExpander () const
+	{ return *m_ImportedNodesExpander; }
+
+	Gtk::TreeView &
+	getImportedNodesTreeView () const
+	{ return *m_ImportedNodesTreeView; }
+
 	Gtk::Dialog &
 	getAddFieldDialog () const
 	{ return *m_AddFieldDialog; }
@@ -496,10 +520,14 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::ListStore>          m_ImportedNodesListStore;
 	Glib::RefPtr <Gtk::TreeSelection>      m_UserDefinedFieldsTreeviewSelection;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererType;
 	Glib::RefPtr <Gtk::CellRendererText>   m_CellRendererName;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererAccessType;
+	Glib::RefPtr <Gtk::CellRendererToggle> m_ImportedNodesImportedCellrendererToggle;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesExportedNameCellrendererText;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesImportedNameCellrendererText;
 	Gtk::Menu*                             m_AccessTypeMenu;
 	Gtk::MenuItem*                         m_InitializeOnlyMenuItem;
 	Gtk::MenuItem*                         m_InputOnlyMenuItem;
@@ -568,6 +596,8 @@ private:
 	Gtk::Button*                           m_RemoveFieldButton;
 	Gtk::Expander*                         m_CDataFieldExpander;
 	Gtk::Button*                           m_EditCDataButton;
+	Gtk::Expander*                         m_ImportedNodesExpander;
+	Gtk::TreeView*                         m_ImportedNodesTreeView;
 	Gtk::Dialog*                           m_AddFieldDialog;
 	Gtk::Button*                           m_AddFieldCancelButton;
 	Gtk::Button*                           m_AddFieldOkButton;

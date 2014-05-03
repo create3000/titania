@@ -226,7 +226,8 @@ throw (Error <INVALID_NAME>,
 SFNode
 X3DExecutionContext::getNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
@@ -399,6 +400,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <NODE_IN_USE>,
        Error <URL_UNAVAILABLE>,
+       Error <NODE_NOT_AVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -449,6 +451,7 @@ X3DExecutionContext::updateImportedNode (const InlinePtr & inlineNode, const std
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,
+       Error <NODE_NOT_AVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -473,6 +476,7 @@ throw (Error <INVALID_NODE>,
 SFNode
 X3DExecutionContext::getImportedNode (const std::string & importedName) const
 throw (Error <INVALID_NAME>,
+       Error <NODE_NOT_AVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -807,7 +811,8 @@ throw (Error <INVALID_NODE>,
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CloneType &)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProto -> clone (this);
@@ -816,7 +821,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProto -> copy (this);
@@ -825,7 +831,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CloneType &)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
 		proto -> clone (this);
@@ -834,7 +841,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
 		proto -> copy (this);
@@ -843,7 +851,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
@@ -858,7 +867,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode -> copy (this);
@@ -867,7 +877,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
 		route -> copy (this);

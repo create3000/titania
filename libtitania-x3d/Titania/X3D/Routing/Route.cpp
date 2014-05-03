@@ -86,7 +86,8 @@ Route::create (X3DExecutionContext* const) const
 Route*
 Route::clone (X3DExecutionContext* const) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Cloning routes is not supported.");
 }
@@ -94,7 +95,8 @@ throw (Error <INVALID_NAME>,
 Route*
 Route::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	try
 	{

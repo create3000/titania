@@ -37,6 +37,7 @@ $objects {$_} = true foreach qw(
 	Gtk::TextBuffer
 	Gtk::TreeViewColumn
 	Gtk::CellRendererText
+	Gtk::CellRendererToggle
 	Gtk::CellRendererPixbuf
 	Gtk::TreeSelection
 );

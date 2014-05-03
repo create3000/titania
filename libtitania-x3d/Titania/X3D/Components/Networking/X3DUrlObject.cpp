@@ -72,7 +72,8 @@ X3DUrlObject::X3DUrlObject () :
 X3DUrlObject*
 X3DUrlObject::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>)
 {
 	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
 

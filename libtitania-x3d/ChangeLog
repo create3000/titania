@@ -1,5 +1,36 @@
 2014-05-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Route.h:
+	* Scene.h:
+	* Proto.h:
+	* Route.cpp:
+	* X3DBaseNode.h:
+	* Scene.cpp:
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* NamedNode.h:
+	* NamedNode.cpp:
+	* ExternProto.h:
+	* ExportedNode.h:
+	* ImportedNode.h:
+	* ExternProto.cpp:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* InlineTool.h:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DUrlObject.h:
+	* jsX3DScene.cpp:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.cpp:
+	* Background.h:
+	* Background.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2014-05-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Script.cpp: 
 
 2014-05-02  Holger Seelig  <holger.seelig@yahoo.de>

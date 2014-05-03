@@ -77,7 +77,8 @@ Scene::create (X3DExecutionContext* const executionContext) const
 void
 Scene::importScene (const ScenePtr & scene)
 throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>,
+       Error <NODE_NOT_AVAILABLE>,
+	    Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {

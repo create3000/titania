@@ -207,6 +207,7 @@ public:
 	SFNode
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -266,6 +267,7 @@ public:
 	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
 	       Error <URL_UNAVAILABLE>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -279,12 +281,14 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	SFNode
 	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -460,36 +464,43 @@ protected:
 	void
 	importExternProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importExternProtos (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importProtos (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importRootNodes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importImportedNodes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importRoutes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 

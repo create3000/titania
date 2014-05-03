@@ -90,6 +90,10 @@ reverse (const std::map <Key, Value, Compare, Allocator> & index)
 
 const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "titania/node-properties/user-defined-field";
 
+static constexpr int IMPORTED_COLUMN      = 0;
+static constexpr int EXPORTED_NAME_COLUMN = 1;
+static constexpr int IMPORTED_NAME_COLUMN = 2;
+
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodePropertiesEditorInterface (get_ui ("Dialogs/NodePropertiesEditor.xml"), gconf_dir ()),
@@ -116,84 +120,131 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	 **/
 
 	getUserDefinedFieldsExpander () .set_visible (node -> hasUserDefinedFields ());
-	getUserDefinedFieldsTreeView () .get_selection () -> set_mode (Gtk::SELECTION_SINGLE);
-	getUserDefinedFieldsTreeView () .set_model (userDefinedFieldsListStore);
+	
+	if (node -> hasUserDefinedFields ())
+	{
+		getUserDefinedFieldsTreeView () .get_selection () -> set_mode (Gtk::SELECTION_SINGLE);
+		getUserDefinedFieldsTreeView () .set_model (userDefinedFieldsListStore);
 
-	for (const auto & field : node -> getPreDefinedFields ())
-		addField (field);
+		for (const auto & field : node -> getPreDefinedFields ())
+			addField (field);
 
-	for (const auto & field : node -> getUserDefinedFields ())
-		addUserDefinedField (field);
+		for (const auto & field : node -> getUserDefinedFields ())
+			addUserDefinedField (field);
 
-	getCellRendererAccessType () -> property_xalign () = 0;
-	getCellRendererAccessType () -> property_xpad ()   = 4;
+		getCellRendererAccessType () -> property_xalign () = 0;
+		getCellRendererAccessType () -> property_xpad ()   = 4;
 
-	getInitializeOnlyMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "initializeOnly"));
-	getInputOnlyMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "inputOnly"));
-	getOutputOnlyMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "outputOnly"));
-	getInputOutputMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "inputOutput"));
+		getInitializeOnlyMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "initializeOnly"));
+		getInputOnlyMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "inputOnly"));
+		getOutputOnlyMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "outputOnly"));
+		getInputOutputMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_access_type_activate), "inputOutput"));
 
-	getSFBoolMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFBool"));
-	getSFColorRGBAMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFColorRGBA"));
-	getSFColorMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFColor"));
-	getSFDoubleMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFDouble"));
-	getSFFloatMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFFloat"));
-	getSFImageMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFImage"));
-	getSFInt32MenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFInt32"));
-	getSFMatrix3dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix3d"));
-	getSFMatrix3fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix3f"));
-	getSFMatrix4dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix4d"));
-	getSFMatrix4fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix4f"));
-	getSFNodeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFNode"));
-	getSFRotationMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFRotation"));
-	getSFStringMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFString"));
-	getSFTimeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFTime"));
-	getSFVec2dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec2d"));
-	getSFVec2fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec2f"));
-	getSFVec3dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec3d"));
-	getSFVec3fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec3f"));
-	getSFVec4dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec4d"));
-	getSFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec4f"));
+		getSFBoolMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFBool"));
+		getSFColorRGBAMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFColorRGBA"));
+		getSFColorMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFColor"));
+		getSFDoubleMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFDouble"));
+		getSFFloatMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFFloat"));
+		getSFImageMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFImage"));
+		getSFInt32MenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFInt32"));
+		getSFMatrix3dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix3d"));
+		getSFMatrix3fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix3f"));
+		getSFMatrix4dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix4d"));
+		getSFMatrix4fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFMatrix4f"));
+		getSFNodeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFNode"));
+		getSFRotationMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFRotation"));
+		getSFStringMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFString"));
+		getSFTimeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFTime"));
+		getSFVec2dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec2d"));
+		getSFVec2fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec2f"));
+		getSFVec3dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec3d"));
+		getSFVec3fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec3f"));
+		getSFVec4dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec4d"));
+		getSFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "SFVec4f"));
 
-	getMFBoolMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFBool"));
-	getMFColorRGBAMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFColorRGBA"));
-	getMFColorMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFColor"));
-	getMFDoubleMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFDouble"));
-	getMFFloatMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFFloat"));
-	getMFImageMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFImage"));
-	getMFInt32MenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFInt32"));
-	getMFMatrix3dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix3d"));
-	getMFMatrix3fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix3f"));
-	getMFMatrix4dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix4d"));
-	getMFMatrix4fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix4f"));
-	getMFNodeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFNode"));
-	getMFRotationMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFRotation"));
-	getMFStringMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFString"));
-	getMFTimeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFTime"));
-	getMFVec2dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec2d"));
-	getMFVec2fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec2f"));
-	getMFVec3dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec3d"));
-	getMFVec3fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec3f"));
-	getMFVec4dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec4d"));
-	getMFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec4f"));
+		getMFBoolMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFBool"));
+		getMFColorRGBAMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFColorRGBA"));
+		getMFColorMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFColor"));
+		getMFDoubleMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFDouble"));
+		getMFFloatMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFFloat"));
+		getMFImageMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFImage"));
+		getMFInt32MenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFInt32"));
+		getMFMatrix3dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix3d"));
+		getMFMatrix3fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix3f"));
+		getMFMatrix4dMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix4d"));
+		getMFMatrix4fMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFMatrix4f"));
+		getMFNodeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFNode"));
+		getMFRotationMenuItem ()  .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFRotation"));
+		getMFStringMenuItem ()    .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFString"));
+		getMFTimeMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFTime"));
+		getMFVec2dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec2d"));
+		getMFVec2fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec2f"));
+		getMFVec3dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec3d"));
+		getMFVec3fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec3f"));
+		getMFVec4dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec4d"));
+		getMFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &NodePropertiesEditor::on_field_type_activate), "MFVec4f"));
 
-	//  Drag & Drop
+		//  Drag & Drop
 
-	// Drag targets
-	getUserDefinedFieldsTreeView () .enable_model_drag_source ({
-	                                                              Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
-																				  }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+		// Drag targets
+		getUserDefinedFieldsTreeView () .enable_model_drag_source ({
+		                                                              Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
+																					  }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
 
-	// Drop targets
-	getUserDefinedFieldsTreeView () .enable_model_drag_dest ({
-	                                                            Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
-																				}, Gdk::ACTION_MOVE);
+		// Drop targets
+		getUserDefinedFieldsTreeView () .enable_model_drag_dest ({
+		                                                            Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
+																					}, Gdk::ACTION_MOVE);
+	}
 
 	/**
 	 * CDATA field
 	 **/
 
 	getCDataFieldExpander () .set_visible (node -> getCData ());
+
+	/**
+	 * Imported Nodes
+	 **/
+
+	try
+	{
+		const auto inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
+
+		if (inlineNode)
+		{
+			getImportedNodesImportedCellrendererToggle ()   -> property_activatable ()  = true;
+			getImportedNodesImportedNameCellrendererText () -> property_editable_set () = true;
+
+			std::map <X3D::SFNode, X3D::ImportedNodePtr> importedNodes;
+
+			for (const auto & importedNode : getBrowser () -> getExecutionContext () -> getImportedNodes ())
+				importedNodes .emplace (importedNode -> getExportedNode (), importedNode);
+
+			for (const auto & exportedNode : inlineNode -> getExportedNodes ())
+			{
+				const auto row          = getImportedNodesListStore () -> append ();
+				const auto importedNode = importedNodes .find (exportedNode -> getNode ());
+				
+				if (importedNode not_eq importedNodes .end ())
+				{
+					row -> set_value (IMPORTED_COLUMN, true);
+					row -> set_value (IMPORTED_NAME_COLUMN, importedNode -> second -> getImportedName ());
+				}
+				else
+					row -> set_value (IMPORTED_COLUMN, false);
+
+				row -> set_value (EXPORTED_NAME_COLUMN, exportedNode -> getExportedName ());
+			}
+		}
+
+		getImportedNodesExpander () .set_visible (inlineNode and not inlineNode -> getExportedNodes () .empty ());
+	}
+	catch (const X3D::X3DError &)
+	{
+		// If Inline is not loaded.
+		getImportedNodesExpander () .set_visible (false);
+	}
 }
 
 void

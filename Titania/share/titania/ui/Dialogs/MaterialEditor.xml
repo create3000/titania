@@ -385,7 +385,7 @@
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Front</property>
+                        <property name="label" translatable="yes">Front Material</property>
                       </object>
                     </child>
                   </object>
@@ -630,7 +630,7 @@
                       <object class="GtkLabel" id="label9">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Back</property>
+                        <property name="label" translatable="yes">Back Material</property>
                       </object>
                     </child>
                   </object>
