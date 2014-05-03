@@ -1827,7 +1827,7 @@ void
 X3DBrowserEditor::editCData (const X3D::SFNode & node)
 {
 	X3D::MFString* const cdata          = node -> getCData ();
-	std::string          filename       = node -> getName () .empty () ? "/tmp/titania-XXXXXX.js" : "/tmp/titania-" + node -> getName () + "-XXXXXX.js";
+	std::string          filename       = "/tmp/titania-XXXXXX.js";
 	const int            fileDescriptor = mkstemps (&filename [0], 3);
 
 	if (not cdata or fileDescriptor == -1)
@@ -1836,6 +1836,19 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 	// Output file
 
 	std::ofstream ostream (filename);
+
+	std::string name = node -> getName ();
+	pcrecpp::RE (R"/((\*/))/") .GlobalReplace ("", &name);
+
+	ostream
+		<< "/**" << std::endl
+		<< " * " << node -> getTypeName () << " " << name << std::endl
+		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields.") << std::endl
+		<< " * " << _ ("Each SFString value is enclosed inside a CDATA section.") << std::endl
+		<< " * " << _ ("A CDATA section starts with \"<![CDATA[\" and ends with \"]]>\".") << std::endl
+		<< " * " << _ ("Just save this file to apply changes.") << std::endl
+		<< " **/" << std::endl
+		<< std::endl;
 
 	for (const auto & string : *cdata)
 	{
@@ -1857,7 +1870,7 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 
 	try
 	{
-		Gio::AppInfo::create_from_commandline ("-gedit", "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
+		Gio::AppInfo::create_from_commandline ("gedit", "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
 	catch (...)
 	{
@@ -1875,6 +1888,8 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 void
 X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode & node)
 {
+	io::string         comment_start ("/*");
+	io::inverse_string comment ("*/");
 	io::sequence       whitespaces ("\r\n \t");
 	io::string         cdata_start ("<![CDATA[");
 	io::inverse_string contents ("]]>");
@@ -1889,6 +1904,10 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 	std::ifstream istream (file -> get_path ());
 
 	std::string ws;
+	
+	whitespaces (istream, ws);
+	comment_start (istream);
+	comment (istream, ws);
 
 	while (istream)
 	{

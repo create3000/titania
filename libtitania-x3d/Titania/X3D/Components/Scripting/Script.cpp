@@ -147,6 +147,8 @@ Script::requestImmediateLoad ()
 		return;
 
 	setLoadState (IN_PROGRESS_STATE);
+	
+	javaScript .set (nullptr);
 
 	// Find first working script.
 
