@@ -137,6 +137,7 @@
     <None Include="Titania\OS\popen2.h" />
     <None Include="Titania\OS\system.h" />
     <None Include="Titania\InputOutput\InverseString.h" />
+    <None Include="Titania\OS\realpath.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -196,6 +197,7 @@
     <Compile Include="Titania\OS\popen2.cpp" />
     <Compile Include="Titania\OS\system.cpp" />
     <Compile Include="Titania\InputOutput\InverseString.cpp" />
+    <Compile Include="Titania\OS\realpath.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

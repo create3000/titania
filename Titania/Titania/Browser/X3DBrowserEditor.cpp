@@ -53,6 +53,8 @@
 #include "BrowserSelection.h"
 #include "MagicImport.h"
 
+#include <Titania/OS.h>
+
 namespace titania {
 namespace puck {
 
@@ -1846,6 +1848,8 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields.") << std::endl
 		<< " * " << _ ("Each SFString value is enclosed inside a CDATA section.") << std::endl
 		<< " * " << _ ("A CDATA section starts with \"<![CDATA[\" and ends with \"]]>\".") << std::endl
+		<< " * " << _ ("If this is a Script node a inline script must start with \"javascript:\".") << std::endl
+		<< " * " << _ ("If this is a shader a it must start with \"data:text/plain,\".") << std::endl
 		<< " * " << _ ("Just save this file to apply changes.") << std::endl
 		<< " **/" << std::endl
 		<< std::endl;
@@ -1870,17 +1874,10 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 
 	try
 	{
-		Gio::AppInfo::create_from_commandline ("gedit", "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
+		Gio::AppInfo::create_from_commandline (os::realpath ("/usr/bin/gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
 	catch (...)
-	{
-		try
-		{
-			Gio::AppInfo::create_from_commandline ("gnome-text-editor", "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
-		}
-		catch (...)
-		{ }
-	}
+	{ }
 
 	::close (fileDescriptor);
 }

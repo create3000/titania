@@ -600,16 +600,16 @@ NodePropertiesEditor::on_apply ()
 	if (name not_eq node -> getName ())
 	{
 		undoStep -> addUndoFunction (&NodePropertiesEditor::updateNamedNode,
+		                             getBrowserWindow (),
 		                             node -> getName (),
-		                             node,
-		                             getBrowserWindow ());
+		                             node);
 
 		undoStep -> addRedoFunction (&NodePropertiesEditor::updateNamedNode,
+		                             getBrowserWindow (),
 		                             name,
-		                             node,
-		                             getBrowserWindow ());
+		                             node);
 
-		updateNamedNode (name, node, getBrowserWindow ());
+		updateNamedNode (getBrowserWindow (), name, node);
 	}
 
 	// Apply user defined fields change.
@@ -766,7 +766,7 @@ NodePropertiesEditor::on_cancel ()
 }
 
 void
-NodePropertiesEditor::updateNamedNode (const std::string & name, const X3D::SFNode & node, BrowserWindow* const browserWindow)
+NodePropertiesEditor::updateNamedNode (BrowserWindow* const browserWindow, const std::string & name, const X3D::SFNode & node)
 {
 	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
 

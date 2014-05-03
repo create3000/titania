@@ -48,22 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#include "realpath.h"
 
-#include "OS/cwd.h"
-#include "OS/env.h"
-#include "OS/file_exists.h"
-#include "OS/file_size.h"
-#include "OS/find_data_file.h"
-#include "OS/getfullname.h"
-#include "OS/home.h"
-#include "OS/is_directory.h"
-#include "OS/is_file.h"
-#include "OS/load_file.h"
-#include "OS/mkdir.h"
-#include "OS/popen2.h"
-#include "OS/realpath.h"
-#include "OS/system.h"
+#include <stdlib.h>
 
-#endif
+namespace titania {
+namespace os {
+
+std::string
+realpath (const std::string & path)
+{
+	char* const rp = ::realpath (path .c_str (), nullptr);
+
+	if (not rp)
+		return "";
+
+	std::string realpath = rp;
+	free (rp);
+	
+	return realpath;
+}
+
+} // os
+} // titania

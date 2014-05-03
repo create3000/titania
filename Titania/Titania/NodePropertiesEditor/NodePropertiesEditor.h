@@ -200,7 +200,7 @@ private:
 
 	static
 	void
-	updateNamedNode (const std::string &, const X3D::SFNode &, BrowserWindow* const);
+	updateNamedNode (BrowserWindow* const, const std::string &, const X3D::SFNode &);
 
 	static
 	void
