@@ -238,6 +238,9 @@
     <None Include="CosmoWorlds\icons\AccessType\outputOnly.1.png" />
     <None Include="CosmoWorlds\icons\AccessType\outputOnly.2.png" />
     <None Include="CosmoWorlds\icons\AccessType\AccessTypes.xcf" />
+    <None Include="xxx\X3DImportedNodesEditor.cpp" />
+    <None Include="xxx\X3DImportedNodesEditor.h" />
+    <None Include="xxx\X3DNodePropertiesEditorBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

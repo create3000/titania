@@ -346,6 +346,8 @@
       <column type="gchararray"/>
       <!-- column-name importedName -->
       <column type="gchararray"/>
+      <!-- column-name notValid -->
+      <column type="gboolean"/>
     </columns>
   </object>
   <object class="GtkDialog" id="Window">
@@ -906,7 +908,9 @@
                                       <object class="GtkTreeViewColumn" id="treeviewcolumn4">
                                         <property name="sizing">autosize</property>
                                         <child>
-                                          <object class="GtkCellRendererToggle" id="ImportedNodesImportedCellrendererToggle"/>
+                                          <object class="GtkCellRendererToggle" id="ImportedNodesImportedCellRendererToggle">
+                                            <signal name="toggled" handler="on_imported_toggled" swapped="no"/>
+                                          </object>
                                           <attributes>
                                             <attribute name="active">0</attribute>
                                           </attributes>
@@ -918,20 +922,24 @@
                                         <property name="sizing">autosize</property>
                                         <property name="title" translatable="yes">Exported Name</property>
                                         <child>
-                                          <object class="GtkCellRendererText" id="ImportedNodesExportedNameCellrendererText"/>
+                                          <object class="GtkCellRendererText" id="ImportedNodesExportedNameCellRendererText"/>
                                           <attributes>
+                                            <attribute name="strikethrough">3</attribute>
                                             <attribute name="text">1</attribute>
                                           </attributes>
                                         </child>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                                      <object class="GtkTreeViewColumn" id="ImportedNodesImportedNameTreeviewColumn">
                                         <property name="sizing">autosize</property>
                                         <property name="title" translatable="yes">Imported Name</property>
                                         <child>
-                                          <object class="GtkCellRendererText" id="ImportedNodesImportedNameCellrendererText"/>
+                                          <object class="GtkCellRendererText" id="ImportedNodesImportedNameCellRendererText">
+                                            <signal name="edited" handler="on_imported_name_edited" swapped="no"/>
+                                          </object>
                                           <attributes>
+                                            <attribute name="strikethrough">3</attribute>
                                             <attribute name="text">2</attribute>
                                           </attributes>
                                         </child>

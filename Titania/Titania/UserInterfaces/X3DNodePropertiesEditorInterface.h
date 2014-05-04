@@ -112,16 +112,20 @@ public:
 	{ return m_CellRendererAccessType; }
 
 	const Glib::RefPtr <Gtk::CellRendererToggle> &
-	getImportedNodesImportedCellrendererToggle () const
-	{ return m_ImportedNodesImportedCellrendererToggle; }
+	getImportedNodesImportedCellRendererToggle () const
+	{ return m_ImportedNodesImportedCellRendererToggle; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getImportedNodesExportedNameCellrendererText () const
-	{ return m_ImportedNodesExportedNameCellrendererText; }
+	getImportedNodesExportedNameCellRendererText () const
+	{ return m_ImportedNodesExportedNameCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImportedNodesImportedNameTreeviewColumn () const
+	{ return m_ImportedNodesImportedNameTreeviewColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getImportedNodesImportedNameCellrendererText () const
-	{ return m_ImportedNodesImportedNameCellrendererText; }
+	getImportedNodesImportedNameCellRendererText () const
+	{ return m_ImportedNodesImportedNameCellRendererText; }
 
 	Gtk::Menu &
 	getAccessTypeMenu () const
@@ -489,6 +493,14 @@ public:
 
 	virtual
 	void
+	on_imported_toggled (const Glib::ustring &) = 0;
+
+	virtual
+	void
+	on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
 	on_add_field_cancel_clicked () = 0;
 
 	virtual
@@ -525,9 +537,10 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererType;
 	Glib::RefPtr <Gtk::CellRendererText>   m_CellRendererName;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererAccessType;
-	Glib::RefPtr <Gtk::CellRendererToggle> m_ImportedNodesImportedCellrendererToggle;
-	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesExportedNameCellrendererText;
-	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesImportedNameCellrendererText;
+	Glib::RefPtr <Gtk::CellRendererToggle> m_ImportedNodesImportedCellRendererToggle;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesExportedNameCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImportedNodesImportedNameTreeviewColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesImportedNameCellRendererText;
 	Gtk::Menu*                             m_AccessTypeMenu;
 	Gtk::MenuItem*                         m_InitializeOnlyMenuItem;
 	Gtk::MenuItem*                         m_InputOnlyMenuItem;

@@ -1,0 +1,16 @@
+#X3D V3.0 utf8
+
+DEF Inline1 Inline {
+  url "OutlineEditor-EXPORT.x3dv"
+}
+
+DEF Inline2 Inline {
+  url "OutlineEditor-EXPORT.x3dv"
+}
+
+DEF Inline3 Inline {
+  url "OutlineEditor-EXPORT.x3dv"
+}
+
+IMPORT Inline1.Export1
+IMPORT Inline2.Export1 AS Import1

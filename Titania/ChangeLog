@@ -1,3 +1,11 @@
+2014-05-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* NodePropertiesEditor.xml:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
 2014-05-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DUserInterface.h:

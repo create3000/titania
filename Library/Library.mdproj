@@ -2436,6 +2436,8 @@
     <None Include="Tests\Scripting\URL.wrl" />
     <None Include="Tests\Text\DefaultText.x3dv" />
     <None Include="Tests\Scripting\MotionBlur.x3dv" />
+    <None Include="Tests\Handles\OutlineEditor-IMPORT.x3dv" />
+    <None Include="Tests\Handles\OutlineEditor-EXPORT.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

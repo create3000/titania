@@ -278,42 +278,67 @@ f (Type p)
 		__LOG__ << p << std::endl;
 }
 
-
 class X
-{ };
+{
+public:
+	
+	X (int i = 0)
+	{
+		__LOG__ << i << std::endl;
+	}
+};
 
-template <class Type>
 class A :
-	public Type
-{ };
-
-class B :
-	public A <X>
+	virtual public X
 {
 public:
 
-	X*
-	get ()
-	{ return (X*) 0x123; }
-	
-	template <class Type>
-	Type*
-	get ()
-	{ return (Type*) 0x999;  }
+	A () :
+		X ()
+	{
+		__LOG__ << std::endl;
+	}
 
+	A (int i) :
+		X ()
+	{
+		__LOG__ << i << std::endl;
+	}
+
+	virtual
+	void
+	f () = 0;
 };
 
-template <class Type>
-vector3 <Type>
-mult_dir_matrix (const matrix4 <Type> & m, const vector3 <Type> & vector)
+class O :
+	virtual public A
 {
-	std::clog << vector .x () << " : " << m .data () [1] << " : " << vector .y () << " : " << m .data () [5] << " : " << vector .z () << " : " << m .data () [ 9] << std::endl;
-	std::clog << vector .x () * m .data () [1] << " : " << vector .y () * m .data () [5] << " : " << vector .z () * m .data () [ 9] << std::endl;
+public:
 
-	return vector3 <Type> (vector .x () * m .data () [0] + vector .y () * m .data () [4] + vector .z () * m .data () [ 8],
-	                       vector .x () * m .data () [1] + vector .y () * m .data () [5] + vector .z () * m .data () [ 9],
-	                       vector .x () * m .data () [2] + vector .y () * m .data () [6] + vector .z () * m .data () [10]);
-}
+	O () :
+		A ()
+	{ }
+
+	virtual
+	void
+	f () final override
+	{
+		__LOG__ << std::endl;
+	}
+};
+
+class B :
+	virtual public A,
+	public O
+{
+public:
+
+	B () :
+		X (1),
+		A (1)
+	{ }
+
+};
 
 int
 main (int argc, char** argv)
@@ -326,67 +351,9 @@ main (int argc, char** argv)
 
 	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	auto GD_WE     = geospatial::geodetic <double> (geospatial::WE);
-	auto UTM_WE10N = geospatial::universal_transverse_mercator <double> (geospatial::WE, 10);
-
-	std::clog << Vector3d (radians (37.4506), radians (-122.1834), 0) << std::endl;
-	std::clog << std::endl;
-
-	std::clog << "convert:" << std::endl;
-	std::clog << "GD:  " << GD_WE .convert (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
-	std::clog << "UTM: " << UTM_WE10N .convert (Vector3d (4145173, 572227, 0)) << std::endl;
-	std::clog << "GC:  " << Vector3d (-2700301, -4290762, 3857213) << std::endl; // gc: Geocentric coordinates
-
-	std::clog << std::endl;
-
-	std::clog << "apply:" << std::endl;
-	std::clog << "GD:  " << GD_WE .convert (GD_WE .apply (Vector3d (-2700301, -4290762, 3857213))) << std::endl;
-	std::clog << "UTM: " << UTM_WE10N .convert (UTM_WE10N .apply (Vector3d (-2700301, -4290762, 3857213))) << std::endl;
-
-	{
-		std::clog << std::endl;
-
-		auto UTM_WE60N = geospatial::universal_transverse_mercator <double> (geospatial::WE, 60);
-		auto UTM_WE60S = geospatial::universal_transverse_mercator <double> (geospatial::WE, 60, true);
-
-		std::clog << "UTM: " << UTM_WE60N .convert (Vector3d (-5427419.7, 314369.5, 0)) << std::endl;
-		std::clog << "UTM: " << UTM_WE60S .convert (Vector3d (5427419.7, 314369.5, 0)) << std::endl;
-		
-		std::clog << "UTM: " << UTM_WE60N .apply (UTM_WE60S .convert (Vector3d (5427419.7, 314369.5, 0))) << std::endl;
-		std::clog << "UTM: " << UTM_WE60N .apply (UTM_WE60N .convert (Vector3d (-5427419.7, 314369.5, 0))) << std::endl;
-
-		std::clog << "UTM: " << UTM_WE60S .apply (UTM_WE60S .convert (Vector3d (5427419.7, 314369.5, 0))) << std::endl;
-		std::clog << "UTM: " << UTM_WE60S .apply (UTM_WE60N .convert (Vector3d (-5427419.7, 314369.5, 0))) << std::endl;
-		
-	}
-
-	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
-	
-	std::clog << std::endl;
-	std::clog << std::endl;
-
 	B b;
 
-	std::clog << b .get () << std::endl;
-	std::clog << b .get <B> () << std::endl;
-	
-//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:234: in function 'set_motion': 797.819
-Matrix4d m1 (-0.989024, -0.00441032, -0.14769, -0, -0.0442208, 0.962575, 0.267385, 0, 0.140983, 0.270982, -0.952204, -0, 1.40885, 2.73116, -9.51611, 1);
-Vector3d d1 (-0.512762, 0.23317, -0.826261);
-std::clog << mult_dir_matrix (m1, d1) << std::endl;
-//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:237: in function 'set_motion': 1.46639 2.73159 -9.37619 0.380334 0.00280351 0.924845
-//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:238: in function 'set_motion': 0 1 0 0.0241612
-
-//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:234: in function 'set_motion': -1105.39
-Matrix4d m2 (-0.989024, -0.00441032, -0.14769, -0, -0.0442208, 0.962575, 0.267385, 0, 0.140983, 0.270982, -0.952204, -0, 1.40885, 2.73116, -9.51611, 1);
-Vector3d d2 (-0.513357, 0.22842, -0.827218);
-std::clog << mult_dir_matrix (m2, d2) << std::endl;
-//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:237: in function 'set_motion': 1.46643 2.73086 -9.3764 0.380997 -0.00202579 0.924574
-//########## Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp:238: in function 'set_motion': 0 1 0 0.0241612
-
-	
+	b .f ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

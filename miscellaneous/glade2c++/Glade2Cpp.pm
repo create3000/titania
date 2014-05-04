@@ -45,6 +45,7 @@ $objects {$_} = true foreach qw(
 sub new
 {
 	my ($class, $options) = @_;
+
 	my $self = {
 		namespaces         => exists $options -> {namespaces}   ? $options -> {namespaces}   : [ ],
 		base_class         => exists $options -> {base_class}   ? $options -> {base_class}   : "",
@@ -60,14 +61,16 @@ sub new
 		prototypes         => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
 		windows            => { },
 	};
+	
 	bless $self, $class;
 	return $self;
 }
 
 sub getPrototype
 {
-	my ($self, $name) = @_;
-	
+	my ($self, $class, $name) = @_;
+
+	return $self -> {prototypes} {"$class,$name"} if exists $self -> {prototypes} {"$class,$name"};
 	return $self -> {prototypes} {$name} if exists $self -> {prototypes} {$name};
 
 	my @result = `find /usr/include/gtkmm-3.0/gtkmm -name \\*.h -exec grep -I -P 'virtual.*?on_$name\\s*\\(' {} \\;`;
@@ -171,6 +174,13 @@ sub h_signal_handler
 {
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
+	
+	if ($name eq "object")
+	{
+		$self -> {class} = $attributes {class};
+		$self -> {class} =~ s/Gtk//;
+		return;
+	}
 
 	return if $name ne "signal";
 	return if exists $self -> {h_signal_handler} {$attributes {handler}};
@@ -179,7 +189,7 @@ sub h_signal_handler
 
 	$attributes {name} =~ s/-/_/sgo;
 
-	my $prototype = $self -> getPrototype ($attributes {name});
+	my $prototype = $self -> getPrototype ($self -> {class}, $attributes {name});
 	
 	unless ($prototype)
 	{
@@ -585,6 +595,8 @@ activate
   virtual void on_activate();
 toggled
   virtual void on_toggled();
+CellRendererToggle,toggled
+  virtual void on_toggled(const Glib::ustring &);
 clicked
   virtual void on_clicked();
 editing_done
@@ -633,3 +645,5 @@ delete_text
   virtual void on_delete_text(int start_pos, int end_pos);
 color_set
   virtual void on_color_set();
+edited
+  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);

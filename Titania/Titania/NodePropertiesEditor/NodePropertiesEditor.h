@@ -183,6 +183,17 @@ private:
 	virtual
 	void
 	on_edit_cdata_clicked () final override;
+	
+	virtual
+	void
+	on_imported_toggled (const Glib::ustring &) final override;
+
+	virtual
+	void
+	on_imported_name_edited (const Glib::ustring &, const Glib::ustring &) final override;
+
+	bool
+	validateImportedName (const std::string &, const std::string &) const;
 
 	///  @name Dialog buttons
 
@@ -227,6 +238,12 @@ private:
 	FieldToFieldIndex             fieldsToReplace;
 	X3D::FieldDefinitionArray     fieldsToRemove;
 	bool                          editUserDefinedField;
+	
+	// Imported Nodes
+
+	std::map <X3D::SFNode, X3D::ImportedNodePtr> importedNodes;	
+	std::map <std::string, std::string>          importedNodesToUpdate;
+	std::map <std::string, std::string>          importedNodesToRemove;
 
 };
 

@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Sat, 03 May 2014 17:02:01 GMT'/>
+    <meta name='modified' content='Sun, 04 May 2014 05:40:20 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -151,7 +151,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 6.20436'
+          rotation='0 0 1 2.45025'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -307,7 +307,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Sa 03 Mai 2014 13:46:14 CEST"'>
+            string='"modified...", "Sa 03 Mai 2014 19:02:01 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>

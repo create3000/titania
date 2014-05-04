@@ -90,9 +90,10 @@ reverse (const std::map <Key, Value, Compare, Allocator> & index)
 
 const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "titania/node-properties/user-defined-field";
 
-static constexpr int IMPORTED_COLUMN      = 0;
-static constexpr int EXPORTED_NAME_COLUMN = 1;
-static constexpr int IMPORTED_NAME_COLUMN = 2;
+static constexpr int IMPORTED_NODE_IMPORTED      = 0;
+static constexpr int IMPORTED_NODE_EXPORTED_NAME = 1;
+static constexpr int IMPORTED_NODE_IMPORTED_NAME = 2;
+static constexpr int IMPORTED_NODE_NOT_VALID     = 3;
 
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -105,7 +106,11 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                          fields (),
 	                 fieldsToReplace (),
 	                  fieldsToRemove (),
-	            editUserDefinedField (false)
+	            editUserDefinedField (false),
+	                   importedNodes (),
+	           importedNodesToUpdate (),
+	           importedNodesToRemove ()
+
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 
@@ -120,7 +125,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	 **/
 
 	getUserDefinedFieldsExpander () .set_visible (node -> hasUserDefinedFields ());
-	
+
 	if (node -> hasUserDefinedFields ())
 	{
 		getUserDefinedFieldsTreeView () .get_selection () -> set_mode (Gtk::SELECTION_SINGLE);
@@ -209,32 +214,39 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 
 	try
 	{
-		const auto inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
+		const X3D::InlinePtr inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
 
 		if (inlineNode)
 		{
-			getImportedNodesImportedCellrendererToggle ()   -> property_activatable ()  = true;
-			getImportedNodesImportedNameCellrendererText () -> property_editable_set () = true;
-
-			std::map <X3D::SFNode, X3D::ImportedNodePtr> importedNodes;
+			getImportedNodesImportedCellRendererToggle ()   -> property_activatable () = true;
+			getImportedNodesImportedNameCellRendererText () -> property_editable ()    = true;
 
 			for (const auto & importedNode : getBrowser () -> getExecutionContext () -> getImportedNodes ())
 				importedNodes .emplace (importedNode -> getExportedNode (), importedNode);
 
 			for (const auto & exportedNode : inlineNode -> getExportedNodes ())
 			{
-				const auto row          = getImportedNodesListStore () -> append ();
+				const auto iter         = getImportedNodesListStore () -> append ();
 				const auto importedNode = importedNodes .find (exportedNode -> getNode ());
-				
+
 				if (importedNode not_eq importedNodes .end ())
 				{
-					row -> set_value (IMPORTED_COLUMN, true);
-					row -> set_value (IMPORTED_NAME_COLUMN, importedNode -> second -> getImportedName ());
+					const std::string & exportedName = importedNode -> second -> getExportedName ();
+					const std::string & importedName = importedNode -> second -> getImportedName ();
+
+					iter -> set_value (IMPORTED_NODE_IMPORTED,      true);
+					iter -> set_value (IMPORTED_NODE_IMPORTED_NAME, importedName == exportedName ? "" : importedName);
+					iter -> set_value (IMPORTED_NODE_NOT_VALID,     not validateImportedName (exportedName, importedName));
 				}
 				else
-					row -> set_value (IMPORTED_COLUMN, false);
+				{
+					const std::string & exportedName = exportedNode -> getExportedName ();
 
-				row -> set_value (EXPORTED_NAME_COLUMN, exportedNode -> getExportedName ());
+					iter -> set_value (IMPORTED_NODE_IMPORTED,  false);
+					iter -> set_value (IMPORTED_NODE_NOT_VALID, not validateImportedName (exportedName, exportedName));
+				}
+
+				iter -> set_value (IMPORTED_NODE_EXPORTED_NAME, exportedNode -> getExportedName ());
 			}
 		}
 
@@ -633,6 +645,99 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 }
 
 void
+NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
+{
+	std::string exportedName;
+	std::string importedName;
+
+	const auto iter = getImportedNodesListStore () -> get_iter (path);
+	iter -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
+	iter -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
+
+	if (importedName .empty ())
+		importedName = exportedName;
+
+	const bool valid = validateImportedName (exportedName, importedName);
+
+	if (not valid)
+		return;
+
+	bool imported = false;
+	iter -> get_value (IMPORTED_NODE_IMPORTED,  imported);
+	iter -> set_value (IMPORTED_NODE_IMPORTED,  imported = not imported);
+	iter -> set_value (IMPORTED_NODE_NOT_VALID, false);
+
+	// Update or remove imported node.
+
+	if (not importedNodesToUpdate .erase (importedName))
+		importedNodesToRemove .emplace (exportedName, importedName);
+
+	if (imported)
+		importedNodesToUpdate [importedName] = exportedName;
+}
+
+void
+NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & value)
+{
+	bool        imported = false;
+	std::string exportedName;
+	std::string importedName;
+
+	const auto iter = getImportedNodesListStore () -> get_iter (path);
+	iter -> get_value (IMPORTED_NODE_IMPORTED,      imported);
+	iter -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
+	iter -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
+
+	if (importedName .empty ())
+		importedName = exportedName;
+
+	// Update ListStore.
+
+	const std::string newImportedName = value .empty () ? exportedName : value .raw ();
+	const bool        valid           = validateImportedName (exportedName, newImportedName);
+
+	iter -> set_value (IMPORTED_NODE_IMPORTED,      valid);
+	iter -> set_value (IMPORTED_NODE_IMPORTED_NAME, newImportedName == exportedName ? "" : newImportedName);
+	iter -> set_value (IMPORTED_NODE_NOT_VALID,     not valid);
+
+	// Update or remove imported node.
+
+	if (not importedNodesToUpdate .erase (importedName) and imported)
+		importedNodesToRemove .emplace (exportedName, importedName);
+
+	if (valid)
+		importedNodesToUpdate [newImportedName] = exportedName;
+}
+
+bool
+NodePropertiesEditor::validateImportedName (const std::string & exportedName, const std::string & importedName) const
+{
+	const auto nodeToUpdate = importedNodesToUpdate .find (importedName);
+	const auto updateExists = nodeToUpdate not_eq importedNodesToUpdate .end () and nodeToUpdate -> second not_eq exportedName;
+
+	if (updateExists)
+		return false;
+
+	try
+	{
+		const auto localNode    = getBrowser () -> getExecutionContext () -> getNode (importedName);
+		const auto importedNode = importedNodes .find (localNode);
+
+		if (importedNode == importedNodes .end ())
+			return false; // There is no imported node with importedName thus a named node must already exists.
+
+		const X3D::InlinePtr inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
+
+		if (importedNode -> second -> getInlineNode () not_eq inlineNode)
+			return false;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	return true;
+}
+
+void
 NodePropertiesEditor::on_ok ()
 {
 	on_apply ();
@@ -682,7 +787,7 @@ NodePropertiesEditor::on_apply ()
 				undoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
 			undoStep -> addVariables (undoRoot);
-	
+
 			// Redo Preparation
 
 			X3D::X3DPtr <X3D::FieldContainer> redoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
@@ -693,11 +798,11 @@ NodePropertiesEditor::on_apply ()
 				redoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
 			undoStep -> addVariables (redoRoot);
-			
+
 			// Prepare add routes and assign oldField to newField if possible
-			
-			std::deque <std::function <void ()>> addRoutes;
-			
+
+			std::deque <std::function <void ()>>  addRoutes;
+
 			for (const auto & iter : fieldsToReplace)
 			{
 				const auto & newField = iter .first;
@@ -715,15 +820,15 @@ NodePropertiesEditor::on_apply ()
 						{
 							const auto iter           = undoFieldsToReplace .find (route -> getId () .first);
 							const bool newSourceField = route -> getSourceNode () == node and iter not_eq undoFieldsToReplace .end ();
-						
+
 							addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
 							                                    getBrowserWindow (),
 							                                    node -> getExecutionContext (),
-								                                 route -> getSourceNode (),
-								                                 newSourceField ? iter -> second -> getName () : route -> getSourceField (),
-								                                 node,
-								                                 newField -> getName (),
-								                                 undoStep));
+							                                    route -> getSourceNode (),
+							                                    newSourceField ? iter -> second -> getName () : route -> getSourceField (),
+							                                    node,
+							                                    newField -> getName (),
+							                                    undoStep));
 						}
 					}
 
@@ -733,15 +838,15 @@ NodePropertiesEditor::on_apply ()
 						{
 							const auto iter                = undoFieldsToReplace .find (route -> getId () .second);
 							const bool newDestinationField = route -> getDestinationNode () == node and iter not_eq undoFieldsToReplace .end ();
-						
+
 							addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
 							                                    getBrowserWindow (),
 							                                    node -> getExecutionContext (),
-								                                 node,
-								                                 newField -> getName (),
-								                                 route -> getDestinationNode (),
-								                                 newDestinationField ? iter -> second -> getName () : route -> getDestinationField (),
-								                                 undoStep));
+							                                    node,
+							                                    newField -> getName (),
+							                                    route -> getDestinationNode (),
+							                                    newDestinationField ? iter -> second -> getName () : route -> getDestinationField (),
+							                                    undoStep));
 						}
 					}
 				}
@@ -750,7 +855,7 @@ NodePropertiesEditor::on_apply ()
 			// Undo, Redo & Do
 
 			// Remove routes from fieldsToRemove
-			
+
 			for (const auto & field : fieldsToRemove)
 			{
 				for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
@@ -805,6 +910,22 @@ NodePropertiesEditor::on_apply ()
 				{ }
 			}
 		}
+	}
+
+	// Apply imported nodes change.
+
+	if (not importedNodesToUpdate .empty () or not importedNodesToRemove .empty ())
+	{
+		__LOG__ << std::endl;
+
+		for (const auto & importedNode : importedNodesToUpdate)
+			importedNodesToRemove .erase (importedNode .second);
+
+		for (const auto & importedNode : importedNodesToRemove)
+			__LOG__ << "remove: " << importedNode .second << std::endl;
+
+		for (const auto & importedNode : importedNodesToUpdate)
+			__LOG__ << "update: " << importedNode .second << ", " << importedNode .first << std::endl;
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

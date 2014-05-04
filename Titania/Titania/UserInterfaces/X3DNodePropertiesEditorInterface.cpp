@@ -66,9 +66,10 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_CellRendererType                          = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererType"));
 	m_CellRendererName                          = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererName"));
 	m_CellRendererAccessType                    = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererAccessType"));
-	m_ImportedNodesImportedCellrendererToggle   = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedCellrendererToggle"));
-	m_ImportedNodesExportedNameCellrendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesExportedNameCellrendererText"));
-	m_ImportedNodesImportedNameCellrendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedNameCellrendererText"));
+	m_ImportedNodesImportedCellRendererToggle   = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedCellRendererToggle"));
+	m_ImportedNodesExportedNameCellRendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesExportedNameCellRendererText"));
+	m_ImportedNodesImportedNameTreeviewColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedNameTreeviewColumn"));
+	m_ImportedNodesImportedNameCellRendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedNameCellRendererText"));
 
 	// Get widgets.
 	m_builder -> get_widget ("AccessTypeMenu", m_AccessTypeMenu);
@@ -250,6 +251,14 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_AddFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_clicked));
 	m_RemoveFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_field_clicked));
 	m_EditCDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_edit_cdata_clicked));
+
+	// Connect object Gtk::CellRendererToggle with id 'ImportedNodesImportedCellRendererToggle'.
+	m_ImportedNodesImportedCellRendererToggle -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_toggled));
+
+	// Connect object Gtk::CellRendererText with id 'ImportedNodesImportedNameCellRendererText'.
+	m_ImportedNodesImportedNameCellRendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_edited));
+
+	// Connect object Gtk::Button with id 'AddFieldCancelButton'.
 	m_AddFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));
 	m_AddFieldOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_ok_clicked));
 
