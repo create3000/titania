@@ -647,33 +647,63 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 void
 NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
 {
+	bool imported = false;
 	std::string exportedName;
 	std::string importedName;
 
 	const auto iter = getImportedNodesListStore () -> get_iter (path);
+	iter -> get_value (IMPORTED_NODE_IMPORTED,      imported);
 	iter -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
 	iter -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
-
+	
 	if (importedName .empty ())
 		importedName = exportedName;
 
+	imported = not imported;
+	
+	if (not imported)
+	{
+		// Remove imported node.
+
+		if (not importedNodesToUpdate .erase (importedName))
+			importedNodesToRemove .emplace (exportedName, importedName);
+
+		// Update ListStore.
+
+		iter -> set_value (IMPORTED_NODE_IMPORTED, false);
+	}
+
 	const bool valid = validateImportedName (exportedName, importedName);
+	iter -> set_value (IMPORTED_NODE_NOT_VALID, not valid);
 
-	if (not valid)
-		return;
+	if (valid and imported)
+	{
+		// Update imported node.
 
-	bool imported = false;
-	iter -> get_value (IMPORTED_NODE_IMPORTED,  imported);
-	iter -> set_value (IMPORTED_NODE_IMPORTED,  imported = not imported);
-	iter -> set_value (IMPORTED_NODE_NOT_VALID, false);
-
-	// Update or remove imported node.
-
-	if (not importedNodesToUpdate .erase (importedName))
-		importedNodesToRemove .emplace (exportedName, importedName);
-
-	if (imported)
 		importedNodesToUpdate [importedName] = exportedName;
+
+		// Update ListStore.
+
+		iter -> set_value (IMPORTED_NODE_IMPORTED, true);
+	}
+
+	// Validate all children which are not imported.
+
+	for (const auto & child : getImportedNodesListStore () -> children ())
+	{
+		if (child not_eq iter)
+		{
+			child -> get_value (IMPORTED_NODE_IMPORTED,      imported);
+			child -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
+			child -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
+
+			if (importedName .empty ())
+				importedName = exportedName;
+
+			if (not imported)
+				child -> set_value (IMPORTED_NODE_NOT_VALID, not validateImportedName (exportedName, importedName));
+		}
+	}
 }
 
 void
@@ -691,22 +721,40 @@ NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const
 	if (importedName .empty ())
 		importedName = exportedName;
 
-	// Update ListStore.
-
 	const std::string newImportedName = value .empty () ? exportedName : value .raw ();
 	const bool        valid           = validateImportedName (exportedName, newImportedName);
+
+	// Update or remove imported node.
+
+	if (imported and not importedNodesToUpdate .erase (importedName))
+		importedNodesToRemove .emplace (exportedName, importedName);
+
+	if (valid)
+		importedNodesToUpdate [newImportedName] = exportedName;
+
+	// Update ListStore.
 
 	iter -> set_value (IMPORTED_NODE_IMPORTED,      valid);
 	iter -> set_value (IMPORTED_NODE_IMPORTED_NAME, newImportedName == exportedName ? "" : newImportedName);
 	iter -> set_value (IMPORTED_NODE_NOT_VALID,     not valid);
 
-	// Update or remove imported node.
+	// Validate all children which are not imported.
 
-	if (not importedNodesToUpdate .erase (importedName) and imported)
-		importedNodesToRemove .emplace (exportedName, importedName);
+	for (const auto & child : getImportedNodesListStore () -> children ())
+	{
+		if (child not_eq iter)
+		{
+			child -> get_value (IMPORTED_NODE_IMPORTED,      imported);
+			child -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
+			child -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
 
-	if (valid)
-		importedNodesToUpdate [newImportedName] = exportedName;
+			if (importedName .empty ())
+				importedName = exportedName;
+
+			if (not imported)
+				child -> set_value (IMPORTED_NODE_NOT_VALID, not validateImportedName (exportedName, importedName));
+		}
+	}
 }
 
 bool
@@ -729,7 +777,13 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 		const X3D::InlinePtr inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
 
 		if (importedNode -> second -> getInlineNode () not_eq inlineNode)
-			return false;
+			return false; // There is an import from another Inline node with importedName.
+
+		if (importedNodesToRemove .find (importedNode -> second -> getExportedName ()) == importedNodesToRemove .end ())
+		{
+			if (importedNode -> second -> getExportedName () not_eq exportedName)
+				return false; // There is another import from this Inline node with importedName.
+		}
 	}
 	catch (const X3D::X3DError &)
 	{ }
