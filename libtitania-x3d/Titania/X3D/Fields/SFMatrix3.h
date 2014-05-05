@@ -520,7 +520,7 @@ inline
 void
 SFMatrix3 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <value_type> << getValue ();
+	ostream << X3DGenerator::Precision <value_type> << getValue ();
 }
 
 template <class ValueType>

@@ -55,7 +55,6 @@
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
 #include "../Bits/Error.h"
-#include "../InputOutput/Generator.h"
 
 #include <Titania/LOG.h>
 
@@ -211,6 +210,8 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & obj
 	return ostream;
 }
 
+// XMLEncode
+
 struct XMLEncodeObjectType { const X3DObject* const object; };
 
 inline
@@ -233,24 +234,6 @@ std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeObjectType & value)
 {
 	value .object -> toXMLStream (ostream);
-	return ostream;
-}
-
-struct XMLEncodeStringType { const std::string & string; };
-
-inline
-XMLEncodeStringType
-XMLEncode (const std::string & string)
-{
-	return XMLEncodeStringType { string };
-}
-
-template <typename CharT, typename Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
-{
-	Generator::XMLEncodeToStream (ostream, value .string);
 	return ostream;
 }
 

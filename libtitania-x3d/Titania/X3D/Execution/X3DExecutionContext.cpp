@@ -406,6 +406,8 @@ throw (Error <INVALID_NODE>,
 {
 	if (not inlineNode)
 		throw Error <INVALID_NODE> ("Couldn't add imported node: inline node is NULL.");
+		
+	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
 
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add imported node: exported node name is empty.");
@@ -811,7 +813,6 @@ throw (Error <INVALID_NODE>,
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CloneType &)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
@@ -821,7 +822,6 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
@@ -831,7 +831,6 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CloneType &)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
@@ -841,7 +840,6 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
@@ -851,7 +849,6 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & rootNode : executionContext -> getRootNodes ())
@@ -867,7 +864,6 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
@@ -877,7 +873,6 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
@@ -922,6 +917,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 
 	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
+	Generator::setImportedNodes (getImportedNodes ());
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -1002,6 +998,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
+	Generator::setImportedNodes (ImportedNodeArray ());
 	Generator::PopContext ();
 	Generator::PopExecutionContext ();
 }
@@ -1013,6 +1010,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 
 	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
+	Generator::setImportedNodes (getImportedNodes ());
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -1059,6 +1057,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
+	Generator::setImportedNodes (ImportedNodeArray ());
 	Generator::PopContext ();
 	Generator::PopExecutionContext ();
 }

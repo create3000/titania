@@ -269,6 +269,8 @@ X3DBaseGenerator <CharT, Traits>::EmptyBrackets (std::basic_ostream <CharT, Trai
 	return stream;
 }
 
+using X3DGenerator = X3DBaseGenerator <char>;
+
 extern template class X3DBaseGenerator <char>;
 
 } // X3D

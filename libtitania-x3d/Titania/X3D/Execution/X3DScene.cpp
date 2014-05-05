@@ -149,6 +149,8 @@ throw (Error <NODE_IN_USE>,
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't add exported node: node is NULL.");
 
+	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
+
 	exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
 
 	auto & exportedNode = exportedNodes .back ();
@@ -372,6 +374,7 @@ X3DScene::toStream (std::ostream & ostream) const
 	// Scene
 
 	Generator::PushContext ();
+	Generator::setExportedNodes (getExportedNodes ());
 
 	X3DExecutionContext::toStream (ostream);
 
@@ -390,6 +393,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		}
 	}
 
+	Generator::setExportedNodes (ExportedNodeArray ());
 	Generator::PopContext ();
 
 	// ~Scene
@@ -515,6 +519,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 	// <Scene>
 
 	Generator::PushContext ();
+	Generator::setExportedNodes (getExportedNodes ());
 
 	X3DExecutionContext::toXMLStream (ostream);
 
@@ -530,6 +535,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
+	Generator::setExportedNodes (ExportedNodeArray ());
 	Generator::PopContext ();
 
 	// </Scene>

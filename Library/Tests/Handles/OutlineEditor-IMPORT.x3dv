@@ -1,10 +1,16 @@
-#X3D V3.0 utf8
+#X3D V3.0 utf8 Titania V0.6.8
 
-DEF Inline1 Inline {
+META "comment" "World of Titania"
+META "created" "Mon, 05 May 2014 10:24:07 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.8, http://titania.create3000.de"
+META "modified" "Mon, 05 May 2014 15:54:25 GMT"
+
+DEF _1 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
-DEF Inline2 Inline {
+DEF _2 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
@@ -12,5 +18,9 @@ DEF Inline3 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
-IMPORT Inline1.Export1
-IMPORT Inline2.Export1 AS Import1
+IMPORT _1.Export1
+IMPORT _1.Export2
+IMPORT _1.Export3
+IMPORT _2.Export1 AS i1
+IMPORT _2.Export2 AS i2
+IMPORT _2.Export3 AS i3

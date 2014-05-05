@@ -68,6 +68,11 @@ public:
 	///  @name Member access
 
 	virtual
+	bool
+	hasUserDefinedFields () const final override
+	{ return true; }
+
+	virtual
 	GLuint
 	getProgramId () const = 0;
 	
@@ -94,13 +99,12 @@ protected:
 	void
 	applyTransformFeedbackVaryings () const;
 
-	virtual
-	bool
-	hasUserDefinedFields () const final override
-	{ return true; }
-
 	void
 	setFields ();
+
+	virtual
+	void
+	removeUserDefinedField (X3DFieldDefinition* const) override;
 
 	///  @name Destructions
 

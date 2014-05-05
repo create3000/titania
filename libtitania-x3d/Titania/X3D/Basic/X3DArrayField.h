@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
- #include "../Basic/X3DField.h"
- #include "../Types/Array.h"
+#include "../Basic/X3DField.h"
+#include "../Types/Array.h"
 
- #include <Titania/Algorithm.h>
- #include <Titania/Basic/ReferenceIterator.h>
- #include <Titania/Utility/Adapter.h>
- #include <initializer_list>
+#include <Titania/Algorithm.h>
+#include <Titania/Basic/ReferenceIterator.h>
+#include <Titania/Utility/Adapter.h>
+#include <initializer_list>
 
 namespace titania {
 namespace X3D {
@@ -849,7 +849,7 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 	{
 		case 0:
 		{
-			ostream << Generator::EmptyBrackets;
+			ostream << X3DGenerator::EmptyBrackets;
 			return;
 		}
 		case 1:
@@ -859,22 +859,22 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 		}
 		default:
 		{
-			ostream << Generator::OpenBracket;
+			ostream << X3DGenerator::OpenBracket;
 
 			for (const auto & value : basic::adapter (cbegin (), cend () - 1))
 			{
 				ostream
 					<< value
-					<< Generator::Comma
-					<< Generator::ListBreak;
+					<< X3DGenerator::Comma
+					<< X3DGenerator::ListBreak;
 					
-				if (Generator::HasListBreak ())
-					ostream << Generator::Indent;
+				if (X3DGenerator::HasListBreak ())
+					ostream << X3DGenerator::Indent;
 			}
 
 			ostream
 				<< back ()
-				<< Generator::CloseBracket;
+				<< X3DGenerator::CloseBracket;
 
 			return;
 		}
@@ -891,8 +891,8 @@ X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<< XMLEncode (value)
-				<< Generator::Comma
-				<< Generator::Space;
+				<< X3DGenerator::Comma
+				<< X3DGenerator::Space;
 		}
 
 		ostream << XMLEncode (back ());

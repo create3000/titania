@@ -97,14 +97,12 @@ public:
 	X3DBaseNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	virtual
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	X3DBaseNode*

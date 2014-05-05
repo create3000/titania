@@ -51,6 +51,9 @@
 #include "Generator.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Networking/Inline.h"
+#include "../Execution/ExportedNode.h"
+#include "../Execution/ImportedNode.h"
 #include "../Parser/RegEx.h"
 
 #include <Titania/String/to_string.h>
@@ -197,6 +200,8 @@ VersionType          Generator::version = LATEST_VERSION;
 
 Generator::ExecutionContextStack Generator::executionContextStack;
 size_t                           Generator::level = 0;
+Generator::NodeSet               Generator::exportedNodesIndex;
+Generator::NodeSet               Generator::importedNodesIndex;
 Generator::NodeSet               Generator::nodes;
 Generator::NameIndex             Generator::names;
 Generator::NameIndexByNode       Generator::namesByNode;
@@ -335,6 +340,24 @@ Generator::PopContext ()
 		importedNames .clear ();
 	}
 }
+	
+void
+Generator::setExportedNodes (const ExportedNodeArray & exportedNodes)
+{
+	exportedNodesIndex .clear ();
+
+	for (const auto & exportedNode : exportedNodes)
+		exportedNodesIndex .emplace (exportedNode -> getNode ());
+}
+
+void
+Generator::setImportedNodes (const ImportedNodeArray & importedNodes)
+{
+	importedNodesIndex .clear ();
+
+	for (const auto & importedNode : importedNodes)
+		importedNodesIndex .emplace (importedNode -> getInlineNode ());
+}
 
 bool
 Generator::IsSharedNode (const X3DBaseNode* const baseNode)
@@ -371,7 +394,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 
 	if (baseNode -> getName () .empty ())
 	{
-		if (baseNode -> getNumClones () > 1 or baseNode -> hasRoutes ())
+		if (needsName (baseNode))
 		{
 			std::string name = getUniqueName ();
 
@@ -395,7 +418,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 
 	if (name .empty ())
 	{
-		if (baseNode -> getNumClones () > 1 or baseNode -> hasRoutes ())
+		if (needsName (baseNode))
 			name = getUniqueName ();
 
 		else
@@ -425,6 +448,24 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 	namesByNode [baseNode] = name;
 
 	return namesByNode [baseNode];
+}
+
+bool
+Generator::needsName (const X3DBaseNode* const baseNode)
+{
+	if (baseNode -> getNumClones () > 1)
+		return true;
+	
+	 if (baseNode -> hasRoutes ())
+	   return true;
+
+	 if (exportedNodesIndex .find (baseNode) not_eq exportedNodesIndex .end ())
+	   return true;
+
+	 if (importedNodesIndex .find (baseNode) not_eq importedNodesIndex .end ())
+	   return true;
+
+	return false;
 }
 
 std::string

@@ -86,7 +86,6 @@ Route::create (X3DExecutionContext* const) const
 Route*
 Route::clone (X3DExecutionContext* const) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Cloning routes is not supported.");
@@ -95,7 +94,6 @@ throw (Error <INVALID_NAME>,
 Route*
 Route::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	try
@@ -231,8 +229,8 @@ Route::toStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
-	const std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::GetLocalName (getSourceNode ());
+	const std::string & destinationNodeName = Generator::GetLocalName (getDestinationNode ());
 
 	if (not getComments () .empty ())
 	{
@@ -282,8 +280,8 @@ Route::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
-	const std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::GetLocalName (getSourceNode ());
+	const std::string & destinationNodeName = Generator::GetLocalName (getDestinationNode ());
 
 	ostream
 		<< Generator::Indent

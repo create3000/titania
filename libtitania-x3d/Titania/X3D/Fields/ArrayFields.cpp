@@ -206,8 +206,8 @@ X3DArrayField <SFString>::toXMLStream (std::ostream & ostream) const
 				<< '"'
 				<< XMLEncode (value)
 				<< '"'
-				<< Generator::Comma
-				<< Generator::Space;
+				<< X3DGenerator::Comma
+				<< X3DGenerator::Space;
 		}
 
 		ostream

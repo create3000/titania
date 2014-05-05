@@ -171,14 +171,14 @@ template <>
 void
 X3DScalar <double>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <double> << getValue ();
+	ostream << X3DGenerator::Precision <double> << getValue ();
 }
 
 template <>
 void
 X3DScalar <float>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <float> << getValue ();
+	ostream << X3DGenerator::Precision <float> << getValue ();
 }
 
 template <>

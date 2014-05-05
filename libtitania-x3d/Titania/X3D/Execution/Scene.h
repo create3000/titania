@@ -101,7 +101,6 @@ public:
 	void
 	importScene (const ScenePtr &)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

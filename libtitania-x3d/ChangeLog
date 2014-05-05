@@ -1,3 +1,56 @@
+2014-05-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec2.h:
+	* Route.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* X3DObject.h:
+	* X3DField.h:
+	* Proto.h:
+	* Scene.h:
+	* Route.cpp:
+	* SFTime.cpp:
+	* SFMatrix3.h:
+	* SFImage.cpp:
+	* SFColor.cpp:
+	* SFMatrix4.h:
+	* Scene.cpp:
+	* SFString.cpp:
+	* Proto.cpp:
+	* X3DBaseNode.h:
+	* X3DPtrArray.h:
+	* SFRotation4.h:
+	* X3DScene.h:
+	* X3DScalar.cpp:
+	* X3DBaseNode.cpp:
+	* NamedNode.h:
+	* X3DArrayField.h:
+	* SFColorRGBA.cpp:
+	* X3DScene.cpp:
+	* ArrayFields.cpp:
+	* ExternProto.h:
+	* NamedNode.cpp:
+	* Generator.h:
+	* ExportedNode.h:
+	* ImportedNode.h:
+	* ExternProto.cpp:
+	* Generator.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* X3DBaseGenerator.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* ShaderProgram.cpp:
+	* X3DUrlObject.h:
+	* ComposedShader.cpp:
+	* jsX3DObject.h:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.cpp:
+	* Background.h:
+	* Background.cpp:
+	* X3DProgrammableShaderObject.h:
+	* X3DProgrammableShaderObject.cpp: 
+
 2014-05-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Route.h:

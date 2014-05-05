@@ -76,7 +76,6 @@ NamedNode::create (X3DExecutionContext* const executionContext) const
 NamedNode*
 NamedNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Cloning named nodes to execution context is not supported.");
@@ -85,7 +84,6 @@ throw (Error <INVALID_NAME>,
 NamedNode*
 NamedNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Copying named nodes to execution context is not supported.");

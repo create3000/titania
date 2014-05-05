@@ -1,52 +1,75 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/OutlineEditor-IMPORT.x3dv">
+    <Files>
+      <File FileName="Titania/Titania/NodePropertiesEditor/NodePropertiesEditor.h" Line="197" Column="1" />
+      <File FileName="Titania/Titania/NodePropertiesEditor/NodePropertiesEditor.cpp" Line="991" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="423" Column="41" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="398" Column="1" />
+      <File FileName="Library/Tests/Handles/OutlineEditor-IMPORT.x3dv" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
           </Node>
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
-              <Node name="Networking" expanded="True" />
-              <Node name="Scripting" expanded="True" />
+              <Node name="Basic" expanded="True" />
+              <Node name="Handles" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
+          <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True">
-                <Node name="Context" expanded="True" />
-              </Node>
+              <Node name="Basic" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="tools" expanded="True">
-                  <Node name="library" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
+            <Node name="share" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="Networking" expanded="True" />
-                </Node>
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Networking" expanded="True">
-                    <Node name="Inline.cpp" selected="True" />
-                  </Node>
+                  <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Shaders" expanded="True" />
+                </Node>
+                <Node name="Execution" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                 </Node>
               </Node>
             </Node>
           </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="xxx" expanded="True" />
+          </Node>
           <Node name="Titania" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="ui" expanded="True">
+                  <Node name="Dialogs" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
+              <Node name="MaterialEditor" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True">
+                <Node name="NodePropertiesEditor.cpp" selected="True" />
+              </Node>
+              <Node name="Undo" expanded="True" />
             </Node>
           </Node>
           <Node name="x3d2vrml" expanded="True">
@@ -65,7 +88,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Execution/ExportedNode.cpp" line="105" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/Parser.cpp" line="712" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

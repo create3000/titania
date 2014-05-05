@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_FIELDS_X3DPTR_ARRAY_H__
 
 #include "../Basic/X3DArrayField.h"
+#include "../InputOutput/Generator.h"
 #include "../Fields/X3DPtr.h"
 
 #include <Titania/Utility/Adapter.h>

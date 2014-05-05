@@ -53,6 +53,8 @@
 
 #include "../Bits/X3DConstants.h"
 #include "../InputOutput/X3DBaseGenerator.h"
+#include "../Execution/ExportedNodeArray.h"
+#include "../Execution/ImportedNodeArray.h"
 
 #include <map>
 #include <set>
@@ -67,7 +69,7 @@ class X3DBaseNode;
 class X3DExecutionContext;
 
 class Generator :
-	public X3DBaseGenerator <char>
+	public X3DGenerator
 {
 public:
 
@@ -195,6 +197,14 @@ public:
 	static
 	void
 	PopContext ();
+	
+	static
+	void
+	setExportedNodes (const ExportedNodeArray &);
+
+	static
+	void
+	setImportedNodes (const ImportedNodeArray &);
 
 	bool
 	static
@@ -250,6 +260,10 @@ public:
 private:
 
 	static
+	bool
+	needsName (const X3DBaseNode* const);
+
+	static
 	std::string
 	getUniqueName ();
 
@@ -265,6 +279,8 @@ private:
 
 	static ExecutionContextStack executionContextStack;
 	static size_t                level;
+	static NodeSet               exportedNodesIndex;
+	static NodeSet               importedNodesIndex;
 	static NodeSet               nodes;
 	static NameIndex             names;
 	static NameIndexByNode       namesByNode;
@@ -307,6 +323,26 @@ std::basic_ostream <CharT, Traits> &
 NicestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
 	Generator::NicestStyle ();
+	return ostream;
+}
+
+// XMLEncode
+
+struct XMLEncodeStringType { const std::string & string; };
+
+inline
+XMLEncodeStringType
+XMLEncode (const std::string & string)
+{
+	return XMLEncodeStringType { string };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
+{
+	Generator::XMLEncodeToStream (ostream, value .string);
 	return ostream;
 }
 

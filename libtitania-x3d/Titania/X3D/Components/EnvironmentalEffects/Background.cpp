@@ -115,7 +115,6 @@ Background::create (X3DExecutionContext* const executionContext) const
 Background*
 Background::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	Background* const copy = dynamic_cast <Background*> (X3DBaseNode::copy (executionContext));

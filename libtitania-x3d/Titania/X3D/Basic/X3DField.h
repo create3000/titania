@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DFIELD_H__
 
 #include "../Basic/X3DFieldDefinition.h"
+#include "../InputOutput/X3DBaseGenerator.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {

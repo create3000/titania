@@ -88,7 +88,6 @@ ExternProto::create (X3DExecutionContext* const executionContext) const
 ExternProto*
 ExternProto::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProto*> (this));
@@ -99,7 +98,6 @@ throw (Error <INVALID_NAME>,
 ExternProto*
 ExternProto::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	ExternProto* const copy = create (executionContext);

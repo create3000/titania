@@ -106,7 +106,7 @@ ShaderProgram::initialize ()
 void
 ShaderProgram::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
-	X3DNode::addUserDefinedField (accessType, name, field);
+	X3DProgrammableShaderObject::addUserDefinedField (accessType, name, field);
 
 	if (isInitialized ())
 		url () .addEvent ();
@@ -115,7 +115,7 @@ ShaderProgram::addUserDefinedField (const AccessType accessType, const std::stri
 void
 ShaderProgram::removeUserDefinedField (X3DFieldDefinition* const field)
 {
-	X3DNode::removeUserDefinedField (field);
+	X3DProgrammableShaderObject::removeUserDefinedField (field);
 
 	if (isInitialized ())
 		url () .addEvent ();

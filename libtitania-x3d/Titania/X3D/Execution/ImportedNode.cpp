@@ -87,7 +87,6 @@ ImportedNode::create (X3DExecutionContext* const executionContext) const
 ImportedNode*
 ImportedNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Cloning imported nodes is not supported.");
@@ -96,7 +95,6 @@ throw (Error <INVALID_NAME>,
 ImportedNode*
 ImportedNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <NOT_SUPPORTED>)
 {
 	try
@@ -179,7 +177,7 @@ ImportedNode::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "IMPORT"
 				<< Generator::Space
-				<< inlineNode -> getName ()
+				<< Generator::GetName (inlineNode)
 				<< '.'
 				<< exportedName;
 
@@ -213,7 +211,7 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 			<< "<IMPORT"
 			<< Generator::Space
 			<< "inlineDEF='"
-			<< XMLEncode (inlineNode -> getName ())
+			<< XMLEncode (Generator::GetName (inlineNode))
 			<< "'"
 			<< Generator::Space
 			<< "exportedDEF='"

@@ -50,6 +50,7 @@
 
 #include "SFString.h"
 
+#include "../InputOutput/Generator.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {

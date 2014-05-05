@@ -694,8 +694,11 @@ NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
 }
 
 void
-NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & value)
+NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
+	std::string value = new_text;
+	X3D::filter_non_id_characters (value);
+
 	bool        imported = false;
 	std::string exportedName;
 	std::string importedName;
@@ -709,7 +712,7 @@ NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const
 	if (importedName .empty ())
 		importedName = exportedName;
 
-	const std::string newImportedName = value .empty () ? exportedName : value .raw ();
+	const std::string newImportedName = value .empty () ? exportedName : value;
 	const bool        valid           = validateImportedName (exportedName, newImportedName);
 
 	// Update or remove imported node.
@@ -802,250 +805,255 @@ NodePropertiesEditor::on_ok ()
 void
 NodePropertiesEditor::on_apply ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
-
-	// Apply name change.
-
-	const std::string name = getNameEntry () .get_text ();
-
-	if (name not_eq node -> getName ())
+	try
 	{
-		undoStep -> addUndoFunction (&NodePropertiesEditor::updateNamedNode,
-		                             getBrowserWindow (),
-		                             node -> getName (),
-		                             node);
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
 
-		undoStep -> addRedoFunction (&NodePropertiesEditor::updateNamedNode,
-		                             getBrowserWindow (),
-		                             name,
-		                             node);
+		// Apply name change.
 
-		updateNamedNode (getBrowserWindow (), name, node);
-	}
+		const std::string name = getNameEntry () .get_text ();
 
-	// Apply user defined fields change.
-
-	if (node -> hasUserDefinedFields ())
-	{
-		if (node -> getUserDefinedFields () not_eq userDefinedFields)
+		if (name not_eq node -> getName ())
 		{
-			// Undo preparation
+			undoStep -> addUndoFunction (&NodePropertiesEditor::updateNamedNode,
+			                             getBrowserWindow (),
+			                             node -> getName (),
+			                             node);
 
-			FieldToFieldIndex         undoFieldsToReplace = reverse (fieldsToReplace);
-			X3D::FieldDefinitionArray undoFieldsToRemove  = userDefinedFields - node -> getUserDefinedFields ();
+			undoStep -> addRedoFunction (&NodePropertiesEditor::updateNamedNode,
+			                             getBrowserWindow (),
+			                             name,
+			                             node);
 
-			X3D::X3DPtr <X3D::FieldContainer> undoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
+			updateNamedNode (getBrowserWindow (), name, node);
+		}
 
-			undoRoot -> setup ();
+		// Apply user defined fields change.
 
-			for (const auto & field : undoFieldsToRemove)
-				undoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-			undoStep -> addVariables (undoRoot);
-
-			// Redo Preparation
-
-			X3D::X3DPtr <X3D::FieldContainer> redoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
-
-			redoRoot -> setup ();
-
-			for (const auto & field : fieldsToRemove)
-				redoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-			undoStep -> addVariables (redoRoot);
-
-			// Prepare add routes and assign oldField to newField if possible
-
-			std::deque <std::function <void ()>>  addRoutes;
-
-			for (const auto & iter : fieldsToReplace)
+		if (node -> hasUserDefinedFields ())
+		{
+			if (node -> getUserDefinedFields () not_eq userDefinedFields)
 			{
-				const auto & newField = iter .first;
-				const auto & oldField = iter .second;
+				// Undo preparation
 
-				newField -> setUserData (oldField -> getUserData ());
+				FieldToFieldIndex         undoFieldsToReplace = reverse (fieldsToReplace);
+				X3D::FieldDefinitionArray undoFieldsToRemove  = userDefinedFields - node -> getUserDefinedFields ();
 
-				if (newField -> getType () == oldField -> getType ())
+				X3D::X3DPtr <X3D::FieldContainer> undoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
+
+				undoRoot -> setup ();
+
+				for (const auto & field : undoFieldsToRemove)
+					undoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+				undoStep -> addVariables (undoRoot);
+
+				// Redo Preparation
+
+				X3D::X3DPtr <X3D::FieldContainer> redoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
+
+				redoRoot -> setup ();
+
+				for (const auto & field : fieldsToRemove)
+					redoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+				undoStep -> addVariables (redoRoot);
+
+				// Prepare add routes and assign oldField to newField if possible
+
+				std::deque <std::function <void ()>>  addRoutes;
+
+				for (const auto & iter : fieldsToReplace)
 				{
-					newField -> write (*oldField);
+					const auto & newField = iter .first;
+					const auto & oldField = iter .second;
 
-					if (newField -> isInput () and oldField -> isInput ())
+					newField -> setUserData (oldField -> getUserData ());
+
+					if (newField -> getType () == oldField -> getType ())
 					{
-						for (const auto & route : oldField -> getInputRoutes ())
-						{
-							const auto iter           = undoFieldsToReplace .find (route -> getId () .first);
-							const bool newSourceField = route -> getSourceNode () == node and iter not_eq undoFieldsToReplace .end ();
+						newField -> write (*oldField);
 
-							addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
-							                                    getBrowserWindow (),
-							                                    node -> getExecutionContext (),
-							                                    route -> getSourceNode (),
-							                                    newSourceField ? iter -> second -> getName () : route -> getSourceField (),
-							                                    node,
-							                                    newField -> getName (),
-							                                    undoStep));
+						if (newField -> isInput () and oldField -> isInput ())
+						{
+							for (const auto & route : oldField -> getInputRoutes ())
+							{
+								const auto iter           = undoFieldsToReplace .find (route -> getId () .first);
+								const bool newSourceField = route -> getSourceNode () == node and iter not_eq undoFieldsToReplace .end ();
+
+								addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
+								                                    getBrowserWindow (),
+								                                    node -> getExecutionContext (),
+								                                    route -> getSourceNode (),
+								                                    newSourceField ? iter -> second -> getName () : route -> getSourceField (),
+								                                    node,
+								                                    newField -> getName (),
+								                                    undoStep));
+							}
+						}
+
+						if (newField -> isOutput () and oldField -> isOutput ())
+						{
+							for (const auto & route : oldField -> getOutputRoutes ())
+							{
+								const auto iter                = undoFieldsToReplace .find (route -> getId () .second);
+								const bool newDestinationField = route -> getDestinationNode () == node and iter not_eq undoFieldsToReplace .end ();
+
+								addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
+								                                    getBrowserWindow (),
+								                                    node -> getExecutionContext (),
+								                                    node,
+								                                    newField -> getName (),
+								                                    route -> getDestinationNode (),
+								                                    newDestinationField ? iter -> second -> getName () : route -> getDestinationField (),
+								                                    undoStep));
+							}
 						}
 					}
+				}
 
-					if (newField -> isOutput () and oldField -> isOutput ())
+				// Undo, Redo & Do
+
+				// Remove routes from fieldsToRemove
+
+				for (const auto & field : fieldsToRemove)
+				{
+					for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
 					{
-						for (const auto & route : oldField -> getOutputRoutes ())
-						{
-							const auto iter                = undoFieldsToReplace .find (route -> getId () .second);
-							const bool newDestinationField = route -> getDestinationNode () == node and iter not_eq undoFieldsToReplace .end ();
+						getBrowserWindow () -> deleteRoute (node -> getExecutionContext (),
+						                                    route -> getSourceNode (),
+						                                    route -> getSourceField (),
+						                                    route -> getDestinationNode (),
+						                                    route -> getDestinationField (),
+						                                    undoStep);
+					}
 
-							addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
-							                                    getBrowserWindow (),
-							                                    node -> getExecutionContext (),
-							                                    node,
-							                                    newField -> getName (),
-							                                    route -> getDestinationNode (),
-							                                    newDestinationField ? iter -> second -> getName () : route -> getDestinationField (),
-							                                    undoStep));
-						}
+					for (const auto & route : X3D::RouteSet (field -> getOutputRoutes ()))
+					{
+						getBrowserWindow () -> deleteRoute (node -> getExecutionContext (),
+						                                    route -> getSourceNode (),
+						                                    route -> getSourceField (),
+						                                    route -> getDestinationNode (),
+						                                    route -> getDestinationField (),
+						                                    undoStep);
 					}
 				}
-			}
 
-			// Undo, Redo & Do
+				// Set user defined fields
 
-			// Remove routes from fieldsToRemove
+				undoStep -> addUndoFunction (&NodePropertiesEditor::setUserDefinedFields,
+				                             getBrowserWindow (),
+				                             node,
+				                             node -> getUserDefinedFields (),
+				                             undoFieldsToRemove);
 
-			for (const auto & field : fieldsToRemove)
-			{
-				for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
+				undoStep -> addRedoFunction (&NodePropertiesEditor::setUserDefinedFields,
+				                             getBrowserWindow (),
+				                             node,
+				                             userDefinedFields,
+				                             fieldsToRemove);
+
+				setUserDefinedFields (getBrowserWindow (),
+				                      node,
+				                      userDefinedFields,
+				                      fieldsToRemove);
+
+				// Add routes to fieldsToReplace
+
+				for (const auto & addRoute : addRoutes)
 				{
-					getBrowserWindow () -> deleteRoute (node -> getExecutionContext (),
-					                                    route -> getSourceNode (),
-					                                    route -> getSourceField (),
-					                                    route -> getDestinationNode (),
-					                                    route -> getDestinationField (),
-					                                    undoStep);
-				}
-
-				for (const auto & route : X3D::RouteSet (field -> getOutputRoutes ()))
-				{
-					getBrowserWindow () -> deleteRoute (node -> getExecutionContext (),
-					                                    route -> getSourceNode (),
-					                                    route -> getSourceField (),
-					                                    route -> getDestinationNode (),
-					                                    route -> getDestinationField (),
-					                                    undoStep);
+					try
+					{
+						addRoute ();
+					}
+					catch (const X3D::X3DError &)
+					{ }
 				}
 			}
+		}
 
-			// Set user defined fields
+		// Apply imported nodes change.
 
-			undoStep -> addUndoFunction (&NodePropertiesEditor::setUserDefinedFields,
-			                             getBrowserWindow (),
-			                             node,
-			                             node -> getUserDefinedFields (),
-			                             undoFieldsToRemove);
+		if (not importedNodesToUpdate .empty () or not importedNodesToRemove .empty ())
+		{
+			//__LOG__ << std::endl;
 
-			undoStep -> addRedoFunction (&NodePropertiesEditor::setUserDefinedFields,
-			                             getBrowserWindow (),
-			                             node,
-			                             userDefinedFields,
-			                             fieldsToRemove);
+			const X3D::X3DExecutionContextPtr executionContext (node -> getExecutionContext ());
+			const X3D::InlinePtr              inlineNode (node);
 
-			setUserDefinedFields (getBrowserWindow (),
-			                      node,
-			                      userDefinedFields,
-			                      fieldsToRemove);
+			// Prepare imported nodes.
 
-			// Add routes to fieldsToReplace
+			for (const auto & importedNode : importedNodesToUpdate)
+				importedNodesToRemove .erase (importedNode .second);
 
-			for (const auto & addRoute : addRoutes)
+			// Remove imported nodes.
+
+			for (const auto & importedNode : importedNodesToRemove)
 			{
+				const auto & importedName = importedNode .second;
+			
+				//__LOG__ << "remove: " << importedName << std::endl;
+
 				try
 				{
-					addRoute ();
+					const auto & importedNode = executionContext -> getImportedNodes () .rfind (importedName);
+
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
+					                             executionContext,
+					                             importedNode -> getInlineNode (),
+					                             importedNode -> getExportedName (),
+					                             importedNode -> getImportedName ());			
 				}
-				catch (const X3D::X3DError &)
+				catch (...)
 				{ }
+
+				undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode,
+				                             executionContext,
+				                             importedName);
+				
+				executionContext -> removeImportedNode (importedName);
+			}
+
+			// Update imported nodes.
+
+			for (const auto & importedNode : importedNodesToUpdate)
+			{
+				const auto & exportedName = importedNode .second;
+				const auto & importedName = importedNode .first;
+
+				//__LOG__ << "update: " << exportedName << ", " << importedName << std::endl;
+
+				try
+				{
+					const auto & importedNode = executionContext -> getImportedNodes () .rfind (importedName);
+
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
+					                             executionContext,
+					                             importedNode -> getInlineNode (),
+					                             importedNode -> getExportedName (),
+					                             importedNode -> getImportedName ());			
+				}
+				catch (...)
+				{
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeImportedNode,
+					                             executionContext,
+					                             importedName);			
+				}
+
+				undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateImportedNode,
+				                             executionContext,
+				                             inlineNode,
+				                             exportedName,
+				                             importedName);
+
+				executionContext -> updateImportedNode (inlineNode, exportedName, importedName);
 			}
 		}
+
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
-
-	// Apply imported nodes change.
-
-	if (not importedNodesToUpdate .empty () or not importedNodesToRemove .empty ())
-	{
-		__LOG__ << std::endl;
-		
-		// Prepare imported nodes.
-		
-		const X3D::ScenePtr  scene (getBrowser () -> getExecutionContext ());
-		const X3D::InlinePtr inlineNode (node);
-
-		for (const auto & importedNode : importedNodesToUpdate)
-			importedNodesToRemove .erase (importedNode .second);
-
-		// Remove imported nodes.
-
-		for (const auto & importedNode : importedNodesToRemove)
-		{
-			const auto & importedName = importedNode .second;
-		
-			__LOG__ << "remove: " << importedName << std::endl;
-			
-			try
-			{
-				const auto & importedNode = scene -> getImportedNodes () .rfind (importedName);
-
-				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
-				                             scene,
-				                             importedNode -> getInlineNode (),
-				                             importedNode -> getExportedName (),
-				                             importedNode -> getImportedName ());			
-			}
-			catch (...)
-			{ }
-
-			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode,
-			                             scene,
-			                             importedName);
-			
-			scene -> removeImportedNode (importedName);
-		}
-
-		// Update imported nodes.
-
-		for (const auto & importedNode : importedNodesToUpdate)
-		{
-			const auto & exportedName = importedNode .second;
-			const auto & importedName = importedNode .first;
-
-			__LOG__ << "update: " << exportedName << ", " << importedName << std::endl;
-
-			try
-			{
-				const auto & importedNode = scene -> getImportedNodes () .rfind (importedName);
-
-				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
-				                             scene,
-				                             importedNode -> getInlineNode (),
-				                             importedNode -> getExportedName (),
-				                             importedNode -> getImportedName ());			
-			}
-			catch (...)
-			{
-				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeImportedNode,
-				                             scene,
-				                             importedName);			
-			}
-
-			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateImportedNode,
-			                             scene,
-			                             inlineNode,
-			                             exportedName,
-			                             importedName);
-			
-			scene -> updateImportedNode (inlineNode, exportedName, importedName);
-		}
-	}
-
-	getBrowserWindow () -> addUndoStep (undoStep);
+	catch (const std::exception & error)
+	{ }
 }
 
 void

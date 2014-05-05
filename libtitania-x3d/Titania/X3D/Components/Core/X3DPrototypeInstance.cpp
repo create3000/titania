@@ -70,7 +70,6 @@ const std::string X3DPrototypeInstance::containerField = "children";
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & prototype) :
 //throw (Error <INVALID_NAME>,
-//       Error <NODE_NOT_AVAILABLE>,
 //       Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),

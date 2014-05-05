@@ -464,43 +464,36 @@ protected:
 	void
 	importExternProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importExternProtos (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importProtos (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importRootNodes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importImportedNodes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	void
 	importRoutes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 

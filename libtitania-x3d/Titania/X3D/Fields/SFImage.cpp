@@ -205,9 +205,9 @@ SFImage::toStream (std::ostream & ostream) const
 
 	ostream
 		<< image .width ()
-		<< Generator::Space
+		<< X3DGenerator::Space
 		<< image .height ()
-		<< Generator::Space
+		<< X3DGenerator::Space
 		<< image .components ();
 
 	if (image .width () and image .height ())
@@ -215,15 +215,15 @@ SFImage::toStream (std::ostream & ostream) const
 		ostream
 			<< std::hex
 			<< std::showbase
-			<< Generator::ListBreak
-			<< Generator::IncIndent;
+			<< X3DGenerator::ListBreak
+			<< X3DGenerator::IncIndent;
 
 		Image::size_type y = 0;
 
 		for (; y < image .height () - 1; ++ y)
 		{
-			if (Generator::HasListBreak ())
-				ostream << Generator::Indent;
+			if (X3DGenerator::HasListBreak ())
+				ostream << X3DGenerator::Indent;
 
 			const Image::size_type s = y * image .width ();
 			Image::size_type       x = 0;
@@ -232,16 +232,16 @@ SFImage::toStream (std::ostream & ostream) const
 			{
 				ostream
 					<< image .array () [x + s]
-					<< Generator::Space;
+					<< X3DGenerator::Space;
 			}
 
 			ostream
 				<< image .array () [x + s]
-				<< Generator::ListBreak;
+				<< X3DGenerator::ListBreak;
 		}
 
-		if (Generator::HasListBreak ())
-			ostream << Generator::Indent;
+		if (X3DGenerator::HasListBreak ())
+			ostream << X3DGenerator::Indent;
 
 		const Image::size_type s = y * image .width ();
 		Image::size_type       x = 0;
@@ -250,12 +250,12 @@ SFImage::toStream (std::ostream & ostream) const
 		{
 			ostream
 				<< image .array () [x + s]
-				<< Generator::Space;
+				<< X3DGenerator::Space;
 		}
 
 		ostream
 			<< image .array () [x + s]
-			<< Generator::DecIndent
+			<< X3DGenerator::DecIndent
 			<< std::dec;
 	}
 }

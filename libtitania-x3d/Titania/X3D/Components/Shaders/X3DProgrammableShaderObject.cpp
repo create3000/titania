@@ -97,6 +97,14 @@ X3DProgrammableShaderObject::setFields ()
 }
 
 void
+X3DProgrammableShaderObject::removeUserDefinedField (X3DFieldDefinition* const field)
+{
+	field -> removeInterest (this, &X3DProgrammableShaderObject::set_field);
+
+	X3DBaseNode::removeUserDefinedField (field);
+}
+
+void
 X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 {
 	glUseProgram (getProgramId ());

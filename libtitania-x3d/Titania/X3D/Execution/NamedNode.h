@@ -75,14 +75,12 @@ public:
 	NamedNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	NamedNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members

@@ -73,7 +73,6 @@ public:
 	ExportedNode*
 	copy (X3DScene* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>);
 
 	///  @name Construction (NOT SUPPORTED)
@@ -82,14 +81,12 @@ public:
 	ExportedNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	ExportedNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
