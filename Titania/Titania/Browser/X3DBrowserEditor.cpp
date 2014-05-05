@@ -376,17 +376,33 @@ X3DBrowserEditor::addUndoStep (const UndoStepPtr & undoStep)
 void
 X3DBrowserEditor::undo ()
 {
-	getBrowser () -> grab_focus ();
+	try
+	{
+		getBrowser () -> grab_focus ();
 
-	undoHistory .undo ();
+		undoHistory .undo ();
+	}
+	catch (const std::exception & error)
+	{
+		std::clog << "Undo not possible:" << std::endl;
+		std::clog << error .what () << std::endl;
+	}
 }
 
 void
 X3DBrowserEditor::redo ()
 {
-	getBrowser () -> grab_focus ();
+	try
+	{
+		getBrowser () -> grab_focus ();
 
-	undoHistory .redo ();
+		undoHistory .redo ();
+	}
+	catch (const std::exception & error)
+	{
+		std::clog << "Redo not possible:" << std::endl;
+		std::clog << error .what () << std::endl;
+	}
 }
 
 void

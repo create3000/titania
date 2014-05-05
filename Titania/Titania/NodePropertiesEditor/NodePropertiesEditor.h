@@ -192,6 +192,9 @@ private:
 	void
 	on_imported_name_edited (const Glib::ustring &, const Glib::ustring &) final override;
 
+	void
+	validateImportedNames (const Gtk::TreeIter &) const;
+
 	bool
 	validateImportedName (const std::string &, const std::string &) const;
 

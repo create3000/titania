@@ -647,20 +647,21 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 void
 NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
 {
-	bool imported = false;
+	bool        imported = false;
 	std::string exportedName;
 	std::string importedName;
 
 	const auto iter = getImportedNodesListStore () -> get_iter (path);
+
 	iter -> get_value (IMPORTED_NODE_IMPORTED,      imported);
 	iter -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
 	iter -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
-	
+
 	if (importedName .empty ())
 		importedName = exportedName;
 
 	imported = not imported;
-	
+
 	if (not imported)
 	{
 		// Remove imported node.
@@ -689,21 +690,7 @@ NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
 
 	// Validate all children which are not imported.
 
-	for (const auto & child : getImportedNodesListStore () -> children ())
-	{
-		if (child not_eq iter)
-		{
-			child -> get_value (IMPORTED_NODE_IMPORTED,      imported);
-			child -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
-			child -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
-
-			if (importedName .empty ())
-				importedName = exportedName;
-
-			if (not imported)
-				child -> set_value (IMPORTED_NODE_NOT_VALID, not validateImportedName (exportedName, importedName));
-		}
-	}
+	validateImportedNames (iter);
 }
 
 void
@@ -714,6 +701,7 @@ NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const
 	std::string importedName;
 
 	const auto iter = getImportedNodesListStore () -> get_iter (path);
+
 	iter -> get_value (IMPORTED_NODE_IMPORTED,      imported);
 	iter -> get_value (IMPORTED_NODE_EXPORTED_NAME, exportedName);
 	iter -> get_value (IMPORTED_NODE_IMPORTED_NAME, importedName);
@@ -737,6 +725,18 @@ NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const
 	iter -> set_value (IMPORTED_NODE_IMPORTED,      valid);
 	iter -> set_value (IMPORTED_NODE_IMPORTED_NAME, newImportedName == exportedName ? "" : newImportedName);
 	iter -> set_value (IMPORTED_NODE_NOT_VALID,     not valid);
+
+	// Validate all children which are not imported.
+	
+	validateImportedNames (iter);
+}
+
+void
+NodePropertiesEditor::validateImportedNames (const Gtk::TreeIter & iter) const
+{
+	bool        imported = false;
+	std::string exportedName;
+	std::string importedName;
 
 	// Validate all children which are not imported.
 
@@ -772,17 +772,18 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 		const auto importedNode = importedNodes .find (localNode);
 
 		if (importedNode == importedNodes .end ())
-			return false; // There is no imported node with importedName thus a named node must already exists.
+			return false;     // There is no imported node with importedName thus a named node must already exists.
 
 		const X3D::InlinePtr inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
 
 		if (importedNode -> second -> getInlineNode () not_eq inlineNode)
-			return false; // There is an import from another Inline node with importedName.
+			return false;     // There is an import from another Inline node with importedName.
 
 		if (importedNodesToRemove .find (importedNode -> second -> getExportedName ()) == importedNodesToRemove .end ())
 		{
 			if (importedNode -> second -> getExportedName () not_eq exportedName)
-				return false; // There is another import from this Inline node with importedName.
+				return false;  // There is another import from this Inline node with importedName.
+
 		}
 	}
 	catch (const X3D::X3DError &)
@@ -971,15 +972,77 @@ NodePropertiesEditor::on_apply ()
 	if (not importedNodesToUpdate .empty () or not importedNodesToRemove .empty ())
 	{
 		__LOG__ << std::endl;
+		
+		// Prepare imported nodes.
+		
+		const X3D::ScenePtr  scene (getBrowser () -> getExecutionContext ());
+		const X3D::InlinePtr inlineNode (node);
 
 		for (const auto & importedNode : importedNodesToUpdate)
 			importedNodesToRemove .erase (importedNode .second);
 
+		// Remove imported nodes.
+
 		for (const auto & importedNode : importedNodesToRemove)
-			__LOG__ << "remove: " << importedNode .second << std::endl;
+		{
+			const auto & importedName = importedNode .second;
+		
+			__LOG__ << "remove: " << importedName << std::endl;
+			
+			try
+			{
+				const auto & importedNode = scene -> getImportedNodes () .rfind (importedName);
+
+				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
+				                             scene,
+				                             importedNode -> getInlineNode (),
+				                             importedNode -> getExportedName (),
+				                             importedNode -> getImportedName ());			
+			}
+			catch (...)
+			{ }
+
+			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode,
+			                             scene,
+			                             importedName);
+			
+			scene -> removeImportedNode (importedName);
+		}
+
+		// Update imported nodes.
 
 		for (const auto & importedNode : importedNodesToUpdate)
-			__LOG__ << "update: " << importedNode .second << ", " << importedNode .first << std::endl;
+		{
+			const auto & exportedName = importedNode .second;
+			const auto & importedName = importedNode .first;
+
+			__LOG__ << "update: " << exportedName << ", " << importedName << std::endl;
+
+			try
+			{
+				const auto & importedNode = scene -> getImportedNodes () .rfind (importedName);
+
+				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
+				                             scene,
+				                             importedNode -> getInlineNode (),
+				                             importedNode -> getExportedName (),
+				                             importedNode -> getImportedName ());			
+			}
+			catch (...)
+			{
+				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeImportedNode,
+				                             scene,
+				                             importedName);			
+			}
+
+			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateImportedNode,
+			                             scene,
+			                             inlineNode,
+			                             exportedName,
+			                             importedName);
+			
+			scene -> updateImportedNode (inlineNode, exportedName, importedName);
+		}
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
