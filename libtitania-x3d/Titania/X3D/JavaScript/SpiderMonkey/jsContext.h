@@ -99,7 +99,7 @@ public:
 	///  @name Member access
 
 	Script*
-	getNode () const
+	getScriptNode () const
 	{ return script; }
 
 	JSBool

@@ -162,6 +162,11 @@ public:
 	getInnerNode ()
 	{ return this; }
 
+	virtual
+	const X3DBaseNode*
+	getInnerNode () const
+	{ return this; }
+
 	///  @name Field handling
 
 	bool
@@ -284,6 +289,16 @@ public:
 	restoreState ();
 
 	///  @name Tool handling
+
+	virtual
+	X3DBaseNode*
+	getNode ()
+	{ return this; }
+
+	virtual
+	const X3DBaseNode*
+	getNode () const
+	{ return this; }
 
 	virtual
 	void

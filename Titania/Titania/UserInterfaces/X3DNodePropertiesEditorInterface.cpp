@@ -212,6 +212,14 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_ImportedNodesExpander -> set_name ("ImportedNodesExpander");
 	m_builder -> get_widget ("ImportedNodesTreeView", m_ImportedNodesTreeView);
 	m_ImportedNodesTreeView -> set_name ("ImportedNodesTreeView");
+	m_builder -> get_widget ("ExportExpander", m_ExportExpander);
+	m_ExportExpander -> set_name ("ExportExpander");
+	m_builder -> get_widget ("ExportCheckButton", m_ExportCheckButton);
+	m_ExportCheckButton -> set_name ("ExportCheckButton");
+	m_builder -> get_widget ("ExportedNameLabel", m_ExportedNameLabel);
+	m_ExportedNameLabel -> set_name ("ExportedNameLabel");
+	m_builder -> get_widget ("ExportedNameEntry", m_ExportedNameEntry);
+	m_ExportedNameEntry -> set_name ("ExportedNameEntry");
 	m_builder -> get_widget ("AddFieldDialog", m_AddFieldDialog);
 	m_AddFieldDialog -> set_name ("AddFieldDialog");
 	m_builder -> get_widget ("AddFieldCancelButton", m_AddFieldCancelButton);
@@ -257,6 +265,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CellRendererText with id 'ImportedNodesImportedNameCellRendererText'.
 	m_ImportedNodesImportedNameCellRendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_edited));
+
+	// Connect object Gtk::CheckButton with id 'ExportCheckButton'.
+	m_ExportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_export_toggled));
 
 	// Connect object Gtk::Button with id 'AddFieldCancelButton'.
 	m_AddFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));

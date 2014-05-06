@@ -347,7 +347,7 @@ Generator::setExportedNodes (const ExportedNodeArray & exportedNodes)
 	exportedNodesIndex .clear ();
 
 	for (const auto & exportedNode : exportedNodes)
-		exportedNodesIndex .emplace (exportedNode -> getNode ());
+		exportedNodesIndex .emplace (exportedNode -> getLocalNode ());
 }
 
 void

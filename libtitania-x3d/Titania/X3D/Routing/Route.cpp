@@ -98,8 +98,8 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const SFNode sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));
-		const SFNode destinationNode = executionContext -> getNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
+		const SFNode sourceNode      = executionContext -> getLocalNode (getExecutionContext () -> getLocalName (getSourceNode ()));
+		const SFNode destinationNode = executionContext -> getLocalNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
 
 		return executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ()) .getValue ();
 	}

@@ -363,13 +363,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Time/X3DTimeDependentNode.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
 	Titania/X3D/Configuration/ComponentInfoArray.cpp \
-	Titania/X3D/Configuration/FieldTypesArray.cpp \
 	Titania/X3D/Configuration/ProfileInfo.cpp \
 	Titania/X3D/Configuration/ProfileInfoArray.cpp \
 	Titania/X3D/Configuration/SupportedComponents.cpp \
 	Titania/X3D/Configuration/SupportedFields.cpp \
 	Titania/X3D/Configuration/SupportedNodes.cpp \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
+	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \

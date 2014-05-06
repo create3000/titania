@@ -105,9 +105,17 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	const FieldTypesArray &
+	const X3DFieldDefinition*
+	getSupportedField (const std::string &) const
+	throw (Error <INVALID_NAME>);
+
+	const SupporteFieldArray &
 	getSupportedFields () const
 	throw (Error <DISPOSED>);
+
+	const X3DBaseNode*
+	getSupportedNode (const std::string &) const
+	throw (Error <INVALID_NAME>);
 
 	const BasicNodeArray &
 	getSupportedNodes () const
@@ -120,14 +128,6 @@ public:
 	const ProfileInfoArray &
 	getSupportedProfiles () const
 	throw (Error <DISPOSED>);
-
-	const X3DFieldDefinition*
-	getFieldType (const std::string &) const
-	throw (Error <INVALID_NAME>);
-
-	const X3DBaseNode*
-	getNode (const std::string &) const
-	throw (Error <INVALID_NAME>);
 
 	ComponentInfoPtr
 	getComponent (const std::string &, const size_t) const

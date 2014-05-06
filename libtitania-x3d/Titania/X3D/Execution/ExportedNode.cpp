@@ -100,7 +100,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto node = scene -> getNamedNode (getNode () -> getName ());
+		const auto node = scene -> getNamedNode (getLocalNode () -> getName ());
 
 		return scene -> addExportedNode (exportedName, node) .getValue ();
 	}
@@ -121,7 +121,7 @@ ExportedNode::initialize ()
 }
 
 SFNode
-ExportedNode::getNode () const
+ExportedNode::getLocalNode () const
 throw (Error <DISPOSED>)
 {
 	if (node and node -> getReferenceCount ())
@@ -142,7 +142,7 @@ ExportedNode::toStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::GetLocalName (getNode ());
+	const std::string & localName = Generator::GetLocalName (getLocalNode ());
 
 	if (not getComments () .empty ())
 	{
@@ -183,7 +183,7 @@ ExportedNode::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::GetLocalName (getNode ());
+	const std::string & localName = Generator::GetLocalName (getLocalNode ());
 
 	ostream
 		<< Generator::Indent

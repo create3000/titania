@@ -87,6 +87,16 @@ public:
 	{ return node -> getUserData (); }
 
 	virtual
+	Type*
+	getNode () final override
+	{ return node; }
+
+	virtual
+	const Type*
+	getNode () const final override
+	{ return node; }
+
+	virtual
 	void
 	addTool () final override
 	{ }
@@ -146,12 +156,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	///  @name Members
-
-	Type*
-	getNode () const
-	{ return node; }
 
 
 private:

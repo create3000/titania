@@ -205,9 +205,8 @@ public:
 	///  @name Named/Imported node handling
 
 	SFNode
-	getNode (const std::string &) const
+	getLocalNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -288,7 +287,6 @@ public:
 	SFNode
 	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -502,6 +500,9 @@ private:
 	using ImportedNamesIndex = std::map <X3DBaseNode*, std::string>;
 
 	///  @name Operations
+
+	void
+	removeImportedName (X3DBaseNode* const);
 
 	ProtoPtr
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)

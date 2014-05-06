@@ -114,7 +114,7 @@ public:
 	{ return exportedName; }
 
 	SFNode
-	getNode () const
+	getLocalNode () const
 	throw (Error <DISPOSED>);
 
 	///  @name Input/Output

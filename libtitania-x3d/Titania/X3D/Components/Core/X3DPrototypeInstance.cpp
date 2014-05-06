@@ -193,6 +193,12 @@ X3DPrototypeInstance::getInnerNode ()
 	return getRootNode () -> getInnerNode ();
 }
 
+const X3DBaseNode*
+X3DPrototypeInstance::getInnerNode () const
+{
+	return getRootNode () -> getInnerNode ();
+}
+
 X3DBaseNode*
 X3DPrototypeInstance::getRootNode () const
 {

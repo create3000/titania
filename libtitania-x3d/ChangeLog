@@ -1,3 +1,41 @@
+2014-05-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Grammar.h:
+	* Route.cpp:
+	* Parser.cpp:
+	* Grammar.cpp:
+	* X3DBaseNode.h:
+	* Scene.cpp:
+	* X3DBrowser.h:
+	* X3DScene.h:
+	* NamedNode.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* NamedNode.cpp:
+	* X3DBaseTool.h:
+	* ExportedNode.h:
+	* Generator.cpp:
+	* ExportedNode.cpp:
+	* InlineTool.h:
+	* FieldTypesArray.h:
+	* SupportedFields.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* FieldTypesArray.cpp:
+	* SupportedFields.cpp:
+	* SupporteFieldArray.h:
+	* jsContext.h:
+	* SupporteFieldArray.cpp:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* jsSFNode.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2014-05-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFVec2.h:

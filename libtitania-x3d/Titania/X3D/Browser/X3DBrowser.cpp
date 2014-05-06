@@ -183,11 +183,25 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return getExecutionContext () -> getWorldURL ();
 }
 
-const FieldTypesArray &
+const X3DFieldDefinition*
+X3DBrowser::getSupportedField (const std::string & name) const
+throw (Error <INVALID_NAME>)
+{
+	return supportedFields .get (name);
+}
+
+const SupporteFieldArray &
 X3DBrowser::getSupportedFields () const
 throw (Error <DISPOSED>)
 {
 	return supportedFields .get ();
+}
+
+const X3DBaseNode*
+X3DBrowser::getSupportedNode (const std::string & name) const
+throw (Error <INVALID_NAME>)
+{
+	return supportedNodes .get (name);
 }
 
 const BasicNodeArray &
@@ -209,20 +223,6 @@ X3DBrowser::getSupportedProfiles () const
 throw (Error <DISPOSED>)
 {
 	return supportedProfiles .get ();
-}
-
-const X3DFieldDefinition*
-X3DBrowser::getFieldType (const std::string & name) const
-throw (Error <INVALID_NAME>)
-{
-	return supportedFields .get (name);
-}
-
-const X3DBaseNode*
-X3DBrowser::getNode (const std::string & name) const
-throw (Error <INVALID_NAME>)
-{
-	return supportedNodes .get (name);
 }
 
 ComponentInfoPtr

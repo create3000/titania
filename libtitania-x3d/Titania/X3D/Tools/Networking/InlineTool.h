@@ -97,7 +97,7 @@ public:
 	getExportedNodes () const
 	throw (Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
+	       Error <DISPOSED>) final override
 	{ return getNode () -> getExportedNodes (); }
 
 	///  @name Root node handling

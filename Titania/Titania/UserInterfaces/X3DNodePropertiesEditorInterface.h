@@ -407,6 +407,22 @@ public:
 	getImportedNodesTreeView () const
 	{ return *m_ImportedNodesTreeView; }
 
+	Gtk::Expander &
+	getExportExpander () const
+	{ return *m_ExportExpander; }
+
+	Gtk::CheckButton &
+	getExportCheckButton () const
+	{ return *m_ExportCheckButton; }
+
+	Gtk::Label &
+	getExportedNameLabel () const
+	{ return *m_ExportedNameLabel; }
+
+	Gtk::Entry &
+	getExportedNameEntry () const
+	{ return *m_ExportedNameEntry; }
+
 	Gtk::Dialog &
 	getAddFieldDialog () const
 	{ return *m_AddFieldDialog; }
@@ -498,6 +514,10 @@ public:
 	virtual
 	void
 	on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_export_toggled () = 0;
 
 	virtual
 	void
@@ -611,6 +631,10 @@ private:
 	Gtk::Button*                           m_EditCDataButton;
 	Gtk::Expander*                         m_ImportedNodesExpander;
 	Gtk::TreeView*                         m_ImportedNodesTreeView;
+	Gtk::Expander*                         m_ExportExpander;
+	Gtk::CheckButton*                      m_ExportCheckButton;
+	Gtk::Label*                            m_ExportedNameLabel;
+	Gtk::Entry*                            m_ExportedNameEntry;
 	Gtk::Dialog*                           m_AddFieldDialog;
 	Gtk::Button*                           m_AddFieldCancelButton;
 	Gtk::Button*                           m_AddFieldOkButton;

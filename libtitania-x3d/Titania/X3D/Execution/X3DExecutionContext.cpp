@@ -174,7 +174,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DBaseNode* const declaration = getBrowser () -> getNode (name);
+	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (name);
 
 	if (getProfile () or not getComponents () .empty ())
 	{
@@ -220,13 +220,12 @@ throw (Error <INVALID_NAME>,
 
 // Named node handling
 
-// TODO: A node may be part of more than one run-time name scope. A node shall be removed from a name scope when it is
+// DONE: A node may be part of more than one run-time name scope. A node shall be removed from a name scope when it is
 // removed from the scene graph. See: http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/concepts.html#Runtimenamescope
 
 SFNode
-X3DExecutionContext::getNode (const std::string & name) const
+X3DExecutionContext::getLocalNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
 	    Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -242,9 +241,26 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const X3DError &)
 		{
-			throw Error <INVALID_NAME> ("Unknown named node '" + name + "'.");
+			throw Error <INVALID_NAME> ("Unknown named or imported node '" + name + "'.");
 		}
 	}
+}
+
+const std::string &
+X3DExecutionContext::getLocalName (const SFNode & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const auto importedName = importedNames .find (node); // XXX
+
+	if (importedName not_eq importedNames .end ()) // XXX
+		return importedName -> second; // XXX
+
+	if (node -> getExecutionContext () == this)
+		return node -> getName ();
+
+	throw Error <INVALID_NODE> ("Couldn' get local name.");
 }
 
 void
@@ -309,7 +325,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		try
 		{
-			namedNode -> second -> getNode () -> setName ("");
+			namedNode -> second -> getLocalNode () -> setName ("");
 		}
 		catch (const X3DError &)
 		{ }
@@ -327,7 +343,7 @@ throw (Error <INVALID_NAME>,
 	const auto namedNode = namedNodes .find (name);
 
 	if (namedNode not_eq namedNodes .end ())
-		return namedNode -> second -> getNode ();
+		return namedNode -> second -> getLocalNode ();
 
 	throw Error <INVALID_NAME> ("Named node '" + name + "' not found.");
 }
@@ -433,8 +449,12 @@ throw (Error <INVALID_NODE>,
 			importedNode -> setup ();
 		else
 			addUninitializedNode (importedNode);
+			
+		const auto exportedNode = inlineNode -> getExportedNode (exportedName);
+			
+		importedNode -> shutdown () .addInterest (this, &X3DExecutionContext::removeImportedName, exportedNode .getValue ()); // XXX
 
-		importedNames [inlineNode -> getExportedNode (exportedName)] = importedName;
+		importedNames [exportedNode] = importedName; // XXX
 
 		return importedNode;
 	}
@@ -446,6 +466,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	importedNodes .erase (importedName);
+}
+
+void
+X3DExecutionContext::removeImportedName (X3DBaseNode* const node)
+{
+	importedNames .erase (node); // XXX
 }
 
 void
@@ -465,7 +491,7 @@ throw (Error <INVALID_NODE>,
 
 	try
 	{
-		importedNodes .erase (importedNames .at (inlineNode -> getExportedNode (exportedName)));
+		importedNodes .erase (importedNames .at (inlineNode -> getExportedNode (exportedName))); // XXX
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -478,7 +504,6 @@ throw (Error <INVALID_NODE>,
 SFNode
 X3DExecutionContext::getImportedNode (const std::string & importedName) const
 throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -490,23 +515,6 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
 	}
-}
-
-const std::string &
-X3DExecutionContext::getLocalName (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	const auto importedName = importedNames .find (node);
-
-	if (importedName not_eq importedNames .end ())
-		return importedName -> second;
-
-	if (node -> getExecutionContext () == this)
-		return node -> getName ();
-
-	throw Error <INVALID_NODE> ("Couldn' get local name.");
 }
 
 //	Proto declaration handling

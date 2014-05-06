@@ -149,7 +149,7 @@ throw (Error <NODE_IN_USE>,
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't add exported node: node is NULL.");
 
-	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
+	// We do not throw Error <IMPORTED_NODE> as imports must be exported too.
 
 	exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
 
@@ -162,8 +162,10 @@ throw (Error <NODE_IN_USE>,
 		exportedNode -> setup ();
 	else
 		addUninitializedNode (exportedNode);
+			
+	exportedNode -> shutdown () .addInterest (this, &X3DScene::removeExportedName, node .getValue ()); // XXX
 
-	exportedNames [node] = exportedName;
+	exportedNames [node] = exportedName; // XXX
 
 	return exportedNode;
 }
@@ -174,6 +176,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	exportedNodes .erase (exportedName);
+}
+
+void
+X3DScene::removeExportedName (X3DBaseNode* const node)
+{
+	exportedNames .erase (node); // XXX
 }
 
 void
@@ -191,7 +199,7 @@ throw (Error <INVALID_NAME>,
 
 	try
 	{
-		exportedNodes .erase (exportedNames .at (node));
+		exportedNodes .erase (exportedNames .at (node)); // XXX
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -209,7 +217,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return exportedNodes .rfind (exportedName) -> getNode ();
+		return exportedNodes .rfind (exportedName) -> getLocalNode ();
 	}
 	catch (...)
 	{

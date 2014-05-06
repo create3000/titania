@@ -521,7 +521,7 @@ Parser::exportStatement ()
 
 			comments ();
 
-			const SFNode node = scene -> getNode (_localNodeNameId);
+			const SFNode node = scene -> getLocalNode (_localNodeNameId);
 
 			if (Grammar::AS (istream))
 			{
@@ -904,7 +904,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -927,7 +927,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -950,7 +950,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 
 				if (fieldValue (_field))
 				{
@@ -997,7 +997,7 @@ Parser::interfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 
 				if (fieldValue (_field))
 				{
@@ -1111,7 +1111,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1134,7 +1134,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1157,7 +1157,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (initializeOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1180,7 +1180,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
+				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (inputOutput);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1209,7 +1209,7 @@ Parser::routeStatement ()
 
 		if (nodeNameId (_fromNodeId))
 		{
-			const SFNode _fromNode = getExecutionContext () -> getNode (_fromNodeId);
+			const SFNode _fromNode = getExecutionContext () -> getLocalNode (_fromNodeId);
 
 			comments ();
 
@@ -1236,7 +1236,7 @@ Parser::routeStatement ()
 
 						if (nodeNameId (_toNodeId))
 						{
-							const SFNode _toNode = getExecutionContext () -> getNode (_toNodeId);
+							const SFNode _toNode = getExecutionContext () -> getLocalNode (_toNodeId);
 
 							comments ();
 
@@ -1435,7 +1435,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
 								}
 
-								const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);
+								const X3DFieldDefinition* _supportedField = getBrowser () -> getSupportedField (_fieldType);
 
 								if (_supportedField -> getType () == _reference -> getType ())
 								{
@@ -1730,7 +1730,7 @@ Parser::fieldType (std::string & _fieldType)
 
 	Id (_fieldType);
 
-	return Grammar::FieldType .find (_fieldType) not_eq Grammar::FieldType .end ();
+	return Grammar::SupportedFields .find (_fieldType) not_eq Grammar::SupportedFields .end ();
 }
 
 bool

@@ -227,7 +227,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 			for (const auto & exportedNode : inlineNode -> getExportedNodes ())
 			{
 				const auto iter         = getImportedNodesListStore () -> append ();
-				const auto importedNode = importedNodes .find (exportedNode -> getNode ());
+				const auto importedNode = importedNodes .find (exportedNode -> getLocalNode ());
 
 				if (importedNode not_eq importedNodes .end ())
 				{
@@ -257,6 +257,22 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 		// If Inline is not loaded.
 		getImportedNodesExpander () .set_visible (false);
 	}
+
+	/**
+	 * Export
+	 **/
+
+//	const auto scene = getBrowser () -> getExecutionContext ();
+//
+//	const auto exportedName = scene -> getExportedNodes () .find (node);
+//
+//	const bool exported = exportedName not_eq scene -> getExportedNames () .end ();
+//
+//	getExportExpander () .set_visible (exported);
+//	getExportCheckButton () .set_active (exported);
+//
+//	if (exported and exportedName -> second not_eq node -> getName ())
+//		getExportedNameEntry () .set_text (exportedName -> second);
 }
 
 void
@@ -495,31 +511,38 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 		std::make_pair ("inputOutput",    X3D::inputOutput)
 	};
 
-	getAddFieldDialog () .hide ();
-
-	if (editUserDefinedField)
+	try
 	{
-		// Edit field.
+		getAddFieldDialog () .hide ();
 
-		X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
+		if (editUserDefinedField)
+		{
+			// Edit field.
 
-		field -> setName (getFieldNameEntry () .get_text ());
-		field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+			X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
 
-		replaceUserDefinedField (userDefinedField, field);
+			field -> setName (getFieldNameEntry () .get_text ());
+			field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+
+			replaceUserDefinedField (userDefinedField, field);
+		}
+		else
+		{
+			// Create field.
+
+			X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
+
+			field -> setName (getFieldNameEntry () .get_text ());
+			field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+
+			// Add user defined field.
+
+			addUserDefinedField (field);
+		}
 	}
-	else
+	catch (const X3D::X3DError & error)
 	{
-		// Create field.
-
-		X3D::X3DFieldDefinition* const field = X3D::getBrowser () -> getFieldType (getFieldTypeLabel () .get_text ()) -> create ();
-
-		field -> setName (getFieldNameEntry () .get_text ());
-		field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
-
-		// Add user defined field.
-
-		addUserDefinedField (field);
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -771,7 +794,7 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 
 	try
 	{
-		const auto localNode    = getBrowser () -> getExecutionContext () -> getNode (importedName);
+		const auto localNode    = getBrowser () -> getExecutionContext () -> getLocalNode (importedName);
 		const auto importedNode = importedNodes .find (localNode);
 
 		if (importedNode == importedNodes .end ())
@@ -793,6 +816,13 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 	{ }
 
 	return true;
+}
+
+void
+NodePropertiesEditor::on_export_toggled ()
+{
+	getExportedNameLabel () .set_sensitive (getExportCheckButton () .get_active ());
+	getExportedNameEntry () .set_sensitive (getExportCheckButton () .get_active ());
 }
 
 void
@@ -978,8 +1008,8 @@ NodePropertiesEditor::on_apply ()
 		{
 			//__LOG__ << std::endl;
 
-			const X3D::X3DExecutionContextPtr executionContext (node -> getExecutionContext ());
-			const X3D::InlinePtr              inlineNode (node);
+			const X3D::X3DExecutionContextPtr executionContext = node -> getExecutionContext ();
+			const X3D::InlinePtr              inlineNode       = X3D::x3d_cast <X3D::Inline*> (node);
 
 			// Prepare imported nodes.
 

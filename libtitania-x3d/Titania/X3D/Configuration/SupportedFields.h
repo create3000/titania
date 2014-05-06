@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_FIELDS_H__
 
 #include "../Bits/Error.h"
-#include "../Configuration/FieldTypesArray.h"
+#include "../Configuration/SupporteFieldArray.h"
 
 namespace titania {
 namespace X3D {
@@ -70,7 +70,7 @@ public:
 	get (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
-	const FieldTypesArray &
+	const SupporteFieldArray &
 	get () const;
 
 	void
@@ -82,7 +82,7 @@ public:
 
 private:
 
-	FieldTypesArray fields;
+	SupporteFieldArray fields;
 
 };
 

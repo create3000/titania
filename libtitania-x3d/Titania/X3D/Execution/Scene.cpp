@@ -126,7 +126,7 @@ Scene::updateNamedNodes (const ScenePtr & scene)
 	for (const auto & node : NamedNodeIndex (scene -> getNamedNodes ()))
 	{
 		scene -> removeNamedNode (node .first);
-		scene -> updateNamedNode (getUniqueName (scene, node .first), node .second -> getNode ());
+		scene -> updateNamedNode (getUniqueName (scene, node .first), node .second -> getLocalNode ());
 	}
 }
 

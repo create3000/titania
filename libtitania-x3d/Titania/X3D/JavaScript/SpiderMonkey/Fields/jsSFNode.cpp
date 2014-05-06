@@ -141,7 +141,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+			Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
 
 			const ScenePtr scene = Loader (script -> getExecutionContext (), script -> getWorldURL ())
 			                               .createX3DFromString (JS_GetString (context, vrmlSyntax));
@@ -357,7 +357,7 @@ jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
 
 		Generator::Version (script -> getExecutionContext () -> getVersion ());
 		Generator::NicestStyle ();
@@ -377,7 +377,7 @@ jsSFNode::toXMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
 
 		auto version = script -> getExecutionContext () -> getVersion ();
 

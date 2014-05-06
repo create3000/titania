@@ -100,7 +100,7 @@ NamedNode::initialize ()
 }
 
 SFNode
-NamedNode::getNode () const
+NamedNode::getLocalNode () const
 throw (Error <DISPOSED>)
 {
 	if (node and node -> getReferenceCount ())

@@ -94,6 +94,10 @@ public:
 	getInnerNode () final override;
 
 	virtual
+	const X3DBaseNode*
+	getInnerNode () const final override;
+
+	virtual
 	const std::string &
 	getContainerField () const final override
 	{ return containerField; }

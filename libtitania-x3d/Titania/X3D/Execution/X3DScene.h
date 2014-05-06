@@ -193,9 +193,14 @@ protected:
 
 private:
 
-	///  @name Members
+	using ExportedNamesIndex = std::map <X3DBaseNode*, std::string>;
 
-	typedef std::map <X3DBaseNode*, std::string> ExportedNamesIndex;
+	///  @name Operations
+
+	void
+	removeExportedName (X3DBaseNode* const);
+
+	///  @name Members
 
 	bool               compressed;
 	MetaDataIndex      metadatas;

@@ -107,7 +107,7 @@ public:
 	static const io::string eventOut;
 	static const io::string exposedField;
 
-	static const std::set <std::string> FieldType;
+	static const std::set <std::string> SupportedFields;
 
 	///  @name Terminal symbols
 	static const io::character OpenBrace;
@@ -128,7 +128,7 @@ private:
 
 	static
 	std::set <std::string>
-	getFieldType ();
+	getSupportedFields ();
 
 	///  @name Values
 	static const io::string hex;

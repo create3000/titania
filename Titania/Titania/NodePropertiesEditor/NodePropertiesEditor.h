@@ -184,6 +184,8 @@ private:
 	void
 	on_edit_cdata_clicked () final override;
 	
+	///  @name Imported nodes
+
 	virtual
 	void
 	on_imported_toggled (const Glib::ustring &) final override;
@@ -197,6 +199,12 @@ private:
 
 	bool
 	validateImportedName (const std::string &, const std::string &) const;
+
+	///  @name Export
+	
+	virtual
+	void
+	on_export_toggled () final override;
 
 	///  @name Dialog buttons
 

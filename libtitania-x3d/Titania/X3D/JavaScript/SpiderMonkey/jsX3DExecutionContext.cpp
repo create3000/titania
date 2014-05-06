@@ -617,7 +617,7 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 4)
 	{
-		const Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		const Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
 
 		JSObject* ofromNode    = nullptr;
 		JSObject* otoNode      = nullptr;
@@ -663,7 +663,7 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
 
 		JSObject* oRoute = nullptr;
 

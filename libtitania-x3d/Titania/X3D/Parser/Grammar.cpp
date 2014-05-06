@@ -92,7 +92,7 @@ const io::string Grammar::eventIn ("eventIn");
 const io::string Grammar::eventOut ("eventOut");
 const io::string Grammar::exposedField ("exposedField");
 
-const std::set <std::string> Grammar::FieldType = getFieldType ();
+const std::set <std::string> Grammar::SupportedFields = getSupportedFields ();
 
 // Terminal symbols
 const io::character Grammar::OpenBrace ('{');
@@ -133,14 +133,14 @@ Grammar::Hex (std::istream & istream, uint32_t & value)
 }
 
 std::set <std::string>
-Grammar::getFieldType ()
+Grammar::getSupportedFields ()
 {
-	std::set <std::string> FieldType;
+	std::set <std::string> supportedFields;
 
 	for (const auto & field : getBrowser () -> getSupportedFields ())
-		FieldType .emplace (field -> getTypeName ());
+		supportedFields .emplace (field -> getTypeName ());
 
-	return FieldType;
+	return supportedFields;
 }
 
 } // X3D

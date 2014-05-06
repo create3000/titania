@@ -438,7 +438,6 @@
     <None Include="Titania\X3D\Configuration\ProfileInfoArray.h" />
     <None Include="Titania\X3D\Configuration\SupportedFields.h" />
     <None Include="Titania\X3D\Execution\X3DScene.h" />
-    <None Include="Titania\X3D\Configuration\FieldTypesArray.h" />
     <None Include="Titania\X3D\Basic\BasicNodeArray.h" />
     <None Include="Titania\X3D\Types\Geometry.h" />
     <None Include="Titania\X3D\Types\Numbers.h" />
@@ -688,6 +687,7 @@
     <None Include="Titania\X3D\Routing\X3DRouterObject.h" />
     <None Include="Titania\X3D\Base\X3DGarbageCollector.h" />
     <None Include="Titania\X3D\Basic\FieldContainer.h" />
+    <None Include="Titania\X3D\Configuration\SupporteFieldArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1020,7 +1020,6 @@
     <Compile Include="Titania\X3D\Execution\X3DScene.cpp" />
     <Compile Include="Titania\X3D\Configuration\ComponentInfoArray.cpp" />
     <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
-    <Compile Include="Titania\X3D\Configuration\FieldTypesArray.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeArray.cpp" />
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
@@ -1181,6 +1180,7 @@
     <Compile Include="Titania\X3D\Routing\X3DRouterObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DGarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldContainer.cpp" />
+    <Compile Include="Titania\X3D\Configuration\SupporteFieldArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

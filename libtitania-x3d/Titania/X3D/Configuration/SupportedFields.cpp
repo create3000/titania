@@ -133,7 +133,7 @@ throw (Error <INVALID_NAME>)
 	}
 }
 
-const FieldTypesArray &
+const SupporteFieldArray &
 SupportedFields::get () const
 {
 	return fields;

@@ -375,7 +375,7 @@ jsContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval
 	if (JS_IdToValue (context, id, &name))
 	{
 		jsContext* const          javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-		Script* const             script     = javaScript -> getNode ();
+		Script* const             script     = javaScript -> getScriptNode ();
 		X3DFieldDefinition* const field      = script -> getField (JS_GetString (context, name));
 
 		return JS_NewFieldValue (context, field, vp);
@@ -407,7 +407,7 @@ jsContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool stric
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
 
 		X3DFieldDefinition* const field = script -> getField (JS_GetString (context, name));
 
@@ -623,7 +623,7 @@ void
 jsContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
 	jsContext*  javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	Script*     script     = javaScript -> getNode ();
+	Script*     script     = javaScript -> getScriptNode ();
 	X3DBrowser* browser    = script -> getBrowser ();
 
 	// Get script
