@@ -232,7 +232,7 @@ throw (Error <INVALID_NAME>,
 	return getScene () -> getExportedNode (exportedName);
 }
 
-const ExportedNodeArray &
+const ExportedNodeIndex &
 Inline::getExportedNodes () const
 throw (Error <NODE_NOT_AVAILABLE>,
 	    Error <INVALID_OPERATION_TIMING>,

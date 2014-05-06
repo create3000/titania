@@ -53,18 +53,17 @@
 
 #include "../Types/Pointer.h"
 
-#include <Titania/Basic/IndexedMultiMap.h>
+#include <map>
 #include <string>
 
 namespace titania {
 namespace X3D {
 
-using ExportedNodeArray = basic::indexed_multimap <std::string, ExportedNodePtr>;
+using ExportedNodeIndex = std::map <std::string, ExportedNodePtr>;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, X3D::ExportedNodePtr>;
-
 } // titania
+
+extern template class std::map <std::string, titania::X3D::ExportedNodePtr>;
 
 #endif

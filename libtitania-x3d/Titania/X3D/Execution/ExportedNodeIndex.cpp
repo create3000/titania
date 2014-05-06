@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "ImportedNodeArray.h"
+#include "ExportedNodeIndex.h"
 
-#include "../Execution/ImportedNode.h"
+#include "../Execution/ExportedNode.h"
 
 namespace titania {
 namespace X3D {
@@ -58,7 +58,6 @@ namespace X3D {
 //
 
 } // X3D
-
-template class basic::indexed_multimap <std::string, X3D::ImportedNodePtr>;
-
 } // titania
+
+template class std::map <std::string, titania::X3D::ExportedNodePtr>;

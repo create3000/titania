@@ -222,12 +222,13 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 			getImportedNodesImportedNameCellRendererText () -> property_editable ()    = true;
 
 			for (const auto & importedNode : getBrowser () -> getExecutionContext () -> getImportedNodes ())
-				importedNodes .emplace (importedNode -> getExportedNode (), importedNode);
+				importedNodes .emplace (importedNode .second -> getExportedNode (), importedNode .second);
 
-			for (const auto & exportedNode : inlineNode -> getExportedNodes ())
+			for (const auto & pair : inlineNode -> getExportedNodes ())
 			{
-				const auto iter         = getImportedNodesListStore () -> append ();
-				const auto importedNode = importedNodes .find (exportedNode -> getLocalNode ());
+				const auto & exportedNode = pair .second;
+				const auto   iter         = getImportedNodesListStore () -> append ();
+				const auto   importedNode = importedNodes .find (exportedNode -> getLocalNode ());
 
 				if (importedNode not_eq importedNodes .end ())
 				{
@@ -1026,7 +1027,7 @@ NodePropertiesEditor::on_apply ()
 
 				try
 				{
-					const auto & importedNode = executionContext -> getImportedNodes () .rfind (importedName);
+					const auto & importedNode = executionContext -> getImportedNodes () .at (importedName);
 
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
 					                             executionContext,
@@ -1055,7 +1056,7 @@ NodePropertiesEditor::on_apply ()
 
 				try
 				{
-					const auto & importedNode = executionContext -> getImportedNodes () .rfind (importedName);
+					const auto & importedNode = executionContext -> getImportedNodes () .at (importedName);
 
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
 					                             executionContext,

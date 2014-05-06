@@ -2,6 +2,30 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* Generator.h:
+	* Generator.cpp:
+	* ImportedNodeIndex.h:
+	* ImportedNodeArray.h:
+	* ExportedNodeIndex.h:
+	* ExportedNodeArray.h:
+	* InlineTool.h:
+	* Inline.h:
+	* ExportedNodeArray.cpp:
+	* ImportedNodeIndex.cpp:
+	* ImportedNodeArray.cpp:
+	* X3DExecutionContext.h:
+	* ExportedNodeIndex.cpp:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-05-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Grammar.h:
 	* Route.cpp:
 	* Parser.cpp:

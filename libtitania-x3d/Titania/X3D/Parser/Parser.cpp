@@ -531,7 +531,7 @@ Parser::exportStatement ()
 			else
 				_exportedNodeNameId = _localNodeNameId;
 
-			const ExportedNodePtr & _exportedNode = scene -> addExportedNode (_exportedNodeNameId, node);
+			const ExportedNodePtr & _exportedNode = scene -> updateExportedNode (_exportedNodeNameId, node);
 
 			_exportedNode -> addComments (getComments ());
 
@@ -580,7 +580,7 @@ Parser::importStatement ()
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
 
-						const ImportedNodePtr & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
+						const ImportedNodePtr & _importedNode = getExecutionContext () -> updateImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
 
 						_importedNode -> addComments (getComments ());
 

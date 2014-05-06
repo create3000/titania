@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 #define __TITANIA_X3D_EXECUTION_X3DSCENE_H__
 
-#include "../Execution/ExportedNodeArray.h"
+#include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/X3DExecutionContext.h"
 
 #include <map>
@@ -116,16 +116,16 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	void
-	removeExportedNode (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
+	const ExportedNodePtr &
 	updateExportedNode (const std::string &, const SFNode &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	removeExportedNode (const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	SFNode
@@ -134,7 +134,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ExportedNodeArray &
+	const ExportedNodeIndex &
 	getExportedNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -171,14 +171,19 @@ public:
 	void
 	dispose () override;
 
-	///  @name Import handling
+	virtual
+	~X3DScene ();
 
 
 protected:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () override;
+
+	///  @name Import handling
 
 	void
 	importMetaData (const X3DScene* const)
@@ -193,19 +198,11 @@ protected:
 
 private:
 
-	using ExportedNamesIndex = std::map <X3DBaseNode*, std::string>;
-
-	///  @name Operations
-
-	void
-	removeExportedName (X3DBaseNode* const);
-
 	///  @name Members
 
-	bool               compressed;
-	MetaDataIndex      metadatas;
-	ExportedNodeArray  exportedNodes;
-	ExportedNamesIndex exportedNames;
+	bool              compressed;
+	MetaDataIndex     metadatas;
+	ExportedNodeIndex exportedNodes;
 
 };
 

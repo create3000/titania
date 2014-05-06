@@ -373,9 +373,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
-	Titania/X3D/Execution/ExportedNodeArray.cpp \
+	Titania/X3D/Execution/ExportedNodeIndex.cpp \
 	Titania/X3D/Execution/ImportedNode.cpp \
-	Titania/X3D/Execution/ImportedNodeArray.cpp \
+	Titania/X3D/Execution/ImportedNodeIndex.cpp \
 	Titania/X3D/Execution/NamedNode.cpp \
 	Titania/X3D/Execution/NamedNodeIndex.cpp \
 	Titania/X3D/Execution/Scene.cpp \

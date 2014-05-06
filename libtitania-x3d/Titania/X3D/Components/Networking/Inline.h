@@ -126,7 +126,7 @@ public:
 	       Error <DISPOSED>);
 
 	virtual
-	const ExportedNodeArray &
+	const ExportedNodeIndex &
 	getExportedNodes () const
 	throw (Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,

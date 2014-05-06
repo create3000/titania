@@ -403,7 +403,7 @@ throw (Error <DISPOSED>)
 {
 	try
 	{
-		return getBrowser () -> getLocalNode (getTypeName ());
+		return getBrowser () -> getSupportedNode (getTypeName ());
 	}
 	catch (const X3DError &)
 	{

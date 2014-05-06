@@ -766,8 +766,10 @@ X3DBrowserEditor::removeExportedNodes (const X3D::ScenePtr & scene, const X3D::S
 {
 	// Remove exported nodes
 
-	for (const auto & exportedNode : X3D::ExportedNodeArray (scene -> getExportedNodes ()))
+	for (const auto & pair : X3D::ExportedNodeIndex (scene -> getExportedNodes ()))
 	{
+		const auto & exportedNode = pair .second;
+
 		if (exportedNode -> getLocalNode () == node)
 		{
 			undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode, scene, exportedNode -> getExportedName (), exportedNode -> getLocalNode ());
@@ -899,8 +901,10 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 
 	if (inlineNode)
 	{
-		for (const auto & importedNode : X3D::ImportedNodeArray (executionContext -> getImportedNodes ()))
+		for (const auto & pair : X3D::ImportedNodeIndex (executionContext -> getImportedNodes ()))
 		{
+			const auto & importedNode = pair .second;
+		
 			if (inlineNode == importedNode -> getInlineNode ())
 			{
 				deleteRoutes (executionContext, importedNode -> getExportedNode (), undoStep);

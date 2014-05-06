@@ -422,8 +422,6 @@
     <None Include="Titania\X3D\Prototype\ExternProtoArray.h" />
     <None Include="Titania\X3D\Prototype\Proto.h" />
     <None Include="Titania\X3D\Prototype\ProtoArray.h" />
-    <None Include="Titania\X3D\Execution\ExportedNodeArray.h" />
-    <None Include="Titania\X3D\Execution\ImportedNodeArray.h" />
     <None Include="Titania\X3D\Execution\Scene.h" />
     <None Include="Titania\X3D\Execution\X3DExecutionContext.h" />
     <None Include="Titania\X3D\Routing\Route.h" />
@@ -688,6 +686,8 @@
     <None Include="Titania\X3D\Base\X3DGarbageCollector.h" />
     <None Include="Titania\X3D\Basic\FieldContainer.h" />
     <None Include="Titania\X3D\Configuration\SupporteFieldArray.h" />
+    <None Include="Titania\X3D\Execution\ExportedNodeIndex.h" />
+    <None Include="Titania\X3D\Execution\ImportedNodeIndex.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1079,9 +1079,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DRoute.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsRouteArray.cpp" />
     <Compile Include="Titania\X3D\Execution\ImportedNode.cpp" />
-    <Compile Include="Titania\X3D\Execution\ImportedNodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNode.cpp" />
-    <Compile Include="Titania\X3D\Execution\ExportedNodeArray.cpp" />
     <Compile Include="Titania\X3D\Execution\World.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
@@ -1181,6 +1179,8 @@
     <Compile Include="Titania\X3D\Base\X3DGarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldContainer.cpp" />
     <Compile Include="Titania\X3D\Configuration\SupporteFieldArray.cpp" />
+    <Compile Include="Titania\X3D\Execution\ExportedNodeIndex.cpp" />
+    <Compile Include="Titania\X3D\Execution\ImportedNodeIndex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

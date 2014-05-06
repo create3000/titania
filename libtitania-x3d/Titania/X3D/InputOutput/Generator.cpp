@@ -342,21 +342,21 @@ Generator::PopContext ()
 }
 	
 void
-Generator::setExportedNodes (const ExportedNodeArray & exportedNodes)
+Generator::setExportedNodes (const ExportedNodeIndex & exportedNodes)
 {
 	exportedNodesIndex .clear ();
 
 	for (const auto & exportedNode : exportedNodes)
-		exportedNodesIndex .emplace (exportedNode -> getLocalNode ());
+		exportedNodesIndex .emplace (exportedNode .second -> getLocalNode ());
 }
 
 void
-Generator::setImportedNodes (const ImportedNodeArray & importedNodes)
+Generator::setImportedNodes (const ImportedNodeIndex & importedNodes)
 {
 	importedNodesIndex .clear ();
 
 	for (const auto & importedNode : importedNodes)
-		importedNodesIndex .emplace (importedNode -> getInlineNode ());
+		importedNodesIndex .emplace (importedNode .second -> getInlineNode ());
 }
 
 bool

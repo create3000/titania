@@ -53,8 +53,8 @@
 
 #include "../Bits/X3DConstants.h"
 #include "../InputOutput/X3DBaseGenerator.h"
-#include "../Execution/ExportedNodeArray.h"
-#include "../Execution/ImportedNodeArray.h"
+#include "../Execution/ExportedNodeIndex.h"
+#include "../Execution/ImportedNodeIndex.h"
 
 #include <map>
 #include <set>
@@ -200,11 +200,11 @@ public:
 	
 	static
 	void
-	setExportedNodes (const ExportedNodeArray &);
+	setExportedNodes (const ExportedNodeIndex &);
 
 	static
 	void
-	setImportedNodes (const ImportedNodeArray &);
+	setImportedNodes (const ImportedNodeIndex &);
 
 	bool
 	static

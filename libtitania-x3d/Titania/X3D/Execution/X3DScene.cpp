@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,8 +66,7 @@ X3DScene::X3DScene () :
 	X3DExecutionContext (),
 	         compressed (false),
 	          metadatas (),
-	      exportedNodes (),
-	      exportedNames ()
+	      exportedNodes ()
 { }
 
 void
@@ -143,48 +142,13 @@ throw (Error <NODE_IN_USE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (exportedName .empty ())
-		throw Error <INVALID_NAME> ("Couldn't add exported node: exported node name is empty.");
+	if (exportedNodes .find (exportedName) not_eq exportedNodes .end ())
+		throw Error <NODE_IN_USE> ("Couldn't add exported node: exported name '" + exportedName + "' already in use.");
 
-	if (not node)
-		throw Error <INVALID_NODE> ("Couldn't add exported node: node is NULL.");
-
-	// We do not throw Error <IMPORTED_NODE> as imports must be exported too.
-
-	exportedNodes .push_back (exportedName, new ExportedNode (this, exportedName, node));
-
-	auto & exportedNode = exportedNodes .back ();
-
-	exportedNode .isTainted (true);
-	exportedNode .addParent (this);
-
-	if (isInitialized ())
-		exportedNode -> setup ();
-	else
-		addUninitializedNode (exportedNode);
-			
-	exportedNode -> shutdown () .addInterest (this, &X3DScene::removeExportedName, node .getValue ()); // XXX
-
-	exportedNames [node] = exportedName; // XXX
-
-	return exportedNode;
+	return updateExportedNode (exportedName, node);
 }
 
-void
-X3DScene::removeExportedNode (const std::string & exportedName)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	exportedNodes .erase (exportedName);
-}
-
-void
-X3DScene::removeExportedName (X3DBaseNode* const node)
-{
-	exportedNames .erase (node); // XXX
-}
-
-void
+const ExportedNodePtr &
 X3DScene::updateExportedNode (const std::string & exportedName, const SFNode & node)
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
@@ -197,16 +161,32 @@ throw (Error <INVALID_NAME>,
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't update exported node: node is NULL.");
 
-	try
-	{
-		exportedNodes .erase (exportedNames .at (node)); // XXX
-	}
-	catch (const std::out_of_range &)
-	{ }
+	// We do not throw Error <IMPORTED_NODE> as imported nodes can be exported too.
 
+	// Remove exported node.
+
+	removeExportedNode (exportedName);
+
+	// Update exported node.
+
+	auto & exportedNode = exportedNodes .emplace (exportedName, new ExportedNode (this, exportedName, node)) .first -> second;
+	exportedNode .isTainted (true);
+	exportedNode .addParent (this);
+
+	if (isInitialized ())
+		exportedNode -> setup ();
+	else
+		addUninitializedNode (exportedNode);
+
+	return exportedNode;
+}
+
+void
+X3DScene::removeExportedNode (const std::string & exportedName)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
 	exportedNodes .erase (exportedName);
-
-	addExportedNode (exportedName, node);
 }
 
 SFNode
@@ -215,14 +195,12 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	try
-	{
-		return exportedNodes .rfind (exportedName) -> getLocalNode ();
-	}
-	catch (...)
-	{
-		throw Error <INVALID_NAME> ("Exported node '" + exportedName + "' not found.");
-	}
+	const auto iter = exportedNodes .find (exportedName);
+
+	if (iter not_eq exportedNodes .end ())
+		return iter -> second -> getLocalNode ();
+
+	throw Error <INVALID_NAME> ("Exported node '" + exportedName + "' not found.");
 }
 
 // Import handling
@@ -242,7 +220,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & exportedNode : scene -> getExportedNodes ())
-		exportedNode -> copy (this);
+		exportedNode .second -> copy (this);
 }
 
 // Input/Output
@@ -394,14 +372,14 @@ X3DScene::toStream (std::ostream & ostream) const
 		{
 			try
 			{
-				ostream << exportedNode;
+				ostream << exportedNode .second;
 			}
 			catch (const X3DError &)
 			{ }
 		}
 	}
 
-	Generator::setExportedNodes (ExportedNodeArray ());
+	Generator::setExportedNodes (ExportedNodeIndex ());
 	Generator::PopContext ();
 
 	// ~Scene
@@ -536,14 +514,14 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		try
 		{
 			ostream
-				<< XMLEncode (exportedNode)
+				<< XMLEncode (exportedNode .second)
 				<< Generator::Break;
 		}
 		catch (const X3DError &)
 		{ }
 	}
 
-	Generator::setExportedNodes (ExportedNodeArray ());
+	Generator::setExportedNodes (ExportedNodeIndex ());
 	Generator::PopContext ();
 
 	// </Scene>
@@ -564,11 +542,13 @@ X3DScene::dispose ()
 {
 	metadatas     .clear ();
 	exportedNodes .clear ();
-	exportedNames .clear ();
 
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();
 }
+
+X3DScene::~X3DScene ()
+{ }
 
 } // X3D
 } // titania

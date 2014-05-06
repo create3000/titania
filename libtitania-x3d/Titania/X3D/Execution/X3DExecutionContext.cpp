@@ -223,46 +223,6 @@ throw (Error <INVALID_NAME>,
 // DONE: A node may be part of more than one run-time name scope. A node shall be removed from a name scope when it is
 // removed from the scene graph. See: http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/concepts.html#Runtimenamescope
 
-SFNode
-X3DExecutionContext::getLocalNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-	    Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		return getNamedNode (name);
-	}
-	catch (const X3DError &)
-	{
-		try
-		{
-			return getImportedNode (name);
-		}
-		catch (const X3DError &)
-		{
-			throw Error <INVALID_NAME> ("Unknown named or imported node '" + name + "'.");
-		}
-	}
-}
-
-const std::string &
-X3DExecutionContext::getLocalName (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	const auto importedName = importedNames .find (node); // XXX
-
-	if (importedName not_eq importedNames .end ()) // XXX
-		return importedName -> second; // XXX
-
-	if (node -> getExecutionContext () == this)
-		return node -> getName ();
-
-	throw Error <INVALID_NODE> ("Couldn' get local name.");
-}
-
 void
 X3DExecutionContext::addNamedNode (const std::string & name, const SFNode & node)
 throw (Error <NODE_IN_USE>,
@@ -272,11 +232,10 @@ throw (Error <NODE_IN_USE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (namedNodes .find (name) == namedNodes .end ())
-		updateNamedNode (name, node);
+	if (namedNodes .find (name) not_eq namedNodes .end ())
+		throw Error <NODE_IN_USE> ("Couldn't add named node: Node named '" + name + "' already in use.");
 
-	else
-		throw Error <NODE_IN_USE> ("Couldn't add named node: Node named '" + name + "' already exists.");
+	updateNamedNode (name, node);
 }
 
 void
@@ -296,19 +255,23 @@ throw (Error <IMPORTED_NODE>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update named node: node name is empty.");
 
+	// Remove named node.
+
 	removeNamedNode (node -> getName ());
 	removeNamedNode (name);
 
+	// Update named node.
+
 	node -> setName (name);
 
-	const auto namedNode = namedNodes .emplace (name, new NamedNode (this, node)) .first;
-	namedNode -> second .isTainted (true);
-	namedNode -> second .addParent (this);
+	auto & namedNode = namedNodes .emplace (name, new NamedNode (this, node)) .first -> second;
+	namedNode .isTainted (true);
+	namedNode .addParent (this);
 
 	if (isInitialized ())
-		namedNode -> second -> setup ();
+		namedNode -> setup ();
 	else
-		addUninitializedNode (namedNode -> second);
+		addUninitializedNode (namedNode);
 }
 
 void
@@ -420,61 +383,13 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (not inlineNode)
-		throw Error <INVALID_NODE> ("Couldn't add imported node: inline node is NULL.");
-		
-	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
+	if (importedNodes .find (importedName) not_eq importedNodes .end ())
+		throw Error <NODE_IN_USE> ("Couldn't add imported node: imported name '" + importedName + "' already in use.");
 
-	if (exportedName .empty ())
-		throw Error <INVALID_NAME> ("Couldn't add imported node: exported node name is empty.");
-
-	if (importedName .empty ())
-		importedName = exportedName;
-
-	try
-	{
-		importedNodes .rfind (importedName);
-		throw Error <NODE_IN_USE> ("Couldn't add imported node: imported name '" + importedName + "' already exists.");
-	}
-	catch (const std::out_of_range &)
-	{
-		importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
-		
-		auto & importedNode = importedNodes .back ();
-		
-		importedNode .isTainted (true);
-		importedNode .addParent (this);
-
-		if (isInitialized ())
-			importedNode -> setup ();
-		else
-			addUninitializedNode (importedNode);
-			
-		const auto exportedNode = inlineNode -> getExportedNode (exportedName);
-			
-		importedNode -> shutdown () .addInterest (this, &X3DExecutionContext::removeImportedName, exportedNode .getValue ()); // XXX
-
-		importedNames [exportedNode] = importedName; // XXX
-
-		return importedNode;
-	}
+	return updateImportedNode (inlineNode, exportedName, importedName);
 }
 
-void
-X3DExecutionContext::removeImportedNode (const std::string & importedName)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	importedNodes .erase (importedName);
-}
-
-void
-X3DExecutionContext::removeImportedName (X3DBaseNode* const node)
-{
-	importedNames .erase (node); // XXX
-}
-
-void
+const ImportedNodePtr &
 X3DExecutionContext::updateImportedNode (const InlinePtr & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -485,20 +400,55 @@ throw (Error <INVALID_NODE>,
 {
 	if (not inlineNode)
 		throw Error <INVALID_NODE> ("Couldn't update imported node: inline node is NULL.");
+		
+	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
 
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update imported node: exported node name is empty.");
 
-	try
-	{
-		importedNodes .erase (importedNames .at (inlineNode -> getExportedNode (exportedName))); // XXX
-	}
-	catch (const std::out_of_range &)
-	{ }
+	if (importedName .empty ())
+		importedName = exportedName;
+
+	// Remove imported node.
+
+	removeImportedNode (importedName);
+
+	// Add imported node.
+
+	auto & importedNode = importedNodes .emplace (importedName, new ImportedNode (this, inlineNode, exportedName, importedName)) .first -> second;
+	importedNode .isTainted (true);
+	importedNode .addParent (this);
+
+	if (isInitialized ())
+		importedNode -> setup ();
+	else
+		addUninitializedNode (importedNode);
+
+	// Add imported name.
+
+	const auto exportedNode = importedNode -> getExportedNode ();
+
+	importedNode -> shutdown () .addInterest (this,
+	                                          &X3DExecutionContext::removeImportedName,
+	                                          importedNames .emplace (exportedNode -> getNode (), importedName));
+
+	return importedNode;
+}
+
+void
+X3DExecutionContext::removeImportedNode (const std::string & importedName)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	// Shall the routes to the imported node be deleted too?
 
 	importedNodes .erase (importedName);
+}
 
-	addImportedNode (inlineNode, exportedName, importedName);
+void
+X3DExecutionContext::removeImportedName (const ImportedNamesIndex::iterator & iter)
+{
+	importedNames .erase (iter);
 }
 
 SFNode
@@ -507,14 +457,52 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	const auto iter = importedNodes .find (importedName);
+
+	if (iter not_eq importedNodes .end ())
+		return iter -> second -> getExportedNode ();
+
+	throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
+}
+
+SFNode
+X3DExecutionContext::getLocalNode (const std::string & name) const
+throw (Error <INVALID_NAME>,
+	    Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
 	try
 	{
-		return importedNodes .rfind (importedName) -> getExportedNode ();
+		return getNamedNode (name);
 	}
-	catch (...)
+	catch (const X3DError &)
 	{
-		throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
+		try
+		{
+			return getImportedNode (name);
+		}
+		catch (const X3DError &)
+		{
+			throw Error <INVALID_NAME> ("Unknown named or imported node '" + name + "'.");
+		}
 	}
+}
+
+const std::string &
+X3DExecutionContext::getLocalName (const SFNode & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	auto equalRange = importedNames .equal_range (node -> getNode ());
+	
+	if (equalRange .first not_eq equalRange .second)
+		return (-- equalRange .second) -> second;
+
+	if (node -> getExecutionContext () == this)
+		return node -> getName ();
+
+	throw Error <INVALID_NODE> ("Couldn' get local name.");
 }
 
 //	Proto declaration handling
@@ -875,7 +863,7 @@ throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode -> copy (this);
+		importedNode .second -> copy (this);
 }
 
 void
@@ -968,7 +956,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		{
 			try
 			{
-				ostream << importedNode;
+				ostream << importedNode .second;
 			}
 			catch (const X3DError &)
 			{ }
@@ -1006,7 +994,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::setImportedNodes (ImportedNodeArray ());
+	Generator::setImportedNodes (ImportedNodeIndex ());
 	Generator::PopContext ();
 	Generator::PopExecutionContext ();
 }
@@ -1046,7 +1034,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		try
 		{
 			ostream
-				<< XMLEncode (importedNode)
+				<< XMLEncode (importedNode .second)
 				<< Generator::Break;
 		}
 		catch (const X3DError &)
@@ -1065,7 +1053,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::setImportedNodes (ImportedNodeArray ());
+	Generator::setImportedNodes (ImportedNodeIndex ());
 	Generator::PopContext ();
 	Generator::PopExecutionContext ();
 }

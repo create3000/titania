@@ -55,7 +55,7 @@
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/UnitArray.h"
-#include "../Execution/ImportedNodeArray.h"
+#include "../Execution/ImportedNodeIndex.h"
 #include "../Execution/NamedNodeIndex.h"
 #include "../Fields.h"
 #include "../Prototype/ExternProtoArray.h"
@@ -202,20 +202,6 @@ public:
 	addUninitializedNode (X3DBaseNode* const uninitializedNode)
 	{ uninitializedNodes .emplace_back (uninitializedNode); }
 
-	///  @name Named/Imported node handling
-
-	SFNode
-	getLocalNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const std::string &
-	getLocalName (const SFNode &) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	///  @name Named node handling
 
 	void
@@ -270,12 +256,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	void
-	removeImportedNode (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
+	const ImportedNodePtr &
 	updateImportedNode (const InlinePtr &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
@@ -284,17 +265,36 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	void
+	removeImportedNode (const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	SFNode
 	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ImportedNodeArray &
+	const ImportedNodeIndex &
 	getImportedNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return importedNodes; }
+
+	///  @name Named/Imported node handling
+
+	SFNode
+	getLocalNode (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const std::string &
+	getLocalName (const SFNode &) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Proto declaration handling
 
@@ -497,12 +497,12 @@ protected:
 
 private:
 
-	using ImportedNamesIndex = std::map <X3DBaseNode*, std::string>;
+	using ImportedNamesIndex = std::multimap <X3DBaseNode*, std::string>;
 
 	///  @name Operations
 
 	void
-	removeImportedName (X3DBaseNode* const);
+	removeImportedName (const ImportedNamesIndex::iterator &);
 
 	ProtoPtr
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
@@ -538,7 +538,7 @@ private:
 	UnitArray           units;
 
 	NamedNodeIndex     namedNodes;
-	ImportedNodeArray  importedNodes;
+	ImportedNodeIndex  importedNodes;
 	ImportedNamesIndex importedNames;
 	ProtoArray         protos;
 	ExternProtoArray   externProtos;

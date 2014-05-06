@@ -48,17 +48,22 @@
  *
  ******************************************************************************/
 
-#include "ExportedNodeArray.h"
+#ifndef __TITANIA_X3D_EXECUTION_IMPORTED_NODE_ARRAY_H__
+#define __TITANIA_X3D_EXECUTION_IMPORTED_NODE_ARRAY_H__
 
-#include "../Execution/ExportedNode.h"
+#include "../Types/Pointer.h"
+
+#include <map>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-//
+using ImportedNodeIndex = std::map <std::string, ImportedNodePtr>;
 
 } // X3D
-
-template class basic::indexed_multimap <std::string, X3D::ExportedNodePtr>;
-
 } // titania
+
+extern template class std::map <std::string, titania::X3D::ImportedNodePtr>;
+
+#endif
