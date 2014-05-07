@@ -342,6 +342,8 @@
     <columns>
       <!-- column-name imported -->
       <column type="gboolean"/>
+      <!-- column-name typeName -->
+      <column type="gchararray"/>
       <!-- column-name exportedName -->
       <column type="gchararray"/>
       <!-- column-name importedName -->
@@ -920,6 +922,18 @@
                                       </object>
                                     </child>
                                     <child>
+                                      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">Type Name</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="ImportedNodesTypeNameCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
                                       <object class="GtkTreeViewColumn" id="treeviewcolumn5">
                                         <property name="sizing">autosize</property>
                                         <property name="title" translatable="yes">Exported Name</property>
@@ -927,7 +941,7 @@
                                           <object class="GtkCellRendererText" id="ImportedNodesExportedNameCellRendererText"/>
                                           <attributes>
                                             <attribute name="strikethrough">3</attribute>
-                                            <attribute name="text">1</attribute>
+                                            <attribute name="text">2</attribute>
                                           </attributes>
                                         </child>
                                       </object>
@@ -942,7 +956,7 @@
                                           </object>
                                           <attributes>
                                             <attribute name="strikethrough">3</attribute>
-                                            <attribute name="text">2</attribute>
+                                            <attribute name="text">3</attribute>
                                           </attributes>
                                         </child>
                                       </object>

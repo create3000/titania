@@ -91,9 +91,10 @@ reverse (const std::map <Key, Value, Compare, Allocator> & index)
 const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "titania/node-properties/user-defined-field";
 
 static constexpr int IMPORTED_NODE_IMPORTED      = 0;
-static constexpr int IMPORTED_NODE_EXPORTED_NAME = 1;
-static constexpr int IMPORTED_NODE_IMPORTED_NAME = 2;
-static constexpr int IMPORTED_NODE_NOT_VALID     = 3;
+static constexpr int IMPORTED_NODE_TYPE_NAME     = 1;
+static constexpr int IMPORTED_NODE_EXPORTED_NAME = 2;
+static constexpr int IMPORTED_NODE_IMPORTED_NAME = 3;
+static constexpr int IMPORTED_NODE_NOT_VALID     = 4;
 
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -219,16 +220,20 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 		if (inlineNode)
 		{
 			getImportedNodesImportedCellRendererToggle ()   -> property_activatable () = true;
+			getImportedNodesTypeNameCellRendererText ()     -> property_weight ()      = 700;
 			getImportedNodesImportedNameCellRendererText () -> property_editable ()    = true;
 
 			for (const auto & importedNode : getBrowser () -> getExecutionContext () -> getImportedNodes ())
-				importedNodes .emplace (importedNode .second -> getExportedNode (), importedNode .second);
+				importedNodes [importedNode .second -> getExportedNode ()] = importedNode .second;
 
 			for (const auto & pair : inlineNode -> getExportedNodes ())
 			{
 				const auto & exportedNode = pair .second;
-				const auto   iter         = getImportedNodesListStore () -> append ();
 				const auto   importedNode = importedNodes .find (exportedNode -> getLocalNode ());
+				const auto   iter         = getImportedNodesListStore () -> append ();
+
+				iter -> set_value (IMPORTED_NODE_TYPE_NAME,     exportedNode -> getLocalNode () -> getTypeName ());
+				iter -> set_value (IMPORTED_NODE_EXPORTED_NAME, exportedNode -> getExportedName ());
 
 				if (importedNode not_eq importedNodes .end ())
 				{
@@ -246,8 +251,6 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 					iter -> set_value (IMPORTED_NODE_IMPORTED,  false);
 					iter -> set_value (IMPORTED_NODE_NOT_VALID, not validateImportedName (exportedName, exportedName));
 				}
-
-				iter -> set_value (IMPORTED_NODE_EXPORTED_NAME, exportedNode -> getExportedName ());
 			}
 		}
 

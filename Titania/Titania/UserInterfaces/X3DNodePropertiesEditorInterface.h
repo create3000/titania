@@ -116,6 +116,10 @@ public:
 	{ return m_ImportedNodesImportedCellRendererToggle; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
+	getImportedNodesTypeNameCellRendererText () const
+	{ return m_ImportedNodesTypeNameCellRendererText; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
 	getImportedNodesExportedNameCellRendererText () const
 	{ return m_ImportedNodesExportedNameCellRendererText; }
 
@@ -558,6 +562,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_CellRendererName;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererAccessType;
 	Glib::RefPtr <Gtk::CellRendererToggle> m_ImportedNodesImportedCellRendererToggle;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesTypeNameCellRendererText;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesExportedNameCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImportedNodesImportedNameTreeviewColumn;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesImportedNameCellRendererText;
