@@ -120,6 +120,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	            editUserDefinedField (false),
 	           importedNodesToUpdate (),
 	           importedNodesToRemove (),
+	                importedNodePath (),
 	           exportedNodesToUpdate (),
 	           exportedNodesToRemove (),
 	                exportedNodePath (),
@@ -739,34 +740,6 @@ NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
 	// Validate all children which are not imported.
 
 	validateImportedNames (iter);
-}
-
-void
-NodePropertiesEditor::on_imported_name_insert_text (const Glib::ustring & text, int* position)
-{
-	validateIdOnInsert (getImportedNameEntry (), text, *position);
-}
-
-void
-NodePropertiesEditor::on_imported_name_delete_text (int start_pos, int end_pos)
-{
-	validateIdOnDelete (getImportedNameEntry (), start_pos, end_pos);
-}
-
-void
-NodePropertiesEditor::on_imported_name_changed ()
-{ }
-
-void
-NodePropertiesEditor::on_imported_node_ok_clicked ()
-{
-	getImportedNodeDialog () .hide ();
-}
-
-void
-NodePropertiesEditor::on_imported_node_cancel_clicked ()
-{
-	getImportedNodeDialog () .hide ();
 }
 
 void

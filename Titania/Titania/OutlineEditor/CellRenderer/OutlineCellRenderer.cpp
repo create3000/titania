@@ -96,6 +96,7 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	cellrenderer_access_type_icon (),
 	                    noneImage (),
 	                baseNodeImage (),
+	              sharedNodeImage (),
 	              fieldTypeImages (),
 	             accessTypeImages (),
 	                   accessType (),
@@ -104,8 +105,9 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 {
 	// Images
 
-	noneImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
-	baseNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
+	noneImage       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
+	baseNodeImage   = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
+	sharedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
 
 	for (const auto & field : browser -> getSupportedFields ())
 		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
@@ -270,7 +272,13 @@ OutlineCellRenderer::get_icon () const
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			return baseNodeImage;
+			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
+			const auto node   = sfnode -> getValue ();
+
+			if (node -> getExecutionContext () == treeView -> get_model () -> get_execution_context ())
+				return baseNodeImage;
+
+			return sharedNodeImage;
 		}
 	}
 

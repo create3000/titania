@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="X3DBaseNode.svg">
+   sodipodi:docname="SharedNode.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -117,7 +117,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -139,7 +139,7 @@
          sodipodi:cy="6"
          sodipodi:rx="4.5"
          sodipodi:ry="4.5"
-         d="m 10.5,6 a 4.5,4.5 0 1 1 -9,0 4.5,4.5 0 1 1 9,0 z" />
+         d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z" />
       <path
          sodipodi:type="arc"
          style="fill:url(#radialGradient4395);fill-opacity:1;stroke:none"
@@ -148,7 +148,7 @@
          sodipodi:cy="6"
          sodipodi:rx="4.5"
          sodipodi:ry="4.5"
-         d="m 10.5,6 a 4.5,4.5 0 1 1 -9,0 4.5,4.5 0 1 1 9,0 z"
+         d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
          transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980237)" />
     </g>
   </g>

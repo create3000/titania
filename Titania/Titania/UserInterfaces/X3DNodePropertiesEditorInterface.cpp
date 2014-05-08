@@ -68,6 +68,7 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_CellRendererName                          = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererName"));
 	m_CellRendererAccessType                    = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererAccessType"));
 	m_ImportedNodesTreeViewSelection            = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ImportedNodesTreeViewSelection"));
+	m_ImportedNodesImportedTreeviewColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedTreeviewColumn"));
 	m_ImportedNodesImportedCellRendererToggle   = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedCellRendererToggle"));
 	m_ImportedNodesTypeNameCellRendererText     = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesTypeNameCellRendererText"));
 	m_ImportedNodesExportedNameCellRendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesExportedNameCellRendererText"));
@@ -232,14 +233,6 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_ExportedNodeOkButton -> set_name ("ExportedNodeOkButton");
 	m_builder -> get_widget ("ExportedNameEntry", m_ExportedNameEntry);
 	m_ExportedNameEntry -> set_name ("ExportedNameEntry");
-	m_builder -> get_widget ("ImportedNodeDialog", m_ImportedNodeDialog);
-	m_ImportedNodeDialog -> set_name ("ImportedNodeDialog");
-	m_builder -> get_widget ("ImportedNodeCancelButton", m_ImportedNodeCancelButton);
-	m_ImportedNodeCancelButton -> set_name ("ImportedNodeCancelButton");
-	m_builder -> get_widget ("ImportedNodeOkButton", m_ImportedNodeOkButton);
-	m_ImportedNodeOkButton -> set_name ("ImportedNodeOkButton");
-	m_builder -> get_widget ("ImportedNameEntry", m_ImportedNameEntry);
-	m_ImportedNameEntry -> set_name ("ImportedNameEntry");
 	m_builder -> get_widget ("UserDefinedFieldDialog", m_UserDefinedFieldDialog);
 	m_UserDefinedFieldDialog -> set_name ("UserDefinedFieldDialog");
 	m_builder -> get_widget ("AddFieldCancelButton", m_AddFieldCancelButton);
@@ -303,15 +296,6 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_ExportedNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_name_delete_text), false);
 	m_ExportedNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_name_insert_text), false);
 
-	// Connect object Gtk::Button with id 'ImportedNodeCancelButton'.
-	m_ImportedNodeCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_node_cancel_clicked));
-	m_ImportedNodeOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_node_ok_clicked));
-
-	// Connect object Gtk::Entry with id 'ImportedNameEntry'.
-	m_ImportedNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_changed));
-	m_ImportedNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_delete_text), false);
-	m_ImportedNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_insert_text), false);
-
 	// Connect object Gtk::Button with id 'AddFieldCancelButton'.
 	m_AddFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));
 	m_AddFieldOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_ok_clicked));
@@ -328,7 +312,6 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()
 {
 	delete m_ExportedNodeDialog;
-	delete m_ImportedNodeDialog;
 	delete m_UserDefinedFieldDialog;
 	delete m_Window;
 }

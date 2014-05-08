@@ -119,6 +119,10 @@ public:
 	getImportedNodesTreeViewSelection () const
 	{ return m_ImportedNodesTreeViewSelection; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImportedNodesImportedTreeviewColumn () const
+	{ return m_ImportedNodesImportedTreeviewColumn; }
+
 	const Glib::RefPtr <Gtk::CellRendererToggle> &
 	getImportedNodesImportedCellRendererToggle () const
 	{ return m_ImportedNodesImportedCellRendererToggle; }
@@ -456,22 +460,6 @@ public:
 	{ return *m_ExportedNameEntry; }
 
 	Gtk::Dialog &
-	getImportedNodeDialog () const
-	{ return *m_ImportedNodeDialog; }
-
-	Gtk::Button &
-	getImportedNodeCancelButton () const
-	{ return *m_ImportedNodeCancelButton; }
-
-	Gtk::Button &
-	getImportedNodeOkButton () const
-	{ return *m_ImportedNodeOkButton; }
-
-	Gtk::Entry &
-	getImportedNameEntry () const
-	{ return *m_ImportedNameEntry; }
-
-	Gtk::Dialog &
 	getUserDefinedFieldDialog () const
 	{ return *m_UserDefinedFieldDialog; }
 
@@ -601,26 +589,6 @@ public:
 
 	virtual
 	void
-	on_imported_node_cancel_clicked () = 0;
-
-	virtual
-	void
-	on_imported_node_ok_clicked () = 0;
-
-	virtual
-	void
-	on_imported_name_changed () = 0;
-
-	virtual
-	void
-	on_imported_name_delete_text (int start_pos, int end_pos) = 0;
-
-	virtual
-	void
-	on_imported_name_insert_text (const Glib::ustring & text, int* position) = 0;
-
-	virtual
-	void
 	on_add_field_cancel_clicked () = 0;
 
 	virtual
@@ -659,6 +627,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_CellRendererName;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererAccessType;
 	Glib::RefPtr <Gtk::TreeSelection>      m_ImportedNodesTreeViewSelection;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImportedNodesImportedTreeviewColumn;
 	Glib::RefPtr <Gtk::CellRendererToggle> m_ImportedNodesImportedCellRendererToggle;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesTypeNameCellRendererText;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesExportedNameCellRendererText;
@@ -743,10 +712,6 @@ private:
 	Gtk::Button*                           m_ExportedNodeCancelButton;
 	Gtk::Button*                           m_ExportedNodeOkButton;
 	Gtk::Entry*                            m_ExportedNameEntry;
-	Gtk::Dialog*                           m_ImportedNodeDialog;
-	Gtk::Button*                           m_ImportedNodeCancelButton;
-	Gtk::Button*                           m_ImportedNodeOkButton;
-	Gtk::Entry*                            m_ImportedNameEntry;
 	Gtk::Dialog*                           m_UserDefinedFieldDialog;
 	Gtk::Button*                           m_AddFieldCancelButton;
 	Gtk::Button*                           m_AddFieldOkButton;

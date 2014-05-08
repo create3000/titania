@@ -1,5 +1,18 @@
 2014-05-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SharedNode.svg:
+	* X3DBaseNode.svg:
+	* ImportedNode.svg:
+	* NodePropertiesEditor.xml:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.h:
+	* X3DNodePropertiesEditorInterface.h:
+	* OutlineCellRenderer.cpp:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
+2014-05-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NodePropertiesEditor.xml:
 	* NodePropertiesEditor.h:
 	* NodePropertiesEditor.cpp:

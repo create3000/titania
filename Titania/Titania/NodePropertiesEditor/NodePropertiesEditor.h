@@ -192,26 +192,6 @@ private:
 
 	virtual
 	void
-	on_imported_name_insert_text (const Glib::ustring &, int*) final override;
-
-	virtual
-	void
-	on_imported_name_delete_text (int, int) final override;
-
-	virtual
-	void
-	on_imported_name_changed () final override;
-
-	virtual
-	void
-	on_imported_node_ok_clicked () final override;
-
-	virtual
-	void
-	on_imported_node_cancel_clicked () final override;
-
-	virtual
-	void
 	on_imported_name_edited (const Glib::ustring &, const Glib::ustring &) final override;
 
 	void
@@ -309,6 +289,7 @@ private:
 
 	std::map <std::string, std::string> importedNodesToUpdate;
 	std::map <std::string, std::string> importedNodesToRemove;
+	Gtk::TreeModel::Path                importedNodePath;
 
 	// Exported Nodes
 
