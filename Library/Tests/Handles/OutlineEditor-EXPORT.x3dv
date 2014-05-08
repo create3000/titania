@@ -1,6 +1,10 @@
 #X3D V3.0 utf8 Titania V0.6.8
 
+META "comment" "World of Titania"
+META "created" "Thu, 08 May 2014 13:51:27 GMT"
+META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
+META "modified" "Thu, 08 May 2014 13:51:38 GMT"
 
 DEF Export1 Transform {
   children Shape {

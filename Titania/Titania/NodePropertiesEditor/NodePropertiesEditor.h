@@ -134,11 +134,11 @@ private:
 
 	virtual
 	void
-	on_add_field_clicked () final override;
+	on_add_user_defined_field_clicked () final override;
 
 	virtual
 	void
-	on_remove_field_clicked () final override;
+	on_remove_user_defined_field_clicked () final override;
 
 	void
 	on_access_type_activate (const std::string &);
@@ -192,6 +192,26 @@ private:
 
 	virtual
 	void
+	on_imported_name_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_imported_name_delete_text (int, int) final override;
+
+	virtual
+	void
+	on_imported_name_changed () final override;
+
+	virtual
+	void
+	on_imported_node_ok_clicked () final override;
+
+	virtual
+	void
+	on_imported_node_cancel_clicked () final override;
+
+	virtual
+	void
 	on_imported_name_edited (const Glib::ustring &, const Glib::ustring &) final override;
 
 	void
@@ -201,10 +221,45 @@ private:
 	validateImportedName (const std::string &, const std::string &) const;
 
 	///  @name Export
-	
+
 	virtual
 	void
-	on_export_toggled () final override;
+	on_exported_node_changed () final override;
+
+	virtual
+	void
+	on_exported_node_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	virtual
+	void
+	on_add_exported_node () final override;
+
+	virtual
+	void
+	on_remove_exported_node () final override;
+
+	virtual
+	void
+	on_exported_name_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_exported_name_delete_text (int, int) final override;
+
+	virtual
+	void
+	on_exported_name_changed () final override;
+
+	virtual
+	void
+	on_exported_node_ok_clicked () final override;
+
+	virtual
+	void
+	on_exported_node_cancel_clicked () final override;
+
+	bool
+	validateExportedName (const std::string &);
 
 	///  @name Dialog buttons
 
@@ -252,8 +307,15 @@ private:
 	
 	// Imported Nodes
 
-	std::map <std::string, std::string>          importedNodesToUpdate;
-	std::map <std::string, std::string>          importedNodesToRemove;
+	std::map <std::string, std::string> importedNodesToUpdate;
+	std::map <std::string, std::string> importedNodesToRemove;
+
+	// Exported Nodes
+
+	std::set <std::string> exportedNodesToUpdate;
+	std::set <std::string> exportedNodesToRemove;
+	Gtk::TreeModel::Path   exportedNodePath;
+	bool                   editExportedNode;
 
 };
 

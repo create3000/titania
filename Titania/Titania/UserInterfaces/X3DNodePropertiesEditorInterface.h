@@ -92,6 +92,10 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::ListStore> &
+	getExportedNodesListStore () const
+	{ return m_ExportedNodesListStore; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
 	getImportedNodesListStore () const
 	{ return m_ImportedNodesListStore; }
 
@@ -110,6 +114,10 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getCellRendererAccessType () const
 	{ return m_CellRendererAccessType; }
+
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getImportedNodesTreeViewSelection () const
+	{ return m_ImportedNodesTreeViewSelection; }
 
 	const Glib::RefPtr <Gtk::CellRendererToggle> &
 	getImportedNodesImportedCellRendererToggle () const
@@ -130,6 +138,10 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getImportedNodesImportedNameCellRendererText () const
 	{ return m_ImportedNodesImportedNameCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getExportedNodesTreeViewSelection () const
+	{ return m_ExportedNodesTreeViewSelection; }
 
 	Gtk::Menu &
 	getAccessTypeMenu () const
@@ -412,24 +424,56 @@ public:
 	{ return *m_ImportedNodesTreeView; }
 
 	Gtk::Expander &
-	getExportExpander () const
-	{ return *m_ExportExpander; }
+	getExportedNodesExpander () const
+	{ return *m_ExportedNodesExpander; }
 
-	Gtk::CheckButton &
-	getExportCheckButton () const
-	{ return *m_ExportCheckButton; }
+	Gtk::TreeView &
+	getExportedNodesTreeView () const
+	{ return *m_ExportedNodesTreeView; }
 
-	Gtk::Label &
-	getExportedNameLabel () const
-	{ return *m_ExportedNameLabel; }
+	Gtk::Button &
+	getAddExportedNodeButton () const
+	{ return *m_AddExportedNodeButton; }
+
+	Gtk::Button &
+	getRemoveExportedNodeButton () const
+	{ return *m_RemoveExportedNodeButton; }
+
+	Gtk::Dialog &
+	getExportedNodeDialog () const
+	{ return *m_ExportedNodeDialog; }
+
+	Gtk::Button &
+	getExportedNodeCancelButton () const
+	{ return *m_ExportedNodeCancelButton; }
+
+	Gtk::Button &
+	getExportedNodeOkButton () const
+	{ return *m_ExportedNodeOkButton; }
 
 	Gtk::Entry &
 	getExportedNameEntry () const
 	{ return *m_ExportedNameEntry; }
 
 	Gtk::Dialog &
-	getAddFieldDialog () const
-	{ return *m_AddFieldDialog; }
+	getImportedNodeDialog () const
+	{ return *m_ImportedNodeDialog; }
+
+	Gtk::Button &
+	getImportedNodeCancelButton () const
+	{ return *m_ImportedNodeCancelButton; }
+
+	Gtk::Button &
+	getImportedNodeOkButton () const
+	{ return *m_ImportedNodeOkButton; }
+
+	Gtk::Entry &
+	getImportedNameEntry () const
+	{ return *m_ImportedNameEntry; }
+
+	Gtk::Dialog &
+	getUserDefinedFieldDialog () const
+	{ return *m_UserDefinedFieldDialog; }
 
 	Gtk::Button &
 	getAddFieldCancelButton () const
@@ -501,11 +545,11 @@ public:
 
 	virtual
 	void
-	on_add_field_clicked () = 0;
+	on_add_user_defined_field_clicked () = 0;
 
 	virtual
 	void
-	on_remove_field_clicked () = 0;
+	on_remove_user_defined_field_clicked () = 0;
 
 	virtual
 	void
@@ -521,7 +565,59 @@ public:
 
 	virtual
 	void
-	on_export_toggled () = 0;
+	on_exported_node_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+
+	virtual
+	void
+	on_exported_node_changed () = 0;
+
+	virtual
+	void
+	on_add_exported_node () = 0;
+
+	virtual
+	void
+	on_remove_exported_node () = 0;
+
+	virtual
+	void
+	on_exported_node_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_exported_node_ok_clicked () = 0;
+
+	virtual
+	void
+	on_exported_name_changed () = 0;
+
+	virtual
+	void
+	on_exported_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_exported_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_imported_node_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_imported_node_ok_clicked () = 0;
+
+	virtual
+	void
+	on_imported_name_changed () = 0;
+
+	virtual
+	void
+	on_imported_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_imported_name_insert_text (const Glib::ustring & text, int* position) = 0;
 
 	virtual
 	void
@@ -556,16 +652,19 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::ListStore>          m_ExportedNodesListStore;
 	Glib::RefPtr <Gtk::ListStore>          m_ImportedNodesListStore;
 	Glib::RefPtr <Gtk::TreeSelection>      m_UserDefinedFieldsTreeviewSelection;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererType;
 	Glib::RefPtr <Gtk::CellRendererText>   m_CellRendererName;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererAccessType;
+	Glib::RefPtr <Gtk::TreeSelection>      m_ImportedNodesTreeViewSelection;
 	Glib::RefPtr <Gtk::CellRendererToggle> m_ImportedNodesImportedCellRendererToggle;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesTypeNameCellRendererText;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesExportedNameCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImportedNodesImportedNameTreeviewColumn;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImportedNodesImportedNameCellRendererText;
+	Glib::RefPtr <Gtk::TreeSelection>      m_ExportedNodesTreeViewSelection;
 	Gtk::Menu*                             m_AccessTypeMenu;
 	Gtk::MenuItem*                         m_InitializeOnlyMenuItem;
 	Gtk::MenuItem*                         m_InputOnlyMenuItem;
@@ -636,11 +735,19 @@ private:
 	Gtk::Button*                           m_EditCDataButton;
 	Gtk::Expander*                         m_ImportedNodesExpander;
 	Gtk::TreeView*                         m_ImportedNodesTreeView;
-	Gtk::Expander*                         m_ExportExpander;
-	Gtk::CheckButton*                      m_ExportCheckButton;
-	Gtk::Label*                            m_ExportedNameLabel;
+	Gtk::Expander*                         m_ExportedNodesExpander;
+	Gtk::TreeView*                         m_ExportedNodesTreeView;
+	Gtk::Button*                           m_AddExportedNodeButton;
+	Gtk::Button*                           m_RemoveExportedNodeButton;
+	Gtk::Dialog*                           m_ExportedNodeDialog;
+	Gtk::Button*                           m_ExportedNodeCancelButton;
+	Gtk::Button*                           m_ExportedNodeOkButton;
 	Gtk::Entry*                            m_ExportedNameEntry;
-	Gtk::Dialog*                           m_AddFieldDialog;
+	Gtk::Dialog*                           m_ImportedNodeDialog;
+	Gtk::Button*                           m_ImportedNodeCancelButton;
+	Gtk::Button*                           m_ImportedNodeOkButton;
+	Gtk::Entry*                            m_ImportedNameEntry;
+	Gtk::Dialog*                           m_UserDefinedFieldDialog;
 	Gtk::Button*                           m_AddFieldCancelButton;
 	Gtk::Button*                           m_AddFieldOkButton;
 	Gtk::MenuButton*                       m_AccessTypeMenuButton;

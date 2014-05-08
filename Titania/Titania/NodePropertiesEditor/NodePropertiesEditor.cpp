@@ -100,6 +100,12 @@ enum ImportedNodesEditorColumns
 
 };
 
+enum ExportedNodesEditorColumns
+{
+	EXPORTED_NODE_EXPORTED_NAME
+
+};
+
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodePropertiesEditorInterface (get_ui ("Dialogs/NodePropertiesEditor.xml"), gconf_dir ()),
@@ -113,7 +119,11 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                  fieldsToRemove (),
 	            editUserDefinedField (false),
 	           importedNodesToUpdate (),
-	           importedNodesToRemove ()
+	           importedNodesToRemove (),
+	           exportedNodesToUpdate (),
+	           exportedNodesToRemove (),
+	                exportedNodePath (),
+	                editExportedNode (false)
 
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
@@ -132,7 +142,6 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 
 	if (node -> hasUserDefinedFields ())
 	{
-		getUserDefinedFieldsTreeView () .get_selection () -> set_mode (Gtk::SELECTION_SINGLE);
 		getUserDefinedFieldsTreeView () .set_model (userDefinedFieldsListStore);
 
 		for (const auto & field : node -> getPreDefinedFields ())
@@ -271,32 +280,21 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	 **/
 
 	{
-		std::map <X3D::SFNode, std::string> exportedNames;
-		
-		for (const auto & exportedNode : getBrowser () -> getExecutionContext () -> getExportedNodes ())
-			exportedNames [exportedNode .second -> getLocalNode ()] = exportedNode .first;
+		const X3D::ScenePtr scene (node -> getExecutionContext ());
 
-		const auto exportedName = exportedNames .find (node);
-		const bool exported     = exportedName not_eq exportedNames .end ();
+		getExportedNodesExpander () .set_visible (scene);
 
-		getExportExpander () .set_visible (exported);
-		getExportCheckButton () .set_active (exported);
-
-		if (exported and exportedName -> second not_eq node -> getName ())
-			getExportedNameEntry () .set_text (exportedName -> second);
-
-//		auto strikethrough = Pango::Attribute::create_attr_strikethrough (true);
-//
-//		Pango::AttrList attributes;
-//		attributes .insert (strikethrough);
-//
-//		getExportedNameEntry () .set_attributes (attributes);
-
-		const auto attributes = pango_attr_list_new ();
-		pango_attr_list_insert (attributes, pango_attr_strikethrough_new (true));
-
-		gtk_entry_set_attributes (getExportedNameEntry () .gobj (), attributes);
-		pango_attr_list_unref (attributes);
+		if (scene)
+		{
+			for (const auto & exportedNode : scene -> getExportedNodes ())
+			{
+				if (exportedNode .second -> getLocalNode () == node)
+				{
+					const auto iter = getExportedNodesListStore () -> append ();
+					iter -> set_value (EXPORTED_NODE_EXPORTED_NAME, exportedNode .first);
+				}
+			}
+		}
 	}
 }
 
@@ -412,30 +410,32 @@ NodePropertiesEditor::on_user_defined_field_activated (const Gtk::TreeModel::Pat
 	getAccessTypeLabel () .set_text (X3D::Generator::X3DAccessTypes [userDefinedField]);
 	getFieldTypeLabel () .set_text (userDefinedField -> getTypeName ());
 	getFieldNameEntry () .set_text (userDefinedField -> getName ());
+	on_field_name_changed ();
 
-	getAddFieldDialog () .set_title (_ ("Edit User Defined Field"));
-	getAddFieldDialog () .present ();
+	getUserDefinedFieldDialog () .set_title (_ ("Edit User Defined Field"));
+	getUserDefinedFieldDialog () .present ();
 
 	getFieldNameEntry () .grab_focus ();
 }
 
 void
-NodePropertiesEditor::on_add_field_clicked ()
+NodePropertiesEditor::on_add_user_defined_field_clicked ()
 {
 	editUserDefinedField = false;
 
 	getInitializeOnlyMenuItem () .activate ();
 	getSFBoolMenuItem () .activate ();
 	getFieldNameEntry () .set_text ("");
+	on_field_name_changed ();
 
-	getAddFieldDialog () .set_title (_ ("Add User Defined Field"));
-	getAddFieldDialog () .present ();
+	getUserDefinedFieldDialog () .set_title (_ ("Add User Defined Field"));
+	getUserDefinedFieldDialog () .present ();
 
 	getFieldNameEntry () .grab_focus ();
 }
 
 void
-NodePropertiesEditor::on_remove_field_clicked ()
+NodePropertiesEditor::on_remove_user_defined_field_clicked ()
 {
 	const auto selected = getUserDefinedFieldsTreeView () .get_selection () -> get_selected ();
 	const auto index    = userDefinedFieldsListStore -> get_path (selected) .front ();
@@ -538,7 +538,7 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 
 	try
 	{
-		getAddFieldDialog () .hide ();
+		getUserDefinedFieldDialog () .hide ();
 
 		if (editUserDefinedField)
 		{
@@ -574,7 +574,7 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 void
 NodePropertiesEditor::on_add_field_cancel_clicked ()
 {
-	getAddFieldDialog () .hide ();
+	getUserDefinedFieldDialog () .hide ();
 }
 
 bool
@@ -742,6 +742,34 @@ NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
 }
 
 void
+NodePropertiesEditor::on_imported_name_insert_text (const Glib::ustring & text, int* position)
+{
+	validateIdOnInsert (getImportedNameEntry (), text, *position);
+}
+
+void
+NodePropertiesEditor::on_imported_name_delete_text (int start_pos, int end_pos)
+{
+	validateIdOnDelete (getImportedNameEntry (), start_pos, end_pos);
+}
+
+void
+NodePropertiesEditor::on_imported_name_changed ()
+{ }
+
+void
+NodePropertiesEditor::on_imported_node_ok_clicked ()
+{
+	getImportedNodeDialog () .hide ();
+}
+
+void
+NodePropertiesEditor::on_imported_node_cancel_clicked ()
+{
+	getImportedNodeDialog () .hide ();
+}
+
+void
 NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
 	std::string value = new_text;
@@ -823,7 +851,7 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 	try
 	{
 		scene -> getNamedNode (importedName);
-		return false; // There is already a named node.
+		return false;           // There is already a named node.
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -838,12 +866,12 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 			const X3D::InlinePtr inlineNode   = X3D::x3d_cast <X3D::Inline*> (node);
 
 			if (importedNode -> getInlineNode () not_eq inlineNode)
-				return false;    // There is an import from another Inline node with importedName.
+				return false;     // There is an import from another Inline node with importedName.
 
 			if (importedNodesToRemove .find (importedNode -> getExportedName ()) == importedNodesToRemove .end ())
 			{
 				if (importedNode -> getExportedName () not_eq exportedName)
-					return false; // There is another import from this Inline node with importedName.
+					return false;  // There is another import from this Inline node with importedName.
 
 			}
 		}
@@ -855,10 +883,147 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 }
 
 void
-NodePropertiesEditor::on_export_toggled ()
+NodePropertiesEditor::on_exported_node_changed ()
 {
-	getExportedNameLabel () .set_sensitive (getExportCheckButton () .get_active ());
-	getExportedNameEntry () .set_sensitive (getExportCheckButton () .get_active ());
+	getRemoveExportedNodeButton () .set_sensitive (not getExportedNodesTreeView () .get_selection () -> get_selected_rows () .empty ());
+}
+
+void
+NodePropertiesEditor::on_exported_node_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
+{
+	editExportedNode = true;
+	exportedNodePath = path;
+
+	const auto iter = getExportedNodesListStore () -> get_iter (path);
+
+	std::string exportedName;
+	iter -> get_value (EXPORTED_NODE_EXPORTED_NAME, exportedName);
+
+	getExportedNameEntry () .set_text (exportedName);
+	on_exported_name_changed ();
+
+	getExportedNodeDialog () .set_title (_ ("Edit Exported Node"));
+	getExportedNodeDialog () .present ();
+}
+
+void
+NodePropertiesEditor::on_add_exported_node ()
+{
+	editExportedNode = false;
+
+	getExportedNameEntry () .set_text (getNameEntry () .get_text ());
+	on_exported_name_changed ();
+
+	getExportedNodeDialog () .set_title (_ ("Add Exported Node"));
+	getExportedNodeDialog () .present ();
+}
+
+void
+NodePropertiesEditor::on_remove_exported_node ()
+{
+	__LOG__ << std::endl;
+
+	const auto selected = getExportedNodesTreeView () .get_selection () -> get_selected ();
+
+	// Remove exported node.
+
+	std::string exportedName;
+	selected -> get_value (EXPORTED_NODE_EXPORTED_NAME, exportedName);
+
+	exportedNodesToRemove .emplace (exportedName);
+	exportedNodesToUpdate .erase (exportedName);
+
+	// Erase from list store.
+
+	getExportedNodesListStore () -> erase (selected);
+}
+
+void
+NodePropertiesEditor::on_exported_name_insert_text (const Glib::ustring & text, int* position)
+{
+	validateIdOnInsert (getExportedNameEntry (), text, *position);
+}
+
+void
+NodePropertiesEditor::on_exported_name_delete_text (int start_pos, int end_pos)
+{
+	validateIdOnDelete (getExportedNameEntry (), start_pos, end_pos);
+}
+
+void
+NodePropertiesEditor::on_exported_name_changed ()
+{
+	const std::string exportedName = getExportedNameEntry () .get_text ();
+
+	getExportedNodeOkButton () .set_sensitive (validateExportedName (exportedName));
+}
+
+void
+NodePropertiesEditor::on_exported_node_ok_clicked ()
+{
+	getExportedNodeDialog () .hide ();
+
+	const std::string exportedName = getExportedNameEntry () .get_text ();
+
+	if (editExportedNode)
+	{
+		// Update ListStore.
+
+		const auto iter = getExportedNodesListStore () -> get_iter (exportedNodePath);
+
+		std::string oldExportedName;
+		iter -> get_value (EXPORTED_NODE_EXPORTED_NAME, oldExportedName);
+		iter -> set_value (EXPORTED_NODE_EXPORTED_NAME, exportedName);
+
+		// Remove old exported node.
+
+		exportedNodesToRemove .emplace (oldExportedName);
+		exportedNodesToUpdate .erase (oldExportedName);
+	}
+	else
+	{
+		// Update ListStore.
+
+		const auto iter = getExportedNodesListStore () -> append ();
+		iter -> set_value (EXPORTED_NODE_EXPORTED_NAME, exportedName);
+	}
+
+	// Update exported node.
+
+	exportedNodesToRemove .erase (exportedName);
+	exportedNodesToUpdate .emplace (exportedName);
+}
+
+void
+NodePropertiesEditor::on_exported_node_cancel_clicked ()
+{
+	getExportedNodeDialog () .hide ();
+}
+
+bool
+NodePropertiesEditor::validateExportedName (const std::string & exportedName)
+{
+	if (exportedNodesToUpdate .find (exportedName) not_eq exportedNodesToUpdate .end ())
+		return false;       // Update exists.
+
+	try
+	{
+		const X3D::ScenePtr scene (node -> getExecutionContext ());
+		const auto          exportedNode = scene -> getExportedNode (exportedName);
+
+		if (exportedNode == node)
+		{
+			if (exportedNodesToRemove .find (exportedName) not_eq exportedNodesToRemove .end ())
+				return true;  // Remove exists.
+
+		}
+
+		return false;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	return not exportedName .empty ();
 }
 
 void
@@ -1053,7 +1218,7 @@ NodePropertiesEditor::on_apply ()
 			{
 				const auto & importedName = importedNode .second;
 
-				__LOG__ << "remove: " << importedName << std::endl;
+				__LOG__ << "removeImportedNode: " << importedName << std::endl;
 
 				try
 				{
@@ -1082,7 +1247,7 @@ NodePropertiesEditor::on_apply ()
 				const auto & exportedName = importedNode .second;
 				const auto & importedName = importedNode .first;
 
-				__LOG__ << "update: " << exportedName << ", " << importedName << std::endl;
+				__LOG__ << "updateImportedNode: " << exportedName << ", " << importedName << std::endl;
 
 				try
 				{
@@ -1108,6 +1273,69 @@ NodePropertiesEditor::on_apply ()
 				                             importedName);
 
 				executionContext -> updateImportedNode (inlineNode, exportedName, importedName);
+			}
+		}
+
+		// Apply exported nodes change.
+
+		if (not exportedNodesToUpdate .empty () or not exportedNodesToRemove .empty ())
+		{
+			__LOG__ << std::endl;
+
+			const X3D::ScenePtr scene (node -> getExecutionContext ());
+
+			if (scene)
+			{
+				for (const auto & exportedName : exportedNodesToRemove)
+				{
+					__LOG__ << "removeExportedNode: " << exportedName << std::endl;
+
+					try
+					{
+						const auto & exportedNode = scene -> getExportedNodes () .at (exportedName);
+
+						undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode,
+						                             scene,
+						                             exportedNode -> getExportedName (),
+						                             exportedNode -> getLocalNode ());
+					}
+					catch (...)
+					{ }
+
+					undoStep -> addRedoFunction (&X3D::X3DScene::removeExportedNode,
+					                             scene,
+					                             exportedName);
+
+					scene -> removeExportedNode (exportedName);
+				}
+
+				for (const auto & exportedName : exportedNodesToUpdate)
+				{
+					__LOG__ << "updateExportedNode: " << exportedName << std::endl;
+
+					try
+					{
+						const auto & exportedNode = scene -> getExportedNodes () .at (exportedName);
+
+						undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode,
+						                             scene,
+						                             exportedNode -> getExportedName (),
+						                             exportedNode -> getLocalNode ());
+					}
+					catch (...)
+					{
+						undoStep -> addUndoFunction (&X3D::X3DScene::removeExportedNode,
+						                             scene,
+						                             exportedName);
+					}
+
+					undoStep -> addRedoFunction (&X3D::X3DScene::updateExportedNode,
+					                             scene,
+					                             exportedName,
+					                             node);
+
+					scene -> updateExportedNode (exportedName, node);
+				}
 			}
 		}
 
