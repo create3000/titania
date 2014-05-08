@@ -1057,7 +1057,7 @@
                               <object class="GtkLabel" id="label9">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Export</property>
+                                <property name="label" translatable="yes">Exports</property>
                               </object>
                             </child>
                           </object>

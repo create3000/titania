@@ -752,6 +752,9 @@ throw (Error <INVALID_NODE>,
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
 
+	if (route -> getExecutionContext () not_eq this)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
+
 	const auto routeId = route -> getId ();
 
 	route -> disconnect ();

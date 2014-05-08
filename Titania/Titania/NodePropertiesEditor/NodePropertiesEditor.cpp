@@ -267,7 +267,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	}
 
 	/**
-	 * Export
+	 * Exports
 	 **/
 
 	{
