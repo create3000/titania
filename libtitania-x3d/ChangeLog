@@ -1,3 +1,17 @@
+2014-05-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec3.h:
+	* X3DPtr.h:
+	* SFVec4.h:
+	* SFVec2.h:
+	* X3DField.h:
+	* SFMatrix3.h:
+	* X3DScalar.h:
+	* SFMatrix4.h:
+	* SFRotation4.h:
+	* X3DScene.cpp:
+	* X3DExecutionContext.cpp: 
+
 2014-05-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

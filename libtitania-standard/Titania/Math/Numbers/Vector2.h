@@ -295,7 +295,7 @@ vector2 <Type>::normalize ()
 ///  @name Comparision operations
 
 ///  Compares two vector2 numbers.
-///  Returns true if @a a is equal to @a rhs.
+///  Returns true if @a lhs is equal to @a rhs.
 template <class Type>
 inline
 constexpr
@@ -308,7 +308,7 @@ operator == (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 }
 
 ///  Compares two vector2 numbers.
-///  Returns false if @a a is not equal to @a rhs.
+///  Returns false if @a lhs is not equal to @a rhs.
 template <class Type>
 inline
 constexpr
@@ -354,7 +354,7 @@ negate (const vector2 <Type> & vector)
 	return result;
 }
 
-///  Returns new vector value @a a plus @a rhs.
+///  Returns new vector value @a lhs plus @a rhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -363,7 +363,7 @@ operator + (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (lhs) += rhs;
 }
 
-///  Returns new vector value @a a minus @a rhs.
+///  Returns new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -372,7 +372,7 @@ operator - (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (lhs) -= rhs;
 }
 
-///  Returns new vector value @a a times @a rhs.
+///  Returns new vector value @a lhs times @a rhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -381,7 +381,7 @@ operator * (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (lhs) *= rhs;
 }
 
-///  Returns new vector value @a a times @a rhs.
+///  Returns new vector value @a lhs times @a rhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -390,7 +390,7 @@ operator * (const vector2 <Type> & lhs, const Type & rhs)
 	return vector2 <Type> (lhs) *= rhs;
 }
 
-///  Returns new vector value @a a times @a rhs.
+///  Returns new vector value @a lhs times @a rhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -399,7 +399,7 @@ operator * (const Type & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (rhs) *= lhs;
 }
 
-///  Returns new vector value @a a divided by @a rhs.
+///  Returns new vector value @a lhs divided by @a rhs.
 template <class Type>
 inline
 vector2 <Type>
@@ -417,7 +417,7 @@ operator / (const vector2 <Type> & lhs, const Type & rhs)
 	return vector2 <Type> (lhs) /= rhs;
 }
 
-///  Returns new vector value @a a divided by @a hs.
+///  Returns new vector value @a lhs divided by @a hs.
 template <class Type>
 constexpr
 vector2 <Type>
@@ -427,7 +427,7 @@ operator / (const Type & lhs, const vector2 <Type> & rhs)
 	                       lhs / rhs .y ());
 }
 
-///  Returns new vector value @a a dot @a rhs.
+///  Returns new vector value @a lhs dot @a rhs.
 template <class Type>
 constexpr
 Type

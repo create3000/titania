@@ -435,9 +435,9 @@ SFRotation4 <ValueType>::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
-// Aritmetic operators.
+///  @relates SFRotation4
+///  @name Aritmetic operators.
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -445,9 +445,7 @@ operator ~ (const SFRotation4 <ValueType> & rotation)
 {
 	return ~rotation .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -471,9 +469,7 @@ operator * (const ValueType & a, const SFRotation4 <ValueType> & b)
 {
 	return a * b .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 typename ValueType::vector3_type
@@ -489,10 +485,6 @@ operator * (const SFRotation4 <ValueType> & rotation, const typename ValueType::
 {
 	return rotation .getValue () * vector;
 }
-//@}
-
-//extern template class X3DField <Rotation4d>;
-//extern template class X3DField <Rotation4f>;
 
 extern template class SFRotation4 <Rotation4d>;
 extern template class SFRotation4 <Rotation4f>;

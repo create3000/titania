@@ -264,7 +264,9 @@ throw (Error <IMPORTED_NODE>,
 
 	node -> setName (name);
 
-	auto & namedNode = namedNodes .emplace (name, new NamedNode (this, node)) .first -> second;
+	auto & namedNode = namedNodes [name];
+	namedNode = new NamedNode (this, node);
+
 	namedNode .isTainted (true);
 	namedNode .addParent (this);
 
@@ -409,13 +411,11 @@ throw (Error <INVALID_NODE>,
 	if (importedName .empty ())
 		importedName = exportedName;
 
-	// Remove imported node.
+	// Update imported node.
 
-	removeImportedNode (importedName);
+	auto & importedNode = importedNodes [importedName];
+	importedNode = new ImportedNode (this, inlineNode, exportedName, importedName);
 
-	// Add imported node.
-
-	auto & importedNode = importedNodes .emplace (importedName, new ImportedNode (this, inlineNode, exportedName, importedName)) .first -> second;
 	importedNode .isTainted (true);
 	importedNode .addParent (this);
 
@@ -502,7 +502,7 @@ throw (Error <INVALID_NODE>,
 	if (node -> getExecutionContext () == this)
 		return node -> getName ();
 
-	throw Error <INVALID_NODE> ("Couldn' get local name.");
+	throw Error <INVALID_NODE> ("Couldn't get local name.");
 }
 
 //	Proto declaration handling

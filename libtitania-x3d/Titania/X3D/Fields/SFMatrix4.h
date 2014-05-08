@@ -560,9 +560,6 @@ SFMatrix4 <ValueType>::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
-//extern template class X3DField <Matrix4d>;
-//extern template class X3DField <Matrix4f>;
-
 // SFMatrix4d and SFMatrix4f
 extern template class SFMatrix4 <Matrix4d>;
 extern template class SFMatrix4 <Matrix4f>;

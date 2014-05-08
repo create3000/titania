@@ -261,7 +261,11 @@ const std::string X3DField <ValueType>::typeName = "X3DField";
 template <class ValueType>
 const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;
 
-//@{
+///  @relates X3DField
+///  @name Comparision operations
+
+///  Compares two X3DField numbers.
+///  Returns true if @a lhs is equal to @a rhs.
 template <class ValueType>
 inline
 bool
@@ -270,6 +274,8 @@ operator == (const X3DField <ValueType> & lhs, const X3DField <ValueType> & rhs)
 	return lhs .getValue () == rhs .getValue ();
 }
 
+///  Compares two X3DField numbers.
+///  Returns true if @a lhs is equal to @a rhs.
 template <class ValueType>
 inline
 bool
@@ -278,6 +284,8 @@ operator == (const typename X3DField <ValueType>::internal_type & lhs, const X3D
 	return lhs == rhs .getValue ();
 }
 
+///  Compares two X3DField numbers.
+///  Returns true if @a lhs is equal to @a rhs.
 template <class ValueType>
 inline
 bool
@@ -285,9 +293,9 @@ operator == (const X3DField <ValueType> & lhs, const typename X3DField <ValueTyp
 {
 	return lhs .getValue () == rhs;
 }
-//@}
 
-//@{
+///  Compares two X3DField numbers.
+///  Returns true if @a lhs is not equal to @a rhs.
 template <class ValueType>
 inline
 bool
@@ -296,6 +304,8 @@ operator not_eq (const X3DField <ValueType> & lhs, const X3DField <ValueType> & 
 	return lhs .getValue () not_eq rhs .getValue ();
 }
 
+///  Compares two X3DField numbers.
+///  Returns true if @a lhs is not equal to @a rhs.
 template <class ValueType>
 inline
 bool
@@ -304,6 +314,8 @@ operator not_eq (const typename X3DField <ValueType>::internal_type & lhs, const
 	return lhs not_eq rhs .getValue ();
 }
 
+///  Compares two X3DField numbers.
+///  Returns true if @a lhs is not equal to @a rhs.
 template <class ValueType>
 inline
 bool
@@ -311,7 +323,6 @@ operator not_eq (const X3DField <ValueType> & lhs, const typename X3DField <Valu
 {
 	return lhs .getValue () not_eq rhs;
 }
-//@}
 
 } // X3D
 } // titania

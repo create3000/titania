@@ -4,13 +4,13 @@ META "comment" "World of Titania"
 META "created" "Mon, 05 May 2014 10:24:07 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Wed, 07 May 2014 03:15:13 GMT"
+META "modified" "Thu, 08 May 2014 02:00:14 GMT"
 
 DEF _1 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
-DEF _2 Inline {
+Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
@@ -18,15 +18,4 @@ DEF Inline3 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
-IMPORT _1.A
-IMPORT _1.B
-IMPORT _2.Export1
-IMPORT _1.Export2
-IMPORT _1.Export3
-IMPORT Inline3.A AS x
-IMPORT Inline3.Export2 AS y
-IMPORT Inline3.Export3 AS z
-
-ROUTE Export1.translation_changed TO Export1.set_translation
-ROUTE Export1.rotation_changed TO Export1.set_rotation
-ROUTE Export1.scale_changed TO Export1.set_scale
+IMPORT _1.A AS a

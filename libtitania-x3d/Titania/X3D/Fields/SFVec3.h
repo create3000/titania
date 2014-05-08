@@ -553,9 +553,9 @@ SFVec3 <ValueType>::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
-// Aritmetic operators.
+///  @relates SFVec3
+///  @name Aritmetic operators.
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -563,9 +563,7 @@ operator - (const SFVec3 <ValueType> & vector)
 {
 	return -vector .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -589,9 +587,7 @@ operator + (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
 {
 	return lhs + rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -615,9 +611,7 @@ operator - (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
 {
 	return lhs - rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -641,9 +635,7 @@ operator * (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
 {
 	return lhs * rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -659,9 +651,7 @@ operator * (const typename ValueType::value_type & lhs, const SFVec3 <ValueType>
 {
 	return lhs * rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -677,10 +667,6 @@ operator / (const typename ValueType::value_type & lhs, const SFVec3 <ValueType>
 {
 	return lhs / rhs .getValue ();
 }
-//@}
-
-//extern template class X3DField <Vector3d>;
-//extern template class X3DField <Vector3f>;
 
 // SFVec3d and SFVec3f
 extern template class SFVec3 <Vector3d>;

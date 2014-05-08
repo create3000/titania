@@ -254,9 +254,9 @@ X3DScalar <ValueType>::operator /= (const ValueType & value)
 	return *this;
 }
 
-// Aritmetic operators.
+///  @relates X3DScalar
+///  @name Aritmetic operators.
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -264,9 +264,7 @@ operator - (const X3DScalar <ValueType> & scalar)
 {
 	return -scalar .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -290,9 +288,7 @@ operator + (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
 {
 	return lhs + rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -316,9 +312,7 @@ operator - (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
 {
 	return lhs - rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -342,9 +336,7 @@ operator * (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
 {
 	return lhs * rhs .getValue ();
 }
-//@}
 
-//@{
 template <class ValueType>
 inline
 ValueType
@@ -368,7 +360,6 @@ operator / (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
 {
 	return lhs / rhs .getValue ();
 }
-//@}
 
 template <>
 void

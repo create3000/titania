@@ -496,12 +496,85 @@ X3DPtr <ValueType>::~X3DPtr ()
 	removeNode (getValue ());
 }
 
-template <class Type>
+///  @relates X3DPtr
+///  @name Comparision operations
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs is equal to @a rhs.
+template <class ValueType>
 inline
 bool
-operator < (const X3DPtr <Type> & lhs, const X3DPtr <Type> & rhs)
+operator == (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	return lhs .getValue () < rhs .getValue ();
+	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
+	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+
+	return a == b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs is not equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator not_eq (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+{
+	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
+	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+
+	return a not_eq b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+{
+	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
+	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+
+	return a < b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+{
+	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
+	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+
+	return a <= b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+{
+	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
+	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+
+	return a > b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+{
+	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
+	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+
+	return a >= b;
 }
 
 } // X3D

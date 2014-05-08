@@ -560,7 +560,7 @@
                                     <property name="sensitive">False</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Type name:</property>
+                                    <property name="label" translatable="yes">Type Name:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -665,7 +665,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Container field:</property>
+                                    <property name="label" translatable="yes">Container Field:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -926,7 +926,9 @@
                                         <property name="sizing">autosize</property>
                                         <property name="title" translatable="yes">Type Name</property>
                                         <child>
-                                          <object class="GtkCellRendererText" id="ImportedNodesTypeNameCellRendererText"/>
+                                          <object class="GtkCellRendererText" id="ImportedNodesTypeNameCellRendererText">
+                                            <property name="weight">700</property>
+                                          </object>
                                           <attributes>
                                             <attribute name="text">1</attribute>
                                           </attributes>
@@ -940,7 +942,7 @@
                                         <child>
                                           <object class="GtkCellRendererText" id="ImportedNodesExportedNameCellRendererText"/>
                                           <attributes>
-                                            <attribute name="strikethrough">3</attribute>
+                                            <attribute name="strikethrough">4</attribute>
                                             <attribute name="text">2</attribute>
                                           </attributes>
                                         </child>
@@ -952,10 +954,11 @@
                                         <property name="title" translatable="yes">Imported Name</property>
                                         <child>
                                           <object class="GtkCellRendererText" id="ImportedNodesImportedNameCellRendererText">
+                                            <property name="editable">True</property>
                                             <signal name="edited" handler="on_imported_name_edited" swapped="no"/>
                                           </object>
                                           <attributes>
-                                            <attribute name="strikethrough">3</attribute>
+                                            <attribute name="strikethrough">4</attribute>
                                             <attribute name="text">3</attribute>
                                           </attributes>
                                         </child>
@@ -1013,7 +1016,7 @@
                                     <property name="sensitive">False</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Exported name:</property>
+                                    <property name="label" translatable="yes">Exported Name:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>

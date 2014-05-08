@@ -55,6 +55,5 @@ DEF Export3 Transform {
 
 EXPORT Export1 AS A
 EXPORT Export1 AS B
-EXPORT Export1
 EXPORT Export2
 EXPORT Export3

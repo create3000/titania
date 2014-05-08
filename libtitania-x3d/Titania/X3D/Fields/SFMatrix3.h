@@ -531,9 +531,6 @@ SFMatrix3 <ValueType>::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
-//extern template class X3DField <Matrix3d>;
-//extern template class X3DField <Matrix3f>;
-
 // SFMatrix4d and SFMatrix4f
 extern template class SFMatrix3 <Matrix3d>;
 extern template class SFMatrix3 <Matrix3f>;

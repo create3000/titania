@@ -90,11 +90,15 @@ reverse (const std::map <Key, Value, Compare, Allocator> & index)
 
 const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "titania/node-properties/user-defined-field";
 
-static constexpr int IMPORTED_NODE_IMPORTED      = 0;
-static constexpr int IMPORTED_NODE_TYPE_NAME     = 1;
-static constexpr int IMPORTED_NODE_EXPORTED_NAME = 2;
-static constexpr int IMPORTED_NODE_IMPORTED_NAME = 3;
-static constexpr int IMPORTED_NODE_NOT_VALID     = 4;
+enum ImportedNodesEditorColumns
+{
+	IMPORTED_NODE_IMPORTED,
+	IMPORTED_NODE_TYPE_NAME,
+	IMPORTED_NODE_EXPORTED_NAME,
+	IMPORTED_NODE_IMPORTED_NAME,
+	IMPORTED_NODE_NOT_VALID
+
+};
 
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -108,7 +112,6 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                 fieldsToReplace (),
 	                  fieldsToRemove (),
 	            editUserDefinedField (false),
-	                   importedNodes (),
 	           importedNodesToUpdate (),
 	           importedNodesToRemove ()
 
@@ -219,17 +222,18 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 
 		if (inlineNode)
 		{
-			getImportedNodesImportedCellRendererToggle ()   -> property_activatable () = true;
-			getImportedNodesTypeNameCellRendererText ()     -> property_weight ()      = 700;
-			getImportedNodesImportedNameCellRendererText () -> property_editable ()    = true;
+			std::map <std::string, X3D::ImportedNodePtr> importedNodes;
 
 			for (const auto & importedNode : getBrowser () -> getExecutionContext () -> getImportedNodes ())
-				importedNodes [importedNode .second -> getExportedNode ()] = importedNode .second;
+			{
+				if (importedNode .second -> getInlineNode () == inlineNode)
+					importedNodes [importedNode .second -> getExportedName ()] = importedNode .second;
+			}
 
 			for (const auto & pair : inlineNode -> getExportedNodes ())
 			{
 				const auto & exportedNode = pair .second;
-				const auto   importedNode = importedNodes .find (exportedNode -> getLocalNode ());
+				const auto   importedNode = importedNodes .find (exportedNode -> getExportedName ());
 				const auto   iter         = getImportedNodesListStore () -> append ();
 
 				iter -> set_value (IMPORTED_NODE_TYPE_NAME,     exportedNode -> getLocalNode () -> getTypeName ());
@@ -266,17 +270,34 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	 * Export
 	 **/
 
-//	const auto scene = getBrowser () -> getExecutionContext ();
+	{
+		std::map <X3D::SFNode, std::string> exportedNames;
+		
+		for (const auto & exportedNode : getBrowser () -> getExecutionContext () -> getExportedNodes ())
+			exportedNames [exportedNode .second -> getLocalNode ()] = exportedNode .first;
+
+		const auto exportedName = exportedNames .find (node);
+		const bool exported     = exportedName not_eq exportedNames .end ();
+
+		getExportExpander () .set_visible (exported);
+		getExportCheckButton () .set_active (exported);
+
+		if (exported and exportedName -> second not_eq node -> getName ())
+			getExportedNameEntry () .set_text (exportedName -> second);
+
+//		auto strikethrough = Pango::Attribute::create_attr_strikethrough (true);
 //
-//	const auto exportedName = scene -> getExportedNodes () .find (node);
+//		Pango::AttrList attributes;
+//		attributes .insert (strikethrough);
 //
-//	const bool exported = exportedName not_eq scene -> getExportedNames () .end ();
-//
-//	getExportExpander () .set_visible (exported);
-//	getExportCheckButton () .set_active (exported);
-//
-//	if (exported and exportedName -> second not_eq node -> getName ())
-//		getExportedNameEntry () .set_text (exportedName -> second);
+//		getExportedNameEntry () .set_attributes (attributes);
+
+		const auto attributes = pango_attr_list_new ();
+		pango_attr_list_insert (attributes, pango_attr_strikethrough_new (true));
+
+		gtk_entry_set_attributes (getExportedNameEntry () .gobj (), attributes);
+		pango_attr_list_unref (attributes);
+	}
 }
 
 void
@@ -724,6 +745,7 @@ void
 NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
 	std::string value = new_text;
+
 	X3D::filter_non_id_characters (value);
 
 	bool        imported = false;
@@ -757,7 +779,7 @@ NodePropertiesEditor::on_imported_name_edited (const Glib::ustring & path, const
 	iter -> set_value (IMPORTED_NODE_NOT_VALID,     not valid);
 
 	// Validate all children which are not imported.
-	
+
 	validateImportedNames (iter);
 }
 
@@ -796,24 +818,34 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 	if (updateExists)
 		return false;
 
+	const auto & scene = getBrowser () -> getExecutionContext ();
+
 	try
 	{
-		const auto localNode    = getBrowser () -> getExecutionContext () -> getLocalNode (importedName);
-		const auto importedNode = importedNodes .find (localNode);
+		scene -> getNamedNode (importedName);
+		return false; // There is already a named node.
+	}
+	catch (const X3D::X3DError &)
+	{ }
 
-		if (importedNode == importedNodes .end ())
-			return false;     // There is no imported node with importedName thus a named node must already exists.
+	try
+	{
+		const auto iter = scene -> getImportedNodes () .find (importedName);
 
-		const X3D::InlinePtr inlineNode = X3D::x3d_cast <X3D::Inline*> (node);
-
-		if (importedNode -> second -> getInlineNode () not_eq inlineNode)
-			return false;     // There is an import from another Inline node with importedName.
-
-		if (importedNodesToRemove .find (importedNode -> second -> getExportedName ()) == importedNodesToRemove .end ())
+		if (iter not_eq scene -> getImportedNodes () .end ())
 		{
-			if (importedNode -> second -> getExportedName () not_eq exportedName)
-				return false;  // There is another import from this Inline node with importedName.
+			const auto &         importedNode = iter -> second;
+			const X3D::InlinePtr inlineNode   = X3D::x3d_cast <X3D::Inline*> (node);
 
+			if (importedNode -> getInlineNode () not_eq inlineNode)
+				return false;    // There is an import from another Inline node with importedName.
+
+			if (importedNodesToRemove .find (importedNode -> getExportedName ()) == importedNodesToRemove .end ())
+			{
+				if (importedNode -> getExportedName () not_eq exportedName)
+					return false; // There is another import from this Inline node with importedName.
+
+			}
 		}
 	}
 	catch (const X3D::X3DError &)
@@ -1010,23 +1042,18 @@ NodePropertiesEditor::on_apply ()
 
 		if (not importedNodesToUpdate .empty () or not importedNodesToRemove .empty ())
 		{
-			//__LOG__ << std::endl;
+			__LOG__ << std::endl;
 
 			const X3D::X3DExecutionContextPtr executionContext = node -> getExecutionContext ();
 			const X3D::InlinePtr              inlineNode       = X3D::x3d_cast <X3D::Inline*> (node);
-
-			// Prepare imported nodes.
-
-			for (const auto & importedNode : importedNodesToUpdate)
-				importedNodesToRemove .erase (importedNode .second);
 
 			// Remove imported nodes.
 
 			for (const auto & importedNode : importedNodesToRemove)
 			{
 				const auto & importedName = importedNode .second;
-			
-				//__LOG__ << "remove: " << importedName << std::endl;
+
+				__LOG__ << "remove: " << importedName << std::endl;
 
 				try
 				{
@@ -1036,7 +1063,7 @@ NodePropertiesEditor::on_apply ()
 					                             executionContext,
 					                             importedNode -> getInlineNode (),
 					                             importedNode -> getExportedName (),
-					                             importedNode -> getImportedName ());			
+					                             importedNode -> getImportedName ());
 				}
 				catch (...)
 				{ }
@@ -1044,7 +1071,7 @@ NodePropertiesEditor::on_apply ()
 				undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode,
 				                             executionContext,
 				                             importedName);
-				
+
 				executionContext -> removeImportedNode (importedName);
 			}
 
@@ -1055,7 +1082,7 @@ NodePropertiesEditor::on_apply ()
 				const auto & exportedName = importedNode .second;
 				const auto & importedName = importedNode .first;
 
-				//__LOG__ << "update: " << exportedName << ", " << importedName << std::endl;
+				__LOG__ << "update: " << exportedName << ", " << importedName << std::endl;
 
 				try
 				{
@@ -1065,13 +1092,13 @@ NodePropertiesEditor::on_apply ()
 					                             executionContext,
 					                             importedNode -> getInlineNode (),
 					                             importedNode -> getExportedName (),
-					                             importedNode -> getImportedName ());			
+					                             importedNode -> getImportedName ());
 				}
 				catch (...)
 				{
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeImportedNode,
 					                             executionContext,
-					                             importedName);			
+					                             importedName);
 				}
 
 				undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateImportedNode,

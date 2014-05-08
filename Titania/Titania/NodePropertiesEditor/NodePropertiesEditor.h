@@ -252,7 +252,6 @@ private:
 	
 	// Imported Nodes
 
-	std::map <X3D::SFNode, X3D::ImportedNodePtr> importedNodes;	
 	std::map <std::string, std::string>          importedNodesToUpdate;
 	std::map <std::string, std::string>          importedNodesToRemove;
 
