@@ -66,8 +66,11 @@ X3DScene::X3DScene () :
 	X3DExecutionContext (),
 	         compressed (false),
 	          metadatas (),
-	      exportedNodes ()
-{ }
+	      exportedNodes (),
+	exportedNodesOutput ()
+{
+	addChildren (exportedNodesOutput);
+}
 
 void
 X3DScene::initialize ()
@@ -176,6 +179,8 @@ throw (Error <INVALID_NAME>,
 	else
 		addUninitializedNode (exportedNode);
 
+	exportedNodesOutput = getCurrentTime ();
+
 	return exportedNode;
 }
 
@@ -185,6 +190,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	exportedNodes .erase (exportedName);
+
+	exportedNodesOutput = getCurrentTime ();
 }
 
 SFNode

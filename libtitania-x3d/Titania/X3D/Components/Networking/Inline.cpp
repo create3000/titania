@@ -76,8 +76,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	          fields (),
 	           scene (),
 	           group (new Group (executionContext)),
-	          future (),
-	       wasLoaded (false)
+	          future ()
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "load",       load ());
@@ -179,8 +178,14 @@ throw (Error <NODE_NOT_AVAILABLE>,
 	{
 		if (isInitialized ())
 		{
-			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
-				future -> wait ();
+			if (checkLoadState () == NOT_STARTED_STATE)
+				const_cast <Inline*> (this) -> requestImmediateLoad ();
+
+			else
+			{
+				if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
+					future -> wait ();
+			}
 
 			if (checkLoadState () == COMPLETE_STATE)
 				return scene;
@@ -346,10 +351,8 @@ Inline::saveState ()
 
 	X3DChildNode::saveState ();
 
-	wasLoaded = load ();
-
 	if (load ())
-		load () = false;
+		requestUnload ();
 }
 
 void
@@ -360,8 +363,8 @@ Inline::restoreState ()
 
 	X3DChildNode::restoreState ();
 
-	if (wasLoaded)
-		load () = true;
+	if (load ())
+		requestAsyncLoad ();
 }
 
 void

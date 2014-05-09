@@ -217,7 +217,9 @@ private:
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
+	Glib::RefPtr <Gdk::Pixbuf> importedNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> sharedNodeImage;
+	Glib::RefPtr <Gdk::Pixbuf> routeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 	AccessTypeImageIndex       accessTypeImages;
 	X3D::AccessType            accessType;

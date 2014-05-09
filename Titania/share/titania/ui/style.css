@@ -20,8 +20,16 @@ GtkExpander > GtkLabel {
 }
 
 #OutlineTreeViewEditor column-header .button {
-	border-left-width: 0;
-	border-right-width: 0;
+	border-left-width: 0px;
+	border-right-width: 0px;
+}
+
+#OutlineTreeViewEditor .textview-editable,
+#OutlineTreeViewEditor .textview-editable GtkTextView
+{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
 }
 
 #Console {

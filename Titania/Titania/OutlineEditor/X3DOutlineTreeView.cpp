@@ -53,6 +53,7 @@
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
+#include "CellRenderer/OutlineSeparator.h"
 #include "OutlineRouteGraph.h"
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
@@ -338,18 +339,33 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 {
 	//__LOG__ << std::endl;
 
+	// Remove model.
+
+	X3D::ScenePtr scene (get_model () -> get_execution_context ());
+
 	for (const auto & child : get_model () -> children ())
 	{
 		routeGraph -> collapse (child);
-
 		treeObserver -> unwatch_tree (child);
 	}
 
-	get_model () -> get_execution_context () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_model () -> get_execution_context () -> getRootNodes ()          .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_model () -> get_execution_context () -> importedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+
+	if (scene)
+		scene -> exportedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+
+	// Set model.
+
+	scene = executionContext;
 
 	set_model (OutlineTreeModel::create (getBrowserWindow (), executionContext));
 
-	executionContext -> getRootNodes () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	executionContext -> getRootNodes ()          .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	executionContext -> importedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
+
+	if (scene)
+		scene -> exportedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	set_rootNodes ();
 }
@@ -358,6 +374,10 @@ void
 X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
+	
+	const X3D::X3DExecutionContextPtr & executionContext = get_model () -> get_execution_context ();
+
+	// Unwatch model.
 
 	for (const auto & child : get_model () -> children ())
 	{
@@ -365,13 +385,62 @@ X3DOutlineTreeView::set_rootNodes ()
 		treeObserver -> unwatch_tree (child);
 	}
 
+	// Fill model.
+
 	unset_model ();
 	get_model () -> clear ();
+	
+	// Root nodes
 
-	for (auto & rootNode : getBrowser () -> getExecutionContext () -> getRootNodes ())
+	get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
+
+	for (auto & rootNode : executionContext -> getRootNodes ())
 		get_model () -> append (OutlineIterType::X3DBaseNode, &rootNode);
 
+	// Imported nodes
+
+	if (not executionContext -> getImportedNodes () .empty ())
+	{
+		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Imported Nodes")));
+
+		for (auto & importedNode : executionContext -> getImportedNodes ())
+		{
+			try
+			{
+				auto exportedNode = importedNode .second -> getExportedNode ();
+				get_model () -> append (OutlineIterType::X3DBaseNode, &exportedNode);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+		}
+	}
+
+	// Exported nodes
+
+	X3D::ScenePtr scene (executionContext);
+
+	if (scene)
+	{
+		if (not scene -> getExportedNodes () .empty ())
+		{
+			get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Exported Nodes")));
+
+			for (auto & exportedNode : scene -> getExportedNodes ())
+			{
+				try
+				{
+					auto localNode = exportedNode .second -> getLocalNode ();
+					get_model () -> append (OutlineIterType::X3DBaseNode, &localNode);
+				}
+				catch (const X3D::X3DError &)
+				{ }
+			}
+		}
+	}
+
 	set_model (get_model ());
+
+	// Expand.
 
 	disable_shift_key ();
 
@@ -455,6 +524,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
+		case OutlineIterType::Separator:
 			break;
 
 		case OutlineIterType::X3DField:
@@ -617,6 +687,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
+		case OutlineIterType::Separator:
 			break;
 
 		case OutlineIterType::X3DField:

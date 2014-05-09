@@ -227,7 +227,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 	{
 		const auto sourceNode = route -> getSourceNode ();
 
-		if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (sourceNode))
 			return;
 
 		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
@@ -306,7 +306,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 	{
 		const auto destinationNode = route -> getDestinationNode ();
 
-		if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (destinationNode))
 			return;
 
 		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
@@ -599,7 +599,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 		const auto sourceNode = route -> getSourceNode ();
 
-		if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (sourceNode))
 			return;
 
 		// Remove disconnected interest
@@ -678,7 +678,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 
 		const auto destinationNode = route -> getDestinationNode ();
 
-		if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (destinationNode))
 			return;
 
 		// Remove disconnected interest

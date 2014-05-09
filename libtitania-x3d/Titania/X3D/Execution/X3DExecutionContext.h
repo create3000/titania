@@ -282,6 +282,16 @@ public:
 	       Error <DISPOSED>)
 	{ return importedNodes; }
 
+	bool
+	isImportedNode (const SFNode & node) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const SFTime &
+	importedNodes_changed () const
+	{ return importedNodesOutput; }
+
 	///  @name Named/Imported node handling
 
 	SFNode
@@ -292,6 +302,12 @@ public:
 
 	const std::string &
 	getLocalName (const SFNode &) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	bool
+	isLocalNode (const SFNode & node) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -540,6 +556,7 @@ private:
 	NamedNodeIndex     namedNodes;
 	ImportedNodeIndex  importedNodes;
 	ImportedNamesIndex importedNames;
+	SFTime             importedNodesOutput;
 	ProtoArray         protos;
 	ExternProtoArray   externProtos;
 	RouteArray         routes;

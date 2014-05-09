@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="ImportedNode.svg">
+   sodipodi:docname="Route.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -92,12 +92,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="-2.6919191"
-     inkscape:cy="8.7107453"
+     inkscape:zoom="22.627417"
+     inkscape:cx="11.672111"
+     inkscape:cy="3.0109125"
      inkscape:document-units="px"
      inkscape:current-layer="text4292"
-     showgrid="false"
+     showgrid="true"
      inkscape:snap-page="true"
      showguides="false"
      inkscape:guide-bbox="true"
@@ -163,62 +163,33 @@
        style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
        id="text4292"
        transform="matrix(1.0831916,0,0,1.0831916,0.04908308,-0.9313307)">
-      <g
-         style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
-         id="g3153-9"
-         transform="matrix(0.99971431,0,0,0.99967464,1.847573,-0.92111566)">
-        <path
-           d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
-           sodipodi:ry="4.5"
-           sodipodi:rx="4.5"
-           sodipodi:cy="6"
-           sodipodi:cx="6"
-           id="path4369-2-1"
-           style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#000000;stroke-width:1.28610718;stroke-opacity:1;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
-           sodipodi:type="arc"
-           transform="matrix(0.71804266,0,0,0.71804266,0.26241918,2.0907326)" />
-        <path
-           transform="matrix(0.71804266,0,0,0.71804266,0.26241918,2.0907326)"
-           d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
-           sodipodi:ry="4.5"
-           sodipodi:rx="4.5"
-           sodipodi:cy="6"
-           sodipodi:cx="6"
-           id="path4369-0"
-           style="fill:url(#radialGradient3174);fill-opacity:1;stroke:none"
-           sodipodi:type="arc" />
-      </g>
-      <g
-         id="g3153"
-         transform="matrix(0.99986695,0,0,0.9998273,7.3625464e-4,0.92430288)">
-        <path
-           d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
-           sodipodi:ry="4.5"
-           sodipodi:rx="4.5"
-           sodipodi:cy="6"
-           sodipodi:cx="6"
-           id="path4369-2"
-           style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#000000;stroke-width:1.28591108;stroke-opacity:1;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
-           sodipodi:type="arc"
-           transform="matrix(0.71804266,0,0,0.71804266,0.26241918,2.0907326)" />
-        <path
-           transform="matrix(0.71804266,0,0,0.71804266,0.26241918,2.0907326)"
-           d="M 10.5,6 C 10.5,8.4852814 8.4852814,10.5 6,10.5 3.5147186,10.5 1.5,8.4852814 1.5,6 1.5,3.5147186 3.5147186,1.5 6,1.5 c 2.4852814,0 4.5,2.0147186 4.5,4.5 z"
-           sodipodi:ry="4.5"
-           sodipodi:rx="4.5"
-           sodipodi:cy="6"
-           sodipodi:cx="6"
-           id="path4369"
-           style="fill:url(#radialGradient3971);fill-opacity:1;stroke:none"
-           sodipodi:type="arc" />
-      </g>
       <path
-         style="fill:#000000;fill-opacity:1;stroke:none"
-         d="M 3,0 0,3 3,3 z"
-         id="path4017"
+         transform="matrix(0.31799032,0,0,0.31799032,0.81633783,7.2606398)"
+         sodipodi:type="arc"
+         style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.61290336;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
+         id="path4369-2"
+         sodipodi:cx="6"
+         sodipodi:cy="6"
+         sodipodi:rx="4.5"
+         sodipodi:ry="4.5"
+         d="m 10.5,6 a 4.5,4.5 0 1 1 -9,0 4.5,4.5 0 1 1 9,0 z" />
+      <path
+         transform="matrix(0.31799032,0,0,0.31799032,6.3555241,1.7214536)"
+         sodipodi:type="arc"
+         style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.61290336;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;font-family:Ubuntu Condensed;-inkscape-font-specification:'Ubuntu Condensed,'"
+         id="path4369-2-1"
+         sodipodi:cx="6"
+         sodipodi:cy="6"
+         sodipodi:rx="4.5"
+         sodipodi:ry="4.5"
+         d="m 10.5,6 a 4.5,4.5 0 1 1 -9,0 4.5,4.5 0 1 1 9,0 z" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.89999998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="M 4.5,9 C 8,9 8,7 6,6 4,5 4,3 7.5,3"
+         id="path3907"
          inkscape:connector-curvature="0"
          transform="matrix(0.92319771,0,0,0.92319771,-0.04531339,0.85980237)"
-         sodipodi:nodetypes="cccc" />
+         sodipodi:nodetypes="czc" />
     </g>
   </g>
   <g

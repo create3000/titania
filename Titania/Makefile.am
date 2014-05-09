@@ -24,6 +24,7 @@ titania_SOURCES =  \
 	Titania/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/NodePropertiesEditor/NodePropertiesEditor.cpp \
 	Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
+	Titania/OutlineEditor/CellRenderer/OutlineSeparator.cpp \
 	Titania/OutlineEditor/CellRenderer/TextViewEditable.cpp \
 	Titania/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \
 	Titania/OutlineEditor/OutlineEditor.cpp \

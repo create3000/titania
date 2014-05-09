@@ -65,13 +65,13 @@ X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
 	                validated (false),
 	           handleFocusOut (true)
 {
+	get_style_context () -> add_class ("textview-editable");
 	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	set_visible (true);
-	add (textview);
 
-	textview .get_style_context () -> add_class ("textview-editable");
 	textview .set_editable (true);
 	textview .set_visible (true);
+	add (textview);
 
 	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event), false);
 	textview .signal_focus_out_event ()    .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_focus_out_event));

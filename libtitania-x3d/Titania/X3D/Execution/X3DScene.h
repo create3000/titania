@@ -140,6 +140,10 @@ public:
 	       Error <DISPOSED>)
 	{ return exportedNodes; }
 
+	const SFTime &
+	exportedNodes_changed () const
+	{ return exportedNodesOutput; }
+
 	///  @name Input/Output
 
 	void
@@ -203,6 +207,7 @@ private:
 	bool              compressed;
 	MetaDataIndex     metadatas;
 	ExportedNodeIndex exportedNodes;
+	SFTime            exportedNodesOutput;
 
 };
 

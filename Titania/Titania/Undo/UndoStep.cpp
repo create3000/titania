@@ -70,14 +70,34 @@ void
 UndoStep::undo ()
 {
 	for (const auto & undoFunction : basic::reverse_adapter (undoFunctions))
-		undoFunction ();
+	{
+		try
+		{
+			undoFunction ();
+		}
+		catch (const std::exception & error)
+		{
+			std::clog << "Undo step not possible:" << std::endl;
+			std::clog << error .what () << std::endl;
+		}
+	}
 }
 
 void
 UndoStep::redo ()
 {
 	for (const auto & redoFunction : redoFunctions)
-		redoFunction ();
+	{
+		try
+		{
+			redoFunction ();
+		}
+		catch (const std::exception & error)
+		{
+			std::clog << "Redo step not possible:" << std::endl;
+			std::clog << error .what () << std::endl;
+		}
+	}
 }
 
 } // puck

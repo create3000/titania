@@ -48,99 +48,57 @@
  *
  ******************************************************************************/
 
-#include "OutlineTreeData.h"
+#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_SEPARATOR_H__
+#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_SEPARATOR_H__
+
+#include <Titania/X3D/Basic/X3DBaseNode.h>
 
 namespace titania {
 namespace puck {
 
-OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObject* const _object, const Gtk::TreeModel::Path & _path) :
-	   Glib::Object (),
-	         parent (),
-	         object (_object),
-	           type (_type),
-	           path (_path),
-	   inputs_below (),
-	   inputs_above (),
-	  outputs_below (),
-	  outputs_above (),
-	self_connection (false),
-	    connections ()
+class OutlineSeparator :
+	public X3D::X3DBaseNode
 {
-	switch (type)
-	{
-		case OutlineIterType::X3DField:
-		{
-			static_cast <X3D::X3DFieldDefinition*> (object) -> addParent (&parent);
-			break;
-		}
-		case OutlineIterType::X3DBaseNode:
-		{
-			parent = *static_cast <X3D::SFNode*> (object);
-			object = &parent;
-			break;
-		}
-		case OutlineIterType::Separator:
-		{
-			parent = object;
-			object = &parent;
-			break;
-		}
-		default:
-			break;
-	}
+public:
 
-	get_user_data () -> paths .emplace (path);
-}
+	///  @name Construction
 
-bool
-OutlineTreeData::is (X3D::X3DChildObject* const value) const
-{
-	if (type == OutlineIterType::X3DBaseNode)
-		return static_cast <X3D::SFNode*> (object) -> getValue () == value;
+	OutlineSeparator (X3D::X3DExecutionContext* const, const std::string &);
 
-	return object == value;
-}
+	virtual
+	X3D::X3DBaseNode*
+	create (X3D::X3DExecutionContext* const) const final override;
 
-OutlineUserDataPtr
-OutlineTreeData::get_user_data () const
-{
-	auto object = get_object ();
+	///  @name Common members
 
-	if (type == OutlineIterType::X3DBaseNode)
-		object = static_cast <X3D::SFNode*> (object) -> getValue ();
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
 
-	if (object)
-		return get_user_data (object);
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return typeName; }
 
-	return get_user_data (get_object ());
-}
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
 
-OutlineUserDataPtr
-OutlineTreeData::get_user_data (X3D::X3DChildObject* const object)
-{
-	if (not object -> getUserData ())
-		object -> setUserData (X3D::UserDataPtr (new OutlineUserData ()));
 
-	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
-}
+private:
 
-///  @name Destruction
+	///  @name Static members
 
-OutlineTreeData::~OutlineTreeData ()
-{
-	switch (type)
-	{
-		case OutlineIterType::X3DField:
-		{
-			static_cast <X3D::X3DFieldDefinition*> (object) -> removeParent (&parent);
-			break;
-		}
-		default:
-			break;
-	}
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
 
-	get_user_data () -> paths .erase (path);
-}
+};
 
 } // puck
 } // titania
+
+#endif

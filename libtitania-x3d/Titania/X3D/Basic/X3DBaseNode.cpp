@@ -922,63 +922,69 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '{';
 
-	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
-	size_t fieldTypeLength  = 0;
-	size_t accessTypeLength = 0;
+	size_t fieldTypeLength      = 0;
+	size_t accessTypeLength     = 0;
+	size_t numUserDefinedFields = 0;
 
-	switch (Generator::Style ())
+	if (hasUserDefinedFields ())
 	{
-		case Generator::SMALLEST:
-		case Generator::SMALL:
-		{
-			break;
-		}
-		default:
-		{
-			for (const auto & field : userDefinedFields)
-			{
-				fieldTypeLength = std::max (fieldTypeLength, field -> getTypeName () .length ());
+		const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+		
+		numUserDefinedFields = userDefinedFields .size ();
 
-				accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+		switch (Generator::Style ())
+		{
+			case Generator::SMALLEST:
+			case Generator::SMALL:
+			{
+				break;
+			}
+			default:
+			{
+				for (const auto & field : userDefinedFields)
+				{
+					fieldTypeLength  = std::max (fieldTypeLength, field -> getTypeName () .length ());
+					accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+				}
+
+				break;
+			}
+		}
+
+		if (numUserDefinedFields)
+		{
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+			for (const auto & field : basic::adapter (userDefinedFields .begin (), userDefinedFields .end () - 1))
+			{
+				toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
+				ostream << Generator::Break;
 			}
 
-			break;
-		}
-	}
-
-	if (not userDefinedFields .empty ())
-	{
-		ostream
-			<< Generator::TidyBreak
-			<< Generator::IncIndent;
-
-		for (const auto & field : basic::adapter (userDefinedFields .begin (), userDefinedFields .end () - 1))
-		{
-			toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
+			toStreamUserDefinedField (ostream, userDefinedFields .back (), fieldTypeLength, accessTypeLength);
 			ostream << Generator::Break;
+
+			ostream
+				<< Generator::DecIndent
+				<< Generator::TidyBreak;
 		}
-
-		toStreamUserDefinedField (ostream, userDefinedFields .back (), fieldTypeLength, accessTypeLength);
-		ostream << Generator::Break;
-
-		ostream
-			<< Generator::DecIndent
-			<< Generator::TidyBreak;
 	}
 
 	const FieldDefinitionArray fields = getChangedFields ();
 
 	if (fields .empty ())
 	{
-		if (userDefinedFields .empty ())
-			ostream << Generator::TidySpace;
-		else
+		if (numUserDefinedFields)
 			ostream << Generator::Indent;
+		else
+			ostream << Generator::TidySpace;
 	}
 	else
 	{
-		if (userDefinedFields .empty ())
+		if (not numUserDefinedFields)
 			ostream << Generator::TidyBreak;
 
 		ostream << Generator::IncIndent;
@@ -1370,7 +1376,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::DecIndent;
 
-	if (userDefinedFields .empty () and references .empty () and childNodes .empty () and not cdata)
+	if ((not hasUserDefinedFields () or userDefinedFields .empty ()) and references .empty () and childNodes .empty () and not cdata)
 	{
 		ostream << "/>";
 	}
@@ -1381,99 +1387,102 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			<< Generator::Break
 			<< Generator::IncIndent;
 
-		for (const auto & field : userDefinedFields)
+		if (hasUserDefinedFields ())
 		{
-			ostream
-				<< Generator::Indent
-				<< "<field"
-				<< Generator::Space
-				<< "accessType='"
-				<< Generator::X3DAccessTypes [field]
-				<< "'"
-				<< Generator::Space
-				<< "type='"
-				<< field -> getTypeName ()
-				<< "'"
-				<< Generator::Space
-				<< "name='"
-				<< XMLEncode (field -> getName ())
-				<< "'";
-
-			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
-			// for this field.
-
-			bool mustOutputValue = false;
-
-			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+			for (const auto & field : userDefinedFields)
 			{
-				bool initializeableReference = false;
+				ostream
+					<< Generator::Indent
+					<< "<field"
+					<< Generator::Space
+					<< "accessType='"
+					<< Generator::X3DAccessTypes [field]
+					<< "'"
+					<< Generator::Space
+					<< "type='"
+					<< field -> getTypeName ()
+					<< "'"
+					<< Generator::Space
+					<< "name='"
+					<< XMLEncode (field -> getName ())
+					<< "'";
 
-				for (const auto & reference : field -> getReferences ())
-					initializeableReference |= reference -> isInitializeable ();
+				// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+				// for this field.
 
-				if (not initializeableReference)
-					mustOutputValue = not field -> isDefaultValue ();
-			}
+				bool mustOutputValue = false;
 
-			if (field -> getReferences () .empty () or mustOutputValue)
-			{
-				if (mustOutputValue)
+				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+				{
+					bool initializeableReference = false;
+
+					for (const auto & reference : field -> getReferences ())
+						initializeableReference |= reference -> isInitializeable ();
+
+					if (not initializeableReference)
+						mustOutputValue = not field -> isDefaultValue ();
+				}
+
+				if (field -> getReferences () .empty () or mustOutputValue)
+				{
+					if (mustOutputValue)
+						references .emplace_back (field);
+
+					if (not field -> isInitializeable () or field -> isDefaultValue ())
+					{
+						ostream
+							<< "/>"
+							<< Generator::Break;
+					}
+					else
+					{
+						// Output value
+
+						switch (field -> getType ())
+						{
+							case X3DConstants::SFNode:
+							case X3DConstants::MFNode:
+							{
+								Generator::PushContainerField (nullptr);
+
+								ostream
+									<< ">"
+									<< Generator::Break
+									<< Generator::IncIndent
+									<< XMLEncode (field)
+									<< Generator::Break
+									<< Generator::DecIndent
+									<< Generator::Indent
+									<< "</field>"
+									<< Generator::Break;
+
+								Generator::PopContainerField ();
+
+								break;
+							}
+							default:
+							{
+								ostream
+									<< Generator::Space
+									<< "value='"
+									<< XMLEncode (field)
+									<< "'"
+									<< "/>"
+									<< Generator::Break;
+
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
 					references .emplace_back (field);
 
-				if (not field -> isInitializeable () or field -> isDefaultValue ())
-				{
 					ostream
 						<< "/>"
 						<< Generator::Break;
 				}
-				else
-				{
-					// Output value
-
-					switch (field -> getType ())
-					{
-						case X3DConstants::SFNode:
-						case X3DConstants::MFNode:
-						{
-							Generator::PushContainerField (nullptr);
-
-							ostream
-								<< ">"
-								<< Generator::Break
-								<< Generator::IncIndent
-								<< XMLEncode (field)
-								<< Generator::Break
-								<< Generator::DecIndent
-								<< Generator::Indent
-								<< "</field>"
-								<< Generator::Break;
-
-							Generator::PopContainerField ();
-
-							break;
-						}
-						default:
-						{
-							ostream
-								<< Generator::Space
-								<< "value='"
-								<< XMLEncode (field)
-								<< "'"
-								<< "/>"
-								<< Generator::Break;
-
-							break;
-						}
-					}
-				}
-			}
-			else
-			{
-				references .emplace_back (field);
-
-				ostream
-					<< "/>"
-					<< Generator::Break;
 			}
 		}
 

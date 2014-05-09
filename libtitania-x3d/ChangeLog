@@ -1,3 +1,14 @@
+2014-05-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp: 
+
 2014-05-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DExecutionContext.cpp: 

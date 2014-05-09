@@ -1,3 +1,25 @@
+2014-05-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* UndoStep.cpp:
+	* style.css:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.cpp:
+	* Route.svg:
+	* OutlineTreeData.h:
+	* OutlineTreeData.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineRouteGraph.cpp:
+	* X3DOutlineTreeView.cpp:
+	* ImportedNode.svg:
+	* OutlineTreeObserver.cpp:
+	* OutlineSeparator.h:
+	* OutlineSeparator.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp:
+	* X3DTextViewEditable.cpp: 
+
 2014-05-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SharedNode.svg:

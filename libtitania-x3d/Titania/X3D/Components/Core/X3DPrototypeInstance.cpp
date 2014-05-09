@@ -238,7 +238,7 @@ X3DPrototypeInstance::saveState ()
 	                  return true;
 						});
 
-	// Save state of rest, this are only nodes not in scene
+	// Save state of rest, these are only nodes not in scene.
 
 	for (const auto & child : children)
 	{

@@ -96,7 +96,9 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	cellrenderer_access_type_icon (),
 	                    noneImage (),
 	                baseNodeImage (),
+	            importedNodeImage (),
 	              sharedNodeImage (),
+	                   routeImage (),
 	              fieldTypeImages (),
 	             accessTypeImages (),
 	                   accessType (),
@@ -105,9 +107,11 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 {
 	// Images
 
-	noneImage       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
-	baseNodeImage   = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
-	sharedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
+	noneImage         = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
+	baseNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
+	importedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"));
+	sharedNodeImage   = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
+	routeImage        = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Route.svg"));
 
 	for (const auto & field : browser -> getSupportedFields ())
 		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
@@ -218,6 +222,16 @@ OutlineCellRenderer::on_data ()
 			set_alignment (0, 0.5);
 			break;
 		}
+		case OutlineIterType::Separator:
+		{
+			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
+			const auto node   = sfnode -> getValue ();
+
+			property_editable () = false;
+			property_markup ()   = "<b><small>" + Glib::Markup::escape_text (node -> getName ()) + "</small></b>";
+			set_alignment (0, 0);
+			break;
+		}
 	}
 }
 
@@ -256,6 +270,9 @@ OutlineCellRenderer::get_icon () const
 	{
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
+		{
+			return routeImage;
+		}
 		case OutlineIterType::X3DFieldValue:
 		{
 			return noneImage;
@@ -275,10 +292,20 @@ OutlineCellRenderer::get_icon () const
 			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
 			const auto node   = sfnode -> getValue ();
 
+			if (not node)
+				return baseNodeImage;
+
 			if (node -> getExecutionContext () == treeView -> get_model () -> get_execution_context ())
 				return baseNodeImage;
 
+			if (treeView -> get_model () -> get_execution_context () -> isImportedNode (*sfnode))
+				return importedNodeImage;
+
 			return sharedNodeImage;
+		}
+		case OutlineIterType::Separator:
+		{
+			return noneImage;
 		}
 	}
 
@@ -327,13 +354,28 @@ OutlineCellRenderer::get_node_name () const
 	{
 		const X3D::X3DBaseNode* node = sfnode -> getValue ();
 
-		const std::string typeName  = Glib::Markup::escape_text (node -> getTypeName ());
-		std::string       name      = Glib::Markup::escape_text (node -> getName ());
-		const size_t      numClones = node -> getNumClones ();
+		// Get name.
+
+		std::string name;
+		
+		try
+		{
+			name = treeView -> get_model () -> get_execution_context () -> getLocalName (*sfnode);
+		}
+		catch (const X3D::X3DError &)
+		{
+			name = node -> getName ();
+		}
 
 		X3D::RegEx::_LastNumber .Replace ("", &name);
 
-		std::string string = "<b>" + typeName + "</b> " + name;
+		// Add typeName and name.
+
+		std::string string = "<b>" + Glib::Markup::escape_text (node -> getTypeName ()) + "</b> " + Glib::Markup::escape_text (name);
+
+		// Add clone count if any.
+
+		const auto numClones = node -> getNumClones ();
 
 		if (numClones > 1)
 			string += " [" + basic::to_string (numClones) + "]";
@@ -579,17 +621,15 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
                                           const Gdk::Rectangle & cell_area,
                                           Gtk::CellRendererState flags)
 {
-	int icon_width    = 0;
-	int natural_width = 0;
-
-	cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
-
-	const int x_pad = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
-
 	switch (get_data_type ())
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
+			int icon_width    = 0;
+			int natural_width = 0;
+
+			cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
+
 			Gtk::TreePath parentPath (path);
 			parentPath .up ();
 			parentPath .up ();
@@ -597,6 +637,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			const auto parent = treeView -> get_model () -> get_iter (parentPath);
 			const auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
 			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const int  x_pad  = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
 
 			textview .reset (new TextViewEditable (*node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
 			textview -> set_text (get_field_value (field, false));
@@ -938,163 +979,177 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	int minimum_height = 0;
 	int natural_height = 0;
 
-	// Icon
+	const auto data_type = get_data_type ();
 
+	if (data_type == OutlineIterType::Separator)
 	{
+		// Separator
+
 		x += ICON_X_PAD;
 
-		const Gdk::Rectangle cell_area (x, y, width, height);
-		cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
-		cellrenderer_icon .get_preferred_width (widget, minimum_width, natural_width);
-
-		x     += minimum_width;
-		width -= minimum_width;
-	}
-
-	// Name or value
-
-	{
-		x     += NAME_X_PAD;
-		width -= NAME_X_PAD;
-
-		const Gdk::Rectangle cell_area (x, y, width, height);
+		const Gdk::Rectangle cell_area (0, y + property_ypad () .get_value (), width, height);
 		Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);
-		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum_width, natural_width);
-
-		x     += minimum_width;
-		width -= minimum_width;
 	}
-
-	// Access type padding
-
-	switch (get_data_type ())
+	else
 	{
-		case OutlineIterType::X3DField:
+		// Icon
+
 		{
-			if (is_full_expanded () and is_expanded ())
-				break;
-		}
-		case OutlineIterType::X3DInputRoute:
-		case OutlineIterType::X3DOutputRoute:
-		{
-			x     += ACCESS_TYPE_X_PAD;
-			width -= ACCESS_TYPE_X_PAD;
-			break;
-		}
-		default:
-			break;
-	}
+			x += ICON_X_PAD;
 
-	// Access type background
-
-	cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
-
-	double       field_x      = x;
-	const double field_y      = y + (height - minimum_height) / 2;
-	const double field_height = minimum_height;
-
-	const auto      data     = property_data () .get_value ();
-	const int       selected = data -> get_user_data () -> selected | property_cell_background_set ();
-	const Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
-
-	context -> reset_clip ();
-	context -> set_operator (Cairo::OPERATOR_OVER);
-	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-
-	constexpr double radius = ACCESS_TYPE_RADIUS;
-
-	switch (get_data_type ())
-	{
-		case OutlineIterType::X3DField:
-		{
-			if (is_full_expanded () and is_expanded ())
-				break;
-
-			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
-			{
-				context -> begin_new_sub_path ();
-				context -> arc_negative (field_x + radius, field_y + radius, radius, M_PI3_2, M_PI1_2);
-				context -> rel_line_to (FIELD_WIDTH - radius, 0);
-				context -> rel_line_to (0, -field_height + 1);
-	
-				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-				context -> fill ();
-			}
-
-			if (accessType == X3D::inputOutput)
-			{
-				field_x += INPUT_WIDTH + FIELD_PAD;
-			}
-
-			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
-			{
-				context -> begin_new_sub_path ();
-				context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, M_PI1_2, M_PI3_2);
-				context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
-				context -> rel_line_to (0, field_height);
-	
-				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-				context -> fill ();
-			}
-
-			break;
-		}
-		case OutlineIterType::X3DInputRoute:
-		{
-			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
-			{
-				context -> begin_new_sub_path ();
-				context -> arc_negative (field_x + radius, field_y + radius, radius, M_PI3_2, M_PI1_2);
-				context -> rel_line_to (FIELD_WIDTH - radius, 0);
-				context -> rel_line_to (0, -field_height + 1);
-	
-				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-				context -> fill ();
-			}
-
-			break;
-		}
-		case OutlineIterType::X3DOutputRoute:
-		{
-			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
-			{
-				context -> begin_new_sub_path ();
-				context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, M_PI1_2, M_PI3_2);
-				context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
-				context -> rel_line_to (0, field_height);
-	
-				//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-				context -> fill ();
-			}
-
-			break;
-		}
-		default:
-			break;
-	}
-
-	// Access type
-
-	switch (get_data_type ())
-	{
-		case OutlineIterType::X3DField:
-		{
-			if (is_full_expanded () and is_expanded ())
-				break;
-		}
-		case OutlineIterType::X3DInputRoute:
-		case OutlineIterType::X3DOutputRoute:
-		{
-			Gdk::Rectangle cell_area (x, y, width, height);
-			cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
-			cellrenderer_access_type_icon .get_preferred_width (widget, minimum_width, natural_width);
+			const Gdk::Rectangle cell_area (x, y, width, height);
+			cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
+			cellrenderer_icon .get_preferred_width (widget, minimum_width, natural_width);
 
 			x     += minimum_width;
 			width -= minimum_width;
-			break;
 		}
-		default:
-			break;
+
+		// Name or value
+
+		{
+			x     += NAME_X_PAD;
+			width -= NAME_X_PAD;
+
+			const Gdk::Rectangle cell_area (x, y, width, height);
+			Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);
+			Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum_width, natural_width);
+
+			x     += minimum_width;
+			width -= minimum_width;
+		}
+
+		// Access type padding
+
+		switch (data_type)
+		{
+			case OutlineIterType::X3DField:
+			{
+				if (is_full_expanded () and is_expanded ())
+					break;
+			}
+			case OutlineIterType::X3DInputRoute:
+			case OutlineIterType::X3DOutputRoute:
+			{
+				x     += ACCESS_TYPE_X_PAD;
+				width -= ACCESS_TYPE_X_PAD;
+				break;
+			}
+			default:
+				break;
+		}
+
+		// Access type background
+
+		cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
+
+		double       field_x      = x;
+		const double field_y      = y + (height - minimum_height) / 2;
+		const double field_height = minimum_height;
+
+		const auto      data     = property_data () .get_value ();
+		const int       selected = data -> get_user_data () -> selected | property_cell_background_set ();
+		const Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
+
+		context -> reset_clip ();
+		context -> set_operator (Cairo::OPERATOR_OVER);
+		context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+
+		constexpr double radius = ACCESS_TYPE_RADIUS;
+
+		switch (data_type)
+		{
+			case OutlineIterType::X3DField:
+			{
+				if (is_full_expanded () and is_expanded ())
+					break;
+
+				if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
+				{
+					context -> begin_new_sub_path ();
+					context -> arc_negative (field_x + radius, field_y + radius, radius, M_PI3_2, M_PI1_2);
+					context -> rel_line_to (FIELD_WIDTH - radius, 0);
+					context -> rel_line_to (0, -field_height + 1);
+		
+					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+					context -> fill ();
+				}
+
+				if (accessType == X3D::inputOutput)
+				{
+					field_x += INPUT_WIDTH + FIELD_PAD;
+				}
+
+				if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
+				{
+					context -> begin_new_sub_path ();
+					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, M_PI1_2, M_PI3_2);
+					context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
+					context -> rel_line_to (0, field_height);
+		
+					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+					context -> fill ();
+				}
+
+				break;
+			}
+			case OutlineIterType::X3DInputRoute:
+			{
+				if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
+				{
+					context -> begin_new_sub_path ();
+					context -> arc_negative (field_x + radius, field_y + radius, radius, M_PI3_2, M_PI1_2);
+					context -> rel_line_to (FIELD_WIDTH - radius, 0);
+					context -> rel_line_to (0, -field_height + 1);
+		
+					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+					context -> fill ();
+				}
+
+				break;
+			}
+			case OutlineIterType::X3DOutputRoute:
+			{
+				if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
+				{
+					context -> begin_new_sub_path ();
+					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, M_PI1_2, M_PI3_2);
+					context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
+					context -> rel_line_to (0, field_height);
+		
+					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+					context -> fill ();
+				}
+
+				break;
+			}
+			default:
+				break;
+		}
+
+		// Access type
+
+		switch (data_type)
+		{
+			case OutlineIterType::X3DField:
+			{
+				if (is_full_expanded () and is_expanded ())
+					break;
+			}
+			case OutlineIterType::X3DInputRoute:
+			case OutlineIterType::X3DOutputRoute:
+			{
+				Gdk::Rectangle cell_area (x, y, width, height);
+				cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
+				cellrenderer_access_type_icon .get_preferred_width (widget, minimum_width, natural_width);
+
+				x     += minimum_width;
+				width -= minimum_width;
+				break;
+			}
+			default:
+				break;
+		}
 	}
 
 	// Routes

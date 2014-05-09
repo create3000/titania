@@ -98,6 +98,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	          namedNodes (),
 	       importedNodes (),
 	       importedNames (),
+	 importedNodesOutput (),
 	              protos (),
 	        externProtos (),
 	              routes (),
@@ -106,7 +107,7 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	rootNodes .setName ("rootNodes"); // Set this for numClones.
 
-	addChildren (rootNodes, uninitializedNodes);
+	addChildren (importedNodesOutput, rootNodes, uninitializedNodes);
 }
 
 void
@@ -432,6 +433,8 @@ throw (Error <INVALID_NODE>,
 	                                          &X3DExecutionContext::removeImportedName,
 	                                          importedNames .emplace (exportedNode -> getNode (), importedName));
 
+	importedNodesOutput = getCurrentTime ();
+
 	return importedNode;
 }
 
@@ -440,9 +443,9 @@ X3DExecutionContext::removeImportedNode (const std::string & importedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	// Shall the routes to the imported node be deleted too?
-
 	importedNodes .erase (importedName);
+
+	importedNodesOutput = getCurrentTime ();
 }
 
 void
@@ -463,6 +466,18 @@ throw (Error <INVALID_NAME>,
 		return iter -> second -> getExportedNode ();
 
 	throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
+}
+
+bool
+X3DExecutionContext::isImportedNode (const SFNode & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not node)
+		throw Error <INVALID_NODE> ("Node is NULL.");
+
+	return importedNames .count (node -> getNode ());
 }
 
 SFNode
@@ -494,15 +509,38 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto equalRange = importedNames .equal_range (node -> getNode ());
-	
-	if (equalRange .first not_eq equalRange .second)
-		return (-- equalRange .second) -> second;
+	if (node)
+	{
+		if (node -> getExecutionContext () == this)
+			return node -> getName ();
+
+		auto equalRange = importedNames .equal_range (node -> getNode ());
+
+		if (equalRange .first not_eq equalRange .second)
+			return (-- equalRange .second) -> second;
+
+		throw Error <INVALID_NODE> ("Couldn't get local name: node is shared.");
+	}
+
+	throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
+}
+
+bool
+X3DExecutionContext::isLocalNode (const SFNode & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not node)
+		throw Error <INVALID_NODE> ("Node is NULL.");
 
 	if (node -> getExecutionContext () == this)
-		return node -> getName ();
+		return true;
 
-	throw Error <INVALID_NODE> ("Couldn't get local name.");
+	if (isImportedNode (node))
+		return true;
+
+	return false;
 }
 
 //	Proto declaration handling

@@ -4,13 +4,33 @@ META "comment" "World of Titania"
 META "created" "Mon, 05 May 2014 10:24:07 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Thu, 08 May 2014 17:42:28 GMT"
+META "modified" "Fri, 09 May 2014 11:08:34 GMT"
 
-DEF _1 Inline {
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Engines/Rotor.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Engines/Rotor.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"
+]
+
+DEF Inline1 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
-Inline {
+DEF Inline2 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
@@ -18,8 +38,19 @@ DEF Inline3 Inline {
   url "OutlineEditor-EXPORT.x3dv"
 }
 
-IMPORT _1.Export1
-IMPORT _1.Export2
-IMPORT _1.Export3
+DEF _1 Rotor {
+  loop TRUE
+  pauseTime 1399633601.26232
+  resumeTime 1399633601.95004
+}
 
-EXPORT _1 AS Inline
+NULL
+
+IMPORT Inline1.Export1 AS Import1
+IMPORT Inline1.Export2 AS Import2
+IMPORT Inline1.Export3 AS Import3
+
+ROUTE Inline1.url_changed TO Inline2.set_url
+ROUTE _1.rotation_changed TO Import1.set_rotation
+
+EXPORT Inline1 AS ExportedInline

@@ -4,15 +4,16 @@ META "comment" "World of Titania"
 META "created" "Thu, 08 May 2014 13:51:27 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Thu, 08 May 2014 17:37:43 GMT"
+META "modified" "Fri, 09 May 2014 09:45:23 GMT"
 
 DEF Export1 Transform {
+  translation 0 1.23317 0
   children Shape {
     appearance Appearance {
       material Material { }
     }
     geometry Text {
-      string "EXPORT statement"
+      string "EXPORT statement 1"
       fontStyle FontStyle {
         justify [
           "MIDDLE",
@@ -29,7 +30,7 @@ DEF Export2 Transform {
       material Material { }
     }
     geometry Text {
-      string "EXPORT statement"
+      string "EXPORT statement 2"
       fontStyle FontStyle {
         justify [
           "MIDDLE",
@@ -41,12 +42,13 @@ DEF Export2 Transform {
 }
 
 DEF Export3 Transform {
+  translation 0 -1.25334 0
   children Shape {
     appearance Appearance {
       material Material { }
     }
     geometry Text {
-      string "EXPORT statement"
+      string "EXPORT statement 3"
       fontStyle FontStyle {
         justify [
           "MIDDLE",

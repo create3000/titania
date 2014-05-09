@@ -128,7 +128,7 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 	{
 		try
 		{
-			if (route -> getSourceNode () -> getExecutionContext () == executionContext)
+			if (executionContext -> isLocalNode (route -> getSourceNode ()))
 				routes .emplace_back (route);
 		}
 		catch (const X3D::X3DError &)
@@ -147,7 +147,7 @@ OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) c
 	{
 		try
 		{
-			size += route -> getSourceNode () -> getExecutionContext () == executionContext;
+			size += executionContext -> isLocalNode (route -> getSourceNode ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -165,7 +165,7 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 	{
 		try
 		{
-			if (route -> getDestinationNode () -> getExecutionContext () == executionContext)
+			if (executionContext -> isLocalNode (route -> getDestinationNode ()))
 				routes .emplace_back (route);
 		}
 		catch (const X3D::X3DError &)
@@ -184,7 +184,7 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 	{
 		try
 		{
-			size += route -> getDestinationNode () -> getExecutionContext () == executionContext;
+			size += executionContext -> isLocalNode (route -> getDestinationNode ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -239,7 +239,6 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
 	//__LOG__ << std::endl;
 
 	Path path;
-
 	path .push_back (tree .size ());
 
 	iterator iter;
@@ -257,7 +256,6 @@ OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3
 	//__LOG__ << std::endl;
 
 	Path path = get_path (parent);
-
 	path .push_back (tree .get_node (path) .size ());
 
 	iterator iter;
@@ -482,6 +480,10 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			if (sfnode)
 				return sfnode -> getFieldDefinitions () .size ();
 
+			return 0;
+		}
+		case OutlineIterType::Separator:
+		{
 			return 0;
 		}
 	}

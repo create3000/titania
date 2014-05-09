@@ -48,98 +48,28 @@
  *
  ******************************************************************************/
 
-#include "OutlineTreeData.h"
+#include "OutlineSeparator.h"
+
+#include <Titania/X3D/Execution/X3DExecutionContext.h>
 
 namespace titania {
 namespace puck {
 
-OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObject* const _object, const Gtk::TreeModel::Path & _path) :
-	   Glib::Object (),
-	         parent (),
-	         object (_object),
-	           type (_type),
-	           path (_path),
-	   inputs_below (),
-	   inputs_above (),
-	  outputs_below (),
-	  outputs_above (),
-	self_connection (false),
-	    connections ()
-{
-	switch (type)
-	{
-		case OutlineIterType::X3DField:
-		{
-			static_cast <X3D::X3DFieldDefinition*> (object) -> addParent (&parent);
-			break;
-		}
-		case OutlineIterType::X3DBaseNode:
-		{
-			parent = *static_cast <X3D::SFNode*> (object);
-			object = &parent;
-			break;
-		}
-		case OutlineIterType::Separator:
-		{
-			parent = object;
-			object = &parent;
-			break;
-		}
-		default:
-			break;
-	}
+const std::string OutlineSeparator::componentName  = "OutlineEditor";
+const std::string OutlineSeparator::typeName       = "OutlineSeparator";
+const std::string OutlineSeparator::containerField = "children";
 
-	get_user_data () -> paths .emplace (path);
+OutlineSeparator::OutlineSeparator (X3D::X3DExecutionContext* const executionContext, const std::string & name) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext)
+{
+	setName (name);
+	setup ();
 }
 
-bool
-OutlineTreeData::is (X3D::X3DChildObject* const value) const
+X3D::X3DBaseNode*
+OutlineSeparator::create (X3D::X3DExecutionContext* const executionContext) const
 {
-	if (type == OutlineIterType::X3DBaseNode)
-		return static_cast <X3D::SFNode*> (object) -> getValue () == value;
-
-	return object == value;
-}
-
-OutlineUserDataPtr
-OutlineTreeData::get_user_data () const
-{
-	auto object = get_object ();
-
-	if (type == OutlineIterType::X3DBaseNode)
-		object = static_cast <X3D::SFNode*> (object) -> getValue ();
-
-	if (object)
-		return get_user_data (object);
-
-	return get_user_data (get_object ());
-}
-
-OutlineUserDataPtr
-OutlineTreeData::get_user_data (X3D::X3DChildObject* const object)
-{
-	if (not object -> getUserData ())
-		object -> setUserData (X3D::UserDataPtr (new OutlineUserData ()));
-
-	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
-}
-
-///  @name Destruction
-
-OutlineTreeData::~OutlineTreeData ()
-{
-	switch (type)
-	{
-		case OutlineIterType::X3DField:
-		{
-			static_cast <X3D::X3DFieldDefinition*> (object) -> removeParent (&parent);
-			break;
-		}
-		default:
-			break;
-	}
-
-	get_user_data () -> paths .erase (path);
+	return new OutlineSeparator (executionContext, getName ());
 }
 
 } // puck

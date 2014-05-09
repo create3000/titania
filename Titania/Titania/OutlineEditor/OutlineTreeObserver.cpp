@@ -111,6 +111,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 	{
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
+		case OutlineIterType::Separator:
 			break;
 
 		case OutlineIterType::X3DFieldValue:
@@ -166,6 +167,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 	{
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
+		case OutlineIterType::Separator:
 			break;
 
 		case OutlineIterType::X3DFieldValue:
