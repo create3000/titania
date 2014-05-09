@@ -66,6 +66,8 @@ enum class OutlineIterType
 	X3DFieldValue,
 	X3DField,
 	X3DBaseNode,
+	ImportedNode,
+	ExportedNode,
 	Separator
 
 };

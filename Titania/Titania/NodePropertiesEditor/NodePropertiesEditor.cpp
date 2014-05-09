@@ -289,11 +289,16 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 		{
 			for (const auto & exportedNode : scene -> getExportedNodes ())
 			{
-				if (exportedNode .second -> getLocalNode () == node)
+				try
 				{
-					const auto iter = getExportedNodesListStore () -> append ();
-					iter -> set_value (EXPORTED_NODE_EXPORTED_NAME, exportedNode .first);
+					if (exportedNode .second -> getLocalNode () == node)
+					{
+						const auto iter = getExportedNodesListStore () -> append ();
+						iter -> set_value (EXPORTED_NODE_EXPORTED_NAME, exportedNode .first);
+					}
 				}
+				catch (...)
+				{ }
 			}
 		}
 	}

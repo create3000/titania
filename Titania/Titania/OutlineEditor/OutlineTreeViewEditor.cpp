@@ -300,11 +300,48 @@ OutlineTreeViewEditor::set_motion_notify_event (GdkEventMotion* event)
 void
 OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
-	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-	{
-		selection -> set_select_multiple (get_shift_key ());
+	selection -> set_select_multiple (get_shift_key ());
 
-		selection -> select (*static_cast <X3D::SFNode*> (get_object (iter)));
+	switch (get_data_type (iter))
+	{
+		case OutlineIterType::X3DBaseNode:
+		{
+			const auto & localNode = *static_cast <X3D::SFNode*> (get_object (iter));
+			selection -> select (localNode);
+			break;
+		}
+		case OutlineIterType::ImportedNode:
+		{
+			try
+			{
+				const auto object       = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (object -> getValue ());
+				const auto exportedNode = importedNode -> getExportedNode ();
+
+				selection -> select (exportedNode);
+			}
+			catch (...)
+			{ }
+
+			break;
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			try
+			{
+				const auto object       = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (object -> getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+
+				selection -> select (localNode);
+			}
+			catch (...)
+			{ }
+
+			break;
+		}
+		default:
+			break;
 	}
 }
 
@@ -465,6 +502,52 @@ OutlineTreeViewEditor::select_access_type (const double x, const double y)
 	return select_route (x, y);
 }
 
+X3D::SFNode
+OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
+{
+	switch (nodeData -> get_type ())
+	{
+		case OutlineIterType::X3DBaseNode:
+		{
+			return *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+		}
+		case OutlineIterType::ImportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (nodeData -> get_object ());
+				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode -> getValue ());
+				const auto exportedNode = importedNode -> getExportedNode ();
+
+				return exportedNode;
+			}
+			catch (...)
+			{ }
+			
+			break;
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (nodeData -> get_object ());
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+
+				return localNode;
+			}
+			catch (...)
+			{ }
+			
+			break;
+		}
+		default:
+			break;
+	}
+
+	return X3D::SFNode ();
+}
+
 bool
 OutlineTreeViewEditor::add_route (const double x, const double y)
 {
@@ -501,12 +584,12 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									path .up ();
 									const auto nodeIter = get_model () -> get_iter (path);
 									const auto nodeData = get_model () -> get_data (nodeIter);
-
-									if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
-										return false;
-
-									const X3D::SFNode destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+									
+									const X3D::SFNode destinationNode  = get_node (nodeData);
 									const std::string destinationField = field -> getName ();
+									
+									if (not destinationNode)
+										return false;
 
 									// Add route
 
@@ -533,11 +616,11 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 						const auto nodeIter = get_model () -> get_iter (path);
 						const auto nodeData = get_model () -> get_data (nodeIter);
 
-						if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
-							return false;
-
-						destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+						destinationNode  = get_node (nodeData);
 						destinationField = field -> getName ();
+
+						if (not destinationNode)
+							return false;
 
 						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_INPUT);
 						matchingFieldType  = field -> getType ();
@@ -557,11 +640,11 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									const auto nodeIter = get_model () -> get_iter (path);
 									const auto nodeData = get_model () -> get_data (nodeIter);
 
-									if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
-										return false;
+									const X3D::SFNode sourceNode  = get_node (nodeData);
+									const std::string sourceField = field -> getName ();
 
-									const X3D::SFNode sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
-									std::string       sourceField = field -> getName ();
+									if (not sourceNode)
+										return false;
 
 									// Add route
 
@@ -588,11 +671,11 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 						const auto nodeIter = get_model () -> get_iter (path);
 						const auto nodeData = get_model () -> get_data (nodeIter);
 
-						if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
-							return false;
-
-						sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+						sourceNode  = get_node (nodeData);
 						sourceField = field -> getName ();
+
+						if (not sourceNode)
+							return false;
 
 						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_OUTPUT);
 						matchingFieldType  = field -> getType ();

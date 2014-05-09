@@ -463,22 +463,60 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			// Prevent self referencing traversal
-
-			for (const auto & parent : get_parents (iter))
-			{
-				if (parent -> get_type () == OutlineIterType::X3DBaseNode)
-				{
-					const auto & parent_sfnode = *static_cast <X3D::SFNode*> (parent -> get_object ());
-
-					if (sfnode == parent_sfnode)
-						return 0;
-				}
-			}
-
+			
+			if (is_in_parents (sfnode, iter))
+				return 0;
+				
 			// Test SFNode
 
 			if (sfnode)
 				return sfnode -> getFieldDefinitions () .size ();
+
+			return 0;
+		}
+		case OutlineIterType::ImportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode -> getValue ());
+				const auto exportedNode = importedNode -> getExportedNode ();
+
+				// Prevent self referencing traversal
+				
+				if (is_in_parents (exportedNode, iter))
+					return 0;
+					
+				// Test SFNode
+
+				if (exportedNode)
+					return exportedNode -> getFieldDefinitions () .size ();
+			}
+			catch (...)
+			{ }
+
+			return 0;
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+
+				// Prevent self referencing traversal
+				
+				if (is_in_parents (localNode, iter))
+					return 0;
+					
+				// Test SFNode
+
+				if (localNode)
+					return localNode -> getFieldDefinitions () .size ();
+			}
+			catch (...)
+			{ }
 
 			return 0;
 		}
@@ -489,6 +527,62 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 	}
 
 	return 0;
+}
+
+bool
+OutlineTreeModel::is_in_parents (const X3D::SFNode & sfnode, const iterator & iter) const
+{
+	for (const auto & parent : get_parents (iter))
+	{
+		switch (parent -> get_type ())
+		{
+			case OutlineIterType::X3DBaseNode:
+			{
+				const auto & parent_sfnode = *static_cast <X3D::SFNode*> (parent -> get_object ());
+
+				if (sfnode == parent_sfnode)
+					return true;
+
+				break;
+			}
+			case OutlineIterType::ImportedNode:
+			{
+				try
+				{
+					const auto object       = static_cast <X3D::SFNode*> (parent -> get_object ());
+					const auto importedNode = dynamic_cast <X3D::ImportedNode*> (object -> getValue ());
+					const auto exportedNode = importedNode -> getExportedNode ();
+
+					if (sfnode == exportedNode)
+						return true;
+				}
+				catch (...)
+				{ }
+
+				break;
+			}
+			case OutlineIterType::ExportedNode:
+			{
+				try
+				{
+					const auto object       = static_cast <X3D::SFNode*> (parent -> get_object ());
+					const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (object -> getValue ());
+					const auto localNode    = exportedNode -> getLocalNode ();
+
+					if (sfnode == localNode)
+						return true;
+				}
+				catch (...)
+				{ }
+
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	return false;
 }
 
 int

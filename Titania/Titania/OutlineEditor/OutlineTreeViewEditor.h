@@ -128,6 +128,9 @@ private:
 	bool
 	select_access_type (const double, const double);
 
+	X3D::SFNode
+	get_node (OutlineTreeData* const) const;
+
 	bool
 	add_route (const double, const double);
 

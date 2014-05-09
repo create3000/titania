@@ -141,7 +141,7 @@ private:
 	get_access_type_icon (X3D::AccessType &) const;
 
 	std::string
-	get_node_name () const;
+	get_node_name (const X3D::SFNode &, std::string name) const;
 
 	bool
 	is_array () const;
@@ -218,6 +218,7 @@ private:
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> importedNodeImage;
+	Glib::RefPtr <Gdk::Pixbuf> exportedNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> sharedNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> routeImage;
 	FieldTypeImageIndex        fieldTypeImages;

@@ -218,6 +218,9 @@ private:
 	void
 	model_expand_row (const Gtk::TreeModel::iterator &);
 
+	void
+	model_expand_node (const X3D::SFNode &, const Gtk::TreeModel::iterator &);
+
 	X3D::FieldDefinitionArray
 	get_fields (X3D::X3DBaseNode* const) const;
 

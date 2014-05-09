@@ -67,6 +67,8 @@ OutlineRouteGraph::expand (const Gtk::TreeModel::iterator & iter)
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ImportedNode:
+		case OutlineIterType::ExportedNode:
 		{
 			expand_node (iter);
 			break;
@@ -435,6 +437,8 @@ OutlineRouteGraph::collapse (const Gtk::TreeModel::iterator & iter)
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ImportedNode:
+		case OutlineIterType::ExportedNode:
 		{
 			collapse_node (iter);
 			break;

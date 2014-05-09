@@ -1,5 +1,22 @@
 2014-05-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.cpp:
+	* OutlineTreeData.h:
+	* OutlineTreeModel.h:
+	* OutlineTreeData.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineRouteGraph.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp:
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* UndoStep.cpp:

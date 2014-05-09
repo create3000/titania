@@ -97,6 +97,7 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	                    noneImage (),
 	                baseNodeImage (),
 	            importedNodeImage (),
+	            exportedNodeImage (),
 	              sharedNodeImage (),
 	                   routeImage (),
 	              fieldTypeImages (),
@@ -110,6 +111,7 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	noneImage         = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
 	baseNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
 	importedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"));
+	exportedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExportedNode.svg"));
 	sharedNodeImage   = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
 	routeImage        = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Route.svg"));
 
@@ -189,7 +191,7 @@ OutlineCellRenderer::on_data ()
 
 				property_text () = _ ("Route to ") + name + "." + route -> getDestinationField ();
 			}
-			catch (const X3D::X3DError &)
+			catch (...)
 			{
 				property_text () = "";
 			}
@@ -217,8 +219,48 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
+			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
+
 			property_editable () = false;
-			property_markup ()   = get_node_name ();
+			property_markup ()   = get_node_name (*sfnode, "");
+			set_alignment (0, 0.5);
+			break;
+		}
+		case OutlineIterType::ImportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (get_object ());
+				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode -> getValue ());
+				const auto exportedNode = importedNode -> getExportedNode ();
+
+				property_markup () = get_node_name (exportedNode, importedNode -> getImportedName ());
+			}
+			catch (...)
+			{
+				property_text () = "";
+			}
+
+			property_editable () = false;
+			set_alignment (0, 0.5);
+			break;
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (get_object ());
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+
+				property_markup ()   = get_node_name (localNode, exportedNode -> getExportedName ());
+			}
+			catch (...)
+			{
+				property_text () = "";
+			}
+
+			property_editable () = false;
 			set_alignment (0, 0.5);
 			break;
 		}
@@ -303,6 +345,14 @@ OutlineCellRenderer::get_icon () const
 
 			return sharedNodeImage;
 		}
+		case OutlineIterType::ImportedNode:
+		{
+			return importedNodeImage;
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			return exportedNodeImage;
+		}
 		case OutlineIterType::Separator:
 		{
 			return noneImage;
@@ -346,26 +396,16 @@ OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 }
 
 std::string
-OutlineCellRenderer::get_node_name () const
+OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name) const
 {
-	const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
-
-	if (*sfnode)
+	if (sfnode)
 	{
-		const X3D::X3DBaseNode* node = sfnode -> getValue ();
+		const X3D::X3DBaseNode* node = sfnode .getValue ();
 
 		// Get name.
 
-		std::string name;
-		
-		try
-		{
-			name = treeView -> get_model () -> get_execution_context () -> getLocalName (*sfnode);
-		}
-		catch (const X3D::X3DError &)
-		{
+		if (name .empty ())
 			name = node -> getName ();
-		}
 
 		X3D::RegEx::_LastNumber .Replace ("", &name);
 

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 05 May 2014 10:24:07 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Fri, 09 May 2014 11:08:34 GMT"
+META "modified" "Fri, 09 May 2014 15:11:29 GMT"
 
 EXTERNPROTO Rotor [
   inputOutput SFBool     enabled
@@ -27,6 +27,7 @@ EXTERNPROTO Rotor [
 ]
 
 DEF Inline1 Inline {
+  metadata MetadataBoolean { }
   url "OutlineEditor-EXPORT.x3dv"
 }
 
@@ -46,11 +47,15 @@ DEF _1 Rotor {
 
 NULL
 
+IMPORT Inline2.A
+IMPORT Inline2.B
 IMPORT Inline1.Export1 AS Import1
 IMPORT Inline1.Export2 AS Import2
 IMPORT Inline1.Export3 AS Import3
 
 ROUTE Inline1.url_changed TO Inline2.set_url
+ROUTE _1.rotation_changed TO Import2.set_rotation
 ROUTE _1.rotation_changed TO Import1.set_rotation
+ROUTE _1.rotation_changed TO Import3.set_rotation
 
 EXPORT Inline1 AS ExportedInline

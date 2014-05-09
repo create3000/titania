@@ -225,6 +225,9 @@ private:
 	bool
 	iter_has_child_vfunc (const iterator & iter) const final override;
 
+	bool
+	is_in_parents (const X3D::SFNode & sfnode, const iterator &) const;
+
 	virtual
 	int
 	iter_n_children_vfunc (const iterator & iter) const final override;

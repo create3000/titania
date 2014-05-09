@@ -74,11 +74,8 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObje
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
-		{
-			parent = *static_cast <X3D::SFNode*> (object);
-			object = &parent;
-			break;
-		}
+		case OutlineIterType::ImportedNode:
+		case OutlineIterType::ExportedNode:
 		case OutlineIterType::Separator:
 		{
 			parent = object;
@@ -89,14 +86,75 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObje
 			break;
 	}
 
+	try
+	{
+		switch (type)
+		{
+			case OutlineIterType::ImportedNode:
+			{
+				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (parent .getValue ());
+				const auto exportedNode = importedNode -> getExportedNode ();
+				parent -> setUserData (get_user_data (exportedNode));
+				break;
+			}
+			case OutlineIterType::ExportedNode:
+			{
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (parent .getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+				parent -> setUserData (get_user_data (localNode));
+				break;
+			}
+			default:
+				break;
+		}
+	}
+	catch (...)
+	{ }
+
 	get_user_data () -> paths .emplace (path);
 }
 
 bool
 OutlineTreeData::is (X3D::X3DChildObject* const value) const
 {
-	if (type == OutlineIterType::X3DBaseNode)
-		return static_cast <X3D::SFNode*> (object) -> getValue () == value;
+	switch (type)
+	{
+		case OutlineIterType::X3DBaseNode:
+			return parent .getValue () == value;
+
+		case OutlineIterType::ImportedNode:
+		{
+			try
+			{
+				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (parent .getValue ());
+				const auto exportedNode = importedNode -> getExportedNode ();
+
+				if (value == exportedNode)
+					return true;
+			}
+			catch (...)
+			{ }
+			
+			return value == parent .getValue ();
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			try
+			{
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (parent .getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+
+				if (value == localNode)
+					return true;
+			}
+			catch (...)
+			{ }
+
+			return value == parent .getValue ();
+		}
+		default:
+			break;
+	}
 
 	return object == value;
 }
@@ -106,8 +164,16 @@ OutlineTreeData::get_user_data () const
 {
 	auto object = get_object ();
 
-	if (type == OutlineIterType::X3DBaseNode)
-		object = static_cast <X3D::SFNode*> (object) -> getValue ();
+	switch (type)
+	{
+		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ImportedNode:
+		case OutlineIterType::ExportedNode:
+			object = parent .getValue ();
+			break;
+		default:
+			break;
+	}
 
 	if (object)
 		return get_user_data (object);
