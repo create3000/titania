@@ -321,15 +321,14 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	removeProtoDeclaration (const std::string & name)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ protos .erase (name); }
-
-	void
 	updateProtoDeclaration (const std::string &, const ProtoPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	removeProtoDeclaration (const std::string & name)
+	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const ProtoPtr &
@@ -342,7 +341,7 @@ public:
 	getProtoDeclarations () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
-	{ return protos; }
+	{ return prototypes; }
 
 	X3DProtoObject*
 	findProtoDeclaration (const std::string &) const
@@ -351,6 +350,10 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+
+	const SFTime &
+	prototypes_changed () const
+	{ return prototypesOutput; }
 
 	///  @name Exterproto declaration handling
 
@@ -361,15 +364,14 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	removeExternProtoDeclaration (const std::string & name)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ externProtos .erase (name); }
-
-	void
 	updateExternProtoDeclaration (const std::string &, const ExternProtoPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	removeExternProtoDeclaration (const std::string & name)
+	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const ExternProtoPtr &
@@ -384,6 +386,10 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return externProtos; }
+
+	const SFTime &
+	externProtos_changed () const
+	{ return externProtosOutput; }
 
 	///  @name Root node handling
 
@@ -557,8 +563,10 @@ private:
 	ImportedNodeIndex  importedNodes;
 	ImportedNamesIndex importedNames;
 	SFTime             importedNodesOutput;
-	ProtoArray         protos;
+	ProtoArray         prototypes;
+	SFTime             prototypesOutput;
 	ExternProtoArray   externProtos;
+	SFTime             externProtosOutput;
 	RouteArray         routes;
 	MFNode             rootNodes;
 

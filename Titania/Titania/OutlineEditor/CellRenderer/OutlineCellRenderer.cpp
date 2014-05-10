@@ -96,6 +96,8 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	cellrenderer_access_type_icon (),
 	                    noneImage (),
 	                baseNodeImage (),
+	               prototypeImage (),
+	             externProtoImage (),
 	            importedNodeImage (),
 	            exportedNodeImage (),
 	              sharedNodeImage (),
@@ -110,6 +112,8 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 
 	noneImage         = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
 	baseNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
+	prototypeImage    = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Prototype.svg"));
+	externProtoImage  = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExternProto.svg"));
 	importedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"));
 	exportedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExportedNode.svg"));
 	sharedNodeImage   = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
@@ -218,6 +222,8 @@ OutlineCellRenderer::on_data ()
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ExternProto:
+		case OutlineIterType::Prototype:
 		{
 			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
 
@@ -344,6 +350,14 @@ OutlineCellRenderer::get_icon () const
 				return importedNodeImage;
 
 			return sharedNodeImage;
+		}
+		case OutlineIterType::ExternProto:
+		{
+			return externProtoImage;
+		}
+		case OutlineIterType::Prototype:
+		{
+			return prototypeImage;
 		}
 		case OutlineIterType::ImportedNode:
 		{

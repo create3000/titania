@@ -1,5 +1,18 @@
 2014-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* PROTO.png:
+	* OutlineTreeData.h:
+	* Prototype.svg:
+	* OutlineTreeData.cpp:
+	* OutlineTreeModel.cpp:
+	* ExternProto.svg:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.xml: 
 
 2014-05-10  Holger Seelig  <holger.seelig@yahoo.de>

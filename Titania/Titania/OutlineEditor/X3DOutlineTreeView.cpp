@@ -406,6 +406,8 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	get_model () -> get_execution_context () -> getRootNodes ()          .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	get_model () -> get_execution_context () -> importedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_model () -> get_execution_context () -> prototypes_changed ()    .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_model () -> get_execution_context () -> externProtos_changed ()  .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	if (scene)
 		scene -> exportedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -418,6 +420,8 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	executionContext -> getRootNodes ()          .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	executionContext -> importedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	executionContext -> prototypes_changed ()    .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	executionContext -> externProtos_changed ()  .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	if (scene)
 		scene -> exportedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -444,7 +448,27 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	unset_model ();
 	get_model () -> clear ();
-	
+
+	// ExternProtos
+
+	if (not executionContext -> getExternProtoDeclarations () .empty ())
+	{
+		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Extern Prototypes")));
+
+		for (auto & externProto : executionContext -> getExternProtoDeclarations ())
+			get_model () -> append (OutlineIterType::ExternProto, externProto);
+	}
+
+	// Prototypes
+
+	if (not executionContext -> getProtoDeclarations () .empty ())
+	{
+		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Prototypes")));
+
+		for (auto & prototype : executionContext -> getProtoDeclarations ())
+			get_model () -> append (OutlineIterType::Prototype, prototype);
+	}
+
 	// Root nodes
 
 	get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
@@ -618,6 +642,8 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ExternProto:
+		case OutlineIterType::Prototype:
 		{
 			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
 			break;
@@ -717,7 +743,7 @@ X3DOutlineTreeView::get_fields (X3D::X3DBaseNode* const node) const
 
 	// If X3DNode, insert userDefined fields after metadata otherwise prepend.
 
-	if (dynamic_cast <X3D::X3DNode*> (node))
+	if (not fields .empty () and dynamic_cast <X3D::X3DNode*> (node))
 		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
 
 	else
@@ -747,6 +773,8 @@ X3DOutlineTreeView::toggle_expand (const Gtk::TreeModel::iterator & iter, const 
 	{
 		case OutlineIterType::X3DField:
 		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ExternProto:
+		case OutlineIterType::Prototype:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		{
@@ -767,6 +795,8 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 
 	switch (get_data_type (parent))
 	{
+		case OutlineIterType::ExternProto:
+		case OutlineIterType::Prototype:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:

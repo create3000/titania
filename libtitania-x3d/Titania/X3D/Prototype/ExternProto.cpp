@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 const std::string ExternProto::componentName  = "Browser";
-const std::string ExternProto::typeName       = "ExternProto";
+const std::string ExternProto::typeName       = "EXTERNPROTO";
 const std::string ExternProto::containerField = "externProto";
 
 ExternProto::ExternProto (X3DExecutionContext* const executionContext) :

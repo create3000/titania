@@ -55,14 +55,14 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
-#include "../Execution/NamedNode.h"
 #include "../Execution/ImportedNode.h"
+#include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
 
-#include <Titania/Utility/Adapter.h>
 #include <Titania/String/to_string.h>
+#include <Titania/Utility/Adapter.h>
 
 #include <algorithm>
 
@@ -99,15 +99,21 @@ X3DExecutionContext::X3DExecutionContext () :
 	       importedNodes (),
 	       importedNames (),
 	 importedNodesOutput (),
-	              protos (),
+	          prototypes (),
+	    prototypesOutput (),
 	        externProtos (),
+	  externProtosOutput (),
 	              routes (),
 	           rootNodes (),
 	  uninitializedNodes ()
 {
-	rootNodes .setName ("rootNodes"); // Set this for numClones.
+	rootNodes .setName ("rootNodes");     // Set this for numClones.
 
-	addChildren (importedNodesOutput, rootNodes, uninitializedNodes);
+	addChildren (importedNodesOutput,
+	             prototypesOutput,
+	             externProtosOutput,
+	             rootNodes,
+	             uninitializedNodes);
 }
 
 void
@@ -125,7 +131,7 @@ X3DExecutionContext::initialize ()
 	}
 	else
 	{
-		rootNodes .isTainted (true); // !!! Prevent generating events.
+		rootNodes .isTainted (true);       // !!! Prevent generating events.
 
 		uninitializedNodes .clear ();
 	}
@@ -403,7 +409,7 @@ throw (Error <INVALID_NODE>,
 {
 	if (not inlineNode)
 		throw Error <INVALID_NODE> ("Couldn't update imported node: inline node is NULL.");
-		
+
 	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
 
 	if (exportedName .empty ())
@@ -483,7 +489,7 @@ throw (Error <INVALID_NODE>,
 SFNode
 X3DExecutionContext::getLocalNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
-	    Error <INVALID_OPERATION_TIMING>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
@@ -554,15 +560,17 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
 
-	protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
-	protos .back () .isTainted (true);
-	protos .back () .addParent (this);
+	prototypes .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
+	prototypes .back () .isTainted (true);
+	prototypes .back () .addParent (this);
 
-	return protos .back ();
+	prototypesOutput = getCurrentTime ();
+
+	return prototypes .back ();
 }
 
 void
-X3DExecutionContext::updateProtoDeclaration (const std::string & name, const ProtoPtr & protoDeclaration)
+X3DExecutionContext::updateProtoDeclaration (const std::string & name, const ProtoPtr & prototype)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -570,12 +578,24 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
 
-	protos .erase (protoDeclaration -> getName ());
-	protos .push_back (name, protoDeclaration);
-	protos .back () .isTainted (true);
-	protos .back () .addParent (this);
+	prototypes .erase (prototype -> getName ());
+	prototypes .push_back (name, prototype);
+	prototypes .back () .isTainted (true);
+	prototypes .back () .addParent (this);
 
-	protoDeclaration -> setName (name);
+	prototype -> setName (name);
+
+	prototypesOutput = getCurrentTime ();
+}
+
+void
+X3DExecutionContext::removeProtoDeclaration (const std::string & name)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	prototypes .erase (name);
+
+	prototypesOutput = getCurrentTime ();
 }
 
 const ProtoPtr &
@@ -586,7 +606,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .rfind (name);
+		return prototypes .rfind (name);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -602,20 +622,20 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
 
-	ProtoPtr proto = new Proto (this);
+	ProtoPtr prototype = new Proto (this);
 
-	proto -> setName (name);
+	prototype -> setName (name);
 
 	for (const auto & field : interfaceDeclarations)
 	{
-		proto -> addUserDefinedField (field -> getAccessType (),
-		                              field -> getName (),
-		                              field);
+		prototype -> addUserDefinedField (field -> getAccessType (),
+		                                  field -> getName (),
+		                                  field);
 	}
 
-	proto -> setup ();
+	prototype -> setup ();
 
-	return proto;
+	return prototype;
 }
 
 X3DProtoObject*
@@ -628,7 +648,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return protos .rfind (name) .getValue ();
+		return prototypes .rfind (name) .getValue ();
 	}
 	catch (const std::out_of_range &)
 	{
@@ -661,6 +681,8 @@ throw (Error <INVALID_NAME>,
 	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
 
+	externProtosOutput = getCurrentTime ();
+
 	return externProtos .back ();
 }
 
@@ -679,6 +701,18 @@ throw (Error <INVALID_NAME>,
 	externProtos .back () .addParent (this);
 
 	externProtoDeclaration -> setName (name);
+
+	externProtosOutput = getCurrentTime ();
+}
+
+void
+X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	externProtos .erase (name);
+
+	externProtosOutput = getCurrentTime ();
 }
 
 const
@@ -745,7 +779,7 @@ throw (Error <INVALID_NODE>,
 		// Add route.
 
 		routes .push_back (routeId, new Route (this, sourceNode, routeId .first, destinationNode, routeId .second));
-		
+
 		auto & route = routes .back ();
 
 		route .isTainted (true);
@@ -850,7 +884,7 @@ throw (Error <INVALID_NODE>,
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CloneType &)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProto -> clone (this);
@@ -859,7 +893,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProto -> copy (this);
@@ -868,7 +902,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CloneType &)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
 		proto -> clone (this);
@@ -877,7 +911,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
 		proto -> copy (this);
@@ -886,7 +920,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
@@ -901,7 +935,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode .second -> copy (this);
@@ -910,7 +944,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
 		route -> copy (this);
@@ -1103,7 +1137,7 @@ X3DExecutionContext::dispose ()
 	namedNodes    .clear ();
 	importedNodes .clear ();
 	importedNames .clear ();
-	protos        .clear ();
+	prototypes    .clear ();
 	externProtos  .clear ();
 	routes        .clear ();
 }
