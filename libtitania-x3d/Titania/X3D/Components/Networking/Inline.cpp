@@ -178,14 +178,8 @@ throw (Error <NODE_NOT_AVAILABLE>,
 	{
 		if (isInitialized ())
 		{
-			if (checkLoadState () == NOT_STARTED_STATE)
-				const_cast <Inline*> (this) -> requestImmediateLoad ();
-
-			else
-			{
-				if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
-					future -> wait ();
-			}
+			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
+				future -> wait ();
 
 			if (checkLoadState () == COMPLETE_STATE)
 				return scene;

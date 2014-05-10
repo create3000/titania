@@ -119,6 +119,12 @@ private:
 	bool
 	select_field_value (const double x, const double y);
 
+	bool
+	is_real_local_node (const Gtk::TreeModel::iterator &) const;
+
+	bool
+	is_local_node (const Gtk::TreeModel::iterator &) const;
+
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);
 

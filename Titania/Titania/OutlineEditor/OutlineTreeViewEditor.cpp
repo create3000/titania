@@ -240,8 +240,6 @@ void
 OutlineTreeViewEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
 	select_node (get_model () -> get_iter (path), path);
-
-	set_cursor (path, *column, true);
 }
 
 bool
@@ -307,21 +305,9 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 		case OutlineIterType::X3DBaseNode:
 		{
 			const auto & localNode = *static_cast <X3D::SFNode*> (get_object (iter));
-			selection -> select (localNode);
-			break;
-		}
-		case OutlineIterType::ImportedNode:
-		{
-			try
-			{
-				const auto object       = static_cast <X3D::SFNode*> (get_object (iter));
-				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (object -> getValue ());
-				const auto exportedNode = importedNode -> getExportedNode ();
-
-				selection -> select (exportedNode);
-			}
-			catch (...)
-			{ }
+	
+			if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
+				selection -> select (localNode);
 
 			break;
 		}
@@ -357,17 +343,63 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 
 		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
 		{
-			X3D::X3DFieldDefinition* const field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+			Gtk::TreePath parentPath (path);
+			parentPath .up ();
+			parentPath .up ();
 
-			if (field -> getAccessType () not_eq X3D::outputOnly)
+			const auto parent = get_model () -> get_iter (parentPath);
+
+			if (is_real_local_node (parent))
 			{
-				getBrowserWindow () -> hasShortcuts (false);
-				get_tree_observer () -> unwatch_tree (iter);
-				unwatch_motion ();
-				set_cursor (path, *column, true);
-				return true;
+				X3D::X3DFieldDefinition* const field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+
+				if (field -> getAccessType () not_eq X3D::outputOnly)
+				{
+					getBrowserWindow () -> hasShortcuts (false);
+					get_tree_observer () -> unwatch_tree (iter);
+					unwatch_motion ();
+					set_cursor (path, *column, true);
+					return true;
+				}
 			}
 		}
+	}
+
+	return false;
+}
+
+bool
+OutlineTreeViewEditor::is_real_local_node (const Gtk::TreeModel::iterator & iter) const
+{
+	switch (get_data_type (iter))
+	{
+		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ExportedNode:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
+			return sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+bool
+OutlineTreeViewEditor::is_local_node (const Gtk::TreeModel::iterator & iter) const
+{
+	switch (get_data_type (iter))
+	{
+		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ImportedNode:
+		case OutlineIterType::ExportedNode:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
+			return sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
+		}
+		default:
+			break;
 	}
 
 	return false;
@@ -409,6 +441,14 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 		{
 			case OutlineIterType::X3DField:
 			{
+				Gtk::TreePath parentPath (path);
+				parentPath .up ();	
+			
+				const auto parent = get_model () -> get_iter (parentPath);
+
+				if (not is_local_node (parent))
+					break;
+
 				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 				overUserData = data -> get_user_data ();
@@ -444,10 +484,21 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 					default:
 						break;
 				}
+
+				break;
 			}
 			case OutlineIterType::X3DInputRoute:
 			case OutlineIterType::X3DOutputRoute:
 			{
+				Gtk::TreePath parentPath (path);
+				parentPath .up ();		
+				parentPath .up ();		
+			
+				const auto parent = get_model () -> get_iter (parentPath);
+
+				if (not is_local_node (parent))
+					break;
+
 				overUserData = data -> get_user_data ();
 
 				Gdk::Rectangle cell_area;
@@ -481,6 +532,8 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 					default:
 						break;
 				}
+
+				break;
 			}
 			default:
 				break;
@@ -509,7 +562,12 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 	{
 		case OutlineIterType::X3DBaseNode:
 		{
-			return *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+			const auto & sfnode = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+			
+			if (sfnode -> getExecutionContext () == get_model () -> get_execution_context ())
+				return sfnode;
+			
+			break;
 		}
 		case OutlineIterType::ImportedNode:
 		{
@@ -597,7 +655,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									{
 										const auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
-										getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										getBrowserWindow () -> addRoute (get_model () -> get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
 									catch (const X3D::X3DError &)
@@ -652,7 +710,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									{
 										const auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
-										getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										getBrowserWindow () -> addRoute (get_model () -> get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
 									catch (const X3D::X3DError &)
@@ -757,21 +815,27 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 					{
 						try
 						{
-							const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+							if (get_model () -> get_execution_context () -> isLocalNode (route -> getSourceNode ()) and
+							    get_model () -> get_execution_context () -> isLocalNode (route -> getDestinationNode ()))
+							{
+								const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
-							getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
-							                                    route -> getSourceNode (),
-							                                    route -> getSourceField (),
-							                                    route -> getDestinationNode (),
-							                                    route -> getDestinationField (),
-							                                    undoStep);
+								getBrowserWindow () -> deleteRoute (get_model () -> get_execution_context (),
+								                                    route -> getSourceNode (),
+								                                    route -> getSourceField (),
+								                                    route -> getDestinationNode (),
+								                                    route -> getDestinationField (),
+								                                    undoStep);
 
-							getBrowserWindow () -> addUndoStep (undoStep);
+								getBrowserWindow () -> addUndoStep (undoStep);
+
+								return true;
+							}
 						}
 						catch (const X3D::X3DError &)
 						{ }
-
-						return true;
+						
+						break;
 					}
 					default:
 						break;
@@ -806,6 +870,8 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 					default:
 						break;
 				}
+				
+				break;
 			}
 			default:
 				break;
@@ -826,17 +892,22 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		{
 			try
 			{
-				const auto route    = routes [0];
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+				const auto route = routes [0];
 
-				getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
-				                                    route -> getSourceNode (),
-				                                    route -> getSourceField (),
-				                                    route -> getDestinationNode (),
-				                                    route -> getDestinationField (),
-				                                    undoStep);
+				if (get_model () -> get_execution_context () -> isLocalNode (route -> getSourceNode ()) and
+				    get_model () -> get_execution_context () -> isLocalNode (route -> getDestinationNode ()))
+				{
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
-				getBrowserWindow () -> addUndoStep (undoStep);
+					getBrowserWindow () -> deleteRoute (get_model () -> get_execution_context (),
+					                                    route -> getSourceNode (),
+					                                    route -> getSourceField (),
+					                                    route -> getDestinationNode (),
+					                                    route -> getDestinationField (),
+					                                    undoStep);
+
+					getBrowserWindow () -> addUndoStep (undoStep);
+				}
 			}
 			catch (const X3D::X3DError &)
 			{ }

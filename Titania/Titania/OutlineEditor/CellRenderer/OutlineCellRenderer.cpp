@@ -756,10 +756,22 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 	if (field -> fromLocaleString (string, locale))
 	{
-		if (field -> toString () not_eq currentValue)
-		{
-			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
+		const X3D::InlinePtr inlineNode (node);
+		
+		if (inlineNode and (
+		    (field -> getName () == "load" and field -> toString () == "FALSE") or 
+		     field -> getName () == "url"))
+		{
+			treeView -> getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), inlineNode, undoStep);
+
+			if (not undoStep -> empty ())
+				undoStep -> addUndoFunction (&X3D::X3DBrowser::update, inlineNode -> getBrowser ());
+		}
+
+		if (field -> toString () not_eq currentValue or not undoStep -> empty ())
+		{
 			undoStep -> addVariables (node);
 			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ());
 

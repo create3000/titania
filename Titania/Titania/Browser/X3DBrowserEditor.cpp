@@ -728,7 +728,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::ScenePtr & scene, X3D::SFNode 
 	{
 		removeNamedNode (scene, child, undoStep);
 		removeExportedNodes (scene, child, undoStep);
-		removeImportedNodes (scene, child, undoStep);
+		removeImportedNodes (scene, X3D::InlinePtr (child), undoStep);
 		deleteRoutes (scene, child, undoStep);
 
 		// Hide node
@@ -776,7 +776,7 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	// Remove node from scene graph
 
 	removeNamedNode (executionContext, node, undoStep);
-	removeImportedNodes (executionContext, node, undoStep);
+	removeImportedNodes (executionContext, X3D::InlinePtr (node), undoStep);
 	deleteRoutes (executionContext, node, undoStep);
 	removeNodeFromSceneGraph (executionContext, node, undoStep);
 
@@ -883,97 +883,44 @@ X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionCont
 }
 
 void
-X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const executionContext, const X3D::InlinePtr & inlineNode, const UndoStepPtr & undoStep) const
 {
 	// Remove nodes imported from node
-
-	const X3D::InlinePtr inlineNode (node);
 
 	if (inlineNode)
 	{
 		for (const auto & pair : X3D::ImportedNodeIndex (executionContext -> getImportedNodes ()))
 		{
-			const auto & importedName = pair .first;
-			const auto & importedNode = pair .second;
-		
-			if (inlineNode == importedNode -> getInlineNode ())
+			try
 			{
-				// Delete routes.
+				const auto & importedNode = pair .second;
 
-				try
+				if (inlineNode == importedNode -> getInlineNode ())
 				{
-					for (const auto & field : importedNode -> getExportedNode () -> getFieldDefinitions ())
+					// Delete routes.
+					
+					try
 					{
-						for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
-						{
-							try
-							{
-								if (route -> getExecutionContext () not_eq executionContext)
-									continue;
-							
-								using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
-
-								undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
-								                             route -> getSourceNode (),
-								                             route -> getSourceField (),
-								                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, importedName),
-								                             route -> getDestinationField ());
-
-								undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
-								                             route -> getSourceNode (),
-								                             route -> getSourceField (),
-								                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, importedName),
-								                             route -> getDestinationField ());
-
-								executionContext -> deleteRoute (route);
-							}
-							catch (const X3D::X3DError &)
-							{ }
-						}
-
-						for (const auto & route : X3D::RouteSet (field -> getOutputRoutes ()))
-						{
-							try
-							{
-								if (route -> getExecutionContext () not_eq executionContext)
-									continue;
-							
-								using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
-
-								undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
-								                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, importedName),
-								                             route -> getSourceField (),
-								                             route -> getDestinationNode (),
-								                             route -> getDestinationField ());
-
-								undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
-								                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, importedName),
-								                             route -> getSourceField (),
-								                             route -> getDestinationNode (),
-								                             route -> getDestinationField ());
-
-								executionContext -> deleteRoute (route);
-							}
-							catch (const X3D::X3DError &)
-							{ }
-						}
+						deleteRoutes (executionContext, importedNode -> getExportedNode (), undoStep);
 					}
+					catch (...)
+					{ }
+
+					// Remove imported node.
+
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addImportedNode, executionContext,
+					                             importedNode -> getInlineNode (),
+					                             importedNode -> getExportedName (),
+					                             importedNode -> getImportedName ());
+
+					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode, executionContext,
+					                             importedNode -> getImportedName ());
+
+					executionContext -> removeImportedNode (importedNode -> getImportedName ());
 				}
-				catch (const X3D::X3DError &)
-				{ }
-
-				// Remove imported node.
-
-				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addImportedNode, executionContext,
-				                             importedNode -> getInlineNode (),
-				                             importedNode -> getExportedName (),
-				                             importedNode -> getImportedName ());
-
-				undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode, executionContext,
-				                             importedNode -> getImportedName ());
-
-				executionContext -> removeImportedNode (importedNode -> getImportedName ());
 			}
+			catch (...)
+			{ }
 		}
 	}
 }
@@ -1031,17 +978,80 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 {
 	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
 
-	undoStep -> addUndoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
-	                             sourceNode,
-	                             sourceField,
-	                             destinationNode,
-	                             destinationField);
 
-	undoStep -> addRedoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
-	                             sourceNode,
-	                             sourceField,
-	                             destinationNode,
-	                             destinationField);
+	bool sourceImported      = false;
+	bool destinationImported = false;
+
+	try
+	{
+		sourceImported = executionContext -> isImportedNode (sourceNode);
+	}
+	catch (...)
+	{ }
+	
+	try
+	{
+		destinationImported = executionContext -> isImportedNode (destinationNode);
+	}
+	catch (...)
+	{ }
+
+	if (sourceImported and destinationImported)
+	{
+		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+	}
+	else if (sourceImported and not destinationImported)
+	{
+		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+	}
+	else if (destinationImported and not sourceImported)
+	{
+		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+	}
+	else
+	{
+		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+	}
 
 	executionContext -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
 }
@@ -1056,17 +1066,79 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 {
 	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
 
-	undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
-	                             sourceNode,
-	                             sourceField,
-	                             destinationNode,
-	                             destinationField);
+	bool sourceImported      = false;
+	bool destinationImported = false;
 
-	undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
-	                             sourceNode,
-	                             sourceField,
-	                             destinationNode,
-	                             destinationField);
+	try
+	{
+		sourceImported = executionContext -> isImportedNode (sourceNode);
+	}
+	catch (...)
+	{ }
+	
+	try
+	{
+		destinationImported = executionContext -> isImportedNode (destinationNode);
+	}
+	catch (...)
+	{ }
+
+	if (sourceImported and destinationImported)
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+
+		undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+	}
+	else if (sourceImported and not destinationImported)
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+
+		undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+	}
+	else if (destinationImported and not sourceImported)
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+
+		undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
+		                             destinationField);
+	}
+	else
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::addRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+
+		undoStep -> addRedoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
+		                             sourceNode,
+		                             sourceField,
+		                             destinationNode,
+		                             destinationField);
+	}
 
 	executionContext -> deleteRoute (sourceNode, sourceField, destinationNode, destinationField);
 }
