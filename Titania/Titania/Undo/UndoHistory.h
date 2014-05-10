@@ -110,20 +110,20 @@ public:
 	getLastUndoStep () const;
 
 	void
-	undo ();
+	undoChanges ();
 
 	void
-	redo ();
+	redoChanges ();
 
 	void
 	clear ();
 
 	bool
-	empty () const
+	isEmpty () const
 	{ return list .empty (); }
 
 	size_t
-	size () const
+	getSize () const
 	{ return list .size (); }
 
 

@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Fri, 09 May 2014 05:30:32 GMT'/>
+    <meta name='modified' content='Sat, 10 May 2014 10:09:25 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -117,13 +117,16 @@
       <fieldValue name='angle' value='1.5708'/>
       <fieldValue name='loop' value='true'/>
     </ProtoInstance>
-    <ProtoInstance name='Rotor2' DEF='Rotor2'/>
+    <ProtoInstance name='Rotor2' DEF='Rotor2'>
+      <fieldValue name='cycleInterval' value='10'/>
+      <fieldValue name='loop' value='true'/>
+    </ProtoInstance>
     <ImageTexture/>
     <Transform DEF='Inline'
         translation='5.51299 0.468949 1'
         scale='0.329804 0.329803 1'
         center='-1.99912 -0.520307 0'>
-      <Inline
+      <Inline DEF='_2'
           url='"Inline.wrl"'/>
     </Transform>
     <Transform DEF='MirrorText'
@@ -151,7 +154,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 3.84746'
+          rotation='-0 -0 -1 5.6747'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -178,7 +181,7 @@
                 repeatS='false'
                 repeatT='false'/>
           </Appearance>
-          <Sphere DEF='_2'/>
+          <Sphere DEF='_3'/>
         </Shape>
       </Transform>
     </Transform>
@@ -241,7 +244,7 @@
                 specularColor='0.276305 0.11431 0.139857'
                 shininess='0.127273'/>
           </Appearance>
-          <Sphere USE='_2'/>
+          <Sphere USE='_3'/>
         </Shape>
       </Transform>
     </Anchor>
@@ -307,7 +310,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "So 04 Mai 2014 07:40:20 CEST"'>
+            string='"modified...", "Sa 10 Mai 2014 12:08:24 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -350,9 +353,12 @@ function initialize ()
       <Inline
           url='"../Basic/EXPORT.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"'/>
     </Transform>
+    <IMPORT inlineDEF='_2' exportedDEF='Text' AS='ImportedInline'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
     <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
     <ROUTE fromNode='ModifiedScript' fromField='string_changed' toNode='Text2' toField='set_string'/>
+    <ROUTE fromNode='Rotor2' fromField='rotation_changed' toNode='ImportedInline' toField='set_rotation'/>
+    <EXPORT localDEF='Rotor'/>
   </Scene>
 </X3D>

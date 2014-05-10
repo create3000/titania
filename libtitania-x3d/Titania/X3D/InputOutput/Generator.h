@@ -182,13 +182,11 @@ public:
 
 	static
 	void
-	PushExecutionContext (const X3DExecutionContext* const value)
-	{ executionContextStack .emplace_back (value); }
+	PushExecutionContext (const X3DExecutionContext* const);
 
 	static
 	void
-	PopExecutionContext ()
-	{ executionContextStack .pop_back (); }
+	PopExecutionContext ();
 
 	static
 	void
@@ -271,6 +269,7 @@ private:
 	using NodeSet               = std::set <const X3DBaseNode*>;
 	using NameIndex             = std::map <std::string, const X3DBaseNode*>;
 	using NameIndexByNode       = std::map <const X3DBaseNode*, std::string>;
+	using LocalNodeSet          = std::map <const X3DExecutionContext*, NodeSet>;
 	using ImportedNamesIndex    = std::map <const X3DBaseNode*, std::string>;
 	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
@@ -279,8 +278,8 @@ private:
 
 	static ExecutionContextStack executionContextStack;
 	static size_t                level;
-	static NodeSet               exportedNodesIndex;
-	static NodeSet               importedNodesIndex;
+	static LocalNodeSet          exportedNodesIndex;
+	static LocalNodeSet          importedNodesIndex;
 	static NodeSet               nodes;
 	static NameIndex             names;
 	static NameIndexByNode       namesByNode;

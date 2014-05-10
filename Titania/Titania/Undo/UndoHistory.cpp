@@ -75,7 +75,7 @@ UndoHistory::getRedoDescription () const
 void
 UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
 {
-	if (undoStep -> empty ())
+	if (undoStep -> isEmpty ())
 		return;
 
 	if (index < savedIndex)
@@ -100,11 +100,11 @@ UndoHistory::getLastUndoStep () const
 }
 
 void
-UndoHistory::undo ()
+UndoHistory::undoChanges ()
 {
 	if (index >= 0)
 	{
-		list [index] -> undo ();
+		list [index] -> undoChanges ();
 
 		-- index;
 
@@ -113,13 +113,13 @@ UndoHistory::undo ()
 }
 
 void
-UndoHistory::redo ()
+UndoHistory::redoChanges ()
 {
 	if (index + 1 < (int) list .size ())
 	{
 		++ index;
 
-		list [index] -> redo ();
+		list [index] -> redoChanges ();
 
 		changed () .processInterests ();
 	}

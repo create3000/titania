@@ -200,8 +200,8 @@ VersionType          Generator::version = LATEST_VERSION;
 
 Generator::ExecutionContextStack Generator::executionContextStack;
 size_t                           Generator::level = 0;
-Generator::NodeSet               Generator::exportedNodesIndex;
-Generator::NodeSet               Generator::importedNodesIndex;
+Generator::LocalNodeSet          Generator::exportedNodesIndex;
+Generator::LocalNodeSet          Generator::importedNodesIndex;
 Generator::NodeSet               Generator::nodes;
 Generator::NameIndex             Generator::names;
 Generator::NameIndexByNode       Generator::namesByNode;
@@ -319,6 +319,27 @@ Generator::NicestStyle ()
 }
 
 void
+Generator::PushExecutionContext (const X3DExecutionContext* const value)
+{
+	executionContextStack .emplace_back (value);
+	
+	exportedNodesIndex .emplace (value, NodeSet ());
+	importedNodesIndex .emplace (value, NodeSet ());
+}
+
+void
+Generator::PopExecutionContext ()
+{
+	executionContextStack .pop_back ();
+
+	if (executionContextStack .empty ())
+	{
+		exportedNodesIndex .clear ();
+		importedNodesIndex .clear ();
+	}
+}
+
+void
 Generator::PushContext ()
 {
 	if (level == 0)
@@ -344,19 +365,33 @@ Generator::PopContext ()
 void
 Generator::setExportedNodes (const ExportedNodeIndex & exportedNodes)
 {
-	exportedNodesIndex .clear ();
+	auto & index = exportedNodesIndex .at (executionContextStack .back ());
 
 	for (const auto & exportedNode : exportedNodes)
-		exportedNodesIndex .emplace (exportedNode .second -> getLocalNode ());
+	{
+		try
+		{
+			index .emplace (exportedNode .second -> getLocalNode ());
+		}
+		catch (...)
+		{ }
+	}
 }
 
 void
 Generator::setImportedNodes (const ImportedNodeIndex & importedNodes)
 {
-	importedNodesIndex .clear ();
+	auto & index = importedNodesIndex .at (executionContextStack .back ());
 
 	for (const auto & importedNode : importedNodes)
-		importedNodesIndex .emplace (importedNode .second -> getInlineNode ());
+	{
+		try
+		{
+			index .emplace (importedNode .second -> getInlineNode ());
+		}
+		catch (...)
+		{ }
+	}
 }
 
 bool
@@ -459,11 +494,25 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 	 if (baseNode -> hasRoutes ())
 	   return true;
 
-	 if (exportedNodesIndex .find (baseNode) not_eq exportedNodesIndex .end ())
-	   return true;
+	try
+	{
+		const auto & index = exportedNodesIndex .at (baseNode -> getExecutionContext ());
 
-	 if (importedNodesIndex .find (baseNode) not_eq importedNodesIndex .end ())
-	   return true;
+		if (index .find (baseNode) not_eq index .end ())
+			return true;
+	}
+	catch (...)
+	{ }
+
+	try
+	{
+		const auto & index = importedNodesIndex .at (baseNode -> getExecutionContext ());
+
+		if (index .find (baseNode) not_eq index .end ())
+			return true;
+	}
+	catch (...)
+	{ }
 
 	return false;
 }

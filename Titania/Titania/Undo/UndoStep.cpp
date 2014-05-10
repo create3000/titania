@@ -67,7 +67,7 @@ UndoStep::UndoStep (const std::string & description) :
 { }
 
 void
-UndoStep::undo ()
+UndoStep::undoChanges ()
 {
 	for (const auto & undoFunction : basic::reverse_adapter (undoFunctions))
 	{
@@ -84,7 +84,7 @@ UndoStep::undo ()
 }
 
 void
-UndoStep::redo ()
+UndoStep::redoChanges ()
 {
 	for (const auto & redoFunction : redoFunctions)
 	{

@@ -1,4 +1,12 @@
-#VRML V2.0 utf8 Titania V0.6.7
+#VRML V2.0 utf8 Titania V0.6.8
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Sun, 06 Apr 2014 10:12:16 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.8, http://titania.create3000.de"
+META "modified" "Sat, 10 May 2014 08:29:55 GMT"
 
 EXTERNPROTO Grid [
   exposedField SFNode  metadata
@@ -82,7 +90,9 @@ PROTO Children1 [
   }
 }
 
-DEF None NavigationInfo { }
+DEF None NavigationInfo {
+  transitionType "ANIMATE"
+}
 
 DEF Sunset Background {
   skyAngle [
@@ -103,11 +113,11 @@ DEF Sunset Background {
   groundColor 0 0 0
 }
 
-DEF xxx Viewpoint {
+DEF Viewpoint1 Viewpoint {
   description "OutlineEditor"
-  position 1.46307 2.24268 0.93119
-  orientation 0.657858 0.711081 0.248166 5.17775
-  centerOfRotation 2.26896 1.23038 0.218036
+  position 8.952 2.7577 7.80941
+  orientation 0.998463 0.0551338 0.00558196 5.97746
+  centerOfRotation 9.10058 0.024358 -0.863814
 }
 
 Grid {
@@ -146,7 +156,7 @@ DEF Inline Transform {
   translation 5.51299 0.468949 1
   scale 0.329804 0.329803 1
   center -1.99912 -0.520307 0
-  children Inline {
+  children DEF _2 Inline {
     url "Inline.wrl"
   }
 }
@@ -185,7 +195,7 @@ Group {
     USE _1
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 4.68252
+      rotation 0 0 1 2.27579
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -220,7 +230,7 @@ DEF Sphere Transform {
           repeatT FALSE
         }
       }
-      geometry DEF _2 Sphere { }
+      geometry DEF _3 Sphere { }
     }
   }
 }
@@ -291,7 +301,7 @@ Anchor {
           shininess 0.127273
         }
       }
-      geometry USE _2
+      geometry USE _3
     }
   }
 }
@@ -363,7 +373,10 @@ DEF ScreenText Transform {
       material Material { }
     }
     geometry DEF Text2 Text {
-      string "OutlineEditor"
+      string [
+        "modified...",
+        "Sa 10 Mai 2014 10:29:55 CEST"
+      ]
       fontStyle ScreenFontStyle {
         family "SANS"
         style "BOLD"
@@ -393,7 +406,7 @@ VisibilitySensor {
   center 3.77007 0 -2.89052
 }
 
-Viewpoint {
+DEF Viewpoint2 Viewpoint {
   description "OutlineEditor"
   position 0.307405 1.46693 4.56711
   orientation 0.563368 0.806068 0.181301 5.84917
@@ -404,7 +417,33 @@ TextureTransform { }
 
 TextureTransform { }
 
+DEF ModifiedScript Script {
+  eventOut MFString string_changed
+
+  url "javascript:
+function initialize ()
+{
+	var modified = Browser .currentScene .getMetaData (\"modified\");
+	var date = new Date (Date .parse (modified));
+	string_changed = new MFString (\"modified...\", date .toLocaleString ());
+}"
+}
+
+DEF EXPORT Transform {
+  translation 8.97635 0 0
+  children Inline {
+    url [
+      "../Basic/EXPORT.wrl",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"
+    ]
+  }
+}
+
+IMPORT _2.Text AS ImportedInline
+
 ROUTE Rotor.rotation_changed TO Box.set_rotation
 ROUTE Sensors.translation_changed TO Inline.set_translation
-ROUTE xxx.position_changed TO xxx.set_centerOfRotation
 ROUTE Rotor2.pauseTime_changed TO Rotor2.set_resumeTime
+ROUTE ModifiedScript.string_changed TO Text2.set_string
+
+EXPORT Rotor

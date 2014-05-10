@@ -327,10 +327,10 @@ X3DBrowserEditor::import (const X3D::ScenePtr & scene, const UndoStepPtr & undoS
 
 		removeNodes (importedNodes, undoRemoveNodes);
 
-		undoStep -> addUndoFunction (&UndoStep::redo, undoRemoveNodes);
-		undoStep -> addRedoFunction (&UndoStep::undo, undoRemoveNodes);
+		undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNodes);
+		undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNodes);
 
-		undoRemoveNodes -> undo ();
+		undoRemoveNodes -> undoChanges ();
 
 		// Select imported nodes
 
@@ -378,7 +378,7 @@ X3DBrowserEditor::undo ()
 {
 	getBrowser () -> grab_focus ();
 
-	undoHistory .undo ();
+	undoHistory .undoChanges ();
 }
 
 void
@@ -386,7 +386,7 @@ X3DBrowserEditor::redo ()
 {
 	getBrowser () -> grab_focus ();
 
-	undoHistory .redo ();
+	undoHistory .redoChanges ();
 }
 
 void
@@ -407,7 +407,7 @@ X3DBrowserEditor::set_undoHistory ()
 		getUndoButton ()   .set_sensitive (false);
 	}
 
-	if (index + 1 < (int) undoHistory .size ())
+	if (index + 1 < (int) undoHistory .getSize ())
 	{
 		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
 		getRedoMenuItem () .set_sensitive (true);
@@ -456,7 +456,7 @@ X3DBrowserEditor::copyNodes (X3D::MFNode nodes) const
 
 	// Undo detach from group
 
-	undoDetachFromGroup -> undo ();
+	undoDetachFromGroup -> undoChanges ();
 }
 
 std::string

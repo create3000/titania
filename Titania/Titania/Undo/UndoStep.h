@@ -90,19 +90,19 @@ public:
 	addRedoFunction (Args && ... args)
 	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
 
+	void
+	undoChanges ();
+
+	void
+	redoChanges ();
+
 	bool
-	empty () const
+	isEmpty () const
 	{ return undoFunctions .empty (); }
 
 	size_t
-	size () const
+	getSize () const
 	{ return undoFunctions .size (); }
-
-	void
-	undo ();
-
-	void
-	redo ();
 
 
 private:

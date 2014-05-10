@@ -766,11 +766,11 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		{
 			treeView -> getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), inlineNode, undoStep);
 
-			if (not undoStep -> empty ())
+			if (not undoStep -> isEmpty ())
 				undoStep -> addUndoFunction (&X3D::X3DBrowser::update, inlineNode -> getBrowser ());
 		}
 
-		if (field -> toString () not_eq currentValue or not undoStep -> empty ())
+		if (field -> toString () not_eq currentValue or not undoStep -> isEmpty ())
 		{
 			undoStep -> addVariables (node);
 			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ());

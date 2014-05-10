@@ -83,7 +83,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 
 	// Columns
 
-	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn (_ ("Tree")));
+	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn (_ ("Scene")));
 	treeviewcolumn_name -> set_expand (false);
 
 	// CellRenderer
@@ -228,6 +228,7 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 				}
 				catch (...)
 				{ }
+	
 				break;
 			}
 			case OutlineIterType::ExportedNode:
@@ -242,6 +243,7 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 				}
 				catch (...)
 				{ }
+
 				break;
 			}
 			default:
@@ -777,9 +779,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode :
-					case OutlineIterType::ImportedNode :
-					case OutlineIterType::ExportedNode :
+					case OutlineIterType::X3DBaseNode:
 						{
 							if (is_expanded (child))
 							{

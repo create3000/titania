@@ -364,6 +364,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	// Scene
 
+	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
 	Generator::setExportedNodes (getExportedNodes ());
 
@@ -384,8 +385,8 @@ X3DScene::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::setExportedNodes (ExportedNodeIndex ());
 	Generator::PopContext ();
+	Generator::PopExecutionContext ();
 
 	// ~Scene
 
@@ -509,6 +510,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	// <Scene>
 
+	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
 	Generator::setExportedNodes (getExportedNodes ());
 
@@ -526,8 +528,8 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::setExportedNodes (ExportedNodeIndex ());
 	Generator::PopContext ();
+	Generator::PopExecutionContext ();
 
 	// </Scene>
 

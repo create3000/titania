@@ -1035,7 +1035,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::setImportedNodes (ImportedNodeIndex ());
 	Generator::PopContext ();
 	Generator::PopExecutionContext ();
 }
@@ -1094,7 +1093,6 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::setImportedNodes (ImportedNodeIndex ());
 	Generator::PopContext ();
 	Generator::PopExecutionContext ();
 }
