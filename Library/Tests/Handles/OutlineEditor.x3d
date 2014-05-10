@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Sat, 10 May 2014 10:09:25 GMT'/>
+    <meta name='modified' content='Sat, 10 May 2014 10:13:58 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -91,9 +91,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='8.952 2.7577 7.80941'
-        orientation='0.998463 0.0551338 0.00558196 5.97746'
-        centerOfRotation='9.10058 0.024358 -0.863814'/>
+        position='-0.826765 5.87027 13.359'
+        orientation='0.787842 0.597084 0.150982 5.73888'
+        centerOfRotation='4.26786 -1.47502 -1.62472'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -154,7 +154,7 @@
       <ProximitySensor USE='_1'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='-0 -0 -1 5.6747'
+          rotation='0 0 1 3.66986'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -304,13 +304,13 @@
       </Transform>
     </ScreenGroup>
     <Transform DEF='ScreenText'
-        translation='0.673213 1.51774 0'>
+        translation='0.673213 2.19 0'>
       <Shape>
         <Appearance>
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Sa 10 Mai 2014 12:08:24 CEST"'>
+            string='"modified...", "Sa 10 Mai 2014 12:13:33 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>

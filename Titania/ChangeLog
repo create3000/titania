@@ -1,5 +1,9 @@
 2014-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml: 
+
+2014-05-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UndoStep.h:
 	* UndoStep.cpp:
 	* UndoHistory.h:
