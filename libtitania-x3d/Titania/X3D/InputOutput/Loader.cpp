@@ -228,8 +228,8 @@ throw (Error <INVALID_URL>,
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");
 
-	if (uri .scheme () not_eq "data")
-		std::clog << "Trying to load URI '" << uri << "': " << std::flush;
+	//if (uri .scheme () not_eq "data")
+	//	std::clog << "Trying to load URI '" << uri << "': " << std::flush;
 
 	const basic::uri transformedURL = referer .transform (uri);
 
@@ -251,7 +251,7 @@ throw (Error <INVALID_URL>,
 				worldURL = istream .url ();
 
 				//std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
-				std::clog << "Done." << std::endl;
+				//std::clog << "Done." << std::endl;
 			}
 			else
 				worldURL = referer;
@@ -260,7 +260,8 @@ throw (Error <INVALID_URL>,
 		}
 	}
 
-	std::clog << "Failed." << std::endl;
+	//std::clog << "Failed." << std::endl;
+	std::clog << "Couldn't load URL '" + transformedURL + "': " + istream .reason () << std::endl;
 
 	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'.\n" + istream .reason ());
 }

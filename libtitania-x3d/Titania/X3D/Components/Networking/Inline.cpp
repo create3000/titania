@@ -169,7 +169,7 @@ Inline::setScene (ScenePtr && value)
 }
 
 const ScenePtr &
-Inline::getScene () const
+Inline::accessScene () const
 throw (Error <NODE_NOT_AVAILABLE>,
 	    Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -192,18 +192,15 @@ throw (Error <NODE_NOT_AVAILABLE>,
 			{
 				if (not scene)
 				{
-					ScenePtr scene = getBrowser () -> createScene ();
+					const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene ());
 
 					Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
-
-					const_cast <Inline*> (this) -> scene .set (scene);
 				}
+
+				return scene;
 			}
 			catch (const X3DError & error)
 			{ }
-
-			if (scene)
-				return scene;
 
 			// End thread save part
 		}
@@ -228,7 +225,7 @@ throw (Error <INVALID_NAME>,
 	    Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return getScene () -> getExportedNode (exportedName);
+	return accessScene () -> getExportedNode (exportedName);
 }
 
 const ExportedNodeIndex &
@@ -237,7 +234,7 @@ throw (Error <NODE_NOT_AVAILABLE>,
 	    Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return getScene () -> getExportedNodes ();
+	return accessScene () -> getExportedNodes ();
 }
 
 void

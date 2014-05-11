@@ -148,6 +148,13 @@ public:
 	       Error <DISPOSED>)
 	{ return scene -> getRootNodes (); }
 
+	virtual
+	const ScenePtr &
+	getScene () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return scene; }
+
 	///  @name Operations
 
 	virtual
@@ -200,7 +207,7 @@ private:
 	setScene (ScenePtr &&);
 
 	const ScenePtr &
-	getScene () const
+	accessScene () const
 	throw (Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

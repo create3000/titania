@@ -260,9 +260,10 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %"), 100 * renderClock .average () / clock .average ()));
 		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{
-		// catch error from getNamedNode
+		// Catch error from getNamedNode.
+		__LOG__ << error .what () << std::endl;
 	}
 }
 

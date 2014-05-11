@@ -700,6 +700,20 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
+
+			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
+			
+			// Inline handling
+			
+			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+
+			if (inlineNode)
+				get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getScene ());
+
+			break;
+		}
 		case OutlineIterType::ExternProto:
 		{
 			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
@@ -707,11 +721,11 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		}
 		case OutlineIterType::Prototype:
 		{
-			const auto & node = *static_cast <X3D::SFNode*> (get_object (iter));
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
-			model_expand_node (node, iter);
+			model_expand_node (sfnode, iter);
 	
-			get_model () -> append (iter, OutlineIterType::X3DExecutionContext, node);
+			get_model () -> append (iter, OutlineIterType::X3DExecutionContext, sfnode);
 			break;
 		}
 		case OutlineIterType::ImportedNode:

@@ -633,7 +633,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		                                  field);
 	}
 
-	prototype -> setup ();
+	if (isInitialized ())
+		prototype -> setup ();
+	else
+		addUninitializedNode (prototype);
 
 	return prototype;
 }

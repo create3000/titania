@@ -116,6 +116,13 @@ public:
 	       Error <DISPOSED>) final override
 	{ return getNode () -> getRootNodes (); }
 
+	virtual
+	const ScenePtr &
+	getScene () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getNode () -> getScene (); }
+
 	///  @name Operations
 
 	virtual

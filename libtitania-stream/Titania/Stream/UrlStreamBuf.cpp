@@ -145,8 +145,8 @@ urlstreambuf::send (const headers_type & headers)
 	if (retcode == CURLM_OK and (running or bytesRead))
 		return this;
 
-	std::clog << "CURL Error: " << url () << std::endl;
-	std::clog << "CURL Error: " << "Can't send request: " << std::strerror (retcode) << std::endl;
+	//std::clog << "CURL Error: " << url () << std::endl;
+	//std::clog << "CURL Error: " << "Can't send request: " << std::strerror (retcode) << std::endl;
 
 	close ();
 
