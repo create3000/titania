@@ -2438,6 +2438,8 @@
     <None Include="Tests\Scripting\MotionBlur.x3dv" />
     <None Include="Tests\Handles\OutlineEditor-IMPORT.x3dv" />
     <None Include="Tests\Handles\OutlineEditor-EXPORT.x3dv" />
+    <None Include="Tests\Handles\DynamicInline.x3dv" />
+    <None Include="Tests\Handles\test.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

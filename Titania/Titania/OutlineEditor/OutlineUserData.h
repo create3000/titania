@@ -83,6 +83,7 @@ public:
 	bool full_expanded;                        // Expanded mode
 	int  selected;                             // Selected state
 
+	std::shared_ptr <OutlineUserData> user_data;
 
 private:
 

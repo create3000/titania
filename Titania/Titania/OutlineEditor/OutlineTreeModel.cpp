@@ -432,33 +432,41 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 	{
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
-			return 0;
-
 		case OutlineIterType::X3DFieldValue:
-			return 0;
-
+		{
+			return false;
+		}
 		case OutlineIterType::X3DField:
 		{
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-			bool       size  = get_input_routes_size (field) + get_output_routes_size (field);
 
 			switch (field -> getType ())
 			{
 				case X3D::X3DConstants::MFNode:
 				{
-					size |= static_cast <X3D::MFNode*> (field) -> size ();
+					if (not static_cast <X3D::MFNode*> (field) -> empty ())
+						return true;
+
+					if (get_input_routes_size (field))
+						return true;
+					
+					if (get_output_routes_size (field))
+						return true;
+
 					break;
 				}
 				default:
 				{
-					size |= 1;
-					break;
+					return true;
 				}
 			}
 
-			return size;
+			return false;
 		}
 		case OutlineIterType::X3DExecutionContext:
+		{
+			return true;
+		}
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:
@@ -468,14 +476,14 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			// Prevent self referencing traversal
 			
 			if (is_in_parents (sfnode, iter))
-				return 0;
+				return false;
 				
 			// Test SFNode
 
 			if (sfnode)
 				return sfnode -> getFieldDefinitions () .size ();
 
-			return 0;
+			return false;
 		}
 		case OutlineIterType::ImportedNode:
 		{
@@ -488,7 +496,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 				// Prevent self referencing traversal
 				
 				if (is_in_parents (exportedNode, iter))
-					return 0;
+					return false;
 					
 				// Test SFNode
 
@@ -498,7 +506,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			catch (...)
 			{ }
 
-			return 0;
+			return false;
 		}
 		case OutlineIterType::ExportedNode:
 		{
@@ -511,7 +519,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 				// Prevent self referencing traversal
 				
 				if (is_in_parents (localNode, iter))
-					return 0;
+					return false;
 					
 				// Test SFNode
 
@@ -521,15 +529,15 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			catch (...)
 			{ }
 
-			return 0;
+			return false;
 		}
 		case OutlineIterType::Separator:
 		{
-			return 0;
+			return false;
 		}
 	}
 
-	return 0;
+	return false;
 }
 
 bool

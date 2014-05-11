@@ -156,6 +156,9 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 void
 OutlineCellRenderer::on_data ()
 {
+	property_editable () = false;
+	set_alignment (0, 0.5);
+
 	cellrenderer_icon .property_pixbuf () = get_icon ();
 
 	switch (get_data_type ())
@@ -178,10 +181,8 @@ OutlineCellRenderer::on_data ()
 				property_text () = "";
 			}
 
-			property_editable ()                              = false;
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::inputOnly] [1];
 			accessType                                        = X3D::inputOnly;
-			set_alignment (0, 0.5);
 			break;
 		}
 		case OutlineIterType::X3DOutputRoute:
@@ -202,43 +203,42 @@ OutlineCellRenderer::on_data ()
 				property_text () = "";
 			}
 
-			property_editable ()                              = false;
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
 			accessType                                        = X3D::outputOnly;
-			set_alignment (0, 0.5);
 			break;
 		}
 		case OutlineIterType::X3DFieldValue:
 		{
 			property_editable () = true;
-			property_text ()     = get_field_value (static_cast <X3D::X3DFieldDefinition*> (get_object ()), true);
 			set_alignment (0, 0);
+
+			property_text () = get_field_value (static_cast <X3D::X3DFieldDefinition*> (get_object ()), true);
 			break;
 		}
 		case OutlineIterType::X3DField:
 		{
-			property_editable ()                              = false;
 			property_text ()                                  = get_object () -> getName ();
 			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon (accessType);
-			set_alignment (0, 0.5);
 			break;
 		}
 		case OutlineIterType::X3DExecutionContext:
 		{
-			property_editable () = false;
-			property_markup ()   = "<b>BODY</b>";
-			set_alignment (0, 0.5);
+			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
+			const auto scene  = dynamic_cast <X3D::X3DScene*> (sfnode -> getValue ());
+
+			if (scene)
+				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getTitle ()) + "«</i>";
+
+			else if (dynamic_cast <X3D::X3DProtoObject*> (sfnode -> getValue ()))
+				property_markup () = "<i><b>Body</b></i>";
+
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:
 		{
-			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
-
-			property_editable () = false;
-			property_markup ()   = get_node_name (*sfnode, "");
-			set_alignment (0, 0.5);
+			property_markup () = get_node_name (*static_cast <X3D::SFNode*> (get_object ()), "");
 			break;
 		}
 		case OutlineIterType::ImportedNode:
@@ -255,9 +255,6 @@ OutlineCellRenderer::on_data ()
 			{
 				property_text () = "";
 			}
-
-			property_editable () = false;
-			set_alignment (0, 0.5);
 			break;
 		}
 		case OutlineIterType::ExportedNode:
@@ -268,15 +265,12 @@ OutlineCellRenderer::on_data ()
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				property_markup ()   = get_node_name (localNode, exportedNode -> getExportedName ());
+				property_markup () = get_node_name (localNode, exportedNode -> getExportedName ());
 			}
 			catch (...)
 			{
 				property_text () = "";
 			}
-
-			property_editable () = false;
-			set_alignment (0, 0.5);
 			break;
 		}
 		case OutlineIterType::Separator:
@@ -284,9 +278,8 @@ OutlineCellRenderer::on_data ()
 			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
 			const auto node   = sfnode -> getValue ();
 
-			property_editable () = false;
-			property_markup ()   = "<b><small>" + Glib::Markup::escape_text (node -> getName ()) + "</small></b>";
-			set_alignment (0, 0);
+			set_alignment (0, math::M_PHI - 1);
+			property_markup () = "<b><small>" + Glib::Markup::escape_text (node -> getName ()) + "</small></b>";
 			break;
 		}
 	}
@@ -327,13 +320,11 @@ OutlineCellRenderer::get_icon () const
 	{
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
-		{
 			return routeImage;
-		}
+
 		case OutlineIterType::X3DFieldValue:
-		{
 			return noneImage;
-		}
+
 		case OutlineIterType::X3DField:
 		{
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
@@ -345,9 +336,8 @@ OutlineCellRenderer::get_icon () const
 			return noneImage;
 		}
 		case OutlineIterType::X3DExecutionContext:
-		{
 			return executionContextImage;
-		}
+
 		case OutlineIterType::X3DBaseNode:
 		{
 			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
@@ -365,25 +355,19 @@ OutlineCellRenderer::get_icon () const
 			return sharedNodeImage;
 		}
 		case OutlineIterType::ExternProto:
-		{
 			return externProtoImage;
-		}
+
 		case OutlineIterType::Prototype:
-		{
 			return prototypeImage;
-		}
+
 		case OutlineIterType::ImportedNode:
-		{
 			return importedNodeImage;
-		}
+
 		case OutlineIterType::ExportedNode:
-		{
 			return exportedNodeImage;
-		}
+
 		case OutlineIterType::Separator:
-		{
 			return noneImage;
-		}
 	}
 
 	return noneImage;
@@ -752,6 +736,8 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 bool
 OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const std::string & string, const bool)
 {
+	X3D::Generator::SmallestStyle ();
+
 	if (field -> getType () == X3D::X3DConstants::SFString)
 	{
 		const auto        sfstring     = static_cast <X3D::SFString*> (field);
@@ -1064,7 +1050,6 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	{
 		// Separator
 
-		const Gdk::Rectangle cell_area (x, y + property_ypad () .get_value (), width, height);
 		Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);
 
 		x += ICON_X_PAD;

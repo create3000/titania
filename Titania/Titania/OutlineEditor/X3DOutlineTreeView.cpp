@@ -290,7 +290,17 @@ X3DOutlineTreeView::get_iters (X3D::X3DChildObject* const object) const
 OutlineUserDataPtr
 X3DOutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
 {
-	return get_model () -> get_user_data (iter);
+	OutlineUserDataPtr user_data = get_model () -> get_user_data (iter);
+
+	if (get_data_type (iter) == OutlineIterType::X3DExecutionContext)
+	{
+		if (not user_data -> user_data)
+			user_data -> user_data .reset (new OutlineUserData ());
+
+		return user_data -> user_data;
+	}
+
+	return user_data;
 }
 
 OutlineUserDataPtr
@@ -400,7 +410,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	for (const auto & child : get_model () -> children ())
 	{
-		routeGraph -> collapse (child);
+		routeGraph -> collapse_tree (child);
 		treeObserver -> unwatch_tree (child);
 	}
 
@@ -440,7 +450,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	for (const auto & child : get_model () -> children ())
 	{
-		routeGraph -> collapse (child);
+		routeGraph -> collapse_tree (child);
 		treeObserver -> unwatch_tree (child);
 	}
 
@@ -512,7 +522,13 @@ X3DOutlineTreeView::set_rootNodes ()
 		// Expand row again if it was previously expanded.
 
 		if (is_expanded (iter))
-			expand_row (get_model () -> get_path (iter), false);
+		{
+			const auto open_path = get_open_path (iter);
+			const auto path      = Gtk::TreePath (iter);
+
+			if (open_path .empty ())
+				expand_row (path, false);
+		}
 	}
 
 	enable_shift_key ();
@@ -562,7 +578,7 @@ X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, con
 	is_expanded (iter, false);
 	is_full_expanded (iter, false);
 
-	routeGraph -> collapse (iter);
+	routeGraph -> collapse_tree (iter);
 	treeObserver -> unwatch_tree (iter);
 
 	get_model () -> clear (iter);
@@ -580,8 +596,12 @@ X3DOutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
+		{
+			disable_shift_key ();
 			collapse_row (get_open_path (iter));
+			enable_shift_key ();
 			break;
+		}
 		default:
 			break;
 	}
@@ -704,13 +724,15 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
-			
+
 			// Inline handling
-			
+
 			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-			if (inlineNode)
+			if (inlineNode and inlineNode -> getScene () and inlineNode -> getScene () not_eq inlineNode -> getBrowser () -> getScene ())
+			{
 				get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getScene ());
+			}
 
 			break;
 		}
@@ -724,7 +746,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			model_expand_node (sfnode, iter);
-	
+
 			get_model () -> append (iter, OutlineIterType::X3DExecutionContext, sfnode);
 			break;
 		}
@@ -880,8 +902,9 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
 		case OutlineIterType::Separator:
+		{
 			break;
-
+		}
 		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DField:
 		{
@@ -889,18 +912,19 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode :
-					case OutlineIterType::ExternProto:
-					case OutlineIterType::Prototype:
-					case OutlineIterType::ImportedNode:
-					case OutlineIterType::ExportedNode:
+					case OutlineIterType::X3DBaseNode  :
+					case OutlineIterType::ExternProto  :
+					case OutlineIterType::Prototype    :
+					case OutlineIterType::ImportedNode :
+					case OutlineIterType::ExportedNode :
 						{
 							if (is_expanded (child))
 							{
-								if (get_open_path (child) .empty () or not get_open_path (child) .is_ancestor (get_model () -> get_path (child)))
-								{
-									expand_row (Gtk::TreePath (child), false);
-								}
+								const auto open_path = get_open_path (child);
+								const auto path      = Gtk::TreePath (child);
+
+								if (open_path .empty ())
+									expand_row (path, false);
 							}
 
 							break;
@@ -920,39 +944,52 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 		{
 			for (const auto & child : parent -> children ())
 			{
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (child));
-
-				switch (field -> getType ())
+				switch (get_data_type (child))
 				{
-					case X3D::X3DConstants::SFNode:
+					case OutlineIterType::X3DExecutionContext:
 					{
-						const auto sfnode = static_cast <X3D::SFNode*> (field);
-
-						if ((field -> isInitializeable () and *sfnode) or is_expanded (child))
-						{
+						if (is_expanded (child))
 							expand_row (Gtk::TreePath (child), false);
-						}
-
-						break;
-					}
-					case X3D::X3DConstants::MFNode:
-					{
-						const auto mfnode = static_cast <X3D::MFNode*> (field);
-
-						if (mfnode -> size () and (field -> isInitializeable () or is_expanded (child)))
-						{
-							expand_row (Gtk::TreePath (child), false);
-						}
 
 						break;
 					}
 					default:
 					{
-						if (is_expanded (child))
-						{
-							expand_row (Gtk::TreePath (child), false);
-						}
+						const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (child));
 
+						switch (field -> getType ())
+						{
+							case X3D::X3DConstants::SFNode:
+							{
+								const auto sfnode = static_cast <X3D::SFNode*> (field);
+
+								if ((field -> isInitializeable () and *sfnode) or is_expanded (child))
+								{
+									expand_row (Gtk::TreePath (child), false);
+								}
+
+								break;
+							}
+							case X3D::X3DConstants::MFNode:
+							{
+								const auto mfnode = static_cast <X3D::MFNode*> (field);
+
+								if (mfnode -> size () and (field -> isInitializeable () or is_expanded (child)))
+								{
+									expand_row (Gtk::TreePath (child), false);
+								}
+
+								break;
+							}
+							default:
+							{
+								if (is_expanded (child))
+									expand_row (Gtk::TreePath (child), false);
+
+								break;
+							}
+						}
+						
 						break;
 					}
 				}
