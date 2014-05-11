@@ -95,6 +95,7 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	            cellrenderer_icon (),
 	cellrenderer_access_type_icon (),
 	                    noneImage (),
+	        executionContextImage (),
 	                baseNodeImage (),
 	               prototypeImage (),
 	             externProtoImage (),
@@ -110,14 +111,15 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 {
 	// Images
 
-	noneImage         = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
-	baseNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
-	prototypeImage    = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Prototype.svg"));
-	externProtoImage  = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExternProto.svg"));
-	importedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"));
-	exportedNodeImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExportedNode.svg"));
-	sharedNodeImage   = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
-	routeImage        = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Route.svg"));
+	noneImage             = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
+	executionContextImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DExecutionContext.svg"));
+	baseNodeImage         = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
+	prototypeImage        = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Prototype.svg"));
+	externProtoImage      = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExternProto.svg"));
+	importedNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"));
+	exportedNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExportedNode.svg"));
+	sharedNodeImage       = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
+	routeImage            = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Route.svg"));
 
 	for (const auto & field : browser -> getSupportedFields ())
 		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
@@ -218,6 +220,13 @@ OutlineCellRenderer::on_data ()
 			property_editable ()                              = false;
 			property_text ()                                  = get_object () -> getName ();
 			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon (accessType);
+			set_alignment (0, 0.5);
+			break;
+		}
+		case OutlineIterType::X3DExecutionContext:
+		{
+			property_editable () = false;
+			property_markup ()   = "<b>BODY</b>";
 			set_alignment (0, 0.5);
 			break;
 		}
@@ -334,6 +343,10 @@ OutlineCellRenderer::get_icon () const
 				return iter -> second;
 
 			return noneImage;
+		}
+		case OutlineIterType::X3DExecutionContext:
+		{
+			return executionContextImage;
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
@@ -1051,10 +1064,10 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	{
 		// Separator
 
-		x += ICON_X_PAD;
-
-		const Gdk::Rectangle cell_area (0, y + property_ypad () .get_value (), width, height);
+		const Gdk::Rectangle cell_area (x, y + property_ypad () .get_value (), width, height);
 		Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);
+
+		x += ICON_X_PAD;
 	}
 	else
 	{

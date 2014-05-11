@@ -216,6 +216,7 @@ private:
 	mutable Gtk::CellRendererPixbuf cellrenderer_access_type_icon;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
+	Glib::RefPtr <Gdk::Pixbuf> executionContextImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> prototypeImage;
 	Glib::RefPtr <Gdk::Pixbuf> externProtoImage;

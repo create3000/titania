@@ -73,6 +73,7 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObje
 			static_cast <X3D::X3DFieldDefinition*> (object) -> addParent (&parent);
 			break;
 		}
+		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:
@@ -121,6 +122,7 @@ OutlineTreeData::is (X3D::X3DChildObject* const value) const
 {
 	switch (type)
 	{
+		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:
@@ -170,6 +172,7 @@ OutlineTreeData::get_user_data () const
 
 	switch (type)
 	{
+		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:

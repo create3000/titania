@@ -458,6 +458,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 			return size;
 		}
+		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -180,7 +180,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 			{
 				auto exportedNode = importedNode .second -> getExportedNode ();
 				hierarchy = X3D::find (exportedNode, object);
-			
+
 				if (not hierarchy .empty ())
 					break;
 			}
@@ -228,7 +228,7 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 				}
 				catch (...)
 				{ }
-	
+
 				break;
 			}
 			case OutlineIterType::ExportedNode:
@@ -433,7 +433,7 @@ void
 X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
-	
+
 	const X3D::X3DExecutionContextPtr & executionContext = get_model () -> get_execution_context ();
 
 	// Unwatch model.
@@ -488,7 +488,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	// Exported nodes
 
-	X3D::ScenePtr scene (executionContext);
+	const auto scene = dynamic_cast <X3D::Scene*> (executionContext .getValue ());
 
 	if (scene)
 	{
@@ -641,11 +641,77 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			break;
 		}
+		case OutlineIterType::X3DExecutionContext:
+		{
+			const auto executionContext = dynamic_cast <X3D::X3DExecutionContext*> (static_cast <X3D::SFNode*> (get_object (iter)) -> getValue ());
+
+			// ExternProtos
+
+			if (not executionContext -> getExternProtoDeclarations () .empty ())
+			{
+				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Extern Prototypes")));
+
+				for (auto & externProto : executionContext -> getExternProtoDeclarations ())
+					get_model () -> append (iter, OutlineIterType::ExternProto, externProto);
+			}
+
+			// Prototypes
+
+			if (not executionContext -> getProtoDeclarations () .empty ())
+			{
+				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Prototypes")));
+
+				for (auto & prototype : executionContext -> getProtoDeclarations ())
+					get_model () -> append (iter, OutlineIterType::Prototype, prototype);
+			}
+
+			// Root nodes
+
+			get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
+
+			for (auto & rootNode : executionContext -> getRootNodes ())
+				get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode);
+
+			// Imported nodes
+
+			if (not executionContext -> getImportedNodes () .empty ())
+			{
+				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Imported Nodes")));
+
+				for (auto & importedNode : executionContext -> getImportedNodes ())
+					get_model () -> append (iter, OutlineIterType::ImportedNode, importedNode .second);
+			}
+
+			// Exported nodes
+
+			const auto scene = dynamic_cast <X3D::Scene*> (executionContext);
+
+			if (scene)
+			{
+				if (not scene -> getExportedNodes () .empty ())
+				{
+					get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Exported Nodes")));
+
+					for (auto & exportedNode : scene -> getExportedNodes ())
+						get_model () -> append (iter, OutlineIterType::ExportedNode, exportedNode .second);
+				}
+			}
+
+			break;
+		}
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
 		{
 			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
+			break;
+		}
+		case OutlineIterType::Prototype:
+		{
+			const auto & node = *static_cast <X3D::SFNode*> (get_object (iter));
+
+			model_expand_node (node, iter);
+	
+			get_model () -> append (iter, OutlineIterType::X3DExecutionContext, node);
 			break;
 		}
 		case OutlineIterType::ImportedNode:
@@ -772,6 +838,7 @@ X3DOutlineTreeView::toggle_expand (const Gtk::TreeModel::iterator & iter, const 
 	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DField:
+		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProto:
 		case OutlineIterType::Prototype:
@@ -795,21 +862,24 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 
 	switch (get_data_type (parent))
 	{
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
 		case OutlineIterType::Separator:
 			break;
 
+		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DField:
 		{
 			for (const auto & child : parent -> children ())
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode:
+					case OutlineIterType::X3DBaseNode :
+					case OutlineIterType::ExternProto:
+					case OutlineIterType::Prototype:
+					case OutlineIterType::ImportedNode:
+					case OutlineIterType::ExportedNode:
 						{
 							if (is_expanded (child))
 							{
@@ -829,6 +899,8 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ExternProto:
+		case OutlineIterType::Prototype:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		{

@@ -65,6 +65,7 @@ enum class OutlineIterType
 	X3DOutputRoute,
 	X3DFieldValue,
 	X3DField,
+	X3DExecutionContext,
 	X3DBaseNode,
 	ExternProto,
 	Prototype,

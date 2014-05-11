@@ -1,3 +1,14 @@
+2014-05-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OutlineTreeData.h:
+	* OutlineTreeData.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp:
+	* X3DExecutionContext.svg:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2014-05-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* PROTO.png:
