@@ -75,6 +75,7 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	       proto ()
 {
 	addField (inputOutput, "metadata", metadata ());
+	url () .setName ("url");
 
 	addChildren (url (), scene, proto);
 }

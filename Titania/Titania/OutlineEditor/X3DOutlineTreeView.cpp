@@ -738,7 +738,15 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		}
 		case OutlineIterType::ExternProto:
 		{
-			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
+			const auto & sfnode    = *static_cast <X3D::SFNode*> (get_object (iter));
+			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
+			const auto url         = &externProto -> url ();
+
+			model_expand_node (sfnode, iter);
+
+			get_model () -> append (iter, OutlineIterType::X3DField, url);
+
+			get_user_data (url) -> selected |= OUTLINE_SPECIAL;
 			break;
 		}
 		case OutlineIterType::Prototype:

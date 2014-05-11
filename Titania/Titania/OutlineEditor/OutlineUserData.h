@@ -62,6 +62,7 @@ constexpr int OUTLINE_SELECTED_INPUT  = 1 << 1;
 constexpr int OUTLINE_SELECTED_OUTPUT = 1 << 2;
 constexpr int OUTLINE_OVER_INPUT      = 1 << 3;
 constexpr int OUTLINE_OVER_OUTPUT     = 1 << 4;
+constexpr int OUTLINE_SPECIAL         = 1 << 5;
 
 class OutlineUserData :
 	public X3D::X3DBase

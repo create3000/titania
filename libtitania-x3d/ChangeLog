@@ -1,5 +1,9 @@
 2014-05-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ExternProto.cpp: 
+
+2014-05-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Loader.cpp:
 	* InlineTool.h:

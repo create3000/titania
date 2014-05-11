@@ -217,7 +217,13 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::X3DField:
 		{
-			property_text ()                                  = get_object () -> getName ();
+			const auto userData = property_data () .get_value () -> get_user_data ();
+
+			if (userData -> selected & OUTLINE_SPECIAL)
+				property_markup () = "<i><b>" + Glib::Markup::escape_text (get_object () -> getName ()) + "</b></i>";
+			else
+				property_text () = get_object () -> getName ();
+
 			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon (accessType);
 			break;
 		}
