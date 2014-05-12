@@ -1316,7 +1316,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 	}
 
 	// Setup new nodes.
-	scene -> setup ();
+	scene -> realize ();
 
 	return nodes;
 }

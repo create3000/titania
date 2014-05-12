@@ -122,18 +122,16 @@ X3DExecutionContext::initialize ()
 	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
 
 	if (not isProto ())
-	{
-		while (not uninitializedNodes .empty ())
-		{
-			for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
-				uninitializedNode -> setup ();
-		}
-	}
-	else
-	{
-		rootNodes .isTainted (true);       // !!! Prevent generating events.
+		realize ();
+}
 
-		uninitializedNodes .clear ();
+void
+X3DExecutionContext::realize ()
+{
+	while (not uninitializedNodes .empty ())
+	{
+		for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+			uninitializedNode -> setup ();
 	}
 }
 
@@ -622,7 +620,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
 
-	ProtoPtr prototype = new Proto (this);
+	const ProtoPtr prototype = new Proto (this);
 
 	prototype -> setName (name);
 
@@ -690,7 +688,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const ExternProtoPtr & externProtoDeclaration)
+X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const ExternProtoPtr & externProto)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -698,12 +696,12 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
 
-	externProtos .erase (externProtoDeclaration -> getName ());
-	externProtos .push_back (name, externProtoDeclaration);
+	externProtos .erase (externProto -> getName ());
+	externProtos .push_back (name, externProto);
 	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
 
-	externProtoDeclaration -> setName (name);
+	externProto -> setName (name);
 
 	externProtosOutput = getCurrentTime ();
 }
@@ -741,7 +739,7 @@ X3DExecutionContext::createExternProtoDeclaration (const std::string & name, con
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	ExternProtoPtr externProto = new ExternProto (this);
+	const ExternProtoPtr externProto = new ExternProto (this);
 
 	externProto -> setName (name);
 
@@ -752,9 +750,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		                                    field);
 	}
 
-	externProto -> setup ();
-
 	externProto -> url () = URLList;
+	externProto -> setup ();
 
 	return externProto;
 }

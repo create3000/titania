@@ -4,7 +4,21 @@ META "comment" "World of Titania"
 META "created" "Thu, 08 May 2014 13:51:27 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Sun, 11 May 2014 11:52:02 GMT"
+META "modified" "Mon, 12 May 2014 00:26:12 GMT"
+
+EXTERNPROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Grouping/BooleanSwitch.x3dv"
+]
 
 PROTO Rotor [
   inputOutput SFNode     metadata MetadataString { }
@@ -95,7 +109,13 @@ DEF Export1 Transform {
   translation 0 1.23317 0
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        ambientIntensity 0.25
+        diffuseColor 0.282435 0.0851587 0.134462
+        specularColor 0.276305 0.11431 0.139857
+        shininess 0.127273
+        transparency 0.01
+      }
     }
     geometry Text {
       string "EXPORT statement 1"
@@ -112,7 +132,12 @@ DEF Export1 Transform {
 DEF Export2 Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material DEF Artdeco2 Material {
+        ambientIntensity 0.242424
+        diffuseColor 0.304 0.09025 0.207364
+        specularColor 0.6665 0.579046 0.830303
+        shininess 0.0727273
+      }
     }
     geometry Text {
       string "EXPORT statement 2"
@@ -131,6 +156,14 @@ DEF Export3 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
+      texture ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
     }
     geometry Text {
       string "EXPORT statement 3"
@@ -144,8 +177,14 @@ DEF Export3 Transform {
   }
 }
 
+BooleanSwitch { }
+
+ROUTE Export1.rotation_changed TO Export2.set_rotation
+ROUTE Export1.rotation_changed TO Export3.set_rotation
+
 EXPORT Export1 AS A
-EXPORT Export1 AS B
+EXPORT Export2 AS B
+EXPORT Export3 AS C
 EXPORT Export1
 EXPORT Export2
 EXPORT Export3

@@ -160,9 +160,6 @@ X3DBaseNode::setup ()
 {
 	executionContext -> addParent (this);
 
-	if (executionContext -> isProto ())
-		return;
-
 	for (const auto & field : fieldDefinitions)
 	{
 		field -> updateReferences ();
@@ -173,7 +170,6 @@ X3DBaseNode::setup ()
 		child -> isTainted (false);
 
 	initialized = true;
-
 	initialize ();
 }
 

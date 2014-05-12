@@ -64,7 +64,6 @@ class Proto :
 public:
 
 	using X3DProtoObject::createInstance;
-	using X3DExecutionContext::dispose;
 
 	///  @name Construction
 

@@ -218,11 +218,13 @@ private:
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> executionContextImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
+	Glib::RefPtr <Gdk::Pixbuf> baseNodeUImage;
 	Glib::RefPtr <Gdk::Pixbuf> prototypeImage;
 	Glib::RefPtr <Gdk::Pixbuf> externProtoImage;
 	Glib::RefPtr <Gdk::Pixbuf> importedNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> exportedNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> sharedNodeImage;
+	Glib::RefPtr <Gdk::Pixbuf> sharedNodeUImage;
 	Glib::RefPtr <Gdk::Pixbuf> routeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 	AccessTypeImageIndex       accessTypeImages;

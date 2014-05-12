@@ -128,8 +128,6 @@ throw (Error <INVALID_NAME>,
 	copy -> importImportedNodes (this);
 	copy -> importRoutes (this);
 
-	copy -> setup (); // Do it again.
-
 	return copy;
 }
 

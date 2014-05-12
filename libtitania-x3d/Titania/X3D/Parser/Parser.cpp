@@ -828,7 +828,6 @@ Parser::proto ()
 							_proto -> addInterfaceComments (_interfaceComments);
 							_proto -> addComments (_comments);
 							_proto -> addInnerComments (getComments ());
-							_proto -> setup (); // Do it again.
 
 							return true;
 						}

@@ -128,7 +128,7 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 	{
 		try
 		{
-			if (executionContext -> isLocalNode (route -> getSourceNode ()))
+			if (route -> getExecutionContext () -> isScene () or route -> getExecutionContext () -> isProto ())
 				routes .emplace_back (route);
 		}
 		catch (const X3D::X3DError &)
@@ -147,7 +147,7 @@ OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) c
 	{
 		try
 		{
-			size += executionContext -> isLocalNode (route -> getSourceNode ());
+			size += route -> getExecutionContext () -> isScene () or route -> getExecutionContext () -> isProto ();
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -165,7 +165,7 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 	{
 		try
 		{
-			if (executionContext -> isLocalNode (route -> getDestinationNode ()))
+			if (route -> getExecutionContext () -> isScene () or route -> getExecutionContext () -> isProto ())
 				routes .emplace_back (route);
 		}
 		catch (const X3D::X3DError &)
@@ -184,7 +184,7 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 	{
 		try
 		{
-			size += executionContext -> isLocalNode (route -> getDestinationNode ());
+			size += route -> getExecutionContext () -> isScene () or route -> getExecutionContext () -> isProto ();
 		}
 		catch (const X3D::X3DError &)
 		{ }

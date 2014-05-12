@@ -67,10 +67,6 @@ public:
 
 	///  @name Fields
 
-	Output &
-	disconnected ()
-	{ return disconnectedOutput; }
-
 	const Output &
 	disconnected () const
 	{ return disconnectedOutput; }

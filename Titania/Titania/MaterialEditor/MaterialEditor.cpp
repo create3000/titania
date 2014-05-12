@@ -565,7 +565,7 @@ MaterialEditor::updateAppearance ()
 
 		undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
-		getBrowser () -> getExecutionContext () -> setup ();
+		getBrowser () -> getExecutionContext () -> realize ();
 		getBrowser () -> update ();
 
 		if (initialized or appearances .size () > 1)

@@ -1,3 +1,15 @@
+2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MagicImport.cpp:
+	* X3DBrowserEditor.cpp:
+	* MaterialEditor.cpp:
+	* OutlineTreeModel.cpp:
+	* SharedNode.u.svg:
+	* X3DOutlineTreeView.cpp:
+	* X3DBaseNode.u.svg:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2014-05-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineUserData.h:

@@ -83,14 +83,9 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
-	// Update only initalized nodes
+	addInterest (this, &X3DGeometryNode::update);
 
-	if (not getExecutionContext () -> isProto ())
-	{
-		addInterest (this, &X3DGeometryNode::update);
-
-		update ();
-	}
+	update ();
 }
 
 Box3f

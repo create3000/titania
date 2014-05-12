@@ -78,6 +78,11 @@ class X3DExecutionContext :
 {
 public:
 
+	///  @name Construction
+
+	void
+	realize ();
+
 	///  @name Tests
 
 	virtual

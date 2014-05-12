@@ -94,15 +94,17 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	                data_property (*this, "tree-data", nullptr),
 	            cellrenderer_icon (),
 	cellrenderer_access_type_icon (),
-	                    noneImage (),
-	        executionContextImage (),
-	                baseNodeImage (),
-	               prototypeImage (),
-	             externProtoImage (),
-	            importedNodeImage (),
-	            exportedNodeImage (),
-	              sharedNodeImage (),
-	                   routeImage (),
+	                    noneImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"))),
+	        executionContextImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DExecutionContext.svg"))),
+	                baseNodeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"))),
+	               baseNodeUImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.u.svg"))),
+	               prototypeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Prototype.svg"))),
+	             externProtoImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExternProto.svg"))),
+	            importedNodeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"))),
+	            exportedNodeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExportedNode.svg"))),
+	              sharedNodeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"))),
+	             sharedNodeUImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.u.svg"))),
+	                   routeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Route.svg"))),
 	              fieldTypeImages (),
 	             accessTypeImages (),
 	                   accessType (),
@@ -110,16 +112,6 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	                     textview ()
 {
 	// Images
-
-	noneImage             = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"));
-	executionContextImage = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DExecutionContext.svg"));
-	baseNodeImage         = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
-	prototypeImage        = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Prototype.svg"));
-	externProtoImage      = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExternProto.svg"));
-	importedNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"));
-	exportedNodeImage     = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExportedNode.svg"));
-	sharedNodeImage       = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/SharedNode.svg"));
-	routeImage            = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Route.svg"));
 
 	for (const auto & field : browser -> getSupportedFields ())
 		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
@@ -353,12 +345,20 @@ OutlineCellRenderer::get_icon () const
 				return baseNodeImage;
 
 			if (node -> getExecutionContext () == treeView -> get_model () -> get_execution_context ())
-				return baseNodeImage;
+			{
+				if (node -> isInitialized ())
+					return baseNodeImage;
+				
+				return baseNodeUImage;
+			}
 
 			if (treeView -> get_model () -> get_execution_context () -> isImportedNode (*sfnode))
 				return importedNodeImage;
 
-			return sharedNodeImage;
+			if (node -> isInitialized ())
+				return sharedNodeImage;
+
+			return sharedNodeUImage;
 		}
 		case OutlineIterType::ExternProto:
 			return externProtoImage;

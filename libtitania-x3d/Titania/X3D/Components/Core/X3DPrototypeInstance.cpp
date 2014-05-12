@@ -95,31 +95,28 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	// Assign protos and root nodes
 
-	if (not executionContext -> isProto ())
+	setEncoding             (proto -> getEncoding ());
+	setSpecificationVersion (proto -> getSpecificationVersion ());
+	setCharacterEncoding    (proto -> getCharacterEncoding ());
+	setComment              (proto -> getComment ());
+
+	setWorldURL (proto -> getWorldURL ());
+
+	setProfile (proto -> getProfile ());
+
+	for (const auto & component : proto -> getComponents ())
+		addComponent (component);
+
+	setUnits (proto -> getUnits ());
+
+	try
 	{
-		setEncoding             (proto -> getEncoding ());
-		setSpecificationVersion (proto -> getSpecificationVersion ());
-		setCharacterEncoding    (proto -> getCharacterEncoding ());
-		setComment              (proto -> getComment ());
-
-		setWorldURL (proto -> getWorldURL ());
-
-		setProfile (proto -> getProfile ());
-
-		for (const auto & component : proto -> getComponents ())
-			addComponent (component);
-
-		setUnits (proto -> getUnits ());
-
-		try
-		{
-			importExternProtos (proto, CloneType ());
-			importProtos (proto, CloneType ());
-			importRootNodes (proto);
-		}
-		catch (const X3DError &)
-		{ }
+		importExternProtos (proto, CloneType ());
+		importProtos (proto, CloneType ());
+		importRootNodes (proto);
 	}
+	catch (const X3DError &)
+	{ }
 
 	setExtendedEventHandling (false);
 
@@ -146,15 +143,12 @@ X3DPrototypeInstance::initialize ()
 {
 	try
 	{
-		if (not getExecutionContext () -> isProto ())
-		{
-			// Defer assigning imports and routes until now
+		// Defer assigning imports and routes until now
 
-			Proto* const proto = protoDeclaration -> getProto ();
+		Proto* const proto = protoDeclaration -> getProto ();
 
-			importImportedNodes (proto);
-			importRoutes (proto);
-		}
+		importImportedNodes (proto);
+		importRoutes (proto);
 	}
 	catch (const X3DError &)
 	{ }

@@ -170,7 +170,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 
 	disable_shift_key ();
 
-	auto hierarchy = X3D::find (get_model () -> get_execution_context () -> getRootNodes (), object);
+	auto hierarchy = X3D::find (get_model () -> get_execution_context () -> getRootNodes (), object, false);
 
 	if (hierarchy .empty ())
 	{
@@ -198,10 +198,6 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 bool
 X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::vector <X3D::X3DChildObject*> & hierarchy, Gtk::TreeModel::Path & path)
 {
-	const auto top = hierarchy .front ();
-
-	hierarchy .erase (hierarchy .begin ());
-
 	path .push_back (0);
 
 	for (const auto child : children)
@@ -211,6 +207,12 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 
 		switch (data -> get_type ())
 		{
+			case OutlineIterType::X3DExecutionContext:
+			{
+				expand_row (path, false);
+
+				return expand_to (child -> children (), hierarchy, path);
+			}
 			case OutlineIterType::X3DBaseNode:
 			{
 				object = static_cast <X3D::SFNode*> (object) -> getValue ();
@@ -250,8 +252,10 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 				break;
 		}
 
-		if (object == top)
+		if (object == hierarchy .front ())
 		{
+			hierarchy .erase (hierarchy .begin ());
+
 			if (hierarchy .empty ())
 				return true;
 
@@ -663,7 +667,12 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		}
 		case OutlineIterType::X3DExecutionContext:
 		{
-			const auto executionContext = dynamic_cast <X3D::X3DExecutionContext*> (static_cast <X3D::SFNode*> (get_object (iter)) -> getValue ());
+			const auto & sfnode           = *static_cast <X3D::SFNode*> (get_object (iter));
+			const auto   executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode .getValue ());
+
+			// Realize prototypes when expanded.
+
+			executionContext -> realize ();
 
 			// ExternProtos
 
@@ -751,7 +760,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		}
 		case OutlineIterType::Prototype:
 		{
-			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
+			const auto & sfnode  = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			model_expand_node (sfnode, iter);
 
