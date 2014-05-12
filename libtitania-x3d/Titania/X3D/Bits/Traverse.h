@@ -72,6 +72,12 @@ bool
 traverse (SFNode &, const TraverseCallback &, const bool = true);
 
 std::vector <X3DChildObject*>
+find (const X3DScene* const, X3DChildObject* const, const bool = true);
+
+std::vector <X3DChildObject*>
+find (const X3DExecutionContext* const, X3DChildObject* const, const bool = true);
+
+std::vector <X3DChildObject*>
 find (const X3D::MFNode &, X3DChildObject* const, const bool = true);
 
 std::vector <X3DChildObject*>

@@ -234,11 +234,10 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 {
 	try
 	{
-		const auto sourceNode = route -> getSourceNode ();
-
-		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (sourceNode))
+		if (not route -> getExecutionContext () -> isScene () and not route -> getExecutionContext () -> isProto ())
 			return;
 
+		const auto sourceNode     = route -> getSourceNode ();
 		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
 		const auto sourceUserData = treeView -> get_user_data (sourceField);
 
@@ -313,11 +312,10 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 {
 	try
 	{
-		const auto destinationNode = route -> getDestinationNode ();
-
-		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (destinationNode))
+		if (not route -> getExecutionContext () -> isScene () and not route -> getExecutionContext () -> isProto ())
 			return;
 
+		const auto destinationNode     = route -> getDestinationNode ();
 		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
 		const auto destinationUserData = treeView -> get_user_data (destinationField);
 
@@ -683,15 +681,14 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 	{
 		//__LOG__ << std::endl;
 
-		const auto sourceNode = route -> getSourceNode ();
-
-		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (sourceNode))
+		if (not route -> getExecutionContext () -> isScene () and not route -> getExecutionContext () -> isProto ())
 			return;
 
 		// Remove disconnected interest
 
 		route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
 
+		const auto sourceNode     = route -> getSourceNode ();
 		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
 		const auto sourceUserData = treeView -> get_user_data (sourceField);
 
@@ -762,15 +759,14 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 	{
 		//__LOG__ << std::endl;
 
-		const auto destinationNode = route -> getDestinationNode ();
-
-		if (not treeView -> get_model () -> get_execution_context () -> isLocalNode (destinationNode))
+		if (not route -> getExecutionContext () -> isScene () and not route -> getExecutionContext () -> isProto ())
 			return;
 
 		// Remove disconnected interest
 
 		route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
 
+		const auto destinationNode     = route -> getDestinationNode ();
 		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
 		const auto destinationUserData = treeView -> get_user_data (destinationField);
 

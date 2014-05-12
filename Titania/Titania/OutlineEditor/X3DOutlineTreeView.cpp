@@ -170,24 +170,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 
 	disable_shift_key ();
 
-	auto hierarchy = X3D::find (get_model () -> get_execution_context () -> getRootNodes (), object, false);
-
-	if (hierarchy .empty ())
-	{
-		for (const auto & importedNode : get_model () -> get_execution_context () -> getImportedNodes ())
-		{
-			try
-			{
-				auto exportedNode = importedNode .second -> getExportedNode ();
-				hierarchy = X3D::find (exportedNode, object);
-
-				if (not hierarchy .empty ())
-					break;
-			}
-			catch (...)
-			{ }
-		}
-	}
+	auto hierarchy = X3D::find (get_model () -> get_execution_context (), object, false);
 
 	if (not hierarchy .empty ())
 		expand_to (get_model () -> children (), hierarchy, path);
@@ -214,6 +197,7 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 				return expand_to (child -> children (), hierarchy, path);
 			}
 			case OutlineIterType::X3DBaseNode:
+			case OutlineIterType::Prototype:
 			{
 				object = static_cast <X3D::SFNode*> (object) -> getValue ();
 				break;
