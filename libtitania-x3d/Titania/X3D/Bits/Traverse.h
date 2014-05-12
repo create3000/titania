@@ -63,6 +63,15 @@
 namespace titania {
 namespace X3D {
 
+constexpr int TRAVERSE_EXTERN_PROTOS   = 1;
+constexpr int TRAVERSE_PROTOTYPES      = 1 << 1;
+constexpr int TRAVERSE_ROOT_NODES      = 1 << 2;
+constexpr int TRAVERSE_PROTO_INSTANCES = 1 << 3;
+constexpr int TRAVERSE_IMPORTED_NODES  = 1 << 4;
+constexpr int TRAVERSE_EXPORTED_NODES  = 1 << 5;
+constexpr int TRAVERSE_INLINE_NODES    = 1 << 6;
+constexpr int TRAVERSE_TOOL_OBJECTS    = 1 << 7;
+
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
 bool
@@ -72,16 +81,16 @@ bool
 traverse (SFNode &, const TraverseCallback &, const bool = true);
 
 std::vector <X3DChildObject*>
-find (X3DScene* const, X3DChildObject* const, const bool = true);
+find (X3DScene* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
 
 std::vector <X3DChildObject*>
-find (X3DExecutionContext* const, X3DChildObject* const, const bool = true);
+find (X3DExecutionContext* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
 
 std::vector <X3DChildObject*>
-find (const X3D::MFNode &, X3DChildObject* const, const bool = true);
+find (const X3D::MFNode &, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
 
 std::vector <X3DChildObject*>
-find (const X3D::SFNode &, X3DChildObject* const, const bool = true);
+find (const X3D::SFNode &, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
 
 template <class Type>
 void

@@ -59,8 +59,8 @@ namespace titania {
 namespace puck {
 
 OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
-	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	    Glib::Object (),
 	  Gtk::TreeModel (),
 	executionContext (executionContext),

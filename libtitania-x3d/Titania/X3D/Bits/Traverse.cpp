@@ -138,10 +138,10 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 }
 
 bool
-find (X3DBaseNode* const, X3DChildObject* const, const bool, std::vector <X3DChildObject*> &, NodeSet &);
+find (X3DBaseNode* const, X3DChildObject* const, const int, std::vector <X3DChildObject*> &, NodeSet &);
 
 bool
-find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not executionContext)
 		return false;
@@ -151,35 +151,47 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	if (executionContext == object)
 		return true;
 
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+	if (flags & TRAVERSE_EXTERN_PROTOS)
 	{
-		if (find (static_cast <X3DBaseNode*> (externProto), object, inScene, hierarchy, seen))
-			return true;
-	}
-
-	for (const auto & prototype : executionContext -> getProtoDeclarations ())
-	{
-		if (find (static_cast <X3DBaseNode*> (prototype), object, inScene, hierarchy, seen))
-			return true;
-	}
-
-	for (const auto & node : executionContext -> getRootNodes ())
-	{
-		if (find (node, object, inScene, hierarchy, seen))
-			return true;
-	}
-
-	for (const auto & importedNode : executionContext -> getImportedNodes ())
-	{
-		try
+		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		{
-			const auto exportedNode = importedNode .second -> getExportedNode ();
-
-			if (find (exportedNode, object, inScene, hierarchy, seen))
+			if (find (static_cast <X3DBaseNode*> (externProto), object, flags, hierarchy, seen))
 				return true;
 		}
-		catch (...)
-		{ }
+	}
+
+	if (flags & TRAVERSE_PROTOTYPES)
+	{
+		for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		{
+			if (find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchy, seen))
+				return true;
+		}
+	}
+
+	if (flags & TRAVERSE_ROOT_NODES)
+	{
+		for (const auto & node : executionContext -> getRootNodes ())
+		{
+			if (find (node, object, flags, hierarchy, seen))
+				return true;
+		}
+	}
+
+	if (flags & TRAVERSE_IMPORTED_NODES)
+	{
+		for (const auto & importedNode : executionContext -> getImportedNodes ())
+		{
+			try
+			{
+				const auto exportedNode = importedNode .second -> getExportedNode ();
+
+				if (find (exportedNode, object, flags, hierarchy, seen))
+					return true;
+			}
+			catch (...)
+			{ }
+		}
 	}
 
 	hierarchy .pop_back ();
@@ -187,13 +199,13 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 }
 
 bool
-find (X3DScene* const scene, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DScene* const scene, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
-	return find (static_cast <X3DExecutionContext*> (scene), object, inScene, hierarchy, seen);
+	return find (static_cast <X3DExecutionContext*> (scene), object, flags, hierarchy, seen);
 }
 
 bool
-find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not node)
 		return false;
@@ -222,7 +234,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 
 				auto sfnode = static_cast <X3D::SFNode*> (field);
 
-				if (find (*sfnode, object, inScene, hierarchy, seen))
+				if (find (*sfnode, object, flags, hierarchy, seen))
 					return true;
 
 				hierarchy .pop_back ();
@@ -236,7 +248,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 
 				for (const auto & value : *mfnode)
 				{
-					if (find (value, object, inScene, hierarchy, seen))
+					if (find (value, object, flags, hierarchy, seen))
 						return true;
 				}
 
@@ -248,10 +260,13 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 		}
 	}
 
-	if (not inScene)
+	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		if (find (node -> getInnerNode (), object, inScene, hierarchy, seen))
-			return true;
+		if (flags & TRAVERSE_PROTO_INSTANCES)
+		{
+			if (find (node -> getInnerNode (), object, flags, hierarchy, seen))
+				return true;
+		}
 
 		const auto protoObject = dynamic_cast <X3DProtoObject*> (node);
 
@@ -261,35 +276,47 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 			
 			if (protoObject -> isExternproto ())
 			{
-				if (find (static_cast <X3DBaseNode*> (prototype), object, inScene, hierarchy, seen))
-					return true;		
+				if (flags & TRAVERSE_EXTERN_PROTOS)
+				{
+					if (find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchy, seen))
+						return true;	
+				}	
 			}
 			else
 			{
-				if (find (static_cast <X3DExecutionContext*> (prototype), object, inScene, hierarchy, seen))
-					return true;
+				if (flags & TRAVERSE_PROTOTYPES)
+				{
+					if (find (static_cast <X3DExecutionContext*> (prototype), object, flags, hierarchy, seen))
+						return true;
+				}
 			}
 		}
 		else
 		{
-			const auto inlineNode = dynamic_cast <Inline*> (node);
-
-			if (inlineNode)
+			if (flags & TRAVERSE_INLINE_NODES)
 			{
-				if (find (static_cast <X3DExecutionContext*> (inlineNode -> getScene ()), object, inScene, hierarchy, seen))
-					return true;
+				const auto inlineNode = dynamic_cast <Inline*> (node);
+
+				if (inlineNode)
+				{
+					if (find (static_cast <X3DExecutionContext*> (inlineNode -> getScene ()), object, flags, hierarchy, seen))
+						return true;
+				}
 			}
 
 			// Note: InlineTool is both Inline and X3DToolObject.
 
-			X3DToolObject* const tool = dynamic_cast <X3DToolObject*> (node);
-
-			if (tool)
+			if (flags & TRAVERSE_TOOL_OBJECTS)
 			{
-				for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
+				X3DToolObject* const tool = dynamic_cast <X3DToolObject*> (node);
+
+				if (tool)
 				{
-					if (find (rootNode, object, inScene, hierarchy, seen))
-						return true;
+					for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
+					{
+						if (find (rootNode, object, flags, hierarchy, seen))
+							return true;
+					}
 				}
 			}
 		}
@@ -300,36 +327,36 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 }
 
 std::vector <X3DChildObject*>
-find (X3DScene* const scene, X3DChildObject* const object, const bool inScene)
+find (X3DScene* const scene, X3DChildObject* const object, const int flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
 
-	find (scene, object, inScene, hierarchy, seen);
+	find (scene, object, flags, hierarchy, seen);
 
 	return hierarchy;
 }
 
 std::vector <X3DChildObject*>
-find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const bool inScene)
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
 
-	find (executionContext, object, inScene, hierarchy, seen);
+	find (executionContext, object, flags, hierarchy, seen);
 
 	return hierarchy;
 }
 
 std::vector <X3DChildObject*>
-find (const X3D::MFNode & nodes, X3DChildObject* const object, const bool inScene)
+find (const X3D::MFNode & nodes, X3DChildObject* const object, const int flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
 
 	for (const auto & node : nodes)
 	{
-		if (find (node, object, inScene, hierarchy, seen))
+		if (find (node, object, flags, hierarchy, seen))
 			return hierarchy;
 	}
 
@@ -337,12 +364,12 @@ find (const X3D::MFNode & nodes, X3DChildObject* const object, const bool inScen
 }
 
 std::vector <X3DChildObject*>
-find (const X3D::SFNode & node, X3DChildObject* const object, const bool inScene)
+find (const X3D::SFNode & node, X3DChildObject* const object, const int flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
 
-	find (node, object, inScene, hierarchy, seen);
+	find (node, object, flags, hierarchy, seen);
 
 	return hierarchy;
 }

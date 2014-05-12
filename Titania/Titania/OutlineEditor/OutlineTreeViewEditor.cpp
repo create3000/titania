@@ -65,8 +65,8 @@ namespace puck {
 const std::string OutlineTreeViewEditor::dragDataType = "titania/outline-tree/row";
 
 OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
-	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
 	               selection (new OutlineSelection (browserWindow, this)),
 	            overUserData (new OutlineUserData ()),
@@ -211,30 +211,30 @@ OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 	//	context -> drag_finish (false, false, time);
 }
 
-void
-OutlineTreeViewEditor::on_rename_node_activate ()
-{
-	//__LOG__ << std::endl;
-
-	//
-	//	Gtk::TreeModel::Path path;
-	//	Gtk::TreeViewColumn* column = nullptr;
-	//	int                  cell_x = 0;
-	//	int                  cell_y = 0;
-	//
-	//	get_path_at_pos (x, y, path, column, cell_x, cell_y);
-	//
-	//	if (path .size ())
-	//	{
-	//		Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
-	//
-	//		if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-	//		{
-	//			set_cursor (path, *column, true);
-	//			return;
-	//		}
-	//	}
-}
+//void
+//OutlineTreeViewEditor::on_rename_node_activate ()
+//{
+//	//__LOG__ << std::endl;
+//
+//	//
+//	//	Gtk::TreeModel::Path path;
+//	//	Gtk::TreeViewColumn* column = nullptr;
+//	//	int                  cell_x = 0;
+//	//	int                  cell_y = 0;
+//	//
+//	//	get_path_at_pos (x, y, path, column, cell_x, cell_y);
+//	//
+//	//	if (path .size ())
+//	//	{
+//	//		Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+//	//
+//	//		if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
+//	//		{
+//	//			set_cursor (path, *column, true);
+//	//			return;
+//	//		}
+//	//	}
+//}
 
 void
 OutlineTreeViewEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
@@ -252,19 +252,13 @@ OutlineTreeViewEditor::on_button_press_event (GdkEventButton* event)
 			if (select_field_value (event -> x, event -> y))
 				return true;
 
-			break;
-		}
-		case 3:
-		{
-			// getPopupMenu () .popup (event -> button, event -> time);
-			// return true;
-			break;
+			return Gtk::TreeView::on_button_press_event (event);
 		}
 		default:
 			break;
 	}
 
-	return Gtk::TreeView::on_button_press_event (event);
+	return false;
 }
 
 bool
@@ -277,13 +271,13 @@ OutlineTreeViewEditor::on_button_release_event (GdkEventButton* event)
 			if (select_access_type (event -> x, event -> y))
 				return true;
 
-			break;
+			return Gtk::TreeView::on_button_release_event (event);
 		}
 		default:
 			break;
 	}
 
-	return Gtk::TreeView::on_button_release_event (event);
+	return false;
 }
 
 bool
@@ -315,11 +309,12 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 		{
 			try
 			{
-				const auto object       = static_cast <X3D::SFNode*> (get_object (iter));
-				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (object -> getValue ());
+				const auto sfnode       = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				selection -> select (localNode);
+				//if (localNode -> getExecutionContext () == get_model () -> get_execution_context ()) // Test selection, removne comment.
+					selection -> select (localNode);
 			}
 			catch (...)
 			{ }
@@ -351,7 +346,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 
 			if (is_real_local_node (parent))
 			{
-				X3D::X3DFieldDefinition* const field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
 				if (field -> getAccessType () not_eq X3D::outputOnly)
 				{

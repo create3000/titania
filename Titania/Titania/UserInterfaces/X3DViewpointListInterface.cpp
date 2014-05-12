@@ -74,6 +74,8 @@ X3DViewpointListInterface::create (const std::string & filename)
 	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("TreeView", m_TreeView);
 	m_TreeView -> set_name ("TreeView");
+
+	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_map));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.

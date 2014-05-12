@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,7 +66,11 @@ class OutlineEditor :
 {
 public:
 
+	///  @name Construction
+
 	OutlineEditor (BrowserWindow* const);
+
+	///  @name Member access
 
 	OutlineTreeViewEditor &
 	getTreeView ()
@@ -79,6 +83,8 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	on_map () final override;
@@ -87,8 +93,42 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	void
 	set_initialized ();
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*) final override;
+
+	// Popup menu
+
+	virtual
+	void
+	on_allow_editing_of_extern_protos_toggled () final override;
+
+	virtual
+	void
+	on_allow_editing_of_inline_nodes_toggled () final override;
+
+	virtual
+	void
+	on_show_extern_protos_toggled () final override;
+
+	virtual
+	void
+	on_show_prototypes_toggled () final override;
+
+	virtual
+	void
+	on_show_imported_nodes_toggled () final override;
+
+	virtual
+	void
+	on_show_exported_nodes_toggled () final override;
+
+	///  @name Members
 
 	OutlineTreeViewEditor treeview;
 

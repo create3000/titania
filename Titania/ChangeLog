@@ -1,5 +1,27 @@
 2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* OutlineEditor.xml:
+	* OutlineTreeView.xml:
+	* OutlineEditor.h:
+	* OutlineEditor.cpp:
+	* X3DBrowserSelection.cpp:
+	* ViewpointList.cpp:
+	* OutlineTreeModel.h:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp:
+	* X3DOutlineEditorInterface.h:
+	* X3DOutlineTreeViewInterface.h:
+	* X3DOutlineEditorInterface.cpp:
+	* X3DViewpointListInterface.cpp:
+	* X3DOutlineTreeViewInterface.cpp: 
+
+2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ExternProto.svg:
 	* X3DOutlineTreeView.cpp:
 	* ImportedNode.svg:

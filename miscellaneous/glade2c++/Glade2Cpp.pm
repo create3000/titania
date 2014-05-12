@@ -647,3 +647,5 @@ color_set
   virtual void on_color_set();
 edited
   virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
+button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);

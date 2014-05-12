@@ -63,6 +63,24 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
+	m_PopupMenu -> set_name ("PopupMenu");
+	m_builder -> get_widget ("EditMenuItem", m_EditMenuItem);
+	m_EditMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("AllowEditingOfExternProtosMenuItem", m_AllowEditingOfExternProtosMenuItem);
+	m_AllowEditingOfExternProtosMenuItem -> set_name ("AllowEditingOfExternProtosMenuItem");
+	m_builder -> get_widget ("AllowEditingOfInlineNodesMenuItem", m_AllowEditingOfInlineNodesMenuItem);
+	m_AllowEditingOfInlineNodesMenuItem -> set_name ("AllowEditingOfInlineNodesMenuItem");
+	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
+	m_ViewMenuItem -> set_name ("ViewMenuItem");
+	m_builder -> get_widget ("ShowExternProtosMenuItem", m_ShowExternProtosMenuItem);
+	m_ShowExternProtosMenuItem -> set_name ("ShowExternProtosMenuItem");
+	m_builder -> get_widget ("ShowPrototypesMenuItem", m_ShowPrototypesMenuItem);
+	m_ShowPrototypesMenuItem -> set_name ("ShowPrototypesMenuItem");
+	m_builder -> get_widget ("ShowImportedNodesMenuItem", m_ShowImportedNodesMenuItem);
+	m_ShowImportedNodesMenuItem -> set_name ("ShowImportedNodesMenuItem");
+	m_builder -> get_widget ("ShowExportedNodesMenuItem", m_ShowExportedNodesMenuItem);
+	m_ShowExportedNodesMenuItem -> set_name ("ShowExportedNodesMenuItem");
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -72,8 +90,19 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Viewport", m_Viewport);
 	m_Viewport -> set_name ("Viewport");
 
+	// Connect object Gtk::CheckMenuItem with id 'AllowEditingOfExternProtosMenuItem'.
+	m_AllowEditingOfExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_allow_editing_of_extern_protos_toggled));
+	m_AllowEditingOfInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_allow_editing_of_inline_nodes_toggled));
+	m_ShowExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_extern_protos_toggled));
+	m_ShowPrototypesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_prototypes_toggled));
+	m_ShowImportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_imported_nodes_toggled));
+	m_ShowExportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_exported_nodes_toggled));
+
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
+
+	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
+	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));
 
 	// Call construct handler of base class.
 	construct ();

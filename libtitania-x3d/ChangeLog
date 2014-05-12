@@ -10,6 +10,11 @@
 
 2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Traverse.h:
+	* Traverse.cpp: 
+
+2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Route.h:
 	* Parser.cpp:
 	* Proto.h:

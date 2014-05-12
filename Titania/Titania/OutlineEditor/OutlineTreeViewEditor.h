@@ -96,10 +96,6 @@ private:
 
 	virtual
 	void
-	on_rename_node_activate () final override;
-
-	virtual
-	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
 	virtual

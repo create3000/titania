@@ -53,7 +53,7 @@
 
 #include <gtkmm.h>
 
-#include "../UserInterfaces/X3DOutlineTreeViewInterface.h"
+#include "../Base/X3DBaseInterface.h"
 #include "OutlineTree.h"
 #include "OutlineTreeData.h"
 #include "OutlineUserData.h"
@@ -67,7 +67,7 @@ class OutlineTreeModel;
 class OutlineTreeObserver;
 
 class X3DOutlineTreeView :
-	public Gtk::TreeView, public X3DOutlineTreeViewInterface
+	 virtual public X3DBaseInterface, public Gtk::TreeView
 {
 public:
 
@@ -79,6 +79,54 @@ public:
 
 	void
 	set_execution_context (const X3D::X3DExecutionContextPtr &);
+
+	void
+	set_allow_editing_of_extern_protos (const bool value)
+	{ allowEditingOfExternProtos = value; }
+
+	bool
+	get_allow_editing_of_extern_protos () const
+	{ return allowEditingOfExternProtos; }
+
+	void
+	set_allow_editing_of_inline_nodes (const bool value)
+	{ allowEditingOfInlineNodes = value; }
+
+	bool
+	get_allow_editing_of_inline_nodes () const
+	{ return allowEditingOfInlineNodes; }
+
+	void
+	set_show_extern_protos (const bool value)
+	{ externProtos = value; }
+
+	bool
+	get_show_extern_protos () const
+	{ return externProtos; }
+
+	void
+	set_show_prototypes (const bool value)
+	{ prototypes = value; }
+
+	bool
+	get_show_prototypes () const
+	{ return prototypes; }
+
+	void
+	set_show_imported_nodes (const bool value)
+	{ importedNodes = value; }
+
+	bool
+	get_show_imported_nodes () const
+	{ return importedNodes ; }
+
+	void
+	set_show_exported_nodes (const bool value)
+	{ exportedNodes = value; }
+
+	bool
+	get_show_exported_nodes () const
+	{ return exportedNodes; }
 
 	///  @name Iter access
 
@@ -235,11 +283,18 @@ private:
 
 	///  @name Members
 
+	Glib::RefPtr <OutlineTreeModel>       model;
 	std::unique_ptr <OutlineTreeObserver> treeObserver;
 	std::unique_ptr <OutlineRouteGraph>   routeGraph;
-	Glib::RefPtr <OutlineTreeModel>       model;
 	OutlineCellRenderer*                  cellrenderer;
 	size_t                                expandLevel;
+
+	bool allowEditingOfExternProtos;
+	bool allowEditingOfInlineNodes;
+	bool externProtos;
+	bool prototypes;
+	bool importedNodes;
+	bool exportedNodes;
 
 };
 

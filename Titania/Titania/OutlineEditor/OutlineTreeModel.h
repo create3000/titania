@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	public X3DBaseInterface,
+	virtual public X3DBaseInterface,
 	public Glib::Object,
 	public Gtk::TreeModel
 {

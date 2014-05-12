@@ -65,13 +65,20 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 void
 OutlineEditor::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("OutlineEditor"));
+	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Outline Editor"));
 }
 
 void
 OutlineEditor::initialize ()
 {
 	X3DOutlineEditorInterface::initialize ();
+
+	getAllowEditingOfExternProtosMenuItem () .set_active (getConfig () .getBoolean ("allowEditingOfExternProtos"));
+	getAllowEditingOfInlineNodesMenuItem ()  .set_active (getConfig () .getBoolean ("allowEditingOfInlineNodes"));
+	getShowExternProtosMenuItem ()           .set_active (getConfig () .getBoolean ("showExternProtos"));
+	getShowPrototypesMenuItem ()             .set_active (getConfig () .getBoolean ("showPrototypes"));
+	getShowImportedNodesMenuItem ()          .set_active (getConfig () .getBoolean ("showImportedNodes"));
+	getShowExportedNodesMenuItem ()          .set_active (getConfig () .getBoolean ("showExportedNodes"));
 
 	getViewport () .add (treeview);
 	treeview .show ();
@@ -86,6 +93,73 @@ void
 OutlineEditor::set_initialized ()
 {
 	treeview .set_execution_context (X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext ()));
+}
+
+bool
+OutlineEditor::on_button_press_event (GdkEventButton* event)
+{
+	switch (event -> button)
+	{
+		case 3:
+		{
+			getPopupMenu () .popup (event -> button, event -> time);
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+// Popup menu
+
+void
+OutlineEditor::on_allow_editing_of_extern_protos_toggled ()
+{
+	getConfig () .setItem ("allowEditingOfExternProtos", getAllowEditingOfExternProtosMenuItem () .get_active ());
+	treeview .set_allow_editing_of_extern_protos (getAllowEditingOfExternProtosMenuItem () .get_active ());
+	set_initialized ();
+}
+
+void
+OutlineEditor::on_allow_editing_of_inline_nodes_toggled ()
+{
+	getConfig () .setItem ("allowEditingOfInlineNodes", getAllowEditingOfInlineNodesMenuItem () .get_active ());
+	treeview .set_allow_editing_of_inline_nodes (getAllowEditingOfInlineNodesMenuItem () .get_active ());
+	set_initialized ();
+}
+
+void
+OutlineEditor::on_show_extern_protos_toggled ()
+{
+	getConfig () .setItem ("showExternProtos", getShowExternProtosMenuItem () .get_active ());
+	treeview .set_show_extern_protos (getShowExternProtosMenuItem () .get_active ());
+	set_initialized ();
+}
+
+void
+OutlineEditor::on_show_prototypes_toggled ()
+{
+	getConfig () .setItem ("showPrototypes", getShowPrototypesMenuItem () .get_active ());
+	treeview .set_show_prototypes (getShowPrototypesMenuItem () .get_active ());
+	set_initialized ();
+}
+
+void
+OutlineEditor::on_show_imported_nodes_toggled ()
+{
+	getConfig () .setItem ("showImportedNodes", getShowImportedNodesMenuItem () .get_active ());
+	treeview .set_show_imported_nodes (getShowImportedNodesMenuItem () .get_active ());
+	set_initialized ();
+}
+
+void
+OutlineEditor::on_show_exported_nodes_toggled ()
+{
+	getConfig () .setItem ("showExportedNodes", getShowExportedNodesMenuItem () .get_active ());
+	treeview .set_show_exported_nodes (getShowExportedNodesMenuItem () .get_active ());
+	set_initialized ();
 }
 
 } // puck

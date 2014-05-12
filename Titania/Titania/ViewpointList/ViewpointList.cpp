@@ -80,7 +80,7 @@ ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
 void
 ViewpointList::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("ViewpointList"));
+	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Viewpoint List"));
 }
 
 void

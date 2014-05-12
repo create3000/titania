@@ -91,6 +91,42 @@ public:
 		return widget;
 	}
 
+	Gtk::Menu &
+	getPopupMenu () const
+	{ return *m_PopupMenu; }
+
+	Gtk::MenuItem &
+	getEditMenuItem () const
+	{ return *m_EditMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAllowEditingOfExternProtosMenuItem () const
+	{ return *m_AllowEditingOfExternProtosMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAllowEditingOfInlineNodesMenuItem () const
+	{ return *m_AllowEditingOfInlineNodesMenuItem; }
+
+	Gtk::MenuItem &
+	getViewMenuItem () const
+	{ return *m_ViewMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getShowExternProtosMenuItem () const
+	{ return *m_ShowExternProtosMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getShowPrototypesMenuItem () const
+	{ return *m_ShowPrototypesMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getShowImportedNodesMenuItem () const
+	{ return *m_ShowImportedNodesMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getShowExportedNodesMenuItem () const
+	{ return *m_ShowExportedNodesMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -109,7 +145,35 @@ public:
 
 	virtual
 	void
+	on_allow_editing_of_extern_protos_toggled () = 0;
+
+	virtual
+	void
+	on_allow_editing_of_inline_nodes_toggled () = 0;
+
+	virtual
+	void
+	on_show_extern_protos_toggled () = 0;
+
+	virtual
+	void
+	on_show_prototypes_toggled () = 0;
+
+	virtual
+	void
+	on_show_imported_nodes_toggled () = 0;
+
+	virtual
+	void
+	on_show_exported_nodes_toggled () = 0;
+
+	virtual
+	void
 	on_map () = 0;
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	~X3DOutlineEditorInterface ();
@@ -124,6 +188,15 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Menu*                  m_PopupMenu;
+	Gtk::MenuItem*              m_EditMenuItem;
+	Gtk::CheckMenuItem*         m_AllowEditingOfExternProtosMenuItem;
+	Gtk::CheckMenuItem*         m_AllowEditingOfInlineNodesMenuItem;
+	Gtk::MenuItem*              m_ViewMenuItem;
+	Gtk::CheckMenuItem*         m_ShowExternProtosMenuItem;
+	Gtk::CheckMenuItem*         m_ShowPrototypesMenuItem;
+	Gtk::CheckMenuItem*         m_ShowImportedNodesMenuItem;
+	Gtk::CheckMenuItem*         m_ShowExportedNodesMenuItem;
 	Gtk::Window*                m_Window;
 	Gtk::Box*                   m_Widget;
 	Gtk::ScrolledWindow*        m_ScrolledWindow;
