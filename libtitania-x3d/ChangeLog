@@ -1,5 +1,12 @@
 2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.h:
+	* Traverse.cpp:
+	* X3DBaseNode.cpp:
+	* ExternProto.h: 
+
+2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.h:
 	* Traverse.cpp: 
 

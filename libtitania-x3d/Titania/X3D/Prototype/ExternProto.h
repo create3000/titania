@@ -121,6 +121,10 @@ public:
 	getProto () final override
 	{ return proto; }
 
+	const ScenePtr &
+	getScene () const
+	{ return scene; }
+
 	///  @name Operations
 
 	virtual

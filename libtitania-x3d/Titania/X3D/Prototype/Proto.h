@@ -63,6 +63,7 @@ class Proto :
 {
 public:
 
+	using X3DExecutionContext::getProtoDeclaration;
 	using X3DProtoObject::createInstance;
 
 	///  @name Construction

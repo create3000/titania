@@ -770,7 +770,12 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			get_model () -> append (iter, OutlineIterType::X3DField, url);
 
 			if (allowEditingOfExternProtos)
+			{
+				if (externProto -> checkLoadState () == X3D::NOT_STARTED_STATE)
+					externProto -> requestImmediateLoad ();
+
 				get_model () -> append (iter, OutlineIterType::Prototype, externProto -> getProto ());
+			}
 
 			get_user_data (url) -> selected |= OUTLINE_SPECIAL;
 			break;

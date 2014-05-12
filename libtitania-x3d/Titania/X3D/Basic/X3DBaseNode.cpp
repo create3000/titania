@@ -680,7 +680,7 @@ X3DBaseNode::getNumClones () const
 							{
 								auto node = dynamic_cast <X3DBaseNode*> (fparent);
 
-								if (node and node -> getExecutionContext () -> isScene ())
+								if (node and (node -> getExecutionContext () -> isScene () or node -> getExecutionContext () -> isProto ()))
 								{
 									++ numClones;
 									break;
@@ -695,9 +695,9 @@ X3DBaseNode::getNumClones () const
 
 					for (const auto & fparent : parentField -> getParents ())
 					{
-						auto node = dynamic_cast <X3DBaseNode*> (fparent);
+						const auto node = dynamic_cast <X3DBaseNode*> (fparent);
 
-						if (node and node -> getExecutionContext () -> isScene ())
+						if (node and (node -> getExecutionContext () -> isScene () or node -> getExecutionContext () -> isProto ()))
 						{
 							++ numClones;
 							break;

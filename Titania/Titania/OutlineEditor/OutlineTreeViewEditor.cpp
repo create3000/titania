@@ -313,7 +313,7 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				//if (localNode -> getExecutionContext () == get_model () -> get_execution_context ()) // Test selection, removne comment.
+				if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
 					selection -> select (localNode);
 			}
 			catch (...)

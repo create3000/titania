@@ -53,8 +53,8 @@
 #include "../Basic/NodeSet.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ImportedNode.h"
-#include "../Prototype/Proto.h"
 #include "../Prototype/ExternProto.h"
+#include "../Prototype/Proto.h"
 #include "../Tools/Core/X3DToolObject.h"
 
 namespace titania {
@@ -273,14 +273,14 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 		if (protoObject)
 		{
 			const auto prototype = protoObject -> getProto ();
-			
+
 			if (protoObject -> isExternproto ())
 			{
 				if (flags & TRAVERSE_EXTERN_PROTOS)
 				{
 					if (find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchy, seen))
-						return true;	
-				}	
+						return true;
+				}
 			}
 			else
 			{
