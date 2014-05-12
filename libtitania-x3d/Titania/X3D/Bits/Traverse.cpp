@@ -54,6 +54,7 @@
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ImportedNode.h"
 #include "../Prototype/Proto.h"
+#include "../Prototype/ExternProto.h"
 #include "../Tools/Core/X3DToolObject.h"
 
 namespace titania {
@@ -140,8 +141,22 @@ bool
 find (X3DBaseNode* const, X3DChildObject* const, const bool, std::vector <X3DChildObject*> &, NodeSet &);
 
 bool
-find (const X3DExecutionContext* const executionContext, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
+	if (not executionContext)
+		return false;
+
+	hierarchy .emplace_back (executionContext);
+
+	if (executionContext == object)
+		return true;
+
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+	{
+		if (find (static_cast <X3DBaseNode*> (externProto), object, inScene, hierarchy, seen))
+			return true;
+	}
+
 	for (const auto & prototype : executionContext -> getProtoDeclarations ())
 	{
 		if (find (static_cast <X3DBaseNode*> (prototype), object, inScene, hierarchy, seen))
@@ -167,13 +182,14 @@ find (const X3DExecutionContext* const executionContext, X3DChildObject* const o
 		{ }
 	}
 
+	hierarchy .pop_back ();
 	return false;
 }
 
 bool
-find (const X3DScene* const scene, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DScene* const scene, X3DChildObject* const object, const bool inScene, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
-	return find (static_cast <const X3DExecutionContext*> (scene), object, inScene, hierarchy, seen);
+	return find (static_cast <X3DExecutionContext*> (scene), object, inScene, hierarchy, seen);
 }
 
 bool
@@ -243,8 +259,16 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 		{
 			const auto prototype = protoObject -> getProto ();
 			
-			if (find (static_cast <X3DExecutionContext*> (prototype), object, inScene, hierarchy, seen))
-				return true;
+			if (protoObject -> isExternproto ())
+			{
+				if (find (static_cast <X3DBaseNode*> (prototype), object, inScene, hierarchy, seen))
+					return true;		
+			}
+			else
+			{
+				if (find (static_cast <X3DExecutionContext*> (prototype), object, inScene, hierarchy, seen))
+					return true;
+			}
 		}
 		else
 		{
@@ -276,7 +300,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 }
 
 std::vector <X3DChildObject*>
-find (const X3DScene* const scene, X3DChildObject* const object, const bool inScene)
+find (X3DScene* const scene, X3DChildObject* const object, const bool inScene)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
@@ -287,7 +311,7 @@ find (const X3DScene* const scene, X3DChildObject* const object, const bool inSc
 }
 
 std::vector <X3DChildObject*>
-find (const X3DExecutionContext* const executionContext, X3DChildObject* const object, const bool inScene)
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const bool inScene)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;

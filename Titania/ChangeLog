@@ -1,5 +1,12 @@
 2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ExternProto.svg:
+	* X3DOutlineTreeView.cpp:
+	* ImportedNode.svg:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineRouteGraph.cpp:
 	* X3DOutlineTreeView.cpp: 
 

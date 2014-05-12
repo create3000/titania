@@ -173,6 +173,9 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 	auto hierarchy = X3D::find (get_model () -> get_execution_context (), object, false);
 
 	if (not hierarchy .empty ())
+		hierarchy .erase (hierarchy .begin ());
+
+	if (not hierarchy .empty ())
 		expand_to (get_model () -> children (), hierarchy, path);
 
 	enable_shift_key ();
@@ -190,13 +193,9 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 
 		switch (data -> get_type ())
 		{
-			case OutlineIterType::X3DExecutionContext:
-			{
-				expand_row (path, false);
-
-				return expand_to (child -> children (), hierarchy, path);
-			}
 			case OutlineIterType::X3DBaseNode:
+			case OutlineIterType::X3DExecutionContext:
+			case OutlineIterType::ExternProto:
 			case OutlineIterType::Prototype:
 			{
 				object = static_cast <X3D::SFNode*> (object) -> getValue ();
@@ -244,7 +243,6 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 				return true;
 
 			expand_row (path, false);
-
 			return expand_to (child -> children (), hierarchy, path);
 		}
 
@@ -738,6 +736,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			model_expand_node (sfnode, iter);
 
 			get_model () -> append (iter, OutlineIterType::X3DField, url);
+			get_model () -> append (iter, OutlineIterType::Prototype, externProto -> getProto ());
 
 			get_user_data (url) -> selected |= OUTLINE_SPECIAL;
 			break;
@@ -948,6 +947,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 				switch (get_data_type (child))
 				{
 					case OutlineIterType::X3DExecutionContext:
+					case OutlineIterType::Prototype:
 					{
 						if (is_expanded (child))
 							expand_row (Gtk::TreePath (child), false);
