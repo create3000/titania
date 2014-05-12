@@ -177,8 +177,6 @@ DEF Export3 Transform {
   }
 }
 
-BooleanSwitch { }
-
 ROUTE Export1.rotation_changed TO Export2.set_rotation
 ROUTE Export1.rotation_changed TO Export3.set_rotation
 

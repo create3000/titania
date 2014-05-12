@@ -92,6 +92,9 @@ private:
 
 	void
 	unwatch_child (const Gtk::TreeModel::iterator &, const bool);
+	
+	void
+	clear_open_path (const Gtk::TreeModel::iterator &);
 
 	void
 	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const bool);
@@ -100,7 +103,10 @@ private:
 	on_row_changed (const Gtk::TreeModel::Path &);
 
 	void
-	update_field (const Gtk::TreeModel::Path &);
+	set_loadState (const X3D::SFEnum <X3D::LoadState> &, const Gtk::TreeModel::Path &);
+
+	void
+	update_path (const Gtk::TreeModel::Path &);
 
 	void
 	toggle_field (const Gtk::TreeModel::Path &);
