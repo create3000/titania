@@ -79,6 +79,7 @@ X3DNetworkingContext::initialize ()
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +" + providerUrl + ")";
 
 	emptyScene = getBrowser () -> createScene ();
+	emptyScene -> isInternal (true);
 	emptyScene -> setup ();
 
 	downloadMutexes .resize (std::min <int32_t> (omp_get_max_threads () * 2, DOWNLOAD_THREADS_MAX));

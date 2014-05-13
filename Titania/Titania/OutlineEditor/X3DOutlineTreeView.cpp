@@ -62,23 +62,23 @@ namespace titania {
 namespace puck {
 
 X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & executionContext) :
-	          X3DBaseInterface (),
-	             Gtk::TreeView (),
-	                     model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
-	              treeObserver (new OutlineTreeObserver (this)),
-	                routeGraph (new OutlineRouteGraph (this)),
-	              cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
-	               expandLevel (0),
-	allowEditingOfExternProtos (false),
-	 allowEditingOfInlineNodes (false),
-	              externProtos (false),
-	                prototypes (false),
-	             importedNodes (false),
-	             exportedNodes (false)
+	  X3DBaseInterface (),
+	     Gtk::TreeView (),
+	             model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
+	      treeObserver (new OutlineTreeObserver (this)),
+	        routeGraph (new OutlineRouteGraph (this)),
+	      cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
+	       expandLevel (0),
+	      externProtos (false),
+	        prototypes (false),
+	     importedNodes (false),
+	     exportedNodes (false),
+	expandExternProtos (false),
+	 expandInlineNodes (false)
 {
 	// Options
 
-	set_headers_visible (true);
+	set_headers_visible (false);
 	set_enable_search (false);
 	Gtk::TreeView::get_selection () -> set_mode (Gtk::SELECTION_NONE);
 
@@ -178,10 +178,10 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 
 	int flags = X3D::TRAVERSE_ROOT_NODES;
 
-	if (allowEditingOfInlineNodes)
+	if (expandInlineNodes)
 		flags |= X3D::TRAVERSE_INLINE_NODES;
 
-	if (allowEditingOfExternProtos and externProtos)
+	if (expandExternProtos and externProtos)
 		flags |= X3D::TRAVERSE_EXTERN_PROTOS;
 
 	if (prototypes)
@@ -747,11 +747,11 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			// Inline handling
 
-			if (allowEditingOfInlineNodes)
+			if (expandInlineNodes)
 			{
 				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-				if (inlineNode and inlineNode -> getScene () and inlineNode -> getScene () not_eq inlineNode -> getBrowser () -> getScene ())
+				if (inlineNode and inlineNode -> getScene () not_eq inlineNode -> getBrowser () -> getScene ())
 				{
 					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getScene ());
 				}
@@ -769,7 +769,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			get_model () -> append (iter, OutlineIterType::X3DField, url);
 
-			if (allowEditingOfExternProtos)
+			if (expandExternProtos)
 			{
 				if (externProto -> checkLoadState () == X3D::NOT_STARTED_STATE)
 					externProto -> requestImmediateLoad ();

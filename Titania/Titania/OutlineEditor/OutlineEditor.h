@@ -52,14 +52,11 @@
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 
 #include "../UserInterfaces/X3DOutlineEditorInterface.h"
-#include "OutlineTreeViewEditor.h"
-
-#include <Titania/X3D.h>
-
-#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
+
+class OutlineTreeViewEditor;
 
 class OutlineEditor :
 	public X3DOutlineEditorInterface
@@ -72,11 +69,7 @@ public:
 
 	///  @name Member access
 
-	OutlineTreeViewEditor &
-	getTreeView ()
-	{ return treeview; }
-
-	const OutlineTreeViewEditor &
+	const std::shared_ptr <OutlineTreeViewEditor> &
 	getTreeView () const
 	{ return treeview; }
 
@@ -93,24 +86,47 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	restoreSession () final override;
+
 	///  @name Event handlers
 
 	void
-	set_initialized ();
+	set_world ();
+
+	void
+	set_scene ();
+
+	// Pointing Device
 
 	virtual
 	bool
 	on_button_press_event (GdkEventButton*) final override;
 
-	// Popup menu
+	// Edit Menu Item
 
 	virtual
 	void
-	on_allow_editing_of_extern_protos_toggled () final override;
+	on_remove_activate () final override;
 
 	virtual
 	void
-	on_allow_editing_of_inline_nodes_toggled () final override;
+	on_create_instance_activate () final override;
+
+	// Set root
+
+	virtual
+	void
+	on_set_root_to_this_scene_activate () final override;
+
+	void
+	on_scene_activate (const size_t);
+
+	Gtk::RadioMenuItem*
+	addSceneMenuItem (const X3D::ScenePtr &, const X3D::ScenePtr &);
+
+	// View Menu Item
 
 	virtual
 	void
@@ -128,9 +144,34 @@ private:
 	void
 	on_show_exported_nodes_toggled () final override;
 
+	virtual
+	void
+	on_expand_extern_protos_toggled () final override;
+
+	virtual
+	void
+	on_expand_inline_nodes_toggled () final override;
+
+	///  @name Operations
+
+	void
+	select (const double, const double);
+
+	Gtk::TreePath
+	getNodeAtPosition (const double, const double);
+
+	Gtk::TreePath
+	getPathAtPosition (const double, const double);
+
 	///  @name Members
 
-	OutlineTreeViewEditor treeview;
+	std::shared_ptr <OutlineTreeViewEditor>                     treeview;
+	Gtk::RadioButtonGroup                                       sceneGroup;
+	std::map <X3D::ScenePtr, size_t>                            sceneIndex;
+	std::deque <std::pair <X3D::ScenePtr, Gtk::RadioMenuItem*>> scenes;
+
+	Gtk::TreePath path;
+	bool          realized;
 
 };
 

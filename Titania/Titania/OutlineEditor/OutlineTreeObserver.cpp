@@ -122,7 +122,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode -> getValue ());
 
-			externProto -> checkLoadState () .addInterest (this, &OutlineTreeObserver::set_loadState, std::ref (externProto -> checkLoadState ()), path);
+			externProto -> getScene () .addInterest (this, &OutlineTreeObserver::update_path, path);
 			break;
 		}
 		default:
@@ -290,7 +290,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode -> getValue ());
 
-			externProto -> checkLoadState () .removeInterest (this, &OutlineTreeObserver::set_loadState);
+			externProto -> getScene () .removeInterest (this, &OutlineTreeObserver::update_path);
 
 			clear_open_path (iter);
 			break;
@@ -331,13 +331,6 @@ OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
 	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
 	treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
-}
-
-void
-OutlineTreeObserver::set_loadState (const X3D::SFEnum <X3D::LoadState> & loadState, const Gtk::TreeModel::Path & path)
-{
-	if (loadState == X3D::COMPLETE_STATE or loadState == X3D::FAILED_STATE)
-		update_path (path);
 }
 
 void

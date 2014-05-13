@@ -154,6 +154,8 @@ Inline::setScene (ScenePtr && value)
 
 	// First initialize,
 
+	value -> isInternal (true);
+
 	if (isInitialized ())
 		value -> setup ();
 

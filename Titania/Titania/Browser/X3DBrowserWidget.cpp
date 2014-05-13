@@ -66,12 +66,12 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
-	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ())
+	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
+	                    world (getBrowser () -> getExecutionContext ())
 {
-	parseOptions (argc, argv);
+	addChildren (world);
 
-	// Browser
-	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
+	parseOptions (argc, argv);
 }
 
 void
@@ -119,6 +119,9 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
+	// Enable splash screen.
+	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
+
 	// Connect event handler.
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
 	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
@@ -128,7 +131,7 @@ X3DBrowserWidget::initialize ()
 	getSurfaceBox () .pack_start (*getBrowser (), true, true, 0);
 
 	// Show Surface and start the X3D Main Loop.
-	getBrowserWindow () -> getBrowserSurface () -> show ();
+	getBrowser () -> show ();
 }
 
 void
@@ -136,10 +139,8 @@ X3DBrowserWidget::set_splashScreen ()
 {
 	// Initialized
 
-	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = false;
-
 	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getWorld () .addInterest (this, &X3DBrowserWidget::set_world);
 
 	if (getConfig () .getString ("url") .size ())
 	{
@@ -229,8 +230,8 @@ X3DBrowserWidget::saveSession ()
 	getConfig () .setItem ("sideBarCurrentPage", getSideBarNotebook () .get_current_page ());
 	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook ()  .get_current_page ());
 
-	if (getBrowser () -> getExecutionContext () -> getWorldURL () .size ())
-		getConfig () .setItem ("worldURL", getBrowser () -> getExecutionContext () -> getWorldURL ());
+	if (getWorld () -> getWorldURL () .size ())
+		getConfig () .setItem ("worldURL", getWorld () -> getWorldURL ());
 
 	X3DBrowserWindowInterface::saveSession ();
 }
@@ -238,9 +239,9 @@ X3DBrowserWidget::saveSession ()
 void
 X3DBrowserWidget::updateTitle (const bool edited) const
 {
-	getWindow () .set_title (getBrowser () -> getExecutionContext () -> getTitle ()
+	getWindow () .set_title (getWorld () -> getTitle ()
 	                         + " · "
-	                         + getBrowser () -> getExecutionContext () -> getWorldURL ()
+	                         + getWorld () -> getWorldURL ()
 	                         + (edited ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
@@ -249,7 +250,9 @@ X3DBrowserWidget::updateTitle (const bool edited) const
 void
 X3DBrowserWidget::blank ()
 {
-	getBrowser () -> replaceWorld (nullptr);
+	// The world event must come bevore the initialized event.
+	world = getBrowser () -> createScene ();
+	getBrowser () -> replaceWorld (world);
 }
 
 void
@@ -259,7 +262,9 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 
 	try
 	{
-		getBrowser () -> loadURL ({ worldURL .str () });
+		// The world event must come bevore the initialized event.
+		world = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+		getBrowser () -> replaceWorld (world);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -268,12 +273,11 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 void
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
-	const std::string suffix = worldURL .suffix ();
+	const auto suffix = worldURL .suffix ();
+	const auto scene  = getBrowser () -> getExecutionContext ();
 
-	const auto executionContext = getBrowser () -> getExecutionContext ();
-
-	executionContext -> setWorldURL (worldURL);
-	executionContext -> isCompressed (compressed);
+	scene -> setWorldURL (worldURL);
+	scene -> isCompressed (compressed);
 
 	// MetaData
 
@@ -281,40 +285,40 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	{
 		// VRML files are saved as is, but we do not add extra stuff!
 
-		executionContext -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
+		scene -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
 
 		try
 		{
-			executionContext -> getMetaData ("creator");
+			scene -> getMetaData ("creator");
 		}
 		catch (const X3D::X3DError &)
 		{
 			const std::string fullname = os::getfullname ();
 
 			if (not fullname .empty ())
-				executionContext -> setMetaData ("creator", os::getfullname ());
+				scene -> setMetaData ("creator", os::getfullname ());
 		}
 
 		try
 		{
-			executionContext -> getMetaData ("created");
+			scene -> getMetaData ("created");
 		}
 		catch (const X3D::X3DError &)
 		{
-			executionContext -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
+			scene -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
 		}
 
-		executionContext -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
+		scene -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
 	}
 
 	// Save
 
 	if (suffix == ".x3d")
 	{
-		if (executionContext -> getVersion () == X3D::VRML_V2_0)
+		if (scene -> getVersion () == X3D::VRML_V2_0)
 		{
-			executionContext -> setEncoding ("X3D");
-			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+			scene -> setEncoding ("X3D");
+			scene -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
 		}
 
 		if (compressed)
@@ -323,7 +327,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::SmallestStyle
-				<< X3D::XMLEncode (executionContext);
+				<< X3D::XMLEncode (scene);
 		}
 		else
 		{
@@ -331,25 +335,25 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::CompactStyle
-				<< X3D::XMLEncode (executionContext);
+				<< X3D::XMLEncode (scene);
 		}
 	}
 	else
 	{
 		if (suffix == ".wrl")
 		{
-			if (executionContext -> getVersion () not_eq X3D::VRML_V2_0)
+			if (scene -> getVersion () not_eq X3D::VRML_V2_0)
 			{
-				executionContext -> setEncoding ("VRML");
-				executionContext -> setSpecificationVersion ("2.0");
+				scene -> setEncoding ("VRML");
+				scene -> setSpecificationVersion ("2.0");
 			}
 		}
 		else  // ".x3dv"
 		{
-			if (executionContext -> getVersion () == X3D::VRML_V2_0)
+			if (scene -> getVersion () == X3D::VRML_V2_0)
 			{
-				executionContext -> setEncoding ("X3D");
-				executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+				scene -> setEncoding ("X3D");
+				scene -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
 			}
 		}
 
@@ -359,7 +363,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::SmallestStyle
-				<< executionContext;
+				<< scene;
 		}
 		else
 		{
@@ -367,7 +371,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::NicestStyle
-				<< executionContext;
+				<< scene;
 		}
 	}
 }
@@ -375,11 +379,11 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 void
 X3DBrowserWidget::reload ()
 {
-	open (getBrowser () -> getExecutionContext () -> getWorldURL ());
+	open (getWorld () -> getWorldURL ());
 }
 
 void
-X3DBrowserWidget::set_initialized ()
+X3DBrowserWidget::set_world ()
 {
 	loadTime = chrono::now () - loadTime;
 
@@ -391,7 +395,7 @@ X3DBrowserWidget::set_initialized ()
 
 	// Remember last local file
 
-	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const auto worldURL = getWorld () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
@@ -400,11 +404,11 @@ X3DBrowserWidget::set_initialized ()
 bool
 X3DBrowserWidget::statistics ()
 {
-	std::string title = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	std::string title = getWorld () -> getWorldURL ();
 
 	try
 	{
-		title = getBrowser () -> getExecutionContext () -> getMetaData ("title");
+		title = getWorld () -> getMetaData ("title");
 		std::clog << "Statistics for: " << title << std::endl;
 	}
 	catch (...)
@@ -456,7 +460,7 @@ X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 void
 X3DBrowserWidget::loadIcon ()
 {
-	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const basic::uri & worldURL = getWorld () -> getWorldURL ();
 
 	const Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
 
@@ -470,7 +474,7 @@ X3DBrowserWidget::loadIcon ()
 
 		try
 		{
-			uri = getBrowser () -> getExecutionContext () -> getMetaData ("icon");
+			uri = getWorld () -> getMetaData ("icon");
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
@@ -480,7 +484,7 @@ X3DBrowserWidget::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		const titania::Image icon (X3D::Loader (getBrowser () -> getExecutionContext ()) .loadDocument (uri));
+		const titania::Image icon (X3D::Loader (getWorld ()) .loadDocument (uri));
 
 		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
 		                                                               Gdk::COLORSPACE_RGB,

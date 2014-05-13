@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Sat, 10 May 2014 10:23:36 GMT'/>
+    <meta name='modified' content='Mon, 12 May 2014 17:37:01 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -60,6 +60,9 @@
     <ProtoDeclare name='Children1'>
       <ProtoInterface>
         <field accessType='inputOutput' type='SFNode' name='metadata'/>
+        <field accessType='inputOutput' type='SFNode' name='node'>
+          <Transform DEF='_1'/>
+        </field>
         <field accessType='inputOutput' type='MFNode' name='children1'/>
       </ProtoInterface>
       <ProtoBody>
@@ -103,7 +106,7 @@
         rotation='0 -1 0 0.476176'
         scale='-1.01808 1.09117 1.09117'
         center='3.20255 0 -1.19209e-07'>
-      <ProximitySensor DEF='_1'
+      <ProximitySensor DEF='_2'
           size='2 2 2'/>
       <VisibilitySensor
           size='2 2 2'
@@ -126,7 +129,7 @@
         translation='5.51299 0.468949 1'
         scale='0.329804 0.329803 1'
         center='-1.99912 -0.520307 0'>
-      <Inline DEF='_2'
+      <Inline DEF='_3'
           url='"Inline.wrl"'/>
     </Transform>
     <Transform DEF='MirrorText'
@@ -151,10 +154,10 @@
           url='"SnapTarget.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"'/>
     </Transform>
     <Group>
-      <ProximitySensor USE='_1'/>
+      <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='-0 -0 -1 5.73448'
+          rotation='0 0 1 4.70643'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -181,7 +184,7 @@
                 repeatS='false'
                 repeatT='false'/>
           </Appearance>
-          <Sphere DEF='_3'/>
+          <Sphere DEF='_4'/>
         </Shape>
       </Transform>
     </Transform>
@@ -244,7 +247,7 @@
                 specularColor='0.276305 0.11431 0.139857'
                 shininess='0.127273'/>
           </Appearance>
-          <Sphere USE='_3'/>
+          <Sphere USE='_4'/>
         </Shape>
       </Transform>
     </Anchor>
@@ -310,7 +313,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Sa 10 Mai 2014 12:13:58 CEST"'>
+            string='"modified...", "Mo 12 Mai 2014 19:32:41 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -336,8 +339,8 @@
         position='0.307405 1.46693 4.56711'
         orientation='0.563368 0.806068 0.181301 5.84917'
         centerOfRotation='1.83783 -0.942352 -0.631597'/>
-    <TextureTransform/>
-    <TextureTransform/>
+    <TextureTransform DEF='_5'/>
+    <TextureTransform USE='_5'/>
     <Script DEF='ModifiedScript'>
       <field accessType='outputOnly' type='MFString' name='string_changed'/>
 <![CDATA[javascript:
@@ -350,11 +353,17 @@ function initialize ()
     </Script>
     <Transform DEF='EXPORT'
         translation='8.97635 0 0'>
-      <Inline DEF='_4'
+      <Inline DEF='_6'
           url='"../Basic/EXPORT.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"'/>
     </Transform>
-    <IMPORT inlineDEF='_4' exportedDEF='CubeExport'/>
-    <IMPORT inlineDEF='_2' exportedDEF='Text' AS='ImportedInline'/>
+    <!-- NULL -->
+    <Transform DEF='InlineClone'
+        translation='0 0 -11.4797'>
+      <Inline
+          url='"../Basic/Clone.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/Clone.wrl"'/>
+    </Transform>
+    <IMPORT inlineDEF='_6' exportedDEF='CubeExport'/>
+    <IMPORT inlineDEF='_3' exportedDEF='Text' AS='ImportedInline'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
     <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>

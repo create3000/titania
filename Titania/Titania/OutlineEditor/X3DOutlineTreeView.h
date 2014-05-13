@@ -81,22 +81,6 @@ public:
 	set_execution_context (const X3D::X3DExecutionContextPtr &);
 
 	void
-	set_allow_editing_of_extern_protos (const bool value)
-	{ allowEditingOfExternProtos = value; }
-
-	bool
-	get_allow_editing_of_extern_protos () const
-	{ return allowEditingOfExternProtos; }
-
-	void
-	set_allow_editing_of_inline_nodes (const bool value)
-	{ allowEditingOfInlineNodes = value; }
-
-	bool
-	get_allow_editing_of_inline_nodes () const
-	{ return allowEditingOfInlineNodes; }
-
-	void
 	set_show_extern_protos (const bool value)
 	{ externProtos = value; }
 
@@ -127,6 +111,22 @@ public:
 	bool
 	get_show_exported_nodes () const
 	{ return exportedNodes; }
+
+	void
+	set_expand_extern_protos (const bool value)
+	{ expandExternProtos = value; }
+
+	bool
+	get_expand_extern_protos () const
+	{ return expandExternProtos; }
+
+	void
+	set_expand_inline_nodes (const bool value)
+	{ expandInlineNodes = value; }
+
+	bool
+	get_expand_inline_nodes () const
+	{ return expandInlineNodes; }
 
 	///  @name Iter access
 
@@ -289,12 +289,12 @@ private:
 	OutlineCellRenderer*                  cellrenderer;
 	size_t                                expandLevel;
 
-	bool allowEditingOfExternProtos;
-	bool allowEditingOfInlineNodes;
 	bool externProtos;
 	bool prototypes;
 	bool importedNodes;
 	bool exportedNodes;
+	bool expandExternProtos;
+	bool expandInlineNodes;
 
 };
 

@@ -235,7 +235,7 @@ private:
 	// File
 
 	void
-	import (const X3D::ScenePtr &, const UndoStepPtr &);
+	importScene (const X3D::ScenePtr &, const UndoStepPtr &);
 
 	// Clipboard
 
@@ -317,7 +317,7 @@ private:
 	bool          modified;
 	bool          saveConfirmed;
 	int           savedIndex;
-	X3D::ScenePtr scene;
+	X3D::ScenePtr currentScene;
 
 	std::unique_ptr <BrowserSelection> selection;
 	std::unique_ptr <MagicImport>      magicImport;

@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 06 Apr 2014 10:12:16 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Sat, 10 May 2014 08:29:55 GMT"
+META "modified" "Mon, 12 May 2014 17:32:41 GMT"
 
 EXTERNPROTO Grid [
   exposedField SFNode  metadata
@@ -72,6 +72,7 @@ EXTERNPROTO Torus [
 
 PROTO Children1 [
   exposedField SFNode metadata NULL
+  exposedField SFNode node Transform {}
   exposedField MFNode children1 [ ]
 ]
 {
@@ -115,9 +116,9 @@ DEF Sunset Background {
 
 DEF Viewpoint1 Viewpoint {
   description "OutlineEditor"
-  position 8.952 2.7577 7.80941
-  orientation 0.998463 0.0551338 0.00558196 5.97746
-  centerOfRotation 9.10058 0.024358 -0.863814
+  position -0.826765 5.87027 13.359
+  orientation 0.787842 0.597084 0.150982 5.73888
+  centerOfRotation 4.26786 -1.47502 -1.62472
 }
 
 Grid {
@@ -148,7 +149,10 @@ DEF Rotor Rotor {
   loop TRUE
 }
 
-DEF Rotor2 Rotor2 { }
+DEF Rotor2 Rotor2 {
+  cycleInterval 10
+  loop TRUE
+}
 
 ImageTexture { }
 
@@ -195,7 +199,7 @@ Group {
     USE _1
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 2.27579
+      rotation 0 0 1 3.99465
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -367,7 +371,7 @@ ScreenGroup {
 }
 
 DEF ScreenText Transform {
-  translation 0.673213 1.51774 0
+  translation 0.673213 2.19 0
   children Shape {
     appearance Appearance {
       material Material { }
@@ -375,7 +379,7 @@ DEF ScreenText Transform {
     geometry DEF Text2 Text {
       string [
         "modified...",
-        "Sa 10 Mai 2014 10:29:55 CEST"
+        "Sa 10 Mai 2014 12:23:36 CEST"
       ]
       fontStyle ScreenFontStyle {
         family "SANS"
@@ -413,9 +417,9 @@ DEF Viewpoint2 Viewpoint {
   centerOfRotation 1.83783 -0.942352 -0.631597
 }
 
-TextureTransform { }
+DEF _4 TextureTransform { }
 
-TextureTransform { }
+USE _4
 
 DEF ModifiedScript Script {
   eventOut MFString string_changed
@@ -431,7 +435,7 @@ function initialize ()
 
 DEF EXPORT Transform {
   translation 8.97635 0 0
-  children Inline {
+  children DEF _5 Inline {
     url [
       "../Basic/EXPORT.wrl",
       "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"
@@ -439,11 +443,25 @@ DEF EXPORT Transform {
   }
 }
 
+NULL
+
+DEF InlineClone Transform {
+  translation 0 0 -11.4797
+  children Inline {
+    url [
+      "../Basic/Clone.wrl",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Basic/Clone.wrl"
+    ]
+  }
+}
+
+IMPORT _5.CubeExport
 IMPORT _2.Text AS ImportedInline
 
 ROUTE Rotor.rotation_changed TO Box.set_rotation
 ROUTE Sensors.translation_changed TO Inline.set_translation
 ROUTE Rotor2.pauseTime_changed TO Rotor2.set_resumeTime
 ROUTE ModifiedScript.string_changed TO Text2.set_string
+ROUTE Rotor2.rotation_changed TO ImportedInline.set_rotation
 
 EXPORT Rotor

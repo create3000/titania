@@ -84,7 +84,7 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 
 	// Add browser interest
 
-	getBrowser () -> initialized () .addInterest (this, &HistoryEditor::set_splashScreen);
+	getWorld () .addInterest (this, &HistoryEditor::set_splashScreen);
 }
 
 void
@@ -96,12 +96,12 @@ HistoryEditor::on_map ()
 void
 HistoryEditor::set_splashScreen ()
 {
-	getBrowser () -> initialized () .removeInterest (this, &HistoryEditor::set_splashScreen);
-	getBrowser () -> initialized () .addInterest    (this, &HistoryEditor::set_initialized);
+	getWorld () .removeInterest (this, &HistoryEditor::set_splashScreen);
+	getWorld () .addInterest    (this, &HistoryEditor::set_world);
 }
 
 void
-HistoryEditor::set_initialized ()
+HistoryEditor::set_world ()
 {
 	const std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
 	const basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
@@ -138,7 +138,7 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 	// Open worldURL.
 
 	if (getBrowserWindow () -> isSaved ())
-		getBrowserWindow () -> open ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
+		getBrowserWindow () -> open (history .getItemFromIndex (path .to_string ()) .at ("worldURL"));
 }
 
 HistoryEditor::~HistoryEditor ()

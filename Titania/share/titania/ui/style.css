@@ -40,3 +40,10 @@ GtkExpander > GtkLabel {
 	font-size: 120%;
 	font-weight: bold;
 }
+
+GtkMenuButton
+{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}

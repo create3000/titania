@@ -50,12 +50,17 @@
 
 #include "BrowserWindow.h"
 
+#include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
+#include "../HistoryEditor/HistoryEditor.h"
+#include "../LibraryView/LibraryView.h"
 #include "../MaterialEditor/MaterialEditor.h"
+#include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
-#include "../TextureEditor/TextureEditor.h"
-#include "BrowserSelection.h"
+#include "../OutlineEditor/OutlineTreeViewEditor.h"
+#include "../ViewpointList/ViewpointList.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -68,12 +73,11 @@ namespace puck {
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, char** argv) :
 	X3DBaseInterface (this, browserSurface),
 	X3DBrowserEditor (argc, argv),
-	  browserSurface (browserSurface),
-	motionBlurEditor (this),
-	     libraryView (this),
-	   viewpointList (this),
-	   historyEditor (this),
-	   outlineEditor (this),
+	motionBlurEditor (new MotionBlurEditor (this)),
+	     libraryView (new LibraryView (this)),
+	   viewpointList (new ViewpointList (this)),
+	   historyEditor (new HistoryEditor (this)),
+	   outlineEditor (new OutlineEditor (this)),
 	            keys (),
 	       shortcuts (true),
 	          toggle (true),
@@ -82,7 +86,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
-		getBrowserSurface () -> set_antialiasing (4);
+		getBrowser () -> set_antialiasing (4);
 }
 
 void
@@ -97,7 +101,7 @@ BrowserWindow::initialize ()
 	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
-	
+
 	getToolBar () .set_toolbar_style (Gtk::TOOLBAR_ICONS);
 	getDashboardToolBar () .set_toolbar_style (Gtk::TOOLBAR_ICONS);
 
@@ -120,10 +124,10 @@ BrowserWindow::initialize ()
 	getFileSaveDialog ()   .set_filename (os::home () + _ ("scene.x3dv"));
 
 	// Sidebar
-	getViewpointList () .reparent (getViewpointListBox (), getWindow ());
-	getHistoryEditor () .reparent (getHistoryEditorBox (), getWindow ());
-	getLibraryView ()   .reparent (getLibraryViewBox (),   getWindow ());
-	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
+	getViewpointList () -> reparent (getViewpointListBox (), getWindow ());
+	getHistoryEditor () -> reparent (getHistoryEditorBox (), getWindow ());
+	getLibraryView ()   -> reparent (getLibraryViewBox (),   getWindow ());
+	getOutlineEditor () -> reparent (getOutlineEditorBox (), getWindow ());
 
 	// CSS
 	Glib::RefPtr <Gtk::CssProvider> cssProvider1 = Gtk::CssProvider::create ();
@@ -150,7 +154,7 @@ BrowserWindow::initialize ()
 	updatePasteStatus ();
 
 	// Browser Events
-	getBrowser () -> initialized ()             .addInterest (this, &BrowserWindow::set_initialized);
+	getWorld () .addInterest (this, &BrowserWindow::set_world);
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &BrowserWindow::set_active_viewpoint);
 	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers ()     .addInterest (this, &BrowserWindow::set_available_viewers);
@@ -165,6 +169,10 @@ BrowserWindow::initialize ()
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	getWidget () .grab_focus ();
 }
+
+const std::shared_ptr <OutlineTreeViewEditor> &
+BrowserWindow::getOutlineTreeView () const
+{ return outlineEditor -> getTreeView (); }
 
 std::string
 BrowserWindow::getStyles () const
@@ -211,7 +219,7 @@ BrowserWindow::hasShortcuts (bool value)
 }
 
 void
-BrowserWindow::set_initialized ()
+BrowserWindow::set_world ()
 {
 	toggle = false;
 	getProximitySensorMenuItem () .set_active (false);
@@ -285,7 +293,7 @@ BrowserWindow::set_active_viewpoint ()
 	if (activeLayer)
 		haveViewpoint = (activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ());
 
-	getUpdateViewpointButton () .set_sensitive (haveViewpoint);	
+	getUpdateViewpointButton () .set_sensitive (haveViewpoint);
 }
 
 // Keys
@@ -886,8 +894,8 @@ BrowserWindow::on_create_parent_group_activate ()
 
 	for (const auto & group : groups)
 	{
-		for (const auto & iter : getOutlineTreeView () .get_iters (group))
-			getOutlineTreeView () .expand_row (getOutlineTreeView () .get_model () -> get_path (iter), false);
+		for (const auto & iter : getOutlineTreeView () -> get_iters (group))
+			getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
 	}
 }
 
@@ -1221,7 +1229,7 @@ BrowserWindow::on_rubberband_toggled ()
 void
 BrowserWindow::on_motion_blur_editor_activate ()
 {
-	getMotionBlurEditor () .getWindow () .present ();
+	getMotionBlurEditor () -> getWindow () .present ();
 }
 
 // Help menu
@@ -1264,11 +1272,11 @@ BrowserWindow::on_material_editor ()
 void
 BrowserWindow::on_texture_editor ()
 {
-	if (isDialogOpen ("TextureEditor"))
-		return;
-
-	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-		addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
+//	if (isDialogOpen ("TextureEditor"))
+//		return;
+//
+//	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
+//		addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
 }
 
 void
@@ -1279,11 +1287,11 @@ BrowserWindow::on_update_viewpoint ()
 		const X3D::X3DViewpointNodePtr viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
 
 		const auto undoStep = std::make_shared <UndoStep> (_ ("Update Active Viewpoint"));
-		
+
 		undoStep -> addVariables (viewpoint);
 		undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
 		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
-		
+
 		undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getPosition ());
 		undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getUserPosition ());
 		viewpoint -> setPosition (viewpoint -> getUserPosition ());

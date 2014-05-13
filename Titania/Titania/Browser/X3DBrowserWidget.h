@@ -63,12 +63,18 @@ class X3DBrowserWidget :
 {
 public:
 
+	///  @name Member access
+
+	virtual
+	const X3D::ScenePtr &
+	getWorld () const final override
+	{ return world; }
+
 	///  @name Operations
 
 	void
 	blank ();
 
-	virtual
 	void
 	open (const basic::uri &);
 
@@ -79,11 +85,15 @@ public:
 	void
 	reload ();
 
+	///  @name Destruction
+
 	virtual
 	~X3DBrowserWidget ();
 
 
 protected:
+
+	///  @name Construction
 
 	X3DBrowserWidget (int, char**);
 
@@ -99,6 +109,8 @@ protected:
 	void
 	saveSession () override;
 
+	///  @name Operations
+
 	void
 	updateTitle (const bool) const;
 
@@ -108,6 +120,8 @@ protected:
 
 private:
 
+	///  @name Operations
+
 	void
 	parseOptions (int, char**);
 
@@ -115,7 +129,7 @@ private:
 	set_splashScreen ();
 
 	void
-	set_initialized ();
+	set_world ();
 
 	void
 	set_console ();
@@ -130,7 +144,8 @@ private:
 	statistics ();
 
 	///  @name Members
-
+	
+	X3D::ScenePtr    world;
 	double           loadTime;
 	sigc::connection timeout;
 

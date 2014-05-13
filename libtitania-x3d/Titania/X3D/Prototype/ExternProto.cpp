@@ -162,6 +162,8 @@ ExternProto::requestImmediateLoad ()
 		{
 			scene = getBrowser () -> createScene ();
 
+			scene -> isInternal (true);
+
 			loader .parseIntoScene (scene, url ());
 
 			if (getExecutionContext () -> isInitialized ())

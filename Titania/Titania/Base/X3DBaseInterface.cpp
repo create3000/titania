@@ -67,6 +67,12 @@ X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3
 	assert (browser);
 }
 
+const X3D::ScenePtr &
+X3DBaseInterface::getWorld () const
+{
+	return browserWindow -> getWorld ();
+}
+
 X3DBaseInterface::~X3DBaseInterface ()
 {
 	X3D::X3DInput::dispose ();

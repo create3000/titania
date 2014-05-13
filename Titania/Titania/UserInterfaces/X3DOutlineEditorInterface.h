@@ -91,21 +91,25 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const
+	{ return m_IconFactory; }
+
 	Gtk::Menu &
 	getPopupMenu () const
 	{ return *m_PopupMenu; }
 
 	Gtk::MenuItem &
-	getEditMenuItem () const
-	{ return *m_EditMenuItem; }
+	getSetRootToThisSceneMenuItem () const
+	{ return *m_SetRootToThisSceneMenuItem; }
 
-	Gtk::CheckMenuItem &
-	getAllowEditingOfExternProtosMenuItem () const
-	{ return *m_AllowEditingOfExternProtosMenuItem; }
+	Gtk::ImageMenuItem &
+	getRemoveMenuItem () const
+	{ return *m_RemoveMenuItem; }
 
-	Gtk::CheckMenuItem &
-	getAllowEditingOfInlineNodesMenuItem () const
-	{ return *m_AllowEditingOfInlineNodesMenuItem; }
+	Gtk::MenuItem &
+	getCreateInstanceMenuItem () const
+	{ return *m_CreateInstanceMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
@@ -127,6 +131,18 @@ public:
 	getShowExportedNodesMenuItem () const
 	{ return *m_ShowExportedNodesMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getExpandExternProtosMenuItem () const
+	{ return *m_ExpandExternProtosMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getExpandInlineNodesMenuItem () const
+	{ return *m_ExpandInlineNodesMenuItem; }
+
+	Gtk::Menu &
+	getSceneMenu () const
+	{ return *m_SceneMenu; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -134,6 +150,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::Label &
+	getSceneLabel () const
+	{ return *m_SceneLabel; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
@@ -145,11 +165,15 @@ public:
 
 	virtual
 	void
-	on_allow_editing_of_extern_protos_toggled () = 0;
+	on_set_root_to_this_scene_activate () = 0;
 
 	virtual
 	void
-	on_allow_editing_of_inline_nodes_toggled () = 0;
+	on_remove_activate () = 0;
+
+	virtual
+	void
+	on_create_instance_activate () = 0;
 
 	virtual
 	void
@@ -166,6 +190,14 @@ public:
 	virtual
 	void
 	on_show_exported_nodes_toggled () = 0;
+
+	virtual
+	void
+	on_expand_extern_protos_toggled () = 0;
+
+	virtual
+	void
+	on_expand_inline_nodes_toggled () = 0;
 
 	virtual
 	void
@@ -186,21 +218,26 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Menu*                  m_PopupMenu;
-	Gtk::MenuItem*              m_EditMenuItem;
-	Gtk::CheckMenuItem*         m_AllowEditingOfExternProtosMenuItem;
-	Gtk::CheckMenuItem*         m_AllowEditingOfInlineNodesMenuItem;
-	Gtk::MenuItem*              m_ViewMenuItem;
-	Gtk::CheckMenuItem*         m_ShowExternProtosMenuItem;
-	Gtk::CheckMenuItem*         m_ShowPrototypesMenuItem;
-	Gtk::CheckMenuItem*         m_ShowImportedNodesMenuItem;
-	Gtk::CheckMenuItem*         m_ShowExportedNodesMenuItem;
-	Gtk::Window*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::ScrolledWindow*        m_ScrolledWindow;
-	Gtk::Viewport*              m_Viewport;
+	std::string                     filename;
+	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
+	Gtk::Menu*                      m_PopupMenu;
+	Gtk::MenuItem*                  m_SetRootToThisSceneMenuItem;
+	Gtk::ImageMenuItem*             m_RemoveMenuItem;
+	Gtk::MenuItem*                  m_CreateInstanceMenuItem;
+	Gtk::MenuItem*                  m_ViewMenuItem;
+	Gtk::CheckMenuItem*             m_ShowExternProtosMenuItem;
+	Gtk::CheckMenuItem*             m_ShowPrototypesMenuItem;
+	Gtk::CheckMenuItem*             m_ShowImportedNodesMenuItem;
+	Gtk::CheckMenuItem*             m_ShowExportedNodesMenuItem;
+	Gtk::CheckMenuItem*             m_ExpandExternProtosMenuItem;
+	Gtk::CheckMenuItem*             m_ExpandInlineNodesMenuItem;
+	Gtk::Menu*                      m_SceneMenu;
+	Gtk::Window*                    m_Window;
+	Gtk::Box*                       m_Widget;
+	Gtk::Label*                     m_SceneLabel;
+	Gtk::ScrolledWindow*            m_ScrolledWindow;
+	Gtk::Viewport*                  m_Viewport;
 
 };
 

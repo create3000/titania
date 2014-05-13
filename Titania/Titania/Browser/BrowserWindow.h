@@ -52,14 +52,17 @@
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
 #include "../Browser/X3DBrowserEditor.h"
-#include "../HistoryEditor/HistoryEditor.h"
-#include "../LibraryView/LibraryView.h"
-#include "../MotionBlurEditor/MotionBlurEditor.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../ViewpointList/ViewpointList.h"
 
 namespace titania {
 namespace puck {
+
+class HistoryEditor;
+class LibraryView;
+class MotionBlurEditor;
+class OutlineEditor;
+class OutlineTreeViewEditor;
+class ViewpointList;
+
 
 class BrowserWindow :
 	public X3DBrowserEditor
@@ -72,57 +75,28 @@ public:
 
 	/// @name Widgets
 
-	const X3D::BrowserPtr &
-	getBrowserSurface () const
-	{ return browserSurface; }
-
-	MotionBlurEditor &
-	getMotionBlurEditor ()
-	{ return motionBlurEditor; }
-
-	const MotionBlurEditor &
+	const std::shared_ptr <MotionBlurEditor> &
 	getMotionBlurEditor () const
 	{ return motionBlurEditor; }
 
-	LibraryView &
-	getLibraryView ()
-	{ return libraryView; }
-
-	const LibraryView &
+	const std::shared_ptr <LibraryView> &
 	getLibraryView () const
 	{ return libraryView; }
 
-	ViewpointList &
-	getViewpointList ()
-	{ return viewpointList; }
-
-	const ViewpointList &
+	const std::shared_ptr <ViewpointList> &
 	getViewpointList () const
 	{ return viewpointList; }
 
-	HistoryEditor &
-	getHistoryEditor ()
-	{ return historyEditor; }
-
-	const HistoryEditor &
+	const std::shared_ptr <HistoryEditor> &
 	getHistoryEditor () const
 	{ return historyEditor; }
 
-	OutlineEditor &
-	getOutlineEditor ()
-	{ return outlineEditor; }
-
-	const OutlineEditor &
+	const std::shared_ptr <OutlineEditor> &
 	getOutlineEditor () const
 	{ return outlineEditor; }
 
-	OutlineTreeViewEditor &
-	getOutlineTreeView ()
-	{ return outlineEditor .getTreeView (); }
-
-	const OutlineTreeViewEditor &
-	getOutlineTreeView () const
-	{ return outlineEditor .getTreeView (); }
+	const std::shared_ptr <OutlineTreeViewEditor> &
+	getOutlineTreeView () const;
 
 	/// @name Member access
 
@@ -152,7 +126,7 @@ private:
 	getStyles () const;
 
 	void
-	set_initialized ();
+	set_world ();
 
 	///  @name Selection handling
 
@@ -501,13 +475,11 @@ private:
 
 	///  @name Members
 
-	const X3D::BrowserPtr browserSurface;
-
-	MotionBlurEditor motionBlurEditor;
-	LibraryView      libraryView;
-	ViewpointList    viewpointList;
-	HistoryEditor    historyEditor;
-	OutlineEditor    outlineEditor;
+	std::shared_ptr <MotionBlurEditor> motionBlurEditor;
+	std::shared_ptr <LibraryView>      libraryView;
+	std::shared_ptr <ViewpointList>    viewpointList;
+	std::shared_ptr <HistoryEditor>    historyEditor;
+	std::shared_ptr <OutlineEditor>    outlineEditor;
 
 	X3D::Keys keys;
 	bool      shortcuts;

@@ -303,8 +303,11 @@ throw (Error <INVALID_SCENE>,
 
 		if (not initialized () or value not_eq scene)
 		{
-			setDescription ("");
-			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
+			if (not value or not value -> isInternal ())
+			{
+				setDescription ("");
+				browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
+			}
 
 			scene = value ? value : createScene ();
 			scene -> setup ();

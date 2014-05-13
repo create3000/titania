@@ -53,6 +53,7 @@
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 #include "../OutlineEditor/OutlineTreeData.h"
+#include "../OutlineEditor/OutlineTreeViewEditor.h"
 
 namespace titania {
 namespace puck {
@@ -1337,7 +1338,7 @@ NodePropertiesEditor::updateNamedNode (BrowserWindow* const browserWindow, const
 	if (not name .empty ())
 		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
 
-	browserWindow -> getOutlineTreeView () .queue_draw ();
+	browserWindow -> getOutlineTreeView () -> queue_draw ();
 }
 
 void
@@ -1356,7 +1357,7 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
 	for (const auto & field : fieldsToRemove)
 		node -> removeUserDefinedField (field);
 
-	browserWindow -> getOutlineTreeView () .update (node);
+	browserWindow -> getOutlineTreeView () -> update (node);
 }
 
 NodePropertiesEditor::~NodePropertiesEditor ()

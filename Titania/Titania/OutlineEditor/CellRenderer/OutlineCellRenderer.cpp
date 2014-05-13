@@ -225,7 +225,7 @@ OutlineCellRenderer::on_data ()
 			const auto scene  = dynamic_cast <X3D::X3DScene*> (sfnode -> getValue ());
 
 			if (scene)
-				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getTitle ()) + "«</i>";
+				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getWorldURL () .basename ()) + "«</i>";
 
 			else if (dynamic_cast <X3D::X3DProtoObject*> (sfnode -> getValue ()))
 				property_markup () = "<i><b>Body</b></i>";

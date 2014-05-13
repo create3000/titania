@@ -1,3 +1,38 @@
+2014-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* style.css:
+	* X3DBaseInterface.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBaseInterface.cpp:
+	* OutlineEditor.xml:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* HistoryEditor.h:
+	* TextureEditor.h:
+	* OutlineEditor.h:
+	* TextureEditor.cpp:
+	* HistoryEditor.cpp:
+	* OutlineEditor.cpp:
+	* X3DBrowserSelection.cpp:
+	* X3DOutlineTreeView.h:
+	* TextureEditor.xml:
+	* OutlineTreeObserver.h:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp:
+	* X3DOutlineEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* NULL.x3dv:
+	* X3DOutlineEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
 2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DOutlineTreeView.cpp:

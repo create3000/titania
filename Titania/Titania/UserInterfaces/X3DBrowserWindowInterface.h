@@ -91,6 +91,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const
+	{ return m_IconFactory; }
+
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const
 	{ return m_FileFilterAllFiles; }
@@ -111,10 +115,6 @@ public:
 	getFileFilterX3D () const
 	{ return m_FileFilterX3D; }
 
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const
-	{ return m_IconFactory; }
-
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const
 	{ return m_MenuAccelGroup; }
@@ -123,61 +123,29 @@ public:
 	getExamineViewerImage () const
 	{ return *m_ExamineViewerImage; }
 
-	Gtk::FileChooserDialog &
-	getFileImportDialog () const
-	{ return *m_FileImportDialog; }
-
 	Gtk::Image &
 	getFileImportImage () const
 	{ return *m_FileImportImage; }
-
-	Gtk::FileChooserDialog &
-	getFileOpenDialog () const
-	{ return *m_FileOpenDialog; }
-
-	Gtk::FileChooserDialog &
-	getFileSaveDialog () const
-	{ return *m_FileSaveDialog; }
-
-	Gtk::CheckButton &
-	getSaveCompressedButton () const
-	{ return *m_SaveCompressedButton; }
-
-	Gtk::Dialog &
-	getFileSaveWarningDialog () const
-	{ return *m_FileSaveWarningDialog; }
 
 	Gtk::Image &
 	getFlyViewerImage () const
 	{ return *m_FlyViewerImage; }
 
 	Gtk::Image &
-	getPlaneViewerImage () const
-	{ return *m_PlaneViewerImage; }
-
-	Gtk::Image &
 	getImportImage () const
 	{ return *m_ImportImage; }
-
-	Gtk::MessageDialog &
-	getMessageDialog () const
-	{ return *m_MessageDialog; }
 
 	Gtk::Image &
 	getNoneViewerImage () const
 	{ return *m_NoneViewerImage; }
 
-	Gtk::Dialog &
-	getOpenLocationDialog () const
-	{ return *m_OpenLocationDialog; }
-
-	Gtk::Entry &
-	getOpenLocationEntry () const
-	{ return *m_OpenLocationEntry; }
-
 	Gtk::Image &
 	getOpenLocationImage () const
 	{ return *m_OpenLocationImage; }
+
+	Gtk::Image &
+	getPlaneViewerImage () const
+	{ return *m_PlaneViewerImage; }
 
 	Gtk::Image &
 	getWalkViewerImage () const
@@ -206,6 +174,10 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_NoneViewerMenuItem; }
+
+	Gtk::Image &
+	getWorkspacesImage () const
+	{ return *m_WorkspacesImage; }
 
 	Gtk::Window &
 	getWindow () const
@@ -611,21 +583,37 @@ public:
 	getOutlineEditorBox () const
 	{ return *m_OutlineEditorBox; }
 
-	Gtk::Image &
-	getWorkspacesImage () const
-	{ return *m_WorkspacesImage; }
+	Gtk::FileChooserDialog &
+	getFileImportDialog () const
+	{ return *m_FileImportDialog; }
 
-	virtual
-	void
-	on_messageDialog_response (int response_id) = 0;
+	Gtk::FileChooserDialog &
+	getFileOpenDialog () const
+	{ return *m_FileOpenDialog; }
 
-	virtual
-	void
-	on_open_location_entry_changed () = 0;
+	Gtk::FileChooserDialog &
+	getFileSaveDialog () const
+	{ return *m_FileSaveDialog; }
 
-	virtual
-	bool
-	on_open_location_entry_key_release_event (GdkEventKey* event) = 0;
+	Gtk::CheckButton &
+	getSaveCompressedButton () const
+	{ return *m_SaveCompressedButton; }
+
+	Gtk::Dialog &
+	getFileSaveWarningDialog () const
+	{ return *m_FileSaveWarningDialog; }
+
+	Gtk::MessageDialog &
+	getMessageDialog () const
+	{ return *m_MessageDialog; }
+
+	Gtk::Dialog &
+	getOpenLocationDialog () const
+	{ return *m_OpenLocationDialog; }
+
+	Gtk::Entry &
+	getOpenLocationEntry () const
+	{ return *m_OpenLocationEntry; }
 
 	virtual
 	void
@@ -649,11 +637,11 @@ public:
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey* event) = 0;
+	on_key_press_event (GdkEventKey* event) = 0;
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey* event) = 0;
+	on_key_release_event (GdkEventKey* event) = 0;
 
 	virtual
 	void
@@ -900,6 +888,18 @@ public:
 	on_look_at_toggled () = 0;
 
 	virtual
+	void
+	on_messageDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_open_location_entry_changed () = 0;
+
+	virtual
+	bool
+	on_open_location_entry_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
 	~X3DBrowserWindowInterface ();
 
 
@@ -912,28 +912,20 @@ private:
 
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterX3D;
-	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_MenuAccelGroup;
 	Gtk::Image*                     m_ExamineViewerImage;
-	Gtk::FileChooserDialog*         m_FileImportDialog;
 	Gtk::Image*                     m_FileImportImage;
-	Gtk::FileChooserDialog*         m_FileOpenDialog;
-	Gtk::FileChooserDialog*         m_FileSaveDialog;
-	Gtk::CheckButton*               m_SaveCompressedButton;
-	Gtk::Dialog*                    m_FileSaveWarningDialog;
 	Gtk::Image*                     m_FlyViewerImage;
-	Gtk::Image*                     m_PlaneViewerImage;
 	Gtk::Image*                     m_ImportImage;
-	Gtk::MessageDialog*             m_MessageDialog;
 	Gtk::Image*                     m_NoneViewerImage;
-	Gtk::Dialog*                    m_OpenLocationDialog;
-	Gtk::Entry*                     m_OpenLocationEntry;
 	Gtk::Image*                     m_OpenLocationImage;
+	Gtk::Image*                     m_PlaneViewerImage;
 	Gtk::Image*                     m_WalkViewerImage;
 	Gtk::Menu*                      m_ViewerTypeMenu;
 	Gtk::ImageMenuItem*             m_ExamineViewerMenuItem;
@@ -941,6 +933,7 @@ private:
 	Gtk::ImageMenuItem*             m_FlyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_PlaneViewerMenuItem;
 	Gtk::ImageMenuItem*             m_NoneViewerMenuItem;
+	Gtk::Image*                     m_WorkspacesImage;
 	Gtk::Window*                    m_Window;
 	Gtk::VBox*                      m_Widget;
 	Gtk::MenuBar*                   m_MenuBar;
@@ -1042,7 +1035,14 @@ private:
 	Gtk::Box*                       m_HistoryEditorBox;
 	Gtk::Box*                       m_LibraryViewBox;
 	Gtk::Box*                       m_OutlineEditorBox;
-	Gtk::Image*                     m_WorkspacesImage;
+	Gtk::FileChooserDialog*         m_FileImportDialog;
+	Gtk::FileChooserDialog*         m_FileOpenDialog;
+	Gtk::FileChooserDialog*         m_FileSaveDialog;
+	Gtk::CheckButton*               m_SaveCompressedButton;
+	Gtk::Dialog*                    m_FileSaveWarningDialog;
+	Gtk::MessageDialog*             m_MessageDialog;
+	Gtk::Dialog*                    m_OpenLocationDialog;
+	Gtk::Entry*                     m_OpenLocationEntry;
 
 };
 

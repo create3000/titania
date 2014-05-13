@@ -35,7 +35,6 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineTreeObserver.cpp \
 	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
-	Titania/TextureEditor/TextureEditor.cpp \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
 	Titania/Undo/UndoStep.cpp \

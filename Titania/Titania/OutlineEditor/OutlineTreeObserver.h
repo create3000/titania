@@ -103,9 +103,6 @@ private:
 	on_row_changed (const Gtk::TreeModel::Path &);
 
 	void
-	set_loadState (const X3D::SFEnum <X3D::LoadState> &, const Gtk::TreeModel::Path &);
-
-	void
 	update_path (const Gtk::TreeModel::Path &);
 
 	void

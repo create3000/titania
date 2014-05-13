@@ -426,7 +426,6 @@
     <None Include="Titania\X3D\Execution\X3DExecutionContext.h" />
     <None Include="Titania\X3D\Routing\Route.h" />
     <None Include="Titania\X3D\Routing\RouteArray.h" />
-    <None Include="Titania\X3D\Routing\Router.h" />
     <None Include="Titania\X3D\Routing\RouteSet.h" />
     <None Include="Titania\X3D\Parser\Parser.h" />
     <None Include="Titania\X3D\Parser\RegEx.h" />
@@ -736,7 +735,6 @@
     <Compile Include="Titania\X3D\Rendering\X3DRenderer.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteArray.cpp" />
     <Compile Include="Titania\X3D\Routing\Route.cpp" />
-    <Compile Include="Titania\X3D\Routing\Router.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteSet.cpp" />
     <Compile Include="Titania\X3D\Types\Image.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\CADAssembly.cpp" />

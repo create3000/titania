@@ -50,7 +50,8 @@
 
 #include "X3DBrowserSelection.h"
 
-#include "BrowserWindow.h"
+#include "../Browser/BrowserWindow.h"
+#include "../OutlineEditor/OutlineTreeViewEditor.h"
 
 namespace titania {
 namespace puck {
@@ -233,7 +234,7 @@ X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 						getBrowser () -> update ();
 
 						if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
-							getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
+							getBrowserWindow () -> getOutlineTreeView () -> expand_to (node);
 					}
 				}
 			}

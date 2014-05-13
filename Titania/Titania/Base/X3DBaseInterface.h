@@ -75,6 +75,10 @@ public:
 	getBrowser () const
 	{ return browser; }
 
+	virtual
+	const X3D::ScenePtr &
+	getWorld () const;
+
 	///  @name Destruction
 
 	virtual
@@ -89,6 +93,18 @@ protected:
 
 	X3DBaseInterface ()
 	{ }
+
+	///  @name Children handling
+
+	template <typename ... Args>
+	void
+	addChildren (Args & ... args)
+	{ basic::pass ((addChild (args), 1) ...); }
+
+	virtual
+	void
+	addChild (X3D::X3DChildObject & child)
+	{ child .addParent (browser); }
 
 
 private:

@@ -1,3 +1,14 @@
+2014-05-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* Router.cpp:
+	* X3DBrowser.cpp:
+	* ExternProto.cpp:
+	* Inline.cpp:
+	* X3DNetworkingContext.cpp: 
+
 2014-05-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Proto.h:

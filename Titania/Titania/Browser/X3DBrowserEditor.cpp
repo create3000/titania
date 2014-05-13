@@ -50,8 +50,9 @@
 
 #include "BrowserWindow.h"
 
-#include "BrowserSelection.h"
-#include "MagicImport.h"
+#include "../Browser/BrowserSelection.h"
+#include "../Browser/MagicImport.h"
+#include "../OutlineEditor/OutlineTreeViewEditor.h"
 
 #include <Titania/OS.h>
 
@@ -62,7 +63,7 @@ X3DBrowserEditor::X3DBrowserEditor (int argc, char** argv) :
 	X3DBrowserWidget (argc, argv),
 	        modified (false),
 	   saveConfirmed (false),
-	           scene (),
+	    currentScene (),
 	       selection (new BrowserSelection (getBrowserWindow ())),
 	     magicImport (new MagicImport (getBrowserWindow ())),
 	     undoHistory (),
@@ -114,11 +115,10 @@ X3DBrowserEditor::restoreSession ()
 void
 X3DBrowserEditor::set_initialized ()
 {
-	if (getBrowser () -> getExecutionContext () not_eq scene)
+	if (getBrowser () -> getExecutionContext () not_eq currentScene)
 		isModified (false);
 
-	scene = getBrowser () -> getExecutionContext ();
-
+	currentScene = getBrowser () -> getExecutionContext ();
 }
 
 void
@@ -276,7 +276,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 
 				const auto scene = getBrowser () -> createX3DFromString (string);
 
-				import (scene, undoStep);
+				importScene (scene, undoStep);
 			}
 
 			addUndoStep (undoStep);
@@ -297,7 +297,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 				if (magicImport -> import (selection, scene, undoStep))
 					continue;
 
-				import (scene, undoStep);
+				importScene (scene, undoStep);
 			}
 
 			addUndoStep (undoStep);
@@ -310,7 +310,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 }
 
 void
-X3DBrowserEditor::import (const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
+X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -585,7 +585,7 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 
 						getSelection () -> clear (undoStep);
 
-						import (scene, undoStep);
+						importScene (scene, undoStep);
 					}
 				}
 			}
@@ -1255,13 +1255,13 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 {
 	X3D::MFNode nodes;
 
+	const auto scene = getBrowser () -> getExecutionContext ();
+
 	for (const auto & clone : clones)
 	{
 		nodes .emplace_back (clone);
 
 		bool first = true;
-
-		const auto scene = getBrowser () -> getExecutionContext ();
 
 		X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {
@@ -1623,12 +1623,12 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 {
 	X3D::MFNode groups;
 
+	const auto scene = getBrowser () -> getExecutionContext ();
+
 	for (const auto & child : children)
 	{
 		if (not child)
 			continue;
-
-		const auto scene = getBrowser () -> getExecutionContext ();
 
 		X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {
@@ -1695,6 +1695,8 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 
 	if (indices .empty ())
 		return;
+
+	const auto scene = getBrowser () -> getExecutionContext ();
 
 	undoStep -> addVariables (parent);
 
@@ -2093,14 +2095,14 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit CDATA Field"));
 
 		undoStep -> addVariables (node);
-		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, std::ref (getBrowserWindow () -> getOutlineTreeView ()));
+		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, getBrowserWindow () -> getOutlineTreeView ());
 
 		undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
 		undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, string);
 		cdata -> setValue (string);
 
-		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, std::ref (getBrowserWindow () -> getOutlineTreeView ()));
-		getBrowserWindow () -> getOutlineTreeView () .queue_draw ();
+		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, getBrowserWindow () -> getOutlineTreeView ());
+		getBrowserWindow () -> getOutlineTreeView () -> queue_draw ();
 
 		addUndoStep (undoStep);
 	}
