@@ -72,7 +72,7 @@ EXTERNPROTO Torus [
 
 PROTO Children1 [
   exposedField SFNode metadata NULL
-  exposedField SFNode node Transform {}
+  exposedField SFNode node DEF _1 Transform { }
   exposedField MFNode children1 [ ]
 ]
 {
@@ -132,7 +132,7 @@ DEF Sensors Transform {
   scale -1.01808 1.09117 1.09117
   center 3.20255 0 -1.19209e-07
   children [
-    DEF _1 ProximitySensor {
+    DEF _2 ProximitySensor {
       size 2 2 2
     }
     VisibilitySensor {
@@ -160,7 +160,7 @@ DEF Inline Transform {
   translation 5.51299 0.468949 1
   scale 0.329804 0.329803 1
   center -1.99912 -0.520307 0
-  children DEF _2 Inline {
+  children DEF _3 Inline {
     url "Inline.wrl"
   }
 }
@@ -196,10 +196,10 @@ DEF SnapTarget Transform {
 
 Group {
   children [
-    USE _1
+    USE _2
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 3.99465
+      rotation 0 0 1 4.01385
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -234,7 +234,7 @@ DEF Sphere Transform {
           repeatT FALSE
         }
       }
-      geometry DEF _3 Sphere { }
+      geometry DEF _4 Sphere { }
     }
   }
 }
@@ -305,7 +305,7 @@ Anchor {
           shininess 0.127273
         }
       }
-      geometry USE _3
+      geometry USE _4
     }
   }
 }
@@ -379,7 +379,7 @@ DEF ScreenText Transform {
     geometry DEF Text2 Text {
       string [
         "modified...",
-        "Sa 10 Mai 2014 12:23:36 CEST"
+        "Mo 12 Mai 2014 19:32:41 CEST"
       ]
       fontStyle ScreenFontStyle {
         family "SANS"
@@ -417,9 +417,9 @@ DEF Viewpoint2 Viewpoint {
   centerOfRotation 1.83783 -0.942352 -0.631597
 }
 
-DEF _4 TextureTransform { }
+DEF _5 TextureTransform { }
 
-USE _4
+USE _5
 
 DEF ModifiedScript Script {
   eventOut MFString string_changed
@@ -430,12 +430,13 @@ function initialize ()
 	var modified = Browser .currentScene .getMetaData (\"modified\");
 	var date = new Date (Date .parse (modified));
 	string_changed = new MFString (\"modified...\", date .toLocaleString ());
+	print ('####: ', string_changed);
 }"
 }
 
 DEF EXPORT Transform {
   translation 8.97635 0 0
-  children DEF _5 Inline {
+  children DEF _6 Inline {
     url [
       "../Basic/EXPORT.wrl",
       "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"
@@ -455,8 +456,8 @@ DEF InlineClone Transform {
   }
 }
 
-IMPORT _5.CubeExport
-IMPORT _2.Text AS ImportedInline
+IMPORT _6.CubeExport
+IMPORT _3.Text AS ImportedInline
 
 ROUTE Rotor.rotation_changed TO Box.set_rotation
 ROUTE Sensors.translation_changed TO Inline.set_translation

@@ -122,7 +122,7 @@ public:
 	{ return proto; }
 
 	const ScenePtr &
-	getScene () const
+	getInternalScene () const
 	{ return scene; }
 
 	///  @name Operations

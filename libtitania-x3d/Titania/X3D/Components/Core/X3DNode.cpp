@@ -70,17 +70,6 @@ X3DNode::X3DNode () :
 	addNodeType (X3DConstants::X3DNode);
 }
 
-Scene*
-X3DNode::getScene () const
-{
-	X3DExecutionContext* executionContext = getExecutionContext ();
-
-	while (not executionContext -> isScene ())
-		executionContext = executionContext -> getExecutionContext ();
-
-	return static_cast <Scene*> (executionContext);
-}
-
 std::vector <X3DLayerNode*>
 X3DNode::getLayers () const
 {

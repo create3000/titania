@@ -1273,7 +1273,7 @@ NodePropertiesEditor::on_apply ()
 					{
 						const auto & exportedNode = scene -> getExportedNodes () .at (exportedName);
 
-						undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode,
+						undoStep -> addUndoFunction (&X3D::Scene::updateExportedNode,
 						                             scene,
 						                             exportedNode -> getExportedName (),
 						                             exportedNode -> getLocalNode ());
@@ -1281,7 +1281,7 @@ NodePropertiesEditor::on_apply ()
 					catch (...)
 					{ }
 
-					undoStep -> addRedoFunction (&X3D::X3DScene::removeExportedNode,
+					undoStep -> addRedoFunction (&X3D::Scene::removeExportedNode,
 					                             scene,
 					                             exportedName);
 
@@ -1296,19 +1296,19 @@ NodePropertiesEditor::on_apply ()
 					{
 						const auto & exportedNode = scene -> getExportedNodes () .at (exportedName);
 
-						undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode,
+						undoStep -> addUndoFunction (&X3D::Scene::updateExportedNode,
 						                             scene,
 						                             exportedNode -> getExportedName (),
 						                             exportedNode -> getLocalNode ());
 					}
 					catch (...)
 					{
-						undoStep -> addUndoFunction (&X3D::X3DScene::removeExportedNode,
+						undoStep -> addUndoFunction (&X3D::Scene::removeExportedNode,
 						                             scene,
 						                             exportedName);
 					}
 
-					undoStep -> addRedoFunction (&X3D::X3DScene::updateExportedNode,
+					undoStep -> addRedoFunction (&X3D::Scene::updateExportedNode,
 					                             scene,
 					                             exportedName,
 					                             node);

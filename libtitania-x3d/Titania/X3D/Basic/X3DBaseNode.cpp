@@ -393,6 +393,17 @@ X3DBaseNode::getCurrentTime () const
 	return getBrowser () -> getClock () -> cycle ();
 }
 
+X3DExecutionContext*
+X3DBaseNode::getRootContext () const
+{
+	X3DExecutionContext* executionContext = getExecutionContext ();
+
+	while (not executionContext -> isRoot ())
+		executionContext = executionContext -> getExecutionContext ();
+
+	return executionContext;
+}
+
 const X3DBaseNode*
 X3DBaseNode::getType () const
 throw (Error <DISPOSED>)
@@ -680,7 +691,7 @@ X3DBaseNode::getNumClones () const
 							{
 								auto node = dynamic_cast <X3DBaseNode*> (fparent);
 
-								if (node and (node -> getExecutionContext () -> isScene () or node -> getExecutionContext () -> isProto ()))
+								if (node and (node -> getExecutionContext () -> isRoot () or node -> getExecutionContext () -> isProto ()))
 								{
 									++ numClones;
 									break;
@@ -697,7 +708,7 @@ X3DBaseNode::getNumClones () const
 					{
 						const auto node = dynamic_cast <X3DBaseNode*> (fparent);
 
-						if (node and (node -> getExecutionContext () -> isScene () or node -> getExecutionContext () -> isProto ()))
+						if (node and (node -> getExecutionContext () -> isRoot () or node -> getExecutionContext () -> isProto ()))
 						{
 							++ numClones;
 							break;

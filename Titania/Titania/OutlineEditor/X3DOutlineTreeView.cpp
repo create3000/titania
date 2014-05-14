@@ -490,10 +490,13 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	// Root nodes
 
-	get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
+	if (not executionContext -> getRootNodes () .empty ())
+	{
+		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
 
-	for (auto & rootNode : executionContext -> getRootNodes ())
-		get_model () -> append (OutlineIterType::X3DBaseNode, rootNode);
+		for (auto & rootNode : executionContext -> getRootNodes ())
+			get_model () -> append (OutlineIterType::X3DBaseNode, rootNode);
+	}
 
 	// Imported nodes
 
@@ -704,10 +707,13 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			// Root nodes
 
-			get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
+			if (not executionContext -> getRootNodes () .empty ())
+			{
+				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
 
-			for (auto & rootNode : executionContext -> getRootNodes ())
-				get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode);
+				for (auto & rootNode : executionContext -> getRootNodes ())
+					get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode);
+			}
 
 			// Imported nodes
 
@@ -751,9 +757,9 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-				if (inlineNode and inlineNode -> getScene () not_eq inlineNode -> getBrowser () -> getScene ())
+				if (inlineNode and inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getScene ())
 				{
-					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getScene ());
+					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
 				}
 			}
 

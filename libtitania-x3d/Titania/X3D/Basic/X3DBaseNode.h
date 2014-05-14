@@ -140,6 +140,9 @@ public:
 	getExecutionContext () const
 	{ return executionContext; }
 
+	X3DExecutionContext*
+	getRootContext () const;
+
 	virtual
 	const std::string &
 	getComponentName () const = 0;

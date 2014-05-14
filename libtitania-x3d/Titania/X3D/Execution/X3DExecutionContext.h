@@ -85,10 +85,9 @@ public:
 
 	///  @name Tests
 
-	virtual
 	bool
-	isScene () const
-	{ return false; }
+	isRoot () const
+	{ return getExecutionContext () == this; }
 
 	virtual
 	bool

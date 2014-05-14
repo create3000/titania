@@ -1,5 +1,20 @@
 2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Scene.h:
+	* Traverse.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* ExternProto.h:
+	* X3DNode.h:
+	* X3DNode.cpp:
+	* InlineTool.h:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp: 
 
 2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>

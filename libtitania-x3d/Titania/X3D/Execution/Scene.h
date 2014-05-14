@@ -89,13 +89,6 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
-	///  @name Tests
-
-	virtual
-	bool
-	isScene () const final override
-	{ return true; }
-
 	///  @name Import handling
 
 	void

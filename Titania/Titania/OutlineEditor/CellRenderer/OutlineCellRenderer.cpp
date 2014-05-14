@@ -222,7 +222,7 @@ OutlineCellRenderer::on_data ()
 		case OutlineIterType::X3DExecutionContext:
 		{
 			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
-			const auto scene  = dynamic_cast <X3D::X3DScene*> (sfnode -> getValue ());
+			const auto scene  = dynamic_cast <X3D::Scene*> (sfnode -> getValue ());
 
 			if (scene)
 				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getWorldURL () .basename ()) + "«</i>";
@@ -346,7 +346,7 @@ OutlineCellRenderer::get_icon () const
 
 			if (node -> getExecutionContext () == treeView -> get_model () -> get_execution_context ())
 			{
-				if (node -> isInitialized ())
+				if (node -> isInitialized () and not node -> getExecutionContext () -> isProto ())
 					return baseNodeImage;
 				
 				return baseNodeUImage;
@@ -355,7 +355,7 @@ OutlineCellRenderer::get_icon () const
 			if (treeView -> get_model () -> get_execution_context () -> isImportedNode (*sfnode))
 				return importedNodeImage;
 
-			if (node -> isInitialized ())
+			if (node -> isInitialized () and not node -> getExecutionContext () -> isProto ())
 				return sharedNodeImage;
 
 			return sharedNodeUImage;

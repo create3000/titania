@@ -299,7 +299,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 				if (inlineNode)
 				{
-					if (find (static_cast <X3DExecutionContext*> (inlineNode -> getScene ()), object, flags, hierarchy, seen))
+					if (find (static_cast <X3DExecutionContext*> (inlineNode -> getInternalScene ()), object, flags, hierarchy, seen))
 						return true;
 				}
 			}

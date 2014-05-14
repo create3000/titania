@@ -150,7 +150,7 @@ public:
 
 	virtual
 	const ScenePtr &
-	getScene () const
+	getInternalScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return scene; }

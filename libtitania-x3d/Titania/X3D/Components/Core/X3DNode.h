@@ -85,9 +85,6 @@ public:
 
 	///  @name Member access
 
-	Scene*
-	getScene () const;
-
 	std::vector <X3DLayerNode*>
 	getLayers () const;
 

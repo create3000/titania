@@ -126,14 +126,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	if (executionContext -> isScene ())
-	{
-		X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
+	X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
 
-		protoDeclaration -> requestImmediateLoad ();
-
-		return new X3DPrototypeInstance (executionContext, protoDeclaration);
-	}
+	protoDeclaration -> requestImmediateLoad ();
 
 	return new X3DPrototypeInstance (executionContext, protoDeclaration);
 }
@@ -225,7 +220,7 @@ X3DPrototypeInstance::saveState ()
 
 	// Filter out scene nodes
 
-	X3D::traverse (getScene () -> getRootNodes (), [&children] (X3D::SFNode & node)
+	X3D::traverse (getRootContext () -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
 	                  // If scene node in children, remove from children.
 	                  children .erase (node);

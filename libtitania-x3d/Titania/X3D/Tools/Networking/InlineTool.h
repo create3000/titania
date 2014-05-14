@@ -118,10 +118,10 @@ public:
 
 	virtual
 	const ScenePtr &
-	getScene () const
+	getInternalScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return getNode () -> getScene (); }
+	{ return getNode () -> getInternalScene (); }
 
 	///  @name Operations
 

@@ -170,7 +170,7 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-			addSceneMenuItem (getBrowser () -> getExecutionContext (), inlineNode -> getScene ()) -> activate ();
+			addSceneMenuItem (getBrowser () -> getExecutionContext (), inlineNode -> getInternalScene ()) -> activate ();
 			break;
 		}
 		case OutlineIterType::ExternProto:
@@ -182,7 +182,7 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 				externProto -> requestImmediateLoad ();
 
 			if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
-				addSceneMenuItem (getBrowser () -> getExecutionContext (), externProto -> getScene ()) -> activate ();
+				addSceneMenuItem (getBrowser () -> getExecutionContext (), externProto -> getInternalScene ()) -> activate ();
 
 			break;
 		}

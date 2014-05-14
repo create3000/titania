@@ -760,8 +760,8 @@ X3DBrowserEditor::removeExportedNodes (const X3D::ScenePtr & scene, const X3D::S
 
 			if (node == localNode)
 			{
-				undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode, scene, exportedNode -> getExportedName (), localNode);
-				undoStep -> addRedoFunction (&X3D::X3DScene::removeExportedNode, scene, exportedNode -> getExportedName ());
+				undoStep -> addUndoFunction (&X3D::Scene::updateExportedNode, scene, exportedNode -> getExportedName (), localNode);
+				undoStep -> addRedoFunction (&X3D::Scene::removeExportedNode, scene, exportedNode -> getExportedName ());
 
 				scene -> removeExportedNode (exportedNode -> getExportedName ());
 			}

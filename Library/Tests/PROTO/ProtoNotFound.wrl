@@ -1,0 +1,14 @@
+#VRML V2.0 utf8
+
+PROTO Gold [ ]
+{
+  Material {
+    ambientIntensity 0.25
+    diffuseColor 0.384722 0.266993 0
+    specularColor 0.757576 0.738847 0.590386
+    shininess 0.0666667
+  }
+
+  # Bubble up to root context.
+  NotFound { }
+}
