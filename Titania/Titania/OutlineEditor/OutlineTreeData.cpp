@@ -203,6 +203,8 @@ OutlineTreeData::get_user_data (X3D::X3DChildObject* const object)
 
 OutlineTreeData::~OutlineTreeData ()
 {
+	get_user_data () -> paths .erase (path);
+
 	switch (type)
 	{
 		case OutlineIterType::X3DField:
@@ -213,8 +215,6 @@ OutlineTreeData::~OutlineTreeData ()
 		default:
 			break;
 	}
-
-	get_user_data () -> paths .erase (path);
 }
 
 } // puck

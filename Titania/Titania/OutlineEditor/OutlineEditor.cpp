@@ -186,6 +186,16 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 
 			break;
 		}
+		case OutlineIterType::Prototype:
+		{
+			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
+			const auto prototype = dynamic_cast <X3D::Proto*> (sfnode .getValue ());
+
+			prototype -> realize ();
+
+			addSceneMenuItem (getBrowser () -> getExecutionContext (), prototype) -> activate ();
+			break;
+		}
 		default:
 			break;
 	}
@@ -365,7 +375,7 @@ OutlineEditor::select (const double x, const double y)
 
 	getRemoveMenuItem ()             .set_sensitive (isLocalNode and isBaseNode);
 	getCreateInstanceMenuItem ()     .set_sensitive (isLocalNode and (isPrototype or isExternProto));
-	getSetRootToThisSceneMenuItem () .set_sensitive (isExternProto or isInlineNode);
+	getSetRootToThisSceneMenuItem () .set_sensitive (isExternProto or isPrototype or isInlineNode);
 }
 
 Gtk::TreePath

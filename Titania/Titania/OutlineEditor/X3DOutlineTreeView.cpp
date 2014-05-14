@@ -435,6 +435,9 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	scene = executionContext;
 
+	unset_model ();
+	get_model () -> clear ();
+
 	set_model (OutlineTreeModel::create (getBrowserWindow (), executionContext));
 
 	executionContext -> getRootNodes ()          .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
