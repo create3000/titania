@@ -216,13 +216,13 @@ OutlineEditor::addSceneMenuItem (const X3D::ScenePtr & currentScene, const X3D::
 
 	getSceneLabel () .set_markup ("<i><b>Scene</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
 
-	if (iter not_eq sceneIndex .end ())
-		return scenes [iter -> second] .second;
-
-	// Remove menu items.
-
 	if (currentScene)
 	{
+		if (iter not_eq sceneIndex .end ())
+			return scenes [iter -> second] .second;
+
+		// Remove menu items.
+
 		const auto iter = sceneIndex .find (currentScene);
 
 		if (iter not_eq sceneIndex .end ())

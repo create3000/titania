@@ -252,9 +252,8 @@ X3DBrowserWidget::blank ()
 {
 	try
 	{
-		// The world event must come before the initialized event.
-		world = getBrowser () -> createScene ();
-		getBrowser () -> replaceWorld (world);
+		getBrowser () -> replaceWorld (nullptr);
+		world = getBrowser () -> getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -267,9 +266,8 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 
 	try
 	{
-		// The world event must come before the initialized event.
-		world = getBrowser () -> createX3DFromURL ({ worldURL .str () });
-		getBrowser () -> replaceWorld (world);
+		getBrowser () -> loadURL ({ worldURL .str () });
+		world = getBrowser () -> getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }

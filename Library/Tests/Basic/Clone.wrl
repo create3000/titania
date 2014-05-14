@@ -3,6 +3,7 @@
 META "title" "Clone"
 
 DEF Cube Transform {
+  translation 4.52397 0.221778 0
   children Shape {
     appearance Appearance {
       material Material {
