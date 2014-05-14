@@ -178,11 +178,16 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
 
-			if (externProto -> checkLoadState () == X3D::NOT_STARTED_STATE)
-				externProto -> requestImmediateLoad ();
+			try
+			{
+				if (externProto -> checkLoadState () == X3D::NOT_STARTED_STATE)
+					externProto -> requestImmediateLoad ();
 
-			if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
-				addSceneMenuItem (getBrowser () -> getExecutionContext (), X3D::X3DExecutionContextPtr (externProto -> getInternalScene ())) -> activate ();
+				if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
+					addSceneMenuItem (getBrowser () -> getExecutionContext (), X3D::X3DExecutionContextPtr (externProto -> getInternalScene ())) -> activate ();
+			}
+			catch (const X3D::X3DError &)
+			{ }
 
 			break;
 		}

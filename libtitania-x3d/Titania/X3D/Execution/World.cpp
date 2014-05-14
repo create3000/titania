@@ -175,9 +175,14 @@ World::bind ()
 	}
 
 	// Bind viewpoint from URL.
-
-	if (not getExecutionContext () -> getWorldURL () .fragment () .empty ())
-		getExecutionContext () -> changeViewpoint (getExecutionContext () -> getWorldURL () .fragment ());
+	
+	try
+	{
+		if (not getExecutionContext () -> getWorldURL () .fragment () .empty ())
+			getExecutionContext () -> changeViewpoint (getExecutionContext () -> getWorldURL () .fragment ());
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 } // X3D

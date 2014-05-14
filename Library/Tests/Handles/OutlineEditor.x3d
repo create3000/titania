@@ -19,6 +19,16 @@
       <field accessType='inputOutput' type='SFFloat' name='transparency'/>
       <field accessType='initializeOnly' type='SFBool' name='solid'/>
     </ExternProtoDeclare>
+    <ExternProtoDeclare name='OutlineEditorGrid' url='"OutlineEditorGrid.x3dv#Grid"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
+      <field accessType='inputOutput' type='SFInt32' name='xDimension'/>
+      <field accessType='inputOutput' type='SFFloat' name='xSpacing'/>
+      <field accessType='inputOutput' type='SFInt32' name='zDimension'/>
+      <field accessType='inputOutput' type='SFFloat' name='zSpacing'/>
+      <field accessType='inputOutput' type='SFColor' name='color'/>
+      <field accessType='inputOutput' type='SFFloat' name='transparency'/>
+      <field accessType='initializeOnly' type='SFBool' name='solid'/>
+    </ExternProtoDeclare>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
       <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFBool' name='enabled'/>

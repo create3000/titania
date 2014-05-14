@@ -2441,6 +2441,7 @@
     <None Include="Tests\Handles\DynamicInline.x3dv" />
     <None Include="Tests\Handles\test.x3dv" />
     <None Include="Tests\PROTO\ProtoNotFound.wrl" />
+    <None Include="Tests\Handles\OutlineEditorGrid.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
