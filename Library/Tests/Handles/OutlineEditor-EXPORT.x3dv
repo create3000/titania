@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 08 May 2014 13:51:27 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Mon, 12 May 2014 00:26:12 GMT"
+META "modified" "Wed, 14 May 2014 04:42:46 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -107,6 +107,7 @@ function eventsProcessed ()
 
 DEF Export1 Transform {
   translation 0 1.23317 0
+  rotation 0 0 1 2.6822
   children Shape {
     appearance Appearance {
       material Material {
@@ -130,6 +131,7 @@ DEF Export1 Transform {
 }
 
 DEF Export2 Transform {
+  rotation 0 0 1 2.6822
   children Shape {
     appearance Appearance {
       material DEF Artdeco2 Material {
@@ -153,6 +155,7 @@ DEF Export2 Transform {
 
 DEF Export3 Transform {
   translation 0 -1.25334 0
+  rotation 0 0 1 2.6822
   children Shape {
     appearance Appearance {
       material Material { }

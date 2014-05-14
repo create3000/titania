@@ -313,7 +313,7 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (exportedNode -> getExecutionContext () == get_model () -> get_execution_context ())
 					selection -> select (localNode);
 			}
 			catch (...)
@@ -572,7 +572,8 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode -> getValue ());
 				const auto exportedNode = importedNode -> getExportedNode ();
 
-				return exportedNode;
+				if (importedNode -> getExecutionContext () == get_model () -> get_execution_context ())
+					return exportedNode;
 			}
 			catch (...)
 			{ }
@@ -587,7 +588,8 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				return localNode;
+				if (exportedNode -> getExecutionContext () == get_model () -> get_execution_context ())
+					return localNode;
 			}
 			catch (...)
 			{ }
@@ -810,8 +812,7 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 					{
 						try
 						{
-							if (get_model () -> get_execution_context () -> isLocalNode (route -> getSourceNode ()) and
-							    get_model () -> get_execution_context () -> isLocalNode (route -> getDestinationNode ()))
+							if (route -> getExecutionContext () == get_model () -> get_execution_context ())
 							{
 								const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
@@ -889,8 +890,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 			{
 				const auto route = routes [0];
 
-				if (get_model () -> get_execution_context () -> isLocalNode (route -> getSourceNode ()) and
-				    get_model () -> get_execution_context () -> isLocalNode (route -> getDestinationNode ()))
+				if (route -> getExecutionContext () == get_model () -> get_execution_context ())
 				{
 					const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 

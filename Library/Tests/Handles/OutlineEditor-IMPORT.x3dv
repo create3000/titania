@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 05 May 2014 10:24:07 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Sun, 11 May 2014 21:07:44 GMT"
+META "modified" "Wed, 14 May 2014 04:42:43 GMT"
 
 EXTERNPROTO Rotor [
   inputOutput SFBool     enabled
@@ -53,6 +53,8 @@ IMPORT Inline1.Export2 AS Import2
 IMPORT Inline1.Export3 AS Import3
 
 ROUTE Inline1.url_changed TO Inline2.set_url
+ROUTE Import1.rotation_changed TO Import3.set_rotation
 ROUTE _1.rotation_changed TO Import1.set_rotation
+ROUTE Inline1.load_changed TO Inline1.set_load
 
 EXPORT Inline1 AS ExportedInline

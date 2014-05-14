@@ -240,6 +240,8 @@ OutlineEditor::addSceneMenuItem (const X3D::ScenePtr & currentScene, const X3D::
 	}
 	else
 	{
+		// Remove all menu items.
+
 		for (const auto & widget : getSceneMenu () .get_children ())
 			getSceneMenu () .remove (*widget);
 

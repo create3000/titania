@@ -26,6 +26,15 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="CreateInstanceMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Create Instance</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_create_instance_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="RemoveMenuItem">
         <property name="label">gtk-remove</property>
         <property name="visible">True</property>
@@ -36,18 +45,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem4">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="CreateInstanceMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Create Instance</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_create_instance_activate" swapped="no"/>
       </object>
     </child>
     <child>
