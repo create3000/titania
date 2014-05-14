@@ -756,12 +756,12 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
 			undoStep -> addVariables (node);
-			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ());
+			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
 
 			undoStep -> addUndoFunction (&X3D::SFString::setValue, sfstring, currentValue);
 			undoStep -> addRedoFunction (&X3D::SFString::setValue, sfstring, string);
 
-			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ());
+			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
 			row_changed (treeView -> get_model (), textview -> get_path ());
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
@@ -792,12 +792,12 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		if (field -> toString () not_eq currentValue or not undoStep -> isEmpty ())
 		{
 			undoStep -> addVariables (node);
-			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ());
+			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
 
 			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue);
 			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromLocaleString, field, string, locale);
 
-			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ());
+			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
 			row_changed (treeView -> get_model (), textview -> get_path ());
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
