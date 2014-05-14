@@ -204,10 +204,10 @@ FontStyle::initialize ()
 	set_font ();
 }
 
-std::shared_ptr <X3DTextGeometry>
+std::unique_ptr <X3DTextGeometry>
 FontStyle::getTextGeometry (Text* const text) const
 {
-	return std::shared_ptr <X3DTextGeometry> (new PolygonText (text, this));
+	return std::unique_ptr <X3DTextGeometry> (new PolygonText (text, this));
 }
 
 void

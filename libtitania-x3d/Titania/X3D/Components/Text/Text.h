@@ -235,7 +235,7 @@ private:
 
 	Fields fields;
 
-	std::shared_ptr <X3DTextGeometry> textGeometry;
+	std::unique_ptr <X3DTextGeometry> textGeometry;
 	X3DPtr <X3DFontStyleNode>         fontStyleNode;
 
 };

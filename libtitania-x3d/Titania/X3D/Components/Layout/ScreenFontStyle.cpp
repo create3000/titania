@@ -325,7 +325,7 @@ ScreenText::build ()
 	              0,     // This texture is level 0 in mimpap generation.
 	              GL_RGBA,
 	              surface -> get_width (), surface -> get_height (),
-	              false, // border
+	              0,     // border
 	              GL_BGRA, GL_UNSIGNED_BYTE,
 	              surface -> get_data ());
 
@@ -456,10 +456,10 @@ ScreenFontStyle::initialize ()
 	set_font ();
 }
 
-std::shared_ptr <X3DTextGeometry>
+std::unique_ptr <X3DTextGeometry>
 ScreenFontStyle::getTextGeometry (Text* const text) const
 {
-	return std::shared_ptr <X3DTextGeometry> (new ScreenText (text, this));
+	return std::unique_ptr <X3DTextGeometry> (new ScreenText (text, this));
 }
 
 double

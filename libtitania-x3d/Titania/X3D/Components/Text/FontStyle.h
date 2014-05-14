@@ -134,7 +134,7 @@ public:
 	///  @name Member access
 
 	virtual
-	std::shared_ptr <X3DTextGeometry>
+	std::unique_ptr <X3DTextGeometry>
 	getTextGeometry (Text* const) const;
 
 	const FontPtr &

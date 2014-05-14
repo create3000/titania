@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-      <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.svg"/>
+      <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.16.svg"/>
     </sources>
   </object>
   <object class="GtkMenu" id="PopupMenu">
@@ -181,12 +181,14 @@
                   <object class="GtkBox" id="box2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_left">1</property>
+                    <property name="margin_right">1</property>
                     <child>
                       <object class="GtkImage" id="image1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">2</property>
-                        <property name="margin_right">3</property>
+                        <property name="margin_left">1</property>
+                        <property name="margin_right">1</property>
                         <property name="stock">X3DExecutionContext</property>
                         <property name="icon_size">1</property>
                       </object>

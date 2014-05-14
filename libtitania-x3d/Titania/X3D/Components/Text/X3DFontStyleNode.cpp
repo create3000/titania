@@ -54,6 +54,7 @@
 #include "../Text/Text.h"
 
 #include <Titania/OS/file_exists.h>
+#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace X3D {
@@ -508,7 +509,8 @@ X3DTextGeometry::display ()
 {
 	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? GL_CCW : GL_CW);
 
-	glCallList (listId);
+	if (listId)
+		glCallList (listId);
 }
 
 X3DTextGeometry::~X3DTextGeometry ()
