@@ -66,12 +66,12 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
 	m_PopupMenu -> set_name ("PopupMenu");
-	m_builder -> get_widget ("SetRootToThisSceneMenuItem", m_SetRootToThisSceneMenuItem);
-	m_SetRootToThisSceneMenuItem -> set_name ("SetRootToThisSceneMenuItem");
-	m_builder -> get_widget ("RemoveMenuItem", m_RemoveMenuItem);
-	m_RemoveMenuItem -> set_name ("RemoveMenuItem");
+	m_builder -> get_widget ("SetAsCurrentSceneMenuItem", m_SetAsCurrentSceneMenuItem);
+	m_SetAsCurrentSceneMenuItem -> set_name ("SetAsCurrentSceneMenuItem");
 	m_builder -> get_widget ("CreateInstanceMenuItem", m_CreateInstanceMenuItem);
 	m_CreateInstanceMenuItem -> set_name ("CreateInstanceMenuItem");
+	m_builder -> get_widget ("RemoveMenuItem", m_RemoveMenuItem);
+	m_RemoveMenuItem -> set_name ("RemoveMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
 	m_ViewMenuItem -> set_name ("ViewMenuItem");
 	m_builder -> get_widget ("ShowExternProtosMenuItem", m_ShowExternProtosMenuItem);
@@ -92,21 +92,27 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("SceneMenuBox", m_SceneMenuBox);
+	m_SceneMenuBox -> set_name ("SceneMenuBox");
+	m_builder -> get_widget ("SceneMenuButton", m_SceneMenuButton);
+	m_SceneMenuButton -> set_name ("SceneMenuButton");
 	m_builder -> get_widget ("SceneLabel", m_SceneLabel);
 	m_SceneLabel -> set_name ("SceneLabel");
+	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);
+	m_PreviousSceneButton -> set_name ("PreviousSceneButton");
+	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
+	m_NextSceneButton -> set_name ("NextSceneButton");
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("Viewport", m_Viewport);
 	m_Viewport -> set_name ("Viewport");
 
-	// Connect object Gtk::MenuItem with id 'SetRootToThisSceneMenuItem'.
-	m_SetRootToThisSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_root_to_this_scene_activate));
+	// Connect object Gtk::MenuItem with id 'SetAsCurrentSceneMenuItem'.
+	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));
+	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
 
 	// Connect object Gtk::ImageMenuItem with id 'RemoveMenuItem'.
 	m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate));
-
-	// Connect object Gtk::MenuItem with id 'CreateInstanceMenuItem'.
-	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'ShowExternProtosMenuItem'.
 	m_ShowExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_extern_protos_toggled));
@@ -118,6 +124,10 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
+
+	// Connect object Gtk::Button with id 'PreviousSceneButton'.
+	m_PreviousSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_previous_scene_clicked));
+	m_NextSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_next_scene_clicked));
 
 	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
 	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));

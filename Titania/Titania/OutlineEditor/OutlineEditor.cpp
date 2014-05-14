@@ -61,7 +61,7 @@ namespace puck {
 OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.xml"), gconf_dir ()),
-	                 treeview (new OutlineTreeViewEditor (browserWindow, X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext ()))),
+	                 treeview (new OutlineTreeViewEditor (browserWindow, getBrowser () -> getExecutionContext ())),
 	               sceneGroup (),
 	               sceneIndex (),
 	                   scenes (),
@@ -108,6 +108,9 @@ void
 OutlineEditor::set_world ()
 {
 	addSceneMenuItem (X3D::X3DExecutionContextPtr (), X3D::X3DExecutionContextPtr (getWorld ()));
+	
+	getPreviousSceneButton () .set_sensitive (false);
+	getNextSceneButton ()     .set_sensitive (false);
 }
 
 void
@@ -116,9 +119,17 @@ OutlineEditor::set_scene ()
 	if (not realized)
 		return;
 
+	// Scene menu
+
 	const X3D::X3DExecutionContextPtr & currentScene = treeview -> get_model () -> get_execution_context ();
 
-	addSceneMenuItem (currentScene, getBrowser () -> getExecutionContext ()) -> set_active (true);
+	const auto menuItem = addSceneMenuItem (currentScene, getBrowser () -> getExecutionContext ());
+	menuItem .first -> set_active (true);
+
+	getPreviousSceneButton () .set_sensitive (menuItem .second not_eq 0);
+	getNextSceneButton ()     .set_sensitive (menuItem .second not_eq scenes .size () - 1);
+
+	// Tree view
 
 	treeview -> set_execution_context (getBrowser () -> getExecutionContext ());
 }
@@ -159,7 +170,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 }
 
 void
-OutlineEditor::on_set_root_to_this_scene_activate ()
+OutlineEditor::on_set_as_current_scene_activate ()
 {
 	const Gtk::TreeIter iter = treeview -> get_model () -> get_iter (path);
 
@@ -170,7 +181,9 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-			addSceneMenuItem (getBrowser () -> getExecutionContext (), X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ())) -> activate ();
+			const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+			                                        X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
+			menuItem .first -> activate ();
 			break;
 		}
 		case OutlineIterType::ExternProto:
@@ -184,7 +197,11 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 					externProto -> requestImmediateLoad ();
 
 				if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
-					addSceneMenuItem (getBrowser () -> getExecutionContext (), X3D::X3DExecutionContextPtr (externProto -> getInternalScene ())) -> activate ();
+				{
+					const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (), 
+					                                        X3D::X3DExecutionContextPtr (externProto -> getInternalScene ()));
+					menuItem .first -> activate ();
+				}
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -198,7 +215,7 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 
 			prototype -> realize ();
 
-			addSceneMenuItem (getBrowser () -> getExecutionContext (), prototype) -> activate ();
+			addSceneMenuItem (getBrowser () -> getExecutionContext (), prototype) .first -> activate ();
 			break;
 		}
 		default:
@@ -223,7 +240,31 @@ OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size
 	{ }
 }
 
-Gtk::RadioMenuItem*
+void
+OutlineEditor::on_previous_scene_clicked ()
+{
+	const auto iter = sceneIndex .find (getBrowser () -> getExecutionContext ());
+	
+	if (iter not_eq sceneIndex .end ())
+	{
+		if (iter -> second > 0)
+			scenes [iter -> second - 1] .second -> set_active (true);
+	}
+}
+
+void
+OutlineEditor::on_next_scene_clicked ()
+{
+	const auto iter = sceneIndex .find (getBrowser () -> getExecutionContext ());
+	
+	if (iter not_eq sceneIndex .end ())
+	{
+		if (iter -> second + 1 < scenes .size ())
+			scenes [iter -> second + 1] .second -> set_active (true);
+	}
+}
+
+std::pair <Gtk::RadioMenuItem*, size_t>
 OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScene, const X3D::X3DExecutionContextPtr & scene)
 {
 	const auto basename = scene -> getWorldURL () .basename ();
@@ -234,7 +275,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	if (currentScene)
 	{
 		if (iter not_eq sceneIndex .end ())
-			return scenes [iter -> second] .second;
+			return std::make_pair (scenes [iter -> second] .second, iter -> second);
 
 		// Remove menu items.
 
@@ -275,8 +316,8 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	scenes .emplace_back (scene, menuItem);
 
 	getSceneMenu () .append (*menuItem);
-	
-	return menuItem;
+
+	return std::make_pair (menuItem, scenes .size () - 1);
 }
 
 // View Menu Item
@@ -380,7 +421,7 @@ OutlineEditor::select (const double x, const double y)
 
 	getRemoveMenuItem ()             .set_sensitive (isLocalNode and isBaseNode);
 	getCreateInstanceMenuItem ()     .set_sensitive (isLocalNode and (isPrototype or isExternProto));
-	getSetRootToThisSceneMenuItem () .set_sensitive (isExternProto or isPrototype or isInlineNode);
+	getSetAsCurrentSceneMenuItem () .set_sensitive (isExternProto or isPrototype or isInlineNode);
 }
 
 Gtk::TreePath

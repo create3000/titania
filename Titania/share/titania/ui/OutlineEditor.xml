@@ -11,12 +11,12 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="SetRootToThisSceneMenuItem">
+      <object class="GtkMenuItem" id="SetAsCurrentSceneMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Set Root to This Scene</property>
+        <property name="label" translatable="yes">Set As Current Scene</property>
         <property name="use_underline">True</property>
-        <signal name="activate" handler="on_set_root_to_this_scene_activate" swapped="no"/>
+        <signal name="activate" handler="on_set_as_current_scene_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -166,11 +166,11 @@
         <property name="orientation">vertical</property>
         <signal name="map" handler="on_map" swapped="no"/>
         <child>
-          <object class="GtkBox" id="box1">
+          <object class="GtkBox" id="SceneMenuBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuButton" id="menubutton1">
+              <object class="GtkMenuButton" id="SceneMenuButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -202,7 +202,8 @@
                       <object class="GtkLabel" id="SceneLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Scene</property>
+                        <property name="label" translatable="yes">&lt;i&gt;&lt;b&gt;Current Scene&lt;/b&gt;&lt;/i&gt;</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -217,6 +218,43 @@
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="PreviousSceneButton">
+                <property name="label" translatable="yes">◂</property>
+                <property name="width_request">0</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">1</property>
+                <property name="margin_right">1</property>
+                <property name="margin_top">1</property>
+                <property name="margin_bottom">1</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_previous_scene_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="NextSceneButton">
+                <property name="label" translatable="yes">▸</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_next_scene_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>

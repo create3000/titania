@@ -100,16 +100,16 @@ public:
 	{ return *m_PopupMenu; }
 
 	Gtk::MenuItem &
-	getSetRootToThisSceneMenuItem () const
-	{ return *m_SetRootToThisSceneMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getRemoveMenuItem () const
-	{ return *m_RemoveMenuItem; }
+	getSetAsCurrentSceneMenuItem () const
+	{ return *m_SetAsCurrentSceneMenuItem; }
 
 	Gtk::MenuItem &
 	getCreateInstanceMenuItem () const
 	{ return *m_CreateInstanceMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveMenuItem () const
+	{ return *m_RemoveMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
@@ -151,9 +151,25 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getSceneMenuBox () const
+	{ return *m_SceneMenuBox; }
+
+	Gtk::MenuButton &
+	getSceneMenuButton () const
+	{ return *m_SceneMenuButton; }
+
 	Gtk::Label &
 	getSceneLabel () const
 	{ return *m_SceneLabel; }
+
+	Gtk::Button &
+	getPreviousSceneButton () const
+	{ return *m_PreviousSceneButton; }
+
+	Gtk::Button &
+	getNextSceneButton () const
+	{ return *m_NextSceneButton; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
@@ -165,15 +181,15 @@ public:
 
 	virtual
 	void
-	on_set_root_to_this_scene_activate () = 0;
-
-	virtual
-	void
-	on_remove_activate () = 0;
+	on_set_as_current_scene_activate () = 0;
 
 	virtual
 	void
 	on_create_instance_activate () = 0;
+
+	virtual
+	void
+	on_remove_activate () = 0;
 
 	virtual
 	void
@@ -204,6 +220,14 @@ public:
 	on_map () = 0;
 
 	virtual
+	void
+	on_previous_scene_clicked () = 0;
+
+	virtual
+	void
+	on_next_scene_clicked () = 0;
+
+	virtual
 	bool
 	on_button_press_event (GdkEventButton* event) = 0;
 
@@ -222,9 +246,9 @@ private:
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Gtk::Menu*                      m_PopupMenu;
-	Gtk::MenuItem*                  m_SetRootToThisSceneMenuItem;
-	Gtk::ImageMenuItem*             m_RemoveMenuItem;
+	Gtk::MenuItem*                  m_SetAsCurrentSceneMenuItem;
 	Gtk::MenuItem*                  m_CreateInstanceMenuItem;
+	Gtk::ImageMenuItem*             m_RemoveMenuItem;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ShowExternProtosMenuItem;
 	Gtk::CheckMenuItem*             m_ShowPrototypesMenuItem;
@@ -235,7 +259,11 @@ private:
 	Gtk::Menu*                      m_SceneMenu;
 	Gtk::Window*                    m_Window;
 	Gtk::Box*                       m_Widget;
+	Gtk::Box*                       m_SceneMenuBox;
+	Gtk::MenuButton*                m_SceneMenuButton;
 	Gtk::Label*                     m_SceneLabel;
+	Gtk::Button*                    m_PreviousSceneButton;
+	Gtk::Button*                    m_NextSceneButton;
 	Gtk::ScrolledWindow*            m_ScrolledWindow;
 	Gtk::Viewport*                  m_Viewport;
 

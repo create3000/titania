@@ -1,5 +1,14 @@
 2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* style.css:
+	* OutlineEditor.xml:
+	* OutlineEditor.h:
+	* OutlineEditor.cpp:
+	* X3DOutlineEditorInterface.h:
+	* X3DOutlineEditorInterface.cpp: 
+
+2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.cpp:
 	* X3DOutlineTreeView.cpp: 
 

@@ -15,8 +15,39 @@ GtkSeparator {
 
 */
 
+#Console {
+	font: monospace;
+}
+
+/* Dialogs */
+
+.titania-header {
+	font-size: 120%;
+	font-weight: bold;
+}
+
 GtkExpander > GtkLabel {
 	font-weight: bold;
+}
+
+/* Outline Editor */
+
+#SceneMenuButton {
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+#PreviousSceneButton {
+	margin: 0px;
+	border: 0px;
+	padding: 0px 2px 0px 4px;
+}
+
+#NextSceneButton {
+	margin: 0px;
+	border: 0px;
+	padding: 0px 4px 0px 2px;
 }
 
 #OutlineTreeViewEditor column-header .button {
@@ -26,22 +57,6 @@ GtkExpander > GtkLabel {
 
 #OutlineTreeViewEditor .textview-editable,
 #OutlineTreeViewEditor .textview-editable GtkTextView
-{
-	margin: 0px;
-	border: 0px;
-	padding: 0px;
-}
-
-#Console {
-	font: monospace;
-}
-
-.titania-header {
-	font-size: 120%;
-	font-weight: bold;
-}
-
-GtkMenuButton
 {
 	margin: 0px;
 	border: 0px;

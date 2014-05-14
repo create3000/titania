@@ -114,16 +114,24 @@ private:
 	void
 	on_create_instance_activate () final override;
 
-	// Set root
+	// Set current scene
 
 	virtual
 	void
-	on_set_root_to_this_scene_activate () final override;
+	on_set_as_current_scene_activate () final override;
 
 	void
 	on_scene_activate (Gtk::RadioMenuItem* const, const size_t);
 
-	Gtk::RadioMenuItem*
+	virtual
+	void
+	on_previous_scene_clicked () final override;
+
+	virtual
+	void
+	on_next_scene_clicked () final override;
+
+	std::pair <Gtk::RadioMenuItem*, size_t>
 	addSceneMenuItem (const X3D::X3DExecutionContextPtr &, const X3D::X3DExecutionContextPtr &);
 
 	// View Menu Item
