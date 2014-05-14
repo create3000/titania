@@ -307,7 +307,11 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 
 	// Add menu item.
 
-	const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, basename));
+	const auto label = scene -> isProto ()
+	                   ? scene -> getTypeName () + " " + scene -> getName ()
+	                   : scene -> getTypeName () + " »" + basename + "«";
+
+	const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, label));
 	menuItem -> set_active (true);
 	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
 	menuItem -> show ();
