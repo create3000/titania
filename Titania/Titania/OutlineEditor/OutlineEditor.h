@@ -121,7 +121,7 @@ private:
 	on_set_root_to_this_scene_activate () final override;
 
 	void
-	on_scene_activate (const size_t);
+	on_scene_activate (Gtk::RadioMenuItem* const, const size_t);
 
 	Gtk::RadioMenuItem*
 	addSceneMenuItem (const X3D::ScenePtr &, const X3D::ScenePtr &);

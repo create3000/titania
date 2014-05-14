@@ -1,5 +1,13 @@
 2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* OutlineEditor.h:
+	* OutlineEditor.cpp: 
+
+2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.xml: 
 
 2014-05-13  Holger Seelig  <holger.seelig@yahoo.de>

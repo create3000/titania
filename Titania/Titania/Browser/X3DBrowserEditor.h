@@ -308,7 +308,7 @@ private:
 	///  @name Destruction
 
 	void
-	dispose ();
+	shutdown ();
 
 	///  @name Members
 

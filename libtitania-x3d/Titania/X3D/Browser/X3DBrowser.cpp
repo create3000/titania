@@ -303,18 +303,21 @@ throw (Error <INVALID_SCENE>,
 
 		if (not initialized () or value not_eq scene)
 		{
-			if (not value or not value -> isInternal ())
+			scene = value ? value : createScene ();
+
+			if (not scene -> isInternal ())
 			{
 				setDescription ("");
 				browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 			}
 
-			scene = value ? value : createScene ();
 			scene -> setup ();
 
 			world = new World (scene);
 			world -> setup ();
 		}
+		else
+			scene = value;
 
 		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 

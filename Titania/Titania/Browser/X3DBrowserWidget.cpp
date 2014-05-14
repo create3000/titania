@@ -250,9 +250,14 @@ X3DBrowserWidget::updateTitle (const bool edited) const
 void
 X3DBrowserWidget::blank ()
 {
-	// The world event must come bevore the initialized event.
-	world = getBrowser () -> createScene ();
-	getBrowser () -> replaceWorld (world);
+	try
+	{
+		// The world event must come before the initialized event.
+		world = getBrowser () -> createScene ();
+		getBrowser () -> replaceWorld (world);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -262,7 +267,7 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 
 	try
 	{
-		// The world event must come bevore the initialized event.
+		// The world event must come before the initialized event.
 		world = getBrowser () -> createX3DFromURL ({ worldURL .str () });
 		getBrowser () -> replaceWorld (world);
 	}

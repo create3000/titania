@@ -124,15 +124,16 @@ X3DBrowserEditor::set_initialized ()
 void
 X3DBrowserEditor::set_shutdown ()
 {
-	if (isSaved ())
+	try
 	{
-		dispose ();
-		return;
+		if (isSaved ())
+			shutdown ();
+
+		else
+			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ()); // Cancel shutdown
 	}
-
-	// Cancel shutdown
-
-	getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -357,7 +358,7 @@ X3DBrowserEditor::close ()
 
 	if (isSaved ())
 	{
-		dispose ();
+		shutdown ();
 
 		return X3DBrowserWidget::close ();
 	}
@@ -2111,7 +2112,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 }
 
 void
-X3DBrowserEditor::dispose ()
+X3DBrowserEditor::shutdown ()
 {
 	undoHistory  .clear ();
 	

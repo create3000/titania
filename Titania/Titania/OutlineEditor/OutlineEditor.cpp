@@ -107,7 +107,7 @@ OutlineEditor::restoreSession ()
 void
 OutlineEditor::set_world ()
 {
-	addSceneMenuItem (nullptr, getWorld ()) -> activate ();
+	addSceneMenuItem (nullptr, getWorld ());
 }
 
 void
@@ -118,7 +118,7 @@ OutlineEditor::set_scene ()
 
 	X3D::ScenePtr currentScene (treeview -> get_model () -> get_execution_context ());
 
-	addSceneMenuItem (currentScene, getBrowser () -> getExecutionContext ()) -> activate ();
+	addSceneMenuItem (currentScene, getBrowser () -> getExecutionContext ()) -> set_active (true);
 
 	treeview -> set_execution_context (X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext ()));
 }
@@ -192,14 +192,17 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 }
 
 void
-OutlineEditor::on_scene_activate (const size_t index)
+OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size_t index)
 {
 	try
 	{
-		const auto & scene = scenes [index] .first;
+		if (menuItem -> get_active ())
+		{
+			const auto & scene = scenes [index] .first;
 
-		if (getBrowser () -> getExecutionContext () not_eq scene)
-			getBrowser () -> replaceWorld (scene);
+			if (scene not_eq getBrowser () -> getExecutionContext ())
+				getBrowser () -> replaceWorld (scene);
+		}
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -208,56 +211,54 @@ OutlineEditor::on_scene_activate (const size_t index)
 Gtk::RadioMenuItem*
 OutlineEditor::addSceneMenuItem (const X3D::ScenePtr & currentScene, const X3D::ScenePtr & scene)
 {
-	const auto           basename = scene -> getWorldURL () .basename ();
-	Gtk::RadioMenuItem*  menuItem = nullptr;
-	const auto           iter     = sceneIndex .find (scene);
-
-	if (iter == sceneIndex .end ())
-	{
-		// Remove menu items.
-
-		if (currentScene)
-		{
-			const auto iter = sceneIndex .find (currentScene);
-
-			if (iter not_eq sceneIndex .end ())
-			{
-				const size_t first = iter -> second + 1;
-			
-				for (size_t i = first, size = scenes .size (); i < size; ++ i)
-				{
-					sceneIndex .erase (scenes [i] .first);
-					getSceneMenu () .remove (*scenes [i] .second);
-				}
-
-				scenes .resize (first);
-			}
-		}
-		else
-		{
-			for (const auto & widget : getSceneMenu () .get_children ())
-				getSceneMenu () .remove (*widget);
-
-			sceneIndex .clear ();
-			scenes .clear ();
-		}
-
-		// Add menu item.
-
-		menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, basename));
-
-		sceneIndex .emplace (scene, scenes .size ());
-		scenes .emplace_back (std::make_pair (scene, menuItem));
-
-		getSceneMenu () .append (*menuItem);
-		menuItem -> show ();
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), scenes .size () - 1));
-	}
-	else
-		menuItem = scenes [iter -> second] .second;
+	const auto basename = scene -> getWorldURL () .basename ();
+	const auto iter     = sceneIndex .find (scene);
 
 	getSceneLabel () .set_markup ("<i><b>Scene</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
 
+	if (iter not_eq sceneIndex .end ())
+		return scenes [iter -> second] .second;
+
+	// Remove menu items.
+
+	if (currentScene)
+	{
+		const auto iter = sceneIndex .find (currentScene);
+
+		if (iter not_eq sceneIndex .end ())
+		{
+			const size_t first = iter -> second + 1;
+		
+			for (size_t i = first, size = scenes .size (); i < size; ++ i)
+			{
+				sceneIndex .erase (scenes [i] .first);
+				getSceneMenu () .remove (*scenes [i] .second);
+			}
+
+			scenes .resize (first);
+		}
+	}
+	else
+	{
+		for (const auto & widget : getSceneMenu () .get_children ())
+			getSceneMenu () .remove (*widget);
+
+		sceneIndex .clear ();
+		scenes .clear ();
+	}
+
+	// Add menu item.
+
+	const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, basename));
+	menuItem -> set_active (true);
+	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
+	menuItem -> show ();
+
+	sceneIndex .emplace (scene, scenes .size ());
+	scenes .emplace_back (scene, menuItem);
+
+	getSceneMenu () .append (*menuItem);
+	
 	return menuItem;
 }
 
