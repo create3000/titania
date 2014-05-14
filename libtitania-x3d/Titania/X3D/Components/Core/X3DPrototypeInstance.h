@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_CORE_X3DPROTOTYPE_INSTANCE_H__
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Prototype/Proto.h"
 #include "../Core/X3DNode.h"
 
 namespace titania {
@@ -90,6 +91,23 @@ public:
 	throw (Error <DISPOSED>) final override;
 
 	virtual
+	std::string
+	getTitle () const final override
+	{ return protoDeclaration -> getProto () -> getTitle (); }
+
+	virtual
+	void
+	setWorldURL (const basic::uri & value) final override
+	{ return protoDeclaration -> getProto () -> setWorldURL (value); }
+
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoDeclaration -> getProto () -> getWorldURL (); }
+
+	virtual
 	X3DBaseNode*
 	getInnerNode () final override;
 
@@ -102,7 +120,7 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
-	///  @name Members
+	///  @name Member access
 
 	X3DBaseNode*
 	getRootNode () const;
@@ -126,6 +144,16 @@ public:
 	traverse (const TraverseType) final override;
 
 	///  @name Input/Output
+
+	virtual
+	void
+	isCompressed (const bool value) final override
+	{ protoDeclaration -> getProto () -> isCompressed (value); }
+
+	virtual
+	bool
+	isCompressed () const final override
+	{ return protoDeclaration -> getProto () -> isCompressed (); }
 
 	virtual
 	void

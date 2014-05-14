@@ -54,7 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/Scene.h"
 #include "../../Prototype/ExternProto.h"
-#include "../../Prototype/Proto.h"
 #include "../Networking/X3DUrlObject.h"
 
 #include <cassert>
@@ -100,8 +99,6 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	setCharacterEncoding    (proto -> getCharacterEncoding ());
 	setComment              (proto -> getComment ());
 
-	setWorldURL (proto -> getWorldURL ());
-
 	setProfile (proto -> getProfile ());
 
 	for (const auto & component : proto -> getComponents ())
@@ -126,9 +123,14 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
+	if (executionContext -> isRoot ())
+	{
+		X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
 
-	protoDeclaration -> requestImmediateLoad ();
+		protoDeclaration -> requestImmediateLoad ();
+
+		return new X3DPrototypeInstance (executionContext, protoDeclaration);
+	}
 
 	return new X3DPrototypeInstance (executionContext, protoDeclaration);
 }

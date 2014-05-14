@@ -54,7 +54,6 @@
 #include "../Browser/Image.h"
 #include "../Configuration/config.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
 
@@ -252,7 +251,7 @@ X3DBrowserWidget::blank ()
 {
 	try
 	{
-		getBrowser () -> replaceWorld (nullptr);
+		getBrowser () -> replaceWorld (X3D::ScenePtr ());
 		world = getBrowser () -> getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
@@ -276,52 +275,20 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 void
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
-	const auto suffix = worldURL .suffix ();
-	const auto scene  = getBrowser () -> getExecutionContext ();
+	const auto suffix           = worldURL .suffix ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
-	scene -> setWorldURL (worldURL);
-	scene -> isCompressed (compressed);
-
-	// MetaData
-
-	if (suffix not_eq ".wrl")
-	{
-		// VRML files are saved as is, but we do not add extra stuff!
-
-		scene -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
-
-		try
-		{
-			scene -> getMetaData ("creator");
-		}
-		catch (const X3D::X3DError &)
-		{
-			const std::string fullname = os::getfullname ();
-
-			if (not fullname .empty ())
-				scene -> setMetaData ("creator", os::getfullname ());
-		}
-
-		try
-		{
-			scene -> getMetaData ("created");
-		}
-		catch (const X3D::X3DError &)
-		{
-			scene -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
-		}
-
-		scene -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
-	}
+	executionContext -> setWorldURL (worldURL);
+	executionContext -> isCompressed (compressed);
 
 	// Save
 
 	if (suffix == ".x3d")
 	{
-		if (scene -> getVersion () == X3D::VRML_V2_0)
+		if (executionContext -> getVersion () == X3D::VRML_V2_0)
 		{
-			scene -> setEncoding ("X3D");
-			scene -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+			executionContext -> setEncoding ("X3D");
+			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
 		}
 
 		if (compressed)
@@ -330,7 +297,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::SmallestStyle
-				<< X3D::XMLEncode (scene);
+				<< X3D::XMLEncode (executionContext);
 		}
 		else
 		{
@@ -338,25 +305,25 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::CompactStyle
-				<< X3D::XMLEncode (scene);
+				<< X3D::XMLEncode (executionContext);
 		}
 	}
 	else
 	{
 		if (suffix == ".wrl")
 		{
-			if (scene -> getVersion () not_eq X3D::VRML_V2_0)
+			if (executionContext -> getVersion () not_eq X3D::VRML_V2_0)
 			{
-				scene -> setEncoding ("VRML");
-				scene -> setSpecificationVersion ("2.0");
+				executionContext -> setEncoding ("VRML");
+				executionContext -> setSpecificationVersion ("2.0");
 			}
 		}
 		else  // ".x3dv"
 		{
-			if (scene -> getVersion () == X3D::VRML_V2_0)
+			if (executionContext -> getVersion () == X3D::VRML_V2_0)
 			{
-				scene -> setEncoding ("X3D");
-				scene -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+				executionContext -> setEncoding ("X3D");
+				executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
 			}
 		}
 
@@ -366,7 +333,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::SmallestStyle
-				<< scene;
+				<< executionContext;
 		}
 		else
 		{
@@ -374,7 +341,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::NicestStyle
-				<< scene;
+				<< executionContext;
 		}
 	}
 }

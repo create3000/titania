@@ -245,7 +245,7 @@ private:
 	// Edit
 
 	void
-	removeNodeFromScene (const X3D::ScenePtr &, X3D::SFNode, const UndoStepPtr &) const;
+	removeNodeFromScene (const X3D::X3DExecutionContextPtr &, X3D::SFNode, const UndoStepPtr &) const;
 
 	void
 	removeExportedNodes (const X3D::ScenePtr &, const X3D::SFNode &, const UndoStepPtr &) const;
@@ -269,7 +269,7 @@ private:
 	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	unlinkClone (const X3D::ScenePtr &, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
+	unlinkClone (X3D::X3DExecutionContext* const, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
 	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
@@ -314,10 +314,10 @@ private:
 
 	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
-	bool          modified;
-	bool          saveConfirmed;
-	int           savedIndex;
-	X3D::ScenePtr currentScene;
+	bool                        modified;
+	bool                        saveConfirmed;
+	int                         savedIndex;
+	X3D::X3DExecutionContextPtr currentScene;
 
 	std::unique_ptr <BrowserSelection> selection;
 	std::unique_ptr <MagicImport>      magicImport;

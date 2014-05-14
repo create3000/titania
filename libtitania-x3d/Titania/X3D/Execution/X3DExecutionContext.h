@@ -96,16 +96,21 @@ public:
 
 	///  @name Member access
 
+	virtual
+	std::string
+	getTitle () const = 0;
+
+	virtual
 	void
-	setWorldURL (const basic::uri & value)
-	{ worldURL = value; }
+	setWorldURL (const basic::uri & value) = 0;
 
 	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return worldURL; }
+	       Error <DISPOSED>) = 0;
+
+	//{ put this in proto and proto instance and browser
 
 	void
 	setEncoding (const std::string & value)
@@ -127,6 +132,11 @@ public:
 	       Error <DISPOSED>)
 	{ return specificationVersion; }
 
+	VersionType
+	getVersion () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	void
 	setCharacterEncoding (const std::string & value)
 	{ characterEncoding = value; }
@@ -146,11 +156,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return comment; }
-
-	VersionType
-	getVersion () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
 
 	void
 	setProfile (const ProfileInfoPtr & value)
@@ -184,6 +189,8 @@ public:
 	       Error <DISPOSED>)
 	{ return units; }
 
+	//} put this in proto and proto instance
+	
 	SFNode
 	createNode (const std::string &)
 	throw (Error <INVALID_NAME>,
@@ -447,7 +454,25 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  @name Import handling
+
+	virtual
+	void
+	import (X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///  @name Input/Output
+
+	virtual
+	void
+	isCompressed (const bool) = 0;
+
+	virtual
+	bool
+	isCompressed () const = 0;
 
 	virtual
 	void
@@ -546,6 +571,17 @@ private:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
+	///  @name Import handling
+
+	void
+	updateNamedNodes (X3DExecutionContext* const);
+
+	std::string
+	getUniqueName (X3DExecutionContext* const, std::string) const;
+
+	std::string
+	getUniqueName (X3DExecutionContext* const) const;
+
 	///  @name Static members
 
 	static const UnitIndex unitCategories;
@@ -553,7 +589,6 @@ private:
 
 	///  @name Members
 
-	basic::uri  worldURL;
 	std::string encoding;
 	std::string specificationVersion;
 	std::string characterEncoding;

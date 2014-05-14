@@ -71,6 +71,8 @@ X3DCoreContext::X3DCoreContext () :
 void
 X3DCoreContext::initialize ()
 {
+	XInitThreads ();
+
 	if (glXGetCurrentContext ())
 	{
 		extensions = basic::ssplit ((const char*) glGetString (GL_EXTENSIONS), " ");

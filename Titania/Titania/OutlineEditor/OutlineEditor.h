@@ -124,7 +124,7 @@ private:
 	on_scene_activate (Gtk::RadioMenuItem* const, const size_t);
 
 	Gtk::RadioMenuItem*
-	addSceneMenuItem (const X3D::ScenePtr &, const X3D::ScenePtr &);
+	addSceneMenuItem (const X3D::X3DExecutionContextPtr &, const X3D::X3DExecutionContextPtr &);
 
 	// View Menu Item
 
@@ -164,11 +164,13 @@ private:
 	getPathAtPosition (const double, const double);
 
 	///  @name Members
+	
+	using MenuItemPair = std::pair <X3D::X3DExecutionContextPtr, Gtk::RadioMenuItem*>;
 
-	std::shared_ptr <OutlineTreeViewEditor>                     treeview;
-	Gtk::RadioButtonGroup                                       sceneGroup;
-	std::map <X3D::ScenePtr, size_t>                            sceneIndex;
-	std::deque <std::pair <X3D::ScenePtr, Gtk::RadioMenuItem*>> scenes;
+	std::shared_ptr <OutlineTreeViewEditor>        treeview;
+	Gtk::RadioButtonGroup                          sceneGroup;
+	std::map <X3D::X3DExecutionContextPtr, size_t> sceneIndex;
+	std::deque <MenuItemPair>                      scenes;
 
 	Gtk::TreePath path;
 	bool          realized;

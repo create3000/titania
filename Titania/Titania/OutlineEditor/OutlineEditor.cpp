@@ -107,7 +107,7 @@ OutlineEditor::restoreSession ()
 void
 OutlineEditor::set_world ()
 {
-	addSceneMenuItem (nullptr, getWorld ());
+	addSceneMenuItem (X3D::X3DExecutionContextPtr (), X3D::X3DExecutionContextPtr (getWorld ()));
 }
 
 void
@@ -116,11 +116,11 @@ OutlineEditor::set_scene ()
 	if (not realized)
 		return;
 
-	X3D::ScenePtr currentScene (treeview -> get_model () -> get_execution_context ());
+	const X3D::X3DExecutionContextPtr & currentScene = treeview -> get_model () -> get_execution_context ();
 
 	addSceneMenuItem (currentScene, getBrowser () -> getExecutionContext ()) -> set_active (true);
 
-	treeview -> set_execution_context (X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext ()));
+	treeview -> set_execution_context (getBrowser () -> getExecutionContext ());
 }
 
 // Pointing Device
@@ -170,7 +170,7 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-			addSceneMenuItem (getBrowser () -> getExecutionContext (), inlineNode -> getInternalScene ()) -> activate ();
+			addSceneMenuItem (getBrowser () -> getExecutionContext (), X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ())) -> activate ();
 			break;
 		}
 		case OutlineIterType::ExternProto:
@@ -182,7 +182,7 @@ OutlineEditor::on_set_root_to_this_scene_activate ()
 				externProto -> requestImmediateLoad ();
 
 			if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
-				addSceneMenuItem (getBrowser () -> getExecutionContext (), externProto -> getInternalScene ()) -> activate ();
+				addSceneMenuItem (getBrowser () -> getExecutionContext (), X3D::X3DExecutionContextPtr (externProto -> getInternalScene ())) -> activate ();
 
 			break;
 		}
@@ -209,12 +209,12 @@ OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size
 }
 
 Gtk::RadioMenuItem*
-OutlineEditor::addSceneMenuItem (const X3D::ScenePtr & currentScene, const X3D::ScenePtr & scene)
+OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScene, const X3D::X3DExecutionContextPtr & scene)
 {
 	const auto basename = scene -> getWorldURL () .basename ();
 	const auto iter     = sceneIndex .find (scene);
 
-	getSceneLabel () .set_markup ("<i><b>Scene</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
+	getSceneLabel () .set_markup ("<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
 
 	if (currentScene)
 	{

@@ -100,10 +100,16 @@ public:
 	{ return currentFrameRate; }
 
 	virtual
+	void
+	setWorldURL (const basic::uri & value) final override
+	{ return getExecutionContext () -> setWorldURL (value); }
+
+	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) final override
+	{ return getExecutionContext () -> getWorldURL (); }
 
 	const X3DFieldDefinition*
 	getSupportedField (const std::string &) const
@@ -137,11 +143,11 @@ public:
 	getProfile (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
-	const ScenePtr &
+	const X3DExecutionContextPtr &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
-	{ return scene; }
+	{ return executionContext; }
 
 	///  @name X3D Creation Handling
 
@@ -157,6 +163,11 @@ public:
 
 	void
 	replaceWorld (const ScenePtr &)
+	throw (Error <INVALID_SCENE>,
+	       Error <INVALID_OPERATION_TIMING>);
+
+	void
+	replaceWorld (const X3DExecutionContextPtr &)
 	throw (Error <INVALID_SCENE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
@@ -338,7 +349,7 @@ private:
 	set_prepareEvents ();
 
 	void
-	set_scene ();
+	set_executionContext ();
 
 	///  @name Static members
 
@@ -362,11 +373,11 @@ private:
 	BrowserPropertiesPtr   browserProperties;
 	RenderingPropertiesPtr renderingProperties;
 
-	ScenePtr scene;
-	WorldPtr world;
-	WorldPtr root;
-	MFString urlError;
-	size_t   inShutdown;
+	X3DExecutionContextPtr executionContext;
+	WorldPtr               world;
+	WorldPtr               root;
+	MFString               urlError;
+	size_t                 inShutdown;
 
 };
 

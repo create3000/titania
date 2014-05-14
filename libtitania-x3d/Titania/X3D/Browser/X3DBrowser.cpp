@@ -63,7 +63,7 @@ X3DBrowser::X3DBrowser () :
 	     browserOptions (new BrowserOptions      (this)),
 	  browserProperties (new BrowserProperties   (this)),
 	renderingProperties (new RenderingProperties (this)),
-	              scene (createScene ()),
+	   executionContext (createScene ()),
 	              world (),
 	               root (),
 	           urlError (),
@@ -79,7 +79,7 @@ X3DBrowser::X3DBrowser () :
 	             browserOptions,
 	             browserProperties,
 	             renderingProperties,
-	             scene,
+	             executionContext,
 	             world,
 	             root,
 	             urlError);
@@ -103,11 +103,11 @@ X3DBrowser::initialize ()
 
 	prepareEvents () .addInterest (this, &X3DBrowser::set_prepareEvents);
 
-	scene .addInterest (this, &X3DBrowser::set_scene);
+	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
 
 	// Show splash screen or proceed with empty scene.
 
-	replaceWorld (scene);
+	replaceWorld (executionContext);
 
 	if (glXGetCurrentContext ())
 	{
@@ -173,14 +173,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (not value .empty ())
 		getNotification () -> string () = value;
-}
-
-const basic::uri &
-X3DBrowser::getWorldURL () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return getExecutionContext () -> getWorldURL ();
 }
 
 const X3DFieldDefinition*
@@ -267,6 +259,14 @@ X3DBrowser::replaceWorld (const ScenePtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
+	replaceWorld (X3DExecutionContextPtr (value));
+}
+
+void
+X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
+throw (Error <INVALID_SCENE>,
+       Error <INVALID_OPERATION_TIMING>)
+{
 	if (makeCurrent ())
 	{
 		// Process shutdown.
@@ -301,25 +301,25 @@ throw (Error <INVALID_SCENE>,
 
 		// Process as normal.
 
-		if (not initialized () or value not_eq scene)
+		if (not initialized () or value not_eq executionContext)
 		{
-			scene = value ? value : createScene ();
+			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
 
-			if (not scene -> isInternal ())
+			if (not executionContext -> isInternal ())
 			{
 				setDescription ("");
 				browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 			}
 
-			scene -> setup ();
+			executionContext -> setup ();
 
-			world = new World (scene);
+			world = new World (executionContext);
 			world -> setup ();
 		}
 		else
-			scene = value;
+			executionContext = value;
 
-		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
+		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
 
 		return;
 	}
@@ -328,7 +328,7 @@ throw (Error <INVALID_SCENE>,
 }
 
 void
-X3DBrowser::set_scene ()
+X3DBrowser::set_executionContext ()
 {
 	std::clog << "Replacing world done." << std::endl;
 
@@ -371,7 +371,7 @@ throw (Error <INVALID_URL>,
 
 		try
 		{
-			ScenePtr scene = createScene ();
+			const ScenePtr scene = createScene ();
 
 			loader .parseIntoScene (scene, url);
 
@@ -446,7 +446,7 @@ throw (Error <INVALID_URL>,
 		{
 			Loader loader (this);
 
-			ScenePtr scene = loader .createX3DFromURL (url);
+			const ScenePtr scene = loader .createX3DFromURL (url);
 
 			return scene;
 		}

@@ -76,8 +76,6 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 	setCharacterEncoding    (executionContext -> getCharacterEncoding ());
 	setComment              (executionContext -> getComment ());
 
-	setWorldURL (executionContext -> getWorldURL ());
-
 	setProfile (executionContext -> getProfile ());
 
 	for (const auto & component : executionContext -> getComponents ())
@@ -133,6 +131,10 @@ throw (Error <INVALID_NAME>,
 
 X3DPrototypeInstance*
 Proto::createInstance (X3DExecutionContext* const executionContext)
+// Spec says
+//throw (Error <INVALID_NODE>,
+//       Error <INVALID_OPERATION_TIMING>,
+//       Error <DISPOSED>)
 {
 	return new X3DPrototypeInstance (executionContext, this);
 }

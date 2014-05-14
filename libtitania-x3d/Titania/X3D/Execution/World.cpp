@@ -63,21 +63,20 @@ const std::string World::componentName  = "Browser";
 const std::string World::typeName       = "World";
 const std::string World::containerField = "world";
 
-World::World (const ScenePtr & _scene) :
-	    X3DBaseNode (_scene -> getBrowser (), _scene),
-	          scene (_scene),
-	       layerSet (new LayerSet (_scene)),
-	defaultLayerSet (layerSet),
-	         layer0 (new Layer (_scene)),
-	    activeLayer (layer0)
+World::World (X3DExecutionContext* const executionContext) :
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        layerSet (new LayerSet (executionContext)),
+	 defaultLayerSet (layerSet),
+	          layer0 (new Layer (executionContext)),
+	     activeLayer (layer0)
 {
-	addChildren (scene, layerSet, defaultLayerSet, layer0, activeLayer);
+	addChildren (layerSet, defaultLayerSet, layer0, activeLayer);
 }
 
 World*
 World::create (X3DExecutionContext* const executionContext) const
 {
-	return new World (scene);
+	return new World (executionContext);
 }
 
 void
@@ -90,7 +89,7 @@ World::initialize ()
 	layerSet -> setLayer0 (layer0);
 	layerSet -> getActiveLayer () .addInterest (this, &World::set_activeLayer);
 
-	scene -> getRootNodes () .addInterest (this, &World::set_rootNodes);
+	getExecutionContext () -> getRootNodes () .addInterest (this, &World::set_rootNodes);
 
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
@@ -109,9 +108,9 @@ World::set_rootNodes ()
 	const LayerSetPtr oldLayerSet = layerSet;
 	layerSet = defaultLayerSet;
 
-	layer0 -> children () = scene -> getRootNodes ();
+	layer0 -> children () = getExecutionContext () -> getRootNodes ();
 
-	for (const auto & rootNode : scene -> getRootNodes ())
+	for (const auto & rootNode : getExecutionContext () -> getRootNodes ())
 	{
 		LayerSet* const rootLayerSet = x3d_cast <LayerSet*> (rootNode);
 
@@ -177,8 +176,8 @@ World::bind ()
 
 	// Bind viewpoint from URL.
 
-	if (not scene -> getWorldURL () .fragment () .empty ())
-		scene -> changeViewpoint (scene -> getWorldURL () .fragment ());
+	if (not getExecutionContext () -> getWorldURL () .fragment () .empty ())
+		getExecutionContext () -> changeViewpoint (getExecutionContext () -> getWorldURL () .fragment ());
 }
 
 } // X3D

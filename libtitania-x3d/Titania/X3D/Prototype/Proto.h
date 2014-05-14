@@ -125,6 +125,23 @@ public:
 	///  @name Member access
 
 	virtual
+	std::string
+	getTitle () const final override
+	{ return getExecutionContext () -> getTitle (); }
+
+	virtual
+	void
+	setWorldURL (const basic::uri & value) final override
+	{ return getExecutionContext () -> setWorldURL (value); }
+
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getExecutionContext () -> getWorldURL (); }
+
+	virtual
 	Proto*
 	getProto () final override
 	{ return this; }
@@ -133,8 +150,25 @@ public:
 
 	X3DBaseNode*
 	getRootNode () const;
+	
+	///  @name Operations
+	
+	virtual
+	void
+	requestImmediateLoad () final override
+	{ }
 
 	///  @name Input/Output
+
+	virtual
+	void
+	isCompressed (const bool value) final override
+	{ getExecutionContext () -> isCompressed (value); }
+
+	virtual
+	bool
+	isCompressed () const final override
+	{ return getExecutionContext () -> isCompressed (); }
 
 	virtual
 	void

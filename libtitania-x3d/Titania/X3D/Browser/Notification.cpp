@@ -116,7 +116,7 @@ Notification::initialize ()
 			scene -> setup ();
 		}
 
-		world = new World (scene);
+		world = new World (scene -> getExecutionContext ());
 		world -> setup ();
 	}
 }

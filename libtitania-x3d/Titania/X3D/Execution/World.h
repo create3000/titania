@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	World (const ScenePtr &);
+	World (X3DExecutionContext* const);
 
 	///  @name Common members
 
@@ -85,10 +85,6 @@ public:
 	{ return containerField; }
 
 	///  @name Scene handling
-
-	const ScenePtr &
-	getScene () const
-	{ return scene; }
 
 	const LayerSetPtr &
 	getLayerSet () const
@@ -133,11 +129,10 @@ private:
 
 	///  @name Members
 
-	ScenePtr        scene;
-	LayerSetPtr     layerSet;
-	LayerSetPtr     defaultLayerSet;
-	X3DLayerNodePtr layer0;
-	X3DLayerNodePtr activeLayer;
+	LayerSetPtr            layerSet;
+	LayerSetPtr            defaultLayerSet;
+	X3DLayerNodePtr        layer0;
+	X3DLayerNodePtr        activeLayer;
 
 };
 

@@ -61,8 +61,6 @@ class Scene :
 {
 public:
 
-	using X3DScene::getUniqueName;
-
 	///  @name Construction
 
 	Scene (X3DBrowser* const);
@@ -89,15 +87,6 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
-	///  @name Import handling
-
-	void
-	importScene (const ScenePtr &)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	///  @name Destruction
 
 	virtual
@@ -111,17 +100,6 @@ private:
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
-
-	///  @name Members
-
-	void
-	updateNamedNodes (const ScenePtr &);
-
-	std::string
-	getUniqueName (const ScenePtr &, std::string) const;
-
-	std::string
-	getUniqueName (const ScenePtr &) const;
 
 };
 

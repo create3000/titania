@@ -137,6 +137,13 @@ public:
 	const Output &
 	changed () const
 	{ return changedOutput; }
+	
+	/// Metadata access
+
+	virtual
+	std::string
+	getTitle () const final override
+	{ return getName (); }
 
 	///  @name Children
 
@@ -181,6 +188,18 @@ public:
 	void
 	swapBuffers () const
 	{ }
+
+	/// @name Input/Output
+
+	virtual
+	void
+	isCompressed (const bool value) final override
+	{ }
+
+	virtual
+	bool
+	isCompressed () const final override
+	{ return false; }
 
 	///  @name Destruction
 

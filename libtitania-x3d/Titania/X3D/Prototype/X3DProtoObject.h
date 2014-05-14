@@ -88,8 +88,7 @@ public:
 
 	virtual
 	void
-	requestImmediateLoad ()
-	{ }
+	requestImmediateLoad () = 0;
 
 	///  @name Comment handling
 

@@ -130,7 +130,8 @@ X3DBrowserEditor::set_shutdown ()
 			shutdown ();
 
 		else
-			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ()); // Cancel shutdown
+			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());  // Cancel shutdown
+
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -320,7 +321,7 @@ X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, const UndoStepPtr & 
 
 		// Imported scene
 
-		getBrowser () -> getExecutionContext () -> importScene (scene);
+		getBrowser () -> getExecutionContext () -> import (scene);
 
 		X3D::MFNode importedNodes (rootNodes .begin () + numRootNodes, rootNodes .end ());
 
@@ -692,13 +693,16 @@ X3DBrowserEditor::removeNodes (const X3D::MFNode & nodes, const UndoStepPtr & un
 }
 
 void
-X3DBrowserEditor::removeNodeFromScene (const X3D::ScenePtr & scene, X3D::SFNode node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & executionContext, X3D::SFNode node, const UndoStepPtr & undoStep) const
 {
 	// Remove exported nodes
 
-	removeExportedNodes (scene, node, undoStep);
+	X3D::ScenePtr scene (executionContext);
 
-	removeNodeFromExecutionContext (scene, node, undoStep);
+	if (scene)
+		removeExportedNodes (scene, node, undoStep);
+
+	removeNodeFromExecutionContext (executionContext, node, undoStep);
 
 	// Delete children of node if not in scene
 
@@ -716,21 +720,24 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::ScenePtr & scene, X3D::SFNode 
 
 	// Filter out scene nodes
 
-	X3D::traverse (scene -> getRootNodes (), [&children] (X3D::SFNode & node)
+	X3D::traverse (executionContext -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
-	                  // If scene node in children, remove from children.
+	                  // If executionContext node is in children, remove from children.
 	                  children .erase (node);
 	                  return true;
 						});
 
-	// Remove rest, these are only nodes that are not in scene
+	// Remove rest, these are only nodes that are not in executionContext
 
 	for (const auto & child : children)
 	{
-		removeNamedNode (scene, child, undoStep);
-		removeExportedNodes (scene, child, undoStep);
-		removeImportedNodes (scene, X3D::InlinePtr (child), undoStep);
-		deleteRoutes (scene, child, undoStep);
+		removeNamedNode (executionContext, child, undoStep);
+
+		if (scene)
+			removeExportedNodes (scene, child, undoStep);
+
+		removeImportedNodes (executionContext, X3D::InlinePtr (child), undoStep);
+		deleteRoutes (executionContext, child, undoStep);
 
 		// Hide node
 
@@ -899,7 +906,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 				if (inlineNode == importedNode -> getInlineNode ())
 				{
 					// Delete routes.
-					
+
 					try
 					{
 						deleteRoutes (executionContext, importedNode -> getExportedNode (), undoStep);
@@ -930,7 +937,7 @@ void
 X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
 	// Delete routes from and to node
-	
+
 	for (const auto & field : node -> getFieldDefinitions ())
 	{
 		for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
@@ -979,7 +986,6 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 {
 	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
 
-
 	bool sourceImported      = false;
 	bool destinationImported = false;
 
@@ -989,7 +995,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	}
 	catch (...)
 	{ }
-	
+
 	try
 	{
 		destinationImported = executionContext -> isImportedNode (destinationNode);
@@ -999,7 +1005,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 
 	if (sourceImported and destinationImported)
 	{
-		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		undoStep -> addUndoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
 		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
 		                             sourceField,
 		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
@@ -1013,7 +1019,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	}
 	else if (sourceImported and not destinationImported)
 	{
-		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		undoStep -> addUndoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
 		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)),
 		                             sourceField,
 		                             destinationNode,
@@ -1027,7 +1033,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	}
 	else if (destinationImported and not sourceImported)
 	{
-		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		undoStep -> addUndoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
 		                             sourceNode,
 		                             sourceField,
 		                             std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)),
@@ -1041,7 +1047,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	}
 	else
 	{
-		undoStep -> addUndoFunction ((deleteRoute) &X3D::X3DExecutionContext::deleteRoute, executionContext,
+		undoStep -> addUndoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
 		                             sourceNode,
 		                             sourceField,
 		                             destinationNode,
@@ -1076,7 +1082,7 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 	}
 	catch (...)
 	{ }
-	
+
 	try
 	{
 		destinationImported = executionContext -> isImportedNode (destinationNode);
@@ -1214,9 +1220,9 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 		if (not node)
 			continue;
 
-		const auto scene = getBrowser () -> getExecutionContext ();
+		const auto executionContext = getBrowser () -> getExecutionContext ();
 
-		X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & parent)
+		X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {
 		                  for (auto & field: parent -> getFieldDefinitions ())
 		                  {
@@ -1247,7 +1253,7 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 		                  return true;
 							});
 
-		replaceNode (scene .getValue (), scene -> getRootNodes (), node, clone, undoStep);
+		replaceNode (executionContext .getValue (), executionContext -> getRootNodes (), node, clone, undoStep);
 	}
 }
 
@@ -1256,7 +1262,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 {
 	X3D::MFNode nodes;
 
-	const auto scene = getBrowser () -> getExecutionContext ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
 	for (const auto & clone : clones)
 	{
@@ -1264,7 +1270,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 
 		bool first = true;
 
-		X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & parent)
+		X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {
 		                  for (auto & field: parent -> getFieldDefinitions ())
 		                  {
@@ -1280,7 +1286,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											      {
 											         if (not first)
 											         {
-											            const X3D::SFNode node = (*sfnode) -> copy (scene, X3D::FlattCopyType ());
+											            const X3D::SFNode node = (*sfnode) -> copy (executionContext, X3D::FlattCopyType ());
 
 											            replaceNode (parent, *sfnode, node, undoStep);
 
@@ -1299,7 +1305,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											{
 											   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-											   unlinkClone (scene, parent, *mfnode, clone, nodes, first, undoStep);
+											   unlinkClone (executionContext, parent, *mfnode, clone, nodes, first, undoStep);
 
 											   break;
 											}
@@ -1313,17 +1319,17 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 
 		// Unlink in rootNodes array.
 
-		unlinkClone (scene, scene .getValue (), scene -> getRootNodes (), clone, nodes, first, undoStep);
+		unlinkClone (executionContext, executionContext .getValue (), executionContext -> getRootNodes (), clone, nodes, first, undoStep);
 	}
 
 	// Setup new nodes.
-	scene -> realize ();
+	executionContext -> realize ();
 
 	return nodes;
 }
 
 void
-X3DBrowserEditor::unlinkClone (const X3D::ScenePtr & scene,
+X3DBrowserEditor::unlinkClone (X3D::X3DExecutionContext* const executionContext,
                                const X3D::SFNode & parent,
                                X3D::MFNode & mfnode,
                                const X3D::SFNode & clone,
@@ -1342,7 +1348,7 @@ X3DBrowserEditor::unlinkClone (const X3D::ScenePtr & scene,
 		{
 			if (not first)
 			{
-				const X3D::SFNode node = mfnode [index] -> copy (scene, X3D::FlattCopyType ());
+				const X3D::SFNode node = mfnode [index] -> copy (executionContext, X3D::FlattCopyType ());
 
 				replaceNode (parent, mfnode, index, node, undoStep);
 
@@ -1361,9 +1367,9 @@ X3DBrowserEditor::unlinkClone (const X3D::ScenePtr & scene,
 X3D::SFNode
 X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
 {
-	const auto scene = getBrowser () -> getExecutionContext ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
-	const X3D::X3DGroupingNodePtr group (scene -> createNode ("Transform"));
+	const X3D::X3DGroupingNodePtr group (executionContext -> createNode ("Transform"));
 
 	undoStep -> addVariables (group);
 
@@ -1394,7 +1400,7 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 
 	group -> setup ();
 
-	emplaceBack (scene -> getRootNodes (), X3D::SFNode (group), undoStep);
+	emplaceBack (executionContext -> getRootNodes (), X3D::SFNode (group), undoStep);
 
 	return X3D::SFNode (group);
 }
@@ -1404,7 +1410,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 {
 	X3D::MFNode children;
 
-	const auto scene = getBrowser () -> getExecutionContext ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
 	for (const auto & node : groups)
 	{
@@ -1445,7 +1451,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 				for (const auto & layer : layers)
 				{
 					if (layer -> isLayer0 ())
-						emplaceBack (scene -> getRootNodes (), child, undoStep);
+						emplaceBack (executionContext -> getRootNodes (), child, undoStep);
 
 					else
 					{
@@ -1466,7 +1472,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 
 			// Remove group from scene
 
-			removeNodeFromScene (scene, node, undoStep);
+			removeNodeFromScene (executionContext, node, undoStep);
 		}
 		catch (const X3D::Error <X3D::INVALID_NODE> &)
 		{
@@ -1568,7 +1574,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 void
 X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLayer0, const UndoStepPtr & undoStep) const
 {
-	const auto scene = getBrowser () -> getExecutionContext ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
 	for (const auto & child : children)
 	{
@@ -1594,19 +1600,19 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 
 		// Remove child from scene graph
 
-		removeNodeFromSceneGraph (scene, child, undoStep);
+		removeNodeFromSceneGraph (executionContext, child, undoStep);
 
 		// Add to layers
 
 		if (detachToLayer0)
-			emplaceBack (scene -> getRootNodes (), child, undoStep);
+			emplaceBack (executionContext -> getRootNodes (), child, undoStep);
 
 		else
 		{
 			for (const auto & layer : layers)
 			{
 				if (layer -> isLayer0 ())
-					emplaceBack (scene -> getRootNodes (), child, undoStep);
+					emplaceBack (executionContext -> getRootNodes (), child, undoStep);
 
 				else
 				{
@@ -1624,14 +1630,14 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 {
 	X3D::MFNode groups;
 
-	const auto scene = getBrowser () -> getExecutionContext ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
 	for (const auto & child : children)
 	{
 		if (not child)
 			continue;
 
-		X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & parent)
+		X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {
 		                  for (auto & field: parent -> getFieldDefinitions ())
 		                  {
@@ -1645,7 +1651,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 											   {
 											      // Add node to group
 
-											      const X3D::X3DGroupingNodePtr group (scene -> createNode ("Transform"));
+											      const X3D::X3DGroupingNodePtr group (executionContext -> createNode ("Transform"));
 
 											      undoStep -> addVariables (group);
 
@@ -1683,7 +1689,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 		                  return true;
 							});
 
-		createParentGroup (scene -> getRootNodes (), child, scene .getValue (), groups, undoStep);
+		createParentGroup (executionContext -> getRootNodes (), child, executionContext .getValue (), groups, undoStep);
 	}
 
 	return groups;
@@ -1697,7 +1703,7 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 	if (indices .empty ())
 		return;
 
-	const auto scene = getBrowser () -> getExecutionContext ();
+	const auto executionContext = getBrowser () -> getExecutionContext ();
 
 	undoStep -> addVariables (parent);
 
@@ -1705,7 +1711,7 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 	{
 		// Add node to group
 
-		const X3D::X3DGroupingNodePtr group (scene -> createNode ("Transform"));
+		const X3D::X3DGroupingNodePtr group (executionContext -> createNode ("Transform"));
 
 		undoStep -> addVariables (group);
 
@@ -1865,6 +1871,9 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 		return false;
 
 	if (dynamic_cast <X3D::Scene*> (node))
+		return false;
+
+	if (dynamic_cast <X3D::Proto*> (node))
 		return false;
 
 	if (dynamic_cast <X3D::X3DScriptNode*> (node))
@@ -2066,7 +2075,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 	std::ifstream istream (file -> get_path ());
 
 	std::string ws;
-	
+
 	whitespaces (istream, ws);
 	comment_start (istream);
 	comment (istream, ws);
@@ -2115,7 +2124,7 @@ void
 X3DBrowserEditor::shutdown ()
 {
 	undoHistory  .clear ();
-	
+
 	for (const auto & fileMonitor : fileMonitors)
 	{
 		fileMonitor .second -> cancel ();

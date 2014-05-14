@@ -72,16 +72,20 @@ public:
 
 	///  @name Member access
 
+	virtual
 	std::string
-	getTitle () const;
+	getTitle () const final override;
 
 	void
-	isCompressed (bool value)
-	{ compressed = value; }
+	setWorldURL (const basic::uri & value) final override
+	{ worldURL = value; }
 
-	bool
-	isCompressed () const
-	{ return compressed; }
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return worldURL; }
 
 	///  @name MetaData handling
 
@@ -144,7 +148,27 @@ public:
 	exportedNodes_changed () const
 	{ return exportedNodesOutput; }
 
+	///  @name Import handling
+
+	virtual
+	void
+	import (X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Input/Output
+
+	virtual
+	void
+	isCompressed (const bool value)
+	{ compressed = value; }
+
+	virtual
+	bool
+	isCompressed () const
+	{ return compressed; }
 
 	void
 	fromStream (const basic::uri &, std::istream & istream)
@@ -204,10 +228,11 @@ private:
 
 	///  @name Members
 
-	bool              compressed;
+	basic::uri        worldURL;
 	MetaDataIndex     metadatas;
 	ExportedNodeIndex exportedNodes;
 	SFTime            exportedNodesOutput;
+	bool              compressed;
 
 };
 

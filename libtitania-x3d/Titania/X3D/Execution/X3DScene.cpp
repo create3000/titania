@@ -58,16 +58,19 @@
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"
 
+#include <Titania/OS.h>
+
 namespace titania {
 namespace X3D {
 
 X3DScene::X3DScene () :
 	        X3DBaseNode (),
 	X3DExecutionContext (),
-	         compressed (false),
+	           worldURL (),
 	          metadatas (),
 	      exportedNodes (),
-	exportedNodesOutput ()
+	exportedNodesOutput (),
+	         compressed (false)
 {
 	addChildren (exportedNodesOutput);
 }
@@ -211,6 +214,28 @@ throw (Error <INVALID_NAME>,
 // Import handling
 
 void
+X3DScene::import (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getBrowser () -> makeCurrent ())
+	{
+		X3DExecutionContext::import (executionContext);
+
+		const auto scene = dynamic_cast <X3DScene*> (executionContext);
+
+		if (scene)
+			importExportedNodes (scene);
+
+		return;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+void
 X3DScene::importMetaData (const X3DScene* const scene)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
@@ -266,6 +291,30 @@ X3DScene::toStream (std::ostream & ostream) const
 		// VRML files are saved as is, but we do not add extra stuff!
 
 		const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
+		const_cast <X3DScene*> (this) -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
+
+		try
+		{
+			const_cast <X3DScene*> (this) -> getMetaData ("creator");
+		}
+		catch (const X3D::X3DError &)
+		{
+			const std::string fullname = os::getfullname ();
+
+			if (not fullname .empty ())
+				const_cast <X3DScene*> (this) -> setMetaData ("creator", os::getfullname ());
+		}
+
+		try
+		{
+			const_cast <X3DScene*> (this) -> getMetaData ("created");
+		}
+		catch (const X3D::X3DError &)
+		{
+			const_cast <X3DScene*> (this) -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
+		}
+
+		const_cast <X3DScene*> (this) -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
 	}
 
 	ostream
@@ -421,7 +470,33 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	Generator::Version (version);
 
-	const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
+	{
+		const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
+		const_cast <X3DScene*> (this) -> setMetaData ("comment", "World of " + getBrowser () -> getName ());
+
+		try
+		{
+			const_cast <X3DScene*> (this) -> getMetaData ("creator");
+		}
+		catch (const X3D::X3DError &)
+		{
+			const std::string fullname = os::getfullname ();
+
+			if (not fullname .empty ())
+				const_cast <X3DScene*> (this) -> setMetaData ("creator", os::getfullname ());
+		}
+
+		try
+		{
+			const_cast <X3DScene*> (this) -> getMetaData ("created");
+		}
+		catch (const X3D::X3DError &)
+		{
+			const_cast <X3DScene*> (this) -> setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
+		}
+
+		const_cast <X3DScene*> (this) -> setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
+	}
 
 	ostream
 		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

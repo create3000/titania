@@ -87,7 +87,6 @@ const UnitArray X3DExecutionContext::standardUnits = {
 
 X3DExecutionContext::X3DExecutionContext () :
 	         X3DBaseNode (),
-	            worldURL (),
 	            encoding ("X3D"),
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
@@ -128,11 +127,16 @@ X3DExecutionContext::initialize ()
 void
 X3DExecutionContext::realize ()
 {
-	while (not uninitializedNodes .empty ())
+	if (getBrowser () -> makeCurrent ())
 	{
-		for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
-			uninitializedNode -> setup ();
+		while (not uninitializedNodes .empty ())
+		{
+			for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+				uninitializedNode -> setup ();
+		}
 	}
+	//else
+	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
 }
 
 VersionType
@@ -880,6 +884,130 @@ throw (Error <INVALID_NODE>,
 }
 
 // Import handling
+
+void
+X3DExecutionContext::import (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getBrowser () -> makeCurrent ())
+	{
+		if (executionContext -> getProfile () or not executionContext -> getComponents () .empty ())
+		{
+			if (getProfile ())
+			{
+				if (executionContext -> getProfile ())
+				{
+					for (const auto & component : executionContext -> getProfile () -> getComponents ())
+						addComponent (component);
+				}
+
+				for (const auto & component : executionContext -> getComponents ())
+					addComponent (component);
+			}
+			else
+				setProfile (getBrowser () -> getProfile ("Full"));
+		}
+
+		//importMetaData (executionContext);
+
+		importExternProtos (executionContext);
+		importProtos (executionContext);
+
+		updateNamedNodes (executionContext);
+		importRootNodes (executionContext);
+
+		importImportedNodes (executionContext);
+		importRoutes (executionContext);
+
+		realize ();
+
+		return;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+void
+X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionContext)
+{
+	for (const auto & node : NamedNodeIndex (executionContext -> getNamedNodes ()))
+	{
+		executionContext -> removeNamedNode (node .first);
+		executionContext -> updateNamedNode (getUniqueName (executionContext, node .first), node .second -> getLocalNode ());
+	}
+}
+
+std::string
+X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
+{
+	RegEx::_LastNumber .Replace ("", &name);
+	RegEx::LastNumber .Replace ("", &name);
+
+	if (name .empty ())
+		return getUniqueName (executionContext);
+
+	else
+	{
+		std::string newName = name;
+		size_t      i       = 0;
+
+		for ( ; ;)
+		{
+			try
+			{
+				getNamedNode (newName);
+			}
+			catch (const X3DError &)
+			{
+				try
+				{
+					executionContext -> getNamedNode (newName);
+				}
+				catch (const X3DError &)
+				{
+					break;
+				}
+			}
+
+			newName = name + basic::to_string (++ i);
+		}
+
+		return newName;
+	}
+}
+
+std::string
+X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext) const
+{
+	std::string name;
+	size_t      i = 0;
+
+	for ( ; ;)
+	{
+		name = '_' + basic::to_string (++ i);
+
+		try
+		{
+			getNamedNode (name);
+		}
+		catch (const X3DError &)
+		{
+			try
+			{
+				executionContext -> getNamedNode (name);
+			}
+			catch (const X3DError &)
+			{
+				break;
+			}
+		}
+	}
+
+	return name;
+}
 
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CloneType &)

@@ -124,6 +124,10 @@ throw (Error <INVALID_NAME>,
 }
 X3DPrototypeInstance*
 ExternProto::createInstance (X3DExecutionContext* const executionContext)
+// Spec says
+//throw (Error <INVALID_NODE>,
+//       Error <INVALID_OPERATION_TIMING>,
+//       Error <DISPOSED>)
 {
 	requestImmediateLoad ();
 
@@ -148,6 +152,9 @@ ExternProto::initialize ()
 
 void
 ExternProto::requestImmediateLoad ()
+// Spec says
+//throw (<Error <INVALID_OPERATION_TIMING>,
+//       <Error <DISPOSED>)
 {
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
