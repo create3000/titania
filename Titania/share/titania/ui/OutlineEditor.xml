@@ -176,7 +176,6 @@
                 <property name="receives_default">True</property>
                 <property name="relief">none</property>
                 <property name="popup">SceneMenu</property>
-                <property name="direction">left</property>
                 <child>
                   <object class="GtkBox" id="box2">
                     <property name="visible">True</property>
