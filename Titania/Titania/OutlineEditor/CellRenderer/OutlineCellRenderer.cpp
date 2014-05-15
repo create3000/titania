@@ -233,8 +233,8 @@ OutlineCellRenderer::on_data ()
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		{
 			property_markup () = get_node_name (*static_cast <X3D::SFNode*> (get_object ()), "");
 			break;
@@ -360,10 +360,10 @@ OutlineCellRenderer::get_icon () const
 
 			return sharedNodeUImage;
 		}
-		case OutlineIterType::ExternProto:
+		case OutlineIterType::ExternProtoDeclaration:
 			return externProtoImage;
 
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ProtoDeclaration:
 			return prototypeImage;
 
 		case OutlineIterType::ImportedNode:

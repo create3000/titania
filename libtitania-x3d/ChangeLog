@@ -4,6 +4,10 @@
 
 2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Cast.h:
 	* Route.cpp:
 	* Parser.cpp:

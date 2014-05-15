@@ -106,14 +106,6 @@ private:
 
 	// Edit Menu Item
 
-	virtual
-	void
-	on_remove_activate () final override;
-
-	virtual
-	void
-	on_create_instance_activate () final override;
-
 	// Set current scene
 
 	virtual
@@ -133,6 +125,18 @@ private:
 
 	std::pair <Gtk::RadioMenuItem*, size_t>
 	addSceneMenuItem (const X3D::X3DExecutionContextPtr &, const X3D::X3DExecutionContextPtr &);
+
+	// Create Instance
+
+	virtual
+	void
+	on_create_instance_activate () final override;
+
+	// Remove
+
+	virtual
+	void
+	on_remove_activate () final override;
 
 	// View Menu Item
 

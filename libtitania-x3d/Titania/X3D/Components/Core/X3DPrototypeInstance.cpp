@@ -54,7 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/Scene.h"
 #include "../../Prototype/ExternProto.h"
-#include "../Core/WorldInfo.h"
 #include "../Networking/X3DUrlObject.h"
 
 #include <cassert>
@@ -150,9 +149,6 @@ X3DPrototypeInstance::initialize ()
 	}
 	catch (const X3DError &)
 	{ }
-	
-	if (getRootNodes () .empty () or not getRootNodes () .front ())
-		getRootNodes () .set1Value (0, new WorldInfo (this));
 
 	X3DNode::initialize ();
 	X3DExecutionContext::initialize ();
@@ -200,6 +196,9 @@ X3DBaseNode*
 X3DPrototypeInstance::getRootNode () const
 throw (Error <DISPOSED>)
 {
+	if (getRootNodes () .empty () or not getRootNodes () .front ())
+		throw Error <DISPOSED> ("Root node not available.");
+
 	return getRootNodes () .front ();
 }
 
@@ -261,7 +260,12 @@ X3DPrototypeInstance::restoreState ()
 void
 X3DPrototypeInstance::traverse (const TraverseType type)
 {
-	getRootNode () -> traverse (type);
+	try
+	{
+		getRootNode () -> traverse (type);
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void

@@ -75,8 +75,8 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObje
 		}
 		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		case OutlineIterType::Separator:
@@ -124,8 +124,8 @@ OutlineTreeData::is (X3D::X3DChildObject* const value) const
 	{
 		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 			return parent .getValue () == value;
 
 		case OutlineIterType::ImportedNode:
@@ -174,8 +174,8 @@ OutlineTreeData::get_user_data () const
 	{
 		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 			object = parent .getValue ();

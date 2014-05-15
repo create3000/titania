@@ -369,7 +369,7 @@ OutlineTreeViewEditor::is_real_local_node (const Gtk::TreeModel::iterator & iter
 	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ExportedNode:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));

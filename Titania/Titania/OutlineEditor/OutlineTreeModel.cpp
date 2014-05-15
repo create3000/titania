@@ -469,8 +469,8 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			return true;
 		}
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 

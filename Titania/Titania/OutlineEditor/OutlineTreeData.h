@@ -67,8 +67,8 @@ enum class OutlineIterType
 	X3DField,
 	X3DExecutionContext,
 	X3DBaseNode,
-	ExternProto,
-	Prototype,
+	ExternProtoDeclaration,
+	ProtoDeclaration,
 	ImportedNode,
 	ExportedNode,
 	Separator

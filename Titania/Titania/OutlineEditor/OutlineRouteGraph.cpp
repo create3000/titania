@@ -72,8 +72,8 @@ OutlineRouteGraph::expand (const Gtk::TreeModel::iterator & iter)
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		{

@@ -117,7 +117,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 
 			break;
 		}
-		case OutlineIterType::ExternProto:
+		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode -> getValue ());
@@ -148,8 +148,8 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DExecutionContext:
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProto:
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		case OutlineIterType::Separator:
@@ -285,7 +285,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			clear_open_path (iter);
 			break;
 		}
-		case OutlineIterType::ExternProto:
+		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode -> getValue ());
@@ -295,7 +295,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			clear_open_path (iter);
 			break;
 		}
-		case OutlineIterType::Prototype:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		{

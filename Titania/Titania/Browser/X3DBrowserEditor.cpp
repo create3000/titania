@@ -130,7 +130,7 @@ X3DBrowserEditor::set_shutdown ()
 			shutdown ();
 
 		else
-			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());  // Cancel shutdown
+			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());                                                                                     // Cancel shutdown
 
 	}
 	catch (const X3D::X3DError &)
@@ -1730,6 +1730,23 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 
 		groups .emplace_front (group);
 	}
+}
+
+void
+X3DBrowserEditor::createProtoInstance (const std::string & name, const UndoStepPtr & undoStep) const
+{
+	try
+	{
+		const auto        executionContext = getBrowser () -> getExecutionContext ();
+		const X3D::SFNode instance (executionContext -> createProtoInstance (name));
+
+		executionContext -> addUninitializedNode (instance);
+		executionContext -> realize ();
+
+		emplaceBack (executionContext -> getRootNodes (), instance, undoStep);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 // Undo functions
