@@ -92,6 +92,12 @@ private:
 	set_collisionNormal ();
 
 	bool
+	on_key_press_event (GdkEventKey*);
+
+	bool
+	on_key_release_event (GdkEventKey*);
+
+	bool
 	on_button_press_event (GdkEventButton*);
 
 	bool
@@ -102,12 +108,6 @@ private:
 
 	bool
 	on_scroll_event (GdkEventScroll*);
-
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
 
 	bool
 	fly ();

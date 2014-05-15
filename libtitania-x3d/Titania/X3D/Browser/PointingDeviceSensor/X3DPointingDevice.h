@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
 
 #include "../X3DBrowserObject.h"
+#include "../../Miscellaneous/Keys.h"
 
 #include <gdk/gdk.h>
 #include <sigc++/sigc++.h>
@@ -108,7 +109,13 @@ protected:
 
 private:
 
-	///  @name Event Toolrs
+	///  @name Event handlers
+
+	bool
+	on_key_press_event (GdkEventKey*);
+
+	bool
+	on_key_release_event (GdkEventKey*);
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);
@@ -138,11 +145,14 @@ private:
 
 	///  @name Members
 
+	sigc::connection key_press_conncection;
+	sigc::connection key_release_conncection;
 	sigc::connection button_press_conncection;
 	sigc::connection button_release_conncection;
 	sigc::connection motion_notify_conncection;
 	sigc::connection leave_notify_conncection;
 
+	Keys   keys;
 	size_t button;
 	bool   isOver;
 

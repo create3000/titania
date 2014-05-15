@@ -88,7 +88,7 @@ X3DBrowserSelection::setEnabled (const bool value)
 bool
 X3DBrowserSelection::trackSensors ()
 {
-	return not (getBrowserWindow () -> getKeys () .shift () or getBrowserWindow () -> getKeys () .control ());
+	return not (getBrowserWindow () -> getKeys () .shift () and not getBrowserWindow () -> getKeys () .control ());
 }
 
 void
@@ -107,7 +107,7 @@ X3DBrowserSelection::buttonPressEvent (const bool, const int button)
 	{
 		case 2:
 		{
-			if (getBrowserWindow () -> getKeys () .control ())
+			if (getBrowserWindow () -> getKeys () .shift ())
 			{
 				__LOG__ << std::endl;
 				// Activate SnapTarget.

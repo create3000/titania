@@ -96,14 +96,54 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* const naviga
 void
 X3DFlyViewer::initialize ()
 {
+	getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
+	getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event));
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event), false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
-	getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
-	getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
 
 	//getActiveViewpoint () -> straighten (true);
+}
+
+bool
+X3DFlyViewer::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Control_L:
+		case GDK_KEY_Control_R:
+		{
+			disconnect ();
+			break;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+bool
+X3DFlyViewer::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Control_L:
+		case GDK_KEY_Control_R:
+		{
+			disconnect ();
+			break;
+		}
+		default:
+			break;
+	}
+
+	return false;
 }
 
 bool
@@ -217,46 +257,6 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 		sourceRotation      = viewpoint -> orientationOffset ();
 		destinationRotation = sourceRotation * Rotation4f (Vector3f (1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
 		addRoll ();
-	}
-
-	return false;
-}
-
-bool
-X3DFlyViewer::on_key_press_event (GdkEventKey* event)
-{
-	keys .press (event);
-
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Control_L:
-		case GDK_KEY_Control_R:
-		{
-			disconnect ();
-			break;
-		}
-		default:
-			break;
-	}
-
-	return false;
-}
-
-bool
-X3DFlyViewer::on_key_release_event (GdkEventKey* event)
-{
-	keys .release (event);
-
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Control_L:
-		case GDK_KEY_Control_R:
-		{
-			disconnect ();
-			break;
-		}
-		default:
-			break;
 	}
 
 	return false;

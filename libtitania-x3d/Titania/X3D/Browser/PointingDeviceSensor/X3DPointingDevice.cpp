@@ -57,10 +57,13 @@ namespace X3D {
 
 X3DPointingDevice::X3DPointingDevice (Browser* const browser) :
 	          X3DBrowserObject (browser),
+	     key_press_conncection (),
+	   key_release_conncection (),
 	  button_press_conncection (),
 	button_release_conncection (),
 	 motion_notify_conncection (),
 	  leave_notify_conncection (),
+	                      keys (),
 	                    button (0),
 	                    isOver (false)
 { }
@@ -69,6 +72,9 @@ void
 X3DPointingDevice::connect ()
 {
 	disconnect ();
+
+	key_press_conncection   = getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &PointingDevice::on_key_press_event));
+	key_release_conncection = getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &PointingDevice::on_key_release_event));
 
 	button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 	button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
@@ -81,10 +87,27 @@ X3DPointingDevice::connect ()
 void
 X3DPointingDevice::disconnect ()
 {
+	key_press_conncection   .disconnect ();
+	key_release_conncection .disconnect ();
+
 	button_press_conncection   .disconnect ();
 	button_release_conncection .disconnect ();
 	motion_notify_conncection  .disconnect ();
 	leave_notify_conncection   .disconnect ();
+}
+
+bool
+X3DPointingDevice::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+	return false;
+}
+
+bool
+X3DPointingDevice::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+	return false;
 }
 
 bool
@@ -99,32 +122,35 @@ X3DPointingDevice::on_motion_notify_event (GdkEventMotion* event)
 void
 X3DPointingDevice::set_motion (const double x, const double y)
 {
-	const bool picked = pick (x, y);
-
-	if (picked)
+	if (not keys .control ())
 	{
-		if (haveSensor ())
+		const bool picked = pick (x, y);
+
+		if (picked)
 		{
-			if (not isOver)
+			if (haveSensor ())
 			{
-				getBrowser () -> setCursor (Gdk::HAND2);
-				isOver = true;
+				if (not isOver)
+				{
+					getBrowser () -> setCursor (Gdk::HAND2);
+					isOver = true;
+				}
+
+				getBrowser () -> motionNotifyEvent ();
+
+				return;
 			}
-
-			getBrowser () -> motionNotifyEvent ();
-
-			return;
 		}
-	}
 
-	if (isOver)
-	{
-		getBrowser () -> setCursor (Gdk::ARROW);
-		isOver = false;
-	}
+		if (isOver)
+		{
+			getBrowser () -> setCursor (Gdk::ARROW);
+			isOver = false;
+		}
 
-	getBrowser () -> motionNotifyEvent ();
-	motionNotifyEvent (picked);
+		getBrowser () -> motionNotifyEvent ();
+		motionNotifyEvent (picked);
+	}
 }
 
 void
@@ -149,26 +175,29 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 	{
 		case 1:
 		{
-			const bool picked = pick (event -> x, event -> y);
-
-			if (picked)
+			if (not keys .control ())
 			{
-				if (haveSensor ())
+				const bool picked = pick (event -> x, event -> y);
+
+				if (picked)
 				{
-					getBrowser () -> buttonPressEvent ();
+					if (haveSensor ())
+					{
+						getBrowser () -> buttonPressEvent ();
 
-					getBrowser () -> setCursor (Gdk::HAND1);
+						getBrowser () -> setCursor (Gdk::HAND1);
 
-					getBrowser () -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
+						getBrowser () -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
-					return true;
+						return true;
+					}
 				}
+
+				const bool eventHandled = buttonPressEvent (picked, event -> button);
+
+				if (eventHandled)
+					return not trackSensors ();
 			}
-
-			const bool eventToold = buttonPressEvent (picked, event -> button);
-
-			if (eventToold)
-				return not trackSensors ();
 
 			getBrowser () -> setCursor (Gdk::FLEUR);
 
@@ -176,11 +205,14 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 		}
 		case 2:
 		{
-			const bool picked     = pick (event -> x, event -> y);
-			const bool eventToold = buttonPressEvent (picked, event -> button);
+			if (not keys .control ())
+			{
+				const bool picked       = pick (event -> x, event -> y);
+				const bool eventHandled = buttonPressEvent (picked, event -> button);
 
-			if (eventToold)
-				return not trackSensors ();
+				if (eventHandled)
+					return not trackSensors ();
+			}
 
 			getBrowser () -> setCursor (Gdk::FLEUR);
 			break;

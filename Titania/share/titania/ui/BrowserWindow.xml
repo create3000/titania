@@ -1054,7 +1054,7 @@
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Undo last action (Ctrl-Z).</property>
                 <property name="tooltip_text" translatable="yes">Undo last action (Ctrl-Z).</property>
-                <property name="label" translatable="yes">Undo last operation.</property>
+                <property name="label" translatable="yes">Undo</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-undo</property>
                 <signal name="clicked" handler="on_undo" swapped="no"/>
@@ -1071,7 +1071,7 @@
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
                 <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
-                <property name="label" translatable="yes">Redo last operation.</property>
+                <property name="label" translatable="yes">Redo</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-redo</property>
                 <signal name="clicked" handler="on_redo" swapped="no"/>

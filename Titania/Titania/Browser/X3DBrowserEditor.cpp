@@ -399,12 +399,14 @@ X3DBrowserEditor::set_undoHistory ()
 	if (index >= 0)
 	{
 		getUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
+		getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
 		getUndoMenuItem () .set_sensitive (true);
 		getUndoButton ()   .set_sensitive (true);
 	}
 	else
 	{
 		getUndoMenuItem () .set_label (_ ("Undo"));
+		getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
 		getUndoMenuItem () .set_sensitive (false);
 		getUndoButton ()   .set_sensitive (false);
 	}
@@ -412,12 +414,14 @@ X3DBrowserEditor::set_undoHistory ()
 	if (index + 1 < (int) undoHistory .getSize ())
 	{
 		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
+		getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
 		getRedoMenuItem () .set_sensitive (true);
 		getRedoButton ()   .set_sensitive (true);
 	}
 	else
 	{
 		getRedoMenuItem () .set_label (_ ("Redo"));
+		getRedoMenuItem () .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
 		getRedoMenuItem () .set_sensitive (false);
 		getRedoButton ()   .set_sensitive (false);
 	}
@@ -1733,7 +1737,7 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 }
 
 void
-X3DBrowserEditor::createProtoInstance (const std::string & name, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::addProtoInstance (const std::string & name, const UndoStepPtr & undoStep) const
 {
 	try
 	{
@@ -1744,6 +1748,8 @@ X3DBrowserEditor::createProtoInstance (const std::string & name, const UndoStepP
 		executionContext -> realize ();
 
 		emplaceBack (executionContext -> getRootNodes (), instance, undoStep);
+
+		getSelection () -> setChildren ({ instance }, undoStep);
 	}
 	catch (const X3D::X3DError &)
 	{ }
