@@ -37,6 +37,7 @@ function set_time (value, time)
 
 PROTO TransformTool [
   # required fields
+  eventIn      SFBool     enabled
   eventOut     SFBool     isActive
   exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
@@ -81,6 +82,7 @@ PROTO TransformTool [
             children Transform {
               children [
                 DEF FrontSensor PlaneSensor {
+                  enabled IS enabled
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -102,6 +104,7 @@ PROTO TransformTool [
               rotation 0 1 0 1.5708
               children [
                 DEF RightSensor PlaneSensor {
+                  enabled IS enabled
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -114,6 +117,7 @@ PROTO TransformTool [
               rotation 0 1 0 3.14159
               children [
                 DEF BackSensor PlaneSensor {
+                  enabled IS enabled
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -126,6 +130,7 @@ PROTO TransformTool [
               rotation 0 -1 0 1.5708
               children [
                 DEF LeftSensor PlaneSensor {
+                  enabled IS enabled
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -138,6 +143,7 @@ PROTO TransformTool [
               rotation -1 0 0 1.5708
               children [
                 DEF TopSensor PlaneSensor {
+                  enabled IS enabled
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -150,6 +156,7 @@ PROTO TransformTool [
               rotation 1 0 0 1.5708
               children [
                 DEF BottomSensor PlaneSensor {
+                  enabled IS enabled
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -164,15 +171,17 @@ PROTO TransformTool [
         children [
           DEF X Group {
             children [
-              DEF ModeTouch TouchSensor { }
+              DEF ModeTouch TouchSensor {
+                enabled IS enabled
+              }
               DEF XTranslationSensor PlaneSensor {
+                enabled IS enabled
                 description "x-Axis"
                 autoOffset FALSE
                 maxPosition -1 0
                 isActive IS isActive
               }
               DEF XScaleSensor PlaneSensor {
-                enabled FALSE
                 description "x-Axis"
                 autoOffset FALSE
                 maxPosition -1 0
@@ -226,13 +235,13 @@ PROTO TransformTool [
             children [
               USE ModeTouch
               DEF YTranslationSensor PlaneSensor {
+                enabled IS enabled
                 description "y-Axis"
                 autoOffset FALSE
                 maxPosition 0 -1
                 isActive IS isActive
               }
               DEF YScaleSensor PlaneSensor {
-                enabled FALSE
                 description "y-Axis"
                 autoOffset FALSE
                 maxPosition 0 -1
@@ -278,6 +287,7 @@ PROTO TransformTool [
             children [
               USE ModeTouch
               DEF ZTranslationSensor PlaneSensor {
+                enabled IS enabled
                 description "z-Axis"
                 axisRotation 0 -1 0 1.5708
                 autoOffset FALSE
@@ -285,7 +295,6 @@ PROTO TransformTool [
                 isActive IS isActive
               }
               DEF ZScaleSensor PlaneSensor {
-                enabled FALSE
                 description "z-Axis"
                 axisRotation 0 -1 0 1.5708
                 autoOffset FALSE
@@ -616,6 +625,7 @@ PROTO TransformTool [
   DEF DoubleClick_1 DoubleClick { }
 
   DEF ModeScript Script {
+    eventIn  SFBool  set_enabled IS enabled
     eventIn  SFBool  set_active
     eventIn  SFTime  set_time
     eventOut SFTime  touchTime
@@ -625,9 +635,14 @@ PROTO TransformTool [
     eventOut SFInt32 whichChoice_changed
 
     url "vrmlscript:
-function initialize (value, time)
+function initialize ()
 {
 	set_whichChoice (0);
+}
+
+function set_enabled (value, time)
+{
+	move = value;
 }
 
 function set_active (value, time)

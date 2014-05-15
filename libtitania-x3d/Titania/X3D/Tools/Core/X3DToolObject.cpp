@@ -59,7 +59,8 @@ namespace X3D {
 X3DToolObject::X3DToolObject () :
 	X3DBaseNode (),
 	 inlineNode (new Inline (getExecutionContext ())),
-	   toolNode ()
+	   toolNode (),
+	    enabled (true)
 {
 	addChildren (inlineNode, toolNode);
 }
@@ -83,6 +84,20 @@ throw (Error <DISPOSED>)
 }
 
 void
+X3DToolObject::isEnabled (const bool value)
+{
+	try
+	{
+		enabled = value;
+
+		if (toolNode)
+			toolNode -> setField <SFBool> ("enabled", enabled);
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
 X3DToolObject::requestAsyncLoad (const MFString & url)
 {
 	inlineNode -> url ()  = url;
@@ -97,6 +112,8 @@ X3DToolObject::set_loadState (const LoadState loadState)
 		if (loadState == COMPLETE_STATE)
 		{
 			toolNode = inlineNode -> getExportedNode ("Tool");
+			
+			isEnabled (enabled);
 
 			realize ();
 		}

@@ -56,6 +56,8 @@
 #include "../../Prototype/ExternProto.h"
 #include "../Networking/X3DUrlObject.h"
 
+#include "../../Tools/Core/X3DToolObject.h"
+
 #include <cassert>
 #include <iostream>
 
@@ -203,6 +205,17 @@ throw (Error <DISPOSED>)
 }
 
 void
+X3DPrototypeInstance::traverse (const TraverseType type)
+{
+	try
+	{
+		getRootNode () -> traverse (type);
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
 X3DPrototypeInstance::saveState ()
 {
 	if (isSaved ())
@@ -258,11 +271,27 @@ X3DPrototypeInstance::restoreState ()
 }
 
 void
-X3DPrototypeInstance::traverse (const TraverseType type)
+X3DPrototypeInstance::addTool ()
 {
 	try
 	{
-		getRootNode () -> traverse (type);
+		getInnerNode () -> addTool ();
+
+		const auto toolObject = dynamic_cast <X3DToolObject*> (getInnerNode ());
+
+		if (toolObject)
+			toolObject -> isEnabled (false);
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+X3DPrototypeInstance::removeTool (const bool really)
+{
+	try
+	{
+		getInnerNode () -> removeTool (really);
 	}
 	catch (const X3DError &)
 	{ }

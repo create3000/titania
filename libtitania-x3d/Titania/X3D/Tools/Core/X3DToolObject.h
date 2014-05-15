@@ -78,6 +78,9 @@ public:
 
 	///  @name Operations
 
+	void
+	isEnabled (const bool);
+
 	virtual
 	void
 	traverse (const TraverseType) override;
@@ -128,6 +131,7 @@ private:
 
 	InlinePtr inlineNode;
 	SFNode    toolNode;
+	bool      enabled;
 
 };
 

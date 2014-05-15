@@ -1,5 +1,17 @@
 2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ToolColors.h:
+	* X3DBaseTool.h:
+	* BoundingBox.x3dv:
+	* TransformTool.x3dv:
+	* X3DToolObject.h:
+	* X3DToolObject.cpp:
+	* EnvironmentalSensor.x3dv:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DFlyViewer.h:
 	* X3DFlyViewer.cpp:
 	* X3DPointingDevice.h:

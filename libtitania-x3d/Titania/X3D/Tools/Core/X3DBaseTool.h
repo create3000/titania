@@ -176,8 +176,11 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 
 	node -> addParent (this);
 
-	for (auto & field : node -> getFieldDefinitions ())
+	for (auto & field : node -> getPreDefinedFields ())
 		addField (field -> getAccessType (), field -> getName (), *field);
+
+	for (auto & field : node -> getUserDefinedFields ())
+		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 }
 
 template <class Type>

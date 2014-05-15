@@ -133,6 +133,10 @@ public:
 	{ return protoDeclaration; }
 
 	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
 	
 	virtual
 	void
@@ -144,7 +148,11 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	addTool () final override;
+
+	virtual
+	void
+	removeTool (const bool = false) final override;
 
 	///  @name Input/Output
 

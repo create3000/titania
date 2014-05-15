@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Mon, 12 May 2014 17:37:01 GMT'/>
+    <meta name='modified' content='Thu, 15 May 2014 15:26:12 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -167,7 +167,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.70643'
+          rotation='0 0 1 4.88803'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -323,7 +323,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mo 12 Mai 2014 19:32:41 CEST"'>
+            string='"modified...", "Mo 12 Mai 2014 19:37:01 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -333,7 +333,7 @@
     <Shape>
       <Appearance>
         <Material
-            diffuseColor='1 0.987806 0'/>
+            diffuseColor='1 0 0.833392'/>
       </Appearance>
       <Sphere
           radius='0.1'/>
@@ -366,9 +366,9 @@ function initialize ()
       <Inline DEF='_6'
           url='"../Basic/EXPORT.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"'/>
     </Transform>
-    <!-- NULL -->
     <Transform DEF='InlineClone'
-        translation='0 0 -11.4797'>
+        translation='-0.887374 6.52114 -10.5515'
+        scale='2.4824 3.23682 2.16343'>
       <Inline
           url='"../Basic/Clone.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/Clone.wrl"'/>
     </Transform>
