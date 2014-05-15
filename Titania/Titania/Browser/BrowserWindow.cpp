@@ -643,6 +643,16 @@ BrowserWindow::on_save_as ()
 }
 
 void
+BrowserWindow::on_remove_unused_prototypes ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Prototypes"));
+
+	removeUnusedPrototypes (undoStep);
+
+	addUndoStep (undoStep);
+}
+
+void
 BrowserWindow::on_close ()
 {
 	close ();
@@ -947,15 +957,16 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::enableEditor (const bool enabled)
 {
-	getImportMenuItem ()           .set_visible (enabled);
-	getImportAsInlineMenuItem ()   .set_visible (enabled);
-	getEditMenuItem ()             .set_visible (enabled);
-	getBrowserOptionsSeparator ()  .set_visible (enabled);
-	getShadingMenuItem ()          .set_visible (enabled);
-	getPrimitiveQualityMenuItem () .set_visible (enabled);
-	getObjectIconsMenuItem ()      .set_visible (enabled);
-	getObjectIconsMenuItem ()      .set_visible (enabled);
-	getSelectionMenuItem ()        .set_visible (enabled);
+	getImportMenuItem ()                 .set_visible (enabled);
+	getImportAsInlineMenuItem ()         .set_visible (enabled);
+	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
+	getEditMenuItem ()                   .set_visible (enabled);
+	getBrowserOptionsSeparator ()        .set_visible (enabled);
+	getShadingMenuItem ()                .set_visible (enabled);
+	getPrimitiveQualityMenuItem ()       .set_visible (enabled);
+	getObjectIconsMenuItem ()            .set_visible (enabled);
+	getObjectIconsMenuItem ()            .set_visible (enabled);
+	getSelectionMenuItem ()              .set_visible (enabled);
 
 	getImportButton ()               .set_visible (enabled);
 	getSeparatorToolItem1 ()         .set_visible (enabled);

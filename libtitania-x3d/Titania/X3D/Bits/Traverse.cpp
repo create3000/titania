@@ -51,6 +51,7 @@
 #include "Traverse.h"
 
 #include "../Basic/NodeSet.h"
+#include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ImportedNode.h"
 #include "../Prototype/ExternProto.h"
@@ -62,7 +63,7 @@ namespace X3D {
 
 static
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, NodeSet & seen)
+traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen)
 {
 	if (not node)
 		return true;
@@ -77,7 +78,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 					{
 						const auto sfnode = static_cast <X3D::SFNode*> (field);
 
-						if (traverse (*sfnode, callback, distinct, seen))
+						if (traverse (*sfnode, callback, distinct, flags, seen))
 							continue;
 
 						return false;
@@ -88,7 +89,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 
 					for (auto & value : *mfnode)
 					{
-						if (traverse (value, callback, distinct, seen))
+						if (traverse (value, callback, distinct, flags, seen))
 							continue;
 
 						return false;
@@ -107,6 +108,22 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			return true;
 	}
 
+	if (flags & TRAVERSE_PROTO_INSTANCES)
+	{
+		const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
+
+		if (instance)
+		{
+			for (auto & rootNode : instance -> getRootNodes ())
+			{
+				if (traverse (rootNode, callback, distinct, flags, seen))
+					continue;
+
+				return false;
+			}
+		}
+	}
+
 	if (callback (node))
 		return true;
 
@@ -114,13 +131,13 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 }
 
 bool
-traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool distinct)
+traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool distinct, const int flags)
 {
 	NodeSet seen;
 
 	for (auto & node : nodes)
 	{
-		if (traverse (node, callback, distinct, seen))
+		if (traverse (node, callback, distinct, flags, seen))
 			continue;
 
 		return false;
@@ -130,11 +147,11 @@ traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool dis
 }
 
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct)
+traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags)
 {
 	NodeSet seen;
 
-	return traverse (node, callback, distinct, seen);
+	return traverse (node, callback, distinct, flags, seen);
 }
 
 bool

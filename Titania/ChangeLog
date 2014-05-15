@@ -1,3 +1,13 @@
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.xml:

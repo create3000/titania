@@ -352,6 +352,79 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed)
 	isModified (false);
 }
 
+void
+X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
+{
+	const auto & executionContext = getBrowser () -> getExecutionContext ();
+
+	// Get ExternProtos and Prototypes
+
+	std::vector <X3D::ExternProtoPtr> externProtos;
+
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		externProtos .emplace_back (externProto);
+
+	std::vector <X3D::ProtoPtr> prototypes;
+
+	for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		prototypes .emplace_back (prototype);
+
+	// Find proto declaration not used in scene
+
+	X3D::traverse (executionContext -> getRootNodes (), [&externProtos, &prototypes] (X3D::SFNode & child)
+	               {
+	                  const X3D::X3DPrototypeInstancePtr instance (child);
+
+	                  if (instance)
+	                  {
+		                  const X3D::ExternProtoPtr externProto (instance -> getProtoDeclaration ());
+
+		                  if (externProto)
+		                  {
+		                     const auto iter = std::find (externProtos .begin (), externProtos .end (), externProto);
+
+									if (iter not_eq externProtos .end ())
+										externProtos .erase (iter);
+								}
+								else
+								{
+			                  const X3D::ProtoPtr prototype (instance -> getProtoDeclaration ());
+
+			                  if (prototype)
+			                  {
+			                     const auto iter = std::find (prototypes .begin (), prototypes .end (), prototype);
+
+										if (iter not_eq prototypes .end ())
+											prototypes .erase (iter);
+									}
+								}
+							}
+
+	                  return true;
+						},
+						true, X3D::TRAVERSE_PROTO_INSTANCES);
+
+	// Remove ExternProtos
+
+	for (const auto & externProto : basic::reverse_adapter (externProtos))
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
+
+		executionContext -> removeExternProtoDeclaration (externProto -> getName ());
+	}
+
+	// Remove Prototypes
+
+	for (const auto & prototype : basic::reverse_adapter (prototypes))
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
+
+		executionContext -> removeProtoDeclaration (prototype -> getName ());
+	}
+}
+
 bool
 X3DBrowserEditor::close ()
 {
@@ -792,10 +865,6 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	deleteRoutes (executionContext, node, undoStep);
 	removeNodeFromSceneGraph (executionContext, node, undoStep);
 
-	// Remove unused Prototypes
-
-	removePrototypes (executionContext, node, undoStep);
-
 	// Hide node
 
 	undoStep -> addUndoFunction (&X3D::X3DBaseNode::restoreState, node);
@@ -1152,68 +1221,6 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 	}
 
 	executionContext -> deleteRoute (sourceNode, sourceField, destinationNode, destinationField);
-}
-
-void
-X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionContext, X3D::SFNode & node, const UndoStepPtr & undoStep) const
-{
-	std::set <X3D::X3DProtoObjectPtr> protoDeclarations;
-
-	// Find proto declaration used in node and children of node
-
-	X3D::traverse (node, [&protoDeclarations] (X3D::SFNode & child)
-	               {
-	                  const X3D::X3DPrototypeInstancePtr instance (child);
-
-	                  if (instance)
-								protoDeclarations .emplace (instance -> getProtoDeclaration ());
-
-	                  return true;
-						});
-
-	// Filter out proto declaration used in scene
-
-	X3D::traverse (executionContext -> getRootNodes (), [&protoDeclarations] (X3D::SFNode & child)
-	               {
-	                  const X3D::X3DPrototypeInstancePtr instance (child);
-
-	                  if (instance)
-								protoDeclarations .erase (instance -> getProtoDeclaration ());
-
-	                  return true;
-						});
-
-	// Remove unused Protos from X3DExecutionContext
-
-	for (const auto & protoDeclaration : protoDeclarations)
-	{
-		if (protoDeclaration -> getName () .empty ())
-			continue;
-
-		try
-		{
-			const auto proto = executionContext -> getProtoDeclaration (protoDeclaration -> getName ());
-
-			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, executionContext, protoDeclaration -> getName (), proto);
-			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, executionContext, protoDeclaration -> getName ());
-
-			executionContext -> removeProtoDeclaration (protoDeclaration -> getName ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-
-		try
-		{
-			const auto externProto = executionContext -> getExternProtoDeclaration (protoDeclaration -> getName ());
-
-			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, protoDeclaration -> getName (), externProto);
-			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, protoDeclaration -> getName ());
-
-			executionContext -> removeExternProtoDeclaration (protoDeclaration -> getName ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
 }
 
 void

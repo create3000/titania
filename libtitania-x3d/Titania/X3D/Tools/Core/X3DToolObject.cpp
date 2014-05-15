@@ -91,7 +91,7 @@ X3DToolObject::isEnabled (const bool value)
 		enabled = value;
 
 		if (toolNode)
-			toolNode -> setField <SFBool> ("enabled", enabled);
+			toolNode -> setField <SFBool> ("set_enabled", enabled);
 	}
 	catch (const X3DError &)
 	{ }

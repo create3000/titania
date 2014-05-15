@@ -193,6 +193,10 @@ private:
 
 	virtual
 	void
+	on_remove_unused_prototypes () final override;
+
+	virtual
+	void
 	on_close () final override;
 
 	/// @name Dialog response

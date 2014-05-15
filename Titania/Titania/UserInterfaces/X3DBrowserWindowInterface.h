@@ -228,6 +228,10 @@ public:
 	{ return *m_RevertMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getRemoveUnusedPrototypesMenuItem () const
+	{ return *m_RemoveUnusedPrototypesMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getQuitMenuItem () const
 	{ return *m_QuitMenuItem; }
 
@@ -677,6 +681,10 @@ public:
 
 	virtual
 	void
+	on_remove_unused_prototypes () = 0;
+
+	virtual
+	void
 	on_close () = 0;
 
 	virtual
@@ -946,6 +954,7 @@ private:
 	Gtk::ImageMenuItem*             m_SaveMenuItem;
 	Gtk::ImageMenuItem*             m_SaveAsMenuItem;
 	Gtk::ImageMenuItem*             m_RevertMenuItem;
+	Gtk::ImageMenuItem*             m_RemoveUnusedPrototypesMenuItem;
 	Gtk::ImageMenuItem*             m_QuitMenuItem;
 	Gtk::MenuItem*                  m_EditMenuItem;
 	Gtk::ImageMenuItem*             m_UndoMenuItem;

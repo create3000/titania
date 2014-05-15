@@ -70,6 +70,16 @@ EXTERNPROTO Torus [
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Torus.x3dv"
 ]
 
+PROTO A [ ]
+{
+  Group { }
+}
+
+PROTO B [ ]
+{
+  A { }
+}
+
 PROTO Children1 [
   exposedField SFNode metadata NULL
   exposedField SFNode node DEF _1 Transform { }
@@ -89,6 +99,11 @@ PROTO Children1 [
   Children2 {
     children2 IS children1
   }
+}
+
+PROTO C [ ]
+{
+  Group { }
 }
 
 DEF None NavigationInfo {
@@ -199,7 +214,7 @@ Group {
     USE _2
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 4.01385
+      rotation 0 0 1 4.32363
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -455,6 +470,8 @@ DEF InlineClone Transform {
     ]
   }
 }
+
+A { }
 
 IMPORT _6.CubeExport
 IMPORT _3.Text AS ImportedInline

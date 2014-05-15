@@ -87,6 +87,9 @@ public:
 	void
 	save (const basic::uri &, const bool) final override;
 
+	void
+	removeUnusedPrototypes (const UndoStepPtr &);
+
 	virtual
 	bool
 	close () final override;
@@ -267,9 +270,6 @@ private:
 
 	void
 	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
-
-	void
-	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	unlinkClone (X3D::X3DExecutionContext* const, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;

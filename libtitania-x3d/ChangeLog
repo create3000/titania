@@ -1,3 +1,10 @@
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Traverse.h:
+	* Traverse.cpp:
+	* TransformTool.x3dv:
+	* X3DToolObject.cpp: 
+
 2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ToolColors.h:
