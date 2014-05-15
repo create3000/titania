@@ -123,7 +123,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	if (executionContext -> isRoot ())
+	if (executionContext -> isRootContext ())
 	{
 		X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
 
@@ -180,20 +180,24 @@ throw (Error <DISPOSED>)
 
 X3DBaseNode*
 X3DPrototypeInstance::getInnerNode ()
+throw (Error <DISPOSED>)
 {
 	return getRootNode () -> getInnerNode ();
 }
 
 const X3DBaseNode*
 X3DPrototypeInstance::getInnerNode () const
+throw (Error <DISPOSED>)
 {
 	return getRootNode () -> getInnerNode ();
 }
 
 X3DBaseNode*
 X3DPrototypeInstance::getRootNode () const
+throw (Error <DISPOSED>)
 {
-	//assert (getRootNodes () .size ());
+	if (getRootNodes () .empty () or not getRootNodes () .front ())
+		throw Error <DISPOSED> ("Root node not available.");
 
 	return getRootNodes () .front ();
 }
@@ -256,7 +260,12 @@ X3DPrototypeInstance::restoreState ()
 void
 X3DPrototypeInstance::traverse (const TraverseType type)
 {
-	getRootNode () -> traverse (type);
+	try
+	{
+		getRootNode () -> traverse (type);
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
@@ -270,6 +279,7 @@ void
 X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 //throw (Error <DISPOSED>)
 {
+
 	ostream .imbue (std::locale::classic ());
 
 	if (Generator::IsSharedNode (this))

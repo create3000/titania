@@ -147,12 +147,6 @@ Proto::initialize ()
 	X3DProtoObject::initialize ();
 }
 
-X3DBaseNode*
-Proto::getRootNode () const
-{
-	return getRootNodes () .front ();
-}
-
 void
 Proto::toStream (std::ostream & ostream) const
 {

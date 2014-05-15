@@ -163,11 +163,13 @@ public:
 	virtual
 	X3DBaseNode*
 	getInnerNode ()
+	throw (Error <DISPOSED>)
 	{ return this; }
 
 	virtual
 	const X3DBaseNode*
 	getInnerNode () const
+	throw (Error <DISPOSED>)
 	{ return this; }
 
 	///  @name Field handling

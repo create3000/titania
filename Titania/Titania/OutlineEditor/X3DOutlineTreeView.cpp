@@ -528,6 +528,10 @@ X3DOutlineTreeView::set_rootNodes ()
 			}
 		}
 	}
+	
+	// Add at least one child!!!
+	if (not get_model () -> children () .size ())
+		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Empty Scene")));
 
 	set_model (get_model ());
 
@@ -745,6 +749,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					}
 				}
 			}
+
+			// Add at least one child!!!
+			if (not iter -> children () .size ())
+				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Empty Scene")));
 
 			break;
 		}

@@ -1,3 +1,20 @@
+2014-05-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Cast.h:
+	* Route.cpp:
+	* Parser.cpp:
+	* Traverse.cpp:
+	* Proto.h:
+	* X3DBaseNode.h:
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* X3DCoreContext.h:
+	* X3DCoreContext.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp: 
+
 2014-05-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* World.cpp: 

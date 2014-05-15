@@ -1956,7 +1956,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 				return field;
 		}
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const X3D::X3DError &)
 	{ }
 
 	// Find appropriate field
@@ -1971,7 +1971,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 				return field;
 		}
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const X3D::X3DError &)
 	{ }
 
 	// Find last MFNode

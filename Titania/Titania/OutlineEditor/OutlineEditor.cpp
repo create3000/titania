@@ -181,9 +181,19 @@ OutlineEditor::on_set_as_current_scene_activate ()
 			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-			const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
-			                                        X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
-			menuItem .first -> activate ();
+			if (inlineNode)
+			{
+				const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+			                                           X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
+				menuItem .first -> activate ();
+			}
+			else
+			{
+				const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+			                                           sfnode -> getExecutionContext ());
+				menuItem .first -> activate ();			
+			}
+
 			break;
 		}
 		case OutlineIterType::ExternProto:
@@ -307,7 +317,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 
 	// Add menu item.
 
-	const auto label = scene -> isProto ()
+	const auto label = scene -> isProtoDeclaration ()
 	                   ? scene -> getTypeName () + " " + scene -> getName ()
 	                   : scene -> getTypeName () + " »" + basename + "«";
 
@@ -379,11 +389,12 @@ OutlineEditor::select (const double x, const double y)
 {
 	path = getNodeAtPosition (x, y);
 
-	bool isBaseNode    = false;
-	bool isExternProto = false;
-	bool isPrototype   = false;
-	bool isInlineNode  = false;
-	bool isLocalNode   = false;
+	bool isBaseNode      = false;
+	bool isExternProto   = false;
+	bool isPrototype     = false;
+	bool isInlineNode    = false;
+	bool isLocalNode     = false;
+	bool inProtoinstance = true;
 
 	if (not path .empty ())
 	{
@@ -396,9 +407,10 @@ OutlineEditor::select (const double x, const double y)
 				const auto & sfnode    = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 				const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-				isBaseNode   = sfnode .getValue ();
-				isInlineNode = inlineNode and inlineNode -> checkLoadState () == X3D::COMPLETE_STATE;
-				isLocalNode  = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				isBaseNode      = sfnode .getValue ();
+				isInlineNode    = inlineNode and inlineNode -> checkLoadState () == X3D::COMPLETE_STATE;
+				isLocalNode     = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				inProtoinstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode -> getExecutionContext ());
 				break;
 			}
 			case OutlineIterType::ExternProto:
@@ -406,16 +418,18 @@ OutlineEditor::select (const double x, const double y)
 				const auto & sfnode      = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 				const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
 
-			   isExternProto = externProto -> checkLoadState () not_eq X3D::FAILED_STATE;
-				isLocalNode   = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+			   isExternProto   = externProto -> checkLoadState () not_eq X3D::FAILED_STATE;
+				isLocalNode     = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				inProtoinstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode -> getExecutionContext ());
 				break;
 			}
 			case OutlineIterType::Prototype:
 			{
 				const auto & sfnode = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 
-				isPrototype = sfnode .getValue ();
-				isLocalNode = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				isPrototype     = sfnode .getValue ();
+				isLocalNode     = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				inProtoinstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode -> getExecutionContext ());
 				break;
 			}
 			default:
@@ -423,9 +437,9 @@ OutlineEditor::select (const double x, const double y)
 		}
 	}
 
-	getRemoveMenuItem ()             .set_sensitive (isLocalNode and isBaseNode);
-	getCreateInstanceMenuItem ()     .set_sensitive (isLocalNode and (isPrototype or isExternProto));
-	getSetAsCurrentSceneMenuItem () .set_sensitive (isExternProto or isPrototype or isInlineNode);
+	getSetAsCurrentSceneMenuItem () .set_sensitive (isExternProto or isPrototype or isInlineNode or (not isLocalNode and not inProtoinstance));
+	getCreateInstanceMenuItem ()    .set_sensitive (isLocalNode and (isPrototype or isExternProto));
+	getRemoveMenuItem ()            .set_sensitive (isLocalNode and isBaseNode);
 }
 
 Gtk::TreePath
@@ -450,8 +464,8 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 			switch (treeview -> get_data_type (parent))
 			{
 				case OutlineIterType::X3DBaseNode:
-				case OutlineIterType::Prototype:
 				case OutlineIterType::ExternProto:
+				case OutlineIterType::Prototype:
 					break;
 				default:
 					path .clear ();
@@ -461,8 +475,8 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::Prototype:
 		case OutlineIterType::ExternProto:
+		case OutlineIterType::Prototype:
 			break;
 		default:
 			path .clear ();

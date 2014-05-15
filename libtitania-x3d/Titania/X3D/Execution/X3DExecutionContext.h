@@ -86,12 +86,12 @@ public:
 	///  @name Tests
 
 	bool
-	isRoot () const
+	isRootContext () const
 	{ return getExecutionContext () == this; }
 
 	virtual
 	bool
-	isProto () const
+	isProtoDeclaration () const
 	{ return false; }
 
 	///  @name Member access

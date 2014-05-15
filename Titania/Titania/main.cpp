@@ -69,6 +69,8 @@ main (int argc, char** argv)
 
 		BrowserWindow browserWindow (X3D::createBrowser (), argc, argv);
 
+		browserWindow .getBrowser () -> isStrict (false);
+
 		Gtk::Main::run (browserWindow .getWindow ());
 	}
 	catch (const std::exception & error)

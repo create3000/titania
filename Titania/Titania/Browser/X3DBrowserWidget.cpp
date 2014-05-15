@@ -276,14 +276,14 @@ void
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
 	const auto suffix           = worldURL .suffix ();
-	const auto executionContext = getBrowser () -> getExecutionContext ();
+	const auto executionContext = X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext () -> getRootContext ());
 
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);
 
 	// Save
 
-	if (suffix == ".x3d")
+	if (suffix == ".x3d" or suffix == ".xml")
 	{
 		if (executionContext -> getVersion () == X3D::VRML_V2_0)
 		{

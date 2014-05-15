@@ -114,7 +114,7 @@ public:
 
 	virtual
 	bool
-	isProto () const final override
+	isProtoDeclaration () const final override
 	{ return true; }
 
 	virtual
@@ -145,11 +145,6 @@ public:
 	Proto*
 	getProto () final override
 	{ return this; }
-
-	///  @name RootNodes handling
-
-	X3DBaseNode*
-	getRootNode () const;
 	
 	///  @name Operations
 	

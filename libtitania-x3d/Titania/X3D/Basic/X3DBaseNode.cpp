@@ -398,7 +398,7 @@ X3DBaseNode::getRootContext () const
 {
 	X3DExecutionContext* executionContext = getExecutionContext ();
 
-	while (not executionContext -> isRoot ())
+	while (not executionContext -> isRootContext ())
 		executionContext = executionContext -> getExecutionContext ();
 
 	return executionContext;
@@ -691,7 +691,7 @@ X3DBaseNode::getNumClones () const
 							{
 								auto node = dynamic_cast <X3DBaseNode*> (fparent);
 
-								if (node and (node -> getExecutionContext () -> isRoot () or node -> getExecutionContext () -> isProto ()))
+								if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
 								{
 									++ numClones;
 									break;
@@ -708,7 +708,7 @@ X3DBaseNode::getNumClones () const
 					{
 						const auto node = dynamic_cast <X3DBaseNode*> (fparent);
 
-						if (node and (node -> getExecutionContext () -> isRoot () or node -> getExecutionContext () -> isProto ()))
+						if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
 						{
 							++ numClones;
 							break;

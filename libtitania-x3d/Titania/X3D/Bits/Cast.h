@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_BITS_CAST_H__
 #define __TITANIA_X3D_BITS_CAST_H__
 
+#include "../Bits/Error.h"
+
 #include <cstddef>
 
 namespace titania {
@@ -60,10 +62,15 @@ template <class Type, class Up>
 Type
 x3d_cast (Up & value)
 {
-	if (value)
-		return dynamic_cast <Type> (value -> getInnerNode ());
+	try
+	{
+		if (value)
+			return dynamic_cast <Type> (value -> getInnerNode ());
+	}
+	catch (const X3DError &)
+	{ }
 
-	return NULL;
+	return nullptr;
 }
 
 } // X3D

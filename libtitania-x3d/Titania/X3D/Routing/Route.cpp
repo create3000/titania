@@ -183,7 +183,7 @@ Route::connect ()
 	{
 		connected = true;
 
-		if (not getExecutionContext () -> isProto ())
+		if (not getExecutionContext () -> isProtoDeclaration ())
 			sourceField -> addInterest (destinationField);
 
 		sourceField -> addOutputRoute (this);

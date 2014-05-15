@@ -91,6 +91,13 @@ public:
 	throw (Error <DISPOSED>) final override;
 
 	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Member access
+
+	virtual
 	std::string
 	getTitle () const final override
 	{ return protoDeclaration -> getProto () -> getTitle (); }
@@ -109,21 +116,17 @@ public:
 
 	virtual
 	X3DBaseNode*
-	getInnerNode () final override;
+	getInnerNode ()
+	throw (Error <DISPOSED>) final override;
 
 	virtual
 	const X3DBaseNode*
-	getInnerNode () const final override;
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Member access
+	getInnerNode () const
+	throw (Error <DISPOSED>) final override;
 
 	X3DBaseNode*
-	getRootNode () const;
+	getRootNode () const
+	throw (Error <DISPOSED>);
 
 	const X3DProtoObjectPtr &
 	getProtoDeclaration () const

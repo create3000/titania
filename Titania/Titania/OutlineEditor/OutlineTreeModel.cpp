@@ -128,7 +128,7 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 	{
 		try
 		{
-			if (route -> getExecutionContext () -> isRoot () or route -> getExecutionContext () -> isProto ())
+			if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ())
 				routes .emplace_back (route);
 		}
 		catch (const X3D::X3DError &)
@@ -147,7 +147,7 @@ OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) c
 	{
 		try
 		{
-			size += route -> getExecutionContext () -> isRoot () or route -> getExecutionContext () -> isProto ();
+			size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ();
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -165,7 +165,7 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 	{
 		try
 		{
-			if (route -> getExecutionContext () -> isRoot () or route -> getExecutionContext () -> isProto ())
+			if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ())
 				routes .emplace_back (route);
 		}
 		catch (const X3D::X3DError &)
@@ -184,7 +184,7 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 	{
 		try
 		{
-			size += route -> getExecutionContext () -> isRoot () or route -> getExecutionContext () -> isProto ();
+			size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ();
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -430,6 +430,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 	switch (get_data_type (iter))
 	{
+		case OutlineIterType::Separator:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
@@ -449,7 +450,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 					if (get_input_routes_size (field))
 						return true;
-					
+
 					if (get_output_routes_size (field))
 						return true;
 
@@ -481,7 +482,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			// Test SFNode
 
 			if (sfnode)
-				return sfnode -> getFieldDefinitions () .size ();
+				return not sfnode -> getFieldDefinitions () .empty ();
 
 			return false;
 		}
@@ -501,7 +502,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 				// Test SFNode
 
 				if (exportedNode)
-					return exportedNode -> getFieldDefinitions () .size ();
+					return not exportedNode -> getFieldDefinitions () .empty ();
 			}
 			catch (...)
 			{ }
@@ -524,15 +525,11 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 				// Test SFNode
 
 				if (localNode)
-					return localNode -> getFieldDefinitions () .size ();
+					return not localNode -> getFieldDefinitions () .empty ();
 			}
 			catch (...)
 			{ }
 
-			return false;
-		}
-		case OutlineIterType::Separator:
-		{
 			return false;
 		}
 	}

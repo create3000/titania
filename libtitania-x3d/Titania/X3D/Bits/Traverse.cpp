@@ -264,8 +264,13 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 	{
 		if (flags & TRAVERSE_PROTO_INSTANCES)
 		{
-			if (find (node -> getInnerNode (), object, flags, hierarchy, seen))
-				return true;
+			try
+			{
+				if (find (node -> getInnerNode (), object, flags, hierarchy, seen))
+					return true;
+			}
+			catch (const X3DError &)
+			{ }
 		}
 
 		const auto protoObject = dynamic_cast <X3DProtoObject*> (node);

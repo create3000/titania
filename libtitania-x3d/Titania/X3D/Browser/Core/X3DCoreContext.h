@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DScalar.h"
 
 namespace titania {
 namespace X3D {
@@ -63,9 +64,21 @@ public:
 
 	///  @name Member access
 
+	///  Enable/disable strict warnings. The default value is true.
+	void
+	isStrict (const bool value)
+	{ strict = value; }
+
+	///  Returns true if strict warnings are enabled, otherwise false.
+	const SFBool &
+	isStrict () const
+	{ return strict; }
+
+	///  Returns true if OpenGL @a extensions is available, otherwise false.
 	bool
 	hasExtension (const std::string &);
 
+	///  Returns the memory usage in bytes.
 	static
 	size_t
 	getMemoryUsage ();
@@ -93,6 +106,7 @@ private:
 
 	///  @name Members
 
+	SFBool                 strict;
 	std::set <std::string> extensions;
 
 };

@@ -63,8 +63,11 @@ namespace X3D {
 
 X3DCoreContext::X3DCoreContext () :
 	X3DBaseNode (),
+	     strict (true),
 	 extensions ()
 {
+	addChildren (strict);
+
 	glibtop_init ();
 }
 
