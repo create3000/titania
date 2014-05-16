@@ -236,8 +236,6 @@ BrowserOptions::set_textureQuality ()
 void
 BrowserOptions::set_primitiveQuality ()
 {
-	std::clog << "Setting primitive quality to " << primitiveQuality () << "." << std::endl;
-
 	if (primitiveQuality () == "HIGH")
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 40;
@@ -293,8 +291,6 @@ BrowserOptions::set_primitiveQuality ()
 void
 BrowserOptions::set_shading ()
 {
-	std::clog << "Setting shading to " << shading () << "." << std::endl;
-
 	getBrowser () -> getRenderingProperties () -> shading () = shading ();
 
 	if (shading () == "PHONG")

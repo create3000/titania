@@ -73,10 +73,26 @@ X3DBaseInterface::getWorld () const
 	return browserWindow -> getWorld ();
 }
 
+void
+X3DBaseInterface::setExecutionContext (const X3D::X3DExecutionContextPtr & executionContext)
+{
+	try
+	{
+		X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
+
+		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
+
+		getBrowser () -> replaceWorld (executionContext);
+		getBrowser () -> getBrowserOptions () -> assign (browserOptions);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
 bool
 X3DBaseInterface::inPrototypeInstance () const
 {
-	return dynamic_cast <X3D::X3DPrototypeInstance*> (getBrowser () -> getExecutionContext () .getValue ());
+	return dynamic_cast <X3D::X3DPrototypeInstance*> (getExecutionContext () .getValue ());
 }
 
 X3DBaseInterface::~X3DBaseInterface ()

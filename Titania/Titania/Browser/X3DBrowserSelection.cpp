@@ -137,7 +137,7 @@ X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 			if (picked)
 			{
 				const auto hit       = getBrowser () -> getHits () .front ();
-				const auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (),
+				const auto hierarchy = X3D::find (getExecutionContext () -> getRootNodes (),
 				                                  hit -> shape,
 				                                  X3D::TRAVERSE_ROOT_NODES |
 				                                  X3D::TRAVERSE_PROTOTYPE_INSTANCES |
@@ -157,7 +157,7 @@ X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 							if (not lowest)
 								continue;
 
-							if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+							if (lowest -> getExecutionContext () not_eq getExecutionContext ())
 								continue;
 								
 							if (not node)
@@ -181,7 +181,7 @@ X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 							if (not highest)
 								continue;
 
-							if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+							if (highest -> getExecutionContext () not_eq getExecutionContext ())
 								continue;
 
 							if (not node)
@@ -205,7 +205,7 @@ X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 								if (not highest)
 									continue;
 
-								if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+								if (highest -> getExecutionContext () not_eq getExecutionContext ())
 									continue;
 
 								if (X3D::x3d_cast <X3D::X3DChildNode*> (highest .getValue ()))

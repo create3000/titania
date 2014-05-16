@@ -61,7 +61,7 @@ namespace puck {
 OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.xml"), gconf_dir ()),
-	                 treeview (new OutlineTreeViewEditor (browserWindow, getBrowser () -> getExecutionContext ())),
+	                 treeview (new OutlineTreeViewEditor (browserWindow, getExecutionContext ())),
 	               sceneGroup (),
 	               sceneIndex (),
 	                   scenes (),
@@ -85,7 +85,7 @@ OutlineEditor::initialize ()
 
 	// Register browser interest
 	getWorld () .addInterest (this, &OutlineEditor::set_world);
-	getBrowser () -> getExecutionContext () .addInterest (this, &OutlineEditor::set_scene);
+	getExecutionContext () .addInterest (this, &OutlineEditor::set_scene);
 }
 
 void
@@ -124,7 +124,7 @@ OutlineEditor::set_scene ()
 
 	const X3D::X3DExecutionContextPtr & currentScene = treeview -> get_model () -> get_execution_context ();
 
-	const auto menuItem = addSceneMenuItem (currentScene, getBrowser () -> getExecutionContext ());
+	const auto menuItem = addSceneMenuItem (currentScene, getExecutionContext ());
 	menuItem .first -> set_active (true);
 
 	getSceneImage ()          .set_sensitive (not inPrototypeInstance ());
@@ -133,7 +133,7 @@ OutlineEditor::set_scene ()
 
 	// Tree view
 
-	treeview -> set_execution_context (getBrowser () -> getExecutionContext ());
+	treeview -> set_execution_context (getExecutionContext ());
 }
 
 // Pointing Device
@@ -173,7 +173,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 
 			if (instance)
 			{
-				const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+				const auto menuItem = addSceneMenuItem (getExecutionContext (),
 				                                        X3D::X3DExecutionContextPtr (instance));
 				menuItem .first -> activate ();
 			}
@@ -183,13 +183,13 @@ OutlineEditor::on_set_as_current_scene_activate ()
 
 				if (inlineNode)
 				{
-					const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+					const auto menuItem = addSceneMenuItem (getExecutionContext (),
 					                                        X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
 					menuItem .first -> activate ();
 				}
 				else
 				{
-					const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+					const auto menuItem = addSceneMenuItem (getExecutionContext (),
 					                                        sfnode -> getExecutionContext ());
 					menuItem .first -> activate ();
 				}
@@ -209,7 +209,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 
 				if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
 				{
-					const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+					const auto menuItem = addSceneMenuItem (getExecutionContext (),
 					                                        X3D::X3DExecutionContextPtr (externProto -> getInternalScene ()));
 					menuItem .first -> activate ();
 				}
@@ -226,7 +226,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 
 			prototype -> realize ();
 
-			addSceneMenuItem (getBrowser () -> getExecutionContext (), prototype) .first -> activate ();
+			addSceneMenuItem (getExecutionContext (), prototype) .first -> activate ();
 			break;
 		}
 		case OutlineIterType::ImportedNode:
@@ -237,7 +237,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
 				const auto   exportedNode = importedNode -> getExportedNode ();
 
-				const auto menuItem = addSceneMenuItem (getBrowser () -> getExecutionContext (),
+				const auto menuItem = addSceneMenuItem (getExecutionContext (),
 				                                        exportedNode -> getExecutionContext ());
 				menuItem .first -> activate ();
 			}
@@ -254,24 +254,19 @@ OutlineEditor::on_set_as_current_scene_activate ()
 void
 OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size_t index)
 {
-	try
+	if (menuItem -> get_active ())
 	{
-		if (menuItem -> get_active ())
-		{
-			const auto & scene = scenes [index] .first;
+		const auto & scene = scenes [index] .first;
 
-			if (scene not_eq getBrowser () -> getExecutionContext ())
-				getBrowser () -> replaceWorld (scene);
-		}
+		if (scene not_eq getExecutionContext ())
+			setExecutionContext (scene);
 	}
-	catch (const X3D::X3DError &)
-	{ }
 }
 
 void
 OutlineEditor::on_previous_scene_clicked ()
 {
-	const auto iter = sceneIndex .find (getBrowser () -> getExecutionContext ());
+	const auto iter = sceneIndex .find (getExecutionContext ());
 
 	if (iter not_eq sceneIndex .end ())
 	{
@@ -283,7 +278,7 @@ OutlineEditor::on_previous_scene_clicked ()
 void
 OutlineEditor::on_next_scene_clicked ()
 {
-	const auto iter = sceneIndex .find (getBrowser () -> getExecutionContext ());
+	const auto iter = sceneIndex .find (getExecutionContext ());
 
 	if (iter not_eq sceneIndex .end ())
 	{
@@ -470,7 +465,7 @@ OutlineEditor::select (const double x, const double y)
 				isBaseNode          = sfnode .getValue ();
 				isPrototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 				isInlineNode        = inlineNode and inlineNode -> checkLoadState () == X3D::COMPLETE_STATE;
-				isLocalNode         = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				isLocalNode         = sfnode -> getExecutionContext () == getExecutionContext ();
 				break;
 			}
 			case OutlineIterType::ExternProtoDeclaration:
@@ -479,7 +474,7 @@ OutlineEditor::select (const double x, const double y)
 				const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
 
 				isExternProto = externProto -> checkLoadState () not_eq X3D::FAILED_STATE;
-				isLocalNode   = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				isLocalNode   = sfnode -> getExecutionContext () == getExecutionContext ();
 				break;
 			}
 			case OutlineIterType::ProtoDeclaration:
@@ -487,7 +482,7 @@ OutlineEditor::select (const double x, const double y)
 				const auto & sfnode = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 
 				isPrototype = sfnode .getValue ();
-				isLocalNode = sfnode -> getExecutionContext () == getBrowser () -> getExecutionContext ();
+				isLocalNode = sfnode -> getExecutionContext () == getExecutionContext ();
 				break;
 			}
 			case OutlineIterType::ImportedNode:

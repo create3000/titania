@@ -79,6 +79,13 @@ public:
 	const X3D::ScenePtr &
 	getWorld () const;
 
+	void
+	setExecutionContext (const X3D::X3DExecutionContextPtr &);
+
+	const X3D::X3DExecutionContextPtr &
+	getExecutionContext () const
+	{ return getBrowser () -> getExecutionContext (); }
+
 	bool
 	inPrototypeInstance () const;
 

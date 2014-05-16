@@ -103,8 +103,8 @@ HistoryEditor::set_splashScreen ()
 void
 HistoryEditor::set_world ()
 {
-	const std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
-	const basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const std::string title    = getWorld () -> getTitle ();
+	const basic::uri  worldURL = getWorld () -> getWorldURL ();
 
 	if (worldURL .empty ())
 		return;

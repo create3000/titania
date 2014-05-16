@@ -235,7 +235,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 		{
 			std::map <std::string, X3D::ImportedNodePtr> importedNodes;
 
-			for (const auto & importedNode : getBrowser () -> getExecutionContext () -> getImportedNodes ())
+			for (const auto & importedNode : getExecutionContext () -> getImportedNodes ())
 			{
 				if (importedNode .second -> getInlineNode () == inlineNode)
 					importedNodes [importedNode .second -> getExportedName ()] = importedNode .second;
@@ -825,11 +825,9 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 	if (updateExists)
 		return false;
 
-	const auto & scene = getBrowser () -> getExecutionContext ();
-
 	try
 	{
-		scene -> getNamedNode (importedName);
+		getExecutionContext () -> getNamedNode (importedName);
 		return false;           // There is already a named node.
 	}
 	catch (const X3D::X3DError &)
@@ -837,9 +835,9 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 
 	try
 	{
-		const auto iter = scene -> getImportedNodes () .find (importedName);
+		const auto iter = getExecutionContext () -> getImportedNodes () .find (importedName);
 
-		if (iter not_eq scene -> getImportedNodes () .end ())
+		if (iter not_eq getExecutionContext () -> getImportedNodes () .end ())
 		{
 			const auto &         importedNode = iter -> second;
 			const X3D::InlinePtr inlineNode   = X3D::x3d_cast <X3D::Inline*> (node);

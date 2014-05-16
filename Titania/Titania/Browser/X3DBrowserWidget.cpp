@@ -66,7 +66,7 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
-	                    world (getBrowser () -> getExecutionContext ())
+	                    world (getExecutionContext ())
 {
 	addChildren (world);
 
@@ -252,7 +252,7 @@ X3DBrowserWidget::blank ()
 	try
 	{
 		getBrowser () -> replaceWorld (X3D::ScenePtr ());
-		world = getBrowser () -> getExecutionContext ();
+		world = getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -266,7 +266,7 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	try
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
-		world = getBrowser () -> getExecutionContext ();
+		world = getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -276,7 +276,7 @@ void
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
 	const auto suffix           = worldURL .suffix ();
-	const auto executionContext = X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext () -> getRootContext ());
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext () -> getRootContext ());
 
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);

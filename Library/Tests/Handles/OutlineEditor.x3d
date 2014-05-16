@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Thu, 15 May 2014 15:26:12 GMT'/>
+    <meta name='modified' content='Fri, 16 May 2014 23:49:22 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -104,8 +104,8 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='-0.826765 5.87027 13.359'
-        orientation='0.787842 0.597084 0.150982 5.73888'
+        position='0.0128284 4.06347 14.364'
+        orientation='0.765117 0.626719 0.147711 5.86671'
         centerOfRotation='4.26786 -1.47502 -1.62472'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
@@ -167,7 +167,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.88803'
+          rotation='0 0 1 3.16999'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -323,7 +323,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mo 12 Mai 2014 19:37:01 CEST"'>
+            string='"modified...", "Do 15 Mai 2014 17:26:12 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>

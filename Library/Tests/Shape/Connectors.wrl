@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.6.8
 
 META "title" "Connectors"
 
@@ -179,7 +179,10 @@ PROTO Route [
     geometry DEF Geometry_1 LineSet {
       vertexCount 2
       coord Coordinate {
-        point [ -1 0 0, 1 0 0 ]
+        point [
+          -1 0 0,
+          1 0 0
+        ]
       }
     }
   }
@@ -225,7 +228,10 @@ function set_translation ()
 }
 
 NavigationInfo {
-  type [ "PLANE_create3000.de", "ANY" ]
+  type [
+    "PLANE_create3000.de",
+    "ANY"
+  ]
 }
 
 Background {
@@ -234,7 +240,14 @@ Background {
 
 OrthoViewpoint {
   description "OthoViewpoint"
-  fieldOfView [ 0, 0, 10, 10 ]
+  position -3.13496 -4.19776 10
+  centerOfRotation -3.13496 -4.19776 0
+  fieldOfView [
+    0,
+    0,
+    10,
+    10
+  ]
 }
 
 Viewpoint {
@@ -245,34 +258,34 @@ DEF Connectors Transform {
   children [
     Route {
       output DEF N1 Node {
-        translation -5.75227 2.86491 0
+        translation -3.98323 2.88948 0
       }
       input DEF N2 Node {
-        translation -1.53844 2.80322 0
+        translation -0.0890862 2.96049 0
       }
     }
     Route {
       output USE N1
       input DEF N3 Node {
-        translation -1.43095 1.13914 0
+        translation -0.104169 1.16371 0
       }
     }
     Route {
       output USE N1
       input DEF N4 Node {
-        translation -1.37751 -0.5 0
+        translation -0.0998688 -0.40172 0
       }
     }
     Route {
       output USE N1
       input DEF N5 Node {
-        translation -1.37751 -2 0
+        translation -0.0998687 -2.14742 0
       }
     }
     Route {
       output USE N2
       input DEF N6 Node {
-        translation 2.91794 2.15675 0
+        translation 3.55694 2.4116 0
       }
     }
     Route {
@@ -282,7 +295,7 @@ DEF Connectors Transform {
     Route {
       output USE N4
       input DEF N7 Node {
-        translation 2.74369 -0.349726 0
+        translation 3.75106 -0.0794556 0
       }
     }
     Route {
@@ -292,7 +305,7 @@ DEF Connectors Transform {
     Route {
       output USE N6
       input DEF N8 Node {
-        translation 6.45227 0.499754 0
+        translation 7.68077 1.21228 0
       }
     }
     Route {

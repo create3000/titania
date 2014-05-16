@@ -154,8 +154,9 @@ BrowserWindow::initialize ()
 	updatePasteStatus ();
 
 	// Browser Events
-	getWorld () .addInterest (this, &BrowserWindow::set_world);
-	getBrowser () -> getExecutionContext ()     .addInterest (this, &BrowserWindow::set_scene);
+	getWorld ()            .addInterest (this, &BrowserWindow::set_world);
+	getExecutionContext () .addInterest (this, &BrowserWindow::set_scene);
+
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &BrowserWindow::set_active_viewpoint);
 	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers ()     .addInterest (this, &BrowserWindow::set_available_viewers);
@@ -436,7 +437,7 @@ BrowserWindow::on_open ()
 		fileOpenDialog -> add_filter (getFileFilterVideo ());
 		fileOpenDialog -> set_filter (getFileFilterX3D ());
 
-		const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+		const auto worldURL = getExecutionContext () -> getWorldURL ();
 
 		if (not worldURL .empty () and worldURL .is_local ())
 			fileOpenDialog -> set_uri (worldURL .filename () .str ());
@@ -512,7 +513,7 @@ BrowserWindow::on_import ()
 	fileImportDialog -> add_filter (getFileFilterVideo ());
 	fileImportDialog -> set_filter (getFileFilterX3D ());
 
-	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const auto worldURL = getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		fileImportDialog -> set_uri (worldURL .filename () .str ());
@@ -614,13 +615,13 @@ BrowserWindow::on_save ()
 {
 	getKeys () .clear ();
 
-	const basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const basic::uri worldURL = getExecutionContext () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as ();
 
 	else
-		save (worldURL, getBrowser () -> getExecutionContext () -> isCompressed ());
+		save (worldURL, getExecutionContext () -> isCompressed ());
 }
 
 void
@@ -635,7 +636,7 @@ BrowserWindow::on_save_as ()
 	fileSaveDialog -> add_filter (getFileFilterX3D ());
 	fileSaveDialog -> set_filter (getFileFilterX3D ());
 
-	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const auto worldURL = getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		fileSaveDialog -> set_uri (worldURL .filename () .str ());
@@ -652,7 +653,7 @@ BrowserWindow::on_save_as ()
 
 	const auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
 
-	saveCompressedButton -> set_active (getBrowser () -> getExecutionContext () -> isCompressed ());
+	saveCompressedButton -> set_active (getExecutionContext () -> isCompressed ());
 
 	const auto response_id = fileSaveDialog -> run ();
 
@@ -1113,11 +1114,9 @@ BrowserWindow::on_proximity_sensor_toggled ()
 {
 	if (toggle)
 	{
-		const auto scene = getBrowser () -> getExecutionContext ();
-
 		if (getProximitySensorMenuItem () .get_active ())
 		{
-			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 			               {
 			                  const auto tool = dynamic_cast <X3D::ProximitySensor*> (node .getValue ());
 
@@ -1129,7 +1128,7 @@ BrowserWindow::on_proximity_sensor_toggled ()
 		}
 		else
 		{
-			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 			               {
 			                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
 
@@ -1151,11 +1150,9 @@ BrowserWindow::on_visibility_sensor_toggled ()
 {
 	if (toggle)
 	{
-		const auto scene = getBrowser () -> getExecutionContext ();
-
 		if (getVisibilitySensorMenuItem () .get_active ())
 		{
-			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 			               {
 			                  const auto tool = dynamic_cast <X3D::VisibilitySensor*> (node .getValue ());
 
@@ -1167,7 +1164,7 @@ BrowserWindow::on_visibility_sensor_toggled ()
 		}
 		else
 		{
-			X3D::traverse (scene -> getRootNodes (), [ ] (X3D::SFNode & node)
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 			               {
 			                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
 
@@ -1228,7 +1225,7 @@ BrowserWindow::on_select_all_activate ()
 {
 	const auto undoStep = std::make_shared <UndoStep> ();
 
-	getSelection () -> setChildren (getBrowser () -> getExecutionContext () -> getRootNodes (), undoStep);
+	getSelection () -> setChildren (getExecutionContext () -> getRootNodes (), undoStep);
 }
 
 void
@@ -1344,7 +1341,7 @@ BrowserWindow::on_update_viewpoint ()
 void
 BrowserWindow::on_prototype_instance_dialog ()
 {
-	X3D::X3DExecutionContext* executionContext = getBrowser () -> getExecutionContext ();
+	X3D::X3DExecutionContext* executionContext = getExecutionContext ();
 
 	// Find all available prototypes
 

@@ -1,3 +1,17 @@
+2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseInterface.h:
+	* MagicImport.cpp:
+	* BrowserWindow.cpp:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* HistoryEditor.cpp:
+	* OutlineEditor.cpp:
+	* X3DBrowserSelection.cpp:
+	* MaterialEditor.cpp:
+	* NodePropertiesEditor.cpp: 
+
 2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineEditor.cpp:

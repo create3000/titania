@@ -102,7 +102,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 	                     getBrowser () -> makeCurrent ();
 	                     
 	                     importProtoDeclaration (appearance -> material (), undoStep);
-	                     material = appearance -> material () -> copy (getBrowser () -> getExecutionContext ());
+	                     material = appearance -> material () -> copy (getExecutionContext ());
 
 	                     return false;
 							}
@@ -128,7 +128,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 
 	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
-	getBrowser () -> getExecutionContext () -> realize ();
+	getExecutionContext () -> realize ();
 	getBrowser () -> update ();
 
 	return true;
@@ -150,7 +150,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 	                     getBrowser () -> makeCurrent ();
 	                     
 	                     importProtoDeclaration (appearance -> texture (), undoStep);
-	                     texture = appearance -> texture () -> copy (getBrowser () -> getExecutionContext ());
+	                     texture = appearance -> texture () -> copy (getExecutionContext ());
 
 	                     return false;
 							}
@@ -176,7 +176,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
-	getBrowser () -> getExecutionContext () -> realize ();
+	getExecutionContext () -> realize ();
 	getBrowser () -> update ();
 
 	return true;
@@ -194,10 +194,10 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 
 		try
 		{
-			const auto protoDeclaration = getBrowser () -> getExecutionContext () -> getProtoDeclaration (name);
+			const auto protoDeclaration = getExecutionContext () -> getProtoDeclaration (name);
 			
 			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
-			                             getBrowser () -> getExecutionContext (),
+			                             getExecutionContext (),
 			                             name,
 			                             protoDeclaration);
 		}
@@ -205,10 +205,10 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 		{
 			try
 			{
-				const auto externProtoDeclaration = getBrowser () -> getExecutionContext () -> getExternProtoDeclaration (name);
+				const auto externProtoDeclaration = getExecutionContext () -> getExternProtoDeclaration (name);
 				
 				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
-				                             getBrowser () -> getExecutionContext (),
+				                             getExecutionContext (),
 				                             name,
 				                             externProtoDeclaration);
 			}
@@ -217,31 +217,31 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 				if (isExternProto)
 				{
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration,
-					                             getBrowser () -> getExecutionContext (),
+					                             getExecutionContext (),
 					                             name);
 				}
 				else
 				{
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration,
-					                             getBrowser () -> getExecutionContext (),
+					                             getExecutionContext (),
 					                             name);
 				}
 			}
 		}
 
-		const auto proto = prototypeInstance -> getProtoDeclaration () -> copy (getBrowser () -> getExecutionContext ());
+		const auto proto = prototypeInstance -> getProtoDeclaration () -> copy (getExecutionContext ());
 		
 		if (isExternProto)
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
-			                             getBrowser () -> getExecutionContext (),
+			                             getExecutionContext (),
 			                             name,
 			                             X3D::ExternProtoPtr (proto));
 		}
 		else
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
-			                             getBrowser () -> getExecutionContext (),
+			                             getExecutionContext (),
 			                             name,
 			                             X3D::ProtoPtr (proto));
 		}	

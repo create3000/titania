@@ -303,14 +303,10 @@ throw (Error <INVALID_SCENE>,
 
 		if (not initialized () or value not_eq executionContext)
 		{
+			setDescription ("");
+			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
+
 			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
-
-			if (not executionContext -> isInternal ())
-			{
-				setDescription ("");
-				browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
-			}
-
 			executionContext -> setup ();
 
 			world = new World (executionContext);

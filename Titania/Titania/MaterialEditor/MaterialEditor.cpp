@@ -61,8 +61,8 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.xml"), gconf_dir ()),
 	            browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
 	               appearances (),
-	                  material (new X3D::Material (browserWindow -> getBrowser () -> getExecutionContext ())),
-	          twoSidedMaterial (new X3D::TwoSidedMaterial (browserWindow -> getBrowser () -> getExecutionContext ())),
+	                  material (new X3D::Material (browserWindow -> getExecutionContext ())),
+	          twoSidedMaterial (new X3D::TwoSidedMaterial (browserWindow -> getExecutionContext ())),
 	                  undoStep (),
 	               initialized (false)
 {
@@ -565,7 +565,7 @@ MaterialEditor::updateAppearance ()
 
 		undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
-		getBrowser () -> getExecutionContext () -> realize ();
+		getExecutionContext () -> realize ();
 		getBrowser () -> update ();
 
 		if (initialized or appearances .size () > 1)

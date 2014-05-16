@@ -14,7 +14,6 @@ PROTO Clones [ ]
 function initialize ()
 {
 	node2 = node1;
-	node3 .int [0] = 1;
 	
 	print (Browser .currentScene .toVRMLString ());
 	print (Browser .currentScene .rootNodes);
