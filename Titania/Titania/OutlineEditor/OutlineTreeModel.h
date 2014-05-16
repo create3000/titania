@@ -118,14 +118,6 @@ public:
 	get_execution_context () const
 	{ return executionContext; }
 
-	bool
-	get_show_all_routes () const
-	{ return show_all_routes; }
-
-	void
-	set_show_all_routes (const bool value)
-	{ show_all_routes = value; }
-
 	///  @name Tree node
 
 	static
@@ -147,6 +139,16 @@ public:
 	X3D::X3DChildObject*
 	get_object (const iterator &);
 
+	///  @name Route handling
+
+	bool
+	get_show_all_routes () const
+	{ return show_all_routes; }
+
+	void
+	set_show_all_routes (const bool value)
+	{ show_all_routes = value; }
+
 	std::vector <X3D::Route*>
 	get_input_routes (X3D::X3DFieldDefinition* const) const;
 
@@ -158,6 +160,9 @@ public:
 
 	size_t
 	get_output_routes_size (X3D::X3DFieldDefinition* const) const;
+
+	bool
+	is_visible_route (const X3D::Route* const) const;
 
 	///  @name Operations
 

@@ -706,7 +706,11 @@ jsX3DExecutionContext::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 
 		const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-		return JS_NewStringValue (context, executionContext -> toString (), &JS_RVAL (context, vp));
+		std::ostringstream ostream;
+
+		executionContext -> X3DExecutionContext::toStream (ostream);
+
+		return JS_NewStringValue (context, ostream .str (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "X3DExecutionContext .toVRMLString: wrong number of arguments");
@@ -723,7 +727,11 @@ jsX3DExecutionContext::toXMLString (JSContext* context, uintN argc, jsval* vp)
 
 		const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-		return JS_NewStringValue (context, executionContext -> toXMLString (), &JS_RVAL (context, vp));
+		std::ostringstream ostream;
+
+		executionContext -> X3DExecutionContext::toXMLStream (ostream);
+
+		return JS_NewStringValue (context, ostream .str (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "X3DExecutionContext .toXMLString: wrong number of arguments");

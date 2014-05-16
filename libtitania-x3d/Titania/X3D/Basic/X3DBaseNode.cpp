@@ -683,37 +683,45 @@ X3DBaseNode::getNumClones () const
 					{
 						// Only X3DNodes, ie nodes in the scene graph, have field names
 
-						if (dynamic_cast <MFNode*> (parent) and not parent -> getName () .empty ())
-						{
-							// If any of the fields parents is in a scene add count.
+						if (parent -> getName () .empty ())
+							continue;
 
-							for (const auto & fparent : parent -> getParents ())
-							{
-								auto node = dynamic_cast <X3DBaseNode*> (fparent);
+						if (dynamic_cast <MFNode*> (parent))
+							++ numClones;
 
-								if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
-								{
-									++ numClones;
-									break;
-								}
-							}
-						}
+//						if (dynamic_cast <MFNode*> (parent) and not parent -> getName () .empty ())
+//						{
+//							// If any of the fields parents is in a scene add count.
+//
+//							for (const auto & fparent : parent -> getParents ())
+//							{
+//								auto node = dynamic_cast <X3DBaseNode*> (fparent);
+//
+//								if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
+//								{
+//									++ numClones;
+//									break;
+//								}
+//							}
+//						}
 					}
 				}
 				else
 				{
-					// If any of the fields parents is in a scene add count.
+					++ numClones;
 
-					for (const auto & fparent : parentField -> getParents ())
-					{
-						const auto node = dynamic_cast <X3DBaseNode*> (fparent);
-
-						if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
-						{
-							++ numClones;
-							break;
-						}
-					}
+//					// If any of the fields parents is in a scene add count.
+//
+//					for (const auto & fparent : parentField -> getParents ())
+//					{
+//						const auto node = dynamic_cast <X3DBaseNode*> (fparent);
+//
+//						if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
+//						{
+//							++ numClones;
+//							break;
+//						}
+//					}
 				}
 			}
 		}

@@ -335,7 +335,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 
 	// Add menu item.
 
-	const auto label = scene -> isProtoDeclaration ()
+	const auto label = scene -> isProtoDeclaration () or dynamic_cast <X3D::X3DPrototypeInstance*> (scene .getValue ())
 	                   ? scene -> getTypeName () + " " + scene -> getName ()
 							 : scene -> getTypeName () + " »" + basename + "«";
 

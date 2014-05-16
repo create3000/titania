@@ -213,6 +213,10 @@ OutlineCellRenderer::on_data ()
 
 			if (userData -> selected & OUTLINE_SPECIAL)
 				property_markup () = "<i><b>" + Glib::Markup::escape_text (get_object () -> getName ()) + "</b></i>";
+
+			else if (not static_cast <X3D::X3DFieldDefinition*> (get_object ()) -> getReferences () .empty ())
+				property_markup () = "<b>" + Glib::Markup::escape_text (get_object () -> getName ()) + "</b>";
+
 			else
 				property_text () = get_object () -> getName ();
 

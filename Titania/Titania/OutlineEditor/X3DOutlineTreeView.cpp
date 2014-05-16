@@ -475,7 +475,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	unset_model ();
 	get_model () -> clear ();
-	get_cellrenderer () -> clear_routes ();
+	//get_cellrenderer () -> clear_routes (); // Clear selected routes.
 
 	// ExternProtos
 
@@ -891,7 +891,10 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 						if (node -> isDefaultValue (field) or not field -> isInitializeable ())
 						{
 							if (not get_model () -> get_input_routes_size (field) and not get_model () -> get_output_routes_size (field))
-								continue;
+							{
+								if (field -> getReferences () .empty ())
+									continue;
+							}
 						}
 					}
 					catch (const X3D::X3DError &)

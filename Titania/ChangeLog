@@ -1,5 +1,14 @@
 2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineEditor.cpp:
+	* OutlineTreeModel.h:
+	* OutlineTreeModel.cpp:
+	* OutlineRouteGraph.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseInterface.h:
 	* BrowserWindow.h:
 	* X3DBaseInterface.cpp:

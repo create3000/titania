@@ -1,0 +1,24 @@
+#VRML V2.0 utf8 Titania V0.6.8
+
+PROTO Clones [ ]
+{
+  Script {
+    field SFNode node1 Transform { }
+    field SFNode node2 NULL
+
+    url "vrmlscript:
+function initialize ()
+{
+	node2 = node1;
+	
+	print (Browser .currentScene .toVRMLString ());
+	print (Browser .currentScene .rootNodes);
+}
+"
+    directOutput TRUE
+  }
+}
+
+DEF Scene_1 Clones { }
+
+DEF Scene Transform { }

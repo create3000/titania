@@ -234,7 +234,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 {
 	try
 	{
-		if (not (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or treeView -> get_expand_prototype_instances ()))
+		if (not treeView -> get_model () -> is_visible_route (route))
 			return;
 
 		const auto sourceNode     = route -> getSourceNode ();
@@ -312,7 +312,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 {
 	try
 	{
-		if (not (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or treeView -> get_expand_prototype_instances ()))
+		if (not treeView -> get_model () -> is_visible_route (route))
 			return;
 
 		const auto destinationNode     = route -> getDestinationNode ();
@@ -681,7 +681,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 	{
 		//__LOG__ << std::endl;
 
-		if (not route -> getExecutionContext () -> isRootContext () and not route -> getExecutionContext () -> isProtoDeclaration ())
+		if (not treeView -> get_model () -> is_visible_route (route))
 			return;
 
 		// Remove disconnected interest
@@ -759,7 +759,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 	{
 		//__LOG__ << std::endl;
 
-		if (not route -> getExecutionContext () -> isRootContext () and not route -> getExecutionContext () -> isProtoDeclaration ())
+		if (not treeView -> get_model () -> is_visible_route (route))
 			return;
 
 		// Remove disconnected interest

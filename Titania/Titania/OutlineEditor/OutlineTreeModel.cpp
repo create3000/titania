@@ -127,7 +127,7 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getInputRoutes ())
 	{
-		if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes)
+		if (is_visible_route (route))
 			routes .emplace_back (route);
 	}
 
@@ -140,9 +140,7 @@ OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) c
 	size_t size = 0;
 
 	for (const auto & route : field -> getInputRoutes ())
-	{
-		size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
-	}
+		size += is_visible_route (route);
 
 	return size;
 }
@@ -154,7 +152,7 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getOutputRoutes ())
 	{
-		if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes)
+		if (is_visible_route (route))
 			routes .emplace_back (route);
 	}
 
@@ -167,11 +165,15 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 	size_t size = 0;
 
 	for (const auto & route : field -> getOutputRoutes ())
-	{
-		size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
-	}
+		size += is_visible_route (route);
 
 	return size;
+}
+
+bool
+OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
+{
+	return route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
 }
 
 void
