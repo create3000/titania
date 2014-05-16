@@ -256,7 +256,6 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
-	getTextureEditorButton ()        .set_sensitive (haveSelection);
 
 	//
 
@@ -968,16 +967,16 @@ BrowserWindow::enableEditor (const bool enabled)
 	getObjectIconsMenuItem ()            .set_visible (enabled);
 	getSelectionMenuItem ()              .set_visible (enabled);
 
-	getImportButton ()               .set_visible (enabled);
-	getSeparatorToolItem1 ()         .set_visible (enabled);
-	getUndoButton ()                 .set_visible (enabled);
-	getRedoButton ()                 .set_visible (enabled);
-	getSeparatorToolItem2 ()         .set_visible (enabled);
-	getNodePropertiesEditorButton () .set_visible (enabled);
-	getMaterialEditorButton ()       .set_visible (enabled);
-	getTextureEditorButton ()        .set_visible (false);
-	getUpdateViewpointButton ()      .set_visible (enabled);
-	getArrowButton ()                .set_visible (enabled);
+	getImportButton ()                  .set_visible (enabled);
+	getSeparatorToolItem1 ()            .set_visible (enabled);
+	getUndoButton ()                    .set_visible (enabled);
+	getRedoButton ()                    .set_visible (enabled);
+	getSeparatorToolItem2 ()            .set_visible (enabled);
+	getNodePropertiesEditorButton ()    .set_visible (enabled);
+	getMaterialEditorButton ()          .set_visible (enabled);
+	getUpdateViewpointButton ()         .set_visible (enabled);
+	getCreatePrototypeInstanceButton () .set_visible (enabled);
+	getArrowButton ()                   .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
@@ -1281,16 +1280,6 @@ BrowserWindow::on_material_editor ()
 }
 
 void
-BrowserWindow::on_texture_editor ()
-{
-//	if (isDialogOpen ("TextureEditor"))
-//		return;
-//
-//	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-//		addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
-}
-
-void
 BrowserWindow::on_update_viewpoint ()
 {
 	if (getBrowser () -> getActiveLayer ())
@@ -1324,6 +1313,75 @@ BrowserWindow::on_update_viewpoint ()
 
 		addUndoStep (undoStep);
 	}
+}
+
+void
+BrowserWindow::on_prototype_instance_dialog ()
+{
+	X3D::X3DExecutionContext* executionContext = getBrowser () -> getExecutionContext ();
+
+	// Find all available prototypes
+
+	std::map <std::string, X3D::X3DProtoObjectPtr> prototypes;
+	std::string                                    current;
+
+	for (;;)
+	{
+		// Skip all prototypes that are below a current prototype.
+
+		bool skip = true;
+
+		for (const auto & prototype : basic::reverse_adapter (executionContext -> getProtoDeclarations ()))
+		{
+			if (skip and not current .empty ())
+			{
+				if (current == prototype -> getName ())
+					skip = false;
+
+				continue;
+			}
+
+			prototypes .emplace (prototype -> getName (), X3D::X3DProtoObjectPtr (prototype));
+		}
+
+		for (const auto & prototype : executionContext -> getExternProtoDeclarations ())
+			prototypes .emplace (prototype -> getName (), X3D::X3DProtoObjectPtr (prototype));
+
+		if (executionContext -> isRootContext ())
+			break;
+
+		current = executionContext -> getName ();
+
+		executionContext = executionContext -> getExecutionContext ();
+	}
+
+	// Remove all menu items
+
+	for (const auto & widget : getPrototypeMenu () .get_children ())
+		getPrototypeMenu () .remove (*widget);
+
+	for (const auto & pair : prototypes)
+	{
+		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (pair .second -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
+		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, pair .first));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getPrototypeLabel (), &Gtk::Label::set_text), pair .first));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getPrototypeOkButton (), &Gtk::Button::set_sensitive), true));
+		menuItem -> show ();
+
+		getPrototypeMenu () .append (*menuItem);
+	}
+
+	getPrototypeLabel () .set_text ("");
+	getPrototypeOkButton () .set_sensitive (false);
+
+	// Run dialog
+
+	const auto response_id = getPrototypeInstanceDialog () .run ();
+
+	if (response_id == Gtk::RESPONSE_OK)
+		addProtoInstance (getPrototypeLabel () .get_text ());
+
+	getPrototypeInstanceDialog () .hide ();
 }
 
 // Browser dashboard handling

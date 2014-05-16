@@ -55,8 +55,6 @@
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
 
-#include <Titania/String.h>
-
 namespace titania {
 namespace puck {
 
@@ -355,9 +353,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
 
-			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create %s"), externProto -> getName () .c_str ()));
-			getBrowserWindow () -> addProtoInstance (externProto -> getName (), undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
+			getBrowserWindow () -> addProtoInstance (externProto -> getName ());
 			break;
 		}
 		case OutlineIterType::ProtoDeclaration:
@@ -365,9 +361,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeview -> get_object (iter));
 			const auto prototype = dynamic_cast <X3D::Proto*> (sfnode .getValue ());
 
-			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create %s"), prototype -> getName () .c_str ()));
-			getBrowserWindow () -> addProtoInstance (prototype -> getName (), undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
+			getBrowserWindow () -> addProtoInstance (prototype -> getName ());
 			break;
 		}
 		default:

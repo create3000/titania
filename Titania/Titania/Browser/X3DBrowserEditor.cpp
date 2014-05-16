@@ -55,6 +55,7 @@
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
 
 #include <Titania/OS.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -1744,10 +1745,12 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 }
 
 void
-X3DBrowserEditor::addProtoInstance (const std::string & name, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::addProtoInstance (const std::string & name)
 {
 	try
 	{
+		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create %s"), name .c_str ()));
+
 		const auto        executionContext = getBrowser () -> getExecutionContext ();
 		const X3D::SFNode instance (executionContext -> createProtoInstance (name));
 
@@ -1757,6 +1760,7 @@ X3DBrowserEditor::addProtoInstance (const std::string & name, const UndoStepPtr 
 		emplaceBack (executionContext -> getRootNodes (), instance, undoStep);
 
 		getSelection () -> setChildren ({ instance }, undoStep);
+		addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)
 	{ }

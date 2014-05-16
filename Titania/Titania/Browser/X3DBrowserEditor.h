@@ -159,7 +159,7 @@ public:
 	createParentGroup (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	addProtoInstance (const std::string &, const UndoStepPtr &) const;
+	addProtoInstance (const std::string &);
 
 	void
 	addRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const

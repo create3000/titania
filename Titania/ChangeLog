@@ -2,6 +2,18 @@
 
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* OutlineEditor.xml:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:
 	* BrowserWindow.xml:
 	* X3DBrowserEditor.cpp:

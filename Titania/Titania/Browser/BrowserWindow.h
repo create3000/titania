@@ -408,14 +408,14 @@ private:
 	virtual
 	void
 	on_material_editor () final override;
-
-	virtual
-	void
-	on_texture_editor () final override;
 	
 	virtual
 	void
 	on_update_viewpoint () final override;
+
+	virtual
+	void
+	on_prototype_instance_dialog () final override;
 
 	///  @name Browser dashboard handling
 

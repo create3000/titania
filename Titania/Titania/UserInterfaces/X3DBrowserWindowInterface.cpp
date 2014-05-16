@@ -84,6 +84,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_OpenLocationImage -> set_name ("OpenLocationImage");
 	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
 	m_PlaneViewerImage -> set_name ("PlaneViewerImage");
+	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
+	m_PrototypeMenu -> set_name ("PrototypeMenu");
 	m_builder -> get_widget ("WalkViewerImage", m_WalkViewerImage);
 	m_WalkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_ViewerTypeMenu);
@@ -256,10 +258,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_NodePropertiesEditorButton -> set_name ("NodePropertiesEditorButton");
 	m_builder -> get_widget ("MaterialEditorButton", m_MaterialEditorButton);
 	m_MaterialEditorButton -> set_name ("MaterialEditorButton");
-	m_builder -> get_widget ("TextureEditorButton", m_TextureEditorButton);
-	m_TextureEditorButton -> set_name ("TextureEditorButton");
 	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
 	m_UpdateViewpointButton -> set_name ("UpdateViewpointButton");
+	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
+	m_CreatePrototypeInstanceButton -> set_name ("CreatePrototypeInstanceButton");
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_VPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_HPaned);
@@ -320,6 +322,18 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_OpenLocationDialog -> set_name ("OpenLocationDialog");
 	m_builder -> get_widget ("OpenLocationEntry", m_OpenLocationEntry);
 	m_OpenLocationEntry -> set_name ("OpenLocationEntry");
+	m_builder -> get_widget ("PrototypeInstanceDialog", m_PrototypeInstanceDialog);
+	m_PrototypeInstanceDialog -> set_name ("PrototypeInstanceDialog");
+	m_builder -> get_widget ("PrototypeOkButton", m_PrototypeOkButton);
+	m_PrototypeOkButton -> set_name ("PrototypeOkButton");
+	m_builder -> get_widget ("Widget1", m_Widget1);
+	m_Widget1 -> set_name ("Widget1");
+	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
+	m_HeaderLabel -> set_name ("HeaderLabel");
+	m_builder -> get_widget ("MenuButton", m_MenuButton);
+	m_MenuButton -> set_name ("MenuButton");
+	m_builder -> get_widget ("PrototypeLabel", m_PrototypeLabel);
+	m_PrototypeLabel -> set_name ("PrototypeLabel");
 
 	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
 	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
@@ -431,8 +445,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
 	m_NodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor));
 	m_MaterialEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_material_editor));
-	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_update_viewpoint));
+	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.
 	m_SurfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));
@@ -470,6 +484,7 @@ X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 	delete m_FileSaveWarningDialog;
 	delete m_MessageDialog;
 	delete m_OpenLocationDialog;
+	delete m_PrototypeInstanceDialog;
 	delete m_Window;
 }
 

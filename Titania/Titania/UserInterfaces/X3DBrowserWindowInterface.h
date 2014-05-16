@@ -147,6 +147,10 @@ public:
 	getPlaneViewerImage () const
 	{ return *m_PlaneViewerImage; }
 
+	Gtk::Menu &
+	getPrototypeMenu () const
+	{ return *m_PrototypeMenu; }
+
 	Gtk::Image &
 	getWalkViewerImage () const
 	{ return *m_WalkViewerImage; }
@@ -492,12 +496,12 @@ public:
 	{ return *m_MaterialEditorButton; }
 
 	Gtk::ToolButton &
-	getTextureEditorButton () const
-	{ return *m_TextureEditorButton; }
-
-	Gtk::ToolButton &
 	getUpdateViewpointButton () const
 	{ return *m_UpdateViewpointButton; }
+
+	Gtk::ToolButton &
+	getCreatePrototypeInstanceButton () const
+	{ return *m_CreatePrototypeInstanceButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -618,6 +622,30 @@ public:
 	Gtk::Entry &
 	getOpenLocationEntry () const
 	{ return *m_OpenLocationEntry; }
+
+	Gtk::Dialog &
+	getPrototypeInstanceDialog () const
+	{ return *m_PrototypeInstanceDialog; }
+
+	Gtk::Button &
+	getPrototypeOkButton () const
+	{ return *m_PrototypeOkButton; }
+
+	Gtk::Box &
+	getWidget1 () const
+	{ return *m_Widget1; }
+
+	Gtk::Label &
+	getHeaderLabel () const
+	{ return *m_HeaderLabel; }
+
+	Gtk::MenuButton &
+	getMenuButton () const
+	{ return *m_MenuButton; }
+
+	Gtk::Label &
+	getPrototypeLabel () const
+	{ return *m_PrototypeLabel; }
 
 	virtual
 	void
@@ -861,11 +889,11 @@ public:
 
 	virtual
 	void
-	on_texture_editor () = 0;
+	on_update_viewpoint () = 0;
 
 	virtual
 	void
-	on_update_viewpoint () = 0;
+	on_prototype_instance_dialog () = 0;
 
 	virtual
 	void
@@ -934,6 +962,7 @@ private:
 	Gtk::Image*                     m_NoneViewerImage;
 	Gtk::Image*                     m_OpenLocationImage;
 	Gtk::Image*                     m_PlaneViewerImage;
+	Gtk::Menu*                      m_PrototypeMenu;
 	Gtk::Image*                     m_WalkViewerImage;
 	Gtk::Menu*                      m_ViewerTypeMenu;
 	Gtk::ImageMenuItem*             m_ExamineViewerMenuItem;
@@ -1020,8 +1049,8 @@ private:
 	Gtk::SeparatorToolItem*         m_SeparatorToolItem2;
 	Gtk::ToolButton*                m_NodePropertiesEditorButton;
 	Gtk::ToolButton*                m_MaterialEditorButton;
-	Gtk::ToolButton*                m_TextureEditorButton;
 	Gtk::ToolButton*                m_UpdateViewpointButton;
+	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;
 	Gtk::HBox*                      m_SurfaceBox;
@@ -1052,6 +1081,12 @@ private:
 	Gtk::MessageDialog*             m_MessageDialog;
 	Gtk::Dialog*                    m_OpenLocationDialog;
 	Gtk::Entry*                     m_OpenLocationEntry;
+	Gtk::Dialog*                    m_PrototypeInstanceDialog;
+	Gtk::Button*                    m_PrototypeOkButton;
+	Gtk::Box*                       m_Widget1;
+	Gtk::Label*                     m_HeaderLabel;
+	Gtk::MenuButton*                m_MenuButton;
+	Gtk::Label*                     m_PrototypeLabel;
 
 };
 
