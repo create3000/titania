@@ -1,5 +1,19 @@
 2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseInterface.h:
+	* BrowserWindow.h:
+	* X3DBaseInterface.cpp:
+	* BrowserWindow.cpp:
+	* OutlineEditor.xml:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.cpp:
+	* X3DOutlineEditorInterface.h:
+	* X3DOutlineEditorInterface.cpp: 
+
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.xml:
 	* X3DBrowserEditor.cpp:
 	* OutlineEditor.h:

@@ -79,6 +79,9 @@ public:
 	const X3D::ScenePtr &
 	getWorld () const;
 
+	bool
+	inPrototypeInstance () const;
+
 	///  @name Destruction
 
 	virtual

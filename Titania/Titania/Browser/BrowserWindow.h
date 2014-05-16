@@ -125,8 +125,13 @@ private:
 	std::string
 	getStyles () const;
 
+	///  @name Scene handling
+
 	void
 	set_world ();
+
+	void
+	set_scene ();
 
 	///  @name Selection handling
 

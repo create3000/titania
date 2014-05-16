@@ -130,8 +130,8 @@ X3DBrowserEditor::set_shutdown ()
 		if (isSaved ())
 			shutdown ();
 
-		else
-			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());                                                                                     // Cancel shutdown
+		else     // Cancel shutdown
+			getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());
 
 	}
 	catch (const X3D::X3DError &)
@@ -378,24 +378,24 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 	                  if (instance)
 	                  {
-		                  const X3D::ExternProtoPtr externProto (instance -> getProtoDeclaration ());
+	                     const X3D::ExternProtoPtr externProto (instance -> getProtoDeclaration ());
 
-		                  if (externProto)
-		                  {
-		                     const auto iter = std::find (externProtos .begin (), externProtos .end (), externProto);
+	                     if (externProto)
+	                     {
+	                        const auto iter = std::find (externProtos .begin (), externProtos .end (), externProto);
 
-									if (iter not_eq externProtos .end ())
+	                        if (iter not_eq externProtos .end ())
 										externProtos .erase (iter);
 								}
-								else
-								{
-			                  const X3D::ProtoPtr prototype (instance -> getProtoDeclaration ());
+	                     else
+	                     {
+	                        const X3D::ProtoPtr prototype (instance -> getProtoDeclaration ());
 
-			                  if (prototype)
-			                  {
-			                     const auto iter = std::find (prototypes .begin (), prototypes .end (), prototype);
+	                        if (prototype)
+	                        {
+	                           const auto iter = std::find (prototypes .begin (), prototypes .end (), prototype);
 
-										if (iter not_eq prototypes .end ())
+	                           if (iter not_eq prototypes .end ())
 											prototypes .erase (iter);
 									}
 								}
@@ -403,7 +403,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 	                  return true;
 						},
-						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	// Remove ExternProtos
 

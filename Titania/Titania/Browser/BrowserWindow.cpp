@@ -155,6 +155,7 @@ BrowserWindow::initialize ()
 
 	// Browser Events
 	getWorld () .addInterest (this, &BrowserWindow::set_world);
+	getBrowser () -> getExecutionContext ()     .addInterest (this, &BrowserWindow::set_scene);
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &BrowserWindow::set_active_viewpoint);
 	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers ()     .addInterest (this, &BrowserWindow::set_available_viewers);
@@ -230,13 +231,34 @@ BrowserWindow::set_world ()
 	toggle = true;
 }
 
+void
+BrowserWindow::set_scene ()
+{
+	const bool inScene = not inPrototypeInstance ();
+
+	getImportMenuItem ()                 .set_sensitive (inScene);
+	getSaveMenuItem ()                   .set_sensitive (inScene);
+	getSaveAsMenuItem ()                 .set_sensitive (inScene);
+	getRemoveUnusedPrototypesMenuItem () .set_sensitive (inScene);
+
+	getEditMenuItem () .set_sensitive (inScene);
+
+	getSaveButton ()                    .set_sensitive (inScene);
+	getImportButton ()                  .set_sensitive (inScene);
+	getUpdateViewpointButton ()         .set_sensitive (inScene);
+	getCreatePrototypeInstanceButton () .set_sensitive (inScene);
+
+	set_selection (getBrowser () -> getSelection () -> getChildren ());
+}
+
 // Selection
 
 void
 BrowserWindow::set_selection (const X3D::MFNode & children)
 {
-	const bool haveSelection  = children .size ();
-	const bool haveSelections = children .size () > 1;
+	const bool inScene        = not inPrototypeInstance ();
+	const bool haveSelection  = inScene and children .size ();
+	const bool haveSelections = inScene and children .size () > 1;
 
 	getCutMenuItem ()    .set_sensitive (haveSelection);
 	getCopyMenuItem ()   .set_sensitive (haveSelection);
@@ -252,12 +274,12 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
 	getCreateParentGroupMenuItem ()  .set_sensitive (haveSelection);
 
-	getDeselectAllMenuItem () .set_sensitive (haveSelection);
+	getDeselectAllMenuItem () .set_sensitive (children .size ());
 
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
 
-	//
+	// Show/Hide Object Icons
 
 	for (const auto & node : children)
 	{
@@ -304,7 +326,9 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	{
 		keys .press (event);
 
-		if (not getBrowser () -> getSelection () -> getChildren () .empty ())
+		// Nudge selection.
+
+		if (not inPrototypeInstance () and not getBrowser () -> getSelection () -> getChildren () .empty ())
 		{
 			static constexpr float NUDGE_STEP   = 0.001;
 			static constexpr float NUDGE_FACTOR = 10;
@@ -346,6 +370,8 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 					break;
 			}
 		}
+
+		// Change viewpoint.
 
 		switch (event -> keyval)
 		{

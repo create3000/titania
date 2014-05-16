@@ -1,19 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineEditor.cpp">
     <Files>
-      <File FileName="Library/Tests/Handles/OutlineEditor-IMPORT.x3dv" Line="1" Column="1" />
-      <File FileName="Library/Tests/Handles/OutlineEditor-EXPORT.x3dv" Line="1" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.h" Line="99" Column="11" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.cpp" Line="139" Column="4" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="257" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="76" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="306" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="510" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="175" Column="49" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="462" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/RenderingProperties.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.h" Line="162" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.cpp" Line="427" Column="15" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="305" Column="31" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="210" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,6 +13,15 @@
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
+              <Node name="PROTO" expanded="True">
+                <Node name="Particle" expanded="True" />
+                <Node name="Perceptron" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -32,18 +33,17 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Text" expanded="True">
-                    <Node name="X3DFontStyleNode.cpp" selected="True" />
-                  </Node>
+                  <Node name="Core" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True" />
-                <Node name="Prototype" expanded="True" />
-                <Node name="Routing" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -51,7 +51,6 @@
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="ui" expanded="True">
-                  <Node name="Dialogs" expanded="True" />
                   <Node name="icons" expanded="True">
                     <Node name="Node" expanded="True" />
                   </Node>
@@ -59,12 +58,10 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="HistoryEditor" expanded="True" />
-              <Node name="LibraryView" expanded="True" />
               <Node name="OutlineEditor" expanded="True">
                 <Node name="CellRenderer" expanded="True" />
+                <Node name="OutlineEditor.cpp" selected="True" />
               </Node>
             </Node>
           </Node>

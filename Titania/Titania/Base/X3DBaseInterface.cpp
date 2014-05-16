@@ -73,6 +73,12 @@ X3DBaseInterface::getWorld () const
 	return browserWindow -> getWorld ();
 }
 
+bool
+X3DBaseInterface::inPrototypeInstance () const
+{
+	return dynamic_cast <X3D::X3DPrototypeInstance*> (getBrowser () -> getExecutionContext () .getValue ());
+}
+
 X3DBaseInterface::~X3DBaseInterface ()
 {
 	X3D::X3DInput::dispose ();

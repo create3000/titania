@@ -329,6 +329,9 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 bool
 OutlineTreeViewEditor::select_field_value (const double x, const double y)
 {
+	if (inPrototypeInstance ())
+		return false;
+
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
@@ -416,6 +419,9 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 bool
 OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 {
+	if (inPrototypeInstance ())
+		return false;
+
 	Gtk::TreeViewColumn*       column = nullptr;
 	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
@@ -607,6 +613,9 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 bool
 OutlineTreeViewEditor::add_route (const double x, const double y)
 {
+	if (inPrototypeInstance ())
+		return false;
+
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
@@ -785,6 +794,9 @@ OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & u
 bool
 OutlineTreeViewEditor::remove_route (const double x, const double y)
 {
+	if (inPrototypeInstance ())
+		return false;
+
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 

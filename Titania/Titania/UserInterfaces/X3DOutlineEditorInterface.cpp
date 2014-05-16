@@ -98,6 +98,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_SceneMenuBox -> set_name ("SceneMenuBox");
 	m_builder -> get_widget ("SceneMenuButton", m_SceneMenuButton);
 	m_SceneMenuButton -> set_name ("SceneMenuButton");
+	m_builder -> get_widget ("SceneImage", m_SceneImage);
+	m_SceneImage -> set_name ("SceneImage");
 	m_builder -> get_widget ("SceneLabel", m_SceneLabel);
 	m_SceneLabel -> set_name ("SceneLabel");
 	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);

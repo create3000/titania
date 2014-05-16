@@ -163,6 +163,10 @@ public:
 	getSceneMenuButton () const
 	{ return *m_SceneMenuButton; }
 
+	Gtk::Image &
+	getSceneImage () const
+	{ return *m_SceneImage; }
+
 	Gtk::Label &
 	getSceneLabel () const
 	{ return *m_SceneLabel; }
@@ -270,6 +274,7 @@ private:
 	Gtk::Box*                       m_Widget;
 	Gtk::Box*                       m_SceneMenuBox;
 	Gtk::MenuButton*                m_SceneMenuButton;
+	Gtk::Image*                     m_SceneImage;
 	Gtk::Label*                     m_SceneLabel;
 	Gtk::Button*                    m_PreviousSceneButton;
 	Gtk::Button*                    m_NextSceneButton;

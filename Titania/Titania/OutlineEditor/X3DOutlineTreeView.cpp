@@ -475,6 +475,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	unset_model ();
 	get_model () -> clear ();
+	get_cellrenderer () -> clear_routes ();
 
 	// ExternProtos
 
