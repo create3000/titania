@@ -276,11 +276,6 @@ X3DPrototypeInstance::addTool ()
 	try
 	{
 		getInnerNode () -> addTool ();
-
-		const auto toolObject = dynamic_cast <X3DToolObject*> (getInnerNode ());
-
-		if (toolObject)
-			toolObject -> isEnabled (false);
 	}
 	catch (const X3DError &)
 	{ }

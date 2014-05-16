@@ -51,6 +51,7 @@
 #include "X3DToolObject.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Networking/Inline.h"
 
 namespace titania {
@@ -59,8 +60,7 @@ namespace X3D {
 X3DToolObject::X3DToolObject () :
 	X3DBaseNode (),
 	 inlineNode (new Inline (getExecutionContext ())),
-	   toolNode (),
-	    enabled (true)
+	   toolNode ()
 {
 	addChildren (inlineNode, toolNode);
 }
@@ -84,20 +84,6 @@ throw (Error <DISPOSED>)
 }
 
 void
-X3DToolObject::isEnabled (const bool value)
-{
-	try
-	{
-		enabled = value;
-
-		if (toolNode)
-			toolNode -> setField <SFBool> ("set_enabled", enabled);
-	}
-	catch (const X3DError &)
-	{ }
-}
-
-void
 X3DToolObject::requestAsyncLoad (const MFString & url)
 {
 	inlineNode -> url ()  = url;
@@ -113,7 +99,12 @@ X3DToolObject::set_loadState (const LoadState loadState)
 		{
 			toolNode = inlineNode -> getExportedNode ("Tool");
 			
-			isEnabled (enabled);
+			try
+			{
+				toolNode -> setField <SFBool> ("set_enabled", not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ()));
+			}
+			catch (const X3DError &)
+			{ }
 
 			realize ();
 		}

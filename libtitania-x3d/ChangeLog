@@ -1,5 +1,11 @@
 2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DToolObject.h:
+	* X3DToolObject.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.h:
 	* Traverse.cpp: 
 
