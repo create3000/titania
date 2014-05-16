@@ -84,6 +84,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_ShowExportedNodesMenuItem -> set_name ("ShowExportedNodesMenuItem");
 	m_builder -> get_widget ("ExpandExternProtosMenuItem", m_ExpandExternProtosMenuItem);
 	m_ExpandExternProtosMenuItem -> set_name ("ExpandExternProtosMenuItem");
+	m_builder -> get_widget ("ExpandPrototypeInstancesMenuItem", m_ExpandPrototypeInstancesMenuItem);
+	m_ExpandPrototypeInstancesMenuItem -> set_name ("ExpandPrototypeInstancesMenuItem");
 	m_builder -> get_widget ("ExpandInlineNodesMenuItem", m_ExpandInlineNodesMenuItem);
 	m_ExpandInlineNodesMenuItem -> set_name ("ExpandInlineNodesMenuItem");
 	m_builder -> get_widget ("SceneMenu", m_SceneMenu);
@@ -120,6 +122,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_ShowImportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_imported_nodes_toggled));
 	m_ShowExportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_exported_nodes_toggled));
 	m_ExpandExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_extern_protos_toggled));
+	m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled));
 	m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled));
 
 	// Connect object Gtk::Box with id 'Widget'.

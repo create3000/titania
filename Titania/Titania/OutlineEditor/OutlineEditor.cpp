@@ -91,12 +91,13 @@ OutlineEditor::initialize ()
 void
 OutlineEditor::restoreSession ()
 {
-	getShowExternProtosMenuItem ()   .set_active (getConfig () .getBoolean ("showExternProtos"));
-	getShowPrototypesMenuItem ()     .set_active (getConfig () .getBoolean ("showPrototypes"));
-	getShowImportedNodesMenuItem ()  .set_active (getConfig () .getBoolean ("showImportedNodes"));
-	getShowExportedNodesMenuItem ()  .set_active (getConfig () .getBoolean ("showExportedNodes"));
-	getExpandExternProtosMenuItem () .set_active (getConfig () .getBoolean ("expandExternProtos"));
-	getExpandInlineNodesMenuItem ()  .set_active (getConfig () .getBoolean ("expandInlineNodes"));
+	getShowExternProtosMenuItem ()         .set_active (getConfig () .getBoolean ("showExternProtos"));
+	getShowPrototypesMenuItem ()           .set_active (getConfig () .getBoolean ("showPrototypes"));
+	getShowImportedNodesMenuItem ()        .set_active (getConfig () .getBoolean ("showImportedNodes"));
+	getShowExportedNodesMenuItem ()        .set_active (getConfig () .getBoolean ("showExportedNodes"));
+	getExpandExternProtosMenuItem ()       .set_active (getConfig () .getBoolean ("expandExternProtos"));
+	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () .getBoolean ("expandPrototypeInstances"));
+	getExpandInlineNodesMenuItem ()        .set_active (getConfig () .getBoolean ("expandInlineNodes"));
 
 	realized = true;
 
@@ -414,6 +415,14 @@ OutlineEditor::on_expand_extern_protos_toggled ()
 {
 	getConfig () .setItem ("expandExternProtos", getExpandExternProtosMenuItem () .get_active ());
 	treeview -> set_expand_extern_protos (getExpandExternProtosMenuItem () .get_active ());
+	set_scene ();
+}
+
+void
+OutlineEditor::on_expand_prototype_instances_toggled ()
+{
+	getConfig () .setItem ("expandPrototypeInstances", getExpandPrototypeInstancesMenuItem () .get_active ());
+	treeview -> set_expand_prototype_instances (getExpandPrototypeInstancesMenuItem () .get_active ());
 	set_scene ();
 }
 

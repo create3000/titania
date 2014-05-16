@@ -234,7 +234,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 {
 	try
 	{
-		if (not route -> getExecutionContext () -> isRootContext () and not route -> getExecutionContext () -> isProtoDeclaration ())
+		if (not (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or treeView -> get_expand_prototype_instances ()))
 			return;
 
 		const auto sourceNode     = route -> getSourceNode ();
@@ -312,7 +312,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 {
 	try
 	{
-		if (not route -> getExecutionContext () -> isRootContext () and not route -> getExecutionContext () -> isProtoDeclaration ())
+		if (not (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or treeView -> get_expand_prototype_instances ()))
 			return;
 
 		const auto destinationNode     = route -> getDestinationNode ();

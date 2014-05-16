@@ -62,19 +62,20 @@ namespace titania {
 namespace puck {
 
 X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & executionContext) :
-	  X3DBaseInterface (),
-	     Gtk::TreeView (),
-	             model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
-	      treeObserver (new OutlineTreeObserver (this)),
-	        routeGraph (new OutlineRouteGraph (this)),
-	      cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
-	       expandLevel (0),
-	      externProtos (false),
-	        prototypes (false),
-	     importedNodes (false),
-	     exportedNodes (false),
-	expandExternProtos (false),
-	 expandInlineNodes (false)
+	        X3DBaseInterface (),
+	           Gtk::TreeView (),
+	                   model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
+	            treeObserver (new OutlineTreeObserver (this)),
+	              routeGraph (new OutlineRouteGraph (this)),
+	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
+	             expandLevel (0),
+	            externProtos (false),
+	              prototypes (false),
+	           importedNodes (false),
+	           exportedNodes (false),
+	      expandExternProtos (false),
+	expandPrototypeInstances (false),
+	       expandInlineNodes (false)
 {
 	// Options
 
@@ -177,6 +178,9 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 	disable_shift_key ();
 
 	int flags = X3D::TRAVERSE_ROOT_NODES;
+
+	if (expandPrototypeInstances)
+		flags |= X3D::TRAVERSE_PROTOTYPE_INSTANCES;
 
 	if (expandInlineNodes)
 		flags |= X3D::TRAVERSE_INLINE_NODES;
@@ -439,6 +443,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 	get_model () -> clear ();
 
 	set_model (OutlineTreeModel::create (getBrowserWindow (), executionContext));
+	get_model () -> set_show_all_routes (get_expand_prototype_instances ());
 
 	executionContext -> getRootNodes ()          .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	executionContext -> importedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -761,6 +766,16 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
+			
+			// X3DPrototypeInstance handling
+
+			if (expandPrototypeInstances)
+			{
+				const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
+
+				if (instance)
+					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, instance);	
+			}
 
 			// Inline handling
 

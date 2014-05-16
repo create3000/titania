@@ -162,6 +162,10 @@ private:
 
 	virtual
 	void
+	on_expand_prototype_instances_toggled () final override;
+
+	virtual
+	void
 	on_expand_inline_nodes_toggled () final override;
 
 	///  @name Operations

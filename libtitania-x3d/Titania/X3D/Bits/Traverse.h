@@ -63,14 +63,14 @@
 namespace titania {
 namespace X3D {
 
-constexpr int TRAVERSE_EXTERN_PROTOS   = 1;
-constexpr int TRAVERSE_PROTOTYPES      = 1 << 1;
-constexpr int TRAVERSE_ROOT_NODES      = 1 << 2;
-constexpr int TRAVERSE_PROTO_INSTANCES = 1 << 3;
-constexpr int TRAVERSE_IMPORTED_NODES  = 1 << 4;
-constexpr int TRAVERSE_EXPORTED_NODES  = 1 << 5;
-constexpr int TRAVERSE_INLINE_NODES    = 1 << 6;
-constexpr int TRAVERSE_TOOL_OBJECTS    = 1 << 7;
+constexpr int TRAVERSE_EXTERN_PROTOS       = 1;
+constexpr int TRAVERSE_PROTOTYPES          = 1 << 1;
+constexpr int TRAVERSE_ROOT_NODES          = 1 << 2;
+constexpr int TRAVERSE_PROTOTYPE_INSTANCES = 1 << 3;
+constexpr int TRAVERSE_IMPORTED_NODES      = 1 << 4;
+constexpr int TRAVERSE_EXPORTED_NODES      = 1 << 5;
+constexpr int TRAVERSE_INLINE_NODES        = 1 << 6;
+constexpr int TRAVERSE_TOOL_OBJECTS        = 1 << 7;
 
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 

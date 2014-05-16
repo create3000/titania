@@ -118,6 +118,14 @@ public:
 	get_execution_context () const
 	{ return executionContext; }
 
+	bool
+	get_show_all_routes () const
+	{ return show_all_routes; }
+
+	void
+	set_show_all_routes (const bool value)
+	{ show_all_routes = value; }
+
 	///  @name Tree node
 
 	static
@@ -288,6 +296,8 @@ private:
 
 	mutable OutlineTree tree;
 	int                 stamp;
+
+	bool show_all_routes;
 
 };
 

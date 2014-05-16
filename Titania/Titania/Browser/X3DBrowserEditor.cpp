@@ -403,7 +403,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 	                  return true;
 						},
-						true, X3D::TRAVERSE_PROTO_INSTANCES);
+						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	// Remove ExternProtos
 

@@ -121,6 +121,14 @@ public:
 	{ return expandExternProtos; }
 
 	void
+	set_expand_prototype_instances (const bool value)
+	{ expandPrototypeInstances = value; }
+
+	bool
+	get_expand_prototype_instances () const
+	{ return expandPrototypeInstances; }
+
+	void
 	set_expand_inline_nodes (const bool value)
 	{ expandInlineNodes = value; }
 
@@ -294,6 +302,7 @@ private:
 	bool importedNodes;
 	bool exportedNodes;
 	bool expandExternProtos;
+	bool expandPrototypeInstances;
 	bool expandInlineNodes;
 
 };

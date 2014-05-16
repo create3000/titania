@@ -140,7 +140,7 @@ X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 				const auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (),
 				                                  hit -> shape,
 				                                  X3D::TRAVERSE_ROOT_NODES |
-				                                  X3D::TRAVERSE_PROTO_INSTANCES |
+				                                  X3D::TRAVERSE_PROTOTYPE_INSTANCES |
 				                                  X3D::TRAVERSE_INLINE_NODES |
 				                                  X3D::TRAVERSE_TOOL_OBJECTS);
 

@@ -221,14 +221,17 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::X3DExecutionContext:
 		{
-			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
-			const auto scene  = dynamic_cast <X3D::Scene*> (sfnode -> getValue ());
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object ());
+			const auto   scene  = dynamic_cast <X3D::Scene*> (sfnode .getValue ());
 
 			if (scene)
 				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getWorldURL () .basename ()) + "«</i>";
 
-			else if (dynamic_cast <X3D::X3DProtoObject*> (sfnode -> getValue ()))
+			else if (dynamic_cast <X3D::X3DProtoObject*> (sfnode .getValue ()))
 				property_markup () = "<i><b>Body</b></i>";
+
+			else // X3DPrototypeInstance
+				property_markup () = "<i><b>Scene</b> " + Glib::Markup::escape_text (sfnode -> getTypeName ()) + "</i>";
 
 			break;
 		}
@@ -243,9 +246,9 @@ OutlineCellRenderer::on_data ()
 		{
 			try
 			{
-				const auto sfnode       = static_cast <X3D::SFNode*> (get_object ());
-				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode -> getValue ());
-				const auto exportedNode = importedNode -> getExportedNode ();
+				const auto & sfnode       = *static_cast <X3D::SFNode*> (get_object ());
+				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
+				const auto   exportedNode = importedNode -> getExportedNode ();
 
 				property_markup () = get_node_name (exportedNode, importedNode -> getImportedName ());
 			}
@@ -259,9 +262,9 @@ OutlineCellRenderer::on_data ()
 		{
 			try
 			{
-				const auto sfnode       = static_cast <X3D::SFNode*> (get_object ());
-				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
-				const auto localNode    = exportedNode -> getLocalNode ();
+				const auto & sfnode       = *static_cast <X3D::SFNode*> (get_object ());
+				const auto   exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode .getValue ());
+				const auto   localNode    = exportedNode -> getLocalNode ();
 
 				property_markup () = get_node_name (localNode, exportedNode -> getExportedName ());
 			}
@@ -273,11 +276,10 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::Separator:
 		{
-			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
-			const auto node   = sfnode -> getValue ();
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object ());
 
 			set_alignment (0, math::M_PHI - 1);
-			property_markup () = "<b><small>" + Glib::Markup::escape_text (node -> getName ()) + "</small></b>";
+			property_markup () = "<b><small>" + Glib::Markup::escape_text (sfnode -> getName ()) + "</small></b>";
 			break;
 		}
 	}

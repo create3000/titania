@@ -108,7 +108,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			return true;
 	}
 
-	if (flags & TRAVERSE_PROTO_INSTANCES)
+	if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
 	{
 		const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
 
@@ -279,15 +279,15 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		if (flags & TRAVERSE_PROTO_INSTANCES)
+		if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
 		{
-			try
+			const auto instance = dynamic_cast <X3DPrototypeInstance*> (node);
+
+			if (instance)
 			{
-				if (find (node -> getInnerNode (), object, flags, hierarchy, seen))
+				if (find (static_cast <X3DExecutionContext*> (instance), object, flags, hierarchy, seen))
 					return true;
 			}
-			catch (const X3DError &)
-			{ }
 		}
 
 		const auto protoObject = dynamic_cast <X3DProtoObject*> (node);

@@ -65,7 +65,8 @@ OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3
 	  Gtk::TreeModel (),
 	executionContext (executionContext),
 	            tree (),
-	           stamp (reinterpret_cast <long int> (this))
+	           stamp (reinterpret_cast <long int> (this)),
+	 show_all_routes (false)
 {
 	//__LOG__ << std::endl;
 }
@@ -126,13 +127,8 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getInputRoutes ())
 	{
-		try
-		{
-			if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ())
-				routes .emplace_back (route);
-		}
-		catch (const X3D::X3DError &)
-		{ }
+		if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes)
+			routes .emplace_back (route);
 	}
 
 	return routes;
@@ -145,12 +141,7 @@ OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) c
 
 	for (const auto & route : field -> getInputRoutes ())
 	{
-		try
-		{
-			size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
+		size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
 	}
 
 	return size;
@@ -163,13 +154,8 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getOutputRoutes ())
 	{
-		try
-		{
-			if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ())
-				routes .emplace_back (route);
-		}
-		catch (const X3D::X3DError &)
-		{ }
+		if (route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes)
+			routes .emplace_back (route);
 	}
 
 	return routes;
@@ -182,12 +168,7 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 
 	for (const auto & route : field -> getOutputRoutes ())
 	{
-		try
-		{
-			size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
+		size += route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
 	}
 
 	return size;

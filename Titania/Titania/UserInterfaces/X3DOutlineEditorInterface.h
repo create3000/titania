@@ -136,6 +136,10 @@ public:
 	{ return *m_ExpandExternProtosMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getExpandPrototypeInstancesMenuItem () const
+	{ return *m_ExpandPrototypeInstancesMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getExpandInlineNodesMenuItem () const
 	{ return *m_ExpandInlineNodesMenuItem; }
 
@@ -213,6 +217,10 @@ public:
 
 	virtual
 	void
+	on_expand_prototype_instances_toggled () = 0;
+
+	virtual
+	void
 	on_expand_inline_nodes_toggled () = 0;
 
 	virtual
@@ -255,6 +263,7 @@ private:
 	Gtk::CheckMenuItem*             m_ShowImportedNodesMenuItem;
 	Gtk::CheckMenuItem*             m_ShowExportedNodesMenuItem;
 	Gtk::CheckMenuItem*             m_ExpandExternProtosMenuItem;
+	Gtk::CheckMenuItem*             m_ExpandPrototypeInstancesMenuItem;
 	Gtk::CheckMenuItem*             m_ExpandInlineNodesMenuItem;
 	Gtk::Menu*                      m_SceneMenu;
 	Gtk::Window*                    m_Window;
