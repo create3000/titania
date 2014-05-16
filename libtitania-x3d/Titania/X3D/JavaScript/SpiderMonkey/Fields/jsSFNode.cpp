@@ -235,7 +235,7 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 			{
 				X3DFieldDefinition* const field = sfnode -> getValue () -> getField (JS_GetString (context, id));
 
-				if (field -> getAccessType () == inputOnly)
+				if (field -> getAccessType () == initializeOnly or field -> getAccessType () == inputOnly)
 				{
 					*vp = JSVAL_VOID;
 					return JS_TRUE;

@@ -209,7 +209,7 @@ jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, js
 	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 	const auto rootNodes        = new MFNode (executionContext -> getRootNodes ());
 
-	rootNodes -> setName ("rootNodes");
+	// rootNodes -> setName ("rootNodes"); // This will increase the clone count of the root nodes.
 	rootNodes -> setAccessType (initializeOnly);
 
 	return jsMFNode::create (context, rootNodes, vp);

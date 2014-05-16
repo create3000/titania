@@ -1,5 +1,10 @@
 2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsSFNode.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* jsX3DExecutionContext.cpp: 
 

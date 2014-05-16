@@ -5,11 +5,16 @@ PROTO Clones [ ]
   Script {
     field SFNode node1 Transform { }
     field SFNode node2 NULL
+    field SFNode node3 Script {
+      field MFInt32 int [ ]
+
+    }
 
     url "vrmlscript:
 function initialize ()
 {
 	node2 = node1;
+	node3 .int [0] = 1;
 	
 	print (Browser .currentScene .toVRMLString ());
 	print (Browser .currentScene .rootNodes);
