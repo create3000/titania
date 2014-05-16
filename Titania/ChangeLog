@@ -1,5 +1,10 @@
 2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Prototype.16.svg:
+	* ExternProto.16.svg: 
+
+2014-05-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:
