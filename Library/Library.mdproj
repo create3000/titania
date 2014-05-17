@@ -2444,6 +2444,7 @@
     <None Include="Tests\Handles\OutlineEditorGrid.x3dv" />
     <None Include="Tests\PROTO\Clones.wrl" />
     <None Include="Tests\Handles\OutlineEditorProto.x3d" />
+    <None Include="Tests\PROTO\Nested.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

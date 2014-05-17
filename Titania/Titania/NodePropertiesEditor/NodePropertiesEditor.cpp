@@ -310,7 +310,7 @@ NodePropertiesEditor::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustrin
 {
 	const std::string text = entry .get_text () .insert (position, insert);
 
-	if (not X3D::RegEx::Id .FullMatch (text) or text == "NULL")
+	if (not validateId (text))
 		entry .signal_insert_text () .emission_stop ();
 }
 
@@ -319,8 +319,14 @@ NodePropertiesEditor::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int
 {
 	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
 
-	if (text .length () and (not X3D::RegEx::Id .FullMatch (text) or text == "NULL"))
+	if (text .length () and not validateId (text))
 		entry .signal_delete_text () .emission_stop ();
+}
+
+bool
+NodePropertiesEditor::validateId (const std::string & text) const
+{
+	return X3D::RegEx::Id .FullMatch (text) and text not_eq "NULL";
 }
 
 void

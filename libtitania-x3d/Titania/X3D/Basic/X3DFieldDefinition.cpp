@@ -153,10 +153,11 @@ X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 void
 X3DFieldDefinition::updateReferences ()
 {
-	realize ();
-
-	for (auto & reference : io -> references)
-		updateReference (reference);
+	if (io)
+	{
+		for (auto & reference : io -> references)
+			updateReference (reference);
+	}
 }
 
 void

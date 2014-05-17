@@ -1,0 +1,36 @@
+#X3D V3.3 utf8 Titania V0.6.8
+
+META "comment" "World of Titania"
+META "created" "Sat, 17 May 2014 09:39:01 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.8, http://titania.create3000.de"
+META "modified" "Sat, 17 May 2014 09:39:01 GMT"
+
+PROTO Outer [
+  initializeOnly SFString string "outer"
+]
+{
+  PROTO Inner [
+    initializeOnly SFString string "inner"
+  ]
+  {
+    Script {
+      initializeOnly SFString string IS string
+
+      url "javascript:
+function initialize ()
+{
+	print ('Inner: ' + string);
+}
+"
+    }
+  }
+
+  Inner {
+    string IS string
+  }
+}
+
+Outer {
+  string "scene"
+}

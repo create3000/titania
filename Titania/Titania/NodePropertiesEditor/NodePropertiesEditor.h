@@ -99,6 +99,9 @@ private:
 	void
 	validateIdOnDelete (Gtk::Entry &, int, int);
 
+	bool
+	validateId (const std::string &) const;
+
 	///  @name TypeName
 
 	virtual
