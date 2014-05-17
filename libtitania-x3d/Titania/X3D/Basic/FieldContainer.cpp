@@ -69,5 +69,35 @@ FieldContainer::create (X3DExecutionContext* const executionContext) const
 	return new FieldContainer (executionContext);
 }
 
+FieldsPtr
+createFieldContainer (X3DExecutionContext* const executionContext, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	if (field -> getName () .empty ())
+		throw Error <INVALID_NAME> ("createFieldContainer: field must have a name.");
+
+	FieldsPtr node = new FieldContainer (executionContext);
+	node -> setName (field -> getName ());
+	node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+	node -> setup ();
+
+	return node;
+}
+
+FieldsPtr
+createFieldContainer (X3DExecutionContext* const executionContext, const FieldDefinitionArray & fields)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	FieldsPtr node = new FieldContainer (executionContext);
+
+	for (const auto & field : fields)
+		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+	node -> setup ();
+	return node;
+}
+
 } // X3D
 } // titania

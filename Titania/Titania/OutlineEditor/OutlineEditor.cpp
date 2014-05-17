@@ -380,12 +380,12 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 }
 
 void
-OutlineEditor::on_create_reference_activate (const X3D::SFNode & fieldPtr, const X3D::SFNode & referencePtr)
+OutlineEditor::on_create_reference_activate (const X3D::FieldsPtr & fieldPtr, const X3D::FieldsPtr & referencePtr)
 {
 	try
 	{
-		const auto field     = X3D::getField (fieldPtr);
-		const auto reference = X3D::getField (referencePtr);
+		const auto field     = fieldPtr -> get ();
+		const auto reference = referencePtr -> get ();
 		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
@@ -403,12 +403,12 @@ OutlineEditor::on_create_reference_activate (const X3D::SFNode & fieldPtr, const
 }
 
 void
-OutlineEditor::on_remove_reference_activate (const X3D::SFNode & fieldPtr, const X3D::SFNode & referencePtr)
+OutlineEditor::on_remove_reference_activate (const X3D::FieldsPtr & fieldPtr, const X3D::FieldsPtr & referencePtr)
 {
 	try
 	{
-		const auto field     = X3D::getField (fieldPtr);
-		const auto reference = X3D::getField (referencePtr);
+		const auto field     = fieldPtr -> get ();
+		const auto reference = referencePtr -> get ();
 		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
@@ -573,6 +573,9 @@ OutlineEditor::selectField (const double x, const double y)
 			{
 				if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
 				{
+					if (field -> getReferences () .find (reference) not_eq field -> getReferences () .end ())
+						continue;
+
 					try
 					{
 						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));

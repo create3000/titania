@@ -91,6 +91,15 @@ public:
 
 	///  @name Operations
 
+	X3DFieldDefinition*
+	get () const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{
+		return getField (getName ());
+	}
+
 	virtual
 	void
 	addEvent () final override
@@ -117,31 +126,17 @@ private:
 
 };
 
-inline
-SFNode
-createFieldContainer (X3DExecutionContext* const executionContext, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>)
-{
-	if (field -> getName () .empty ())
-		throw Error <INVALID_NAME> ("createFieldContainer: field must have a name.");
+using FieldsPtr = X3DPtr <FieldContainer>;
 
-	SFNode node = new FieldContainer (executionContext);
-	node -> setName (field -> getName ());
-	node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-	node -> setup ();
-
-	return node;
-}
-
-inline
-X3DFieldDefinition*
-getField (const SFNode & fieldPtr)
+FieldsPtr
+createFieldContainer (X3DExecutionContext* const, X3DFieldDefinition* const)
 throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return fieldPtr -> getField (fieldPtr -> getName ());
-}
+       Error <DISPOSED>);
+
+FieldsPtr
+createFieldContainer (X3DExecutionContext* const, const FieldDefinitionArray &)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>);
 
 } // X3D
 } // titania

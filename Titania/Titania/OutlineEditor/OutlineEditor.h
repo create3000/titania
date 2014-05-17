@@ -135,10 +135,10 @@ private:
 	// Field references
 
 	void
-	on_create_reference_activate (const X3D::SFNode & fieldPtr, const X3D::SFNode & referencePtr);
+	on_create_reference_activate (const X3D::FieldsPtr & fieldPtr, const X3D::FieldsPtr & referencePtr);
 
 	void
-	on_remove_reference_activate (const X3D::SFNode & fieldPtr, const X3D::SFNode & referencePtr);
+	on_remove_reference_activate (const X3D::FieldsPtr & fieldPtr, const X3D::FieldsPtr & referencePtr);
 
 	// Remove
 

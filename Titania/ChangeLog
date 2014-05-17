@@ -1,5 +1,11 @@
 2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineEditor.h:
+	* OutlineEditor.cpp:
+	* NodePropertiesEditor.cpp: 
+
+2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseInterface.h:
 	* BrowserWindow.cpp:
 	* OutlineEditor.xml:

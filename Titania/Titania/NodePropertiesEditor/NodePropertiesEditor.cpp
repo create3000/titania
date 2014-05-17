@@ -1047,25 +1047,10 @@ NodePropertiesEditor::on_apply ()
 				FieldToFieldIndex         undoFieldsToReplace = reverse (fieldsToReplace);
 				X3D::FieldDefinitionArray undoFieldsToRemove  = userDefinedFields - node -> getUserDefinedFields ();
 
-				X3D::X3DPtr <X3D::FieldContainer> undoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
+				const auto undoRoot = X3D::createFieldContainer (node -> getExecutionContext (), undoFieldsToRemove);
+				const auto redoRoot = X3D::createFieldContainer (node -> getExecutionContext (), fieldsToRemove);
 
-				undoRoot -> setup ();
-
-				for (const auto & field : undoFieldsToRemove)
-					undoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-				undoStep -> addVariables (undoRoot);
-
-				// Redo Preparation
-
-				X3D::X3DPtr <X3D::FieldContainer> redoRoot = new X3D::FieldContainer (node -> getExecutionContext ());
-
-				redoRoot -> setup ();
-
-				for (const auto & field : fieldsToRemove)
-					redoRoot -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-				undoStep -> addVariables (redoRoot);
+				undoStep -> addVariables (undoRoot, redoRoot);
 
 				// Prepare add routes and assign oldField to newField if possible
 
@@ -1081,6 +1066,12 @@ NodePropertiesEditor::on_apply ()
 					if (newField -> getType () == oldField -> getType ())
 					{
 						newField -> write (*oldField);
+
+						for (const auto & reference : oldField -> getReferences ())
+						{
+							if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == X3D::inputOutput)
+								newField -> addReference (reference);
+						}
 
 						if (newField -> isInput () and oldField -> isInput ())
 						{
@@ -1349,7 +1340,12 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
 	{
 		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
-		OutlineTreeData::get_user_data (field) -> selected |= OutlineTreeData::get_user_data (node) -> selected & OUTLINE_SELECTED;
+		const auto userData = OutlineTreeData::get_user_data (node);
+
+		if (userData -> selected & OUTLINE_SELECTED)
+			userData -> selected |= OUTLINE_SELECTED;
+		else
+			userData -> selected &= ~OUTLINE_SELECTED;
 	}
 
 	for (const auto & field : fieldsToRemove)
