@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Fri, 16 May 2014 23:49:22 GMT'/>
+    <meta name='modified' content='Sat, 17 May 2014 00:23:02 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -167,7 +167,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 3.16999'
+          rotation='0 0 1 3.01758'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -323,7 +323,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 15 Mai 2014 17:26:12 CEST"'>
+            string='"modified...", "Sa 17 Mai 2014 02:22:02 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -371,6 +371,10 @@ function initialize ()
         scale='2.4824 3.23682 2.16343'>
       <Inline
           url='"../Basic/Clone.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/Clone.wrl"'/>
+    </Transform>
+    <Transform DEF='_7'
+        translation='0 2.68099 0'>
+      <ProtoInstance name='Grid'/>
     </Transform>
     <IMPORT inlineDEF='_6' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_3' exportedDEF='Text' AS='ImportedInline'/>

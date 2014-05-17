@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Thu, 15 May 2014 00:33:24 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
+    <meta name='modified' content='Sat, 17 May 2014 01:52:30 GMT'/>
+  </head>
+  <Scene>
+    <ProtoDeclare name='Grid'>
+      <ProtoInterface>
+        <field accessType='inputOutput' type='SFInt32' name='xDimension' value='10'/>
+        <field accessType='inputOutput' type='SFFloat' name='xSpacing' value='1'/>
+        <field accessType='inputOutput' type='SFInt32' name='zDimension' value='10'/>
+        <field accessType='inputOutput' type='SFFloat' name='zSpacing' value='1'/>
+        <field accessType='inputOutput' type='SFColor' name='color' value='1 0.5 0'/>
+        <field accessType='inputOutput' type='SFFloat' name='transparency' value='0.5'/>
+        <field accessType='initializeOnly' type='SFBool' name='solid' value='true'/>
+      </ProtoInterface>
+      <ProtoBody>
+        <ProtoDeclare name='Fields'>
+          <ProtoInterface>
+            <field accessType='inputOutput' type='SFInt32' name='xDimension' value='10'/>
+            <field accessType='inputOutput' type='SFFloat' name='xSpacing' value='1'/>
+            <field accessType='inputOutput' type='SFInt32' name='zDimension' value='10'/>
+            <field accessType='inputOutput' type='SFFloat' name='zSpacing' value='1'/>
+            <field accessType='inputOutput' type='SFFloat' name='transparency' value='0.66'/>
+          </ProtoInterface>
+          <ProtoBody>
+          </ProtoBody>
+        </ProtoDeclare>
+        <Transform>
+          <Transform DEF='Plane'
+              rotation='1 0 0 1.5708'
+              scale='10 10 1'>
+            <Shape>
+              <Appearance>
+                <Material DEF='Material2'>
+                  <IS>
+                    <connect nodeField='diffuseColor' protoField='color'/>
+                    <connect nodeField='specularColor' protoField='color'/>
+                    <connect nodeField='emissiveColor' protoField='color'/>
+                  </IS>
+                </Material>
+              </Appearance>
+              <Rectangle2D
+                  size='1 1'>
+                <IS>
+                  <connect nodeField='solid' protoField='solid'/>
+                </IS>
+              </Rectangle2D>
+            </Shape>
+          </Transform>
+          <Transform>
+            <Shape>
+              <Appearance>
+                <Material DEF='Material3'
+                    transparency='0.594604'>
+                  <IS>
+                    <connect nodeField='emissiveColor' protoField='color'/>
+                  </IS>
+                </Material>
+              </Appearance>
+              <IndexedLineSet DEF='Axis'
+                  coordIndex='0, 1, -1, 2, 3, -1'>
+                <Coordinate
+                    point='-5.25 0 0, 5.25 0 0, 0 0 -5.25, 0 0 5.25'/>
+              </IndexedLineSet>
+            </Shape>
+          </Transform>
+          <Transform>
+            <Shape>
+              <Appearance>
+                <Material DEF='Material1'>
+                  <IS>
+                    <connect nodeField='emissiveColor' protoField='color'/>
+                  </IS>
+                </Material>
+              </Appearance>
+              <IndexedLineSet DEF='Grid'
+                  coordIndex='0, 1, -1, 2, 3, -1, 4, 5, -1, 6, 7, -1, 8, 9, -1, 10, 11, -1, 12, 13, -1, 14, 15, -1, 16, 17, -1, 18, 19, -1, 20, 21, -1, 22, 23, -1, 24, 25, -1, 26, 27, -1, 28, 29, -1, 30, 31, -1, 32, 33, -1, 34, 35, -1, 36, 37, -1, 38, 39, -1, 40, 41, -1, 42, 43, -1'>
+                <Coordinate
+                    point='-5 0 -5, -5 0 5, -4 0 -5, -4 0 5, -3 0 -5, -3 0 5, -2 0 -5, -2 0 5, -1 0 -5, -1 0 5, 0 0 -5, 0 0 5, 1 0 -5, 1 0 5, 2 0 -5, 2 0 5, 3 0 -5, 3 0 5, 4 0 -5, 4 0 5, 5 0 -5, 5 0 5, -5 0 -5, 5 0 -5, -5 0 -4, 5 0 -4, -5 0 -3, 5 0 -3, -5 0 -2, 5 0 -2, -5 0 -1, 5 0 -1, -5 0 0, 5 0 0, -5 0 1, 5 0 1, -5 0 2, 5 0 2, -5 0 3, 5 0 3, -5 0 4, 5 0 4, -5 0 5, 5 0 5'/>
+              </IndexedLineSet>
+            </Shape>
+          </Transform>
+        </Transform>
+        <Script DEF='_Grid'
+            directOutput='true'
+            mustEvaluate='true'>
+          <field accessType='initializeOnly' type='SFNode' name='plane'>
+            <Transform USE='Plane'/>
+          </field>
+          <field accessType='initializeOnly' type='SFNode' name='axis'>
+            <IndexedLineSet USE='Axis'/>
+          </field>
+          <field accessType='initializeOnly' type='SFNode' name='grid'>
+            <IndexedLineSet USE='Grid'/>
+          </field>
+          <field accessType='initializeOnly' type='SFNode' name='axisMaterial'>
+            <Material USE='Material3'/>
+          </field>
+          <field accessType='initializeOnly' type='SFNode' name='fields'>
+            <ProtoInstance name='Fields' DEF='Fields'>
+              <IS>
+                <connect nodeField='xDimension' protoField='xDimension'/>
+                <connect nodeField='xSpacing' protoField='xSpacing'/>
+                <connect nodeField='zDimension' protoField='zDimension'/>
+                <connect nodeField='zSpacing' protoField='zSpacing'/>
+                <connect nodeField='transparency' protoField='transparency'/>
+              </IS>
+            </ProtoInstance>
+          </field>
+<![CDATA[vrmlscript:
+function set_dimension ()
+{
+}
+
+function set_spacing ()
+{
+}
+
+function initialize ()
+{
+	fields .transparency = fields .transparency;
+
+	// Plane
+
+	plane .scale = new SFVec3f (fields .xDimension * fields .xSpacing, fields .zDimension * fields .zSpacing, 1);
+	
+	// Axis
+
+	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - fields .xSpacing / 4, 0, 0),
+	                                  new SFVec3f ( plane .scale .x / 2 + fields .xSpacing / 4, 0, 0),
+	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - fields .zSpacing / 4),
+	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + fields .zSpacing / 4));
+  
+	axisMaterial .transparency = Math .pow (fields .transparency, 3 / 4);
+
+	// Grid
+
+	var coordIndex     = new MFInt32 ();
+	coordIndex .length = 3 * (fields .xDimension + fields .zDimension);
+	
+	var point     = grid .coord .point;
+	point .length = 2 * (fields .xDimension + fields .zDimension);
+
+	var i = 0;
+	
+	for (; i < fields .xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + fields .xSpacing * i, 0, -plane .scale .y / 2);
+		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + fields .xSpacing * i, 0,  plane .scale .y / 2);
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+	
+	for (; i < fields .zDimension + 1 + fields .xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + fields .zSpacing * (i - fields .xDimension - 1));
+		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + fields .zSpacing * (i - fields .xDimension - 1));
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+
+	grid .set_coordIndex = coordIndex;
+}
+]]> 
+        </Script>
+        <ROUTE fromNode='Fields' fromField='transparency_changed' toNode='Material1' toField='set_transparency'/>
+        <ROUTE fromNode='Material1' fromField='transparency_changed' toNode='Material2' toField='set_transparency'/>
+        <ROUTE fromNode='Material1' fromField='diffuseColor_changed' toNode='Material3' toField='set_diffuseColor'/>
+      </ProtoBody>
+    </ProtoDeclare>
+    <Transform DEF='Circle2D'>
+      <Shape>
+        <Appearance>
+          <Material
+              emissiveColor='0.8 0.8 0.8'/>
+        </Appearance>
+        <Circle2D/>
+      </Shape>
+    </Transform>
+    <Transform>
+      <ProtoInstance name='Grid'/>
+    </Transform>
+  </Scene>
+</X3D>

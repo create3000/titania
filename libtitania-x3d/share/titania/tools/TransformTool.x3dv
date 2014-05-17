@@ -1100,7 +1100,7 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_scale7
     eventIn      SFVec3f    set_scale8
     eventIn      SFVec3f    set_linetype
-    exposedField SFBool     scaleAroundBBoxCenter FALSE
+    exposedField SFBool     scaleAroundBBoxCenter TRUE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter

@@ -174,7 +174,9 @@ BrowserWindow::initialize ()
 
 const std::shared_ptr <OutlineTreeViewEditor> &
 BrowserWindow::getOutlineTreeView () const
-{ return outlineEditor -> getTreeView (); }
+{
+	return outlineEditor -> getTreeView ();
+}
 
 std::string
 BrowserWindow::getStyles () const
@@ -437,7 +439,7 @@ BrowserWindow::on_open ()
 		fileOpenDialog -> add_filter (getFileFilterVideo ());
 		fileOpenDialog -> set_filter (getFileFilterX3D ());
 
-		const auto worldURL = getExecutionContext () -> getWorldURL ();
+		const auto worldURL = getRootContext () -> getWorldURL ();
 
 		if (not worldURL .empty () and worldURL .is_local ())
 			fileOpenDialog -> set_uri (worldURL .filename () .str ());
@@ -513,7 +515,7 @@ BrowserWindow::on_import ()
 	fileImportDialog -> add_filter (getFileFilterVideo ());
 	fileImportDialog -> set_filter (getFileFilterX3D ());
 
-	const auto worldURL = getExecutionContext () -> getWorldURL ();
+	const auto worldURL = getRootContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		fileImportDialog -> set_uri (worldURL .filename () .str ());
@@ -615,13 +617,13 @@ BrowserWindow::on_save ()
 {
 	getKeys () .clear ();
 
-	const basic::uri worldURL = getExecutionContext () -> getWorldURL ();
+	const basic::uri worldURL = getRootContext () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as ();
 
 	else
-		save (worldURL, getExecutionContext () -> isCompressed ());
+		save (worldURL, getRootContext () -> isCompressed ());
 }
 
 void
@@ -636,7 +638,7 @@ BrowserWindow::on_save_as ()
 	fileSaveDialog -> add_filter (getFileFilterX3D ());
 	fileSaveDialog -> set_filter (getFileFilterX3D ());
 
-	const auto worldURL = getExecutionContext () -> getWorldURL ();
+	const auto worldURL = getRootContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		fileSaveDialog -> set_uri (worldURL .filename () .str ());
@@ -653,7 +655,7 @@ BrowserWindow::on_save_as ()
 
 	const auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
 
-	saveCompressedButton -> set_active (getExecutionContext () -> isCompressed ());
+	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
 
 	const auto response_id = fileSaveDialog -> run ();
 

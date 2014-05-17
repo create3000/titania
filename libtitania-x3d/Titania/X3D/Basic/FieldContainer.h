@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_BASIC_FIELD_CONTAINER_H__
 
 #include "../Basic/X3DBaseNode.h"
+#include "../Execution/X3DExecutionContext.h"
+#include "../Fields/SFNode.h"
 
 namespace titania {
 namespace X3D {
@@ -114,6 +116,32 @@ private:
 	static const std::string containerField;
 
 };
+
+inline
+SFNode
+createFieldContainer (X3DExecutionContext* const executionContext, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>)
+{
+	if (field -> getName () .empty ())
+		throw Error <INVALID_NAME> ("createFieldContainer: field must have a name.");
+
+	SFNode node = new FieldContainer (executionContext);
+	node -> setName (field -> getName ());
+	node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+	node -> setup ();
+
+	return node;
+}
+
+inline
+X3DFieldDefinition*
+getField (const SFNode & fieldPtr)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return fieldPtr -> getField (fieldPtr -> getName ());
+}
 
 } // X3D
 } // titania

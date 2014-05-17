@@ -276,7 +276,7 @@ void
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
 	const auto suffix           = worldURL .suffix ();
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext () -> getRootContext ());
+	const auto executionContext = X3D::X3DExecutionContextPtr (getRootContext ());
 
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);

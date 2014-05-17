@@ -107,6 +107,22 @@ public:
 	getCreateInstanceMenuItem () const
 	{ return *m_CreateInstanceMenuItem; }
 
+	Gtk::MenuItem &
+	getCreateReferenceMenuItem () const
+	{ return *m_CreateReferenceMenuItem; }
+
+	Gtk::Menu &
+	getCreateReferenceMenu () const
+	{ return *m_CreateReferenceMenu; }
+
+	Gtk::MenuItem &
+	getRemoveReferenceMenuItem () const
+	{ return *m_RemoveReferenceMenuItem; }
+
+	Gtk::Menu &
+	getRemoveReferenceMenu () const
+	{ return *m_RemoveReferenceMenu; }
+
 	Gtk::ImageMenuItem &
 	getRemoveMenuItem () const
 	{ return *m_RemoveMenuItem; }
@@ -260,6 +276,10 @@ private:
 	Gtk::Menu*                      m_PopupMenu;
 	Gtk::MenuItem*                  m_SetAsCurrentSceneMenuItem;
 	Gtk::MenuItem*                  m_CreateInstanceMenuItem;
+	Gtk::MenuItem*                  m_CreateReferenceMenuItem;
+	Gtk::Menu*                      m_CreateReferenceMenu;
+	Gtk::MenuItem*                  m_RemoveReferenceMenuItem;
+	Gtk::Menu*                      m_RemoveReferenceMenu;
 	Gtk::ImageMenuItem*             m_RemoveMenuItem;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ShowExternProtosMenuItem;

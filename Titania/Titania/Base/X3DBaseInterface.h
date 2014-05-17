@@ -79,12 +79,20 @@ public:
 	const X3D::ScenePtr &
 	getWorld () const;
 
+	X3D::X3DExecutionContext*
+	getRootContext () const
+	{ return getExecutionContext () -> getRootContext (); }
+
 	void
 	setExecutionContext (const X3D::X3DExecutionContextPtr &);
 
 	const X3D::X3DExecutionContextPtr &
 	getExecutionContext () const
 	{ return getBrowser () -> getExecutionContext (); }
+
+	bool
+	inProtoDeclaration () const
+	{ return getExecutionContext () -> isProtoDeclaration (); }
 
 	bool
 	inPrototypeInstance () const;

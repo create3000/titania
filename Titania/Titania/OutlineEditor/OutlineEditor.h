@@ -71,7 +71,7 @@ public:
 
 	const std::shared_ptr <OutlineTreeViewEditor> &
 	getTreeView () const
-	{ return treeview; }
+	{ return treeView; }
 
 
 private:
@@ -132,6 +132,14 @@ private:
 	void
 	on_create_instance_activate () final override;
 
+	// Field references
+
+	void
+	on_create_reference_activate (const X3D::SFNode & fieldPtr, const X3D::SFNode & referencePtr);
+
+	void
+	on_remove_reference_activate (const X3D::SFNode & fieldPtr, const X3D::SFNode & referencePtr);
+
 	// Remove
 
 	virtual
@@ -171,10 +179,16 @@ private:
 	///  @name Operations
 
 	void
-	select (const double, const double);
+	selectNode (const double, const double);
+
+	void
+	selectField (const double, const double);
 
 	Gtk::TreePath
 	getNodeAtPosition (const double, const double);
+
+	Gtk::TreePath
+	getFieldAtPosition (const double, const double);
 
 	Gtk::TreePath
 	getPathAtPosition (const double, const double);
@@ -183,12 +197,13 @@ private:
 	
 	using MenuItemPair = std::pair <X3D::X3DExecutionContextPtr, Gtk::RadioMenuItem*>;
 
-	std::shared_ptr <OutlineTreeViewEditor>        treeview;
+	std::shared_ptr <OutlineTreeViewEditor>        treeView;
 	Gtk::RadioButtonGroup                          sceneGroup;
 	std::map <X3D::X3DExecutionContextPtr, size_t> sceneIndex;
 	std::deque <MenuItemPair>                      scenes;
 
-	Gtk::TreePath path;
+	Gtk::TreePath nodePath;
+	Gtk::TreePath fieldPath;
 	bool          realized;
 
 };

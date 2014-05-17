@@ -1,5 +1,10 @@
 2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FieldContainer.h:
+	* TransformTool.x3dv: 
+
+2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* BrowserOptions.cpp: 
 
