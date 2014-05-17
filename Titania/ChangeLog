@@ -1,5 +1,9 @@
 2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* NodePropertiesEditor.cpp: 
+
+2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.h:
 	* OutlineEditor.cpp:
 	* NodePropertiesEditor.cpp: 
