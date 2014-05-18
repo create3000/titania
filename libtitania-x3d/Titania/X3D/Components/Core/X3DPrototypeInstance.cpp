@@ -124,15 +124,6 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	if (executionContext -> isRootContext ())
-	{
-		X3DProtoObject* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
-
-		protoDeclaration -> requestImmediateLoad ();
-
-		return new X3DPrototypeInstance (executionContext, protoDeclaration);
-	}
-
 	return new X3DPrototypeInstance (executionContext, protoDeclaration);
 }
 

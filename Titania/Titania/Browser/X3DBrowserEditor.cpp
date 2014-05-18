@@ -617,7 +617,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	text .imbue (std::locale::classic ());
 
 	text
-		<< "#X3D V3.3 utf8 Titania"
+		<< "#X3D V3.3 utf8 " << getBrowser () -> getName ()
 		<< std::endl
 		<< std::endl
 		<< '#' << getExecutionContext () -> getWorldURL ()
@@ -829,12 +829,12 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 
 	for (const auto & child : children)
 	{
-		removeNamedNode (child -> getExecutionContext (), child, undoStep);
+		removeNamedNode (getExecutionContext (), child, undoStep);
 
-		if (scene == child -> getExecutionContext ())
+		if (scene)
 			removeExportedNodes (scene, child, undoStep);
 
-		removeImportedNodes (child -> getExecutionContext (), X3D::InlinePtr (child), undoStep);
+		removeImportedNodes (X3D::InlinePtr (child), undoStep);
 		deleteRoutes (child, undoStep);
 	}
 
@@ -879,7 +879,7 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	// Remove node from scene graph
 
 	removeNamedNode (executionContext, node, undoStep);
-	removeImportedNodes (executionContext, X3D::InlinePtr (node), undoStep);
+	removeImportedNodes (X3D::InlinePtr (node), undoStep);
 	deleteRoutes (node, undoStep);
 	removeNodeFromSceneGraph (executionContext, node, undoStep);
 
@@ -977,12 +977,14 @@ X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionCont
 }
 
 void
-X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const executionContext, const X3D::InlinePtr & inlineNode, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeImportedNodes (const X3D::InlinePtr & inlineNode, const UndoStepPtr & undoStep) const
 {
 	// Remove nodes imported from node
 
 	if (inlineNode)
 	{
+		X3D::X3DExecutionContext* const executionContext = inlineNode -> getExecutionContext ();
+
 		for (const auto & pair : X3D::ImportedNodeIndex (executionContext -> getImportedNodes ()))
 		{
 			try

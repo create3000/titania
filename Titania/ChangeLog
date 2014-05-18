@@ -2,6 +2,12 @@
 
 	* X3DBrowserEditor.h:
 	* X3DBrowserEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
 	* OutlineTreeViewEditor.cpp:
 	* NodePropertiesEditor.cpp: 
 

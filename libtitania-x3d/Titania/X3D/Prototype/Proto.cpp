@@ -105,20 +105,17 @@ Proto::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	Proto* const copy = create (executionContext);
-
-	copy -> setName (getName ());
-
-	for (const auto & field : getUserDefinedFields ())
+	try
 	{
-		copy -> addUserDefinedField (field -> getAccessType (),
-		                             field -> getName (),
-		                             field -> clone (executionContext));
+		const auto proto = dynamic_cast <Proto*> (executionContext -> findProtoDeclaration (getName ()));
+
+		if (proto)
+			return proto;
 	}
+	catch (const X3D::X3DError &)
+	{ }
 
-	copy -> setup ();
-
-	executionContext -> updateProtoDeclaration (copy -> getName (), copy);
+	const auto & copy = executionContext -> addProtoDeclaration (getName (), getUserDefinedFields ());
 
 	copy -> importExternProtos (this);
 	copy -> importProtos (this);

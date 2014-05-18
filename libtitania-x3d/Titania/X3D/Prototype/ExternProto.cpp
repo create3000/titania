@@ -101,24 +101,19 @@ ExternProto::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	ExternProto* const copy = create (executionContext);
-
-	copy -> setName (getName ());
-
-	for (const auto & field : getUserDefinedFields ())
+	try
 	{
-		copy -> addUserDefinedField (field -> getAccessType (),
-		                             field -> getName (),
-		                             field -> clone (executionContext));
+		const auto externProto = dynamic_cast <ExternProto*> (executionContext -> findProtoDeclaration (getName ()));
+
+		if (externProto)
+			return externProto;
 	}
+	catch (const X3D::X3DError &)
+	{ }
 
-	copy -> setup ();
+	const auto & copy = executionContext -> addExternProtoDeclaration (getName (), getUserDefinedFields (), url ());
 
-	copy -> url () = url ();
-	
 	transform (copy -> url (), getExecutionContext (), executionContext);
-	
-	executionContext -> updateExternProtoDeclaration (copy -> getName (), copy);
 
 	return copy;
 }

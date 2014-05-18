@@ -135,7 +135,7 @@ public:
 	removeNodes (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::InlinePtr &, const UndoStepPtr &) const;
+	removeImportedNodes (const X3D::InlinePtr &, const UndoStepPtr &) const;
 
 	void
 	createClone (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;

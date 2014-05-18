@@ -1,5 +1,11 @@
 2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.cpp:
+	* ExternProto.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DBaseNode.cpp:
 	* Script.cpp:
