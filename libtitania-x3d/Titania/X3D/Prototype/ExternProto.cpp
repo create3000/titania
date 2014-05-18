@@ -111,7 +111,9 @@ throw (Error <INVALID_NAME>,
 	catch (const X3D::X3DError &)
 	{ }
 
-	const auto & copy = executionContext -> addExternProtoDeclaration (getName (), getUserDefinedFields (), url ());
+	const auto copy = executionContext -> createExternProtoDeclaration (getName (), getUserDefinedFields (), url ());
+
+	executionContext -> addExternProtoDeclaration (getName (), copy);
 
 	transform (copy -> url (), getExecutionContext (), executionContext);
 

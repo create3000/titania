@@ -325,8 +325,13 @@ public:
 
 	///  @name Proto declaration handling
 
+	ProtoPtr
+	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const ProtoPtr &
-	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
+	addProtoDeclaration (const std::string &, const ProtoPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -368,8 +373,13 @@ public:
 
 	///  @name Exterproto declaration handling
 
+	ExternProtoPtr
+	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const ExternProtoPtr &
-	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
+	addExternProtoDeclaration (const std::string &, const ExternProtoPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -554,16 +564,6 @@ private:
 
 	void
 	removeImportedName (const ImportedNamesIndex::iterator &);
-
-	ProtoPtr
-	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	ExternProtoPtr
-	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
 
 	RouteId
 	getRouteId (const SFNode &, const std::string &,

@@ -115,7 +115,9 @@ throw (Error <INVALID_NAME>,
 	catch (const X3D::X3DError &)
 	{ }
 
-	const auto & copy = executionContext -> addProtoDeclaration (getName (), getUserDefinedFields ());
+	const auto copy = executionContext -> createProtoDeclaration (getName (), getUserDefinedFields ());
+
+	executionContext -> addProtoDeclaration (getName (), copy);
 
 	copy -> importExternProtos (this);
 	copy -> importProtos (this);

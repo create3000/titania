@@ -147,8 +147,14 @@ public:
 	at (const size_type & index) const
 	{ return *array .at (index); }
 
+	value_type &
+	find (const key_type &);
+
 	const value_type &
 	find (const key_type &) const;
+
+	value_type &
+	rfind (const key_type &);
 
 	const value_type &
 	rfind (const key_type &) const;
@@ -234,6 +240,9 @@ public:
 	void
 	push_back (const key_type &, const value_type &);
 
+	void
+	remap (const key_type &, const key_type &);
+
 	bool
 	erase (const key_type &);
 
@@ -251,6 +260,18 @@ private:
 };
 
 template <class Key, class ValueType>
+typename indexed_multimap <Key, ValueType>::value_type &
+indexed_multimap <Key, ValueType>::find (const key_type &key)
+{
+	const auto range = map .equal_range (key);
+
+	if (range .first not_eq range .second)
+		return *range .first -> second;
+
+	throw std::out_of_range ("indexed_multimap::first");
+}
+
+template <class Key, class ValueType>
 const typename indexed_multimap <Key, ValueType>::value_type &
 indexed_multimap <Key, ValueType>::find (const key_type &key) const
 {
@@ -263,6 +284,18 @@ indexed_multimap <Key, ValueType>::find (const key_type &key) const
 }
 
 template <class Key, class ValueType>
+typename indexed_multimap <Key, ValueType>::value_type &
+indexed_multimap <Key, ValueType>::rfind (const key_type &key)
+{
+	auto range = map .equal_range (key);
+
+	if (range .first not_eq range .second)
+		return *(-- range .second) -> second;
+
+	throw std::out_of_range ("indexed_multimap::rfind");
+}
+
+template <class Key, class ValueType>
 const typename indexed_multimap <Key, ValueType>::value_type &
 indexed_multimap <Key, ValueType>::rfind (const key_type &key) const
 {
@@ -271,7 +304,7 @@ indexed_multimap <Key, ValueType>::rfind (const key_type &key) const
 	if (range .first not_eq range .second)
 		return *(-- range .second) -> second;
 
-	throw std::out_of_range ("indexed_multimap::last");
+	throw std::out_of_range ("indexed_multimap::rfind");
 }
 
 template <class Key, class ValueType>
@@ -283,6 +316,21 @@ indexed_multimap <Key, ValueType>::push_back (const key_type & key, const value_
 	array .emplace_back (element);
 
 	map .emplace (key, element);
+}
+
+template <class Key, class ValueType>
+void
+indexed_multimap <Key, ValueType>::remap (const key_type & oldKey, const key_type & newKey)
+{
+	const auto iter = map .find (oldKey);
+	
+	if (iter not_eq map .end ())
+	{
+		const auto element = iter -> second;
+		
+		map .erase (iter);
+		map .emplace (newKey, element);
+	}
 }
 
 template <class Key, class ValueType>

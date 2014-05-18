@@ -242,7 +242,7 @@ throw (Error <NODE_IN_USE>,
        Error <DISPOSED>)
 {
 	if (namedNodes .find (name) not_eq namedNodes .end ())
-		throw Error <NODE_IN_USE> ("Couldn't add named node: Node named '" + name + "' already in use.");
+		throw Error <NODE_IN_USE> ("Couldn't add named node: Node name '" + name + "' is already in use.");
 
 	updateNamedNode (name, node);
 }
@@ -553,18 +553,50 @@ throw (Error <INVALID_NODE>,
 
 //	Proto declaration handling
 
+ProtoPtr
+X3DExecutionContext::createProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (name .empty ())
+		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
+
+	const ProtoPtr prototype = new Proto (this);
+
+	prototype -> setName (name);
+
+	for (const auto & field : interfaceDeclarations)
+	{
+		prototype -> addUserDefinedField (field -> getAccessType (),
+		                                  field -> getName (),
+		                                  field);
+	}
+
+	if (isInitialized ())
+		prototype -> setup ();
+	else
+		addUninitializedNode (prototype);
+
+	return prototype;
+}
+
 const ProtoPtr &
-X3DExecutionContext::addProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
+X3DExecutionContext::addProtoDeclaration (const std::string & name, const ProtoPtr & prototype)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
+	
+	if (prototypes .count (name))
+		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto '" + name + "' is already in use.");
 
-	prototypes .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
+	prototypes .push_back (name, prototype);
 	prototypes .back () .isTainted (true);
 	prototypes .back () .addParent (this);
+
+	prototype -> setName (name);
 
 	prototypesOutput = getCurrentTime ();
 
@@ -580,10 +612,24 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
 
-	prototypes .erase (prototype -> getName ());
-	prototypes .push_back (name, prototype);
-	prototypes .back () .isTainted (true);
-	prototypes .back () .addParent (this);
+	try
+	{
+		if (prototypes .rfind (prototype -> getName ()) == prototype)
+			prototypes .remap (prototype -> getName (), name);
+	}
+	catch (const std::out_of_range &)
+	{
+		try
+		{
+			prototypes .rfind (name) = prototype;
+		}
+		catch (const std::out_of_range &)
+		{
+			prototypes .push_back (name, prototype);
+			prototypes .back () .isTainted (true);
+			prototypes .back () .addParent (this);
+		}
+	}
 
 	prototype -> setName (name);
 
@@ -616,33 +662,6 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-ProtoPtr
-X3DExecutionContext::createProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (name .empty ())
-		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
-
-	const ProtoPtr prototype = new Proto (this);
-
-	prototype -> setName (name);
-
-	for (const auto & field : interfaceDeclarations)
-	{
-		prototype -> addUserDefinedField (field -> getAccessType (),
-		                                  field -> getName (),
-		                                  field);
-	}
-
-	if (isInitialized ())
-		prototype -> setup ();
-	else
-		addUninitializedNode (prototype);
-
-	return prototype;
-}
-
 X3DProtoObject*
 X3DExecutionContext::findProtoDeclaration (const std::string & name) const
 throw (Error <INVALID_NAME>,
@@ -671,10 +690,32 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-//	externprotoDeclarationHandling
+//	ExternProto declaration handling
+
+ExternProtoPtr
+X3DExecutionContext::createExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const ExternProtoPtr externProto = new ExternProto (this);
+
+	externProto -> setName (name);
+
+	for (const auto & field : externInterfaceDeclarations)
+	{
+		externProto -> addUserDefinedField (field -> getAccessType (),
+		                                    field -> getName (),
+		                                    field);
+	}
+
+	externProto -> url () = URLList;
+	externProto -> setup ();
+
+	return externProto;
+}
 
 const ExternProtoPtr &
-X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
+X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const ExternProtoPtr & externProto)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -682,9 +723,14 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
 
-	externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
+	if (externProtos .count (name))
+		throw Error <INVALID_NAME> ("Couldn't add extern proto declaration: extern proto '" + name + "' is already in use.");
+
+	externProtos .push_back (name, externProto);
 	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
+
+	externProto -> setName (name);
 
 	externProtosOutput = getCurrentTime ();
 
@@ -700,10 +746,24 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
 
-	externProtos .erase (externProto -> getName ());
-	externProtos .push_back (name, externProto);
-	externProtos .back () .isTainted (true);
-	externProtos .back () .addParent (this);
+	try
+	{
+		if (externProtos .rfind (externProto -> getName ()) == externProto)
+			externProtos .remap (externProto -> getName (), name);
+	}
+	catch (const std::out_of_range &)
+	{
+		try
+		{
+			externProtos .rfind (name) = externProto;
+		}
+		catch (const std::out_of_range &)
+		{
+			externProtos .push_back (name, externProto);
+			externProtos .back () .isTainted (true);
+			externProtos .back () .addParent (this);
+		}
+	}
 
 	externProto -> setName (name);
 
@@ -736,28 +796,6 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("EXTERNPROTO '" + name + "' not found.");
 	}
-}
-
-ExternProtoPtr
-X3DExecutionContext::createExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	const ExternProtoPtr externProto = new ExternProto (this);
-
-	externProto -> setName (name);
-
-	for (const auto & field : externInterfaceDeclarations)
-	{
-		externProto -> addUserDefinedField (field -> getAccessType (),
-		                                    field -> getName (),
-		                                    field);
-	}
-
-	externProto -> url () = URLList;
-	externProto -> setup ();
-
-	return externProto;
 }
 
 //	Dynamic route handling

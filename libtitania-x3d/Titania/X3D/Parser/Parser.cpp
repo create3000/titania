@@ -811,7 +811,9 @@ Parser::proto ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const ProtoPtr & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+						const ProtoPtr _proto = getExecutionContext () -> createProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+
+						getExecutionContext () -> updateProtoDeclaration (_nodeTypeId, _proto);
 
 						pushExecutionContext (_proto);
 
@@ -1054,7 +1056,9 @@ Parser::externproto ()
 
 					if (URLList (&_URLList))
 					{
-						const ExternProtoPtr & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+						const ExternProtoPtr _externProto = getExecutionContext () -> createExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+
+						getExecutionContext () -> updateExternProtoDeclaration (_nodeTypeId, _externProto);
 
 						_externProto -> addInterfaceComments (_interfaceComments);
 						_externProto -> addComments (_comments);
@@ -1063,7 +1067,7 @@ Parser::externproto ()
 						return true;
 					}
 					else
-						throw Error <INVALID_X3D> ("Expected a URL list after EXTERNPROTO '" + _nodeTypeId + "'.");
+						throw Error <INVALID_X3D> ("Expected a URL list after EXTERNPROTO interface declaration '" + _nodeTypeId + "'.");
 				}
 				else
 					throw Error <INVALID_X3D> ("Expected a ']' at the end of EXTERNPROTO interface declaration.");
