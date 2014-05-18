@@ -556,7 +556,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                                       {
 	                                          try
 	                                          {
-		                                          if (child -> getProtoDeclaration () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName ()))
+		                                          if (child -> getProtoDeclaration () == getExecutionContext () -> getProtoObject (child -> getTypeName ()))
 		                                             protoDeclarations .emplace (child -> getProtoDeclaration (), protoDeclarations .size ());
 		                                       }
 		                                       catch (const X3D::X3DError &)

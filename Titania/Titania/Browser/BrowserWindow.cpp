@@ -1343,49 +1343,16 @@ BrowserWindow::on_update_viewpoint ()
 void
 BrowserWindow::on_prototype_instance_dialog ()
 {
-	X3D::X3DExecutionContext* executionContext = getExecutionContext ();
+	// Find all available proto objects
 
-	// Find all available prototypes
-
-	std::map <std::string, X3D::X3DProtoObjectPtr> prototypes;
-	std::string                                    current;
-
-	for (;;)
-	{
-		// Skip all prototypes that are below a current prototype.
-
-		bool skip = true;
-
-		for (const auto & prototype : basic::reverse_adapter (executionContext -> getProtoDeclarations ()))
-		{
-			if (skip and not current .empty ())
-			{
-				if (current == prototype -> getName ())
-					skip = false;
-
-				continue;
-			}
-
-			prototypes .emplace (prototype -> getName (), X3D::X3DProtoObjectPtr (prototype));
-		}
-
-		for (const auto & prototype : executionContext -> getExternProtoDeclarations ())
-			prototypes .emplace (prototype -> getName (), X3D::X3DProtoObjectPtr (prototype));
-
-		if (executionContext -> isRootContext ())
-			break;
-
-		current = executionContext -> getName ();
-
-		executionContext = executionContext -> getExecutionContext ();
-	}
+	const auto protoObjects = getExecutionContext () -> findProtoObjects ();
 
 	// Remove all menu items
 
 	for (const auto & widget : getPrototypeMenu () .get_children ())
 		getPrototypeMenu () .remove (*widget);
 
-	for (const auto & pair : prototypes)
+	for (const auto & pair : protoObjects)
 	{
 		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (pair .second -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
 		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, pair .first));

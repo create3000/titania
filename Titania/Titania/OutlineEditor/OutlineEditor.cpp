@@ -573,7 +573,7 @@ OutlineEditor::selectField (const double x, const double y)
 			{
 				if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
 				{
-					if (field -> getReferences () .find (reference) not_eq field -> getReferences () .end ())
+					if (field -> getReferences () .count (reference))
 						continue;
 
 					try

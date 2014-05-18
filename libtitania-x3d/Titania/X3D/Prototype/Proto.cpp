@@ -107,7 +107,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto proto = dynamic_cast <Proto*> (executionContext -> findProtoDeclaration (getName ()));
+		const auto proto = dynamic_cast <Proto*> (executionContext -> findProtoObject (getName ()));
 
 		if (proto)
 			return proto;

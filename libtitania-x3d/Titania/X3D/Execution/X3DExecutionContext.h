@@ -359,14 +359,6 @@ public:
 	       Error <DISPOSED>)
 	{ return prototypes; }
 
-	X3DProtoObject*
-	findProtoDeclaration (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_X3D>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	const SFTime &
 	prototypes_changed () const
 	{ return prototypesOutput; }
@@ -411,6 +403,25 @@ public:
 	const SFTime &
 	externProtos_changed () const
 	{ return externProtosOutput; }
+
+	///  @name ProtoObject handling
+
+	X3DProtoObject*
+	getProtoObject (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	X3DProtoObject*
+	findProtoObject (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	std::map <std::string, X3DProtoObject*>
+	findProtoObjects () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Root node handling
 

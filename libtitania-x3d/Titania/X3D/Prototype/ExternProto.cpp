@@ -103,7 +103,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto externProto = dynamic_cast <ExternProto*> (executionContext -> findProtoDeclaration (getName ()));
+		const auto externProto = dynamic_cast <ExternProto*> (executionContext -> findProtoObject (getName ()));
 
 		if (externProto)
 			return externProto;

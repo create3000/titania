@@ -224,7 +224,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return findProtoDeclaration (name) -> createInstance (this);
+	return getProtoObject (name) -> createInstance (this);
 }
 
 // Named node handling
@@ -662,34 +662,6 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-X3DProtoObject*
-X3DExecutionContext::findProtoDeclaration (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_X3D>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		return prototypes .rfind (name) .getValue ();
-	}
-	catch (const std::out_of_range &)
-	{
-		try
-		{
-			return externProtos .rfind (name) .getValue ();
-		}
-		catch (const std::out_of_range &)
-		{
-			if (not isRootContext ())
-				return getExecutionContext () -> findProtoDeclaration (name);
-
-			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
-		}
-	}
-}
-
 //	ExternProto declaration handling
 
 ExternProtoPtr
@@ -796,6 +768,94 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("EXTERNPROTO '" + name + "' not found.");
 	}
+}
+
+// ProtoObject handling
+
+X3DProtoObject*
+X3DExecutionContext::getProtoObject (const std::string & name) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		return prototypes .rfind (name) .getValue ();
+	}
+	catch (const std::out_of_range &)
+	{
+		try
+		{
+			return externProtos .rfind (name) .getValue ();
+		}
+		catch (const std::out_of_range &)
+		{
+			if (not isRootContext ())
+				return getExecutionContext () -> getProtoObject (name);
+
+			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
+		}
+	}
+}
+
+X3DProtoObject*
+X3DExecutionContext::findProtoObject (const std::string & name) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const auto protoObjects = findProtoObjects ();
+	const auto iter         = protoObjects .find (name);
+	
+	if (iter not_eq protoObjects .end ())
+		return iter -> second;
+
+	throw Error <INVALID_NAME> ("Unknown proto object '" + name + "'.");
+}
+
+std::map <std::string, X3DProtoObject*>
+X3DExecutionContext::findProtoObjects () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const X3DExecutionContext* executionContext = this;
+
+	// Find all available prototypes
+
+	std::map <std::string, X3DProtoObject*> prototypes;
+	std::string                             current;
+
+	for (;;)
+	{
+		// Skip all prototypes that are below a current prototype.
+
+		bool skip = true;
+
+		for (const auto & prototype : basic::reverse_adapter (executionContext -> getProtoDeclarations ()))
+		{
+			if (skip and not current .empty ())
+			{
+				if (current == prototype -> getName ())
+					skip = false;
+
+				continue;
+			}
+
+			prototypes .emplace (prototype -> getName (), prototype);
+		}
+
+		for (const auto & prototype : executionContext -> getExternProtoDeclarations ())
+			prototypes .emplace (prototype -> getName (), prototype);
+
+		if (executionContext -> isRootContext ())
+			break;
+
+		current = executionContext -> isProtoDeclaration () ? executionContext -> getName () : "";
+
+		executionContext = executionContext -> getExecutionContext ();
+	}
+
+	return prototypes;
 }
 
 //	Dynamic route handling
