@@ -119,7 +119,7 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 bool
 X3DUserInterface::isDialogOpen (const std::string & key) const
 {
-	return dialogs .find (key) not_eq dialogs .end ();
+	return dialogs .count (key);
 }
 
 void

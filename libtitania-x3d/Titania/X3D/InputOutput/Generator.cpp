@@ -406,7 +406,7 @@ Generator::IsSharedNode (const X3DBaseNode* const baseNode)
 bool
 Generator::ExistsNode (const X3DBaseNode* const baseNode)
 {
-	return nodes .find (baseNode) not_eq nodes .end ();
+	return nodes .count (baseNode);
 }
 
 void
@@ -498,7 +498,7 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 	{
 		const auto & index = exportedNodesIndex .at (baseNode -> getExecutionContext ());
 
-		if (index .find (baseNode) not_eq index .end ())
+		if (index .count (baseNode))
 			return true;
 	}
 	catch (...)
@@ -508,7 +508,7 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 	{
 		const auto & index = importedNodesIndex .at (baseNode -> getExecutionContext ());
 
-		if (index .find (baseNode) not_eq index .end ())
+		if (index .count (baseNode))
 			return true;
 	}
 	catch (...)

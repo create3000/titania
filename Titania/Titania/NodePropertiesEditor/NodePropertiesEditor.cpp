@@ -838,7 +838,7 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 			if (importedNode -> getInlineNode () not_eq inlineNode)
 				return false;     // There is an import from another Inline node with importedName.
 
-			if (importedNodesToRemove .find (importedNode -> getExportedName ()) == importedNodesToRemove .end ())
+			if (not importedNodesToRemove .count (importedNode -> getExportedName ()))
 			{
 				if (importedNode -> getExportedName () not_eq exportedName)
 					return false;  // There is another import from this Inline node with importedName.
@@ -973,7 +973,7 @@ NodePropertiesEditor::on_exported_node_cancel_clicked ()
 bool
 NodePropertiesEditor::validateExportedName (const std::string & exportedName)
 {
-	if (exportedNodesToUpdate .find (exportedName) not_eq exportedNodesToUpdate .end ())
+	if (exportedNodesToUpdate .count (exportedName))
 		return false;       // Update exists.
 
 	try
@@ -983,7 +983,7 @@ NodePropertiesEditor::validateExportedName (const std::string & exportedName)
 
 		if (exportedNode == node)
 		{
-			if (exportedNodesToRemove .find (exportedName) not_eq exportedNodesToRemove .end ())
+			if (exportedNodesToRemove .count (exportedName))
 				return true;  // Remove exists.
 
 		}

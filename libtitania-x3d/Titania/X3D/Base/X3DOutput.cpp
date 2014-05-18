@@ -96,7 +96,7 @@ X3DOutput::checkInterest (const void* const object, const void* const memberFunc
 	{
 		const RequesterPair requesterPair (this, memberFunction, object);
 
-		return data -> requesterIndex .find (requesterPair) not_eq data -> requesterIndex .end ();
+		return data -> requesterIndex .count (requesterPair);
 	}
 
 	return false;
@@ -111,7 +111,7 @@ X3DOutput::insertInterest (const Requester & function, const void* const object,
 
 	const RequesterPair requesterPair (this, memberFunction, object);
 
-	if (data -> requesterIndex .find (requesterPair) == data -> requesterIndex .end ())
+	if (not data -> requesterIndex .count (requesterPair))
 	{
 		data -> requesters .emplace_back (function);
 		data -> requesterIndex .emplace (requesterPair, -- data -> requesters .end ());

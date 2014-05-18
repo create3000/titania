@@ -1,5 +1,17 @@
 2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* X3DOutput.cpp:
+	* Selection.cpp:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* Generator.cpp:
+	* X3DCoreContext.cpp:
+	* X3DExecutionContext.cpp:
+	* LoadSensor.cpp: 
+
+2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Proto.cpp:
 	* ExternProto.cpp:
 	* X3DExecutionContext.h:

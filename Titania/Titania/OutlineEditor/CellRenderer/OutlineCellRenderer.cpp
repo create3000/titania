@@ -1408,7 +1408,7 @@ OutlineCellRenderer::have_selected_routes (const OutlineRoutes & set)
 {
 	for (const auto & route : routes)
 	{
-		if (set .find (route) not_eq set .end ())
+		if (set .count (route))
 			return true;
 	}
 

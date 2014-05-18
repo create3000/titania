@@ -86,7 +86,7 @@ Selection::initialize ()
 bool
 Selection::isSelected (const SFNode & node) const
 {
-	return std::find (children .begin (), children .end (), node) not_eq children .end ();
+	return std::count (children .begin (), children .end (), node);
 }
 
 void

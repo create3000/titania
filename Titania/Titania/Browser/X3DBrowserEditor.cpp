@@ -598,7 +598,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                        {
 	                           try
 	                           {
-	                              if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
+	                              if (nodeIndex .count (route -> getDestinationNode ()))
 												routes .emplace_back (route);
 										}
 	                           catch (const X3D::X3DError &)

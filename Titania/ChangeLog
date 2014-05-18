@@ -1,5 +1,12 @@
 2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.cpp:
+	* X3DBrowserEditor.cpp:
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.cpp:
 	* OutlineEditor.cpp: 

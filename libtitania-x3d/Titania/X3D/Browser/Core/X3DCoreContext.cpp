@@ -85,7 +85,7 @@ X3DCoreContext::initialize ()
 bool
 X3DCoreContext::hasExtension (const std::string & name)
 {
-	return extensions .find (name) not_eq extensions .end ();
+	return extensions .count (name);
 }
 
 size_t

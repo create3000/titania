@@ -148,7 +148,7 @@ throw (Error <NODE_IN_USE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (exportedNodes .find (exportedName) not_eq exportedNodes .end ())
+	if (exportedNodes .count (exportedName))
 		throw Error <NODE_IN_USE> ("Couldn't add exported node: exported name '" + exportedName + "' already in use.");
 
 	return updateExportedNode (exportedName, node);

@@ -190,7 +190,7 @@ LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 				case COMPLETE_STATE:
 				case FAILED_STATE:
 				{
-					if (loaded .find (urlObject) == loaded .end ())
+					if (not loaded .count (urlObject))
 						break;
 					// Proceed with next step
 				}

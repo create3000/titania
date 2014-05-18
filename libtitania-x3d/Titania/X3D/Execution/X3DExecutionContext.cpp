@@ -241,7 +241,7 @@ throw (Error <NODE_IN_USE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (namedNodes .find (name) not_eq namedNodes .end ())
+	if (namedNodes .count (name))
 		throw Error <NODE_IN_USE> ("Couldn't add named node: Node name '" + name + "' is already in use.");
 
 	updateNamedNode (name, node);
@@ -394,7 +394,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (importedNodes .find (importedName) not_eq importedNodes .end ())
+	if (importedNodes .count (importedName))
 		throw Error <NODE_IN_USE> ("Couldn't add imported node: imported name '" + importedName + "' already in use.");
 
 	return updateImportedNode (inlineNode, exportedName, importedName);

@@ -1735,7 +1735,7 @@ Parser::fieldType (std::string & _fieldType)
 
 	Id (_fieldType);
 
-	return Grammar::SupportedFields .find (_fieldType) not_eq Grammar::SupportedFields .end ();
+	return Grammar::SupportedFields .count (_fieldType);
 }
 
 bool

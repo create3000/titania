@@ -360,7 +360,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 
 		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
 		{
-			if (exclude .find (sfnode) == exclude .end ())
+			if (not exclude .count (sfnode))
 			{
 				bool insert = true;
 
@@ -369,7 +369,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 					const auto mfnode = dynamic_cast <X3DFieldDefinition*> (secondParent);
 
 					if (mfnode and mfnode -> getType () == X3DConstants::MFNode)
-						insert = exclude .find (mfnode) == exclude .end ();
+						insert = not exclude .count (mfnode);
 				}
 
 				if (insert)
