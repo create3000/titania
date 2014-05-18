@@ -269,7 +269,7 @@ private:
 	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
+	deleteRoutes (const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	unlinkClone (X3D::X3DExecutionContext* const, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;

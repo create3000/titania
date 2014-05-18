@@ -348,12 +348,12 @@ X3DTimeDependentNode::saveState ()
 	if (isSaved ())
 		return;
 
-	X3DChildNode::saveState ();
-
 	wasActive = isActive () and not isPaused ();
 
 	if (wasActive)
 		pauseTime () = getCurrentTime ();
+
+	X3DChildNode::saveState ();
 }
 
 void

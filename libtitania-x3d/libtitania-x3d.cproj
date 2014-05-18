@@ -188,7 +188,9 @@
     <None Include="Titania\X3D\Components\Grouping\Group.h" />
     <None Include="Titania\X3D\Components\Grouping\StaticGroup.h" />
     <None Include="Titania\X3D\Components\Grouping\Switch.h" />
-    <None Include="Titania\X3D\Components\Grouping\Transform.h" />
+    <None Include="Titania\X3D\Components\Grouping\Transform.h">
+      <DependentUpon>StaticGroup.cpp</DependentUpon>
+    </None>
     <None Include="Titania\X3D\Components\Grouping\X3DBoundedObject.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DGroupingNode.h" />
     <None Include="Titania\X3D\Components\Interpolation\ColorInterpolator.h" />

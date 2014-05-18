@@ -1,3 +1,15 @@
+2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DBaseNode.cpp:
+	* Script.cpp:
+	* Inline.cpp:
+	* X3DBindableNode.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DTimeDependentNode.cpp:
+	* X3DPrototypeInstance.cpp:
+	* ParticleSystem.cpp: 
+
 2014-05-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DFieldDefinition.cpp: 

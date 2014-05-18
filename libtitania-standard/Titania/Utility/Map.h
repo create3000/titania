@@ -48,113 +48,30 @@
  *
  ******************************************************************************/
 
-#include "X3DBindableNode.h"
+#ifndef __TITANIA_UTILITY_MAP_H__
+#define __TITANIA_UTILITY_MAP_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "../Layering/X3DLayerNode.h"
-
-#include <iostream>
+#include <map>
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-X3DBindableNode::Fields::Fields () :
-	set_bind (new SFBool ()),
-	 isBound (new SFBool ()),
-	bindTime (new SFTime ())
-{ }
-
-X3DBindableNode::X3DBindableNode () :
-	X3DChildNode (),
-	      fields (),
-	      layers (),
-	    wasBound (false)
+template <class Key,
+          class Value,
+          class Compare,
+          class Allocator>
+std::map <Value, Key, std::less <Value>>
+reverse (const std::map <Key, Value, Compare, Allocator> & index)
 {
-	addNodeType (X3DConstants::X3DBindableNode);
+	std::map <Value, Key, std::less <Value>> result;
+
+	for (const auto & pair : index)
+		result .emplace (pair .second, pair .first);
+
+	return result;
 }
 
-void
-X3DBindableNode::initialize ()
-{
-	X3DChildNode::initialize ();
-
-	set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
-}
-
-void
-X3DBindableNode::_set_bind ()
-{
-	if (set_bind ())
-	{
-		// Save layers
-
-		for (const auto & layer : layers)
-			layer -> shutdown () .removeInterest (this, &X3DBindableNode::removeLayer);
-
-		layers = getLayers ();
-
-		for (const auto & layer : layers)
-			layer -> shutdown () .addInterest (this, &X3DBindableNode::removeLayer, layer);
-
-		// Bind
-
-		for (const auto & layer : layers)
-			bindToLayer (layer);
-	}
-	else
-	{
-		// Unbind
-
-		for (const auto & layer : layers)
-			unbindFromLayer (layer);
-	}
-}
-
-void 
-X3DBindableNode::addLayer (X3DLayerNode* const layer)
-{
-	layers .emplace_back (layer);
-	
-	layer -> shutdown () .addInterest (this, &X3DBindableNode::removeLayer, layer);
-}
-
-void 
-X3DBindableNode::removeLayer (X3DLayerNode* const layer)
-{
-	const auto iter = std::find (layers .begin (), layers .end (), layer);
-
-	if (iter not_eq layers .end ())
-		layers .erase (iter);
-}
-
-void
-X3DBindableNode::saveState ()
-{
-	if (isSaved ())
-		return;
-
-	wasBound = isBound ();
-
-	for (const auto & layer : layers)
-		removeFromLayer (layer);
-
-	X3DChildNode::saveState ();
-}
-
-void
-X3DBindableNode::restoreState ()
-{
-	if (not isSaved ())
-		return;
-
-	X3DChildNode::restoreState ();
-
-	if (wasBound)
-	{
-		for (const auto & layer : layers)
-			bindToLayer (layer);
-	}
-}
-
-} // X3D
+} // basic
 } // titania
+
+#endif

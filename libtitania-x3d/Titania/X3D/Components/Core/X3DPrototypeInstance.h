@@ -137,14 +137,6 @@ public:
 	virtual
 	void
 	traverse (const TraverseType) final override;
-	
-	virtual
-	void
-	saveState () final override;
-	
-	virtual
-	void
-	restoreState () final override;
 
 	virtual
 	void
@@ -197,8 +189,6 @@ private:
 	///  @name Members
 
 	X3DProtoObjectPtr protoDeclaration;
-
-	MFNode savedChildren;
 };
 
 } // X3D

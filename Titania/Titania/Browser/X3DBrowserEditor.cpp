@@ -56,6 +56,7 @@
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
+#include <Titania/Utility/Map.h>
 
 namespace titania {
 namespace puck {
@@ -536,14 +537,39 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 {
 	// Find proto declarations
 
-	std::set <X3D::X3DProtoObjectPtr> protoDeclarations;
+	std::map <X3D::X3DProtoObjectPtr, size_t> protoDeclarations;
 
-	X3D::traverse (nodes, [&protoDeclarations] (X3D::SFNode & node)
+	X3D::traverse (nodes, [&] (X3D::SFNode & node)
 	               {
-	                  const auto protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
+	                  const X3D::X3DPrototypeInstancePtr protoInstance (node);
 
 	                  if (protoInstance)
-								protoDeclarations .emplace (protoInstance -> getProtoDeclaration ());
+	                  {
+	                     X3D::traverse (node, [&] (X3D::SFNode & node)
+	                                    {
+	                                       if (node == protoInstance)
+	                                          return true;
+	                                       
+	                                       const X3D::X3DPrototypeInstancePtr child (node);
+	                                       
+	                                       if (child)
+	                                       {
+	                                          try
+	                                          {
+		                                          if (child -> getProtoDeclaration () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName ()))
+		                                             protoDeclarations .emplace (child -> getProtoDeclaration (), protoDeclarations .size ());
+		                                       }
+		                                       catch (const X3D::X3DError &)
+		                                       { }
+	                                       }
+	                                       
+	                                       return true;
+	                                    },
+						                     true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	                     
+	                     
+								protoDeclarations .emplace (protoInstance -> getProtoDeclaration (), protoDeclarations .size ());
+							}
 
 	                  return true;
 						});
@@ -603,8 +629,8 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 
 	if (not protoDeclarations .empty ())
 	{
-		for (const auto & protoDeclaration : protoDeclarations)
-			text << protoDeclaration << std::endl;
+		for (const auto & protoDeclaration : basic::reverse (protoDeclarations))
+			text << protoDeclaration .second << std::endl;
 
 		text << std::endl;
 	}
@@ -784,7 +810,8 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	               {
 	                  children .emplace (child);
 	                  return true;
-						});
+						},
+						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	children .erase (node);
 
@@ -795,31 +822,29 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	                  // If executionContext node is in children, remove from children.
 	                  children .erase (node);
 	                  return true;
-						});
+						},
+						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	// Remove rest, these are only nodes that are not in executionContext
 
 	for (const auto & child : children)
 	{
-		removeNamedNode (executionContext, child, undoStep);
+		removeNamedNode (child -> getExecutionContext (), child, undoStep);
 
-		if (scene)
+		if (scene == child -> getExecutionContext ())
 			removeExportedNodes (scene, child, undoStep);
 
-		removeImportedNodes (executionContext, X3D::InlinePtr (child), undoStep);
-		deleteRoutes (executionContext, child, undoStep);
+		removeImportedNodes (child -> getExecutionContext (), X3D::InlinePtr (child), undoStep);
+		deleteRoutes (child, undoStep);
+	}
 
+	for (const auto & child : children)
+	{
 		// Hide node
 
 		undoStep -> addUndoFunction (&X3D::X3DBaseNode::restoreState, child);
 		undoStep -> addRedoFunction (&X3D::X3DBaseNode::saveState,    child);
 		child -> saveState ();
-
-		using isInternal = void (X3D::X3DBaseNode::*) (const bool);
-
-		undoStep -> addUndoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, child, false);
-		undoStep -> addRedoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, child, true);
-		child -> isInternal (true);
 	}
 }
 
@@ -855,7 +880,7 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 
 	removeNamedNode (executionContext, node, undoStep);
 	removeImportedNodes (executionContext, X3D::InlinePtr (node), undoStep);
-	deleteRoutes (executionContext, node, undoStep);
+	deleteRoutes (node, undoStep);
 	removeNodeFromSceneGraph (executionContext, node, undoStep);
 
 	// Hide node
@@ -863,12 +888,6 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	undoStep -> addUndoFunction (&X3D::X3DBaseNode::restoreState, node);
 	undoStep -> addRedoFunction (&X3D::X3DBaseNode::saveState,    node);
 	node -> saveState ();
-
-	using isInternal = void (X3D::X3DBaseNode::*) (const bool);
-
-	undoStep -> addUndoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, node, false);
-	undoStep -> addRedoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, node, true);
-	node -> isInternal (true);
 }
 
 void
@@ -914,7 +933,8 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 							}
 
 	                  return true;
-						});
+						},
+						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -975,7 +995,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 
 					try
 					{
-						deleteRoutes (executionContext, importedNode -> getExportedNode (), undoStep);
+						deleteRoutes (importedNode -> getExportedNode (), undoStep);
 					}
 					catch (...)
 					{ }
@@ -1000,7 +1020,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 }
 
 void
-X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::deleteRoutes (const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
 	// Delete routes from and to node
 
@@ -1010,7 +1030,7 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 		{
 			try
 			{
-				deleteRoute (executionContext,
+				deleteRoute (route -> getExecutionContext (),
 				             route -> getSourceNode (),
 				             route -> getSourceField (),
 				             route -> getDestinationNode (),
@@ -1025,7 +1045,7 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 		{
 			try
 			{
-				deleteRoute (executionContext,
+				deleteRoute (route -> getExecutionContext (),
 				             route -> getSourceNode (),
 				             route -> getSourceField (),
 				             route -> getDestinationNode (),
@@ -1253,7 +1273,8 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 								}
 
 		                  return true;
-							});
+							},
+							true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 		replaceNode (getExecutionContext () .getValue (), getExecutionContext () -> getRootNodes (), node, clone, undoStep);
 	}
@@ -1315,7 +1336,8 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 								}
 
 		                  return true;
-							});
+							},
+							true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 		// Unlink in rootNodes array.
 

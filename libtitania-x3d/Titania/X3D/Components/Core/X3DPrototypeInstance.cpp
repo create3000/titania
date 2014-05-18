@@ -76,8 +76,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
-	   protoDeclaration (prototype),
-	      savedChildren ()
+	   protoDeclaration (prototype)
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
@@ -92,7 +91,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> clone ());
 	}
 
-	addChildren (protoDeclaration, savedChildren);
+	addChildren (protoDeclaration);
 
 	// Assign protos and root nodes
 
@@ -216,61 +215,6 @@ X3DPrototypeInstance::traverse (const TraverseType type)
 }
 
 void
-X3DPrototypeInstance::saveState ()
-{
-	if (isSaved ())
-		return;
-
-	X3DBaseNode::saveState ();
-
-	// Delete children of node if not in scene
-
-	std::set <X3D::SFNode> children;
-
-	// Collect children
-
-	X3D::traverse (getRootNodes (), [&children] (X3D::SFNode & child)
-	               {
-	                  children .emplace (child);
-	                  return true;
-						});
-
-	children .erase (this);
-
-	// Filter out scene nodes
-
-	X3D::traverse (getRootContext () -> getRootNodes (), [&children] (X3D::SFNode & node)
-	               {
-	                  // If scene node in children, remove from children.
-	                  children .erase (node);
-	                  return true;
-						});
-
-	// Save state of rest, these are only nodes not in scene.
-
-	for (const auto & child : children)
-	{
-		child -> saveState ();
-
-		savedChildren .emplace_back (child);
-	}
-}
-
-void
-X3DPrototypeInstance::restoreState ()
-{
-	if (not isSaved ())
-		return;
-
-	X3DBaseNode::restoreState ();
-
-	for (const auto & child : savedChildren)
-		child -> restoreState ();
-
-	savedChildren .clear ();
-}
-
-void
 X3DPrototypeInstance::addTool ()
 {
 	try
@@ -296,7 +240,7 @@ void
 X3DPrototypeInstance::toStream (std::ostream & ostream) const
 //throw (Error <DISPOSED>)
 {
-	X3DBaseNode::toStream (ostream);
+	X3DNode::toStream (ostream);
 }
 
 void

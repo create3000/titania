@@ -55,6 +55,8 @@
 #include "../OutlineEditor/OutlineTreeData.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
 
+#include <Titania/Utility/Map.h>
+
 namespace titania {
 namespace puck {
 
@@ -70,21 +72,6 @@ operator - (X3D::FieldDefinitionArray lhs, X3D::FieldDefinitionArray rhs)
 	std::set_difference (lhs .begin (), lhs .end (),
 	                     rhs .begin (), rhs .end (),
 	                     std::back_inserter (result));
-
-	return result;
-}
-
-template <class Key,
-          class Value,
-          class Compare,
-          class Allocator>
-std::map <Value, Key, Compare>
-reverse (const std::map <Key, Value, Compare, Allocator> & index)
-{
-	std::map <Value, Key, Compare> result;
-
-	for (const auto & pair : index)
-		result .emplace (pair .second, pair .first);
 
 	return result;
 }
@@ -1050,7 +1037,7 @@ NodePropertiesEditor::on_apply ()
 			{
 				// Undo preparation
 
-				FieldToFieldIndex         undoFieldsToReplace = reverse (fieldsToReplace);
+				FieldToFieldIndex         undoFieldsToReplace = basic::reverse (fieldsToReplace);
 				X3D::FieldDefinitionArray undoFieldsToRemove  = userDefinedFields - node -> getUserDefinedFields ();
 
 				const auto undoRoot = X3D::createFieldContainer (node -> getExecutionContext (), undoFieldsToRemove);
@@ -1125,7 +1112,7 @@ NodePropertiesEditor::on_apply ()
 				{
 					for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
 					{
-						getBrowserWindow () -> deleteRoute (node -> getExecutionContext (),
+						getBrowserWindow () -> deleteRoute (route -> getExecutionContext (),
 						                                    route -> getSourceNode (),
 						                                    route -> getSourceField (),
 						                                    route -> getDestinationNode (),
@@ -1135,7 +1122,7 @@ NodePropertiesEditor::on_apply ()
 
 					for (const auto & route : X3D::RouteSet (field -> getOutputRoutes ()))
 					{
-						getBrowserWindow () -> deleteRoute (node -> getExecutionContext (),
+						getBrowserWindow () -> deleteRoute (route -> getExecutionContext (),
 						                                    route -> getSourceNode (),
 						                                    route -> getSourceField (),
 						                                    route -> getDestinationNode (),

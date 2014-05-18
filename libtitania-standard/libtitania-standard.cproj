@@ -138,6 +138,7 @@
     <None Include="Titania\OS\system.h" />
     <None Include="Titania\InputOutput\InverseString.h" />
     <None Include="Titania\OS\realpath.h" />
+    <None Include="Titania\Utility\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

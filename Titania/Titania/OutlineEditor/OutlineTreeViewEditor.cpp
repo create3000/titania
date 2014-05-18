@@ -829,7 +829,7 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 							{
 								const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
-								getBrowserWindow () -> deleteRoute (get_model () -> get_execution_context (),
+								getBrowserWindow () -> deleteRoute (route -> getExecutionContext (),
 								                                    route -> getSourceNode (),
 								                                    route -> getSourceField (),
 								                                    route -> getDestinationNode (),
@@ -907,7 +907,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 				{
 					const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
-					getBrowserWindow () -> deleteRoute (get_model () -> get_execution_context (),
+					getBrowserWindow () -> deleteRoute (route -> getExecutionContext (),
 					                                    route -> getSourceNode (),
 					                                    route -> getSourceField (),
 					                                    route -> getDestinationNode (),

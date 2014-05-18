@@ -342,10 +342,10 @@ Inline::saveState ()
 	if (isSaved ())
 		return;
 
-	X3DChildNode::saveState ();
-
 	if (load ())
 		requestUnload ();
+
+	X3DChildNode::saveState ();
 }
 
 void

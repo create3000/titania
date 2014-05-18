@@ -747,17 +747,20 @@ X3DBaseNode::hasRoutes () const
 void
 X3DBaseNode::isInternal (const bool value)
 {
-	internal = value;
+	if (value not_eq internal)
+	{
+		internal = value;
 
-	if (internal)
-	{
-		for (const auto & field : fieldDefinitions)
-			field -> setName ("");
-	}
-	else
-	{
-		for (const auto & field : fields)
-			field .second -> setName (field .first);
+		if (internal)
+		{
+			for (const auto & field : fieldDefinitions)
+				field -> setName ("");
+		}
+		else
+		{
+			for (const auto & field : fields)
+				field .second -> setName (field .first);
+		}
 	}
 }
 
@@ -765,12 +768,14 @@ void
 X3DBaseNode::saveState ()
 {
 	saved = true;
+	isInternal (true);
 }
 
 void
 X3DBaseNode::restoreState ()
 {
 	saved = false;
+	isInternal (false);
 }
 
 void

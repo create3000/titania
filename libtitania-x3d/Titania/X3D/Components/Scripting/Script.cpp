@@ -220,11 +220,11 @@ Script::saveState ()
 	if (isSaved ())
 		return;
 
-	X3DScriptNode::saveState ();
-
 	javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
 
 	setLoadState (NOT_STARTED_STATE);
+
+	X3DScriptNode::saveState ();
 }
 
 void
