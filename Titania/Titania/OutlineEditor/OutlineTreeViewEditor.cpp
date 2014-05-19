@@ -52,6 +52,7 @@
 
 #include "../Browser/BrowserWindow.h"
 #include "CellRenderer/OutlineCellRenderer.h"
+#include "OutlineDragDrop.h"
 #include "OutlineRouteGraph.h"
 #include "OutlineSelection.h"
 #include "OutlineTreeModel.h"
@@ -62,13 +63,12 @@
 namespace titania {
 namespace puck {
 
-const std::string OutlineTreeViewEditor::dragDataType = "TITANIA_OUTLINE_TREE_ROW";
-
 OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
 	               selection (new OutlineSelection (browserWindow, this)),
+	                dragDrop (new OutlineDragDrop (browserWindow, this)),
 	            overUserData (new OutlineUserData ()),
 	        selectedUserData (new OutlineUserData ()),
 	      matchingAccessType (0),
@@ -84,17 +84,6 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	watch_motion ();
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
-
-	// Drag & Drop
-	set_reorderable (true);
-
-	enable_model_drag_source ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
-	                          Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
-
-	enable_model_drag_dest ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
-	                        Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
-
-	signal_drag_motion () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::on_my_drag_motion), false);
 }
 
 void
@@ -112,95 +101,6 @@ OutlineTreeViewEditor::unwatch_motion ()
 	++ unwatchMotion;
 
 	motion_notify_connection .disconnect ();
-}
-
-bool
-OutlineTreeViewEditor::on_my_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
-{
-	context -> drag_status (Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK, time);
-
-	TreeModel::Path      path;
-	TreeViewDropPosition position;
-
-	if (get_dest_row_at_pos (x, y, path, position))
-	{
-		switch (position)
-		{
-			case Gtk::TREE_VIEW_DROP_AFTER:
-			case Gtk::TREE_VIEW_DROP_BEFORE:
-				break;
-			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
-			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
-			{
-				const auto iter = get_model () -> get_iter (path);
-
-				switch (get_data_type (iter))
-				{
-					case OutlineIterType::X3DField:
-					{
-						const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-						switch (field -> getType ())
-						{
-							case X3D::X3DConstants::SFNode:
-							case X3D::X3DConstants::MFNode:
-								break;
-							default:
-								return true;
-						}
-					}
-					case OutlineIterType::X3DBaseNode:
-						break;
-					default:
-						return true;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-void
-OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                              int x, int y,
-                                              const Gtk::SelectionData & selection_data,
-                                              guint info,
-                                              guint time)
-{
-	__LOG__ << time << " : " << selection_data .get_data_as_string () << std::endl;
-
-	TreeModel::Path      path;
-	TreeViewDropPosition position;
-
-	if (get_dest_row_at_pos (x, y, path, position))
-	{
-		__LOG__ << int (context -> get_suggested_action ()) << std::endl;
-
-		switch (context -> get_suggested_action ())
-		{
-			case Gdk::ACTION_COPY:
-			{
-				__LOG__ << "copy" << std::endl;
-				context -> drag_finish (true, true, time);
-				break;
-			}
-			case Gdk::ACTION_MOVE:
-			{
-				__LOG__ << "move" << std::endl;
-				context -> drag_finish (true, true, time);
-				break;
-			}
-			case Gdk::ACTION_LINK:
-			{
-				__LOG__ << "link" << std::endl;
-				context -> drag_finish (true, false, time);
-				break;
-			}
-			default:
-				break;
-		}
-	}
 }
 
 void

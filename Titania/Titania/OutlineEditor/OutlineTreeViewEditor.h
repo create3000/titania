@@ -56,6 +56,7 @@
 namespace titania {
 namespace puck {
 
+class OutlineDragDrop;
 class OutlineSelection;
 
 class OutlineTreeViewEditor :
@@ -77,13 +78,6 @@ private:
 
 	void
 	unwatch_motion ();
-
-	bool
-	on_my_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
-
-	virtual
-	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	virtual
 	void
@@ -142,15 +136,12 @@ private:
 	bool
 	select_route (const double, const double);
 
-	///  @name Static members
-
-	static const std::string dragDataType;
-
 	///  @name Members
 
 	using FieldType = X3D::X3DConstants::FieldType;
 
 	std::unique_ptr <OutlineSelection> selection;
+	std::unique_ptr <OutlineDragDrop>  dragDrop;
 	OutlineUserDataPtr                 overUserData;
 	OutlineUserDataPtr                 selectedUserData;
 	FieldType                          matchingFieldType;

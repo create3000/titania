@@ -1,5 +1,13 @@
 2014-05-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* OutlineDragDrop.h:
+	* OutlineDragDrop.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
+2014-05-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.cpp:
 	* OutlineTreeModel.h:
 	* OutlineTreeModel.cpp:
