@@ -78,17 +78,8 @@ private:
 	void
 	unwatch_motion ();
 
-	virtual
-	void
-	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> &) final override;
-
-	virtual
-	void
-	on_drag_end (const Glib::RefPtr <Gdk::DragContext> &) final override;
-
-	virtual
-	void
-	on_drag_data_delete (const Glib::RefPtr <Gdk::DragContext> &) final override;
+	bool
+	on_my_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
 
 	virtual
 	void

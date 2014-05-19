@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,14 +59,16 @@ namespace titania {
 namespace puck {
 
 OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	Glib::ObjectBase (typeid (OutlineTreeModel)),
-	    Glib::Object (),
-	  Gtk::TreeModel (),
-	executionContext (executionContext),
-	            tree (),
-	           stamp (reinterpret_cast <long int> (this)),
-	 show_all_routes (false)
+	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	   Glib::ObjectBase (typeid (OutlineTreeModel)),
+	       Glib::Object (),
+	     Gtk::TreeModel (),
+	Gtk::TreeDragSource (),
+	  Gtk::TreeDragDest (),
+	   executionContext (executionContext),
+	               tree (),
+	              stamp (reinterpret_cast <long int> (this)),
+	    show_all_routes (false)
 {
 	//__LOG__ << std::endl;
 }
@@ -222,6 +224,7 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
 	//__LOG__ << std::endl;
 
 	Path path;
+
 	path .push_back (tree .size ());
 
 	iterator iter;
@@ -239,6 +242,7 @@ OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3
 	//__LOG__ << std::endl;
 
 	Path path = get_path (parent);
+
 	path .push_back (tree .get_node (path) .size ());
 
 	iterator iter;
@@ -338,8 +342,8 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			const auto userData       = get_user_data (iter);
 			const auto parentUserData = get_user_data (iter -> parent ());
 
-			val .set ((userData and userData -> selected & OUTLINE_SELECTED) or
-			          (parentUserData and parentUserData -> selected & OUTLINE_SELECTED));
+			val .set ((userData and userData -> selected & OUTLINE_SELECTED)or
+			             (parentUserData and parentUserData -> selected & OUTLINE_SELECTED));
 
 			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;
@@ -358,7 +362,7 @@ Gtk::TreeModel::Path
 OutlineTreeModel::get_path_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
-	
+
 	assert (get_data (iter));
 
 	return get_data (iter) -> get_path ();
@@ -458,10 +462,10 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			// Prevent self referencing traversal
-			
+
 			if (is_in_parents (sfnode, iter))
 				return false;
-				
+
 			// Test SFNode
 
 			if (sfnode)
@@ -478,10 +482,10 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 				const auto exportedNode = importedNode -> getExportedNode ();
 
 				// Prevent self referencing traversal
-				
+
 				if (is_in_parents (exportedNode, iter))
 					return false;
-					
+
 				// Test SFNode
 
 				if (exportedNode)
@@ -501,10 +505,10 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 				const auto localNode    = exportedNode -> getLocalNode ();
 
 				// Prevent self referencing traversal
-				
+
 				if (is_in_parents (localNode, iter))
 					return false;
-					
+
 				// Test SFNode
 
 				if (localNode)
@@ -527,15 +531,15 @@ OutlineTreeModel::is_in_parents (const X3D::SFNode & sfnode, const iterator & it
 	{
 		switch (parent -> get_type ())
 		{
-			case OutlineIterType::X3DBaseNode:
-			{
-				const auto & parent_sfnode = *static_cast <X3D::SFNode*> (parent -> get_object ());
+			case OutlineIterType::X3DBaseNode :
+				{
+					const auto & parent_sfnode = *static_cast <X3D::SFNode*> (parent -> get_object ());
 
-				if (sfnode == parent_sfnode)
-					return true;
+					if (sfnode == parent_sfnode)
+						return true;
 
-				break;
-			}
+					break;
+				}
 			case OutlineIterType::ImportedNode:
 			{
 				try
@@ -693,6 +697,33 @@ void
 OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, int* new_order)
 {
 	//__LOG__ << std::endl;
+}
+
+bool
+OutlineTreeModel::row_draggable_vfunc (const Path & path) const
+{
+	//__LOG__ << std::endl;
+
+	const auto iter = const_cast <OutlineTreeModel*> (this) -> get_iter (path);
+
+	switch (get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
+			return sfnode -> getExecutionContext () == get_execution_context ();
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+bool
+OutlineTreeModel::drag_data_get_vfunc (const Path & path, Gtk::SelectionData & selection_data) const
+{
+	return true;
 }
 
 OutlineTreeModel::~OutlineTreeModel ()

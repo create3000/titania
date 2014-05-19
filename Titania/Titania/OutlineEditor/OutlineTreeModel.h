@@ -67,7 +67,9 @@ namespace puck {
 class OutlineTreeModel :
 	virtual public X3DBaseInterface,
 	public Glib::Object,
-	public Gtk::TreeModel
+	public Gtk::TreeModel,
+	public Gtk::TreeDragSource,
+	public Gtk::TreeDragDest
 {
 public:
 
@@ -288,6 +290,14 @@ private:
 	virtual
 	void
 	on_rows_reordered (const Path &, const iterator &, int*) final override;
+	
+	virtual
+	bool
+	row_draggable_vfunc (const Path & path) const final override;
+	
+	virtual
+	bool
+	drag_data_get_vfunc (const Path & path, Gtk::SelectionData & selection_data) const final override;
 
 	///  @name Members
 

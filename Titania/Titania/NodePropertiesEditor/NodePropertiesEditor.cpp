@@ -76,7 +76,7 @@ operator - (X3D::FieldDefinitionArray lhs, X3D::FieldDefinitionArray rhs)
 	return result;
 }
 
-const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "titania/node-properties/user-defined-field";
+const std::string NodePropertiesEditor::userDefinedFieldsDragDataType = "TITANIA_NODE_PROPERTIES_USER_DEFINED_FIELD";
 
 enum ImportedNodesEditorColumns
 {
@@ -193,15 +193,11 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 
 		//  Drag & Drop
 
-		// Drag targets
-		getUserDefinedFieldsTreeView () .enable_model_drag_source ({
-		                                                              Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
-																					  }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+		getUserDefinedFieldsTreeView () .enable_model_drag_source ({ Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET) },
+																					  Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
 
-		// Drop targets
-		getUserDefinedFieldsTreeView () .enable_model_drag_dest ({
-		                                                            Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET)
-																					}, Gdk::ACTION_MOVE);
+		getUserDefinedFieldsTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry (userDefinedFieldsDragDataType, Gtk::TARGET_SAME_WIDGET) },
+																					Gdk::ACTION_MOVE);
 	}
 
 	/**
