@@ -1,18 +1,24 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V0.6.8
+
+META "comment" "World of Titania"
+META "created" "Tue, 20 May 2014 19:16:28 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.8, http://titania.create3000.de"
+META "modified" "Tue, 20 May 2014 20:07:29 GMT"
 
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
 
 PROTO DoubleClick [
-  eventIn      SFTime set_time
-  exposedField SFTime doubleClickInterval 0.5
-  eventOut     SFTime doubleClickTime
+  inputOnly   SFTime set_time
+  inputOutput SFTime doubleClickInterval 0.5
+  outputOnly  SFTime doubleClickTime
 ]
 {
   DEF DoubleClick Script {
-    eventIn      SFTime set_time IS set_time
-    exposedField SFTime doubleClickInterval IS doubleClickInterval
-    eventOut     SFTime doubleClickTime IS doubleClickTime
+    inputOnly   SFTime set_time IS set_time
+    inputOutput SFTime doubleClickInterval IS doubleClickInterval
+    outputOnly  SFTime doubleClickTime IS doubleClickTime
 
     url "vrmlscript:
 
@@ -35,19 +41,56 @@ function set_time (value, time)
   }
 }
 
+PROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice FALSE
+  initializeOnly SFVec3f bboxSize -1 -1 -1
+  initializeOnly SFVec3f bboxCenter 0 0 0
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children [ ]
+]
+{
+  DEF Switch Switch {
+    bboxSize IS bboxSize
+    bboxCenter IS bboxCenter
+    addChildren IS addChildren
+    removeChildren IS removeChildren
+    children IS children
+  }
+
+  Script {
+    inputOutput    SFBool whichChoice IS whichChoice
+    initializeOnly SFNode group USE Switch
+
+    url "javascript:
+
+function initialize ()
+{
+	set_whichChoice (whichChoice);
+}
+
+function set_whichChoice (value)
+{
+	group .whichChoice = value
+}
+"
+    directOutput TRUE
+  }
+}
+
 PROTO TransformTool [
   # required fields
-  eventIn      SFBool     set_enabled
-  eventOut     SFBool     isActive
-  exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  exposedField SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  exposedField SFVec3f    bboxSize 0 0 0
-  exposedField SFVec3f    bboxCenter 0 0 0
-  exposedField SFNode     transform NULL
+  inputOnly   SFBool     set_enabled
+  outputOnly  SFBool     isActive
+  inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFVec3f    bboxSize 0 0 0
+  inputOutput SFVec3f    bboxCenter 0 0 0
+  inputOutput SFNode     transform NULL
 ]
 {
   Collision {
-    collide FALSE
+    enabled FALSE
     children [
       Transform {
         translation IS bboxCenter
@@ -60,21 +103,75 @@ PROTO TransformTool [
               }
             }
             geometry IndexedLineSet {
-              coordIndex [ 0, 1, 2, 3, 0, -1, 4, 5, 6, 7, 4, -1, 0, 4, -1, 3, 7, -1, 1, 5, -1, 2, 6, -1 ]
+              coordIndex [
+                0,
+                1,
+                2,
+                3,
+                0,
+                -1,
+                4,
+                5,
+                6,
+                7,
+                4,
+                -1,
+                0,
+                4,
+                -1,
+                3,
+                7,
+                -1,
+                1,
+                5,
+                -1,
+                2,
+                6,
+                -1
+              ]
               coord DEF BBox Coordinate {
-                point [ -0.5 0.5 0.5, -0.5 -0.5 0.5, 0.5 -0.5 0.5, 0.5 0.5 0.5, -0.5 0.5 -0.5, -0.5 -0.5 -0.5, 0.5 -0.5 -0.5, 0.5 0.5 -0.5 ]
+                point [
+                  -0.5 0.5 0.5,
+                  -0.5 -0.5 0.5,
+                  0.5 -0.5 0.5,
+                  0.5 0.5 0.5,
+                  -0.5 0.5 -0.5,
+                  -0.5 -0.5 -0.5,
+                  0.5 -0.5 -0.5,
+                  0.5 0.5 -0.5
+                ]
               }
             }
           }
           Shape {
             geometry IndexedLineSet {
               colorPerVertex FALSE
-              coordIndex [ 0, 1, -1, 0, 2, -1, 0, 3, -1 ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
               color Color {
-                color [ 1 0 0, 0 1 0, 0 0 1 ]
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
               }
               coord DEF Axes Coordinate {
-                point [ 0 0 0, 0.5 0 0, 0 0.5 0, 0 0 0.5, 0 0 0 ]
+                point [
+                  0 0 0,
+                  0.5 0 0,
+                  0 0.5 0,
+                  0 0 0.5,
+                  0 0 0
+                ]
               }
             }
           }
@@ -190,7 +287,7 @@ PROTO TransformTool [
               DEF XHandle Transform {
                 children ScreenGroup {
                   children DEF XSwitch Switch {
-                    choice [
+                    children [
                       Transform {
                         translation 10.5 0 0
                         rotation 0 0 -1 1.5708
@@ -250,7 +347,7 @@ PROTO TransformTool [
               DEF YHandle Transform {
                 children ScreenGroup {
                   children DEF YSwitch Switch {
-                    choice [
+                    children [
                       Transform {
                         translation 0 10.5 0
                         children Shape {
@@ -304,7 +401,7 @@ PROTO TransformTool [
               DEF ZHandle Transform {
                 children ScreenGroup {
                   children DEF ZSwitch Switch {
-                    choice [
+                    children [
                       Transform {
                         translation 0 0 10.5
                         rotation 1 0 0 1.5708
@@ -339,7 +436,7 @@ PROTO TransformTool [
             ]
           }
           DEF ScaleTool Switch {
-            choice [
+            children [
               Group { }
               Group { }
               Group {
@@ -452,28 +549,46 @@ PROTO TransformTool [
           }
         }
         geometry DEF CenterIndexedLineSet IndexedLineSet {
-          coordIndex [ 0, 1, -1 ]
+          coordIndex [
+            0,
+            1,
+            -1
+          ]
           color Color {
-            color [ 1 1 0, 1 1 0 ]
+            color [
+              1 1 0,
+              1 1 0
+            ]
           }
           coord DEF CenterLineCoord Coordinate { }
         }
       }
       DEF CenterPoint Transform {
         children [
+          DEF _1 TouchSensor {
+            enabled IS set_enabled
+          }
           ScreenGroup {
-            children Shape {
-              appearance Appearance {
-                material USE Yellow
-                shaders USE HandleShader
-              }
-              geometry Sphere {
-                radius 5
-              }
+            children DEF _2 BooleanSwitch {
+              children [
+                DEF _3 Shape {
+                  appearance Appearance {
+                    material USE Yellow
+                    shaders USE HandleShader
+                  }
+                  geometry DEF _4 Sphere {
+                    radius 5
+                  }
+                }
+                DEF _5 Shape {
+                  appearance USE Red
+                  geometry USE _4
+                }
+              ]
             }
           }
           DEF RotationHandlesSwitch Switch {
-            choice [
+            children [
               Group { }
               DEF RotationHandles Transform {
                 children [
@@ -507,7 +622,7 @@ PROTO TransformTool [
                           }
                           DEF XCircleSwitch Switch {
                             whichChoice 0
-                            choice Shape {
+                            children Shape {
                               appearance Appearance {
                                 material DEF XCircleMaterial Material {
                                   emissiveColor 1 0 0
@@ -544,7 +659,7 @@ PROTO TransformTool [
                           }
                           DEF YCircleSwitch Switch {
                             whichChoice 0
-                            choice Shape {
+                            children Shape {
                               appearance Appearance {
                                 material DEF YCircleMaterial Material {
                                   emissiveColor 0 1 0
@@ -579,7 +694,7 @@ PROTO TransformTool [
                           }
                           DEF ZCircleSwitch Switch {
                             whichChoice 0
-                            choice Shape {
+                            children Shape {
                               appearance Appearance {
                                 material DEF ZCircleMaterial Material {
                                   emissiveColor 0 0 1
@@ -601,7 +716,7 @@ PROTO TransformTool [
         ]
       }
       Switch {
-        choice DEF PPoint Transform {
+        children DEF PPoint Transform {
           children Shape {
             appearance Appearance {
               lineProperties LineProperties {
@@ -622,17 +737,19 @@ PROTO TransformTool [
     ]
   }
 
-  DEF DoubleClick_1 DoubleClick { }
+  DEF ModeDoubleClick DoubleClick { }
+
+  DEF CenterDoubleClick DoubleClick { }
 
   DEF ModeScript Script {
-    eventIn  SFBool  set_enabled IS set_enabled
-    eventIn  SFBool  set_active
-    eventIn  SFTime  set_time
-    eventOut SFTime  touchTime
-    eventOut SFBool  move
-    eventOut SFBool  rotate
-    eventOut SFBool  scale
-    eventOut SFInt32 whichChoice_changed
+    inputOnly  SFBool  set_enabled IS set_enabled
+    inputOnly  SFBool  set_active
+    inputOnly  SFTime  set_time
+    outputOnly SFTime  touchTime
+    outputOnly SFBool  move
+    outputOnly SFBool  rotate
+    outputOnly SFBool  scale
+    outputOnly SFInt32 whichChoice_changed
 
     url "vrmlscript:
 function initialize ()
@@ -682,24 +799,24 @@ function set_whichChoice (value)
   }
 
   DEF BBoxScript Script {
-    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
-    exposedField SFVec3f    bboxSize IS bboxSize
-    field        SFFloat    offset 0.01
-    field        SFVec3f    xAxis 1 0 0
-    field        SFVec3f    yAxis 0 1 0
-    field        SFVec3f    zAxis 0 0 1
-    field        SFNode     bbox USE BBox
-    field        SFNode     axes USE Axes
-    field        SFNode     front USE Front
-    field        SFNode     right USE Right
-    field        SFNode     back USE Back
-    field        SFNode     left USE Left
-    field        SFNode     top USE Top
-    field        SFNode     bottom USE Bottom
-    field        SFNode     xHandle USE XHandle
-    field        SFNode     yHandle USE YHandle
-    field        SFNode     zHandle USE ZHandle
+    inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
+    inputOutput    SFVec3f    bboxSize IS bboxSize
+    initializeOnly SFFloat    offset 0.01
+    initializeOnly SFVec3f    xAxis 1 0 0
+    initializeOnly SFVec3f    yAxis 0 1 0
+    initializeOnly SFVec3f    zAxis 0 0 1
+    initializeOnly SFNode     bbox USE BBox
+    initializeOnly SFNode     axes USE Axes
+    initializeOnly SFNode     front USE Front
+    initializeOnly SFNode     right USE Right
+    initializeOnly SFNode     back USE Back
+    initializeOnly SFNode     left USE Left
+    initializeOnly SFNode     top USE Top
+    initializeOnly SFNode     bottom USE Bottom
+    initializeOnly SFNode     xHandle USE XHandle
+    initializeOnly SFNode     yHandle USE YHandle
+    initializeOnly SFNode     zHandle USE ZHandle
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -765,24 +882,27 @@ function eventsProcessed ()
   }
 
   DEF MoveScript Script {
-    eventIn      SFBool  set_active
-    eventIn      SFVec3f set_frontTranslation
-    eventIn      SFVec3f set_rightTranslation
-    eventIn      SFVec3f set_backTranslation
-    eventIn      SFVec3f set_leftTranslation
-    eventIn      SFVec3f set_topTranslation
-    eventIn      SFVec3f set_bottomTranslation
-    eventIn      SFVec3f set_xTranslation
-    eventIn      SFVec3f set_yTranslation
-    eventIn      SFVec3f set_zTranslation
-    exposedField SFVec3f bboxSize IS bboxSize
-    exposedField SFNode  transform IS transform
-    field        SFVec3f translation 0 0 0
+    inputOnly      SFBool  set_active
+    inputOnly      SFVec3f set_frontTranslation
+    inputOnly      SFVec3f set_rightTranslation
+    inputOnly      SFVec3f set_backTranslation
+    inputOnly      SFVec3f set_leftTranslation
+    inputOnly      SFVec3f set_topTranslation
+    inputOnly      SFVec3f set_bottomTranslation
+    inputOnly      SFVec3f set_xTranslation
+    inputOnly      SFVec3f set_yTranslation
+    inputOnly      SFVec3f set_zTranslation
+    inputOutput    SFBool  keepCenter FALSE
+    inputOutput    SFVec3f bboxSize IS bboxSize
+    inputOutput    SFNode  transform IS transform
+    initializeOnly SFVec3f translation 0 0 0
+    inputOutput    SFVec3f center 0 0 0
 
     url "vrmlscript:
 function set_active (value)
 {
 	translation = transform .translation;
+	center      = transform .center;
 }
 
 function set_frontTranslation (value)
@@ -837,35 +957,49 @@ function translate_with_bbox (value)
 
 function translate (value)
 {
-	var matrix = new SFMatrix4f ();
-	matrix .setTransform (transform .translation,
-	                      transform .rotation,
-	                      transform .scale,
-	                      transform .scaleOrientation,
-	                      transform .center);
+	if (keepCenter)
+	{
+		transform .translation = translation .add (value);
+		transform .center      = center .subtract (value);
+	}
+	else
+	{
+		var matrix = new SFMatrix4f ();
+		matrix .setTransform (transform .translation,
+		                      transform .rotation,
+		                      transform .scale,
+		                      transform .scaleOrientation,
+		                      transform .center);
 
-	var offset = matrix .multDirMatrix (value);
-
-	transform .translation = translation .add (offset);
+		var offset = matrix .multDirMatrix (value);
+		transform .translation = translation .add (offset);
+	}
 }
 "
     directOutput TRUE
   }
 
   DEF CenterScript Script {
-    eventIn      SFVec3f set_center
-    exposedField SFVec3f bboxSize IS bboxSize
-    exposedField SFVec3f bboxCenter IS bboxCenter
-    exposedField SFNode  transform IS transform
-    field        SFNode  point USE CenterPoint
-    field        SFNode  coord USE CenterLineCoord
-    field        SFNode  self USE CenterScript
+    inputOnly      SFVec3f set_center
+    inputOnly      SFTime  set_doubleClickTime
+    outputOnly     SFBool  keepCenter_changed
+    inputOutput    SFVec3f bboxSize IS bboxSize
+    inputOutput    SFVec3f bboxCenter IS bboxCenter
+    inputOutput    SFNode  transform IS transform
+    initializeOnly SFNode  point USE CenterPoint
+    initializeOnly SFNode  coord USE CenterLineCoord
+    initializeOnly SFNode  self USE CenterScript
 
     url "vrmlscript:
+function set_doubleClickTime ()
+{
+  keepCenter_changed = ! keepCenter_changed;
+}
+
 function set_transform ()
 {
   Browser .addRoute (transform, 'center', self, 'set_center');
-}    
+}
 
 function eventsProcessed ()
 {
@@ -877,17 +1011,17 @@ function eventsProcessed ()
   }
 
   DEF RotationHandleScript Script {
-    eventIn      SFVec3f    set_center
-    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
-    exposedField SFNode     transform IS transform
-    exposedField SFVec3f    bboxSize IS bboxSize
-    exposedField SFVec3f    bboxCenter IS bboxCenter
-    field        SFNode     handles USE RotationHandles
-    field        SFNode     xHandle USE XRotationHandle
-    field        SFNode     yHandle USE YRotationHandle
-    field        SFNode     zHandle USE ZRotationHandle
-    field        SFNode     self USE RotationHandleScript
+    inputOnly      SFVec3f    set_center
+    inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
+    inputOutput    SFNode     transform IS transform
+    inputOutput    SFVec3f    bboxSize IS bboxSize
+    inputOutput    SFVec3f    bboxCenter IS bboxCenter
+    initializeOnly SFNode     handles USE RotationHandles
+    initializeOnly SFNode     xHandle USE XRotationHandle
+    initializeOnly SFNode     yHandle USE YRotationHandle
+    initializeOnly SFNode     zHandle USE ZRotationHandle
+    initializeOnly SFNode     self USE RotationHandleScript
 
     url "vrmlscript:
 function set_transform ()
@@ -938,16 +1072,16 @@ function eventsProcessed ()
   }
 
   DEF DiskScript Script {
-    eventIn  SFBool  set_x
-    eventIn  SFBool  set_y
-    eventIn  SFBool  set_z
-    eventOut SFFloat x_changed
-    eventOut SFFloat y_changed
-    eventOut SFFloat z_changed
-    field    SFFloat transparency 0.9
-    field    SFNode  xSensor USE XRotationSensor
-    field    SFNode  ySensor USE YRotationSensor
-    field    SFNode  zSensor USE ZRotationSensor
+    inputOnly      SFBool  set_x
+    inputOnly      SFBool  set_y
+    inputOnly      SFBool  set_z
+    outputOnly     SFFloat x_changed
+    outputOnly     SFFloat y_changed
+    outputOnly     SFFloat z_changed
+    initializeOnly SFFloat transparency 0.9
+    initializeOnly SFNode  xSensor USE XRotationSensor
+    initializeOnly SFNode  ySensor USE YRotationSensor
+    initializeOnly SFNode  zSensor USE ZRotationSensor
 
     url "vrmlscript:
 function initialize ()
@@ -980,15 +1114,15 @@ function isActive (sensorA, sensorB, sensorC)
   }
 
   DEF RotateScript Script {
-    eventIn      SFBool     set_active
-    eventIn      SFRotation set_rotation
-    eventIn      SFRotation set_xRotation
-    eventIn      SFRotation set_yRotation
-    eventIn      SFRotation set_zRotation
-    exposedField SFNode     transform IS transform
-    field        SFRotation rotation 0 0 1 0
-    field        SFVec3f    scale 1 1 1
-    field        SFRotation scaleOrientation 0 0 1 0
+    inputOnly      SFBool     set_active
+    inputOnly      SFRotation set_rotation
+    inputOnly      SFRotation set_xRotation
+    inputOnly      SFRotation set_yRotation
+    inputOnly      SFRotation set_zRotation
+    inputOutput    SFNode     transform IS transform
+    initializeOnly SFRotation rotation 0 0 1 0
+    initializeOnly SFVec3f    scale 1 1 1
+    initializeOnly SFRotation scaleOrientation 0 0 1 0
 
     url "vrmlscript:
 function set_active (value)
@@ -1035,23 +1169,23 @@ function rotate (value)
   }
 
   DEF ScaleHandlesScript Script {
-    exposedField SFVec3f bboxSize IS bboxSize
-    field        SFNode  handle1 USE ScaleHandle1
-    field        SFNode  handle2 USE ScaleHandle2
-    field        SFNode  handle3 USE ScaleHandle3
-    field        SFNode  handle4 USE ScaleHandle4
-    field        SFNode  handle5 USE ScaleHandle5
-    field        SFNode  handle6 USE ScaleHandle6
-    field        SFNode  handle7 USE ScaleHandle7
-    field        SFNode  handle8 USE ScaleHandle8
-    field        SFNode  sensor1 USE ScaleSensor1
-    field        SFNode  sensor2 USE ScaleSensor2
-    field        SFNode  sensor3 USE ScaleSensor3
-    field        SFNode  sensor4 USE ScaleSensor4
-    field        SFNode  sensor5 USE ScaleSensor5
-    field        SFNode  sensor6 USE ScaleSensor6
-    field        SFNode  sensor7 USE ScaleSensor7
-    field        SFNode  sensor8 USE ScaleSensor8
+    inputOutput    SFVec3f bboxSize IS bboxSize
+    initializeOnly SFNode  handle1 USE ScaleHandle1
+    initializeOnly SFNode  handle2 USE ScaleHandle2
+    initializeOnly SFNode  handle3 USE ScaleHandle3
+    initializeOnly SFNode  handle4 USE ScaleHandle4
+    initializeOnly SFNode  handle5 USE ScaleHandle5
+    initializeOnly SFNode  handle6 USE ScaleHandle6
+    initializeOnly SFNode  handle7 USE ScaleHandle7
+    initializeOnly SFNode  handle8 USE ScaleHandle8
+    initializeOnly SFNode  sensor1 USE ScaleSensor1
+    initializeOnly SFNode  sensor2 USE ScaleSensor2
+    initializeOnly SFNode  sensor3 USE ScaleSensor3
+    initializeOnly SFNode  sensor4 USE ScaleSensor4
+    initializeOnly SFNode  sensor5 USE ScaleSensor5
+    initializeOnly SFNode  sensor6 USE ScaleSensor6
+    initializeOnly SFNode  sensor7 USE ScaleSensor7
+    initializeOnly SFNode  sensor8 USE ScaleSensor8
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -1086,38 +1220,38 @@ function eventsProcessed ()
   }
 
   DEF ScaleScript Script {
-    eventIn      SFBool     set_active
-    eventIn      SFVec3f    set_xScale
-    eventIn      SFVec3f    set_yScale
-    eventIn      SFVec3f    set_zScale
-    eventIn      SFVec3f    set_scale1
-    eventIn      SFVec3f    set_scale2
-    eventIn      SFVec3f    set_scale3
-    eventIn      SFVec3f    set_scale4
-    eventIn      SFVec3f    set_scale5
-    eventIn      SFVec3f    set_scale6
-    eventIn      SFVec3f    set_scale7
-    eventIn      SFVec3f    set_scale8
-    eventIn      SFVec3f    set_linetype
-    exposedField SFBool     keepCenter FALSE
-    exposedField SFNode     transform IS transform
-    exposedField SFVec3f    bboxSize IS bboxSize
-    exposedField SFVec3f    bboxCenter IS bboxCenter
-    field        SFVec3f    translation 0 0 0
-    field        SFVec3f    scaleFactor 0 0 0
-    field        SFVec3f    center 0 0 0
-    field        SFVec3f    distanceFromCenter 0 0 0
-    field        SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-    field        SFNode     sensor1 USE ScaleSensor1
-    field        SFNode     sensor2 USE ScaleSensor2
-    field        SFNode     sensor3 USE ScaleSensor3
-    field        SFNode     sensor4 USE ScaleSensor4
-    field        SFNode     sensor5 USE ScaleSensor5
-    field        SFNode     sensor6 USE ScaleSensor6
-    field        SFNode     sensor7 USE ScaleSensor7
-    field        SFNode     sensor8 USE ScaleSensor8
-    field        SFNode     lineProperties USE LineProperties
-    field        SFNode     self USE ScaleScript
+    inputOnly      SFBool     set_active
+    inputOnly      SFVec3f    set_xScale
+    inputOnly      SFVec3f    set_yScale
+    inputOnly      SFVec3f    set_zScale
+    inputOnly      SFVec3f    set_scale1
+    inputOnly      SFVec3f    set_scale2
+    inputOnly      SFVec3f    set_scale3
+    inputOnly      SFVec3f    set_scale4
+    inputOnly      SFVec3f    set_scale5
+    inputOnly      SFVec3f    set_scale6
+    inputOnly      SFVec3f    set_scale7
+    inputOnly      SFVec3f    set_scale8
+    inputOnly      SFVec3f    set_linetype
+    inputOutput    SFBool     keepCenter FALSE
+    inputOutput    SFVec3f    bboxSize IS bboxSize
+    inputOutput    SFVec3f    bboxCenter IS bboxCenter
+    inputOutput    SFNode     transform IS transform
+    initializeOnly SFVec3f    translation 0 0 0
+    initializeOnly SFVec3f    scaleFactor 0 0 0
+    initializeOnly SFVec3f    center 0 0 0
+    initializeOnly SFVec3f    distanceFromCenter 0 0 0
+    initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    initializeOnly SFNode     sensor1 USE ScaleSensor1
+    initializeOnly SFNode     sensor2 USE ScaleSensor2
+    initializeOnly SFNode     sensor3 USE ScaleSensor3
+    initializeOnly SFNode     sensor4 USE ScaleSensor4
+    initializeOnly SFNode     sensor5 USE ScaleSensor5
+    initializeOnly SFNode     sensor6 USE ScaleSensor6
+    initializeOnly SFNode     sensor7 USE ScaleSensor7
+    initializeOnly SFNode     sensor8 USE ScaleSensor8
+    initializeOnly SFNode     lineProperties USE LineProperties
+    initializeOnly SFNode     self USE ScaleScript
 
     url "vrmlscript:
 
@@ -1282,7 +1416,7 @@ function sgn (value)
     directOutput TRUE
   }
 
- 
+
   # Debug
 
   ROUTE XRotationSensor.trackPoint_changed TO PPoint.set_translation
@@ -1297,9 +1431,9 @@ function sgn (value)
   ROUTE LeftSensor.isActive TO ModeScript.set_active
   ROUTE TopSensor.isActive TO ModeScript.set_active
   ROUTE BottomSensor.isActive TO ModeScript.set_active
-  ROUTE ModeTouch.touchTime TO DoubleClick_1.set_time
-  ROUTE ModeScript.touchTime TO DoubleClick_1.set_time
-  ROUTE DoubleClick_1.doubleClickTime TO ModeScript.set_time
+  ROUTE ModeTouch.touchTime TO ModeDoubleClick.set_time
+  ROUTE ModeScript.touchTime TO ModeDoubleClick.set_time
+  ROUTE ModeDoubleClick.doubleClickTime TO ModeScript.set_time
 
   # Mode Switch
 
@@ -1393,6 +1527,11 @@ function sgn (value)
   ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
   ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
+  ROUTE _1.touchTime TO CenterDoubleClick.set_time
+  ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
+  ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
+  ROUTE CenterScript.keepCenter_changed TO _2.set_whichChoice
+  ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
 }
 
 DEF Tool TransformTool { }

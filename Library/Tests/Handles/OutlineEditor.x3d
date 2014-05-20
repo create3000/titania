@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Tue, 20 May 2014 11:06:48 GMT'/>
+    <meta name='modified' content='Tue, 20 May 2014 20:34:36 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
@@ -104,9 +104,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='16.9067 17.8558 5.43131'
-        orientation='0.683459 -0.717417 -0.134895 5.35514'
-        centerOfRotation='7.85243 7.9839 -4.79192'/>
+        position='9.91391 20.2458 19.6559'
+        orientation='0.891728 -0.430507 -0.139587 5.27425'
+        centerOfRotation='2.47591 1.23024 6.49146'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -167,7 +167,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 6.17894'
+          rotation='0 0 1 5.9624'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -323,7 +323,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Di 20 Mai 2014 12:21:54 CEST"'>
+            string='"modified...", "Di 20 Mai 2014 13:06:48 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -367,8 +367,10 @@ function initialize ()
           url='"../Basic/EXPORT.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"'/>
     </Transform>
     <Transform DEF='InlineClone'
-        translation='4.77832 6.52114 -10.5635'
-        scale='1.17093 1.20014 1.38536'>
+        translation='9.95486 1.41524 8.36829'
+        rotation='0 1 0 0.870674'
+        scale='2.81939 2.81939 2.81939'
+        center='-2.06519 -1.45117 -0.338752'>
       <Inline
           url='"../Basic/Clone.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/Clone.wrl"'/>
     </Transform>
