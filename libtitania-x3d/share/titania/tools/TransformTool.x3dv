@@ -782,8 +782,7 @@ function eventsProcessed ()
     url "vrmlscript:
 function set_active (value)
 {
-	if (value)
-		translation = transform .translation;
+	translation = transform .translation;
 }
 
 function set_frontTranslation (value)
