@@ -448,7 +448,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_update_viewpoint));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog));
 
-	// Connect object Gtk::HBox with id 'SurfaceBox'.
+	// Connect object Gtk::Box with id 'SurfaceBox'.
 	m_SurfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.

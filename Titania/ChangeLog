@@ -1,6 +1,12 @@
 2014-05-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-05-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.xml:
 	* OutlineEditor.xml: 
 
 2014-05-20  Holger Seelig  <holger.seelig@yahoo.de>

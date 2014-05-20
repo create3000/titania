@@ -187,7 +187,7 @@ public:
 	getWindow () const
 	{ return *m_Window; }
 
-	Gtk::VBox &
+	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
 
@@ -511,7 +511,7 @@ public:
 	getHPaned () const
 	{ return *m_HPaned; }
 
-	Gtk::HBox &
+	Gtk::Box &
 	getSurfaceBox () const
 	{ return *m_SurfaceBox; }
 
@@ -972,7 +972,7 @@ private:
 	Gtk::ImageMenuItem*             m_NoneViewerMenuItem;
 	Gtk::Image*                     m_WorkspacesImage;
 	Gtk::Window*                    m_Window;
-	Gtk::VBox*                      m_Widget;
+	Gtk::Box*                       m_Widget;
 	Gtk::MenuBar*                   m_MenuBar;
 	Gtk::MenuItem*                  m_FileMenuItem;
 	Gtk::ImageMenuItem*             m_NewMenuItem;
@@ -1053,7 +1053,7 @@ private:
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;
-	Gtk::HBox*                      m_SurfaceBox;
+	Gtk::Box*                       m_SurfaceBox;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
 	Gtk::RadioToolButton*           m_HandButton;
