@@ -74,10 +74,7 @@ public:
 private:
 
 	void
-	watch_motion ();
-
-	void
-	unwatch_motion ();
+	watch_motion (const bool);
 
 	virtual
 	void
@@ -152,8 +149,6 @@ private:
 	std::string                        destinationField;
 
 	sigc::connection motion_notify_connection;
-	size_t           unwatchMotion;
-
 };
 
 } // puck

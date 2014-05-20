@@ -76,31 +76,22 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	             sourceField (),
 	         destinationNode (),
 	        destinationField (),
-	motion_notify_connection (),
-	           unwatchMotion (1)
+	motion_notify_connection ()
 {
 	set_name ("OutlineTreeViewEditor");
 
-	watch_motion ();
+	watch_motion (true);
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 }
 
 void
-OutlineTreeViewEditor::watch_motion ()
+OutlineTreeViewEditor::watch_motion (const bool value)
 {
-	-- unwatchMotion;
-
-	if (not unwatchMotion)
-		motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
-}
-
-void
-OutlineTreeViewEditor::unwatch_motion ()
-{
-	++ unwatchMotion;
-
 	motion_notify_connection .disconnect ();
+
+	if (value)
+		motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
 }
 
 void
@@ -250,7 +241,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 				{
 					getBrowserWindow () -> hasShortcuts (false);
 					get_tree_observer () -> unwatch_tree (iter);
-					unwatch_motion ();
+					watch_motion (false);
 					set_cursor (path, *column, true);
 					return true;
 				}
@@ -308,7 +299,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	get_tree_observer () -> watch_child (iter, path);
 
 	getBrowserWindow () -> hasShortcuts (true);
-	watch_motion ();
+	watch_motion (true);
 }
 
 bool
