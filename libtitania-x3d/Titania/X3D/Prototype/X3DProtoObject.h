@@ -74,7 +74,7 @@ public:
 
 	virtual
 	Proto*
-	getProto () = 0;
+	getProtoDeclaration () = 0;
 
 	///  @name Operations
 

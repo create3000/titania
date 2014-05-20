@@ -494,7 +494,12 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 	}
 	else
+	{
 		std::clog << "Warning: Uniform variable '" << field -> getName () << "' not found." << std::endl;
+
+		if (not getProgramId ())
+			std::clog << "Warning: Couldn't allocate shader." << std::endl;
+	}
 
 	glUseProgram (0);
 }

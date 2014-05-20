@@ -1371,7 +1371,7 @@ BrowserWindow::on_prototype_instance_dialog ()
 	const auto response_id = getPrototypeInstanceDialog () .run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		addProtoInstance (getPrototypeLabel () .get_text ());
+		addPrototypeInstance (getPrototypeLabel () .get_text ());
 
 	getPrototypeInstanceDialog () .hide ();
 }

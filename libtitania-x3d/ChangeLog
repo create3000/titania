@@ -1,3 +1,19 @@
+2014-05-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Struct.h:
+	* Traverse.cpp:
+	* Parser.cpp:
+	* Proto.h:
+	* ExternProto.h:
+	* ExternProto.cpp:
+	* X3DProtoObject.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* jsX3DExecutionContext.cpp:
+	* X3DProgrammableShaderObject.cpp: 
+
 2014-05-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Selection.cpp: 

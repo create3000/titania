@@ -274,7 +274,7 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 
 			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-			const auto node             = executionContext -> createProtoInstance (JS_GetString (context, name));
+			const auto node             = executionContext -> createPrototypeInstance (JS_GetString (context, name));
 
 			node -> setup ();
 

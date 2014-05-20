@@ -1,25 +1,15 @@
 <ListOfTask>
-  <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden" />
-  <Task file="" description="Collisions radius" />
-  <Task file="" description="in Geometry2D TwoSidedMaterial aktivieren (geht gar nicht)" completed="True" />
+  <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden. Vorsicht wegen x3dtidy." />
   <Task file="" description="Collision beim hochspringen" />
-  <Task file="" description="Vattenfall MovieTexture zweimal in GarbageCollector" />
-  <Task file="" description="JavaScript jsSFNode getFieldDefinitions ist nicht save" />
-  <Task file="" description="comments für import und export" />
-  <Task file="" description="vrmlName entfernen" />
   <Task file="" description="proto externproto route executioncontext und scene vergleichen nicht in JavaScript" />
   <Task file="" description="an der Wand lang rutschen" />
   <Task file="" description="von Geistern schieben lassen" />
   <Task file="" description="bei jump collisision speed auf 0 setzen" />
-  <Task file="" description="FieldDefinitionArray als X3DArrayField &lt;X3DFieldDefinition&gt; machen für JavaScript, sonst da unsave" />
-  <Task file="" description="eventsProcessed als Output " />
   <Task file="" description="RenderContext" />
-  <Task file="" description="X3DSFNode, SFScene, SFNode" completed="True" />
-  <Task file="" description="NavigationInfo type animieren" completed="True" />
-  <Task file="" description="notify deferred" />
-  <Task file="" description="Full profile in ExecutionContext" />
-  <Task file="" description="TextViewEditable set_validated einfügen und ableiten" />
-  <Task file="" description="write to set" />
-  <Task file="" description="operator * () in X3DSFNode" />
-  <Task file="" description="Matrix3* get und setTransform" />
+  <Task file="" description="watch Inline unload when in sub scene" />
+  <Task file="" description="save as before import when world not saved" />
+  <Task file="" description="Strict warnings button in open and import dialog" />
+  <Task file="" description="scale tool center mitverschieben" />
+  <Task file="" description="Text node display list not created???" />
+  <Task file="" description="exception in addUserDefinedField if name empty" />
 </ListOfTask>

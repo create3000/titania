@@ -54,6 +54,7 @@
 namespace titania {
 namespace X3D {
 
+struct AvailableType { };
 struct CloneType { };
 
 } // X3D

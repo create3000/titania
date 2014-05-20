@@ -72,12 +72,12 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
  X3DProtoObject (),
 	X3DUrlObject (),
 	       scene (),
-	       proto ()
+	   prototype ()
 {
 	addField (inputOutput, "metadata", metadata ());
 	url () .setName ("url");
 
-	addChildren (url (), scene, proto);
+	addChildren (url (), scene, prototype);
 }
 
 ExternProto*
@@ -144,7 +144,7 @@ ExternProto::initialize ()
 	disableEvents ();
 
 	scene .isTainted (true);
-	proto .isTainted (true);
+	prototype .isTainted (true);
 }
 
 void
@@ -197,15 +197,15 @@ ExternProto::requestImmediateLoad ()
 	                              ? getName ()
 								       	: loader .getWorldURL () .fragment ();
 
-	proto = scene -> getProtoDeclaration (protoName);
+	prototype = scene -> getProtoDeclaration (protoName);
 
-	if (proto)
+	if (prototype)
 	{
 		for (const auto & fieldDefinition : getFieldDefinitions ())
 		{
 			try
 			{
-				X3DFieldDefinition* const protoField = proto -> getField (fieldDefinition -> getName ());
+				X3DFieldDefinition* const protoField = prototype -> getField (fieldDefinition -> getName ());
 
 				if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
 				{
@@ -228,7 +228,7 @@ ExternProto::requestImmediateLoad ()
 			catch (const Error <INVALID_NAME> &)
 			{
 				setLoadState (FAILED_STATE);
-				throw Error <INVALID_NAME> ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + proto -> getName () + "'");
+				throw Error <INVALID_NAME> ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + prototype -> getName () + "'");
 			}
 		}
 

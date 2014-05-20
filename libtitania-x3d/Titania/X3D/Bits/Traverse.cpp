@@ -294,7 +294,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 		if (protoObject)
 		{
-			const auto prototype = protoObject -> getProto ();
+			const auto prototype = protoObject -> getProtoDeclaration ();
 
 			if (protoObject -> isExternproto ())
 			{

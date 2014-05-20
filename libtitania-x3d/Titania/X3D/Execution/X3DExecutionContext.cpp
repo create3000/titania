@@ -215,7 +215,7 @@ throw (Error <INVALID_NAME>,
 }
 
 X3DPrototypeInstancePtr
-X3DExecutionContext::createProtoInstance (const std::string & name)
+X3DExecutionContext::createPrototypeInstance (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_X3D>,
        Error <INVALID_FIELD>,
@@ -224,7 +224,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return getProtoObject (name) -> createInstance (this);
+	return findProtoObject (name, AvailableType { }) -> createInstance (this);
 }
 
 // Named node handling
@@ -773,7 +773,7 @@ throw (Error <INVALID_NAME>,
 // ProtoObject handling
 
 X3DProtoObject*
-X3DExecutionContext::getProtoObject (const std::string & name) const
+X3DExecutionContext::findProtoObject (const std::string & name, const AvailableType & available) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -791,7 +791,7 @@ throw (Error <INVALID_NAME>,
 		catch (const std::out_of_range &)
 		{
 			if (not isRootContext ())
-				return getExecutionContext () -> getProtoObject (name);
+				return getExecutionContext () -> findProtoObject (name, available);
 
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
 		}
@@ -849,6 +849,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		if (executionContext -> isRootContext ())
 			break;
+
+		if (executionContext -> isProtoDeclaration ())
+			current = executionContext -> getName ();
+		else
+			current .clear ();
 
 		current = executionContext -> isProtoDeclaration () ? executionContext -> getName () : "";
 

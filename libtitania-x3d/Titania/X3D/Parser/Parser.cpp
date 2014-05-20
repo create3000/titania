@@ -1322,7 +1322,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 			try
 			{
-				_node = getExecutionContext () -> createProtoInstance (_nodeTypeId) .getValue ();
+				_node = getExecutionContext () -> createPrototypeInstance (_nodeTypeId) .getValue ();
 			}
 			catch (const X3DError & error2)
 			{

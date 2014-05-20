@@ -189,8 +189,8 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 
 	if (prototypeInstance)
 	{
-		const auto name          = prototypeInstance -> getProtoDeclaration () -> getName ();
-		const bool isExternProto = prototypeInstance -> getProtoDeclaration () -> isExternproto ();
+		const auto name          = prototypeInstance -> getProtoObject () -> getName ();
+		const bool isExternProto = prototypeInstance -> getProtoObject () -> isExternproto ();
 
 		try
 		{
@@ -229,21 +229,21 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			}
 		}
 
-		const auto proto = prototypeInstance -> getProtoDeclaration () -> copy (getExecutionContext ());
+		const auto protoObject = prototypeInstance -> getProtoObject () -> copy (getExecutionContext ());
 		
 		if (isExternProto)
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
-			                             X3D::ExternProtoPtr (proto));
+			                             X3D::ExternProtoPtr (protoObject));
 		}
 		else
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
-			                             X3D::ProtoPtr (proto));
+			                             X3D::ProtoPtr (protoObject));
 		}	
 	}
 }

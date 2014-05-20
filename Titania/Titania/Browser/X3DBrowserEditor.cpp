@@ -371,7 +371,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 	                  if (instance)
 	                  {
-	                     const X3D::ExternProtoPtr externProto (instance -> getProtoDeclaration ());
+	                     const X3D::ExternProtoPtr externProto (instance -> getProtoObject ());
 
 	                     if (externProto)
 	                     {
@@ -382,7 +382,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 								}
 	                     else
 	                     {
-	                        const X3D::ProtoPtr prototype (instance -> getProtoDeclaration ());
+	                        const X3D::ProtoPtr prototype (instance -> getProtoObject ());
 
 	                        if (prototype)
 	                        {
@@ -537,7 +537,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 {
 	// Find proto declarations
 
-	std::map <X3D::X3DProtoObjectPtr, size_t> protoDeclarations;
+	std::map <X3D::X3DProtoObjectPtr, size_t> protoObjects;
 
 	X3D::traverse (nodes, [&] (X3D::SFNode & node)
 	               {
@@ -556,8 +556,8 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                                       {
 	                                          try
 	                                          {
-		                                          if (child -> getProtoDeclaration () == getExecutionContext () -> getProtoObject (child -> getTypeName ()))
-		                                             protoDeclarations .emplace (child -> getProtoDeclaration (), protoDeclarations .size ());
+		                                          if (child -> getProtoObject () == getExecutionContext () -> findProtoObject (child -> getTypeName (), X3D::AvailableType { }))
+		                                             protoObjects .emplace (child -> getProtoObject (), protoObjects .size ());
 		                                       }
 		                                       catch (const X3D::X3DError &)
 		                                       { }
@@ -568,7 +568,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 						                     true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	                     
 	                     
-								protoDeclarations .emplace (protoInstance -> getProtoDeclaration (), protoDeclarations .size ());
+								protoObjects .emplace (protoInstance -> getProtoObject (), protoObjects .size ());
 							}
 
 	                  return true;
@@ -627,10 +627,10 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	X3D::Generator::CompactStyle ();
 	X3D::Generator::PushContext ();
 
-	if (not protoDeclarations .empty ())
+	if (not protoObjects .empty ())
 	{
-		for (const auto & protoDeclaration : basic::reverse (protoDeclarations))
-			text << protoDeclaration .second << std::endl;
+		for (const auto & protoObject : basic::reverse (protoObjects))
+			text << protoObject .second << std::endl;
 
 		text << std::endl;
 	}
@@ -1702,13 +1702,13 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 }
 
 void
-X3DBrowserEditor::addProtoInstance (const std::string & name)
+X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 {
 	try
 	{
 		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create %s"), name .c_str ()));
 
-		const X3D::SFNode instance (getExecutionContext () -> createProtoInstance (name));
+		const X3D::SFNode instance (getExecutionContext () -> createPrototypeInstance (name));
 
 		getExecutionContext () -> addUninitializedNode (instance);
 		getExecutionContext () -> realize ();

@@ -69,49 +69,49 @@ namespace X3D {
 const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & prototype) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & _protoObject) :
 //throw (Error <INVALID_NAME>,
 //       Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
-	   protoDeclaration (prototype)
+	        protoObject (_protoObject)
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
 
-	Proto* const proto = protoDeclaration -> getProto ();
+	Proto* const prototype = protoObject -> getProtoDeclaration ();
 
-	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
+	for (const auto & userDefinedField : prototype -> getUserDefinedFields ())
 	{
 		addField (userDefinedField -> getAccessType (),
 		          userDefinedField -> getName (),
 		          *userDefinedField -> clone ());
 	}
 
-	addChildren (protoDeclaration);
+	addChildren (protoObject);
 
 	// Assign protos and root nodes
 
-	setEncoding             (proto -> getEncoding ());
-	setSpecificationVersion (proto -> getSpecificationVersion ());
-	setCharacterEncoding    (proto -> getCharacterEncoding ());
-	setComment              (proto -> getComment ());
+	setEncoding             (prototype -> getEncoding ());
+	setSpecificationVersion (prototype -> getSpecificationVersion ());
+	setCharacterEncoding    (prototype -> getCharacterEncoding ());
+	setComment              (prototype -> getComment ());
 
-	setProfile (proto -> getProfile ());
+	setProfile (prototype -> getProfile ());
 
-	for (const auto & component : proto -> getComponents ())
+	for (const auto & component : prototype -> getComponents ())
 		addComponent (component);
 
-	setUnits (proto -> getUnits ());
+	setUnits (prototype -> getUnits ());
 
 	try
 	{
-		importExternProtos (proto, CloneType ());
-		importProtos (proto, CloneType ());
-		importRootNodes (proto);
+		importExternProtos (prototype, CloneType { });
+		importProtos (prototype, CloneType { });
+		importRootNodes (prototype);
 	}
 	catch (const X3DError &)
 	{ }
@@ -124,7 +124,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	return new X3DPrototypeInstance (executionContext, protoDeclaration);
+	return new X3DPrototypeInstance (executionContext, protoObject);
 }
 
 void
@@ -134,10 +134,10 @@ X3DPrototypeInstance::initialize ()
 	{
 		// Defer assigning imports and routes until now
 
-		Proto* const proto = protoDeclaration -> getProto ();
+		Proto* const prototype = protoObject -> getProtoDeclaration ();
 
-		importImportedNodes (proto);
-		importRoutes (proto);
+		importImportedNodes (prototype);
+		importRoutes (prototype);
 	}
 	catch (const X3DError &)
 	{ }
@@ -150,8 +150,8 @@ const std::string &
 X3DPrototypeInstance::getTypeName () const
 throw (Error <DISPOSED>)
 {
-	if (protoDeclaration)
-		return protoDeclaration -> getName ();
+	if (protoObject)
+		return protoObject -> getName ();
 
 	backtrace_fn ();
 
@@ -162,8 +162,8 @@ const X3DBaseNode*
 X3DPrototypeInstance::getType () const
 throw (Error <DISPOSED>)
 {
-	if (protoDeclaration)
-		return protoDeclaration .getValue ();
+	if (protoObject)
+		return protoObject .getValue ();
 
 	backtrace_fn ();
 

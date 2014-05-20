@@ -809,7 +809,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					if (externProto -> checkLoadState () == X3D::NOT_STARTED_STATE)
 						externProto -> requestImmediateLoad ();
 
-					get_model () -> append (iter, OutlineIterType::ProtoDeclaration, externProto -> getProto ());
+					get_model () -> append (iter, OutlineIterType::ProtoDeclaration, externProto -> getProtoDeclaration ());
 				}
 			}
 			catch (const X3D::X3DError &)

@@ -83,16 +83,11 @@ public:
 	void
 	realize ();
 
-	///  @name Tests
+	///  @name Scene handling
 
 	bool
 	isRootContext () const
 	{ return getExecutionContext () == this; }
-
-	virtual
-	bool
-	isProtoDeclaration () const
-	{ return false; }
 
 	///  @name Member access
 
@@ -198,7 +193,7 @@ public:
 	       Error <DISPOSED>);
 
 	X3DPrototypeInstancePtr
-	createProtoInstance (const std::string &)
+	createPrototypeInstance (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,
 	       Error <INVALID_FIELD>,
@@ -325,6 +320,11 @@ public:
 
 	///  @name Proto declaration handling
 
+	virtual
+	bool
+	isProtoDeclaration () const
+	{ return false; }
+
 	ProtoPtr
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -407,7 +407,7 @@ public:
 	///  @name ProtoObject handling
 
 	X3DProtoObject*
-	getProtoObject (const std::string &) const
+	findProtoObject (const std::string &, const AvailableType &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

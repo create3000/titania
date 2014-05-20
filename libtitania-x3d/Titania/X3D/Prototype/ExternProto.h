@@ -118,8 +118,8 @@ public:
 
 	virtual
 	Proto*
-	getProto () final override
-	{ return proto; }
+	getProtoDeclaration () final override
+	{ return prototype; }
 
 	const ScenePtr &
 	getInternalScene () const
@@ -180,7 +180,7 @@ private:
 	///  @name Members
 
 	ScenePtr scene;
-	ProtoPtr proto;
+	ProtoPtr prototype;
 
 };
 

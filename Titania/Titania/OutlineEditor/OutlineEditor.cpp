@@ -363,7 +363,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
 
-			getBrowserWindow () -> addProtoInstance (externProto -> getName ());
+			getBrowserWindow () -> addPrototypeInstance (externProto -> getName ());
 			break;
 		}
 		case OutlineIterType::ProtoDeclaration:
@@ -371,7 +371,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   prototype = dynamic_cast <X3D::Proto*> (sfnode .getValue ());
 
-			getBrowserWindow () -> addProtoInstance (prototype -> getName ());
+			getBrowserWindow () -> addPrototypeInstance (prototype -> getName ());
 			break;
 		}
 		default:

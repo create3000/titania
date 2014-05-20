@@ -100,19 +100,19 @@ public:
 	virtual
 	std::string
 	getTitle () const final override
-	{ return protoDeclaration -> getProto () -> getTitle (); }
+	{ return protoObject -> getProtoDeclaration () -> getTitle (); }
 
 	virtual
 	void
 	setWorldURL (const basic::uri & value) final override
-	{ return protoDeclaration -> getProto () -> setWorldURL (value); }
+	{ return protoObject -> getProtoDeclaration () -> setWorldURL (value); }
 
 	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return protoDeclaration -> getProto () -> getWorldURL (); }
+	{ return protoObject -> getProtoDeclaration () -> getWorldURL (); }
 
 	virtual
 	X3DBaseNode*
@@ -129,8 +129,8 @@ public:
 	throw (Error <DISPOSED>);
 
 	const X3DProtoObjectPtr &
-	getProtoDeclaration () const
-	{ return protoDeclaration; }
+	getProtoObject () const
+	{ return protoObject; }
 
 	///  @name Operations
 
@@ -151,12 +151,12 @@ public:
 	virtual
 	void
 	isCompressed (const bool value) final override
-	{ protoDeclaration -> getProto () -> isCompressed (value); }
+	{ protoObject -> getProtoDeclaration () -> isCompressed (value); }
 
 	virtual
 	bool
 	isCompressed () const final override
-	{ return protoDeclaration -> getProto () -> isCompressed (); }
+	{ return protoObject -> getProtoDeclaration () -> isCompressed (); }
 
 	virtual
 	void
@@ -188,7 +188,7 @@ private:
 
 	///  @name Members
 
-	X3DProtoObjectPtr protoDeclaration;
+	X3DProtoObjectPtr protoObject;
 };
 
 } // X3D

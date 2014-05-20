@@ -143,7 +143,7 @@ public:
 
 	virtual
 	Proto*
-	getProto () final override
+	getProtoDeclaration () final override
 	{ return this; }
 	
 	///  @name Operations

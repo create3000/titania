@@ -93,6 +93,8 @@ public:
 	property_data () const
 	{ return data_property; }
 
+	// Selection handling
+
 	void
 	add_routes (const OutlineRoutes & value)
 	{ routes .insert (value .begin (), value .end ()); }
