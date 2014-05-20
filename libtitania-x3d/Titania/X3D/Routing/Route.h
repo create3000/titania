@@ -112,6 +112,9 @@ public:
 	RouteId
 	getId () const;
 
+	bool
+	isConnected () const;
+
 	SFNode
 	getSourceNode () const
 	throw (Error <DISPOSED>);
@@ -166,9 +169,6 @@ private:
 	initialize () final override;
 
 	///  @name Operations
-
-	bool
-	isConnected () const;
 
 	void
 	connect ();

@@ -175,7 +175,10 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 bool
 OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 {
-	return route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
+	if (route -> isConnected ())
+		return route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
+
+	return false;
 }
 
 void
