@@ -509,8 +509,7 @@ X3DTextGeometry::display ()
 {
 	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? GL_CCW : GL_CW);
 
-	if (listId)
-		glCallList (listId);
+	glCallList (listId);
 }
 
 X3DTextGeometry::~X3DTextGeometry ()

@@ -116,6 +116,7 @@ noexcept (true)
 
 	browser -> makeCurrent ();
 
+	const auto referenceCount  = browser -> getReferenceCount ();
 	const auto xBrowserContext = glXGetCurrentContext ();
 
 	browser = nullptr;
@@ -124,7 +125,8 @@ noexcept (true)
 	{
 		if (xContext not_eq xBrowserContext)
 			glXMakeCurrent (xDisplay, xDrawable, xContext);
-		else
+
+		else if (referenceCount == 1)
 			glXMakeCurrent (xDisplay, None, nullptr);
 	}
 }

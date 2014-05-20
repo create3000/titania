@@ -1,5 +1,11 @@
 2014-05-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.cpp:
+	* X3DScene.cpp:
+	* X3DFontStyleNode.cpp: 
+
+2014-05-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Struct.h:
 	* Traverse.cpp:
 	* Parser.cpp:

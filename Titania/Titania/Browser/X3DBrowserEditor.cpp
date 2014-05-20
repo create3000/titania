@@ -129,7 +129,7 @@ X3DBrowserEditor::set_shutdown ()
 	if (isSaved ())
 		shutdown ();
 
-	else     // Cancel shutdown
+	else             // Cancel shutdown
 		setExecutionContext (getExecutionContext ());
 }
 
@@ -548,27 +548,26 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                     X3D::traverse (node, [&] (X3D::SFNode & node)
 	                                    {
 	                                       if (node == protoInstance)
-	                                          return true;
-	                                       
+															return true;
+
 	                                       const X3D::X3DPrototypeInstancePtr child (node);
-	                                       
+
 	                                       if (child)
 	                                       {
 	                                          try
 	                                          {
-		                                          if (child -> getProtoObject () == getExecutionContext () -> findProtoObject (child -> getTypeName (), X3D::AvailableType { }))
-		                                             protoObjects .emplace (child -> getProtoObject (), protoObjects .size ());
-		                                       }
-		                                       catch (const X3D::X3DError &)
-		                                       { }
-	                                       }
-	                                       
+	                                             if (child -> getProtoObject () == getExecutionContext () -> findProtoObject (child -> getTypeName (), X3D::AvailableType { }))
+																	protoObjects .emplace (child -> getProtoObject (), protoObjects .size ());
+															}
+	                                          catch (const X3D::X3DError &)
+	                                          { }
+														}
+
 	                                       return true;
-	                                    },
-						                     true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	                     
-	                     
-								protoObjects .emplace (protoInstance -> getProtoObject (), protoObjects .size ());
+													},
+	                                    true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+
+	                     protoObjects .emplace (protoInstance -> getProtoObject (), protoObjects .size ());
 							}
 
 	                  return true;
@@ -811,7 +810,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	                  children .emplace (child);
 	                  return true;
 						},
-						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	children .erase (node);
 
@@ -823,7 +822,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	                  children .erase (node);
 	                  return true;
 						},
-						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	// Remove rest, these are only nodes that are not in executionContext
 
@@ -934,7 +933,7 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 
 	                  return true;
 						},
-						true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -983,7 +982,7 @@ X3DBrowserEditor::removeImportedNodes (const X3D::InlinePtr & inlineNode, const 
 
 	if (inlineNode)
 	{
-		X3D::X3DExecutionContext* const executionContext = inlineNode -> getExecutionContext ();
+		const auto executionContext = inlineNode -> getExecutionContext ();
 
 		for (const auto & pair : X3D::ImportedNodeIndex (executionContext -> getImportedNodes ()))
 		{
@@ -999,7 +998,7 @@ X3DBrowserEditor::removeImportedNodes (const X3D::InlinePtr & inlineNode, const 
 					{
 						deleteRoutes (importedNode -> getExportedNode (), undoStep);
 					}
-					catch (...)
+					catch (const X3D::X3DError &)
 					{ }
 
 					// Remove imported node.
@@ -1015,7 +1014,7 @@ X3DBrowserEditor::removeImportedNodes (const X3D::InlinePtr & inlineNode, const 
 					executionContext -> removeImportedNode (importedNode -> getImportedName ());
 				}
 			}
-			catch (...)
+			catch (const X3D::X3DError &)
 			{ }
 		}
 	}
@@ -1076,17 +1075,17 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	{
 		using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
 		using NodeFn      = std::function <X3D::SFNode ()>;
-		
+
 		const auto identity = [ ] (const X3D::SFNode & value) { return value; };
-		const auto call     = [ ] (const NodeFn & value) { return value (); };
+		const auto call     = [ ] (const NodeFn &value) { return value (); };
 
 		const NodeFn sourceNodeFn = executionContext -> isImportedNode (sourceNode)
 		                            ? NodeFn (std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (sourceNode)))
-		                            : NodeFn (std::bind (identity, sourceNode));
+											 : NodeFn (std::bind (identity, sourceNode));
 
 		const NodeFn destinationNodeFn = executionContext -> isImportedNode (destinationNode)
 		                                 ? NodeFn (std::bind (&X3D::X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)))
-		                                 : NodeFn (std::bind (identity, destinationNode));
+													: NodeFn (std::bind (identity, destinationNode));
 
 		undoStep -> addUndoFunction ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute, executionContext,
 		                             std::bind (call, sourceNodeFn),
@@ -1231,7 +1230,7 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 
 		                  return true;
 							},
-							true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 		replaceNode (getExecutionContext () .getValue (), getExecutionContext () -> getRootNodes (), node, clone, undoStep);
 	}
@@ -1294,7 +1293,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 
 		                  return true;
 							},
-							true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 		// Unlink in rootNodes array.
 

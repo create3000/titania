@@ -78,8 +78,6 @@ X3DScene::X3DScene () :
 void
 X3DScene::initialize ()
 {
-	getBrowser () -> makeCurrent ();
-
 	X3DBaseNode::initialize ();
 	X3DExecutionContext::initialize ();
 }

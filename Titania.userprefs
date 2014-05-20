@@ -1,27 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.h" Line="162" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.cpp" Line="427" Column="15" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.h" Line="138" Column="85" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.cpp" Line="578" Column="1" />
       <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="305" Column="31" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="210" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="811" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="88" Column="23" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Library" expanded="True">
+            <Node name="Examples" selected="True" />
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
-              <Node name="PROTO" expanded="True">
-                <Node name="Particle" expanded="True" />
-                <Node name="Perceptron" expanded="True" />
-              </Node>
+              <Node name="PROTO" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True" />
+              <Node name="Utility" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -32,18 +32,27 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Core" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Grouping" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Shaders" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
                 <Node name="Parser" expanded="True" />
-                <Node name="Tools" expanded="True">
-                  <Node name="Core" expanded="True" />
-                </Node>
+                <Node name="Prototype" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -58,10 +67,11 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True">
                 <Node name="CellRenderer" expanded="True" />
-                <Node name="OutlineEditor.cpp" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -78,7 +88,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/Parser.cpp" line="712" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
