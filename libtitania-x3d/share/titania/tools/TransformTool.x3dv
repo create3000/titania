@@ -1100,7 +1100,7 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_scale7
     eventIn      SFVec3f    set_scale8
     eventIn      SFVec3f    set_linetype
-    exposedField SFBool     scaleAroundBBoxCenter TRUE
+    exposedField SFBool     keepCenter FALSE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
@@ -1239,12 +1239,28 @@ function scale (value)
 	{
 		transform .scale = scale;
 
-		if (scaleAroundBBoxCenter)
+		if (keepCenter)
+			translateKeepCenter ();
+		else
 			translate ();
 	}
 }
 
 function translate ()
+{
+	var scaledMatrix = new SFMatrix4f ();
+	scaledMatrix .setTransform (transform .translation,
+	                            transform .rotation,
+	                            transform .scale,
+	                            transform .scaleOrientation,
+	                            transform .center);
+
+	var centerOffset = scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter));
+
+	transform .translation = translation .subtract (centerOffset);
+}
+
+function translateKeepCenter ()
 {
 	var scaledMatrix = new SFMatrix4f ();
 	scaledMatrix .setTransform (transform .translation,
