@@ -93,8 +93,30 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 bool
 OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
 {
-	context -> drag_status (Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK, time);
+	// Returns false to allow drop and true to reject drop.
 
+	if (time)
+		context -> drag_status (Gdk::ACTION_MOVE, time);
+
+	const auto iter = treeView -> get_model () -> get_iter (sourcePath);
+
+	if (not treeView -> get_model () -> iter_is_valid (iter))
+		return true;
+
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+			return on_drag_motion_extern_proto (context, x, y, time);
+		default:
+			break;
+	}
+
+	return true;
+}
+
+bool
+OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
+{
 	TreeModel::Path      destinationPath;
 	TreeViewDropPosition position;
 
@@ -102,85 +124,257 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 	{
 		switch (position)
 		{
-			case Gtk::TREE_VIEW_DROP_AFTER:
-			case Gtk::TREE_VIEW_DROP_BEFORE:
-				break;
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
 			{
+				if (time)
+					break;
+				// If it is a call from on_drag_data_received procced with next step.
+			}
+			case Gtk::TREE_VIEW_DROP_AFTER:
+			case Gtk::TREE_VIEW_DROP_BEFORE:
+			{
 				const auto iter = treeView -> get_model () -> get_iter (destinationPath);
 
-				switch (treeView -> get_data_type (iter))
-				{
-					case OutlineIterType::X3DField:
-					{
-						const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+				if (not treeView -> get_model () -> iter_is_valid (iter))
+					break;
 
-						switch (field -> getType ())
-						{
-							case X3D::X3DConstants::SFNode:
-							case X3D::X3DConstants::MFNode:
-								break;
-							default:
-								// Reject drop.
-								return true;
-						}
-					}
-					case OutlineIterType::X3DBaseNode:
-						break;
-					default:
-						// Reject drop.
-						return true;
-				}
+				if (treeView -> get_data_type (iter) not_eq OutlineIterType::ExternProtoDeclaration)
+					break;
+
+				const auto sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+
+				if (sfnode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+					break;
+
+				return false;
 			}
 		}
 	}
 
-	// Allow drop.
-	return false;
+	return true;
 }
 
 void
 OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                                 int x, int y,
-                                                 const Gtk::SelectionData & selection_data,
-                                                 guint info,
-                                                 guint time)
+                                        int x, int y,
+                                        const Gtk::SelectionData & selection_data,
+                                        guint info,
+                                        guint time)
 {
-	__LOG__ << time << " : " << selection_data .get_data_as_string () << std::endl;
+	__LOG__ << time << std::endl;
+	
+	if (on_drag_motion (context, x, y, 0))
+		return;
 
+	const auto iter = treeView -> get_model () -> get_iter (sourcePath);
+
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+			on_drag_data_extern_proto_received (context, x, y, selection_data, info, time);
+			return;
+		default:
+			break;
+	}
+}
+
+void
+OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                                     int x, int y,
+                                                     const Gtk::SelectionData & selection_data,
+                                                     guint info,
+                                                     guint time)
+{
 	TreeModel::Path      destinationPath;
 	TreeViewDropPosition position;
 
 	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	{
-		__LOG__ << int (context -> get_suggested_action ()) << std::endl;
+		__LOG__ << destinationPath .to_string () << std::endl;
 
-		switch (context -> get_suggested_action ())
+		// Get source extern proto.
+
+		const auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
+		const auto sourceNode = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
+
+		const X3D::ExternProtoPtr sourceExternProto (sourceNode);
+
+		// Get destination extern proto.
+
+		const auto destIter = treeView -> get_model () -> get_iter (destinationPath);
+		const auto destNode = *static_cast <X3D::SFNode*> (treeView -> get_object (destIter));
+
+		const X3D::ExternProtoPtr destExternProto (destNode);
+
+		// Get destination extern protos.
+		
+		const auto executionContext = destExternProto -> getExecutionContext ();
+
+		std::vector <X3D::ExternProtoPtr> destExternProtos (executionContext -> getExternProtoDeclarations () .begin (),
+		                                                    executionContext -> getExternProtoDeclarations () .end ());
+
+		// Insert source extern proto in destination extern protos.
+
 		{
-			case Gdk::ACTION_COPY:
+			const auto eraseIter = std::find (destExternProtos .begin (), destExternProtos .end (), sourceExternProto);
+			
+			if (eraseIter == destExternProtos .end ())
+				return;
+
+			auto insertIter = std::find (destExternProtos .begin (), destExternProtos .end (), destExternProto);
+			
+			if (insertIter == destExternProtos .end ())
+				return;
+
+			switch (position)
 			{
-				__LOG__ << "copy" << std::endl;
-				context -> drag_finish (true, true, time);
-				break;
+				case Gtk::TREE_VIEW_DROP_AFTER:
+				case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+				{
+					++ insertIter;
+					// Procced with next case.
+				}
+				case Gtk::TREE_VIEW_DROP_BEFORE:
+				case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+				{
+					const auto eraseIndex  = eraseIter - destExternProtos .begin ();
+					const auto insertIndex = insertIter - destExternProtos .begin ();
+
+					if (eraseIndex < insertIndex)
+					{
+						destExternProtos .insert (destExternProtos .begin () + insertIndex, sourceExternProto);
+						destExternProtos .erase (destExternProtos .begin () + eraseIndex);
+					}
+					else
+					{
+						destExternProtos .erase (destExternProtos .begin () + eraseIndex);
+						destExternProtos .insert (destExternProtos .begin () + insertIndex, sourceExternProto);
+					}
+
+					// Reorder extern protos.
+
+					const auto undoStep = std::make_shared <UndoStep> ("Reorder Extern Prototypes");
+
+					// Remove extern protos.
+					
+					const auto currentExternProtos = executionContext -> getExternProtoDeclarations ();
+
+					for (const auto & externProto : basic::reverse_adapter (currentExternProtos))
+					{
+						undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+						undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
+
+						executionContext -> removeExternProtoDeclaration (externProto -> getName ());
+					}
+
+					// Add extern protos.
+
+					for (const auto & externProto : destExternProtos)
+					{
+						undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
+						undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+
+						executionContext -> updateExternProtoDeclaration (externProto -> getName (), externProto);
+					}
+
+					getBrowserWindow () -> addUndoStep (undoStep);
+					break;
+				}
 			}
-			case Gdk::ACTION_MOVE:
-			{
-				__LOG__ << "move" << std::endl;
-				context -> drag_finish (true, true, time);
-				break;
-			}
-			case Gdk::ACTION_LINK:
-			{
-				__LOG__ << "link" << std::endl;
-				context -> drag_finish (true, false, time);
-				break;
-			}
-			default:
-				break;
 		}
 	}
 }
+
+//bool
+//OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
+//{
+//	context -> drag_status (Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK, time);
+//
+//	TreeModel::Path      destinationPath;
+//	TreeViewDropPosition position;
+//
+//	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
+//	{
+//		switch (position)
+//		{
+//			case Gtk::TREE_VIEW_DROP_AFTER:
+//			case Gtk::TREE_VIEW_DROP_BEFORE:
+//				break;
+//			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+//			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+//			{
+//				const auto iter = treeView -> get_model () -> get_iter (destinationPath);
+//
+//				switch (treeView -> get_data_type (iter))
+//				{
+//					case OutlineIterType::X3DField:
+//					{
+//						const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+//
+//						switch (field -> getType ())
+//						{
+//							case X3D::X3DConstants::SFNode:
+//							case X3D::X3DConstants::MFNode:
+//								break;
+//							default:
+//								// Reject drop.
+//								return true;
+//						}
+//					}
+//					case OutlineIterType::X3DBaseNode:
+//						break;
+//					default:
+//						// Reject drop.
+//						return true;
+//				}
+//			}
+//		}
+//	}
+//
+//	// Allow drop.
+//	return false;
+//}
+
+//void
+//OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+//                                        int x, int y,
+//                                        const Gtk::SelectionData & selection_data,
+//                                        guint info,
+//                                        guint time)
+//{
+//	__LOG__ << time << " : " << selection_data .get_data_as_string () << std::endl;
+//
+//	TreeModel::Path      destinationPath;
+//	TreeViewDropPosition position;
+//
+//	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
+//	{
+//		switch (context -> get_suggested_action ())
+//		{
+//			case Gdk::ACTION_COPY:
+//			{
+//				__LOG__ << "copy" << std::endl;
+//				context -> drag_finish (true, true, time);
+//				break;
+//			}
+//			case Gdk::ACTION_MOVE:
+//			{
+//				__LOG__ << "move" << std::endl;
+//				context -> drag_finish (true, true, time);
+//				break;
+//			}
+//			case Gdk::ACTION_LINK:
+//			{
+//				__LOG__ << "link" << std::endl;
+//				context -> drag_finish (true, false, time);
+//				break;
+//			}
+//			default:
+//				break;
+//		}
+//	}
+//}
 
 } // puck
 } // titania

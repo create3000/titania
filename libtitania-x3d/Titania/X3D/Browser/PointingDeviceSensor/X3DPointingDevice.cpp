@@ -167,6 +167,9 @@ X3DPointingDevice::set_verify_motion (const double x, const double y)
 bool
 X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 {
+	if (event -> type not_eq GDK_BUTTON_PRESS)
+		return false;
+
 	button = event -> button;
 
 	getBrowser () -> grab_focus ();

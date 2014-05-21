@@ -186,8 +186,11 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 		{
 			const auto & localNode = *static_cast <X3D::SFNode*> (get_object (iter));
 
-			if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
-				selection -> select (localNode);
+			if (localNode)
+			{
+				if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
+					selection -> select (localNode);
+			}
 
 			break;
 		}
@@ -262,7 +265,7 @@ OutlineTreeViewEditor::is_real_local_node (const Gtk::TreeModel::iterator & iter
 		case OutlineIterType::ExportedNode:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
-			return sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
+			return sfnode and sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
 		}
 		default:
 			break;
@@ -281,7 +284,7 @@ OutlineTreeViewEditor::is_local_node (const Gtk::TreeModel::iterator & iter) con
 		case OutlineIterType::ExportedNode:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
-			return sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
+			return sfnode and sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
 		}
 		default:
 			break;
@@ -452,8 +455,11 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
 
-			if (sfnode -> getExecutionContext () == get_model () -> get_execution_context ())
-				return sfnode;
+			if (sfnode)
+			{
+				if (sfnode -> getExecutionContext () == get_model () -> get_execution_context ())
+					return sfnode;
+			}
 
 			break;
 		}

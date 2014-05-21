@@ -4,7 +4,21 @@ META "comment" "World of Titania"
 META "created" "Thu, 08 May 2014 13:51:27 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Wed, 14 May 2014 04:42:46 GMT"
+META "modified" "Wed, 21 May 2014 11:28:21 GMT"
+
+EXTERNPROTO Delay [
+  inputOutput SFTime cycleInterval
+  inputOutput SFBool enabled
+  inputOutput SFTime startTime
+  inputOutput SFTime stopTime
+  outputOnly  SFBool isActive
+  outputOnly  SFTime exitTime
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Time/Delay.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Time/Delay.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Time/Delay.x3dv"
+]
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -107,7 +121,7 @@ function eventsProcessed ()
 
 DEF Export1 Transform {
   translation 0 1.23317 0
-  rotation 0 0 1 2.6822
+  rotation 0 0 1 5.49333
   children Shape {
     appearance Appearance {
       material Material {
@@ -131,7 +145,7 @@ DEF Export1 Transform {
 }
 
 DEF Export2 Transform {
-  rotation 0 0 1 2.6822
+  rotation 0 0 1 5.49333
   children Shape {
     appearance Appearance {
       material DEF Artdeco2 Material {
@@ -155,7 +169,7 @@ DEF Export2 Transform {
 
 DEF Export3 Transform {
   translation 0 -1.25334 0
-  rotation 0 0 1 2.6822
+  rotation 0 0 1 5.49333
   children Shape {
     appearance Appearance {
       material Material { }
@@ -179,6 +193,8 @@ DEF Export3 Transform {
     }
   }
 }
+
+Delay { }
 
 ROUTE Export1.rotation_changed TO Export2.set_rotation
 ROUTE Export1.rotation_changed TO Export3.set_rotation

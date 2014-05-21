@@ -92,8 +92,7 @@ public:
 		array (),
 		  map ()
 	{
-		for (const auto & pair : value .map)
-			push_back (pair .first, *pair .second);
+		*this = value;
 	}
 
 	///  Move constructor
@@ -104,15 +103,7 @@ public:
 
 	///  Assignment operator
 	indexed_multimap &
-	operator = (const indexed_multimap & value)
-	{
-		clear ();
-
-		for (const auto & pair : value .map)
-			push_back (pair .first, *pair .second);
-
-		return *this;
-	}
+	operator = (const indexed_multimap &);
 
 	indexed_multimap &
 	operator = (indexed_multimap && value)
@@ -260,6 +251,30 @@ private:
 };
 
 template <class Key, class ValueType>
+indexed_multimap <Key, ValueType> &
+indexed_multimap <Key, ValueType>::operator = (const indexed_multimap & value)
+{
+	clear ();
+
+	typename array_type::size_type index = 0;
+	std::map <pointer_type, typename array_type::size_type> indices;
+
+	for (const auto e : value .array)
+	{
+		indices .emplace (e, index ++);
+
+		const pointer_type element = new value_type (*e);
+
+		array .emplace_back (element);
+	}
+
+	for (const auto & pair : value .map)
+		map .emplace (pair .first, array [indices [pair .second]]);
+
+	return *this;
+}
+
+template <class Key, class ValueType>
 typename indexed_multimap <Key, ValueType>::value_type &
 indexed_multimap <Key, ValueType>::find (const key_type &key)
 {
@@ -311,7 +326,7 @@ template <class Key, class ValueType>
 void
 indexed_multimap <Key, ValueType>::push_back (const key_type & key, const value_type & value)
 {
-	pointer_type element = new value_type (value);
+	const pointer_type element = new value_type (value);
 
 	array .emplace_back (element);
 
@@ -339,7 +354,7 @@ indexed_multimap <Key, ValueType>::erase (const key_type & key)
 {
 	// find values
 
-	auto equal_range = map .equal_range (key);
+	const auto equal_range = map .equal_range (key);
 
 	if (equal_range .first not_eq equal_range .second)
 	{

@@ -191,7 +191,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 					                                        X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
 					menuItem .first -> activate ();
 				}
-				else
+				else if (sfnode)
 				{
 					const auto menuItem = addSceneMenuItem (getExecutionContext (),
 					                                        sfnode -> getExecutionContext ());
@@ -418,7 +418,7 @@ OutlineEditor::on_remove_reference_activate (const X3D::FieldsPtr & fieldPtr, co
 
 		field -> removeReference (reference);
 		treeView -> queue_draw ();
-	
+
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)
@@ -494,6 +494,7 @@ OutlineEditor::selectNode (const double x, const double y)
 {
 	nodePath = getNodeAtPosition (x, y);
 
+	bool null                = false;
 	bool isBaseNode          = false;
 	bool isExternProto       = false;
 	bool isPrototype         = false;
@@ -511,6 +512,12 @@ OutlineEditor::selectNode (const double x, const double y)
 			{
 				const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 				const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+
+				if (not sfnode)
+				{
+					null = true;
+					break;
+				}
 
 				isBaseNode          = sfnode .getValue ();
 				isPrototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
@@ -542,7 +549,7 @@ OutlineEditor::selectNode (const double x, const double y)
 		}
 	}
 
-	getSetAsCurrentSceneMenuItem () .set_visible (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode);
+	getSetAsCurrentSceneMenuItem () .set_visible (not null and (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode));
 	getCreateInstanceMenuItem ()    .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
 	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 }

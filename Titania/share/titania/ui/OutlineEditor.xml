@@ -20,7 +20,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+      <object class="GtkSeparatorMenuItem" id="SetAsCurrentSceneSeparatorMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
       </object>

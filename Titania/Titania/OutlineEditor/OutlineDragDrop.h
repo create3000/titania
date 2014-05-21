@@ -81,9 +81,15 @@ private:
 
 	bool
 	on_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+	
+	bool
+	on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
 
 	void
 	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+
+	void
+	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	///  @name Members
 

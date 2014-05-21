@@ -412,7 +412,6 @@
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionArray.h" />
     <None Include="Titania\X3D\Base\GarbageCollector.h" />
-    <None Include="Titania\X3D\Types\Array.h" />
     <None Include="Titania\X3D\Types\Image.h" />
     <None Include="Titania\X3D\Types\Time.h" />
     <None Include="Titania\X3D\Configuration\ComponentInfo.h" />
@@ -689,6 +688,7 @@
     <None Include="Titania\X3D\Configuration\SupporteFieldArray.h" />
     <None Include="Titania\X3D\Execution\ExportedNodeIndex.h" />
     <None Include="Titania\X3D\Execution\ImportedNodeIndex.h" />
+    <None Include="Titania\X3D\Types\Array.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

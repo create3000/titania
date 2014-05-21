@@ -6,29 +6,9 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Tue, 20 May 2014 20:34:36 GMT'/>
+    <meta name='modified' content='Wed, 21 May 2014 11:44:49 GMT'/>
   </head>
   <Scene>
-    <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
-      <field accessType='inputOutput' type='SFNode' name='metadata'/>
-      <field accessType='inputOutput' type='SFInt32' name='xDimension'/>
-      <field accessType='inputOutput' type='SFFloat' name='xSpacing'/>
-      <field accessType='inputOutput' type='SFInt32' name='zDimension'/>
-      <field accessType='inputOutput' type='SFFloat' name='zSpacing'/>
-      <field accessType='inputOutput' type='SFColor' name='color'/>
-      <field accessType='inputOutput' type='SFFloat' name='transparency'/>
-      <field accessType='initializeOnly' type='SFBool' name='solid'/>
-    </ExternProtoDeclare>
-    <ExternProtoDeclare name='OutlineEditorGrid' url='"OutlineEditorGrid.x3dv#Grid"'>
-      <field accessType='inputOutput' type='SFNode' name='metadata'/>
-      <field accessType='inputOutput' type='SFInt32' name='xDimension'/>
-      <field accessType='inputOutput' type='SFFloat' name='xSpacing'/>
-      <field accessType='inputOutput' type='SFInt32' name='zDimension'/>
-      <field accessType='inputOutput' type='SFFloat' name='zSpacing'/>
-      <field accessType='inputOutput' type='SFColor' name='color'/>
-      <field accessType='inputOutput' type='SFFloat' name='transparency'/>
-      <field accessType='initializeOnly' type='SFBool' name='solid'/>
-    </ExternProtoDeclare>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
       <field accessType='inputOutput' type='SFNode' name='metadata'/>
       <field accessType='inputOutput' type='SFBool' name='enabled'/>
@@ -67,6 +47,26 @@
       <field accessType='inputOutput' type='SFInt32' name='majorDimension'/>
       <field accessType='initializeOnly' type='SFBool' name='solid'/>
     </ExternProtoDeclare>
+    <ExternProtoDeclare name='Grid' url='"Grid.wrl"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
+      <field accessType='inputOutput' type='SFInt32' name='xDimension'/>
+      <field accessType='inputOutput' type='SFFloat' name='xSpacing'/>
+      <field accessType='inputOutput' type='SFInt32' name='zDimension'/>
+      <field accessType='inputOutput' type='SFFloat' name='zSpacing'/>
+      <field accessType='inputOutput' type='SFColor' name='color'/>
+      <field accessType='inputOutput' type='SFFloat' name='transparency'/>
+      <field accessType='initializeOnly' type='SFBool' name='solid'/>
+    </ExternProtoDeclare>
+    <ExternProtoDeclare name='OutlineEditorGrid' url='"OutlineEditorGrid.x3dv#Grid"'>
+      <field accessType='inputOutput' type='SFNode' name='metadata'/>
+      <field accessType='inputOutput' type='SFInt32' name='xDimension'/>
+      <field accessType='inputOutput' type='SFFloat' name='xSpacing'/>
+      <field accessType='inputOutput' type='SFInt32' name='zDimension'/>
+      <field accessType='inputOutput' type='SFFloat' name='zSpacing'/>
+      <field accessType='inputOutput' type='SFColor' name='color'/>
+      <field accessType='inputOutput' type='SFFloat' name='transparency'/>
+      <field accessType='initializeOnly' type='SFBool' name='solid'/>
+    </ExternProtoDeclare>
     <ProtoDeclare name='Children1'>
       <ProtoInterface>
         <field accessType='inputOutput' type='SFNode' name='metadata'/>
@@ -76,6 +76,14 @@
         <field accessType='inputOutput' type='MFNode' name='children1'/>
       </ProtoInterface>
       <ProtoBody>
+        <ExternProtoDeclare name='Delay' url='"../../../Titania/share/titania/Prototypes/0.1/Time/Delay.x3dv", "file:///usr/share/titania/Prototypes/0.1/Time/Delay.x3dv", "http://titania.create3000.de/Library/Prototypes/0.1/Time/Delay.x3dv"'>
+          <field accessType='inputOutput' type='SFTime' name='cycleInterval'/>
+          <field accessType='inputOutput' type='SFBool' name='enabled'/>
+          <field accessType='inputOutput' type='SFTime' name='startTime'/>
+          <field accessType='inputOutput' type='SFTime' name='stopTime'/>
+          <field accessType='outputOnly' type='SFBool' name='isActive'/>
+          <field accessType='outputOnly' type='SFTime' name='exitTime'/>
+        </ExternProtoDeclare>
         <ProtoDeclare name='Children2'>
           <ProtoInterface>
             <field accessType='inputOutput' type='SFNode' name='metadata'/>
@@ -94,6 +102,7 @@
             <connect nodeField='children2' protoField='children1'/>
           </IS>
         </ProtoInstance>
+        <ProtoInstance name='Delay'/>
       </ProtoBody>
     </ProtoDeclare>
     <NavigationInfo DEF='None'
@@ -167,7 +176,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 5.9624'
+          rotation='0 0 1 2.92643'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -323,7 +332,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Di 20 Mai 2014 13:06:48 CEST"'>
+            string='"modified...", "Mi 21 Mai 2014 13:26:57 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -378,6 +387,13 @@ function initialize ()
         translation='0 2.68099 0'>
       <ProtoInstance name='Grid'/>
     </Transform>
+    <Transform DEF='OutlineEditor-IMPORT'
+        translation='9.25124 1.2397 -1.94955'
+        scale='0.223361 0.223361 0.223361'>
+      <Inline
+          url='"OutlineEditor-IMPORT.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/OutlineEditor-IMPORT.x3dv"'/>
+    </Transform>
+    <!-- NULL -->
     <IMPORT inlineDEF='_6' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_3' exportedDEF='Text' AS='ImportedInline'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>

@@ -69,8 +69,11 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObje
 	switch (type)
 	{
 		case OutlineIterType::X3DField:
+		case OutlineIterType::X3DFieldValue:
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
 		{
-			static_cast <X3D::X3DFieldDefinition*> (object) -> addParent (&parent);
+			object -> addParent (&parent);
 			break;
 		}
 		case OutlineIterType::X3DExecutionContext:
@@ -208,8 +211,11 @@ OutlineTreeData::~OutlineTreeData ()
 	switch (type)
 	{
 		case OutlineIterType::X3DField:
+		case OutlineIterType::X3DFieldValue:
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
 		{
-			static_cast <X3D::X3DFieldDefinition*> (object) -> removeParent (&parent);
+			object -> removeParent (&parent);
 			break;
 		}
 		default:
