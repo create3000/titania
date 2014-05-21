@@ -1,5 +1,9 @@
 2014-05-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* NodePropertiesEditor.cpp: 
+
+2014-05-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.xml:
 	* OutlineDragDrop.h:
 	* OutlineEditor.cpp:

@@ -1127,7 +1127,12 @@ NodePropertiesEditor::on_apply ()
 					}
 				}
 
-				// Set user defined fields
+				// Set user defined fields.
+
+				const auto selection = getBrowser () -> getSelection ();
+
+				undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
+				undoStep -> addUndoFunction (&X3D::Selection::setChildren, selection, selection -> getChildren ());
 
 				undoStep -> addUndoFunction (&NodePropertiesEditor::setUserDefinedFields,
 				                             getBrowserWindow (),
@@ -1140,6 +1145,9 @@ NodePropertiesEditor::on_apply ()
 				                             node,
 				                             userDefinedFields,
 				                             fieldsToRemove);
+
+				undoStep -> addRedoFunction (&X3D::Selection::setChildren, selection, selection -> getChildren ());
+				undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 				setUserDefinedFields (getBrowserWindow (),
 				                      node,
@@ -1326,16 +1334,7 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
                                             const X3D::FieldDefinitionArray & fieldsToRemove)
 {
 	for (const auto & field : userDefinedFields)
-	{
 		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-		const auto userData = OutlineTreeData::get_user_data (node);
-
-		if (userData -> selected & OUTLINE_SELECTED)
-			userData -> selected |= OUTLINE_SELECTED;
-		else
-			userData -> selected &= ~OUTLINE_SELECTED;
-	}
 
 	for (const auto & field : fieldsToRemove)
 		node -> removeUserDefinedField (field);
