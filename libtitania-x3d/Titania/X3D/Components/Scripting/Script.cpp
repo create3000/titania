@@ -175,11 +175,8 @@ Script::requestImmediateLoad ()
 	}
 
 	if (javaScript)
-	{
-		addInterest (this, &Script::eventsProcessed);
-
 		setLoadState (COMPLETE_STATE);
-	}
+
 	else
 	{
 		try
@@ -189,8 +186,6 @@ Script::requestImmediateLoad ()
 		}
 		catch (const std::invalid_argument & error)
 		{ }
-
-		removeInterest (this, &Script::eventsProcessed);
 
 		setLoadState (FAILED_STATE);
 	}
@@ -209,33 +204,27 @@ Script::set_url ()
 }
 
 void
-Script::eventsProcessed ()
+Script::beginUpdate ()
+throw (Error <DISPOSED>)
 {
-	javaScript -> eventsProcessed ();
+	if (isEnabled ())
+		return;
+
+	X3DScriptNode::beginUpdate ();
+
+	javaScript  -> beginUpdate ();
 }
 
 void
-Script::saveState ()
+Script::endUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (isSaved ())
+	if (not isEnabled ())
 		return;
 
-	javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
+	javaScript  -> endUpdate ();
 
-	setLoadState (NOT_STARTED_STATE);
-
-	X3DScriptNode::saveState ();
-}
-
-void
-Script::restoreState ()
-{
-	if (not isSaved ())
-		return;
-
-	X3DScriptNode::restoreState ();
-
-	requestImmediateLoad ();
+	X3DScriptNode::endUpdate ();
 }
 
 } // X3D

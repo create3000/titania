@@ -82,12 +82,12 @@ X3DViewpointNode::X3DViewpointNode () :
 	                parentMatrix (),
 	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
-	                  timeSensor (new TimeSensor (getExecutionContext ())),
-	               easeInEaseOut (new EaseInEaseOut (getExecutionContext ())),
-	        positionInterpolator (new PositionInterpolator (getExecutionContext ())),
-	     orientationInterpolator (new OrientationInterpolator (getExecutionContext ())),
-	           scaleInterpolator (new PositionInterpolator (getExecutionContext ())),
-	scaleOrientationInterpolator (new OrientationInterpolator (getExecutionContext ()))
+	                  timeSensor (new TimeSensor (getBrowser ())),
+	               easeInEaseOut (new EaseInEaseOut (getBrowser ())),
+	        positionInterpolator (new PositionInterpolator (getBrowser ())),
+	     orientationInterpolator (new OrientationInterpolator (getBrowser ())),
+	           scaleInterpolator (new PositionInterpolator (getBrowser ())),
+	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser ()))
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 

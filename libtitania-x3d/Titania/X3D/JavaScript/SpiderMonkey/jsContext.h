@@ -112,14 +112,6 @@ public:
 	jsval
 	getFunction (const std::string &) const;
 
-	virtual
-	void
-	set_initialized () final override;
-
-	virtual
-	void
-	eventsProcessed () final override;
-
 	void
 	addObject (X3DFieldDefinition* const, JSObject* const)
 	throw (Error <INVALID_FIELD>);
@@ -134,6 +126,20 @@ public:
 	std::unique_ptr <SceneLoader> &
 	getFuture ()
 	{ return future; }
+
+	///  @name Event handling
+
+	virtual
+	void
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override;
+
+	virtual
+	void
+	endUpdate ()
+	throw (Error <DISPOSED>) final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -176,10 +182,19 @@ private:
 	static JSBool setProperty        (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 	void
-	set_field (X3DFieldDefinition*);
+	set_live ();
+
+	void
+	set_initialized ();
 
 	void
 	prepareEvents ();
+
+	void
+	set_field (X3DFieldDefinition*);
+
+	void
+	eventsProcessed ();
 
 	void
 	shutdown ();

@@ -143,7 +143,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	 numUserDefinedFields (0),
 	             children (),
 	             internal (false),
-	                saved (false),
+	              enabled (true),
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
 	               events (),
@@ -348,6 +348,13 @@ throw (Error <INVALID_NODE>,
 		}
 	}
 }
+
+/**
+ *  Completely replaces this node by @a node.
+ *  
+ *  This function should be used with caution. It is currently only useful with with addTool/removeTool.
+ *  @a node requires a special implementation as it should return from getNode the same node as this node.
+ */
 
 void
 X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
@@ -762,20 +769,6 @@ X3DBaseNode::isInternal (const bool value)
 				field .second -> setName (field .first);
 		}
 	}
-}
-
-void
-X3DBaseNode::saveState ()
-{
-	saved = true;
-	isInternal (true);
-}
-
-void
-X3DBaseNode::restoreState ()
-{
-	saved = false;
-	isInternal (false);
 }
 
 void

@@ -316,8 +316,8 @@ public:
 	{ return *m_FooterMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getWorkspacesMenuItem () const
-	{ return *m_WorkspacesMenuItem; }
+	getEnvironmentMenuItem () const
+	{ return *m_EnvironmentMenuItem; }
 
 	Gtk::RadioMenuItem &
 	getBrowserMenuItem () const
@@ -522,6 +522,10 @@ public:
 	Gtk::Toolbar &
 	getDashboardToolBar () const
 	{ return *m_DashboardToolBar; }
+
+	Gtk::ToolButton &
+	getPlayPauseButton () const
+	{ return *m_PlayPauseButton; }
 
 	Gtk::RadioToolButton &
 	getHandButton () const
@@ -901,6 +905,10 @@ public:
 
 	virtual
 	void
+	on_play_pause_button_clicked () = 0;
+
+	virtual
+	void
 	on_hand_button_toggled () = 0;
 
 	virtual
@@ -1004,7 +1012,7 @@ private:
 	Gtk::CheckMenuItem*             m_ToolBarMenuItem;
 	Gtk::CheckMenuItem*             m_SideBarMenuItem;
 	Gtk::CheckMenuItem*             m_FooterMenuItem;
-	Gtk::ImageMenuItem*             m_WorkspacesMenuItem;
+	Gtk::ImageMenuItem*             m_EnvironmentMenuItem;
 	Gtk::RadioMenuItem*             m_BrowserMenuItem;
 	Gtk::RadioMenuItem*             m_EditorMenuItem;
 	Gtk::SeparatorMenuItem*         m_BrowserOptionsSeparator;
@@ -1056,6 +1064,7 @@ private:
 	Gtk::Box*                       m_SurfaceBox;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
+	Gtk::ToolButton*                m_PlayPauseButton;
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
 	Gtk::MenuToolButton*            m_ViewerButton;

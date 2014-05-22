@@ -219,13 +219,15 @@ public:
 
 	/// @name Update service
 
+	virtual
 	void
 	beginUpdate ()
-	throw (Error <DISPOSED>);
+	throw (Error <DISPOSED>) final override;
 
+	virtual
 	void
 	endUpdate ()
-	throw (Error <DISPOSED>);
+	throw (Error <DISPOSED>) final override;
 
 	/// @name Browser properties service
 

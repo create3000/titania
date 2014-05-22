@@ -409,6 +409,8 @@ ParticleSystem::initialize ()
 	glGenBuffers  (1, &boundedVolumeBufferId);
 
 	// Setup
+	
+	getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
 
 	enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
@@ -485,12 +487,36 @@ ParticleSystem::getBBox () const
 }
 
 void
+ParticleSystem::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isEnabled ())
+	{
+		if (isActive () and maxParticles ())
+		{
+			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
+			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+		}
+	}
+	else
+	{
+		if (isActive () and maxParticles ())
+		{
+			getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
+			getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+		}
+	}
+}
+
+void
 ParticleSystem::set_enabled ()
 {
 	if (enabled () and maxParticles ())
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
-		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+		if (isEnabled () and getExecutionContext () -> isLive ())
+		{
+			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
+			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+		}
 
 		isActive () = true;
 
@@ -498,8 +524,11 @@ ParticleSystem::set_enabled ()
 	}
 	else
 	{
-		getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
-		getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+		if (isEnabled () and getExecutionContext () -> isLive ())
+		{
+			getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
+			getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+		}
 
 		isActive () = false;
 	}
@@ -1537,35 +1566,27 @@ ParticleSystem::disableTexCoord () const
 }
 
 void
-ParticleSystem::saveState ()
+ParticleSystem::beginUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (isSaved ())
+	if (isEnabled ())
 		return;
 
-	if (isActive () and maxParticles ())
-	{
-		getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
-		getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
-	}
+	X3DShapeNode::beginUpdate ();
 
-	X3DShapeNode::saveState ();
+	set_live ();
 }
 
 void
-ParticleSystem::restoreState ()
+ParticleSystem::endUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (not isSaved ())
+	if (not isEnabled ())
 		return;
 
-	X3DShapeNode::restoreState ();
+	X3DShapeNode::endUpdate ();
 
-	if (isActive () and maxParticles ())
-	{
-		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
-		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
-
-		set_particle_buffers ();
-	}
+	set_live ();
 }
 
 void

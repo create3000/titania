@@ -1005,7 +1005,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getMaterialEditorButton ()          .set_visible (enabled);
 	getUpdateViewpointButton ()         .set_visible (enabled);
 	getCreatePrototypeInstanceButton () .set_visible (enabled);
-	getArrowButton ()                   .set_visible (enabled);
+	//getArrowButton ()                   .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
@@ -1385,23 +1385,33 @@ BrowserWindow::set_dashboard (const bool value)
 }
 
 void
+BrowserWindow::on_play_pause_button_clicked ()
+{
+	const bool processEvents = not getConfig () .getBoolean ("isLive");
+
+	getConfig () .setItem ("isLive", processEvents);
+
+	isLive (processEvents);
+}
+
+void
 BrowserWindow::on_hand_button_toggled ()
 {
-	if (getHandButton () .get_active ())
-	{
-		getConfig () .setItem ("arrow", false);
-		getSelection () -> setEnabled (false);
-	}
+//	if (getHandButton () .get_active ())
+//	{
+//		getConfig () .setItem ("arrow", false);
+//		getSelection () -> setEnabled (false);
+//	}
 }
 
 void
 BrowserWindow::on_arrow_button_toggled ()
 {
-	if (getArrowButton () .get_active ())
-	{
-		getConfig () .setItem ("arrow", true);
-		getSelection () -> setEnabled (true);
-	}
+//	if (getArrowButton () .get_active ())
+//	{
+//		getConfig () .setItem ("arrow", true);
+//		getSelection () -> setEnabled (true);
+//	}
 }
 
 // Viewer

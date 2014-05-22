@@ -137,11 +137,13 @@ public:
 	
 	virtual
 	void
-	saveState () final override;
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override;
 	
 	virtual
 	void
-	restoreState () final override;
+	endUpdate ()
+	throw (Error <DISPOSED>) final override;
 
 
 private:
@@ -156,9 +158,6 @@ private:
 
 	void
 	set_url ();
-
-	void
-	eventsProcessed ();
 
 	///  @name Static members
 

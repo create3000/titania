@@ -59,16 +59,6 @@ namespace X3D {
 class X3DJavaScriptContext :
 	virtual public X3DBaseNode
 {
-public:
-
-	virtual
-	void
-	set_initialized () = 0;
-
-	virtual
-	void
-	eventsProcessed () = 0;
-
 protected:
 
 	X3DJavaScriptContext ();

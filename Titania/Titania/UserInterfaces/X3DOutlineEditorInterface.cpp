@@ -68,6 +68,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_PopupMenu -> set_name ("PopupMenu");
 	m_builder -> get_widget ("SetAsCurrentSceneMenuItem", m_SetAsCurrentSceneMenuItem);
 	m_SetAsCurrentSceneMenuItem -> set_name ("SetAsCurrentSceneMenuItem");
+	m_builder -> get_widget ("SetAsCurrentSceneSeparatorMenuItem", m_SetAsCurrentSceneSeparatorMenuItem);
+	m_SetAsCurrentSceneSeparatorMenuItem -> set_name ("SetAsCurrentSceneSeparatorMenuItem");
 	m_builder -> get_widget ("CreateInstanceMenuItem", m_CreateInstanceMenuItem);
 	m_CreateInstanceMenuItem -> set_name ("CreateInstanceMenuItem");
 	m_builder -> get_widget ("CreateReferenceMenuItem", m_CreateReferenceMenuItem);

@@ -281,18 +281,6 @@ public:
 	void
 	isInternal (const bool);
 
-	bool
-	isSaved () const
-	{ return saved; }
-
-	virtual
-	void
-	saveState ();
-
-	virtual
-	void
-	restoreState ();
-
 	///  @name Tool handling
 
 	virtual
@@ -346,6 +334,22 @@ public:
 	{ removeInterest (&object); }
 
 	///  @name Event handling
+
+	bool
+	isEnabled () const
+	{ return enabled; }
+
+	virtual
+	void
+	beginUpdate ()
+	throw (Error <DISPOSED>)
+	{ enabled = true; }
+
+	virtual
+	void
+	endUpdate ()
+	throw (Error <DISPOSED>)
+	{ enabled = false; }
 
 	virtual
 	void
@@ -507,7 +511,7 @@ private:
 	ChildObjectSet       children;               // Internal used fields
 
 	bool                  internal;              // Is this node interally used
-	bool                  saved;                 // Is this node hidden and saved
+	bool                  enabled;               // Is this node hidden and freezed
 	bool                  extendedEventHandling; // Tool initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;

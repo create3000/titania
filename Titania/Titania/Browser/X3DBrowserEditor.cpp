@@ -115,6 +115,14 @@ X3DBrowserEditor::restoreSession ()
 }
 
 void
+X3DBrowserEditor::isLive (const bool value)
+{
+	X3DBrowserWidget::isLive (value);
+
+	getSelection () -> setEnabled (not value);
+}
+
+void
 X3DBrowserEditor::set_initialized ()
 {
 	if (getExecutionContext () not_eq currentScene)
@@ -840,10 +848,16 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	for (const auto & child : children)
 	{
 		// Hide node
+		
+		using isInternal = void (X3D::X3DBaseNode::*) (const bool);
 
-		undoStep -> addUndoFunction (&X3D::X3DBaseNode::restoreState, child);
-		undoStep -> addRedoFunction (&X3D::X3DBaseNode::saveState,    child);
-		child -> saveState ();
+		undoStep -> addUndoFunction (&X3D::X3DBaseNode::beginUpdate, child);
+		undoStep -> addRedoFunction (&X3D::X3DBaseNode::endUpdate,   child);
+		child -> endUpdate ();
+
+		undoStep -> addUndoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, child, false);
+		undoStep -> addRedoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, child, true);
+		child -> isInternal (true);
 	}
 }
 
@@ -884,9 +898,15 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 
 	// Hide node
 
-	undoStep -> addUndoFunction (&X3D::X3DBaseNode::restoreState, node);
-	undoStep -> addRedoFunction (&X3D::X3DBaseNode::saveState,    node);
-	node -> saveState ();
+	using isInternal = void (X3D::X3DBaseNode::*) (const bool);
+
+	undoStep -> addUndoFunction (&X3D::X3DBaseNode::beginUpdate, node);
+	undoStep -> addRedoFunction (&X3D::X3DBaseNode::endUpdate,   node);
+	node -> endUpdate ();
+
+	undoStep -> addUndoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, node, false);
+	undoStep -> addRedoFunction ((isInternal) &X3D::X3DBaseNode::isInternal, node, true);
+	node -> isInternal (true);
 }
 
 void

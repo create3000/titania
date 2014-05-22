@@ -163,11 +163,13 @@ public:
 
 	virtual
 	void
-	saveState () override;
+	beginUpdate ()
+	throw (Error <DISPOSED>) override;
 
 	virtual
 	void
-	restoreState () override;
+	endUpdate ()
+	throw (Error <DISPOSED>) override;
 
 	virtual
 	void
@@ -217,6 +219,9 @@ private:
 
 	void
 	requestUnload ();
+
+	void
+	set_live ();
 
 	void
 	set_load ();

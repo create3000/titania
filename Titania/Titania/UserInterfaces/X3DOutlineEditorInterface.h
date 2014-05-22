@@ -103,6 +103,10 @@ public:
 	getSetAsCurrentSceneMenuItem () const
 	{ return *m_SetAsCurrentSceneMenuItem; }
 
+	Gtk::SeparatorMenuItem &
+	getSetAsCurrentSceneSeparatorMenuItem () const
+	{ return *m_SetAsCurrentSceneSeparatorMenuItem; }
+
 	Gtk::MenuItem &
 	getCreateInstanceMenuItem () const
 	{ return *m_CreateInstanceMenuItem; }
@@ -275,6 +279,7 @@ private:
 	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Gtk::Menu*                      m_PopupMenu;
 	Gtk::MenuItem*                  m_SetAsCurrentSceneMenuItem;
+	Gtk::SeparatorMenuItem*         m_SetAsCurrentSceneSeparatorMenuItem;
 	Gtk::MenuItem*                  m_CreateInstanceMenuItem;
 	Gtk::MenuItem*                  m_CreateReferenceMenuItem;
 	Gtk::Menu*                      m_CreateReferenceMenu;

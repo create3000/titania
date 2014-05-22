@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Wed, 21 May 2014 11:44:49 GMT'/>
+    <meta name='modified' content='Thu, 22 May 2014 13:01:36 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -113,9 +113,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='9.91391 20.2458 19.6559'
-        orientation='0.891728 -0.430507 -0.139587 5.27425'
-        centerOfRotation='2.47591 1.23024 6.49146'/>
+        position='3.65022 1.60121 7.80401'
+        orientation='0.999053 0.0237645 0.0364346 6.11598'
+        centerOfRotation='3.67112 0.599133 1.86088'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -176,7 +176,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 2.92643'
+          rotation='0 0 1 2.38717'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -206,6 +206,7 @@
           <Sphere DEF='_4'/>
         </Shape>
       </Transform>
+      <TouchSensor/>
     </Transform>
     <Switch DEF='Yellow'
         whichChoice='0'>
@@ -332,7 +333,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mi 21 Mai 2014 13:26:57 CEST"'>
+            string='"modified...", "Do 22 Mai 2014 15:00:36 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -393,14 +394,13 @@ function initialize ()
       <Inline
           url='"OutlineEditor-IMPORT.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/OutlineEditor-IMPORT.x3dv"'/>
     </Transform>
-    <!-- NULL -->
     <IMPORT inlineDEF='_6' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_3' exportedDEF='Text' AS='ImportedInline'/>
-    <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
-    <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
-    <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
     <ROUTE fromNode='ModifiedScript' fromField='string_changed' toNode='Text2' toField='set_string'/>
     <ROUTE fromNode='Rotor2' fromField='rotation_changed' toNode='ImportedInline' toField='set_rotation'/>
+    <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
+    <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
+    <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <EXPORT localDEF='Rotor'/>
   </Scene>
 </X3D>

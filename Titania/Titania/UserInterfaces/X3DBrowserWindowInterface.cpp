@@ -168,8 +168,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SideBarMenuItem -> set_name ("SideBarMenuItem");
 	m_builder -> get_widget ("FooterMenuItem", m_FooterMenuItem);
 	m_FooterMenuItem -> set_name ("FooterMenuItem");
-	m_builder -> get_widget ("WorkspacesMenuItem", m_WorkspacesMenuItem);
-	m_WorkspacesMenuItem -> set_name ("WorkspacesMenuItem");
+	m_builder -> get_widget ("EnvironmentMenuItem", m_EnvironmentMenuItem);
+	m_EnvironmentMenuItem -> set_name ("EnvironmentMenuItem");
 	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_BrowserMenuItem -> set_name ("BrowserMenuItem");
 	m_builder -> get_widget ("EditorMenuItem", m_EditorMenuItem);
@@ -272,6 +272,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_Dashboard -> set_name ("Dashboard");
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
 	m_DashboardToolBar -> set_name ("DashboardToolBar");
+	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
+	m_PlayPauseButton -> set_name ("PlayPauseButton");
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_HandButton -> set_name ("HandButton");
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
@@ -450,6 +452,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Box with id 'SurfaceBox'.
 	m_SurfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));
+
+	// Connect object Gtk::ToolButton with id 'PlayPauseButton'.
+	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_play_pause_button_clicked));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hand_button_toggled));

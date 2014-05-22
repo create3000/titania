@@ -91,14 +91,16 @@ public:
 
 	void
 	addLayer (X3DLayerNode* const);
-
-	virtual
-	void
-	saveState () final override;
 	
 	virtual
 	void
-	restoreState () final override;
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override;
+
+	virtual
+	void
+	endUpdate ()
+	throw (Error <DISPOSED>) final override;
 
 
 protected:

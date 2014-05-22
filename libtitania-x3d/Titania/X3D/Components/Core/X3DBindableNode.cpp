@@ -128,9 +128,26 @@ X3DBindableNode::removeLayer (X3DLayerNode* const layer)
 }
 
 void
-X3DBindableNode::saveState ()
+X3DBindableNode::beginUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (isSaved ())
+	if (isEnabled ())
+		return;
+
+	X3DChildNode::beginUpdate ();
+
+	if (wasBound)
+	{
+		for (const auto & layer : layers)
+			bindToLayer (layer);
+	}
+}
+
+void
+X3DBindableNode::endUpdate ()
+throw (Error <DISPOSED>)
+{
+	if (not isEnabled ())
 		return;
 
 	wasBound = isBound ();
@@ -138,22 +155,7 @@ X3DBindableNode::saveState ()
 	for (const auto & layer : layers)
 		removeFromLayer (layer);
 
-	X3DChildNode::saveState ();
-}
-
-void
-X3DBindableNode::restoreState ()
-{
-	if (not isSaved ())
-		return;
-
-	X3DChildNode::restoreState ();
-
-	if (wasBound)
-	{
-		for (const auto & layer : layers)
-			bindToLayer (layer);
-	}
+	X3DChildNode::endUpdate ();
 }
 
 } // X3D

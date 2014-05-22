@@ -461,15 +461,26 @@ void
 X3DBrowser::beginUpdate ()
 throw (Error <DISPOSED>)
 {
+	if (isEnabled ())
+		return;
+
+	X3DBrowserContext::beginUpdate ();
+
+	addEvent ();	
+
 	std::clog << "Browser begin update." << std::endl;
-	addEvent ();
 }
 
 void
 X3DBrowser::endUpdate ()
 throw (Error <DISPOSED>)
 {
+	if (not isEnabled ())
+		return;
+
 	std::clog << "Browser end update." << std::endl;
+
+	X3DBrowserContext::endUpdate ();
 }
 
 void

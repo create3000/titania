@@ -124,16 +124,18 @@ public:
 	void
 	traverse (const TraverseType) override
 	{ }
-
-	virtual
-	void
-	saveState () final override
-	{ return node -> saveState (); }
 	
 	virtual
 	void
-	restoreState () final override
-	{ return node -> restoreState (); }
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override
+	{ return node -> beginUpdate (); }
+
+	virtual
+	void
+	endUpdate ()
+	throw (Error <DISPOSED>) final override
+	{ return node -> endUpdate (); }
 
 	///  @name Destruction
 

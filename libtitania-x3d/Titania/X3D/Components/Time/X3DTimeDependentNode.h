@@ -149,11 +149,13 @@ public:
 	
 	virtual
 	void
-	saveState () final override;
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override;
 	
 	virtual
 	void
-	restoreState () final override;
+	endUpdate ()
+	throw (Error <DISPOSED>) final override;
 
 	///  @name Destruction
 	
@@ -211,10 +213,13 @@ protected:
 
 private:
 
-	typedef void (X3DTimeDependentNode::* TimeoutToolr)();
+	using TimeoutHandler = void (X3DTimeDependentNode::*) ();
 
 	///  @name Event handling
-	
+
+	void
+	set_live ();
+
 	void
 	set_enabled ();
 
@@ -239,15 +244,21 @@ private:
 	do_pause ();
 
 	void
+	real_pause ();
+
+	void
 	do_resume ();
+
+	void
+	real_resume ();
 
 	// Timeout
 
 	bool
-	timeout (TimeoutToolr);
+	timeout (TimeoutHandler);
 
 	void
-	addTimeout (sigc::connection &, TimeoutToolr, const time_type);
+	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
 
 	void
 	removeTimeouts ();
@@ -285,7 +296,7 @@ private:
 	sigc::connection resumeTimeout;
 	sigc::connection stopTimeout;
 	
-	bool wasActive;
+	bool disabled;
 
 };
 

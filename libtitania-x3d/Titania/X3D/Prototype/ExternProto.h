@@ -166,6 +166,11 @@ private:
 	bool
 	rewrite (Loader &);
 
+	///  @name Event handlers
+
+	void
+	set_live ();
+
 	///  @name Input/Output
 
 	void

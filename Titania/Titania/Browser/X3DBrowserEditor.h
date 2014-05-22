@@ -213,6 +213,10 @@ protected:
 	void
 	restoreSession () final override;
 
+	virtual
+	void
+	isLive (const bool) final override;
+
 	/// @name Undo
 
 	void

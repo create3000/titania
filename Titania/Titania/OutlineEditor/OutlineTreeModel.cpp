@@ -176,7 +176,16 @@ bool
 OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 {
 	if (route -> isConnected ())
-		return route -> getExecutionContext () -> isRootContext () or route -> getExecutionContext () -> isProtoDeclaration () or show_all_routes;
+	{
+		if (route -> getExecutionContext () -> isRootContext ())
+			return true;
+
+		if (route -> getExecutionContext () -> isProtoDeclaration ())
+			return true;
+
+		if (show_all_routes and not route -> getRootContext () -> isInternal ())
+			return true;
+	}
 
 	return false;
 }

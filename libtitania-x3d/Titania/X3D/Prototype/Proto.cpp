@@ -137,13 +137,19 @@ Proto::createInstance (X3DExecutionContext* const executionContext)
 {
 	return new X3DPrototypeInstance (executionContext, this);
 }
-	
+
 void
 Proto::initialize ()
 {
 	X3DNode::initialize ();
 	X3DExecutionContext::initialize ();
 	X3DProtoObject::initialize ();
+
+//	getExecutionContext () -> isLive () .addInterest (this,
+//	                                                  (void (Proto::*) (const bool)) &Proto::isLive,
+//	                                                  std::cref (getExecutionContext () -> isLive ()));
+//
+//	isLive (getExecutionContext () -> isLive ());
 }
 
 void

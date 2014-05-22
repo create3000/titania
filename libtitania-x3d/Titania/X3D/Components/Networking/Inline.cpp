@@ -100,6 +100,8 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
+
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
 
@@ -154,7 +156,7 @@ Inline::setScene (ScenePtr && value)
 
 	// First initialize,
 
-	value -> isInternal (true);
+	value -> isLive (getExecutionContext () -> isLive ());
 
 	if (isInitialized ())
 		value -> setup ();
@@ -305,6 +307,13 @@ Inline::requestUnload ()
 }
 
 void
+Inline::set_live ()
+{
+	if (checkLoadState () == COMPLETE_STATE)
+		scene -> isLive (getExecutionContext () -> isLive () and isEnabled ());
+}
+
+void
 Inline::set_load ()
 {
 	if (load ())
@@ -337,27 +346,27 @@ Inline::set_url ()
 }
 
 void
-Inline::saveState ()
+Inline::beginUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (isSaved ())
+	if (isEnabled ())
 		return;
 
-	if (load ())
-		requestUnload ();
+	X3DChildNode::beginUpdate ();
 
-	X3DChildNode::saveState ();
+	set_live ();
 }
 
 void
-Inline::restoreState ()
+Inline::endUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (not isSaved ())
+	if (not isEnabled ())
 		return;
 
-	X3DChildNode::restoreState ();
+	X3DChildNode::endUpdate ();
 
-	if (load ())
-		requestAsyncLoad ();
+	set_live ();
 }
 
 void

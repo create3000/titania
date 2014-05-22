@@ -84,7 +84,7 @@ protected:
 	trackSensors ()
 	{ return true; }
 
-	///  @name Event Toolrs
+	///  @name Event handling
 
 	virtual
 	void

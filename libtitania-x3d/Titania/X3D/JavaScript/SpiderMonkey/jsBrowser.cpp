@@ -335,11 +335,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 									const ScenePtr scene = Loader (script -> getExecutionContext (),
 									                               script -> getWorldURL ()) .createX3DFromURL (*url);
 
-									if (scene)
-									{
-										field -> write (scene -> getRootNodes ());
-										field -> addEvent ();
-									}
+									field -> write (scene -> getRootNodes ());
+									field -> addEvent ();
 								}
 								catch (const X3DError & error)
 								{
@@ -876,6 +873,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 						javaScript -> getFuture () .reset (new SceneLoader (script -> getExecutionContext (),
 						                                                    *url,
 						                                                    std::bind (&jsBrowser::setSceneAsync,
+						                                                               SFNode (script),
 						                                                               *sfnode,
 						                                                               static_cast <MFNode*> (field),
 						                                                               _1)));
@@ -905,11 +903,19 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsBrowser::setSceneAsync (const SFNode & node, MFNode* const field, ScenePtr && scene)
+jsBrowser::setSceneAsync (const SFNode & script, const SFNode & node, MFNode* const field, ScenePtr && scene)
 {
 	if (scene)
 	{
+		const auto executionContext = script -> getExecutionContext ();
+
+		executionContext -> isLive () .addInterest (scene .getValue (),
+		                                            (void (Scene::*) (const bool)) &Scene::isLive,
+		                                            std::cref (executionContext -> isLive ()));
+
+		scene -> isLive (executionContext -> isLive ());
 		scene -> setup ();
+
 		*field = scene -> getRootNodes ();
 	}
 }

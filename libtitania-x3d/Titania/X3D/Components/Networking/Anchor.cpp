@@ -142,14 +142,18 @@ Anchor::traverse (const TraverseType type)
 	{
 		case TraverseType::PICKING:
 		{
-			getBrowser () -> getSensors () .emplace_back ();
-			getBrowser () -> getSensors () .back () .emplace (this);
+			if (getExecutionContext () -> isLive ())
+			{
+				getBrowser () -> getSensors () .emplace_back ();
+				getBrowser () -> getSensors () .back () .emplace (this);
 
-			X3DGroupingNode::traverse (type);
+				X3DGroupingNode::traverse (type);
 
-			getBrowser () -> getSensors () .pop_back ();
-
-			break;
+				getBrowser () -> getSensors () .pop_back ();
+				break;
+			}
+			
+			// else proceed with next case.
 		}
 		default:
 		{

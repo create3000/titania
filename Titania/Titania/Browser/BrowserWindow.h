@@ -429,6 +429,10 @@ private:
 
 	virtual
 	void
+	on_play_pause_button_clicked () final override;
+
+	virtual
+	void
 	on_hand_button_toggled () final override;
 
 	virtual

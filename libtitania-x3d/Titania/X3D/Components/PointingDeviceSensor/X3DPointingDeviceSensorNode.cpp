@@ -112,9 +112,11 @@ X3DPointingDeviceSensorNode::set_active (const HitPtr &, const bool value)
 void
 X3DPointingDeviceSensorNode::push ()
 {
-	if (enabled ())
+	if (enabled () and getExecutionContext () -> isLive ())
 	{
 		getBrowser () -> getSensors () .back () .emplace (this);
+		
+		// Create a matrix set for each layer if needed.
 
 		auto iter = matrices .find (getCurrentLayer ());
 

@@ -208,6 +208,11 @@ X3DBrowserWidget::restoreSession ()
 	if (getConfig () .hasItem ("rubberBand"))
 		getRubberbandMenuItem () .set_active (getConfig () .getBoolean ("rubberBand"));
 
+	if (not getConfig () .hasItem ("isLive"))
+		getConfig () .setItem ("isLive", true);
+
+	isLive (getConfig () .getBoolean ("isLive"));
+
 	// VPaned
 	if (getConfig () .hasItem ("vPaned"))
 		getVPaned () .set_position (getConfig () .getInteger ("vPaned"));
@@ -233,6 +238,18 @@ X3DBrowserWidget::saveSession ()
 		getConfig () .setItem ("worldURL", getWorld () -> getWorldURL ());
 
 	X3DBrowserWindowInterface::saveSession ();
+}
+
+void
+X3DBrowserWidget::isLive (const bool value)
+{
+	if (value)
+		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-pause"));
+
+	else
+		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-play"));
+
+	getWorld () -> isLive (value);
 }
 
 void
@@ -267,6 +284,7 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
 		world = getExecutionContext ();
+		world -> isLive (getConfig () .getBoolean ("isLive"));
 	}
 	catch (const X3D::X3DError &)
 	{ }

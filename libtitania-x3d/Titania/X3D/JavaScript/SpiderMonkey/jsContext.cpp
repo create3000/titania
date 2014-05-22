@@ -172,6 +172,10 @@ jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
+
+	set_live ();
+
 	set_initialized ();
 }
 
@@ -339,29 +343,23 @@ jsContext::initEventHandler ()
 	eventsProcessedFn = getFunction ("eventsProcessed");
 	shutdownFn        = getFunction ("shutdown");
 
-	if (not JSVAL_IS_VOID (prepareEventsFn))
-		getBrowser () -> prepareEvents () .addInterest (this, &jsContext::prepareEvents);
-
-	for (auto & field : script -> getUserDefinedFields ())
+	for (const auto & field : script -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
-			case inputOnly   :
-			case inputOutput :
-				{
-					const jsval function = field -> getAccessType () == inputOnly
-					                       ? getFunction (field -> getName ())
-										        : getFunction ("set_" + field -> getName ());
+			case inputOnly:
+			case inputOutput:
+			{
+				const jsval function = field -> getAccessType () == inputOnly
+				                       ? getFunction (field -> getName ())
+									        : getFunction ("set_" + field -> getName ());
 
-					if (not JSVAL_IS_VOID (function))
-					{
-						functions [field] = function;
-						field -> addInterest (this, &jsContext::set_field, field);
-					}
+				if (not JSVAL_IS_VOID (function))
+					functions [field] = function;
 
-					break;
-				}
-			default :
+				break;
+			}
+			default:
 				break;
 		}
 	}
@@ -500,21 +498,58 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 }
 
 void
-jsContext::set_field (X3DFieldDefinition* const field)
+jsContext::set_live ()
 {
-	//std::lock_guard <std::mutex> lock (mutex);
+	if (getExecutionContext () -> isLive () and isEnabled ())
+	{
+		if (not JSVAL_IS_VOID (prepareEventsFn))
+			getBrowser () -> prepareEvents () .addInterest (this, &jsContext::prepareEvents);
 
-	field -> isTainted (true);
+		if (not JSVAL_IS_VOID (eventsProcessedFn))
+			script -> addInterest (this, &jsContext::eventsProcessed);
 
-	jsval argv [2];
+		for (const auto & field : script -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly:
+				case inputOutput:
+				{
+					if (functions .count (field))
+						field -> addInterest (this, &jsContext::set_field, field);
 
-	JS_NewFieldValue (context, field, &argv [0]);
-	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
+					break;
+				}
+				default:
+					break;
+			}
+		}
+	}
+	else
+	{
+		if (not JSVAL_IS_VOID (prepareEventsFn))
+			getBrowser () -> prepareEvents () .removeInterest (this, &jsContext::prepareEvents);
 
-	jsval rval;
-	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
+		if (not JSVAL_IS_VOID (eventsProcessedFn))
+			script -> removeInterest (this, &jsContext::eventsProcessed);
 
-	field -> isTainted (false);
+		for (const auto & field : script -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly:
+				case inputOutput:
+				{
+					if (functions .count (field))
+						field -> removeInterest (this, &jsContext::set_field);
+
+					break;
+				}
+				default:
+					break;
+			}
+		}
+	}
 }
 
 void
@@ -534,6 +569,24 @@ jsContext::prepareEvents ()
 {
 	if (not JSVAL_IS_VOID (prepareEventsFn))
 		callFunction (prepareEventsFn);
+}
+
+void
+jsContext::set_field (X3DFieldDefinition* const field)
+{
+	//std::lock_guard <std::mutex> lock (mutex);
+
+	field -> isTainted (true);
+
+	jsval argv [2];
+
+	JS_NewFieldValue (context, field, &argv [0]);
+	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
+
+	jsval rval;
+	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
+
+	field -> isTainted (false);
 }
 
 void
@@ -691,6 +744,30 @@ jsContext::runGarbageCollector ()
 	//std::lock_guard <std::mutex> lock (mutex);
 
 	JS_GC (context);
+}
+
+void
+jsContext::beginUpdate ()
+throw (Error <DISPOSED>)
+{
+	if (isEnabled ())
+		return;
+
+	X3DJavaScriptContext::beginUpdate ();
+
+	set_live ();
+}
+
+void
+jsContext::endUpdate ()
+throw (Error <DISPOSED>)
+{
+	if (not isEnabled ())
+		return;
+
+	X3DJavaScriptContext::endUpdate ();
+
+	set_live ();
 }
 
 void

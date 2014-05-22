@@ -1,3 +1,39 @@
+2014-05-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* Proto.cpp:
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* Loader.cpp:
+	* X3DBrowser.cpp:
+	* ExternProto.h:
+	* X3DBaseTool.h:
+	* ExternProto.cpp:
+	* X3DToolObject.cpp:
+	* Script.h:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Script.cpp:
+	* Anchor.cpp:
+	* Inline.cpp:
+	* X3DBindableNode.h:
+	* X3DExecutionContext.cpp:
+	* X3DJavaScriptContext.h:
+	* jsContext.h:
+	* jsBrowser.h:
+	* X3DBindableNode.cpp:
+	* jsContext.cpp:
+	* jsBrowser.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DTimeDependentNode.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DViewpointNode.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp:
+	* PointingDevice.h:
+	* X3DPointingDevice.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2014-05-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

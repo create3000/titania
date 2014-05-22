@@ -84,7 +84,7 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	   pauseTimeout (),
 	  resumeTimeout (),
 	    stopTimeout (),
-	      wasActive (false)
+	       disabled (false)
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
 
@@ -95,6 +95,8 @@ void
 X3DTimeDependentNode::initialize ()
 {
 	X3DChildNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
 
 	initialized   .addInterest (this, &X3DTimeDependentNode::set_loop);
 	enabled ()    .addInterest (this, &X3DTimeDependentNode::set_enabled);
@@ -119,6 +121,27 @@ X3DTimeDependentNode::getElapsedTime () const
 }
 
 // Event callbacks
+
+void
+X3DTimeDependentNode::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isEnabled ())
+	{
+		if (disabled and isActive () and not isPaused ())
+		{
+			disabled = false;
+			real_resume ();
+		}
+	}
+	else
+	{
+		if (not disabled and isActive () and not isPaused ())
+		{
+			disabled = true;
+			real_pause ();
+		}
+	}
+}
 
 void
 X3DTimeDependentNode::set_enabled ()
@@ -151,16 +174,16 @@ X3DTimeDependentNode::set_startTime ()
 {
 	startTimeValue = startTime ();
 
-	if (not enabled ())
-		return;
+	if (enabled ())
+	{
+		startTimeout .disconnect ();
 
-	startTimeout .disconnect ();
+		if (startTimeValue <= getCurrentTime ())
+			do_start ();
 
-	if (startTimeValue <= getCurrentTime ())
-		do_start ();
-
-	else
-		addTimeout (startTimeout, &X3DTimeDependentNode::do_start, startTimeValue);
+		else
+			addTimeout (startTimeout, &X3DTimeDependentNode::do_start, startTimeValue);
+	}
 }
 
 void
@@ -168,19 +191,19 @@ X3DTimeDependentNode::set_pauseTime ()
 {
 	pauseTimeValue = pauseTime ();
 
-	if (not enabled ())
-		return;
+	if (enabled ())
+	{
+		pauseTimeout .disconnect ();
 
-	pauseTimeout .disconnect ();
+		if (pauseTimeValue <= resumeTimeValue)
+			return;
 
-	if (pauseTimeValue <= resumeTimeValue)
-		return;
+		if (pauseTimeValue <= getCurrentTime ())
+			do_pause ();
 
-	if (pauseTimeValue <= getCurrentTime ())
-		do_pause ();
-
-	else
-		addTimeout (pauseTimeout, &X3DTimeDependentNode::do_pause, pauseTimeValue);
+		else
+			addTimeout (pauseTimeout, &X3DTimeDependentNode::do_pause, pauseTimeValue);
+	}
 }
 
 void
@@ -188,19 +211,19 @@ X3DTimeDependentNode::set_resumeTime ()
 {
 	resumeTimeValue = resumeTime ();
 
-	if (not enabled ())
-		return;
+	if (enabled ())
+	{
+		resumeTimeout .disconnect ();
 
-	resumeTimeout .disconnect ();
+		if (resumeTimeValue <= pauseTimeValue)
+			return;
 
-	if (resumeTimeValue <= pauseTimeValue)
-		return;
+		if (resumeTimeValue <= getCurrentTime ())
+			do_resume ();
 
-	if (resumeTimeValue <= getCurrentTime ())
-		do_resume ();
-
-	else
-		addTimeout (resumeTimeout, &X3DTimeDependentNode::do_resume, resumeTimeValue);
+		else
+			addTimeout (resumeTimeout, &X3DTimeDependentNode::do_resume, resumeTimeValue);
+	}
 }
 
 void
@@ -208,19 +231,19 @@ X3DTimeDependentNode::set_stopTime ()
 {
 	stopTimeValue = stopTime ();
 
-	if (not enabled ())
-		return;
+	if (enabled ())
+	{
+		stopTimeout .disconnect ();
 
-	stopTimeout .disconnect ();
+		if (stopTimeValue <= startTimeValue)
+			return;
 
-	if (stopTimeValue <= startTimeValue)
-		return;
+		if (stopTimeValue <= getCurrentTime ())
+			do_stop ();
 
-	if (stopTimeValue <= getCurrentTime ())
-		do_stop ();
-
-	else
-		addTimeout (stopTimeout, &X3DTimeDependentNode::do_stop, stopTimeValue);
+		else
+			addTimeout (stopTimeout, &X3DTimeDependentNode::do_stop, stopTimeValue);
+	}
 }
 
 // Wrapper functions
@@ -239,10 +262,18 @@ X3DTimeDependentNode::do_start ()
 
 		set_start ();
 
+		if (getExecutionContext () -> isLive () and isEnabled ())
+		{
+			getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+		}
+		else if (not disabled)
+		{
+			disabled = true;
+			real_pause ();
+		}
+
 		elapsedTime () = 0;
 		cycleTime ()   = getCurrentTime ();
-
-		getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
 
@@ -252,15 +283,23 @@ X3DTimeDependentNode::do_pause ()
 	if (isActive () and not isPaused ())
 	{
 		isPaused () = true;
-		pause       = getCurrentTime ();
 
 		if (pauseTimeValue not_eq getCurrentTime ())
 			pauseTimeValue = getCurrentTime ();
 
-		set_pause ();
-
-		getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+		if (getExecutionContext () -> isLive () and isEnabled ())
+			real_pause ();
 	}
+}
+
+void
+X3DTimeDependentNode::real_pause ()
+{
+	pause = getCurrentTime ();
+
+	set_pause ();
+
+	getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 }
 
 void
@@ -273,13 +312,21 @@ X3DTimeDependentNode::do_resume ()
 		if (resumeTimeValue not_eq getCurrentTime ())
 			resumeTimeValue = getCurrentTime ();
 
-		float interval = getCurrentTime () - pause;
-		pauseInterval += interval;
-
-		set_resume (interval);
-
-		getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+		if (getExecutionContext () -> isLive () and isEnabled ())
+			real_resume ();
 	}
+}
+
+void
+X3DTimeDependentNode::real_resume ()
+{
+	const float interval = getCurrentTime () - pause;
+
+	pauseInterval += interval;
+
+	set_resume (interval);
+
+	getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 }
 
 void
@@ -304,14 +351,15 @@ X3DTimeDependentNode::stop ()
 
 		isActive () = false;
 
-		getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+		if (getExecutionContext () -> isLive () and isEnabled ())
+			getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
 
 // Timeout
 
 bool
-X3DTimeDependentNode::timeout (TimeoutToolr handler)
+X3DTimeDependentNode::timeout (TimeoutHandler handler)
 {
 	if (enabled ())
 	{
@@ -324,7 +372,7 @@ X3DTimeDependentNode::timeout (TimeoutToolr handler)
 }
 
 void
-X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutToolr callback, const time_type time)
+X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler callback, const time_type time)
 {
 	timeout .disconnect ();
 
@@ -343,29 +391,27 @@ X3DTimeDependentNode::removeTimeouts ()
 }
 
 void
-X3DTimeDependentNode::saveState ()
+X3DTimeDependentNode::beginUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (isSaved ())
+	if (isEnabled ())
 		return;
+	
+	X3DChildNode::beginUpdate ();
 
-	wasActive = isActive () and not isPaused ();
-
-	if (wasActive)
-		pauseTime () = getCurrentTime ();
-
-	X3DChildNode::saveState ();
+	set_live ();
 }
 
 void
-X3DTimeDependentNode::restoreState ()
+X3DTimeDependentNode::endUpdate ()
+throw (Error <DISPOSED>)
 {
-	if (not isSaved ())
+	if (not isEnabled ())
 		return;
 
-	X3DChildNode::restoreState ();
+	X3DChildNode::endUpdate ();
 
-	if (wasActive)
-		resumeTime () = getCurrentTime ();
+	set_live ();
 }
 
 // Destruction

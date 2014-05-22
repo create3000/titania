@@ -59,7 +59,7 @@ namespace X3D {
 
 X3DToolObject::X3DToolObject () :
 	X3DBaseNode (),
-	 inlineNode (new Inline (getExecutionContext ())),
+	 inlineNode (new Inline (getBrowser ())),
 	   toolNode ()
 {
 	addChildren (inlineNode, toolNode);
@@ -68,6 +68,7 @@ X3DToolObject::X3DToolObject () :
 void
 X3DToolObject::initialize ()
 {
+	inlineNode -> isInternal (true);
 	inlineNode -> checkLoadState () .addInterest (this, &X3DToolObject::set_loadState);
 	inlineNode -> load () = false;
 	inlineNode -> setup ();
@@ -98,7 +99,7 @@ X3DToolObject::set_loadState (const LoadState loadState)
 		if (loadState == COMPLETE_STATE)
 		{
 			toolNode = inlineNode -> getExportedNode ("Tool");
-			
+
 			try
 			{
 				toolNode -> setField <SFBool> ("set_enabled", not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ()));

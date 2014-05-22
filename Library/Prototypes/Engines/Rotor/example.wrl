@@ -14,10 +14,10 @@ EXTERNPROTO Rotor [
 "Rotor.wrl"
 
 EXTERNPROTO Torus [
-  field SFFloat minorRadius
-  field SFFloat majorRadius
-  field SFInt32 minorDimension
-  field SFInt32 majorDimension
+  exposedField SFFloat minorRadius
+  exposedField SFFloat majorRadius
+  exposedField SFInt32 minorDimension
+  exposedField SFInt32 majorDimension
   field SFBool  solid
   field SFBool  ccw
   field SFFloat creaseAngle

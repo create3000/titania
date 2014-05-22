@@ -235,11 +235,13 @@ public:
 
 	virtual
 	void
-	saveState () final override;
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override;
 
 	virtual
 	void
-	restoreState () final override;
+	endUpdate ()
+	throw (Error <DISPOSED>) final override;
 
 	///  @name Destruction
 
@@ -281,6 +283,9 @@ private:
 	isLineGeometry () const final override;
 
 	///  @name Event handlers
+
+	void
+	set_live ();
 
 	void
 	set_enabled ();
