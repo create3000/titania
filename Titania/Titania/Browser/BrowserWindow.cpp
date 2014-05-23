@@ -970,7 +970,17 @@ BrowserWindow::on_browser_toggled ()
 	{
 		getConfig () .setItem ("workspace", "BROWSER");
 
+		isLive (true);
+
 		enableEditor (false);
+
+		if (getProximitySensorMenuItem () .get_active ())
+			getProximitySensorMenuItem () .set_active (false);
+
+		if (getVisibilitySensorMenuItem () .get_active ())
+			getVisibilitySensorMenuItem () .set_active (false);
+
+		on_show_all_objects_activate ();
 	}
 }
 
@@ -988,9 +998,6 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::enableEditor (const bool enabled)
 {
-	if (not enabled)
-		isLive (true);
-
 	getImportMenuItem ()                 .set_visible (enabled);
 	getImportAsInlineMenuItem ()         .set_visible (enabled);
 	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
@@ -1022,15 +1029,6 @@ BrowserWindow::enableEditor (const bool enabled)
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
-
-	if (not enabled)
-	{
-		if (getProximitySensorMenuItem () .get_active ())
-			getProximitySensorMenuItem () .set_active (false);
-
-		if (getVisibilitySensorMenuItem () .get_active ())
-			getVisibilitySensorMenuItem () .set_active (false);
-	}
 
 	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);
