@@ -979,8 +979,6 @@ BrowserWindow::on_browser_toggled ()
 
 		if (getVisibilitySensorMenuItem () .get_active ())
 			getVisibilitySensorMenuItem () .set_active (false);
-
-		on_show_all_objects_activate ();
 	}
 }
 
