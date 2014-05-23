@@ -124,6 +124,22 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 		}
 	}
 
+	if (flags & TRAVERSE_INLINE_NODES)
+	{
+		const auto inlineNode = dynamic_cast <Inline*> (node .getValue ());
+
+		if (inlineNode)
+		{
+			for (auto & value : inlineNode -> getRootNodes ())
+			{
+				if (traverse (value, callback, distinct, flags, seen))
+					continue;
+
+				return false;
+			}
+		}
+	}
+
 	if (callback (node))
 		return true;
 

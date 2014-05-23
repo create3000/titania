@@ -447,6 +447,22 @@ public:
 	getInfoMenuItem () const
 	{ return *m_InfoMenuItem; }
 
+	Gtk::MenuItem &
+	getHideSelectedObjectsMenuItem () const
+	{ return *m_HideSelectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getHideUnselectedObjectsMenuItem () const
+	{ return *m_HideUnselectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getShowSelectedObjectsMenuItem () const
+	{ return *m_ShowSelectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getShowAllObjectsMenuItem () const
+	{ return *m_ShowAllObjectsMenuItem; }
+
 	Gtk::Toolbar &
 	getToolBar () const
 	{ return *m_ToolBar; }
@@ -523,10 +539,6 @@ public:
 	getDashboardToolBar () const
 	{ return *m_DashboardToolBar; }
 
-	Gtk::ToolButton &
-	getPlayPauseButton () const
-	{ return *m_PlayPauseButton; }
-
 	Gtk::RadioToolButton &
 	getHandButton () const
 	{ return *m_HandButton; }
@@ -534,6 +546,10 @@ public:
 	Gtk::RadioToolButton &
 	getArrowButton () const
 	{ return *m_ArrowButton; }
+
+	Gtk::ToolButton &
+	getPlayPauseButton () const
+	{ return *m_PlayPauseButton; }
 
 	Gtk::SeparatorToolItem &
 	getDashSeparator1 () const
@@ -889,6 +905,22 @@ public:
 
 	virtual
 	void
+	on_hide_selected_objects_activate () = 0;
+
+	virtual
+	void
+	on_hide_unselected_objects_activate () = 0;
+
+	virtual
+	void
+	on_show_selected_objects_activate () = 0;
+
+	virtual
+	void
+	on_show_all_objects_activate () = 0;
+
+	virtual
+	void
 	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
@@ -913,15 +945,15 @@ public:
 
 	virtual
 	void
-	on_play_pause_button_clicked () = 0;
-
-	virtual
-	void
 	on_hand_button_toggled () = 0;
 
 	virtual
 	void
 	on_arrow_button_toggled () = 0;
+
+	virtual
+	void
+	on_play_pause_button_clicked () = 0;
 
 	virtual
 	void
@@ -1053,6 +1085,10 @@ private:
 	Gtk::MenuItem*                  m_HelpMenuItem;
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;
+	Gtk::MenuItem*                  m_HideSelectedObjectsMenuItem;
+	Gtk::MenuItem*                  m_HideUnselectedObjectsMenuItem;
+	Gtk::MenuItem*                  m_ShowSelectedObjectsMenuItem;
+	Gtk::MenuItem*                  m_ShowAllObjectsMenuItem;
 	Gtk::Toolbar*                   m_ToolBar;
 	Gtk::ToolButton*                m_NewButton;
 	Gtk::MenuToolButton*            m_OpenButton;
@@ -1072,9 +1108,9 @@ private:
 	Gtk::Box*                       m_SurfaceBox;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
-	Gtk::ToolButton*                m_PlayPauseButton;
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
+	Gtk::ToolButton*                m_PlayPauseButton;
 	Gtk::SeparatorToolItem*         m_DashSeparator1;
 	Gtk::MenuToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                m_StraightenButton;

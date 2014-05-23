@@ -81,9 +81,9 @@ X3DTransformNode::initialize ()
 void
 X3DTransformNode::eventsProcessed ()
 {
-	setDisplay (scale () .getX () not_eq 0 and
-	            scale () .getY () not_eq 0 and
-	            scale () .getZ () not_eq 0);
+	isHidden (scale () .getX () == 0 or
+	          scale () .getY () == 0 or
+	          scale () .getZ () == 0);
 
 	X3DTransformMatrix4DNode::setMatrix (translation (),
 	                                     rotation (),

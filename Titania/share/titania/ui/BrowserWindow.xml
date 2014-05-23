@@ -889,6 +889,48 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="HideSelectedObjectsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Hide Selected Objects</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_hide_selected_objects_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="HideUnselectedObjectsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Hide Unselected Objects</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_hide_unselected_objects_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ShowSelectedObjectsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Show Selected Objects</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_show_selected_objects_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ShowAllObjectsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Show All Objects</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_show_all_objects_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkCheckMenuItem" id="SelectLowestMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1313,7 +1355,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkSeparatorToolItem" id="DashSeparator1">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                   </object>
                                   <packing>

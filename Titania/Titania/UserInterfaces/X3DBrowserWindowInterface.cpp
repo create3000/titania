@@ -234,6 +234,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_StandardSizeMenuItem -> set_name ("StandardSizeMenuItem");
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_InfoMenuItem -> set_name ("InfoMenuItem");
+	m_builder -> get_widget ("HideSelectedObjectsMenuItem", m_HideSelectedObjectsMenuItem);
+	m_HideSelectedObjectsMenuItem -> set_name ("HideSelectedObjectsMenuItem");
+	m_builder -> get_widget ("HideUnselectedObjectsMenuItem", m_HideUnselectedObjectsMenuItem);
+	m_HideUnselectedObjectsMenuItem -> set_name ("HideUnselectedObjectsMenuItem");
+	m_builder -> get_widget ("ShowSelectedObjectsMenuItem", m_ShowSelectedObjectsMenuItem);
+	m_ShowSelectedObjectsMenuItem -> set_name ("ShowSelectedObjectsMenuItem");
+	m_builder -> get_widget ("ShowAllObjectsMenuItem", m_ShowAllObjectsMenuItem);
+	m_ShowAllObjectsMenuItem -> set_name ("ShowAllObjectsMenuItem");
 	m_builder -> get_widget ("ToolBar", m_ToolBar);
 	m_ToolBar -> set_name ("ToolBar");
 	m_builder -> get_widget ("NewButton", m_NewButton);
@@ -272,12 +280,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_Dashboard -> set_name ("Dashboard");
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
 	m_DashboardToolBar -> set_name ("DashboardToolBar");
-	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
-	m_PlayPauseButton -> set_name ("PlayPauseButton");
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_HandButton -> set_name ("HandButton");
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
 	m_ArrowButton -> set_name ("ArrowButton");
+	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
+	m_PlayPauseButton -> set_name ("PlayPauseButton");
 	m_builder -> get_widget ("DashSeparator1", m_DashSeparator1);
 	m_DashSeparator1 -> set_name ("DashSeparator1");
 	m_builder -> get_widget ("ViewerButton", m_ViewerButton);
@@ -434,6 +442,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_StandardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size));
 	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info));
 
+	// Connect object Gtk::MenuItem with id 'HideSelectedObjectsMenuItem'.
+	m_HideSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_selected_objects_activate));
+	m_HideUnselectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_unselected_objects_activate));
+	m_ShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activate));
+	m_ShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activate));
+
 	// Connect object Gtk::Toolbar with id 'ToolBar'.
 	m_ToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
@@ -457,12 +471,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::Box with id 'SurfaceBox'.
 	m_SurfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));
 
-	// Connect object Gtk::ToolButton with id 'PlayPauseButton'.
-	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_play_pause_button_clicked));
-
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hand_button_toggled));
 	m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_arrow_button_toggled));
+
+	// Connect object Gtk::ToolButton with id 'PlayPauseButton'.
+	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_play_pause_button_clicked));
 
 	// Connect object Gtk::MenuToolButton with id 'ViewerButton'.
 	m_ViewerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_clicked));

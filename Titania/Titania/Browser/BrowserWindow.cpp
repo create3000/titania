@@ -277,7 +277,10 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
 	getCreateParentGroupMenuItem ()  .set_sensitive (haveSelection);
 
-	getDeselectAllMenuItem () .set_sensitive (children .size ());
+	getDeselectAllMenuItem ()           .set_sensitive (children .size ());
+	getHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
+	getHideUnselectedObjectsMenuItem () .set_sensitive (haveSelection);
+	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
@@ -1246,6 +1249,88 @@ BrowserWindow::on_deselect_all_activate ()
 	const auto undoStep = std::make_shared <UndoStep> ();
 
 	getSelection () -> clear (undoStep);
+}
+
+void
+BrowserWindow::on_hide_selected_objects_activate ()
+{
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	X3D::traverse (selection, [ ] (X3D::SFNode & node)
+	               {
+							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+
+							if (shape)
+								shape -> isHidden (true);
+	
+	                  return true;
+						},
+						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+}
+
+void
+BrowserWindow::on_hide_unselected_objects_activate ()
+{
+	std::set <X3D::X3DShapeNode*> visibles;
+
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	X3D::traverse (selection, [&visibles] (X3D::SFNode & node)
+	               {
+							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+
+							if (shape)
+								visibles .emplace (shape);
+	
+	                  return true;
+						},
+						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+
+	X3D::traverse (getExecutionContext () -> getRootNodes (), [&visibles] (X3D::SFNode & node)
+	               {
+							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+
+							if (shape)
+							{
+		                  if (not visibles .count (shape))
+									shape -> isHidden (true);
+							}
+
+	                  return true;
+						},
+						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+}
+
+void
+BrowserWindow::on_show_selected_objects_activate ()
+{
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	X3D::traverse (selection, [ ] (X3D::SFNode & node)
+	               {
+							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+
+							if (shape)
+								shape -> isHidden (false);
+	
+	                  return true;
+						},
+						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+}
+
+void
+BrowserWindow::on_show_all_objects_activate ()
+{
+	X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+	               {
+	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+
+							if (shape)
+								shape -> isHidden (false);
+
+	                  return true;
+						},
+	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void

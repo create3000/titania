@@ -68,7 +68,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	         X3DChildNode (),
 	     X3DBoundedObject (),
 	               fields (),
-	              display (true),
+	               hidden (false),
 	              visible (),
 	pointingDeviceSensors (),
 	            localFogs (),
@@ -113,11 +113,11 @@ X3DGroupingNode::getBBox () const
 }
 
 void
-X3DGroupingNode::setDisplay (const bool value)
+X3DGroupingNode::isHidden (const bool value)
 {
-	if (value not_eq display)
+	if (value not_eq hidden)
 	{
-		display = value;
+		hidden = value;
 
 		set_children ();
 	}
@@ -143,8 +143,6 @@ X3DGroupingNode::set_addChildren ()
 
 		childrenToAdd .erase (new_end, childrenToAdd .end ());
 
-		add (childrenToAdd);
-
 		children () .insert (children () .end (), childrenToAdd .begin (), childrenToAdd .end ());
 
 		addChildren () .set ({ });
@@ -161,8 +159,6 @@ X3DGroupingNode::set_removeChildren ()
 
 		children () .erase (new_end, children () .end ());
 
-		set_children ();
-
 		removeChildren () .set ({ });
 	}
 }
@@ -177,7 +173,7 @@ X3DGroupingNode::set_children ()
 void
 X3DGroupingNode::add (const MFNode & children)
 {
-	if (not display)
+	if (hidden)
 		return;
 
 	size_t i = 0;

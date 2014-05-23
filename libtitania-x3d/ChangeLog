@@ -1,5 +1,16 @@
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Traverse.cpp:
+	* X3DShapeNodeTool.h:
+	* X3DShapeNode.h:
+	* X3DShapeNode.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DTransformNode.cpp:
+	* X3DTransformMatrix4DNode.cpp: 
+
+2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DGroupingNode.cpp:
 	* X3DTimeDependentNode.cpp: 
 

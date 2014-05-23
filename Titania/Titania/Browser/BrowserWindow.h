@@ -376,6 +376,22 @@ private:
 
 	virtual
 	void
+	on_hide_selected_objects_activate () final override;
+
+	virtual
+	void
+	on_hide_unselected_objects_activate () final override;
+
+	virtual
+	void
+	on_show_selected_objects_activate () final override;
+
+	virtual
+	void
+	on_show_all_objects_activate () final override;
+
+	virtual
+	void
 	on_select_lowest_toggled () final override;
 
 	virtual

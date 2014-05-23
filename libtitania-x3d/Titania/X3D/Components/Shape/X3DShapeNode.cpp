@@ -69,6 +69,7 @@ X3DShapeNode::X3DShapeNode () :
 	         X3DChildNode (),
 	     X3DBoundedObject (),
 	               fields (),
+	               hidden (false),
 	       appearanceNode (),
 	         geometryNode (),
 	glBindProgramPipeline ()
@@ -98,6 +99,17 @@ X3DShapeNode::initialize ()
 }
 
 void
+X3DShapeNode::isHidden (const bool value)
+{
+	if (value not_eq hidden)
+	{
+		hidden = value;
+
+		set_geometry ();
+	}
+}
+
+void
 X3DShapeNode::set_appearance ()
 {
 	appearanceNode = x3d_cast <X3DAppearanceNode*> (appearance ());
@@ -111,7 +123,7 @@ X3DShapeNode::set_appearance ()
 void
 X3DShapeNode::set_geometry ()
 {
-	geometryNode .set (x3d_cast <X3DGeometryNode*> (geometry ()));
+	geometryNode .set (hidden ? nullptr : x3d_cast <X3DGeometryNode*> (geometry ()));
 }
 
 void

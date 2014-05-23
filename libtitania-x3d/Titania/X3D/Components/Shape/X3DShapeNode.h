@@ -91,6 +91,15 @@ public:
 	///  @name Operations
 
 	virtual
+	void
+	isHidden (const bool);
+
+	virtual
+	bool
+	isHidden () const
+	{ return hidden; }
+
+	virtual
 	bool
 	isTransparent () const = 0;
 	
@@ -171,6 +180,7 @@ private:
 
 	Fields fields;
 
+	bool                       hidden;
 	X3DPtr <X3DAppearanceNode> appearanceNode;
 	X3DPtr <X3DGeometryNode>   geometryNode;
 

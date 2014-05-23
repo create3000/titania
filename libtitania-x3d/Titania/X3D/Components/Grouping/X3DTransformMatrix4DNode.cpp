@@ -63,10 +63,10 @@ X3DTransformMatrix4DNode::X3DTransformMatrix4DNode () :
 Box3f
 X3DTransformMatrix4DNode::getBBox () const
 {
-	if (getDisplay ())
-		return X3DGroupingNode::getBBox () * matrix;
-	
-	return Box3f ();
+	if (isHidden ())
+		return Box3f ();
+
+	return X3DGroupingNode::getBBox () * matrix;
 }
 
 void

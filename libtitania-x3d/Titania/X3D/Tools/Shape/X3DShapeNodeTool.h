@@ -84,8 +84,18 @@ public:
 	const SFNode &
 	geometry () const final override
 	{ return getNode () -> geometry (); }
+	
+	///  @name Member access
+	
+	virtual
+	void
+	isHidden (const bool value) final override
+	{ getNode () -> isHidden (value); }
 
-	/// @name Operations
+	virtual
+	bool
+	isHidden () const final override
+	{ return getNode () -> isHidden (); }
 
 	virtual
 	bool
@@ -96,6 +106,8 @@ public:
 	bool
 	intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & collectableObjects) final override
 	{ return getNode () -> intersect (sphere, matrix, collectableObjects); }
+
+	/// @name Operations
 
 	virtual
 	void

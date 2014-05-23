@@ -133,11 +133,11 @@ protected:
 	///  @name Visibility
 
 	void
-	setDisplay (const bool);
+	isHidden (const bool);
 
 	bool
-	getDisplay () const
-	{ return display; }
+	isHidden () const
+	{ return hidden; }
 
 	void
 	setVisible (const MFBool &);
@@ -148,6 +148,9 @@ protected:
 
 
 private:
+
+	void
+	set_hidden ();
 
 	void
 	set_addChildren ();
@@ -175,7 +178,7 @@ private:
 
 	Fields fields;
 
-	bool                                      display;
+	bool                                      hidden;
 	MFBool                                    visible;
 	X3DPtrArray <X3DPointingDeviceSensorNode> pointingDeviceSensors;
 	X3DPtrArray <LocalFog>                    localFogs;
