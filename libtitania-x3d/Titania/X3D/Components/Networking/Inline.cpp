@@ -157,6 +157,7 @@ Inline::setScene (ScenePtr && value)
 	// First initialize,
 
 	value -> isLive (getExecutionContext () -> isLive ());
+	//value -> isInternal (getExecutionContext () -> getRootContext () -> isInternal ());
 
 	if (isInitialized ())
 		value -> setup ();

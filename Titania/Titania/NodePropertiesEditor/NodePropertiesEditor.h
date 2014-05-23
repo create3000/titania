@@ -170,7 +170,7 @@ private:
 	on_add_field_cancel_clicked () final override;
 
 	bool
-	existsField (const std::string &) const;
+	hasField (const std::string &) const;
 
 	void
 	addField (X3D::X3DFieldDefinition* const);

@@ -98,6 +98,8 @@ X3DToolObject::set_loadState (const LoadState loadState)
 	{
 		if (loadState == COMPLETE_STATE)
 		{
+			inlineNode -> getInternalScene () -> isInternal (true);
+
 			toolNode = inlineNode -> getExportedNode ("Tool");
 
 			try

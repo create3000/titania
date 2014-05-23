@@ -176,7 +176,7 @@ public:
 	///  @name Field handling
 
 	bool
-	existsField (X3DFieldDefinition* const) const;
+	hasField (X3DFieldDefinition* const) const;
 
 	template <class FieldType, class ValueType>
 	void

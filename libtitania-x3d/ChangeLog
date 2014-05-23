@@ -1,5 +1,12 @@
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DToolObject.cpp:
+	* Inline.cpp: 
+
+2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DConstants.h:

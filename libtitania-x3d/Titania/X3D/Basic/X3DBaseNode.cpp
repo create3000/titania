@@ -426,7 +426,7 @@ throw (Error <DISPOSED>)
 }
 	
 bool
-X3DBaseNode::existsField (X3DFieldDefinition* const field) const
+X3DBaseNode::hasField (X3DFieldDefinition* const field) const
 {
 	try
 	{

@@ -511,12 +511,12 @@ NodePropertiesEditor::on_field_name_changed ()
 	// Set Ok button sensitive or not.
 
 	const std::string name   = getFieldNameEntry () .get_text ();
-	bool              exists = existsField (name);
+	bool              exists = hasField (name);
 
 	if (getAccessTypeLabel () .get_text () == "inputOutput")
 	{
-		exists |= existsField ("set_" + name);
-		exists |= existsField (name + "_changed");
+		exists |= hasField ("set_" + name);
+		exists |= hasField (name + "_changed");
 	}
 
 	getAddFieldOkButton () .set_sensitive (not name .empty () and not exists);
@@ -574,7 +574,7 @@ NodePropertiesEditor::on_add_field_cancel_clicked ()
 }
 
 bool
-NodePropertiesEditor::existsField (const std::string & name) const
+NodePropertiesEditor::hasField (const std::string & name) const
 {
 	const auto iter = fields .find (name);
 
@@ -661,7 +661,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 
 	// Remember old existing node fields that should be replaced by newField.
 
-	if (node -> existsField (oldField))
+	if (node -> hasField (oldField))
 	{
 		fieldsToReplace [newField] = oldField;
 		fieldsToRemove .emplace_back (oldField);
