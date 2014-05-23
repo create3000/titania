@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Thu, 22 May 2014 13:01:36 GMT'/>
+    <meta name='modified' content='Fri, 23 May 2014 10:41:47 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -151,22 +151,6 @@
       <Inline DEF='_3'
           url='"Inline.wrl"'/>
     </Transform>
-    <Transform DEF='MirrorText'
-        translation='0.673213 -0.0752815 0'
-        scale='1 -1 1'>
-      <Shape>
-        <Appearance>
-          <Material
-              transparency='0.57'/>
-        </Appearance>
-        <Text DEF='Text'
-            string='"OutlineEditor"'>
-          <FontStyle
-              family='"PT Sans Narrow"'
-              style='BOLD'/>
-        </Text>
-      </Shape>
-    </Transform>
     <Transform DEF='SnapTarget'
         translation='6.84977 0 -2.30566'>
       <Inline
@@ -176,7 +160,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 2.38717'
+          rotation='-0 -0 -1 5.32248'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -241,18 +225,6 @@
         </Shape>
       </Transform>
     </Switch>
-    <LOD
-        center='1 0 0'>
-      <Transform DEF='Text1'
-          translation='0.673213 0.0817185 0'>
-        <Shape>
-          <Appearance>
-            <Material/>
-          </Appearance>
-          <Text USE='Text'/>
-        </Shape>
-      </Transform>
-    </LOD>
     <Anchor
         description='Reload Now'
         url='"OutlineEditor.wrl"'>
@@ -333,7 +305,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 22 Mai 2014 15:00:36 CEST"'>
+            string='"modified...", "Do 22 Mai 2014 15:01:36 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -393,6 +365,37 @@ function initialize ()
         scale='0.223361 0.223361 0.223361'>
       <Inline
           url='"OutlineEditor-IMPORT.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/OutlineEditor-IMPORT.x3dv"'/>
+    </Transform>
+    <Transform DEF='OutlineEditorText'>
+      <LOD
+          center='1 0 0'>
+        <Transform DEF='Text1'
+            translation='0.673213 0.0817185 0'>
+          <Shape>
+            <Appearance>
+              <Material/>
+            </Appearance>
+            <Text DEF='Text'
+                string='"OutlineEditor"'>
+              <FontStyle
+                  family='"PT Sans Narrow"'
+                  style='BOLD'/>
+            </Text>
+          </Shape>
+        </Transform>
+      </LOD>
+      <Transform DEF='MirrorText'
+          translation='0.673213 -0.0752815 0'
+          rotation='0 1 0 3.14159'
+          scale='-1 -1 -1'>
+        <Shape>
+          <Appearance>
+            <Material
+                transparency='0.57'/>
+          </Appearance>
+          <Text USE='Text'/>
+        </Shape>
+      </Transform>
     </Transform>
     <IMPORT inlineDEF='_6' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_3' exportedDEF='Text' AS='ImportedInline'/>
