@@ -243,6 +243,8 @@ X3DBrowserWidget::saveSession ()
 void
 X3DBrowserWidget::isLive (const bool value)
 {
+	getConfig () .setItem ("isLive", value);
+
 	if (value)
 		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-pause"));
 

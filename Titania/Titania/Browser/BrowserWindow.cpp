@@ -985,6 +985,9 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::enableEditor (const bool enabled)
 {
+	if (not enabled)
+		isLive (true);
+
 	getImportMenuItem ()                 .set_visible (enabled);
 	getImportAsInlineMenuItem ()         .set_visible (enabled);
 	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
@@ -1394,11 +1397,7 @@ BrowserWindow::set_dashboard (const bool value)
 void
 BrowserWindow::on_play_pause_button_clicked ()
 {
-	const bool processEvents = not getConfig () .getBoolean ("isLive");
-
-	getConfig () .setItem ("isLive", processEvents);
-
-	isLive (processEvents);
+	isLive (not getConfig () .getBoolean ("isLive"));
 }
 
 void
