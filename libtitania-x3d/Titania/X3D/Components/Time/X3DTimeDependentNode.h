@@ -193,7 +193,7 @@ protected:
 
 	virtual
 	void
-	set_resume (time_type) = 0;
+	set_resume (const time_type) = 0;
 
 	virtual
 	void

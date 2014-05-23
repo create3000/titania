@@ -73,8 +73,8 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	       X3DSensorNode (),
 	X3DTimeDependentNode (),
 	              fields (),
-	               cycle (),
-	            interval ()
+	               cycle (0),
+	            interval (0)
 {
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
@@ -107,7 +107,7 @@ TimeSensor::prepareEvents ()
 	{
 		if (loop ())
 		{
-			cycle              += interval * size_t ((getCurrentTime () - cycle) / interval);
+			cycle              += interval * std::floor ((getCurrentTime () - cycle) / interval);
 			fraction_changed () = 1;
 			elapsedTime ()      = getElapsedTime ();
 			cycleTime ()        = getCurrentTime ();
@@ -120,7 +120,7 @@ TimeSensor::prepareEvents ()
 	}
 	else
 	{
-		static time_type intpart;
+		time_type intpart;
 
 		fraction_changed () = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
 		elapsedTime ()      = getElapsedTime ();
@@ -144,7 +144,7 @@ TimeSensor::set_pause ()
 { }
 
 void
-TimeSensor::set_resume (time_type pauseInterval)
+TimeSensor::set_resume (const time_type pauseInterval)
 {
 	cycle += pauseInterval;
 }

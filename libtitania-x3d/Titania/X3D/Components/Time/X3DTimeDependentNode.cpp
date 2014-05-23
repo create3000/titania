@@ -137,12 +137,10 @@ X3DTimeDependentNode::set_live ()
 	}
 	else
 	{
-		if (not disabled)
+		if (not disabled and isActive () and not isPaused ())
 		{
 			disabled = true;
-
-			if (isActive () and not isPaused ())
-				real_pause ();
+			real_pause ();
 		}
 	}
 }

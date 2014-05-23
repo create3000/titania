@@ -1,5 +1,14 @@
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeSensor.h:
+	* TimeSensor.cpp:
+	* X3DSoundSourceNode.h:
+	* X3DTimeDependentNode.h:
+	* X3DSoundSourceNode.cpp:
+	* X3DTimeDependentNode.cpp: 
+
+2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTimeDependentNode.h:
 	* X3DTimeDependentNode.cpp: 
 

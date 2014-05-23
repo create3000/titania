@@ -201,7 +201,7 @@ private:
 
 	virtual
 	void
-	set_resume (time_type) final override;
+	set_resume (const time_type) final override;
 
 	void
 	set_end ();
