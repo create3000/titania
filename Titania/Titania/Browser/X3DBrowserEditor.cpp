@@ -420,7 +420,7 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
 	                        {
 	                           prototypes .erase (prototype);
 
-										removeUsedPrototypes (prototype, externProtos, prototypes);
+										//removeUsedPrototypes (prototype, externProtos, prototypes);
 									}
 								}
 							}

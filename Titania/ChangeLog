@@ -1,5 +1,9 @@
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.cpp: 
+
+2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.h:
 	* X3DBrowserEditor.cpp:
 	* TextViewEditable.cpp: 
