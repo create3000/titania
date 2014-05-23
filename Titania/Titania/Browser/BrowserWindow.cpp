@@ -1408,6 +1408,8 @@ BrowserWindow::on_hand_button_toggled ()
 		getConfig () .setItem ("arrow", false);
 		getSelection () -> setEnabled (false);
 	}
+
+	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }
 
 void
@@ -1418,6 +1420,8 @@ BrowserWindow::on_arrow_button_toggled ()
 		getConfig () .setItem ("arrow", true);
 		getSelection () -> setEnabled (true);
 	}
+
+	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }
 
 // Viewer
@@ -1509,7 +1513,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
 {
-	const bool editor = getEditorMenuItem () .get_active ();
+	const bool editor = getEditorMenuItem () .get_active () and getArrowButton () .get_active ();
 
 	bool examine = editor;
 	bool walk    = editor;
