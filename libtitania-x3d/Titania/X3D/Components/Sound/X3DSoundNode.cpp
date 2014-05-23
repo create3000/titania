@@ -56,7 +56,7 @@ namespace X3D {
 X3DSoundNode::X3DSoundNode () :
 	X3DChildNode ()
 {
-	addNodeType (X3DConstants::X3DSoundNode);
+	addType (X3DConstants::X3DSoundNode);
 }
 
 } // X3D

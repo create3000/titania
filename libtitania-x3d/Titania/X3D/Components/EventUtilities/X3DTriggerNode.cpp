@@ -56,7 +56,7 @@ namespace X3D {
 X3DTriggerNode::X3DTriggerNode () :
 	X3DChildNode ()
 {
-	addNodeType (X3DConstants::X3DTriggerNode);
+	addType (X3DConstants::X3DTriggerNode);
 }
 
 } // X3D

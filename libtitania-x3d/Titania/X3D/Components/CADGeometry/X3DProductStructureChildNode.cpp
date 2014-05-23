@@ -61,7 +61,7 @@ X3DProductStructureChildNode::X3DProductStructureChildNode () :
 	X3DChildNode (),
 	      fields ()
 {
-	addNodeType (X3DConstants::X3DProductStructureChildNode);
+	addType (X3DConstants::X3DProductStructureChildNode);
 }
 
 } // X3D

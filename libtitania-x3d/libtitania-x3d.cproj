@@ -406,7 +406,6 @@
     <None Include="Titania\X3D\Basic\X3DArrayField.h" />
     <None Include="Titania\X3D\Basic\X3DField.h" />
     <None Include="Titania\X3D\Basic\X3DFieldDefinition.h" />
-    <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Base\X3DInput.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
@@ -689,6 +688,7 @@
     <None Include="Titania\X3D\Execution\ExportedNodeIndex.h" />
     <None Include="Titania\X3D\Execution\ImportedNodeIndex.h" />
     <None Include="Titania\X3D\Types\Array.h" />
+    <None Include="Titania\X3D\Basic\BasicNodeTypeArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -713,7 +713,6 @@
     <Compile Include="Titania\X3D\Base\X3DOutput.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionSet.cpp" />
-    <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowser.cpp" />
@@ -1181,6 +1180,7 @@
     <Compile Include="Titania\X3D\Configuration\SupporteFieldArray.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\ImportedNodeIndex.cpp" />
+    <Compile Include="Titania\X3D\Basic\BasicNodeTypeArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

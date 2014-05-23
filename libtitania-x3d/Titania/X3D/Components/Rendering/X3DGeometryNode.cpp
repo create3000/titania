@@ -73,7 +73,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	    frontFace (GL_CCW),
 	     elements ()
 {
-	addNodeType (X3DConstants::X3DGeometryNode);
+	addType (X3DConstants::X3DGeometryNode);
 	
 	addChildren (texCoordNode);
 }

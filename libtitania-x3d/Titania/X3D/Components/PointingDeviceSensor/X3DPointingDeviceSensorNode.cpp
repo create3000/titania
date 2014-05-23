@@ -66,7 +66,7 @@ X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	       fields (),
 	     matrices ()
 {
-	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
+	addType (X3DConstants::X3DPointingDeviceSensorNode);
 }
 
 void

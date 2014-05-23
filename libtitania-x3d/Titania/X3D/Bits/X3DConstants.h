@@ -206,7 +206,7 @@ enum FieldType : uint8_t
 
 };
 
-enum NodeType : uint8_t
+enum BasicNodeType : uint8_t
 {
 	X3DAppearanceChildNode,
 	X3DAppearanceNode,

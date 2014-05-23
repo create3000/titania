@@ -63,7 +63,7 @@ const Matrix4f X3DTextureTransformNode::textureMatrix = { 1,  0, 0, 0,
 X3DTextureTransformNode::X3DTextureTransformNode () :
 	X3DAppearanceChildNode ()
 {
-	addNodeType (X3DConstants::X3DTextureTransformNode);
+	addType (X3DConstants::X3DTextureTransformNode);
 }
 
 void

@@ -62,7 +62,7 @@ X3DTextureNode::X3DTextureNode () :
 	X3DAppearanceChildNode (),
 	             textureId (0)
 {
-	addNodeType (X3DConstants::X3DTextureNode);
+	addType (X3DConstants::X3DTextureNode);
 }
 
 void

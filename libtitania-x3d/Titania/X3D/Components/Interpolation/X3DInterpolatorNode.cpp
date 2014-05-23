@@ -62,7 +62,7 @@ X3DInterpolatorNode::X3DInterpolatorNode () :
 	X3DChildNode (),
 	      fields ()
 {
-	addNodeType (X3DConstants::X3DInterpolatorNode);
+	addType (X3DConstants::X3DInterpolatorNode);
 }
 
 void

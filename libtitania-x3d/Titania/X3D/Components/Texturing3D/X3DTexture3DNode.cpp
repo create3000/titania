@@ -72,7 +72,7 @@ X3DTexture3DNode::X3DTexture3DNode () :
 	          transparent (false),
 	texturePropertiesNode ()
 {
-	addNodeType (X3DConstants::X3DTexture3DNode);
+	addType (X3DConstants::X3DTexture3DNode);
 
 	addChildren (texturePropertiesNode);
 }

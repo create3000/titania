@@ -78,7 +78,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	X3DExecutionContext (),
 	        protoObject (_protoObject)
 {
-	addNodeType (X3DConstants::X3DPrototypeInstance);
+	addType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
 
@@ -165,7 +165,7 @@ throw (Error <DISPOSED>)
 }
 
 const X3DBaseNode*
-X3DPrototypeInstance::getType () const
+X3DPrototypeInstance::getDeclaration () const
 throw (Error <DISPOSED>)
 {
 	if (protoObject)

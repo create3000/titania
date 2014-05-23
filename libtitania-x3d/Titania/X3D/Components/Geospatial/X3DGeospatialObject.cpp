@@ -75,7 +75,7 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	          origin (),
 	         radians (true)
 {
-	//addNodeType (X3DConstants::X3DGeospatialObject);
+	//addType (X3DConstants::X3DGeospatialObject);
 
 	addChildren (geoOriginNode);
 }

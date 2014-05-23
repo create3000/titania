@@ -73,7 +73,7 @@ X3DSoundSourceNode::X3DSoundSourceNode () :
 	                 end (),
 	         mediaStream (new MediaStream ())
 {
-	addNodeType (X3DConstants::X3DSoundSourceNode);
+	addType (X3DConstants::X3DSoundSourceNode);
 
 	addChildren (end);
 

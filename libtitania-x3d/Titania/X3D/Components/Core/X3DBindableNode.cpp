@@ -70,7 +70,7 @@ X3DBindableNode::X3DBindableNode () :
 	      layers (),
 	    wasBound (false)
 {
-	addNodeType (X3DConstants::X3DBindableNode);
+	addType (X3DConstants::X3DBindableNode);
 }
 
 void

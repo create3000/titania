@@ -67,7 +67,7 @@ X3DNode::X3DNode () :
 	X3DBaseNode (),
 	     fields ()
 {
-	addNodeType (X3DConstants::X3DNode);
+	addType (X3DConstants::X3DNode);
 }
 
 std::vector <X3DLayerNode*>

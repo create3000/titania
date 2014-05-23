@@ -56,7 +56,7 @@ namespace X3D {
 X3DNormalNode::X3DNormalNode () :
 	X3DGeometricPropertyNode ()
 {
-	addNodeType (X3DConstants::X3DNormalNode);
+	addType (X3DConstants::X3DNormalNode);
 }
 
 } // X3D

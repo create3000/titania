@@ -64,7 +64,7 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DBoundedObject (),
 	          fields ()
 {
-	addNodeType (X3DConstants::X3DNBodyCollidableNode);
+	addType (X3DConstants::X3DNBodyCollidableNode);
 }
 
 void

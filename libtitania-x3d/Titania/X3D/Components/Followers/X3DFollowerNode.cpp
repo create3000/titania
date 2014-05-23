@@ -63,7 +63,7 @@ X3DFollowerNode::X3DFollowerNode () :
 	X3DChildNode (),
 	      fields ()
 {
-	addNodeType (X3DConstants::X3DFollowerNode);
+	addType (X3DConstants::X3DFollowerNode);
 }
 
 void

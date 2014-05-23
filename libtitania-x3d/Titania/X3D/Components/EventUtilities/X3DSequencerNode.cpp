@@ -65,7 +65,7 @@ X3DSequencerNode::X3DSequencerNode () :
 	      fields (),
 	       index (-1)
 {
-	addNodeType (X3DConstants::X3DSequencerNode);
+	addType (X3DConstants::X3DSequencerNode);
 }
 
 void

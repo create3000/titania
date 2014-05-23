@@ -67,7 +67,7 @@ X3DShaderNode::X3DShaderNode () :
 	                fields (),
 	              selected (0)
 {
-	addNodeType (X3DConstants::X3DShaderNode);
+	addType (X3DConstants::X3DShaderNode);
 }
 
 void

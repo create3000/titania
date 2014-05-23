@@ -310,13 +310,13 @@ jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 		{
 			X3DBaseNode* const node = sfnode -> getValue ();
 
-			jsval array [node -> getNodeType () .size ()];
+			jsval array [node -> getType () .size ()];
 
-			for (size_t i = 0, size = node -> getNodeType () .size (); i < size; ++ i)
-				if (not JS_NewNumberValue (context, (size_t) node -> getNodeType () [i], &array [i]))
+			for (size_t i = 0, size = node -> getType () .size (); i < size; ++ i)
+				if (not JS_NewNumberValue (context, (size_t) node -> getType () [i], &array [i]))
 					return JS_FALSE;
 
-			result = JS_NewArrayObject (context, node -> getNodeType () .size (), array);
+			result = JS_NewArrayObject (context, node -> getType () .size (), array);
 		}
 		else
 		{

@@ -62,7 +62,7 @@ X3DDragSensorNode::X3DDragSensorNode () :
 	X3DPointingDeviceSensorNode (),
 	                     fields ()
 {
-	addNodeType (X3DConstants::X3DDragSensorNode);
+	addType (X3DConstants::X3DDragSensorNode);
 }
 
 } // X3D

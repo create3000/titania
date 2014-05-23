@@ -63,7 +63,7 @@ X3DRigidJointNode::X3DRigidJointNode () :
 	X3DNode (),
 	 fields ()
 {
-	addNodeType (X3DConstants::X3DRigidJointNode);
+	addType (X3DConstants::X3DRigidJointNode);
 }
 
 } // X3D

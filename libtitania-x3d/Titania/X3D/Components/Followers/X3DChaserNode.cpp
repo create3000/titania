@@ -62,7 +62,7 @@ X3DChaserNode::X3DChaserNode () :
 	         fields (),
 	       stepTime ()
 {
-	addNodeType (X3DConstants::X3DChaserNode);
+	addType (X3DConstants::X3DChaserNode);
 }
 
 void

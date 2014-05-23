@@ -536,7 +536,7 @@ X3DFontStyleNode::X3DFontStyleNode () :
 	      bold (false),
 	alignments ({ Alignment::BEGIN, Alignment::FIRST })
 {
-	addNodeType (X3DConstants::X3DFontStyleNode);
+	addType (X3DConstants::X3DFontStyleNode);
 }
 
 void

@@ -112,7 +112,7 @@ Generator::VrmlAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const f
 	assert (false);
 }
 
-Generator::NodeTypesIndex::NodeTypesIndex () :
+Generator::BasicNodeTypeIndex::BasicNodeTypeIndex () :
 	array ({
 	          "X3DAppearanceChildNode",
 	          "X3DAppearanceNode",
@@ -185,15 +185,15 @@ Generator::NodeTypesIndex::NodeTypesIndex () :
 { }
 
 const std::string &
-Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* const baseNode) const
+Generator::BasicNodeTypeIndex::operator [ ] (const X3DBaseNode* const baseNode) const
 {
-	return operator [ ] (baseNode -> getNodeType () .back ());
+	return operator [ ] (baseNode -> getType () .back ());
 }
 
 const Generator::AccessTypesIndex     Generator::AccessTypes;
 const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
 const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
-const Generator::NodeTypesIndex       Generator::NodeTypes;
+const Generator::BasicNodeTypeIndex   Generator::BasicNodeTypes;
 
 Generator::StyleType Generator::style   = NICEST;
 VersionType          Generator::version = LATEST_VERSION;

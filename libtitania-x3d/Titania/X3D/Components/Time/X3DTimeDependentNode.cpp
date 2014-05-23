@@ -86,7 +86,7 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	    stopTimeout (),
 	       disabled (false)
 {
-	addNodeType (X3DConstants::X3DTimeDependentNode);
+	addType (X3DConstants::X3DTimeDependentNode);
 
 	addChildren (initialized);
 }

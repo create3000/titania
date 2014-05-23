@@ -56,7 +56,7 @@ namespace X3D {
 X3DNetworkSensorNode::X3DNetworkSensorNode () :
 	X3DSensorNode ()
 {
-	addNodeType (X3DConstants::X3DNetworkSensorNode);
+	addType (X3DConstants::X3DNetworkSensorNode);
 }
 
 } // X3D

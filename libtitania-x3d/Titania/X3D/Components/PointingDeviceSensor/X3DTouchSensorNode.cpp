@@ -61,7 +61,7 @@ X3DTouchSensorNode::X3DTouchSensorNode () :
 	X3DPointingDeviceSensorNode (),
 	                     fields ()
 {
-	addNodeType (X3DConstants::X3DTouchSensorNode);
+	addType (X3DConstants::X3DTouchSensorNode);
 }
 
 void

@@ -87,7 +87,7 @@ public:
 
 	virtual
 	const X3DBaseNode*
-	getType () const
+	getDeclaration () const
 	throw (Error <DISPOSED>) final override;
 
 	virtual

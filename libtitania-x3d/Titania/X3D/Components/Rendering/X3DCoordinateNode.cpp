@@ -56,7 +56,7 @@ namespace X3D {
 X3DCoordinateNode::X3DCoordinateNode () :
 	X3DGeometricPropertyNode ()
 {
-	addNodeType (X3DConstants::X3DCoordinateNode);
+	addType (X3DConstants::X3DCoordinateNode);
 }
 
 } // X3D

@@ -57,7 +57,7 @@ X3DEnvironmentTextureNode::X3DEnvironmentTextureNode () :
 	X3DTextureNode (),
 	     loadState (COMPLETE_STATE)
 {
-	addNodeType (X3DConstants::X3DEnvironmentTextureNode);
+	addType (X3DConstants::X3DEnvironmentTextureNode);
 }
 
 } // X3D

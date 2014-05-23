@@ -93,7 +93,7 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	     topTexture (),
 	  bottomTexture ()
 {
-	addNodeType (X3DConstants::X3DBackgroundNode);
+	addType (X3DConstants::X3DBackgroundNode);
 
 	addChildren (frontTexture,
 	             backTexture,

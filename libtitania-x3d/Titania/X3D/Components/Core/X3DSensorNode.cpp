@@ -62,7 +62,7 @@ X3DSensorNode::X3DSensorNode () :
 	X3DChildNode (),
 	      fields ()
 {
-	addNodeType (X3DConstants::X3DSensorNode);
+	addType (X3DConstants::X3DSensorNode);
 }
 
 } // X3D

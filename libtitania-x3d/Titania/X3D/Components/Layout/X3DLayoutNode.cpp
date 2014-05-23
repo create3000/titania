@@ -56,7 +56,7 @@ namespace X3D {
 X3DLayoutNode::X3DLayoutNode () :
 	X3DChildNode ()
 {
-	addNodeType (X3DConstants::X3DLayoutNode);
+	addType (X3DConstants::X3DLayoutNode);
 }
 
 } // X3D

@@ -70,7 +70,7 @@ X3DFogObject::X3DFogObject () :
 	     glMode (GL_LINEAR),
 	    glColor ()
 {
-	addNodeType (X3DConstants::X3DFogObject);
+	addType (X3DConstants::X3DFogObject);
 
 	addChildren (transparency ());
 }

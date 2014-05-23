@@ -64,7 +64,7 @@ X3DBoundedObject::X3DBoundedObject () :
 	X3DBaseNode (),
 	     fields ()
 {
-	addNodeType (X3DConstants::X3DBoundedObject);
+	addType (X3DConstants::X3DBoundedObject);
 }
 
 void

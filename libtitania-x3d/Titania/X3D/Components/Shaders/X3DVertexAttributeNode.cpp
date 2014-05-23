@@ -61,7 +61,7 @@ X3DVertexAttributeNode::X3DVertexAttributeNode () :
 	X3DGeometricPropertyNode (),
 	                  fields ()
 {
-	addNodeType (X3DConstants::X3DVertexAttributeNode);
+	addType (X3DConstants::X3DVertexAttributeNode);
 }
 
 } // X3D

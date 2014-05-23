@@ -56,7 +56,7 @@ namespace X3D {
 X3DChildNode::X3DChildNode () :
 	X3DNode ()
 {
-	addNodeType (X3DConstants::X3DChildNode);
+	addType (X3DConstants::X3DChildNode);
 }
 
 } // X3D

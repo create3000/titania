@@ -66,7 +66,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	transformFeedbackVaryings (),
 	             textureUnits ()
 {
-	addNodeType (X3DConstants::X3DProgrammableShaderObject);
+	addType (X3DConstants::X3DProgrammableShaderObject);
 }
 
 void

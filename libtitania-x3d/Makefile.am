@@ -15,11 +15,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Base/X3DObject.cpp \
 	Titania/X3D/Base/X3DOutput.cpp \
 	Titania/X3D/Basic/BasicNodeArray.cpp \
+	Titania/X3D/Basic/BasicNodeTypeArray.cpp \
 	Titania/X3D/Basic/FieldContainer.cpp \
 	Titania/X3D/Basic/FieldDefinitionArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionSet.cpp \
 	Titania/X3D/Basic/NodeSet.cpp \
-	Titania/X3D/Basic/NodeTypeArray.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \

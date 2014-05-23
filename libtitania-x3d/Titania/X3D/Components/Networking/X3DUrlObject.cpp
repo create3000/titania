@@ -64,7 +64,7 @@ X3DUrlObject::X3DUrlObject () :
 	     fields (),
 	  loadState (NOT_STARTED_STATE)
 {
-	addNodeType (X3DConstants::X3DUrlObject);
+	addType (X3DConstants::X3DUrlObject);
 
 	addChildren (loadState);
 }

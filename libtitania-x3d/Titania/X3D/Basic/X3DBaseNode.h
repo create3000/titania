@@ -54,7 +54,7 @@
 #include "../Base/Output.h"
 #include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
-#include "../Basic/NodeTypeArray.h"
+#include "../Basic/BasicNodeTypeArray.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include "../Bits/Error.h"
 #include "../Bits/TraverseType.h"
@@ -147,14 +147,15 @@ public:
 	const std::string &
 	getComponentName () const = 0;
 
+	const BasicNodeTypeArray &
+	getType () const
+	throw (Error <DISPOSED>)
+	{ return type; }
+
 	virtual
 	const X3DBaseNode*
-	getType () const
+	getDeclaration () const
 	throw (Error <DISPOSED>);
-
-	const NodeTypeArray &
-	getNodeType () const
-	{ return nodeType; }
 
 	virtual
 	const std::string &
@@ -193,13 +194,14 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{
-		X3DFieldDefinition* const field = getField (name);
-		Type* const               type  = dynamic_cast <Type*> (field);
+		X3DFieldDefinition* const fieldDefinition = getField (name);
+		
+		Type* const field  = dynamic_cast <Type*> (fieldDefinition);
 
-		if (type)
-			return *type;
+		if (field)
+			return *field;
 
-		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + field -> getTypeName () + ".");
+		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
 	}
 
 	template <class Type>
@@ -210,13 +212,14 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{
-		X3DFieldDefinition* const field = getField (name);
-		Type* const               type  = dynamic_cast <Type*> (field);
+		X3DFieldDefinition* const fieldDefinition = getField (name);
 
-		if (type)
-			return *type;
+		Type* const field  = dynamic_cast <Type*> (fieldDefinition);
 
-		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + field -> getTypeName () + ".");
+		if (field)
+			return *field;
+
+		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
 	}
 
 	X3DFieldDefinition*
@@ -425,8 +428,8 @@ protected:
 	///  @name Misc
 
 	void
-	addNodeType (const X3DConstants::NodeType value)
-	{ nodeType .push_back (value); }
+	addType (const X3DConstants::BasicNodeType value)
+	{ type .emplace_back (value); }
 
 	void
 	addField (const AccessType, const std::string &, X3DFieldDefinition &);
@@ -502,7 +505,7 @@ private:
 	X3DBrowser* const          browser;          // This nodes Browser
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
-	NodeTypeArray nodeType;
+	BasicNodeTypeArray type;
 
 	FieldDefinitionArray fieldDefinitions;       // Pre-defined and user-defined field definitions
 	FieldIndex           fields;                 // Pre-defined and user-defined fields

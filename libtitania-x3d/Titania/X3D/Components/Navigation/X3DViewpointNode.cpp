@@ -89,7 +89,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	           scaleInterpolator (new PositionInterpolator (getBrowser ())),
 	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser ()))
 {
-	addNodeType (X3DConstants::X3DViewpointNode);
+	addType (X3DConstants::X3DViewpointNode);
 
 	addChildren (positionOffset (),
 	             orientationOffset (),

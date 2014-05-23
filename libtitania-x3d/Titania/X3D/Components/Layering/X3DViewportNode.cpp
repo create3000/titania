@@ -58,7 +58,7 @@ namespace X3D {
 X3DViewportNode::X3DViewportNode () :
 	X3DGroupingNode ()
 {
-	addNodeType (X3DConstants::X3DViewportNode);
+	addType (X3DConstants::X3DViewportNode);
 }
 
 Vector4i

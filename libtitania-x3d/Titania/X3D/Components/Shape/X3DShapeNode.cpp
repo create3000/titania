@@ -74,7 +74,7 @@ X3DShapeNode::X3DShapeNode () :
 	         geometryNode (),
 	glBindProgramPipeline ()
 {
-	addNodeType (X3DConstants::X3DShapeNode);
+	addType (X3DConstants::X3DShapeNode);
 	
 	addChildren (appearanceNode,
 	             geometryNode);

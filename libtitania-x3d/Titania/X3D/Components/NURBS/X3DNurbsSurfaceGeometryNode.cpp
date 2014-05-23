@@ -84,7 +84,7 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	               vertexMode (0),
 	              numVertices (0)
 {
-	addNodeType (X3DConstants::X3DNurbsSurfaceGeometryNode);
+	addType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 	
 	addChildren (texCoordNode,
 	             controlPointNode);

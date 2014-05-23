@@ -62,7 +62,7 @@ X3DMetadataObject::X3DMetadataObject () :
 	X3DBaseNode (),
 	     fields ()
 {
-	addNodeType (X3DConstants::X3DMetadataObject);
+	addType (X3DConstants::X3DMetadataObject);
 }
 
 void

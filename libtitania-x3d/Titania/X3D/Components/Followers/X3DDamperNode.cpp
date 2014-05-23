@@ -63,7 +63,7 @@ X3DDamperNode::X3DDamperNode () :
 	X3DFollowerNode (),
 	         fields ()
 {
-	addNodeType (X3DConstants::X3DDamperNode);
+	addType (X3DConstants::X3DDamperNode);
 }
 
 size_t

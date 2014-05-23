@@ -56,7 +56,7 @@ namespace X3D {
 X3DColorNode::X3DColorNode () :
 	X3DGeometricPropertyNode ()
 {
-	addNodeType (X3DConstants::X3DColorNode);
+	addType (X3DConstants::X3DColorNode);
 }
 
 } // X3D

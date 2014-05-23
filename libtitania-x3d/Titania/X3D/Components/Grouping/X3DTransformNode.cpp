@@ -65,7 +65,7 @@ X3DTransformNode::X3DTransformNode () :
 	X3DTransformMatrix4DNode (),
 	                  fields ()
 {
-	//addNodeType (X3DConstants::X3DTransformNode);
+	//addType (X3DConstants::X3DTransformNode);
 }
 
 void

@@ -92,7 +92,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	            localFogs (),
 	                group (_layerGroup)
 {
-	addNodeType (X3DConstants::X3DLayerNode);
+	addType (X3DConstants::X3DLayerNode);
 
 	addChildren (defaultNavigationInfo,
 	             defaultBackground,

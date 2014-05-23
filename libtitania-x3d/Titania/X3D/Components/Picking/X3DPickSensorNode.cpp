@@ -66,7 +66,7 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	X3DSensorNode (),
 	       fields ()
 {
-	addNodeType (X3DConstants::X3DPickSensorNode);
+	addType (X3DConstants::X3DPickSensorNode);
 }
 
 } // X3D

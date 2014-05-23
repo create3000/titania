@@ -56,7 +56,7 @@ namespace X3D {
 X3DParametricGeometryNode::X3DParametricGeometryNode () :
 	X3DGeometryNode ()
 {
-	addNodeType (X3DConstants::X3DParametricGeometryNode);
+	addType (X3DConstants::X3DParametricGeometryNode);
 }
 
 } // X3D

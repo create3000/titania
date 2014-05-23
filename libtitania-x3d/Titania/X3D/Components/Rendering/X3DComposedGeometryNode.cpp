@@ -79,7 +79,7 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	      coordNode (),
 	    transparent (false)
 {
-	addNodeType (X3DConstants::X3DComposedGeometryNode);
+	addType (X3DConstants::X3DComposedGeometryNode);
 
 	addChildren (attribNodes,
 	             colorNode,

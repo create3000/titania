@@ -1,5 +1,89 @@
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DConstants.h:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* NodeTypeArray.h:
+	* Generator.h:
+	* NodeTypeArray.cpp:
+	* Generator.cpp:
+	* BasicNodeTypeArray.h:
+	* X3DNode.cpp:
+	* BasicNodeTypeArray.cpp:
+	* X3DInfoNode.cpp:
+	* X3DChildNode.cpp:
+	* X3DShapeNode.cpp:
+	* X3DSensorNode.cpp:
+	* X3DSoundNode.cpp:
+	* X3DBindableNode.cpp:
+	* X3DLayoutNode.cpp:
+	* X3DLayerNode.cpp:
+	* X3DLightNode.cpp:
+	* X3DFontStyleNode.cpp:
+	* X3DShaderNode.cpp:
+	* X3DMaterialNode.cpp:
+	* X3DColorNode.cpp:
+	* X3DMetadataObject.cpp:
+	* X3DScriptNode.cpp:
+	* X3DNormalNode.cpp:
+	* X3DUrlObject.cpp:
+	* X3DAppearanceNode.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DDamperNode.cpp:
+	* X3DChaserNode.cpp:
+	* X3DViewportNode.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DSoundSourceNode.cpp:
+	* X3DTextureNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DPickableObject.cpp:
+	* X3DPickSensorNode.cpp:
+	* X3DFollowerNode.cpp:
+	* X3DBoundedObject.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DTransformNode.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DCoordinateNode.cpp:
+	* jsSFNode.cpp:
+	* X3DTexture3DNode.cpp:
+	* X3DAppearanceChildNode.cpp:
+	* X3DTriggerNode.cpp:
+	* X3DViewpointObject.cpp:
+	* X3DNurbsControlCurveNode.cpp:
+	* X3DVertexAttributeNode.cpp:
+	* X3DGeospatialObject.cpp:
+	* X3DNetworkSensorNode.cpp:
+	* X3DParametricGeometryNode.cpp:
+	* X3DSequencerNode.cpp:
+	* X3DTransformMatrix4DNode.cpp:
+	* X3DInterpolatorNode.cpp:
+	* X3DTextureTransformNode.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* X3DFogObject.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp:
+	* X3DRigidJointNode.cpp:
+	* X3DTextureCoordinateNode.cpp:
+	* X3DGeometricPropertyNode.cpp:
+	* X3DProgrammableShaderObject.cpp:
+	* X3DKeyDeviceSensorNode.cpp:
+	* X3DBackgroundNode.cpp:
+	* X3DParticleEmitterNode.cpp:
+	* X3DDragSensorNode.cpp:
+	* X3DTouchSensorNode.cpp:
+	* X3DNBodyCollidableNode.cpp:
+	* X3DProductStructureChildNode.cpp:
+	* X3DEnvironmentTextureNode.cpp:
+	* X3DParticlePhysicsModelNode.cpp:
+	* X3DNBodyCollisionSpaceNode.cpp:
+	* X3DEnvironmentalSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DShapeNode.cpp:
 	* ParticleSystem.cpp:
 	* X3DFogObject.h:

@@ -136,7 +136,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	       X3DChildObject (),
 	              browser (browser),
 	     executionContext (executionContext),
-	             nodeType (),
+	                 type (),
 	     fieldDefinitions (),
 	               fields (),
 	         fieldAliases (),
@@ -412,7 +412,7 @@ X3DBaseNode::getRootContext () const
 }
 
 const X3DBaseNode*
-X3DBaseNode::getType () const
+X3DBaseNode::getDeclaration () const
 throw (Error <DISPOSED>)
 {
 	try
@@ -593,7 +593,7 @@ X3DBaseNode::getPreDefinedFields () const
 	{
 		try
 		{
-			getType () -> getField (field -> getName ());
+			getDeclaration () -> getField (field -> getName ());
 	
 			predefinedFields .emplace_back (field);
 		}
@@ -631,7 +631,7 @@ X3DBaseNode::getChangedFields () const
 			}
 			catch (const X3DError &)
 			{
-				// This can happen if a ExternProto has less field than the proto.
+				// This can happen if a ExternProto has less fields than the prototype.
 				continue;
 			}
 		}
@@ -648,7 +648,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DFieldDefinition* const declarationField = getType () -> getField (field -> getName ());
+	const X3DFieldDefinition* const declarationField = getDeclaration () -> getField (field -> getName ());
 
 	return *field == *declarationField;
 }

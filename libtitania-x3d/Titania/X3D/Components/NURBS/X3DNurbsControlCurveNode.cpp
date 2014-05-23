@@ -61,7 +61,7 @@ X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 	X3DNode (),
 	 fields ()
 {
-	addNodeType (X3DConstants::X3DNurbsControlCurveNode);
+	addType (X3DConstants::X3DNurbsControlCurveNode);
 }
 
 Box2f

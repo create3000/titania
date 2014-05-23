@@ -58,7 +58,7 @@ X3DScriptNode::X3DScriptNode () :
 	X3DUrlObject (),
 	    worldURL ()
 {
-	addNodeType (X3DConstants::X3DScriptNode);
+	addType (X3DConstants::X3DScriptNode);
 }
 
 void
