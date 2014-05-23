@@ -184,29 +184,31 @@ X3DGroupingNode::add (const MFNode & children)
 
 	for (const auto & child : children)
 	{
-		const auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensors .emplace_back (pointingDeviceSensorNode);
-
-		else
+		if (i >= visible .size () or visible [i])
 		{
-			const auto localFog = x3d_cast <LocalFog*> (child);
+			const auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
 
-			if (localFog)
-				localFogs .emplace_back (localFog);
+			if (pointingDeviceSensorNode)
+				pointingDeviceSensors .emplace_back (pointingDeviceSensorNode);
 
 			else
 			{
-				const auto childNode = x3d_cast <X3DChildNode*> (child);
+				const auto localFog = x3d_cast <LocalFog*> (child);
 
-				if (childNode)
+				if (localFog)
+					localFogs .emplace_back (localFog);
+
+				else
 				{
-					if (childNode -> isCollectable ())
-						collectables .emplace_back (childNode);
+					const auto childNode = x3d_cast <X3DChildNode*> (child);
 
-					if (i >= visible .size () or visible [i])
+					if (childNode)
+					{
+						if (childNode -> isCollectable ())
+							collectables .emplace_back (childNode);
+
 						childNodes .emplace_back (childNode);
+					}
 				}
 			}
 		}
