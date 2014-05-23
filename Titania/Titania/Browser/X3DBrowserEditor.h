@@ -244,7 +244,7 @@ private:
 	importScene (const X3D::ScenePtr &, const UndoStepPtr &);
 
 	void
-	removeUsedPrototypes (X3D::X3DExecutionContext* const, std::map <X3D::ExternProtoPtr, size_t> &, std::map <X3D::ProtoPtr, size_t>) const;
+	removeUsedPrototypes (X3D::X3DExecutionContext* const, std::map <X3D::ExternProtoPtr, size_t> &, std::map <X3D::ProtoPtr, size_t> &) const;
 
 	// Clipboard
 

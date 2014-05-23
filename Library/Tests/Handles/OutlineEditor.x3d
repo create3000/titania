@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Fri, 23 May 2014 10:41:47 GMT'/>
+    <meta name='modified' content='Fri, 23 May 2014 13:23:00 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -105,6 +105,11 @@
         <ProtoInstance name='Delay'/>
       </ProtoBody>
     </ProtoDeclare>
+    <ProtoDeclare name='RemoveMe'>
+      <ProtoBody>
+        <ProtoInstance name='OutlineEditorGrid'/>
+      </ProtoBody>
+    </ProtoDeclare>
     <NavigationInfo DEF='None'
         transitionType='"ANIMATE"'/>
     <Background DEF='Sunset'
@@ -160,7 +165,7 @@
       <ProximitySensor USE='_2'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='-0 -0 -1 5.32248'
+          rotation='0 0 1 1.5708'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -305,7 +310,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 22 Mai 2014 15:01:36 CEST"'>
+            string='"modified...", "Fr 23 Mai 2014 12:41:47 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>

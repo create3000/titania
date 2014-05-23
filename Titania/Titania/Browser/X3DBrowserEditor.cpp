@@ -399,7 +399,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 void
 X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executionContext,
                                         std::map <X3D::ExternProtoPtr, size_t> & externProtos,
-                                        std::map <X3D::ProtoPtr, size_t> prototypes) const
+                                        std::map <X3D::ProtoPtr, size_t> & prototypes) const
 {
 	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & child)
 	               {
@@ -420,7 +420,8 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
 	                        {
 	                           prototypes .erase (prototype);
 
-										//removeUsedPrototypes (prototype, externProtos, prototypes);
+										// This is not neccessary:
+										// removeUsedPrototypes (prototype, externProtos, prototypes);
 									}
 								}
 							}
