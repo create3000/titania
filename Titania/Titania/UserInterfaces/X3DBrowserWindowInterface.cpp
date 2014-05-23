@@ -196,12 +196,18 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_MediumQualityMenuItem -> set_name ("MediumQualityMenuItem");
 	m_builder -> get_widget ("LowQualityMenuItem", m_LowQualityMenuItem);
 	m_LowQualityMenuItem -> set_name ("LowQualityMenuItem");
+	m_builder -> get_widget ("ShowHideEnvironmentalEffectsMenuItem", m_ShowHideEnvironmentalEffectsMenuItem);
+	m_ShowHideEnvironmentalEffectsMenuItem -> set_name ("ShowHideEnvironmentalEffectsMenuItem");
+	m_builder -> get_widget ("BackgroundsMenuItem", m_BackgroundsMenuItem);
+	m_BackgroundsMenuItem -> set_name ("BackgroundsMenuItem");
+	m_builder -> get_widget ("FogsMenuItem", m_FogsMenuItem);
+	m_FogsMenuItem -> set_name ("FogsMenuItem");
 	m_builder -> get_widget ("ObjectIconsMenuItem", m_ObjectIconsMenuItem);
 	m_ObjectIconsMenuItem -> set_name ("ObjectIconsMenuItem");
-	m_builder -> get_widget ("ProximitySensorMenuItem", m_ProximitySensorMenuItem);
-	m_ProximitySensorMenuItem -> set_name ("ProximitySensorMenuItem");
-	m_builder -> get_widget ("VisibilitySensorMenuItem", m_VisibilitySensorMenuItem);
-	m_VisibilitySensorMenuItem -> set_name ("VisibilitySensorMenuItem");
+	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
+	m_ProximitySensorsMenuItem -> set_name ("ProximitySensorsMenuItem");
+	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
+	m_VisibilitySensorsMenuItem -> set_name ("VisibilitySensorsMenuItem");
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
 	m_HideAllObjectIconsMenuItem -> set_name ("HideAllObjectIconsMenuItem");
 	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_RenderingPropertiesMenuItem);
@@ -216,6 +222,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SelectAllMenuItem -> set_name ("SelectAllMenuItem");
 	m_builder -> get_widget ("DeselectAllMenuItem", m_DeselectAllMenuItem);
 	m_DeselectAllMenuItem -> set_name ("DeselectAllMenuItem");
+	m_builder -> get_widget ("HideSelectedObjectsMenuItem", m_HideSelectedObjectsMenuItem);
+	m_HideSelectedObjectsMenuItem -> set_name ("HideSelectedObjectsMenuItem");
+	m_builder -> get_widget ("HideUnselectedObjectsMenuItem", m_HideUnselectedObjectsMenuItem);
+	m_HideUnselectedObjectsMenuItem -> set_name ("HideUnselectedObjectsMenuItem");
+	m_builder -> get_widget ("ShowSelectedObjectsMenuItem", m_ShowSelectedObjectsMenuItem);
+	m_ShowSelectedObjectsMenuItem -> set_name ("ShowSelectedObjectsMenuItem");
+	m_builder -> get_widget ("ShowAllObjectsMenuItem", m_ShowAllObjectsMenuItem);
+	m_ShowAllObjectsMenuItem -> set_name ("ShowAllObjectsMenuItem");
 	m_builder -> get_widget ("SelectLowestMenuItem", m_SelectLowestMenuItem);
 	m_SelectLowestMenuItem -> set_name ("SelectLowestMenuItem");
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
@@ -234,14 +248,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_StandardSizeMenuItem -> set_name ("StandardSizeMenuItem");
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_InfoMenuItem -> set_name ("InfoMenuItem");
-	m_builder -> get_widget ("HideSelectedObjectsMenuItem", m_HideSelectedObjectsMenuItem);
-	m_HideSelectedObjectsMenuItem -> set_name ("HideSelectedObjectsMenuItem");
-	m_builder -> get_widget ("HideUnselectedObjectsMenuItem", m_HideUnselectedObjectsMenuItem);
-	m_HideUnselectedObjectsMenuItem -> set_name ("HideUnselectedObjectsMenuItem");
-	m_builder -> get_widget ("ShowSelectedObjectsMenuItem", m_ShowSelectedObjectsMenuItem);
-	m_ShowSelectedObjectsMenuItem -> set_name ("ShowSelectedObjectsMenuItem");
-	m_builder -> get_widget ("ShowAllObjectsMenuItem", m_ShowAllObjectsMenuItem);
-	m_ShowAllObjectsMenuItem -> set_name ("ShowAllObjectsMenuItem");
 	m_builder -> get_widget ("ToolBar", m_ToolBar);
 	m_ToolBar -> set_name ("ToolBar");
 	m_builder -> get_widget ("NewButton", m_NewButton);
@@ -412,9 +418,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_MediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_medium_quality_activate));
 	m_LowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_low_quality_activate));
 
-	// Connect object Gtk::CheckMenuItem with id 'ProximitySensorMenuItem'.
-	m_ProximitySensorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensor_toggled));
-	m_VisibilitySensorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensor_toggled));
+	// Connect object Gtk::CheckMenuItem with id 'BackgroundsMenuItem'.
+	m_BackgroundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
+	m_FogsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
+	m_ProximitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
+	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
 
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activate));
@@ -429,6 +437,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
 	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_deselect_all_activate));
+	m_HideSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_selected_objects_activate));
+	m_HideUnselectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_unselected_objects_activate));
+	m_ShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activate));
+	m_ShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'SelectLowestMenuItem'.
 	m_SelectLowestMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
@@ -441,12 +453,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'StandardSizeMenuItem'.
 	m_StandardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size));
 	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info));
-
-	// Connect object Gtk::MenuItem with id 'HideSelectedObjectsMenuItem'.
-	m_HideSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_selected_objects_activate));
-	m_HideUnselectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_unselected_objects_activate));
-	m_ShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activate));
-	m_ShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activate));
 
 	// Connect object Gtk::Toolbar with id 'ToolBar'.
 	m_ToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));

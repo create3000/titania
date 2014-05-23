@@ -338,11 +338,19 @@ private:
 
 	virtual
 	void
-	on_proximity_sensor_toggled () final override;
+	on_fogs_toggled () final override;
 
 	virtual
 	void
-	on_visibility_sensor_toggled () final override;
+	on_backgrounds_toggled () final override;
+
+	virtual
+	void
+	on_proximity_sensors_toggled () final override;
+
+	virtual
+	void
+	on_visibility_sensors_toggled () final override;
 
 	virtual
 	void

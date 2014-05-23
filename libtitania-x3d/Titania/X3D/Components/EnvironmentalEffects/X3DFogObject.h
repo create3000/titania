@@ -99,6 +99,15 @@ public:
 	transparency () const
 	{ return fields .transparency; }
 
+	///  @name Member access
+	
+	void
+	isHidden (const bool);
+
+	bool
+	isHidden () const
+	{ return hidden; }	
+
 	///  @name Operations
 
 	virtual
@@ -158,6 +167,7 @@ private:
 
 	Fields fields;
 
+	bool    hidden;
 	GLenum  glMode;
 	GLfloat glColor [4];
 

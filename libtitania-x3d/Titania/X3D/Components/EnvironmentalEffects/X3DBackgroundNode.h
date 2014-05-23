@@ -104,6 +104,15 @@ public:
 	transparency () const
 	{ return *fields .transparency; }
 
+	///  @name Member access
+	
+	void
+	isHidden (const bool);
+
+	bool
+	isHidden () const
+	{ return hidden; }	
+
 	///  @name Operations
 
 	void
@@ -205,6 +214,7 @@ private:
 
 	Fields fields;
 
+	bool                   hidden;
 	Matrix4d               matrix;
 	std::vector <Color4f>  glColors;
 	std::vector <Vector3f> glPoints;

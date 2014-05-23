@@ -106,6 +106,8 @@ X3DShapeNode::isHidden (const bool value)
 		hidden = value;
 
 		set_geometry ();
+
+		getBrowser () -> addEvent ();
 	}
 }
 

@@ -1175,6 +1175,9 @@ ParticleSystem::traverse (const TraverseType type)
 		}
 		case TraverseType::DISPLAY:
 		{
+			if (isHidden ())
+				break;
+
 			if (isActive ())
 				getCurrentLayer () -> addShape (this);
 

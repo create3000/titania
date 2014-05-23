@@ -1,5 +1,14 @@
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DShapeNode.cpp:
+	* ParticleSystem.cpp:
+	* X3DFogObject.h:
+	* X3DFogObject.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
+2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.cpp:
 	* X3DShapeNodeTool.h:
 	* X3DShapeNode.h:

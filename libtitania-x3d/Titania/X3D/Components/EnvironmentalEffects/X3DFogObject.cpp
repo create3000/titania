@@ -65,7 +65,10 @@ X3DFogObject::Fields::Fields () :
 
 X3DFogObject::X3DFogObject () :
 	X3DBaseNode (),
-	     fields ()
+	     fields (),
+	     hidden (false),
+	     glMode (GL_LINEAR),
+	    glColor ()
 {
 	addNodeType (X3DConstants::X3DFogObject);
 
@@ -83,6 +86,19 @@ X3DFogObject::initialize ()
 	set_color        ();
 	set_transparency ();
 	set_fogType      ();
+}
+
+void
+X3DFogObject::isHidden (const bool value)
+{
+	if (value not_eq hidden)
+	{
+		hidden = value;
+
+		set_transparency ();
+
+		getBrowser () -> addEvent ();
+	}
 }
 
 float
@@ -121,7 +137,7 @@ X3DFogObject::set_color ()
 void
 X3DFogObject::set_transparency ()
 {
-	glColor [3] = 1 - transparency ();
+	glColor [3] = hidden ? 0 : 1 - transparency ();
 }
 
 void

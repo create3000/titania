@@ -372,16 +372,28 @@ public:
 	{ return *m_LowQualityMenuItem; }
 
 	Gtk::MenuItem &
+	getShowHideEnvironmentalEffectsMenuItem () const
+	{ return *m_ShowHideEnvironmentalEffectsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBackgroundsMenuItem () const
+	{ return *m_BackgroundsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getFogsMenuItem () const
+	{ return *m_FogsMenuItem; }
+
+	Gtk::MenuItem &
 	getObjectIconsMenuItem () const
 	{ return *m_ObjectIconsMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getProximitySensorMenuItem () const
-	{ return *m_ProximitySensorMenuItem; }
+	getProximitySensorsMenuItem () const
+	{ return *m_ProximitySensorsMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getVisibilitySensorMenuItem () const
-	{ return *m_VisibilitySensorMenuItem; }
+	getVisibilitySensorsMenuItem () const
+	{ return *m_VisibilitySensorsMenuItem; }
 
 	Gtk::MenuItem &
 	getHideAllObjectIconsMenuItem () const
@@ -410,6 +422,22 @@ public:
 	Gtk::MenuItem &
 	getDeselectAllMenuItem () const
 	{ return *m_DeselectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getHideSelectedObjectsMenuItem () const
+	{ return *m_HideSelectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getHideUnselectedObjectsMenuItem () const
+	{ return *m_HideUnselectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getShowSelectedObjectsMenuItem () const
+	{ return *m_ShowSelectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getShowAllObjectsMenuItem () const
+	{ return *m_ShowAllObjectsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getSelectLowestMenuItem () const
@@ -446,22 +474,6 @@ public:
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
 	{ return *m_InfoMenuItem; }
-
-	Gtk::MenuItem &
-	getHideSelectedObjectsMenuItem () const
-	{ return *m_HideSelectedObjectsMenuItem; }
-
-	Gtk::MenuItem &
-	getHideUnselectedObjectsMenuItem () const
-	{ return *m_HideUnselectedObjectsMenuItem; }
-
-	Gtk::MenuItem &
-	getShowSelectedObjectsMenuItem () const
-	{ return *m_ShowSelectedObjectsMenuItem; }
-
-	Gtk::MenuItem &
-	getShowAllObjectsMenuItem () const
-	{ return *m_ShowAllObjectsMenuItem; }
 
 	Gtk::Toolbar &
 	getToolBar () const
@@ -849,11 +861,19 @@ public:
 
 	virtual
 	void
-	on_proximity_sensor_toggled () = 0;
+	on_backgrounds_toggled () = 0;
 
 	virtual
 	void
-	on_visibility_sensor_toggled () = 0;
+	on_fogs_toggled () = 0;
+
+	virtual
+	void
+	on_proximity_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_visibility_sensors_toggled () = 0;
 
 	virtual
 	void
@@ -881,6 +901,22 @@ public:
 
 	virtual
 	void
+	on_hide_selected_objects_activate () = 0;
+
+	virtual
+	void
+	on_hide_unselected_objects_activate () = 0;
+
+	virtual
+	void
+	on_show_selected_objects_activate () = 0;
+
+	virtual
+	void
+	on_show_all_objects_activate () = 0;
+
+	virtual
+	void
 	on_select_lowest_toggled () = 0;
 
 	virtual
@@ -902,22 +938,6 @@ public:
 	virtual
 	void
 	on_info () = 0;
-
-	virtual
-	void
-	on_hide_selected_objects_activate () = 0;
-
-	virtual
-	void
-	on_hide_unselected_objects_activate () = 0;
-
-	virtual
-	void
-	on_show_selected_objects_activate () = 0;
-
-	virtual
-	void
-	on_show_all_objects_activate () = 0;
 
 	virtual
 	void
@@ -1066,9 +1086,12 @@ private:
 	Gtk::RadioMenuItem*             m_HighQualityMenuItem;
 	Gtk::RadioMenuItem*             m_MediumQualityMenuItem;
 	Gtk::RadioMenuItem*             m_LowQualityMenuItem;
+	Gtk::MenuItem*                  m_ShowHideEnvironmentalEffectsMenuItem;
+	Gtk::CheckMenuItem*             m_BackgroundsMenuItem;
+	Gtk::CheckMenuItem*             m_FogsMenuItem;
 	Gtk::MenuItem*                  m_ObjectIconsMenuItem;
-	Gtk::CheckMenuItem*             m_ProximitySensorMenuItem;
-	Gtk::CheckMenuItem*             m_VisibilitySensorMenuItem;
+	Gtk::CheckMenuItem*             m_ProximitySensorsMenuItem;
+	Gtk::CheckMenuItem*             m_VisibilitySensorsMenuItem;
 	Gtk::MenuItem*                  m_HideAllObjectIconsMenuItem;
 	Gtk::CheckMenuItem*             m_RenderingPropertiesMenuItem;
 	Gtk::ImageMenuItem*             m_FullScreenMenuItem;
@@ -1076,6 +1099,10 @@ private:
 	Gtk::MenuItem*                  m_SelectionMenuItem;
 	Gtk::ImageMenuItem*             m_SelectAllMenuItem;
 	Gtk::MenuItem*                  m_DeselectAllMenuItem;
+	Gtk::MenuItem*                  m_HideSelectedObjectsMenuItem;
+	Gtk::MenuItem*                  m_HideUnselectedObjectsMenuItem;
+	Gtk::MenuItem*                  m_ShowSelectedObjectsMenuItem;
+	Gtk::MenuItem*                  m_ShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*             m_SelectLowestMenuItem;
 	Gtk::CheckMenuItem*             m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                  m_NavigationMenuItem;
@@ -1085,10 +1112,6 @@ private:
 	Gtk::MenuItem*                  m_HelpMenuItem;
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;
-	Gtk::MenuItem*                  m_HideSelectedObjectsMenuItem;
-	Gtk::MenuItem*                  m_HideUnselectedObjectsMenuItem;
-	Gtk::MenuItem*                  m_ShowSelectedObjectsMenuItem;
-	Gtk::MenuItem*                  m_ShowAllObjectsMenuItem;
 	Gtk::Toolbar*                   m_ToolBar;
 	Gtk::ToolButton*                m_NewButton;
 	Gtk::MenuToolButton*            m_OpenButton;

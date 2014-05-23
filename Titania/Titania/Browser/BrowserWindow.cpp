@@ -226,10 +226,16 @@ void
 BrowserWindow::set_world ()
 {
 	toggle = false;
-	getProximitySensorMenuItem () .set_active (false);
+	getBackgroundsMenuItem () .set_active (true);
 
 	toggle = false;
-	getVisibilitySensorMenuItem () .set_active (false);
+	getFogsMenuItem () .set_active (true);
+
+	toggle = false;
+	getProximitySensorsMenuItem () .set_active (false);
+
+	toggle = false;
+	getVisibilitySensorsMenuItem () .set_active (false);
 
 	toggle = true;
 }
@@ -289,20 +295,20 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 
 	for (const auto & node : children)
 	{
-		if (dynamic_cast <X3D::ProximitySensor*> (node .getValue ()))
+		if (X3D::x3d_cast <X3D::ProximitySensor*> (node))
 		{
 			toggle = false;
-			getProximitySensorMenuItem () .set_active (true);
+			getProximitySensorsMenuItem () .set_active (true);
 			break;
 		}
 	}
 
 	for (const auto & node : children)
 	{
-		if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
+		if (X3D::x3d_cast <X3D::VisibilitySensor*> (node))
 		{
 			toggle = false;
-			getVisibilitySensorMenuItem () .set_active (true);
+			getVisibilitySensorsMenuItem () .set_active (true);
 			break;
 		}
 	}
@@ -974,11 +980,19 @@ BrowserWindow::on_browser_toggled ()
 
 		enableEditor (false);
 
-		if (getProximitySensorMenuItem () .get_active ())
-			getProximitySensorMenuItem () .set_active (false);
+		if (getBackgroundsMenuItem () .get_active ())
+			getBackgroundsMenuItem () .set_active (false);
 
-		if (getVisibilitySensorMenuItem () .get_active ())
-			getVisibilitySensorMenuItem () .set_active (false);
+		if (getFogsMenuItem () .get_active ())
+			getFogsMenuItem () .set_active (false);
+
+		if (getProximitySensorsMenuItem () .get_active ())
+			getProximitySensorsMenuItem () .set_active (false);
+
+		if (getVisibilitySensorsMenuItem () .get_active ())
+			getVisibilitySensorsMenuItem () .set_active (false);
+
+		on_show_all_objects_activate ();
 	}
 }
 
@@ -996,16 +1010,16 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::enableEditor (const bool enabled)
 {
-	getImportMenuItem ()                 .set_visible (enabled);
-	getImportAsInlineMenuItem ()         .set_visible (enabled);
-	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
-	getEditMenuItem ()                   .set_visible (enabled);
-	getBrowserOptionsSeparator ()        .set_visible (enabled);
-	getShadingMenuItem ()                .set_visible (enabled);
-	getPrimitiveQualityMenuItem ()       .set_visible (enabled);
-	getObjectIconsMenuItem ()            .set_visible (enabled);
-	getObjectIconsMenuItem ()            .set_visible (enabled);
-	getSelectionMenuItem ()              .set_visible (enabled);
+	getImportMenuItem ()                       .set_visible (enabled);
+	getImportAsInlineMenuItem ()               .set_visible (enabled);
+	getRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
+	getEditMenuItem ()                         .set_visible (enabled);
+	getBrowserOptionsSeparator ()              .set_visible (enabled);
+	getShadingMenuItem ()                      .set_visible (enabled);
+	getPrimitiveQualityMenuItem ()             .set_visible (enabled);
+	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
+	getObjectIconsMenuItem ()                  .set_visible (enabled);
+	getSelectionMenuItem ()                    .set_visible (enabled);
 
 	getImportButton ()                  .set_visible (enabled);
 	getSeparatorToolItem1 ()            .set_visible (enabled);
@@ -1121,11 +1135,57 @@ BrowserWindow::on_low_quality_activate ()
 // Object Icons
 
 void
-BrowserWindow::on_proximity_sensor_toggled ()
+BrowserWindow::on_backgrounds_toggled ()
 {
 	if (toggle)
 	{
-		if (getProximitySensorMenuItem () .get_active ())
+		const bool hidden = not getBackgroundsMenuItem () .get_active ();
+
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+		               {
+		                  const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
+
+		                  if (background)
+									background -> isHidden (hidden);
+
+		                  return true;
+							},
+							true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
+
+	toggle = true;
+}
+
+void
+BrowserWindow::on_fogs_toggled ()
+{
+	if (toggle)
+	{
+		const bool hidden = not getFogsMenuItem () .get_active ();
+
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+		               {
+		                  const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
+
+		                  if (fog)
+									fog -> isHidden (hidden);
+
+		                  return true;
+							},
+							true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
+
+	toggle = true;
+}
+
+// Object Icons
+
+void
+BrowserWindow::on_proximity_sensors_toggled ()
+{
+	if (toggle)
+	{
+		if (getProximitySensorsMenuItem () .get_active ())
 		{
 			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 			               {
@@ -1135,7 +1195,8 @@ BrowserWindow::on_proximity_sensor_toggled ()
 										tool -> addTool ();
 
 			                  return true;
-								});
+								},
+								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 		else
 		{
@@ -1147,7 +1208,8 @@ BrowserWindow::on_proximity_sensor_toggled ()
 										tool -> removeTool (true);
 
 			                  return true;
-								});
+								},
+								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 
 		getBrowser () -> update (); // Prevent OutlineEditor flickering.
@@ -1157,11 +1219,11 @@ BrowserWindow::on_proximity_sensor_toggled ()
 }
 
 void
-BrowserWindow::on_visibility_sensor_toggled ()
+BrowserWindow::on_visibility_sensors_toggled ()
 {
 	if (toggle)
 	{
-		if (getVisibilitySensorMenuItem () .get_active ())
+		if (getVisibilitySensorsMenuItem () .get_active ())
 		{
 			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 			               {
@@ -1171,7 +1233,8 @@ BrowserWindow::on_visibility_sensor_toggled ()
 										tool -> addTool ();
 
 			                  return true;
-								});
+								},
+								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 		else
 		{
@@ -1183,7 +1246,8 @@ BrowserWindow::on_visibility_sensor_toggled ()
 										tool -> removeTool (true);
 
 			                  return true;
-								});
+								},
+								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 
 		getBrowser () -> update (); // Prevent OutlineEditor flickering.
@@ -1195,11 +1259,11 @@ BrowserWindow::on_visibility_sensor_toggled ()
 void
 BrowserWindow::on_hide_all_object_icons_activate ()
 {
-	if (getProximitySensorMenuItem () .get_active ())
-		getProximitySensorMenuItem () .set_active (false);
+	if (getProximitySensorsMenuItem () .get_active ())
+		getProximitySensorsMenuItem () .set_active (false);
 
-	if (getVisibilitySensorMenuItem () .get_active ())
-		getVisibilitySensorMenuItem () .set_active (false);
+	if (getVisibilitySensorsMenuItem () .get_active ())
+		getVisibilitySensorsMenuItem () .set_active (false);
 }
 
 // RenderingProperties

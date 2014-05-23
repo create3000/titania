@@ -81,6 +81,11 @@ X3DBackgroundNode::Fields::Fields () :
 X3DBackgroundNode::X3DBackgroundNode () :
 	X3DBindableNode (),
 	         fields (),
+	         hidden (false),
+	         matrix (),
+	       glColors (),
+	       glPoints (),
+	     numIndices (),
 	   frontTexture (),
 	    backTexture (),
 	    leftTexture (),
@@ -106,6 +111,14 @@ X3DBackgroundNode::initialize ()
 	addInterest (this, &X3DBackgroundNode::build);
 
 	build ();
+}
+
+void
+X3DBackgroundNode::isHidden (const bool value)
+{
+	hidden = value;
+
+	getBrowser () -> addEvent ();
 }
 
 void
@@ -340,6 +353,9 @@ X3DBackgroundNode::traverse (const TraverseType type)
 void
 X3DBackgroundNode::draw ()
 {
+	if (hidden)
+		return;
+
 	PolygonMode polygonMode (GL_FILL);
 
 	// Scale background
