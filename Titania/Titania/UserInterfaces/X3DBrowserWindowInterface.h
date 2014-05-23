@@ -535,6 +535,10 @@ public:
 	getArrowButton () const
 	{ return *m_ArrowButton; }
 
+	Gtk::SeparatorToolItem &
+	getDashSeparator1 () const
+	{ return *m_DashSeparator1; }
+
 	Gtk::MenuToolButton &
 	getViewerButton () const
 	{ return *m_ViewerButton; }
@@ -542,6 +546,10 @@ public:
 	Gtk::ToolButton &
 	getStraightenButton () const
 	{ return *m_StraightenButton; }
+
+	Gtk::SeparatorToolItem &
+	getDashSeparator2 () const
+	{ return *m_DashSeparator2; }
 
 	Gtk::ToolButton &
 	getLookAtAllButton () const
@@ -1067,8 +1075,10 @@ private:
 	Gtk::ToolButton*                m_PlayPauseButton;
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
+	Gtk::SeparatorToolItem*         m_DashSeparator1;
 	Gtk::MenuToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                m_StraightenButton;
+	Gtk::SeparatorToolItem*         m_DashSeparator2;
 	Gtk::ToolButton*                m_LookAtAllButton;
 	Gtk::ToggleToolButton*          m_LookAtButton;
 	Gtk::Box*                       m_Footer;

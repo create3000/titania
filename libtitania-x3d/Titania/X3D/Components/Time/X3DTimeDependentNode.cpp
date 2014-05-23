@@ -127,18 +127,22 @@ X3DTimeDependentNode::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isEnabled ())
 	{
-		if (disabled and isActive () and not isPaused ())
+		if (disabled)
 		{
 			disabled = false;
-			real_resume ();
+
+			if (isActive () and not isPaused ())
+				real_resume ();
 		}
 	}
 	else
 	{
-		if (not disabled and isActive () and not isPaused ())
+		if (not disabled)
 		{
 			disabled = true;
-			real_pause ();
+
+			if (isActive () and not isPaused ())
+				real_pause ();
 		}
 	}
 }
@@ -320,7 +324,7 @@ X3DTimeDependentNode::do_resume ()
 void
 X3DTimeDependentNode::real_resume ()
 {
-	const float interval = getCurrentTime () - pause;
+	const time_type interval = getCurrentTime () - pause;
 
 	pauseInterval += interval;
 

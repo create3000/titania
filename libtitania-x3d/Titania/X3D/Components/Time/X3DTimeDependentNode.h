@@ -295,7 +295,7 @@ private:
 	sigc::connection pauseTimeout;
 	sigc::connection resumeTimeout;
 	sigc::connection stopTimeout;
-	
+
 	bool disabled;
 
 };

@@ -278,10 +278,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_HandButton -> set_name ("HandButton");
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
 	m_ArrowButton -> set_name ("ArrowButton");
+	m_builder -> get_widget ("DashSeparator1", m_DashSeparator1);
+	m_DashSeparator1 -> set_name ("DashSeparator1");
 	m_builder -> get_widget ("ViewerButton", m_ViewerButton);
 	m_ViewerButton -> set_name ("ViewerButton");
 	m_builder -> get_widget ("StraightenButton", m_StraightenButton);
 	m_StraightenButton -> set_name ("StraightenButton");
+	m_builder -> get_widget ("DashSeparator2", m_DashSeparator2);
+	m_DashSeparator2 -> set_name ("DashSeparator2");
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_LookAtAllButton -> set_name ("LookAtAllButton");
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);

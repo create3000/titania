@@ -1005,7 +1005,14 @@ BrowserWindow::enableEditor (const bool enabled)
 	getMaterialEditorButton ()          .set_visible (enabled);
 	getUpdateViewpointButton ()         .set_visible (enabled);
 	getCreatePrototypeInstanceButton () .set_visible (enabled);
-	//getArrowButton ()                   .set_visible (enabled);
+
+	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
+	set_available_viewers (getBrowser () -> getAvailableViewers ());
+
+	getHandButton ()                    .set_visible (enabled);
+	getArrowButton ()                   .set_visible (enabled);
+	getPlayPauseButton ()               .set_visible (enabled);
+	getDashSeparator1 ()                .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
@@ -1381,7 +1388,7 @@ BrowserWindow::on_prototype_instance_dialog ()
 void
 BrowserWindow::set_dashboard (const bool value)
 {
-	getDashboard () .set_visible (value);
+	getDashboard () .set_visible (getEditorMenuItem () .get_active () or value);
 }
 
 void
@@ -1397,21 +1404,21 @@ BrowserWindow::on_play_pause_button_clicked ()
 void
 BrowserWindow::on_hand_button_toggled ()
 {
-//	if (getHandButton () .get_active ())
-//	{
-//		getConfig () .setItem ("arrow", false);
-//		getSelection () -> setEnabled (false);
-//	}
+	if (getHandButton () .get_active ())
+	{
+		getConfig () .setItem ("arrow", false);
+		getSelection () -> setEnabled (false);
+	}
 }
 
 void
 BrowserWindow::on_arrow_button_toggled ()
 {
-//	if (getArrowButton () .get_active ())
-//	{
-//		getConfig () .setItem ("arrow", true);
-//		getSelection () -> setEnabled (true);
-//	}
+	if (getArrowButton () .get_active ())
+	{
+		getConfig () .setItem ("arrow", true);
+		getSelection () -> setEnabled (true);
+	}
 }
 
 // Viewer
@@ -1503,12 +1510,14 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
 {
-	bool examine = false;
-	bool walk    = false;
-	bool fly     = false;
-	bool plane   = false;
-	bool none    = false;
-	bool lookat  = false;
+	const bool editor = getEditorMenuItem () .get_active ();
+
+	bool examine = editor;
+	bool walk    = editor;
+	bool fly     = editor;
+	bool plane   = editor;
+	bool none    = editor;
+	bool lookat  = editor;
 
 	for (const auto & viewer : availableViewers)
 	{

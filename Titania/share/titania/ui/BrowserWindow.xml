@@ -1263,20 +1263,6 @@
                                 <property name="toolbar_style">icons</property>
                                 <property name="icon_size">1</property>
                                 <child>
-                                  <object class="GtkToolButton" id="PlayPauseButton">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Play</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-media-play</property>
-                                    <signal name="clicked" handler="on_play_pause_button_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkRadioToolButton" id="HandButton">
                                     <property name="can_focus">True</property>
                                     <property name="has_tooltip">True</property>
@@ -1311,7 +1297,22 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSeparatorToolItem" id="separatortoolitem1">
+                                  <object class="GtkToolButton" id="PlayPauseButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Toggle live mode.</property>
+                                    <property name="label" translatable="yes">Play</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="stock_id">gtk-media-play</property>
+                                    <signal name="clicked" handler="on_play_pause_button_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="homogeneous">True</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparatorToolItem" id="DashSeparator1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                   </object>
@@ -1356,7 +1357,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSeparatorToolItem" id="separatortoolitem2">
+                                  <object class="GtkSeparatorToolItem" id="DashSeparator2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                   </object>

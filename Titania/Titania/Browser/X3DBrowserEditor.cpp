@@ -97,8 +97,10 @@ X3DBrowserEditor::restoreSession ()
 
 	// Workspace
 	if (getConfig () .getString ("workspace") == "BROWSER")
+	{
 		getBrowserMenuItem () .set_active (true);
-
+		getConfig () .setItem ("isLive", true);
+	}
 	else if (getConfig () .getString ("workspace") == "EDITOR")
 		getEditorMenuItem () .set_active (true);
 
@@ -112,14 +114,6 @@ X3DBrowserEditor::restoreSession ()
 
 	// This must be done after.
 	X3DBrowserWidget::restoreSession ();
-}
-
-void
-X3DBrowserEditor::isLive (const bool value)
-{
-	X3DBrowserWidget::isLive (value);
-
-	getSelection () -> setEnabled (not value);
 }
 
 void

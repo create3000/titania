@@ -111,7 +111,6 @@ protected:
 
 	///  @name Operations
 
-	virtual
 	void
 	isLive (const bool);
 
