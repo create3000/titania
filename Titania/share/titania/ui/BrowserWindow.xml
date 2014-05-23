@@ -1380,7 +1380,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkToolButton" id="PlayPauseButton">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="tooltip_text" translatable="yes">Toggle live mode.</property>
                                     <property name="label" translatable="yes">Play</property>
