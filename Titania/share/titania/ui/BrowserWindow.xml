@@ -612,9 +612,11 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">_Browser</property>
+                                <property name="use_underline">True</property>
                                 <property name="active">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <signal name="toggled" handler="on_browser_toggled" swapped="no"/>
+                                <accelerator key="e" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -622,9 +624,11 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">_Editor</property>
+                                <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">BrowserMenuItem</property>
                                 <signal name="toggled" handler="on_editor_toggled" swapped="no"/>
+                                <accelerator key="e" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                           </object>

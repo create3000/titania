@@ -81,6 +81,9 @@ private:
 	set_splashScreen ();
 
 	void
+	set_history ();
+
+	void
 	set_world ();
 
 	virtual

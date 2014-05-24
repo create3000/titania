@@ -52,15 +52,22 @@
 #define __TITANIA_HISTORY_EDITOR_HISTORY_H__
 
 #include <Titania/SQL/SQLite3.h>
+#include <Titania/X3D/Base/Output.h>
+#include <giomm.h>
 
 namespace titania {
 namespace puck {
 
-class History
+class History :
+	public X3D::Output
 {
 public:
 
+	///  @name Construction
+
 	History ();
+
+	///  @name Operations
 
 	void
 	setItem (const std::string &, const std::string &);
@@ -83,6 +90,19 @@ public:
 
 private:
 
+	///  @name FileMonitor
+
+	void
+	connect ();
+	
+	void
+	disconnect ();
+
+	void
+	on_history_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent);
+
+	///  @name Operations
+
 	const std::string &
 	getId (const std::string &) const
 	throw (std::out_of_range);
@@ -93,10 +113,11 @@ private:
 	void
 	update (const std::string &, const std::string &);
 
+	///  @name Members
 
-private:
-
-	sql::sqlite3 database;
+	std::string                     filename;
+	sql::sqlite3                    database;
+	Glib::RefPtr <Gio::FileMonitor> fileMonitor;
 
 };
 

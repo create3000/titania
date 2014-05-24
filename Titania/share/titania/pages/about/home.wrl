@@ -122,6 +122,15 @@ DEF _5 LoadSensor {
   watchList USE loops
 }
 
+Script {
+  url "javascript:
+function initialize ()
+{
+	Browser .setBrowserOption ('Dashboard', false);
+}
+"
+}
+
 ROUTE Fastener.rotation_changed TO Small.set_rotation
 ROUTE Slower.rotation_changed TO Large.set_rotation
 ROUTE _2.value_changed TO _4.set_transparency

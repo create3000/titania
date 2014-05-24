@@ -1,5 +1,15 @@
 2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* History.h:
+	* History.cpp:
+	* BrowserWindow.cpp:
+	* home.wrl:
+	* BrowserWindow.xml:
+	* HistoryEditor.h:
+	* HistoryEditor.cpp: 
+
+2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.h:
 	* OutlineEditor.cpp:
 	* NodePropertiesEditor.cpp: 

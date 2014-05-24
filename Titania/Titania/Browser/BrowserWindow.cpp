@@ -980,11 +980,11 @@ BrowserWindow::on_browser_toggled ()
 
 		enableEditor (false);
 
-		if (getBackgroundsMenuItem () .get_active ())
-			getBackgroundsMenuItem () .set_active (false);
+		if (not getBackgroundsMenuItem () .get_active ())
+			getBackgroundsMenuItem () .set_active (true);
 
-		if (getFogsMenuItem () .get_active ())
-			getFogsMenuItem () .set_active (false);
+		if (not getFogsMenuItem () .get_active ())
+			getFogsMenuItem () .set_active (true);
 
 		if (getProximitySensorsMenuItem () .get_active ())
 			getProximitySensorsMenuItem () .set_active (false);

@@ -58,10 +58,12 @@ namespace titania {
 namespace puck {
 
 History::History () :
-	database ()
+	X3D::Output (),
+	   filename (config_dir ("history.db")),
+	   database (),
+	fileMonitor ()
 {
-	const std::string filename     = config_dir ("history.db");
-	const bool        have_history = os::file_exists (filename);
+	const bool have_history = os::file_exists (filename);
 
 	os::system ("mkdir", "-p", config_dir ());
 
@@ -83,11 +85,37 @@ History::History () :
 		setItem ("about:gears", get_page ("about/gears.wrl"));
 		setItem ("about:home",  get_page ("about/home.wrl"));
 	}
+
+	// Watch for changes
+
+	connect ();
+}
+
+void
+History::connect ()
+{
+	fileMonitor = Gio::File::create_for_path (filename) -> monitor_file ();
+	fileMonitor -> signal_changed () .connect (sigc::mem_fun (*this, &History::on_history_changed));
+}
+
+void
+History::disconnect ()
+{
+	fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+}
+
+void
+History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event)
+{
+	if (event == Gio::FILE_MONITOR_EVENT_CHANGED)
+		processInterests ();
 }
 
 void
 History::setItem (const std::string & title, const std::string & worldURL)
 {
+	disconnect ();
+
 	try
 	{
 		update (getId (worldURL), title);
@@ -96,6 +124,8 @@ History::setItem (const std::string & title, const std::string & worldURL)
 	{
 		insert (title, worldURL);
 	}
+
+	connect ();
 }
 
 const sql::sqlite3::assoc_row_type &

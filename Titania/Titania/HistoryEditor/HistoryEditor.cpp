@@ -65,24 +65,13 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 	X3DHistoryEditorInterface (get_ui ("HistoryEditor.xml"), gconf_dir ()),
 	                  history ()
 {
-	// Fill model
-
-	//auto model = getTreeView () .get_model ();
-	//getTreeView () .unset_model ();
-
-	for (const auto & item : history .getItems ())
-	{
-		const auto row = getListStore () -> append ();
-		row -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
-		row -> set_value (TITLE_COLUMN,     item .at ("title"));
-		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
-
-		getListStore () -> row_changed (getListStore () -> get_path (row), row);
-	}
+	// Fill model.
 	
-	//getTreeView () .set_model (model);
+	history .addInterest (this, &HistoryEditor::set_history);
 
-	// Add browser interest
+	set_history ();
+
+	// Add browser interest.
 
 	getWorld () .addInterest (this, &HistoryEditor::set_splashScreen);
 }
@@ -101,6 +90,27 @@ HistoryEditor::set_splashScreen ()
 }
 
 void
+HistoryEditor::set_history ()
+{
+	// Fill model.
+
+	getTreeView () .unset_model ();
+	
+	getListStore () -> clear ();
+
+	for (const auto & item : history .getItems ())
+	{
+		const auto iter = getListStore () -> append ();
+		iter -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
+		iter -> set_value (TITLE_COLUMN,     item .at ("title"));
+		iter -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
+	}
+
+	getTreeView () .set_model (getListStore ());
+	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
+}
+
+void
 HistoryEditor::set_world ()
 {
 	const std::string title    = getWorld () -> getTitle ();
@@ -109,7 +119,7 @@ HistoryEditor::set_world ()
 	if (worldURL .empty ())
 		return;
 		
-	// Move row
+	// Move row.
 
 	try
 	{
@@ -127,7 +137,7 @@ HistoryEditor::set_world ()
 
 	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
 
-	// Update history
+	// Update history.
 
 	history .setItem (title, worldURL);
 }
