@@ -252,7 +252,6 @@ private:
 	std::map <basic::uri, jsval>              files;
 
 	std::unique_ptr <SceneLoader> future;
-	mutable std::mutex            mutex;
 
 };
 

@@ -117,8 +117,7 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 	           functions (),
 	             objects (),
 	               files (),
-	              future (),
-	               mutex ()
+	              future ()
 {
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
@@ -147,14 +146,14 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 
 	initNode ();
 
-	if (evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
+	if (not evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
 	{
-		initEventHandler ();
-		return;
+		dispose ();
+
+		throw std::invalid_argument ("Couldn't evaluate script.");
 	}
 
-	dispose ();
-	throw std::invalid_argument ("Couldn't evaluate script.");
+	initEventHandler ();
 }
 
 X3DBaseNode*
