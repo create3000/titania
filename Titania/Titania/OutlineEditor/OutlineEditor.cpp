@@ -380,14 +380,15 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 }
 
 void
-OutlineEditor::on_create_reference_activate (const X3D::FieldsPtr & fieldPtr, const X3D::FieldsPtr & referencePtr)
+OutlineEditor::on_create_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
 {
 	try
 	{
-		const auto field     = fieldPtr -> get ();
-		const auto reference = referencePtr -> get ();
+		const auto field     = fieldPtr .getValue ();
+		const auto reference = referencePtr .getValue ();
 		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
+		undoStep -> addVariables (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::removeReference, field, reference);
 		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::addReference,    field, reference);
@@ -403,14 +404,15 @@ OutlineEditor::on_create_reference_activate (const X3D::FieldsPtr & fieldPtr, co
 }
 
 void
-OutlineEditor::on_remove_reference_activate (const X3D::FieldsPtr & fieldPtr, const X3D::FieldsPtr & referencePtr)
+OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
 {
 	try
 	{
-		const auto field     = fieldPtr -> get ();
-		const auto reference = referencePtr -> get ();
+		const auto field     = fieldPtr .getValue ();
+		const auto reference = referencePtr .getValue ();
 		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
+		undoStep -> addVariables (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addReference,    field, reference);
 		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeReference, field, reference);
@@ -587,8 +589,8 @@ OutlineEditor::selectField (const double x, const double y)
 					{
 						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_create_reference_activate),
-						                                                     X3D::createFieldContainer (getExecutionContext (), field),
-						                                                     X3D::createFieldContainer (getExecutionContext (), reference)));
+						                                                     X3D::FieldPtr (field),
+						                                                     X3D::FieldPtr (reference)));
 						menuItem -> show ();
 
 						getCreateReferenceMenu () .append (*menuItem);
@@ -612,8 +614,8 @@ OutlineEditor::selectField (const double x, const double y)
 			{
 				const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 				menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_remove_reference_activate),
-				                                                     X3D::createFieldContainer (getExecutionContext (), field),
-				                                                     X3D::createFieldContainer (getExecutionContext (), reference)));
+				                                                     X3D::FieldPtr (field),
+				                                                     X3D::FieldPtr (reference)));
 				menuItem -> show ();
 
 				getRemoveReferenceMenu () .append (*menuItem);

@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_FIELDS_X3DWEAK_SFNODE_H__
 
 #include "X3DPtr.h"
-#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
@@ -68,16 +67,11 @@ public:
 
 	using X3DField <ValueType*>::getParents;
 	using X3DField <ValueType*>::addEvent;
-	using X3DField <ValueType*>::operator =;
 	using X3DField <ValueType*>::addInterest;
-	using X3DField <ValueType*>::setValue;
-	using X3DField <ValueType*>::getValue;
 
 	///  @name Constructors
 
-	X3DWeakPtr () :
-		X3DField <ValueType*> (nullptr)
-	{ }
+	X3DWeakPtr () = delete;
 
 	X3DWeakPtr (const X3DWeakPtr & field) :
 		X3DWeakPtr (field .getValue ())
@@ -110,39 +104,28 @@ public:
 	virtual
 	X3DWeakPtr*
 	create () const final override
-	{ return new X3DWeakPtr (); }
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::create: not supported!"); }
 
 	virtual
 	X3DWeakPtr*
 	clone () const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ return new X3DWeakPtr (*this); }
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::clone: not supported!"); }
 
 	virtual
 	X3DWeakPtr*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::clone: not supported!"); }
 
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
-
-	/// @name Assignment operators
-
-	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
-	X3DWeakPtr &
-	operator = (const X3DWeakPtr &);
-
-	X3DWeakPtr &
-	operator = (const X3DPtrBase &);
-
-	template <class Up>
-	X3DWeakPtr &
-	operator = (Up* const);
+	       Error <NOT_SUPPORTED>) final override
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::clone: not supported!"); }
 
 	///  @name Field services
 
@@ -160,37 +143,27 @@ public:
 	///  @name X3DChildObject
 	virtual
 	bool
-	hasRoots (ChildObjectSet &) final override;
-
-	///  @name Set value services
-
-	virtual
-	void
-	set (const internal_type &) final override;
-
-	virtual
-	void
-	write (const X3DChildObject &) final override;
+	hasRoots (ChildObjectSet &) final override
+	{
+		// Weak pointers are no roots.
+		return false;
+	}
 
 	virtual
 	X3DChildObject*
-	getObject () const final override
-	{ return getValue (); }
+	getObject () const
+	throw (Error <DISPOSED>) final override
+	{
+		if (*this)
+			return getValue ();
+
+		throw Error <DISPOSED> ("X3DWeakPtr::getObject: value is already disposed!");
+	}
 
 	///  @name Boolean operator
 
 	operator bool () const
-	{ return getValue (); }
-
-	///  @name Access operators
-
-	ValueType*
-	operator -> () const
-	{ return getValue (); }
-
-	ValueType &
-	operator * () const
-	{ return *getValue (); }
+	{ return getValue () and getValue () -> getReferenceCount (); }
 
 	///  @name 6.7.7 Add field interest.
 
@@ -211,15 +184,18 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) final override
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::fromStream: not supported!"); }
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream &) const final override
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toStream: not supported!"); }
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream &) const final override
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toXMLStream: not supported!"); }
 
 	///  @name Dispose
 
@@ -236,13 +212,30 @@ private:
 	template <class Up>
 	friend class X3DWeakPtr;
 
+	using X3DField <ValueType*>::isDefaultValue;
+	using X3DField <ValueType*>::getValue;
+	using X3DField <ValueType*>::setValue;
 	using X3DField <ValueType*>::reset;
+	using X3DField <ValueType*>::operator const value_type &;
+	using X3DField <ValueType*>::operator =;
+	using X3DField <ValueType*>::operator ==;
+	using X3DField <ValueType*>::operator not_eq;
+
+	///  @name Set value services
+
+	virtual
+	void
+	set (const internal_type &) final override;
+
+	virtual
+	void
+	write (const X3DChildObject &) final override;
 
 	void
-	addNode (ValueType* const);
+	addObject (ValueType* const);
 
 	void
-	removeNode (ValueType* const);
+	removeObject (ValueType* const);
 
 	void
 	set_shutdown ();
@@ -256,74 +249,10 @@ template <class ValueType>
 const std::string X3DWeakPtr <ValueType>::typeName ("SFNode");
 
 template <class ValueType>
-X3DWeakPtr <ValueType>*
-X3DWeakPtr <ValueType>::clone (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	X3DWeakPtr* const field = new X3DWeakPtr ();
-
-	clone (executionContext, field);
-
-	return field;
-}
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	X3DWeakPtr* const field = static_cast <X3DWeakPtr*> (fieldDefinition);
-
-	if (getValue ())
-		field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
-
-	else
-		field -> set (nullptr);
-}
-
-template <class ValueType>
-inline
-X3DWeakPtr <ValueType> &
-X3DWeakPtr <ValueType>::operator = (const X3DWeakPtr & field)
-{
-	X3DField <ValueType*>::operator = (field);
-	return *this;
-}
-
-template <class ValueType>
-inline
-X3DWeakPtr <ValueType> &
-X3DWeakPtr <ValueType>::operator = (const X3DPtrBase & field)
-{
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getObject ()));
-	return *this;
-}
-
-template <class ValueType>
-template <class Up>
-inline
-X3DWeakPtr <ValueType> &
-X3DWeakPtr <ValueType>::operator = (Up* const value)
-{
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (value));
-	return *this;
-}
-
-template <class ValueType>
-bool
-X3DWeakPtr <ValueType>::hasRoots (ChildObjectSet & seen)
-{
-	// Weak pointers are no roots.
-	return false;
-}
-
-template <class ValueType>
 void
 X3DWeakPtr <ValueType>::set (const internal_type & value)
 {
-	addNode (value);
+	addObject (value);
 	X3DField <ValueType*>::set (value);
 }
 
@@ -338,7 +267,7 @@ X3DWeakPtr <ValueType>::write (const X3DChildObject & field)
 
 template <class ValueType>
 void
-X3DWeakPtr <ValueType>::addNode (ValueType* const value)
+X3DWeakPtr <ValueType>::addObject (ValueType* const value)
 {
 	if (getValue () not_eq value)
 	{
@@ -348,13 +277,13 @@ X3DWeakPtr <ValueType>::addNode (ValueType* const value)
 			value -> shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
 		}
 
-		removeNode (getValue ());
+		removeObject (getValue ());
 	}
 }
 
 template <class ValueType>
 void
-X3DWeakPtr <ValueType>::removeNode (ValueType* const value)
+X3DWeakPtr <ValueType>::removeObject (ValueType* const value)
 {
 	if (value)
 	{
@@ -374,44 +303,10 @@ X3DWeakPtr <ValueType>::set_shutdown ()
 }
 
 template <class ValueType>
-inline
-void
-X3DWeakPtr <ValueType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{ }
-
-template <class ValueType>
-inline
-void
-X3DWeakPtr <ValueType>::toStream (std::ostream & ostream) const
-{
-	if (getValue ())
-		getValue () -> toStream (ostream);
-
-	else
-		ostream << "NULL";
-}
-
-template <class ValueType>
-inline
-void
-X3DWeakPtr <ValueType>::toXMLStream (std::ostream & ostream) const
-{
-	if (getValue ())
-		getValue () -> toXMLStream (ostream);
-
-	else
-		ostream << "NULL";
-}
-
-template <class ValueType>
 void
 X3DWeakPtr <ValueType>::dispose ()
 {
-	removeNode (getValue ());
+	removeObject (getValue ());
 
 	X3DField <ValueType*>::dispose ();
 }
@@ -420,88 +315,70 @@ template <class ValueType>
 inline
 X3DWeakPtr <ValueType>::~X3DWeakPtr ()
 {
-	removeNode (getValue ());
+	removeObject (getValue ());
 }
 
 ///  @relates X3DWeakPtr
 ///  @name Comparision operations
 
-///  Compares two X3DWeakPtr.
-///  Returns true if @a lhs is equal to @a rhs.
+///  NOT_SUPPORTED
 template <class ValueType>
 inline
 bool
 operator == (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+throw (Error <NOT_SUPPORTED>)
 {
-	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
-
-	return a == b;
+	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator ==: not supported!");
 }
 
-///  Compares two X3DWeakPtr.
-///  Returns true if @a lhs is not equal to @a rhs.
+///  NOT_SUPPORTED
 template <class ValueType>
 inline
 bool
 operator not_eq (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+throw (Error <NOT_SUPPORTED>)
 {
-	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
-
-	return a not_eq b;
+	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator not_eq: not supported!");
 }
 
-///  Compares two X3DWeakPtr.
-///  Returns true if @a lhs less than @a rhs.
+///  NOT_SUPPORTED
 template <class ValueType>
 inline
 bool
 operator < (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+throw (Error <NOT_SUPPORTED>)
 {
-	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
-
-	return a < b;
+	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator <: not supported!");
 }
 
-///  Compares two X3DWeakPtr.
-///  Returns true if @a lhs less than equal to @a rhs.
+///  NOT_SUPPORTED
 template <class ValueType>
 inline
 bool
 operator <= (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+throw (Error <NOT_SUPPORTED>)
 {
-	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
-
-	return a <= b;
+	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator <=: not supported!");
 }
 
-///  Compares two X3DWeakPtr.
-///  Returns true if @a lhs greater than @a rhs.
+///  NOT_SUPPORTED
 template <class ValueType>
 inline
 bool
 operator > (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+throw (Error <NOT_SUPPORTED>)
 {
-	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
-
-	return a > b;
+	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator >: not supported!");
 }
 
-///  Compares two X3DWeakPtr.
-///  Returns true if @a lhs greater than equal to @a rhs.
+///  NOT_SUPPORTED
 template <class ValueType>
 inline
 bool
 operator >= (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+throw (Error <NOT_SUPPORTED>)
 {
-	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
-
-	return a >= b;
+	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator >=: not supported!");
 }
 
 } // X3D

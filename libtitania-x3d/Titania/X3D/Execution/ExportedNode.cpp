@@ -124,10 +124,14 @@ SFNode
 ExportedNode::getLocalNode () const
 throw (Error <DISPOSED>)
 {
-	if (node and node -> getReferenceCount ())
+	try
+	{
 		return SFNode (node);
-
-	throw Error <DISPOSED> ("ExportedNode: Node '" + exportedName + "' is already disposed.");
+	}
+	catch (const X3D::Error <DISPOSED> &)
+	{
+		throw Error <DISPOSED> ("ExportedNode: Node '" + exportedName + "' is already disposed.");
+	}
 }
 
 void

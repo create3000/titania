@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,89 +48,17 @@
  *
  ******************************************************************************/
 
-#include "NamedNode.h"
+#ifndef __TITANIA_X3D_FIELDS_FIELD_PTR_H__
+#define __TITANIA_X3D_FIELDS_FIELD_PTR_H__
 
-#include "../Execution/X3DExecutionContext.h"
+#include "X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string NamedNode::componentName  = "Browser";
-const std::string NamedNode::typeName       = "NamedNode";
-const std::string NamedNode::containerField = "namedNode";
-
-NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode & _node) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        node (_node),
-	        name (_node -> getName ())
-{
-	addChildren (node);
-}
-
-X3DBaseNode*
-NamedNode::create (X3DExecutionContext* const executionContext) const
-{
-	throw Error <NOT_SUPPORTED> ("Fabricating named nodes is not supported.");
-}
-
-NamedNode*
-NamedNode::clone (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	throw Error <NOT_SUPPORTED> ("Cloning named nodes to execution context is not supported.");
-}
-
-NamedNode*
-NamedNode::copy (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	throw Error <NOT_SUPPORTED> ("Copying named nodes to execution context is not supported.");
-}
-
-void
-NamedNode::initialize ()
-{
-	X3DBaseNode::initialize ();
-
-	node .addInterest (this, &NamedNode::set_node);
-
-	set_node ();
-}
-
-SFNode
-NamedNode::getLocalNode () const
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		return SFNode (node);
-	}
-	catch (const X3D::Error <DISPOSED> &)
-	{
-		throw Error <DISPOSED> ("NamedNode: Node named '" + name + "' is already disposed.");
-	}
-}
-
-void
-NamedNode::set_node ()
-{
-	if (not node)
-		getExecutionContext () -> removeNamedNode (name);
-}
-
-void
-NamedNode::toStream (std::ostream & ostream) const
-{
-	ostream << name;
-}
-
-void
-NamedNode::toXMLStream (std::ostream & ostream) const
-{
-	ostream << name;
-}
+using FieldPtr = X3DPtr <X3DFieldDefinition>;
 
 } // X3D
 } // titania
+
+#endif

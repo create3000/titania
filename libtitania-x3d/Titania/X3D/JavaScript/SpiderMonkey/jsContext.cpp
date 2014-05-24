@@ -168,18 +168,6 @@ jsContext::create (X3DExecutionContext* const) const
 }
 
 void
-jsContext::initialize ()
-{
-	X3DJavaScriptContext::initialize ();
-
-	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
-
-	set_live ();
-
-	set_initialized ();
-}
-
-void
 jsContext::initContext ()
 {
 	// Populate the global object with the standard globals, like Object and Array.
@@ -553,29 +541,29 @@ jsContext::set_live ()
 }
 
 void
-jsContext::set_initialized ()
+jsContext::initialize ()
 {
+	X3DJavaScriptContext::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
+
+	script -> addInterest (this, &jsContext::finish);
+
+	set_live ();
+
 	if (not JSVAL_IS_VOID (initializeFn))
 		callFunction (initializeFn);
-
-	//JS_MaybeGC (context);
-	JS_GC (context);
-
-	//std::thread (std::mem_fn (&jsContext::runGarbageCollector), this) .detach ();
 }
 
 void
 jsContext::prepareEvents ()
 {
-	if (not JSVAL_IS_VOID (prepareEventsFn))
-		callFunction (prepareEventsFn);
+	callFunction (prepareEventsFn);
 }
 
 void
 jsContext::set_field (X3DFieldDefinition* const field)
 {
-	//std::lock_guard <std::mutex> lock (mutex);
-
 	field -> isTainted (true);
 
 	jsval argv [2];
@@ -592,13 +580,13 @@ jsContext::set_field (X3DFieldDefinition* const field)
 void
 jsContext::eventsProcessed ()
 {
-	if (not JSVAL_IS_VOID (eventsProcessedFn))
-		callFunction (eventsProcessedFn);
+	callFunction (eventsProcessedFn);
+}
 
-	//JS_MaybeGC (context);
+void
+jsContext::finish ()
+{
 	JS_GC (context);
-
-	//std::thread (std::mem_fn (&jsContext::runGarbageCollector), this) .detach ();
 }
 
 void
@@ -641,8 +629,6 @@ jsContext::callFunction (const std::string & name) const
 void
 jsContext::callFunction (jsval function) const
 {
-	//std::lock_guard <std::mutex> lock (mutex);
-
 	jsval rval;
 
 	JS_CallFunctionValue (context, global, function, 0, nullptr, &rval);
@@ -739,14 +725,6 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 }
 
 void
-jsContext::runGarbageCollector ()
-{
-	//std::lock_guard <std::mutex> lock (mutex);
-
-	JS_GC (context);
-}
-
-void
 jsContext::beginUpdate ()
 throw (Error <DISPOSED>)
 {
@@ -773,20 +751,16 @@ throw (Error <DISPOSED>)
 void
 jsContext::dispose ()
 {
-	{
-		//std::lock_guard <std::mutex> lock (mutex);
+	shutdown ();
 
-		if (future)
-			future -> dispose ();
+	if (future)
+		future -> dispose ();
 
-		shutdown ();
+	for (auto & field: fields)
+		JS_RemoveValueRoot (context, &field .second);
 
-		for (auto & field: fields)
-			JS_RemoveValueRoot (context, &field .second);
-
-		for (auto & file : files)
-			JS_RemoveValueRoot (context, &file .second);
-	}
+	for (auto & file : files)
+		JS_RemoveValueRoot (context, &file .second);
 
 	// Cleanup.
 	JS_DestroyContext (context);

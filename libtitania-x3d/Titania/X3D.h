@@ -55,7 +55,8 @@
 #include "X3D/Browser/Browser.h"
 #include "X3D/Browser/BrowserApplication.h"
 
-#include "X3D/Basic/FieldContainer.h"
+#include "X3D/Basic/FieldSet.h"
+
 #include "X3D/Bits/Cast.h"
 #include "X3D/Bits/Error.h"
 #include "X3D/Bits/Traverse.h"

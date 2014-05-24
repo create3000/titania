@@ -887,8 +887,6 @@ NodePropertiesEditor::on_add_exported_node ()
 void
 NodePropertiesEditor::on_remove_exported_node ()
 {
-	__LOG__ << std::endl;
-
 	const auto selected = getExportedNodesTreeView () .get_selection () -> get_selected ();
 
 	// Remove exported node.
@@ -1036,8 +1034,8 @@ NodePropertiesEditor::on_apply ()
 				FieldToFieldIndex         undoFieldsToReplace = basic::reverse (fieldsToReplace);
 				X3D::FieldDefinitionArray undoFieldsToRemove  = userDefinedFields - node -> getUserDefinedFields ();
 
-				const auto undoRoot = X3D::createFieldContainer (node -> getExecutionContext (), undoFieldsToRemove);
-				const auto redoRoot = X3D::createFieldContainer (node -> getExecutionContext (), fieldsToRemove);
+				const auto undoRoot = X3D::FieldArray (undoFieldsToRemove .begin (), undoFieldsToRemove .end ());
+				const auto redoRoot = X3D::FieldArray (fieldsToRemove .begin (), fieldsToRemove .end ());
 
 				undoStep -> addVariables (undoRoot, redoRoot);
 
@@ -1172,8 +1170,6 @@ NodePropertiesEditor::on_apply ()
 
 		if (not importedNodesToUpdate .empty () or not importedNodesToRemove .empty ())
 		{
-			__LOG__ << std::endl;
-
 			const X3D::X3DExecutionContextPtr executionContext = node -> getExecutionContext ();
 			const X3D::InlinePtr              inlineNode       = X3D::x3d_cast <X3D::Inline*> (node);
 
@@ -1183,7 +1179,7 @@ NodePropertiesEditor::on_apply ()
 			{
 				const auto & importedName = importedNode .second;
 
-				__LOG__ << "removeImportedNode: " << importedName << std::endl;
+				//__LOG__ << "removeImportedNode: " << importedName << std::endl;
 
 				try
 				{
@@ -1212,7 +1208,7 @@ NodePropertiesEditor::on_apply ()
 				const auto & exportedName = importedNode .second;
 				const auto & importedName = importedNode .first;
 
-				__LOG__ << "updateImportedNode: " << exportedName << ", " << importedName << std::endl;
+				//__LOG__ << "updateImportedNode: " << exportedName << ", " << importedName << std::endl;
 
 				try
 				{
@@ -1245,7 +1241,7 @@ NodePropertiesEditor::on_apply ()
 
 		if (not exportedNodesToUpdate .empty () or not exportedNodesToRemove .empty ())
 		{
-			__LOG__ << std::endl;
+			//__LOG__ << std::endl;
 
 			const X3D::ScenePtr scene (node -> getExecutionContext ());
 
@@ -1253,7 +1249,7 @@ NodePropertiesEditor::on_apply ()
 			{
 				for (const auto & exportedName : exportedNodesToRemove)
 				{
-					__LOG__ << "removeExportedNode: " << exportedName << std::endl;
+					//__LOG__ << "removeExportedNode: " << exportedName << std::endl;
 
 					try
 					{
@@ -1276,7 +1272,7 @@ NodePropertiesEditor::on_apply ()
 
 				for (const auto & exportedName : exportedNodesToUpdate)
 				{
-					__LOG__ << "updateExportedNode: " << exportedName << std::endl;
+					//__LOG__ << "updateExportedNode: " << exportedName << std::endl;
 
 					try
 					{
@@ -1344,7 +1340,7 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
 
 NodePropertiesEditor::~NodePropertiesEditor ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 }  // puck

@@ -676,7 +676,6 @@
     <None Include="share\titania\tools\RenderingProperties.x3dv" />
     <None Include="Titania\X3D\Routing\X3DRouterObject.h" />
     <None Include="Titania\X3D\Base\X3DGarbageCollector.h" />
-    <None Include="Titania\X3D\Basic\FieldContainer.h" />
     <None Include="Titania\X3D\Configuration\SupporteFieldArray.h" />
     <None Include="Titania\X3D\Execution\ExportedNodeIndex.h" />
     <None Include="Titania\X3D\Execution\ImportedNodeIndex.h" />
@@ -688,6 +687,9 @@
     <None Include="Titania\X3D\Tools\Core\X3DSensorNodeTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DToolObject.h" />
     <None Include="Titania\X3D\Tools\Shape\X3DShapeNodeTool.h" />
+    <None Include="Titania\X3D\Fields\FieldPtr.h" />
+    <None Include="Titania\X3D\Fields\FieldArray.h" />
+    <None Include="Titania\X3D\Basic\FieldSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1173,13 +1175,13 @@
     <Compile Include="Titania\X3D\Browser\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Routing\X3DRouterObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DGarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\Basic\FieldContainer.cpp" />
     <Compile Include="Titania\X3D\Configuration\SupporteFieldArray.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\ImportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeTypeArray.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\GroupTool.cpp" />
+    <Compile Include="Titania\X3D\Basic\FieldSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

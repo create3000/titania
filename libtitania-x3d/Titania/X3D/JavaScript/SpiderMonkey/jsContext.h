@@ -151,10 +151,6 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize () final override;
-
 	void
 	initContext ();
 
@@ -184,8 +180,9 @@ private:
 	void
 	set_live ();
 
+	virtual
 	void
-	set_initialized ();
+	initialize () final override;
 
 	void
 	prepareEvents ();
@@ -195,6 +192,9 @@ private:
 
 	void
 	eventsProcessed ();
+
+	void
+	finish ();
 
 	void
 	shutdown ();
@@ -223,9 +223,6 @@ private:
 	void
 	addEvent (X3DChildObject* const, const EventPtr &) final override
 	{ }
-
-	void
-	runGarbageCollector ();
 
 	///  @name Static members
 

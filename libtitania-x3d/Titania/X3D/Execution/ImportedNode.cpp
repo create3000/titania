@@ -99,7 +99,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto namedNode       = executionContext -> getNamedNode (inlineNode -> getName ());
+		const auto namedNode       = executionContext -> getNamedNode (getInlineNode () -> getName ());
 		const auto localInlineNode = x3d_cast <Inline*> (namedNode);
 
 		return executionContext -> addImportedNode (localInlineNode, exportedName, importedName) .getValue ();
@@ -125,20 +125,28 @@ InlinePtr
 ImportedNode::getInlineNode () const
 throw (Error <DISPOSED>)
 {
-	if (inlineNode and inlineNode -> getReferenceCount ())
+	try
+	{
 		return InlinePtr (inlineNode);
-
-	throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
+	}
+	catch (const X3D::Error <DISPOSED> &)
+	{
+		throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
+	}
 }
 
 SFNode
 ImportedNode::getExportedNode () const
 throw (Error <DISPOSED>)
 {
-	if (exportedNode and exportedNode -> getReferenceCount ())
+	try
+	{
 		return SFNode (exportedNode);
-
-	throw Error <DISPOSED> ("ImportedNode: Exported node '" + exportedName + "' is already disposed.");
+	}
+	catch (const X3D::Error <DISPOSED> &)
+	{
+		throw Error <DISPOSED> ("ImportedNode: Exported node '" + exportedName + "' is already disposed.");
+	}
 }
 
 void
@@ -153,7 +161,7 @@ ImportedNode::toStream (std::ostream & ostream) const
 {
 	try
 	{
-		if (Generator::ExistsNode (inlineNode))
+		if (Generator::ExistsNode (getInlineNode ()))
 		{
 			Generator::AddImportedNode (getExportedNode (), importedName);
 
@@ -177,7 +185,7 @@ ImportedNode::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "IMPORT"
 				<< Generator::Space
-				<< Generator::GetName (inlineNode)
+				<< Generator::GetName (getInlineNode ())
 				<< '.'
 				<< exportedName;
 
@@ -202,7 +210,7 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	if (Generator::ExistsNode (inlineNode))
+	if (Generator::ExistsNode (getInlineNode ()))
 	{
 		Generator::AddImportedNode (getExportedNode (), importedName);
 
@@ -211,7 +219,7 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 			<< "<IMPORT"
 			<< Generator::Space
 			<< "inlineDEF='"
-			<< XMLEncode (Generator::GetName (inlineNode))
+			<< XMLEncode (Generator::GetName (getInlineNode ()))
 			<< "'"
 			<< Generator::Space
 			<< "exportedDEF='"

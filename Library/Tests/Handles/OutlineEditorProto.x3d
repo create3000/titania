@@ -6,7 +6,7 @@
     <meta name='created' content='Thu, 15 May 2014 00:33:24 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Sat, 17 May 2014 08:59:10 GMT'/>
+    <meta name='modified' content='Sat, 24 May 2014 01:58:33 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='Grid'>
@@ -59,8 +59,8 @@
                 <Material DEF='Material3'
                     transparency='0.594604'>
                   <IS>
-                    <connect nodeField='ambientIntensity' protoField='zSpacing'/>
                     <connect nodeField='ambientIntensity' protoField='xSpacing'/>
+                    <connect nodeField='ambientIntensity' protoField='zSpacing'/>
                     <connect nodeField='ambientIntensity' protoField='transparency'/>
                     <connect nodeField='emissiveColor' protoField='color'/>
                   </IS>
@@ -177,6 +177,15 @@ function initialize ()
 	grid .set_coordIndex = coordIndex;
 }
 ]]> 
+        </Script>
+        <Material/>
+        <Script>
+          <field accessType='initializeOnly' type='SFBool' name='a'/>
+          <field accessType='initializeOnly' type='SFBool' name='b'/>
+          <field accessType='initializeOnly' type='SFBool' name='a1'/>
+          <field accessType='initializeOnly' type='SFBool' name='b2'/>
+          <field accessType='initializeOnly' type='SFBool' name='c3'/>
+          <field accessType='initializeOnly' type='SFBool' name='d4'/>
         </Script>
         <ROUTE fromNode='Fields' fromField='transparency_changed' toNode='Material1' toField='set_transparency'/>
         <ROUTE fromNode='Material1' fromField='transparency_changed' toNode='Material2' toField='set_transparency'/>

@@ -69,4 +69,7 @@
 #include "Fields/MFInt32.h"
 #include "Fields/MFNode.h"
 
+#include "Fields/FieldPtr.h"
+#include "Fields/FieldArray.h"
+
 #endif

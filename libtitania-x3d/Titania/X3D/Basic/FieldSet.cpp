@@ -48,97 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_FIELD_CONTAINER_H__
-#define __TITANIA_X3D_BASIC_FIELD_CONTAINER_H__
+#include "FieldSet.h"
 
-#include "../Basic/X3DBaseNode.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Fields/SFNode.h"
 
 namespace titania {
 namespace X3D {
 
-class FieldContainer :
-	public X3DBaseNode
+const std::string FieldSet::componentName  = "Basic";
+const std::string FieldSet::typeName       = "FieldSet";
+const std::string FieldSet::containerField = "fieldContainer";
+
+FieldSet::FieldSet (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext)
 {
-public:
+	setup ();
+}
 
-	///  @name Construction
+FieldSet::FieldSet (X3DExecutionContext* const executionContext, const FieldDefinitionArray & fields) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext)
+{
+	for (const auto & field : fields)
+		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
-	FieldContainer (X3DExecutionContext* const);
+	setup ();
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Operations
-
-	X3DFieldDefinition*
-	get () const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{
-		return getField (getName ());
-	}
-
-	virtual
-	void
-	addEvent () final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
-
-
-private:
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-};
-
-using FieldsPtr = X3DPtr <FieldContainer>;
-
-FieldsPtr
-createFieldContainer (X3DExecutionContext* const, X3DFieldDefinition* const)
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>);
-
-FieldsPtr
-createFieldContainer (X3DExecutionContext* const, const FieldDefinitionArray &)
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>);
+X3DBaseNode*
+FieldSet::create (X3DExecutionContext* const executionContext) const
+{
+	return new FieldSet (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif

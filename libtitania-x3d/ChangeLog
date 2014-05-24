@@ -1,5 +1,26 @@
 2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Fields.h:
+	* X3DPtr.h:
+	* FieldSet.h:
+	* Route.cpp:
+	* FieldPtr.h:
+	* FieldSet.cpp:
+	* X3DWeakPtr.h:
+	* FieldArray.h:
+	* FieldContainer.h:
+	* NamedNode.cpp:
+	* FieldContainer.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* jsContext.h:
+	* jsContext.cpp: 
+
+2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DBase.h:
 	* Route.h:

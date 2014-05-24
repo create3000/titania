@@ -131,9 +131,7 @@ Route::getKey () const
 bool
 Route::isConnected () const
 {
-	return sourceNode and destinationNode and
-	       sourceNode -> getReferenceCount () and
-	       destinationNode -> getReferenceCount ();
+	return sourceNode and destinationNode;
 }
 
 SFNode

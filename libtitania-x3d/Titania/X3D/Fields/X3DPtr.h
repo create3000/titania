@@ -65,7 +65,8 @@ public:
 
 	virtual
 	X3DChildObject*
-	getObject () const = 0;
+	getObject () const
+	throw (Error <DISPOSED>) = 0;
 
 
 protected:
@@ -218,7 +219,8 @@ public:
 
 	virtual
 	X3DChildObject*
-	getObject () const final override
+	getObject () const
+	throw (Error <DISPOSED>) final override
 	{ return getValue (); }
 
 	///  @name Boolean operator
