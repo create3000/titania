@@ -67,6 +67,16 @@ public:
 	///  @name Member access
 
 	virtual
+	Type*
+	getId () final override
+	{ return node; }
+
+	virtual
+	const Type*
+	getId () const final override
+	{ return node; }
+
+	virtual
 	void
 	setName (const std::string & value) final override
 	{ node -> setName (value); }
@@ -85,16 +95,6 @@ public:
 	const UserDataPtr &
 	getUserData () const final override
 	{ return node -> getUserData (); }
-
-	virtual
-	Type*
-	getNode () final override
-	{ return node; }
-
-	virtual
-	const Type*
-	getNode () const final override
-	{ return node; }
 
 	virtual
 	void
@@ -158,6 +158,16 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	Type*
+	getNode ()
+	{ return node; }
+
+	const Type*
+	getNode () const
+	{ return node; }
 
 
 private:

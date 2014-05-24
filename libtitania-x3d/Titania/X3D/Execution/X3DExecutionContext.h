@@ -577,7 +577,7 @@ protected:
 
 private:
 
-	using ImportedNamesIndex = std::multimap <X3DBaseNode*, std::string>;
+	using ImportedNamesIndex = std::multimap <X3DBase*, std::string>;
 
 	///  @name Operations
 

@@ -287,16 +287,6 @@ public:
 	///  @name Tool handling
 
 	virtual
-	X3DBaseNode*
-	getNode ()
-	{ return this; }
-
-	virtual
-	const X3DBaseNode*
-	getNode () const
-	{ return this; }
-
-	virtual
 	void
 	addTool ()
 	{ }

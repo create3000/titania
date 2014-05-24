@@ -110,7 +110,7 @@ public:
 	///  @name Member access
 
 	RouteId
-	getId () const;
+	getKey () const;
 
 	bool
 	isConnected () const;

@@ -1066,7 +1066,7 @@ NodePropertiesEditor::on_apply ()
 						{
 							for (const auto & route : oldField -> getInputRoutes ())
 							{
-								const auto iter           = undoFieldsToReplace .find (route -> getId () .first);
+								const auto iter           = undoFieldsToReplace .find (route -> getKey () .first);
 								const bool newSourceField = route -> getSourceNode () == node and iter not_eq undoFieldsToReplace .end ();
 
 								addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
@@ -1084,7 +1084,7 @@ NodePropertiesEditor::on_apply ()
 						{
 							for (const auto & route : oldField -> getOutputRoutes ())
 							{
-								const auto iter                = undoFieldsToReplace .find (route -> getId () .second);
+								const auto iter                = undoFieldsToReplace .find (route -> getKey () .second);
 								const bool newDestinationField = route -> getDestinationNode () == node and iter not_eq undoFieldsToReplace .end ();
 
 								addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,

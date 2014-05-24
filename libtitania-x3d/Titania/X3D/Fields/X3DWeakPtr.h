@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_FIELDS_X3DWEAK_SFNODE_H__
 
 #include "X3DPtr.h"
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
@@ -84,7 +85,7 @@ public:
 
 	explicit
 	X3DWeakPtr (const X3DPtrBase & field) :
-		X3DWeakPtr (dynamic_cast <ValueType*> (field .getBaseNode ()))
+		X3DWeakPtr (dynamic_cast <ValueType*> (field .getObject ()))
 	{ }
 
 	//explicit
@@ -94,7 +95,7 @@ public:
 		if (value)
 		{
 			value -> addWeakParent (this);
-			value -> X3DBaseNode::shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
+			value -> shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
 		}
 	}
 
@@ -172,8 +173,8 @@ public:
 	write (const X3DChildObject &) final override;
 
 	virtual
-	X3DBaseNode*
-	getBaseNode () const final override
+	X3DChildObject*
+	getObject () const final override
 	{ return getValue (); }
 
 	///  @name Boolean operator
@@ -296,7 +297,7 @@ inline
 X3DWeakPtr <ValueType> &
 X3DWeakPtr <ValueType>::operator = (const X3DPtrBase & field)
 {
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getBaseNode ()));
+	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getObject ()));
 	return *this;
 }
 
@@ -330,9 +331,9 @@ template <class ValueType>
 void
 X3DWeakPtr <ValueType>::write (const X3DChildObject & field)
 {
-	X3DBaseNode* baseNode = dynamic_cast <const X3DPtrBase &> (field) .getBaseNode ();
+	X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 
-	set (dynamic_cast <internal_type> (baseNode));
+	set (dynamic_cast <internal_type> (object));
 }
 
 template <class ValueType>
@@ -344,7 +345,7 @@ X3DWeakPtr <ValueType>::addNode (ValueType* const value)
 		if (value)
 		{
 			value -> addWeakParent (this);
-			value -> X3DBaseNode::shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
+			value -> shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
 		}
 
 		removeNode (getValue ());
@@ -360,7 +361,7 @@ X3DWeakPtr <ValueType>::removeNode (ValueType* const value)
 		reset ();
 
 		value -> removeWeakParent (this);
-		value -> X3DBaseNode::shutdown () .removeInterest (this, &X3DWeakPtr::set_shutdown);
+		value -> shutdown () .removeInterest (this, &X3DWeakPtr::set_shutdown);
 	}
 }
 
@@ -422,12 +423,85 @@ X3DWeakPtr <ValueType>::~X3DWeakPtr ()
 	removeNode (getValue ());
 }
 
-template <class Type>
+///  @relates X3DWeakPtr
+///  @name Comparision operations
+
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs is equal to @a rhs.
+template <class ValueType>
 inline
 bool
-operator < (const X3DWeakPtr <Type> & lhs, const X3DWeakPtr <Type> & rhs)
+operator == (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
 {
-	return lhs .getValue () < rhs .getValue ();
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+
+	return a == b;
+}
+
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs is not equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator not_eq (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+{
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+
+	return a not_eq b;
+}
+
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+{
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+
+	return a < b;
+}
+
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+{
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+
+	return a <= b;
+}
+
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+{
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+
+	return a > b;
+}
+
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
+{
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+
+	return a >= b;
 }
 
 } // X3D

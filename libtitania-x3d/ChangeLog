@@ -1,3 +1,17 @@
+2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DBase.h:
+	* Route.h:
+	* X3DPtr.h:
+	* SFNode.h:
+	* Route.cpp:
+	* X3DWeakPtr.h:
+	* X3DBaseNode.h:
+	* X3DBaseTool.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp: 
+
 2014-05-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

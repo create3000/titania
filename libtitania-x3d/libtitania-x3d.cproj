@@ -609,9 +609,6 @@
     <None Include="Titania\X3D\Fields\X3DPtr.h" />
     <None Include="Titania\X3D\Types\Pointer.h" />
     <None Include="Titania\X3D\Fields\X3DPtrArray.h" />
-    <None Include="Titania\X3D\Tools\Core\X3DBaseTool.h" />
-    <None Include="Titania\X3D\Tools\Core\X3DNodeTool.h" />
-    <None Include="Titania\X3D\Tools\Core\X3DToolObject.h" />
     <None Include="Titania\X3D\Tools\Grouping\GroupTool.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DGroupingNodeTool.h" />
     <None Include="Titania\X3D\Tools\Grouping\TransformTool.h" />
@@ -621,10 +618,7 @@
     <None Include="Titania\X3D\Tools\Navigation\BillboardTool.h" />
     <None Include="Titania\X3D\Tools\ToolColors.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DBoundedObjectTool.h" />
-    <None Include="Titania\X3D\Tools\Core\X3DChildNodeTool.h" />
-    <None Include="Titania\X3D\Tools\Shape\X3DShapeNodeTool.h" />
     <None Include="Titania\X3D\Tools\Shape\ShapeTool.h" />
-    <None Include="Titania\X3D\Tools\Networking\X3DUrlObjectTool.h" />
     <None Include="Titania\X3D\Tools\Networking\InlineTool.h" />
     <None Include="Titania\X3D\Tools\Networking\AnchorTool.h" />
     <None Include="share\titania\tools\library\HandleShader.x3dv" />
@@ -633,7 +627,6 @@
     <None Include="share\titania\tools\Notification.x3dv" />
     <None Include="share\titania\tools\library\Vector.x3dv" />
     <None Include="Titania\X3D\Tools\Layout\ScreenGroupTool.h" />
-    <None Include="Titania\X3D\Tools\Core\X3DSensorNodeTool.h" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\X3DEnvironmentalSensorNodeTool.h" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.h" />
     <None Include="share\titania\tools\EnvironmentalSensor.x3dv" />
@@ -689,6 +682,12 @@
     <None Include="Titania\X3D\Execution\ImportedNodeIndex.h" />
     <None Include="Titania\X3D\Types\Array.h" />
     <None Include="Titania\X3D\Basic\BasicNodeTypeArray.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DBaseTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DChildNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DSensorNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DToolObject.h" />
+    <None Include="Titania\X3D\Tools\Shape\X3DShapeNodeTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1126,8 +1125,6 @@
     <Compile Include="Titania\X3D\InputOutput\X3DBaseGenerator.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNode.cpp" />
-    <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
-    <Compile Include="Titania\X3D\Tools\Grouping\GroupTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\TransformTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\SwitchTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\LODTool.cpp" />
@@ -1181,6 +1178,8 @@
     <Compile Include="Titania\X3D\Execution\ExportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\ImportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Basic\BasicNodeTypeArray.cpp" />
+    <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grouping\GroupTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

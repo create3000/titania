@@ -441,7 +441,7 @@ throw (Error <INVALID_NODE>,
 
 	importedNode -> shutdown () .addInterest (this,
 	                                          &X3DExecutionContext::removeImportedName,
-	                                          importedNames .emplace (exportedNode -> getNode (), importedName));
+	                                          importedNames .emplace (exportedNode -> getId (), importedName));
 
 	importedNodesOutput = getCurrentTime ();
 
@@ -487,7 +487,7 @@ throw (Error <INVALID_NODE>,
 	if (not node)
 		throw Error <INVALID_NODE> ("Node is NULL.");
 
-	return importedNames .count (node -> getNode ());
+	return importedNames .count (node -> getId ());
 }
 
 SFNode
@@ -524,7 +524,7 @@ throw (Error <INVALID_NODE>,
 		if (node -> getExecutionContext () == this)
 			return node -> getName ();
 
-		auto equalRange = importedNames .equal_range (node -> getNode ());
+		auto equalRange = importedNames .equal_range (node -> getId ());
 
 		if (equalRange .first not_eq equalRange .second)
 			return (-- equalRange .second) -> second;
@@ -936,10 +936,10 @@ throw (Error <INVALID_NODE>,
 	if (route -> getExecutionContext () not_eq this)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
 
-	const auto routeId = route -> getId ();
+	const auto routeKey = route -> getKey ();
 
 	route -> disconnect ();
-	routes .erase (routeId);
+	routes .erase (routeKey);
 }
 
 RouteId

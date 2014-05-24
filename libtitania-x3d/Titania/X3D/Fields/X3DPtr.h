@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_FIELDS_X3DPTR_H__
 #define __TITANIA_X3D_FIELDS_X3DPTR_H__
 
-#include "../Basic/X3DBaseNode.h"
 #include "../Basic/X3DField.h"
 
 namespace titania {
@@ -65,8 +64,8 @@ public:
 	///  @name Operations
 
 	virtual
-	X3DBaseNode*
-	getBaseNode () const = 0;
+	X3DChildObject*
+	getObject () const = 0;
 
 
 protected:
@@ -104,7 +103,7 @@ public:
 
 	explicit
 	X3DPtr (const X3DPtrBase & field) :
-		X3DPtr (dynamic_cast <ValueType*> (field .getBaseNode ()))
+		X3DPtr (dynamic_cast <ValueType*> (field .getObject ()))
 	{ }
 
 	X3DPtr (X3DPtr && field) :
@@ -218,8 +217,8 @@ public:
 	write (const X3DChildObject &) final override;
 
 	virtual
-	X3DBaseNode*
-	getBaseNode () const final override
+	X3DChildObject*
+	getObject () const final override
 	{ return getValue (); }
 
 	///  @name Boolean operator
@@ -284,10 +283,10 @@ private:
 	using X3DField <ValueType*>::reset;
 
 	void
-	addNode (ValueType* const);
+	addObject (ValueType* const);
 
 	void
-	removeNode (ValueType* const);
+	removeObject (ValueType* const);
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
@@ -339,7 +338,7 @@ inline
 X3DPtr <ValueType> &
 X3DPtr <ValueType>::operator = (const X3DPtrBase & field)
 {
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getBaseNode ()));
+	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getObject ()));
 	return *this;
 }
 
@@ -351,7 +350,7 @@ X3DPtr <ValueType>::operator = (X3DPtr && field)
 	if (&field == this)
 		return *this;
 
-	removeNode (getValue ());
+	removeObject (getValue ());
 
 	X3DField <ValueType*>::set (field .getValue ());
 
@@ -376,7 +375,7 @@ X3DPtr <ValueType>::operator = (X3DPtr <Up>&& field)
 	if (&field == this)
 		return *this;
 
-	removeNode (getValue ());
+	removeObject (getValue ());
 
 	X3DField <ValueType*>::set (dynamic_cast <ValueType*> (field .getValue ()));
 
@@ -408,7 +407,7 @@ template <class ValueType>
 void
 X3DPtr <ValueType>::set (const internal_type & value)
 {
-	addNode (value);
+	addObject (value);
 	X3DField <ValueType*>::set (value);
 }
 
@@ -416,27 +415,27 @@ template <class ValueType>
 void
 X3DPtr <ValueType>::write (const X3DChildObject & field)
 {
-	X3DBaseNode* baseNode = dynamic_cast <const X3DPtrBase &> (field) .getBaseNode ();
+	X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 
-	set (dynamic_cast <internal_type> (baseNode));
+	set (dynamic_cast <internal_type> (object));
 }
 
 template <class ValueType>
 void
-X3DPtr <ValueType>::addNode (ValueType* const value)
+X3DPtr <ValueType>::addObject (ValueType* const value)
 {
 	if (getValue () not_eq value)
 	{
 		if (value)
 			value -> addParent (this);
 
-		removeNode (getValue ());
+		removeObject (getValue ());
 	}
 }
 
 template <class ValueType>
 void
-X3DPtr <ValueType>::removeNode (ValueType* const value)
+X3DPtr <ValueType>::removeObject (ValueType* const value)
 {
 	if (value)
 	{
@@ -484,7 +483,7 @@ template <class ValueType>
 void
 X3DPtr <ValueType>::dispose ()
 {
-	removeNode (getValue ());
+	removeObject (getValue ());
 
 	X3DField <ValueType*>::dispose ();
 }
@@ -493,7 +492,7 @@ template <class ValueType>
 inline
 X3DPtr <ValueType>::~X3DPtr ()
 {
-	removeNode (getValue ());
+	removeObject (getValue ());
 }
 
 ///  @relates X3DPtr
@@ -506,8 +505,8 @@ inline
 bool
 operator == (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
-	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
 
 	return a == b;
 }
@@ -519,8 +518,8 @@ inline
 bool
 operator not_eq (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
-	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
 
 	return a not_eq b;
 }
@@ -532,8 +531,8 @@ inline
 bool
 operator < (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
-	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
 
 	return a < b;
 }
@@ -545,8 +544,8 @@ inline
 bool
 operator <= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
-	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
 
 	return a <= b;
 }
@@ -558,8 +557,8 @@ inline
 bool
 operator > (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
-	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
 
 	return a > b;
 }
@@ -571,8 +570,8 @@ inline
 bool
 operator >= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 {
-	X3DBaseNode* const a = lhs ? lhs -> getNode () : nullptr;
-	X3DBaseNode* const b = rhs ? rhs -> getNode () : nullptr;
+	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
+	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
 
 	return a >= b;
 }

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_FIELDS_SFNODE_H__
 
 #include "X3DPtr.h"
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {

@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Fri, 23 May 2014 13:23:00 GMT'/>
+    <meta name='modified' content='Sat, 24 May 2014 01:08:46 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -310,7 +310,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Fr 23 Mai 2014 12:41:47 CEST"'>
+            string='"modified...", "Fr 23 Mai 2014 15:23:00 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -368,7 +368,7 @@ function initialize ()
     <Transform DEF='OutlineEditor-IMPORT'
         translation='9.25124 1.2397 -1.94955'
         scale='0.223361 0.223361 0.223361'>
-      <Inline
+      <Inline DEF='_7'
           url='"OutlineEditor-IMPORT.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/OutlineEditor-IMPORT.x3dv"'/>
     </Transform>
     <Transform DEF='OutlineEditorText'>
@@ -403,6 +403,7 @@ function initialize ()
       </Transform>
     </Transform>
     <IMPORT inlineDEF='_6' exportedDEF='CubeExport'/>
+    <IMPORT inlineDEF='_7' exportedDEF='ExportedInline'/>
     <IMPORT inlineDEF='_3' exportedDEF='Text' AS='ImportedInline'/>
     <ROUTE fromNode='ModifiedScript' fromField='string_changed' toNode='Text2' toField='set_string'/>
     <ROUTE fromNode='Rotor2' fromField='rotation_changed' toNode='ImportedInline' toField='set_rotation'/>

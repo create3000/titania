@@ -123,7 +123,7 @@ Route::initialize ()
 }
 
 RouteId
-Route::getId () const
+Route::getKey () const
 {
 	return std::make_pair (sourceField, destinationField);
 }
