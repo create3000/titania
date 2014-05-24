@@ -1,5 +1,9 @@
 2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsContext.cpp: 
+
+2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* X3D.h:
 	* libtitania-x3d.cproj:

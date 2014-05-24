@@ -496,6 +496,8 @@ jsContext::set_live ()
 		if (not JSVAL_IS_VOID (eventsProcessedFn))
 			script -> addInterest (this, &jsContext::eventsProcessed);
 
+		script -> addInterest (this, &jsContext::finish);
+
 		for (const auto & field : script -> getUserDefinedFields ())
 		{
 			switch (field -> getAccessType ())
@@ -520,6 +522,8 @@ jsContext::set_live ()
 
 		if (not JSVAL_IS_VOID (eventsProcessedFn))
 			script -> removeInterest (this, &jsContext::eventsProcessed);
+
+		script -> removeInterest (this, &jsContext::finish);
 
 		for (const auto & field : script -> getUserDefinedFields ())
 		{
@@ -546,8 +550,6 @@ jsContext::initialize ()
 	X3DJavaScriptContext::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
-
-	script -> addInterest (this, &jsContext::finish);
 
 	set_live ();
 
