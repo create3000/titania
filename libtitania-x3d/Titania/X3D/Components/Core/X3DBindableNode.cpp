@@ -78,9 +78,8 @@ void
 X3DBindableNode::initialize ()
 {
 	X3DChildNode::initialize ();
-	
-	isLive () .addInterest (this, &X3DBindableNode::set_live);
 
+	isLive ()   .addInterest (this, &X3DBindableNode::set_live);
 	set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
 }
 

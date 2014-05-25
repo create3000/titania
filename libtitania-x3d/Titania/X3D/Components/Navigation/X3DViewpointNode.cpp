@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
+#include "../../Execution/Scene.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 
@@ -82,12 +83,12 @@ X3DViewpointNode::X3DViewpointNode () :
 	                parentMatrix (),
 	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
-	                  timeSensor (new TimeSensor (getBrowser ())),
-	               easeInEaseOut (new EaseInEaseOut (getBrowser ())),
-	        positionInterpolator (new PositionInterpolator (getBrowser ())),
-	     orientationInterpolator (new OrientationInterpolator (getBrowser ())),
-	           scaleInterpolator (new PositionInterpolator (getBrowser ())),
-	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser ()))
+	                  timeSensor (new TimeSensor (getBrowser () -> getScene ())),
+	               easeInEaseOut (new EaseInEaseOut (getBrowser () -> getScene ())),
+	        positionInterpolator (new PositionInterpolator (getBrowser () -> getScene ())),
+	     orientationInterpolator (new OrientationInterpolator (getBrowser () -> getScene ())),
+	           scaleInterpolator (new PositionInterpolator (getBrowser () -> getScene ())),
+	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getScene ()))
 {
 	addType (X3DConstants::X3DViewpointNode);
 

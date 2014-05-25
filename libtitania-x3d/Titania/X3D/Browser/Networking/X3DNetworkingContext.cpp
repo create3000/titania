@@ -65,7 +65,7 @@ const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000
 X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
 	         userAgent (),
-	        emptyScene (),
+	        emptyScene (new Scene (getBrowser ())),
 	downloadMutexIndex (0),
 	   downloadMutexes (1),
 	     downloadMutex ()
@@ -78,8 +78,6 @@ X3DNetworkingContext::initialize ()
 {
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +" + providerUrl + ")";
 
-	emptyScene = getBrowser () -> createScene ();
-	emptyScene -> isInternal (true);
 	emptyScene -> setup ();
 
 	downloadMutexes .resize (std::min <int32_t> (omp_get_max_threads () * 2, DOWNLOAD_THREADS_MAX));
