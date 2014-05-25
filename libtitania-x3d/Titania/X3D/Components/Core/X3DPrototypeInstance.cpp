@@ -131,7 +131,6 @@ void
 X3DPrototypeInstance::initialize ()
 {
 	getExecutionContext () -> isLive () .addInterest (isLive ());
-
 	isLive () = getExecutionContext () -> isLive ();
 
 	try

@@ -1,5 +1,11 @@
 2014-05-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformTool.x3dv:
+	* Inline.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp: 
 
 2014-05-25  Holger Seelig  <holger.seelig@yahoo.de>

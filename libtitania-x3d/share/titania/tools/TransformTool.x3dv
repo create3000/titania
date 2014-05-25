@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Tue, 20 May 2014 20:07:29 GMT"
+META "modified" "Sun, 25 May 2014 10:32:58 GMT"
 
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
@@ -176,7 +176,7 @@ PROTO TransformTool [
             }
           }
           DEF Front Transform {
-            children Transform {
+            children DEF _1 Transform {
               children [
                 DEF FrontSensor PlaneSensor {
                   enabled IS set_enabled
@@ -565,24 +565,24 @@ PROTO TransformTool [
       }
       DEF CenterPoint Transform {
         children [
-          DEF _1 TouchSensor {
+          DEF _2 TouchSensor {
             enabled IS set_enabled
           }
           ScreenGroup {
-            children DEF _2 BooleanSwitch {
+            children DEF _3 BooleanSwitch {
               children [
-                DEF _3 Shape {
+                DEF _4 Shape {
                   appearance Appearance {
                     material USE Yellow
                     shaders USE HandleShader
                   }
-                  geometry DEF _4 Sphere {
+                  geometry DEF _5 Sphere {
                     radius 5
                   }
                 }
-                DEF _5 Shape {
+                DEF _6 Shape {
                   appearance USE Red
-                  geometry USE _4
+                  geometry USE _5
                 }
               ]
             }
@@ -735,6 +735,10 @@ PROTO TransformTool [
         }
       }
     ]
+  }
+
+  DEF _7 KeySensor {
+    enabled FALSE
   }
 
   DEF ModeDoubleClick DoubleClick { }
@@ -893,6 +897,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f set_yTranslation
     inputOnly      SFVec3f set_zTranslation
     inputOutput    SFBool  keepCenter FALSE
+    inputOutput    SFBool  constrain FALSE
     inputOutput    SFVec3f bboxSize IS bboxSize
     inputOutput    SFNode  transform IS transform
     initializeOnly SFVec3f translation 0 0 0
@@ -903,10 +908,14 @@ function set_active (value)
 {
 	translation = transform .translation;
 	center      = transform .center;
+
+	print (value);
 }
 
 function set_frontTranslation (value)
 {
+	print (value);
+
 	translate_with_bbox (new SFVec3f (value .x, value .y, 0));
 }
 
@@ -1527,11 +1536,12 @@ function sgn (value)
   ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
   ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-  ROUTE _1.touchTime TO CenterDoubleClick.set_time
+  ROUTE _2.touchTime TO CenterDoubleClick.set_time
   ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
   ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-  ROUTE CenterScript.keepCenter_changed TO _2.set_whichChoice
+  ROUTE CenterScript.keepCenter_changed TO _3.set_whichChoice
   ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
+  ROUTE _7.controlKey TO MoveScript.set_constrain
 }
 
 DEF Tool TransformTool { }
