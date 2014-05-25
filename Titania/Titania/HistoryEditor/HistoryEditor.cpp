@@ -73,7 +73,7 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 
 	// Add browser interest.
 
-	getWorld () .addInterest (this, &HistoryEditor::set_splashScreen);
+	getScene () .addInterest (this, &HistoryEditor::set_splashScreen);
 }
 
 void
@@ -85,8 +85,8 @@ HistoryEditor::on_map ()
 void
 HistoryEditor::set_splashScreen ()
 {
-	getWorld () .removeInterest (this, &HistoryEditor::set_splashScreen);
-	getWorld () .addInterest    (this, &HistoryEditor::set_world);
+	getScene () .removeInterest (this, &HistoryEditor::set_splashScreen);
+	getScene () .addInterest    (this, &HistoryEditor::set_scene);
 }
 
 void
@@ -94,8 +94,8 @@ HistoryEditor::set_history ()
 {
 	// Fill model.
 
-	getTreeView () .unset_model ();
-	
+	//getTreeView () .unset_model (); // This will unset the sort column.
+
 	getListStore () -> clear ();
 
 	for (const auto & item : history .getItems ())
@@ -106,15 +106,15 @@ HistoryEditor::set_history ()
 		iter -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
 	}
 
-	getTreeView () .set_model (getListStore ());
+	//getTreeView () .set_model (getListStore ());
 	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
 }
 
 void
-HistoryEditor::set_world ()
+HistoryEditor::set_scene ()
 {
-	const std::string title    = getWorld () -> getTitle ();
-	const basic::uri  worldURL = getWorld () -> getWorldURL ();
+	const std::string title    = getScene () -> getTitle ();
+	const basic::uri  worldURL = getScene () -> getWorldURL ();
 
 	if (worldURL .empty ())
 		return;

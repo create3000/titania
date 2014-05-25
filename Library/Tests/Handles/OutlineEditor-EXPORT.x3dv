@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 08 May 2014 13:51:27 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Wed, 21 May 2014 11:28:21 GMT"
+META "modified" "Sun, 25 May 2014 08:49:01 GMT"
 
 EXTERNPROTO Delay [
   inputOutput SFTime cycleInterval
@@ -32,6 +32,41 @@ EXTERNPROTO BooleanSwitch [
   "../../../Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Grouping/BooleanSwitch.x3dv"
+]
+
+EXTERNPROTO Button [
+  inputOutput    SFBool   enabled
+  inputOutput    SFString description
+  outputOnly     SFBool   isOver
+  outputOnly     SFBool   isActive
+  outputOnly     SFTime   touchTime
+  initializeOnly SFVec3f  bboxSize
+  initializeOnly SFVec3f  bboxCenter
+  inputOnly      MFNode   addChildren
+  inputOnly      MFNode   removeChildren
+  inputOutput    MFNode   children
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
+]
+
+EXTERNPROTO CheckButton [
+  inputOutput    SFBool  enabled
+  outputOnly     SFBool  isActive
+  outputOnly     SFTime  enterTime
+  outputOnly     SFTime  exitTime
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv"
 ]
 
 PROTO Rotor [
@@ -121,7 +156,6 @@ function eventsProcessed ()
 
 DEF Export1 Transform {
   translation 0 1.23317 0
-  rotation 0 0 1 5.49333
   children Shape {
     appearance Appearance {
       material Material {
@@ -145,7 +179,6 @@ DEF Export1 Transform {
 }
 
 DEF Export2 Transform {
-  rotation 0 0 1 5.49333
   children Shape {
     appearance Appearance {
       material DEF Artdeco2 Material {
@@ -169,7 +202,6 @@ DEF Export2 Transform {
 
 DEF Export3 Transform {
   translation 0 -1.25334 0
-  rotation 0 0 1 5.49333
   children Shape {
     appearance Appearance {
       material Material { }
@@ -196,12 +228,49 @@ DEF Export3 Transform {
 
 Delay { }
 
+DEF _1 CheckButton {
+  enabled TRUE
+  children [
+    DEF _2 Button {
+      children DEF Default Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
+    DEF _3 Button {
+      children DEF Active Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.4 0.4 0.4
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}
+
+DEF Debug Script {
+  inputOnly SFBool set_enabled
+
+  url "javascript:
+function set_enabled (value)
+{
+	print (\"enabled: \" + value);
+}
+"
+}
+
 ROUTE Export1.rotation_changed TO Export2.set_rotation
 ROUTE Export1.rotation_changed TO Export3.set_rotation
+ROUTE _1.enabled_changed TO Debug.set_enabled
 
 EXPORT Export1 AS A
 EXPORT Export2 AS B
 EXPORT Export3 AS C
+EXPORT _1 AS CheckButton
 EXPORT Export1
 EXPORT Export2
 EXPORT Export3

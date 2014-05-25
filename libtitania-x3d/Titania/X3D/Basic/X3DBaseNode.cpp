@@ -120,16 +120,16 @@ namespace X3D {
 
 
 /**
- *  Contructs a new X3DBaseNode into @a browser and @a executionContext.
+ *  Contructs a new node into @a browser and @a executionContext.
  *
- *  Important: a in this way newly created X3DBaseNode must be setuped manually. On setup there must be a
+ *  Important: a in this way newly created node must be setuped manually. On setup there must be a
  *  OpenGL context available.
  *
  *  You can use:
  *
  *      auto node = new Transform (executionContext);
  *      executionContext -> addUninitalizedNode (node);
- *      executionContext -> setup ();
+ *      executionContext -> realize ();
  */
 
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
@@ -158,6 +158,10 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	addChildren (live);
 }
 
+/**
+ *  Initializes a node: after setup all fields can process events.
+ */
+
 void
 X3DBaseNode::setup ()
 {
@@ -177,14 +181,13 @@ X3DBaseNode::setup ()
 }
 
 /**
- *
  *  Creates either a clone or a copy of this node. If the named node already exists in @a executionContext this node is
  *  returned otherwise a copy of this node and all of its children is made.  See copy ().
  *
  *  The nodes must be setuped with:
  *
- *      auto clone = node -> clone ();
- *      executionContext -> setup ();
+ *      auto clone = node -> clone (executionContext);
+ *      executionContext -> realize ();
  */
 
 X3DBaseNode*
@@ -209,14 +212,13 @@ throw (Error <INVALID_NAME>,
 }
 
 /**
- *
  *  Creates a copy of this node and all of its child nodes into @a executionContext. If a named node of one of this
  *  node children already exists in @a executionContext then only a clone is created.
  *
  *  The nodes must be setuped with:
  *
- *      auto copy = node -> copy ();
- *      executionContext -> setup ();
+ *      auto copy = node -> copy (executionContext);
+ *      executionContext -> realize ();
  */
 
 X3DBaseNode*
@@ -397,11 +399,19 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 	}
 }
 
+/***
+ *  Returns the current time stamp of this cycle.
+ */
+
 time_type
 X3DBaseNode::getCurrentTime () const
 {
 	return getBrowser () -> getClock () -> cycle ();
 }
+
+/***
+ *  Returns the root context of this node.
+ */
 
 X3DExecutionContext*
 X3DBaseNode::getRootContext () const
@@ -413,6 +423,10 @@ X3DBaseNode::getRootContext () const
 
 	return executionContext;
 }
+
+/***
+ *  Returns the declaration node for this node.
+ */
 
 const X3DBaseNode*
 X3DBaseNode::getDeclaration () const
@@ -428,6 +442,10 @@ throw (Error <DISPOSED>)
 	}
 }
 	
+/***
+ *  Returns true if field is in the set of fields either pre or user defined.
+ */
+
 bool
 X3DBaseNode::hasField (X3DFieldDefinition* const field) const
 {
@@ -440,6 +458,10 @@ X3DBaseNode::hasField (X3DFieldDefinition* const field) const
 		return false;
 	}
 }
+
+/***
+ *  Adds @a field to the set of pre defined fields. @a accessType and @a name will be assigned to @a field.
+ */
 
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
@@ -460,6 +482,10 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	fields .emplace (name, &field);
 }
 
+/***
+ *  Adds a @a alias for a field named @a name.
+ */
+
 void
 X3DBaseNode::addField (const VersionType version, const std::string & alias, const std::string & name)
 {
@@ -468,6 +494,10 @@ X3DBaseNode::addField (const VersionType version, const std::string & alias, con
 	fieldAlias .first [alias] = name;
 	fieldAlias .second [name] = alias;
 }
+
+/***
+ *  Removes @a field from the set fields.
+ */
 
 void
 X3DBaseNode::removeField (const std::string & name)
@@ -499,6 +529,12 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool removeP
 	fieldDefinitions .erase (iter);
 	fields .erase (field);
 }
+
+/***
+ *  The getField service returns a field identifier so that operations can be performed on the node properties. If the
+ *  field requested is an inputOutput field, either the field name or the set_ and _changed modifiers may be used to
+ *  access the appropriate form of the node as required..
+ */
 
 X3DFieldDefinition*
 X3DBaseNode::getField (const std::string & name) const
@@ -563,6 +599,10 @@ X3DBaseNode::getFieldName (const std::string & name, const VersionType version) 
 	return name;
 }
 
+/***
+ *  Adds @a field to the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+ */
+
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
@@ -570,6 +610,10 @@ X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string
 
 	++ numUserDefinedFields;
 }
+
+/***
+ *  Removes @a field from the set of user defined fields.
+ */
 
 void
 X3DBaseNode::removeUserDefinedField (X3DFieldDefinition* const field)
@@ -586,6 +630,10 @@ X3DBaseNode::removeUserDefinedField (X3DFieldDefinition* const field)
 
 	removeField (field -> getName ());
 }
+
+/***
+ *  Returns all predefined fields.
+ */
 
 FieldDefinitionArray
 X3DBaseNode::getPreDefinedFields () const
@@ -609,11 +657,19 @@ X3DBaseNode::getPreDefinedFields () const
 	return predefinedFields;
 }
 
+/***
+ *  Returns all user defined fields.
+ */
+
 FieldDefinitionArray
 X3DBaseNode::getUserDefinedFields () const
 {
 	return FieldDefinitionArray (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());
 }
+
+/***
+ *  Returns all fields that have a non default value.
+ */
 
 FieldDefinitionArray
 X3DBaseNode::getChangedFields () const
@@ -645,6 +701,10 @@ X3DBaseNode::getChangedFields () const
 	return changedFields;
 }
 
+/***
+ *  Returns true if @a field has the default value, @a field must be a field of this node.
+ */
+
 bool
 X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 throw (Error <INVALID_NAME>,
@@ -656,6 +716,10 @@ throw (Error <INVALID_NAME>,
 	return *field == *declarationField;
 }
 
+/***
+ *  Adds this node as parent of @a child. After setup @a child is eventable.
+ */
+
 void
 X3DBaseNode::addChild (X3DChildObject & child)
 {
@@ -666,6 +730,11 @@ X3DBaseNode::addChild (X3DChildObject & child)
 	X3DChildObject::addChild (child);
 }
 
+/***
+ *  This node will now not be longer a parent of @a child. If the reference count of @a child goes
+ *  to zero @a child will be disposed and garbage collected.
+ */
+
 void
 X3DBaseNode::removeChild (X3DChildObject & child)
 {
@@ -673,6 +742,10 @@ X3DBaseNode::removeChild (X3DChildObject & child)
 
 	X3DChildObject::removeChild (child);
 }
+
+/***
+ *  Determines how often this node is used in the scene graph.
+ */
 
 size_t
 X3DBaseNode::getNumClones () const
@@ -740,6 +813,10 @@ X3DBaseNode::getNumClones () const
 	return numClones;
 }
 
+/***
+ *  Returns true if there are any routes from or to fields of this node otherwise false.
+ */
+
 bool
 X3DBaseNode::hasRoutes () const
 {
@@ -753,6 +830,11 @@ X3DBaseNode::hasRoutes () const
 
 	return false;
 }
+
+/***
+ *  Marks this node as a node for internal use only. Such nodes are not routeable and
+ *  scriptable. The clone count of child nodes is not incrementd.
+ */
 
 void
 X3DBaseNode::isInternal (const bool value)
@@ -774,6 +856,10 @@ X3DBaseNode::isInternal (const bool value)
 	}
 }
 
+/***
+ *  Replaces this node by @a tool and calls setup on tool.
+ */
+
 void
 X3DBaseNode::addTool (X3DBaseNode* const tool)
 {
@@ -781,26 +867,36 @@ X3DBaseNode::addTool (X3DBaseNode* const tool)
 	tool -> setup ();
 }
 
+/***
+ *  Replaces this tool node by @a node.
+ */
+
 void
 X3DBaseNode::removeTool (X3DBaseNode* const node)
 {
 	node -> replace (this);
 }
 
+/***
+ *  Changes the live state of this node to true.
+ */
+
 void
 X3DBaseNode::beginUpdate ()
 throw (Error <DISPOSED>)
 {
-	if (not isLive ())
-		isLive () = true;
+	isLive () = true;
 }
+
+/***
+ *  Changes the live state of this node to false.
+ */
 
 void
 X3DBaseNode::endUpdate ()
 throw (Error <DISPOSED>)
 {
-	if (isLive ())
-		isLive () = false;
+	isLive () = false;
 }
 
 void
@@ -838,6 +934,10 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 	}
 }
 
+/***
+ *  Marks this node as changed. Call this function if you want to inform requester of this node about a change.
+ */
+
 void
 X3DBaseNode::addEvent ()
 {
@@ -851,6 +951,11 @@ X3DBaseNode::addEvent ()
 	}
 }
 
+/***
+ *  The eventsProcessed () function represents the service request that is called after some set of events has been received.
+ *  Requester of this node are now informed about a change of this node.
+ */
+
 void
 X3DBaseNode::eventsProcessed ()
 {
@@ -863,6 +968,10 @@ X3DBaseNode::eventsProcessed ()
 		processInterests ();
 	}
 }
+
+/***
+ *  Removes all outstanding events from the event queue of the router.
+ */
 
 void
 X3DBaseNode::removeEvents ()

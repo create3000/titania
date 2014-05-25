@@ -128,10 +128,10 @@ private:
 	///  @name Scene handling
 
 	void
-	set_world ();
+	set_scene ();
 
 	void
-	set_scene ();
+	set_executionContext ();
 
 	///  @name Selection handling
 

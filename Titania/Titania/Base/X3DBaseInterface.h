@@ -77,11 +77,11 @@ public:
 
 	virtual
 	const X3D::ScenePtr &
-	getWorld () const;
-
-	X3D::X3DExecutionContext*
-	getRootContext () const
-	{ return getExecutionContext () -> getRootContext (); }
+	getScene () const;
+	
+	const X3D::WorldPtr &
+	getWorld () const
+	{ return getBrowser () -> getWorld (); }
 
 	void
 	setExecutionContext (const X3D::X3DExecutionContextPtr &);
@@ -89,6 +89,10 @@ public:
 	const X3D::X3DExecutionContextPtr &
 	getExecutionContext () const
 	{ return getBrowser () -> getExecutionContext (); }
+
+	X3D::X3DExecutionContext*
+	getRootContext () const
+	{ return getExecutionContext () -> getRootContext (); }
 
 	bool
 	inProtoDeclaration () const

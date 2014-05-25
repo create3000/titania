@@ -67,8 +67,8 @@ public:
 
 	virtual
 	const X3D::ScenePtr &
-	getWorld () const final override
-	{ return world; }
+	getScene () const final override
+	{ return scene; }
 
 	///  @name Operations
 
@@ -132,7 +132,7 @@ private:
 	set_splashScreen ();
 
 	void
-	set_world ();
+	set_scene ();
 
 	void
 	set_console ();
@@ -148,7 +148,7 @@ private:
 
 	///  @name Members
 	
-	X3D::ScenePtr    world;
+	X3D::ScenePtr    scene;
 	double           loadTime;
 	sigc::connection timeout;
 

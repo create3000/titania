@@ -93,10 +93,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_world ();
+	set_scene ();
 
 	void
-	set_scene ();
+	set_executionContext ();
 
 	// Pointing Device
 

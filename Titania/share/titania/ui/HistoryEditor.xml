@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.10"/>
   <object class="GtkListStore" id="ListStore">
     <columns>
       <!-- column-name Icon -->
@@ -39,6 +40,7 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="Icon">
+                    <property name="sizing">autosize</property>
                     <property name="title" translatable="yes">Icon</property>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
@@ -50,6 +52,7 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="TitleColumn">
+                    <property name="sizing">autosize</property>
                     <property name="title" translatable="yes">Title</property>
                     <property name="sort_indicator">True</property>
                     <child>
@@ -62,6 +65,7 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="LocationColumn">
+                    <property name="sizing">autosize</property>
                     <property name="title" translatable="yes">Location</property>
                     <child>
                       <object class="GtkCellRendererText" id="LocationRenderer"/>

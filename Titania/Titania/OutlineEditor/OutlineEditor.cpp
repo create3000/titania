@@ -87,8 +87,8 @@ OutlineEditor::initialize ()
 	treeView -> show ();
 
 	// Register browser interest
-	getWorld () .addInterest (this, &OutlineEditor::set_world);
-	getExecutionContext () .addInterest (this, &OutlineEditor::set_scene);
+	getScene ()            .addInterest (this, &OutlineEditor::set_scene);
+	getExecutionContext () .addInterest (this, &OutlineEditor::set_executionContext);
 }
 
 void
@@ -104,21 +104,21 @@ OutlineEditor::restoreSession ()
 
 	realized = true;
 
-	set_world ();
 	set_scene ();
+	set_executionContext ();
 }
 
 void
-OutlineEditor::set_world ()
+OutlineEditor::set_scene ()
 {
-	addSceneMenuItem (X3D::X3DExecutionContextPtr (), X3D::X3DExecutionContextPtr (getWorld ()));
+	addSceneMenuItem (X3D::X3DExecutionContextPtr (), X3D::X3DExecutionContextPtr (getScene ()));
 
 	getPreviousSceneButton () .set_sensitive (false);
 	getNextSceneButton ()     .set_sensitive (false);
 }
 
 void
-OutlineEditor::set_scene ()
+OutlineEditor::set_executionContext ()
 {
 	if (not realized)
 		return;
@@ -440,7 +440,7 @@ OutlineEditor::on_show_extern_protos_toggled ()
 {
 	getConfig () .setItem ("showExternProtos", getShowExternProtosMenuItem () .get_active ());
 	treeView -> set_show_extern_protos (getShowExternProtosMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void
@@ -448,7 +448,7 @@ OutlineEditor::on_show_prototypes_toggled ()
 {
 	getConfig () .setItem ("showPrototypes", getShowPrototypesMenuItem () .get_active ());
 	treeView -> set_show_prototypes (getShowPrototypesMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void
@@ -456,7 +456,7 @@ OutlineEditor::on_show_imported_nodes_toggled ()
 {
 	getConfig () .setItem ("showImportedNodes", getShowImportedNodesMenuItem () .get_active ());
 	treeView -> set_show_imported_nodes (getShowImportedNodesMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void
@@ -464,7 +464,7 @@ OutlineEditor::on_show_exported_nodes_toggled ()
 {
 	getConfig () .setItem ("showExportedNodes", getShowExportedNodesMenuItem () .get_active ());
 	treeView -> set_show_exported_nodes (getShowExportedNodesMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void
@@ -472,7 +472,7 @@ OutlineEditor::on_expand_extern_protos_toggled ()
 {
 	getConfig () .setItem ("expandExternProtos", getExpandExternProtosMenuItem () .get_active ());
 	treeView -> set_expand_extern_protos (getExpandExternProtosMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void
@@ -480,7 +480,7 @@ OutlineEditor::on_expand_prototype_instances_toggled ()
 {
 	getConfig () .setItem ("expandPrototypeInstances", getExpandPrototypeInstancesMenuItem () .get_active ());
 	treeView -> set_expand_prototype_instances (getExpandPrototypeInstancesMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void
@@ -488,7 +488,7 @@ OutlineEditor::on_expand_inline_nodes_toggled ()
 {
 	getConfig () .setItem ("expandInlineNodes", getExpandInlineNodesMenuItem () .get_active ());
 	treeView -> set_expand_inline_nodes (getExpandInlineNodesMenuItem () .get_active ());
-	set_scene ();
+	set_executionContext ();
 }
 
 void

@@ -84,7 +84,7 @@ private:
 	set_history ();
 
 	void
-	set_world ();
+	set_scene ();
 
 	virtual
 	void

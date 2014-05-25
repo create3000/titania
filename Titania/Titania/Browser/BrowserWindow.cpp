@@ -154,8 +154,8 @@ BrowserWindow::initialize ()
 	updatePasteStatus ();
 
 	// Browser Events
-	getWorld ()            .addInterest (this, &BrowserWindow::set_world);
-	getExecutionContext () .addInterest (this, &BrowserWindow::set_scene);
+	getScene ()            .addInterest (this, &BrowserWindow::set_scene);
+	getExecutionContext () .addInterest (this, &BrowserWindow::set_executionContext);
 
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &BrowserWindow::set_active_viewpoint);
 	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
@@ -223,7 +223,7 @@ BrowserWindow::hasShortcuts (bool value)
 }
 
 void
-BrowserWindow::set_world ()
+BrowserWindow::set_scene ()
 {
 	toggle = false;
 	getBackgroundsMenuItem () .set_active (true);
@@ -241,7 +241,7 @@ BrowserWindow::set_world ()
 }
 
 void
-BrowserWindow::set_scene ()
+BrowserWindow::set_executionContext ()
 {
 	const bool inScene = not inPrototypeInstance ();
 

@@ -1,5 +1,20 @@
 2014-05-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* X3DBaseInterface.h:
+	* LibraryView.xml:
+	* X3DBaseInterface.cpp:
+	* BrowserWindow.cpp:
+	* HistoryEditor.xml:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* OutlineEditor.h:
+	* HistoryEditor.h:
+	* OutlineEditor.cpp:
+	* HistoryEditor.cpp: 
+
+2014-05-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.cpp: 
 
 2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>

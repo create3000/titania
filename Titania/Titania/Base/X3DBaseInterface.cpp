@@ -68,9 +68,9 @@ X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3
 }
 
 const X3D::ScenePtr &
-X3DBaseInterface::getWorld () const
+X3DBaseInterface::getScene () const
 {
-	return browserWindow -> getWorld ();
+	return browserWindow -> getScene ();
 }
 
 void
@@ -84,6 +84,9 @@ X3DBaseInterface::setExecutionContext (const X3D::X3DExecutionContextPtr & execu
 
 		getBrowser () -> replaceWorld (executionContext);
 		getBrowser () -> getBrowserOptions () -> assign (browserOptions);
+
+		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
+		getScene () -> isLive () = getBrowser () -> isLive ();
 	}
 	catch (const X3D::X3DError &)
 	{ }

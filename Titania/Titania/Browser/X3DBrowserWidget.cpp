@@ -66,9 +66,9 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
-	                    world (getExecutionContext ())
+	                    scene (getExecutionContext ())
 {
-	addChildren (world);
+	addChildren (scene);
 
 	parseOptions (argc, argv);
 }
@@ -139,7 +139,7 @@ X3DBrowserWidget::set_splashScreen ()
 	// Initialized
 
 	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
-	getWorld () .addInterest (this, &X3DBrowserWidget::set_world);
+	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
 
 	if (getConfig () .getString ("url") .size ())
 	{
@@ -234,8 +234,8 @@ X3DBrowserWidget::saveSession ()
 	getConfig () .setItem ("sideBarCurrentPage", getSideBarNotebook () .get_current_page ());
 	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook ()  .get_current_page ());
 
-	if (getWorld () -> getWorldURL () .size ())
-		getConfig () .setItem ("worldURL", getWorld () -> getWorldURL ());
+	if (getScene () -> getWorldURL () .size ())
+		getConfig () .setItem ("worldURL", getScene () -> getWorldURL ());
 
 	X3DBrowserWindowInterface::saveSession ();
 }
@@ -253,9 +253,9 @@ X3DBrowserWidget::isLive (const bool value)
 void
 X3DBrowserWidget::updateTitle (const bool edited) const
 {
-	getWindow () .set_title (getWorld () -> getTitle ()
+	getWindow () .set_title (getScene () -> getTitle ()
 	                         + " · "
-	                         + getWorld () -> getWorldURL ()
+	                         + getScene () -> getWorldURL ()
 	                         + (edited ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
@@ -266,8 +266,8 @@ X3DBrowserWidget::blank ()
 {
 	try
 	{
-		getBrowser () -> replaceWorld (X3D::ScenePtr ());
-		world = getExecutionContext ();
+		getBrowser () -> replaceWorld (nullptr);
+		scene = getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -281,7 +281,7 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	try
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
-		world = getExecutionContext ();
+		scene = getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -364,11 +364,11 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 void
 X3DBrowserWidget::reload ()
 {
-	open (getWorld () -> getWorldURL ());
+	open (getScene () -> getWorldURL ());
 }
 
 void
-X3DBrowserWidget::set_world ()
+X3DBrowserWidget::set_scene ()
 {
 	loadTime = chrono::now () - loadTime;
 
@@ -380,7 +380,7 @@ X3DBrowserWidget::set_world ()
 
 	// Remember last local file
 
-	const auto worldURL = getWorld () -> getWorldURL ();
+	const auto worldURL = getScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
@@ -426,7 +426,7 @@ X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 void
 X3DBrowserWidget::loadIcon ()
 {
-	const basic::uri & worldURL = getWorld () -> getWorldURL ();
+	const basic::uri & worldURL = getScene () -> getWorldURL ();
 
 	const Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
 
@@ -440,7 +440,7 @@ X3DBrowserWidget::loadIcon ()
 
 		try
 		{
-			uri = getWorld () -> getMetaData ("icon");
+			uri = getScene () -> getMetaData ("icon");
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
@@ -450,7 +450,7 @@ X3DBrowserWidget::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		const titania::Image icon (X3D::Loader (getWorld ()) .loadDocument (uri));
+		const titania::Image icon (X3D::Loader (getScene ()) .loadDocument (uri));
 
 		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
 		                                                               Gdk::COLORSPACE_RGB,
@@ -484,11 +484,11 @@ X3DBrowserWidget::setTransparent (const bool value)
 bool
 X3DBrowserWidget::statistics ()
 {
-	std::string title = getWorld () -> getWorldURL ();
+	std::string title = getScene () -> getWorldURL ();
 
 	try
 	{
-		title = getWorld () -> getMetaData ("title");
+		title = getScene () -> getMetaData ("title");
 		std::clog << "Statistics for: " << title << std::endl;
 	}
 	catch (...)
