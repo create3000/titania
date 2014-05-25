@@ -119,7 +119,7 @@ X3DBrowserWidget::initialize ()
 	X3DBrowserWindowInterface::initialize ();
 
 	// Enable splash screen.
-	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
+	getBrowser () -> getBrowserOptions () -> splashScreen () = true;
 
 	// Connect event handler.
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
@@ -245,13 +245,9 @@ X3DBrowserWidget::isLive (const bool value)
 {
 	getConfig () .setItem ("isLive", value);
 
-	if (value)
-		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-pause"));
+	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
 
-	else
-		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-play"));
-
-	getWorld () -> isLive (value);
+	getBrowser () -> isLive () = value;
 }
 
 void
@@ -286,7 +282,6 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
 		world = getExecutionContext ();
-		world -> isLive (getConfig () .getBoolean ("isLive"));
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -391,25 +386,6 @@ X3DBrowserWidget::set_world ()
 		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
 }
 
-bool
-X3DBrowserWidget::statistics ()
-{
-	std::string title = getWorld () -> getWorldURL ();
-
-	try
-	{
-		title = getWorld () -> getMetaData ("title");
-		std::clog << "Statistics for: " << title << std::endl;
-	}
-	catch (...)
-	{ }
-
-	std::clog << "Load Time: " << loadTime << std::endl;
-	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> getFPS () << std::endl;
-
-	return false;
-}
-
 void
 X3DBrowserWidget::set_console ()
 {
@@ -503,6 +479,25 @@ X3DBrowserWidget::setTransparent (const bool value)
 		if (visual)
 			gtk_widget_set_visual (GTK_WIDGET (getWindow () .gobj ()), visual -> gobj ());
 	}
+}
+
+bool
+X3DBrowserWidget::statistics ()
+{
+	std::string title = getWorld () -> getWorldURL ();
+
+	try
+	{
+		title = getWorld () -> getMetaData ("title");
+		std::clog << "Statistics for: " << title << std::endl;
+	}
+	catch (...)
+	{ }
+
+	std::clog << "Load Time: " << loadTime << std::endl;
+	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> getFPS () << std::endl;
+
+	return false;
 }
 
 X3DBrowserWidget::~X3DBrowserWidget ()

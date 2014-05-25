@@ -79,7 +79,6 @@ namespace titania {
 namespace X3D {
 
 class X3DBrowserContext :
-	virtual public X3DBaseNode,
 	public X3DExecutionContext,
 	public X3DCoreContext,
 	public X3DGeometry2DContext,
@@ -145,7 +144,11 @@ public:
 	getTitle () const final override
 	{ return getName (); }
 
-	///  @name Children
+	///  @name Member access
+
+	const WorldPtr &
+	getWorld () const
+	{ return world; }
 
 	const SelectionPtr &
 	getSelection ()
@@ -221,9 +224,9 @@ protected:
 	void
 	initialize () override;
 
-	virtual
-	const WorldPtr &
-	getWorld () const = 0;
+	void
+	setWorld (const WorldPtr & value)
+	{ world = value; }
 
 
 private:
@@ -241,6 +244,7 @@ private:
 
 	time_type changedTime;
 
+	WorldPtr        world;
 	SelectionPtr    selection;
 	NotificationPtr notification;
 	ConsolePtr      console;

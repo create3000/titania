@@ -145,11 +145,10 @@ Proto::initialize ()
 	X3DExecutionContext::initialize ();
 	X3DProtoObject::initialize ();
 
-//	getExecutionContext () -> isLive () .addInterest (this,
-//	                                                  (void (Proto::*) (const bool)) &Proto::isLive,
-//	                                                  std::cref (getExecutionContext () -> isLive ()));
-//
-//	isLive (getExecutionContext () -> isLive ());
+	// Prototypes shouldn't be live as they are not realized.
+	//	getExecutionContext () -> isLive () .addInterest (isLive ());
+	//
+	//	isLive () = getExecutionContext () -> isLive ();
 }
 
 void

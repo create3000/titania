@@ -134,16 +134,6 @@ public:
 	virtual
 	void
 	removeUserDefinedField (X3DFieldDefinition* const) final override;
-	
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override;
-	
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override;
 
 
 private:

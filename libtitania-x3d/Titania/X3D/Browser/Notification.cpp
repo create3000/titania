@@ -53,6 +53,7 @@
 #include "../Bits/config.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../Browser/X3DBrowser.h"
+#include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
@@ -92,7 +93,7 @@ Notification::initialize ()
 
 		try
 		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
+			scene = Loader (getBrowser () -> getScene ()) .createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
 
 			const auto notification = scene -> getNamedNode ("Notification");
 			

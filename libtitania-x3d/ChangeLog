@@ -1,3 +1,38 @@
+2014-05-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* Proto.cpp:
+	* X3DBrowser.h:
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* Loader.cpp:
+	* Notification.cpp:
+	* X3DBaseTool.h:
+	* ExternProto.cpp:
+	* X3DBrowserContext.h:
+	* X3DToolObject.cpp:
+	* X3DBrowserContext.cpp:
+	* Script.h:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Script.cpp:
+	* RenderingProperties.cpp:
+	* Anchor.cpp:
+	* Inline.cpp:
+	* X3DBindableNode.h:
+	* X3DExecutionContext.cpp:
+	* X3DBindableNode.cpp:
+	* jsContext.h:
+	* jsContext.cpp:
+	* jsBrowser.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DPrototypeInstance.cpp:
+	* X3DTimeDependentNode.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2014-05-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* jsContext.h:

@@ -233,16 +233,6 @@ public:
 	void
 	drawCollision () final override;
 
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override;
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override;
-
 	///  @name Destruction
 
 	virtual

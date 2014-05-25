@@ -64,8 +64,6 @@ X3DBrowser::X3DBrowser () :
 	  browserProperties (new BrowserProperties   (this)),
 	renderingProperties (new RenderingProperties (this)),
 	   executionContext (createScene ()),
-	              world (),
-	               root (),
 	           urlError (),
 	         inShutdown ()
 {
@@ -80,8 +78,6 @@ X3DBrowser::X3DBrowser () :
 	             browserProperties,
 	             renderingProperties,
 	             executionContext,
-	             world,
-	             root,
 	             urlError);
 
 	std::clog << "\tDone constructing Browser." << std::endl;
@@ -107,22 +103,24 @@ X3DBrowser::initialize ()
 
 	// Show splash screen or proceed with empty scene.
 
-	replaceWorld (executionContext);
-
 	if (glXGetCurrentContext ())
 	{
 		try
 		{
 			if (browserOptions -> splashScreen ())
-				replaceWorld (createX3DFromURL ({ get_page ("about/splash.x3dv") .str () }));
+				executionContext .set (Loader (getScene ()) .createX3DFromURL ({ get_page ("about/splash.x3dv") .str () }));
 		}
 		catch (const X3DError & error)
 		{
 			std::clog << error .what () << std::endl;
 		}
 
+		replaceWorld (executionContext);
+
 		update ();
 	}
+	else
+		replaceWorld (executionContext);
 
 	// Welcome
 
@@ -246,6 +244,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	ScenePtr scene = createScene ();
 
+	scene -> isLive () = false;
 	scene -> setProfile (profile);
 
 	for (const auto & component : components)
@@ -293,43 +292,47 @@ throw (Error <INVALID_SCENE>,
 			}
 			else
 				++ inShutdown;
-
-			// Generate initialized event immediately upon receiving this service.
-
-			initialized () = getCurrentTime ();
 		}
 
 		// Process as normal.
 
 		if (not initialized () or value not_eq executionContext)
 		{
+			// Remove world.
+
+			isLive () .removeInterest (executionContext -> isLive ());
+			executionContext -> isLive () = false;
+			processEvents ();
+
+			// Replace world.
+
 			setDescription ("");
 			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
 			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
+			
+			isLive () .addInterest (executionContext -> isLive ());
+			executionContext -> isLive () = isLive ();
 			executionContext -> setup ();
 
-			world = new World (executionContext);
-			world -> setup ();
+			setWorld (new World (executionContext));
+			getWorld () -> setup ();
 		}
 		else
 			executionContext = value;
 
+		if (initialized ())
+			initialized () = getCurrentTime ();
+
 		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
-
-		return;
 	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	else
+		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 void
 X3DBrowser::set_executionContext ()
 {
-	std::clog << "Replacing world done." << std::endl;
-
-	root = world;
-
 	std::clog << "Replacing world done." << std::endl;
 }
 
@@ -455,32 +458,6 @@ throw (Error <INVALID_URL>,
 	}
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-}
-
-void
-X3DBrowser::beginUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (isEnabled ())
-		return;
-
-	X3DBrowserContext::beginUpdate ();
-
-	addEvent ();	
-
-	std::clog << "Browser begin update." << std::endl;
-}
-
-void
-X3DBrowser::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	std::clog << "Browser end update." << std::endl;
-
-	X3DBrowserContext::endUpdate ();
 }
 
 void

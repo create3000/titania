@@ -60,7 +60,6 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	                   X3DBaseNode (),
 	           X3DExecutionContext (),
 	                X3DCoreContext (),
 	          X3DGeometry2DContext (),
@@ -88,6 +87,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                finishedOutput (),
 	                 changedOutput (),
 	                   changedTime (0),
+	                         world (),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
 	                       console (new Console (this))
@@ -95,6 +95,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	initialized () .setName ("initialized");
 
 	addChildren (initialized (),
+	             world,
 	             selection,
 	             notification,
 	             console);
@@ -123,9 +124,9 @@ X3DBrowserContext::initialize ()
 	X3DTimeContext::initialize ();
 	X3DRouterObject::initialize ();
 
-	selection           -> setup ();
-	notification        -> setup ();
-	console             -> setup ();
+	selection    -> setup ();
+	notification -> setup ();
+	console      -> setup ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

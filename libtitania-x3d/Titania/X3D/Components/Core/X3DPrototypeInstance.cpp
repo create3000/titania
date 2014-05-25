@@ -130,11 +130,9 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 void
 X3DPrototypeInstance::initialize ()
 {
-	getExecutionContext () -> isLive () .addInterest (this,
-	                                                  (void (X3DPrototypeInstance::*) (const bool)) &X3DPrototypeInstance::isLive,
-	                                                  std::cref (getExecutionContext () -> isLive ()));
+	getExecutionContext () -> isLive () .addInterest (isLive ());
 
-	isLive (getExecutionContext () -> isLive ());
+	isLive () = getExecutionContext () -> isLive ();
 
 	try
 	{

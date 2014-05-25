@@ -118,6 +118,14 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
+	SFBool &
+	isLive ()
+	{ return live; }
+
+	const SFBool &
+	isLive () const
+	{ return live; }
+
 	virtual
 	void
 	setup ();
@@ -328,21 +336,13 @@ public:
 
 	///  @name Event handling
 
-	bool
-	isEnabled () const
-	{ return enabled; }
-
-	virtual
 	void
 	beginUpdate ()
-	throw (Error <DISPOSED>)
-	{ enabled = true; }
+	throw (Error <DISPOSED>);
 
-	virtual
 	void
 	endUpdate ()
-	throw (Error <DISPOSED>)
-	{ enabled = false; }
+	throw (Error <DISPOSED>);
 
 	virtual
 	void
@@ -511,6 +511,7 @@ private:
 
 	std::vector <std::string> comments;          // This nodes comments
 
+	SFBool live;
 	bool   initialized;
 	Output shutdownOutput;                       // Shutdown service
 

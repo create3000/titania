@@ -124,18 +124,6 @@ public:
 	void
 	traverse (const TraverseType) override
 	{ }
-	
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override
-	{ return node -> beginUpdate (); }
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override
-	{ return node -> endUpdate (); }
 
 	///  @name Destruction
 
@@ -201,6 +189,8 @@ X3DBaseTool <Type>::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DToolObject::initialize ();
+
+	isLive () .addInterest (node -> isLive ());
 }
 
 template <class Type>

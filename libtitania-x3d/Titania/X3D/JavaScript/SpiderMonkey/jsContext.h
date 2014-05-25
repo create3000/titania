@@ -127,18 +127,6 @@ public:
 	getFuture ()
 	{ return future; }
 
-	///  @name Event handling
-
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override;
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override;
-
 	///  @name Destruction
 
 	virtual

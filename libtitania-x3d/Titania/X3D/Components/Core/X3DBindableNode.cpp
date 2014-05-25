@@ -68,6 +68,7 @@ X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),
 	      fields (),
 	      layers (),
+	        live (true),
 	    wasBound (false)
 {
 	addType (X3DConstants::X3DBindableNode);
@@ -77,8 +78,27 @@ void
 X3DBindableNode::initialize ()
 {
 	X3DChildNode::initialize ();
+	
+	isLive () .addInterest (this, &X3DBindableNode::set_live);
 
 	set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
+}
+
+void 
+X3DBindableNode::addLayer (X3DLayerNode* const layer)
+{
+	layers .emplace_back (layer);
+	
+	layer -> shutdown () .addInterest (this, &X3DBindableNode::removeLayer, layer);
+}
+
+void 
+X3DBindableNode::removeLayer (X3DLayerNode* const layer)
+{
+	const auto iter = std::find (layers .begin (), layers .end (), layer);
+
+	if (iter not_eq layers .end ())
+		layers .erase (iter);
 }
 
 void
@@ -110,52 +130,29 @@ X3DBindableNode::_set_bind ()
 	}
 }
 
-void 
-X3DBindableNode::addLayer (X3DLayerNode* const layer)
-{
-	layers .emplace_back (layer);
-	
-	layer -> shutdown () .addInterest (this, &X3DBindableNode::removeLayer, layer);
-}
-
-void 
-X3DBindableNode::removeLayer (X3DLayerNode* const layer)
-{
-	const auto iter = std::find (layers .begin (), layers .end (), layer);
-
-	if (iter not_eq layers .end ())
-		layers .erase (iter);
-}
-
 void
-X3DBindableNode::beginUpdate ()
-throw (Error <DISPOSED>)
+X3DBindableNode::set_live ()
 {
-	if (isEnabled ())
+	if (isLive () == live)
 		return;
 
-	X3DChildNode::beginUpdate ();
+	live = isLive ();
 
-	if (wasBound)
+	if (live)
 	{
-		for (const auto & layer : layers)
-			bindToLayer (layer);
+		if (wasBound)
+		{
+			for (const auto & layer : layers)
+				bindToLayer (layer);
+		}
 	}
-}
+	else
+	{
+		wasBound = isBound ();
 
-void
-X3DBindableNode::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	wasBound = isBound ();
-
-	for (const auto & layer : layers)
-		removeFromLayer (layer);
-
-	X3DChildNode::endUpdate ();
+		for (const auto & layer : layers)
+			removeFromLayer (layer);
+	}
 }
 
 } // X3D

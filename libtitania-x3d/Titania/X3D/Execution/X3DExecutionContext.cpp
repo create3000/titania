@@ -87,7 +87,6 @@ const UnitArray X3DExecutionContext::standardUnits = {
 
 X3DExecutionContext::X3DExecutionContext () :
 	         X3DBaseNode (),
-	                live (true),
 	            encoding ("X3D"),
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
@@ -109,8 +108,7 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	rootNodes .setName ("rootNodes");     // Set this for numClones.
 
-	addChildren (live,
-	             importedNodesOutput,
+	addChildren (importedNodesOutput,
 	             prototypesOutput,
 	             externProtosOutput,
 	             rootNodes,

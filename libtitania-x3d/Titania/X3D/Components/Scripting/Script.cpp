@@ -192,6 +192,9 @@ Script::requestImmediateLoad ()
 
 	// Initialize.
 
+	isLive () .addInterest (javaScript -> isLive ());
+
+	javaScript -> isLive () = isLive ();
 	javaScript -> setup ();
 }
 
@@ -201,30 +204,6 @@ Script::set_url ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
-}
-
-void
-Script::beginUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (isEnabled ())
-		return;
-
-	X3DScriptNode::beginUpdate ();
-
-	javaScript  -> beginUpdate ();
-}
-
-void
-Script::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	javaScript  -> endUpdate ();
-
-	X3DScriptNode::endUpdate ();
 }
 
 } // X3D

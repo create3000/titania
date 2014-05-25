@@ -162,12 +162,12 @@ public:
 
 	virtual
 	void
-	isCompressed (const bool value)
+	isCompressed (const bool value) final override
 	{ compressed = value; }
 
 	virtual
 	bool
-	isCompressed () const
+	isCompressed () const final override
 	{ return compressed; }
 
 	void

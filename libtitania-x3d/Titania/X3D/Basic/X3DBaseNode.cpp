@@ -148,11 +148,14 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	               nodeId ({ 0 }),
 	               events (),
 	             comments (),
+	                 live (true),
 	          initialized (false),
 	       shutdownOutput ()
 {
 	assert (browser);
 	assert (executionContext);
+
+	addChildren (live);
 }
 
 void
@@ -782,6 +785,22 @@ void
 X3DBaseNode::removeTool (X3DBaseNode* const node)
 {
 	node -> replace (this);
+}
+
+void
+X3DBaseNode::beginUpdate ()
+throw (Error <DISPOSED>)
+{
+	if (not isLive ())
+		isLive () = true;
+}
+
+void
+X3DBaseNode::endUpdate ()
+throw (Error <DISPOSED>)
+{
+	if (isLive ())
+		isLive () = false;
 }
 
 void

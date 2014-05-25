@@ -112,7 +112,7 @@ X3DPointingDeviceSensorNode::set_active (const HitPtr &, const bool value)
 void
 X3DPointingDeviceSensorNode::push ()
 {
-	if (enabled () and getExecutionContext () -> isLive ())
+	if (enabled () and getExecutionContext () -> isLive () and isLive ())
 	{
 		getBrowser () -> getSensors () .back () .emplace (this);
 		

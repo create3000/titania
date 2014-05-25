@@ -91,16 +91,6 @@ public:
 
 	void
 	addLayer (X3DLayerNode* const);
-	
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override;
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override;
 
 
 protected:
@@ -130,13 +120,18 @@ protected:
 
 private:
 
+	///  @name Operations
+
+	void
+	removeLayer (X3DLayerNode* const);
+
 	///  @name Event handlers
 
 	void
 	_set_bind ();
 
 	void
-	removeLayer (X3DLayerNode* const);
+	set_live ();
 
 	///  @name Members
 
@@ -152,6 +147,7 @@ private:
 	Fields fields;
 	
 	std::vector <X3DLayerNode*> layers;
+	bool                        live;
 	bool                        wasBound;
 
 };

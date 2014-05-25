@@ -411,6 +411,7 @@ ParticleSystem::initialize ()
 	// Setup
 	
 	getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
+	isLive () .addInterest (this, &ParticleSystem::set_live);
 
 	enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
@@ -489,7 +490,7 @@ ParticleSystem::getBBox () const
 void
 ParticleSystem::set_live ()
 {
-	if (getExecutionContext () -> isLive () and isEnabled ())
+	if (getExecutionContext () -> isLive () and isLive ())
 	{
 		if (isActive () and maxParticles ())
 		{
@@ -512,7 +513,7 @@ ParticleSystem::set_enabled ()
 {
 	if (enabled () and maxParticles ())
 	{
-		if (isEnabled () and getExecutionContext () -> isLive ())
+		if (isLive () and getExecutionContext () -> isLive ())
 		{
 			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
 			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
@@ -524,7 +525,7 @@ ParticleSystem::set_enabled ()
 	}
 	else
 	{
-		if (isEnabled () and getExecutionContext () -> isLive ())
+		if (isLive () and getExecutionContext () -> isLive ())
 		{
 			getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
 			getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
@@ -1566,30 +1567,6 @@ ParticleSystem::disableTexCoord () const
 			}
 		}
 	}
-}
-
-void
-ParticleSystem::beginUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (isEnabled ())
-		return;
-
-	X3DShapeNode::beginUpdate ();
-
-	set_live ();
-}
-
-void
-ParticleSystem::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	X3DShapeNode::endUpdate ();
-
-	set_live ();
 }
 
 void

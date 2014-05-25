@@ -54,6 +54,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/World.h"
 #include "../Execution/X3DExecutionContext.h"
+#include "../InputOutput/Loader.h"
 
 #include <Titania/String.h>
 
@@ -150,7 +151,7 @@ RenderingProperties::initialize ()
 
 		try
 		{
-			scene = getBrowser () -> createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
+			scene = Loader (getBrowser () -> getScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
 		}
 		catch (const X3DError & error)
 		{

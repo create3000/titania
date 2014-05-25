@@ -909,11 +909,9 @@ jsBrowser::setSceneAsync (const SFNode & script, const SFNode & node, MFNode* co
 	{
 		const auto executionContext = script -> getExecutionContext ();
 
-		executionContext -> isLive () .addInterest (scene .getValue (),
-		                                            (void (Scene::*) (const bool)) &Scene::isLive,
-		                                            std::cref (executionContext -> isLive ()));
+		executionContext -> isLive () .addInterest (scene -> isLive ());
 
-		scene -> isLive (executionContext -> isLive ());
+		scene -> isLive () = executionContext -> isLive ();
 		scene -> setup ();
 
 		*field = scene -> getRootNodes ();

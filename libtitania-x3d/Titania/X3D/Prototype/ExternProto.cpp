@@ -139,6 +139,7 @@ ExternProto::initialize ()
 	X3DUrlObject::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &ExternProto::set_live);
+	isLive () .addInterest (this, &ExternProto::set_live);
 
 	for (const auto & field : getFieldDefinitions ())
 		field -> isTainted (true);
@@ -168,7 +169,7 @@ ExternProto::requestImmediateLoad ()
 		{
 			scene = getBrowser () -> createScene ();
 
-			scene -> isLive (getExecutionContext () -> isLive ());
+			scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
 
 			loader .parseIntoScene (scene, url ());
 
@@ -285,7 +286,7 @@ void
 ExternProto::set_live ()
 {
 	if (checkLoadState () == COMPLETE_STATE)
-		scene -> isLive (getExecutionContext () -> isLive ());
+		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
 }
 
 void

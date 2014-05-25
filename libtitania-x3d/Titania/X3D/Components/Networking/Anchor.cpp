@@ -142,7 +142,7 @@ Anchor::traverse (const TraverseType type)
 	{
 		case TraverseType::PICKING:
 		{
-			if (getExecutionContext () -> isLive ())
+			if (getExecutionContext () -> isLive () and isLive ())
 			{
 				getBrowser () -> getSensors () .emplace_back ();
 				getBrowser () -> getSensors () .back () .emplace (this);

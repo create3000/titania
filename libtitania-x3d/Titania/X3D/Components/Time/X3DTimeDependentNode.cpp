@@ -97,6 +97,7 @@ X3DTimeDependentNode::initialize ()
 	X3DChildNode::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
+	isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
 
 	initialized   .addInterest (this, &X3DTimeDependentNode::set_loop);
 	enabled ()    .addInterest (this, &X3DTimeDependentNode::set_enabled);
@@ -125,7 +126,7 @@ X3DTimeDependentNode::getElapsedTime () const
 void
 X3DTimeDependentNode::set_live ()
 {
-	if (getExecutionContext () -> isLive () and isEnabled ())
+	if (getExecutionContext () -> isLive () and isLive ())
 	{
 		if (disabled)
 		{
@@ -265,7 +266,7 @@ X3DTimeDependentNode::do_start ()
 
 		set_start ();
 
-		if (getExecutionContext () -> isLive () and isEnabled ())
+		if (getExecutionContext () -> isLive () and isLive ())
 		{
 			getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 		}
@@ -290,7 +291,7 @@ X3DTimeDependentNode::do_pause ()
 		if (pauseTimeValue not_eq getCurrentTime ())
 			pauseTimeValue = getCurrentTime ();
 
-		if (getExecutionContext () -> isLive () and isEnabled ())
+		if (getExecutionContext () -> isLive () and isLive ())
 			real_pause ();
 	}
 }
@@ -315,7 +316,7 @@ X3DTimeDependentNode::do_resume ()
 		if (resumeTimeValue not_eq getCurrentTime ())
 			resumeTimeValue = getCurrentTime ();
 
-		if (getExecutionContext () -> isLive () and isEnabled ())
+		if (getExecutionContext () -> isLive () and isLive ())
 			real_resume ();
 	}
 }
@@ -354,7 +355,7 @@ X3DTimeDependentNode::stop ()
 
 		isActive () = false;
 
-		if (getExecutionContext () -> isLive () and isEnabled ())
+		if (getExecutionContext () -> isLive () and isLive ())
 			getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
@@ -391,30 +392,6 @@ X3DTimeDependentNode::removeTimeouts ()
 	pauseTimeout  .disconnect ();
 	resumeTimeout .disconnect ();
 	stopTimeout   .disconnect ();
-}
-
-void
-X3DTimeDependentNode::beginUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (isEnabled ())
-		return;
-	
-	X3DChildNode::beginUpdate ();
-
-	set_live ();
-}
-
-void
-X3DTimeDependentNode::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	X3DChildNode::endUpdate ();
-
-	set_live ();
 }
 
 // Destruction

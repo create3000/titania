@@ -487,7 +487,7 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 void
 jsContext::set_live ()
 {
-	if (getExecutionContext () -> isLive () and isEnabled ())
+	if (getExecutionContext () -> isLive () and isLive ())
 	{
 		if (not JSVAL_IS_VOID (prepareEventsFn))
 			getBrowser () -> prepareEvents () .addInterest (this, &jsContext::prepareEvents);
@@ -549,6 +549,7 @@ jsContext::initialize ()
 	X3DJavaScriptContext::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
+	isLive () .addInterest (this, &jsContext::set_live);
 
 	set_live ();
 
@@ -723,30 +724,6 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 	                  "# ", '\n',
 	                  "# ", message, '\n',
 	                  "#  ", line, '\n');
-}
-
-void
-jsContext::beginUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (isEnabled ())
-		return;
-
-	X3DJavaScriptContext::beginUpdate ();
-
-	set_live ();
-}
-
-void
-jsContext::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	X3DJavaScriptContext::endUpdate ();
-
-	set_live ();
 }
 
 void

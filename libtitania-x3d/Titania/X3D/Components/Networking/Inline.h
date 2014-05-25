@@ -163,16 +163,6 @@ public:
 
 	virtual
 	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) override;
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) override;
-
-	virtual
-	void
 	addTool () override;
 
 	///  @name Input/Output

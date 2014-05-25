@@ -82,14 +82,6 @@ public:
 
 	void
 	realize ();
-	
-	void
-	isLive (const bool value)
-	{ live = value; }
-
-	const SFBool &
-	isLive () const
-	{ return live; }
 
 	///  @name Scene handling
 
@@ -607,8 +599,6 @@ private:
 	static const UnitArray standardUnits;
 
 	///  @name Members
-
-	SFBool live;
 
 	std::string encoding;
 	std::string specificationVersion;

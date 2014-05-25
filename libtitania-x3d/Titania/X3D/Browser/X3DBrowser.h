@@ -217,18 +217,6 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	/// @name Update service
-
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override;
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override;
-
 	/// @name Browser properties service
 
 	const RenderingPropertiesPtr &
@@ -306,6 +294,9 @@ public:
 	void
 	dispose () override;
 
+	virtual
+	~X3DBrowser ();
+
 
 protected:
 
@@ -317,20 +308,8 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Destruction
-
-	virtual
-	~X3DBrowser ();
-
 
 private:
-
-	///  @name Member access
-
-	virtual
-	const WorldPtr &
-	getWorld () const final override
-	{ return world; }
 
 	///  @name Operations
 
@@ -376,8 +355,6 @@ private:
 	RenderingPropertiesPtr renderingProperties;
 
 	X3DExecutionContextPtr executionContext;
-	WorldPtr               world;
-	WorldPtr               root;
 	MFString               urlError;
 	size_t                 inShutdown;
 

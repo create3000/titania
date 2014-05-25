@@ -101,6 +101,7 @@ Inline::initialize ()
 	X3DUrlObject::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
+	isLive () .addInterest (this, &Inline::set_live);
 
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
@@ -156,9 +157,6 @@ Inline::setScene (ScenePtr && value)
 
 	// First initialize,
 
-	value -> isLive (getExecutionContext () -> isLive ());
-	//value -> isInternal (getExecutionContext () -> getRootContext () -> isInternal ());
-
 	if (isInitialized ())
 		value -> setup ();
 
@@ -169,7 +167,13 @@ Inline::setScene (ScenePtr && value)
 
 	scene = std::move (value);
 
-	scene -> getRootNodes () .addInterest (group -> children ());
+	if (checkLoadState () == COMPLETE_STATE)
+	{
+		scene -> isLive () = getExecutionContext () -> isLive ();
+		scene -> isInternal (getExecutionContext () -> getRootContext () -> isInternal ());
+		scene -> getRootNodes () .addInterest (group -> children ());
+	}
+
 	group -> children () = scene -> getRootNodes ();
 }
 
@@ -311,7 +315,7 @@ void
 Inline::set_live ()
 {
 	if (checkLoadState () == COMPLETE_STATE)
-		scene -> isLive (getExecutionContext () -> isLive () and isEnabled ());
+		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
 }
 
 void
@@ -344,30 +348,6 @@ Inline::set_url ()
 		else
 			requestImmediateLoad ();
 	}
-}
-
-void
-Inline::beginUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (isEnabled ())
-		return;
-
-	X3DChildNode::beginUpdate ();
-
-	set_live ();
-}
-
-void
-Inline::endUpdate ()
-throw (Error <DISPOSED>)
-{
-	if (not isEnabled ())
-		return;
-
-	X3DChildNode::endUpdate ();
-
-	set_live ();
 }
 
 void
