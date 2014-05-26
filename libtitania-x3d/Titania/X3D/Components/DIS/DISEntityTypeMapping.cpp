@@ -75,6 +75,8 @@ DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const execution
 	X3DInfoNode (),
 	     fields ()
 {
+	addType (X3DConstants::DISEntityTypeMapping);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "url",         url ());
 	addField (initializeOnly, "category",    category ());

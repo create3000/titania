@@ -76,6 +76,8 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	               cycle (0),
 	            interval (0)
 {
+	addType (X3DConstants::TimeSensor);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
 	addField (inputOutput, "cycleInterval",    cycleInterval ());

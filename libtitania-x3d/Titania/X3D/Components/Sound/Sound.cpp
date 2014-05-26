@@ -80,6 +80,8 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	      fields (),
 	  sourceNode ()
 {
+	addType (X3DConstants::Sound);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "intensity",  intensity ());
 	addField (initializeOnly, "spatialize", spatialize ());

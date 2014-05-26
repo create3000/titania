@@ -73,6 +73,8 @@ NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	X3DParametricGeometryNode (),
 	                   fields ()
 {
+	addType (X3DConstants::NurbsCurve);
+
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (inputOutput,    "controlPoint", controlPoint ());
 	addField (inputOutput,    "tessellation", tessellation ());

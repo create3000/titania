@@ -305,6 +305,8 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	   boundedVolumeBufferId (0),
 	           sortAlgorithm (new OddEvenMergeSort ())
 {
+	addType (X3DConstants::ParticleSystem);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
 

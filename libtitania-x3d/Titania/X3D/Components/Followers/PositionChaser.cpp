@@ -75,6 +75,8 @@ PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	previousValue (),
 	       buffer ()
 {
+	addType (X3DConstants::PositionChaser);
+
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
 	addField (inputOnly,      "set_destination",    set_destination ());

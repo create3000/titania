@@ -76,6 +76,8 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	   proximitySensor (new ProximitySensor (executionContext)),
 	  viewpointObjects ()
 {
+	addType (X3DConstants::ViewpointGroup);
+
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOutput, "displayed",         displayed ());
 	addField (inputOutput, "description",       description ());

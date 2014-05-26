@@ -84,6 +84,8 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	              viewport (),
 	inverseModelViewMatrix ()
 {
+	addType (X3DConstants::PlaneSensor);
+
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
 	addField (inputOutput, "description",         description ());

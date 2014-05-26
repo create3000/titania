@@ -71,6 +71,8 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	X3DParametricGeometryNode (),
 	                   fields ()
 {
+	addType (X3DConstants::NurbsSwungSurface);
+
 	addField (inputOutput,    "metadata",        metadata ());
 	addField (inputOutput,    "profileCurve",    profileCurve ());
 	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());

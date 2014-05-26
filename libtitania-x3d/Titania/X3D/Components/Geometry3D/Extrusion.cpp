@@ -79,6 +79,8 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
+	addType (X3DConstants::Extrusion);
+
 	addField (inputOutput,    "metadata",         metadata ());
 
 	addField (initializeOnly, "beginCap",         beginCap ());

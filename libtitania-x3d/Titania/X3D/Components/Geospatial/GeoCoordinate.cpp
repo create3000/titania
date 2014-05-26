@@ -71,6 +71,8 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	             points (),
 	             origin ()
 {
+	addType (X3DConstants::GeoCoordinate);
+
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (initializeOnly, "geoSystem", geoSystem ());
 	addField (inputOutput,    "point",     point ());

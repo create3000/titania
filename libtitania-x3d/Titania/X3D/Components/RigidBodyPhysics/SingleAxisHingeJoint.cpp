@@ -77,6 +77,8 @@ SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const execution
 	X3DRigidJointNode (),
 	           fields ()
 {
+	addType (X3DConstants::SingleAxisHingeJoint);
+
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "body1",               body1 ());
 	addField (inputOutput, "body2",               body2 ());

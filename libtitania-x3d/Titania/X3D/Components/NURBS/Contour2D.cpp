@@ -74,6 +74,8 @@ Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	     fields (),
 	     curves ()
 {
+	addType (X3DConstants::Contour2D);
+
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOnly,   "addChildren",    addChildren ());
 	addField (inputOnly,   "removeChildren", removeChildren ());

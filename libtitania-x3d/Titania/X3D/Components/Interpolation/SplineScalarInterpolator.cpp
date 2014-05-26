@@ -72,6 +72,8 @@ SplineScalarInterpolator::SplineScalarInterpolator (X3DExecutionContext* const e
 	X3DInterpolatorNode (),
 	             fields ()
 {
+	addType (X3DConstants::SplineScalarInterpolator);
+
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_fraction",      set_fraction ());
 	addField (inputOutput, "closed",            closed ());

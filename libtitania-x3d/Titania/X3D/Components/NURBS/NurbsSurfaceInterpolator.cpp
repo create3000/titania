@@ -78,6 +78,8 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::NurbsSurfaceInterpolator);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOnly,      "set_fraction",     set_fraction ());
 	addField (inputOutput,    "controlPoint",     controlPoint ());

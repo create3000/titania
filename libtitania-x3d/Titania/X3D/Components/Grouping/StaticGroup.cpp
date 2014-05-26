@@ -70,6 +70,8 @@ StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	          fields (),
 	           group (new Group (executionContext))
 {
+	addType (X3DConstants::StaticGroup);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());

@@ -72,6 +72,8 @@ GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	X3DGeospatialObject (),
 	             fields ()
 {
+	addType (X3DConstants::GeoTouchSensor);
+
 	addField (inputOutput,    "metadata",            metadata ());
 	addField (inputOutput,    "enabled",             enabled ());
 	addField (initializeOnly, "geoSystem",           geoSystem ());

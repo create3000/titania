@@ -73,6 +73,8 @@ HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
+	addType (X3DConstants::HAnimSegment);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());

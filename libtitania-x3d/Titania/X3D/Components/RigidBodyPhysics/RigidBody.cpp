@@ -81,6 +81,8 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	    X3DNode (),
 	     fields ()
 {
+	addType (X3DConstants::RigidBody);
+
 	addField (inputOutput, "metadata",             metadata ());
 	addField (inputOutput, "angularDampingFactor", angularDampingFactor ());
 	addField (inputOutput, "angularVelocity",      angularVelocity ());

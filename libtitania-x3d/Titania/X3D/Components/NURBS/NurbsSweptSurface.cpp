@@ -71,6 +71,8 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	X3DParametricGeometryNode (),
 	                   fields ()
 {
+	addType (X3DConstants::NurbsSweptSurface);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "crossSectionCurve", crossSectionCurve ());
 	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());

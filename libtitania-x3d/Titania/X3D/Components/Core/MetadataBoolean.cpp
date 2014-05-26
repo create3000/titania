@@ -69,6 +69,8 @@ MetadataBoolean::MetadataBoolean (X3DExecutionContext* const executionContext) :
 	X3DMetadataObject (),
 	           fields ()
 {
+	addType (X3DConstants::MetadataBoolean);
+
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());

@@ -77,6 +77,8 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::CollisionCollection);
+
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "appliedParameters",        appliedParameters ());
 	addField (inputOutput, "bounce",                   bounce ());

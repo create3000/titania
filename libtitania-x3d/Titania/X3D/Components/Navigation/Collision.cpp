@@ -74,6 +74,8 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	         fields (),
 	      proxyNode ()
 {
+	addType (X3DConstants::Collision);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "enabled",        enabled ());
 	addField (outputOnly,     "isActive",       isActive ());

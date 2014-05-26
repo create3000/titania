@@ -69,6 +69,8 @@ BooleanTrigger::BooleanTrigger (X3DExecutionContext* const executionContext) :
 	X3DTriggerNode (),
 	        fields ()
 {
+	addType (X3DConstants::BooleanTrigger);
+
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOnly,   "set_triggerTime", set_triggerTime ());
 	addField (outputOnly,  "triggerTrue",     triggerTrue ());

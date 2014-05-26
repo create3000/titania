@@ -88,6 +88,8 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	         normalNode (),
 	        transparent (false)
 {
+	addType (X3DConstants::GeoElevationGrid);
+
 	addField (inputOutput,    "metadata",        metadata ());
 	addField (initializeOnly, "geoSystem",       geoSystem ());
 	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin ());

@@ -88,6 +88,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	         shaderNodes (),
 	          shaderNode ()
 {
+	addType (X3DConstants::Appearance);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
 	addField (inputOutput, "lineProperties",   lineProperties ());

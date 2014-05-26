@@ -73,6 +73,8 @@ SplinePositionInterpolator::SplinePositionInterpolator (X3DExecutionContext* con
 	             fields (),
 	             spline ()
 {
+	addType (X3DConstants::SplinePositionInterpolator);
+
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_fraction",      set_fraction ());
 	addField (inputOutput, "closed",            closed ());

@@ -68,6 +68,8 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
+	addType (X3DConstants::Polypoint2D);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "point",    point ());
 }

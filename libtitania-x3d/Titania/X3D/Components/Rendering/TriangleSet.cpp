@@ -67,6 +67,8 @@ TriangleSet::TriangleSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposedGeometryNode ()
 {
+	addType (X3DConstants::TriangleSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

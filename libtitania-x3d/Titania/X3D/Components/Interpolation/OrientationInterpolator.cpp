@@ -69,6 +69,8 @@ OrientationInterpolator::OrientationInterpolator (X3DExecutionContext* const exe
 	X3DInterpolatorNode (),
 	             fields ()
 {
+	addType (X3DConstants::OrientationInterpolator);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

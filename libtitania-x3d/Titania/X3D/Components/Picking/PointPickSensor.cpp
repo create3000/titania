@@ -68,6 +68,8 @@ PointPickSensor::PointPickSensor (X3DExecutionContext* const executionContext) :
 	X3DPickSensorNode (),
 	           fields ()
 {
+	addType (X3DConstants::PointPickSensor);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "enabled",          enabled ());
 	addField (outputOnly,     "isActive",         isActive ());

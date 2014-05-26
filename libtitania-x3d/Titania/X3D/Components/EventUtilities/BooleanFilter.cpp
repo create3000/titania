@@ -71,6 +71,8 @@ BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::BooleanFilter);
+
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOnly,   "set_boolean", set_boolean ());
 	addField (outputOnly,  "inputTrue",   inputTrue ());

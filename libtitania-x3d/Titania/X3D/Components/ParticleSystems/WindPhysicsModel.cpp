@@ -72,6 +72,8 @@ WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext)
 	X3DParticlePhysicsModelNode (),
 	                     fields ()
 {
+	addType (X3DConstants::WindPhysicsModel);
+
 	addField (inputOutput, "metadata",   metadata ());
 	addField (inputOutput, "enabled",    enabled ());
 	addField (inputOutput, "direction",  direction ());

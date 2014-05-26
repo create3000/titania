@@ -74,6 +74,8 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	       fields (),
 	   javaScript ()
 {
+	addType (X3DConstants::Script);
+
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (inputOutput,    "url",          url ());
 	addField (initializeOnly, "directOutput", directOutput ());

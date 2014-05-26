@@ -70,6 +70,8 @@ BallJoint::BallJoint (X3DExecutionContext* const executionContext) :
 	X3DRigidJointNode (),
 	           fields ()
 {
+	addType (X3DConstants::BallJoint);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "body1",            body1 ());
 	addField (inputOutput, "body2",            body2 ());

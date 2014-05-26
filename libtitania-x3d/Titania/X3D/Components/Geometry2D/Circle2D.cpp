@@ -70,6 +70,8 @@ Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
+	addType (X3DConstants::Circle2D);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "radius",   radius ());
 }

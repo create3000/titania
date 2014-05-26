@@ -71,6 +71,8 @@ NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionCo
 	X3DNurbsSurfaceGeometryNode (),
 	                     fields ()
 {
+	addType (X3DConstants::NurbsTrimmedSurface);
+
 	addField (inputOutput,    "metadata",              metadata ());
 	addField (inputOutput,    "uTessellation",         uTessellation ());
 	addField (inputOutput,    "vTessellation",         vTessellation ());

@@ -72,6 +72,8 @@ Shape::Shape (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DShapeNode ()
 {
+	addType (X3DConstants::Shape);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());

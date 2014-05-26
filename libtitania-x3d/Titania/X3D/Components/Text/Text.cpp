@@ -79,6 +79,8 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	   textGeometry (),
 	  fontStyleNode ()
 {
+	addType (X3DConstants::Text);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "string",     string ());
 	addField (inputOutput,    "length",     length ());

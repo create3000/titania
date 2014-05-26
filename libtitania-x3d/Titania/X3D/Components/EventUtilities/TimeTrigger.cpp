@@ -69,6 +69,8 @@ TimeTrigger::TimeTrigger (X3DExecutionContext* const executionContext) :
 	X3DTriggerNode (),
 	        fields ()
 {
+	addType (X3DConstants::TimeTrigger);
+
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOnly,   "set_boolean", set_boolean ());
 	addField (outputOnly,  "triggerTime", triggerTime ());

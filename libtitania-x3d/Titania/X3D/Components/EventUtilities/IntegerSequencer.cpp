@@ -69,6 +69,8 @@ IntegerSequencer::IntegerSequencer (X3DExecutionContext* const executionContext)
 	X3DSequencerNode (),
 	          fields ()
 {
+	addType (X3DConstants::IntegerSequencer);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOnly,   "previous",      previous ());

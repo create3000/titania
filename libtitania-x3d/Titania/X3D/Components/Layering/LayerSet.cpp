@@ -77,6 +77,8 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	         layer0 (children [0]),
 	activeLayerNode ()
 {
+	addType (X3DConstants::LayerSet);
+
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "activeLayer", activeLayer ());
 	addField (inputOutput, "order",       order ());

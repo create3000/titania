@@ -74,6 +74,8 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
+	addType (X3DConstants::LOD);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "forceTransitions", forceTransitions ());
 	addField (initializeOnly, "center",           center ());

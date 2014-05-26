@@ -75,6 +75,8 @@ Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	         fields (),
 	         isOver (false)
 {
+	addType (X3DConstants::Anchor);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "description",    description ());
 	addField (inputOutput,    "url",            url ());

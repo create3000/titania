@@ -68,6 +68,8 @@ TextureCoordinate4D::TextureCoordinate4D (X3DExecutionContext* const executionCo
 	X3DTextureCoordinateNode (),
 	                  fields ()
 {
+	addType (X3DConstants::TextureCoordinate4D);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "point",    point ());
 }

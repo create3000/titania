@@ -76,6 +76,8 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	           startOffset (),
 	inverseModelViewMatrix ()
 {
+	addType (X3DConstants::SphereSensor);
+
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
 	addField (inputOutput, "description",        description ());

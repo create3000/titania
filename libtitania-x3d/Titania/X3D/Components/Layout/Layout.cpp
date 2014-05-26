@@ -93,6 +93,8 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	  rectangleCenter (),
 	    rectangleSize ()
 {
+	addType (X3DConstants::Layout);
+
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "align",       align ());
 	addField (inputOutput, "offsetUnits", offsetUnits ());

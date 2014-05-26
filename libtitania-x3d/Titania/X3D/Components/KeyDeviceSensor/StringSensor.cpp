@@ -70,6 +70,8 @@ StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
 	X3DKeyDeviceSensorNode (),
 	                fields ()
 {
+	addType (X3DConstants::StringSensor);
+
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "deletionAllowed", deletionAllowed ());

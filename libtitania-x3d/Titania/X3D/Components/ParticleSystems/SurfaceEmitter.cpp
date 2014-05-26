@@ -81,6 +81,8 @@ SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
 	          pointEmitter (false),
 	                 solid (true)
 {
+	addType (X3DConstants::SurfaceEmitter);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "speed",       speed ());
 	addField (inputOutput,    "variation",   variation ());

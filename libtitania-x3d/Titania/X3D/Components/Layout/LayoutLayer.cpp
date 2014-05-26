@@ -73,6 +73,8 @@ LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
 	X3DLayerNode (new OrthoViewpoint (executionContext), new LayoutGroup (executionContext)),
 	      fields ()
 {
+	addType (X3DConstants::LayoutLayer);
+
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "isPickable",     isPickable ());
 	addField (inputOutput, "viewport",       viewport ());

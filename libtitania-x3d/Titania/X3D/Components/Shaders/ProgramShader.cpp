@@ -76,6 +76,8 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	   loadSensor (new LoadSensor (executionContext)),
 	   pipelineId (0)
 {
+	addType (X3DConstants::ProgramShader);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOnly,      "activate",   activate ());
 	addField (outputOnly,     "isSelected", isSelected ());

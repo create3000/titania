@@ -71,6 +71,8 @@ LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
 	X3DAppearanceChildNode (),
 	                fields ()
 {
+	addType (X3DConstants::LineProperties);
+
 	addField (inputOutput, "metadata",             metadata ());
 	addField (inputOutput, "applied",              applied ());
 	addField (inputOutput, "linetype",             linetype ());

@@ -83,6 +83,8 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	    X3DNode (),
 	     fields ()
 {
+	addType (X3DConstants::Contact);
+
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "appliedParameters",        appliedParameters ());
 	addField (inputOutput, "body1",                    body1 ());

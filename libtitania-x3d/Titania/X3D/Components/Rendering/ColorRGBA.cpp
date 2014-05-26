@@ -68,6 +68,8 @@ ColorRGBA::ColorRGBA (X3DExecutionContext* const executionContext) :
 	X3DColorNode (),
 	      fields ()
 {
+	addType (X3DConstants::ColorRGBA);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "color",    color ());
 }

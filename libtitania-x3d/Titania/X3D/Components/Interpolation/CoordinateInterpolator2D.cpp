@@ -69,6 +69,8 @@ CoordinateInterpolator2D::CoordinateInterpolator2D (X3DExecutionContext* const e
 	X3DInterpolatorNode (),
 	             fields ()
 {
+	addType (X3DConstants::CoordinateInterpolator2D);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

@@ -71,6 +71,8 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	X3DLightNode (),
 	      fields ()
 {
+	addType (X3DConstants::PointLight);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "global",           global ());
 	addField (inputOutput, "on",               on ());

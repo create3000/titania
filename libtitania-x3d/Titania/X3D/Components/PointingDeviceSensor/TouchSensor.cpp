@@ -72,6 +72,8 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	X3DTouchSensorNode (),
 	            fields ()
 {
+	addType (X3DConstants::TouchSensor);
+
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
 	addField (inputOutput, "description",         description ());

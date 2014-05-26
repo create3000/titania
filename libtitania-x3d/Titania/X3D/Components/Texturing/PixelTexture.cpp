@@ -70,6 +70,8 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	          fields (),
 	       loadState (COMPLETE_STATE)
 {
+	addType (X3DConstants::PixelTexture);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "image",             image ());
 	addField (initializeOnly, "repeatS",           repeatS ());

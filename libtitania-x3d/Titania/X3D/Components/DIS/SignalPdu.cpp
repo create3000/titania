@@ -92,6 +92,8 @@ SignalPdu::SignalPdu (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
+	addType (X3DConstants::SignalPdu);
+
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (initializeOnly, "bboxSize",           bboxSize ());
 	addField (initializeOnly, "bboxCenter",         bboxCenter ());

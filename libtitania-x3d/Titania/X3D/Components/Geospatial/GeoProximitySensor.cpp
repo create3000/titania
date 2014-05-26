@@ -73,6 +73,8 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	                    fields (),
 	           proximitySensor (new ProximitySensor (executionContext))
 {
+	addType (X3DConstants::GeoProximitySensor);
+
 	addField (inputOutput,    "metadata",                 metadata ());
 	addField (inputOutput,    "enabled",                  enabled ());
 	addField (initializeOnly, "geoSystem",                geoSystem ());

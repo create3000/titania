@@ -70,6 +70,8 @@ GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	X3DInfoNode (),
 	     fields ()
 {
+	addType (X3DConstants::GeoMetadata);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "url",      url ());
 	addField (inputOutput, "summary",  summary ());

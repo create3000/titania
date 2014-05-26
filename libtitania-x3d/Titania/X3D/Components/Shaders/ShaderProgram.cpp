@@ -77,6 +77,8 @@ ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	                  programId (0),
 	                      valid (false)
 {
+	addType (X3DConstants::ShaderProgram);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "type",     type ());
 	addField (inputOutput,    "url",      url ());

@@ -70,6 +70,8 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
+	addType (X3DConstants::Switch);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "whichChoice",    whichChoice ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

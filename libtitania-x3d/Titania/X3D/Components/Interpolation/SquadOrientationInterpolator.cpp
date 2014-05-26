@@ -73,6 +73,8 @@ SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext*
 	             fields (),
 	              squad ()
 {
+	addType (X3DConstants::SquadOrientationInterpolator);
+
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_fraction",      set_fraction ());
 	addField (inputOutput, "closed",            closed ());

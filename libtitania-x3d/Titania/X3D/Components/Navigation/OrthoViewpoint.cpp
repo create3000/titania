@@ -72,6 +72,8 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
 	X3DViewpointNode (),
 	          fields ()
 {
+	addType (X3DConstants::OrthoViewpoint);
+
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_bind",          set_bind ());
 	addField (inputOutput, "description",       description ());

@@ -71,6 +71,8 @@ ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::ClipPlane);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "plane",    plane ());

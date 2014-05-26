@@ -66,6 +66,8 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	    X3DUrlObject (),
 	          future ()
 {
+	addType (X3DConstants::ImageTexture);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
 	addField (initializeOnly, "repeatS",           repeatS ());

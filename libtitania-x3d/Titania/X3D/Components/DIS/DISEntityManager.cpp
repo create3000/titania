@@ -74,6 +74,8 @@ DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext)
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::DISEntityManager);
+
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "address",         address ());
 	addField (inputOutput, "applicationID",   applicationID ());

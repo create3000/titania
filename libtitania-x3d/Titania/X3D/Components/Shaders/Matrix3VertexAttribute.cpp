@@ -68,6 +68,8 @@ Matrix3VertexAttribute::Matrix3VertexAttribute (X3DExecutionContext* const execu
 	X3DVertexAttributeNode (),
 	                fields ()
 {
+	addType (X3DConstants::Matrix3VertexAttribute);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "name",     name ());
 	addField (inputOutput,    "value",    value ());

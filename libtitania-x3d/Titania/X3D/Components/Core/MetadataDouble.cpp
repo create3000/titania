@@ -69,6 +69,8 @@ MetadataDouble::MetadataDouble (X3DExecutionContext* const executionContext) :
 	X3DMetadataObject (),
 	           fields ()
 {
+	addType (X3DConstants::MetadataDouble);
+
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());

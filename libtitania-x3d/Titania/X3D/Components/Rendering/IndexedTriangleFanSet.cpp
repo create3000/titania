@@ -69,6 +69,8 @@ IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executi
 	                 fields (),
 	             coordIndex ()
 {
+	addType (X3DConstants::IndexedTriangleFanSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

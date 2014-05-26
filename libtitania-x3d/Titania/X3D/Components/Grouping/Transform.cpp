@@ -65,6 +65,8 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTransformNode ()
 {
+	addType (X3DConstants::Transform);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "translation",      translation ());
 	addField (inputOutput,    "rotation",         rotation ());

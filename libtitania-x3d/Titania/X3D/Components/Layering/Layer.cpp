@@ -68,6 +68,8 @@ Layer::Layer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DLayerNode (new Viewpoint (executionContext), new Group (executionContext))
 {
+	addType (X3DConstants::Layer);
+
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "isPickable",     isPickable ());
 	addField (inputOutput, "viewport",       viewport ());

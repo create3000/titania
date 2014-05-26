@@ -77,6 +77,8 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	      coordNode (),
 	    transparent (false)
 {
+	addType (X3DConstants::LineSet);
+
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "vertexCount", vertexCount ());
 	addField (inputOutput, "attrib",      attrib ());

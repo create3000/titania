@@ -68,6 +68,8 @@ ForcePhysicsModel::ForcePhysicsModel (X3DExecutionContext* const executionContex
 	X3DParticlePhysicsModelNode (),
 	                     fields ()
 {
+	addType (X3DConstants::ForcePhysicsModel);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "force",    force ());

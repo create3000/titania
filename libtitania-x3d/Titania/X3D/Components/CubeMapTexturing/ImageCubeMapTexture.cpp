@@ -69,6 +69,8 @@ ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionCo
 	             X3DUrlObject (),
 	                   fields ()
 {
+	addType (X3DConstants::ImageCubeMapTexture);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
 	addField (initializeOnly, "textureProperties", textureProperties ());

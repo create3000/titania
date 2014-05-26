@@ -71,6 +71,8 @@ LocalFog::LocalFog (X3DExecutionContext* const executionContext) :
 	X3DFogObject (),
 	      fields ()
 {
+	addType (X3DConstants::LocalFog);
+
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "fogType",         fogType ());

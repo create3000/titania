@@ -136,7 +136,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	       X3DChildObject (),
 	              browser (browser),
 	     executionContext (executionContext),
-	                 type (),
+	                 type ({ X3DConstants::X3DBaseNode }),
 	     fieldDefinitions (),
 	               fields (),
 	         fieldAliases (),

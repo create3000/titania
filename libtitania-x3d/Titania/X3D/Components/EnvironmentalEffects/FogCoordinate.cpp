@@ -68,6 +68,8 @@ FogCoordinate::FogCoordinate (X3DExecutionContext* const executionContext) :
 	X3DGeometricPropertyNode (),
 	                  fields ()
 {
+	addType (X3DConstants::FogCoordinate);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "depth",    depth ());
 }

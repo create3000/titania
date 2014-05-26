@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use v5.10.0;
 
+binmode STDOUT, ":utf8";
+
 use File::Basename qw(basename);
 
 sub namespace {

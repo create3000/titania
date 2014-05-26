@@ -64,6 +64,8 @@ CADAssembly::CADAssembly (X3DExecutionContext* const executionContext) :
 	             X3DGroupingNode (),
 	X3DProductStructureChildNode ()
 {
+	addType (X3DConstants::CADAssembly);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "name",           name ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

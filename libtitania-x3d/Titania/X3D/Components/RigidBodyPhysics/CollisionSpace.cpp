@@ -69,6 +69,8 @@ CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
 	X3DNBodyCollisionSpaceNode (),
 	                    fields ()
 {
+	addType (X3DConstants::CollisionSpace);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "enabled",     enabled ());
 	addField (inputOutput,    "useGeometry", useGeometry ());

@@ -71,6 +71,8 @@ ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
 	X3DParticleEmitterNode (),
 	                fields ()
 {
+	addType (X3DConstants::ConeEmitter);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "position",    position ());
 	addField (inputOutput,    "direction",   direction ());

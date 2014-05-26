@@ -71,6 +71,8 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	X3DGeometricPropertyNode (),
 	                  fields ()
 {
+	addType (X3DConstants::HAnimDisplacer);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "coordIndex",    coordIndex ());
 	addField (inputOutput, "displacements", displacements ());

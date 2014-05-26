@@ -84,6 +84,8 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	directionalLight (new DirectionalLight (executionContext)),
 	           light ()
 {
+	addType (X3DConstants::NavigationInfo);
+
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOnly,   "set_bind",           set_bind ());
 	addField (inputOutput, "type",               type ());

@@ -78,6 +78,8 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	          polylineNode (new IndexedLineSet (executionContext)),
 	          pointEmitter (false)
 {
+	addType (X3DConstants::PolylineEmitter);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "direction",      direction ());
 	addField (inputOutput,    "speed",          speed ());

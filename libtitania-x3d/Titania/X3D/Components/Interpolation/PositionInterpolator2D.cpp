@@ -69,6 +69,8 @@ PositionInterpolator2D::PositionInterpolator2D (X3DExecutionContext* const execu
 	X3DInterpolatorNode (),
 	             fields ()
 {
+	addType (X3DConstants::PositionInterpolator2D);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

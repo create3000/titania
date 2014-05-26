@@ -74,6 +74,8 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	    shaderId (0),
 	       valid (false)
 {
+	addType (X3DConstants::ShaderPart);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "type",     type ());
 	addField (inputOutput,    "url",      url ());

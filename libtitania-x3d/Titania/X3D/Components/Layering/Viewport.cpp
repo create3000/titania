@@ -70,6 +70,8 @@ Viewport::Viewport (X3DExecutionContext* const executionContext) :
 	         fields (),
 	      viewports ()
 {
+	addType (X3DConstants::Viewport);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "clipBoundary",   clipBoundary ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

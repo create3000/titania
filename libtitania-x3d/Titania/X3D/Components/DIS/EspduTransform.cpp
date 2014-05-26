@@ -149,6 +149,8 @@ EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
 	  X3DSensorNode (),
 	         fields ()
 {
+	addType (X3DConstants::EspduTransform);
+
 	addField (inputOutput,    "metadata",                                   metadata ());
 	addField (inputOutput,    "enabled",                                    enabled ());
 	addField (initializeOnly, "bboxSize",                                   bboxSize ());

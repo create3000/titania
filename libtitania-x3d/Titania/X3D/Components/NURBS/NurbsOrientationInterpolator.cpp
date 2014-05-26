@@ -73,6 +73,8 @@ NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext*
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::NurbsOrientationInterpolator);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "controlPoint",  controlPoint ());

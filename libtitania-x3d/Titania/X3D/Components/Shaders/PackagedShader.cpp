@@ -66,6 +66,8 @@ PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
 	X3DProgrammableShaderObject (),
 	                  programId (0)
 {
+	addType (X3DConstants::PackagedShader);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "url",        url ());
 	addField (inputOnly,      "activate",   activate ());

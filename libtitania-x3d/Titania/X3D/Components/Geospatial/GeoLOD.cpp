@@ -85,6 +85,8 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	       child3Inline (new Inline (executionContext)),
 	       child4Inline (new Inline (executionContext))
 {
+	addType (X3DConstants::GeoLOD);
+
 	addField (inputOutput,    "metadata",      metadata ());
 	addField (initializeOnly, "geoSystem",     geoSystem ());
 	addField (initializeOnly, "rootUrl",       rootUrl ());

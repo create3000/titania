@@ -70,6 +70,8 @@ IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
 	X3DComposedGeometryNode (),
 	                 fields ()
 {
+	addType (X3DConstants::IndexedQuadSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

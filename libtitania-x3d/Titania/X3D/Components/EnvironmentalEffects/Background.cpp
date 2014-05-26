@@ -81,6 +81,8 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	    bottomTexture (new ImageTexture (executionContext)),
 	textureProperties (new TextureProperties (executionContext))
 {
+	addType (X3DConstants::Background);
+
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOnly,   "set_bind",     set_bind ());
 	addField (inputOutput, "frontUrl",     frontUrl ());

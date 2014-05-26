@@ -73,6 +73,8 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::NurbsPositionInterpolator);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "controlPoint",  controlPoint ());

@@ -79,6 +79,8 @@ Material::Material (X3DExecutionContext* const executionContext) :
 	glEmissiveColor (),
 	    glShininess ()
 {
+	addType (X3DConstants::Material);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());
 	addField (inputOutput, "diffuseColor",     diffuseColor ());

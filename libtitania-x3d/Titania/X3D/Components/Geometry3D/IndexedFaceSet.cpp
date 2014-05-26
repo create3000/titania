@@ -78,6 +78,8 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	X3DComposedGeometryNode (),
 	                 fields ()
 {
+	addType (X3DConstants::IndexedFaceSet);
+
 	addField (inputOutput,    "metadata",          metadata ());
 
 	addField (initializeOnly, "solid",             solid ());

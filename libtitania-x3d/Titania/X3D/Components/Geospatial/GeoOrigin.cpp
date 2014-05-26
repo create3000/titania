@@ -77,6 +77,8 @@ GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	     fields (),
 	    radians (true)
 {
+	addType (X3DConstants::GeoOrigin);
+
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (initializeOnly, "rotateYUp", rotateYUp ());
 	addField (initializeOnly, "geoSystem", geoSystem ());

@@ -74,6 +74,8 @@ PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext)
 	       fields (),
 	       buffer ()
 {
+	addType (X3DConstants::PositionDamper2D);
+
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
 	addField (inputOnly,      "set_destination",    set_destination ());

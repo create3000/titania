@@ -68,6 +68,8 @@ Fog::Fog (X3DExecutionContext* const executionContext) :
 	X3DBindableNode (),
 	   X3DFogObject ()
 {
+	addType (X3DConstants::Fog);
+
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOnly,   "set_bind",        set_bind ());
 	addField (inputOutput, "fogType",         fogType ());

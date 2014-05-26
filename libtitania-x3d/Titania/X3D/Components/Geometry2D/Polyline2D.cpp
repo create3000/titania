@@ -72,6 +72,8 @@ Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
+	addType (X3DConstants::Polyline2D);
+
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOutput, "lineSegments", lineSegments ());
 }

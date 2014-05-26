@@ -70,6 +70,8 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	X3DSensorNode (),
 	       fields ()
 {
+	addType (X3DConstants::CollisionSensor);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
 	addField (outputOnly,  "isActive",      isActive ());

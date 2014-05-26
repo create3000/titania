@@ -63,6 +63,8 @@ VolumePickSensor::VolumePickSensor (X3DExecutionContext* const executionContext)
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DPickSensorNode ()
 {
+	addType (X3DConstants::VolumePickSensor);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "enabled",          enabled ());
 	addField (outputOnly,     "isActive",         isActive ());

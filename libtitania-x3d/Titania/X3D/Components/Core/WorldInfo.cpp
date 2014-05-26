@@ -71,6 +71,8 @@ WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
 	X3DInfoNode (),
 	     fields ()
 {
+	addType (X3DConstants::WorldInfo);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "title",    title ());
 	addField (initializeOnly, "info",     info ());

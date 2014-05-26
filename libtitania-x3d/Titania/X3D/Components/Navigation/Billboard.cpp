@@ -77,6 +77,8 @@ Billboard::Billboard (X3DExecutionContext* const executionContext) :
 	         fields (),
 	         matrix ()
 {
+	addType (X3DConstants::Billboard);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "axisOfRotation", axisOfRotation ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

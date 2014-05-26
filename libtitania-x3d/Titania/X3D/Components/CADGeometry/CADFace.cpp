@@ -70,6 +70,8 @@ CADFace::CADFace (X3DExecutionContext* const executionContext) :
 	            X3DBoundedObject (),
 	                      fields ()
 {
+	addType (X3DConstants::CADFace);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "name",       name ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());

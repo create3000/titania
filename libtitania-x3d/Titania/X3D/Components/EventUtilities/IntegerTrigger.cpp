@@ -70,6 +70,8 @@ IntegerTrigger::IntegerTrigger (X3DExecutionContext* const executionContext) :
 	X3DTriggerNode (),
 	        fields ()
 {
+	addType (X3DConstants::IntegerTrigger);
+
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOnly,   "set_boolean",  set_boolean ());
 	addField (inputOutput, "integerKey",   integerKey ());

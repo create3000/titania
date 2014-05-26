@@ -73,6 +73,8 @@ HAnimSite::HAnimSite (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
+	addType (X3DConstants::HAnimSite);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());

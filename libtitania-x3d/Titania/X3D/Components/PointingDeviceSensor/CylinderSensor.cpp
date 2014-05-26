@@ -81,6 +81,8 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	           startOffset (),
 	inverseModelViewMatrix ()
 {
+	addType (X3DConstants::CylinderSensor);
+
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
 	addField (inputOutput, "description",        description ());

@@ -75,6 +75,8 @@ OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContex
 	previousValue (),
 	       buffer ()
 {
+	addType (X3DConstants::OrientationChaser);
+
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
 	addField (inputOnly,      "set_destination",    set_destination ());

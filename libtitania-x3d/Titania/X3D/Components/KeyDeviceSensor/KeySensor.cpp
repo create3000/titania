@@ -105,6 +105,8 @@ KeySensor::KeySensor (X3DExecutionContext* const executionContext) :
 	             shiftKeys (),
 	           controlKeys ()
 {
+	addType (X3DConstants::KeySensor);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
 	addField (outputOnly,  "shiftKey",         shiftKey ());

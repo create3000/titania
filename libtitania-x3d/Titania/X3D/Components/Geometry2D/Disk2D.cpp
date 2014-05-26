@@ -73,6 +73,8 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	         fields (),
 	   lineGeometry (false)
 {
+	addType (X3DConstants::Disk2D);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "innerRadius", innerRadius ());
 	addField (inputOutput,    "outerRadius", outerRadius ());

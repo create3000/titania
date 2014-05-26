@@ -88,6 +88,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              transparent (false),
 	               components (0)
 {
+	addType (X3DConstants::ComposedCubeMapTexture);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "front",    front ());
 	addField (inputOutput, "back",     back ());

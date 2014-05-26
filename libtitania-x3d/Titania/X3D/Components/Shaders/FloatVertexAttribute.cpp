@@ -69,6 +69,8 @@ FloatVertexAttribute::FloatVertexAttribute (X3DExecutionContext* const execution
 	X3DVertexAttributeNode (),
 	                fields ()
 {
+	addType (X3DConstants::FloatVertexAttribute);
+
 	addField (inputOutput,    "metadata",      metadata ());
 	addField (initializeOnly, "name",          name ());
 	addField (initializeOnly, "numComponents", numComponents ());

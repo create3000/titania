@@ -69,6 +69,8 @@ IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const exe
 	                 fields (),
 	             coordIndex ()
 {
+	addType (X3DConstants::IndexedTriangleStripSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

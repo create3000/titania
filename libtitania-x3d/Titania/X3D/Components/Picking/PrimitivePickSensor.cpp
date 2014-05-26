@@ -63,6 +63,8 @@ PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionCo
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DPickSensorNode ()
 {
+	addType (X3DConstants::PrimitivePickSensor);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "enabled",          enabled ());
 	addField (outputOnly,     "isActive",         isActive ());

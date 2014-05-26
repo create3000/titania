@@ -76,6 +76,8 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	           modelViewMatrix (),
 	                    inside (false)
 {
+	addType (X3DConstants::ProximitySensor);
+
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "enabled",                  enabled ());
 	addField (inputOutput, "size",                     size ());

@@ -68,6 +68,8 @@ Normal::Normal (X3DExecutionContext* const executionContext) :
 	X3DNormalNode (),
 	       fields ()
 {
+	addType (X3DConstants::Normal);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "vector",   vector ());
 }

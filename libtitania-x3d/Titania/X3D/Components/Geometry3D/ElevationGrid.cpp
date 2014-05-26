@@ -88,6 +88,8 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	     normalNode (),
 	    transparent (false)
 {
+	addType (X3DConstants::ElevationGrid);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "xDimension",      xDimension ());

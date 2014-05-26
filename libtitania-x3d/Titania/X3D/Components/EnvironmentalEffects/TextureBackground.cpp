@@ -74,6 +74,8 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 	X3DBackgroundNode (),
 	           fields ()
 {
+	addType (X3DConstants::TextureBackground);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_bind",      set_bind ());
 	addField (inputOutput, "skyAngle",      skyAngle ());

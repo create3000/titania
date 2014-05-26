@@ -69,6 +69,8 @@ TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
+	addType (X3DConstants::TriangleSet2D);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (inputOutput,    "vertices", vertices ());
 	addField (initializeOnly, "solid",    solid ());

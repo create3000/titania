@@ -69,6 +69,8 @@ ScalarInterpolator::ScalarInterpolator (X3DExecutionContext* const executionCont
 	X3DInterpolatorNode (),
 	             fields ()
 {
+	addType (X3DConstants::ScalarInterpolator);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

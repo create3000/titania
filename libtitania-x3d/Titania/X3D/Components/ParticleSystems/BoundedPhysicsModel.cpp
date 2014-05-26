@@ -70,6 +70,8 @@ BoundedPhysicsModel::BoundedPhysicsModel (X3DExecutionContext* const executionCo
 	                     fields (),
 	               geometryNode ()
 {
+	addType (X3DConstants::BoundedPhysicsModel);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "geometry", geometry ());

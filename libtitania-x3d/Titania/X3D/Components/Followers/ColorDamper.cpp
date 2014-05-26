@@ -74,6 +74,8 @@ ColorDamper::ColorDamper (X3DExecutionContext* const executionContext) :
 	       fields (),
 	       buffer ()
 {
+	addType (X3DConstants::ColorDamper);
+
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
 	addField (inputOnly,      "set_destination",    set_destination ());

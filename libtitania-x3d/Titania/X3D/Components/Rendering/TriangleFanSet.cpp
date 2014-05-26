@@ -71,6 +71,8 @@ TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 	                 fields (),
 	             coordIndex ()
 {
+	addType (X3DConstants::TriangleFanSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

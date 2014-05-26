@@ -70,6 +70,8 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	X3DEnvironmentalSensorNode (),
 	                    fields ()
 {
+	addType (X3DConstants::TransformSensor);
+
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
 	addField (inputOutput, "size",                size ());

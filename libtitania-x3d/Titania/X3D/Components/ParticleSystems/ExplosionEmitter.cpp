@@ -70,6 +70,8 @@ ExplosionEmitter::ExplosionEmitter (X3DExecutionContext* const executionContext)
 	                fields (),
 	                 reset (false)
 {
+	addType (X3DConstants::ExplosionEmitter);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "position",    position ());
 	addField (inputOutput,    "speed",       speed ());

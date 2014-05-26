@@ -73,6 +73,8 @@ GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	     X3DGeospatialObject (),
 	                  fields ()
 {
+	addType (X3DConstants::GeoTransform);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "geoSystem",        geoSystem ());
 	addField (inputOutput,    "translation",      translation ());

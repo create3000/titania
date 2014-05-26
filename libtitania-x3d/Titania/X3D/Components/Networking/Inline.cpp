@@ -78,6 +78,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	           group (new Group (executionContext)),
 	          future ()
 {
+	addType (X3DConstants::Inline);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "load",       load ());
 	addField (inputOutput,    "url",        url ());

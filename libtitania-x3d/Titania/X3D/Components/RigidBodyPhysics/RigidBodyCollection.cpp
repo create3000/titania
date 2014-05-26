@@ -83,6 +83,8 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	X3DChildNode (),
 	      fields ()
 {
+	addType (X3DConstants::RigidBodyCollection);
+
 	addField (inputOutput,    "metadata",                metadata ());
 	addField (inputOnly,      "set_contacts",            set_contacts ());
 	addField (inputOutput,    "autoDisable",             autoDisable ());

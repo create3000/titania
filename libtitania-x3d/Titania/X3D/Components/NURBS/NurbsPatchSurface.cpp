@@ -63,6 +63,8 @@ NurbsPatchSurface::NurbsPatchSurface (X3DExecutionContext* const executionContex
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNurbsSurfaceGeometryNode ()
 {
+	addType (X3DConstants::NurbsPatchSurface);
+
 	addField (inputOutput,    "metadata",      metadata ());
 	addField (inputOutput,    "uTessellation", uTessellation ());
 	addField (inputOutput,    "vTessellation", vTessellation ());

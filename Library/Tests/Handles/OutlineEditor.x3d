@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Mon, 26 May 2014 08:51:17 GMT'/>
+    <meta name='modified' content='Mon, 26 May 2014 09:57:53 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -138,13 +138,179 @@
       <fieldValue name='loop' value='true'/>
     </ProtoInstance>
     <ImageTexture/>
+    <Transform DEF='Inline'
+        translation='8.69733 -1.36891e-08 -12.5955'
+        scale='0.329804 0.329803 1'
+        center='-1.99912 -0.520307 0'>
+      <Inline DEF='_2'
+          url='"Inline.wrl"'/>
+    </Transform>
+    <Transform DEF='SnapTarget'
+        translation='6.84977 0 -2.30566'>
+      <Inline
+          url='"SnapTarget.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"'/>
+    </Transform>
+    <Transform DEF='Sphere'
+        translation='2.22045 1.17457 6.31221e-08'
+        rotation='0 0 1 3.14159'
+        scale='-0.208036 -0.208036 -0.208036'>
+      <Transform
+          translation='0.233169 0.268277 0'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0 0.8 0'/>
+            <ImageTexture
+                url='"../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"'
+                repeatS='false'
+                repeatT='false'/>
+          </Appearance>
+          <Sphere DEF='_3'/>
+        </Shape>
+      </Transform>
+      <TouchSensor/>
+    </Transform>
+    <Switch DEF='Yellow'
+        whichChoice='0'>
+      <MetadataBoolean/>
+      <Transform DEF='RoundedRectangle2D'
+          translation='2.91175 1.50513 0'
+          rotation='-1.53721e-06 -3.8065e-06 1 2.13845'
+          scale='0.17606 0.17606 0.2'
+          scaleOrientation='2.51231e-12 -7.65059e-12 1 0.117763'>
+        <Transform>
+          <Shape>
+            <Appearance>
+              <Material
+                  diffuseColor='0 0 0.8'/>
+            </Appearance>
+            <ProtoInstance name='RoundedRectangle2D' containerField='geometry'>
+              <fieldValue name='size' value='4 2'/>
+            </ProtoInstance>
+          </Shape>
+        </Transform>
+      </Transform>
+      <Transform DEF='Torus'
+          translation='2.17447 1.89024 0.073832'
+          rotation='1 3.62462e-06 9.55666e-10 1.60984'
+          scale='0.17211 0.17211 0.17211'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0.540268 0.186765 0'/>
+          </Appearance>
+          <ProtoInstance name='Torus' containerField='geometry'/>
+        </Shape>
+      </Transform>
+    </Switch>
+    <Anchor
+        description='Reload Now'
+        url='"OutlineEditor.wrl"'>
+      <Transform
+          translation='4.41306 2.06142 0'
+          scale='0.1 0.1 0.1'>
+        <Shape>
+          <Appearance>
+            <Material
+                ambientIntensity='0.25'
+                diffuseColor='0.282435 0.0851587 0.134462'
+                specularColor='0.276305 0.11431 0.139857'
+                shininess='0.127273'/>
+          </Appearance>
+          <Sphere USE='_3'/>
+        </Shape>
+      </Transform>
+    </Anchor>
+    <Collision DEF='sss'>
+      <ProtoInstance name='Children1'>
+        <fieldValue name='children1'>
+          <Transform DEF='Cylinder'
+              translation='4.36274 1.14674 0'
+              scale='0.18003 0.18003 0.18003'>
+            <Shape>
+              <Appearance>
+                <Material/>
+              </Appearance>
+              <Cylinder/>
+            </Shape>
+          </Transform>
+          <Transform DEF='Cone1'
+              translation='3.31329 0.997151 0'
+              scale='0.197378 0.197378 0.197378'>
+            <Shape>
+              <Appearance>
+                <Material/>
+              </Appearance>
+              <Cone/>
+            </Shape>
+          </Transform>
+        </fieldValue>
+      </ProtoInstance>
+    </Collision>
+    <Billboard>
+      <Transform DEF='Cone'
+          translation='-1.66427 0.177755 0'
+          scale='0.327988 0.327988 0.327988'>
+        <Shape>
+          <Appearance>
+            <Material DEF='Spring14'
+                ambientIntensity='0.258064'
+                diffuseColor='0.453686 0.462806 0.613468'
+                specularColor='0.101243 0.093899 0.0914149'
+                shininess='0.0432432'/>
+          </Appearance>
+          <Cone/>
+        </Shape>
+      </Transform>
+    </Billboard>
+    <ScreenGroup>
+      <Transform DEF='Cone2'
+          translation='-100 0 0'
+          scale='20 20 20'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0 1 0.00483249'/>
+          </Appearance>
+          <Cone/>
+        </Shape>
+      </Transform>
+    </ScreenGroup>
+    <Transform DEF='ScreenText'
+        translation='0.673213 2.19 0'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Text DEF='Text2'
+            string='"modified...", "Mo 26 Mai 2014 10:45:02 CEST"'>
+          <ScreenFontStyle
+              family='"SANS"'
+              style='BOLD'/>
+        </Text>
+      </Shape>
+    </Transform>
+    <Shape>
+      <Appearance>
+        <Material
+            diffuseColor='1 0 0.833392'/>
+      </Appearance>
+      <Sphere
+          radius='0.1'/>
+    </Shape>
+    <ProximitySensor
+        size='1 1 1'
+        center='-1.03768 0 -2.93338'/>
+    <VisibilitySensor
+        size='1 1 1'
+        center='3.77007 0 -2.89052'/>
     <Viewpoint DEF='Viewpoint2'
         description='OutlineEditor'
         position='0.307405 1.46693 4.56711'
         orientation='0.563368 0.806068 0.181301 5.84917'
         centerOfRotation='1.83783 -0.942352 -0.631597'/>
-    <TextureTransform DEF='_2'/>
-    <TextureTransform USE='_2'/>
+    <TextureTransform DEF='_4'/>
+    <TextureTransform USE='_4'/>
     <Script DEF='ModifiedScript'>
       <field accessType='outputOnly' type='MFString' name='string_changed'/>
 <![CDATA[javascript:
@@ -157,7 +323,7 @@ function initialize ()
     </Script>
     <Transform DEF='EXPORT'
         translation='8.97635 0 0'>
-      <Inline DEF='_3'
+      <Inline DEF='_5'
           url='"../Basic/EXPORT.wrl", "file:///home/holger/Projekte/Titania/Library/Tests/Basic/EXPORT.wrl"'/>
     </Transform>
     <Transform DEF='InlineClone'
@@ -175,7 +341,7 @@ function initialize ()
     <Transform DEF='OutlineEditor-IMPORT'
         translation='9.25124 1.2397 -1.94955'
         scale='0.223361 0.223361 0.223361'>
-      <Inline DEF='_4'
+      <Inline DEF='_6'
           url='"OutlineEditor-IMPORT.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/OutlineEditor-IMPORT.x3dv"'/>
     </Transform>
     <Transform DEF='OutlineEditorText'>
@@ -211,11 +377,11 @@ function initialize ()
     </Transform>
     <Transform DEF='Clones'>
       <Transform>
-        <Transform DEF='_5'>
+        <Transform DEF='_7'>
           <Transform DEF='Box6'
               translation='3.41006 3.13929 -2.83073'
               scale='0.468189 0.468189 0.468189'>
-            <Shape DEF='_6'>
+            <Shape DEF='_8'>
               <Appearance>
                 <Material/>
               </Appearance>
@@ -225,45 +391,45 @@ function initialize ()
           <Transform DEF='Box5'
               translation='2.0954 3.13929 -2.83073'
               scale='0.468189 0.468189 0.468189'>
-            <Shape USE='_6'/>
+            <Shape USE='_8'/>
           </Transform>
           <Transform DEF='Box4'
               translation='0.844911 3.13929 -2.83073'
               scale='0.468189 0.468189 0.468189'>
-            <Shape USE='_6'/>
+            <Shape USE='_8'/>
           </Transform>
           <Transform DEF='Box3'
               translation='-0.454237 3.13929 -2.83073'
               scale='0.468189 0.468189 0.468189'>
-            <Shape USE='_6'/>
+            <Shape USE='_8'/>
           </Transform>
           <Transform DEF='Box2'
               translation='-1.75203 3.13929 -2.83073'
               scale='0.468189 0.468189 0.468189'>
-            <Shape USE='_6'/>
+            <Shape USE='_8'/>
           </Transform>
           <Transform DEF='Box1'
               translation='-3.05192 3.13929 -2.83073'
               scale='0.468189 0.468189 0.468189'>
-            <Shape USE='_6'/>
+            <Shape USE='_8'/>
           </Transform>
         </Transform>
       </Transform>
       <Transform
           translation='0 0 1.60465'>
-        <Transform USE='_5'/>
+        <Transform USE='_7'/>
       </Transform>
       <Transform
           translation='0 0 3.11442'>
-        <Transform USE='_5'/>
+        <Transform USE='_7'/>
       </Transform>
       <Transform
           translation='0 0 4.76727'>
-        <Transform USE='_5'/>
+        <Transform USE='_7'/>
       </Transform>
       <Transform
           translation='0 0 6.44521'>
-        <Transform USE='_5'/>
+        <Transform USE='_7'/>
       </Transform>
     </Transform>
     <Transform DEF='Sensors_1'>
@@ -272,14 +438,14 @@ function initialize ()
           rotation='0.971791 0 0.235845 3.14159'
           scale='-1.01808 -1.09117 -1.09117'
           center='3.20255 0 -1.19209e-07'>
-        <ProximitySensor DEF='_7'
+        <ProximitySensor DEF='_9'
             size='2 2 2'/>
         <VisibilitySensor
             size='2 2 2'
             center='10 0 0'/>
       </Transform>
       <Group>
-        <ProximitySensor USE='_7'/>
+        <ProximitySensor USE='_9'/>
         <Transform DEF='Box'
             translation='1.40843 1.10727 0.193803'
             rotation='0 0 1 1.5708'
@@ -296,177 +462,9 @@ function initialize ()
         </Transform>
       </Group>
     </Transform>
-    <Transform DEF='Various-Objects'>
-      <Collision DEF='sss'>
-        <ProtoInstance name='Children1'>
-          <fieldValue name='children1'>
-            <Transform DEF='Cylinder'
-                translation='4.36274 1.14674 0'
-                scale='0.18003 0.18003 0.18003'>
-              <Shape>
-                <Appearance>
-                  <Material/>
-                </Appearance>
-                <Cylinder/>
-              </Shape>
-            </Transform>
-            <Transform DEF='Cone1'
-                translation='3.31329 0.997151 0'
-                scale='0.197378 0.197378 0.197378'>
-              <Shape>
-                <Appearance>
-                  <Material/>
-                </Appearance>
-                <Cone/>
-              </Shape>
-            </Transform>
-          </fieldValue>
-        </ProtoInstance>
-      </Collision>
-      <Switch DEF='Yellow'
-          whichChoice='0'>
-        <MetadataBoolean/>
-        <Transform DEF='RoundedRectangle2D'
-            translation='2.91175 1.50513 0'
-            rotation='-1.53721e-06 -3.8065e-06 1 2.13845'
-            scale='0.17606 0.17606 0.2'
-            scaleOrientation='2.51231e-12 -7.65059e-12 1 0.117763'>
-          <Transform>
-            <Shape>
-              <Appearance>
-                <Material
-                    diffuseColor='0 0 0.8'/>
-              </Appearance>
-              <ProtoInstance name='RoundedRectangle2D' containerField='geometry'>
-                <fieldValue name='size' value='4 2'/>
-              </ProtoInstance>
-            </Shape>
-          </Transform>
-        </Transform>
-        <Transform DEF='Torus'
-            translation='2.17447 1.89024 0.073832'
-            rotation='1 3.62462e-06 9.55666e-10 1.60984'
-            scale='0.17211 0.17211 0.17211'>
-          <Shape>
-            <Appearance>
-              <Material
-                  diffuseColor='0.540268 0.186765 0'/>
-            </Appearance>
-            <ProtoInstance name='Torus' containerField='geometry'/>
-          </Shape>
-        </Transform>
-      </Switch>
-      <Anchor
-          description='Reload Now'
-          url='"OutlineEditor.wrl"'>
-        <Transform
-            translation='4.41306 2.06142 0'
-            scale='0.1 0.1 0.1'>
-          <Shape>
-            <Appearance>
-              <Material
-                  ambientIntensity='0.25'
-                  diffuseColor='0.282435 0.0851587 0.134462'
-                  specularColor='0.276305 0.11431 0.139857'
-                  shininess='0.127273'/>
-            </Appearance>
-            <Sphere DEF='_8'/>
-          </Shape>
-        </Transform>
-      </Anchor>
-      <Billboard>
-        <Transform DEF='Cone'
-            translation='-1.66427 0.177755 0'
-            scale='0.327988 0.327988 0.327988'>
-          <Shape>
-            <Appearance>
-              <Material DEF='Spring14'
-                  ambientIntensity='0.258064'
-                  diffuseColor='0.453686 0.462806 0.613468'
-                  specularColor='0.101243 0.093899 0.0914149'
-                  shininess='0.0432432'/>
-            </Appearance>
-            <Cone/>
-          </Shape>
-        </Transform>
-      </Billboard>
-      <ScreenGroup>
-        <Transform DEF='Cone2'
-            translation='-100 0 0'
-            scale='20 20 20'>
-          <Shape>
-            <Appearance>
-              <Material
-                  diffuseColor='0 1 0.00483249'/>
-            </Appearance>
-            <Cone/>
-          </Shape>
-        </Transform>
-      </ScreenGroup>
-      <Transform DEF='ScreenText'
-          translation='0.673213 2.19 0'>
-        <Shape>
-          <Appearance>
-            <Material/>
-          </Appearance>
-          <Text DEF='Text2'
-              string='"modified...", "Mo 26 Mai 2014 10:45:02 CEST"'>
-            <ScreenFontStyle
-                family='"SANS"'
-                style='BOLD'/>
-          </Text>
-        </Shape>
-      </Transform>
-      <Shape>
-        <Appearance>
-          <Material
-              diffuseColor='1 0 0.833392'/>
-        </Appearance>
-        <Sphere
-            radius='0.1'/>
-      </Shape>
-      <ProximitySensor
-          size='1 1 1'
-          center='-1.03768 0 -2.93338'/>
-      <VisibilitySensor
-          size='1 1 1'
-          center='3.77007 0 -2.89052'/>
-      <Transform DEF='Sphere'
-          translation='2.22045 1.17457 6.31221e-08'
-          rotation='0 0 1 3.14159'
-          scale='-0.208036 -0.208036 -0.208036'>
-        <Transform
-            translation='0.233169 0.268277 0'>
-          <Shape>
-            <Appearance>
-              <Material
-                  diffuseColor='0 0.8 0'/>
-              <ImageTexture
-                  url='"../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"'
-                  repeatS='false'
-                  repeatT='false'/>
-            </Appearance>
-            <Sphere USE='_8'/>
-          </Shape>
-        </Transform>
-        <TouchSensor/>
-      </Transform>
-      <Transform DEF='SnapTarget'
-          translation='6.84977 0 -2.30566'>
-        <Inline
-            url='"SnapTarget.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"'/>
-      </Transform>
-      <Transform DEF='Inline'
-          translation='8.69733 -1.36891e-08 -12.5955'
-          scale='0.329804 0.329803 1'
-          center='-1.99912 -0.520307 0'>
-        <Inline DEF='_9'
-            url='"Inline.wrl"'/>
-      </Transform>
-    </Transform>
-    <IMPORT inlineDEF='_3' exportedDEF='CubeExport'/>
-    <IMPORT inlineDEF='_4' exportedDEF='ExportedInline'/>
-    <IMPORT inlineDEF='_9' exportedDEF='Text' AS='ImportedInline'/>
+    <IMPORT inlineDEF='_5' exportedDEF='CubeExport'/>
+    <IMPORT inlineDEF='_6' exportedDEF='ExportedInline'/>
+    <IMPORT inlineDEF='_2' exportedDEF='Text' AS='ImportedInline'/>
     <ROUTE fromNode='ModifiedScript' fromField='string_changed' toNode='Text2' toField='set_string'/>
     <ROUTE fromNode='Rotor2' fromField='rotation_changed' toNode='ImportedInline' toField='set_rotation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>

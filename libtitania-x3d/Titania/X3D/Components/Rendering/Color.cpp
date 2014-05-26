@@ -68,6 +68,8 @@ Color::Color (X3DExecutionContext* const executionContext) :
 	X3DColorNode (),
 	      fields ()
 {
+	addType (X3DConstants::Color);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "color",    color ());
 }

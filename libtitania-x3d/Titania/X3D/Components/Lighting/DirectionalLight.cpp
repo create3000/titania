@@ -69,6 +69,8 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	X3DLightNode (),
 	      fields ()
 {
+	addType (X3DConstants::DirectionalLight);
+
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "global",           global ());
 	addField (inputOutput, "on",               on ());

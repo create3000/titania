@@ -69,6 +69,8 @@ CADLayer::CADLayer (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
+	addType (X3DConstants::CADLayer);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "name",           name ());
 	addField (inputOutput,    "visible",        visible ());

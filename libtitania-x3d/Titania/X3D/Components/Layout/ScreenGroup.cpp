@@ -68,6 +68,8 @@ ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
 	   screenMatrix (),
 	         matrix ()
 {
+	addType (X3DConstants::ScreenGroup);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());

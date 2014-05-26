@@ -69,6 +69,8 @@ MetadataFloat::MetadataFloat (X3DExecutionContext* const executionContext) :
 	X3DMetadataObject (),
 	           fields ()
 {
+	addType (X3DConstants::MetadataFloat);
+
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());

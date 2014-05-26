@@ -73,6 +73,8 @@ FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	                fields (),
 	              lighting (false)
 {
+	addType (X3DConstants::FillProperties);
+
 	addField (inputOutput, "metadata",   metadata ());
 	addField (inputOutput, "filled",     filled ());
 	addField (inputOutput, "hatched",    hatched ());

@@ -71,6 +71,8 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	X3DGeospatialObject (),
 	             fields ()
 {
+	addType (X3DConstants::GeoPositionInterpolator);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "geoSystem",        geoSystem ());
 	addField (inputOnly,      "set_fraction",     set_fraction ());

@@ -74,6 +74,8 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	                 loadSensor (new LoadSensor (executionContext)),
 	                  programId (0)
 {
+	addType (X3DConstants::ComposedShader);
+
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOnly,      "activate",   activate ());
 	addField (outputOnly,     "isSelected", isSelected ());

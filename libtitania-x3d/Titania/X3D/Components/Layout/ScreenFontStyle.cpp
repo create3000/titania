@@ -427,6 +427,8 @@ ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	          fields (),
 	      screenFont ()
 {
+	addType (X3DConstants::ScreenFontStyle);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "language",    language ());
 	addField (initializeOnly, "family",      family ());

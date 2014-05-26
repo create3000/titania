@@ -70,6 +70,8 @@ TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext)
 	X3DComposedGeometryNode (),
 	                 fields ()
 {
+	addType (X3DConstants::TriangleStripSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

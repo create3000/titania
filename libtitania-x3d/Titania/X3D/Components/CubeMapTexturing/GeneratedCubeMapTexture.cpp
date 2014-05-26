@@ -70,6 +70,8 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	X3DEnvironmentTextureNode (),
 	                   fields ()
 {
+	addType (X3DConstants::GeneratedCubeMapTexture);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "update",            update ());
 	addField (initializeOnly, "size",              size ());

@@ -173,6 +173,8 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	      lineHeight (1),
 	           scale (1)
 {
+	addType (X3DConstants::FontStyle);
+
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "language",    language ());
 	addField (initializeOnly, "family",      family ());

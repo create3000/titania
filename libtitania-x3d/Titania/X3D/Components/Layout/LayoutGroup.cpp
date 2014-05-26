@@ -74,6 +74,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	currentViewport (),
 	  currentLayout ()
 {
+	addType (X3DConstants::LayoutGroup);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "viewport",       viewport ());
 	addField (inputOutput,    "layout",         layout ());

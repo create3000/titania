@@ -82,6 +82,8 @@ TextureProperties::TextureProperties (X3DExecutionContext* const executionContex
 	    X3DNode (),
 	     fields ()
 {
+	addType (X3DConstants::TextureProperties);
+
 	addField (inputOutput,    "metadata",            metadata ());
 	addField (inputOutput,    "borderColor",         borderColor ());
 	addField (inputOutput,    "borderWidth",         borderWidth ());

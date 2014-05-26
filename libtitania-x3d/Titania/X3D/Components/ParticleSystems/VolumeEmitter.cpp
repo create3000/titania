@@ -85,6 +85,8 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	          pointEmitter (false),
 	                 solid (true)
 {
+	addType (X3DConstants::VolumeEmitter);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "internal",       internal ());
 	addField (inputOutput,    "direction",      direction ());

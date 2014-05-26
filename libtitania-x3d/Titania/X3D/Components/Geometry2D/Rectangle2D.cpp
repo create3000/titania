@@ -71,6 +71,8 @@ Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
+	addType (X3DConstants::Rectangle2D);
+
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "size",     size ());
 	addField (initializeOnly, "solid",    solid ());

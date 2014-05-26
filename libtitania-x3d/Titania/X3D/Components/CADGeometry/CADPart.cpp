@@ -64,6 +64,8 @@ CADPart::CADPart (X3DExecutionContext* const executionContext) :
 	            X3DTransformNode (),
 	X3DProductStructureChildNode ()
 {
+	addType (X3DConstants::CADPart);
+
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "name",             name ());
 	addField (inputOutput,    "translation",      translation ());

@@ -68,6 +68,8 @@ VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext)
 	X3DEnvironmentalSensorNode (),
 	                   visible (false)
 {
+	addType (X3DConstants::VisibilitySensor);
+
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "enabled",   enabled ());
 	addField (inputOutput, "size",      size ());

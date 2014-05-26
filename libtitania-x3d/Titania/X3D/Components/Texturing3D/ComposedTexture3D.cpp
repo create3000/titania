@@ -72,6 +72,8 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	       loadState (COMPLETE_STATE),
 	    textureNodes ()
 {
+	addType (X3DConstants::ComposedTexture3D);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());

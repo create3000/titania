@@ -90,6 +90,8 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	glBackEmissiveColor (),
 	    glBackShininess ()
 {
+	addType (X3DConstants::TwoSidedMaterial);
+
 	addField (inputOutput, "metadata",             metadata ());
 
 	addField (inputOutput, "separateBackColor",    separateBackColor ());

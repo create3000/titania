@@ -81,6 +81,8 @@ LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	            complete (),
 	  timeOut_connection ()
 {
+	addType (X3DConstants::LoadSensor);
+
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "enabled",   enabled ());
 	addField (inputOutput, "timeOut",   timeOut ());

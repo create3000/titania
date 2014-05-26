@@ -69,6 +69,8 @@ IndexedTriangleSet::IndexedTriangleSet (X3DExecutionContext* const executionCont
 	X3DComposedGeometryNode (),
 	                 fields ()
 {
+	addType (X3DConstants::IndexedTriangleSet);
+
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

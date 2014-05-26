@@ -67,6 +67,8 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	X3DSoundSourceNode (),
 	      X3DUrlObject ()
 {
+	addType (X3DConstants::MovieTexture);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());     // non standard
 	addField (inputOutput,    "description",       description ());

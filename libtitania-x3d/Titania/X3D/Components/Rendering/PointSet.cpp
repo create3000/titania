@@ -76,6 +76,8 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	      coordNode (),
 	    transparent (false)
 {
+	addType (X3DConstants::PointSet);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "attrib",   attrib ());
 	addField (inputOutput, "fogCoord", fogCoord ());

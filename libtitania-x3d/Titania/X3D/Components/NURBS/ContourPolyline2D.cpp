@@ -63,6 +63,8 @@ ContourPolyline2D::ContourPolyline2D (X3DExecutionContext* const executionContex
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNurbsControlCurveNode ()
 {
+	addType (X3DConstants::ContourPolyline2D);
+
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOutput, "controlPoint", controlPoint ());
 }

@@ -69,6 +69,8 @@ CoordinateDouble::CoordinateDouble (X3DExecutionContext* const executionContext)
 	X3DCoordinateNode (),
 	           fields ()
 {
+	addType (X3DConstants::CoordinateDouble);
+
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "point",    point ());
 }

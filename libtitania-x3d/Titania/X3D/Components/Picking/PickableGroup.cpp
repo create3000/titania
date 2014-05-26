@@ -64,6 +64,8 @@ PickableGroup::PickableGroup (X3DExecutionContext* const executionContext) :
 	  X3DGroupingNode (),
 	X3DPickableObject ()
 {
+	addType (X3DConstants::PickableGroup);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "objectType",     objectType ());
 	addField (inputOutput,    "pickable",       pickable ());

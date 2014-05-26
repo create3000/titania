@@ -75,6 +75,8 @@ NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const execu
 	    X3DNode (),
 	     fields ()
 {
+	addType (X3DConstants::NurbsTextureCoordinate);
+
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (inputOutput,    "controlPoint", controlPoint ());
 	addField (inputOutput,    "weight",       weight ());

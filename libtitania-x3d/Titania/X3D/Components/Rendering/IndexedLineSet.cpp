@@ -79,6 +79,8 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	      coordNode (),
 	    transparent (false)
 {
+	addType (X3DConstants::IndexedLineSet);
+
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "colorPerVertex", colorPerVertex ());
 	addField (inputOutput,    "colorIndex",     colorIndex ());

@@ -82,6 +82,8 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	          elevation (0),
 	 navigationInfoNode ()
 {
+	addType (X3DConstants::GeoViewpoint);
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "geoSystem",         geoSystem ());
 	addField (inputOnly,      "set_bind",          set_bind ());

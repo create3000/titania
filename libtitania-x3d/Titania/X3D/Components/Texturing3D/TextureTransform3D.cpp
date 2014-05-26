@@ -71,6 +71,8 @@ TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionCont
 	X3DTextureTransformNode (),
 	                 fields ()
 {
+	addType (X3DConstants::TextureTransform3D);
+
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "translation", translation ());
 	addField (inputOutput, "rotation",    rotation ());

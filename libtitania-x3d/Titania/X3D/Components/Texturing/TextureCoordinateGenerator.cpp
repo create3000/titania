@@ -70,6 +70,8 @@ TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* con
 	                  fields (),
 	              texGenMode ()
 {
+	addType (X3DConstants::TextureCoordinateGenerator);
+
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "mode",      mode ());
 	addField (inputOutput, "parameter", parameter ());

@@ -69,6 +69,8 @@ NormalInterpolator::NormalInterpolator (X3DExecutionContext* const executionCont
 	X3DInterpolatorNode (),
 	             fields ()
 {
+	addType (X3DConstants::NormalInterpolator);
+
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());
