@@ -97,6 +97,16 @@ public:
 	{ return node -> getUserData (); }
 
 	virtual
+	SFBool &
+	isLive () final override
+	{ return node -> isLive (); }
+
+	virtual
+	const SFBool &
+	isLive () const  final override
+	{ return node -> isLive (); }
+
+	virtual
 	void
 	addTool () final override
 	{ }
@@ -104,6 +114,18 @@ public:
 	virtual
 	void
 	removeTool (const bool = false) override;
+
+	virtual
+	void
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override
+	{ return node -> beginUpdate (); }
+
+	virtual
+	void
+	endUpdate ()
+	throw (Error <DISPOSED>) final override
+	{ return node -> endUpdate (); }
 
 	virtual
 	void
@@ -189,8 +211,6 @@ X3DBaseTool <Type>::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DToolObject::initialize ();
-
-	isLive () .addInterest (node -> isLive ());
 }
 
 template <class Type>

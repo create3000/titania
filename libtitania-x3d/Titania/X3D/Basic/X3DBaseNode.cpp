@@ -878,25 +878,25 @@ X3DBaseNode::removeTool (X3DBaseNode* const node)
 }
 
 /***
- *  Changes the live state of this node to true.
+ *  Enables this node if possible, ie. the execution context of this node must be enabled too.
  */
 
 void
 X3DBaseNode::beginUpdate ()
 throw (Error <DISPOSED>)
 {
-	isLive () = true;
+	live = true;
 }
 
 /***
- *  Changes the live state of this node to false.
+ *  Definitely disables this node. No further event processing is done.
  */
 
 void
 X3DBaseNode::endUpdate ()
 throw (Error <DISPOSED>)
 {
-	isLive () = false;
+	live = false;
 }
 
 void

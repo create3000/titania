@@ -76,11 +76,16 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
-	        protoObject (_protoObject)
+	        protoObject (_protoObject),
+	               live (true)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
+
+	addChildren (protoObject, live);
+
+	// Interface
 
 	Proto* const prototype = protoObject -> getProtoDeclaration ();
 
@@ -91,9 +96,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> clone ());
 	}
 
-	addChildren (protoObject);
-
-	// Assign protos and root nodes
+	// X3DExecutionContext
 
 	setEncoding             (prototype -> getEncoding ());
 	setSpecificationVersion (prototype -> getSpecificationVersion ());
@@ -106,6 +109,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		addComponent (component);
 
 	setUnits (prototype -> getUnits ());
+
+	// Assign protos and root nodes
 
 	try
 	{
@@ -130,8 +135,10 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 void
 X3DPrototypeInstance::initialize ()
 {
-	getExecutionContext () -> isLive () .addInterest (isLive ());
-	isLive () = getExecutionContext () -> isLive ();
+	getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+	X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+
+	set_live ();
 
 	try
 	{
@@ -228,6 +235,12 @@ X3DPrototypeInstance::removeTool (const bool really)
 	}
 	catch (const X3DError &)
 	{ }
+}
+
+void
+X3DPrototypeInstance::set_live ()
+{
+	live = getExecutionContext () -> isLive () and X3DBaseNode::isLive ();
 }
 
 void

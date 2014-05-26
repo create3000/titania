@@ -98,6 +98,16 @@ public:
 	///  @name Member access
 
 	virtual
+	SFBool &
+	isLive () final override
+	{ return live; }
+
+	virtual
+	const SFBool &
+	isLive () const  final override
+	{ return live; }
+
+	virtual
 	std::string
 	getTitle () const final override
 	{ return protoObject -> getProtoDeclaration () -> getTitle (); }
@@ -181,6 +191,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_live ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -189,6 +204,7 @@ private:
 	///  @name Members
 
 	X3DProtoObjectPtr protoObject;
+	SFBool            live;
 };
 
 } // X3D

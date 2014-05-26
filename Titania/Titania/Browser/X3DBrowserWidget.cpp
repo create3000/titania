@@ -266,7 +266,7 @@ X3DBrowserWidget::blank ()
 {
 	try
 	{
-		getBrowser () -> replaceWorld (nullptr);
+		getBrowser () -> replaceWorld (X3D::ScenePtr ());
 		scene = getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)

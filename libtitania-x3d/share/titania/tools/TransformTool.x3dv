@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Sun, 25 May 2014 10:32:58 GMT"
+META "modified" "Mon, 26 May 2014 00:31:07 GMT"
 
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
@@ -176,7 +176,7 @@ PROTO TransformTool [
             }
           }
           DEF Front Transform {
-            children DEF _1 Transform {
+            children Transform {
               children [
                 DEF FrontSensor PlaneSensor {
                   enabled IS set_enabled
@@ -565,24 +565,24 @@ PROTO TransformTool [
       }
       DEF CenterPoint Transform {
         children [
-          DEF _2 TouchSensor {
+          DEF _1 TouchSensor {
             enabled IS set_enabled
           }
           ScreenGroup {
-            children DEF _3 BooleanSwitch {
+            children DEF _2 BooleanSwitch {
               children [
-                DEF _4 Shape {
+                DEF _3 Shape {
                   appearance Appearance {
                     material USE Yellow
                     shaders USE HandleShader
                   }
-                  geometry DEF _5 Sphere {
+                  geometry DEF _4 Sphere {
                     radius 5
                   }
                 }
-                DEF _6 Shape {
+                DEF _5 Shape {
                   appearance USE Red
-                  geometry USE _5
+                  geometry USE _4
                 }
               ]
             }
@@ -737,7 +737,7 @@ PROTO TransformTool [
     ]
   }
 
-  DEF _7 KeySensor {
+  DEF _6 KeySensor {
     enabled FALSE
   }
 
@@ -908,14 +908,10 @@ function set_active (value)
 {
 	translation = transform .translation;
 	center      = transform .center;
-
-	print (value);
 }
 
 function set_frontTranslation (value)
 {
-	print (value);
-
 	translate_with_bbox (new SFVec3f (value .x, value .y, 0));
 }
 
@@ -1536,12 +1532,12 @@ function sgn (value)
   ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
   ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-  ROUTE _2.touchTime TO CenterDoubleClick.set_time
+  ROUTE _1.touchTime TO CenterDoubleClick.set_time
   ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
   ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-  ROUTE CenterScript.keepCenter_changed TO _3.set_whichChoice
+  ROUTE CenterScript.keepCenter_changed TO _2.set_whichChoice
   ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-  ROUTE _7.controlKey TO MoveScript.set_constrain
+  ROUTE _6.controlKey TO MoveScript.set_constrain
 }
 
 DEF Tool TransformTool { }

@@ -118,10 +118,12 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
+	virtual
 	SFBool &
 	isLive ()
 	{ return live; }
 
+	virtual
 	const SFBool &
 	isLive () const
 	{ return live; }
@@ -336,10 +338,12 @@ public:
 
 	///  @name Event handling
 
+	virtual
 	void
 	beginUpdate ()
 	throw (Error <DISPOSED>);
 
+	virtual
 	void
 	endUpdate ()
 	throw (Error <DISPOSED>);
