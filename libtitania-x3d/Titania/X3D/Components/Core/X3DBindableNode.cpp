@@ -68,7 +68,7 @@ X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),
 	      fields (),
 	      layers (),
-	        live (true),
+	        live (false),
 	    wasBound (false)
 {
 	addType (X3DConstants::X3DBindableNode);
@@ -79,8 +79,9 @@ X3DBindableNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	isLive ()   .addInterest (this, &X3DBindableNode::set_live);
-	set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
+	isLive () .addInterest (this, &X3DBindableNode::set_live);
+
+	set_live ();
 }
 
 void 
@@ -110,6 +111,8 @@ X3DBindableNode::set_live ()
 
 	if (live)
 	{
+		set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
+
 		if (wasBound)
 		{
 			for (const auto & layer : layers)
@@ -118,6 +121,8 @@ X3DBindableNode::set_live ()
 	}
 	else
 	{
+		set_bind () .removeInterest (this, &X3DBindableNode::_set_bind);
+
 		wasBound = isBound ();
 
 		for (const auto & layer : layers)

@@ -1,5 +1,9 @@
 2014-05-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBindableNode.cpp: 
+
+2014-05-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* ExternProto.cpp: 
 
