@@ -430,8 +430,6 @@ OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, con
 void
 OutlineEditor::on_remove_activate ()
 {
-	__LOG__ << nodePath .to_string () << std::endl;
-
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node"));
 
 	const auto iter = treeView -> get_model () -> get_iter (nodePath);

@@ -790,6 +790,8 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 
 	if (oldValue)
 	{
+		// Remove node completely from scene if not exists in scene graph anymore.
+
 		const bool remove = X3D::traverse (getExecutionContext () -> getRootNodes (), [&oldValue] (X3D::SFNode & node)
 		                                   {
 		                                      return oldValue not_eq node;
@@ -824,6 +826,8 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 
 	if (oldValue)
 	{
+		// Remove node completely from scene if not exists in scene graph anymore.
+	
 		const bool remove = X3D::traverse (getExecutionContext () -> getRootNodes (), [&oldValue] (X3D::SFNode & node)
 		                                   {
 		                                      return oldValue not_eq node;
