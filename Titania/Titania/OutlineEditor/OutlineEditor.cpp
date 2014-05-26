@@ -431,6 +431,85 @@ void
 OutlineEditor::on_remove_activate ()
 {
 	__LOG__ << nodePath .to_string () << std::endl;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node"));
+
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+	
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::X3DBaseNode:
+		{
+			switch (nodePath .size ())
+			{
+				case 0:
+					break;
+				case 1:
+				{
+					// Root node
+					
+					X3D::SFNode parent (treeView -> get_model () -> get_execution_context ());
+					auto &      rootNodes = treeView -> get_model () -> get_execution_context () -> getRootNodes ();
+					const auto      index = treeView -> get_index (iter);
+
+					getBrowserWindow () -> removeNode (parent, rootNodes, index, undoStep);
+					break;
+				}
+				default:
+				{
+					// Child node
+					
+					auto path = nodePath;
+					
+					if (path .up ())
+					{
+						const auto fieldIter = treeView -> get_model () -> get_iter (path);
+					
+						if (treeView -> get_data_type (fieldIter) == OutlineIterType::X3DField)
+						{
+							const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+
+							if (path .up ())
+							{
+								const auto parentIter = treeView -> get_model () -> get_iter (path);
+							
+								if (treeView -> get_data_type (parentIter) == OutlineIterType::X3DBaseNode)
+								{
+									const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+									
+									switch (field -> getType ())
+									{
+										case X3D::X3DConstants::SFNode:
+										{
+											getBrowserWindow () -> removeNode (parent, *static_cast <X3D::SFNode*> (field), undoStep);
+											break;
+										}
+										case X3D::X3DConstants::MFNode:
+										{
+											const auto index = treeView -> get_index (iter);
+
+											getBrowserWindow () -> removeNode (parent, *static_cast <X3D::MFNode*> (field), index, undoStep);
+											break;
+										}
+										default:
+											break;
+									}
+								}
+							}
+						}
+					}
+
+					break;
+				}
+			}
+			
+			break;
+		}
+		default:
+			break;
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 // View Menu Item

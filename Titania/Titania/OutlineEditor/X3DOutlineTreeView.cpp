@@ -334,6 +334,12 @@ X3DOutlineTreeView::get_object (const Gtk::TreeModel::iterator & iter) const
 	return get_model () -> get_object (iter);
 }
 
+size_t
+X3DOutlineTreeView::get_index (const Gtk::TreeModel::iterator & iter) const
+{
+	return get_model () -> get_data (iter) -> get_index ();
+}
+
 void
 X3DOutlineTreeView::set_open_path (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
 {
@@ -483,8 +489,10 @@ X3DOutlineTreeView::set_rootNodes ()
 	{
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Extern Prototypes")));
 
+		size_t i = 0;
+
 		for (auto & externProto : executionContext -> getExternProtoDeclarations ())
-			get_model () -> append (OutlineIterType::ExternProtoDeclaration, externProto);
+			get_model () -> append (OutlineIterType::ExternProtoDeclaration, externProto, i ++);
 	}
 
 	// Prototypes
@@ -493,8 +501,10 @@ X3DOutlineTreeView::set_rootNodes ()
 	{
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Prototypes")));
 
+		size_t i = 0;
+
 		for (auto & prototype : executionContext -> getProtoDeclarations ())
-			get_model () -> append (OutlineIterType::ProtoDeclaration, prototype);
+			get_model () -> append (OutlineIterType::ProtoDeclaration, prototype, i ++);
 	}
 
 	// Root nodes
@@ -503,8 +513,10 @@ X3DOutlineTreeView::set_rootNodes ()
 	{
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
 
+		size_t i = 0;
+
 		for (auto & rootNode : executionContext -> getRootNodes ())
-			get_model () -> append (OutlineIterType::X3DBaseNode, rootNode);
+			get_model () -> append (OutlineIterType::X3DBaseNode, rootNode, i ++);
 	}
 
 	// Imported nodes
@@ -675,8 +687,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 						is_full_expanded (iter, iter -> children () .size ());
 					}
 
+					size_t i = 0;
+
 					for (auto & value : *mfnode)
-						get_model () -> append (iter, OutlineIterType::X3DBaseNode, value);
+						get_model () -> append (iter, OutlineIterType::X3DBaseNode, value, i ++);
 
 					break;
 				}
@@ -704,8 +718,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Extern Prototypes")));
 
+				size_t i = 0;
+
 				for (auto & externProto : executionContext -> getExternProtoDeclarations ())
-					get_model () -> append (iter, OutlineIterType::ExternProtoDeclaration, externProto);
+					get_model () -> append (iter, OutlineIterType::ExternProtoDeclaration, externProto, i ++);
 			}
 
 			// Prototypes
@@ -714,8 +730,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Prototypes")));
 
+				size_t i = 0;
+
 				for (auto & prototype : executionContext -> getProtoDeclarations ())
-					get_model () -> append (iter, OutlineIterType::ProtoDeclaration, prototype);
+					get_model () -> append (iter, OutlineIterType::ProtoDeclaration, prototype, i ++);
 			}
 
 			// Root nodes
@@ -724,8 +742,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Root Nodes")));
 
+				size_t i = 0;
+
 				for (auto & rootNode : executionContext -> getRootNodes ())
-					get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode);
+					get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode, i ++);
 			}
 
 			// Imported nodes

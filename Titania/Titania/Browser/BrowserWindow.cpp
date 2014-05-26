@@ -796,11 +796,11 @@ BrowserWindow::on_delete_nodes_activate ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node From Scene"));
 
 	getSelection () -> clear (undoStep);
 
-	removeNodes (selection, undoStep);
+	removeNodesFromScene (selection, undoStep);
 
 	addUndoStep (undoStep);
 }

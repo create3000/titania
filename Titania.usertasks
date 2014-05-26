@@ -1,15 +1,17 @@
 <ListOfTask>
-  <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden. Vorsicht wegen x3dtidy." />
+  <Task file="" description="INVALID_OPERATION_TIMING ist wenn kein GL context vorhanden. Vorsicht wegen x3dtidy." completed="True" />
   <Task file="" description="Collision beim hochspringen" />
-  <Task file="" description="proto externproto route executioncontext und scene vergleichen nicht in JavaScript" />
+  <Task file="" description="proto, externproto, route, executioncontext und scene vergleichen nicht in JavaScript" />
   <Task file="" description="an der Wand lang rutschen" />
   <Task file="" description="von Geistern schieben lassen" />
   <Task file="" description="bei jump collisision speed auf 0 setzen" />
   <Task file="" description="RenderContext" />
-  <Task file="" description="watch Inline unload when in sub scene" />
+  <Task file="" description="Watch Inline unload when in sub scene. Check load state in Scene menu. Man darf nicht mehr in eine ungeladene Scene hineinkommen da diese sozusagen privat ist vom Inline." />
   <Task file="" description="save as before import when world not saved" />
   <Task file="" description="Strict warnings button in open and import dialog" />
-  <Task file="" description="scale tool center mitverschieben" />
-  <Task file="" description="Text node display list not created???" />
-  <Task file="" description="exception in addUserDefinedField if name empty" />
+  <Task file="" description="scale tool center mitverschieben" completed="True" />
+  <Task file="" description="Text node display list not created???" completed="True" />
+  <Task file="" description="Exception in addUserDefinedField wenn Name leer hinzufügen." />
+  <Task file="" description="getType bei X3DBaseNode ändern." />
+  <Task file="" description="DoubleClick zu Protos" />
 </ListOfTask>

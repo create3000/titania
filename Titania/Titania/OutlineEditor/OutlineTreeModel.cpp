@@ -194,11 +194,12 @@ void
 OutlineTreeModel::set_data (iterator & iter,
                             OutlineIterType type,
                             X3D::X3DChildObject* object,
-                            const Path & path) const
+                            const Path & path,
+                            const size_t index) const
 {
 	auto & node = tree .get_node (path, true);
 
-	node .set_data (new OutlineTreeData (type, object, path));
+	node .set_data (new OutlineTreeData (type, object, path, index));
 
 	set_data (iter, node .get_data ());
 }
@@ -231,7 +232,7 @@ OutlineTreeModel::get_iters (X3D::X3DChildObject* const object) const
 }
 
 OutlineTreeModel::iterator
-OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
+OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object, const size_t index)
 {
 	//__LOG__ << std::endl;
 
@@ -240,7 +241,7 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
 	path .push_back (tree .size ());
 
 	iterator iter;
-	set_data (iter, type, object, path);
+	set_data (iter, type, object, path, index);
 
 	row_inserted (path, iter);
 	row_has_child_toggled (path, iter);
@@ -249,7 +250,7 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
 }
 
 OutlineTreeModel::iterator
-OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3DChildObject* object)
+OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3DChildObject* object, const size_t index)
 {
 	//__LOG__ << std::endl;
 
@@ -258,7 +259,7 @@ OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3
 	path .push_back (tree .get_node (path) .size ());
 
 	iterator iter;
-	set_data (iter, type, object, path);
+	set_data (iter, type, object, path, index);
 
 	row_inserted (path, iter);
 	row_has_child_toggled (path, iter);

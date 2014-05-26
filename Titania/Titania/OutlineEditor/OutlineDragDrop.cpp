@@ -217,30 +217,20 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 		// Insert source extern proto in destination extern protos.
 
 		{
-			const auto eraseIter = std::find (destExternProtos .begin (), destExternProtos .end (), sourceExternProto);
-			
-			if (eraseIter == destExternProtos .end ())
-				return;
-
-			auto insertIter = std::find (destExternProtos .begin (), destExternProtos .end (), destExternProto);
-			
-			if (insertIter == destExternProtos .end ())
-				return;
+			const auto eraseIndex  = treeView -> get_index (sourceIter);
+			auto       insertIndex = treeView -> get_index (destIter);
 
 			switch (position)
 			{
 				case Gtk::TREE_VIEW_DROP_AFTER:
 				case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
 				{
-					++ insertIter;
+					++ insertIndex;
 					// Procced with next case.
 				}
 				case Gtk::TREE_VIEW_DROP_BEFORE:
 				case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
 				{
-					const auto eraseIndex  = eraseIter - destExternProtos .begin ();
-					const auto insertIndex = insertIter - destExternProtos .begin ();
-
 					if (eraseIndex < insertIndex)
 					{
 						destExternProtos .insert (destExternProtos .begin () + insertIndex, sourceExternProto);

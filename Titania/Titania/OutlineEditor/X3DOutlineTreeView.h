@@ -153,6 +153,9 @@ public:
 	X3D::X3DChildObject*
 	get_object (const Gtk::TreeModel::iterator &) const;
 
+	size_t
+	get_index (const Gtk::TreeModel::iterator &) const;
+
 	void
 	is_expanded (const Gtk::TreeModel::iterator &, const bool);
 

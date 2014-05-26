@@ -172,10 +172,10 @@ public:
 	get_iters (X3D::X3DChildObject* const) const;
 
 	iterator
-	append (OutlineIterType type, X3D::X3DChildObject*);
+	append (OutlineIterType type, X3D::X3DChildObject*, const size_t = 0);
 
 	iterator
-	append (const iterator &, OutlineIterType type, X3D::X3DChildObject*);
+	append (const iterator &, OutlineIterType type, X3D::X3DChildObject*, const size_t = 0);
 
 	void
 	clear ();
@@ -197,7 +197,7 @@ private:
 	OutlineTreeModel (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
 
 	void
-	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path) const;
+	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path, const size_t) const;
 
 	void
 	set_data (iterator &, OutlineTreeData*) const;
