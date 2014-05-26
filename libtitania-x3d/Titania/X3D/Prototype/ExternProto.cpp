@@ -264,6 +264,8 @@ ExternProto::rewrite (Loader & loader)
 
 				scene = getBrowser () -> createScene ();
 
+				scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
+
 				loader .parseIntoScene (scene, { URL });
 
 				if (getExecutionContext () -> isInitialized ())

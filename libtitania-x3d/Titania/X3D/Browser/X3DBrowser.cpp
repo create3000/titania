@@ -234,7 +234,11 @@ X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return new Scene (const_cast <X3DBrowser*> (this));
+	const ScenePtr scene = new Scene (const_cast <X3DBrowser*> (this));
+
+	scene -> isLive () = false;
+
+	return scene;
 }
 
 ScenePtr
@@ -242,9 +246,8 @@ X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArra
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	ScenePtr scene = createScene ();
+	const ScenePtr scene = createScene ();
 
-	scene -> isLive () = false;
 	scene -> setProfile (profile);
 
 	for (const auto & component : components)
