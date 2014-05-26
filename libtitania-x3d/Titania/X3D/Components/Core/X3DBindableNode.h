@@ -128,10 +128,10 @@ private:
 	///  @name Event handlers
 
 	void
-	_set_bind ();
+	set_live ();
 
 	void
-	set_live ();
+	_set_bind ();
 
 	///  @name Members
 

@@ -98,10 +98,6 @@ public:
 
 	///  @name Member access
 
-	Script*
-	getScriptNode () const
-	{ return script; }
-
 	JSBool
 	require (const basic::uri &, jsval &);
 
@@ -165,15 +161,15 @@ private:
 	static JSBool getProperty        (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool setProperty        (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
-	void
-	set_live ();
-
 	virtual
 	void
 	initialize () final override;
 
 	void
 	prepareEvents ();
+
+	void
+	set_live ();
 
 	void
 	set_field (X3DFieldDefinition*);
@@ -225,7 +221,6 @@ private:
 	JSRuntime*               runtime;
 	JSContext*               context;
 	JSObject*                global;
-	Script*                  script;
 	std::vector <basic::uri> worldURL;
 	size_t                   index;
 

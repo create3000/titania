@@ -56,12 +56,40 @@
 namespace titania {
 namespace X3D {
 
+class Script;
+
 class X3DJavaScriptContext :
 	virtual public X3DBaseNode
 {
+public:
+
+	///  @name Member access
+
+	virtual
+	SFBool &
+	isLive () final override;
+
+	virtual
+	const SFBool &
+	isLive () const final override;
+
+	Script*
+	getScriptNode () const
+	{ return script; }
+
+
 protected:
 
-	X3DJavaScriptContext ();
+	///  @name Construction
+
+	X3DJavaScriptContext (Script* const);
+
+
+private:
+
+	///  @name Members
+
+	Script* const script;
 
 };
 

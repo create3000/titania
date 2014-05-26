@@ -49,13 +49,27 @@
  ******************************************************************************/
 
 #include "../JavaScript/X3DJavaScriptContext.h"
+#include "../Components/Scripting/Script.h"
 
 namespace titania {
 namespace X3D {
 
-X3DJavaScriptContext::X3DJavaScriptContext () :
-	X3DBaseNode ()
+X3DJavaScriptContext::X3DJavaScriptContext (Script* const script) :
+	X3DBaseNode (),
+	     script (script)
 { }
+
+SFBool &
+X3DJavaScriptContext::isLive ()
+{
+	return script -> isLive ();
+}
+
+const SFBool &
+X3DJavaScriptContext::isLive () const
+{
+	return script -> isLive ();
+}
 
 } // X3D
 } // titania

@@ -61,6 +61,8 @@ class X3DKeyDeviceSensorNode :
 {
 public:
 
+	///  @name Event handler
+
 	virtual
 	void
 	set_actionKeyPressEvent (const int) = 0;
@@ -80,11 +82,26 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DKeyDeviceSensorNode ();
 
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
+
+	void
+	enable ();
+
+	void
+	disable ();
+
+	///  @name Event handler
+
+	void
+	set_live ();
 
 	void
 	set_enabled ();

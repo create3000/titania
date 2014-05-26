@@ -65,41 +65,70 @@ void
 X3DKeyDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
+	isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
 	
-	enabled () .addInterest (this, &X3DKeyDeviceSensorNode::set_enabled);
-	
-	set_enabled ();
+	set_live ();
+}
+
+void
+X3DKeyDeviceSensorNode::enable ()
+{
+	if (isActive ())
+		return;
+
+	X3DKeyDeviceSensorNode* const keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensorNode ();
+
+	if (keyDeviceSensorNode)
+	{
+		keyDeviceSensorNode -> enabled ()  = false;
+		keyDeviceSensorNode -> isActive () = false;
+	}
+
+	getBrowser () -> setKeyDeviceSensorNode (this);
+
+	isActive () = true;
+}
+
+void
+X3DKeyDeviceSensorNode::disable ()
+{
+	if (not isActive ())
+		return;
+
+	getBrowser () -> setKeyDeviceSensorNode (nullptr);
+
+	isActive () = false;
+}
+
+void
+X3DKeyDeviceSensorNode::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive ())
+	{
+		enabled () .addInterest (this, &X3DKeyDeviceSensorNode::set_enabled);
+
+		if (enabled ())
+			enable ();
+	}
+	else
+	{
+		enabled () .removeInterest (this, &X3DKeyDeviceSensorNode::set_enabled);
+
+		if (enabled ())
+			disable ();
+	}
 }
 
 void
 X3DKeyDeviceSensorNode::set_enabled ()
 {
 	if (enabled ())
-	{
-		if (isActive ())
-			return;
+		enable ();
 
-		X3DKeyDeviceSensorNode* keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensorNode ();
-
-		if (keyDeviceSensorNode)
-		{
-			keyDeviceSensorNode -> enabled ()  = false;
-			keyDeviceSensorNode -> isActive () = false;
-		}
-
-		getBrowser () -> setKeyDeviceSensorNode (this);
-
-		isActive () = true;
-	}
 	else
-	{
-		if (not isActive ())
-			return;
-
-		getBrowser () -> setKeyDeviceSensorNode (nullptr);
-
-		isActive () = false;
-	}
+		disable ();
 }
 
 } // X3D

@@ -286,7 +286,12 @@ void
 ExternProto::set_live ()
 {
 	if (checkLoadState () == COMPLETE_STATE)
-		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
+	{
+		const bool value = getExecutionContext () -> isLive () and isLive ();
+		
+		if (value not_eq scene -> isLive ())
+			scene -> isLive () = value;
+	}
 }
 
 void

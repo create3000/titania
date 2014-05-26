@@ -146,9 +146,6 @@ Proto::initialize ()
 	X3DProtoObject::initialize ();
 
 	// Prototypes shouldn't be live as they are not realized.
-	//	getExecutionContext () -> isLive () .addInterest (isLive ());
-	//
-	//	isLive () = getExecutionContext () -> isLive ();
 }
 
 void

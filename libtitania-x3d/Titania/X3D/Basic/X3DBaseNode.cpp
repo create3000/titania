@@ -885,7 +885,8 @@ void
 X3DBaseNode::beginUpdate ()
 throw (Error <DISPOSED>)
 {
-	live = true;
+	if (not live)
+		live = true;
 }
 
 /***
@@ -896,7 +897,8 @@ void
 X3DBaseNode::endUpdate ()
 throw (Error <DISPOSED>)
 {
-	live = false;
+	if (live)
+		live = false;
 }
 
 void

@@ -1,5 +1,22 @@
 2014-05-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* X3DBaseTool.h:
+	* ExternProto.cpp:
+	* Inline.cpp:
+	* X3DBindableNode.h:
+	* X3DJavaScriptContext.h:
+	* X3DJavaScriptContext.cpp:
+	* jsContext.h:
+	* X3DBindableNode.cpp:
+	* jsContext.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DKeyDeviceSensorNode.h:
+	* X3DKeyDeviceSensorNode.cpp: 
+
+2014-05-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* X3DBaseTool.h:

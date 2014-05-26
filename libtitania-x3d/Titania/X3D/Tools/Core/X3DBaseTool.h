@@ -103,7 +103,7 @@ public:
 
 	virtual
 	const SFBool &
-	isLive () const  final override
+	isLive () const final override
 	{ return node -> isLive (); }
 
 	virtual

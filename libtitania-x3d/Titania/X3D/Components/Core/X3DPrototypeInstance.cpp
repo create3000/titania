@@ -240,7 +240,10 @@ X3DPrototypeInstance::removeTool (const bool really)
 void
 X3DPrototypeInstance::set_live ()
 {
-	live = getExecutionContext () -> isLive () and X3DBaseNode::isLive ();
+	const bool value = getExecutionContext () -> isLive () and X3DBaseNode::isLive ();
+
+	if (value not_eq live)
+		live = value;
 }
 
 void

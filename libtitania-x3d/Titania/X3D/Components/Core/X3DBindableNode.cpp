@@ -101,6 +101,31 @@ X3DBindableNode::removeLayer (X3DLayerNode* const layer)
 }
 
 void
+X3DBindableNode::set_live ()
+{
+	if (isLive () == live)
+		return;
+
+	live = isLive ();
+
+	if (live)
+	{
+		if (wasBound)
+		{
+			for (const auto & layer : layers)
+				bindToLayer (layer);
+		}
+	}
+	else
+	{
+		wasBound = isBound ();
+
+		for (const auto & layer : layers)
+			removeFromLayer (layer);
+	}
+}
+
+void
 X3DBindableNode::_set_bind ()
 {
 	if (set_bind ())
@@ -126,31 +151,6 @@ X3DBindableNode::_set_bind ()
 
 		for (const auto & layer : layers)
 			unbindFromLayer (layer);
-	}
-}
-
-void
-X3DBindableNode::set_live ()
-{
-	if (isLive () == live)
-		return;
-
-	live = isLive ();
-
-	if (live)
-	{
-		if (wasBound)
-		{
-			for (const auto & layer : layers)
-				bindToLayer (layer);
-		}
-	}
-	else
-	{
-		wasBound = isBound ();
-
-		for (const auto & layer : layers)
-			removeFromLayer (layer);
 	}
 }
 

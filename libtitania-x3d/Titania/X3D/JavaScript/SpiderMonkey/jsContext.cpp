@@ -102,11 +102,10 @@ JSClass jsContext::global_class = {
 
 jsContext::jsContext (Script* const script, const std::string & ecmascript, const basic::uri & uri, const size_t index) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
-	X3DJavaScriptContext (),
+	X3DJavaScriptContext (script),
 	             runtime (nullptr),
 	             context (nullptr),
 	              global (nullptr),
-	              script (script),
 	            worldURL ({ uri }),
 	               index (index),
 	        initializeFn (),
@@ -161,9 +160,9 @@ jsContext::create (X3DExecutionContext* const) const
 {
 	std::string ecmascript;
 
-	script -> loadDocument (script -> url () [index], ecmascript);
+	getScriptNode () -> loadDocument (getScriptNode () -> url () [index], ecmascript);
 
-	return new jsContext (script, ecmascript, worldURL .front (), index);
+	return new jsContext (getScriptNode (), ecmascript, worldURL .front (), index);
 }
 
 void
@@ -240,7 +239,7 @@ jsContext::initContext ()
 void
 jsContext::initNode ()
 {
-	for (auto & field : script -> getUserDefinedFields ())
+	for (auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
@@ -330,7 +329,7 @@ jsContext::initEventHandler ()
 	eventsProcessedFn = getFunction ("eventsProcessed");
 	shutdownFn        = getFunction ("shutdown");
 
-	for (const auto & field : script -> getUserDefinedFields ())
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
@@ -485,6 +484,26 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 }
 
 void
+jsContext::initialize ()
+{
+	X3DJavaScriptContext::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
+	isLive () .addInterest (this, &jsContext::set_live);
+
+	set_live ();
+
+	if (not JSVAL_IS_VOID (initializeFn))
+		callFunction (initializeFn);
+}
+
+void
+jsContext::prepareEvents ()
+{
+	callFunction (prepareEventsFn);
+}
+
+void
 jsContext::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
@@ -493,11 +512,11 @@ jsContext::set_live ()
 			getBrowser () -> prepareEvents () .addInterest (this, &jsContext::prepareEvents);
 
 		if (not JSVAL_IS_VOID (eventsProcessedFn))
-			script -> addInterest (this, &jsContext::eventsProcessed);
+			getScriptNode () -> addInterest (this, &jsContext::eventsProcessed);
 
-		script -> addInterest (this, &jsContext::finish);
+		getScriptNode () -> addInterest (this, &jsContext::finish);
 
-		for (const auto & field : script -> getUserDefinedFields ())
+		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 		{
 			switch (field -> getAccessType ())
 			{
@@ -520,11 +539,11 @@ jsContext::set_live ()
 			getBrowser () -> prepareEvents () .removeInterest (this, &jsContext::prepareEvents);
 
 		if (not JSVAL_IS_VOID (eventsProcessedFn))
-			script -> removeInterest (this, &jsContext::eventsProcessed);
+			getScriptNode () -> removeInterest (this, &jsContext::eventsProcessed);
 
-		script -> removeInterest (this, &jsContext::finish);
+		getScriptNode () -> removeInterest (this, &jsContext::finish);
 
-		for (const auto & field : script -> getUserDefinedFields ())
+		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 		{
 			switch (field -> getAccessType ())
 			{
@@ -541,26 +560,6 @@ jsContext::set_live ()
 			}
 		}
 	}
-}
-
-void
-jsContext::initialize ()
-{
-	X3DJavaScriptContext::initialize ();
-
-	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
-	isLive () .addInterest (this, &jsContext::set_live);
-
-	set_live ();
-
-	if (not JSVAL_IS_VOID (initializeFn))
-		callFunction (initializeFn);
-}
-
-void
-jsContext::prepareEvents ()
-{
-	callFunction (prepareEventsFn);
 }
 
 void
