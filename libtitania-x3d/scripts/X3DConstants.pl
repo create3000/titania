@@ -36,7 +36,12 @@ insert ($_)
 	foreach sort `find '$components' -name \\*.cpp -exec echo {} \\;`;
 
 
-#####
+#######  X3DConstants.h
+say "";
+say "";
+say "X3DConstants.h";
+say "";
+say "";
 
 say "	// Base node type";
 say "";
@@ -56,10 +61,15 @@ foreach (sort @abstractNodeTypes)
 	say "\t$_,";
 }
 
-#####
 
 
-####
+#######  jsX3DConstants.h
+say "";
+say "";
+say "jsX3DConstants.h";
+say "";
+say "";
+
 my $js_n = 0;
 my $js_a = 0;
 say "		// Base node type";
@@ -92,7 +102,12 @@ foreach (sort @abstractNodeTypes)
 	$js_a = max $js_a, length $n;
 }
 
-#####
+#######  jsX3DConstants.h
+say "";
+say "";
+say "jsX3DConstants.h";
+say "";
+say "";
 
 say "	// Base node type";
 say "";
@@ -116,7 +131,12 @@ foreach (sort @abstractNodeTypes)
 	say sprintf "	static JSBool %-${la}s (JSContext*, JSObject*, jsid, jsval*);", $_;
 }
 
-#####
+####### jsX3DConstants.cpp
+say "";
+say "";
+say "jsX3DConstants.cpp";
+say "";
+say "";
 
 say "	// Base node type";
 say "";
@@ -131,9 +151,13 @@ foreach (sort @nodeTypes)
 	$n = "JS_" . uc $n;
 	$n =~ s/__/_/sgo;
 
-	say sprintf "	{ %-" . ($ln + 3) . "s %-" . ($js_n + 1) . "s JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, %-" . ($ln + 1) . "s NULL },",
+	#say sprintf "	{ %-" . ($ln + 3) . "s %-" . ($js_n + 1) . "s JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, %-" . ($ln + 1) . "s NULL },",
+	#	"\"$_\",",
+	#	"$n,",
+	#	"$_,";
+
+	say sprintf "	{ %-" . ($ln + 3) . "s JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, %-" . ($ln + 1) . "s NULL },",
 		"\"$_\",",
-		"$n,",
 		"$_,";
 }
 say "";
@@ -146,13 +170,22 @@ foreach (sort @abstractNodeTypes)
 	$n = "JS_" . uc $n;
 	$n =~ s/__/_/sgo;
 
-	say sprintf "	{ %-" . ($la + 3) . "s %-" . ($js_a + 1) . "s JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, %-" . ($la + 1) . "s NULL },",
+	#say sprintf "	{ %-" . ($la + 3) . "s %-" . ($js_a + 1) . "s JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, %-" . ($la + 1) . "s NULL },",
+	#	"\"$_\",",
+	#	"$n,",
+	#	"$_,";
+
+	say sprintf "	{ %-" . ($la + 3) . "s JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, %-" . ($la + 1) . "s NULL },",
 		"\"$_\",",
-		"$n,",
 		"$_,";
 }
 
-######
+####### jsX3DConstants.cpp
+say "";
+say "";
+say "jsX3DConstants.cpp";
+say "";
+say "";
 
 
 say "// Base node type";
@@ -189,6 +222,71 @@ jsX3DConstants::$_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	return JS_NewNumberValue (context, X3DConstants::$_, vp);
 }
 EOT
+}
+
+
+####### Generator.cpp
+say "";
+say "";
+say "Generator.cpp";
+say "";
+say "";
+
+say "	          // Base node type";
+say "";
+say "	          \"X3DBaseNode\",";
+say "";
+say "	          // Basic node types";
+say "";
+foreach (sort @nodeTypes)
+{
+	say "	          \"$_\",";
+}
+say "";
+say "	          // Abstract node types";
+say "";
+foreach (sort @abstractNodeTypes)
+{
+	say "	          \"$_\",";
+}
+
+
+
+####### X3DConstants.wrl
+say "";
+say "";
+say "X3DConstants.wrl";
+say "";
+say "";
+
+my $i = 0;
+say "	// Base node type";
+say "";
+say "	print ();";
+say "	print ('Base node type');";
+say "	print ();";
+say "	print ('X3DBaseNode: ', X3DConstants .X3DBaseNode == $i);";
+say "";
+say "	// Basic node types";
+say "";
+say "	print ();";
+say "	print ('Basic node types');";
+say "	print ();";
+foreach (sort @nodeTypes)
+{
+	++ $i;
+	say sprintf "	print ('%-${ln}s: ', X3DConstants .%-${ln}s == $i);", $_, $_;
+}
+say "";
+say "	// Abstract node types";
+say "";
+say "	print ();";
+say "	print ('Abstract node types');";
+say "	print ();";
+foreach (sort @abstractNodeTypes)
+{
+	++ $i;
+	say sprintf "	print ('%-${ln}s: ', X3DConstants .%-${ln}s == $i);", $_, $_;
 }
 
 

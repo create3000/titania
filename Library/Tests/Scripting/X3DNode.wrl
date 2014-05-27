@@ -1,0 +1,38 @@
+#VRML V2.0 utf8 Titania V0.6.8
+
+META "title" "X3DConstants"
+
+DEF Touch TouchSensor { }
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+  field   SFNode node USE Touch
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+	print ('Name:             ', node .getNodeName ());
+	print ('Type:             ', node .getNodeType ());
+	print ('FieldDefinitions: ', node .getFieldDefinitions ());
+	print ('toVRMLString:     ', node .toVRMLString ());
+	print ('toXMLString:      ', node .toXMLString ());
+
+	var type = node .getNodeType ();
+
+	print ('')
+	print ('TouchSensor: ', type [type .length - 1] == X3DConstants .TouchSensor)
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

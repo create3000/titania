@@ -1,5 +1,12 @@
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DConstants.pl:
+	* Generator.cpp:
+	* jsX3DConstants.h:
+	* jsX3DConstants.cpp: 
+
+2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DConstants.pl:
 	* X3DConstants.h:
