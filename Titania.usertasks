@@ -5,7 +5,7 @@
   <Task file="" description="an der Wand lang rutschen" />
   <Task file="" description="von Geistern schieben lassen" />
   <Task file="" description="bei jump collisision speed auf 0 setzen" />
-  <Task file="" description="X3DRenderObject" />
+  <Task file="" description="X3DRenderObject" completed="True" />
   <Task file="" description="Watch Inline unload when in sub scene. Check load state in Scene menu. Man darf nicht mehr in eine ungeladene Scene hineinkommen da diese sozusagen privat ist vom Inline." />
   <Task file="" description="save as before import when world not saved" />
   <Task file="" description="Strict warnings button in open and import dialog" />

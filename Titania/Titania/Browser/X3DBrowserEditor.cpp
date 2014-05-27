@@ -1935,7 +1935,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 		{
 			case X3D::X3DConstants::X3DLayerNode:
 				return true;
-			case X3D::X3DConstants::ProtoDeclaration:
+			case X3D::X3DConstants::X3DProtoObject:
 			case X3D::X3DConstants::X3DScriptNode:
 			case X3D::X3DConstants::X3DProgrammableShaderObject:
 			case X3D::X3DConstants::X3DBaseNode:
