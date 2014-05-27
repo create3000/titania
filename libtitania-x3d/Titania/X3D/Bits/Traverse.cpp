@@ -108,35 +108,40 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			return true;
 	}
 
-	if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
+	for (const auto & type : node -> getType ())
 	{
-		const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
-
-		if (instance)
+		switch (type)
 		{
-			for (auto & rootNode : instance -> getRootNodes ())
+			case X3DConstants::X3DPrototypeInstance:
 			{
-				if (traverse (rootNode, callback, distinct, flags, seen))
-					continue;
+				const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
 
-				return false;
+				for (auto & rootNode : instance -> getRootNodes ())
+				{
+					if (traverse (rootNode, callback, distinct, flags, seen))
+						continue;
+
+					return false;
+				}
+
+				break;
 			}
-		}
-	}
-
-	if (flags & TRAVERSE_INLINE_NODES)
-	{
-		const auto inlineNode = dynamic_cast <Inline*> (node .getValue ());
-
-		if (inlineNode)
-		{
-			for (auto & value : inlineNode -> getRootNodes ())
+			case X3DConstants::Inline:
 			{
-				if (traverse (value, callback, distinct, flags, seen))
-					continue;
+				const auto inlineNode = dynamic_cast <Inline*> (node .getValue ());
 
-				return false;
+				for (auto & value : inlineNode -> getRootNodes ())
+				{
+					if (traverse (value, callback, distinct, flags, seen))
+						continue;
+
+					return false;
+				}
+
+				break;
 			}
+			default:
+				break;
 		}
 	}
 
@@ -295,67 +300,71 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
+		for (const auto & type : node -> getType ())
 		{
-			const auto instance = dynamic_cast <X3DPrototypeInstance*> (node);
-
-			if (instance)
+			switch (type)
 			{
-				if (find (static_cast <X3DExecutionContext*> (instance), object, flags, hierarchy, seen))
-					return true;
-			}
-		}
-
-		const auto protoObject = dynamic_cast <X3DProtoObject*> (node);
-
-		if (protoObject)
-		{
-			const auto prototype = protoObject -> getProtoDeclaration ();
-
-			if (protoObject -> isExternproto ())
-			{
-				if (flags & TRAVERSE_EXTERN_PROTOS)
+				case X3DConstants::X3DPrototypeInstance:
 				{
-					if (find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchy, seen))
-						return true;
-				}
-			}
-			else
-			{
-				if (flags & TRAVERSE_PROTOTYPES)
-				{
-					if (find (static_cast <X3DExecutionContext*> (prototype), object, flags, hierarchy, seen))
-						return true;
-				}
-			}
-		}
-		else
-		{
-			if (flags & TRAVERSE_INLINE_NODES)
-			{
-				const auto inlineNode = dynamic_cast <Inline*> (node);
-
-				if (inlineNode)
-				{
-					if (find (static_cast <X3DExecutionContext*> (inlineNode -> getInternalScene ()), object, flags, hierarchy, seen))
-						return true;
-				}
-			}
-
-			// Note: InlineTool is both Inline and X3DToolObject.
-
-			if (flags & TRAVERSE_TOOL_OBJECTS)
-			{
-				X3DToolObject* const tool = dynamic_cast <X3DToolObject*> (node);
-
-				if (tool)
-				{
-					for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
+					if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
 					{
-						if (find (rootNode, object, flags, hierarchy, seen))
+						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
 							return true;
 					}
+					
+					break;
 				}
+				case X3DConstants::ExternProtoDeclaration:
+				{
+					if (flags & TRAVERSE_EXTERN_PROTOS)
+					{
+						const auto externProto = dynamic_cast <ExternProto*> (node);
+
+						if (find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchy, seen))
+							return true;
+					}
+
+					break;
+				}
+				case X3DConstants::ProtoDeclaration:
+				{
+					if (flags & TRAVERSE_PROTOTYPES)
+					{
+						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
+							return true;
+					}
+
+					break;
+				}
+				case X3DConstants::Inline:
+				{
+					if (flags & TRAVERSE_INLINE_NODES)
+					{
+						const auto inlineNode = dynamic_cast <Inline*> (node);
+
+						if (find (static_cast <X3DExecutionContext*> (inlineNode -> getInternalScene ()), object, flags, hierarchy, seen))
+							return true;
+					}
+
+					break;
+				}
+				case X3DConstants::X3DToolObject:
+				{
+					if (flags & TRAVERSE_TOOL_OBJECTS)
+					{
+						const auto tool = dynamic_cast <X3DToolObject*> (node);
+
+						for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
+						{
+							if (find (rootNode, object, flags, hierarchy, seen))
+								return true;
+						}
+					}
+
+					break;
+				}
+				default:
+					break;
 			}
 		}
 	}
