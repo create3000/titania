@@ -1929,27 +1929,23 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 	if (not seen .emplace (node) .second)
 		return false;
 
-	// Do we found the layer?
-
-	if (dynamic_cast <X3D::X3DLayerNode*> (node))
-		return true;
-
-	// Bad nodes
-
-	if (dynamic_cast <X3D::X3DBrowser*> (node))
-		return false;
-
-	if (dynamic_cast <X3D::Scene*> (node))
-		return false;
-
-	if (dynamic_cast <X3D::Proto*> (node))
-		return false;
-
-	if (dynamic_cast <X3D::X3DScriptNode*> (node))
-		return false;
-
-	if (dynamic_cast <X3D::X3DProgrammableShaderObject*> (node))
-		return false;
+	for (const auto & type : node -> getType ())
+	{
+		switch (type)
+		{
+			case X3D::X3DConstants::X3DLayerNode:
+				return true;
+			case X3D::X3DConstants::X3DBrowser:
+			case X3D::X3DConstants::Scene:
+			case X3D::X3DConstants::ProtoDeclaration:
+			case X3D::X3DConstants::X3DScriptNode:
+			case X3D::X3DConstants::X3DProgrammableShaderObject:
+			case X3D::X3DConstants::X3DToolObject:
+				return false;
+			default:
+				break;
+		}
+	}
 
 	// Iterate over parents
 

@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Mon, 26 May 2014 09:57:53 GMT'/>
+    <meta name='modified' content='Tue, 27 May 2014 14:02:57 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -221,32 +221,35 @@
         </Shape>
       </Transform>
     </Anchor>
-    <Collision DEF='sss'>
-      <ProtoInstance name='Children1'>
-        <fieldValue name='children1'>
-          <Transform DEF='Cylinder'
-              translation='4.36274 1.14674 0'
-              scale='0.18003 0.18003 0.18003'>
-            <Shape>
-              <Appearance>
-                <Material/>
-              </Appearance>
-              <Cylinder/>
-            </Shape>
-          </Transform>
-          <Transform DEF='Cone1'
-              translation='3.31329 0.997151 0'
-              scale='0.197378 0.197378 0.197378'>
-            <Shape>
-              <Appearance>
-                <Material/>
-              </Appearance>
-              <Cone/>
-            </Shape>
-          </Transform>
-        </fieldValue>
-      </ProtoInstance>
-    </Collision>
+    <Transform
+        translation='0.564968 0.249562 0'>
+      <Collision DEF='sss'>
+        <ProtoInstance name='Children1'>
+          <fieldValue name='children1'>
+            <Transform DEF='Cylinder'
+                translation='4.36274 1.14674 0'
+                scale='0.18003 0.18003 0.18003'>
+              <Shape>
+                <Appearance>
+                  <Material/>
+                </Appearance>
+                <Cylinder/>
+              </Shape>
+            </Transform>
+            <Transform DEF='Cone1'
+                translation='3.31329 0.997151 0'
+                scale='0.197378 0.197378 0.197378'>
+              <Shape>
+                <Appearance>
+                  <Material/>
+                </Appearance>
+                <Cone/>
+              </Shape>
+            </Transform>
+          </fieldValue>
+        </ProtoInstance>
+      </Collision>
+    </Transform>
     <Billboard>
       <Transform DEF='Cone'
           translation='-1.66427 0.177755 0'
@@ -283,7 +286,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mo 26 Mai 2014 10:45:02 CEST"'>
+            string='"modified...", "Mo 26 Mai 2014 11:57:53 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -448,7 +451,7 @@ function initialize ()
         <ProximitySensor USE='_9'/>
         <Transform DEF='Box'
             translation='1.40843 1.10727 0.193803'
-            rotation='0 0 1 1.5708'
+            rotation='-0 -0 -1 5.91364'
             scale='0.2 0.2 0.2'>
           <Transform>
             <Shape>
