@@ -48,14 +48,20 @@
  *
  ******************************************************************************/
 
-#include "BasicNodeTypeArray.h"
+#ifndef __TITANIA_X3D_BASIC_NODE_TYPE_ARRAY_H__
+#define __TITANIA_X3D_BASIC_NODE_TYPE_ARRAY_H__
+
+#include "../Bits/X3DConstants.h"
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-//
+typedef std::vector <X3DConstants::NodeType> NodeTypeArray;
 
 } // X3D
 } // titania
 
-template class std::vector <titania::X3D::X3DConstants::BasicNodeType>;
+extern template class std::vector <titania::X3D::X3DConstants::NodeType>;
+
+#endif

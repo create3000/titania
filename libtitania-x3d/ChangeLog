@@ -1,5 +1,27 @@
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* findNode:
+	* X3DBaseNode.h:
+	* X3DConstants.h:
+	* X3DBrowser.h:
+	* NodeTypeArray.h:
+	* BaseNodeArray.h:
+	* BasicNodeArray.h:
+	* X3DBrowser.cpp:
+	* Generator.h:
+	* NodeTypeArray.cpp:
+	* BaseNodeArray.cpp:
+	* BasicNodeArray.cpp:
+	* Generator.cpp:
+	* BasicNodeTypeArray.h:
+	* BasicNodeTypeArray.cpp:
+	* SupportedNodes.h:
+	* SupportedNodes.cpp: 
+
+2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DConstants.pl:
 	* Generator.cpp:
 	* jsX3DConstants.h:

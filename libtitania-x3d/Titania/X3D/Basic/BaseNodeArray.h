@@ -48,20 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_NODE_TYPE_ARRAY_H__
-#define __TITANIA_X3D_BASIC_NODE_TYPE_ARRAY_H__
+#ifndef __TITANIA_X3D_BASIC_BASE_NODE_ARRAY_H__
+#define __TITANIA_X3D_BASIC_BASE_NODE_ARRAY_H__
 
-#include "../Bits/X3DConstants.h"
-#include <vector>
+#include "../Basic/X3DBaseNode.h"
+#include <Titania/Basic/IndexedMultiMap.h>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-typedef std::vector <X3DConstants::BasicNodeType> BasicNodeTypeArray;
+typedef basic::indexed_multimap <std::string, const X3DBaseNode*> BaseNodeArray;
 
 } // X3D
-} // titania
 
-extern template class std::vector <titania::X3D::X3DConstants::BasicNodeType>;
+extern template class basic::indexed_multimap <std::string, const X3D::X3DBaseNode*>;
+
+} // titania
 
 #endif

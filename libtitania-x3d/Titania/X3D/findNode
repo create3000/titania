@@ -1,10 +1,10 @@
 void
-Browser::setEditMode(X3DBaseNode* node, BasicNodeArray parents)
+Browser::setEditMode(X3DBaseNode* node, BaseNodeArray parents)
 {
 	if (!node)
 		return;
 
-	BasicNodeArray::const_iterator iter;
+	BaseNodeArray::const_iterator iter;
 	for( iter = parents.begin(); iter != parents.end(); ++iter )
 	{
 		if (node == *iter)

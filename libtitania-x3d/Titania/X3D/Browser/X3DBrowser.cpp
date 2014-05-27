@@ -194,7 +194,7 @@ throw (Error <INVALID_NAME>)
 	return supportedNodes .get (name);
 }
 
-const BasicNodeArray &
+const BaseNodeArray &
 X3DBrowser::getSupportedNodes () const
 throw (Error <DISPOSED>)
 {

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 
-#include "../Basic/BasicNodeArray.h"
+#include "../Basic/BaseNodeArray.h"
 #include "../Bits/Error.h"
 
 namespace titania {
@@ -70,7 +70,7 @@ public:
 	get (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
-	const BasicNodeArray &
+	const BaseNodeArray &
 	get () const;
 
 	void
@@ -82,7 +82,7 @@ public:
 
 private:
 
-	BasicNodeArray nodes;
+	BaseNodeArray nodes;
 
 };
 

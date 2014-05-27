@@ -123,7 +123,7 @@ public:
 	getSupportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
-	const BasicNodeArray &
+	const BaseNodeArray &
 	getSupportedNodes () const
 	throw (Error <DISPOSED>);
 

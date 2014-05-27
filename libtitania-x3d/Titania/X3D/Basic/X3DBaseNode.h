@@ -54,7 +54,7 @@
 #include "../Base/Output.h"
 #include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
-#include "../Basic/BasicNodeTypeArray.h"
+#include "../Basic/NodeTypeArray.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include "../Bits/Error.h"
 #include "../Bits/TraverseType.h"
@@ -157,7 +157,7 @@ public:
 	const std::string &
 	getComponentName () const = 0;
 
-	const BasicNodeTypeArray &
+	const NodeTypeArray &
 	getType () const
 	throw (Error <DISPOSED>)
 	{ return type; }
@@ -422,7 +422,7 @@ protected:
 	///  @name Misc
 
 	void
-	addType (const X3DConstants::BasicNodeType value)
+	addType (const X3DConstants::NodeType value)
 	{ type .emplace_back (value); }
 
 	void
@@ -499,7 +499,7 @@ private:
 	X3DBrowser* const          browser;          // This nodes Browser
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
-	BasicNodeTypeArray type;
+	NodeTypeArray type;
 
 	FieldDefinitionArray fieldDefinitions;       // Pre-defined and user-defined field definitions
 	FieldIndex           fields;                 // Pre-defined and user-defined fields

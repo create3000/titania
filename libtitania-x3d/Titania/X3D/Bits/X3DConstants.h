@@ -207,7 +207,7 @@ enum FieldType : uint8_t
 
 };
 
-enum BasicNodeType : uint16_t
+enum NodeType : uint16_t
 {
 	// Base node type
 

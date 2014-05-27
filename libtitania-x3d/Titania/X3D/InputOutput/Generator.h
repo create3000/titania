@@ -123,17 +123,17 @@ public:
 
 	};
 
-	class BasicNodeTypeIndex
+	class NodeTypeIndex
 	{
 	public:
 
-		BasicNodeTypeIndex ();
+		NodeTypeIndex ();
 
 		const std::string &
 		operator [ ] (const X3DBaseNode* const) const;
 
 		const std::string &
-		operator [ ] (const X3DConstants::BasicNodeType index) const
+		operator [ ] (const X3DConstants::NodeType index) const
 		{ return array [index]; }
 
 
@@ -252,7 +252,7 @@ public:
 	static const AccessTypesIndex     AccessTypes;
 	static const X3DAccessTypesIndex  X3DAccessTypes;
 	static const VrmlAccessTypesIndex VrmlAccessTypes;
-	static const BasicNodeTypeIndex   BasicNodeTypes;
+	static const NodeTypeIndex   NodeTypes;
 
 
 private:

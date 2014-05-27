@@ -315,7 +315,7 @@ throw (Error <INVALID_NAME>)
 	}
 }
 
-const BasicNodeArray &
+const BaseNodeArray &
 SupportedNodes::get () const
 {
 	return nodes;

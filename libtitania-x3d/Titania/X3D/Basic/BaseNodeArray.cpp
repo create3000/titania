@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "BasicNodeArray.h"
+#include "BaseNodeArray.h"
 
 namespace titania {
 namespace X3D {

@@ -435,7 +435,6 @@
     <None Include="Titania\X3D\Configuration\ProfileInfoArray.h" />
     <None Include="Titania\X3D\Configuration\SupportedFields.h" />
     <None Include="Titania\X3D\Execution\X3DScene.h" />
-    <None Include="Titania\X3D\Basic\BasicNodeArray.h" />
     <None Include="Titania\X3D\Types\Geometry.h" />
     <None Include="Titania\X3D\Types\Numbers.h" />
     <None Include="libtitania-x3d.md.pc" />
@@ -680,7 +679,6 @@
     <None Include="Titania\X3D\Execution\ExportedNodeIndex.h" />
     <None Include="Titania\X3D\Execution\ImportedNodeIndex.h" />
     <None Include="Titania\X3D\Types\Array.h" />
-    <None Include="Titania\X3D\Basic\BasicNodeTypeArray.h" />
     <None Include="Titania\X3D\Tools\Core\X3DBaseTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DChildNodeTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DNodeTool.h" />
@@ -691,6 +689,8 @@
     <None Include="Titania\X3D\Fields\FieldArray.h" />
     <None Include="Titania\X3D\Basic\FieldSet.h" />
     <None Include="scripts\X3DConstants.pl" />
+    <None Include="Titania\X3D\Basic\BaseNodeArray.h" />
+    <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1021,7 +1021,6 @@
     <Compile Include="Titania\X3D\Execution\X3DScene.cpp" />
     <Compile Include="Titania\X3D\Configuration\ComponentInfoArray.cpp" />
     <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
-    <Compile Include="Titania\X3D\Basic\BasicNodeArray.cpp" />
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.cpp" />
@@ -1179,10 +1178,11 @@
     <Compile Include="Titania\X3D\Configuration\SupporteFieldArray.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\ImportedNodeIndex.cpp" />
-    <Compile Include="Titania\X3D\Basic\BasicNodeTypeArray.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\GroupTool.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldSet.cpp" />
+    <Compile Include="Titania\X3D\Basic\BaseNodeArray.cpp" />
+    <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
