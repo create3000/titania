@@ -66,6 +66,8 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	     active (),
 	   children ()
 {
+	addType (X3DConstants::Selection);
+
 	X3DChildObject::addChildren (active, children);
 }
 

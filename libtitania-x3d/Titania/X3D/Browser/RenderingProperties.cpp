@@ -98,6 +98,8 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	     fields (),
 	      world ()
 {
+	addType (X3DConstants::RenderingProperties);
+
 	addField (outputOnly, "Vendor",         vendor ());
 	addField (outputOnly, "Renderer",       renderer ());
 	addField (outputOnly, "Version",        version ());

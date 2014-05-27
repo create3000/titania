@@ -71,6 +71,8 @@ Notification::Notification (X3DExecutionContext* const executionContext) :
 	     fields (),
 	      world ()
 {
+	addType (X3DConstants::Notification);
+
 	addField (inputOutput, "string", string ());
 	
 	addChildren (world);

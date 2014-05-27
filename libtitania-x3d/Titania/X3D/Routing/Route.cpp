@@ -74,6 +74,8 @@ Route::Route (X3DExecutionContext* const executionContext,
 	         connected (false),
 	disconnectedOutput ()
 {
+	addType (X3DConstants::Route);
+
 	addChildren (sourceNode, destinationNode);
 }
 

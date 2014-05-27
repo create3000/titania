@@ -62,6 +62,8 @@ const std::string FieldSet::containerField = "fieldContainer";
 FieldSet::FieldSet (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext)
 {
+	addType (X3DConstants::FieldSet);
+
 	setup ();
 }
 

@@ -90,7 +90,9 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	executionContextStack (),
 	      currentComments (),
 	          whitespaces ()
-{ }
+{
+	addType (X3DConstants::Parser);
+}
 
 void
 Parser::parseIntoScene ()

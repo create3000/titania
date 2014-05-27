@@ -107,6 +107,8 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (executionContext)
 {
+	addType (X3DConstants::BrowserOptions);
+
 	addField (inputOutput, "SplashScreen",           splashScreen ());
 	addField (inputOutput, "Dashboard",              dashboard ());
 	addField (inputOutput, "Rubberband",             rubberBand ());

@@ -69,6 +69,8 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 	X3DExecutionContext (),
 	     X3DProtoObject ()
 {
+	addType (X3DConstants::ProtoDeclaration);
+
 	addField (inputOutput, "metadata", metadata ());
 
 	setEncoding             (executionContext -> getEncoding ());

@@ -78,7 +78,9 @@ Browser::Browser () :
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (this),
 	pointingDevice  (this)
-{ }
+{
+	addType (X3DConstants::Browser);
+}
 
 
 Browser::Browser (const Browser & sharingSurface) :
@@ -88,7 +90,9 @@ Browser::Browser (const Browser & sharingSurface) :
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (this),
 	pointingDevice  (this)
-{ }
+{
+	addType (X3DConstants::Browser);
+}
 
 Browser*
 Browser::create (X3DExecutionContext* const) const

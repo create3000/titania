@@ -69,6 +69,8 @@ MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields ()
 {
+	addType (X3DConstants::MotionBlur);
+
 	addField (inputOutput, "enabled",     enabled ());
 	addField (inputOutput, "intensity", intensity ());
 }

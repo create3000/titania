@@ -64,6 +64,8 @@ NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode 
 	        node (_node),
 	        name (_node -> getName ())
 {
+	addType (X3DConstants::NamedNode);
+
 	addChildren (node);
 }
 

@@ -75,6 +75,8 @@ throw (Error <INVALID_NAME>,
 	exportedName (exportedName),
 	importedName (importedName)
 {
+	addType (X3DConstants::ImportedNode);
+
 	addChildren (inlineNode, exportedNode);
 }
 

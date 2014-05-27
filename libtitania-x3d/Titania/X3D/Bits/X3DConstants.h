@@ -505,7 +505,57 @@ enum NodeType : uint16_t
 	X3DVertexAttributeNode,
 	X3DViewpointNode,
 	X3DViewpointObject,
-	X3DViewportNode
+	X3DViewportNode,
+	
+	// Browser node types
+	
+	Browser,
+	BrowserApplication,
+	BrowserOptions,
+	BrowserProperties,
+	Console,
+	ExportedNode,
+	ExternProtoDeclaration,
+	FieldSet,
+	ImportedNode,
+	MotionBlur,
+	NamedNode,
+	Notification,
+	Parser,
+	ProtoDeclaration,
+	RenderingProperties,
+	Route,
+	Scene,
+	Selection,
+	SpiderMonkey,
+	World,
+	X3DBrowser,
+	X3DBrowserContext,
+	X3DExecutionContext,
+	X3DJavaScriptContext,
+	X3DJavaScriptEngine,
+	X3DParser,
+	X3DProtoObject,
+	X3DRenderObject,
+	X3DRouterObject,
+	X3DScene,
+	
+	
+	// Tool nodes
+	
+	AnchorTool,
+	BillboardTool,
+	CollisionTool,
+	GroupTool,
+	InlineTool,
+	LODTool,
+	ProximitySensorTool,
+	ScreenGroupTool,
+	ShapeTool,
+	SwitchTool,
+	TransformTool,
+	VisibilitySensorTool,
+	X3DToolObject
 
 };
 

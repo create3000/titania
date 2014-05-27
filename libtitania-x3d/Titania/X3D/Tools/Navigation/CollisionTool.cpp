@@ -60,7 +60,9 @@ CollisionTool::CollisionTool (Collision* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <Collision> (node),
 	X3DGroupingNodeTool <Collision> (ToolColors::RED)
-{ }
+{
+	addType (X3DConstants::CollisionTool);
+}
 
 void
 CollisionTool::initialize ()

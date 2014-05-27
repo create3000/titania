@@ -59,7 +59,9 @@ BillboardTool::BillboardTool (Billboard* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <Billboard> (node),
 	X3DGroupingNodeTool <Billboard> (ToolColors::PINK, true)
-{ }
+{
+	addType (X3DConstants::BillboardTool);
+}
 
 void
 BillboardTool::realize ()

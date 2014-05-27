@@ -60,7 +60,9 @@ AnchorTool::AnchorTool (Anchor* const node) :
 	        X3DBaseTool <Anchor> (node),
 	X3DGroupingNodeTool <Anchor> (ToolColors::LILA),
 	   X3DUrlObjectTool <Anchor> ()
-{ }
+{
+	addType (X3DConstants::AnchorTool);
+}
 
 void
 AnchorTool::initialize ()

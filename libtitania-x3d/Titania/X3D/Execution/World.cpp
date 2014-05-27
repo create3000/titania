@@ -70,6 +70,8 @@ World::World (X3DExecutionContext* const executionContext) :
 	          layer0 (new Layer (executionContext)),
 	     activeLayer (layer0)
 {
+	addType (X3DConstants::World);
+
 	addChildren (layerSet, defaultLayerSet, layer0, activeLayer);
 }
 

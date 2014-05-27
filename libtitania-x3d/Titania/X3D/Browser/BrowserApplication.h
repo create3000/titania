@@ -65,7 +65,9 @@ public:
 		    X3DBaseNode (this, this),
 		     X3DBrowser (),
 		         viewer (ViewerType::NONE)
-	{ }
+	{
+		addType (X3DConstants::BrowserApplication);
+	}
 
 	virtual
 	void

@@ -72,6 +72,7 @@ X3DBrowser::X3DBrowser () :
 	enable_backtrace ();
 
 	setName ("Titania");
+	addType (X3DConstants::X3DBrowser);
 
 	addChildren (description,
 	             browserOptions,

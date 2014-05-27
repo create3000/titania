@@ -59,7 +59,9 @@ LODTool::LODTool (LOD* const node) :
 	              X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <LOD> (node),
 	X3DGroupingNodeTool <LOD> (ToolColors::CYAN, true)
-{ }
+{
+	addType (X3DConstants::LODTool);
+}
 
 void
 LODTool::realize ()

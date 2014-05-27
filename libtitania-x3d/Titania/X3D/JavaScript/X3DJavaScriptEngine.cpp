@@ -55,7 +55,9 @@ namespace X3D {
 
 X3DJavaScriptEngine::X3DJavaScriptEngine () :
 	X3DBaseNode ()
-{ }
+{
+	addType (X3DConstants::X3DJavaScriptEngine);
+}
 
 } // X3D
 } // titania

@@ -59,7 +59,9 @@ VisibilitySensorTool::VisibilitySensorTool (VisibilitySensor* const node) :
 	                                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                   X3DBaseTool <VisibilitySensor> (node),
 	X3DEnvironmentalSensorNodeTool <VisibilitySensor> (Color3f (1, 0, 0))
-{ }
+{
+	addType (X3DConstants::VisibilitySensorTool);
+}
 
 } // X3D
 } // titania

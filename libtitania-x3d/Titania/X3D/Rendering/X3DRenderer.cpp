@@ -83,7 +83,9 @@ X3DRenderer::X3DRenderer () :
 	     numOpaqueShapes (0),
 	numTransparentShapes (0),
 	  numCollisionShapes (0)
-{ }
+{
+	addType (X3DConstants::X3DRenderObject);
+}
 
 void
 X3DRenderer::initialize ()

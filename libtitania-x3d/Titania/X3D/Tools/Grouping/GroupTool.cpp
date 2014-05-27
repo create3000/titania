@@ -59,7 +59,9 @@ GroupTool::GroupTool (Group* const node) :
 	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <Group> (node),
 	X3DGroupingNodeTool <Group> (ToolColors::GREEN)
-{ }
+{
+	addType (X3DConstants::GroupTool);
+}
 
 } // X3D
 } // titania

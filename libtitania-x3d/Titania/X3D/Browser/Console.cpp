@@ -70,6 +70,8 @@ Console::Console (X3DExecutionContext* const executionContext) :
 	     fields (),
 	     string ()
 {
+	addType (X3DConstants::Console);
+
 	addField (inputOnly,   "set_string",     set_string ());
 	addField (outputOnly,  "string_changed", string_changed ());
 }

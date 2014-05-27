@@ -106,13 +106,15 @@ X3DExecutionContext::X3DExecutionContext () :
 	           rootNodes (),
 	  uninitializedNodes ()
 {
-	rootNodes .setName ("rootNodes");     // Set this for numClones.
+	addType (X3DConstants::X3DExecutionContext);
 
 	addChildren (importedNodesOutput,
 	             prototypesOutput,
 	             externProtosOutput,
 	             rootNodes,
 	             uninitializedNodes);
+
+	rootNodes .setName ("rootNodes");     // Set this for numClones.
 }
 
 void

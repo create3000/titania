@@ -62,7 +62,9 @@ InlineTool::InlineTool (Inline* const node) :
 	    X3DChildNodeTool <Inline> (),
 	X3DBoundedObjectTool <Inline> (ToolColors::WHITE),
 	    X3DUrlObjectTool <Inline> ()
-{ }
+{
+	addType (X3DConstants::InlineTool);
+}
 
 void
 InlineTool::initialize ()

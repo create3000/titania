@@ -61,7 +61,9 @@ ShapeTool::ShapeTool (Shape* const node) :
 	             X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	     X3DBaseTool <Shape> (node),
 	X3DShapeNodeTool <Shape> (ToolColors::ORANGE)
-{ }
+{
+	addType (X3DConstants::ShapeTool);
+}
 
 } // X3D
 } // titania

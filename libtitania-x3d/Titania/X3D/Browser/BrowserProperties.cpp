@@ -84,6 +84,8 @@ BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContex
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields ()
 {
+	addType (X3DConstants::BrowserProperties);
+
 	addField (initializeOnly, "ABSTRACT_NODES",        abstractNodes ());
 	addField (initializeOnly, "CONCRETE_NODES",        concreteNodes ());
 	addField (initializeOnly, "EXTERNAL_INTERACTIONS", externalInteractions ());

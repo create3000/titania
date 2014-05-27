@@ -195,7 +195,6 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	         node (node)
 {
 	assert (node);
-
 	node -> addParent (this);
 
 	for (auto & field : node -> getPreDefinedFields ())

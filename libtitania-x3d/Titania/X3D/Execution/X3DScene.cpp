@@ -72,6 +72,8 @@ X3DScene::X3DScene () :
 	exportedNodesOutput (),
 	         compressed (false)
 {
+	addType (X3DConstants::X3DScene);
+
 	addChildren (exportedNodesOutput);
 }
 

@@ -59,7 +59,9 @@ ProximitySensorTool::ProximitySensorTool (ProximitySensor* const node) :
 	                                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                   X3DBaseTool <ProximitySensor> (node),
 	X3DEnvironmentalSensorNodeTool <ProximitySensor> (Color3f (0.5, 0, 1))
-{ }
+{
+	addType (X3DConstants::ProximitySensorTool);
+}
 
 } // X3D
 } // titania

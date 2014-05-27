@@ -67,7 +67,9 @@ SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
 	               name (),
 	        description (),
 	            version ()
-{ }
+{
+	addType (X3DConstants::SpiderMonkey);
+}
 
 SpiderMonkey*
 SpiderMonkey::create (X3DExecutionContext* const executionContext)  const

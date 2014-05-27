@@ -68,7 +68,9 @@ TransformTool::TransformTool (Transform* const node) :
 	                   parentMatrix (),
 	                         matrix (),
 	                 interestEvents (node -> isTainted ())
-{ }
+{
+	addType (X3DConstants::TransformTool);
+}
 
 void
 TransformTool::initialize ()

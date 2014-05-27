@@ -116,7 +116,9 @@ protected:
 	X3DProtoObject () :
 		X3DBaseNode (),
 		   comments ()
-	{ }
+	{
+		addType (X3DConstants::X3DProtoObject);
+	}
 
 	virtual
 	void

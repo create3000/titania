@@ -62,7 +62,9 @@ X3DRouterObject::X3DRouterObject () :
 	      nodes (),
 	  eventTime (chrono::now ()),
 	   nodeTime (chrono::now ())
-{ }
+{
+	addType (X3DConstants::X3DRouterObject);
+}
 
 EventId
 X3DRouterObject::addTaintedObject (X3DChildObject* const object, const EventPtr & event)

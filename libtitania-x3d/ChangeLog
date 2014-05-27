@@ -1,5 +1,53 @@
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* Route.cpp:
+	* FieldSet.cpp:
+	* X3DConstants.h:
+	* Console.cpp:
+	* Proto.cpp:
+	* Scene.cpp:
+	* Browser.cpp:
+	* World.cpp:
+	* X3DParser.cpp:
+	* Selection.cpp:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* NamedNode.cpp:
+	* X3DBaseTool.h:
+	* Notification.cpp:
+	* ShapeTool.cpp:
+	* ExternProto.cpp:
+	* X3DRenderer.cpp:
+	* BrowserOptions.cpp:
+	* X3DProtoObject.h:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* X3DRouterObject.cpp:
+	* SpiderMonkey.cpp:
+	* GroupTool.cpp:
+	* X3DToolObject.cpp:
+	* LODTool.cpp:
+	* BrowserApplication.h:
+	* X3DBrowserContext.cpp:
+	* BrowserProperties.cpp:
+	* SwitchTool.cpp:
+	* RenderingProperties.cpp:
+	* InlineTool.cpp:
+	* AnchorTool.cpp:
+	* ScreenGroupTool.cpp:
+	* TransformTool.cpp:
+	* MotionBlur.cpp:
+	* X3DExecutionContext.cpp:
+	* CollisionTool.cpp:
+	* BillboardTool.cpp:
+	* X3DJavaScriptEngine.cpp:
+	* X3DJavaScriptContext.cpp:
+	* ProximitySensorTool.cpp:
+	* VisibilitySensorTool.cpp: 
+
+2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* findNode:

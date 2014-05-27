@@ -92,13 +92,15 @@ X3DBrowserContext::X3DBrowserContext () :
 	                  notification (new Notification (this)),
 	                       console (new Console (this))
 {
-	initialized () .setName ("initialized");
+	addType (X3DConstants::X3DBrowserContext);
 
 	addChildren (initialized (),
 	             world,
 	             selection,
 	             notification,
 	             console);
+
+	initialized () .setName ("initialized");
 }
 
 void

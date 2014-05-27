@@ -57,7 +57,9 @@ namespace X3D {
 X3DJavaScriptContext::X3DJavaScriptContext (Script* const script) :
 	X3DBaseNode (),
 	     script (script)
-{ }
+{
+	addType (X3DConstants::X3DJavaScriptContext);
+}
 
 SFBool &
 X3DJavaScriptContext::isLive ()

@@ -61,7 +61,9 @@ ScreenGroupTool::ScreenGroupTool (ScreenGroup* const node) :
 	                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <ScreenGroup> (node),
 	X3DGroupingNodeTool <ScreenGroup> (LIME)
-{ }
+{
+	addType (X3DConstants::ScreenGroupTool);
+}
 
 } // X3D
 } // titania

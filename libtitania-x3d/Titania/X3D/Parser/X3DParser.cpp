@@ -55,12 +55,14 @@ namespace X3D {
 
 X3DParser::X3DParser () :
 	X3DBaseNode ()
-{ }
+{
+	addType (X3DConstants::X3DParser);
+}
 
 X3DBaseNode*
 X3DParser::create (X3DExecutionContext* const) const
 {
-	return NULL;
+	throw Error <NOT_SUPPORTED> ("X3DParser::create: not supported.");
 }
 
 } // X3D

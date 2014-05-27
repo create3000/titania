@@ -66,7 +66,9 @@ const std::string Scene::containerField = "scene";
 Scene::Scene (X3DBrowser* const browser) :
 	X3DBaseNode (browser, this),
 	   X3DScene ()
-{ }
+{
+	addType (X3DConstants::Scene);
+}
 
 Scene*
 Scene::create (X3DExecutionContext* const executionContext) const

@@ -62,6 +62,8 @@ X3DToolObject::X3DToolObject () :
 	 inlineNode (new Inline (getBrowser () -> getScene ())),
 	   toolNode ()
 {
+	addType (X3DConstants::X3DToolObject);
+
 	addChildren (inlineNode, toolNode);
 }
 

@@ -68,6 +68,8 @@ ExportedNode::ExportedNode (X3DScene* const scene,
 	exportedName (exportedName),
 	        node (_node)
 {
+	addType (X3DConstants::ExportedNode);
+
 	addChildren (node);
 }
 
