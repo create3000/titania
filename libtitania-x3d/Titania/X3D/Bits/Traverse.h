@@ -63,14 +63,14 @@
 namespace titania {
 namespace X3D {
 
-constexpr int TRAVERSE_EXTERN_PROTOS       = 1;
-constexpr int TRAVERSE_PROTOTYPES          = 1 << 1;
-constexpr int TRAVERSE_ROOT_NODES          = 1 << 2;
-constexpr int TRAVERSE_PROTOTYPE_INSTANCES = 1 << 3;
-constexpr int TRAVERSE_IMPORTED_NODES      = 1 << 4;
-constexpr int TRAVERSE_EXPORTED_NODES      = 1 << 5;
-constexpr int TRAVERSE_INLINE_NODES        = 1 << 6;
-constexpr int TRAVERSE_TOOL_OBJECTS        = 1 << 7;
+constexpr int TRAVERSE_EXTERN_PROTO_DECLARATIONS = 1;
+constexpr int TRAVERSE_PROTO_DECLARATIONS        = 1 << 1;
+constexpr int TRAVERSE_ROOT_NODES                = 1 << 2;
+constexpr int TRAVERSE_PROTOTYPE_INSTANCES       = 1 << 3;
+constexpr int TRAVERSE_IMPORTED_NODES            = 1 << 4;
+constexpr int TRAVERSE_EXPORTED_NODES            = 1 << 5;
+constexpr int TRAVERSE_INLINE_NODES              = 1 << 6;
+constexpr int TRAVERSE_TOOL_OBJECTS              = 1 << 7;
 
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
@@ -99,21 +99,30 @@ findParents (X3DChildObject* const self, std::vector <Type*> & parents, ChildObj
 	if (not seen .emplace (self) .second)
 		return;
 
-	const auto basenode = dynamic_cast <X3DBaseNode*> (self);
+	const auto node = dynamic_cast <X3DBaseNode*> (self);
 
-	if (basenode)
+	if (node)
 	{
-		if (dynamic_cast <X3DScene*> (basenode))
-			return;
-
-		if (dynamic_cast <X3DBrowser*> (basenode))
-			return;
-
-		if (not dynamic_cast <X3DNode*> (basenode))
-			return;
+		for (const auto & type : basic::reverse_adapter (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::ProtoDeclaration:
+				case X3D::X3DConstants::X3DScriptNode:
+				case X3D::X3DConstants::X3DProgrammableShaderObject:
+				case X3D::X3DConstants::X3DBaseNode:
+					return;
+				case X3D::X3DConstants::X3DNode:
+					goto NEXT;
+				default:
+					break;
+			}
+		}
 	}
 
-	Type* const parent = dynamic_cast <Type*> (self);
+NEXT:
+
+	const auto parent = dynamic_cast <Type*> (self);
 
 	if (parent)
 	{
@@ -122,7 +131,7 @@ findParents (X3DChildObject* const self, std::vector <Type*> & parents, ChildObj
 	}
 
 	for (const auto & object : self -> getParents ())
-		X3D::findParents <Type> (object, parents, seen);
+		findParents <Type> (object, parents, seen);
 }
 
 template <class Type>
@@ -133,7 +142,7 @@ findParents (const X3DNode* const self)
 	ChildObjectSet      seen;
 
 	for (const auto & object : self -> getParents ())
-		X3D::findParents <Type> (object, parents, seen);
+		findParents <Type> (object, parents, seen);
 
 	return parents;
 }

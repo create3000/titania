@@ -1,5 +1,15 @@
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* OutlineDragDrop.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp: 
+
+2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.cpp: 
 
 2014-05-26  Holger Seelig  <holger.seelig@yahoo.de>

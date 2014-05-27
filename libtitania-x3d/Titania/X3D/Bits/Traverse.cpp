@@ -54,8 +54,8 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ImportedNode.h"
-#include "../Prototype/ExternProto.h"
-#include "../Prototype/Proto.h"
+#include "../Prototype/ExternProtoDeclaration.h"
+#include "../Prototype/ProtoDeclaration.h"
 #include "../Tools/Core/X3DToolObject.h"
 
 namespace titania {
@@ -108,7 +108,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			return true;
 	}
 
-	for (const auto & type : node -> getType ())
+	for (const auto & type : basic::reverse_adapter (node -> getType ()))
 	{
 		switch (type)
 		{
@@ -189,7 +189,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	if (executionContext == object)
 		return true;
 
-	if (flags & TRAVERSE_EXTERN_PROTOS)
+	if (flags & TRAVERSE_EXTERN_PROTO_DECLARATIONS)
 	{
 		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		{
@@ -198,7 +198,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 		}
 	}
 
-	if (flags & TRAVERSE_PROTOTYPES)
+	if (flags & TRAVERSE_PROTO_DECLARATIONS)
 	{
 		for (const auto & prototype : executionContext -> getProtoDeclarations ())
 		{
@@ -300,7 +300,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		for (const auto & type : node -> getType ())
+		for (const auto & type : basic::reverse_adapter (node -> getType ()))
 		{
 			switch (type)
 			{
@@ -316,9 +316,9 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 				}
 				case X3DConstants::ExternProtoDeclaration:
 				{
-					if (flags & TRAVERSE_EXTERN_PROTOS)
+					if (flags & TRAVERSE_EXTERN_PROTO_DECLARATIONS)
 					{
-						const auto externProto = dynamic_cast <ExternProto*> (node);
+						const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
 
 						if (find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchy, seen))
 							return true;
@@ -328,7 +328,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 				}
 				case X3DConstants::ProtoDeclaration:
 				{
-					if (flags & TRAVERSE_PROTOTYPES)
+					if (flags & TRAVERSE_PROTO_DECLARATIONS)
 					{
 						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
 							return true;

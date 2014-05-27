@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "ExternProto.h"
+#include "ExternProtoDeclaration.h"
 
 #include "../Bits/Error.h"
 #include "../Browser/X3DBrowser.h"
@@ -62,11 +62,11 @@
 namespace titania {
 namespace X3D {
 
-const std::string ExternProto::componentName  = "Browser";
-const std::string ExternProto::typeName       = "EXTERNPROTO";
-const std::string ExternProto::containerField = "externProto";
+const std::string ExternProtoDeclaration::componentName  = "Browser";
+const std::string ExternProtoDeclaration::typeName       = "EXTERNPROTO";
+const std::string ExternProtoDeclaration::containerField = "externProto";
 
-ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
+ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DNode (),
  X3DProtoObject (),
@@ -82,30 +82,30 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	addChildren (url (), scene, prototype);
 }
 
-ExternProto*
-ExternProto::create (X3DExecutionContext* const executionContext) const
+ExternProtoDeclaration*
+ExternProtoDeclaration::create (X3DExecutionContext* const executionContext) const
 {
-	return new ExternProto (executionContext);
+	return new ExternProtoDeclaration (executionContext);
 }
 
-ExternProto*
-ExternProto::clone (X3DExecutionContext* const executionContext) const
+ExternProtoDeclaration*
+ExternProtoDeclaration::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProto*> (this));
+	executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProtoDeclaration*> (this));
 
-	return const_cast <ExternProto*> (this);
+	return const_cast <ExternProtoDeclaration*> (this);
 }
 
-ExternProto*
-ExternProto::copy (X3DExecutionContext* const executionContext) const
+ExternProtoDeclaration*
+ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		const auto externProto = dynamic_cast <ExternProto*> (executionContext -> findProtoObject (getName ()));
+		const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
 
 		if (externProto)
 			return externProto;
@@ -122,7 +122,7 @@ throw (Error <INVALID_NAME>,
 	return copy;
 }
 X3DPrototypeInstance*
-ExternProto::createInstance (X3DExecutionContext* const executionContext)
+ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
 // Spec says
 //throw (Error <INVALID_NODE>,
 //       Error <INVALID_OPERATION_TIMING>,
@@ -134,14 +134,14 @@ ExternProto::createInstance (X3DExecutionContext* const executionContext)
 }
 
 void
-ExternProto::initialize ()
+ExternProtoDeclaration::initialize ()
 {
 	X3DNode::initialize ();
 	X3DProtoObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &ExternProto::set_live);
-	isLive () .addInterest (this, &ExternProto::set_live);
+	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
+	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
 	for (const auto & field : getFieldDefinitions ())
 		field -> isTainted (true);
@@ -153,7 +153,7 @@ ExternProto::initialize ()
 }
 
 void
-ExternProto::requestImmediateLoad ()
+ExternProtoDeclaration::requestImmediateLoad ()
 // Spec says
 //throw (<Error <INVALID_OPERATION_TIMING>,
 //       <Error <DISPOSED>)
@@ -248,7 +248,7 @@ ExternProto::requestImmediateLoad ()
 }
 
 bool
-ExternProto::rewrite (Loader & loader)
+ExternProtoDeclaration::rewrite (Loader & loader)
 {
 	// Legacy code
 
@@ -287,7 +287,7 @@ ExternProto::rewrite (Loader & loader)
 }
 
 void
-ExternProto::set_live ()
+ExternProtoDeclaration::set_live ()
 {
 	if (checkLoadState () == COMPLETE_STATE)
 	{
@@ -299,7 +299,7 @@ ExternProto::set_live ()
 }
 
 void
-ExternProto::toStream (std::ostream & ostream) const
+ExternProtoDeclaration::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
@@ -423,7 +423,7 @@ ExternProto::toStream (std::ostream & ostream) const
 }
 
 void
-ExternProto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, size_t accessTypeLength, size_t typeLength) const
+ExternProtoDeclaration::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, size_t accessTypeLength, size_t typeLength) const
 {
 	for (const auto & comment : field -> getComments ())
 	{
@@ -449,7 +449,7 @@ ExternProto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 }
 
 void
-ExternProto::dispose ()
+ExternProtoDeclaration::dispose ()
 {
 	X3DUrlObject::dispose ();
 	X3DProtoObject::dispose ();
@@ -459,7 +459,7 @@ ExternProto::dispose ()
 }
 
 void
-ExternProto::toXMLStream (std::ostream & ostream) const
+ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
@@ -507,7 +507,7 @@ ExternProto::toXMLStream (std::ostream & ostream) const
 		<< "</ExternProtoDeclare>";
 }
 
-ExternProto::~ExternProto ()
+ExternProtoDeclaration::~ExternProtoDeclaration ()
 { }
 
 } // X3D

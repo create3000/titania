@@ -353,12 +353,12 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 {
 	// Get ExternProtos and Prototypes
 
-	std::map <X3D::ExternProtoPtr, size_t> externProtos;
+	std::map <X3D::ExternProtoDeclarationPtr, size_t> externProtos;
 
 	for (const auto & externProto : getExecutionContext () -> getExternProtoDeclarations ())
 		externProtos .emplace (externProto, externProtos .size ());
 
-	std::map <X3D::ProtoPtr, size_t> prototypes;
+	std::map <X3D::ProtoDeclarationPtr, size_t> prototypes;
 
 	for (const auto & prototype : getExecutionContext () -> getProtoDeclarations ())
 		prototypes .emplace (prototype, prototypes .size ());
@@ -398,8 +398,8 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 void
 X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executionContext,
-                                        std::map <X3D::ExternProtoPtr, size_t> & externProtos,
-                                        std::map <X3D::ProtoPtr, size_t> & prototypes) const
+                                        std::map <X3D::ExternProtoDeclarationPtr, size_t> & externProtos,
+                                        std::map <X3D::ProtoDeclarationPtr, size_t> & prototypes) const
 {
 	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & child)
 	               {
@@ -407,14 +407,14 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
 
 	                  if (instance)
 	                  {
-	                     const X3D::ExternProtoPtr externProto (instance -> getProtoObject ());
+	                     const X3D::ExternProtoDeclarationPtr externProto (instance -> getProtoObject ());
 
 	                     if (externProto)
 									externProtos .erase (externProto);
 
 	                     else
 	                     {
-	                        const X3D::ProtoPtr prototype (instance -> getProtoObject ());
+	                        const X3D::ProtoDeclarationPtr prototype (instance -> getProtoObject ());
 
 	                        if (prototype)
 	                        {
@@ -1929,23 +1929,25 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 	if (not seen .emplace (node) .second)
 		return false;
 
-	for (const auto & type : node -> getType ())
+	for (const auto & type : basic::reverse_adapter (node -> getType ()))
 	{
 		switch (type)
 		{
 			case X3D::X3DConstants::X3DLayerNode:
 				return true;
-			case X3D::X3DConstants::X3DBrowser:
-			case X3D::X3DConstants::Scene:
 			case X3D::X3DConstants::ProtoDeclaration:
 			case X3D::X3DConstants::X3DScriptNode:
 			case X3D::X3DConstants::X3DProgrammableShaderObject:
-			case X3D::X3DConstants::X3DToolObject:
+			case X3D::X3DConstants::X3DBaseNode:
 				return false;
+			case X3D::X3DConstants::X3DNode:
+				goto NEXT;
 			default:
 				break;
 		}
 	}
+
+NEXT:
 
 	// Iterate over parents
 

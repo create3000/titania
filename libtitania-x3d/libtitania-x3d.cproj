@@ -418,9 +418,7 @@
     <None Include="Titania\X3D\Configuration\SupportedComponents.h" />
     <None Include="Titania\X3D\Configuration\SupportedNodes.h" />
     <None Include="Titania\X3D\Configuration\SupportedProfiles.h" />
-    <None Include="Titania\X3D\Prototype\ExternProto.h" />
     <None Include="Titania\X3D\Prototype\ExternProtoArray.h" />
-    <None Include="Titania\X3D\Prototype\Proto.h" />
     <None Include="Titania\X3D\Prototype\ProtoArray.h" />
     <None Include="Titania\X3D\Execution\Scene.h" />
     <None Include="Titania\X3D\Execution\X3DExecutionContext.h" />
@@ -691,6 +689,8 @@
     <None Include="scripts\X3DConstants.pl" />
     <None Include="Titania\X3D\Basic\BaseNodeArray.h" />
     <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
+    <None Include="Titania\X3D\Prototype\ProtoDeclaration.h" />
+    <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -730,9 +730,7 @@
     <Compile Include="Titania\X3D\Parser\RegEx.cpp" />
     <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoArray.cpp" />
-    <Compile Include="Titania\X3D\Prototype\ExternProto.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoArray.cpp" />
-    <Compile Include="Titania\X3D\Prototype\Proto.cpp" />
     <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewVolume.cpp" />
     <Compile Include="Titania\X3D\Rendering\X3DRenderer.cpp" />
@@ -1183,6 +1181,8 @@
     <Compile Include="Titania\X3D\Basic\FieldSet.cpp" />
     <Compile Include="Titania\X3D\Basic\BaseNodeArray.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
+    <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
+    <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

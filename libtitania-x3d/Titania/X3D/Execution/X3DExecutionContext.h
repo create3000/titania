@@ -325,19 +325,19 @@ public:
 	isProtoDeclaration () const
 	{ return false; }
 
-	ProtoPtr
+	ProtoDeclarationPtr
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ProtoPtr &
-	addProtoDeclaration (const std::string &, const ProtoPtr &)
+	const ProtoDeclarationPtr &
+	addProtoDeclaration (const std::string &, const ProtoDeclarationPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	updateProtoDeclaration (const std::string &, const ProtoPtr &)
+	updateProtoDeclaration (const std::string &, const ProtoDeclarationPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -347,7 +347,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ProtoPtr &
+	const ProtoDeclarationPtr &
 	getProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -365,19 +365,19 @@ public:
 
 	///  @name Exterproto declaration handling
 
-	ExternProtoPtr
+	ExternProtoDeclarationPtr
 	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ExternProtoPtr &
-	addExternProtoDeclaration (const std::string &, const ExternProtoPtr &)
+	const ExternProtoDeclarationPtr &
+	addExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	updateExternProtoDeclaration (const std::string &, const ExternProtoPtr &)
+	updateExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -387,7 +387,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ExternProtoPtr &
+	const ExternProtoDeclarationPtr &
 	getExternProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,

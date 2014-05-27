@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-class Proto;
+class ProtoDeclaration;
 class X3DPrototypeInstance;
 
 class X3DProtoObject :
@@ -73,7 +73,7 @@ public:
 	///  @name Member access
 
 	virtual
-	Proto*
+	ProtoDeclaration*
 	getProtoDeclaration () = 0;
 
 	///  @name Operations

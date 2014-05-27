@@ -93,14 +93,14 @@ jsX3DExternProtoDeclaration::init (JSContext* const context, JSObject* const glo
 }
 
 JSBool
-jsX3DExternProtoDeclaration::create (JSContext* const context, const ExternProtoPtr & externproto, jsval* const vp)
+jsX3DExternProtoDeclaration::create (JSContext* const context, const ExternProtoDeclarationPtr & externproto, jsval* const vp)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	const auto field = new ExternProtoPtr (externproto);
+	const auto field = new ExternProtoDeclarationPtr (externproto);
 
 	JS_SetPrivate (context, result, field);
 
@@ -116,7 +116,7 @@ jsX3DExternProtoDeclaration::create (JSContext* const context, const ExternProto
 JSBool
 jsX3DExternProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, obj));
+	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, externproto -> getName (), vp);
 }
@@ -124,7 +124,7 @@ jsX3DExternProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, j
 JSBool
 jsX3DExternProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, obj));
+	auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
 
 	return jsFieldDefinitionArray::create (context, &externproto -> getFieldDefinitions (), vp);
 }
@@ -132,7 +132,7 @@ jsX3DExternProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id,
 JSBool
 jsX3DExternProtoDeclaration::urls (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, obj));
+	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewFieldValue (context, &externproto -> url (), vp);
 }
@@ -140,7 +140,7 @@ jsX3DExternProtoDeclaration::urls (JSContext* context, JSObject* obj, jsid id, j
 JSBool
 jsX3DExternProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, obj));
+	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
 
 	*vp = externproto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
 
@@ -150,7 +150,7 @@ jsX3DExternProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, j
 JSBool
 jsX3DExternProtoDeclaration::loadState (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, obj));
+	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, externproto -> checkLoadState (), vp);
 }
@@ -160,7 +160,7 @@ jsX3DExternProtoDeclaration::loadState (JSContext* context, JSObject* obj, jsid 
 JSBool
 jsX3DExternProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 	const X3DPrototypeInstancePtr instance = externproto -> createInstance ();
 
@@ -172,7 +172,7 @@ jsX3DExternProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval*
 JSBool
 jsX3DExternProtoDeclaration::loadNow (JSContext* context, uintN argc, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoPtr*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 	externproto -> requestImmediateLoad ();
 
@@ -184,7 +184,7 @@ jsX3DExternProtoDeclaration::loadNow (JSContext* context, uintN argc, jsval* vp)
 void
 jsX3DExternProtoDeclaration::finalize (JSContext* context, JSObject* obj)
 {
-	const auto externproto = static_cast <ExternProtoPtr*> (JS_GetPrivate (context, obj));
+	const auto externproto = static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
 
 	if (externproto)
 		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (externproto);

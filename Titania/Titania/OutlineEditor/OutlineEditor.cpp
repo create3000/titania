@@ -204,7 +204,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
+			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 
 			try
 			{
@@ -226,7 +226,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 		case OutlineIterType::ProtoDeclaration:
 		{
 			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   prototype = dynamic_cast <X3D::Proto*> (sfnode .getValue ());
+			const auto   prototype = dynamic_cast <X3D::ProtoDeclaration*> (sfnode .getValue ());
 
 			prototype -> realize ();
 
@@ -361,7 +361,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
+			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 
 			getBrowserWindow () -> addPrototypeInstance (externProto -> getName ());
 			break;
@@ -369,7 +369,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 		case OutlineIterType::ProtoDeclaration:
 		{
 			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   prototype = dynamic_cast <X3D::Proto*> (sfnode .getValue ());
+			const auto   prototype = dynamic_cast <X3D::ProtoDeclaration*> (sfnode .getValue ());
 
 			getBrowserWindow () -> addPrototypeInstance (prototype -> getName ());
 			break;
@@ -607,7 +607,7 @@ OutlineEditor::selectNode (const double x, const double y)
 			case OutlineIterType::ExternProtoDeclaration:
 			{
 				const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-				const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
+				const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 
 				isExternProto = externProto -> checkLoadState () not_eq X3D::FAILED_STATE;
 				isLocalNode   = sfnode -> getExecutionContext () == getExecutionContext ();

@@ -198,20 +198,20 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 		const auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
 		const auto sourceNode = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
 
-		const X3D::ExternProtoPtr sourceExternProto (sourceNode);
+		const X3D::ExternProtoDeclarationPtr sourceExternProto (sourceNode);
 
 		// Get destination extern proto.
 
 		const auto destIter = treeView -> get_model () -> get_iter (destinationPath);
 		const auto destNode = *static_cast <X3D::SFNode*> (treeView -> get_object (destIter));
 
-		const X3D::ExternProtoPtr destExternProto (destNode);
+		const X3D::ExternProtoDeclarationPtr destExternProto (destNode);
 
 		// Get destination extern protos.
 		
 		const auto executionContext = destExternProto -> getExecutionContext ();
 
-		std::vector <X3D::ExternProtoPtr> destExternProtos (executionContext -> getExternProtoDeclarations () .begin (),
+		std::vector <X3D::ExternProtoDeclarationPtr> destExternProtos (executionContext -> getExternProtoDeclarations () .begin (),
 		                                                    executionContext -> getExternProtoDeclarations () .end ());
 
 		// Insert source extern proto in destination extern protos.

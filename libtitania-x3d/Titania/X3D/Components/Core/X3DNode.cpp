@@ -73,7 +73,7 @@ X3DNode::X3DNode () :
 std::vector <X3DLayerNode*>
 X3DNode::getLayers () const
 {
-	return X3D::findParents <X3DLayerNode> (this);
+	return findParents <X3DLayerNode> (this);
 }
 
 X3DLayerNode*

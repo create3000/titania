@@ -53,7 +53,7 @@
 #include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/Scene.h"
-#include "../../Prototype/ExternProto.h"
+#include "../../Prototype/ExternProtoDeclaration.h"
 #include "../Networking/X3DUrlObject.h"
 
 #include "../../Tools/Core/X3DToolObject.h"
@@ -87,7 +87,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	// Interface
 
-	Proto* const prototype = protoObject -> getProtoDeclaration ();
+	ProtoDeclaration* const prototype = protoObject -> getProtoDeclaration ();
 
 	for (const auto & userDefinedField : prototype -> getUserDefinedFields ())
 	{
@@ -144,7 +144,7 @@ X3DPrototypeInstance::initialize ()
 	{
 		// Defer assigning imports and routes until now
 
-		Proto* const prototype = protoObject -> getProtoDeclaration ();
+		ProtoDeclaration* const prototype = protoObject -> getProtoDeclaration ();
 
 		importImportedNodes (prototype);
 		importRoutes (prototype);

@@ -58,7 +58,7 @@
 #include "../Execution/ImportedNode.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Grammar.h"
-#include "../Prototype/ExternProto.h"
+#include "../Prototype/ExternProtoDeclaration.h"
 
 namespace titania {
 namespace X3D {
@@ -813,7 +813,7 @@ Parser::proto ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const ProtoPtr _proto = getExecutionContext () -> createProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+						const ProtoDeclarationPtr _proto = getExecutionContext () -> createProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
 						getExecutionContext () -> updateProtoDeclaration (_nodeTypeId, _proto);
 
@@ -1058,7 +1058,7 @@ Parser::externproto ()
 
 					if (URLList (&_URLList))
 					{
-						const ExternProtoPtr _externProto = getExecutionContext () -> createExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+						const ExternProtoDeclarationPtr _externProto = getExecutionContext () -> createExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
 
 						getExecutionContext () -> updateExternProtoDeclaration (_nodeTypeId, _externProto);
 

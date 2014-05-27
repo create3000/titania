@@ -58,8 +58,8 @@
 #include "../Execution/ImportedNode.h"
 #include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
-#include "../Prototype/ExternProto.h"
-#include "../Prototype/Proto.h"
+#include "../Prototype/ExternProtoDeclaration.h"
+#include "../Prototype/ProtoDeclaration.h"
 
 #include <Titania/String/to_string.h>
 #include <Titania/Utility/Adapter.h>
@@ -555,7 +555,7 @@ throw (Error <INVALID_NODE>,
 
 //	Proto declaration handling
 
-ProtoPtr
+ProtoDeclarationPtr
 X3DExecutionContext::createProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -563,7 +563,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
 
-	const ProtoPtr prototype = new Proto (this);
+	const ProtoDeclarationPtr prototype = new ProtoDeclaration (this);
 
 	prototype -> setName (name);
 
@@ -582,8 +582,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return prototype;
 }
 
-const ProtoPtr &
-X3DExecutionContext::addProtoDeclaration (const std::string & name, const ProtoPtr & prototype)
+const ProtoDeclarationPtr &
+X3DExecutionContext::addProtoDeclaration (const std::string & name, const ProtoDeclarationPtr & prototype)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -606,7 +606,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateProtoDeclaration (const std::string & name, const ProtoPtr & prototype)
+X3DExecutionContext::updateProtoDeclaration (const std::string & name, const ProtoDeclarationPtr & prototype)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -648,7 +648,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	prototypesOutput = getCurrentTime ();
 }
 
-const ProtoPtr &
+const ProtoDeclarationPtr &
 X3DExecutionContext::getProtoDeclaration (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -666,12 +666,12 @@ throw (Error <INVALID_NAME>,
 
 //	ExternProto declaration handling
 
-ExternProtoPtr
+ExternProtoDeclarationPtr
 X3DExecutionContext::createExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const ExternProtoPtr externProto = new ExternProto (this);
+	const ExternProtoDeclarationPtr externProto = new ExternProtoDeclaration (this);
 
 	externProto -> setName (name);
 
@@ -688,8 +688,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return externProto;
 }
 
-const ExternProtoPtr &
-X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const ExternProtoPtr & externProto)
+const ExternProtoDeclarationPtr &
+X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const ExternProtoDeclarationPtr & externProto)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -712,7 +712,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const ExternProtoPtr & externProto)
+X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const ExternProtoDeclarationPtr & externProto)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -755,7 +755,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 const
-ExternProtoPtr &
+ExternProtoDeclarationPtr &
 X3DExecutionContext::getExternProtoDeclaration (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,

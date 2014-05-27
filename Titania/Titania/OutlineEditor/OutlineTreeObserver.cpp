@@ -120,7 +120,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode -> getValue ());
+			const auto externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode -> getValue ());
 
 			externProto -> getInternalScene () .addInterest (this, &OutlineTreeObserver::update_path, path);
 			break;
@@ -288,7 +288,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto externProto = dynamic_cast <X3D::ExternProto*> (sfnode -> getValue ());
+			const auto externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode -> getValue ());
 
 			externProto -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::update_path);
 

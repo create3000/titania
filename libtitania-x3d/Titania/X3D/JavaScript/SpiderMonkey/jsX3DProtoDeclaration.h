@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DPROTO_DECLARATION_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DPROTO_DECLARATION_H__
 
-#include "../../Prototype/Proto.h"
+#include "../../Prototype/ProtoDeclaration.h"
 #include <jsapi.h>
 
 namespace titania {
@@ -67,7 +67,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const ProtoPtr &, jsval* const);
+	create (JSContext* const, const ProtoDeclarationPtr &, jsval* const);
 
 	static
 	JSClass*

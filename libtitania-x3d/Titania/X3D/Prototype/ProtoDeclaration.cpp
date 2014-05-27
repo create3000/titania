@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "Proto.h"
+#include "ProtoDeclaration.h"
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
@@ -59,11 +59,11 @@
 namespace titania {
 namespace X3D {
 
-const std::string Proto::componentName  = "Browser";
-const std::string Proto::typeName       = "PROTO";
-const std::string Proto::containerField = "proto";
+const std::string ProtoDeclaration::componentName  = "Browser";
+const std::string ProtoDeclaration::typeName       = "PROTO";
+const std::string ProtoDeclaration::containerField = "proto";
 
-Proto::Proto (X3DExecutionContext* const executionContext) :
+ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
@@ -86,30 +86,30 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 	setUnits (executionContext -> getUnits ());
 }
 
-Proto*
-Proto::create (X3DExecutionContext* const executionContext) const
+ProtoDeclaration*
+ProtoDeclaration::create (X3DExecutionContext* const executionContext) const
 {
-	return new Proto (executionContext);
+	return new ProtoDeclaration (executionContext);
 }
 
-Proto*
-Proto::clone (X3DExecutionContext* const executionContext) const
+ProtoDeclaration*
+ProtoDeclaration::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	executionContext -> updateProtoDeclaration (this -> getName (), const_cast <Proto*> (this));
+	executionContext -> updateProtoDeclaration (this -> getName (), const_cast <ProtoDeclaration*> (this));
 
-	return const_cast <Proto*> (this);
+	return const_cast <ProtoDeclaration*> (this);
 }
 
-Proto*
-Proto::copy (X3DExecutionContext* const executionContext) const
+ProtoDeclaration*
+ProtoDeclaration::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		const auto proto = dynamic_cast <Proto*> (executionContext -> findProtoObject (getName ()));
+		const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
 
 		if (proto)
 			return proto;
@@ -131,7 +131,7 @@ throw (Error <INVALID_NAME>,
 }
 
 X3DPrototypeInstance*
-Proto::createInstance (X3DExecutionContext* const executionContext)
+ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
 // Spec says
 //throw (Error <INVALID_NODE>,
 //       Error <INVALID_OPERATION_TIMING>,
@@ -141,7 +141,7 @@ Proto::createInstance (X3DExecutionContext* const executionContext)
 }
 
 void
-Proto::initialize ()
+ProtoDeclaration::initialize ()
 {
 	X3DNode::initialize ();
 	X3DExecutionContext::initialize ();
@@ -151,7 +151,7 @@ Proto::initialize ()
 }
 
 void
-Proto::toStream (std::ostream & ostream) const
+ProtoDeclaration::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
@@ -279,7 +279,7 @@ Proto::toStream (std::ostream & ostream) const
 }
 
 void
-Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t accessTypeLength, const size_t typeLength) const
+ProtoDeclaration::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t accessTypeLength, const size_t typeLength) const
 {
 	for (const auto & comment : field -> getComments ())
 	{
@@ -312,7 +312,7 @@ Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, c
 }
 
 void
-Proto::toXMLStream (std::ostream & ostream) const
+ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
@@ -443,7 +443,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 }
 
 void
-Proto::dispose ()
+ProtoDeclaration::dispose ()
 {
 	X3DProtoObject::dispose ();
 	X3DExecutionContext::dispose ();

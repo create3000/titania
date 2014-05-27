@@ -55,14 +55,14 @@
 #include "../Components/Networking/X3DUrlObject.h"
 #include "../Execution/Scene.h"
 #include "../Fields.h"
-#include "../Prototype/Proto.h"
+#include "../Prototype/ProtoDeclaration.h"
 
 namespace titania {
 namespace X3D {
 
 class Loader;
 
-class ExternProto :
+class ExternProtoDeclaration :
 	public X3DNode, public X3DProtoObject, public X3DUrlObject
 {
 public:
@@ -71,20 +71,20 @@ public:
 
 	///  @name Construction
 
-	ExternProto (X3DExecutionContext* const);
+	ExternProtoDeclaration (X3DExecutionContext* const);
 
 	virtual
-	ExternProto*
+	ExternProtoDeclaration*
 	create (X3DExecutionContext* const) const final override;
 
 	virtual
-	ExternProto*
+	ExternProtoDeclaration*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
-	ExternProto*
+	ExternProtoDeclaration*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
@@ -117,7 +117,7 @@ public:
 	///  @name Member access
 
 	virtual
-	Proto*
+	ProtoDeclaration*
 	getProtoDeclaration () final override
 	{ return prototype; }
 
@@ -152,7 +152,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~ExternProto ();
+	~ExternProtoDeclaration ();
 
 
 private:
@@ -185,7 +185,7 @@ private:
 	///  @name Members
 
 	ScenePtr scene;
-	ProtoPtr prototype;
+	ProtoDeclarationPtr prototype;
 
 };
 

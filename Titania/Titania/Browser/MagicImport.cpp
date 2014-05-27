@@ -236,14 +236,14 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
-			                             X3D::ExternProtoPtr (protoObject));
+			                             X3D::ExternProtoDeclarationPtr (protoObject));
 		}
 		else
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
-			                             X3D::ProtoPtr (protoObject));
+			                             X3D::ProtoDeclarationPtr (protoObject));
 		}	
 	}
 }

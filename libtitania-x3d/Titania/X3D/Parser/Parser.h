@@ -54,7 +54,7 @@
 #include "../Bits/Error.h"
 #include "../Execution/Scene.h"
 #include "../Parser/X3DParser.h"
-#include "../Prototype/Proto.h"
+#include "../Prototype/ProtoDeclaration.h"
 
 #include <Titania/Stream/InputFileStream.h>
 

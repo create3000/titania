@@ -461,10 +461,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/RegEx.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
-	Titania/X3D/Prototype/ExternProto.cpp \
 	Titania/X3D/Prototype/ExternProtoArray.cpp \
-	Titania/X3D/Prototype/Proto.cpp \
+	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \
+	Titania/X3D/Prototype/ProtoDeclaration.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionShape.cpp \
 	Titania/X3D/Rendering/DepthBuffer.cpp \

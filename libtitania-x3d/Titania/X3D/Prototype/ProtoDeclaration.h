@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-class Proto :
+class ProtoDeclaration :
 	public X3DNode, public X3DExecutionContext, public X3DProtoObject
 {
 public:
@@ -68,20 +68,20 @@ public:
 
 	///  @name Construction
 
-	Proto (X3DExecutionContext* const);
+	ProtoDeclaration (X3DExecutionContext* const);
 
 	virtual
-	Proto*
+	ProtoDeclaration*
 	create (X3DExecutionContext* const) const final override;
 
 	virtual
-	Proto*
+	ProtoDeclaration*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
-	Proto*
+	ProtoDeclaration*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
@@ -142,7 +142,7 @@ public:
 	{ return getExecutionContext () -> getWorldURL (); }
 
 	virtual
-	Proto*
+	ProtoDeclaration*
 	getProtoDeclaration () final override
 	{ return this; }
 	

@@ -50,7 +50,7 @@
 
 #include "ExternProtoArray.h"
 
-#include "../Prototype/ExternProto.h"
+#include "../Prototype/ExternProtoDeclaration.h"
 
 namespace titania {
 namespace X3D {
@@ -59,6 +59,6 @@ namespace X3D {
 
 } // X3D
 
-template class basic::indexed_multimap <std::string, X3D::ExternProtoPtr>;
+template class basic::indexed_multimap <std::string, X3D::ExternProtoDeclarationPtr>;
 
 } // titania

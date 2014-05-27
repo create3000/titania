@@ -1,5 +1,38 @@
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Traverse.h:
+	* Pointer.h:
+	* Parser.h:
+	* Traverse.cpp:
+	* Parser.cpp:
+	* Proto.h:
+	* Proto.cpp:
+	* ProtoArray.h:
+	* ExternProto.h:
+	* ProtoArray.cpp:
+	* ExternProto.cpp:
+	* X3DProtoObject.h:
+	* X3DNode.cpp:
+	* ProtoDeclaration.h:
+	* ExternProtoArray.h:
+	* ExternProtoArray.cpp:
+	* ProtoDeclaration.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.h:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* jsX3DProtoDeclaration.h:
+	* jsX3DProtoDeclaration.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsX3DExternProtoDeclaration.cpp: 
+
+2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.cpp: 
 
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>

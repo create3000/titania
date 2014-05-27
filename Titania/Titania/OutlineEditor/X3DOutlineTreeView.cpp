@@ -186,10 +186,10 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 		flags |= X3D::TRAVERSE_INLINE_NODES;
 
 	if (expandExternProtos and externProtos)
-		flags |= X3D::TRAVERSE_EXTERN_PROTOS;
+		flags |= X3D::TRAVERSE_EXTERN_PROTO_DECLARATIONS;
 
 	if (prototypes)
-		flags |= X3D::TRAVERSE_PROTOTYPES;
+		flags |= X3D::TRAVERSE_PROTO_DECLARATIONS;
 
 	if (importedNodes)
 		flags |= X3D::TRAVERSE_IMPORTED_NODES;
@@ -815,7 +815,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		case OutlineIterType::ExternProtoDeclaration:
 		{
 			const auto & sfnode      = *static_cast <X3D::SFNode*> (get_object (iter));
-			const auto   externProto = dynamic_cast <X3D::ExternProto*> (sfnode .getValue ());
+			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 			const auto   url         = &externProto -> url ();
 
 			model_expand_node (sfnode, iter);

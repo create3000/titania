@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_CORE_X3DPROTOTYPE_INSTANCE_H__
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Prototype/Proto.h"
+#include "../../Prototype/ProtoDeclaration.h"
 #include "../Core/X3DNode.h"
 
 namespace titania {
