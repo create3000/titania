@@ -690,6 +690,7 @@
     <None Include="Titania\X3D\Fields\FieldPtr.h" />
     <None Include="Titania\X3D\Fields\FieldArray.h" />
     <None Include="Titania\X3D\Basic\FieldSet.h" />
+    <None Include="scripts\X3DConstants.pl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1237,6 +1238,7 @@
     <Folder Include="Titania\X3D\Browser\Shape\" />
     <Folder Include="Titania\X3D\Browser\Text\" />
     <Folder Include="Titania\X3D\Browser\ParticleSystems\" />
+    <Folder Include="scripts\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

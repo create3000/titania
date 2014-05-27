@@ -144,9 +144,236 @@ private:
 		JS_MFVEC4D,
 		JS_MFVEC4F,
 
-		// Node types
+		// Base node type
 
-		JS_X3D_APPEARANCECHILD_NODE,
+		JS_X3D_BASE_NODE,
+
+		// Basic node types
+
+		JS_ANCHOR,
+		JS_APPEARANCE,
+		JS_ARC2D,
+		JS_ARC_CLOSE2D,
+		JS_AUDIO_CLIP,
+		JS_BACKGROUND,
+		JS_BALL_JOINT,
+		JS_BILLBOARD,
+		JS_BOOLEAN_FILTER,
+		JS_BOOLEAN_SEQUENCER,
+		JS_BOOLEAN_TOGGLE,
+		JS_BOOLEAN_TRIGGER,
+		JS_BOUNDED_PHYSICS_MODEL,
+		JS_BOX,
+		JS_CAD_ASSEMBLY,
+		JS_CAD_FACE,
+		JS_CAD_LAYER,
+		JS_CAD_PART,
+		JS_CIRCLE2D,
+		JS_CLIP_PLANE,
+		JS_COLLIDABLE_OFFSET,
+		JS_COLLIDABLE_SHAPE,
+		JS_COLLISION,
+		JS_COLLISION_COLLECTION,
+		JS_COLLISION_SENSOR,
+		JS_COLLISION_SPACE,
+		JS_COLOR,
+		JS_COLOR_CHASER,
+		JS_COLOR_DAMPER,
+		JS_COLOR_INTERPOLATOR,
+		JS_COLORRGBA,
+		JS_COMPOSED_CUBE_MAP_TEXTURE,
+		JS_COMPOSED_SHADER,
+		JS_COMPOSED_TEXTURE3D,
+		JS_CONE,
+		JS_CONE_EMITTER,
+		JS_CONTACT,
+		JS_CONTOUR2D,
+		JS_CONTOUR_POLYLINE2D,
+		JS_COORDINATE,
+		JS_COORDINATE_CHASER,
+		JS_COORDINATE_DAMPER,
+		JS_COORDINATE_DOUBLE,
+		JS_COORDINATE_INTERPOLATOR,
+		JS_COORDINATE_INTERPOLATOR2D,
+		JS_CYLINDER,
+		JS_CYLINDER_SENSOR,
+		JS_DIS_ENTITY_MANAGER,
+		JS_DIS_ENTITY_TYPE_MAPPING,
+		JS_DIRECTIONAL_LIGHT,
+		JS_DISK2D,
+		JS_DOUBLE_AXIS_HINGE_JOINT,
+		JS_EASE_IN_EASE_OUT,
+		JS_ELEVATION_GRID,
+		JS_ESPDU_TRANSFORM,
+		JS_EXPLOSION_EMITTER,
+		JS_EXTRUSION,
+		JS_FILL_PROPERTIES,
+		JS_FLOAT_VERTEX_ATTRIBUTE,
+		JS_FOG,
+		JS_FOG_COORDINATE,
+		JS_FONT_STYLE,
+		JS_FORCE_PHYSICS_MODEL,
+		JS_GENERATED_CUBE_MAP_TEXTURE,
+		JS_GEO_COORDINATE,
+		JS_GEO_ELEVATION_GRID,
+		JS_GEOLOD,
+		JS_GEO_LOCATION,
+		JS_GEO_METADATA,
+		JS_GEO_ORIGIN,
+		JS_GEO_POSITION_INTERPOLATOR,
+		JS_GEO_PROXIMITY_SENSOR,
+		JS_GEO_TOUCH_SENSOR,
+		JS_GEO_TRANSFORM,
+		JS_GEO_VIEWPOINT,
+		JS_GROUP,
+		JS_H_ANIM_DISPLACER,
+		JS_H_ANIM_HUMANOID,
+		JS_H_ANIM_JOINT,
+		JS_H_ANIM_SEGMENT,
+		JS_H_ANIM_SITE,
+		JS_IMAGE_CUBE_MAP_TEXTURE,
+		JS_IMAGE_TEXTURE,
+		JS_IMAGE_TEXTURE3D,
+		JS_INDEXED_FACE_SET,
+		JS_INDEXED_LINE_SET,
+		JS_INDEXED_QUAD_SET,
+		JS_INDEXED_TRIANGLE_FAN_SET,
+		JS_INDEXED_TRIANGLE_SET,
+		JS_INDEXED_TRIANGLE_STRIP_SET,
+		JS_INLINE_NODE,
+		JS_INTEGER_SEQUENCER,
+		JS_INTEGER_TRIGGER,
+		JS_KEY_SENSOR,
+		JS_LOD,
+		JS_LAYER,
+		JS_LAYER_SET,
+		JS_LAYOUT,
+		JS_LAYOUT_GROUP,
+		JS_LAYOUT_LAYER,
+		JS_LINE_PICK_SENSOR,
+		JS_LINE_PROPERTIES,
+		JS_LINE_SET,
+		JS_LOAD_SENSOR,
+		JS_LOCAL_FOG,
+		JS_MATERIAL,
+		JS_MATRIX3_VERTEX_ATTRIBUTE,
+		JS_MATRIX4_VERTEX_ATTRIBUTE,
+		JS_METADATA_BOOLEAN,
+		JS_METADATA_DOUBLE,
+		JS_METADATA_FLOAT,
+		JS_METADATA_INTEGER,
+		JS_METADATA_SET,
+		JS_METADATA_STRING,
+		JS_MOTOR_JOINT,
+		JS_MOVIE_TEXTURE,
+		JS_MULTI_TEXTURE,
+		JS_MULTI_TEXTURE_COORDINATE,
+		JS_MULTI_TEXTURE_TRANSFORM,
+		JS_NAVIGATION_INFO,
+		JS_NORMAL,
+		JS_NORMAL_INTERPOLATOR,
+		JS_NURBS_CURVE,
+		JS_NURBS_CURVE2D,
+		JS_NURBS_ORIENTATION_INTERPOLATOR,
+		JS_NURBS_PATCH_SURFACE,
+		JS_NURBS_POSITION_INTERPOLATOR,
+		JS_NURBS_SET,
+		JS_NURBS_SURFACE_INTERPOLATOR,
+		JS_NURBS_SWEPT_SURFACE,
+		JS_NURBS_SWUNG_SURFACE,
+		JS_NURBS_TEXTURE_COORDINATE,
+		JS_NURBS_TRIMMED_SURFACE,
+		JS_ORIENTATION_CHASER,
+		JS_ORIENTATION_DAMPER,
+		JS_ORIENTATION_INTERPOLATOR,
+		JS_ORTHO_VIEWPOINT,
+		JS_PACKAGED_SHADER,
+		JS_PARTICLE_SYSTEM,
+		JS_PICKABLE_GROUP,
+		JS_PIXEL_TEXTURE,
+		JS_PIXEL_TEXTURE3D,
+		JS_PLANE_SENSOR,
+		JS_POINT_EMITTER,
+		JS_POINT_LIGHT,
+		JS_POINT_PICK_SENSOR,
+		JS_POINT_SET,
+		JS_POLYLINE2D,
+		JS_POLYLINE_EMITTER,
+		JS_POLYPOINT2D,
+		JS_POSITION_CHASER,
+		JS_POSITION_CHASER2D,
+		JS_POSITION_DAMPER,
+		JS_POSITION_DAMPER2D,
+		JS_POSITION_INTERPOLATOR,
+		JS_POSITION_INTERPOLATOR2D,
+		JS_PRIMITIVE_PICK_SENSOR,
+		JS_PROGRAM_SHADER,
+		JS_PROXIMITY_SENSOR,
+		JS_QUAD_SET,
+		JS_RECEIVER_PDU,
+		JS_RECTANGLE2D,
+		JS_RIGID_BODY,
+		JS_RIGID_BODY_COLLECTION,
+		JS_SCALAR_CHASER,
+		JS_SCALAR_DAMPER,
+		JS_SCALAR_INTERPOLATOR,
+		JS_SCREEN_FONT_STYLE,
+		JS_SCREEN_GROUP,
+		JS_SCRIPT,
+		JS_SHADER_PART,
+		JS_SHADER_PROGRAM,
+		JS_SHAPE,
+		JS_SIGNAL_PDU,
+		JS_SINGLE_AXIS_HINGE_JOINT,
+		JS_SLIDER_JOINT,
+		JS_SOUND,
+		JS_SPHERE,
+		JS_SPHERE_SENSOR,
+		JS_SPLINE_POSITION_INTERPOLATOR,
+		JS_SPLINE_POSITION_INTERPOLATOR2D,
+		JS_SPLINE_SCALAR_INTERPOLATOR,
+		JS_SPOT_LIGHT,
+		JS_SQUAD_ORIENTATION_INTERPOLATOR,
+		JS_STATIC_GROUP,
+		JS_STRING_SENSOR,
+		JS_SURFACE_EMITTER,
+		JS_SWITCH,
+		JS_TEX_COORD_CHASER2D,
+		JS_TEX_COORD_DAMPER2D,
+		JS_TEXT,
+		JS_TEXTURE_BACKGROUND,
+		JS_TEXTURE_COORDINATE,
+		JS_TEXTURE_COORDINATE3D,
+		JS_TEXTURE_COORDINATE4D,
+		JS_TEXTURE_COORDINATE_GENERATOR,
+		JS_TEXTURE_PROPERTIES,
+		JS_TEXTURE_TRANSFORM,
+		JS_TEXTURE_TRANSFORM3D,
+		JS_TEXTURE_TRANSFORM_MATRIX3D,
+		JS_TIME_SENSOR,
+		JS_TIME_TRIGGER,
+		JS_TOUCH_SENSOR,
+		JS_TRANSFORM,
+		JS_TRANSFORM_SENSOR,
+		JS_TRANSMITTER_PDU,
+		JS_TRIANGLE_FAN_SET,
+		JS_TRIANGLE_SET,
+		JS_TRIANGLE_SET2D,
+		JS_TRIANGLE_STRIP_SET,
+		JS_TWO_SIDED_MATERIAL,
+		JS_UNIVERSAL_JOINT,
+		JS_VIEWPOINT,
+		JS_VIEWPOINT_GROUP,
+		JS_VIEWPORT,
+		JS_VISIBILITY_SENSOR,
+		JS_VOLUME_EMITTER,
+		JS_VOLUME_PICK_SENSOR,
+		JS_WIND_PHYSICS_MODEL,
+		JS_WORLD_INFO,
+
+		// Abstract node types
+
+		JS_X3D_APPEARANCE_CHILD_NODE,
 		JS_X3D_APPEARANCE_NODE,
 		JS_X3D_BACKGROUND_NODE,
 		JS_X3D_BINDABLE_NODE,
@@ -154,63 +381,65 @@ private:
 		JS_X3D_CHASER_NODE,
 		JS_X3D_CHILD_NODE,
 		JS_X3D_COLOR_NODE,
-		JS_X3D_COMPOSEDGEOMETRY_NODE,
+		JS_X3D_COMPOSED_GEOMETRY_NODE,
 		JS_X3D_COORDINATE_NODE,
 		JS_X3D_DAMPER_NODE,
-		JS_X3D_DRAGSENSOR_NODE,
-		JS_X3D_ENVIRONMENTALSENSOR_NODE,
-		JS_X3D_ENVIRONMENTTEXTURE_NODE,
+		JS_X3D_DRAG_SENSOR_NODE,
+		JS_X3D_ENVIRONMENT_TEXTURE_NODE,
+		JS_X3D_ENVIRONMENTAL_SENSOR_NODE,
 		JS_X3D_FOG_OBJECT,
 		JS_X3D_FOLLOWER_NODE,
-		JS_X3D_FONTSTYLE_NODE,
-		JS_X3D_GEOMETRICPROPERTY_NODE,
+		JS_X3D_FONT_STYLE_NODE,
+		JS_X3D_GEOMETRIC_PROPERTY_NODE,
 		JS_X3D_GEOMETRY_NODE,
+		JS_X3D_GEOSPATIAL_OBJECT,
 		JS_X3D_GROUPING_NODE,
 		JS_X3D_INFO_NODE,
 		JS_X3D_INTERPOLATOR_NODE,
-		JS_X3D_KEYDEVICESENSOR_NODE,
+		JS_X3D_KEY_DEVICE_SENSOR_NODE,
 		JS_X3D_LAYER_NODE,
 		JS_X3D_LAYOUT_NODE,
 		JS_X3D_LIGHT_NODE,
 		JS_X3D_MATERIAL_NODE,
 		JS_X3D_METADATA_OBJECT,
-		JS_X3D_NBODYCOLLIDABLE_NODE,
-		JS_X3D_NBODYCOLLISIONSPACE_NODE,
-		JS_X3D_NETWORKSENSOR_NODE,
+		JS_X3DN_BODY_COLLIDABLE_NODE,
+		JS_X3DN_BODY_COLLISION_SPACE_NODE,
+		JS_X3D_NETWORK_SENSOR_NODE,
 		JS_X3D_NODE,
 		JS_X3D_NORMAL_NODE,
-		JS_X3D_NURBSCONTROLCURVE_NODE,
-		JS_X3D_NURBSSURFACEGEOMETRY_NODE,
-		JS_X3D_PARAMETRICGEOMETRY_NODE,
-		JS_X3D_PARTICLEEMITTER_NODE,
-		JS_X3D_PARTICLEPHYSICSMODEL_NODE,
+		JS_X3D_NURBS_CONTROL_CURVE_NODE,
+		JS_X3D_NURBS_SURFACE_GEOMETRY_NODE,
+		JS_X3D_PARAMETRIC_GEOMETRY_NODE,
+		JS_X3D_PARTICLE_EMITTER_NODE,
+		JS_X3D_PARTICLE_PHYSICS_MODEL_NODE,
+		JS_X3D_PICK_SENSOR_NODE,
 		JS_X3D_PICKABLE_OBJECT,
-		JS_X3D_PICKING_NODE,
-		JS_X3D_PICKSENSOR_NODE,
-		JS_X3D_POINTINGDEVICESENSOR_NODE,
-		JS_X3D_PRODUCTSTRUCTURECHILD_NODE,
-		JS_X3D_PROGRAMMABLESHADER_OBJECT,
-		JS_X3D_PROPERTY_NODE,
+		JS_X3D_POINTING_DEVICE_SENSOR_NODE,
+		JS_X3D_PRODUCT_STRUCTURE_CHILD_NODE,
+		JS_X3D_PROGRAMMABLE_SHADER_OBJECT,
 		JS_X3D_PROTOTYPE_INSTANCE,
-		JS_X3D_RIGIDJOINT_NODE,
+		JS_X3D_RIGID_JOINT_NODE,
 		JS_X3D_SCRIPT_NODE,
 		JS_X3D_SENSOR_NODE,
 		JS_X3D_SEQUENCER_NODE,
 		JS_X3D_SHADER_NODE,
 		JS_X3D_SHAPE_NODE,
 		JS_X3D_SOUND_NODE,
-		JS_X3D_SOUNDSOURCE_NODE,
+		JS_X3D_SOUND_SOURCE_NODE,
 		JS_X3D_TEXTURE2D_NODE,
 		JS_X3D_TEXTURE3D_NODE,
-		JS_X3D_TEXTURECOORDINATE_NODE,
+		JS_X3D_TEXTURE_COORDINATE_NODE,
 		JS_X3D_TEXTURE_NODE,
-		JS_X3D_TEXTURETRANSFORM_NODE,
-		JS_X3D_TIMEDEPENDENT_NODE,
-		JS_X3D_TOUCHSENSOR_NODE,
+		JS_X3D_TEXTURE_TRANSFORM_NODE,
+		JS_X3D_TIME_DEPENDENT_NODE,
+		JS_X3D_TOUCH_SENSOR_NODE,
+		JS_X3D_TRANSFORM_MATRIX4D_NODE,
+		JS_X3D_TRANSFORM_NODE,
 		JS_X3D_TRIGGER_NODE,
 		JS_X3D_URL_OBJECT,
-		JS_X3D_VERTEXATTRIBUTE_NODE,
+		JS_X3D_VERTEX_ATTRIBUTE_NODE,
 		JS_X3D_VIEWPOINT_NODE,
+		JS_X3D_VIEWPOINT_OBJECT,
 		JS_X3D_VIEWPORT_NODE
 	};
 
@@ -283,73 +512,303 @@ private:
 	static JSBool MFVec4d     (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool MFVec4f     (JSContext *, JSObject *, jsid, jsval*);
 
-	// Node types
+	// Base node type
 
-	static JSBool X3DAppearanceChildNode       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DAppearanceNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DBackgroundNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DBindableNode              (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DBoundedObject             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DChaserNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DChildNode                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DColorNode                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DComposedGeometryNode      (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DCoordinateNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DDamperNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DDragSensorNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DEnvironmentalSensorNode   (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DEnvironmentTextureNode    (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DFogObject                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DFollowerNode              (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DFontStyleNode             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DGeometricPropertyNode     (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DGeometryNode              (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DGroupingNode              (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DInfoNode                  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DInterpolatorNode          (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DKeyDeviceSensorNode       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DLayerNode                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DLayoutNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DLightNode                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DMaterialNode              (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DMetadataObject            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNBodyCollidableNode       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNBodyCollisionSpaceNode   (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNetworkSensorNode         (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNode                      (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNormalNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNurbsControlCurveNode     (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DNurbsSurfaceGeometryNode  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DParametricGeometryNode    (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DParticleEmitterNode       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DParticlePhysicsModelNode  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DPickableObject            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DPickingNode               (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DPickSensorNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DPointingDeviceSensorNode  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DProductStructureChildNode (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DProgrammableShaderObject  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DPrototypeInstance         (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DRigidJointNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DScriptNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DSensorNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DSequencerNode             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DShaderNode                (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DShapeNode                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DSoundNode                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DSoundSourceNode           (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTexture2DNode             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTexture3DNode             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTextureCoordinateNode     (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTextureNode               (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTextureTransformNode      (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTimeDependentNode         (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTouchSensorNode           (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTriggerNode               (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DUrlObject                 (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DVertexAttributeNode       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DViewpointNode             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DViewportNode              (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool X3DBaseNode (JSContext*, JSObject*, jsid, jsval*);
+
+	// Basic node types
+
+	static JSBool Anchor                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Appearance                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Arc2D                        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ArcClose2D                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool AudioClip                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Background                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool BallJoint                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Billboard                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool BooleanFilter                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool BooleanSequencer             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool BooleanToggle                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool BooleanTrigger               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool BoundedPhysicsModel          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Box                          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CADAssembly                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CADFace                      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CADLayer                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CADPart                      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Circle2D                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ClipPlane                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CollidableOffset             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CollidableShape              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Collision                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CollisionCollection          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CollisionSensor              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CollisionSpace               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Color                        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ColorChaser                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ColorDamper                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ColorInterpolator            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ColorRGBA                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ComposedCubeMapTexture       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ComposedShader               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ComposedTexture3D            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Cone                         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ConeEmitter                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Contact                      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Contour2D                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ContourPolyline2D            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Coordinate                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CoordinateChaser             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CoordinateDamper             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CoordinateDouble             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CoordinateInterpolator       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CoordinateInterpolator2D     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Cylinder                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool CylinderSensor               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool DISEntityManager             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool DISEntityTypeMapping         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool DirectionalLight             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Disk2D                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool DoubleAxisHingeJoint         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool EaseInEaseOut                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ElevationGrid                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool EspduTransform               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ExplosionEmitter             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Extrusion                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool FillProperties               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool FloatVertexAttribute         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Fog                          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool FogCoordinate                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool FontStyle                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ForcePhysicsModel            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeneratedCubeMapTexture      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoCoordinate                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoElevationGrid             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoLOD                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoLocation                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoMetadata                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoOrigin                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoPositionInterpolator      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoProximitySensor           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoTouchSensor               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoTransform                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool GeoViewpoint                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Group                        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool HAnimDisplacer               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool HAnimHumanoid                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool HAnimJoint                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool HAnimSegment                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool HAnimSite                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ImageCubeMapTexture          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ImageTexture                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ImageTexture3D               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IndexedFaceSet               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IndexedLineSet               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IndexedQuadSet               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IndexedTriangleFanSet        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IndexedTriangleSet           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IndexedTriangleStripSet      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Inline                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IntegerSequencer             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool IntegerTrigger               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool KeySensor                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LOD                          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Layer                        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LayerSet                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Layout                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LayoutGroup                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LayoutLayer                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LinePickSensor               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LineProperties               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LineSet                      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LoadSensor                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool LocalFog                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Material                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Matrix3VertexAttribute       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Matrix4VertexAttribute       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MetadataBoolean              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MetadataDouble               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MetadataFloat                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MetadataInteger              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MetadataSet                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MetadataString               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MotorJoint                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MovieTexture                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MultiTexture                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MultiTextureCoordinate       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool MultiTextureTransform        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NavigationInfo               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Normal                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NormalInterpolator           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsCurve                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsCurve2D                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsOrientationInterpolator (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsPatchSurface            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsPositionInterpolator    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsSet                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsSurfaceInterpolator     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsSweptSurface            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsSwungSurface            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsTextureCoordinate       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool NurbsTrimmedSurface          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool OrientationChaser            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool OrientationDamper            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool OrientationInterpolator      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool OrthoViewpoint               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PackagedShader               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ParticleSystem               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PickableGroup                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PixelTexture                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PixelTexture3D               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PlaneSensor                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PointEmitter                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PointLight                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PointPickSensor              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PointSet                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Polyline2D                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PolylineEmitter              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Polypoint2D                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PositionChaser               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PositionChaser2D             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PositionDamper               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PositionDamper2D             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PositionInterpolator         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PositionInterpolator2D       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool PrimitivePickSensor          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ProgramShader                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ProximitySensor              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool QuadSet                      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ReceiverPdu                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Rectangle2D                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool RigidBody                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool RigidBodyCollection          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ScalarChaser                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ScalarDamper                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ScalarInterpolator           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ScreenFontStyle              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ScreenGroup                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Script                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ShaderPart                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ShaderProgram                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Shape                        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SignalPdu                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SingleAxisHingeJoint         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SliderJoint                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Sound                        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Sphere                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SphereSensor                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SplinePositionInterpolator   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SplinePositionInterpolator2D (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SplineScalarInterpolator     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SpotLight                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SquadOrientationInterpolator (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool StaticGroup                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool StringSensor                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SurfaceEmitter               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Switch                       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TexCoordChaser2D             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TexCoordDamper2D             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Text                         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureBackground            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureCoordinate            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureCoordinate3D          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureCoordinate4D          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureCoordinateGenerator   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureProperties            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureTransform             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureTransform3D           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TextureTransformMatrix3D     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TimeSensor                   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TimeTrigger                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TouchSensor                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Transform                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TransformSensor              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TransmitterPdu               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TriangleFanSet               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TriangleSet                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TriangleSet2D                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TriangleStripSet             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool TwoSidedMaterial             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool UniversalJoint               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Viewpoint                    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ViewpointGroup               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool Viewport                     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool VisibilitySensor             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool VolumeEmitter                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool VolumePickSensor             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool WindPhysicsModel             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool WorldInfo                    (JSContext*, JSObject*, jsid, jsval*);
+
+	// Abstract node types
+
+	static JSBool X3DAppearanceChildNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DAppearanceNode            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DBackgroundNode            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DBindableNode              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DBoundedObject             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DChaserNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DChildNode                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DColorNode                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DComposedGeometryNode      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DCoordinateNode            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DDamperNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DDragSensorNode            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DEnvironmentTextureNode    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DEnvironmentalSensorNode   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DFogObject                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DFollowerNode              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DFontStyleNode             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DGeometricPropertyNode     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DGeometryNode              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DGeospatialObject          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DGroupingNode              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DInfoNode                  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DInterpolatorNode          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DKeyDeviceSensorNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DLayerNode                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DLayoutNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DLightNode                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DMaterialNode              (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DMetadataObject            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNBodyCollidableNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNBodyCollisionSpaceNode   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNetworkSensorNode         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNode                      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNormalNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNurbsControlCurveNode     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DNurbsSurfaceGeometryNode  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DParametricGeometryNode    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DParticleEmitterNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DParticlePhysicsModelNode  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DPickSensorNode            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DPickableObject            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DPointingDeviceSensorNode  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DProductStructureChildNode (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DProgrammableShaderObject  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DPrototypeInstance         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DRigidJointNode            (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DScriptNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DSensorNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DSequencerNode             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DShaderNode                (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DShapeNode                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DSoundNode                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DSoundSourceNode           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTexture2DNode             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTexture3DNode             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTextureCoordinateNode     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTextureNode               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTextureTransformNode      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTimeDependentNode         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTouchSensorNode           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTransformMatrix4DNode     (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTransformNode             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DTriggerNode               (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DUrlObject                 (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DVertexAttributeNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DViewpointNode             (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DViewpointObject           (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool X3DViewportNode              (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Static Members
 

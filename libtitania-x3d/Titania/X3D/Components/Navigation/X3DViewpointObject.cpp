@@ -62,7 +62,7 @@ X3DViewpointObject::X3DViewpointObject () :
 	X3DBaseNode (),
 	     fields ()
 {
-	//addType (X3DConstants::X3DViewpointObject);
+	addType (X3DConstants::X3DViewpointObject);
 }
 
 void

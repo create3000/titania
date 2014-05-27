@@ -180,33 +180,41 @@ X3DGroupingNode::add (const MFNode & children)
 
 	for (const auto & child : children)
 	{
-		if (i >= visible .size () or visible [i])
+		if (child and (i >= visible .size () or visible [i]))
 		{
-			const auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
-
-			if (pointingDeviceSensorNode)
-				pointingDeviceSensors .emplace_back (pointingDeviceSensorNode);
-
-			else
+			try
 			{
-				const auto localFog = x3d_cast <LocalFog*> (child);
-
-				if (localFog)
-					localFogs .emplace_back (localFog);
-
-				else
+				for (const auto & type : basic::reverse_adapter (child -> getInnerNode () -> getType ()))
 				{
-					const auto childNode = x3d_cast <X3DChildNode*> (child);
-
-					if (childNode)
+					switch (type)
 					{
-						if (childNode -> isCollectable ())
-							collectables .emplace_back (childNode);
+						case X3DConstants::X3DPointingDeviceSensorNode:
+						{
+							pointingDeviceSensors .emplace_back (x3d_cast <X3DPointingDeviceSensorNode*> (child));
+							break;
+						}
+						case X3DConstants::LocalFog:
+						{
+							localFogs .emplace_back (x3d_cast <LocalFog*> (child));
+							break;
+						}
+						case X3DConstants::X3DChildNode:
+						{
+							const auto childNode = x3d_cast <X3DChildNode*> (child);
 
-						childNodes .emplace_back (childNode);
+							if (childNode -> isCollectable ())
+								collectables .emplace_back (childNode);
+
+							childNodes .emplace_back (childNode);
+							break;
+						}
+						default:
+							break;
 					}
 				}
 			}
+			catch (const X3DError &)
+			{ }
 		}
 
 		++ i;

@@ -57,7 +57,7 @@ X3DTransformMatrix4DNode::X3DTransformMatrix4DNode () :
 	X3DGroupingNode (),
 	         matrix ()
 {
-	//addType (X3DConstants::X3DTransformMatrix4DNode);
+	addType (X3DConstants::X3DTransformMatrix4DNode);
 }
 
 Box3f

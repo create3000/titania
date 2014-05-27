@@ -1,3 +1,16 @@
+2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DConstants.pl:
+	* X3DConstants.h:
+	* X3DGroupingNode.cpp:
+	* jsX3DConstants.h:
+	* X3DTransformNode.cpp:
+	* jsX3DConstants.cpp:
+	* X3DViewpointObject.cpp:
+	* X3DGeospatialObject.cpp:
+	* X3DTransformMatrix4DNode.cpp: 
+
 2014-05-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DConstants.h:

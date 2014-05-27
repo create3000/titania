@@ -209,6 +209,12 @@ enum FieldType : uint8_t
 
 enum BasicNodeType : uint16_t
 {
+	// Base node type
+
+	X3DBaseNode,
+
+	// Basic node types
+
 	Anchor,
 	Appearance,
 	Arc2D,
@@ -430,10 +436,6 @@ enum BasicNodeType : uint16_t
 	WindPhysicsModel,
 	WorldInfo,
 
-	// Base type
-
-	X3DBaseNode,
-
 	// Abstract node types
 
 	X3DAppearanceChildNode,
@@ -448,13 +450,14 @@ enum BasicNodeType : uint16_t
 	X3DCoordinateNode,
 	X3DDamperNode,
 	X3DDragSensorNode,
-	X3DEnvironmentalSensorNode,
 	X3DEnvironmentTextureNode,
+	X3DEnvironmentalSensorNode,
 	X3DFogObject,
 	X3DFollowerNode,
 	X3DFontStyleNode,
 	X3DGeometricPropertyNode,
 	X3DGeometryNode,
+	X3DGeospatialObject,
 	X3DGroupingNode,
 	X3DInfoNode,
 	X3DInterpolatorNode,
@@ -474,9 +477,8 @@ enum BasicNodeType : uint16_t
 	X3DParametricGeometryNode,
 	X3DParticleEmitterNode,
 	X3DParticlePhysicsModelNode,
-	X3DPickableObject,
-	X3DPickingNode,
 	X3DPickSensorNode,
+	X3DPickableObject,
 	X3DPointingDeviceSensorNode,
 	X3DProductStructureChildNode,
 	X3DProgrammableShaderObject,
@@ -496,6 +498,8 @@ enum BasicNodeType : uint16_t
 	X3DTextureTransformNode,
 	X3DTimeDependentNode,
 	X3DTouchSensorNode,
+	X3DTransformMatrix4DNode,
+	X3DTransformNode,
 	X3DTriggerNode,
 	X3DUrlObject,
 	X3DVertexAttributeNode,
