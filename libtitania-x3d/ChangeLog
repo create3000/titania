@@ -1,3 +1,49 @@
+2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Keys.h:
+	* Selection.cpp:
+	* Keys.cpp:
+	* X3DFieldDefinition.h:
+	* Shape.cpp:
+	* TransformTool.x3dv:
+	* X3DFieldDefinition.cpp:
+	* TransformTool.cpp:
+	* Hit.h:
+	* LookAtViewer.cpp:
+	* KeyDevice.h:
+	* Hit.cpp:
+	* X3DLayerNode.cpp:
+	* KeyDevice.cpp:
+	* GeoTouchSensor.h:
+	* HitArray.h:
+	* GeoTouchSensor.cpp:
+	* HitArray.cpp:
+	* PickedObject.h:
+	* PointingDevice.h:
+	* PlaneSensor.h:
+	* TouchSensor.h:
+	* PickedObject.cpp:
+	* SphereSensor.h:
+	* PointingDevice.cpp:
+	* TouchSensor.cpp:
+	* PlaneSensor.cpp:
+	* PickedObjectArray.h:
+	* SphereSensor.cpp:
+	* CylinderSensor.h:
+	* CylinderSensor.cpp:
+	* PickedObjectArray.cpp:
+	* X3DDragSensorNode.h:
+	* X3DKeyDeviceSensorContext.h:
+	* X3DTouchSensorNode.h:
+	* X3DKeyDeviceSensorContext.cpp:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorContext.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2014-05-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -107,7 +107,7 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3d & trackPoint)
+PlaneSensor::getLineTrackPoint (const PickedObjectPtr & hit, const Line3d & line, Vector3d & trackPoint)
 throw (std::domain_error)
 {
 	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
@@ -118,7 +118,7 @@ throw (std::domain_error)
 }
 
 void
-PlaneSensor::set_active (const HitPtr & hit, const bool active)
+PlaneSensor::set_active (const PickedObjectPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -209,7 +209,7 @@ PlaneSensor::trackStart (const Vector3d & trackPoint)
 }
 
 void
-PlaneSensor::set_motion (const HitPtr & hit)
+PlaneSensor::set_motion (const PickedObjectPtr & hit)
 {
 	try
 	{

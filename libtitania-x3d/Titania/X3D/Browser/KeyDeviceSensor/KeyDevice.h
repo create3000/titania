@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 
 #include "../X3DBrowserObject.h"
+#include "../../Miscellaneous/Keys.h"
 #include "../../Types/String.h"
 
 #include <sigc++/sigc++.h>
@@ -79,6 +80,12 @@ private:
 	void
 	initialize () final override;
 
+	bool
+	on_action_key_press_event (GdkEventKey*);
+
+	bool
+	on_action_key_release_event (GdkEventKey*);
+
 	void
 	set_keyDeviceSensorNodeEvent ();
 
@@ -100,6 +107,7 @@ private:
 	sigc::connection key_press_connection;
 	sigc::connection key_release_connection;
 	
+	Keys keys;
 };
 
 } // X3D

@@ -68,35 +68,20 @@ public:
 	void
 	release (GdkEventKey* const);
 
-	void
-	shift (const int);
-
-	int
+	bool
 	shift () const;
 
-	void
-	restore_shift ();
-
-	void
-	control (const int);
-
-	int
+	bool
 	control () const;
 
-	void
-	restore_control ();
-
-	void
-	alt (const bool);
-
-	int
+	bool
 	alt () const;
 
 	void
-	restore_alt ();
-
-	void
 	clear ();
+
+
+private:
 
 	static constexpr int Shift_R   = 1;
 	static constexpr int Shift_L   = 2;
@@ -104,9 +89,6 @@ public:
 	static constexpr int Control_L = 2;
 	static constexpr int Alt_R     = 1;
 	static constexpr int Alt_L     = 2;
-
-
-private:
 
 	int m_shift;
 	int m_control;

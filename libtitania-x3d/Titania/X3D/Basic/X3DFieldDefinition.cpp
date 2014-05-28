@@ -176,7 +176,7 @@ X3DFieldDefinition::updateReference (X3DFieldDefinition* const reference)
 }
 
 void
-X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition)
+X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition) const
 {
 	realize ();
 
@@ -185,7 +185,7 @@ X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition)
 }
 
 void
-X3DFieldDefinition::addInterest (X3DFieldDefinition & fieldDefinition)
+X3DFieldDefinition::addInterest (X3DFieldDefinition & fieldDefinition) const
 {
 	realize ();
 
@@ -194,7 +194,7 @@ X3DFieldDefinition::addInterest (X3DFieldDefinition & fieldDefinition)
 }
 
 void
-X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition)
+X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition) const
 {
 	if (io)
 	{
@@ -204,7 +204,7 @@ X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition)
 }
 
 void
-X3DFieldDefinition::removeInterest (X3DFieldDefinition & fieldDefinition)
+X3DFieldDefinition::removeInterest (X3DFieldDefinition & fieldDefinition) const
 {
 	if (io)
 	{
@@ -214,7 +214,7 @@ X3DFieldDefinition::removeInterest (X3DFieldDefinition & fieldDefinition)
 }
 
 void
-X3DFieldDefinition::addInputInterest (X3DFieldDefinition* const fieldDefinition)
+X3DFieldDefinition::addInputInterest (const X3DFieldDefinition* const fieldDefinition) const
 {
 	realize ();
 
@@ -222,7 +222,7 @@ X3DFieldDefinition::addInputInterest (X3DFieldDefinition* const fieldDefinition)
 }
 
 void
-X3DFieldDefinition::removeInputInterest (X3DFieldDefinition* const fieldDefinition)
+X3DFieldDefinition::removeInputInterest (const X3DFieldDefinition* const fieldDefinition) const
 {
 	if (io)
 		io -> inputInterests .erase (fieldDefinition);

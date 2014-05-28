@@ -81,6 +81,22 @@ public:
 	keyDeviceSensorNodeEvent () const
 	{ return keyDeviceSensorNodeOutput; }
 
+	void
+	hasShiftKey (const bool value)
+	{ shiftKey = value; }
+
+	const SFBool &
+	hasShiftKey () const
+	{ return shiftKey; }
+
+	void
+	hasControlKey (const bool value)
+	{ controlKey = value; }
+
+	const SFBool &
+	hasControlKey () const
+	{ return controlKey; }
+
 	///  @name Destruction
 
 	virtual
@@ -107,6 +123,8 @@ private:
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
+	SFBool                  shiftKey;
+	SFBool                  controlKey;
 
 };
 

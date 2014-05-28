@@ -55,7 +55,7 @@
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
 #include "../../Types/Pointer.h"
-#include "HitArray.h"
+#include "PickedObjectArray.h"
 #include "Intersection.h"
 
 namespace titania {
@@ -78,13 +78,13 @@ public:
 
 	///  @name Member access
 
-	const HitPtr &
-	getNearestHit () const
-	{ return getHits () .front (); }
+	const PickedObjectPtr &
+	getNearestPickedObject () const
+	{ return getPickedObjects () .front (); }
 
-	const HitArray &
-	getHits () const
-	{ return hits; }
+	const PickedObjectArray &
+	getPickedObjects () const
+	{ return pickedObjects; }
 
 	X3DLayerNode*
 	getPickingLayer () const
@@ -110,7 +110,7 @@ public:
 	getPickRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
 
 	void
-	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
+	addPickedObject (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
 
 	///  @name Event handlers
 
@@ -165,8 +165,7 @@ private:
 	SFBool                pickable;
 	Vector2d              pointer;
 	Line3d                pickRay;
-	HitArray              hits;
-	HitComp               hitComp;
+	PickedObjectArray     pickedObjects;
 	std::vector <NodeSet> enabledSensors;
 	MFNode                overSensors;
 	MFNode                activeSensors;

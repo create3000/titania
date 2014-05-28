@@ -64,13 +64,17 @@ KeyDevice::KeyDevice (Browser* const browser) :
 	              keyPress (),
 	            keyRelease (),
 	  key_press_connection (),
-	key_release_connection ()
+	key_release_connection (),
+	                  keys ()
 { }
 
 void
 KeyDevice::initialize ()
 {
 	X3DBrowserObject::initialize ();
+
+	getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_action_key_press_event));
+	getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_action_key_release_event));
 
 	getBrowser () -> keyDeviceSensorNodeEvent () .addInterest (this, &KeyDevice::set_keyDeviceSensorNodeEvent);
 
@@ -92,6 +96,34 @@ KeyDevice::set_keyDeviceSensorNodeEvent ()
 		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_press_event));
 		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_release_event));
 	}
+}
+
+bool
+KeyDevice::on_action_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	if (keys .shift () not_eq getBrowser () -> hasShiftKey ())
+		getBrowser () -> hasShiftKey (keys .shift ());
+	
+	if (keys .control () not_eq getBrowser () -> hasControlKey ())
+		getBrowser () -> hasControlKey (keys .control ());
+	
+	return false;
+}
+
+bool
+KeyDevice::on_action_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+	
+	if (keys .shift () not_eq getBrowser () -> hasShiftKey ())
+		getBrowser () -> hasShiftKey (keys .shift ());
+	
+	if (keys .control () not_eq getBrowser () -> hasControlKey ())
+		getBrowser () -> hasControlKey (keys .control ());
+	
+	return false;
 }
 
 bool

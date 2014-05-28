@@ -58,8 +58,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/PickedObject.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/PickedObjectArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \

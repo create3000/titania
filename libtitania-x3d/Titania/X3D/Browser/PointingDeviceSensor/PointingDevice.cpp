@@ -48,23 +48,21 @@
  *
  ******************************************************************************/
 
+#include "../Browser.h"
+
 #include "PointingDevice.h"
 
 #include "../Selection.h"
-#include "../Browser.h"
 
 namespace titania {
 namespace X3D {
 
 PointingDevice::PointingDevice (Browser* const browser) :
 	          X3DBrowserObject (browser),
-	     key_press_conncection (),
-	   key_release_conncection (),
 	  button_press_conncection (),
 	button_release_conncection (),
 	 motion_notify_conncection (),
 	  leave_notify_conncection (),
-	                      keys (),
 	                    button (0),
 	                    isOver (false)
 { }
@@ -84,9 +82,6 @@ PointingDevice::set_pickable ()
 {
 	if (getBrowser () -> isPickable ())
 	{
-		key_press_conncection   = getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &PointingDevice::on_key_press_event));
-		key_release_conncection = getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &PointingDevice::on_key_release_event));
-
 		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
 		motion_notify_conncection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
@@ -94,9 +89,6 @@ PointingDevice::set_pickable ()
 	}
 	else
 	{
-		key_press_conncection   .disconnect ();
-		key_release_conncection .disconnect ();
-
 		button_press_conncection   .disconnect ();
 		button_release_conncection .disconnect ();
 		motion_notify_conncection  .disconnect ();
@@ -106,20 +98,6 @@ PointingDevice::set_pickable ()
 		getBrowser () -> leaveNotifyEvent ();
 		getBrowser () -> setCursor (Gdk::ARROW);
 	}
-}
-
-bool
-PointingDevice::on_key_press_event (GdkEventKey* event)
-{
-	keys .press (event);
-	return false;
-}
-
-bool
-PointingDevice::on_key_release_event (GdkEventKey* event)
-{
-	keys .release (event);
-	return false;
 }
 
 bool
@@ -171,7 +149,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 	if (event -> type not_eq GDK_BUTTON_PRESS)
 		return false;
 
-	if (keys .shift () and keys .control ())
+	if (getBrowser () -> hasShiftKey () and getBrowser () -> hasControlKey ())
 		return false;
 
 	button = event -> button;

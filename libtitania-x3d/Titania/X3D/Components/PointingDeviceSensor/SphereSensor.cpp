@@ -112,7 +112,7 @@ SphereSensor::getTrackPoint (const Line3d & pickRay, Vector3d & trackPoint, cons
 }
 
 void
-SphereSensor::set_active (const HitPtr & hit, const bool active)
+SphereSensor::set_active (const PickedObjectPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -146,7 +146,7 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 }
 
 void
-SphereSensor::set_motion (const HitPtr & hit)
+SphereSensor::set_motion (const PickedObjectPtr & hit)
 {
 	try
 	{

@@ -630,8 +630,6 @@
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoObject.h" />
     <None Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Intersection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.h" />
     <None Include="Titania\X3D\Browser\Core\X3DCoreContext.h" />
@@ -690,6 +688,8 @@
     <None Include="Titania\X3D\Prototype\ProtoDeclaration.h" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1136,7 +1136,6 @@
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.cpp" />
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\X3DCoreContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.cpp" />
@@ -1181,7 +1180,8 @@
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

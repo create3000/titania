@@ -102,7 +102,7 @@ GeoTouchSensor::initialize ()
 }
 
 void
-GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
+GeoTouchSensor::set_over (const PickedObjectPtr & hit, const bool over)
 {
 	try
 	{

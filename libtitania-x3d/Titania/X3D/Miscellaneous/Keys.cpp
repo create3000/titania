@@ -112,70 +112,31 @@ Keys::release (GdkEventKey* const event)
 	}
 }
 
-void
-Keys::shift (const int value)
-{
-	m_saved_shift = m_shift;
-	m_shift       = value;
-}
-
-int
+bool
 Keys::shift () const
 {
 	return m_shift;
 }
 
-void
-Keys::restore_shift ()
-{
-	m_shift = m_saved_shift;
-}
-
-void
-Keys::control (const int value)
-{
-	m_saved_control = m_control;
-	m_control       = value;
-}
-
-int
+bool
 Keys::control () const
 {
 	return m_control;
 }
 
-void
-Keys::restore_control ()
-{
-	m_control = m_saved_control;
-}
-
-void
-Keys::alt (const bool value)
-{
-	m_saved_alt = m_alt;
-	m_alt       = value;
-}
-
-int
+bool
 Keys::alt () const
 {
 	return m_alt;
 }
 
 void
-Keys::restore_alt ()
-{
-	m_alt = m_saved_alt;
-}
-
-void
 Keys::clear ()
 {
-	shift (false);
-	control (false);
-	alt (false);
+	m_shift   = 0;
+	m_control = 0;
+	m_alt     = 0;
 }
 
 } // X3D
-} // titania/
+} // titania

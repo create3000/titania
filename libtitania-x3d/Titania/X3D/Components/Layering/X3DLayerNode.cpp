@@ -337,7 +337,7 @@ X3DLayerNode::pick ()
 		{
 			// if x and y not in Viewport return.
 
-			if (not getBrowser () -> getHits () .empty ())
+			if (not getBrowser () -> getPickedObjects () .empty ())
 				return;
 		}
 

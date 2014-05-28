@@ -200,16 +200,16 @@ public:
 	///  @name Interest handling
 
 	void
-	addInterest (X3DFieldDefinition* const);
+	addInterest (X3DFieldDefinition* const) const;
 
 	void
-	addInterest (X3DFieldDefinition &);
+	addInterest (X3DFieldDefinition &) const;
 
 	void
-	removeInterest (X3DFieldDefinition* const);
+	removeInterest (X3DFieldDefinition* const) const;
 
 	void
-	removeInterest (X3DFieldDefinition &);
+	removeInterest (X3DFieldDefinition &) const;
 
 	const FieldDefinitionSet &
 	getInterests () const
@@ -253,20 +253,20 @@ private:
 	///  @name Interest handling
 
 	void
-	addInputInterest (X3DFieldDefinition* const);
+	addInputInterest (const X3DFieldDefinition* const) const;
 
 	void
-	removeInputInterest (X3DFieldDefinition* const);
+	removeInputInterest (const X3DFieldDefinition* const) const;
 
 	///  @name Members
 
 	struct IO
 	{
-		FieldDefinitionSet references;
-		RouteSet inputRoutes;
-		RouteSet outputRoutes;
-		FieldDefinitionSet inputInterests;
-		FieldDefinitionSet outputInterests;
+		FieldDefinitionSet                   references;
+		RouteSet                             inputRoutes;
+		RouteSet                             outputRoutes;
+		std::set <const X3DFieldDefinition*> inputInterests;
+		FieldDefinitionSet                   outputInterests;
 	};
 
 	AccessType  accessType;

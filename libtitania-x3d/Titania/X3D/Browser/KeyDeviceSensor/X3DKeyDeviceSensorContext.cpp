@@ -60,7 +60,7 @@ X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	      keyDeviceSensorNode (nullptr),
 	keyDeviceSensorNodeOutput ()
 {
-	addChildren (keyDeviceSensorNodeOutput);
+	addChildren (keyDeviceSensorNodeOutput, shiftKey, controlKey);
 }
 
 // Key device

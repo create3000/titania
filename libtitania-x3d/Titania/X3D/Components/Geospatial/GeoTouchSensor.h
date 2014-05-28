@@ -126,7 +126,7 @@ public:
 
 	virtual
 	void
-	set_over (const HitPtr &, const bool) final override;
+	set_over (const PickedObjectPtr &, const bool) final override;
 
 	///  @name Destruction
 

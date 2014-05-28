@@ -151,7 +151,7 @@ CylinderSensor::getAngle (const Rotation4d & rotation) const
 }
 
 void
-CylinderSensor::set_active (const HitPtr & hit, const bool active)
+CylinderSensor::set_active (const PickedObjectPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -209,7 +209,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 }
 
 void
-CylinderSensor::set_motion (const HitPtr & hit)
+CylinderSensor::set_motion (const PickedObjectPtr & hit)
 {
 	try
 	{

@@ -51,7 +51,7 @@
 #include "Shape.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/PointingDeviceSensor/Hit.h"
+#include "../../Browser/PointingDeviceSensor/PickedObject.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
@@ -193,7 +193,7 @@ Shape::pick ()
 																			 });
 
 					if (itersection not_eq itersections .end ())
-						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
+						getBrowser () -> addPickedObject (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 				}
 			}
 		}

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_NODE_H__
 
-#include "../../Browser/PointingDeviceSensor/Hit.h"
+#include "../../Browser/PointingDeviceSensor/PickedObject.h"
 #include "../Core/X3DSensorNode.h"
 
 namespace titania {
@@ -89,11 +89,11 @@ public:
 
 	virtual
 	void
-	set_over (const HitPtr &, const bool);
+	set_over (const PickedObjectPtr &, const bool);
 
 	virtual
 	void
-	set_active (const HitPtr &, const bool);
+	set_active (const PickedObjectPtr &, const bool);
 
 	///  @name Operations
 

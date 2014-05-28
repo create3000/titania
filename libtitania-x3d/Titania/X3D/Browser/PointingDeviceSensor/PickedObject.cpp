@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "Hit.h"
+#include "PickedObject.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Shape/X3DShapeNode.h"
@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const Vector2d & pointer,
+PickedObject::PickedObject (const Vector2d & pointer,
           const Matrix4d & modelViewMatrix,
           const Line3d & pickRay,
           const IntersectionPtr & intersection,
@@ -75,7 +75,7 @@ Hit::Hit (const Vector2d & pointer,
 	          layer (layer)
 { }
 
-Hit::~Hit ()
+PickedObject::~PickedObject ()
 { }
 
 } // X3D

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Wed, 28 May 2014 08:45:19 GMT"
+META "modified" "Wed, 28 May 2014 23:24:47 GMT"
 
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
@@ -82,6 +82,8 @@ PROTO TransformTool [
   # required fields
   inputOnly   SFBool     set_enabled
   outputOnly  SFBool     isActive
+  inputOutput SFBool     shiftKey FALSE
+  inputOutput SFBool     controlKey FALSE
   inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   inputOutput SFVec3f    bboxSize 0 0 0
@@ -737,8 +739,6 @@ PROTO TransformTool [
     ]
   }
 
-  DEF _6 KeySensor { }
-
   DEF ModeDoubleClick DoubleClick { }
 
   DEF CenterDoubleClick DoubleClick { }
@@ -895,7 +895,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f set_yTranslation
     inputOnly      SFVec3f set_zTranslation
     inputOutput    SFBool  keepCenter FALSE
-    inputOutput    SFBool  constrain FALSE
+    inputOutput    SFBool  constrainMotion IS controlKey
     inputOutput    SFVec3f bboxSize IS bboxSize
     inputOutput    SFNode  transform IS transform
     initializeOnly SFVec3f translation 0 0 0
@@ -908,33 +908,50 @@ function set_active (value)
 	center      = transform .center;
 }
 
+function constrainValue (value)
+{
+	if (constrainMotion)
+	{
+		if (Math .abs (value .x) > Math .abs (value .y))
+			value .y = 0;
+		else
+			value .x = 0;
+	}
+}
+
 function set_frontTranslation (value)
 {
+	constrainValue (value);
 	translate_with_bbox (new SFVec3f (value .x, value .y, 0));
 }
 
 function set_rightTranslation (value)
 {
+	constrainValue (value);
 	translate_with_bbox (new SFVec3f (0, value .y, -value .x));
 }
 
 function set_backTranslation (value)
 {
+	constrainValue (value);
 	translate_with_bbox (new SFVec3f (-value .x, value .y, 0));
 }
 
 function set_leftTranslation (value)
 {
+	constrainValue (value);
 	translate_with_bbox (new SFVec3f (0, value .y, value .x));
 }
 
 function set_topTranslation (value)
 {
+	constrainValue (value);
 	translate_with_bbox (new SFVec3f (value .x, 0, -value .y));
 }
 
 function set_bottomTranslation (value)
 {
+	constrainValue (value);
 	translate_with_bbox (new SFVec3f (value .x, 0, value .y));
 }
 
@@ -1420,8 +1437,8 @@ function sgn (value)
   }
 
   DEF Debug Script {
-    inputOnly SFBool set_shiftKey
-    inputOnly SFBool set_controlKey
+    inputOutput SFBool shiftKey IS shiftKey
+    inputOutput SFBool controlKey IS controlKey
 
     url "javascript:
 
@@ -1554,9 +1571,6 @@ function set_controlKey (value)
   ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
   ROUTE CenterScript.keepCenter_changed TO _2.set_whichChoice
   ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-  ROUTE _6.controlKey TO MoveScript.set_constrain
-  ROUTE _6.controlKey TO Debug.set_controlKey
-  ROUTE _6.shiftKey TO Debug.set_shiftKey
 }
 
 DEF Tool TransformTool { }
