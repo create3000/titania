@@ -132,6 +132,12 @@ private:
 	///  @name Event handlers
 
 	void
+	set_live ();
+
+	void
+	set_disabled ();
+
+	void
 	set_enabled ();
 
 	void
@@ -150,6 +156,7 @@ private:
 	Fields fields;
 
 	MatrixIndex matrices;
+	bool        disabled;
 
 };
 

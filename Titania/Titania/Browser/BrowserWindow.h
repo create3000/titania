@@ -406,6 +406,9 @@ private:
 	void
 	on_follow_primary_selection_toggled () final override;
 
+	void
+	set_selectedTime ();
+
 	///  @name Navigation
 
 	virtual

@@ -48,117 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
-#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
+#include "Hit.h"
 
-#include "../X3DBrowserObject.h"
-#include "../../Miscellaneous/Keys.h"
-
-#include <gdk/gdk.h>
-#include <sigc++/sigc++.h>
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Shape/X3DShapeNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Browser;
+Hit::Hit (const Vector2d & pointer,
+          const Matrix4d & modelViewMatrix,
+          const Line3d & pickRay,
+          const IntersectionPtr & intersection,
+          const NodeSet & sensors,
+          const X3DShapeNodePtr shape,
+          const X3DLayerNodePtr layer) :
+	        pointer (pointer),
+	modelViewMatrix (modelViewMatrix),
+	        pickRay (pickRay),
+	       texCoord (intersection -> hitTexCoord),
+	         normal (intersection -> hitNormal),
+	          point (intersection -> hitPoint),
+	       distance (std::abs (point .z ())),
+	        sensors (sensors),
+	          shape (shape),
+	          layer (layer)
+{ }
 
-class X3DPointingDevice :
-	public X3DBrowserObject
-{
-protected:
-
-	///  @name Construction
-
-	X3DPointingDevice (Browser* const);
-
-	void
-	connect ();
-
-	void
-	disconnect ();
-
-	///  @name Options
-
-	virtual
-	bool
-	trackSensors ()
-	{ return true; }
-
-	///  @name Event handling
-
-	virtual
-	void
-	motionNotifyEvent (const bool)
-	{ }
-
-	virtual
-	bool
-	buttonPressEvent (const bool, const int)
-	{ return false; }
-
-	virtual
-	void
-	buttonReleaseEvent (const bool, const int)
-	{ }
-
-	virtual
-	void
-	leaveNotifyEvent ()
-	{ }
-
-
-private:
-
-	///  @name Event handlers
-
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	void
-	set_motion (const double, const double);
-
-	void
-	set_verify_motion (const double, const double);
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_leave_notify_event (GdkEventCrossing*);
-
-	///  @name Operations
-
-	bool
-	pick (const double, const double);
-
-	bool
-	haveSensor ();
-
-	///  @name Members
-
-	sigc::connection key_press_conncection;
-	sigc::connection key_release_conncection;
-	sigc::connection button_press_conncection;
-	sigc::connection button_release_conncection;
-	sigc::connection motion_notify_conncection;
-	sigc::connection leave_notify_conncection;
-
-	Keys   keys;
-	size_t button;
-	bool   isOver;
-
-};
+Hit::~Hit ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

@@ -635,8 +635,6 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Intersection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.h" />
     <None Include="Titania\X3D\Browser\Core\X3DCoreContext.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.h" />
     <None Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.h" />
     <None Include="Titania\X3D\Browser\Layout\X3DLayoutContext.h" />
     <None Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.h" />
@@ -691,6 +689,7 @@
     <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
     <None Include="Titania\X3D\Prototype\ProtoDeclaration.h" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1140,8 +1139,6 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\X3DCoreContext.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\Networking\X3DNetworkingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\X3DRenderingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Lighting\X3DLightingContext.cpp" />
@@ -1183,6 +1180,8 @@
     <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

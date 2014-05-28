@@ -56,8 +56,7 @@ namespace titania {
 namespace puck {
 
 BrowserSelection::BrowserSelection (BrowserWindow* const browserWindow) :
-	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DBrowserSelection (browserWindow)
+	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ())
 { }
 
 void

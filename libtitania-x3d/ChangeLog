@@ -1,3 +1,28 @@
+2014-05-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Pointer.h:
+	* Selection.h:
+	* Selection.cpp:
+	* X3DBaseNode.cpp:
+	* TransformTool.x3dv:
+	* Hit.h:
+	* LookAtViewer.cpp:
+	* Hit.cpp:
+	* ExternProtoDeclaration.cpp:
+	* KeyDevice.cpp:
+	* X3DNetworkingContext.cpp:
+	* PointingDevice.h:
+	* PlaneSensor.cpp:
+	* PointingDevice.cpp:
+	* X3DPointingDevice.h:
+	* X3DPointingDevice.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorNode.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-05-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Traverse.h: 

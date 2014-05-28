@@ -61,6 +61,13 @@ class Selection :
 {
 public:
 
+	enum SelectionType
+	{
+		SINGLE,
+		MULTIPLE	
+
+	};
+
 	///  @name Construction
 
 	Selection (X3DExecutionContext* const);
@@ -89,6 +96,39 @@ public:
 
 	///  @name Member access
 
+	void
+	isEnabled (const bool value)
+	{ enabled = value; }
+
+	const SFBool &
+	isEnabled () const
+	{ return enabled; }
+
+	void
+	setMode (const SelectionType value)
+	{ mode = value; }
+	
+	const
+	SFEnum <SelectionType>
+	getMode () const
+	{ return mode; }
+
+	void
+	setSelectLowest (const bool value)
+	{ selectLowest = value; }
+	
+	const SFBool &
+	getSelectLowest () const
+	{ return selectLowest; }
+
+	SFBool &
+	isOver ()
+	{ return over; }
+
+	const SFBool &
+	isOver () const
+	{ return over; }
+
 	SFBool &
 	isActive ()
 	{ return active; }
@@ -96,6 +136,10 @@ public:
 	const SFBool &
 	isActive () const
 	{ return active; }
+
+	const SFBool &
+	getSelectedTime () const
+	{ return selectedTime; }
 
 	///  @name Member access
 
@@ -120,8 +164,13 @@ public:
 	void
 	clear ();
 
+	bool
+	select ();
+
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -135,8 +184,13 @@ private:
 
 	///  @name Members
 
-	SFBool active;
-	MFNode children;
+	SFBool                 enabled;
+	SFEnum <SelectionType> mode;
+	SFBool                 selectLowest;
+	SFBool                 over;
+	SFBool                 active;
+	SFBool                 selectedTime;
+	MFNode                 children;
 
 };
 

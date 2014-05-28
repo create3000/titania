@@ -1725,5 +1725,4 @@ X3DBaseNode::~X3DBaseNode ()
 { }
 
 } // X3D
-
 } // titania

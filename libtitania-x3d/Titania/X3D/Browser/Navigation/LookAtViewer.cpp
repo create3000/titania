@@ -59,7 +59,7 @@ namespace X3D {
 
 LookAtViewer::LookAtViewer (Browser* const browser) :
 	  X3DViewer (browser),
-	    picking (browser -> getPicking ()),
+	    picking (browser -> isPickable ()),
 	     isOver (false),
 	orientation (),
 	   rotation (),
@@ -77,7 +77,7 @@ LookAtViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
-	getBrowser () -> setPicking (false);
+	getBrowser () -> isPickable (false);
 }
 
 bool
@@ -178,7 +178,7 @@ LookAtViewer::pick (const double x, const double y)
 
 LookAtViewer::~LookAtViewer ()
 {
-	getBrowser () -> setPicking (picking);
+	getBrowser () -> isPickable (picking);
 }
 
 } // X3D

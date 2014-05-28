@@ -51,6 +51,7 @@
 #include "X3DPointingDeviceSensorNode.h"
 
 #include "../../Browser/Notification.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {
@@ -64,7 +65,8 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	X3DSensorNode (),
 	       fields (),
-	     matrices ()
+	     matrices (),
+	     disabled (false)
 {
 	addType (X3DConstants::X3DPointingDeviceSensorNode);
 }
@@ -74,7 +76,34 @@ X3DPointingDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
+	enabled ()                          .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+	getExecutionContext () -> isLive () .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+	isLive ()                           .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+
 	enabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
+
+	set_live ();
+}
+
+void
+X3DPointingDeviceSensorNode::set_live ()
+{
+	if (enabled () and getExecutionContext () -> isLive () and isLive ())
+	{
+		getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_disabled);
+		set_disabled ();
+	}
+	else
+	{
+		getBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &X3DPointingDeviceSensorNode::set_disabled);
+		disabled = true;
+	}
+}
+
+void
+X3DPointingDeviceSensorNode::set_disabled ()
+{
+	disabled = getBrowser () -> getSelection () -> isEnabled () and not getRootContext () -> isInternal ();
 }
 
 void
@@ -112,23 +141,23 @@ X3DPointingDeviceSensorNode::set_active (const HitPtr &, const bool value)
 void
 X3DPointingDeviceSensorNode::push ()
 {
-	if (enabled () and getExecutionContext () -> isLive () and isLive ())
+	if (disabled)
+		return;
+
+	getBrowser () -> getSensors () .back () .emplace (this);
+	
+	// Create a matrix set for each layer if needed.
+
+	auto iter = matrices .find (getCurrentLayer ());
+
+	if (iter == matrices .end ())
 	{
-		getBrowser () -> getSensors () .back () .emplace (this);
-		
-		// Create a matrix set for each layer if needed.
+		iter = matrices .emplace (getCurrentLayer (), Matrices { }) .first;
 
-		auto iter = matrices .find (getCurrentLayer ());
-
-		if (iter == matrices .end ())
-		{
-			iter = matrices .emplace (getCurrentLayer (), Matrices { }) .first;
-
-			getCurrentLayer () -> shutdown () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, getCurrentLayer ());
-		}
-
-		iter -> second = Matrices { getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i () };
+		getCurrentLayer () -> shutdown () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, getCurrentLayer ());
 	}
+
+	iter -> second = Matrices { getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i () };
 }
 
 void

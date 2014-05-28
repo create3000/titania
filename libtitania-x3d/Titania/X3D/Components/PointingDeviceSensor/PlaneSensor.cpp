@@ -111,7 +111,7 @@ PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3
 throw (std::domain_error)
 {
 	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
-	auto       trackPoint1    = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
+	auto       trackPoint1    = screenLine .closest_point (Vector3d (hit -> pointer .x (), hit -> pointer .y (), 0));
 	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), modelViewMatrix, projectionMatrix, viewport);
 
 	return line .closest_point (trackPointLine, trackPoint);

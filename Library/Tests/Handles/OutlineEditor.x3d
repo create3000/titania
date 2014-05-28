@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Tue, 27 May 2014 15:02:08 GMT'/>
+    <meta name='modified' content='Wed, 28 May 2014 07:02:11 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -118,9 +118,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='3.65022 1.60121 7.80401'
+        position='5.71498 1.21879 3.77555'
         orientation='0.999053 0.0237645 0.0364346 6.11598'
-        centerOfRotation='3.67112 0.599133 1.86088'/>
+        centerOfRotation='5.72194 0.889003 1.81917'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -139,7 +139,7 @@
     </ProtoInstance>
     <ImageTexture/>
     <Transform DEF='Inline'
-        translation='8.69733 -1.36891e-08 -12.5955'
+        translation='6.12093 0.772195 0.974001'
         scale='0.329804 0.329803 1'
         center='-1.99912 -0.520307 0'>
       <Inline DEF='_2'
@@ -227,7 +227,7 @@
         <ProtoInstance name='Children1'>
           <fieldValue name='children1'>
             <Transform DEF='Cylinder'
-                translation='4.36274 1.14674 0'
+                translation='4.25542 1.18534 0'
                 scale='0.18003 0.18003 0.18003'>
               <Shape>
                 <Appearance>
@@ -286,7 +286,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Di 27 Mai 2014 16:02:57 CEST"'>
+            string='"modified...", "Mi 28 Mai 2014 04:18:04 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -451,7 +451,7 @@ function initialize ()
         <ProximitySensor USE='_9'/>
         <Transform DEF='Box'
             translation='1.40843 1.10727 0.193803'
-            rotation='0 0 1 1.75294'
+            rotation='-0 -0 -1 6.26414'
             scale='0.2 0.2 0.2'>
           <Transform>
             <Shape>
@@ -472,7 +472,6 @@ function initialize ()
     <ROUTE fromNode='Rotor2' fromField='rotation_changed' toNode='ImportedInline' toField='set_rotation'/>
     <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
-    <ROUTE fromNode='Sensors' fromField='translation_changed' toNode='Inline' toField='set_translation'/>
     <EXPORT localDEF='Rotor'/>
   </Scene>
 </X3D>

@@ -338,6 +338,8 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	{
 		keys .press (event);
 
+		getBrowser () -> getSelection () -> setMode (keys .shift () and not keys .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
+
 		// Nudge selection.
 
 		if (not inPrototypeInstance () and not getBrowser () -> getSelection () -> getChildren () .empty ())
@@ -419,6 +421,8 @@ bool
 BrowserWindow::on_key_release_event (GdkEventKey* event)
 {
 	keys .release (event);
+
+	getBrowser () -> getSelection () -> setMode (keys .shift () and not keys .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
 
 	return false;
 }
@@ -1397,12 +1401,27 @@ void
 BrowserWindow::on_select_lowest_toggled ()
 {
 	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
+
+	getBrowser () -> getSelection () -> setSelectLowest (getSelectLowestMenuItem () .get_active ());
 }
 
 void
 BrowserWindow::on_follow_primary_selection_toggled ()
 {
 	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
+	
+	if (getFollowPrimarySelectionMenuItem () .get_active ())
+		getBrowser () -> getSelection () -> getSelectedTime () .addInterest (this, &BrowserWindow::set_selectedTime);
+	
+	else
+		getBrowser () -> getSelection () -> getSelectedTime () .removeInterest (this, &BrowserWindow::set_selectedTime);
+}
+
+void
+BrowserWindow::set_selectedTime ()
+{
+	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
+		getOutlineTreeView () -> expand_to (getBrowser () -> getSelection () -> getChildren () .back ());
 }
 
 // Navigation menu
@@ -1551,7 +1570,7 @@ BrowserWindow::on_hand_button_toggled ()
 	if (getHandButton () .get_active ())
 	{
 		getConfig () .setItem ("arrow", false);
-		getSelection () -> setEnabled (false);
+		getBrowser () -> getSelection () -> isEnabled (false);
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -1563,7 +1582,7 @@ BrowserWindow::on_arrow_button_toggled ()
 	if (getArrowButton () .get_active ())
 	{
 		getConfig () .setItem ("arrow", true);
-		getSelection () -> setEnabled (true);
+		getBrowser () -> getSelection () -> isEnabled (true);
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -1596,8 +1615,8 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 			getHandButton ()  .set_sensitive (false);
 			getArrowButton () .set_sensitive (false);
 
-			if (getArrowButton () .get_active ())
-				getSelection () -> disconnect ();
+			//if (getArrowButton () .get_active ())
+				//getSelection () -> disconnect ();
 
 			break;
 		}
@@ -1608,8 +1627,8 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 			getHandButton ()  .set_sensitive (true);
 			getArrowButton () .set_sensitive (true);
 
-			if (getArrowButton () .get_active ())
-				getSelection () -> connect ();
+			//if (getArrowButton () .get_active ())
+				//getSelection () -> connect ();
 
 			if (getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (false);

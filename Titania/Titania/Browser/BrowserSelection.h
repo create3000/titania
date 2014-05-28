@@ -52,13 +52,13 @@
 #define __TITANIA_BROWSER_BROWSER_SELECTION_H__
 
 #include "../Undo/UndoStep.h"
-#include "X3DBrowserSelection.h"
+#include "../Base/X3DBaseInterface.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserSelection :
-	public X3DBrowserSelection
+	public X3DBaseInterface
 {
 public:
 

@@ -298,6 +298,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	const auto iter     = sceneIndex .find (scene);
 
 	getSceneLabel () .set_markup ("<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
+	getSceneMenuButton () .set_tooltip_text (scene -> getWorldURL () .str ());
 
 	if (currentScene)
 	{

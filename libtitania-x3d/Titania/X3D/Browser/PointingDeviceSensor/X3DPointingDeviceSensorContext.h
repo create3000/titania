@@ -68,17 +68,27 @@ public:
 
 	///  @name Outputs
 
-	const Output &
-	picked () const
-	{ return pickedOutput; }
-
 	void
-	setPicking (const bool value)
-	{ picking = value; }
+	isPickable (const bool value)
+	{ pickable = value; }
 
 	const SFBool &
-	getPicking () const
-	{ return picking; }
+	isPickable () const
+	{ return pickable; }
+
+	///  @name Member access
+
+	const HitPtr &
+	getNearestHit () const
+	{ return getHits () .front (); }
+
+	const HitArray &
+	getHits () const
+	{ return hits; }
+
+	X3DLayerNode*
+	getPickingLayer () const
+	{ return pickingLayer; }
 
 	///  @name Operations
 
@@ -102,23 +112,15 @@ public:
 	void
 	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
 
-	const HitArray &
-	getHits () const
-	{ return hits; }
-
-	X3DLayerNode*
-	getPickingLayer () const
-	{ return pickingLayer; }
-
 	///  @name Event handlers
 
-	void
-	motionNotifyEvent ();
+	bool
+	motionNotifyEvent (const double, const double);
 
-	void
-	buttonPressEvent ();
+	bool
+	buttonPressEvent (const double, const double);
 
-	void
+	bool
 	buttonReleaseEvent ();
 
 	void
@@ -160,18 +162,17 @@ private:
 
 	//  @name Members
 
-	Output pickedOutput;
-
-	SFBool                picking;
-	double                x;
-	double                y;
+	SFBool                pickable;
+	Vector2d              pointer;
 	Line3d                pickRay;
 	HitArray              hits;
 	HitComp               hitComp;
 	std::vector <NodeSet> enabledSensors;
 	MFNode                overSensors;
 	MFNode                activeSensors;
-	X3DLayerNode*         pickingLayer;
+	X3DLayerNodePtr       pickingLayer;
+	time_type             pressTime;
+	bool                  hasMoved;
 
 };
 

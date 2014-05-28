@@ -117,10 +117,11 @@ class X3DGroupingNode;
 class X3DTransformMatrix4DNode;
 class Inline;
 
-//
+// Shape
 class Appearance;
 class Material;
 class TwoSidedMaterial;
+class X3DShapeNode;
 
 // typedef's
 
@@ -174,6 +175,7 @@ using InlinePtr                   = X3DPtr <Inline>;
 using AppearancePtr       = X3DPtr <Appearance>;
 using MaterialPtr         = X3DPtr <Material>;
 using TwoSidedMaterialPtr = X3DPtr <TwoSidedMaterial>;
+using X3DShapeNodePtr     = X3DPtr <X3DShapeNode>;
 
 } // X3D
 } // titania

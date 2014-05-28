@@ -89,8 +89,8 @@ KeyDevice::set_keyDeviceSensorNodeEvent ()
 
 	if (getBrowser () -> getKeyDeviceSensorNode ())
 	{
-		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_press_event),   false);
-		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_release_event), false);
+		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_press_event));
+		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_release_event));
 	}
 }
 
@@ -104,13 +104,12 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 			getBrowser () -> getKeyDeviceSensorNode () -> set_keyPressEvent (keyPress);
 
 			keyPress .clear ();
-
-			return true;
+			return false;
 		}
 	}
 
 	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyPressEvent (event -> keyval);
-	return true;
+	return false;
 }
 
 bool
@@ -125,13 +124,12 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 			getBrowser () -> getKeyDeviceSensorNode () -> set_keyReleaseEvent (keyRelease);
 
 			keyRelease .clear ();
-
-			return true;
+			return false;
 		}
 	}
 
 	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyReleaseEvent (event -> keyval);
-	return true;
+	return false;
 }
 
 void

@@ -55,26 +55,29 @@
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
+#include "../Selection.h"
 #include "../X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
+static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELEASE_TIME here.
+
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   X3DBaseNode (),
-	  pickedOutput (),
-	       picking (true),
-	             x (0),
-	             y (0),
+	      pickable (true),
+	       pointer (),
 	       pickRay (),
 	          hits (),
 	       hitComp (),
 	enabledSensors ({ NodeSet () }),
 	   overSensors (),
 	 activeSensors (),
-	  pickingLayer (nullptr)
+	  pickingLayer (),
+	     pressTime (0),
+	      hasMoved (false)
 {
-	addChildren (picking,
+	addChildren (pickable,
 	             overSensors,
 	             activeSensors);
 }
@@ -95,10 +98,9 @@ X3DPointingDeviceSensorContext::set_shutdown ()
 }
 
 void
-X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
+X3DPointingDeviceSensorContext::pick (const double x, const double y)
 {
-	x = _x;
-	y = _y;
+	pointer = Vector2d (x, y);
 
 	// Clear hits.
 
@@ -111,8 +113,6 @@ X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 		//update (); // We cannot make an update here because of gravity.
 
 		getWorld () -> traverse (TraverseType::PICKING);
-
-		picked () .processInterests ();
 	}
 
 	// Picking end.
@@ -125,8 +125,10 @@ X3DPointingDeviceSensorContext::pick (const double _x, const double _y)
 bool
 X3DPointingDeviceSensorContext::intersect (const Vector4i & scissor) const
 {
-	return x > scissor .x () and x <scissor .x () + scissor .z () and
-	                                y> scissor .y () and y < scissor .y () + scissor .w ();
+	return pointer .x () > scissor .x () and 
+	       pointer .x () < scissor .x () + scissor .z () and
+	       pointer .y () > scissor .y () and 
+	       pointer .y () < scissor .y () + scissor .w ();
 }
 
 Line3d
@@ -134,7 +136,7 @@ X3DPointingDeviceSensorContext::getPickRay (const Matrix4d & modelViewMatrix, co
 {
 	try
 	{
-		return ViewVolume::unProjectLine (x, y, modelViewMatrix, projectionMatrix, viewport);
+		return ViewVolume::unProjectLine (pointer .x (), pointer .y (), modelViewMatrix, projectionMatrix, viewport);
 	}
 	catch (const std::domain_error &)
 	{
@@ -145,12 +147,16 @@ X3DPointingDeviceSensorContext::getPickRay (const Matrix4d & modelViewMatrix, co
 void
 X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
-	hits .emplace_front (new Hit (x, y, transformationMatrix, pickRay, intersection, enabledSensors .back (), shape, layer));
+	hits .emplace_front (new Hit (pointer, transformationMatrix, pickRay, intersection, enabledSensors .back (), shape, layer));
 }
 
-void
-X3DPointingDeviceSensorContext::motionNotifyEvent ()
+bool
+X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double y)
 {
+	hasMoved = pointer .x () not_eq x or pointer .y () not_eq y;
+
+	pick (x, y);
+
 	// Set isOver to FALSE for appropriate nodes
 
 	std::vector <X3DBaseNode*> difference;
@@ -163,7 +169,7 @@ X3DPointingDeviceSensorContext::motionNotifyEvent ()
 		// overSensors and sensors are always sorted.
 
 		std::set_difference (overSensors .begin (), overSensors .end (),
-		                     getHits () .front () -> sensors .begin (), getHits () .front () -> sensors .end (),
+		                     getNearestHit () -> sensors .begin (), getNearestHit () -> sensors .end (),
 		                     std::back_inserter (difference));
 	}
 
@@ -172,7 +178,7 @@ X3DPointingDeviceSensorContext::motionNotifyEvent ()
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_over (getHits () .front (), false);
+			pointingDeviceSensorNode -> set_over (getNearestHit (), false);
 
 		else
 		{
@@ -190,15 +196,15 @@ X3DPointingDeviceSensorContext::motionNotifyEvent ()
 
 	else
 	{
-		overSensors .assign (getHits () .front () -> sensors .begin (),
-		                     getHits () .front () -> sensors .end ());
+		overSensors .assign (getNearestHit () -> sensors .begin (),
+		                     getNearestHit () -> sensors .end ());
 
 		for (const auto & node : overSensors)
 		{
 			const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> set_over (getHits () .front (), true);
+				pointingDeviceSensorNode -> set_over (getNearestHit (), true);
 
 			else
 			{
@@ -219,26 +225,39 @@ X3DPointingDeviceSensorContext::motionNotifyEvent ()
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (getHits () .empty ()
-			                              ? std::make_shared <Hit> (x, y, Matrix4d (), pickRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr)
-													: getHits () .front ());
+			                              ? std::make_shared <Hit> (pointer, Matrix4d (), pickRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr)
+													: getNearestHit ());
 		}
 	}
+
+	return not getHits () .empty () and not getNearestHit () -> sensors .empty ();
 }
 
-void
-X3DPointingDeviceSensorContext::buttonPressEvent ()
+bool
+X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y)
 {
-	pickingLayer = getHits () .front () -> layer;
+	pressTime = chrono::now ();
+	hasMoved  = false;
 
-	activeSensors .assign (getHits () .front () -> sensors .begin (),
-	                       getHits () .front () -> sensors .end ());
+	pick (x, y);
+
+	if (getHits () .empty ())
+		return false;
+		
+	if (getNearestHit () -> sensors .empty ())
+		return false;
+
+	pickingLayer = getNearestHit () -> layer;
+
+	activeSensors .assign (getNearestHit () -> sensors .begin (),
+	                       getNearestHit () -> sensors .end ());
 
 	for (const auto & node : activeSensors)
 	{
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (getHits () .front (), true);
+			pointingDeviceSensorNode -> set_active (getNearestHit (), true);
 
 		else
 		{
@@ -248,11 +267,19 @@ X3DPointingDeviceSensorContext::buttonPressEvent ()
 				anchor -> set_active (true);
 		}
 	}
+
+	return true;
 }
 
-void
+bool
 X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 {
+	if (not hasMoved or chrono::now () - pressTime < SELECTION_TIME)
+	{
+		if (getBrowser () -> getSelection () -> select ())
+			return true;
+	}
+
 	pickingLayer = nullptr;
 
 	for (const auto & node : activeSensors)
@@ -260,7 +287,7 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (x, y, Matrix4d (), pickRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr),
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), pickRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr),
 			                                        false);
 
 		else
@@ -273,6 +300,10 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 	}
 
 	activeSensors .clear ();
+
+	// Selection
+
+	return true;
 }
 
 void
@@ -282,14 +313,12 @@ X3DPointingDeviceSensorContext::leaveNotifyEvent ()
 
 	hits .clear ();
 
-	motionNotifyEvent ();
+	motionNotifyEvent (pointer .x (), pointer .y ());
 }
 
 void
 X3DPointingDeviceSensorContext::dispose ()
-{
-	pickedOutput .dispose ();
-}
+{ }
 
 X3DPointingDeviceSensorContext::~X3DPointingDeviceSensorContext ()
 { }

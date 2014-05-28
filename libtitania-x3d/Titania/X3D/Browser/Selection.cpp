@@ -50,8 +50,13 @@
 
 #include "Selection.h"
 
+#include "../Bits/Cast.h"
+#include "../Bits/Traverse.h"
 #include "../Browser/X3DBrowser.h"
-#include "../Execution/Scene.h"
+#include "../Components/Grouping/Transform.h"
+#include "../Components/Layering/LayerSet.h"
+#include "../Components/Layering/X3DLayerNode.h"
+#include "../Components/Shape/X3DShapeNode.h"
 #include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -63,12 +68,17 @@ const std::string Selection::containerField = "selection";
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     active (),
-	   children ()
+	     enabled (false),
+	        mode (SINGLE),
+	selectLowest (true),
+	        over (),
+	      active (),
+	selectedTime (),
+	    children ()
 {
 	addType (X3DConstants::Selection);
 
-	X3DChildObject::addChildren (active, children);
+	X3DChildObject::addChildren (enabled, mode, selectLowest, over, active, selectedTime, children);
 }
 
 X3DBaseNode*
@@ -153,6 +163,125 @@ Selection::setChildren (const MFNode & value)
 	}
 
 	addChildren (value);
+}
+
+bool
+Selection::select ()
+{
+	if (not isEnabled ())
+		return false;
+
+	// Selected highest or lowest Node, or clear selection.
+
+	if (getBrowser () -> getHits () .empty ())
+	{
+		clear ();
+	}
+	else
+	{
+		const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
+		                             getBrowser () -> getNearestHit () -> shape,
+		                             TRAVERSE_ROOT_NODES |
+		                             TRAVERSE_PROTOTYPE_INSTANCES |
+		                             TRAVERSE_INLINE_NODES |
+		                             TRAVERSE_TOOL_OBJECTS);
+
+
+		if (not hierarchy .empty ())
+		{
+			SFNode node;
+
+			if (selectLowest)
+			{
+				for (const auto & object : basic::reverse_adapter (hierarchy))
+				{
+					const SFNode lowest (object);
+
+					if (not lowest)
+						continue;
+
+					if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+						continue;
+						
+					if (not node)
+						node = lowest;
+
+					if (dynamic_cast <Transform*> (lowest .getValue ()))
+					{
+						node = lowest;
+						break;
+					}
+				}
+			}
+			else
+			{
+				// Find highest Transform
+			
+				for (const auto & object : hierarchy)
+				{
+					const SFNode highest (object);
+
+					if (not highest)
+						continue;
+
+					if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+						continue;
+
+					if (not node)
+						node = highest;
+
+					if (dynamic_cast <Transform*> (highest .getValue ()))
+					{
+						node = highest;
+						break;
+					}
+				}
+
+				// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
+
+				if (x3d_cast <LayerSet*> (node))
+				{
+					for (const auto & object : hierarchy)
+					{
+						const SFNode highest (object);
+
+						if (not highest)
+							continue;
+
+						if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+							continue;
+
+						if (x3d_cast <X3DChildNode*> (highest))
+						{
+							node = highest;
+							break;
+						}
+					}
+				}
+			}
+
+			if (node)
+			{
+				if (isSelected (node))
+				{
+					if (getMode () == Selection::MULTIPLE)
+						removeChildren ({ node });
+				}
+				else
+				{
+					if (getMode () == Selection::MULTIPLE)
+						addChildren ({ node });
+					else
+						setChildren ({ node });
+
+					selectedTime = getCurrentTime ();
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
 }
 
 void
