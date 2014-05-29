@@ -75,7 +75,7 @@ nodeIndex ()
 				<< X3D::Generator::AccessTypes [field] << ";"
 				<< field -> getTypeName () << ";";
 
-			if (field -> isInitializeable ())
+			if (field -> isInitializable ())
 				std::cout << field -> toString ();
 
 			std::cout << std::endl;

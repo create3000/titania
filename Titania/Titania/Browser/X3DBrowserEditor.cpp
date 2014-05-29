@@ -1900,7 +1900,7 @@ X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value,
 		else
 		{
 			// There is has something changed, clear history
-			__LOG__ << std::endl;
+			__LOG__ << "WARNING" << std::endl;
 		}
 	}
 }
@@ -1971,11 +1971,11 @@ NEXT:
 }
 
 std::vector <X3D::X3DBaseNode*>
-X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
+X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const child) const
 {
 	std::vector <X3D::X3DBaseNode*> parentNodes;
 
-	for (const auto & parent : node -> getParents ())
+	for (const auto & parent : child -> getParents ())
 	{
 		const auto sfnode = dynamic_cast <X3D::SFNode*> (parent);
 
@@ -1993,8 +1993,11 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
 
 						if (baseNode)
 						{
-							if (not baseNode -> isInternal ())
-								parentNodes .emplace_back (baseNode);
+							if (baseNode not_eq child)
+							{
+								if (not baseNode -> isInternal ())
+									parentNodes .emplace_back (baseNode);
+							}
 						}
 					}
 
@@ -2005,8 +2008,11 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
 
 				if (baseNode)
 				{
-					if (not baseNode -> isInternal ())
-						parentNodes .emplace_back (baseNode);
+					if (baseNode not_eq child)
+					{
+						if (not baseNode -> isInternal ())
+							parentNodes .emplace_back (baseNode);
+					}
 
 					continue;
 				}

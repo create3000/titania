@@ -1416,14 +1416,14 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
 	
 	if (getFollowPrimarySelectionMenuItem () .get_active ())
-		getBrowser () -> getSelection () -> getSelectedTime () .addInterest (this, &BrowserWindow::set_selectedTime);
-	
+		getBrowser () -> getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_pickedTime);
+
 	else
-		getBrowser () -> getSelection () -> getSelectedTime () .removeInterest (this, &BrowserWindow::set_selectedTime);
+		getBrowser () -> getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_pickedTime);
 }
 
 void
-BrowserWindow::set_selectedTime ()
+BrowserWindow::set_pickedTime ()
 {
 	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
 		getOutlineTreeView () -> expand_to (getBrowser () -> getSelection () -> getChildren () .back ());
@@ -1601,7 +1601,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 	if (selection .empty ())
 		return;
 
-	X3D::MFNode parents;
+	std::set <X3D::SFNode> parentIndex;
 
 	for (const auto & child : selection)
 	{
@@ -1609,16 +1609,77 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 		for (const auto & parent : getParentNodes (child))
 		{
-			if (parent not_eq getExecutionContext () and
-			    parent -> getExecutionContext () == getExecutionContext ())
+			if (parent == child -> getExecutionContext ())
+				continue;
+
+			if (parent -> getExecutionContext () not_eq child -> getExecutionContext ())
+				continue;
+
+			for (const auto & type : basic::reverse_adapter (parent -> getType ()))
 			{
-				hasParents = true;
-				parents .emplace_back (parent);
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DGroupingNode:
+					case X3D::X3DConstants::X3DPrototypeInstance:
+					{
+						hasParents = true;
+						parentIndex .emplace (parent);
+						break;
+					}
+					default:
+						break;
+				}
 			}
 		}
 
 		if (not hasParents)
-			parents .emplace_back (child);
+			parentIndex .emplace (child);
+	}
+
+	// Get all hierarchies sorted by length.
+
+	std::multimap <size_t, std::vector <X3D::X3DChildObject*>> hierachies;
+
+	for (const auto & parent : parentIndex)
+	{
+		const auto hierarchy = X3D::find (parent -> getExecutionContext (), parent);
+
+		if (hierarchy .empty ())
+			continue;
+
+		hierachies .emplace (hierarchy .size (), std::move (hierarchy));
+	}
+
+	// Find objects in objects.
+	
+	std::map <X3D::X3DChildObject*, bool> tree;
+
+	for (auto & pair : hierachies)
+	{
+		auto & hierarchy = pair .second;
+		
+		// Insert parent.
+
+		tree .emplace (hierarchy .back (), true);
+
+		// Insert other parents.
+
+		for (const auto & object : basic::adapter (hierarchy .crbegin () + 1, hierarchy .crend ()))
+		{
+			if (tree .emplace (object, false) .first -> second)
+			{
+				hierarchy .back () = nullptr;
+				break;
+			}
+		}
+	}
+
+	X3D::MFNode parents;
+
+	for (const auto & hierarchy : hierachies)
+	{
+		if (hierarchy .second .back ())
+			parents .emplace_back (hierarchy .second .back ());
 	}
 
 	//{ DEBUG
@@ -1632,6 +1693,8 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 	if (parents .empty ())
 		return;
+
+	// Select and expand.
 
 	getBrowser () -> getSelection () -> setChildren (parents);
 
@@ -1654,78 +1717,13 @@ BrowserWindow::on_select_children_button_clicked ()
 
 	for (const auto & parent : selection)
 	{
-		bool hasChildren = false;
+		const auto nodes = getChildren (parent);
 
-		try
-		{
-			for (const auto & type : basic::reverse_adapter (parent -> getType ()))
-			{
-				switch (type)
-				{
-					case X3D::X3DConstants::LOD:
-					{
-						const auto lodNode = dynamic_cast <X3D::LOD*> (parent .getValue ());
-						const auto index   = lodNode -> level_changed ();
-
-						if (index >= 0 and index < (int32_t) lodNode -> children () .size ())
-						{
-							const auto & child = lodNode -> children () [index];
-
-							if (child -> getExecutionContext () == getExecutionContext ())
-							{
-								hasChildren = true;
-								children .emplace_back (child);
-							}	
-						}
-
-						goto NEXT;
-					}
-					case X3D::X3DConstants::Switch:
-					{
-						const auto switchNode = dynamic_cast <X3D::Switch*> (parent .getValue ());
-						const auto index      = switchNode -> whichChoice ();
-
-						if (index >= 0 and index < (int32_t) switchNode -> children () .size ())
-						{
-							const auto & child = switchNode -> children () [index];
-
-							if (child -> getExecutionContext () == getExecutionContext ())
-							{
-								hasChildren = true;
-								children .emplace_back (child);
-							}	
-						}
-
-						goto NEXT;
-					}
-					case X3D::X3DConstants::X3DGroupingNode:
-					{
-						const auto groupingNode = dynamic_cast <X3D::X3DGroupingNode*> (parent .getValue ()); 
-
-						for (const auto & child : groupingNode -> children ())
-						{
-							if (child -> getExecutionContext () == getExecutionContext ())
-							{
-								hasChildren = true;
-								children .emplace_back (child);
-							}
-						}
-
-						goto NEXT;
-					}
-					default:
-						break;
-				}
-			}
-
-		}
-		catch (const X3D::X3DError &)
-		{ }
-
-NEXT:
-
-		if (not hasChildren)
+		if (nodes .empty ())
 			children .emplace_back (parent);
+
+		else
+			children .insert (children .end (), nodes .begin (), nodes .end ());
 	}
 
 	getBrowser () -> getSelection () -> setChildren (children);
@@ -1735,6 +1733,191 @@ NEXT:
 		for (const auto child : children)
 			getOutlineTreeView () -> expand_to (child);
 	}
+}
+
+X3D::MFNode
+BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) const
+{
+	X3D::MFNode children;
+
+	for (const auto & type : basic::reverse_adapter (parent -> getType ()))
+	{
+		switch (type)
+		{
+			case X3D::X3DConstants::LOD:
+			{
+				const auto lodNode = dynamic_cast <X3D::LOD*> (parent .getValue ());
+				const auto index   = lodNode -> level_changed ();
+
+				if (index >= 0 and index < (int32_t) lodNode -> children () .size ())
+				{
+					const auto & child = lodNode -> children () [index];
+					
+					if (not child)
+						return children;
+						
+					if (not sharedNodes)
+					{
+						if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+							return children;
+					}
+
+					children .emplace_back (child);	
+				}
+
+				return children;
+			}
+			case X3D::X3DConstants::Switch:
+			{
+				const auto switchNode = dynamic_cast <X3D::Switch*> (parent .getValue ());
+				const auto index      = switchNode -> whichChoice ();
+
+				if (index >= 0 and index < (int32_t) switchNode -> children () .size ())
+				{
+					const auto & child = switchNode -> children () [index];
+					
+					if (not child)
+						return children;
+						
+					if (not sharedNodes)
+					{
+						if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+							return children;
+					}
+
+					children .emplace_back (child);	
+				}
+
+				return children;
+			}
+			case X3D::X3DConstants::X3DGroupingNode:
+			{
+				const auto groupingNode = dynamic_cast <X3D::X3DGroupingNode*> (parent .getValue ()); 
+
+				for (const auto & child : groupingNode -> children ())
+				{
+					if (not child)
+						return children;
+
+					if (not sharedNodes)
+					{
+						if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+							return children;
+					}
+
+					children .emplace_back (child);
+				}
+
+				return children;
+			}
+			case X3D::X3DConstants::X3DPrototypeInstance:
+			{
+				const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (parent .getValue ()); 
+
+				// Create child index.
+
+				std::set <X3D::SFNode> childIndex;
+			
+				for (const auto & field : instance -> getFieldDefinitions ())
+				{
+					if (field -> isInitializable ())
+					{
+						switch (field -> getType ())
+						{
+							case X3D::X3DConstants::SFNode:
+							{
+								const auto child = *static_cast <X3D::SFNode*> (field);
+
+								if (not child)
+									break;
+
+								if (child == parent)
+									break;
+
+								if (not sharedNodes)
+								{
+									if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+										break;
+								}
+
+								childIndex .emplace (child);
+
+								break;
+							}
+							case X3D::X3DConstants::MFNode:
+							{
+								const auto mfnode = *static_cast <X3D::MFNode*> (field);
+
+								for (const auto & child : mfnode)
+								{
+									if (not child)
+										continue;
+
+									if (child == parent)
+										continue;
+
+									if (not sharedNodes)
+									{
+										if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+											continue;
+									}
+
+									childIndex .emplace (child);
+								}
+
+								break;
+							}
+							default:
+								break;
+						}
+					}
+				}
+			
+				// Get children.
+
+				try
+				{
+					std::set <X3D::SFNode> seen;
+
+					const auto nodes = getChildrenInProtoinstance (instance -> getRootNode (), childIndex, seen);
+
+					children .insert (children .end (), nodes .begin (), nodes .end ());
+				}
+				catch (const X3D::X3DError &)
+				{ }
+
+				return children;
+			}
+			default:
+				break;
+		}
+	}
+
+	return children;
+}
+
+X3D::MFNode
+BrowserWindow::getChildrenInProtoinstance (const X3D::SFNode & parent, const std::set <X3D::SFNode> & childIndex, std::set <X3D::SFNode> & seen) const
+{
+	X3D::MFNode children;
+
+	if (not seen .emplace (parent) .second)
+		return children;
+
+	for (const auto & child : getChildren (parent, true))
+	{
+		if (childIndex .count (child))
+			children .emplace_back (child);
+
+		else if (child -> getExecutionContext () == parent -> getExecutionContext ())
+		{
+			const auto nodes = getChildrenInProtoinstance (child, childIndex, seen);
+
+			children .insert (children .end (), nodes .begin (), nodes .end ());
+		}
+	}
+
+	return children;
 }
 
 // Viewer

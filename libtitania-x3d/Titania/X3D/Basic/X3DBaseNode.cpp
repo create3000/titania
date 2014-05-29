@@ -243,7 +243,7 @@ throw (Error <INVALID_NAME>,
 			{
 				if (fieldDefinition -> getReferences () .empty ())
 				{
-					if (fieldDefinition -> isInitializeable ())
+					if (fieldDefinition -> isInitializable ())
 						fieldDefinition -> clone (executionContext, field);
 				}
 				else
@@ -680,7 +680,7 @@ X3DBaseNode::getChangedFields () const
 	{
 		if (field -> getReferences () .empty ())
 		{
-			if (not field -> isInitializeable ())
+			if (not field -> isInitializable ())
 				continue;
 
 			try
@@ -1168,7 +1168,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 		for (const auto & reference : field -> getReferences ())
 		{
-			initializableReference |= reference -> isInitializeable ();
+			initializableReference |= reference -> isInitializable ();
 
 			// Output build in reference
 
@@ -1246,7 +1246,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 
 		ostream << field -> getName ();
 
-		if (field -> isInitializeable ())
+		if (field -> isInitializable ())
 		{
 			ostream
 				<< Generator::Space
@@ -1260,7 +1260,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 
 		for (const auto & reference : field -> getReferences ())
 		{
-			initializableReference |= reference -> isInitializeable ();
+			initializableReference |= reference -> isInitializable ();
 
 			// Output user defined reference field
 
@@ -1312,7 +1312,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 
 			ostream << field -> getName ();
 
-			if (field -> isInitializeable ())
+			if (field -> isInitializable ())
 			{
 				ostream
 					<< Generator::Space
@@ -1429,14 +1429,14 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 		{
-			bool initializeableReference = false;
+			bool initializableReference = false;
 
 			for (const auto & reference : field -> getReferences ())
-				initializeableReference |= reference -> isInitializeable ();
+				initializableReference |= reference -> isInitializable ();
 
 			try
 			{
-				if (not initializeableReference)
+				if (not initializableReference)
 					mustOutputValue = not isDefaultValue (field);
 			}
 			catch (const X3DError &)
@@ -1523,12 +1523,12 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 				{
-					bool initializeableReference = false;
+					bool initializableReference = false;
 
 					for (const auto & reference : field -> getReferences ())
-						initializeableReference |= reference -> isInitializeable ();
+						initializableReference |= reference -> isInitializable ();
 
-					if (not initializeableReference)
+					if (not initializableReference)
 						mustOutputValue = not field -> isDefaultValue ();
 				}
 
@@ -1537,7 +1537,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					if (mustOutputValue)
 						references .emplace_back (field);
 
-					if (not field -> isInitializeable () or field -> isDefaultValue ())
+					if (not field -> isInitializable () or field -> isDefaultValue ())
 					{
 						ostream
 							<< "/>"

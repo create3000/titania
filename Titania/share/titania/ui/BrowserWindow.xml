@@ -1752,7 +1752,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">History Editor</property>
-                            <property name="stock">gtk-sort-ascending</property>
+                            <property name="stock">gtk-file</property>
                             <property name="icon_size">1</property>
                           </object>
                           <packing>

@@ -1,5 +1,16 @@
 2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* Selection.h:
+	* Selection.cpp:
+	* X3DBaseNode.cpp:
+	* X3DFieldDefinition.h:
+	* ProtoDeclaration.cpp:
+	* EnvironmentalSensor.x3dv:
+	* X3DPrototypeInstance.cpp: 
+
+2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* World.cpp:
 	* X3DBaseNode.cpp:

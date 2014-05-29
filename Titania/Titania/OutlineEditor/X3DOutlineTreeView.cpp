@@ -908,7 +908,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 				{
 					try
 					{
-						if (node -> isDefaultValue (field) or not field -> isInitializeable ())
+						if (node -> isDefaultValue (field) or not field -> isInitializable ())
 						{
 							if (not get_model () -> get_input_routes_size (field) and not get_model () -> get_output_routes_size (field))
 							{
@@ -1066,7 +1066,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 							{
 								const auto sfnode = static_cast <X3D::SFNode*> (field);
 
-								if ((field -> isInitializeable () and *sfnode) or is_expanded (child))
+								if ((field -> isInitializable () and *sfnode) or is_expanded (child))
 								{
 									expand_row (Gtk::TreePath (child), false);
 								}
@@ -1077,7 +1077,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 							{
 								const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-								if (mfnode -> size () and (field -> isInitializeable () or is_expanded (child)))
+								if (mfnode -> size () and (field -> isInitializable () or is_expanded (child)))
 								{
 									expand_row (Gtk::TreePath (child), false);
 								}

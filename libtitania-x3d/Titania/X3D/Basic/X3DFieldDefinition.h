@@ -139,7 +139,7 @@ public:
 	{ return accessType; }
 
 	bool
-	isInitializeable () const
+	isInitializable () const
 	{ return accessType & initializeOnly; }
 
 	virtual

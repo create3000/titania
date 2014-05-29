@@ -1626,7 +1626,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 				throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
 		}
 
-		if (_field -> isInitializeable ())
+		if (_field -> isInitializable ())
 		{
 			if (fieldValue (_field))
 			{

@@ -1,6 +1,10 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V0.6.8
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Thu, 29 May 2014 16:43:52 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.6.8, http://titania.create3000.de"
+META "modified" "Thu, 29 May 2014 16:43:52 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -25,176 +29,176 @@ PROTO EnvironmentalSensor [
   inputOutput SFNode     node NULL
 ]
 {
-Collision {
-  enabled FALSE
-  children DEF BoundingBox Transform {
-            translation IS center    children [
-      BooleanSwitch {
-        whichChoice IS selected
-        children [
-            Group { }
-          DEF Lines Shape {
-
-            appearance Appearance {
-              lineProperties DEF LineProperties LineProperties { }
-              material Material {
-                emissiveColor 1 1 1
-                transparency 0.2
-              }
-            }
-            geometry IndexedLineSet {
-              coordIndex [
-                0,
-                1,
-                2,
-                3,
-                0,
-                -1,
-                4,
-                5,
-                6,
-                7,
-                4,
-                -1,
-                0,
-                4,
-                -1,
-                3,
-                7,
-                -1,
-                1,
-                5,
-                -1,
-                2,
-                6,
-                -1
-              ]
-              coord DEF BBox Coordinate {
-                point [
-                  -0.5 0.5 0.5,
-                  -0.5 -0.5 0.5,
-                  0.5 -0.5 0.5,
-                  0.5 0.5 0.5,
-                  -0.5 0.5 -0.5,
-                  -0.5 -0.5 -0.5,
-                  0.5 -0.5 -0.5,
-                  0.5 0.5 -0.5
-                ]
-              }
-            }
-          }
-         ]
-       }
-       DEF Front Transform {
-        translation 0 0 0.5
-        children Transform {
+  Collision {
+    enabled FALSE
+    children DEF BoundingBox Transform {
+      translation IS center
+      children [
+        BooleanSwitch {
+          whichChoice IS selected
           children [
-            DEF FrontSensor PlaneSensor {
-              enabled FALSE
-              autoOffset FALSE
-            }
-            DEF Plane Shape {
-              appearance DEF Transparent Appearance {
-                material DEF BBoxMaterial Material {
-                  ambientIntensity 0
-                  diffuseColor 0.2 0.2 0.2
-                  emissiveColor IS color
-                  shininess 0
-                  transparency 0.5
+            Group { }
+            DEF Lines Shape {
+              appearance Appearance {
+                lineProperties DEF LineProperties LineProperties { }
+                material Material {
+                  emissiveColor 1 1 1
+                  transparency 0.2
                 }
               }
-              geometry Rectangle2D {
-                size 1 1
-                solid FALSE
+              geometry IndexedLineSet {
+                coordIndex [
+                  0,
+                  1,
+                  2,
+                  3,
+                  0,
+                  -1,
+                  4,
+                  5,
+                  6,
+                  7,
+                  4,
+                  -1,
+                  0,
+                  4,
+                  -1,
+                  3,
+                  7,
+                  -1,
+                  1,
+                  5,
+                  -1,
+                  2,
+                  6,
+                  -1
+                ]
+                coord DEF BBox Coordinate {
+                  point [
+                    -0.5 0.5 0.5,
+                    -0.5 -0.5 0.5,
+                    0.5 -0.5 0.5,
+                    0.5 0.5 0.5,
+                    -0.5 0.5 -0.5,
+                    -0.5 -0.5 -0.5,
+                    0.5 -0.5 -0.5,
+                    0.5 0.5 -0.5
+                  ]
+                }
               }
             }
           ]
         }
-      }
-      DEF Right Transform {
-        translation 0.5 0 0
-        children Transform {
-          rotation 0 1 0 1.5708
-          children [
-            DEF RightSensor PlaneSensor {
-              enabled FALSE
-              autoOffset FALSE
-            }
-            USE Plane
-          ]
+        DEF Front Transform {
+          translation 0 0 0.5
+          children Transform {
+            children [
+              DEF FrontSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+              }
+              DEF Plane Shape {
+                appearance DEF Transparent Appearance {
+                  material DEF BBoxMaterial Material {
+                    ambientIntensity 0
+                    diffuseColor 0.2 0.2 0.2
+                    emissiveColor IS color
+                    shininess 0
+                    transparency 0.5
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                  solid FALSE
+                }
+              }
+            ]
+          }
         }
-      }
-      DEF Back Transform {
-        translation 0 0 -0.5
-        children Transform {
-          rotation 0 1 0 3.14159
-          children [
-            DEF BackSensor PlaneSensor {
-              enabled FALSE
-              autoOffset FALSE
-            }
-            USE Plane
-          ]
+        DEF Right Transform {
+          translation 0.5 0 0
+          children Transform {
+            rotation 0 1 0 1.5708
+            children [
+              DEF RightSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+              }
+              USE Plane
+            ]
+          }
         }
-      }
-      DEF Left Transform {
-        translation -0.5 0 0
-        children Transform {
-          rotation 0 -1 0 1.5708
-          children [
-            DEF LeftSensor PlaneSensor {
-              enabled FALSE
-              autoOffset FALSE
-            }
-            USE Plane
-          ]
+        DEF Back Transform {
+          translation 0 0 -0.5
+          children Transform {
+            rotation 0 1 0 3.14159
+            children [
+              DEF BackSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+              }
+              USE Plane
+            ]
+          }
         }
-      }
-      DEF Top Transform {
-        translation 0 0.5 0
-        children Transform {
-          rotation -1 0 0 1.5708
-          children [
-            DEF TopSensor PlaneSensor {
-              enabled FALSE
-              autoOffset FALSE
-            }
-            USE Plane
-          ]
+        DEF Left Transform {
+          translation -0.5 0 0
+          children Transform {
+            rotation 0 -1 0 1.5708
+            children [
+              DEF LeftSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+              }
+              USE Plane
+            ]
+          }
         }
-      }
-      DEF Bottom Transform {
-        translation 0 -0.5 0
-        children Transform {
-          rotation 1 0 0 1.5708
-          children [
-            DEF BottomSensor PlaneSensor {
-              enabled FALSE
-              autoOffset FALSE
-            }
-            USE Plane
-          ]
+        DEF Top Transform {
+          translation 0 0.5 0
+          children Transform {
+            rotation -1 0 0 1.5708
+            children [
+              DEF TopSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+              }
+              USE Plane
+            ]
+          }
         }
-      }
-    ]
+        DEF Bottom Transform {
+          translation 0 -0.5 0
+          children Transform {
+            rotation 1 0 0 1.5708
+            children [
+              DEF BottomSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+              }
+              USE Plane
+            ]
+          }
+        }
+      ]
+    }
   }
-}
 
-DEF BBoxScript Script {
-  inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-  inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
-  inputOutput    SFVec3f    bboxSize IS size
-  initializeOnly SFFloat    offset 0
-  initializeOnly SFNode     bbox USE BBox
-  initializeOnly SFNode     front USE Front
-  initializeOnly SFNode     right USE Right
-  initializeOnly SFNode     back USE Back
-  initializeOnly SFNode     left USE Left
-  initializeOnly SFNode     top USE Top
-  initializeOnly SFNode     bottom USE Bottom
-  inputOutput    SFNode     node IS node
+  DEF BBoxScript Script {
+    inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
+    inputOutput    SFVec3f    bboxSize IS size
+    initializeOnly SFFloat    offset 0
+    initializeOnly SFNode     bbox USE BBox
+    initializeOnly SFNode     front USE Front
+    initializeOnly SFNode     right USE Right
+    initializeOnly SFNode     back USE Back
+    initializeOnly SFNode     left USE Left
+    initializeOnly SFNode     top USE Top
+    initializeOnly SFNode     bottom USE Bottom
+    inputOutput    SFNode     node IS node
 
-  url "vrmlscript:
+    url "vrmlscript:
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -236,8 +240,8 @@ function eventsProcessed ()
 
 }
 "
-  directOutput TRUE
-}
+    directOutput TRUE
+  }
 }
 
 DEF Tool EnvironmentalSensor {

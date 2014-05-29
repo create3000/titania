@@ -407,7 +407,7 @@ private:
 	on_follow_primary_selection_toggled () final override;
 
 	void
-	set_selectedTime ();
+	set_pickedTime ();
 
 	///  @name Navigation
 
@@ -473,6 +473,12 @@ private:
 	virtual
 	void
 	on_select_children_button_clicked () final override;
+
+	X3D::MFNode
+	getChildren (const X3D::SFNode &, const bool = false) const;
+	
+	X3D::MFNode
+	getChildrenInProtoinstance (const X3D::SFNode &, const std::set <X3D::SFNode> &, std::set <X3D::SFNode> &) const;
 
 	void
 	set_viewer (X3D::ViewerType);

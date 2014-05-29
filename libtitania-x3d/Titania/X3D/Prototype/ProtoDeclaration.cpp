@@ -303,7 +303,7 @@ ProtoDeclaration::toStreamField (std::ostream & ostream, X3DFieldDefinition* con
 		<< Generator::Space
 		<< field -> getName ();
 
-	if (field -> isInitializeable ())
+	if (field -> isInitializable ())
 	{
 		ostream
 			<< Generator::Space
