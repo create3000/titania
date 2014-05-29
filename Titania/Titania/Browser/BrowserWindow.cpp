@@ -291,6 +291,9 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
 
+	getSelectParentButton ()   .set_sensitive (haveSelection);
+	getSelectChildrenButton () .set_sensitive (haveSelection);
+
 	// Show/Hide Object Icons
 
 	for (const auto & node : children)
@@ -1041,10 +1044,13 @@ BrowserWindow::enableEditor (const bool enabled)
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-	getHandButton ()                    .set_visible (enabled);
-	getArrowButton ()                   .set_visible (enabled);
-	getPlayPauseButton ()               .set_visible (enabled);
-	getDashSeparator1 ()                .set_visible (enabled);
+	getHandButton ()           .set_visible (enabled);
+	getArrowButton ()          .set_visible (enabled);
+	getPlayPauseButton ()      .set_visible (enabled);
+	getSelectSeparator ()      .set_visible (enabled);
+	getSelectParentButton ()   .set_visible (enabled);
+	getSelectChildrenButton () .set_visible (enabled);
+	getViewerSeparator ()      .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
@@ -1860,6 +1866,7 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 	getPlaneViewerMenuItem ()   .set_visible (plane);
 	getNoneViewerMenuItem ()    .set_visible (none);
 
+	getLookAtSeparator () .set_visible (lookat);
 	getLookAtAllButton () .set_visible (lookat);
 	getLookAtButton ()    .set_visible (lookat);
 }

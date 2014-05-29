@@ -1406,7 +1406,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSeparatorToolItem" id="DashSeparator1">
+                                  <object class="GtkSeparatorToolItem" id="SelectSeparator">
                                     <property name="can_focus">False</property>
                                   </object>
                                   <packing>
@@ -1445,7 +1445,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSeparatorToolItem" id="DashSeparator4">
+                                  <object class="GtkSeparatorToolItem" id="ViewerSeparator">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                   </object>
@@ -1490,7 +1490,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSeparatorToolItem" id="DashSeparator2">
+                                  <object class="GtkSeparatorToolItem" id="LookAtSeparator">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                   </object>

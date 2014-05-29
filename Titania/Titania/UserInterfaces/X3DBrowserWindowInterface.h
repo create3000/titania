@@ -564,8 +564,8 @@ public:
 	{ return *m_PlayPauseButton; }
 
 	Gtk::SeparatorToolItem &
-	getDashSeparator1 () const
-	{ return *m_DashSeparator1; }
+	getSelectSeparator () const
+	{ return *m_SelectSeparator; }
 
 	Gtk::ToolButton &
 	getSelectParentButton () const
@@ -576,8 +576,8 @@ public:
 	{ return *m_SelectChildrenButton; }
 
 	Gtk::SeparatorToolItem &
-	getDashSeparator4 () const
-	{ return *m_DashSeparator4; }
+	getViewerSeparator () const
+	{ return *m_ViewerSeparator; }
 
 	Gtk::MenuToolButton &
 	getViewerButton () const
@@ -588,8 +588,8 @@ public:
 	{ return *m_StraightenButton; }
 
 	Gtk::SeparatorToolItem &
-	getDashSeparator2 () const
-	{ return *m_DashSeparator2; }
+	getLookAtSeparator () const
+	{ return *m_LookAtSeparator; }
 
 	Gtk::ToolButton &
 	getLookAtAllButton () const
@@ -1154,13 +1154,13 @@ private:
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
 	Gtk::ToolButton*                m_PlayPauseButton;
-	Gtk::SeparatorToolItem*         m_DashSeparator1;
+	Gtk::SeparatorToolItem*         m_SelectSeparator;
 	Gtk::ToolButton*                m_SelectParentButton;
 	Gtk::ToolButton*                m_SelectChildrenButton;
-	Gtk::SeparatorToolItem*         m_DashSeparator4;
+	Gtk::SeparatorToolItem*         m_ViewerSeparator;
 	Gtk::MenuToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                m_StraightenButton;
-	Gtk::SeparatorToolItem*         m_DashSeparator2;
+	Gtk::SeparatorToolItem*         m_LookAtSeparator;
 	Gtk::ToolButton*                m_LookAtAllButton;
 	Gtk::ToggleToolButton*          m_LookAtButton;
 	Gtk::Box*                       m_Footer;
