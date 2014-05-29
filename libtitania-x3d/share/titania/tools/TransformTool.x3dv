@@ -1267,6 +1267,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f    set_scale7
     inputOnly      SFVec3f    set_scale8
     inputOnly      SFVec3f    set_linetype
+    inputOutput    SFBool     scaleFromEdge IS controlKey
     inputOutput    SFBool     keepCenter FALSE
     inputOutput    SFVec3f    bboxSize IS bboxSize
     inputOutput    SFVec3f    bboxCenter IS bboxCenter
@@ -1335,70 +1336,112 @@ function set_active (value)
 
 // isActive
 
-
 function set_xScale (value)
 {
-	scale (new SFVec3f (1 + 2 * value .x / bboxSize .x, 1, 1));
+	if (scaleFromEdge)
+		scale (new SFVec3f (1 + value .x / bboxSize .x, 1, 1),
+		       new SFVec3f (-bboxSize .x / 2, 0, 0));
+
+	else
+		scale (new SFVec3f (1 + 2 * value .x / bboxSize .x, 1, 1),
+		       new SFVec3f ());
 }
 
 function set_yScale (value)
 {
-	scale (new SFVec3f (1, 1 + 2 * value .y / bboxSize .y, 1));
+	if (scaleFromEdge)
+		scale (new SFVec3f (1, 1 + value .y / bboxSize .y, 1),
+		       new SFVec3f (0, -bboxSize .y / 2, 0));
+	
+	else
+		scale (new SFVec3f (1, 1 + 2 * value .y / bboxSize .y, 1),
+		       new SFVec3f ());
 }
 
 function set_zScale (value)
 {
-	scale (new SFVec3f (1, 1, 1 + 2 * value .z / bboxSize .z));
+	if (scaleFromEdge)
+		scale (new SFVec3f (1, 1, 1 + value .z / bboxSize .z),
+		       new SFVec3f (0, 0, -bboxSize .z / 2));
+
+	else
+		scale (new SFVec3f (1, 1, 1 + 2 * value .z / bboxSize .z),
+		       new SFVec3f ());
 }
 
 function set_scale1 (value)
 {
-	set_scale (value, sgn (sensor1 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (sensor1 .trackPoint_changed .x),
+	           new SFVec3f (-bboxSize .x / 2, -bboxSize .y / 2, -bboxSize .z / 2));
 }
 
 function set_scale2 (value)
 {
-	set_scale (value, sgn (-sensor2 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (-sensor2 .trackPoint_changed .x),
+	           new SFVec3f (bboxSize .x / 2, -bboxSize .y / 2, -bboxSize .z / 2));
 }
 
 function set_scale3 (value)
 {
-	set_scale (value, sgn (-sensor3 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (-sensor3 .trackPoint_changed .x),
+	           new SFVec3f (bboxSize .x / 2, bboxSize .y / 2, -bboxSize .z / 2));
 }
 
 function set_scale4 (value)
 {
-	set_scale (value, sgn (sensor4 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (sensor4 .trackPoint_changed .x),
+	           new SFVec3f (-bboxSize .x / 2, bboxSize .y / 2, -bboxSize .z / 2));
 }
 
 function set_scale5 (value)
 {
-	set_scale (value, sgn (sensor5 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (sensor5 .trackPoint_changed .x),
+	           new SFVec3f (-bboxSize .x / 2, -bboxSize .y / 2, bboxSize .z / 2));
 }
 
 function set_scale6 (value)
 {
-	set_scale (value, sgn (-sensor6 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (-sensor6 .trackPoint_changed .x),
+	           new SFVec3f (bboxSize .x / 2, -bboxSize .y / 2, bboxSize .z / 2));
 }
 
 function set_scale7 (value)
 {
-	set_scale (value, sgn (-sensor7 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (-sensor7 .trackPoint_changed .x),
+	           new SFVec3f (bboxSize .x / 2, bboxSize .y / 2, bboxSize .z / 2));
 }
 
 function set_scale8 (value)
 {
-	set_scale (value, sgn (sensor8 .trackPoint_changed .x))
+	set_scale (value,
+	           sgn (sensor8 .trackPoint_changed .x),
+	           new SFVec3f (-bboxSize .x / 2, bboxSize .y / 2, bboxSize .z / 2));
 }
 
-function set_scale (value, sgn)
+function set_scale (value, sgn, centerOffset)
 {
-	var size = 1 + 2 * sgn * value .length () / bboxSize .length ();
-	
-	scale (new SFVec3f (size, size, size));
+	if (scaleFromEdge)
+	{
+		var size = 1 + sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (size, size, size), centerOffset);
+	}
+	else
+	{
+		var size = 1 + 2 * sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (size, size, size), new SFVec3f ());
+	}
 }
 
-function scale (value)
+function scale (value, centerOffset)
 {
 	var scale = scaleFactor .multVec (value);
 	
@@ -1407,13 +1450,13 @@ function scale (value)
 		transform .scale = scale;
 
 		if (keepCenter)
-			translateKeepCenter ();
+			translateKeepCenter (distanceFromCenter .add (centerOffset));
 		else
-			translate ();
+			translate (distanceFromCenter .add (centerOffset));
 	}
 }
 
-function translate ()
+function translate (distanceFromCenter)
 {
 	var scaledMatrix = new SFMatrix4f ();
 	scaledMatrix .setTransform (transform .translation,
@@ -1427,7 +1470,7 @@ function translate ()
 	transform .translation = translation .subtract (centerOffset);
 }
 
-function translateKeepCenter ()
+function translateKeepCenter (distanceFromCenter)
 {
 	var scaledMatrix = new SFMatrix4f ();
 	scaledMatrix .setTransform (transform .translation,

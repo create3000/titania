@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Wed, 28 May 2014 07:02:11 GMT'/>
+    <meta name='modified' content='Thu, 29 May 2014 01:39:40 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -118,9 +118,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='5.71498 1.21879 3.77555'
-        orientation='0.999053 0.0237645 0.0364346 6.11598'
-        centerOfRotation='5.72194 0.889003 1.81917'/>
+        position='-8.38147 5.38817 4.65655'
+        orientation='0.832366 -0.535971 -0.141073 5.35505'
+        centerOfRotation='-11.5193 -0.334001 -0.332001'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -286,7 +286,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mi 28 Mai 2014 04:18:04 CEST"'>
+            string='"modified...", "Do 29 Mai 2014 03:25:45 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -451,7 +451,7 @@ function initialize ()
         <ProximitySensor USE='_9'/>
         <Transform DEF='Box'
             translation='1.40843 1.10727 0.193803'
-            rotation='-0 -0 -1 6.26414'
+            rotation='0 0 1 1.5708'
             scale='0.2 0.2 0.2'>
           <Transform>
             <Shape>
@@ -464,6 +464,18 @@ function initialize ()
           </Transform>
         </Transform>
       </Group>
+    </Transform>
+    <Transform DEF='Box7'
+        translation='-9.33993 0 0'
+        scale='2.31607 0.89467 0.89467'
+        center='2 0 0'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Box
+            size='1 1 1'/>
+      </Shape>
     </Transform>
     <IMPORT inlineDEF='_5' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_6' exportedDEF='ExportedInline'/>
