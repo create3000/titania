@@ -1139,6 +1139,7 @@ function isActive (sensorA, sensorB, sensorC)
     inputOnly      SFRotation set_xRotation
     inputOnly      SFRotation set_yRotation
     inputOnly      SFRotation set_zRotation
+    inputOutput    SFBool     constrainRotation IS controlKey
     inputOutput    SFNode     transform IS transform
     initializeOnly SFRotation rotation 0 0 1 0
     initializeOnly SFVec3f    scale 1 1 1
@@ -1182,7 +1183,16 @@ function set_zRotation (value)
 
 function rotate (value)
 {
-	transform .rotation = value .multiply (rotation);
+	value = value .multiply (rotation);
+
+	if (constrainRotation)
+	{
+		var snapAngle = 11.25 / 180 * Math .PI;
+		var angle     = Math .round (value .angle / snapAngle) * snapAngle;
+		value = new SFRotation (value .getAxis (), angle);
+	}
+
+	transform .rotation = value;
 }
 "
     directOutput TRUE
