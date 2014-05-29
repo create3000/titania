@@ -79,6 +79,7 @@ Keys::press (GdkEventKey* const event)
 		case GDK_KEY_Control_R:
 			m_control |= Control_R;
 			break;
+		case GDK_KEY_Meta_L:
 		case GDK_KEY_Alt_L:
 			m_alt = true;
 			break;
@@ -104,6 +105,7 @@ Keys::release (GdkEventKey* const event)
 		case GDK_KEY_Control_R:
 			m_control &= ~Control_R;
 			break;
+		case GDK_KEY_Meta_L:
 		case GDK_KEY_Alt_L:
 			m_alt = false;
 			break;

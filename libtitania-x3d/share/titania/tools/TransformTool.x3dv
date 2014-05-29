@@ -82,8 +82,9 @@ PROTO TransformTool [
   # required fields
   inputOnly   SFBool     set_enabled
   outputOnly  SFBool     isActive
-  inputOutput SFBool     shiftKey FALSE
   inputOutput SFBool     controlKey FALSE
+  inputOutput SFBool     shiftKey FALSE
+  inputOutput SFBool     altKey FALSE
   inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   inputOutput SFVec3f    bboxSize 0 0 0
@@ -1268,6 +1269,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f    set_scale8
     inputOnly      SFVec3f    set_linetype
     inputOutput    SFBool     scaleFromEdge IS controlKey
+    inputOutput    SFBool     altKey IS altKey
     inputOutput    SFBool     keepCenter FALSE
     inputOutput    SFVec3f    bboxSize IS bboxSize
     inputOutput    SFVec3f    bboxCenter IS bboxCenter
@@ -1373,62 +1375,64 @@ function set_scale1 (value)
 {
 	set_scale (value,
 	           sgn (sensor1 .trackPoint_changed .x),
-	           new SFVec3f (-bboxSize .x / 2, -bboxSize .y / 2, -bboxSize .z / 2));
+	           new SFVec3f (-1, -1, -1));
 }
 
 function set_scale2 (value)
 {
 	set_scale (value,
 	           sgn (-sensor2 .trackPoint_changed .x),
-	           new SFVec3f (bboxSize .x / 2, -bboxSize .y / 2, -bboxSize .z / 2));
+	           new SFVec3f (1, -1, -1));
 }
 
 function set_scale3 (value)
 {
 	set_scale (value,
 	           sgn (-sensor3 .trackPoint_changed .x),
-	           new SFVec3f (bboxSize .x / 2, bboxSize .y / 2, -bboxSize .z / 2));
+	           new SFVec3f (1, 1, -1));
 }
 
 function set_scale4 (value)
 {
 	set_scale (value,
 	           sgn (sensor4 .trackPoint_changed .x),
-	           new SFVec3f (-bboxSize .x / 2, bboxSize .y / 2, -bboxSize .z / 2));
+	           new SFVec3f (-1, 1, -1));
 }
 
 function set_scale5 (value)
 {
 	set_scale (value,
 	           sgn (sensor5 .trackPoint_changed .x),
-	           new SFVec3f (-bboxSize .x / 2, -bboxSize .y / 2, bboxSize .z / 2));
+	           new SFVec3f (-1, -1, 1));
 }
 
 function set_scale6 (value)
 {
 	set_scale (value,
 	           sgn (-sensor6 .trackPoint_changed .x),
-	           new SFVec3f (bboxSize .x / 2, -bboxSize .y / 2, bboxSize .z / 2));
+	           new SFVec3f (1, -1, 1));
 }
 
 function set_scale7 (value)
 {
 	set_scale (value,
 	           sgn (-sensor7 .trackPoint_changed .x),
-	           new SFVec3f (bboxSize .x / 2, bboxSize .y / 2, bboxSize .z / 2));
+	           new SFVec3f (1, 1, 1));
 }
 
 function set_scale8 (value)
 {
 	set_scale (value,
 	           sgn (sensor8 .trackPoint_changed .x),
-	           new SFVec3f (-bboxSize .x / 2, bboxSize .y / 2, bboxSize .z / 2));
+	           new SFVec3f (-1, 1, 1));
 }
 
 function set_scale (value, sgn, centerOffset)
 {
 	if (scaleFromEdge)
 	{
+		centerOffset = centerOffset .multVec (bboxSize .divide (2));
+
 		var size = 1 + sgn * value .length () / bboxSize .length ();
 
 		scale (new SFVec3f (size, size, size), centerOffset);

@@ -58,9 +58,12 @@ namespace X3D {
 X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	              X3DBaseNode (),
 	      keyDeviceSensorNode (nullptr),
-	keyDeviceSensorNodeOutput ()
+	keyDeviceSensorNodeOutput (),
+	               controlKey (),
+	                 shiftKey (),
+	                   altKey ()
 {
-	addChildren (keyDeviceSensorNodeOutput, shiftKey, controlKey);
+	addChildren (keyDeviceSensorNodeOutput, controlKey, shiftKey, altKey);
 }
 
 // Key device

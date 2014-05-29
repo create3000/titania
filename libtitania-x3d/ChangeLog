@@ -1,5 +1,16 @@
 2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Keys.cpp:
+	* TransformTool.x3dv:
+	* TransformTool.cpp:
+	* KeyDevice.cpp:
+	* KeySensor.h:
+	* KeySensor.cpp:
+	* X3DKeyDeviceSensorContext.h:
+	* X3DKeyDeviceSensorContext.cpp: 
+
+2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformTool.x3dv: 
 
 2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>

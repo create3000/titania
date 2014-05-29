@@ -90,20 +90,20 @@ public:
 	///  @name Fields
 
 	SFBool &
-	shiftKey ()
-	{ return *fields .shiftKey; }
-
-	const SFBool &
-	shiftKey () const
-	{ return *fields .shiftKey; }
-
-	SFBool &
 	controlKey ()
 	{ return *fields .controlKey; }
 
 	const SFBool &
 	controlKey () const
 	{ return *fields .controlKey; }
+
+	SFBool &
+	shiftKey ()
+	{ return *fields .shiftKey; }
+
+	const SFBool &
+	shiftKey () const
+	{ return *fields .shiftKey; }
 
 	SFBool &
 	altKey ()
@@ -178,8 +178,8 @@ private:
 	{
 		Fields ();
 
-		SFBool* const shiftKey;
 		SFBool* const controlKey;
+		SFBool* const shiftKey;
 		SFBool* const altKey;
 		SFInt32* const actionKeyPress;
 		SFInt32* const actionKeyRelease;

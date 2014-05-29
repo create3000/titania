@@ -82,6 +82,14 @@ public:
 	{ return keyDeviceSensorNodeOutput; }
 
 	void
+	hasControlKey (const bool value)
+	{ controlKey = value; }
+
+	const SFBool &
+	hasControlKey () const
+	{ return controlKey; }
+
+	void
 	hasShiftKey (const bool value)
 	{ shiftKey = value; }
 
@@ -90,12 +98,12 @@ public:
 	{ return shiftKey; }
 
 	void
-	hasControlKey (const bool value)
-	{ controlKey = value; }
+	hasAltKey (const bool value)
+	{ altKey = value; }
 
 	const SFBool &
-	hasControlKey () const
-	{ return controlKey; }
+	hasAltKey () const
+	{ return altKey; }
 
 	///  @name Destruction
 
@@ -123,8 +131,9 @@ private:
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
-	SFBool                  shiftKey;
 	SFBool                  controlKey;
+	SFBool                  shiftKey;
+	SFBool                  altKey;
 
 };
 

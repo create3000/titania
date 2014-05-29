@@ -83,14 +83,14 @@ static constexpr int32_t X3D_KEY_DOWN  = 18;
 static constexpr int32_t X3D_KEY_LEFT  = 19;
 static constexpr int32_t X3D_KEY_RIGHT = 20;
 
-static constexpr int Shift_R   = 1;
-static constexpr int Shift_L   = 2;
 static constexpr int Control_R = 1;
 static constexpr int Control_L = 2;
+static constexpr int Shift_R   = 1;
+static constexpr int Shift_L   = 2;
 
 KeySensor::Fields::Fields () :
-	        shiftKey (new SFBool ()),
 	      controlKey (new SFBool ()),
+	        shiftKey (new SFBool ()),
 	          altKey (new SFBool ()),
 	  actionKeyPress (new SFInt32 ()),
 	actionKeyRelease (new SFInt32 ()),
@@ -109,8 +109,8 @@ KeySensor::KeySensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
-	addField (outputOnly,  "shiftKey",         shiftKey ());
 	addField (outputOnly,  "controlKey",       controlKey ());
+	addField (outputOnly,  "shiftKey",         shiftKey ());
 	addField (outputOnly,  "altKey",           altKey ());
 	addField (outputOnly,  "actionKeyPress",   actionKeyPress ());
 	addField (outputOnly,  "actionKeyRelease", actionKeyRelease ());
@@ -132,24 +132,6 @@ KeySensor::set_actionKeyPressEvent (const int keyval)
 	{
 		// Special keys
 
-		case GDK_KEY_Shift_L:
-		{
-			shiftKeys |= Shift_L;
-
-			if (not shiftKey ())
-				shiftKey () = true;
-
-			break;
-		}
-		case GDK_KEY_Shift_R:
-		{
-			shiftKeys |= Shift_R;
-
-			if (not shiftKey ())
-				shiftKey () = true;
-
-			break;
-		}
 		case GDK_KEY_Control_L:
 		{
 			controlKeys |= Control_L;
@@ -165,6 +147,24 @@ KeySensor::set_actionKeyPressEvent (const int keyval)
 
 			if (not controlKey ())
 				controlKey () = true;
+
+			break;
+		}
+		case GDK_KEY_Shift_L:
+		{
+			shiftKeys |= Shift_L;
+
+			if (not shiftKey ())
+				shiftKey () = true;
+
+			break;
+		}
+		case GDK_KEY_Shift_R:
+		{
+			shiftKeys |= Shift_R;
+
+			if (not shiftKey ())
+				shiftKey () = true;
 
 			break;
 		}
@@ -290,24 +290,6 @@ KeySensor::set_actionKeyReleaseEvent (const int keyval)
 	{
 		// Special keys
 
-		case GDK_KEY_Shift_L:
-		{
-			shiftKeys &= ~Shift_L;
-
-			if (not shiftKeys and shiftKey ())
-				shiftKey () = false;
-
-			break;
-		}
-		case GDK_KEY_Shift_R:
-		{
-			shiftKeys &= ~Shift_R;
-
-			if (not shiftKeys and shiftKey ())
-				shiftKey () = false;
-
-			break;
-		}
 		case GDK_KEY_Control_L:
 		{
 			controlKeys &= ~Control_L;
@@ -323,6 +305,24 @@ KeySensor::set_actionKeyReleaseEvent (const int keyval)
 
 			if (not controlKeys and controlKey ())
 				controlKey () = false;
+
+			break;
+		}
+		case GDK_KEY_Shift_L:
+		{
+			shiftKeys &= ~Shift_L;
+
+			if (not shiftKeys and shiftKey ())
+				shiftKey () = false;
+
+			break;
+		}
+		case GDK_KEY_Shift_R:
+		{
+			shiftKeys &= ~Shift_R;
+
+			if (not shiftKeys and shiftKey ())
+				shiftKey () = false;
 
 			break;
 		}
