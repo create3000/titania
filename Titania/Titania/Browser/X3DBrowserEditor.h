@@ -232,6 +232,11 @@ protected:
 	bool
 	getPasteStatus () const;
 
+	///  @name Grouping
+
+	std::vector <X3D::X3DBaseNode*>
+	getParentNodes (X3D::X3DBaseNode* const) const;
+
 
 private:
 
@@ -307,9 +312,6 @@ private:
 
 	bool
 	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4d &, std::set <X3D::X3DBaseNode*> &) const;
-
-	std::vector <X3D::X3DBaseNode*>
-	getParentNodes (X3D::X3DBaseNode* const) const;
 
 	X3D::X3DFieldDefinition*
 	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const

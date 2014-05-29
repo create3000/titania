@@ -108,7 +108,7 @@ public:
 
 	virtual
 	void
-	addTool () final override
+	addTool () override
 	{ }
 
 	virtual

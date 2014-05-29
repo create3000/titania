@@ -9,6 +9,16 @@ META "modified" "Thu, 29 May 2014 01:08:38 GMT"
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
 
+EXTERNPROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+"library/BooleanSwitch.x3dv"
+
 PROTO DoubleClick [
   inputOnly   SFTime set_time
   inputOutput SFTime doubleClickInterval 0.5
@@ -38,43 +48,6 @@ function set_time (value, time)
 		firstTime = time;
 }
 "
-  }
-}
-
-PROTO BooleanSwitch [
-  inputOutput    SFBool  whichChoice FALSE
-  initializeOnly SFVec3f bboxSize -1 -1 -1
-  initializeOnly SFVec3f bboxCenter 0 0 0
-  inputOnly      MFNode  addChildren
-  inputOnly      MFNode  removeChildren
-  inputOutput    MFNode  children [ ]
-]
-{
-  DEF Switch Switch {
-    bboxSize IS bboxSize
-    bboxCenter IS bboxCenter
-    addChildren IS addChildren
-    removeChildren IS removeChildren
-    children IS children
-  }
-
-  Script {
-    inputOutput    SFBool whichChoice IS whichChoice
-    initializeOnly SFNode group USE Switch
-
-    url "javascript:
-
-function initialize ()
-{
-	set_whichChoice (whichChoice);
-}
-
-function set_whichChoice (value)
-{
-	group .whichChoice = value
-}
-"
-    directOutput TRUE
   }
 }
 

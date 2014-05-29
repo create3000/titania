@@ -456,15 +456,23 @@ private:
 
 	virtual
 	void
-	on_play_pause_button_clicked () final override;
-
-	virtual
-	void
 	on_hand_button_toggled () final override;
 
 	virtual
 	void
 	on_arrow_button_toggled () final override;
+
+	virtual
+	void
+	on_play_pause_button_clicked () final override;
+
+	virtual
+	void
+	on_select_parent_button_clicked () final override;
+
+	virtual
+	void
+	on_select_children_button_clicked () final override;
 
 	void
 	set_viewer (X3D::ViewerType);

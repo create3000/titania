@@ -96,16 +96,20 @@ OutlineSelection::select (const X3D::SFNode & node)
 		const auto selection  = getBrowser () -> getSelection ();
 		const bool isSelected = selection -> isSelected (node);
 
-		if (selectMultiple)
+		if (isSelected)
 		{
-			if (isSelected)
+			if (selectMultiple)
 				selection -> removeChildren ({ node });
+			else
+				selection -> clear ();
 		}
 		else
-			selection -> clear ();
-
-		if (not isSelected)
-			selection -> addChildren ({ node });
+		{
+			if (selectMultiple)
+				selection -> addChildren ({ node });
+			else
+				selection -> setChildren ({ node });	
+		}
 
 		getBrowser () -> update ();
 	}

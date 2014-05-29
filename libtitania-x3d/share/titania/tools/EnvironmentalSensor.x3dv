@@ -2,30 +2,90 @@
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
-PROTO Interface [
+EXTERNPROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+"library/BooleanSwitch.x3dv"
+
+PROTO EnvironmentalSensor [
   # required fields
   inputOutput SFBool     enabled TRUE
+  inputOutput SFBool     selected TRUE
   inputOutput SFColor    color 0.35 1 0.7
   inputOutput SFVec3f    size 1 1 1
   inputOutput SFVec3f    center 0 0 0
   inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput SFBool     isActive FALSE
+  outputOnly  SFBool     isActive
   inputOutput SFNode     node NULL
 ]
 {
-  Group { }
-}
-
-DEF Tool Interface {
-  color 0.5 0 1
-}
-
 Collision {
   enabled FALSE
   children DEF BoundingBox Transform {
-    children [
-      DEF Front Transform {
+            translation IS center    children [
+      BooleanSwitch {
+        whichChoice IS selected
+        children [
+            Group { }
+          DEF Lines Shape {
+
+            appearance Appearance {
+              lineProperties DEF LineProperties LineProperties { }
+              material Material {
+                emissiveColor 1 1 1
+                transparency 0.2
+              }
+            }
+            geometry IndexedLineSet {
+              coordIndex [
+                0,
+                1,
+                2,
+                3,
+                0,
+                -1,
+                4,
+                5,
+                6,
+                7,
+                4,
+                -1,
+                0,
+                4,
+                -1,
+                3,
+                7,
+                -1,
+                1,
+                5,
+                -1,
+                2,
+                6,
+                -1
+              ]
+              coord DEF BBox Coordinate {
+                point [
+                  -0.5 0.5 0.5,
+                  -0.5 -0.5 0.5,
+                  0.5 -0.5 0.5,
+                  0.5 0.5 0.5,
+                  -0.5 0.5 -0.5,
+                  -0.5 -0.5 -0.5,
+                  0.5 -0.5 -0.5,
+                  0.5 0.5 -0.5
+                ]
+              }
+            }
+          }
+         ]
+       }
+       DEF Front Transform {
         translation 0 0 0.5
         children Transform {
           children [
@@ -38,7 +98,7 @@ Collision {
                 material DEF BBoxMaterial Material {
                   ambientIntensity 0
                   diffuseColor 0.2 0.2 0.2
-                  emissiveColor 0.5 0 1
+                  emissiveColor IS color
                   shininess 0
                   transparency 0.5
                 }
@@ -121,22 +181,34 @@ Collision {
 }
 
 DEF BBoxScript Script {
-  inputOutput    SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput    SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput    SFVec3f    size 1 1 1
+  inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+  inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
+  inputOutput    SFVec3f    bboxSize IS size
   initializeOnly SFFloat    offset 0
+  initializeOnly SFNode     bbox USE BBox
   initializeOnly SFNode     front USE Front
   initializeOnly SFNode     right USE Right
   initializeOnly SFNode     back USE Back
   initializeOnly SFNode     left USE Left
   initializeOnly SFNode     top USE Top
   initializeOnly SFNode     bottom USE Bottom
-  inputOutput    SFNode     node NULL
+  inputOutput    SFNode     node IS node
 
   url "vrmlscript:
 function eventsProcessed ()
 {
-	var size1_2 = size .divide (2);
+	var bboxSize1_2 = bboxSize .divide (2);
+
+	// BBox
+
+	bbox .point = new MFVec3f (new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z),
+	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z));
 
 	// Position and scale planes
 
@@ -148,30 +220,28 @@ function eventsProcessed ()
 	var y = offset / Math .abs (scale .y);
 	var z = offset / Math .abs (scale .z);
 
-	front  .translation = new SFVec3f ( 0,  0,  z + size1_2 .z);
-	right  .translation = new SFVec3f ( x + size1_2 .x,  0,  0);
-	back   .translation = new SFVec3f ( 0,  0, -z - size1_2 .z);
-	left   .translation = new SFVec3f (-x - size1_2 .x,  0,  0);
-	top    .translation = new SFVec3f ( 0,  y + size1_2 .y,  0);
-	bottom .translation = new SFVec3f ( 0, -y - size1_2 .y,  0);
+	front  .translation = new SFVec3f ( 0,  0,  z + bboxSize1_2 .z);
+	right  .translation = new SFVec3f ( x + bboxSize1_2 .x,  0,  0);
+	back   .translation = new SFVec3f ( 0,  0, -z - bboxSize1_2 .z);
+	left   .translation = new SFVec3f (-x - bboxSize1_2 .x,  0,  0);
+	top    .translation = new SFVec3f ( 0,  y + bboxSize1_2 .y,  0);
+	bottom .translation = new SFVec3f ( 0, -y - bboxSize1_2 .y,  0);
 	
-	front  .scale = new SFVec3f (size .x, size .y, 1);
-	right  .scale = new SFVec3f (1, size .y, size .z);
-	back   .scale = new SFVec3f (size .x, size .y, 1);
-	left   .scale = new SFVec3f (1, size .y, size .z);
-	top    .scale = new SFVec3f (size .x, 1, size .z);
-	bottom .scale = new SFVec3f (size .x, 1, size .z);
+	front  .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
+	right  .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
+	back   .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
+	left   .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
+	top    .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
+	bottom .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
 
 }
 "
   directOutput TRUE
 }
+}
 
-ROUTE Tool.color_changed TO BBoxMaterial.set_emissiveColor
-ROUTE Tool.center_changed TO BoundingBox.set_translation
-ROUTE Tool.node_changed TO BBoxScript.set_node
-ROUTE Tool.cameraSpaceMatrix_changed TO BBoxScript.set_cameraSpaceMatrix
-ROUTE Tool.modelViewMatrix_changed TO BBoxScript.set_modelViewMatrix
-ROUTE Tool.size_changed TO BBoxScript.set_size
+DEF Tool EnvironmentalSensor {
+  color 0.5 0 1
+}
 
 EXPORT Tool

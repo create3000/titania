@@ -111,13 +111,14 @@ Selection::addChildren (const MFNode & value)
 			if (not child)
 				continue;
 
+			if (child -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+				continue;
+
 			if (isSelected (child))
 				continue;
 
-			if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-				child -> addTool ();
-
 			children .emplace_back (child);
+			child -> addTool ();
 		}
 	}
 }
@@ -266,6 +267,8 @@ Selection::select ()
 				{
 					if (getMode () == Selection::MULTIPLE)
 						removeChildren ({ node });
+					else
+						node -> addTool ();
 				}
 				else
 				{

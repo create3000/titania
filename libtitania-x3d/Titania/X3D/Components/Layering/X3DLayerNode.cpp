@@ -116,6 +116,9 @@ X3DLayerNode::initialize ()
 	X3DNode::initialize ();
 	X3DRenderer::initialize ();
 
+	defaultBackground -> isHidden (true);
+	defaultFog        -> isHidden (true);
+
 	defaultNavigationInfo -> setup ();
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
@@ -134,9 +137,6 @@ X3DLayerNode::initialize ()
 	group -> isInternal (true);
 	group -> children () = children ();
 	group -> setup ();
-
-	defaultBackground -> transparency () = 1;
-	defaultFog        -> transparency () = 1;
 
 	viewport ()       .addInterest (this, &X3DLayerNode::set_viewport);
 	addChildren ()    .addInterest (group -> addChildren ());

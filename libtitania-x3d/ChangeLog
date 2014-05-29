@@ -1,5 +1,18 @@
 2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* World.cpp:
+	* X3DBaseNode.cpp:
+	* Selection.cpp:
+	* X3DBaseTool.h:
+	* TransformTool.x3dv:
+	* EnvironmentalSensor.x3dv:
+	* BooleanSwitch.x3dv:
+	* X3DLayerNode.cpp:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
+2014-05-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Keys.cpp:
 	* TransformTool.x3dv:
 	* TransformTool.cpp:

@@ -690,6 +690,7 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.h" />
+    <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

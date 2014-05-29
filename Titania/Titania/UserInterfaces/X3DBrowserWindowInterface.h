@@ -567,6 +567,18 @@ public:
 	getDashSeparator1 () const
 	{ return *m_DashSeparator1; }
 
+	Gtk::ToolButton &
+	getSelectParentButton () const
+	{ return *m_SelectParentButton; }
+
+	Gtk::ToolButton &
+	getSelectChildrenButton () const
+	{ return *m_SelectChildrenButton; }
+
+	Gtk::SeparatorToolItem &
+	getDashSeparator4 () const
+	{ return *m_DashSeparator4; }
+
 	Gtk::MenuToolButton &
 	getViewerButton () const
 	{ return *m_ViewerButton; }
@@ -977,6 +989,14 @@ public:
 
 	virtual
 	void
+	on_select_parent_button_clicked () = 0;
+
+	virtual
+	void
+	on_select_children_button_clicked () = 0;
+
+	virtual
+	void
 	on_viewer_clicked () = 0;
 
 	virtual
@@ -1135,6 +1155,9 @@ private:
 	Gtk::RadioToolButton*           m_ArrowButton;
 	Gtk::ToolButton*                m_PlayPauseButton;
 	Gtk::SeparatorToolItem*         m_DashSeparator1;
+	Gtk::ToolButton*                m_SelectParentButton;
+	Gtk::ToolButton*                m_SelectChildrenButton;
+	Gtk::SeparatorToolItem*         m_DashSeparator4;
 	Gtk::MenuToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                m_StraightenButton;
 	Gtk::SeparatorToolItem*         m_DashSeparator2;

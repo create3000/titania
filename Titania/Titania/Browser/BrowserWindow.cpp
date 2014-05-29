@@ -943,10 +943,13 @@ BrowserWindow::on_create_parent_group_activate ()
 
 	// Expand groups
 
-	for (const auto & group : groups)
+	if (getConfig () .getBoolean ("followPrimarySelection"))
 	{
-		for (const auto & iter : getOutlineTreeView () -> get_iters (group))
-			getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
+		for (const auto & group : groups)
+		{
+			for (const auto & iter : getOutlineTreeView () -> get_iters (group))
+				getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
+		}
 	}
 }
 
@@ -1204,19 +1207,17 @@ BrowserWindow::on_proximity_sensors_toggled ()
 		}
 		else
 		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 			               {
 			                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
 
-			                  if (tool)
+			                  if (tool and not getBrowser () -> getSelection () -> isSelected (node))
 										tool -> removeTool (true);
 
 			                  return true;
 								},
 								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
-
-		getBrowser () -> update (); // Prevent OutlineEditor flickering.
 	}
 
 	toggle = true;
@@ -1242,19 +1243,17 @@ BrowserWindow::on_visibility_sensors_toggled ()
 		}
 		else
 		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 			               {
 			                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
 
-			                  if (tool)
+			                  if (tool and not getBrowser () -> getSelection () -> isSelected (node))
 										tool -> removeTool (true);
 
 			                  return true;
 								},
 								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
-
-		getBrowser () -> update (); // Prevent OutlineEditor flickering.
 	}
 
 	toggle = true;
@@ -1559,12 +1558,6 @@ BrowserWindow::set_dashboard (const bool value)
 }
 
 void
-BrowserWindow::on_play_pause_button_clicked ()
-{
-	isLive (not getConfig () .getBoolean ("isLive"));
-}
-
-void
 BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
@@ -1586,6 +1579,156 @@ BrowserWindow::on_arrow_button_toggled ()
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
+}
+
+void
+BrowserWindow::on_play_pause_button_clicked ()
+{
+	isLive (not getConfig () .getBoolean ("isLive"));
+}
+
+void
+BrowserWindow::on_select_parent_button_clicked ()
+{
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return;
+
+	X3D::MFNode parents;
+
+	for (const auto & child : selection)
+	{
+		bool hasParents = false;
+
+		for (const auto & parent : getParentNodes (child))
+		{
+			if (parent not_eq getExecutionContext () and
+			    parent -> getExecutionContext () == getExecutionContext ())
+			{
+				hasParents = true;
+				parents .emplace_back (parent);
+			}
+		}
+
+		if (not hasParents)
+			parents .emplace_back (child);
+	}
+
+	//{ DEBUG
+
+	__LOG__ << parents .size () << std::endl;
+
+	for (const auto & parent : parents)
+		__LOG__ << parent -> getTypeName () << std::endl;
+
+	//} DEBUG
+
+	if (parents .empty ())
+		return;
+
+	getBrowser () -> getSelection () -> setChildren (parents);
+
+	if (getConfig () .getBoolean ("followPrimarySelection"))
+	{
+		for (const auto parent : parents)
+			getOutlineTreeView () -> expand_to (parent);
+	}
+}
+
+void
+BrowserWindow::on_select_children_button_clicked ()
+{
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return;
+
+	X3D::MFNode children;
+
+	for (const auto & parent : selection)
+	{
+		bool hasChildren = false;
+
+		try
+		{
+			for (const auto & type : basic::reverse_adapter (parent -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::LOD:
+					{
+						const auto lodNode = dynamic_cast <X3D::LOD*> (parent .getValue ());
+						const auto index   = lodNode -> level_changed ();
+
+						if (index >= 0 and index < (int32_t) lodNode -> children () .size ())
+						{
+							const auto & child = lodNode -> children () [index];
+
+							if (child -> getExecutionContext () == getExecutionContext ())
+							{
+								hasChildren = true;
+								children .emplace_back (child);
+							}	
+						}
+
+						goto NEXT;
+					}
+					case X3D::X3DConstants::Switch:
+					{
+						const auto switchNode = dynamic_cast <X3D::Switch*> (parent .getValue ());
+						const auto index      = switchNode -> whichChoice ();
+
+						if (index >= 0 and index < (int32_t) switchNode -> children () .size ())
+						{
+							const auto & child = switchNode -> children () [index];
+
+							if (child -> getExecutionContext () == getExecutionContext ())
+							{
+								hasChildren = true;
+								children .emplace_back (child);
+							}	
+						}
+
+						goto NEXT;
+					}
+					case X3D::X3DConstants::X3DGroupingNode:
+					{
+						const auto groupingNode = dynamic_cast <X3D::X3DGroupingNode*> (parent .getValue ()); 
+
+						for (const auto & child : groupingNode -> children ())
+						{
+							if (child -> getExecutionContext () == getExecutionContext ())
+							{
+								hasChildren = true;
+								children .emplace_back (child);
+							}
+						}
+
+						goto NEXT;
+					}
+					default:
+						break;
+				}
+			}
+
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+NEXT:
+
+		if (not hasChildren)
+			children .emplace_back (parent);
+	}
+
+	getBrowser () -> getSelection () -> setChildren (children);
+
+	if (getConfig () .getBoolean ("followPrimarySelection"))
+	{
+		for (const auto child : children)
+			getOutlineTreeView () -> expand_to (child);
+	}
 }
 
 // Viewer

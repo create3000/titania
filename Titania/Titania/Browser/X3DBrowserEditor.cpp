@@ -1929,6 +1929,9 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 	if (not seen .emplace (node) .second)
 		return false;
 
+	if (node == getExecutionContext ())
+		return true;
+
 	for (const auto & type : basic::reverse_adapter (node -> getType ()))
 	{
 		switch (type)
@@ -1989,7 +1992,10 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
 						const auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (thirdParent);
 
 						if (baseNode)
-							parentNodes .emplace_back (baseNode);
+						{
+							if (not baseNode -> isInternal ())
+								parentNodes .emplace_back (baseNode);
+						}
 					}
 
 					continue;
@@ -1999,7 +2005,9 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
 
 				if (baseNode)
 				{
-					parentNodes .emplace_back (baseNode);
+					if (not baseNode -> isInternal ())
+						parentNodes .emplace_back (baseNode);
+
 					continue;
 				}
 			}

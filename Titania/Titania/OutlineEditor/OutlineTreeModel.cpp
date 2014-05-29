@@ -352,11 +352,17 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			SelectedColumn::ValueType val;
 			val .init (SelectedColumn::ValueType::value_type ());
 
-			const auto userData       = get_user_data (iter);
-			const auto parentUserData = get_user_data (iter -> parent ());
+			const auto userData = get_user_data (iter);
 
-			val .set ((userData and userData -> selected & OUTLINE_SELECTED)or
-			             (parentUserData and parentUserData -> selected & OUTLINE_SELECTED));
+			if (userData)
+				val .set (userData -> selected & OUTLINE_SELECTED);
+
+			else
+			{
+				// Handle NULL.
+				const auto parentUserData = get_user_data (iter -> parent ());
+				val .set (parentUserData and parentUserData -> selected & OUTLINE_SELECTED);
+			}
 
 			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;

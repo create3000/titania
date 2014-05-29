@@ -54,6 +54,7 @@
 #include "../Core/X3DSensorNodeTool.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
 #include "../../Components/Layering/X3DLayerNode.h"
@@ -125,11 +126,11 @@ public:
 
 	virtual
 	void
-	removeTool (const bool really) final override
-	{
-		if (really)
-			X3DSensorNodeTool <Type>::removeTool ();
-	}
+	addTool () final override;
+
+	virtual
+	void
+	removeTool (const bool) final override;
 
 	///  @name Destruction
 
@@ -198,6 +199,8 @@ X3DEnvironmentalSensorNodeTool <Type>::realize ()
 {
 	try
 	{
+		addTool ();
+
 		getToolNode () -> setField <SFColor> ("color", color);
 		getToolNode () -> setField <SFNode>  ("node",  getNode ());
 
@@ -211,6 +214,36 @@ X3DEnvironmentalSensorNodeTool <Type>::realize ()
 	}
 	catch (const X3DError & error)
 	{ }
+}
+
+template <class Type>
+void
+X3DEnvironmentalSensorNodeTool <Type>::addTool ()
+{
+	try
+	{
+		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (this));
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+template <class Type>
+void
+X3DEnvironmentalSensorNodeTool <Type>::removeTool (const bool really)
+{
+	if (really)
+		X3DSensorNodeTool <Type>::removeTool ();
+	
+	else
+	{
+		try
+		{
+			getToolNode () -> setField <SFBool> ("set_selected", false);
+		}
+		catch (const X3DError &)
+		{ }
+	}
 }
 
 template <class Type>

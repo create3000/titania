@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Thu, 29 May 2014 01:39:40 GMT'/>
+    <meta name='modified' content='Thu, 29 May 2014 13:33:58 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -118,9 +118,9 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='-8.38147 5.38817 4.65655'
-        orientation='0.832366 -0.535971 -0.141073 5.35505'
-        centerOfRotation='-11.5193 -0.334001 -0.332001'/>
+        position='0.303737 1.79783 8.43447'
+        orientation='0.519624 0.822241 0.232186 5.95359'
+        centerOfRotation='4.29495 -0.945555 -6.15488'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
       <fieldValue name='zDimension' value='40'/>
@@ -221,7 +221,7 @@
         </Shape>
       </Transform>
     </Anchor>
-    <Transform
+    <Transform DEF='ChildrenInProto'
         translation='0.564968 0.249562 0'>
       <Collision DEF='sss'>
         <ProtoInstance name='Children1'>
@@ -286,7 +286,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 29 Mai 2014 03:25:45 CEST"'>
+            string='"modified...", "Do 29 Mai 2014 15:11:38 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -447,24 +447,24 @@ function initialize ()
             size='2 2 2'
             center='10 0 0'/>
       </Transform>
-      <Group>
-        <ProximitySensor USE='_9'/>
-        <Transform DEF='Box'
-            translation='1.40843 1.10727 0.193803'
-            rotation='0 0 1 1.5708'
-            scale='0.2 0.2 0.2'>
-          <Transform>
-            <Shape>
-              <Appearance>
-                <Material
-                    diffuseColor='0.8 0 0'/>
-              </Appearance>
-              <Box/>
-            </Shape>
-          </Transform>
-        </Transform>
-      </Group>
     </Transform>
+    <Group DEF='SensorClone'>
+      <ProximitySensor USE='_9'/>
+      <Transform DEF='Box'
+          translation='1.40843 1.10727 0.193803'
+          rotation='0 0 1 1.5708'
+          scale='0.2 0.2 0.2'>
+        <Transform>
+          <Shape>
+            <Appearance>
+              <Material
+                  diffuseColor='0.8 0 0'/>
+            </Appearance>
+            <Box/>
+          </Shape>
+        </Transform>
+      </Transform>
+    </Group>
     <Transform DEF='Box7'
         translation='-9.33993 0 0'
         scale='2.31607 0.89467 0.89467'

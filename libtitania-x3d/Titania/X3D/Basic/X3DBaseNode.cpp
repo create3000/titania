@@ -752,61 +752,27 @@ X3DBaseNode::getNumClones () const
 {
 	size_t numClones = 0;
 
-	for (const auto & parentField : getParents ())
+	for (const auto & parent : getParents ())
 	{
-		if (dynamic_cast <X3DFieldDefinition*> (parentField))
+		if (dynamic_cast <SFNode*> (parent))
 		{
-			if (dynamic_cast <SFNode*> (parentField))
+			// Only X3DNodes, ie nodes in the scene graph, have field names
+
+			if (parent -> getName () .empty ())
 			{
-				// Only X3DNodes, ie nodes in the scene graph, have field names
-
-				if (parentField -> getName () .empty ())
+				for (const auto & secondParent : parent -> getParents ())
 				{
-					for (const auto & parent : parentField -> getParents ())
-					{
-						// Only X3DNodes, ie nodes in the scene graph, have field names
+					// Only X3DNodes, ie nodes in the scene graph, have field names
 
-						if (parent -> getName () .empty ())
-							continue;
+					if (secondParent -> getName () .empty ())
+						continue;
 
-						if (dynamic_cast <MFNode*> (parent))
-							++ numClones;
-
-//						if (dynamic_cast <MFNode*> (parent) and not parent -> getName () .empty ())
-//						{
-//							// If any of the fields parents is in a scene add count.
-//
-//							for (const auto & fparent : parent -> getParents ())
-//							{
-//								auto node = dynamic_cast <X3DBaseNode*> (fparent);
-//
-//								if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
-//								{
-//									++ numClones;
-//									break;
-//								}
-//							}
-//						}
-					}
-				}
-				else
-				{
-					++ numClones;
-
-//					// If any of the fields parents is in a scene add count.
-//
-//					for (const auto & fparent : parentField -> getParents ())
-//					{
-//						const auto node = dynamic_cast <X3DBaseNode*> (fparent);
-//
-//						if (node and (node -> getExecutionContext () -> isRootContext () or node -> getExecutionContext () -> isProtoDeclaration ()))
-//						{
-//							++ numClones;
-//							break;
-//						}
-//					}
+					if (dynamic_cast <MFNode*> (secondParent))
+						++ numClones;
 				}
 			}
+			else
+				++ numClones;
 		}
 	}
 
