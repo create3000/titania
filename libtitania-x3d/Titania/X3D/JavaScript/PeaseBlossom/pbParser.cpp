@@ -74,6 +74,7 @@ public:
 	static const io::string _true;
 
 	static const std::set <std::string> Keyword;
+	static const std::set <std::string> FutureReservedWord;
 
 };
 
@@ -87,12 +88,18 @@ const io::string Grammar::_true ("true");
 
 const std::set <std::string> Grammar::Keyword = {
 	"break",    "do",       "instanceof", "typeof",
-	"case",     "else",     "new",         "var",
-	"catch",    "finally",  "return",      "void",
-	"continue", "for",      "switch",      "while",
-	"debugger", "function", "this",        "with",
+	"case",     "else",     "new",        "var",
+	"catch",    "finally",  "return",     "void",
+	"continue", "for",      "switch",     "while",
+	"debugger", "function", "this",       "with",
 	"default",  "if",       "throw",
 	"delete",   "in",       "try"
+
+};
+
+const std::set <std::string> Grammar::FutureReservedWord = {
+	"class", "enum",   "extends", "super",
+	"const", "export", "import"
 
 };
 
@@ -133,35 +140,6 @@ Parser::comments ()
 // A.1 Lexical Grammar
 
 bool
-Parser::literal ()
-{
-	//__LOG__ << std::endl;
-
-	if (nullLiteral ())
-		return true;
-
-	if (booleanLiteral ())
-		return true;
-
-	// ...
-
-	return false;
-}
-
-bool
-Parser::nullLiteral ()
-{
-	__LOG__ << std::endl;
-
-	comments ();
-
-	if (Grammar::_null (istream))
-		return true;
-
-	return false;
-}
-
-bool
 Parser::identifier ()
 {
 	__LOG__ << std::endl;
@@ -172,6 +150,8 @@ Parser::identifier ()
 	{
 		if (reservedWord (_identifierName))
 			throw Error <INVALID_X3D> ("reservedWord");
+
+		return true;
 	}
 
 	return false;
@@ -190,14 +170,56 @@ Parser::identifierName (std::string & _identifierName)
 bool
 Parser::reservedWord (const std::string & _string)
 {
+	__LOG__ << std::endl;
+
 	if (Grammar::Keyword .count (_string))
+		return true;
+
+	if (Grammar::FutureReservedWord .count (_string))
+		return true;
+
+	std::istringstream istream (_string);
+
+	if (nullLiteral (istream))
+		return true;
+
+	if (booleanLiteral (istream))
 		return true;
 
 	return false;
 }
 
 bool
-Parser::booleanLiteral ()
+Parser::literal ()
+{
+	//__LOG__ << std::endl;
+
+	if (nullLiteral (istream))
+		return true;
+
+	if (booleanLiteral (istream))
+		return true;
+
+	// ...
+
+	return false;
+}
+
+bool
+Parser::nullLiteral (std::istream & istream)
+{
+	__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::_null (istream))
+		return true;
+
+	return false;
+}
+
+bool
+Parser::booleanLiteral (std::istream & istream)
 {
 	__LOG__ << std::endl;
 

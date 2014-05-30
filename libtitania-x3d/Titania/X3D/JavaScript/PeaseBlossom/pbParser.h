@@ -110,10 +110,10 @@ private:
 	literal ();
 
 	bool
-	nullLiteral ();
+	nullLiteral (std::istream &);
 
 	bool
-	booleanLiteral ();
+	booleanLiteral (std::istream &);
 
 	// A.2 Number Conversions
 
