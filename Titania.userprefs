@@ -1,10 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="test/main.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="131" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="130" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.cpp" Line="166" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="172" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="175" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/X3DJavaScriptContext.h" Line="87" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/pbParser.h" Line="65" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/pbParser.cpp" Line="117" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.cpp" Line="84" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.h" Line="55" Column="1" />
+      <File FileName="test/main.cpp" Line="78" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -28,17 +34,28 @@
             <Node name="scripts" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Layering" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                   <Node name="Scripting" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
                 <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="jsContext.cpp" selected="True" />
-                  </Node>
+                  <Node name="PeaseBlossom" expanded="True" />
                 </Node>
+                <Node name="Parser" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="test" expanded="True" selected="True" />
           <Node name="Titania" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />

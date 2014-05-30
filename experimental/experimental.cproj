@@ -14,10 +14,10 @@
     <ReleaseVersion>0.3</ReleaseVersion>
     <Packages>
       <Packages>
-        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-sqlite/libtitania-sqlite.md.pc" name="libtitania-sqlite" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="true" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-sqlite/libtitania-sqlite.md.pc" name="libtitania-sqlite" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="True" />
       </Packages>
     </Packages>
   </PropertyGroup>
@@ -62,8 +62,8 @@
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="titania_experimental_SOURCES" />
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="True" Name="titania_experimental_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />

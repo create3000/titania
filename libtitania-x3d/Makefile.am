@@ -401,6 +401,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \
 	Titania/X3D/InputOutput/X3DBaseGenerator.cpp \
+	Titania/X3D/JavaScript/PeaseBlossom/pbParser.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsArrayFields.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp \

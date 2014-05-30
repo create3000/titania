@@ -14,13 +14,13 @@
     <ReleaseVersion>0.3</ReleaseVersion>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/sigc++-2.0.pc" name="libsigc++" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/Magick++.pc" name="Magick++" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="false" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/sigc++-2.0.pc" name="libsigc++" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/Magick++.pc" name="Magick++" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="True" />
       </Packages>
     </Packages>
   </PropertyGroup>
@@ -65,15 +65,15 @@
         <Policies>
           <StandardHeader Text=" &#xA; class ${FileName} {&#xA;public: &#xA;	 ${FileName} ()&#xA;  	{&#xA;&#xA;&#xA;}&#xA; " IncludeInNewFiles="True" />
         </Policies>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="titania_test_SOURCES" />
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="True" Name="titania_test_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(error|Fehler)\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*warning\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(error|Fehler)\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(warning|note)\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>

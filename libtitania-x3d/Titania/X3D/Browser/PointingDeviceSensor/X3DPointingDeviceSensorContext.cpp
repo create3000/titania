@@ -155,6 +155,14 @@ X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double 
 
 	pick (x, y);
 
+	motion ();
+
+	return not getPickedObjects () .empty () and not getNearestPickedObject () -> sensors .empty ();
+}
+
+void
+X3DPointingDeviceSensorContext::motion ()
+{
 	// Set isOver to FALSE for appropriate nodes
 
 	std::vector <X3DBaseNode*> difference;
@@ -227,8 +235,6 @@ X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double 
 													: getNearestPickedObject ());
 		}
 	}
-
-	return not getPickedObjects () .empty () and not getNearestPickedObject () -> sensors .empty ();
 }
 
 bool
@@ -309,7 +315,9 @@ X3DPointingDeviceSensorContext::leaveNotifyEvent ()
 {
 	// Clear pickedObjects.
 
-	motionNotifyEvent (std::numeric_limits <double>::quiet_NaN (), std::numeric_limits <double>::quiet_NaN ());
+	pickedObjects .clear ();
+
+	motion ();
 }
 
 void

@@ -59,88 +59,33 @@
 #include <Titania/OS.h>
 #include <gtkmm.h>
 
-using namespace titania;
+#include <Titania/X3D/JavaScript/PeaseBlossom/pbParser.h>
 
-struct Test
-{
-void
-set_initialized (const X3D::X3DPtr <X3D::Browser> & browser)
-{
-	browser -> initialized () .removeInterest (this, &Test::set_initialized);
-	browser -> loadURL ({ "/home/holger/Projekte/Titania/Library/Examples/ICTS/stage/index__6.T.wrl" });
-}
-};
+using namespace titania;
+using namespace titania::X3D;
 
 int
 main (int argc, char* argv [ ])
 {
-	//install_signal_hander ();
-	
-	os::env ("UBUNTU_MENUPROXY", "libappmenu.so");
-
-	//gtk_init (0, 0);
-	//Gtk::Main::init_gtkmm_internals ();
-
 	std::clog << std::boolalpha << std::endl;
-
 	std::clog << "Test started ..." << std::endl << std::endl;
+
 	{
-		std::clog << "Start of block ..." << std::endl;
+		static const std::string string =
+			"true false null Browser"
+		;
 
-		{
-			Gtk::Main kit (argc, argv);
+		std::istringstream istream (string);
 
-			Gtk::Window window;
-			window .show ();
-			
-			Test test;
-			
-			auto browser = X3D::createBrowser ();
-			browser -> initialized () .addInterest (&test, &Test::set_initialized, browser);
-			browser -> show ();
-			window .add (*browser);
+		const auto scene = getBrowser () -> createScene ();
 
-			Gtk::Main::run (window);
-		}
-
-		std::clog << "End of block ..." << std::endl;
+		pb::Parser (istream, scene) .parseIntoContext ();
+		
+		__LOG__ << bool (istream) << std::endl;
+		
+		if (istream)
+			__LOG__ << istream .rdbuf () << std::endl;
 	}
+
 	std::clog << "Test done ..." << std::endl;
 }
-
-// SAIAction
-// SAIBoolean
-// SAIBrowserApp
-// SAIBrowserName
-// SAIBrowserRef
-// SAIBrowserVersion
-// SAIComponentDeclaration
-// SAIComponent
-// SAIEncoding
-// SAIExecutionContext
-// SAIFieldAccess
-// SAIFieldDeclaration
-// SAIField
-// SAIFieldName
-// SAIFieldType
-// SAIFieldValue
-// SAIFrameRate
-// SAILayerID
-// SAILoadState
-// SAIMatrix
-// SAINavSpeed
-// SAINode
-// SAINodeType
-// SAIParameterLIst
-// SAIProfileDeclaration
-// SAIPropertyList
-// SAIProtoDeclaration
-// SAIRequester
-// SAIRoute
-// SAIScene
-// SAIScript
-// SAIScriptImplementation
-// SAIStream
-// SAIString
-// SAIURL
-// NULL

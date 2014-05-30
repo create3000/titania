@@ -48,138 +48,171 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_PB_PARSER_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_PB_PARSER_H__
 
-#include "../../Basic/NodeSet.h"
-#include "../../Fields.h"
-#include "../../Types/Geometry.h"
-#include "../../Types/Pointer.h"
-#include "PickedObjectArray.h"
-#include "Intersection.h"
+#include "../../Parser/X3DParser.h"
 
 namespace titania {
 namespace X3D {
+namespace pb {
 
-class X3DPointingDeviceSensorContext :
-	virtual public X3DBaseNode
+class Parser :
+	public X3DParser
 {
 public:
 
-	///  @name Outputs
+	///  @name Construction
 
-	void
-	isPickable (const bool value)
-	{ pickable = value; }
+	Parser (std::istream & istream, X3DExecutionContext* const);
 
-	const SFBool &
-	isPickable () const
-	{ return pickable; }
+	///  @name Common members
 
-	///  @name Member access
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
 
-	const PickedObjectPtr &
-	getNearestPickedObject () const
-	{ return getPickedObjects () .front (); }
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
 
-	const PickedObjectArray &
-	getPickedObjects () const
-	{ return pickedObjects; }
-
-	X3DLayerNode*
-	getPickingLayer () const
-	{ return pickingLayer; }
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
 
 	///  @name Operations
 
 	void
-	pick (const double, const double);
-
-	bool
-	intersect (const Vector4i &) const;
-
-	std::vector <NodeSet> &
-	getSensors ()
-	{ return enabledSensors; }
-
-	void
-	setPickRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	{ pickRay = getPickRay (modelViewMatrix, projectionMatrix, viewport); }
-
-	Line3d
-	getPickRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
-
-	void
-	addPickedObject (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
-
-	///  @name Event handlers
-
-	bool
-	motionNotifyEvent (const double, const double);
-
-	bool
-	buttonPressEvent (const double, const double);
-
-	bool
-	buttonReleaseEvent ();
-
-	void
-	leaveNotifyEvent ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DPointingDeviceSensorContext ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DPointingDeviceSensorContext ();
-
-	virtual
-	void
-	initialize () override;
+	parseIntoContext ();
 
 
 private:
 
-	///  @name Members access
+	void
+	comments ();
 
-	virtual
-	const WorldPtr &
-	getWorld () const = 0;
+	// A.1 Lexical Grammar
 
-	///  @name Event handlers
+	bool
+	identifier ();
+	
+	bool
+	identifierName (std::string &);
+
+	bool
+	reservedWord (const std::string &);
+
+	bool
+	literal ();
+
+	bool
+	nullLiteral ();
+
+	bool
+	booleanLiteral ();
+
+	// A.2 Number Conversions
+
+	// A.3 Expressions
+
+	bool
+	primaryExpression ();
+
+	bool
+	memberExpression ();
+
+	bool
+	newExpression ();
+
+	bool
+	leftHandSideExpression ();
+
+	bool
+	postfixExpression ();
+
+	bool
+	unaryExpression ();
+
+	bool
+	multiplicativeExpression ();
+
+	bool
+	additiveExpression ();
+
+	bool
+	shiftExpression ();
+
+	bool
+	relationalExpression ();
+
+	bool
+	equalityExpression ();
+
+	bool
+	bitwiseANDExpression ();
+
+	bool
+	bitwiseXORExpression ();
+
+	bool
+	bitwiseORExpression ();
+
+	bool
+	logicalANDExpression ();
+
+	bool
+	logicalORExpression ();
+
+	bool
+	conditionalExpression ();
+
+	bool
+	assignmentExpression ();
+
+	bool
+	expression ();
+
+	// A.4 Statements
+
+	bool
+	statement ();
+
+	bool
+	expressionStatement ();
+
+	// A.5 Functions and Programs
+
+	bool
+	functionDeclaration ();
 
 	void
-	set_shutdown ();
-
-	///  @name Operations
+	program ();
 
 	void
-	motion ();
+	sourceElements ();
 
-	//  @name Members
+	bool
+	sourceElement ();
 
-	SFBool                pickable;
-	Vector2d              pointer;
-	Line3d                pickRay;
-	PickedObjectArray     pickedObjects;
-	std::vector <NodeSet> enabledSensors;
-	MFNode                overSensors;
-	MFNode                activeSensors;
-	X3DLayerNodePtr       pickingLayer;
-	time_type             pressTime;
-	bool                  hasMoved;
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	std::istream & istream;
+	
+	std::string whitespaces;
 
 };
 
+} // pb
 } // X3D
 } // titania
 

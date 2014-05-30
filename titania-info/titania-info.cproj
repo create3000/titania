@@ -13,14 +13,14 @@
     </Compiler>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/pkgconfig/ImageMagick++.pc" name="ImageMagick++" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="false" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-anyoptions/libtitania-anyoptions.md.pc" name="libtitania-anyoptions" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="true" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="true" />
+        <Package file="/usr/lib/pkgconfig/ImageMagick++.pc" name="ImageMagick++" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-anyoptions/libtitania-anyoptions.md.pc" name="libtitania-anyoptions" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="True" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -59,8 +59,8 @@
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="true" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="true" Name="titania_info_SOURCES" />
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ExecuteTargetName="run" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="True" Name="titania_info_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
           <OthersVar />
