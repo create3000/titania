@@ -1416,7 +1416,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkToolButton" id="SelectParentButton">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="tooltip_text" translatable="yes">Selects the immediate parent of the current selection.</property>
                                     <property name="label" translatable="yes">Select Parent</property>
@@ -1431,7 +1430,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkToolButton" id="SelectChildrenButton">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="tooltip_text" translatable="yes">Selects the next lower children objects within the selected group in the hierarchy.</property>
                                     <property name="label" translatable="yes">Select Children</property>
@@ -1446,7 +1444,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkSeparatorToolItem" id="ViewerSeparator">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                   </object>
                                   <packing>

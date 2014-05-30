@@ -66,7 +66,7 @@ public:
 
 	virtual
 	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &, size_t) = 0;
+	createContext (Script *, const std::string &, const basic::uri &) = 0;
 
 
 protected:

@@ -154,8 +154,6 @@ Script::requestImmediateLoad ()
 
 	// Find first working script.
 
-	size_t index = 0;
-
 	for (const auto & URL : url ())
 	{
 		std::string ecmascript;
@@ -164,7 +162,16 @@ Script::requestImmediateLoad ()
 		{
 			try
 			{
-				javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL (), index));
+				javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL ()));
+
+				// Initialize.
+
+				isLive () .addInterest (javaScript -> isLive ());
+
+				javaScript -> isLive () = isLive ();
+				javaScript -> setup ();
+
+				setLoadState (COMPLETE_STATE);
 				break;
 			}
 			catch (const std::invalid_argument & error)
@@ -172,32 +179,21 @@ Script::requestImmediateLoad ()
 				std::clog << error .what () << std::endl;
 			}
 		}
-
-		++ index;
 	}
 
-	if (javaScript)
-		setLoadState (COMPLETE_STATE);
-
-	else
+	if (not javaScript)
 	{
 		try
 		{
 			// Assign an empty script if no working script is found.
-			javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0));
+			javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, "", ""));
+			javaScript -> setup ();
 		}
 		catch (const std::invalid_argument & error)
 		{ }
 
 		setLoadState (FAILED_STATE);
 	}
-
-	// Initialize.
-
-	isLive () .addInterest (javaScript -> isLive ());
-
-	javaScript -> isLive () = isLive ();
-	javaScript -> setup ();
 }
 
 void

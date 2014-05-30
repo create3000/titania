@@ -94,7 +94,7 @@ public:
 
 	virtual
 	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &, size_t) final override;
+	createContext (Script *, const std::string &, const basic::uri &) final override;
 
 	///  @name Input/Output
 

@@ -72,7 +72,7 @@ public:
 
 	///  @name Construction
 
-	jsContext (Script* const, const std::string &, const basic::uri &, const size_t);
+	jsContext (Script* const, const std::string &, const basic::uri &);
 
 	virtual
 	X3DBaseNode*
@@ -105,9 +105,6 @@ public:
 	getGlobal () const
 	{ return global; }
 
-	jsval
-	getFunction (const std::string &) const;
-
 	void
 	addObject (X3DFieldDefinition* const, JSObject* const)
 	throw (Error <INVALID_FIELD>);
@@ -136,10 +133,10 @@ public:
 private:
 
 	void
-	initContext ();
+	createContext ();
 
 	void
-	initNode ();
+	setFields ();
 
 	void
 	addUserDefinedField (X3DFieldDefinition* const);
@@ -147,9 +144,6 @@ private:
 	static
 	void
 	defineProperty (JSContext* const, JSObject* const, X3DFieldDefinition * const, const std::string &, const uintN);
-
-	void
-	initEventHandler ();
 
 	JSBool
 	evaluate (const std::string &, const std::string &);
@@ -164,6 +158,9 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	void
+	setEventHandler ();
 
 	void
 	prepareEvents ();
@@ -182,6 +179,9 @@ private:
 
 	void
 	shutdown ();
+
+	jsval
+	getFunction (const std::string &) const;
 
 	void
 	callFunction (const std::string &) const;
@@ -214,15 +214,16 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	static JSClass global_class;
+	static JSClass GlobalClass;
 
 	///  @name Members
 
 	JSRuntime*               runtime;
 	JSContext*               context;
+	JSClass                  globalClass;
 	JSObject*                global;
+	std::string              ecmascript;
 	std::vector <basic::uri> worldURL;
-	size_t                   index;
 
 	jsval initializeFn;
 	jsval prepareEventsFn;

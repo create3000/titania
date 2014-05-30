@@ -1650,7 +1650,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 		hierachies .emplace (hierarchy .size (), std::move (hierarchy));
 	}
 
-	// Find objects in objects.
+	// Sort out parent if parent is a child of another parent.
 	
 	std::map <X3D::X3DChildObject*, bool> tree;
 

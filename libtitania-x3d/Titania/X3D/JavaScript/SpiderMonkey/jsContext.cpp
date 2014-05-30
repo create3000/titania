@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -80,8 +80,8 @@
 #include "jsString.h"
 #include "jsfield.h"
 
-#include <thread>
 #include <cassert>
+#include <thread>
 
 namespace titania {
 namespace X3D {
@@ -92,7 +92,7 @@ const std::string jsContext::componentName  = "Browser";
 const std::string jsContext::typeName       = "jsContext";
 const std::string jsContext::containerField = "context";
 
-JSClass jsContext::global_class = {
+JSClass jsContext::GlobalClass = {
 	"global", JSCLASS_GLOBAL_FLAGS,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -100,14 +100,15 @@ JSClass jsContext::global_class = {
 
 };
 
-jsContext::jsContext (Script* const script, const std::string & ecmascript, const basic::uri & uri, const size_t index) :
+jsContext::jsContext (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (script),
 	             runtime (nullptr),
 	             context (nullptr),
+	         globalClass (GlobalClass),
 	              global (nullptr),
+	          ecmascript (ecmascript),
 	            worldURL ({ uri }),
-	               index (index),
 	        initializeFn (),
 	     prepareEventsFn (),
 	   eventsProcessedFn (),
@@ -136,37 +137,24 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 	JS_SetErrorReporter (context, error);
 
 	// Create the global object.
-	global = JS_NewCompartmentAndGlobalObject (context, &global_class, nullptr);
+	global = JS_NewCompartmentAndGlobalObject (context, &globalClass, nullptr);
 
 	if (global == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript global object.");
 
-	initContext ();
+	createContext ();
 
-	initNode ();
-
-	if (not evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
-	{
-		dispose ();
-
-		throw std::invalid_argument ("Couldn't evaluate script.");
-	}
-
-	initEventHandler ();
+	setFields ();
 }
 
 X3DBaseNode*
 jsContext::create (X3DExecutionContext* const) const
 {
-	std::string ecmascript;
-
-	getScriptNode () -> loadDocument (getScriptNode () -> url () [index], ecmascript);
-
-	return new jsContext (getScriptNode (), ecmascript, worldURL .front (), index);
+	return new jsContext (getScriptNode (), ecmascript, worldURL .front ());
 }
 
 void
-jsContext::initContext ()
+jsContext::createContext ()
 {
 	// Populate the global object with the standard globals, like Object and Array.
 	if (not JS_InitStandardClasses (context, global))
@@ -237,7 +225,7 @@ jsContext::initContext ()
 }
 
 void
-jsContext::initNode ()
+jsContext::setFields ()
 {
 	for (auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
@@ -318,36 +306,6 @@ jsContext::defineProperty (JSContext* const context,
 			                   getProperty, setProperty,
 			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
 			break;
-	}
-}
-
-void
-jsContext::initEventHandler ()
-{
-	initializeFn      = getFunction ("initialize");
-	prepareEventsFn   = getFunction ("prepareEvents");
-	eventsProcessedFn = getFunction ("eventsProcessed");
-	shutdownFn        = getFunction ("shutdown");
-
-	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
-	{
-		switch (field -> getAccessType ())
-		{
-			case inputOnly:
-			case inputOutput:
-			{
-				const jsval function = field -> getAccessType () == inputOnly
-				                       ? getFunction (field -> getName ())
-									        : getFunction ("set_" + field -> getName ());
-
-				if (not JSVAL_IS_VOID (function))
-					functions [field] = function;
-
-				break;
-			}
-			default:
-				break;
-		}
 	}
 }
 
@@ -488,6 +446,11 @@ jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 
+	if (not evaluate (ecmascript, worldURL .front () == getExecutionContext () -> getWorldURL () ? "" : worldURL .front () .str ()))
+		throw std::invalid_argument ("Couldn't evaluate script.");
+
+	setEventHandler ();
+
 	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
 	isLive () .addInterest (this, &jsContext::set_live);
 
@@ -495,6 +458,36 @@ jsContext::initialize ()
 
 	if (not JSVAL_IS_VOID (initializeFn))
 		callFunction (initializeFn);
+}
+
+void
+jsContext::setEventHandler ()
+{
+	initializeFn      = getFunction ("initialize");
+	prepareEventsFn   = getFunction ("prepareEvents");
+	eventsProcessedFn = getFunction ("eventsProcessed");
+	shutdownFn        = getFunction ("shutdown");
+
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+	{
+		switch (field -> getAccessType ())
+		{
+			case inputOnly   :
+			case inputOutput :
+				{
+					const jsval function = field -> getAccessType () == inputOnly
+					                       ? getFunction (field -> getName ())
+												  : getFunction ("set_" + field -> getName ());
+
+					if (not JSVAL_IS_VOID (function))
+						functions [field] = function;
+
+					break;
+				}
+			default :
+				break;
+		}
+	}
 }
 
 void
@@ -516,7 +509,7 @@ jsContext::set_live ()
 
 		getScriptNode () -> addInterest (this, &jsContext::finish);
 
-		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+		for (const auto & field: getScriptNode () -> getUserDefinedFields ())
 		{
 			switch (field -> getAccessType ())
 			{
@@ -547,14 +540,14 @@ jsContext::set_live ()
 		{
 			switch (field -> getAccessType ())
 			{
-				case inputOnly:
-				case inputOutput:
-				{
-					if (functions .count (field))
-						field -> removeInterest (this, &jsContext::set_field);
+				case inputOnly   :
+				case inputOutput :
+					{
+						if (functions .count (field))
+							field -> removeInterest (this, &jsContext::set_field);
 
-					break;
-				}
+						break;
+					}
 				default:
 					break;
 			}
@@ -666,25 +659,9 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 	Script*     script     = javaScript -> getScriptNode ();
 	X3DBrowser* browser    = script -> getBrowser ();
 
-	// Get script
-
-	std::string ecmascript;
-
-	if (report -> filename)
-	{
-		try
-		{
-			ecmascript = Loader (script -> getExecutionContext (),
-			                     script -> getWorldURL ()) .loadDocument (report -> filename);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-
-	else
-		script -> loadDocument (script -> url () [javaScript -> index], ecmascript);
-
 	// Find error line
+
+	const std::string & ecmascript = javaScript -> ecmascript;
 
 	std::string line = "Couldn't load file!";
 
@@ -733,7 +710,7 @@ jsContext::dispose ()
 	if (future)
 		future -> dispose ();
 
-	for (auto & field: fields)
+	for (auto & field : fields)
 		JS_RemoveValueRoot (context, &field .second);
 
 	for (auto & file : files)
