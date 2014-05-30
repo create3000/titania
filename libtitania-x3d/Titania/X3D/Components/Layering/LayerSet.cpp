@@ -84,7 +84,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "order",       order ());
 	addField (inputOutput, "layers",      layers ());
 
-	addChildren (layer0, activeLayerNode);
+	addChildren (children, layer0, activeLayerNode);
 }
 
 X3DBaseNode*
@@ -100,9 +100,9 @@ LayerSet::initialize ()
 
 	layer0 -> isInternal (true);
 	layer0 -> setup ();
-	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;
 
 	activeLayer () .addInterest (this, &LayerSet::set_activeLayer);
+	order ()       .addInterest (this, &LayerSet::set_layers);
 	layers ()      .addInterest (this, &LayerSet::set_layers);
 
 	set_layers ();
@@ -111,39 +111,56 @@ LayerSet::initialize ()
 void
 LayerSet::setLayer0 (const X3DLayerNodePtr & value)
 {
-	layer0       = value;
-	children [0] = value;
+	layer0 = value;
 
-	set_activeLayer ();
+	set_layers ();
 }
 
 void
 LayerSet::set_activeLayer ()
 {
-	if (activeLayer () >= 0 and activeLayer () < (int32_t) children .size ())
+	if (activeLayer () == 0)
 	{
-		if (activeLayerNode not_eq children [activeLayer ()])
-			activeLayerNode = children [activeLayer ()];
+		if (activeLayerNode not_eq layer0)
+			activeLayerNode = layer0;
 	}
 	else
 	{
-		if (activeLayerNode not_eq nullptr)
-			activeLayerNode = nullptr;
+		const int32_t index = activeLayer () - 1;
+
+		if (index >= 0 and index < (int32_t) layers () .size ())
+		{
+			if (activeLayerNode .getValue () not_eq layers () [index] .getValue ())
+				activeLayerNode = layers () [index];
+		}
+		else
+		{
+			if (activeLayerNode not_eq nullptr)
+				activeLayerNode = nullptr;
+		}
 	}
 }
 
 void
 LayerSet::set_layers ()
 {
-	children .resize (1);
-	children .reserve (layers () .size () + 1);
+	X3DPtrArray <X3DLayerNode> unordered ({ layer0 });
+
+	unordered .reserve (layers () .size () + 1);
 
 	for (const auto & layer : layers ())
-	{
-		auto child = x3d_cast <X3DLayerNode*> (layer);
+		unordered .emplace_back (x3d_cast <X3DLayerNode*> (layer));
 
-		if (child)
-			children .emplace_back (child);
+	children .clear ();
+	children .reserve (layers () .size () + 1);
+
+	for (const auto & index : order ())
+	{
+		if (index >= 0 and index < (int32_t) unordered .size ())
+		{
+			if (unordered [index]);
+				children .emplace_back (unordered [index]);
+		}
 	}
 
 	set_activeLayer ();
@@ -152,20 +169,15 @@ LayerSet::set_layers ()
 void
 LayerSet::traverse (const TraverseType type)
 {
-	for (const auto & index : order ())
+	for (const auto & child : children)
 	{
-		if (index >= 0 and index < (int32_t) children .size ())
-		{
-			children [index] -> traverse (type);
-		}
+		child -> traverse (type);
 	}
 }
 
 void
 LayerSet::dispose ()
 {
-	children .clear ();
-
 	X3DNode::dispose ();
 }
 

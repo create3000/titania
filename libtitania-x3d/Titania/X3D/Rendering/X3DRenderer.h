@@ -93,6 +93,14 @@ public:
 	getCollisions ()
 	{ return collisions; }
 
+	size_t
+	getNumOpaqueShapes () const
+	{ return numOpaqueShapes; }
+
+	size_t
+	getNumTransparentShapes () const
+	{ return numTransparentShapes; }
+
 	void
 	addShape (X3DShapeNode* const);
 
@@ -157,7 +165,6 @@ private:
 
 	ShapeContainerArray      shapes;
 	ShapeContainerArray      transparentShapes;
-	ShapeContainerComp       shapeComare;
 	CollisionShapeArray      collisionShapes;
 	std::vector <Collision*> activeCollisions;
 

@@ -216,11 +216,7 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, c
 
 	// Traverse and get distance
 
-	getBrowser () -> getLayers () .push (this);
-
 	traverse (TraverseType::NAVIGATION);
-
-	getBrowser () -> getLayers () .pop ();
 
 	return X3DRenderer::getDistance ();
 }

@@ -142,7 +142,7 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 	if (global == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript global object.");
 
-	createContext ();
+	setContext ();
 
 	setFields ();
 }
@@ -154,7 +154,7 @@ jsContext::create (X3DExecutionContext* const) const
 }
 
 void
-jsContext::createContext ()
+jsContext::setContext ()
 {
 	// Populate the global object with the standard globals, like Object and Array.
 	if (not JS_InitStandardClasses (context, global))

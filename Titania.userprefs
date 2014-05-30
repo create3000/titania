@@ -1,14 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserSelection.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1938" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDevice.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDevice.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserSelection.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserSelection.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="131" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="130" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.cpp" Line="166" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -32,23 +28,20 @@
             <Node name="scripts" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
                 </Node>
-                <Node name="InputOutput" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="jsContext.cpp" selected="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True">
-                <Node name="X3DBrowserSelection.cpp" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True" />

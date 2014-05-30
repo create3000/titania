@@ -98,7 +98,6 @@ World::initialize ()
 	layer0 -> isLayer0 (true);
 	layer0 -> isInternal (true);
 	layer0 -> setup ();
-	layer0 -> getBackgroundStack () -> bottom () -> isHidden (false);
 
 	if (glXGetCurrentContext ())
 		bind ();

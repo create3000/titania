@@ -89,8 +89,7 @@ ShapeContainer::draw ()
 
 	glLoadMatrixf (matrix .data ());
 
-	if (fog)
-		fog -> enable ();
+	fog -> enable ();
 
 	shape -> draw ();
 

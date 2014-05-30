@@ -74,7 +74,6 @@ X3DRenderer::X3DRenderer () :
 	          collisions (),
 	              shapes (),
 	   transparentShapes (),
-	         shapeComare (),
 	     collisionShapes (),
 	    activeCollisions (),
 	         depthBuffer (),
@@ -222,7 +221,7 @@ X3DRenderer::draw ()
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
 
-		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, shapeComare);
+		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp { });
 
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
 			shape -> draw ();
@@ -240,7 +239,7 @@ X3DRenderer::draw ()
 
 		// Render transparent objects
 
-		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, shapeComare);
+		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp { });
 
 		glEnable (GL_BLEND);
 

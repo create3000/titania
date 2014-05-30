@@ -119,7 +119,7 @@ public:
 	getActiveLayer () const
 	{ return activeLayerNode; }
 
-	const std::vector <X3DLayerNode*> &
+	const X3DPtrArray <X3DLayerNode> &
 	getLayers () const
 	{ return children; }
 
@@ -163,9 +163,9 @@ private:
 
 	Fields fields;
 
-	std::vector <X3DLayerNode*> children;
-	X3DLayerNodePtr             layer0;
-	X3DLayerNodePtr             activeLayerNode;
+	X3DPtrArray <X3DLayerNode> children;
+	X3DLayerNodePtr            layer0;
+	X3DLayerNodePtr            activeLayerNode;
 
 };
 

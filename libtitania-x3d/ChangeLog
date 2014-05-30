@@ -1,5 +1,21 @@
 2014-05-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* World.cpp:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* ShapeContainer.cpp:
+	* LayerSet.h:
+	* Script.cpp:
+	* RenderingProperties.cpp:
+	* TransformTool.cpp:
+	* LayerSet.cpp:
+	* jsContext.h:
+	* X3DLayerNode.cpp:
+	* jsContext.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
+2014-05-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SpiderMonkey.h:
 	* SpiderMonkey.cpp:
 	* Script.cpp:

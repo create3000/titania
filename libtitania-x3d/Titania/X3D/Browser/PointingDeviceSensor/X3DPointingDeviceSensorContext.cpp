@@ -309,9 +309,7 @@ X3DPointingDeviceSensorContext::leaveNotifyEvent ()
 {
 	// Clear pickedObjects.
 
-	pickedObjects .clear ();
-
-	motionNotifyEvent (pointer .x (), pointer .y ());
+	motionNotifyEvent (std::numeric_limits <double>::quiet_NaN (), std::numeric_limits <double>::quiet_NaN ());
 }
 
 void

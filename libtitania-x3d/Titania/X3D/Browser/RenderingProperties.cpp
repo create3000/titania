@@ -168,13 +168,15 @@ RenderingProperties::initialize ()
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 
-		set_enabled ();
+		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_enabled);
 	}
 }
 
 void
 RenderingProperties::set_enabled ()
 {
+	getBrowser () -> initialized () .removeInterest (this, &RenderingProperties::set_enabled);
+
 	if (enabled ())
 	{
 		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::reset);
@@ -196,7 +198,7 @@ RenderingProperties::reset ()
 {
 	clock       .reset ();
 	renderClock .reset ();
-
+	
 	build ();
 }
 
@@ -235,6 +237,15 @@ RenderingProperties::build ()
 	glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
 	glGetIntegerv (GL_SAMPLES, &samples);
 
+	size_t numOpaqueShapes      = 0;
+	size_t numTransparentShapes = 0;
+	
+	for (const auto & layer : getBrowser () -> getWorld () -> getLayerSet () -> getLayers ())
+	{
+		numOpaqueShapes      += layer -> getNumOpaqueShapes ();
+		numTransparentShapes += layer -> getNumTransparentShapes ();
+	}
+
 	try
 	{
 		const auto statistics = world -> getExecutionContext () -> getNamedNode ("RenderingProperties");
@@ -261,6 +272,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f m/s"), getBrowser () -> getCurrentSpeed ()));
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %"), 100 * renderClock .average () / clock .average ()));
+		string .emplace_back (basic::sprintf (_ ("Shapes:                    %zd / %zd"), numOpaqueShapes, numTransparentShapes));
 		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
 	}
 	catch (const X3DError & error)
