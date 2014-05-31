@@ -1,5 +1,9 @@
 2014-05-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsContext.cpp: 
+
+2014-05-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Grammar.cpp:
 	* SpiderMonkey.h:
 	* SpiderMonkey.cpp:

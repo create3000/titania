@@ -100,10 +100,10 @@ JSClass jsContext::GlobalClass = {
 
 };
 
-jsContext::jsContext (JSRuntime* const runtime, Script* const script, const std::string & ecmascript, const basic::uri & uri) :
+jsContext::jsContext (JSRuntime* const _runtime, Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (script),
-	             runtime (runtime),
+	             runtime (_runtime),
 	             context (nullptr),
 	         globalClass (GlobalClass),
 	              global (nullptr),
@@ -718,7 +718,7 @@ jsContext::dispose ()
 
 	// Cleanup.
 	JS_DestroyContext (context);
-	//JS_DestroyRuntime (runtime);
+	JS_DestroyRuntime (runtime);
 
 	assert (objects .empty ());
 
