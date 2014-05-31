@@ -58,6 +58,18 @@
 namespace titania {
 namespace X3D {
 
+struct JSRuntimeDeleter
+{
+	void
+	operator () (JSRuntime* runtime) const
+	{
+		JS_DestroyRuntime (runtime);
+	}
+
+};
+
+using JSRuntimePtr = std::shared_ptr <JSRuntime>;
+
 class SpiderMonkey :
 	public X3DJavaScriptEngine
 {
@@ -101,6 +113,12 @@ public:
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:

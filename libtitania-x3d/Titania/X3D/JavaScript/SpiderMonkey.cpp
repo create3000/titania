@@ -97,8 +97,6 @@ SpiderMonkey::initialize ()
 
 			JS_DestroyContext (context);
 		}
-
-		//JS_DestroyRuntime (runtime);
 	}
 }
 
@@ -116,6 +114,14 @@ SpiderMonkey::toStream (std::ostream & stream) const
 		<< "\t\tName: " << vendor .getValue () << ' ' << name .getValue () << std::endl
 		<< "\t\tDescription: " << description .getValue () << std::endl
 		<< "\t\tVersion: " << version .getValue ();
+}
+
+void
+SpiderMonkey::dispose ()
+{
+	JS_DestroyRuntime (runtime);
+
+	X3DJavaScriptEngine::dispose ();
 }
 
 } // X3D
