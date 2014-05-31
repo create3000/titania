@@ -1,3 +1,10 @@
+2014-05-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp: 
+
 2014-05-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:

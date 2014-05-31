@@ -76,20 +76,13 @@ X3DBaseInterface::getScene () const
 void
 X3DBaseInterface::setExecutionContext (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	try
-	{
-		X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
+	return browserWindow -> setExecutionContext (executionContext);
+}
 
-		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
-
-		getBrowser () -> replaceWorld (executionContext);
-		getBrowser () -> getBrowserOptions () -> assign (browserOptions);
-
-		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
-		getScene () -> isLive () = getBrowser () -> isLive ();
-	}
-	catch (const X3D::X3DError &)
-	{ }
+const X3D::X3DExecutionContextPtr &
+X3DBaseInterface::getExecutionContext () const
+{
+	return browserWindow -> getExecutionContext ();
 }
 
 bool

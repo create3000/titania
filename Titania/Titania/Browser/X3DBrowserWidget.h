@@ -70,6 +70,15 @@ public:
 	getScene () const final override
 	{ return scene; }
 
+	virtual
+	void
+	setExecutionContext (const X3D::X3DExecutionContextPtr &) final override;
+
+	virtual
+	const X3D::X3DExecutionContextPtr &
+	getExecutionContext () const final override
+	{ return executionContext; }
+
 	///  @name Operations
 
 	void
@@ -112,10 +121,10 @@ protected:
 	///  @name Operations
 
 	void
-	isLive (const bool);
+	updateTitle (const bool) const;
 
 	void
-	updateTitle (const bool) const;
+	isLive (const bool);
 
 	void
 	setTransparent (const bool);
@@ -130,6 +139,9 @@ private:
 
 	void
 	set_splashScreen ();
+
+	void
+	set_initialized ();
 
 	void
 	set_scene ();
@@ -148,9 +160,10 @@ private:
 
 	///  @name Members
 	
-	X3D::ScenePtr    scene;
-	double           loadTime;
-	sigc::connection timeout;
+	X3D::ScenePtr               scene;
+	X3D::X3DExecutionContextPtr executionContext;
+	double                      loadTime;
+	sigc::connection            timeout;
 
 };
 

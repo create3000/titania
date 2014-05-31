@@ -83,12 +83,13 @@ public:
 	getWorld () const
 	{ return getBrowser () -> getWorld (); }
 
+	virtual
 	void
 	setExecutionContext (const X3D::X3DExecutionContextPtr &);
 
+	virtual
 	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const
-	{ return getBrowser () -> getExecutionContext (); }
+	getExecutionContext () const;
 
 	X3D::X3DExecutionContext*
 	getRootContext () const

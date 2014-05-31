@@ -108,40 +108,49 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			return true;
 	}
 
-	for (const auto & type : basic::reverse_adapter (node -> getType ()))
+	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		switch (type)
+		for (const auto & type : basic::reverse_adapter (node -> getType ()))
 		{
-			case X3DConstants::X3DPrototypeInstance:
+			switch (type)
 			{
-				const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
-
-				for (auto & rootNode : instance -> getRootNodes ())
+				case X3DConstants::X3DPrototypeInstance:
 				{
-					if (traverse (rootNode, callback, distinct, flags, seen))
-						continue;
+					if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
+					{
+						const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
 
-					return false;
+						for (auto & rootNode : instance -> getRootNodes ())
+						{
+							if (traverse (rootNode, callback, distinct, flags, seen))
+								continue;
+
+							return false;
+						}
+					}
+
+					break;
 				}
-
-				break;
-			}
-			case X3DConstants::Inline:
-			{
-				const auto inlineNode = dynamic_cast <Inline*> (node .getValue ());
-
-				for (auto & value : inlineNode -> getRootNodes ())
+				case X3DConstants::Inline:
 				{
-					if (traverse (value, callback, distinct, flags, seen))
-						continue;
+					if (flags & TRAVERSE_INLINE_NODES)
+					{
+						const auto inlineNode = dynamic_cast <Inline*> (node .getValue ());
 
-					return false;
+						for (auto & value : inlineNode -> getRootNodes ())
+						{
+							if (traverse (value, callback, distinct, flags, seen))
+								continue;
+
+							return false;
+						}
+					}
+
+					break;
 				}
-
-				break;
+				default:
+					break;
 			}
-			default:
-				break;
 		}
 	}
 

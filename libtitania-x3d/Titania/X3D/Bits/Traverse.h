@@ -75,10 +75,10 @@ constexpr int TRAVERSE_TOOL_OBJECTS              = 1 << 7;
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
 bool
-traverse (MFNode &, const TraverseCallback &, const bool = true, const int = 0);
+traverse (MFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
 
 bool
-traverse (SFNode &, const TraverseCallback &, const bool = true, const int = 0);
+traverse (SFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
 
 std::vector <X3DChildObject*>
 find (X3DScene* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);

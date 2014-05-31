@@ -66,9 +66,10 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
-	                    scene (getExecutionContext ())
+	                    scene (getBrowser () -> getExecutionContext ()),
+	         executionContext (scene)
 {
-	addChildren (scene);
+	addChildren (scene, executionContext);
 
 	parseOptions (argc, argv);
 }
@@ -139,6 +140,7 @@ X3DBrowserWidget::set_splashScreen ()
 	// Initialized
 
 	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
 
 	if (getConfig () .getString ("url") .size ())
@@ -241,16 +243,6 @@ X3DBrowserWidget::saveSession ()
 }
 
 void
-X3DBrowserWidget::isLive (const bool value)
-{
-	getConfig () .setItem ("isLive", value);
-
-	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
-
-	getBrowser () -> isLive () = value;
-}
-
-void
 X3DBrowserWidget::updateTitle (const bool edited) const
 {
 	getWindow () .set_title (getScene () -> getTitle ()
@@ -262,12 +254,44 @@ X3DBrowserWidget::updateTitle (const bool edited) const
 }
 
 void
+X3DBrowserWidget::isLive (const bool value)
+{
+	getConfig () .setItem ("isLive", value);
+
+	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
+
+	getBrowser () -> isLive () = value;
+}
+
+void
+X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value)
+{
+	try
+	{
+		executionContext = value;
+
+		X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
+
+		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
+
+		getBrowser () -> replaceWorld (executionContext);
+		getBrowser () -> getBrowserOptions () -> assign (browserOptions);
+
+		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
+		getScene () -> isLive () = getBrowser () -> isLive ();
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
 X3DBrowserWidget::blank ()
 {
 	try
 	{
 		getBrowser () -> replaceWorld (X3D::ScenePtr ());
-		scene = getExecutionContext ();
+		scene            = getBrowser () -> getExecutionContext ();
+		executionContext = getBrowser () -> getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -281,7 +305,8 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	try
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
-		scene = getExecutionContext ();
+		scene            = getBrowser () -> getExecutionContext ();
+		executionContext = getBrowser () -> getExecutionContext ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -365,6 +390,18 @@ void
 X3DBrowserWidget::reload ()
 {
 	open (getScene () -> getWorldURL ());
+}
+
+void
+X3DBrowserWidget::set_initialized ()
+{
+	if (getBrowser () -> getExecutionContext () not_eq executionContext)
+	{
+		if (X3D::ScenePtr (getBrowser () -> getExecutionContext ()))
+			scene = getBrowser () -> getExecutionContext ();
+
+		executionContext = getBrowser () -> getExecutionContext ();
+	}
 }
 
 void
