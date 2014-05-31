@@ -77,11 +77,43 @@ public:
 	static const std::set <std::string> FutureReservedWord;
 	
 	// Operator
-	static const io::character Multiply;
-	static const io::character Divide;
-	static const io::character Modulo;
-	static const io::character Plus;
-	static const io::character Minus;
+	static const io::character Multiplication;
+	static const io::character Division;
+	static const io::character Remainder;
+	static const io::character Addition;
+	static const io::character Subtraction;
+	static const io::string    LeftShift;
+	static const io::string    RightShift;
+	static const io::string    UnsignedRightShift;
+	static const io::character Less;
+	static const io::character Greater;
+	static const io::string    LessEqual;
+	static const io::string    GreaterEqual;
+	static const io::string    instanceof;
+	static const io::string    in;
+	static const io::string    Equal;
+	static const io::string    NotEqual;
+	static const io::string    StrictEqual;
+	static const io::string    StrictNotEqual;
+	static const io::character BitwiseAND;
+	static const io::character BitwiseXOR;
+	static const io::character BitwiseOR;
+	static const io::string    LogicalAND;
+	static const io::string    LogicalOR;
+	static const io::character QuestionMark;
+	static const io::character Colon;
+	static const io::character Assignment;
+	static const io::string    MultiplicationAssigment;
+	static const io::string    DivisionAssignment;
+	static const io::string    RemainderAssignment;
+	static const io::string    AdditionAssignment;
+	static const io::string    SubtractionAssignment;
+	static const io::string    LeftShiftAssignment;
+	static const io::string    RightShiftAssignment;
+	static const io::string    UnsignedRightShiftAssignment;
+	static const io::string    BitwiseANDAssignment;
+	static const io::string    BitwiseXORAssignment;
+	static const io::string    BitwiseORAssignment;
 
 	///  @name Values
 	static const io::string hex;
@@ -115,11 +147,43 @@ const std::set <std::string> Grammar::FutureReservedWord = {
 };
 	
 // Operator
-const io::character Grammar::Multiply ('*');
-const io::character Grammar::Divide ('/');
-const io::character Grammar::Modulo ('%');
-const io::character Grammar::Plus ('+');
-const io::character Grammar::Minus ('-');
+const io::character Grammar::Multiplication ('*');
+const io::character Grammar::Division ('/');
+const io::character Grammar::Remainder ('%');
+const io::character Grammar::Addition ('+');
+const io::character Grammar::Subtraction ('-');
+const io::string    Grammar::LeftShift ("<<");
+const io::string    Grammar::RightShift (">>");
+const io::string    Grammar::UnsignedRightShift (">>>");
+const io::character Grammar::Less ('<');
+const io::character Grammar::Greater ('>');
+const io::string    Grammar::LessEqual ("<=");
+const io::string    Grammar::GreaterEqual (">=");
+const io::string    Grammar::instanceof ("instanceof");
+const io::string    Grammar::in ("in");
+const io::string    Grammar::Equal ("==");
+const io::string    Grammar::NotEqual ("!=");
+const io::string    Grammar::StrictEqual ("===");
+const io::string    Grammar::StrictNotEqual ("!==");
+const io::character Grammar::BitwiseAND ('&');
+const io::character Grammar::BitwiseXOR ('^');
+const io::character Grammar::BitwiseOR ('|');
+const io::string    Grammar::LogicalAND ("&&");
+const io::string    Grammar::LogicalOR ("||");
+const io::character Grammar::QuestionMark ('?');
+const io::character Grammar::Colon (':');
+const io::character Grammar::Assignment ('=');
+const io::string    Grammar::MultiplicationAssigment ("*=");
+const io::string    Grammar::DivisionAssignment ("/=");
+const io::string    Grammar::RemainderAssignment ("%=");
+const io::string    Grammar::AdditionAssignment ("+=");
+const io::string    Grammar::SubtractionAssignment ("-=");
+const io::string    Grammar::LeftShiftAssignment ("<<=");
+const io::string    Grammar::RightShiftAssignment (">>=");
+const io::string    Grammar::UnsignedRightShiftAssignment (">>>=");
+const io::string    Grammar::BitwiseANDAssignment ("&=");
+const io::string    Grammar::BitwiseXORAssignment ("^=");
+const io::string    Grammar::BitwiseORAssignment ("|=");
 
 // Values
 const io::string Grammar::hex ("0x");
@@ -405,27 +469,42 @@ Parser::multiplicativeExpression ()
 
 	if (unaryExpression ())
 	{
-		comments ();
-	
-		if (Grammar::Multiply (istream))
+		for (;;)
 		{
-			if (unaryExpression ())
-				return true;
-		}
+			comments ();
+		
+			if (Grammar::Multiplication (istream))
+			{
+				if (unaryExpression ())
+				{
+					continue;
+				}
 
-		if (Grammar::Divide (istream))
-		{
-			if (unaryExpression ())
-				return true;
-		}
+				throw Error <INVALID_X3D> ("multiplicativeExpression");
+			}
 
-		if (Grammar::Modulo (istream))
-		{
-			if (unaryExpression ())
-				return true;
-		}
+			if (Grammar::Division (istream))
+			{
+				if (unaryExpression ())
+				{
+					continue;
+				}
 
-		return true;
+				throw Error <INVALID_X3D> ("multiplicativeExpression");
+			}
+
+			if (Grammar::Remainder (istream))
+			{
+				if (unaryExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("multiplicativeExpression");
+			}
+
+			return true;
+		}
 	}
 
 	return false;
@@ -438,21 +517,32 @@ Parser::additiveExpression ()
 
 	if (multiplicativeExpression ())
 	{
-		comments ();
-	
-		if (Grammar::Plus (istream))
+		for (;;)
 		{
-			if (multiplicativeExpression ())
-				return true;
-		}
+			comments ();
+		
+			if (Grammar::Addition (istream))
+			{
+				if (multiplicativeExpression ())
+				{
+					continue;
+				}
 
-		if (Grammar::Minus (istream))
-		{
-			if (multiplicativeExpression ())
-				return true;
-		}
+				throw Error <INVALID_X3D> ("additiveExpression");
+			}
 
-		return true;
+			if (Grammar::Subtraction (istream))
+			{
+				if (multiplicativeExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("additiveExpression");
+			}
+
+			return true;
+		}
 	}
 
 	return false;
@@ -464,9 +554,44 @@ Parser::shiftExpression ()
 	//__LOG__ << std::endl;
 
 	if (additiveExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
+		
+			if (Grammar::LeftShift (istream))
+			{
+				if (additiveExpression ())
+				{
+					continue;
+				}
 
-	// ...
+				throw Error <INVALID_X3D> ("shiftExpression");
+			}
+
+			if (Grammar::UnsignedRightShift (istream))
+			{
+				if (additiveExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("shiftExpression");
+			}
+
+			if (Grammar::RightShift (istream))
+			{
+				if (additiveExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("shiftExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -477,9 +602,74 @@ Parser::relationalExpression ()
 	//__LOG__ << std::endl;
 
 	if (shiftExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
 
-	// ...
+			if (Grammar::LessEqual (istream))
+			{
+				if (shiftExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("relationalExpression");
+			}
+
+			if (Grammar::GreaterEqual (istream))
+			{
+				if (shiftExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("relationalExpression");
+			}
+
+			if (Grammar::Less (istream))
+			{
+				if (shiftExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("relationalExpression");
+			}
+
+			if (Grammar::Greater (istream))
+			{
+				if (shiftExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("relationalExpression");
+			}
+
+			if (Grammar::instanceof (istream))
+			{
+				if (shiftExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("relationalExpression");
+			}
+
+			if (Grammar::in (istream))
+			{
+				if (shiftExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("relationalExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -490,9 +680,54 @@ Parser::equalityExpression ()
 	//__LOG__ << std::endl;
 
 	if (relationalExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
 
-	// ...
+			if (Grammar::StrictEqual (istream))
+			{
+				if (relationalExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("equalityExpression");
+			}
+
+			if (Grammar::StrictNotEqual (istream))
+			{
+				if (relationalExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("equalityExpression");
+			}
+
+			if (Grammar::Equal (istream))
+			{
+				if (relationalExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("equalityExpression");
+			}
+
+			if (Grammar::NotEqual (istream))
+			{
+				if (relationalExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("equalityExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -503,9 +738,27 @@ Parser::bitwiseANDExpression ()
 	//__LOG__ << std::endl;
 
 	if (equalityExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
+			
+			if (Grammar::LogicalAND .test (istream))
+				return true;
 
-	// ...
+			if (Grammar::BitwiseAND (istream))
+			{
+				if (equalityExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("bitwiseANDExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -516,9 +769,24 @@ Parser::bitwiseXORExpression ()
 	//__LOG__ << std::endl;
 
 	if (bitwiseANDExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
+			
+			if (Grammar::BitwiseXOR (istream))
+			{
+				if (bitwiseANDExpression ())
+				{
+					continue;
+				}
 
-	// ...
+				throw Error <INVALID_X3D> ("bitwiseXORExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -529,9 +797,27 @@ Parser::bitwiseORExpression ()
 	//__LOG__ << std::endl;
 
 	if (bitwiseXORExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
 
-	// ...
+			if (Grammar::LogicalOR .test (istream))
+				return true;
+		
+			if (Grammar::BitwiseOR (istream))
+			{
+				if (bitwiseXORExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("bitwiseORExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -542,9 +828,24 @@ Parser::logicalANDExpression ()
 	//__LOG__ << std::endl;
 
 	if (bitwiseORExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
 
-	// ...
+			if (Grammar::LogicalAND (istream))
+			{
+				if (bitwiseORExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("logicalANDExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -555,9 +856,24 @@ Parser::logicalORExpression ()
 	//__LOG__ << std::endl;
 
 	if (logicalANDExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
 
-	// ...
+			if (Grammar::LogicalOR (istream))
+			{
+				if (logicalANDExpression ())
+				{
+					continue;
+				}
+
+				throw Error <INVALID_X3D> ("logicalORExpression");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -568,9 +884,27 @@ Parser::conditionalExpression ()
 	//__LOG__ << std::endl;
 
 	if (logicalORExpression ())
-		return true;
+	{
+		comments ();
 
-	// ...
+		if (Grammar::QuestionMark (istream))
+		{
+			if (assignmentExpression ())
+			{
+				comments ();
+
+				if (Grammar::Colon (istream))
+				{
+					if (assignmentExpression ())
+						return true;
+				}
+			}
+
+			throw Error <INVALID_X3D> ("conditionalExpression");
+		}
+	
+		return true;
+	}
 
 	return false;
 }

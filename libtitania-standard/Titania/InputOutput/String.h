@@ -69,6 +69,9 @@ public:
 	bool
 	operator () (std::basic_istream <CharT, Traits> &) const;
 
+	bool
+	test (std::basic_istream <CharT, Traits> &) const;
+
 
 private:
 
@@ -105,6 +108,22 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 	}
 
 	return true;
+}
+
+template <class CharT, class Traits>
+bool
+basic_string <CharT, Traits>::test (std::basic_istream <CharT, Traits> & istream) const
+{
+	const auto state = istream .rdstate ();
+
+	if (operator () (istream))
+	{
+		istream .seekg (-size, std::ios_base::cur);
+		istream .clear (state);
+		return true;
+	}
+
+	return false;
 }
 
 typedef basic_string <char>    string;

@@ -70,9 +70,20 @@ main (int argc, char* argv [ ])
 	std::clog << std::boolalpha << std::endl;
 	std::clog << "Test started ..." << std::endl << std::endl;
 
+	try
 	{
 		static const std::string string =
-			"true false null 1234.56789 0xabcdef 1 + 2 * 3 Browser"
+			"true false null 1234.56789 0xabcdef"
+			"\n"
+			"0 - 1 + 2 * 3 % 4"
+			"\n"
+			"0 - 1 + 2 * 3 % 4 || true && false | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5 ? true : false"
+			"\n"
+			"0 instanceof 0"
+			"\n"
+			"0 in 0"
+			"\n"
+			"Browser"
 		;
 
 		std::istringstream istream (string);
@@ -85,6 +96,10 @@ main (int argc, char* argv [ ])
 		
 		if (istream)
 			__LOG__ << istream .rdbuf () << std::endl;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
 	std::clog << "Test done ..." << std::endl;
