@@ -119,6 +119,8 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	JSRuntime* runtime;
+
 };
 
 } // X3D

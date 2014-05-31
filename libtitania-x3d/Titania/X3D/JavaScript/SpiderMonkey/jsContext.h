@@ -72,7 +72,7 @@ public:
 
 	///  @name Construction
 
-	jsContext (Script* const, const std::string &, const basic::uri &);
+	jsContext (JSRuntime* const, Script* const, const std::string &, const basic::uri &);
 
 	virtual
 	X3DBaseNode*

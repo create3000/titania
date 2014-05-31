@@ -55,7 +55,7 @@
 
 namespace titania {
 namespace X3D {
-namespace pb {
+namespace peaseblossom {
 
 class Parser :
 	public X3DParser
@@ -114,6 +114,15 @@ private:
 
 	bool
 	booleanLiteral (std::istream &);
+
+	bool
+	numericLiteral ();
+
+	bool
+	decimalLiteral ();
+
+	bool
+	hexIntegerLiteral ();
 
 	// A.2 Number Conversions
 
@@ -212,7 +221,7 @@ private:
 
 };
 
-} // pb
+} // peaseblossom
 } // X3D
 } // titania
 

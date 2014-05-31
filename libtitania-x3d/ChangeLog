@@ -1,3 +1,14 @@
+2014-05-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Grammar.cpp:
+	* SpiderMonkey.h:
+	* SpiderMonkey.cpp:
+	* Script.cpp:
+	* pbParser.h:
+	* jsContext.h:
+	* pbParser.cpp:
+	* jsContext.cpp: 
+
 2014-05-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp: 

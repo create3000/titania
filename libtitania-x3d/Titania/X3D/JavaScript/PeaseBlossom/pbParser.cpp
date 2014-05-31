@@ -58,7 +58,7 @@
 
 namespace titania {
 namespace X3D {
-namespace pb {
+namespace peaseblossom {
 
 class Grammar
 {
@@ -75,11 +75,22 @@ public:
 
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
+	
+	// Operator
+	static const io::character Multiply;
+	static const io::character Divide;
+	static const io::character Modulo;
+	static const io::character Plus;
+	static const io::character Minus;
+
+	///  @name Values
+	static const io::string hex;
+	static const io::string HEX;
 
 };
 
 // General
-const io::sequence Grammar::whitespaces ("\r\n \t,");
+const io::sequence Grammar::whitespaces ("\r\n \t");
 
 // Keywords
 const io::string Grammar::_false ("false");
@@ -102,6 +113,17 @@ const std::set <std::string> Grammar::FutureReservedWord = {
 	"const", "export", "import"
 
 };
+	
+// Operator
+const io::character Grammar::Multiply ('*');
+const io::character Grammar::Divide ('/');
+const io::character Grammar::Modulo ('%');
+const io::character Grammar::Plus ('+');
+const io::character Grammar::Minus ('-');
+
+// Values
+const io::string Grammar::hex ("0x");
+const io::string Grammar::HEX ("0X");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -142,7 +164,7 @@ Parser::comments ()
 bool
 Parser::identifier ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string _identifierName;
 
@@ -160,7 +182,7 @@ Parser::identifier ()
 bool
 Parser::identifierName (std::string & _identifierName)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	// ...
 
@@ -170,7 +192,7 @@ Parser::identifierName (std::string & _identifierName)
 bool
 Parser::reservedWord (const std::string & _string)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (Grammar::Keyword .count (_string))
 		return true;
@@ -200,15 +222,18 @@ Parser::literal ()
 	if (booleanLiteral (istream))
 		return true;
 
+	if (numericLiteral ())
+		return true;
+
 	// ...
 
 	return false;
 }
 
 bool
-Parser::nullLiteral (std::istream & istream)
+Parser::nullLiteral (std::istream & istream /*, Value & _value*/)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -219,9 +244,9 @@ Parser::nullLiteral (std::istream & istream)
 }
 
 bool
-Parser::booleanLiteral (std::istream & istream)
+Parser::booleanLiteral (std::istream & istream /*, Value & _value*/)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -230,6 +255,57 @@ Parser::booleanLiteral (std::istream & istream)
 
 	if (Grammar::_false (istream))
 		return true;
+
+	return false;
+}
+
+bool
+Parser::numericLiteral (/*Value & _value*/)
+{
+	//__LOG__ << std::endl;
+
+	if (hexIntegerLiteral ())
+		return true;
+
+	if (decimalLiteral ())
+		return true;
+
+	return false;
+}
+
+bool
+Parser::decimalLiteral (/*Value & _value*/)
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	double _value;
+
+	if (istream >> _value)
+		return true;
+
+	istream .clear ();
+
+	return false;
+}
+
+bool
+Parser::hexIntegerLiteral (/*Value & _value*/)
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::hex (istream) or Grammar::HEX (istream))
+	{
+		uint32_t _value;
+
+		if (istream >> std::hex >> _value)
+			return true;
+
+		istream .clear ();
+	}
 
 	return false;
 }
@@ -328,9 +404,29 @@ Parser::multiplicativeExpression ()
 	//__LOG__ << std::endl;
 
 	if (unaryExpression ())
-		return true;
+	{
+		comments ();
+	
+		if (Grammar::Multiply (istream))
+		{
+			if (unaryExpression ())
+				return true;
+		}
 
-	// ...
+		if (Grammar::Divide (istream))
+		{
+			if (unaryExpression ())
+				return true;
+		}
+
+		if (Grammar::Modulo (istream))
+		{
+			if (unaryExpression ())
+				return true;
+		}
+
+		return true;
+	}
 
 	return false;
 }
@@ -341,9 +437,23 @@ Parser::additiveExpression ()
 	//__LOG__ << std::endl;
 
 	if (multiplicativeExpression ())
-		return true;
+	{
+		comments ();
+	
+		if (Grammar::Plus (istream))
+		{
+			if (multiplicativeExpression ())
+				return true;
+		}
 
-	// ...
+		if (Grammar::Minus (istream))
+		{
+			if (multiplicativeExpression ())
+				return true;
+		}
+
+		return true;
+	}
 
 	return false;
 }
@@ -556,6 +666,6 @@ Parser::sourceElement ()
 	return false;
 }
 
-} // pb
+} // peaseblossom
 } // X3D
 } // titania

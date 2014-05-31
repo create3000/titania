@@ -63,8 +63,8 @@ const std::string SpiderMonkey::containerField = "javaScript";
 SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DJavaScriptEngine (),
-	             vendor (),
-	               name (),
+	             vendor ("Mozilla Foundation"),
+	               name ("SpiderMonkey"),
 	        description (),
 	            version ()
 {
@@ -82,31 +82,30 @@ SpiderMonkey::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
 
-	JSRuntime* const javaScriptRuntime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
+	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
-	if (javaScriptRuntime)
+	if (runtime)
 	{
-		vendor = "Mozilla Foundation";
-		name   = "SpiderMonkey";
+		JSContext* const context = JS_NewContext (runtime, 1024);
 
-		JSContext* const javaScriptContext = JS_NewContext (javaScriptRuntime, 1024);
-
-		if (javaScriptContext)
+		if (context)
 		{
-			description = JS_GetImplementationVersion ();
-			version     = JS_VersionToString (JS_GetVersion (javaScriptContext));
+			JS_SetVersion (context, JSVERSION_LATEST);
 
-			JS_DestroyContext (javaScriptContext);
+			description = JS_GetImplementationVersion ();
+			version     = JS_VersionToString (JS_GetVersion (context));
+
+			JS_DestroyContext (context);
 		}
 
-		JS_DestroyRuntime (javaScriptRuntime);
+		//JS_DestroyRuntime (runtime);
 	}
 }
 
 X3DPtr <X3DJavaScriptContext>
 SpiderMonkey::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
 {
-	return new jsContext (script, ecmascript, uri);
+	return new jsContext (runtime, script, ecmascript, uri);
 }
 
 void

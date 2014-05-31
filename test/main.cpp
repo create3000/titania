@@ -72,14 +72,14 @@ main (int argc, char* argv [ ])
 
 	{
 		static const std::string string =
-			"true false null Browser"
+			"true false null 1234.56789 0xabcdef 1 + 2 * 3 Browser"
 		;
 
 		std::istringstream istream (string);
 
 		const auto scene = getBrowser () -> createScene ();
 
-		pb::Parser (istream, scene) .parseIntoContext ();
+		peaseblossom::Parser (istream, scene) .parseIntoContext ();
 		
 		__LOG__ << bool (istream) << std::endl;
 		

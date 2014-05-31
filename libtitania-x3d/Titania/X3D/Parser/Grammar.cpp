@@ -124,10 +124,10 @@ Grammar::Int32 (std::istream & istream, int32_t & _value)
 }
 
 bool
-Grammar::Hex (std::istream & istream, uint32_t & value)
+Grammar::Hex (std::istream & istream, uint32_t & _value)
 {
 	if (hex (istream) or HEX (istream))
-		return istream >> std::hex >> value;
+		return istream >> std::hex >> _value;
 
 	return false;
 }

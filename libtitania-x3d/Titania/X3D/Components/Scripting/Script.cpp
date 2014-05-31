@@ -72,7 +72,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DScriptNode (),
 	       fields (),
-	   javaScript (getBrowser () -> getJavaScriptEngine () -> createContext (this, "", ""))
+	   javaScript ()
 {
 	addType (X3DConstants::Script);
 
