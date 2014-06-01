@@ -102,12 +102,11 @@ JSClass jsContext::GlobalClass = {
 
 jsContext::jsContext (JSRuntime* const _runtime, Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
-	X3DJavaScriptContext (script),
+	X3DJavaScriptContext (script, ecmascript),
 	             runtime (_runtime),
 	             context (nullptr),
 	         globalClass (GlobalClass),
 	              global (nullptr),
-	          ecmascript (ecmascript),
 	            worldURL ({ uri }),
 	        initializeFn (),
 	     prepareEventsFn (),
@@ -150,7 +149,7 @@ jsContext::jsContext (JSRuntime* const _runtime, Script* const script, const std
 X3DBaseNode*
 jsContext::create (X3DExecutionContext* const) const
 {
-	return new jsContext (runtime, getScriptNode (), ecmascript, worldURL .front ());
+	return new jsContext (runtime, getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
 void
@@ -446,7 +445,7 @@ jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 
-	if (not evaluate (ecmascript, worldURL .front () == getExecutionContext () -> getWorldURL () ? "" : worldURL .front () .str ()))
+	if (not evaluate (getECMAScript (), worldURL .front () == getExecutionContext () -> getWorldURL () ? "" : worldURL .front () .str ()))
 		throw std::invalid_argument ("Couldn't evaluate script.");
 
 	setEventHandler ();
@@ -655,51 +654,13 @@ throw (std::out_of_range)
 void
 jsContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
-	jsContext*  javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	Script*     script     = javaScript -> getScriptNode ();
-	X3DBrowser* browser    = script -> getBrowser ();
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
-	// Find error line
-
-	const std::string & ecmascript = javaScript -> ecmascript;
-
-	std::string line = "Couldn't load file!";
-
-	if (not ecmascript .empty ())
-	{
-		char nl = ecmascript .find ('\n', 0) == std::string::npos ? '\r' : '\n';
-
-		std::string::size_type start = 0;
-		std::string::size_type end   = 0;
-
-		for (size_t i = 0; i < report -> lineno - 1; ++ i)
-		{
-			start = ecmascript .find (nl, start);
-
-			if (start == std::string::npos)
-				break;
-
-			else
-				++ start;
-		}
-
-		if (start not_eq std::string::npos)
-		{
-			if ((end = ecmascript .find (nl, start)) == std::string::npos)
-				end = ecmascript .length ();
-
-			line = ecmascript .substr (start, end - start);
-		}
-	}
-
-	// Pretty print error
-
-	browser -> print ("# Javascript: runtime error at line ", report -> lineno, ":", '\n',
-	                  "# in url '", (report -> filename ? report -> filename : "<inline>"), "' from Script '", script -> getName (), '\n',
-	                  "# World URL is '", script -> getExecutionContext () -> getWorldURL (), "'", '\n',
-	                  "# ", '\n',
-	                  "# ", message, '\n',
-	                  "#  ", line, '\n');
+	javaScript -> X3DJavaScriptContext::error (message,
+	                                           report -> filename ? report -> filename : "<inline>",
+	                                           report -> lineno,
+	                                           report -> tokenptr ? report -> tokenptr - report -> linebuf : -1,
+	                                           report -> linebuf ? report -> linebuf : "");
 }
 
 void

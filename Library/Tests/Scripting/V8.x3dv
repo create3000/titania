@@ -46,11 +46,20 @@ DEF Script1 Script {
   url "v8:
 var test = 1234;
 
+NULL = 123;
+
 print ('Script 1: ', 'Hellö Wörld!');
 print ('Script 1: ', test);
 print ('Script 1: ', NULL);
 print ('Script 1: ', TRUE === true);
 print ('Script 1: ', FALSE === false);
+print ('Script 1: ', Browser);
+print ('Script 1: ', Browser .prototype);
+print ('Script 1: ', Browser .__proto__);
+for (var p in Browser)
+	print ('Browser: ', p);
+print ('Script 1: ', Browser .name);
+print ('Script 1: ', xxx);
 "
   directOutput TRUE
 }

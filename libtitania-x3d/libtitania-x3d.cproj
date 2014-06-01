@@ -695,6 +695,7 @@
     <None Include="Titania\X3D\JavaScript\V8.h" />
     <None Include="Titania\X3D\JavaScript\V8\v8Context.h" />
     <None Include="Titania\X3D\JavaScript\V8\v8Globals.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8Browser.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1191,6 +1192,7 @@
     <Compile Include="Titania\X3D\JavaScript\V8.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\v8Context.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\v8Globals.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\v8Browser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

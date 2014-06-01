@@ -48,73 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8BROWSER_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8BROWSER_H__
 
-#include "../Basic/X3DBaseNode.h"
+#include <v8.h>
+
+#include "v8Context.h"
 
 namespace titania {
 namespace X3D {
 
-class Script;
-
-class X3DJavaScriptContext :
-	virtual public X3DBaseNode
+class v8Browser
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	SFBool &
-	isLive () final override;
-
-	virtual
-	const SFBool &
-	isLive () const final override;
-
-	Script*
-	getScriptNode () const
-	{ return script; }
-
-	///  @name Operations
-
-	virtual
+	static
 	void
-	addEvent () final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
-
-
-protected:
-
-	///  @name Construction
-
-	X3DJavaScriptContext (Script* const, const std::string &);
-
-	const std::string &
-	getECMAScript () const
-	{ return ecmascript; }
-
-	void
-	error (const std::string &, const std::string &, const int, const int, std::string) const;
+	initialize (v8Context* const, const v8::Local <v8::Object> &);
 
 
 private:
 
-	///  @name Members
+	// X3D properties
 
-	Script* const     script;
-	const std::string ecmascript;
+	static
+	v8::Handle <v8::Value>
+	name (v8::Local <v8::String>, const v8::AccessorInfo &);
+
 };
 
 } // X3D

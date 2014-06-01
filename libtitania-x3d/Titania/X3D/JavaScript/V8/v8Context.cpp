@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 
+#include "v8Browser.h"
 #include "v8Globals.h"
 
 namespace titania {
@@ -63,8 +64,7 @@ const std::string v8Context::containerField = "context";
 
 v8Context::v8Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
-	X3DJavaScriptContext (script),
-	          ecmascript (ecmascript),
+	X3DJavaScriptContext (script, ecmascript),
 	            worldURL ({ uri }),
 	             context (),
 	        globalObject (),
@@ -75,23 +75,30 @@ v8Context::v8Context (Script* const script, const std::string & ecmascript, cons
 	v8::HandleScope handleScope;
 
 	globalObject = v8::Persistent <v8::ObjectTemplate>::New (v8::ObjectTemplate::New ());
+	context      = v8::Context::New (nullptr, globalObject);
+
+	v8::Context::Scope contextScope (context);
 
 	setContext ();
-
 	setFields ();
-
-	context = v8::Context::New (nullptr, globalObject);
 
 	// Compile.
 
-	v8::Context::Scope contextScope (context);
-	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (v8::String::New (ecmascript .c_str (), ecmascript .size ())));
+	v8::TryCatch trycatch;
+	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (v8::String::New (getECMAScript () .c_str (), getECMAScript () .size ())));
+
+	if (program .IsEmpty ())
+	{
+		error (trycatch);
+		throw std::invalid_argument ("Couldn't not compile JavaScript.");
+	}
 }
 
 void
 v8Context::setContext ()
 {
-	v8Globals::initialize (this, globalObject);
+	v8Browser::initialize (this, context -> Global ());
+	v8Globals::initialize (this, context -> Global ());
 }
 
 void
@@ -101,7 +108,7 @@ v8Context::setFields ()
 X3DBaseNode*
 v8Context::create (X3DExecutionContext* const) const
 {
-	return new v8Context (getScriptNode (), ecmascript, worldURL .front ());
+	return new v8Context (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
 void
@@ -113,7 +120,12 @@ v8Context::initialize ()
 
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
-	program -> Run ();
+
+	v8::TryCatch trycatch;
+	v8::Handle <v8::Value> result = program -> Run ();
+
+	if (result .IsEmpty ())
+		error (trycatch);
 }
 
 void
@@ -141,11 +153,27 @@ v8Context::shutdown ()
 { }
 
 void
+v8Context::error (const v8::TryCatch & trycatch) const
+{
+	v8::HandleScope handleScope;
+
+	X3DJavaScriptContext::error (*v8::String::Utf8Value (trycatch .Exception ()),
+	                             worldURL .back () == getExecutionContext () -> getWorldURL () ? "<inline>" : worldURL .back (),
+	                             trycatch .Message () -> GetLineNumber (),
+	                             trycatch .Message () -> GetStartColumn (),
+	                             *v8::String::Utf8Value (trycatch .Message () -> GetSourceLine ()));
+}
+
+void
 v8Context::dispose ()
 {
 	__LOG__ << std::endl;
 
 	shutdown ();
+
+	program      .Dispose ();
+	context      .Dispose ();
+	globalObject .Dispose ();
 
 	X3DJavaScriptContext::dispose ();
 }

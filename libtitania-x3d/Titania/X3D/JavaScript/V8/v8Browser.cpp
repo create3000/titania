@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,76 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
+#include "v8Browser.h"
 
-#include "../Basic/X3DBaseNode.h"
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class Script;
-
-class X3DJavaScriptContext :
-	virtual public X3DBaseNode
+void
+v8Browser::initialize (v8Context* const javaScript, const v8::Local <v8::Object> & globalObject)
 {
-public:
+	const auto browserClass = v8::FunctionTemplate::New ();
 
-	///  @name Member access
+	browserClass -> SetClassName (v8::String::New ("Browser"));
 
-	virtual
-	SFBool &
-	isLive () final override;
+	// X3D properties
 
-	virtual
-	const SFBool &
-	isLive () const final override;
+	const auto prototype = browserClass -> InstanceTemplate ();
 
-	Script*
-	getScriptNode () const
-	{ return script; }
+	prototype -> SetAccessor (v8::String::New ("name"),                name, nullptr, v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+//	prototype -> SetAccessor (v8::String::New ("version"),             );
+//	prototype -> SetAccessor (v8::String::New ("currentSpeed"),        );
+//	prototype -> SetAccessor (v8::String::New ("currentFrameRate"),    );
+//	prototype -> SetAccessor (v8::String::New ("description"),         );
+//	prototype -> SetAccessor (v8::String::New ("supportedComponents"), );
+//	prototype -> SetAccessor (v8::String::New ("supportedProfiles"),   );
+//	prototype -> SetAccessor (v8::String::New ("currentScene"),        );
 
-	///  @name Operations
+	globalObject -> Set (v8::String::New ("Browser"), browserClass -> GetFunction () -> NewInstance (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+}
 
-	virtual
-	void
-	addEvent () final override
-	{ }
+v8::Handle <v8::Value>
+v8Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto browser = static_cast <v8Context*> (v8::Handle <v8::External>::Cast (info .Data ()) -> Value ()) -> getBrowser ();
 
-	virtual
-	void
-	addEvent (X3DChildObject* const) final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
-
-
-protected:
-
-	///  @name Construction
-
-	X3DJavaScriptContext (Script* const, const std::string &);
-
-	const std::string &
-	getECMAScript () const
-	{ return ecmascript; }
-
-	void
-	error (const std::string &, const std::string &, const int, const int, std::string) const;
-
-
-private:
-
-	///  @name Members
-
-	Script* const     script;
-	const std::string ecmascript;
-};
+	return v8::String::New (browser -> getName () .c_str (), browser -> getName () .size ());
+}
 
 } // X3D
 } // titania
-
-#endif

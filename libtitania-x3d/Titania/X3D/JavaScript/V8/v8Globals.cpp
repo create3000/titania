@@ -56,14 +56,14 @@ namespace titania {
 namespace X3D {
 
 void
-v8Globals::initialize (v8Context* const javaScript, const v8::Persistent <v8::ObjectTemplate> & globalObject)
+v8Globals::initialize (v8Context* const javaScript, const v8::Local <v8::Object> & globalObject)
 {
-	globalObject -> Set (v8::String::New ("NULL"),  v8::Null ());
-	globalObject -> Set (v8::String::New ("FALSE"), v8::Boolean::New (false));
-	globalObject -> Set (v8::String::New ("TRUE"),  v8::Boolean::New (true));
+	globalObject -> Set (v8::String::New ("NULL"),  v8::Null (),              v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	globalObject -> Set (v8::String::New ("FALSE"), v8::Boolean::New (false), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	globalObject -> Set (v8::String::New ("TRUE"),  v8::Boolean::New (true),  v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 
-	globalObject -> Set (v8::String::New ("print"), v8::FunctionTemplate::New (&v8Globals::print, v8::External::New (javaScript)));
-	globalObject -> Set (v8::String::New ("trace"), v8::FunctionTemplate::New (&v8Globals::print, v8::External::New (javaScript)));
+	globalObject -> Set (v8::String::New ("print"), v8::FunctionTemplate::New (print, v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	globalObject -> Set (v8::String::New ("trace"), v8::FunctionTemplate::New (print, v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 }
 
 v8::Handle <v8::Value>

@@ -136,6 +136,9 @@ private:
 	void
 	shutdown ();
 
+	void
+	error (const v8::TryCatch &) const;
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -144,12 +147,11 @@ private:
 
 	///  @name Members
 
-	std::string              ecmascript;
 	std::vector <basic::uri> worldURL;
 
 	v8::Persistent <v8::Context>        context;
 	v8::Persistent <v8::ObjectTemplate> globalObject;
-	v8::Handle <v8::Script>             program;
+	v8::Persistent <v8::Script>         program;
 
 };
 

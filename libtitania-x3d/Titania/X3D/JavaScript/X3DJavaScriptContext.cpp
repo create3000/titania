@@ -49,14 +49,20 @@
  ******************************************************************************/
 
 #include "../JavaScript/X3DJavaScriptContext.h"
+
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Scripting/Script.h"
+#include "../Execution/X3DExecutionContext.h"
+
+#include <Titania/String/trim.h>
 
 namespace titania {
 namespace X3D {
 
-X3DJavaScriptContext::X3DJavaScriptContext (Script* const script) :
+X3DJavaScriptContext::X3DJavaScriptContext (Script* const script, const std::string & ecmascript) :
 	X3DBaseNode (),
-	     script (script)
+	     script (script),
+	 ecmascript (ecmascript)
 {
 	addType (X3DConstants::X3DJavaScriptContext);
 }
@@ -71,6 +77,59 @@ const SFBool &
 X3DJavaScriptContext::isLive () const
 {
 	return script -> isLive ();
+}
+
+void
+X3DJavaScriptContext::error (const std::string & message, const std::string & filename, const int lineNumber, const int startColumn, std::string line) const
+{
+	if (line .empty ())
+	{
+		// Find error line.
+
+		line = "Couldn't load file!";
+
+		if (not ecmascript .empty ())
+		{
+			char nl = ecmascript .find ('\n', 0) == std::string::npos ? '\r' : '\n';
+
+			std::string::size_type start = 0;
+			std::string::size_type end   = 0;
+
+			for (int i = 0; i < lineNumber - 1; ++ i)
+			{
+				start = ecmascript .find (nl, start);
+
+				if (start == std::string::npos)
+					break;
+
+				else
+					++ start;
+			}
+
+			if (start not_eq std::string::npos)
+			{
+				if ((end = ecmascript .find (nl, start)) == std::string::npos)
+					end = ecmascript .length ();
+
+				line = ecmascript .substr (start, end - start);
+			}
+		}
+	}
+
+	// Pretty print error.
+
+	getBrowser () -> print ('\n',
+	                        "#   JavaScript runtime error at line ", lineNumber, (startColumn >= 0 ? ':' + std::to_string (startColumn) : ""), ":\n",
+	                        "#   in Script '", script -> getName (), "' url '", filename, "'\n",
+	                        "#   World URL is '", script -> getExecutionContext () -> getWorldURL (), "'\n",
+	                        "#   ", '\n',
+	                        "#   ", message, '\n',
+	                        "#      ", basic::trim (line), '\n');
+
+	if (startColumn >= 0)
+		getBrowser () -> print ("#      ", std::string (startColumn, ' '), "^\n");
+
+	getBrowser () -> print ('\n');
 }
 
 } // X3D

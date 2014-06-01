@@ -207,7 +207,6 @@ private:
 	JSContext*               context;
 	JSClass                  globalClass;
 	JSObject*                global;
-	std::string              ecmascript;
 	std::vector <basic::uri> worldURL;
 
 	jsval initializeFn;

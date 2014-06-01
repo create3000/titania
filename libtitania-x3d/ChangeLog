@@ -2,6 +2,21 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* v8Browser.h:
+	* v8Globals.h:
+	* v8Context.h:
+	* v8Globals.cpp:
+	* v8Context.cpp:
+	* v8Browser.cpp:
+	* X3DJavaScriptContext.h:
+	* X3DJavaScriptContext.cpp:
+	* jsContext.h:
+	* jsContext.cpp: 
+
+2014-06-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* V8.h:
 	* RegEx.cpp:
 	* V8.cpp:
