@@ -77,6 +77,23 @@ public:
 	getScriptNode () const
 	{ return script; }
 
+	///  @name Operations
+
+	virtual
+	void
+	addEvent () final override
+	{ }
+
+	virtual
+	void
+	addEvent (X3DChildObject* const) final override
+	{ }
+
+	virtual
+	void
+	addEvent (X3DChildObject* const, const EventPtr &) final override
+	{ }
+
 
 protected:
 

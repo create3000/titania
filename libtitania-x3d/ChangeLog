@@ -1,3 +1,25 @@
+2014-06-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* V8.h:
+	* RegEx.cpp:
+	* V8.cpp:
+	* jsContext.h:
+	* v8Context.h:
+	* jsGlobals.h:
+	* SpiderMonkey.h:
+	* v8Globals.cpp:
+	* SpiderMonkey.cpp:
+	* v8Context.cpp:
+	* Script.h:
+	* Script.cpp:
+	* X3DJavaScriptEngine.h:
+	* X3DJavaScriptContext.h:
+	* jsContext.h:
+	* pbParser.cpp:
+	* jsContext.cpp: 
+
 2014-05-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* pbParser.cpp: 

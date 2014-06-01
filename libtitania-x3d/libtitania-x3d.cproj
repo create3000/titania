@@ -692,6 +692,9 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.h" />
     <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\pbParser.h" />
+    <None Include="Titania\X3D\JavaScript\V8.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8Context.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8Globals.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1185,6 +1188,9 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\pbParser.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\v8Context.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\v8Globals.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1242,6 +1248,7 @@
     <Folder Include="Titania\X3D\Browser\ParticleSystems\" />
     <Folder Include="scripts\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\" />
+    <Folder Include="Titania\X3D\JavaScript\V8\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

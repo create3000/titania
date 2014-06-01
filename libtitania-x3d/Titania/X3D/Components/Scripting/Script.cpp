@@ -48,6 +48,8 @@
  *
  ******************************************************************************/
 
+#include "../../JavaScript/V8/v8Context.h"
+
 #include "Script.h"
 
 #include "../../Browser/X3DBrowser.h"
@@ -121,9 +123,9 @@ Script::removeUserDefinedField (X3DFieldDefinition* const field)
 }
 
 bool
-Script::loadDocument (const SFString & URL, std::string & ecmascript)
+Script::loadDocument (const SFString & URL, std::string & scheme, std::string & ecmascript)
 {
-	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
+	if (RegEx::ECMAScript .FullMatch (URL .str (), &scheme, &ecmascript))
 	{
 		setWorldURL (getExecutionContext () -> getWorldURL ());
 		return true;
@@ -156,13 +158,18 @@ Script::requestImmediateLoad ()
 
 	for (const auto & URL : url ())
 	{
+		std::string scheme;
 		std::string ecmascript;
 
-		if (loadDocument (URL, ecmascript))
+		if (loadDocument (URL, scheme, ecmascript))
 		{
 			try
 			{
-				javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL ()));
+				if (scheme == "v8")
+					javaScript .set (new v8Context (this, ecmascript, getWorldURL ()));
+
+				else
+					javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL ()));
 
 				// Initialize.
 

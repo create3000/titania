@@ -64,11 +64,12 @@ SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DJavaScriptEngine (),
 	             vendor ("Mozilla Foundation"),
-	               name ("SpiderMonkey"),
 	        description (),
 	            version ()
 {
 	addType (X3DConstants::SpiderMonkey);
+	
+	setName ("SpiderMonkey");
 }
 
 SpiderMonkey*
@@ -111,9 +112,9 @@ SpiderMonkey::toStream (std::ostream & stream) const
 {
 	stream
 		<< "\tCurrent Javascript Engine" << std::endl
-		<< "\t\tName: " << vendor .getValue () << ' ' << name .getValue () << std::endl
-		<< "\t\tDescription: " << description .getValue () << std::endl
-		<< "\t\tVersion: " << version .getValue ();
+		<< "\t\tName: " << vendor << ' ' << getName () << std::endl
+		<< "\t\tDescription: " << description << std::endl
+		<< "\t\tVersion: " << version;
 }
 
 void

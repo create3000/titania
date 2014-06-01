@@ -193,21 +193,6 @@ private:
 	void
 	error (JSContext* context, const char* message, JSErrorReport* report);
 
-	virtual
-	void
-	addEvent () final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
-
 	///  @name Static members
 
 	static const std::string componentName;

@@ -5,8 +5,8 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V0.6.8, http://titania.create3000.de'/>
-    <meta name='modified' content='Thu, 29 May 2014 13:33:58 GMT'/>
+    <meta name='generator' content='Titania V0.7.0, http://titania.create3000.de'/>
+    <meta name='modified' content='Sun, 01 Jun 2014 02:28:12 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -286,7 +286,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 29 Mai 2014 15:11:38 CEST"'>
+            string='"modified...", "Do 29 Mai 2014 15:33:58 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -452,7 +452,7 @@ function initialize ()
       <ProximitySensor USE='_9'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 1.5708'
+          rotation='0 0 1 4.0391'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>

@@ -896,7 +896,9 @@ Parser::conditionalExpression ()
 				if (Grammar::Colon (istream))
 				{
 					if (assignmentExpression ())
+					{
 						return true;
+					}
 				}
 			}
 

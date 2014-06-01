@@ -48,120 +48,39 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
+#include "v8Globals.h"
 
-#include "../JavaScript/X3DJavaScriptEngine.h"
-
-#include <jsapi.h>
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-struct JSRuntimeDeleter
+void
+v8Globals::initialize (v8Context* const javaScript, const v8::Persistent <v8::ObjectTemplate> & globalObject)
 {
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
+	globalObject -> Set (v8::String::New ("NULL"),  v8::Null ());
+	globalObject -> Set (v8::String::New ("FALSE"), v8::Boolean::New (false));
+	globalObject -> Set (v8::String::New ("TRUE"),  v8::Boolean::New (true));
 
-};
+	globalObject -> Set (v8::String::New ("print"), v8::FunctionTemplate::New (&v8Globals::print, v8::External::New (javaScript)));
+	globalObject -> Set (v8::String::New ("trace"), v8::FunctionTemplate::New (&v8Globals::print, v8::External::New (javaScript)));
+}
 
-using JSRuntimePtr = std::shared_ptr <JSRuntime>;
-
-class SpiderMonkey :
-	public X3DJavaScriptEngine
+v8::Handle <v8::Value>
+v8Globals::print (const v8::Arguments & args)
 {
-public:
+	const auto browser = static_cast <v8Context*> (v8::Handle <v8::External>::Cast (args .Data ()) -> Value ()) -> getBrowser ();
 
-	///  @name Construction
+	for (size_t i = 0, size = args .Length (); i < size; ++ i)
+		browser -> print (*v8::String::Utf8Value (args [i]));
 
-	SpiderMonkey (X3DExecutionContext* const);
+	browser -> print ("\n");
 
-	///  @name Common members
+	//if (args. Length () not_eq 1)
+	//	return v8::ThrowException (v8::String::New ("Too many arguments to print()."));
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Member access
-	
-	virtual
-	const std::string &
-	getVendor () const final override
-	{ return vendor; }
-
-	virtual
-	const std::string &
-	getDescription () const final override
-	{ return description; }
-
-	virtual
-	const std::string &
-	getVersion () const final override
-	{ return version; }
-
-	///  @name Operations
-
-	virtual
-	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &) final override;
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream &) const final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	SpiderMonkey*
-	create (X3DExecutionContext* const)  const;
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	std::string vendor;
-	std::string description;
-	std::string version;
-
-	JSRuntime* runtime;
-
-};
+	return v8::Undefined ();
+}
 
 } // X3D
 } // titania
-
-#endif

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_H__
 
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
@@ -58,26 +58,14 @@
 namespace titania {
 namespace X3D {
 
-struct JSRuntimeDeleter
-{
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
-
-};
-
-using JSRuntimePtr = std::shared_ptr <JSRuntime>;
-
-class SpiderMonkey :
+class V8 :
 	public X3DJavaScriptEngine
 {
 public:
 
 	///  @name Construction
 
-	SpiderMonkey (X3DExecutionContext* const);
+	V8 (X3DExecutionContext* const);
 
 	///  @name Common members
 
@@ -98,7 +86,7 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-	
+
 	virtual
 	const std::string &
 	getVendor () const final override
@@ -118,7 +106,7 @@ public:
 
 	virtual
 	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &) final override;
+	createContext (Script*, const std::string &, const basic::uri &) final override;
 
 	///  @name Input/Output
 
@@ -138,7 +126,7 @@ private:
 	///  @name Construction
 
 	virtual
-	SpiderMonkey*
+	V8*
 	create (X3DExecutionContext* const)  const;
 
 	virtual
@@ -156,8 +144,6 @@ private:
 	std::string vendor;
 	std::string description;
 	std::string version;
-
-	JSRuntime* runtime;
 
 };
 

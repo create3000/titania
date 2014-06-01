@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,36 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8CONTEXT_H__
 
-#include "../JavaScript/X3DJavaScriptEngine.h"
+#include <v8.h>
 
-#include <jsapi.h>
+#include "../../Components/Scripting/Script.h"
+#include "../X3DJavaScriptContext.h"
 
 namespace titania {
 namespace X3D {
 
-struct JSRuntimeDeleter
-{
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
-
-};
-
-using JSRuntimePtr = std::shared_ptr <JSRuntime>;
-
-class SpiderMonkey :
-	public X3DJavaScriptEngine
+class v8Context :
+	public X3DJavaScriptContext
 {
 public:
 
 	///  @name Construction
 
-	SpiderMonkey (X3DExecutionContext* const);
+	v8Context (Script* const, const std::string &, const basic::uri &);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
@@ -98,33 +91,6 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-	
-	virtual
-	const std::string &
-	getVendor () const final override
-	{ return vendor; }
-
-	virtual
-	const std::string &
-	getDescription () const final override
-	{ return description; }
-
-	virtual
-	const std::string &
-	getVersion () const final override
-	{ return version; }
-
-	///  @name Operations
-
-	virtual
-	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &) final override;
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream &) const final override;
 
 	///  @name Destruction
 
@@ -132,18 +98,43 @@ public:
 	void
 	dispose () final override;
 
+	virtual
+	~v8Context ();
+
 
 private:
 
-	///  @name Construction
+	///  @name Operations
 
-	virtual
-	SpiderMonkey*
-	create (X3DExecutionContext* const)  const;
+	void
+	setContext ();
+
+	void
+	setFields ();
+
+	/// Event handlers
 
 	virtual
 	void
 	initialize () final override;
+
+	void
+	prepareEvents ();
+
+	void
+	set_live ();
+
+	void
+	set_field (X3DFieldDefinition*);
+
+	void
+	eventsProcessed ();
+
+	void
+	finish ();
+
+	void
+	shutdown ();
 
 	///  @name Static members
 
@@ -153,11 +144,12 @@ private:
 
 	///  @name Members
 
-	std::string vendor;
-	std::string description;
-	std::string version;
+	std::string              ecmascript;
+	std::vector <basic::uri> worldURL;
 
-	JSRuntime* runtime;
+	v8::Persistent <v8::Context>        context;
+	v8::Persistent <v8::ObjectTemplate> globalObject;
+	v8::Handle <v8::Script>             program;
 
 };
 

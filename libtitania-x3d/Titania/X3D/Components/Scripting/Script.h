@@ -120,9 +120,6 @@ public:
 
 	///  @name Operations
 
-	bool
-	loadDocument (const SFString &, std::string &);
-
 	virtual
 	void
 	requestImmediateLoad () final override;
@@ -143,6 +140,11 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
+
+	bool
+	loadDocument (const SFString &, std::string & scheme, std::string &);
 
 	///  @name Event handling
 

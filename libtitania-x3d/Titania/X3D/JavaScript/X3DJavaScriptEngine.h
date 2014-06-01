@@ -64,6 +64,22 @@ class X3DJavaScriptEngine :
 {
 public:
 
+	///  @name Member access
+	
+	virtual
+	const std::string &
+	getVendor () const = 0;
+
+	virtual
+	const std::string &
+	getDescription () const = 0;
+
+	virtual
+	const std::string &
+	getVersion () const = 0;
+
+	///  @name Operations
+	
 	virtual
 	X3DPtr <X3DJavaScriptContext>
 	createContext (Script *, const std::string &, const basic::uri &) = 0;
@@ -71,6 +87,8 @@ public:
 
 protected:
 
+	///  @name Construction
+	
 	X3DJavaScriptEngine ();
 
 };

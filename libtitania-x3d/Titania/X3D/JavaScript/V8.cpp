@@ -48,120 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
+#include "V8/v8Context.h"
 
-#include "../JavaScript/X3DJavaScriptEngine.h"
+#include "../JavaScript/V8.h"
 
-#include <jsapi.h>
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-struct JSRuntimeDeleter
+const std::string V8::componentName  = "Browser";
+const std::string V8::typeName       = "V8";
+const std::string V8::containerField = "javaScript";
+
+V8::V8 (X3DExecutionContext* const executionContext) :
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DJavaScriptEngine (),
+	             vendor ("Google"),
+	        description (),
+	            version ()
 {
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
-
-};
-
-using JSRuntimePtr = std::shared_ptr <JSRuntime>;
-
-class SpiderMonkey :
-	public X3DJavaScriptEngine
-{
-public:
-
-	///  @name Construction
-
-	SpiderMonkey (X3DExecutionContext* const);
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Member access
+	//addType (X3DConstants::V8);
 	
-	virtual
-	const std::string &
-	getVendor () const final override
-	{ return vendor; }
+	setName ("V8");
+}
 
-	virtual
-	const std::string &
-	getDescription () const final override
-	{ return description; }
+V8*
+V8::create (X3DExecutionContext* const executionContext)  const
+{
+	return new V8 (executionContext);
+}
 
-	virtual
-	const std::string &
-	getVersion () const final override
-	{ return version; }
+void
+V8::initialize ()
+{
+	X3DJavaScriptEngine::initialize ();
 
-	///  @name Operations
+	description = "";
+	version     = "";
+}
 
-	virtual
-	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &) final override;
+X3DPtr <X3DJavaScriptContext>
+V8::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
+{
+	return new v8Context (script, ecmascript, uri);
+}
 
-	///  @name Input/Output
+void
+V8::toStream (std::ostream & stream) const
+{
+	stream
+		<< "\tCurrent Javascript Engine" << std::endl
+		<< "\t\tName: " << vendor << ' ' << getName () << std::endl
+		<< "\t\tDescription: " << description << std::endl
+		<< "\t\tVersion: " << version;
+}
 
-	virtual
-	void
-	toStream (std::ostream &) const final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	SpiderMonkey*
-	create (X3DExecutionContext* const)  const;
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	std::string vendor;
-	std::string description;
-	std::string version;
-
-	JSRuntime* runtime;
-
-};
+void
+V8::dispose ()
+{
+	X3DJavaScriptEngine::dispose ();
+}
 
 } // X3D
 } // titania
-
-#endif

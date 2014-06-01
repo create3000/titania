@@ -445,6 +445,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DProtoDeclaration.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DRoute.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \
+	Titania/X3D/JavaScript/V8.cpp \
+	Titania/X3D/JavaScript/V8/v8Context.cpp \
+	Titania/X3D/JavaScript/V8/v8Globals.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
 	Titania/X3D/Miscellaneous/BVH.cpp \
@@ -514,4 +517,6 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	-I$(top_builddir)/libtitania-opengl-surface \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
+
+AM_LDFLAGS = -lv8
 

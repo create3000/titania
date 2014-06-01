@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,120 +48,110 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_H__
+#include "v8Context.h"
 
-#include "../JavaScript/X3DJavaScriptEngine.h"
+#include "../../Browser/X3DBrowser.h"
 
-#include <jsapi.h>
+#include "v8Globals.h"
 
 namespace titania {
 namespace X3D {
 
-struct JSRuntimeDeleter
+const std::string v8Context::componentName  = "Browser";
+const std::string v8Context::typeName       = "v8Context";
+const std::string v8Context::containerField = "context";
+
+v8Context::v8Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
+	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
+	X3DJavaScriptContext (script),
+	          ecmascript (ecmascript),
+	            worldURL ({ uri }),
+	             context (),
+	        globalObject (),
+	             program ()
 {
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
+	__LOG__ << std::endl;
 
-};
+	v8::HandleScope handleScope;
 
-using JSRuntimePtr = std::shared_ptr <JSRuntime>;
+	globalObject = v8::Persistent <v8::ObjectTemplate>::New (v8::ObjectTemplate::New ());
 
-class SpiderMonkey :
-	public X3DJavaScriptEngine
+	setContext ();
+
+	setFields ();
+
+	context = v8::Context::New (nullptr, globalObject);
+
+	// Compile.
+
+	v8::Context::Scope contextScope (context);
+	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (v8::String::New (ecmascript .c_str (), ecmascript .size ())));
+}
+
+void
+v8Context::setContext ()
 {
-public:
+	v8Globals::initialize (this, globalObject);
+}
 
-	///  @name Construction
+void
+v8Context::setFields ()
+{ }
 
-	SpiderMonkey (X3DExecutionContext* const);
+X3DBaseNode*
+v8Context::create (X3DExecutionContext* const) const
+{
+	return new v8Context (getScriptNode (), ecmascript, worldURL .front ());
+}
 
-	///  @name Common members
+void
+v8Context::initialize ()
+{
+	__LOG__ << std::endl;
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	X3DJavaScriptContext::initialize ();
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
+	program -> Run ();
+}
 
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+void
+v8Context::prepareEvents ()
+{ }
 
-	///  @name Member access
-	
-	virtual
-	const std::string &
-	getVendor () const final override
-	{ return vendor; }
+void
+v8Context::set_live ()
+{ }
 
-	virtual
-	const std::string &
-	getDescription () const final override
-	{ return description; }
+void
+v8Context::set_field (X3DFieldDefinition* const field)
+{ }
 
-	virtual
-	const std::string &
-	getVersion () const final override
-	{ return version; }
+void
+v8Context::eventsProcessed ()
+{ }
 
-	///  @name Operations
+void
+v8Context::finish ()
+{ }
 
-	virtual
-	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &) final override;
+void
+v8Context::shutdown ()
+{ }
 
-	///  @name Input/Output
+void
+v8Context::dispose ()
+{
+	__LOG__ << std::endl;
 
-	virtual
-	void
-	toStream (std::ostream &) const final override;
+	shutdown ();
 
-	///  @name Destruction
+	X3DJavaScriptContext::dispose ();
+}
 
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	SpiderMonkey*
-	create (X3DExecutionContext* const)  const;
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	std::string vendor;
-	std::string description;
-	std::string version;
-
-	JSRuntime* runtime;
-
-};
+v8Context::~v8Context ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

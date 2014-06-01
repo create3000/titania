@@ -2446,6 +2446,7 @@
     <None Include="Tests\Handles\OutlineEditorProto.x3d" />
     <None Include="Tests\PROTO\Nested.wrl" />
     <None Include="Tests\Scripting\X3DNode.wrl" />
+    <None Include="Tests\Scripting\V8.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -729,5 +729,4 @@ jsContext::~jsContext ()
 { }
 
 } // X3D
-
 } // titania
