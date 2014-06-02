@@ -1,5 +1,16 @@
 2014-06-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* SFString.cpp:
+	* v8String.h:
+	* v8Browser.h:
+	* v8Context.h:
+	* v8Globals.cpp:
+	* v8Browser.cpp:
+	* jsBrowser.cpp: 
+
+2014-06-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* v8Context.cpp:

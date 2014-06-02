@@ -48,66 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8BROWSER_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8BROWSER_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8STRING_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8STRING_H__
 
+#include <string>
 #include <v8.h>
-
-#include "v8Context.h"
 
 namespace titania {
 namespace X3D {
 
-class v8Browser
+inline
+v8::Local <v8::String>
+make_v8_string (const char* string)
 {
-public:
+	return v8::String::New (string);
+}
 
-	static
-	void
-	initialize (v8Context* const, const v8::Local <v8::Object> &);
-
-
-private:
-
-	// X3D properties
-
-	static
-	v8::Handle <v8::Value>
-	name (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	version (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	currentSpeed (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	currentFrameRate (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	void
-	description (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	description (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-//	static
-//	v8::Handle <v8::Value>
-//	supportedComponents (v8::Local <v8::String>, const v8::AccessorInfo &);
-//
-//	static
-//	v8::Handle <v8::Value>
-//	supportedProfiles (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	currentScene (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-};
+inline
+v8::Local <v8::String>
+make_v8_string (const std::string & string)
+{
+	return v8::String::New (string .c_str (), string .size ());
+}
 
 } // X3D
 } // titania

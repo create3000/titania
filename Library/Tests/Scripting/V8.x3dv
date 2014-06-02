@@ -44,22 +44,41 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url "v8:
-var test = 1234;
 
-NULL = 123;
+global ();
+browser ();
 
-print ('Script 1: ', 'Hellö Wörld!');
-print ('Script 1: ', test);
-print ('Script 1: ', NULL);
-print ('Script 1: ', TRUE === true);
-print ('Script 1: ', FALSE === false);
-print ('Script 1: ', Browser);
-print ('Script 1: ', Browser .prototype);
-print ('Script 1: ', Browser .__proto__);
-for (var p in Browser)
-	print ('Browser: ', p);
-print ('Script 1: ', Browser .name);
-print ('Script 1: ', xxx);
+
+function global ()
+{
+	delete NULL;
+	delete TRUE;
+	delete FALSE;
+
+	NULL = 0;
+	TRUE = 0;
+	FALSE = 0;
+
+	print ('NULL:  ', NULL  === null);
+	print ('TRUE:  ', TRUE  === true);
+	print ('FALSE: ', FALSE === false);
+}
+
+function browser ()
+{
+	delete Browser;
+	Browser = 0;
+
+	print ('Browser:            ', Browser);
+	print ('Browser .prototype: ', Browser .prototype);
+	print ('Browser .__proto__: ', Browser .__proto__);
+
+	Browser .description = Browser .name + ' V' + Browser .version;
+
+	for (var p in Browser)
+		print ('Browser: ', p, ' = ', Browser [p]);
+}
+
 "
   directOutput TRUE
 }

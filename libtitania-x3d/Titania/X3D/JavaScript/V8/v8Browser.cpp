@@ -51,6 +51,7 @@
 #include "v8Browser.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "v8String.h"
 
 namespace titania {
 namespace X3D {
@@ -60,30 +61,94 @@ v8Browser::initialize (v8Context* const javaScript, const v8::Local <v8::Object>
 {
 	const auto browserClass = v8::FunctionTemplate::New ();
 
-	browserClass -> SetClassName (v8::String::New ("Browser"));
+	browserClass -> SetClassName (make_v8_string ("Browser"));
 
 	// X3D properties
 
 	const auto prototype = browserClass -> InstanceTemplate ();
 
-	prototype -> SetAccessor (v8::String::New ("name"),                name, nullptr, v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-//	prototype -> SetAccessor (v8::String::New ("version"),             );
-//	prototype -> SetAccessor (v8::String::New ("currentSpeed"),        );
-//	prototype -> SetAccessor (v8::String::New ("currentFrameRate"),    );
-//	prototype -> SetAccessor (v8::String::New ("description"),         );
-//	prototype -> SetAccessor (v8::String::New ("supportedComponents"), );
-//	prototype -> SetAccessor (v8::String::New ("supportedProfiles"),   );
-//	prototype -> SetAccessor (v8::String::New ("currentScene"),        );
+	prototype -> SetAccessor (make_v8_string ("name"),                name,                nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> SetAccessor (make_v8_string ("version"),             version,             nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> SetAccessor (make_v8_string ("currentSpeed"),        currentSpeed,        nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> SetAccessor (make_v8_string ("currentFrameRate"),    currentFrameRate,    nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> SetAccessor (make_v8_string ("description"),         description,         description, v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
+//	prototype -> SetAccessor (make_v8_string ("supportedComponents"), supportedComponents, nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+//	prototype -> SetAccessor (make_v8_string ("supportedProfiles"),   supportedProfiles,   nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete);
+	prototype -> SetAccessor (make_v8_string ("currentScene"),        currentScene,        nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 
-	globalObject -> Set (v8::String::New ("Browser"), browserClass -> GetFunction () -> NewInstance (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	globalObject -> Set (make_v8_string ("Browser"), browserClass -> GetFunction () -> NewInstance (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 }
 
 v8::Handle <v8::Value>
 v8Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = static_cast <v8Context*> (v8::Handle <v8::External>::Cast (info .Data ()) -> Value ()) -> getBrowser ();
+	const auto browser = get_v8_context (info) -> getBrowser ();
 
-	return v8::String::New (browser -> getName () .c_str (), browser -> getName () .size ());
+	return make_v8_string (browser -> getName ());
+}
+
+v8::Handle <v8::Value>
+v8Browser::version (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto browser = get_v8_context (info) -> getBrowser ();
+
+	return make_v8_string (browser -> getVersion ());
+}
+
+v8::Handle <v8::Value>
+v8Browser::currentSpeed (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto browser = get_v8_context (info) -> getBrowser ();
+
+	return v8::Number::New (browser -> getCurrentSpeed ());
+}
+
+v8::Handle <v8::Value>
+v8Browser::currentFrameRate (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto browser = get_v8_context (info) -> getBrowser ();
+
+	return v8::Number::New (browser -> getCurrentFrameRate ());
+}
+
+void
+v8Browser::description (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+{
+	const auto browser = get_v8_context (info) -> getBrowser ();
+
+	browser -> setDescription (*v8::String::Utf8Value (value));
+}
+
+v8::Handle <v8::Value>
+v8Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto browser = get_v8_context (info) -> getBrowser ();
+
+	return make_v8_string (browser -> getDescription ());
+}
+
+//v8::Handle <v8::Value>
+//v8Browser::supportedComponents (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+//{
+//	const auto browser = get_v8_context (info) -> getBrowser ();
+//
+//	return make_v8_string (browser -> getName ());
+//}
+
+//v8::Handle <v8::Value>
+//v8Browser::supportedProfiles (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+//{
+//	const auto browser = get_v8_context (info) -> getBrowser ();
+//
+//	return make_v8_string (browser -> getName ());
+//}
+
+v8::Handle <v8::Value>
+v8Browser::currentScene (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto browser = get_v8_context (info) -> getBrowser ();
+
+	return make_v8_string (browser -> getName ());
 }
 
 } // X3D

@@ -155,6 +155,20 @@ private:
 
 };
 
+inline
+v8Context*
+get_v8_context (const v8::AccessorInfo & info)
+{
+	return static_cast <v8Context*> (v8::Handle <v8::External>::Cast (info .Data ()) -> Value ());
+}
+
+inline
+v8Context*
+get_v8_context (const v8::Arguments & args)
+{
+	return static_cast <v8Context*> (v8::Handle <v8::External>::Cast (args .Data ()) -> Value ());
+}
+
 } // X3D
 } // titania
 

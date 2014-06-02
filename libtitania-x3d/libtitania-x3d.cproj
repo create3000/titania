@@ -696,6 +696,9 @@
     <None Include="Titania\X3D\JavaScript\V8\v8Context.h" />
     <None Include="Titania\X3D\JavaScript\V8\v8Globals.h" />
     <None Include="Titania\X3D\JavaScript\V8\v8Browser.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8String.h">
+      <DependentUpon>v8String.h</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

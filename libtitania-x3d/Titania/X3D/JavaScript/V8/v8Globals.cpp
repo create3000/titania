@@ -69,7 +69,7 @@ v8Globals::initialize (v8Context* const javaScript, const v8::Local <v8::Object>
 v8::Handle <v8::Value>
 v8Globals::print (const v8::Arguments & args)
 {
-	const auto browser = static_cast <v8Context*> (v8::Handle <v8::External>::Cast (args .Data ()) -> Value ()) -> getBrowser ();
+	const auto browser = get_v8_context (args) -> getBrowser ();
 
 	for (size_t i = 0, size = args .Length (); i < size; ++ i)
 		browser -> print (*v8::String::Utf8Value (args [i]));
