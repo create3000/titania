@@ -412,7 +412,7 @@ public:
 	{ return *m_RemoveFieldButton; }
 
 	Gtk::Expander &
-	getCDataFieldExpander () const
+	getCDATAFieldExpander () const
 	{ return *m_CDataFieldExpander; }
 
 	Gtk::Button &

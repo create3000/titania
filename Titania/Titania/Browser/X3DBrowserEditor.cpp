@@ -2081,18 +2081,28 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 }
 
 void
-X3DBrowserEditor::editCData (const X3D::SFNode & node)
+X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 {
-	X3D::MFString* const cdata          = node -> getCData ();
+	X3D::MFString* const cdata          = node -> getCDATA ();
 	std::string          filename       = "/tmp/titania-XXXXXX.js";
 	const int            fileDescriptor = mkstemps (&filename [0], 3);
 
 	if (not cdata or fileDescriptor == -1)
 		return;
 
-	// Output file
+	// Output file.
 
 	std::ofstream ostream (filename);
+
+	for (const auto & string : *cdata)
+	{
+		ostream
+			<< "<![CDATA["
+			<< X3D::escape_cdata (string)
+			<< "]]>" << std::endl
+			<< std::endl
+			<< std::endl;
+	}
 
 	std::string name = node -> getName ();
 	pcrecpp::RE (R"/((\*/))/") .GlobalReplace ("", &name);
@@ -2100,26 +2110,15 @@ X3DBrowserEditor::editCData (const X3D::SFNode & node)
 	ostream
 		<< "/**" << std::endl
 		<< " * " << node -> getTypeName () << " " << name << std::endl
-		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields.") << std::endl
-		<< " * " << _ ("Each SFString value is enclosed inside a CDATA section.") << std::endl
-		<< " * " << _ ("A CDATA section starts with \"<![CDATA[\" and ends with \"]]>\".") << std::endl
-		<< " * " << _ ("If this is a Script node a inline script must start with \"javascript:\".") << std::endl
-		<< " * " << _ ("If this is a shader a it must start with \"data:text/plain,\".") << std::endl
-		<< " * " << _ ("Just save this file to apply changes.") << std::endl
-		<< " **/" << std::endl
-		<< std::endl;
+		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields. Each SFString value is enclosed inside a CDATA") << std::endl
+		<< " * " << _ ("section.  A CDATA section starts with \"<![CDATA[\" and ends with \"]]>\".") << std::endl
+		<< " * " << std::endl
+		<< " * " << _ ("If this is a Script node, a inline script must be enclosed in \"<![CDATA[javascript: your program here ]]>\".") << std::endl
+		<< " * " << _ ("If this is a shader, it must be enclosed in \"<![CDATA[data:text/plain, your shader here ]]>\".  Just save") << std::endl
+		<< " * " << _ ("this file to apply changes.") << std::endl
+		<< " **/" << std::endl;
 
-	for (const auto & string : *cdata)
-	{
-		ostream
-			<< std::endl
-			<< "<![CDATA["
-			<< X3D::escape_cdata (string)
-			<< "]]>"
-			<< std::endl;
-	}
-
-	// Launch TextEditor
+	// Launch Gnome TextEditor.
 
 	Glib::RefPtr <Gio::File>        file        = Gio::File::create_for_path (filename);
 	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
@@ -2142,30 +2141,30 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 {
 	io::string         comment_start ("/*");
 	io::inverse_string comment ("*/");
-	io::sequence       whitespaces ("\r\n \t");
-	io::string         cdata_start ("<![CDATA[");
+	io::sequence       whitespaces ("\r\n \t,");
+	io::inverse_string cdata_start ("<![CDATA[");
 	io::inverse_string contents ("]]>");
 
 	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
 		return;
 
-	// Parse file
+	// Parse file.
 
 	X3D::MFString string;
+	std::string   ws;
 
 	std::ifstream istream (file -> get_path ());
 
-	std::string ws;
-
-	whitespaces (istream, ws);
-	comment_start (istream);
-	comment (istream, ws);
+	// Parse CDATA sections.
 
 	while (istream)
 	{
 		whitespaces (istream, ws);
 
-		if (cdata_start (istream))
+		if (comment_start (istream))
+			comment (istream, ws);
+	
+		if (cdata_start (istream, ws))
 		{
 			std::string value;
 
@@ -2179,7 +2178,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 
 	// Set value.
 
-	X3D::MFString* const cdata = node -> getCData ();
+	X3D::MFString* const cdata = node -> getCDATA ();
 
 	if (string not_eq *cdata)
 	{
@@ -2197,8 +2196,6 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 
 		addUndoStep (undoStep);
 	}
-	else
-		__LOG__ << std::endl;
 }
 
 void

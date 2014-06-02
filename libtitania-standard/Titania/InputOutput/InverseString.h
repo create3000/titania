@@ -69,7 +69,7 @@ public:
 		delimiter (delimiter)
 	{ }
 
-	void
+	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
 
@@ -80,17 +80,19 @@ private:
 };
 
 template <class CharT, class Traits>
-void
+bool
 basic_inverse_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
 	while (istream)
 	{
 		if (delimiter (istream))
-			return;
+			return true;
 
 		if (istream)
 			string .push_back (istream .get ());
 	}
+
+	return false;
 }
 
 typedef basic_inverse_string <char>    inverse_string;

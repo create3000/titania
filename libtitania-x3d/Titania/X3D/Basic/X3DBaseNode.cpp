@@ -1411,7 +1411,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 	FieldDefinitionArray references;
 	FieldDefinitionArray childNodes;
 
-	const MFString* cdata = getCData ();
+	const MFString* cdata = getCDATA ();
 
 	if (cdata and cdata -> empty ())
 		cdata = nullptr;

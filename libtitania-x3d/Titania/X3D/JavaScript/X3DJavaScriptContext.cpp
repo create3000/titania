@@ -120,8 +120,8 @@ X3DJavaScriptContext::error (const std::string & message, const std::string & fi
 
 	getBrowser () -> print ('\n',
 	                        "#   JavaScript runtime error at line ", lineNumber, (startColumn >= 0 ? ':' + std::to_string (startColumn) : ""), ":\n",
-	                        "#   in Script '", script -> getName (), "' url '", filename, "'\n",
-	                        "#   World URL is '", script -> getExecutionContext () -> getWorldURL (), "'\n",
+	                        "#   in Script '", script -> getName (), "' url '", filename, "',\n",
+	                        "#   world url is '", script -> getExecutionContext () -> getWorldURL (), "'.\n",
 	                        "#   ", '\n',
 	                        "#   ", message, '\n',
 	                        "#      ", basic::trim (line), '\n');

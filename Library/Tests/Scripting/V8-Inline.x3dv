@@ -1,0 +1,447 @@
+#X3D V3.3 utf8 Titania V0.7.0
+
+META "comment" "World of Titania"
+META "created" "Sun, 01 Jun 2014 13:49:19 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.0, http://titania.create3000.de"
+META "modified" "Sun, 01 Jun 2014 13:52:24 GMT"
+
+DEF V Transform {
+  translation -4.12532 3.27811 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V1 Transform {
+  translation -4.12532 2.49728 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V2 Transform {
+  translation -4.12532 1.7082 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V3 Transform {
+  translation -4.12532 0.927367 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V6 Transform {
+  translation -4.12532 -1.37236 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V7 Transform {
+  translation -4.12532 -2.1532 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V5 Transform {
+  translation -4.12532 -0.583282 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V4 Transform {
+  translation -4.12532 0.197548 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V14 Transform {
+  translation -2.51975 -1.37236 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V15 Transform {
+  translation -2.50353 -2.1532 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V13 Transform {
+  translation -2.51975 -0.583282 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V12 Transform {
+  translation -2.51975 0.197548 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V11 Transform {
+  translation -2.51975 0.927367 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V10 Transform {
+  translation -2.51975 1.7082 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V9 Transform {
+  translation -2.51975 2.49728 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V8 Transform {
+  translation -2.51975 3.27811 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V20 Transform {
+  translation -0.930354 -1.37236 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V21 Transform {
+  translation -0.914134 -2.1532 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V19 Transform {
+  translation -0.930354 -0.583282 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V18 Transform {
+  translation -0.930354 0.197548 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V17 Transform {
+  translation -0.930354 0.927367 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V16 Transform {
+  translation -0.930354 1.7082 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V23 Transform {
+  translation -0.930354 2.49728 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V22 Transform {
+  translation -0.930354 3.27811 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V28 Transform {
+  translation 0.642939 -1.37236 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V29 Transform {
+  translation 0.659159 -2.1532 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V27 Transform {
+  translation 0.642939 -0.583282 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V26 Transform {
+  translation 0.642939 0.197548 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V25 Transform {
+  translation 0.642939 0.927367 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V24 Transform {
+  translation 0.642939 1.7082 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V31 Transform {
+  translation 0.642939 2.49728 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V30 Transform {
+  translation 0.642939 3.27811 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V36 Transform {
+  translation 2.26488 -1.37236 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V37 Transform {
+  translation 2.2811 -2.1532 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V35 Transform {
+  translation 2.26488 -0.583282 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V34 Transform {
+  translation 2.26488 0.197548 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V33 Transform {
+  translation 2.26488 0.927367 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V32 Transform {
+  translation 2.26488 1.7082 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V39 Transform {
+  translation 2.26488 2.49728 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}
+
+DEF V38 Transform {
+  translation 2.26488 3.27811 -0.728222
+  scale 0.271778 0.271778 0.271778
+  children Inline {
+    url [
+      "V8.x3dv",
+      "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/V8.x3dv"
+    ]
+  }
+}

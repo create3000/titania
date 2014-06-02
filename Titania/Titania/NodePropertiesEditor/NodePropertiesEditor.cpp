@@ -204,7 +204,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	 * CDATA field
 	 **/
 
-	getCDataFieldExpander () .set_visible (node -> getCData ());
+	getCDATAFieldExpander () .set_visible (node -> getCDATA ());
 
 	/**
 	 * Imported Nodes
@@ -685,7 +685,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 void
 NodePropertiesEditor::on_edit_cdata_clicked ()
 {
-	getBrowserWindow () -> editCData (node);
+	getBrowserWindow () -> editCDATA (node);
 }
 
 void

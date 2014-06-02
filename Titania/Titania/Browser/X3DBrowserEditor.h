@@ -189,7 +189,7 @@ public:
 	/// @name CDATA field operations
 
 	void
-	editCData (const X3D::SFNode &);
+	editCDATA (const X3D::SFNode &);
 
 	/// @name Selection operations
 

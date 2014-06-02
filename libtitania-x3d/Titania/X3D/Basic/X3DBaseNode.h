@@ -246,12 +246,12 @@ public:
 
 	virtual
 	MFString*
-	getCData ()
+	getCDATA ()
 	{ return nullptr; }
 
 	virtual
 	const MFString*
-	getCData () const
+	getCDATA () const
 	{ return nullptr; }
 
 	virtual

@@ -2447,6 +2447,7 @@
     <None Include="Tests\PROTO\Nested.wrl" />
     <None Include="Tests\Scripting\X3DNode.wrl" />
     <None Include="Tests\Scripting\V8.x3dv" />
+    <None Include="Tests\Scripting\V8-Inline.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

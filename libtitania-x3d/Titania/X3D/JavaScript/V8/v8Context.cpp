@@ -97,6 +97,8 @@ v8Context::v8Context (Script* const script, const std::string & ecmascript, cons
 void
 v8Context::setContext ()
 {
+	// v8::Context::Scope
+
 	v8Browser::initialize (this, context -> Global ());
 	v8Globals::initialize (this, context -> Global ());
 }
