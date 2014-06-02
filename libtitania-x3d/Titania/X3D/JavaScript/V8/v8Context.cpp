@@ -55,6 +55,7 @@
 #include "v8Browser.h"
 #include "v8Globals.h"
 #include "v8String.h"
+#include "v8Fields.h"
 
 namespace titania {
 namespace X3D {
@@ -68,12 +69,15 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (script, ecmascript),
 	            worldURL ({ uri }),
+	             isolate (v8::Isolate::New ()),
 	             context (),
 	        globalObject (),
 	             program ()
 {
 	__LOG__ << std::endl;
 
+	v8::Locker locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope handleScope;
 
 	globalObject = v8::Persistent <v8::ObjectTemplate>::New (v8::ObjectTemplate::New ());
@@ -101,8 +105,12 @@ Context::setContext ()
 {
 	// v8::Context::Scope
 
-	Browser::initialize (this, context -> Global ());
 	Globals::initialize (this, context -> Global ());
+	Browser::initialize (this, context -> Global ());
+
+	SFVec4d::initialize (this, context -> Global ());
+	SFVec4f::initialize (this, context -> Global ());
+
 }
 
 void
@@ -122,6 +130,8 @@ Context::initialize ()
 
 	X3DJavaScriptContext::initialize ();
 
+	v8::Locker locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
@@ -159,6 +169,8 @@ Context::shutdown ()
 void
 Context::error (const v8::TryCatch & trycatch) const
 {
+	v8::Locker locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope handleScope;
 
 	X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
@@ -171,13 +183,25 @@ Context::error (const v8::TryCatch & trycatch) const
 void
 Context::dispose ()
 {
-	__LOG__ << std::endl;
+	__LOG__ << getScriptNode () -> getName () << std::endl;
 
-	shutdown ();
+	{
+		v8::Locker locker (isolate);
+		v8::Isolate::Scope isolate_scope (isolate);
+		v8::HandleScope    handleScope;
+		v8::Context::Scope contextScope (context);
 
-	program      .Dispose ();
-	context      .Dispose ();
-	globalObject .Dispose ();
+		shutdown ();
+
+		program      .Dispose ();
+		context      .Dispose ();
+		globalObject .Dispose ();
+
+		while (not v8::V8::IdleNotification ())
+			;
+	}
+
+	isolate -> Dispose ();
 
 	X3DJavaScriptContext::dispose ();
 }

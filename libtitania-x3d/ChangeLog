@@ -1,6 +1,18 @@
 2014-06-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* v8Fields.h:
+	* v8Context.h:
+	* v8Context.cpp:
+	* v8Browser.cpp:
+	* v8Globals.cpp:
+	* v8SFVec4.h:
+	* v8SFVec4.cpp: 
+
+2014-06-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
 	* V8.cpp:
 	* v8String.h:
 	* v8Context.h:

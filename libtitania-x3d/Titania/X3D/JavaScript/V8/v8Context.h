@@ -150,6 +150,7 @@ private:
 
 	std::vector <basic::uri> worldURL;
 
+	v8::Isolate*                        isolate;
 	v8::Persistent <v8::Context>        context;
 	v8::Persistent <v8::ObjectTemplate> globalObject;
 	v8::Persistent <v8::Script>         program;

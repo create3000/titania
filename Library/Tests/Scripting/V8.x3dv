@@ -47,6 +47,7 @@ DEF Script1 Script {
 
 global ();
 browser ();
+fields ();
 
 
 function global ()
@@ -80,6 +81,15 @@ function browser ()
 		print ('Browser: ', p, ' = ', Browser [p]);
 
 	print ('getName:     ', Browser .getName ());
+}
+
+function fields ()
+{
+	print ('SFVec4f:       ', SFVec4f);
+	print ('SFVec4f .name: ', SFVec4f .name);
+	print ('SFVec4f ():    ', SFVec4f ());
+	print ('SFVec4f .new:  ', new SFVec4f ());
+	print ('SFVec4f .new:  ', new SFVec4f (1, 2, 3, 4));
 }
 
 "

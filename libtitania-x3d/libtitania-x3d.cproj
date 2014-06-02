@@ -699,6 +699,8 @@
     <None Include="Titania\X3D\JavaScript\V8\v8String.h">
       <DependentUpon>v8String.h</DependentUpon>
     </None>
+    <None Include="Titania\X3D\JavaScript\V8\Fields\v8SFVec4.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8Fields.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1196,6 +1198,7 @@
     <Compile Include="Titania\X3D\JavaScript\V8\v8Context.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\v8Globals.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\v8Browser.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\v8SFVec4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1254,6 +1257,7 @@
     <Folder Include="scripts\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\" />
     <Folder Include="Titania\X3D\JavaScript\V8\" />
+    <Folder Include="Titania\X3D\JavaScript\V8\Fields\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
