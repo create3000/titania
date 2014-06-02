@@ -52,6 +52,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <>
 JSClass jsConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>::static_class = {
@@ -64,5 +65,6 @@ JSClass jsConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>::static_cla
 
 template class jsConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

@@ -57,14 +57,15 @@
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-class v8Globals
+class Globals
 {
 public:
 
 	static
 	void
-	initialize (v8Context* const, const v8::Local <v8::Object> &);
+	initialize (Context* const, const v8::Local <v8::Object> &);
 
 
 private:
@@ -75,6 +76,7 @@ private:
 
 };
 
+} // GoogleV8
 } // X3D
 } // titania
 

@@ -59,6 +59,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 class jsX3DObject
 {
@@ -129,6 +130,7 @@ extern template JSBool jsX3DObject::getName <X3DChildObject>     (JSContext *, u
 extern template JSBool jsX3DObject::getTypeName <X3DChildObject> (JSContext *, uintN, jsval*);
 extern template JSBool jsX3DObject::toString <X3DChildObject>    (JSContext *, uintN, jsval*);
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

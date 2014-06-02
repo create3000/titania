@@ -52,6 +52,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <>
 JSClass jsSFMatrix4 <SFMatrix4d>::static_class = {
@@ -84,5 +85,6 @@ template class jsSFMatrix4 <SFMatrix4d>;
 template class jsSFMatrix4 <SFMatrix4f>;
 template class jsSFMatrix4 <VrmlMatrix>;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

@@ -55,8 +55,8 @@ function global ()
 	delete TRUE;
 	delete FALSE;
 
-	NULL = 0;
-	TRUE = 0;
+	NULL  = 0;
+	TRUE  = 0;
 	FALSE = 0;
 
 	print ('NULL:  ', NULL  === null);
@@ -72,11 +72,14 @@ function browser ()
 	print ('Browser:            ', Browser);
 	print ('Browser .prototype: ', Browser .prototype);
 	print ('Browser .__proto__: ', Browser .__proto__);
+	print ('Object .create:     ', Object .create (Browser));
 
 	Browser .description = Browser .name + ' V' + Browser .version;
 
 	for (var p in Browser)
 		print ('Browser: ', p, ' = ', Browser [p]);
+
+	print ('getName:     ', Browser .getName ());
 }
 
 "

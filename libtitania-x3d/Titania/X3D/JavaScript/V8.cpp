@@ -91,7 +91,7 @@ V8::initialize ()
 X3DPtr <X3DJavaScriptContext>
 V8::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
 {
-	return new v8Context (script, ecmascript, uri);
+	return new GoogleV8::Context (script, ecmascript, uri);
 }
 
 void

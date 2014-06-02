@@ -57,6 +57,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsX3DScene::static_class = {
 	"X3DScene", JSCLASS_HAS_PRIVATE,
@@ -354,5 +355,6 @@ jsX3DScene::finalize (JSContext* context, JSObject* obj)
 	}
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

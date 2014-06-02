@@ -54,6 +54,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 const size_t jsSFColorRGBA::size = 4;
 
@@ -285,5 +286,6 @@ jsSFColorRGBA::setHSV (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

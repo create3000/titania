@@ -52,8 +52,10 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 //
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

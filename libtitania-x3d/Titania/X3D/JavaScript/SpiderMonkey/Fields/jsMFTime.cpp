@@ -52,6 +52,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <>
 JSClass jsX3DArrayField <jsSFTime, MFTime>::static_class = {
@@ -173,5 +174,6 @@ jsX3DArrayField <jsSFTime, MFTime>::push (JSContext* context, uintN argc, jsval*
 
 template class jsX3DArrayField <jsSFTime, MFTime>;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

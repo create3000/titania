@@ -65,6 +65,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsX3DConstants::static_class = {
 	"X3DConstants", 0,
@@ -2536,5 +2537,6 @@ jsX3DConstants::X3DViewportNode (JSContext* context, JSObject* obj, jsid id, jsv
 	return JS_NewNumberValue (context, X3DConstants::X3DViewportNode, vp);
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

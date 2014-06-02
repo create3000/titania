@@ -56,6 +56,7 @@
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
 inline
 v8::Local <v8::String>
@@ -71,6 +72,22 @@ make_v8_string (const std::string & string)
 	return v8::String::New (string .c_str (), string .size ());
 }
 
+template <class Type>
+inline
+std::string
+get_utf8_string (const Type & value)
+{
+	try
+	{
+		return *v8::String::Utf8Value (value);
+	}
+	catch (...)
+	{
+		return "";
+	}
+}
+
+} // GoogleV8
 } // X3D
 } // titania
 

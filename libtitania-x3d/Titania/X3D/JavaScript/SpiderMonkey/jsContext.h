@@ -65,6 +65,8 @@ namespace X3D {
 
 class SceneLoader;
 
+namespace MozillaSpiderMonkey {
+
 class jsContext :
 	public X3DJavaScriptContext
 {
@@ -223,6 +225,7 @@ private:
 
 };
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

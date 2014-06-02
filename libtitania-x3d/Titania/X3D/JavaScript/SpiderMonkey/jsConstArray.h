@@ -55,6 +55,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <class Type, class ValueType>
 class jsConstArray
@@ -219,6 +220,7 @@ jsConstArray <Type, ValueType>::length (JSContext* context, JSObject* obj, jsid 
 	return JS_NewNumberValue (context, array -> size (), vp);
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

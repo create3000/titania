@@ -58,15 +58,16 @@
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-class v8Context :
+class Context :
 	public X3DJavaScriptContext
 {
 public:
 
 	///  @name Construction
 
-	v8Context (Script* const, const std::string &, const basic::uri &);
+	Context (Script* const, const std::string &, const basic::uri &);
 
 	virtual
 	X3DBaseNode*
@@ -99,7 +100,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~v8Context ();
+	~Context ();
 
 
 private:
@@ -156,19 +157,20 @@ private:
 };
 
 inline
-v8Context*
-get_v8_context (const v8::AccessorInfo & info)
+Context*
+get_context (const v8::AccessorInfo & info)
 {
-	return static_cast <v8Context*> (v8::Handle <v8::External>::Cast (info .Data ()) -> Value ());
+	return static_cast <Context*> (v8::Handle <v8::External>::Cast (info .Data ()) -> Value ());
 }
 
 inline
-v8Context*
-get_v8_context (const v8::Arguments & args)
+Context*
+get_context (const v8::Arguments & args)
 {
-	return static_cast <v8Context*> (v8::Handle <v8::External>::Cast (args .Data ()) -> Value ());
+	return static_cast <Context*> (v8::Handle <v8::External>::Cast (args .Data ()) -> Value ());
 }
 
+} // GoogleV8
 } // X3D
 } // titania
 

@@ -56,6 +56,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 class jsX3DExecutionContext
 {
@@ -129,6 +130,7 @@ private:
 
 };
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

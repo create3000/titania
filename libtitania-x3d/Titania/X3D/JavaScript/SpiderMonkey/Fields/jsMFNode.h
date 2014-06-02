@@ -57,6 +57,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <>
 JSBool
@@ -78,6 +79,7 @@ extern template class jsX3DArrayField <jsSFNode, MFNode>;
 
 typedef jsX3DArrayField <jsSFNode, MFNode> jsMFNode;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

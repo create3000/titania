@@ -58,6 +58,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <class Type, class FieldType>
 class jsX3DArrayField :
@@ -453,6 +454,7 @@ jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, js
 	return JS_TRUE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

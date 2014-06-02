@@ -56,6 +56,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsSFImage::static_class = {
 	"SFImage", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
@@ -247,5 +248,6 @@ jsSFImage::array (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsv
 	return JS_TRUE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

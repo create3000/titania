@@ -54,6 +54,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 const size_t jsSFColor::size = 3;
 
@@ -283,5 +284,6 @@ jsSFColor::setHSV (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

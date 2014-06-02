@@ -67,6 +67,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsX3DExecutionContext::static_class = {
 	"X3DExecutionContext", JSCLASS_HAS_PRIVATE,
@@ -739,5 +740,6 @@ jsX3DExecutionContext::toXMLString (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

@@ -59,6 +59,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsX3DProtoDeclaration::static_class = {
 	"X3DProtoDeclaration", JSCLASS_HAS_PRIVATE,
@@ -159,5 +160,6 @@ jsX3DProtoDeclaration::finalize (JSContext* context, JSObject* obj)
 		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (proto);
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

@@ -104,7 +104,7 @@ SpiderMonkey::initialize ()
 X3DPtr <X3DJavaScriptContext>
 SpiderMonkey::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
 {
-	return new jsContext (runtime, script, ecmascript, uri);
+	return new MozillaSpiderMonkey::jsContext (runtime, script, ecmascript, uri);
 }
 
 void

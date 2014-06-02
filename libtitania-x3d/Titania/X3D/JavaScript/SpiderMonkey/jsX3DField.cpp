@@ -54,6 +54,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSBool
 jsX3DField::getType (JSContext* context, uintN argc, jsval* vp)
@@ -104,5 +105,6 @@ jsX3DField::isWritable (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // Titania

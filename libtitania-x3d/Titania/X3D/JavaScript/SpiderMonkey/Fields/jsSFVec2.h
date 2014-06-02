@@ -58,6 +58,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <class Type>
 class jsSFVec2 :
@@ -533,6 +534,7 @@ extern template class jsSFVec2 <SFVec2f>;
 typedef jsSFVec2 <SFVec2d> jsSFVec2d;
 typedef jsSFVec2 <SFVec2f> jsSFVec2f;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

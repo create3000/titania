@@ -57,6 +57,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 // Template class for javascript scalar field types.
 
@@ -105,6 +106,7 @@ typedef jsScalar <SFInt32>  jsSFInt32;
 typedef jsScalar <SFString> jsSFString;
 typedef jsScalar <SFTime>   jsSFTime;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

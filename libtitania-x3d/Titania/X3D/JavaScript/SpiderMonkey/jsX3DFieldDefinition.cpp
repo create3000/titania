@@ -56,6 +56,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 using jsX3DFieldDefinitionPrivate = X3DScalar <const X3DFieldDefinition*>;
 
@@ -157,5 +158,6 @@ jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
 		javaScript -> removeObject (field);
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

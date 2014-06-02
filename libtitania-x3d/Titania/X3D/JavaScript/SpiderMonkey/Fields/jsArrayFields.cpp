@@ -52,6 +52,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <>
 JSClass jsX3DArrayField <jsSFColor, MFColor>::static_class = {
@@ -194,5 +195,6 @@ template class jsX3DArrayField <jsSFVec3f, MFVec3f>;
 template class jsX3DArrayField <jsSFVec4d, MFVec4d>;
 template class jsX3DArrayField <jsSFVec4f, MFVec4f>;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

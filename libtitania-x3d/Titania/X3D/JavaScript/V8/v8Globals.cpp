@@ -51,12 +51,14 @@
 #include "v8Globals.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "v8String.h"
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
 void
-v8Globals::initialize (v8Context* const javaScript, const v8::Local <v8::Object> & globalObject)
+Globals::initialize (Context* const javaScript, const v8::Local <v8::Object> & globalObject)
 {
 	globalObject -> Set (v8::String::New ("NULL"),  v8::Null (),              v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 	globalObject -> Set (v8::String::New ("FALSE"), v8::Boolean::New (false), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
@@ -67,12 +69,12 @@ v8Globals::initialize (v8Context* const javaScript, const v8::Local <v8::Object>
 }
 
 v8::Handle <v8::Value>
-v8Globals::print (const v8::Arguments & args)
+Globals::print (const v8::Arguments & args)
 {
-	const auto browser = get_v8_context (args) -> getBrowser ();
+	const auto browser = get_context (args) -> getBrowser ();
 
 	for (size_t i = 0, size = args .Length (); i < size; ++ i)
-		browser -> print (*v8::String::Utf8Value (args [i]));
+		browser -> print (get_utf8_string (args [i]));
 
 	browser -> print ("\n");
 
@@ -82,5 +84,6 @@ v8Globals::print (const v8::Arguments & args)
 	return v8::Undefined ();
 }
 
+} // GoogleV8
 } // X3D
 } // titania

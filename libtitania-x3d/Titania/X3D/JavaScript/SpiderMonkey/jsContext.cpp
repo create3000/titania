@@ -85,6 +85,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 // mutex test: http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/DeadReckoningComparisons.x3d
 
@@ -689,5 +690,6 @@ jsContext::dispose ()
 jsContext::~jsContext ()
 { }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

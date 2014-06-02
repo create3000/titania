@@ -55,6 +55,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSBool
 JS_NewStringValue (JSContext* const context, const std::string & string, jsval* const vp)
@@ -116,5 +117,6 @@ JS_GetString (JSContext* const context, JSString* const jsstring)
 	return "";
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

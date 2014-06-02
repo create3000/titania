@@ -60,6 +60,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 template <class Type>
 class jsSFMatrix3 :
@@ -651,6 +652,7 @@ extern template class jsSFMatrix3 <SFMatrix3f>;
 typedef jsSFMatrix3 <SFMatrix3d> jsSFMatrix3d;
 typedef jsSFMatrix3 <SFMatrix3f> jsSFMatrix3f;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

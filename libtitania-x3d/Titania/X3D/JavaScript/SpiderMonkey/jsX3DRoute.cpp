@@ -57,6 +57,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsX3DRoute::static_class = {
 	"X3DRoute", JSCLASS_HAS_PRIVATE,
@@ -176,5 +177,6 @@ jsX3DRoute:: finalize (JSContext* context, JSObject* obj)
 		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

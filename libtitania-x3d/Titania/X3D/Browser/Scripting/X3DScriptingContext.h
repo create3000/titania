@@ -66,7 +66,10 @@ public:
 
 	const X3DJavaScriptEnginePtr &
 	getJavaScriptEngine () const
-	{ return javaScriptEngine; }
+	{ return getJavaScriptEngine (""); }
+
+	const X3DJavaScriptEnginePtr &
+	getJavaScriptEngine (const std::string &) const;
 
 	///  @name Destruction
 
@@ -94,7 +97,10 @@ private:
 
 	///  @name Members
 
-	X3DJavaScriptEnginePtr javaScriptEngine;
+	X3DJavaScriptEnginePtr spiderMonkey;
+	X3DJavaScriptEnginePtr v8;
+
+	std::map <std::string, X3DJavaScriptEnginePtr> javaScriptEngines;
 
 };
 

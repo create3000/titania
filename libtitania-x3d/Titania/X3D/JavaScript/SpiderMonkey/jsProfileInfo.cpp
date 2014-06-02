@@ -55,6 +55,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsProfileInfo::static_class = {
 	"ProfileInfo", JSCLASS_HAS_PRIVATE,
@@ -141,5 +142,6 @@ jsProfileInfo::finalize (JSContext* context, JSObject* obj)
 		delete profileInfo;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

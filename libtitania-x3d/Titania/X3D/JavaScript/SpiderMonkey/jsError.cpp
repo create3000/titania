@@ -52,6 +52,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSBool
 JS_InstanceOfError (JSContext* const context, JSObject* const object, JSClass* const class_type)
@@ -76,5 +77,6 @@ JS_InstanceOfError (JSContext* const context, JSObject* const object, JSClass* c
 	return JS_FALSE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

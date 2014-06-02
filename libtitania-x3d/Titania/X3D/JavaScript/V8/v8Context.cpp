@@ -54,15 +54,17 @@
 
 #include "v8Browser.h"
 #include "v8Globals.h"
+#include "v8String.h"
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-const std::string v8Context::componentName  = "Browser";
-const std::string v8Context::typeName       = "v8Context";
-const std::string v8Context::containerField = "context";
+const std::string Context::componentName  = "Browser";
+const std::string Context::typeName       = "Context";
+const std::string Context::containerField = "context";
 
-v8Context::v8Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
+Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (script, ecmascript),
 	            worldURL ({ uri }),
@@ -95,26 +97,26 @@ v8Context::v8Context (Script* const script, const std::string & ecmascript, cons
 }
 
 void
-v8Context::setContext ()
+Context::setContext ()
 {
 	// v8::Context::Scope
 
-	v8Browser::initialize (this, context -> Global ());
-	v8Globals::initialize (this, context -> Global ());
+	Browser::initialize (this, context -> Global ());
+	Globals::initialize (this, context -> Global ());
 }
 
 void
-v8Context::setFields ()
+Context::setFields ()
 { }
 
 X3DBaseNode*
-v8Context::create (X3DExecutionContext* const) const
+Context::create (X3DExecutionContext* const) const
 {
-	return new v8Context (getScriptNode (), getECMAScript (), worldURL .front ());
+	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
 void
-v8Context::initialize ()
+Context::initialize ()
 {
 	__LOG__ << std::endl;
 
@@ -131,43 +133,43 @@ v8Context::initialize ()
 }
 
 void
-v8Context::prepareEvents ()
+Context::prepareEvents ()
 { }
 
 void
-v8Context::set_live ()
+Context::set_live ()
 { }
 
 void
-v8Context::set_field (X3DFieldDefinition* const field)
+Context::set_field (X3DFieldDefinition* const field)
 { }
 
 void
-v8Context::eventsProcessed ()
+Context::eventsProcessed ()
 { }
 
 void
-v8Context::finish ()
+Context::finish ()
 { }
 
 void
-v8Context::shutdown ()
+Context::shutdown ()
 { }
 
 void
-v8Context::error (const v8::TryCatch & trycatch) const
+Context::error (const v8::TryCatch & trycatch) const
 {
 	v8::HandleScope handleScope;
 
-	X3DJavaScriptContext::error (*v8::String::Utf8Value (trycatch .Exception ()),
+	X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
 	                             worldURL .back () == getExecutionContext () -> getWorldURL () ? "<inline>" : worldURL .back (),
 	                             trycatch .Message () -> GetLineNumber (),
 	                             trycatch .Message () -> GetStartColumn (),
-	                             *v8::String::Utf8Value (trycatch .Message () -> GetSourceLine ()));
+	                             get_utf8_string (trycatch .Message () -> GetSourceLine ()));
 }
 
 void
-v8Context::dispose ()
+Context::dispose ()
 {
 	__LOG__ << std::endl;
 
@@ -180,8 +182,9 @@ v8Context::dispose ()
 	X3DJavaScriptContext::dispose ();
 }
 
-v8Context::~v8Context ()
+Context::~Context ()
 { }
 
+} // GoogleV8
 } // X3D
 } // titania

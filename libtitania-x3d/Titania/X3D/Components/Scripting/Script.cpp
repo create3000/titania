@@ -48,8 +48,6 @@
  *
  ******************************************************************************/
 
-#include "../../JavaScript/V8/v8Context.h"
-
 #include "Script.h"
 
 #include "../../Browser/X3DBrowser.h"
@@ -165,11 +163,7 @@ Script::requestImmediateLoad ()
 		{
 			try
 			{
-				if (scheme == "v8")
-					javaScript .set (new v8Context (this, ecmascript, getWorldURL ()));
-
-				else
-					javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL ()));
+				javaScript .set (getBrowser () -> getJavaScriptEngine (scheme) -> createContext (this, ecmascript, getWorldURL ()));
 
 				// Initialize.
 

@@ -57,11 +57,13 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 typedef jsConstArray <RouteArray, jsX3DRoute> jsRouteArray;
 
 extern template class jsConstArray <RouteArray, jsX3DRoute>;
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania
 

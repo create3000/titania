@@ -72,6 +72,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSClass jsBrowser::static_class = {
 	"Browser", 0,
@@ -1002,5 +1003,6 @@ jsBrowser::setDescription (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

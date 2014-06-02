@@ -60,6 +60,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSPropertySpec jsGlobals::properties [ ] = {
 	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
@@ -147,5 +148,6 @@ jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 	return success;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

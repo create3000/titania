@@ -55,6 +55,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 // Minimal X3DArrayField to wrap X3DFieldDefinitions
 
@@ -330,5 +331,6 @@ jsFieldDefinitionArray::finalize (JSContext* context, JSObject* obj)
 		array -> removeParent (javaScript);
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

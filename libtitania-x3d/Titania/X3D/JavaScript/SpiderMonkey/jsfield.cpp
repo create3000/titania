@@ -55,6 +55,7 @@
 
 namespace titania {
 namespace X3D {
+namespace MozillaSpiderMonkey {
 
 JSBool
 JS_ValueToField (JSContext* const context, X3DFieldDefinition* const field, jsval* const vp)
@@ -773,5 +774,6 @@ JS_NewFieldValue (JSContext* const context, X3DFieldDefinition* const field, jsv
 	return JS_TRUE;
 }
 
+} // MozillaSpiderMonkey
 } // X3D
 } // titania

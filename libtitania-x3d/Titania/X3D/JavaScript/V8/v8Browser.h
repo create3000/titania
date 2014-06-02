@@ -57,14 +57,15 @@
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-class v8Browser
+class Browser
 {
 public:
 
 	static
 	void
-	initialize (v8Context* const, const v8::Local <v8::Object> &);
+	initialize (Context* const, const v8::Local <v8::Object> &);
 
 
 private:
@@ -107,8 +108,51 @@ private:
 	v8::Handle <v8::Value>
 	currentScene (v8::Local <v8::String>, const v8::AccessorInfo &);
 
+	// VRML functions
+
+	static
+	v8::Handle <v8::Value>
+	getName (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	getVersion (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	getCurrentSpeed (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	getCurrentFrameRate (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	getWorldURL (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	setDescription (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	createVrmlFromString (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	createVrmlFromURL (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	addRoute (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	deleteRoute (const v8::Arguments &);
+
 };
 
+} // GoogleV8
 } // X3D
 } // titania
 

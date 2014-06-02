@@ -55,9 +55,10 @@
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
 void
-v8Browser::initialize (v8Context* const javaScript, const v8::Local <v8::Object> & globalObject)
+Browser::initialize (Context* const javaScript, const v8::Local <v8::Object> & globalObject)
 {
 	const auto browserClass = v8::FunctionTemplate::New ();
 
@@ -76,80 +77,185 @@ v8Browser::initialize (v8Context* const javaScript, const v8::Local <v8::Object>
 //	prototype -> SetAccessor (make_v8_string ("supportedProfiles"),   supportedProfiles,   nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete);
 	prototype -> SetAccessor (make_v8_string ("currentScene"),        currentScene,        nullptr,     v8::External::New (javaScript), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 
+	// VRML functions
+
+	prototype -> Set (v8::String::New ("getName"),              v8::FunctionTemplate::New (getName,              v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("getVersion"),           v8::FunctionTemplate::New (getVersion,           v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("getCurrentSpeed"),      v8::FunctionTemplate::New (getCurrentSpeed,      v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("getCurrentFrameRate"),  v8::FunctionTemplate::New (getCurrentFrameRate,  v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("getWorldURL"),          v8::FunctionTemplate::New (getWorldURL,          v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("setDescription"),       v8::FunctionTemplate::New (setDescription,       v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("createVrmlFromString"), v8::FunctionTemplate::New (createVrmlFromString, v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("createVrmlFromURL"),    v8::FunctionTemplate::New (createVrmlFromURL,    v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("addRoute"),             v8::FunctionTemplate::New (addRoute,             v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	prototype -> Set (v8::String::New ("deleteRoute"),          v8::FunctionTemplate::New (deleteRoute,          v8::External::New (javaScript)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+
 	globalObject -> Set (make_v8_string ("Browser"), browserClass -> GetFunction () -> NewInstance (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 }
 
+// X3D properties
+
 v8::Handle <v8::Value>
-v8Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
 
 	return make_v8_string (browser -> getName ());
 }
 
 v8::Handle <v8::Value>
-v8Browser::version (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+Browser::version (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
 
 	return make_v8_string (browser -> getVersion ());
 }
 
 v8::Handle <v8::Value>
-v8Browser::currentSpeed (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+Browser::currentSpeed (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
 
 	return v8::Number::New (browser -> getCurrentSpeed ());
 }
 
 v8::Handle <v8::Value>
-v8Browser::currentFrameRate (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+Browser::currentFrameRate (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
 
 	return v8::Number::New (browser -> getCurrentFrameRate ());
 }
 
 void
-v8Browser::description (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+Browser::description (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
 
-	browser -> setDescription (*v8::String::Utf8Value (value));
+	browser -> setDescription (get_utf8_string (value));
 }
 
 v8::Handle <v8::Value>
-v8Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
 
 	return make_v8_string (browser -> getDescription ());
 }
 
 //v8::Handle <v8::Value>
-//v8Browser::supportedComponents (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+//Browser::supportedComponents (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 //{
-//	const auto browser = get_v8_context (info) -> getBrowser ();
+//	const auto browser = get_context (info) -> getBrowser ();
 //
-//	return make_v8_string (browser -> getName ());
+//	return v8::Undefined ();
 //}
 
 //v8::Handle <v8::Value>
-//v8Browser::supportedProfiles (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+//Browser::supportedProfiles (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 //{
-//	const auto browser = get_v8_context (info) -> getBrowser ();
+//	const auto browser = get_context (info) -> getBrowser ();
 //
-//	return make_v8_string (browser -> getName ());
+//	return v8::Undefined ();
 //}
 
 v8::Handle <v8::Value>
-v8Browser::currentScene (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+Browser::currentScene (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_v8_context (info) -> getBrowser ();
+	const auto browser = get_context (info) -> getBrowser ();
+
+	return v8::Undefined ();
+}
+
+// VRML functions
+
+v8::Handle <v8::Value>
+Browser::getName (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
 
 	return make_v8_string (browser -> getName ());
 }
 
+v8::Handle <v8::Value>
+Browser::getVersion (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return make_v8_string (browser -> getVersion ());
+}
+
+v8::Handle <v8::Value>
+Browser::getCurrentSpeed (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return v8::Number::New (browser -> getCurrentSpeed ());
+}
+
+v8::Handle <v8::Value>
+Browser::getCurrentFrameRate (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return v8::Number::New (browser -> getCurrentFrameRate ());
+}
+
+v8::Handle <v8::Value>
+Browser::getWorldURL (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return make_v8_string (browser -> getWorldURL ());
+}
+
+v8::Handle <v8::Value>
+Browser::setDescription (const v8::Arguments & args)
+{
+	if (args. Length () == 1)
+	{
+		const auto browser = get_context (args) -> getBrowser ();
+
+		browser -> setDescription (get_utf8_string (args [0]));
+
+		return v8::Undefined ();
+	}
+
+	return v8::ThrowException (make_v8_string ("Wrong number of arguments."));
+}
+
+v8::Handle <v8::Value>
+Browser::createVrmlFromString (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return v8::Undefined ();
+}
+
+v8::Handle <v8::Value>
+Browser::createVrmlFromURL (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return v8::Undefined ();
+}
+
+v8::Handle <v8::Value>
+Browser::addRoute (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return v8::Undefined ();
+}
+
+v8::Handle <v8::Value>
+Browser::deleteRoute (const v8::Arguments & args)
+{
+	const auto browser = get_context (args) -> getBrowser ();
+
+	return v8::Undefined ();
+}
+
+} // GoogleV8
 } // X3D
 } // titania
