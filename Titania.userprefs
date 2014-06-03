@@ -1,22 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/v8SFVec4.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="8" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="176" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFString.h" Line="125" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFString.cpp" Line="97" Column="34" />
+      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="108" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/v8X3DObject.h" Line="169" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/v8SFVec4.h" Line="151" Column="74" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/v8SFVec4.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.h" Line="117" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/v8Context.h" Line="112" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/v8Context.cpp" Line="162" Column="36" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Scripting" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Math" expanded="True">
+                <Node name="Numbers" expanded="True">
+                  <Node name="Vector2.h" selected="True" />
+                </Node>
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -29,17 +38,21 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Scripting" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Scripting" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True">
-                  <Node name="SFString.cpp" selected="True" />
-                </Node>
+                <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True" />
-                  <Node name="V8" expanded="True" />
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                  <Node name="V8" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
               </Node>

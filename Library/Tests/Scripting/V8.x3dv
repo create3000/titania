@@ -96,11 +96,32 @@ function fields ()
 	print ('SFVec4f .prototype: ', v .prototype);
 	print ('SFVec4f .__proto__: ', v .__proto__);
 	print ('SFVec4f .x:         ', v .x);
+	print ('SFVec4f .y:         ', v .y);
+	print ('SFVec4f .z:         ', v .z);
+	print ('SFVec4f .w:         ', v .w);
+	print ('SFVec4f .x:         ', 'x' in v);
+	print ('SFVec4f .y:         ', 'y' in v);
+	print ('SFVec4f .z:         ', 'z' in v);
+	print ('SFVec4f .w:         ', 'w' in v);
+	print ('SFVec4f .v:         ', 'v' in v);
+	print ('SFVec4f .0:         ', v [0]);
+	print ('SFVec4f .1:         ', v [1]);
+	print ('SFVec4f .2:         ', v [2]);
+	print ('SFVec4f .3:         ', v [3]);
+	print ('SFVec4f .0:         ', 0 in v);
+	print ('SFVec4f .1:         ', 1 in v);
+	print ('SFVec4f .2:         ', 2 in v);
+	print ('SFVec4f .3:         ', 3 in v);
+	print ('SFVec4f .4:         ', 4 in v);
 	v .x = 5;
-	print ('SFVec4f .toString: ', v );
+	v .y = 6;
+	v .z = 7;
+	v .w = 8;
+	print ('SFVec4f .toString:  ', v );
 
-	var f = v .toString;
-	f .call ([ ]);
+	print ('Enumerate:');
+	for (var i in v)
+		print ('SFVec4f: ', i, ' = ', v [i]);
 }
 
 "

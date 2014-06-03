@@ -54,6 +54,12 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
+template <>
+const std::string X3DObject <X3D::SFVec4d, ObjectType::SFVec4d>::typeName ("SFVec4d");
+
+template <>
+const std::string X3DObject <X3D::SFVec4f, ObjectType::SFVec4f>::typeName ("SFVec4f");
+
 template class SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;
 template class SFVec4 <X3D::SFVec4f, ObjectType::SFVec4f>;
 

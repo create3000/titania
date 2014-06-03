@@ -97,7 +97,7 @@ public:
 	///  @name Member access
 
 	void
-	addClass (const ObjectType, const v8::Local <v8::String> &, const v8::Local <v8::Function> &);
+	addClass (const ObjectType, const v8::Local <v8::Function> &);
 
 	v8::Local <v8::Object>
 	createObject (const ObjectType, X3D::X3DFieldDefinition* const) const;

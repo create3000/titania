@@ -78,9 +78,6 @@ Globals::print (const v8::Arguments & args)
 
 	browser -> print ("\n");
 
-	//if (args. Length () not_eq 1)
-	//	return v8::ThrowException (v8::String::New ("Too many arguments to print()."));
-
 	return v8::Undefined ();
 }
 

@@ -82,6 +82,7 @@ class X3DObject
 {
 public:
 
+	static
 	v8::Handle <v8::Value>
 	create (Context* const, Type* const);
 
@@ -89,6 +90,11 @@ public:
 protected:
 
 	///  @name Member access
+	
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
 
 	static
 	Type*
@@ -119,6 +125,10 @@ protected:
 	///  @name Construction
 
 	static
+	v8::Local <v8::FunctionTemplate>
+	createFunctionTemplate (Context* const context, v8::InvocationCallback);
+
+	static
 	void
 	realize (Context* const, const v8::Local <v8::Object> &, Type* const);
 
@@ -137,14 +147,23 @@ protected:
 
 private:
 
+	///  @name Member access
+
 	static
 	ObjectType
 	getObjectType (const v8::Local <v8::Object> & object)
 	{
 		return ObjectType (size_t (v8::Handle <v8::External>::Cast (object -> GetInternalField (InternalField::OBJECT_TYPE)) -> Value ()));
 	}
+	
+	///  @name Static members
+
+	static const std::string typeName;
 
 };
+
+template <class Type, ObjectType OBJECT_TYPE>
+const std::string X3DObject <Type, OBJECT_TYPE>::typeName = "X3DObject";
 
 template <class Type, ObjectType OBJECT_TYPE>
 v8::Handle <v8::Value>
@@ -171,7 +190,22 @@ throw (X3D::Error <X3D::INVALID_FIELD>)
 			return getObject (args .This ());
 	}
 
-	throw X3D::Error <X3D::INVALID_FIELD> ("Function must be called with object of type " + to_string (OBJECT_TYPE) + ".");
+	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + to_string (OBJECT_TYPE) + ".");
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
+v8::Local <v8::FunctionTemplate>
+X3DObject <Type, OBJECT_TYPE>::createFunctionTemplate (Context* const context, v8::InvocationCallback callback)
+{
+	const auto className        = make_v8_string (typeName);
+	const auto functionTemplate = v8::FunctionTemplate::New ();
+
+	functionTemplate -> SetCallHandler (callback, v8::External::New (context));	
+	functionTemplate -> SetClassName (className);
+
+	functionTemplate -> InstanceTemplate () -> SetInternalFieldCount (InternalField::SIZE);
+
+	return functionTemplate;
 }
 
 template <class Type, ObjectType OBJECT_TYPE>

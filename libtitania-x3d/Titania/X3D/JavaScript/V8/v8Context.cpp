@@ -110,8 +110,8 @@ Context::setContext ()
 	Globals::initialize (this, context -> Global ());
 	Browser::initialize (this, context -> Global ());
 
-	SFVec4d::initialize (this, context -> Global ());
-	SFVec4f::initialize (this, context -> Global ());
+	SFVec4d::initialize (this);
+	SFVec4f::initialize (this);
 }
 
 void
@@ -125,9 +125,9 @@ Context::create (X3DExecutionContext* const) const
 }
 
 void
-Context::addClass (const ObjectType objectType, const v8::Local <v8::String> & name, const v8::Local <v8::Function> & function)
+Context::addClass (const ObjectType objectType, const v8::Local <v8::Function> & function)
 {
-	context -> Global () -> Set (name, function, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	context -> Global () -> Set (function -> GetName () -> ToString (), function, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
 	classes [size_t (objectType)] = v8::Persistent <v8::Function>::New (function);
 }

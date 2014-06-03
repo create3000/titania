@@ -68,47 +68,143 @@ public:
 
 	static
 	void
-	initialize (Context* const, const v8::Local <v8::Object> &);
+	initialize (Context* const);
 
 
 private:
 
 	using X3DField <Type, OBJECT_TYPE>::getObject;
+	using X3DField <Type, OBJECT_TYPE>::createFunctionTemplate;
 	using X3DField <Type, OBJECT_TYPE>::realize;
 	using X3DField <Type, OBJECT_TYPE>::toString;
+
+	///  @name Construction
 
 	static
 	v8::Handle <v8::Value>
 	construct (const v8::Arguments &);
 
+	///  @name Member access
+
 	static
-	void
-	x (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
+	v8::Handle <v8::Integer>
+	hasIndex (uint32_t, const v8::AccessorInfo &);
 
 	static
 	v8::Handle <v8::Value>
-	x (v8::Local <v8::String>, const v8::AccessorInfo &);
+	set1Value (uint32_t, v8::Local <v8::Value>, const v8::AccessorInfo &);
+
+	static
+	v8::Handle <v8::Value>
+	get1Value (uint32_t, const v8::AccessorInfo &);
+
+	static
+	v8::Handle <v8::Array>
+	getIndices (const v8::AccessorInfo &);
+
+	static
+	void
+	x (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+	{ getObject (info) -> setX (value -> ToNumber () -> Value ()); }
+
+	static
+	v8::Handle <v8::Value>
+	x (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+	{ return v8::Number::New (getObject (info) -> getX ()); }
+
+	static
+	void
+	y (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+	{ getObject (info) -> setY (value -> ToNumber () -> Value ()); }
+
+	static
+	v8::Handle <v8::Value>
+	y (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+	{ return v8::Number::New (getObject (info) -> getY ()); }
+
+	static
+	void
+	z (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+	{ getObject (info) -> setZ (value -> ToNumber () -> Value ()); }
+
+	static
+	v8::Handle <v8::Value>
+	z (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+	{ return v8::Number::New (getObject (info) -> getZ ()); }
+
+	static
+	void
+	w (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+	{ getObject (info) -> setW (value -> ToNumber () -> Value ()); }
+
+	static
+	v8::Handle <v8::Value>
+	w (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+	{ return v8::Number::New (getObject (info) -> getW ()); }
 
 };
 
 template <class Type, ObjectType OBJECT_TYPE>
 void
-SFVec4 <Type, OBJECT_TYPE>::initialize (Context* const context, const v8::Local <v8::Object> & globalObject)
+SFVec4 <Type, OBJECT_TYPE>::initialize (Context* const context)
 {
-	const auto className        = make_v8_string ("SFVec4f");
-	const auto functionTemplate = v8::FunctionTemplate::New ();
-
-	functionTemplate -> SetCallHandler (construct, v8::External::New (context));	
-	functionTemplate -> SetClassName (className);
-
+	const auto functionTemplate = createFunctionTemplate (context, construct);
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
-	instanceTemplate -> SetInternalFieldCount (InternalField::SIZE);
-	instanceTemplate -> SetAccessor (make_v8_string ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
+	instanceTemplate -> SetIndexedPropertyHandler (get1Value, set1Value, hasIndex, nullptr, getIndices);
+	instanceTemplate -> SetAccessor (make_v8_string ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (make_v8_string ("y"), y, y, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (make_v8_string ("z"), z, z, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (make_v8_string ("w"), w, w, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
 
 	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-	context -> addClass (OBJECT_TYPE, className, functionTemplate -> GetFunction ());
+	context -> addClass (OBJECT_TYPE, functionTemplate -> GetFunction ());
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
+v8::Handle <v8::Integer>
+SFVec4 <Type, OBJECT_TYPE>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
+{
+	if (index < Type::internal_type::size ())
+		return v8::Integer::New (index);
+
+	return v8::Handle <v8::Integer> ();
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
+v8::Handle <v8::Value>
+SFVec4 <Type, OBJECT_TYPE>::get1Value (uint32_t index, const v8::AccessorInfo & info)
+{
+	if (index < Type::internal_type::size ())
+		return v8::Number::New (getObject (info) -> get1Value (index));
+
+	return v8::ThrowException (v8::String::New ("RuntimeError: index out of range."));
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
+v8::Handle <v8::Value>
+SFVec4 <Type, OBJECT_TYPE>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+{
+	if (index < Type::internal_type::size ())
+	{
+		getObject (info) -> set1Value (index, value -> ToNumber () -> Value ());
+		return value;
+	}
+
+	return v8::ThrowException (v8::String::New ("RuntimeError: index out of range."));
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
+v8::Handle <v8::Array>
+SFVec4 <Type, OBJECT_TYPE>::getIndices (const v8::AccessorInfo & info)
+{
+	const auto indices = v8::Array::New ();
+
+	for (size_t index = 0; index < Type::internal_type::size (); ++ index)
+		indices -> Set (v8::Number::New (index), v8::Number::New (index));
+
+	return indices;
 }
 
 template <class Type, ObjectType OBJECT_TYPE>
@@ -148,31 +244,13 @@ SFVec4 <Type, OBJECT_TYPE>::construct (const v8::Arguments & args)
 				// Proceed with next case.
 			}
 			default:
-				return v8::ThrowException (make_v8_string ("Wrong number of arguments."));
+				return v8::ThrowException (make_v8_string ("RuntimeError: wrong number of arguments."));
 		}
 
 		return v8::Undefined ();
 	}
 
-	return v8::ThrowException (v8::String::New ("Cannot call constructor as function."));
-}
-
-template <class Type, ObjectType OBJECT_TYPE>
-void
-SFVec4 <Type, OBJECT_TYPE>::x (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
-{
-	const auto field = getObject (info);
-
-	field -> setX (value -> ToNumber () -> Value ());
-}
-
-template <class Type, ObjectType OBJECT_TYPE>
-v8::Handle <v8::Value>
-SFVec4 <Type, OBJECT_TYPE>::x (v8::Local <v8::String> property, const v8::AccessorInfo & info)
-{
-	const auto field = getObject (info);
-
-	return v8::Number::New (field -> getX ());
+	return v8::ThrowException (v8::String::New ("RuntimeError: cannot call constructor as function."));
 }
 
 extern template class SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;

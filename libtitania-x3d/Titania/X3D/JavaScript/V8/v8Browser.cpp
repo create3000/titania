@@ -221,7 +221,7 @@ Browser::setDescription (const v8::Arguments & args)
 		return v8::Undefined ();
 	}
 
-	return v8::ThrowException (make_v8_string ("Wrong number of arguments."));
+	return v8::ThrowException (make_v8_string ("RuntimeError: wrong number of arguments."));
 }
 
 v8::Handle <v8::Value>
