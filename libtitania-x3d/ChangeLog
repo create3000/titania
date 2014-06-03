@@ -1,3 +1,10 @@
+2014-06-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* v8Context.h:
+	* v8Context.cpp:
+	* jsContext.h:
+	* jsContext.cpp: 
+
 2014-06-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

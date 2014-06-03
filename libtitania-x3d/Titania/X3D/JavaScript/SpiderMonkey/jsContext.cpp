@@ -491,12 +491,6 @@ jsContext::setEventHandler ()
 }
 
 void
-jsContext::prepareEvents ()
-{
-	callFunction (prepareEventsFn);
-}
-
-void
 jsContext::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
@@ -553,6 +547,12 @@ jsContext::set_live ()
 			}
 		}
 	}
+}
+
+void
+jsContext::prepareEvents ()
+{
+	callFunction (prepareEventsFn);
 }
 
 void

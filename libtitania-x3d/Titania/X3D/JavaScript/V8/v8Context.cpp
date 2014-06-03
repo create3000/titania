@@ -75,7 +75,12 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	                  context (),
 	                  program (),
 	                  classes (),
-	                  objects ()
+	                  objects (),
+	                functions (),
+	             initializeFn (),
+	          prepareEventsFn (),
+	        eventsProcessedFn (),
+	               shutdownFn ()
 {
 	__LOG__ << std::endl;
 
@@ -93,7 +98,10 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	// Compile.
 
 	v8::TryCatch trycatch;
-	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (v8::String::New (getECMAScript () .c_str (), getECMAScript () .size ())));
+	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (make_v8_string (getECMAScript ()),
+	                                                                 make_v8_string (worldURL .back () == getExecutionContext () -> getWorldURL ()
+	                                                                                 ? "<inline>"
+																												: worldURL .back ())));
 
 	if (program .IsEmpty ())
 	{
@@ -106,7 +114,7 @@ void
 Context::setContext ()
 {
 	// v8::Context::Scope
-	
+
 	const auto globalObject = context -> Global ();
 	const auto self         = v8::External::New (this);
 
@@ -153,7 +161,7 @@ Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Persistent <
 throw (Error <INVALID_FIELD>)
 {
 	if (not objects .emplace (field, object) .second)
-		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
+		throw Error <INVALID_FIELD> ("Object already exists in v8 Context.");
 
 	field -> addParent (this);
 }
@@ -172,6 +180,12 @@ throw (std::out_of_range)
 	return objects .at (field);
 }
 
+v8::Local <v8::Function>
+Context::getFunction (const std::string & name) const
+{
+	return v8::Local <v8::Function>::Cast (context -> Global () -> GetRealNamedProperty (make_v8_string (name)));
+}
+
 void
 Context::initialize ()
 {
@@ -184,28 +198,159 @@ Context::initialize ()
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
+	// Run program.
+
 	v8::TryCatch           trycatch;
 	v8::Handle <v8::Value> result = program -> Run ();
 
 	if (result .IsEmpty ())
 		error (trycatch);
+
+	setEventHandler ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
+	isLive () .addInterest (this, &Context::set_live);
+
+	set_live ();
+
+	const auto initializeFn = getFunction ("initialize");
+
+	if (not initializeFn .IsEmpty ())
+		initializeFn -> Call (context -> Global (), 0, nullptr);
+}
+
+void
+Context::setEventHandler ()
+{
+	initializeFn      = v8::Persistent <v8::Function>::New (getFunction ("initialize"));
+	prepareEventsFn   = v8::Persistent <v8::Function>::New (getFunction ("prepareEvents"));
+	eventsProcessedFn = v8::Persistent <v8::Function>::New (getFunction ("eventsProcessed"));
+	shutdownFn        = v8::Persistent <v8::Function>::New (getFunction ("shutdown"));
+
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+	{
+		switch (field -> getAccessType ())
+		{
+			case inputOnly   :
+			case inputOutput :
+				{
+					const auto function = field -> getAccessType () == inputOnly
+					                      ? getFunction (field -> getName ())
+												 : getFunction ("set_" + field -> getName ());
+
+					if (not function .IsEmpty ())
+						functions [field] = v8::Persistent <v8::Function>::New (function);
+
+					break;
+				}
+			default :
+				break;
+		}
+	}
+}
+
+void
+Context::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive ())
+	{
+		if (not prepareEventsFn .IsEmpty ())
+			getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
+
+		if (not eventsProcessedFn .IsEmpty ())
+			getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+
+		getScriptNode () -> addInterest (this, &Context::finish);
+
+		for (const auto & field: getScriptNode () -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly:
+				case inputOutput:
+				{
+					if (functions .count (field))
+						field -> addInterest (this, &Context::set_field, field);
+
+					break;
+				}
+				default:
+					break;
+			}
+		}
+	}
+	else
+	{
+		if (not prepareEventsFn .IsEmpty ())
+			getBrowser () -> prepareEvents () .removeInterest (this, &Context::prepareEvents);
+
+		if (not eventsProcessedFn .IsEmpty ())
+			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
+
+		getScriptNode () -> removeInterest (this, &Context::finish);
+
+		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly   :
+				case inputOutput :
+					{
+						if (functions .count (field))
+							field -> removeInterest (this, &Context::set_field);
+
+						break;
+					}
+				default:
+					break;
+			}
+		}
+	}
 }
 
 void
 Context::prepareEvents ()
-{ }
+{
+	v8::Locker         locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
+	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
 
-void
-Context::set_live ()
-{ }
+	prepareEventsFn -> Call (context -> Global (), 0, nullptr);
+}
 
 void
 Context::set_field (X3D::X3DFieldDefinition* const field)
-{ }
+{
+	v8::Locker         locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
+	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
+
+	field -> isTainted (true);
+
+	static constexpr int argc = 2;
+
+	v8::Handle <v8::Value> argv [argc] = {
+		v8::Undefined (), //getValue (field),
+		v8::Number::New (getCurrentTime ())
+	};
+
+	functions [field] -> Call (context -> Global (), argc, argv);
+
+	field -> isTainted (false);
+}
 
 void
 Context::eventsProcessed ()
-{ }
+{
+	v8::Locker         locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
+	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
+
+	eventsProcessedFn -> Call (context -> Global (), 0, nullptr);
+}
 
 void
 Context::finish ()
@@ -213,7 +358,14 @@ Context::finish ()
 
 void
 Context::shutdown ()
-{ }
+{
+	//v8::Locker         locker (isolate);
+	//v8::Isolate::Scope isolate_scope (isolate);
+	//v8::HandleScope    handleScope;
+	//v8::Context::Scope contextScope (context);
+
+	//shutdownFn -> Call (context -> Global (), 0, nullptr);
+}
 
 void
 Context::error (const v8::TryCatch & trycatch) const
@@ -223,7 +375,7 @@ Context::error (const v8::TryCatch & trycatch) const
 	v8::HandleScope    handleScope;
 
 	X3D::X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
-	                                  worldURL .back () == getExecutionContext () -> getWorldURL () ? "<inline>" : worldURL .back (),
+	                                  get_utf8_string (trycatch .Message () -> GetScriptResourceName ()),
 	                                  trycatch .Message () -> GetLineNumber (),
 	                                  trycatch .Message () -> GetStartColumn (),
 	                                  get_utf8_string (trycatch .Message () -> GetSourceLine ()));
@@ -242,6 +394,14 @@ Context::dispose ()
 
 		shutdown ();
 
+		initializeFn      .Dispose ();
+		prepareEventsFn   .Dispose ();
+		eventsProcessedFn .Dispose ();
+		shutdownFn        .Dispose ();
+	
+		functions .clear ();
+		classes   .clear ();
+	
 		program .Dispose ();
 		context .Dispose ();
 

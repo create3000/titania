@@ -165,10 +165,10 @@ private:
 	setEventHandler ();
 
 	void
-	prepareEvents ();
+	set_live ();
 
 	void
-	set_live ();
+	prepareEvents ();
 
 	void
 	set_field (X3DFieldDefinition*);

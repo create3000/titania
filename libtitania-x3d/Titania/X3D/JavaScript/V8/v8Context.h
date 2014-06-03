@@ -138,6 +138,9 @@ private:
 	void
 	setFields ();
 
+	v8::Local <v8::Function>
+	getFunction (const std::string &) const;
+
 	/// Event handlers
 
 	virtual
@@ -145,10 +148,13 @@ private:
 	initialize () final override;
 
 	void
-	prepareEvents ();
+	setEventHandler ();
 
 	void
 	set_live ();
+
+	void
+	prepareEvents ();
 
 	void
 	set_field (X3D::X3DFieldDefinition*);
@@ -181,6 +187,12 @@ private:
 
 	std::map <std::string, v8::Persistent <v8::FunctionTemplate>>    classes;
 	std::map <X3D::X3DFieldDefinition*, v8::Persistent <v8::Object>> objects;
+	std::map <X3DFieldDefinition*, v8::Persistent <v8::Function>>    functions;
+
+	v8::Persistent <v8::Function> initializeFn;
+	v8::Persistent <v8::Function> prepareEventsFn;
+	v8::Persistent <v8::Function> eventsProcessedFn;
+	v8::Persistent <v8::Function> shutdownFn;
 
 };
 

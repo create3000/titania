@@ -45,10 +45,12 @@ DEF Script1 Script {
 
   url "v8:
 
-global ();
-browser ();
-fields ();
-
+function initialize ()
+{
+	global ();
+	browser ();
+	fields ();
+}
 
 function global ()
 {
@@ -137,10 +139,12 @@ DEF Script2 Script {
   inputOnly SFTime set_time
 
   url "v8:
-var test = 1234;
 
-print ('Script 2: ', test);
-
+function set_time (value, time)
+{
+	print ('Script 2. value: ', value);
+	print ('Script 2. value: ', time);
+}
 "
   directOutput TRUE
 }
