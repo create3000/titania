@@ -98,7 +98,7 @@ Browser::initialize (Context* const context, const v8::Local <v8::Object> & glob
 v8::Handle <v8::Value>
 Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_context (info) -> getBrowser ();
+	const auto browser = getContext (info) -> getBrowser ();
 
 	return make_v8_string (browser -> getName ());
 }
@@ -106,7 +106,7 @@ Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 v8::Handle <v8::Value>
 Browser::version (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_context (info) -> getBrowser ();
+	const auto browser = getContext (info) -> getBrowser ();
 
 	return make_v8_string (browser -> getVersion ());
 }
@@ -114,7 +114,7 @@ Browser::version (v8::Local <v8::String> property, const v8::AccessorInfo & info
 v8::Handle <v8::Value>
 Browser::currentSpeed (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_context (info) -> getBrowser ();
+	const auto browser = getContext (info) -> getBrowser ();
 
 	return v8::Number::New (browser -> getCurrentSpeed ());
 }
@@ -122,7 +122,7 @@ Browser::currentSpeed (v8::Local <v8::String> property, const v8::AccessorInfo &
 v8::Handle <v8::Value>
 Browser::currentFrameRate (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_context (info) -> getBrowser ();
+	const auto browser = getContext (info) -> getBrowser ();
 
 	return v8::Number::New (browser -> getCurrentFrameRate ());
 }
@@ -130,7 +130,7 @@ Browser::currentFrameRate (v8::Local <v8::String> property, const v8::AccessorIn
 void
 Browser::description (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
-	const auto browser = get_context (info) -> getBrowser ();
+	const auto browser = getContext (info) -> getBrowser ();
 
 	browser -> setDescription (get_utf8_string (value));
 }
@@ -138,7 +138,7 @@ Browser::description (v8::Local <v8::String> property, v8::Local <v8::Value> val
 v8::Handle <v8::Value>
 Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto browser = get_context (info) -> getBrowser ();
+	const auto browser = getContext (info) -> getBrowser ();
 
 	return make_v8_string (browser -> getDescription ());
 }
@@ -146,7 +146,7 @@ Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & 
 //v8::Handle <v8::Value>
 //Browser::supportedComponents (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 //{
-//	const auto browser = get_context (info) -> getBrowser ();
+//	const auto browser = getContext (info) -> getBrowser ();
 //
 //	return v8::Undefined ();
 //}
@@ -154,7 +154,7 @@ Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & 
 //v8::Handle <v8::Value>
 //Browser::supportedProfiles (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 //{
-//	const auto browser = get_context (info) -> getBrowser ();
+//	const auto browser = getContext (info) -> getBrowser ();
 //
 //	return v8::Undefined ();
 //}
@@ -162,7 +162,7 @@ Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & 
 v8::Handle <v8::Value>
 Browser::currentScene (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	//const auto browser = get_context (info) -> getBrowser ();
+	//const auto browser = getContext (info) -> getBrowser ();
 
 	return v8::Undefined ();
 }
@@ -172,7 +172,7 @@ Browser::currentScene (v8::Local <v8::String> property, const v8::AccessorInfo &
 v8::Handle <v8::Value>
 Browser::getName (const v8::Arguments & args)
 {
-	const auto browser = get_context (args) -> getBrowser ();
+	const auto browser = getContext (args) -> getBrowser ();
 
 	return make_v8_string (browser -> getName ());
 }
@@ -180,7 +180,7 @@ Browser::getName (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::getVersion (const v8::Arguments & args)
 {
-	const auto browser = get_context (args) -> getBrowser ();
+	const auto browser = getContext (args) -> getBrowser ();
 
 	return make_v8_string (browser -> getVersion ());
 }
@@ -188,7 +188,7 @@ Browser::getVersion (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::getCurrentSpeed (const v8::Arguments & args)
 {
-	const auto browser = get_context (args) -> getBrowser ();
+	const auto browser = getContext (args) -> getBrowser ();
 
 	return v8::Number::New (browser -> getCurrentSpeed ());
 }
@@ -196,7 +196,7 @@ Browser::getCurrentSpeed (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::getCurrentFrameRate (const v8::Arguments & args)
 {
-	const auto browser = get_context (args) -> getBrowser ();
+	const auto browser = getContext (args) -> getBrowser ();
 
 	return v8::Number::New (browser -> getCurrentFrameRate ());
 }
@@ -204,7 +204,7 @@ Browser::getCurrentFrameRate (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::getWorldURL (const v8::Arguments & args)
 {
-	const auto browser = get_context (args) -> getBrowser ();
+	const auto browser = getContext (args) -> getBrowser ();
 
 	return make_v8_string (browser -> getWorldURL ());
 }
@@ -214,7 +214,7 @@ Browser::setDescription (const v8::Arguments & args)
 {
 	if (args. Length () == 1)
 	{
-		const auto browser = get_context (args) -> getBrowser ();
+		const auto browser = getContext (args) -> getBrowser ();
 
 		browser -> setDescription (get_utf8_string (args [0]));
 
@@ -227,7 +227,7 @@ Browser::setDescription (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::createVrmlFromString (const v8::Arguments & args)
 {
-	//const auto browser = get_context (args) -> getBrowser ();
+	//const auto browser = getContext (args) -> getBrowser ();
 
 	return v8::Undefined ();
 }
@@ -235,7 +235,7 @@ Browser::createVrmlFromString (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::createVrmlFromURL (const v8::Arguments & args)
 {
-	//const auto browser = get_context (args) -> getBrowser ();
+	//const auto browser = getContext (args) -> getBrowser ();
 
 	return v8::Undefined ();
 }
@@ -243,7 +243,7 @@ Browser::createVrmlFromURL (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::addRoute (const v8::Arguments & args)
 {
-	//const auto browser = get_context (args) -> getBrowser ();
+	//const auto browser = getContext (args) -> getBrowser ();
 
 	return v8::Undefined ();
 }
@@ -251,7 +251,7 @@ Browser::addRoute (const v8::Arguments & args)
 v8::Handle <v8::Value>
 Browser::deleteRoute (const v8::Arguments & args)
 {
-	//const auto browser = get_context (args) -> getBrowser ();
+	//const auto browser = getContext (args) -> getBrowser ();
 
 	return v8::Undefined ();
 }

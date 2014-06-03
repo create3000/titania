@@ -60,23 +60,23 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 class SFVec4 :
-	public X3DField <Type, OBJECT_TYPE>
+	public X3DField <Type>
 {
 public:
 
 	static
-	void
-	initialize (Context* const);
+	v8::Local <v8::FunctionTemplate>
+	initialize (const v8::Local <v8::External> &);
 
 
 private:
 
-	using X3DField <Type, OBJECT_TYPE>::getObject;
-	using X3DField <Type, OBJECT_TYPE>::createFunctionTemplate;
-	using X3DField <Type, OBJECT_TYPE>::realize;
-	using X3DField <Type, OBJECT_TYPE>::toString;
+	using X3DField <Type>::getObject;
+	using X3DField <Type>::createFunctionTemplate;
+	using X3DField <Type>::realize;
+	using X3DField <Type>::toString;
 
 	///  @name Construction
 
@@ -144,9 +144,9 @@ private:
 
 };
 
-template <class Type, ObjectType OBJECT_TYPE>
-void
-SFVec4 <Type, OBJECT_TYPE>::initialize (Context* const context)
+template <class Type>
+v8::Local <v8::FunctionTemplate>
+SFVec4 <Type>::initialize (const v8::Local <v8::External> & context)
 {
 	const auto functionTemplate = createFunctionTemplate (context, construct);
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
@@ -157,14 +157,14 @@ SFVec4 <Type, OBJECT_TYPE>::initialize (Context* const context)
 	instanceTemplate -> SetAccessor (make_v8_string ("z"), z, z, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
 	instanceTemplate -> SetAccessor (make_v8_string ("w"), w, w, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
 
-	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString, context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-	context -> addClass (OBJECT_TYPE, functionTemplate -> GetFunction ());
+	return functionTemplate;
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Integer>
-SFVec4 <Type, OBJECT_TYPE>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
+SFVec4 <Type>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 {
 	if (index < Type::internal_type::size ())
 		return v8::Integer::New (index);
@@ -172,9 +172,9 @@ SFVec4 <Type, OBJECT_TYPE>::hasIndex (uint32_t index, const v8::AccessorInfo & i
 	return v8::Handle <v8::Integer> ();
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Value>
-SFVec4 <Type, OBJECT_TYPE>::get1Value (uint32_t index, const v8::AccessorInfo & info)
+SFVec4 <Type>::get1Value (uint32_t index, const v8::AccessorInfo & info)
 {
 	if (index < Type::internal_type::size ())
 		return v8::Number::New (getObject (info) -> get1Value (index));
@@ -182,9 +182,9 @@ SFVec4 <Type, OBJECT_TYPE>::get1Value (uint32_t index, const v8::AccessorInfo & 
 	return v8::ThrowException (v8::String::New ("RuntimeError: index out of range."));
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Value>
-SFVec4 <Type, OBJECT_TYPE>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+SFVec4 <Type>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
 	if (index < Type::internal_type::size ())
 	{
@@ -195,9 +195,9 @@ SFVec4 <Type, OBJECT_TYPE>::set1Value (uint32_t index, v8::Local <v8::Value> val
 	return v8::ThrowException (v8::String::New ("RuntimeError: index out of range."));
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Array>
-SFVec4 <Type, OBJECT_TYPE>::getIndices (const v8::AccessorInfo & info)
+SFVec4 <Type>::getIndices (const v8::AccessorInfo & info)
 {
 	const auto indices = v8::Array::New ();
 
@@ -207,15 +207,15 @@ SFVec4 <Type, OBJECT_TYPE>::getIndices (const v8::AccessorInfo & info)
 	return indices;
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Value>
-SFVec4 <Type, OBJECT_TYPE>::construct (const v8::Arguments & args)
+SFVec4 <Type>::construct (const v8::Arguments & args)
 {
 	__LOG__ << std::endl;
 
 	if (args .IsConstructCall ())
 	{
-		const auto context = get_context (args);
+		const auto context = getContext (args);
 		const auto object  = args .This ();
 
 		switch (args .Length ())
@@ -253,11 +253,11 @@ SFVec4 <Type, OBJECT_TYPE>::construct (const v8::Arguments & args)
 	return v8::ThrowException (v8::String::New ("RuntimeError: cannot call constructor as function."));
 }
 
-extern template class SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;
-extern template class SFVec4 <X3D::SFVec4f, ObjectType::SFVec4f>;
+extern template class SFVec4 <X3D::SFVec4d>;
+extern template class SFVec4 <X3D::SFVec4f>;
 
-using SFVec4d = SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;
-using SFVec4f = SFVec4 <X3D::SFVec4f, ObjectType::SFVec4f>;
+using SFVec4d = SFVec4 <X3D::SFVec4d>;
+using SFVec4f = SFVec4 <X3D::SFVec4f>;
 
 } // GoogleV8
 } // X3D

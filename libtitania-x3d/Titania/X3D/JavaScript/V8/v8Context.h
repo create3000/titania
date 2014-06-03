@@ -55,7 +55,6 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
-#include "v8ObjectType.h"
 
 namespace titania {
 namespace X3D {
@@ -97,10 +96,16 @@ public:
 	///  @name Member access
 
 	void
-	addClass (const ObjectType, const v8::Local <v8::Function> &);
+	addClass (const std::string &, const v8::Local <v8::FunctionTemplate> &);
+
+	const v8::Persistent <v8::FunctionTemplate> &
+	getClass (const std::string & name)
+	throw (std::out_of_range)
+	{ return classes .at (name); }
 
 	v8::Local <v8::Object>
-	createObject (const ObjectType, X3D::X3DFieldDefinition* const) const;
+	createObject (X3D::X3DFieldDefinition* const) const
+	throw (std::out_of_range);
 
 	void
 	addObject (X3D::X3DFieldDefinition* const, const v8::Persistent <v8::Object> &)
@@ -174,21 +179,21 @@ private:
 	v8::Persistent <v8::Context> context;
 	v8::Persistent <v8::Script>  program;
 
-	std::vector <v8::Persistent <v8::Function>>                      classes;
+	std::map <std::string, v8::Persistent <v8::FunctionTemplate>>    classes;
 	std::map <X3D::X3DFieldDefinition*, v8::Persistent <v8::Object>> objects;
 
 };
 
 inline
 Context*
-get_context (const v8::AccessorInfo & info)
+getContext (const v8::AccessorInfo & info)
 {
 	return static_cast <Context*> (v8::Handle <v8::External>::Cast (info .Data ()) -> Value ());
 }
 
 inline
 Context*
-get_context (const v8::Arguments & args)
+getContext (const v8::Arguments & args)
 {
 	return static_cast <Context*> (v8::Handle <v8::External>::Cast (args .Data ()) -> Value ());
 }

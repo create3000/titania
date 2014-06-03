@@ -74,7 +74,7 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	                  isolate (v8::Isolate::New ()),
 	                  context (),
 	                  program (),
-	                  classes (size_t (ObjectType::Size)),
+	                  classes (),
 	                  objects ()
 {
 	__LOG__ << std::endl;
@@ -106,12 +106,15 @@ void
 Context::setContext ()
 {
 	// v8::Context::Scope
+	
+	const auto globalObject = context -> Global ();
+	const auto self         = v8::External::New (this);
 
-	Globals::initialize (this, context -> Global ());
-	Browser::initialize (this, context -> Global ());
+	Globals::initialize (this, globalObject);
+	Browser::initialize (this, globalObject);
 
-	SFVec4d::initialize (this);
-	SFVec4f::initialize (this);
+	addClass (SFVec4d::getTypeName (), SFVec4d::initialize (self));
+	addClass (SFVec4f::getTypeName (), SFVec4f::initialize (self));
 }
 
 void
@@ -125,21 +128,24 @@ Context::create (X3DExecutionContext* const) const
 }
 
 void
-Context::addClass (const ObjectType objectType, const v8::Local <v8::Function> & function)
+Context::addClass (const std::string & typeName, const v8::Local <v8::FunctionTemplate> & functionTemplate)
 {
+	const auto function = functionTemplate -> GetFunction ();
+
 	context -> Global () -> Set (function -> GetName () -> ToString (), function, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-	classes [size_t (objectType)] = v8::Persistent <v8::Function>::New (function);
+	classes .emplace (typeName, v8::Persistent <v8::FunctionTemplate>::New (functionTemplate));
 }
 
 v8::Local <v8::Object>
-Context::createObject (const ObjectType objectType, X3D::X3DFieldDefinition* const field) const
+Context::createObject (X3D::X3DFieldDefinition* const field) const
+throw (std::out_of_range)
 {
 	constexpr size_t argc = 1;
 
 	v8::Handle <v8::Value> argv [argc] = { v8::External::New (field) };
 
-	return classes [size_t (objectType)] -> NewInstance (argc, argv);
+	return classes .at (field -> getTypeName ()) -> GetFunction () -> NewInstance (argc, argv);
 }
 
 void

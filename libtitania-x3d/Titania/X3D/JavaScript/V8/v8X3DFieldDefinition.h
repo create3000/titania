@@ -57,9 +57,9 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 class X3DFieldDefinition :
-	public X3DObject <Type, OBJECT_TYPE>
+	public X3DObject <Type>
 {
 protected:
 

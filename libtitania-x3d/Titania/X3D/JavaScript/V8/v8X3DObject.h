@@ -54,40 +54,16 @@
 #include <v8.h>
 
 #include "../../Base/X3DChildObject.h"
-#include "v8ObjectType.h"
 #include "v8String.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-namespace InternalField {
-//
-constexpr int OBJECT_TYPE = 0;
-constexpr int OBJECT      = 1;
-constexpr int SIZE        = 2;
-
-};
-
-// XXX: Put this in X3DObject.cpp
-static
-std::string
-to_string (ObjectType value)
-{
-	return std::to_string (int (value));
-}
-
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 class X3DObject
 {
 public:
-
-	static
-	v8::Handle <v8::Value>
-	create (Context* const, Type* const);
-
-
-protected:
 
 	///  @name Member access
 	
@@ -95,6 +71,18 @@ protected:
 	const std::string &
 	getTypeName ()
 	{ return typeName; }
+
+	///  @name Construction
+	
+	static
+	v8::Handle <v8::Value>
+	create (Context* const, Type* const)
+	throw (std::out_of_range);
+
+
+protected:
+
+	///  @name Member access
 
 	static
 	Type*
@@ -106,13 +94,14 @@ protected:
 	static
 	Type*
 	getObject (const v8::Arguments &)
-	throw (X3D::Error <X3D::INVALID_FIELD>);
+	throw (X3D::Error <X3D::INVALID_FIELD>,
+          std::out_of_range);
 
 	static
 	Type*
 	getObject (const v8::Local <v8::Object> & object)
 	{
-		return getObject (object -> GetInternalField (InternalField::OBJECT));
+		return getObject (object -> GetInternalField (0));
 	}
 
 	static
@@ -126,7 +115,7 @@ protected:
 
 	static
 	v8::Local <v8::FunctionTemplate>
-	createFunctionTemplate (Context* const context, v8::InvocationCallback);
+	createFunctionTemplate (const v8::Local <v8::External> & context, v8::InvocationCallback);
 
 	static
 	void
@@ -146,15 +135,6 @@ protected:
 
 
 private:
-
-	///  @name Member access
-
-	static
-	ObjectType
-	getObjectType (const v8::Local <v8::Object> & object)
-	{
-		return ObjectType (size_t (v8::Handle <v8::External>::Cast (object -> GetInternalField (InternalField::OBJECT_TYPE)) -> Value ()));
-	}
 	
 	///  @name Static members
 
@@ -162,12 +142,10 @@ private:
 
 };
 
-template <class Type, ObjectType OBJECT_TYPE>
-const std::string X3DObject <Type, OBJECT_TYPE>::typeName = "X3DObject";
-
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Value>
-X3DObject <Type, OBJECT_TYPE>::create (Context* const context, Type* const field)
+X3DObject <Type>::create (Context* const context, Type* const field)
+throw (std::out_of_range)
 {
 	try
 	{
@@ -175,56 +153,53 @@ X3DObject <Type, OBJECT_TYPE>::create (Context* const context, Type* const field
 	}
 	catch (const std::out_of_range &)
 	{
-		return context -> createObject (OBJECT_TYPE, field);
+		return context -> createObject (field);
 	}
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 Type*
-X3DObject <Type, OBJECT_TYPE>::getObject (const v8::Arguments & args)
-throw (X3D::Error <X3D::INVALID_FIELD>)
+X3DObject <Type>::getObject (const v8::Arguments & args)
+throw (X3D::Error <X3D::INVALID_FIELD>,
+       std::out_of_range)
 {
-	if (args .This () -> InternalFieldCount () == InternalField::SIZE)
-	{
-		if (getObjectType (args .This ()) == OBJECT_TYPE)
-			return getObject (args .This ());
-	}
+	if (getContext (args) -> getClass (typeName) -> HasInstance (args .This ()))
+		return getObject (args .This ());
 
-	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + to_string (OBJECT_TYPE) + ".");
+	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + typeName + ".");
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Local <v8::FunctionTemplate>
-X3DObject <Type, OBJECT_TYPE>::createFunctionTemplate (Context* const context, v8::InvocationCallback callback)
+X3DObject <Type>::createFunctionTemplate (const v8::Local <v8::External> & context, v8::InvocationCallback callback)
 {
 	const auto className        = make_v8_string (typeName);
 	const auto functionTemplate = v8::FunctionTemplate::New ();
 
-	functionTemplate -> SetCallHandler (callback, v8::External::New (context));	
+	functionTemplate -> SetCallHandler (callback, context);	
 	functionTemplate -> SetClassName (className);
 
-	functionTemplate -> InstanceTemplate () -> SetInternalFieldCount (InternalField::SIZE);
+	functionTemplate -> InstanceTemplate () -> SetInternalFieldCount (1);
 
 	return functionTemplate;
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 void
-X3DObject <Type, OBJECT_TYPE>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
+X3DObject <Type>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
 {
 	auto persistent = v8::Persistent <v8::Object>::New (object);
 
 	persistent .MakeWeak (context, finalize);
 
-	object -> SetInternalField (InternalField::OBJECT_TYPE, v8::External::New (reinterpret_cast <void*> (OBJECT_TYPE)));
-	object -> SetInternalField (InternalField::OBJECT,      v8::External::New (field));
+	object -> SetInternalField (0, v8::External::New (field));
 
 	context -> addObject (field, persistent);
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 v8::Handle <v8::Value>
-X3DObject <Type, OBJECT_TYPE>::toString (const v8::Arguments & args)
+X3DObject <Type>::toString (const v8::Arguments & args)
 {
 	try
 	{
@@ -234,15 +209,15 @@ X3DObject <Type, OBJECT_TYPE>::toString (const v8::Arguments & args)
 
 		return make_v8_string (field -> toString ());
 	}
-	catch (const X3D::X3DError & error)
+	catch (const std::exception & error)
 	{
 		return v8::ThrowException (make_v8_string (error .what ()));
 	}
 }
 
-template <class Type, ObjectType OBJECT_TYPE>
+template <class Type>
 void
-X3DObject <Type, OBJECT_TYPE>::finalize (v8::Persistent <v8::Value> value, void* parameter)
+X3DObject <Type>::finalize (v8::Persistent <v8::Value> value, void* parameter)
 {
 	__LOG__ << std::endl;
 

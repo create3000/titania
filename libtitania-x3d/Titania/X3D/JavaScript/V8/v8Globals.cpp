@@ -71,7 +71,7 @@ Globals::initialize (Context* const context, const v8::Local <v8::Object> & glob
 v8::Handle <v8::Value>
 Globals::print (const v8::Arguments & args)
 {
-	const auto browser = get_context (args) -> getBrowser ();
+	const auto browser = getContext (args) -> getBrowser ();
 
 	for (size_t i = 0, size = args .Length (); i < size; ++ i)
 		browser -> print (get_utf8_string (args [i]));
