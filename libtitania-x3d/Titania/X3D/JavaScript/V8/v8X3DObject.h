@@ -54,19 +54,12 @@
 #include <v8.h>
 
 #include "../../Base/X3DChildObject.h"
+#include "v8ObjectType.h"
 #include "v8String.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
-
-enum class ObjectType
-{
-	Default,
-	SFVec4d,
-	SFVec4f
-
-};
 
 namespace InternalField {
 //
@@ -89,6 +82,10 @@ class X3DObject
 {
 public:
 
+	v8::Handle <v8::Value>
+	create (Context* const, Type* const);
+
+
 protected:
 
 	///  @name Member access
@@ -109,7 +106,14 @@ protected:
 	Type*
 	getObject (const v8::Local <v8::Object> & object)
 	{
-		return static_cast <Type*> (v8::Handle <v8::External>::Cast (object -> GetInternalField (InternalField::OBJECT)) -> Value ());
+		return getObject (object -> GetInternalField (InternalField::OBJECT));
+	}
+
+	static
+	Type*
+	getObject (const v8::Handle <v8::Value> & value)
+	{
+		return static_cast <Type*> (v8::Handle <v8::External>::Cast (value) -> Value ());
 	}
 
 	///  @name Construction
@@ -143,6 +147,20 @@ private:
 };
 
 template <class Type, ObjectType OBJECT_TYPE>
+v8::Handle <v8::Value>
+X3DObject <Type, OBJECT_TYPE>::create (Context* const context, Type* const field)
+{
+	try
+	{
+		return context -> getObject (field);
+	}
+	catch (const std::out_of_range &)
+	{
+		return context -> createObject (OBJECT_TYPE, field);
+	}
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
 Type*
 X3DObject <Type, OBJECT_TYPE>::getObject (const v8::Arguments & args)
 throw (X3D::Error <X3D::INVALID_FIELD>)
@@ -158,18 +176,16 @@ throw (X3D::Error <X3D::INVALID_FIELD>)
 
 template <class Type, ObjectType OBJECT_TYPE>
 void
-X3DObject <Type, OBJECT_TYPE>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const child)
+X3DObject <Type, OBJECT_TYPE>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
 {
-	v8::V8::AdjustAmountOfExternalAllocatedMemory (sizeof (Type));
-
 	auto persistent = v8::Persistent <v8::Object>::New (object);
 
 	persistent .MakeWeak (context, finalize);
 
 	object -> SetInternalField (InternalField::OBJECT_TYPE, v8::External::New (reinterpret_cast <void*> (OBJECT_TYPE)));
-	object -> SetInternalField (InternalField::OBJECT,      v8::External::New (child));
+	object -> SetInternalField (InternalField::OBJECT,      v8::External::New (field));
 
-	context -> addObject (child, persistent);
+	context -> addObject (field, persistent);
 }
 
 template <class Type, ObjectType OBJECT_TYPE>
@@ -197,11 +213,9 @@ X3DObject <Type, OBJECT_TYPE>::finalize (v8::Persistent <v8::Value> value, void*
 	__LOG__ << std::endl;
 
 	const auto context = static_cast <Context*> (parameter);
-	const auto child   = getObject (value -> ToObject ());
+	const auto field   = getObject (value -> ToObject ());
 
-	v8::V8::AdjustAmountOfExternalAllocatedMemory (-sizeof (Type));
-
-	context -> removeObject (child);
+	context -> removeObject (field);
 }
 
 } // GoogleV8

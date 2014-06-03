@@ -1,5 +1,14 @@
 2014-06-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* v8Context.h:
+	* v8X3DObject.h:
+	* v8Context.cpp:
+	* v8ObjectType.h:
+	* v8SFVec4.h: 
+
+2014-06-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* v8X3DField.h:
 	* v8X3DObject.h:
 	* v8SFVec4.h:

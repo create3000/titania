@@ -73,8 +73,8 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	                 worldURL ({ uri }),
 	                  isolate (v8::Isolate::New ()),
 	                  context (),
-	             globalObject (),
 	                  program (),
+	                  classes (size_t (ObjectType::Size)),
 	                  objects ()
 {
 	__LOG__ << std::endl;
@@ -83,8 +83,7 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope    handleScope;
 
-	globalObject = v8::Persistent <v8::ObjectTemplate>::New (v8::ObjectTemplate::New ());
-	context      = v8::Context::New (nullptr, globalObject);
+	context = v8::Context::New (nullptr, v8::ObjectTemplate::New ());
 
 	v8::Context::Scope contextScope (context);
 
@@ -123,6 +122,24 @@ X3DBaseNode*
 Context::create (X3DExecutionContext* const) const
 {
 	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
+}
+
+void
+Context::addClass (const ObjectType objectType, const v8::Local <v8::String> & name, const v8::Local <v8::Function> & function)
+{
+	context -> Global () -> Set (name, function, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+
+	classes [size_t (objectType)] = v8::Persistent <v8::Function>::New (function);
+}
+
+v8::Local <v8::Object>
+Context::createObject (const ObjectType objectType, X3D::X3DFieldDefinition* const field) const
+{
+	constexpr size_t argc = 1;
+
+	v8::Handle <v8::Value> argv [argc] = { v8::External::New (field) };
+
+	return classes [size_t (objectType)] -> NewInstance (argc, argv);
 }
 
 void
@@ -219,9 +236,8 @@ Context::dispose ()
 
 		shutdown ();
 
-		program      .Dispose ();
-		context      .Dispose ();
-		globalObject .Dispose ();
+		program .Dispose ();
+		context .Dispose ();
 
 		while (not v8::V8::IdleNotification ())
 			;

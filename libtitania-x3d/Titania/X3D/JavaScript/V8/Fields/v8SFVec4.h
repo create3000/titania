@@ -108,26 +108,8 @@ SFVec4 <Type, OBJECT_TYPE>::initialize (Context* const context, const v8::Local 
 
 	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-	globalObject -> Set (className, functionTemplate -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	context -> addClass (OBJECT_TYPE, className, functionTemplate -> GetFunction ());
 }
-
-//template <class Type>
-//v8::Handle <v8::Value>
-//SFVec4 <Type>::create (Context* const context, Type* const field)
-//{
-//	try
-//	{
-//		return context -> getObject (field);
-//	}
-//	catch (const std::out_of_range &)
-//	{
-//		const auto object = ... NewInstance ();
-//
-//		realize (context, object, field);
-//
-//		return object;
-//	}
-//}
 
 template <class Type, ObjectType OBJECT_TYPE>
 v8::Handle <v8::Value>
@@ -155,12 +137,24 @@ SFVec4 <Type, OBJECT_TYPE>::construct (const v8::Arguments & args)
 				                                    args [3] -> ToNumber () -> Value ()));
 				break;
 			}
+			case 1:
+			{
+				if (args [0] -> IsExternal ())
+				{
+					realize (context, object, getObject (args [0]));
+					break;
+				}
+
+				// Proceed with next case.
+			}
 			default:
 				return v8::ThrowException (make_v8_string ("Wrong number of arguments."));
 		}
+
+		return v8::Undefined ();
 	}
 
-	return v8::Undefined ();
+	return v8::ThrowException (v8::String::New ("Cannot call constructor as function."));
 }
 
 template <class Type, ObjectType OBJECT_TYPE>

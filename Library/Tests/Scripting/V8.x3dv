@@ -81,6 +81,9 @@ function browser ()
 		print ('Browser: ', p, ' = ', Browser [p]);
 
 	print ('getName:     ', Browser .getName ());
+
+	var f = Browser .getVersion;
+	print ('f: ', f .call ());
 }
 
 function fields ()
@@ -88,7 +91,6 @@ function fields ()
 	var v;
 	print ('SFVec4f:            ', SFVec4f);
 	print ('SFVec4f .name:      ', SFVec4f .name);
-	print ('SFVec4f ():         ', SFVec4f ());
 	print ('SFVec4f .new:       ', v = new SFVec4f ());
 	print ('SFVec4f .new:       ', v = new SFVec4f (1, 2, 3, 4));
 	print ('SFVec4f .prototype: ', v .prototype);
@@ -96,9 +98,9 @@ function fields ()
 	print ('SFVec4f .x:         ', v .x);
 	v .x = 5;
 	print ('SFVec4f .toString: ', v );
-	
+
 	var f = v .toString;
-	f .call ();
+	f .call ([ ]);
 }
 
 "

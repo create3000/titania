@@ -55,6 +55,7 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
+#include "v8ObjectType.h"
 
 namespace titania {
 namespace X3D {
@@ -94,6 +95,12 @@ public:
 	///  @name Member access
 
 	///  @name Member access
+
+	void
+	addClass (const ObjectType, const v8::Local <v8::String> &, const v8::Local <v8::Function> &);
+
+	v8::Local <v8::Object>
+	createObject (const ObjectType, X3D::X3DFieldDefinition* const) const;
 
 	void
 	addObject (X3D::X3DFieldDefinition* const, const v8::Persistent <v8::Object> &)
@@ -163,11 +170,11 @@ private:
 
 	std::vector <basic::uri> worldURL;
 
-	v8::Isolate*                        isolate;
-	v8::Persistent <v8::Context>        context;
-	v8::Persistent <v8::ObjectTemplate> globalObject;
-	v8::Persistent <v8::Script>         program;
+	v8::Isolate*                 isolate;
+	v8::Persistent <v8::Context> context;
+	v8::Persistent <v8::Script>  program;
 
+	std::vector <v8::Persistent <v8::Function>>                      classes;
 	std::map <X3D::X3DFieldDefinition*, v8::Persistent <v8::Object>> objects;
 
 };
