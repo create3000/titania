@@ -54,8 +54,8 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template class SFVec4 <X3D::SFVec4d>;
-template class SFVec4 <X3D::SFVec4f>;
+template class SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;
+template class SFVec4 <X3D::SFVec4f, ObjectType::SFVec4f>;
 
 } // GoogleV8
 } // X3D

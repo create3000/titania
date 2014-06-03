@@ -60,79 +60,125 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template <class Type>
-inline
-Type
-get_object (const v8::Local <v8::Object> & object)
+enum class ObjectType
 {
-	return static_cast <Type> (v8::Handle <v8::External>::Cast (object -> GetInternalField (0)) -> Value ());
+	Default,
+	SFVec4d,
+	SFVec4f
+
+};
+
+namespace InternalField {
+//
+constexpr int OBJECT_TYPE = 0;
+constexpr int OBJECT      = 1;
+constexpr int SIZE        = 2;
+
+};
+
+// XXX: Put this in X3DObject.cpp
+static
+std::string
+to_string (ObjectType value)
+{
+	return std::to_string (int (value));
 }
 
-template <class Type>
-inline
-Type
-get_object (const v8::Arguments & args)
-throw (X3D::Error <X3D::INVALID_FIELD>)
+template <class Type, ObjectType OBJECT_TYPE>
+class X3DObject
 {
-	const auto className = v8::Handle <v8::String>::Cast (args .Data ());
+public:
 
-	if (args .This () -> GetConstructorName () == className)
-		return static_cast <Type> (v8::Handle <v8::External>::Cast (args .This () -> GetInternalField (0)) -> Value ());
-	
-	throw X3D::Error <X3D::INVALID_FIELD> ("Must be called with object of type " + get_utf8_string (className) + ".");
-}
-
-template <class Type>
-inline
-Type
-get_object (const v8::AccessorInfo & info)
-{
-	return static_cast <Type> (v8::Handle <v8::External>::Cast (info .This () -> GetInternalField (0)) -> Value ());
-}
-
-class Object
-{
 protected:
 
-	template <class Type>
+	///  @name Member access
+
+	static
+	Type*
+	getObject (const v8::AccessorInfo & info)
+	{
+		return getObject (info .This ());
+	}
+
+	static
+	Type*
+	getObject (const v8::Arguments &)
+	throw (X3D::Error <X3D::INVALID_FIELD>);
+
+	static
+	Type*
+	getObject (const v8::Local <v8::Object> & object)
+	{
+		return static_cast <Type*> (v8::Handle <v8::External>::Cast (object -> GetInternalField (InternalField::OBJECT)) -> Value ());
+	}
+
+	///  @name Construction
+
 	static
 	void
 	realize (Context* const, const v8::Local <v8::Object> &, Type* const);
 
-	template <class Type>
+	///  @name Operations
+
 	static
 	v8::Handle <v8::Value>
 	toString (const v8::Arguments &);
 
-	template <class Type>
+	///  @name Destruction
+
 	static
 	void
 	finalize (v8::Persistent <v8::Value>, void*);
 
+
+private:
+
+	static
+	ObjectType
+	getObjectType (const v8::Local <v8::Object> & object)
+	{
+		return ObjectType (size_t (v8::Handle <v8::External>::Cast (object -> GetInternalField (InternalField::OBJECT_TYPE)) -> Value ()));
+	}
+
 };
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
+Type*
+X3DObject <Type, OBJECT_TYPE>::getObject (const v8::Arguments & args)
+throw (X3D::Error <X3D::INVALID_FIELD>)
+{
+	if (args .This () -> InternalFieldCount () == InternalField::SIZE)
+	{
+		if (getObjectType (args .This ()) == OBJECT_TYPE)
+			return getObject (args .This ());
+	}
+
+	throw X3D::Error <X3D::INVALID_FIELD> ("Function must be called with object of type " + to_string (OBJECT_TYPE) + ".");
+}
+
+template <class Type, ObjectType OBJECT_TYPE>
 void
-Object::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const child)
+X3DObject <Type, OBJECT_TYPE>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const child)
 {
 	v8::V8::AdjustAmountOfExternalAllocatedMemory (sizeof (Type));
 
 	auto persistent = v8::Persistent <v8::Object>::New (object);
 
-	persistent .MakeWeak (context, finalize <Type>);
+	persistent .MakeWeak (context, finalize);
 
-	object -> SetInternalField (0, v8::External::New (child));
+	object -> SetInternalField (InternalField::OBJECT_TYPE, v8::External::New (reinterpret_cast <void*> (OBJECT_TYPE)));
+	object -> SetInternalField (InternalField::OBJECT,      v8::External::New (child));
 
 	context -> addObject (child, persistent);
 }
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 v8::Handle <v8::Value>
-Object::toString (const v8::Arguments & args)
+X3DObject <Type, OBJECT_TYPE>::toString (const v8::Arguments & args)
 {
 	try
 	{
-		const auto field = get_object <Type*> (args);
+		const auto field = getObject (args);
 
 		X3D::Generator::NicestStyle ();
 
@@ -144,14 +190,14 @@ Object::toString (const v8::Arguments & args)
 	}
 }
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 void
-Object::finalize (v8::Persistent <v8::Value> value, void* parameter)
+X3DObject <Type, OBJECT_TYPE>::finalize (v8::Persistent <v8::Value> value, void* parameter)
 {
 	__LOG__ << std::endl;
 
 	const auto context = static_cast <Context*> (parameter);
-	const auto child   = get_object <Type*> (value -> ToObject ());
+	const auto child   = getObject (value -> ToObject ());
 
 	v8::V8::AdjustAmountOfExternalAllocatedMemory (-sizeof (Type));
 

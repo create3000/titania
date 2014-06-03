@@ -1,5 +1,13 @@
 2014-06-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* v8X3DField.h:
+	* v8X3DObject.h:
+	* v8SFVec4.h:
+	* v8SFVec4.cpp:
+	* v8X3DFieldDefinition.h: 
+
+2014-06-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* v8Context.h:
 	* v8X3DField.h:

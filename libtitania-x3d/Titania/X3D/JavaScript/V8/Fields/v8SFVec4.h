@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 class SFVec4 :
-	public X3DField
+	public X3DField <Type, OBJECT_TYPE>
 {
 public:
 
@@ -72,6 +72,10 @@ public:
 
 
 private:
+
+	using X3DField <Type, OBJECT_TYPE>::getObject;
+	using X3DField <Type, OBJECT_TYPE>::realize;
+	using X3DField <Type, OBJECT_TYPE>::toString;
 
 	static
 	v8::Handle <v8::Value>
@@ -87,9 +91,9 @@ private:
 
 };
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 void
-SFVec4 <Type>::initialize (Context* const context, const v8::Local <v8::Object> & globalObject)
+SFVec4 <Type, OBJECT_TYPE>::initialize (Context* const context, const v8::Local <v8::Object> & globalObject)
 {
 	const auto className        = make_v8_string ("SFVec4f");
 	const auto functionTemplate = v8::FunctionTemplate::New ();
@@ -99,10 +103,10 @@ SFVec4 <Type>::initialize (Context* const context, const v8::Local <v8::Object> 
 
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
-	instanceTemplate -> SetInternalFieldCount (1);
+	instanceTemplate -> SetInternalFieldCount (InternalField::SIZE);
 	instanceTemplate -> SetAccessor (make_v8_string ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
 
-	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString <Type>, className) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
 	globalObject -> Set (className, functionTemplate -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 }
@@ -125,9 +129,9 @@ SFVec4 <Type>::initialize (Context* const context, const v8::Local <v8::Object> 
 //	}
 //}
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 v8::Handle <v8::Value>
-SFVec4 <Type>::construct (const v8::Arguments & args)
+SFVec4 <Type, OBJECT_TYPE>::construct (const v8::Arguments & args)
 {
 	__LOG__ << std::endl;
 
@@ -159,29 +163,29 @@ SFVec4 <Type>::construct (const v8::Arguments & args)
 	return v8::Undefined ();
 }
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 void
-SFVec4 <Type>::x (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+SFVec4 <Type, OBJECT_TYPE>::x (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
-	const auto field = get_object <Type*> (info);
+	const auto field = getObject (info);
 
 	field -> setX (value -> ToNumber () -> Value ());
 }
 
-template <class Type>
+template <class Type, ObjectType OBJECT_TYPE>
 v8::Handle <v8::Value>
-SFVec4 <Type>::x (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+SFVec4 <Type, OBJECT_TYPE>::x (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
-	const auto field = get_object <Type*> (info);
+	const auto field = getObject (info);
 
 	return v8::Number::New (field -> getX ());
 }
 
-extern template class SFVec4 <X3D::SFVec4d>;
-extern template class SFVec4 <X3D::SFVec4f>;
+extern template class SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;
+extern template class SFVec4 <X3D::SFVec4f, ObjectType::SFVec4f>;
 
-using SFVec4d = SFVec4 <X3D::SFVec4d>;
-using SFVec4f = SFVec4 <X3D::SFVec4f>;
+using SFVec4d = SFVec4 <X3D::SFVec4d, ObjectType::SFVec4d>;
+using SFVec4f = SFVec4 <X3D::SFVec4f, ObjectType::SFVec4f>;
 
 } // GoogleV8
 } // X3D
