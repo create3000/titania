@@ -112,7 +112,7 @@ public:
 	throw (Error <INVALID_FIELD>);
 
 	void
-	removeObject (X3DFieldDefinition*);
+	removeObject (X3DFieldDefinition* const);
 
 	JSObject*
 	getObject (X3DFieldDefinition* const)

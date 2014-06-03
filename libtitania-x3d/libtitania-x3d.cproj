@@ -701,6 +701,9 @@
     </None>
     <None Include="Titania\X3D\JavaScript\V8\Fields\v8SFVec4.h" />
     <None Include="Titania\X3D\JavaScript\V8\v8Fields.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8X3DFieldDefinition.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8X3DObject.h" />
+    <None Include="Titania\X3D\JavaScript\V8\v8X3DField.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

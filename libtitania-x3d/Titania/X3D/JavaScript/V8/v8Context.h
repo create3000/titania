@@ -61,7 +61,7 @@ namespace X3D {
 namespace GoogleV8 {
 
 class Context :
-	public X3DJavaScriptContext
+	public X3D::X3DJavaScriptContext
 {
 public:
 
@@ -92,6 +92,19 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
+
+	///  @name Member access
+
+	void
+	addObject (X3D::X3DFieldDefinition* const, const v8::Persistent <v8::Object> &)
+	throw (Error <INVALID_FIELD>);
+
+	void
+	removeObject (X3D::X3DFieldDefinition* const);
+
+	const v8::Persistent <v8::Object> &
+	getObject (X3D::X3DFieldDefinition* const) const
+	throw (std::out_of_range);
 
 	///  @name Destruction
 
@@ -126,7 +139,7 @@ private:
 	set_live ();
 
 	void
-	set_field (X3DFieldDefinition*);
+	set_field (X3D::X3DFieldDefinition*);
 
 	void
 	eventsProcessed ();
@@ -154,6 +167,8 @@ private:
 	v8::Persistent <v8::Context>        context;
 	v8::Persistent <v8::ObjectTemplate> globalObject;
 	v8::Persistent <v8::Script>         program;
+
+	std::map <X3D::X3DFieldDefinition*, v8::Persistent <v8::Object>> objects;
 
 };
 

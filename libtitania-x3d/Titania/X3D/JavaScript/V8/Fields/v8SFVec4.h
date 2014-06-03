@@ -54,14 +54,15 @@
 #include <v8.h>
 
 #include "../v8Context.h"
-#include "../v8String.h"
+#include "../v8X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
 template <class Type>
-class SFVec4
+class SFVec4 :
+	public X3DField
 {
 public:
 
@@ -78,15 +79,11 @@ private:
 
 	static
 	void
-	realize (Context* const, const v8::Local <v8::Object> &, Type* const);
+	x (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
 
 	static
 	v8::Handle <v8::Value>
-	toString (const v8::Arguments &);
-
-	static
-	void
-	finalize (v8::Persistent <v8::Value>, void*);
+	x (v8::Local <v8::String>, const v8::AccessorInfo &);
 
 };
 
@@ -102,37 +99,12 @@ SFVec4 <Type>::initialize (Context* const context, const v8::Local <v8::Object> 
 
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
-	instanceTemplate -> SetInternalFieldCount (2);
-	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	instanceTemplate -> SetInternalFieldCount (1);
+	instanceTemplate -> SetAccessor (make_v8_string ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
 
-	globalObject -> Set (className, functionTemplate -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-}
+	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString <Type>, className) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-template <class Type>
-inline
-Type
-get_object (const v8::Arguments & args)
-{
-	return static_cast <Type> (v8::Handle <v8::External>::Cast (args .This () -> GetInternalField (0)) -> Value ());
-}
-
-template <class Type>
-inline
-Type
-get_object (const v8::Local <v8::Object> & object)
-{
-	return static_cast <Type> (v8::Handle <v8::External>::Cast (object -> GetInternalField (0)) -> Value ());
-}
-
-template <class Type>
-v8::Handle <v8::Value>
-SFVec4 <Type>::toString (const v8::Arguments & args)
-{
-	const auto field = get_object <X3D::X3DChildObject*> (args);
-
-	X3D::Generator::NicestStyle ();
-
-	return make_v8_string (field -> toString ());
+	globalObject -> Set (className, functionTemplate -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 }
 
 //template <class Type>
@@ -152,21 +124,6 @@ SFVec4 <Type>::toString (const v8::Arguments & args)
 //		return object;
 //	}
 //}
-
-template <class Type>
-void
-SFVec4 <Type>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
-{
-	v8::V8::AdjustAmountOfExternalAllocatedMemory (sizeof (Type));
-
-   auto persistent = v8::Persistent <v8::Object>::New (object);
-
-   persistent .MakeWeak (context, finalize);
-
-	object -> SetInternalField (0, v8::External::New (field));
-
-	//context -> addObject (field, object);
-}
 
 template <class Type>
 v8::Handle <v8::Value>
@@ -204,18 +161,20 @@ SFVec4 <Type>::construct (const v8::Arguments & args)
 
 template <class Type>
 void
-SFVec4 <Type>::finalize (v8::Persistent <v8::Value> value, void* parameter)
+SFVec4 <Type>::x (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
-	__LOG__ << std::endl;
+	const auto field = get_object <Type*> (info);
 
-	const auto context = static_cast <Context*> (parameter);
-	const auto field   = get_object <X3D::X3DFieldDefinition*> (value -> ToObject ());
+	field -> setX (value -> ToNumber () -> Value ());
+}
 
-	v8::V8::AdjustAmountOfExternalAllocatedMemory (-sizeof (Type));
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::x (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	const auto field = get_object <Type*> (info);
 
-	//context -> removeObject (field);
-
-	delete field;
+	return v8::Number::New (field -> getX ());
 }
 
 extern template class SFVec4 <X3D::SFVec4d>;

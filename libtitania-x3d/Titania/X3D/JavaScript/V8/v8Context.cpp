@@ -53,9 +53,11 @@
 #include "../../Browser/X3DBrowser.h"
 
 #include "v8Browser.h"
+#include "v8Fields.h"
 #include "v8Globals.h"
 #include "v8String.h"
-#include "v8Fields.h"
+
+#include <cassert>
 
 namespace titania {
 namespace X3D {
@@ -66,19 +68,20 @@ const std::string Context::typeName       = "Context";
 const std::string Context::containerField = "context";
 
 Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
-	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
-	X3DJavaScriptContext (script, ecmascript),
-	            worldURL ({ uri }),
-	             isolate (v8::Isolate::New ()),
-	             context (),
-	        globalObject (),
-	             program ()
+	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
+	X3D::X3DJavaScriptContext (script, ecmascript),
+	                 worldURL ({ uri }),
+	                  isolate (v8::Isolate::New ()),
+	                  context (),
+	             globalObject (),
+	                  program (),
+	                  objects ()
 {
 	__LOG__ << std::endl;
 
-	v8::Locker locker (isolate);
+	v8::Locker         locker (isolate);
 	v8::Isolate::Scope isolate_scope (isolate);
-	v8::HandleScope handleScope;
+	v8::HandleScope    handleScope;
 
 	globalObject = v8::Persistent <v8::ObjectTemplate>::New (v8::ObjectTemplate::New ());
 	context      = v8::Context::New (nullptr, globalObject);
@@ -110,7 +113,6 @@ Context::setContext ()
 
 	SFVec4d::initialize (this, context -> Global ());
 	SFVec4f::initialize (this, context -> Global ());
-
 }
 
 void
@@ -124,18 +126,42 @@ Context::create (X3DExecutionContext* const) const
 }
 
 void
+Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Persistent <v8::Object> & object)
+throw (Error <INVALID_FIELD>)
+{
+	if (not objects .emplace (field, object) .second)
+		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
+
+	field -> addParent (this);
+}
+
+void
+Context::removeObject (X3D::X3DFieldDefinition* const field)
+{
+	if (objects .erase (field))
+		field -> removeParent (this);
+}
+
+const v8::Persistent <v8::Object> &
+Context::getObject (X3D::X3DFieldDefinition* const field) const
+throw (std::out_of_range)
+{
+	return objects .at (field);
+}
+
+void
 Context::initialize ()
 {
 	__LOG__ << std::endl;
 
-	X3DJavaScriptContext::initialize ();
+	X3D::X3DJavaScriptContext::initialize ();
 
-	v8::Locker locker (isolate);
+	v8::Locker         locker (isolate);
 	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
-	v8::TryCatch trycatch;
+	v8::TryCatch           trycatch;
 	v8::Handle <v8::Value> result = program -> Run ();
 
 	if (result .IsEmpty ())
@@ -151,7 +177,7 @@ Context::set_live ()
 { }
 
 void
-Context::set_field (X3DFieldDefinition* const field)
+Context::set_field (X3D::X3DFieldDefinition* const field)
 { }
 
 void
@@ -169,15 +195,15 @@ Context::shutdown ()
 void
 Context::error (const v8::TryCatch & trycatch) const
 {
-	v8::Locker locker (isolate);
+	v8::Locker         locker (isolate);
 	v8::Isolate::Scope isolate_scope (isolate);
-	v8::HandleScope handleScope;
+	v8::HandleScope    handleScope;
 
-	X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
-	                             worldURL .back () == getExecutionContext () -> getWorldURL () ? "<inline>" : worldURL .back (),
-	                             trycatch .Message () -> GetLineNumber (),
-	                             trycatch .Message () -> GetStartColumn (),
-	                             get_utf8_string (trycatch .Message () -> GetSourceLine ()));
+	X3D::X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
+	                                  worldURL .back () == getExecutionContext () -> getWorldURL () ? "<inline>" : worldURL .back (),
+	                                  trycatch .Message () -> GetLineNumber (),
+	                                  trycatch .Message () -> GetStartColumn (),
+	                                  get_utf8_string (trycatch .Message () -> GetSourceLine ()));
 }
 
 void
@@ -186,7 +212,7 @@ Context::dispose ()
 	__LOG__ << getScriptNode () -> getName () << std::endl;
 
 	{
-		v8::Locker locker (isolate);
+		v8::Locker         locker (isolate);
 		v8::Isolate::Scope isolate_scope (isolate);
 		v8::HandleScope    handleScope;
 		v8::Context::Scope contextScope (context);
@@ -203,7 +229,9 @@ Context::dispose ()
 
 	isolate -> Dispose ();
 
-	X3DJavaScriptContext::dispose ();
+	assert (objects .empty ());
+
+	X3D::X3DJavaScriptContext::dispose ();
 }
 
 Context::~Context ()

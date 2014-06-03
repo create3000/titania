@@ -75,7 +75,7 @@ function browser ()
 	print ('Browser .__proto__: ', Browser .__proto__);
 	print ('Object .create:     ', Object .create (Browser));
 
-	Browser .description = Browser .name + ' V' + Browser .version;
+	Browser .setDescription (Browser .name + ' V' + Browser .version);
 
 	for (var p in Browser)
 		print ('Browser: ', p, ' = ', Browser [p]);
@@ -85,11 +85,20 @@ function browser ()
 
 function fields ()
 {
-	print ('SFVec4f:       ', SFVec4f);
-	print ('SFVec4f .name: ', SFVec4f .name);
-	print ('SFVec4f ():    ', SFVec4f ());
-	print ('SFVec4f .new:  ', new SFVec4f ());
-	print ('SFVec4f .new:  ', new SFVec4f (1, 2, 3, 4));
+	var v;
+	print ('SFVec4f:            ', SFVec4f);
+	print ('SFVec4f .name:      ', SFVec4f .name);
+	print ('SFVec4f ():         ', SFVec4f ());
+	print ('SFVec4f .new:       ', v = new SFVec4f ());
+	print ('SFVec4f .new:       ', v = new SFVec4f (1, 2, 3, 4));
+	print ('SFVec4f .prototype: ', v .prototype);
+	print ('SFVec4f .__proto__: ', v .__proto__);
+	print ('SFVec4f .x:         ', v .x);
+	v .x = 5;
+	print ('SFVec4f .toString: ', v );
+	
+	var f = v .toString;
+	f .call ();
 }
 
 "
