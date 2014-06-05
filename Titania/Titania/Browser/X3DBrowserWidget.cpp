@@ -123,7 +123,6 @@ X3DBrowserWidget::initialize ()
 	getBrowser () -> getBrowserOptions () -> splashScreen () = true;
 
 	// Connect event handler.
-	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
 	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen);
 
@@ -421,32 +420,6 @@ X3DBrowserWidget::set_scene ()
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
-}
-
-void
-X3DBrowserWidget::set_console ()
-{
-	const auto buffer = getConsole () .get_buffer ();
-
-	// Insert
-
-	for (const auto & string : getBrowser () -> getConsole () -> string_changed ())
-		buffer -> insert (buffer -> end (), string .getValue ());
-
-	buffer -> place_cursor (buffer -> end ());
-
-	getConsole () .scroll_to (buffer -> get_insert ());
-
-	// Erase
-
-	static const int CONSOLE_LIMIT = std::pow (2, 20);
-
-	if (buffer -> size () > CONSOLE_LIMIT)
-	{
-		const int char_offset = buffer -> size () - CONSOLE_LIMIT;
-
-		buffer -> erase (buffer -> begin (), buffer -> get_iter_at_offset (char_offset));
-	}
 }
 
 void

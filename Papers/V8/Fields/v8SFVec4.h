@@ -163,6 +163,50 @@ SFVec4 <Type>::initialize (const v8::Local <v8::External> & context)
 }
 
 template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::construct (const v8::Arguments & args)
+{
+	if (args .IsConstructCall ())
+	{
+		const auto context = getContext (args);
+		const auto object  = args .This ();
+
+		switch (args .Length ())
+		{
+			case 0:
+			{
+				realize (context, object, new Type ());
+				break;
+			}
+			case 4:
+			{
+				realize (context, object, new Type (args [0] -> ToNumber () -> Value (),
+				                                    args [1] -> ToNumber () -> Value (),
+				                                    args [2] -> ToNumber () -> Value (),
+				                                    args [3] -> ToNumber () -> Value ()));
+				break;
+			}
+			case 1:
+			{
+				if (args [0] -> IsExternal ())
+				{
+					realize (context, object, getObject (args [0]));
+					break;
+				}
+
+				// Proceed with next case.
+			}
+			default:
+				return v8::ThrowException (make_v8_string ("RuntimeError: wrong number of arguments."));
+		}
+
+		return v8::Undefined ();
+	}
+
+	return v8::ThrowException (v8::String::New ("RuntimeError: cannot call constructor as function."));
+}
+
+template <class Type>
 v8::Handle <v8::Integer>
 SFVec4 <Type>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 {
@@ -202,55 +246,9 @@ SFVec4 <Type>::getIndices (const v8::AccessorInfo & info)
 	const auto indices = v8::Array::New ();
 
 	for (size_t index = 0; index < Type::internal_type::size (); ++ index)
-		indices -> Set (v8::Number::New (index), v8::Number::New (index));
+		indices -> Set (index, v8::Number::New (index));
 
 	return indices;
-}
-
-template <class Type>
-v8::Handle <v8::Value>
-SFVec4 <Type>::construct (const v8::Arguments & args)
-{
-	__LOG__ << std::endl;
-
-	if (args .IsConstructCall ())
-	{
-		const auto context = getContext (args);
-		const auto object  = args .This ();
-
-		switch (args .Length ())
-		{
-			case 0:
-			{
-				realize (context, object, new Type ());
-				break;
-			}
-			case 4:
-			{
-				realize (context, object, new Type (args [0] -> ToNumber () -> Value (),
-				                                    args [1] -> ToNumber () -> Value (),
-				                                    args [2] -> ToNumber () -> Value (),
-				                                    args [3] -> ToNumber () -> Value ()));
-				break;
-			}
-			case 1:
-			{
-				if (args [0] -> IsExternal ())
-				{
-					realize (context, object, getObject (args [0]));
-					break;
-				}
-
-				// Proceed with next case.
-			}
-			default:
-				return v8::ThrowException (make_v8_string ("RuntimeError: wrong number of arguments."));
-		}
-
-		return v8::Undefined ();
-	}
-
-	return v8::ThrowException (v8::String::New ("RuntimeError: cannot call constructor as function."));
 }
 
 extern template class SFVec4 <X3D::SFVec4d>;

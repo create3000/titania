@@ -188,13 +188,11 @@ template <class Type>
 void
 X3DObject <Type>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
 {
-	auto persistent = v8::Persistent <v8::Object>::New (object);
-
-	persistent .MakeWeak (context, finalize);
-
 	object -> SetInternalField (0, v8::External::New (field));
 
-	context -> addObject (field, persistent);
+	context -> addObject (field, object, context, finalize);
+
+	v8::V8::AdjustAmountOfExternalAllocatedMemory (sizeof (Type));
 }
 
 template <class Type>
@@ -219,12 +217,14 @@ template <class Type>
 void
 X3DObject <Type>::finalize (v8::Persistent <v8::Value> value, void* parameter)
 {
-	__LOG__ << std::endl;
-
 	const auto context = static_cast <Context*> (parameter);
 	const auto field   = getObject (value -> ToObject ());
 
 	context -> removeObject (field);
+
+	v8::V8::AdjustAmountOfExternalAllocatedMemory (-sizeof (Type));
+
+	__LOG__ << context << " : " << field -> getTypeName () << std::endl;
 }
 
 } // GoogleV8

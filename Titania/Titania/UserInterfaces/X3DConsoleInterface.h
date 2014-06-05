@@ -92,8 +92,8 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::TextBuffer> &
-	getTextbuffer () const
-	{ return m_Textbuffer; }
+	getTextBuffer () const
+	{ return m_TextBuffer; }
 
 	Gtk::Window &
 	getWindow () const
@@ -102,6 +102,38 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::ScrolledWindow &
+	getConsole () const
+	{ return *m_Console; }
+
+	Gtk::TextView &
+	getTextView () const
+	{ return *m_TextView; }
+
+	Gtk::ToggleToolButton &
+	getSuspendButton () const
+	{ return *m_SuspendButton; }
+
+	Gtk::ToolButton &
+	getClearButton () const
+	{ return *m_ClearButton; }
+
+	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
+	on_suspend_button_toggled () = 0;
+
+	virtual
+	void
+	on_clear_button_clicked () = 0;
 
 	virtual
 	~X3DConsoleInterface ();
@@ -116,9 +148,13 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::TextBuffer> m_Textbuffer;
+	Glib::RefPtr <Gtk::TextBuffer> m_TextBuffer;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::ScrolledWindow*           m_Console;
+	Gtk::TextView*                 m_TextView;
+	Gtk::ToggleToolButton*         m_SuspendButton;
+	Gtk::ToolButton*               m_ClearButton;
 
 };
 

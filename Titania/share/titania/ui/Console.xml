@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkTextBuffer" id="Textbuffer"/>
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkTextBuffer" id="TextBuffer"/>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow1">
+          <object class="GtkScrolledWindow" id="Console">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <child>
-              <object class="GtkTextView" id="textview1">
+              <object class="GtkTextView" id="TextView">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="buffer">Textbuffer</property>
+                <property name="buffer">TextBuffer</property>
               </object>
             </child>
           </object>
@@ -29,19 +31,47 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButtonBox" id="buttonbox1">
+          <object class="GtkBox" id="box1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkButton" id="button1">
-                <property name="label">gtk-clear</property>
-                <property name="use_action_appearance">False</property>
+              <object class="GtkToolbar" id="toolbar1">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <property name="use_stock">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">1</property>
+                <child>
+                  <object class="GtkToggleToolButton" id="SuspendButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Suspend output.</property>
+                    <property name="label" translatable="yes">Suspend</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-stop</property>
+                    <signal name="toggled" handler="on_suspend_button_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="ClearButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Clear Console.</property>
+                    <property name="label" translatable="yes">Clear</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-clear</property>
+                    <signal name="clicked" handler="on_clear_button_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>

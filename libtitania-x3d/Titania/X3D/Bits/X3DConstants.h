@@ -527,7 +527,6 @@ enum NodeType : uint16_t
 	Route,
 	Scene,
 	Selection,
-	SpiderMonkey,
 	World,
 	X3DBrowser,
 	X3DBrowserContext,
@@ -539,8 +538,7 @@ enum NodeType : uint16_t
 	X3DRenderObject,
 	X3DRouterObject,
 	X3DScene,
-	
-	
+
 	// Tool nodes
 	
 	AnchorTool,

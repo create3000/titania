@@ -91,20 +91,12 @@ public:
 	///  @name Fields
 
 	MFString &
-	set_string ()
-	{ return *fields .set_string; }
+	string ()
+	{ return *fields .string; }
 
 	const MFString &
-	set_string () const
-	{ return *fields .set_string; }
-
-	MFString &
-	string_changed ()
-	{ return *fields .string_changed; }
-
-	const MFString &
-	string_changed () const
-	{ return *fields .string_changed; }
+	string () const
+	{ return *fields .string; }
 
 
 private:
@@ -116,9 +108,6 @@ private:
 	initialize () final override;
 
 	///  @name Event handlers
-
-	void
-	_set_string ();
 
 	void
 	eventsProcessed ();
@@ -135,12 +124,10 @@ private:
 	{
 		Fields ();
 
-		MFString* const set_string;
-		MFString* const string_changed;
+		MFString* const string;
 	};
 
-	Fields   fields;
-	MFString string;
+	Fields fields;
 
 };
 

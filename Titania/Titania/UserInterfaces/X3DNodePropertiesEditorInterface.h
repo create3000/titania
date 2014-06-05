@@ -413,7 +413,7 @@ public:
 
 	Gtk::Expander &
 	getCDATAFieldExpander () const
-	{ return *m_CDataFieldExpander; }
+	{ return *m_CDATAFieldExpander; }
 
 	Gtk::Button &
 	getEditCDataButton () const
@@ -700,7 +700,7 @@ private:
 	Gtk::TreeView*                         m_UserDefinedFieldsTreeView;
 	Gtk::Button*                           m_AddFieldButton;
 	Gtk::Button*                           m_RemoveFieldButton;
-	Gtk::Expander*                         m_CDataFieldExpander;
+	Gtk::Expander*                         m_CDATAFieldExpander;
 	Gtk::Button*                           m_EditCDataButton;
 	Gtk::Expander*                         m_ImportedNodesExpander;
 	Gtk::TreeView*                         m_ImportedNodesTreeView;

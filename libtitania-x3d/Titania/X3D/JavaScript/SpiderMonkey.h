@@ -126,12 +126,6 @@ public:
 	void
 	toStream (std::ostream &) const final override;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 
@@ -156,8 +150,6 @@ private:
 	std::string vendor;
 	std::string description;
 	std::string version;
-
-	JSRuntime* runtime;
 
 };
 

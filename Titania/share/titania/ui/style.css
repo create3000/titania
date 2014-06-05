@@ -15,7 +15,7 @@ GtkSeparator {
 
 */
 
-#Console {
+#Console GtkTextView {
 	font: monospace;
 }
 

@@ -603,6 +603,10 @@ public:
 	getFooter () const
 	{ return *m_Footer; }
 
+	Gtk::Label &
+	getFooterLabel () const
+	{ return *m_FooterLabel; }
+
 	Gtk::Notebook &
 	getFooterNotebook () const
 	{ return *m_FooterNotebook; }
@@ -610,10 +614,6 @@ public:
 	Gtk::Box &
 	getConsoleBox () const
 	{ return *m_ConsoleBox; }
-
-	Gtk::TextView &
-	getConsole () const
-	{ return *m_Console; }
 
 	Gtk::Box &
 	getSideBar () const
@@ -1164,9 +1164,9 @@ private:
 	Gtk::ToolButton*                m_LookAtAllButton;
 	Gtk::ToggleToolButton*          m_LookAtButton;
 	Gtk::Box*                       m_Footer;
+	Gtk::Label*                     m_FooterLabel;
 	Gtk::Notebook*                  m_FooterNotebook;
 	Gtk::Box*                       m_ConsoleBox;
-	Gtk::TextView*                  m_Console;
 	Gtk::Box*                       m_SideBar;
 	Gtk::Label*                     m_SideBarLabel;
 	Gtk::Notebook*                  m_SideBarNotebook;

@@ -147,9 +147,6 @@ private:
 	set_scene ();
 
 	void
-	set_console ();
-
-	void
 	set_urlError (const X3D::MFString &);
 
 	void

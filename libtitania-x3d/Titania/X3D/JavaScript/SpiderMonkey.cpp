@@ -67,8 +67,6 @@ SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
 	        description (),
 	            version ()
 {
-	addType (X3DConstants::SpiderMonkey);
-	
 	setName ("SpiderMonkey");
 }
 
@@ -83,7 +81,7 @@ SpiderMonkey::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
 
-	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
+	JSRuntime* const runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (runtime)
 	{
@@ -98,13 +96,15 @@ SpiderMonkey::initialize ()
 
 			JS_DestroyContext (context);
 		}
+
+		JS_DestroyRuntime (runtime);
 	}
 }
 
 X3DPtr <X3DJavaScriptContext>
 SpiderMonkey::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
 {
-	return new MozillaSpiderMonkey::jsContext (runtime, script, ecmascript, uri);
+	return new MozillaSpiderMonkey::jsContext (script, ecmascript, uri);
 }
 
 void
@@ -115,14 +115,6 @@ SpiderMonkey::toStream (std::ostream & stream) const
 		<< "\t\tName: " << vendor << ' ' << getName () << std::endl
 		<< "\t\tDescription: " << description << std::endl
 		<< "\t\tVersion: " << version;
-}
-
-void
-SpiderMonkey::dispose ()
-{
-	JS_DestroyRuntime (runtime);
-
-	X3DJavaScriptEngine::dispose ();
 }
 
 } // X3D

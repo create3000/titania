@@ -1,3 +1,35 @@
+2014-06-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBase.h:
+	* V8.h:
+	* X3DObject.h:
+	* Console.h:
+	* V8.cpp:
+	* X3DConstants.h:
+	* Console.cpp:
+	* X3DBrowser.h:
+	* v8String.h:
+	* v8Fields.h:
+	* v8Globals.h:
+	* SpiderMonkey.h:
+	* v8Browser.h:
+	* v8Context.h:
+	* v8X3DField.h:
+	* v8Browser.cpp:
+	* v8X3DObject.h:
+	* SpiderMonkey.cpp:
+	* v8Globals.cpp:
+	* v8Context.cpp:
+	* v8SFVec4.h:
+	* v8SFVec4.cpp:
+	* jsContext.h:
+	* v8X3DFieldDefinition.h:
+	* jsContext.cpp:
+	* X3DScriptingContext.h:
+	* X3DScriptingContext.cpp: 
+
 2014-06-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* v8Context.h:

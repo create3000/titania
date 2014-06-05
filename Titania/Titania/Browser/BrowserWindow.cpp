@@ -61,6 +61,7 @@
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
 #include "../ViewpointList/ViewpointList.h"
+#include "../Console/Console.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -78,6 +79,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	   viewpointList (new ViewpointList (this)),
 	   historyEditor (new HistoryEditor (this)),
 	   outlineEditor (new OutlineEditor (this)),
+	         console (new Console (this)),
 	            keys (),
 	       shortcuts (true),
 	          toggle (true),
@@ -128,6 +130,7 @@ BrowserWindow::initialize ()
 	getHistoryEditor () -> reparent (getHistoryEditorBox (), getWindow ());
 	getLibraryView ()   -> reparent (getLibraryViewBox (),   getWindow ());
 	getOutlineEditor () -> reparent (getOutlineEditorBox (), getWindow ());
+	getConsole ()       -> reparent (getConsoleBox (), getWindow ());
 
 	// CSS
 	Glib::RefPtr <Gtk::CssProvider> cssProvider1 = Gtk::CssProvider::create ();

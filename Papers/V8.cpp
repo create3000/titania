@@ -68,8 +68,6 @@ V8::V8 (X3DExecutionContext* const executionContext) :
 	        description (),
 	            version ()
 {
-	//addType (X3DConstants::V8);
-	
 	setName ("V8");
 }
 
@@ -85,7 +83,7 @@ V8::initialize ()
 	X3DJavaScriptEngine::initialize ();
 
 	description = "";
-	version     = "";
+	version     = v8::V8::GetVersion ();
 }
 
 X3DPtr <X3DJavaScriptContext>

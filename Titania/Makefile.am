@@ -15,6 +15,7 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
+	Titania/Console/Console.cpp \
 	Titania/HistoryEditor/History.cpp \
 	Titania/HistoryEditor/HistoryEditor.cpp \
 	Titania/LibraryView/LibraryView.cpp \

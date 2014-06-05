@@ -241,6 +241,18 @@
     <None Include="xxx\X3DImportedNodesEditor.cpp" />
     <None Include="xxx\X3DImportedNodesEditor.h" />
     <None Include="xxx\X3DNodePropertiesEditorBase.h" />
+    <None Include="V8\Fields\v8SFVec4.h" />
+    <None Include="V8\v8Browser.h" />
+    <None Include="V8\v8Context.h" />
+    <None Include="V8\v8Fields.h" />
+    <None Include="V8\v8Globals.h" />
+    <None Include="V8\v8String.h">
+      <DependentUpon>..\..\libtitania-x3d\Titania\X3D\JavaScript\V8\v8String.h</DependentUpon>
+    </None>
+    <None Include="V8\v8X3DField.h" />
+    <None Include="V8\v8X3DFieldDefinition.h" />
+    <None Include="V8\v8X3DObject.h" />
+    <None Include="V8.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -264,6 +276,11 @@
     <Compile Include="xxx\Stream\InputUrlStream.cpp" />
     <Compile Include="xxx\Box3.cpp" />
     <Compile Include="xxx\PointingDevice.cpp" />
+    <Compile Include="V8\Fields\v8SFVec4.cpp" />
+    <Compile Include="V8\v8Browser.cpp" />
+    <Compile Include="V8\v8Context.cpp" />
+    <Compile Include="V8\v8Globals.cpp" />
+    <Compile Include="V8.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CosmoWorlds\icons\Fields.xcf" />

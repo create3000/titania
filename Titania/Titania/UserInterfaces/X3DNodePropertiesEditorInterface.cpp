@@ -209,8 +209,8 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_AddFieldButton -> set_name ("AddFieldButton");
 	m_builder -> get_widget ("RemoveFieldButton", m_RemoveFieldButton);
 	m_RemoveFieldButton -> set_name ("RemoveFieldButton");
-	m_builder -> get_widget ("CDataFieldExpander", m_CDataFieldExpander);
-	m_CDataFieldExpander -> set_name ("CDataFieldExpander");
+	m_builder -> get_widget ("CDATAFieldExpander", m_CDATAFieldExpander);
+	m_CDATAFieldExpander -> set_name ("CDATAFieldExpander");
 	m_builder -> get_widget ("EditCDataButton", m_EditCDataButton);
 	m_EditCDataButton -> set_name ("EditCDataButton");
 	m_builder -> get_widget ("ImportedNodesExpander", m_ImportedNodesExpander);

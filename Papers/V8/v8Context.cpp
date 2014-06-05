@@ -88,6 +88,8 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope    handleScope;
 
+	//v8::V8::AdjustAmountOfExternalAllocatedMemory (std::numeric_limits <int16_t>::max ());
+
 	context = v8::Context::New (nullptr, v8::ObjectTemplate::New ());
 
 	v8::Context::Scope contextScope (context);
@@ -157,11 +159,15 @@ throw (std::out_of_range)
 }
 
 void
-Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Persistent <v8::Object> & object)
+Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Local <v8::Object> & object, void* parameters, v8::WeakReferenceCallback callback)
 throw (Error <INVALID_FIELD>)
 {
-	if (not objects .emplace (field, object) .second)
+	const auto iter = objects .emplace (field, v8::Persistent <v8::Object>::New (object));
+
+	if (not iter .second)
 		throw Error <INVALID_FIELD> ("Object already exists in v8 Context.");
+
+	iter .first -> second .MakeWeak (parameters, callback);
 
 	field -> addParent (this);
 }
@@ -173,11 +179,11 @@ Context::removeObject (X3D::X3DFieldDefinition* const field)
 		field -> removeParent (this);
 }
 
-const v8::Persistent <v8::Object> &
+v8::Local <v8::Object>
 Context::getObject (X3D::X3DFieldDefinition* const field) const
 throw (std::out_of_range)
 {
-	return objects .at (field);
+	return v8::Local <v8::Object>::New (objects .at (field));
 }
 
 v8::Local <v8::Function>
@@ -212,8 +218,6 @@ Context::initialize ()
 	isLive () .addInterest (this, &Context::set_live);
 
 	set_live ();
-
-	const auto initializeFn = getFunction ("initialize");
 
 	if (not initializeFn .IsEmpty ())
 		initializeFn -> Call (context -> Global (), 0, nullptr);
@@ -354,16 +358,21 @@ Context::eventsProcessed ()
 
 void
 Context::finish ()
-{ }
+{
+	v8::Locker         locker (isolate);
+	v8::Isolate::Scope isolate_scope (isolate);
+	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
+
+	//while (not v8::V8::IdleNotification ())
+	//	;
+
+	__LOG__ << getScriptNode () -> getName () << std::endl;
+}
 
 void
 Context::shutdown ()
 {
-	//v8::Locker         locker (isolate);
-	//v8::Isolate::Scope isolate_scope (isolate);
-	//v8::HandleScope    handleScope;
-	//v8::Context::Scope contextScope (context);
-
 	//shutdownFn -> Call (context -> Global (), 0, nullptr);
 }
 
@@ -373,6 +382,7 @@ Context::error (const v8::TryCatch & trycatch) const
 	v8::Locker         locker (isolate);
 	v8::Isolate::Scope isolate_scope (isolate);
 	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
 
 	X3D::X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
 	                                  get_utf8_string (trycatch .Message () -> GetScriptResourceName ()),
@@ -384,7 +394,7 @@ Context::error (const v8::TryCatch & trycatch) const
 void
 Context::dispose ()
 {
-	__LOG__ << getScriptNode () -> getName () << std::endl;
+	__LOG__ << this << " : " << getScriptNode () -> getName () << std::endl;
 
 	{
 		v8::Locker         locker (isolate);
@@ -398,7 +408,7 @@ Context::dispose ()
 		prepareEventsFn   .Dispose ();
 		eventsProcessedFn .Dispose ();
 		shutdownFn        .Dispose ();
-	
+
 		functions .clear ();
 		classes   .clear ();
 	
@@ -417,7 +427,9 @@ Context::dispose ()
 }
 
 Context::~Context ()
-{ }
+{
+	__LOG__ << this << std::endl;
+}
 
 } // GoogleV8
 } // X3D

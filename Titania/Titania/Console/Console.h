@@ -47,54 +47,67 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DConsoleInterface.h"
+
+#ifndef __TITANIA_CONSOLE_CONSOLE_H__
+#define __TITANIA_CONSOLE_CONSOLE_H__
+
+#include "../UserInterfaces/X3DConsoleInterface.h"
+#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
 
-const std::string X3DConsoleInterface::m_widgetName = "Console";
+class BrowserWindow;
 
-void
-X3DConsoleInterface::create (const std::string & filename)
+class Console :
+	public X3DConsoleInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
-	m_TextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
+	///  @name Construction
+	
+	Console (BrowserWindow* const);
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
-	m_builder -> get_widget ("Console", m_Console);
-	m_Console -> set_name ("Console");
-	m_builder -> get_widget ("TextView", m_TextView);
-	m_TextView -> set_name ("TextView");
-	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
-	m_SuspendButton -> set_name ("SuspendButton");
-	m_builder -> get_widget ("ClearButton", m_ClearButton);
-	m_ClearButton -> set_name ("ClearButton");
+	///  @name Destruction
+	
+	virtual
+	~Console ();
 
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_unmap));
 
-	// Connect object Gtk::ToggleToolButton with id 'SuspendButton'.
-	m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_suspend_button_toggled));
+private:
 
-	// Connect object Gtk::ToolButton with id 'ClearButton'.
-	m_ClearButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_clear_button_clicked));
+	///  @name Event handlers
+	
+	virtual
+	void
+	on_map () final override;
 
-	// Call construct handler of base class.
-	construct ();
-}
+	virtual
+	void
+	on_unmap () final override;
 
-X3DConsoleInterface::~X3DConsoleInterface ()
-{
-	delete m_Window;
-}
+	virtual
+	void
+	on_suspend_button_toggled () final override;
+
+	virtual
+	void
+	on_clear_button_clicked () final override;
+
+	void
+	set_enabled ();
+
+	void
+	set_string ();
+
+	///  @name Members
+
+	bool mapped;
+	bool enabled;
+
+};
 
 } // puck
 } // titania
+
+#endif

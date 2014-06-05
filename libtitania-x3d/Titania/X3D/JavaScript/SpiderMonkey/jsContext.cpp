@@ -101,10 +101,10 @@ JSClass jsContext::GlobalClass = {
 
 };
 
-jsContext::jsContext (JSRuntime* const _runtime, Script* const script, const std::string & ecmascript, const basic::uri & uri) :
+jsContext::jsContext (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (script, ecmascript),
-	             runtime (_runtime),
+	             runtime (nullptr),
 	             context (nullptr),
 	         globalClass (GlobalClass),
 	              global (nullptr),
@@ -150,7 +150,7 @@ jsContext::jsContext (JSRuntime* const _runtime, Script* const script, const std
 X3DBaseNode*
 jsContext::create (X3DExecutionContext* const) const
 {
-	return new jsContext (runtime, getScriptNode (), getECMAScript (), worldURL .front ());
+	return new jsContext (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
 void

@@ -51,36 +51,36 @@
 #include "X3DScriptingContext.h"
 
 #include "../../JavaScript/SpiderMonkey.h"
-#include "../../JavaScript/V8.h"
 
 namespace titania {
 namespace X3D {
 
 X3DScriptingContext::X3DScriptingContext () :
 	      X3DBaseNode (),
-	     spiderMonkey (new SpiderMonkey (getExecutionContext ())),
-	               v8 (new V8 (getExecutionContext ())),
-	javaScriptEngines ({ std::make_pair ("v8", v8) })
+	javaScriptEngines ({ std::make_pair ("javascript", new SpiderMonkey (getExecutionContext ())) })
 {
-	addChildren (spiderMonkey, v8);
+	for (auto & javaScriptEngine : javaScriptEngines)
+		addChild (javaScriptEngine .second);
 }
 
 void
 X3DScriptingContext::initialize ()
 {
-	spiderMonkey -> setup ();
-	v8 -> setup ();
+	for (const auto & javaScriptEngine : javaScriptEngines)
+		javaScriptEngine .second -> setup ();
 }
 
 const X3DJavaScriptEnginePtr &
 X3DScriptingContext::getJavaScriptEngine (const std::string & scheme) const
 {
-	const auto javaScriptEngine = javaScriptEngines .find (scheme);
-
-	if (javaScriptEngine not_eq javaScriptEngines .end ())
-		return javaScriptEngine -> second;
-
-	return spiderMonkey;
+	try
+	{
+		return javaScriptEngines .at (scheme);
+	}
+	catch (const std::out_of_range &)
+	{
+		return javaScriptEngines .at ("javascript");
+	}
 }
 
 X3DScriptingContext::~X3DScriptingContext ()

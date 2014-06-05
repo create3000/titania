@@ -372,9 +372,7 @@ throw (Error <DISPOSED>)
 
 	print (ostream, args ...);
 
-	getConsole () -> set_string () .emplace_back (ostream .str ());
-
-	std::clog << ostream .str ();
+	getConsole () -> string () .emplace_back (ostream .str ());
 }
 
 template <typename First, typename ... Args>

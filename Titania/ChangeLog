@@ -1,3 +1,24 @@
+2014-06-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* Console.h:
+	* style.css:
+	* Console.cpp:
+	* Console.xml:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.cpp:
+	* X3DConsoleInterface.h:
+	* X3DConsoleInterface.cpp:
+	* NodePropertiesEditor.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
 2014-06-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.h:

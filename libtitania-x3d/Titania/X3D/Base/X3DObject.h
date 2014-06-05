@@ -76,6 +76,16 @@ public:
 	///  @name Type Information
 
 	virtual
+	X3DBase*
+	getId ()
+	{ return this; }
+
+	virtual
+	const X3DBase*
+	getId () const
+	{ return this; }
+
+	virtual
 	void
 	setName (const std::string & value)
 	{ realize (); data -> name = value; }
@@ -112,7 +122,7 @@ public:
 	getUserData () const
 	{ realize (); return data -> userData; }
 
-	///  @name String Creation
+	///  @name String creation
 
 	bool
 	fromString (const std::string &)
@@ -137,7 +147,7 @@ public:
 	std::string
 	toXMLString () const;
 
-	///  @name Stream Handling
+	///  @name Input/Output
 
 	virtual
 	void

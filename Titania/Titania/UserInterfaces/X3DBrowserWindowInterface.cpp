@@ -312,12 +312,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LookAtButton -> set_name ("LookAtButton");
 	m_builder -> get_widget ("Footer", m_Footer);
 	m_Footer -> set_name ("Footer");
+	m_builder -> get_widget ("FooterLabel", m_FooterLabel);
+	m_FooterLabel -> set_name ("FooterLabel");
 	m_builder -> get_widget ("FooterNotebook", m_FooterNotebook);
 	m_FooterNotebook -> set_name ("FooterNotebook");
 	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
 	m_ConsoleBox -> set_name ("ConsoleBox");
-	m_builder -> get_widget ("Console", m_Console);
-	m_Console -> set_name ("Console");
 	m_builder -> get_widget ("SideBar", m_SideBar);
 	m_SideBar -> set_name ("SideBar");
 	m_builder -> get_widget ("SideBarLabel", m_SideBarLabel);

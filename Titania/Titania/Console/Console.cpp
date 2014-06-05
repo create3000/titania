@@ -47,54 +47,96 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DConsoleInterface.h"
+
+#include "Console.h"
+
+#include "../Browser/BrowserWindow.h"
+#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DConsoleInterface::m_widgetName = "Console";
+Console::Console (BrowserWindow* const browserWindow) :
+	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DConsoleInterface (get_ui ("Console.xml"), gconf_dir ()),
+	             mapped (false),
+	            enabled (true)
+{ }
 
 void
-X3DConsoleInterface::create (const std::string & filename)
+Console::on_map ()
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Console"));
 
-	// Get objects.
-	m_TextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
+	mapped = true;
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
-	m_builder -> get_widget ("Console", m_Console);
-	m_Console -> set_name ("Console");
-	m_builder -> get_widget ("TextView", m_TextView);
-	m_TextView -> set_name ("TextView");
-	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
-	m_SuspendButton -> set_name ("SuspendButton");
-	m_builder -> get_widget ("ClearButton", m_ClearButton);
-	m_ClearButton -> set_name ("ClearButton");
-
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_unmap));
-
-	// Connect object Gtk::ToggleToolButton with id 'SuspendButton'.
-	m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_suspend_button_toggled));
-
-	// Connect object Gtk::ToolButton with id 'ClearButton'.
-	m_ClearButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_clear_button_clicked));
-
-	// Call construct handler of base class.
-	construct ();
+	set_enabled ();
 }
 
-X3DConsoleInterface::~X3DConsoleInterface ()
+void
+Console::on_unmap ()
 {
-	delete m_Window;
+	mapped = false;
+
+	set_enabled ();
 }
+
+void
+Console::on_suspend_button_toggled ()
+{
+	enabled = not getSuspendButton () .get_active ();
+
+	set_enabled ();
+}
+
+void
+Console::on_clear_button_clicked ()
+{
+	getTextBuffer () -> set_text ("");
+}
+
+void
+Console::set_enabled ()
+{
+	if (enabled and mapped)
+		getBrowser () -> getConsole () -> string () .addInterest (this, &Console::set_string);
+
+	else
+		getBrowser () -> getConsole () -> string () .removeInterest (this, &Console::set_string);
+}
+
+void
+Console::set_string ()
+{
+	// Insert.
+
+	for (const auto & string : getBrowser () -> getConsole () -> string ())
+		getTextBuffer () -> insert (getTextBuffer () -> end (), string .getValue ());
+
+	// Erase.
+
+	static constexpr int CONSOLE_LIMIT = 1 << 20; // 2 MB
+
+	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
+	{
+		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
+
+		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
+	}
+
+	// Place cursor.
+
+	getTextBuffer () -> place_cursor (getTextBuffer () -> end ());
+
+	getTextView () .scroll_to (getTextBuffer () -> get_insert ());
+
+	// Refresh.
+
+	getTextView () .queue_draw ();
+}
+
+Console::~Console ()
+{ }
 
 } // puck
 } // titania

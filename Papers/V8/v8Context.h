@@ -108,13 +108,13 @@ public:
 	throw (std::out_of_range);
 
 	void
-	addObject (X3D::X3DFieldDefinition* const, const v8::Persistent <v8::Object> &)
+	addObject (X3D::X3DFieldDefinition* const, const v8::Local <v8::Object> &, void*, v8::WeakReferenceCallback)
 	throw (Error <INVALID_FIELD>);
 
 	void
 	removeObject (X3D::X3DFieldDefinition* const);
 
-	const v8::Persistent <v8::Object> &
+	v8::Local <v8::Object>
 	getObject (X3D::X3DFieldDefinition* const) const
 	throw (std::out_of_range);
 

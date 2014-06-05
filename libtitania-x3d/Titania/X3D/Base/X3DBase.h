@@ -60,18 +60,6 @@ class X3DBase
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	X3DBase*
-	getId ()
-	{ return this; }
-
-	virtual
-	const X3DBase*
-	getId () const
-	{ return this; }
-
 	///  @name Destruction
 
 	virtual

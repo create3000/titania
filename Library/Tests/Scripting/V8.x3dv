@@ -93,11 +93,13 @@ function fields ()
 	var v;
 	print ('SFVec4f:             ', SFVec4f);
 	print ('SFVec4f .name:       ', SFVec4f .name);
+	//print ('SFVec4f .prototype:  ', SFVec4f .prototype);
+	//print ('SFVec4f .__proto__:  ', SFVec4f .__proto__);
 	print ('SFVec4f .new:        ', v = new SFVec4f ());
 	print ('SFVec4f .new:        ', v = new SFVec4f (1, 2, 3, 4));
 	print ('SFVec4f .instanceof: ', v instanceof SFVec4f);
-	print ('SFVec4f .prototype:  ', v .prototype);
-	print ('SFVec4f .__proto__:  ', v .__proto__);
+	//print ('SFVec4f .prototype:  ', v .prototype);
+	//print ('SFVec4f .__proto__:  ', v .__proto__);
 	delete v .w;
 	print ('SFVec4f .x:          ', v .x);
 	print ('SFVec4f .y:          ', v .y);
@@ -126,11 +128,22 @@ function fields ()
 	print ('Enumerate:');
 	for (var i in v)
 		print ('SFVec4f: ', i, ' = ', v [i]);
-		
-	var f = v .toString;
-	f .call (Browser);
+
+	//var f = v .toString;
+	//f .call (Browser);
 }
 
+
+function set_time (value, time)
+{
+	print ('Script 2. value:   ', value);
+	print ('Script 2. value:   ', time);
+	print ('Script 2. SFVec4f: ', new SFVec4f ());
+	
+	var a = [ ];
+	for (var i = 0; i < 1000; ++ i)
+		a .push (new SFVec4f ());
+}
 "
   directOutput TRUE
 }
@@ -140,10 +153,20 @@ DEF Script2 Script {
 
   url "v8:
 
+function initialize ()
+{
+	var v = new SFVec4f ();
+}
+
 function set_time (value, time)
 {
-	print ('Script 2. value: ', value);
-	print ('Script 2. value: ', time);
+	print ('Script 2. value:   ', value);
+	print ('Script 2. value:   ', time);
+	print ('Script 2. SFVec4f: ', new SFVec4f ());
+	
+	var a = [ ];
+	for (var i = 0; i < 1000; ++ i)
+		a .push (new SFVec4f ());
 }
 "
   directOutput TRUE

@@ -62,6 +62,7 @@ class MotionBlurEditor;
 class OutlineEditor;
 class OutlineTreeViewEditor;
 class ViewpointList;
+class Console;
 
 
 class BrowserWindow :
@@ -97,6 +98,10 @@ public:
 
 	const std::shared_ptr <OutlineTreeViewEditor> &
 	getOutlineTreeView () const;
+
+	const std::shared_ptr <Console> &
+	getConsole () const
+	{ return console; }
 
 	/// @name Member access
 
@@ -534,6 +539,7 @@ private:
 	std::shared_ptr <ViewpointList>    viewpointList;
 	std::shared_ptr <HistoryEditor>    historyEditor;
 	std::shared_ptr <OutlineEditor>    outlineEditor;
+	std::shared_ptr <Console>          console;
 
 	X3D::Keys keys;
 	bool      shortcuts;

@@ -866,7 +866,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkExpander" id="CDataFieldExpander">
+                          <object class="GtkExpander" id="CDATAFieldExpander">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <child>
