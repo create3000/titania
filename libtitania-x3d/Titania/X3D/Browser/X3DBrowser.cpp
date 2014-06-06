@@ -309,6 +309,7 @@ throw (Error <INVALID_SCENE>,
 			processEvents ();
 
 			// Replace world.
+			print ("*** The browser is requested to replace the world with '", value -> getWorldURL (), "'.\n");
 
 			setDescription ("");
 			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
@@ -328,7 +329,6 @@ throw (Error <INVALID_SCENE>,
 		if (initialized ())
 			initialized () = getCurrentTime ();
 
-		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
 	}
 	else
 		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");

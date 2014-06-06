@@ -875,7 +875,7 @@ X3DBaseNode::addEvent (X3DChildObject* const object)
 
 	object -> isTainted (true);
 
-	addEvent (object, EventPtr (new Event (object)));
+	addEvent (object, std::make_shared <Event> (object));
 }
 
 //__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
@@ -896,10 +896,13 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 		if (object -> isInput () or (extendedEventHandling and not object -> isOutput ()))
 		{
 			isTainted (true);
-
-			nodeId = getBrowser () -> addTaintedNode (this);
 		}
 	}
+
+	// Register always on every first event.
+
+	if (not nodeId .time)
+		nodeId = getBrowser () -> addTaintedNode (this);
 }
 
 /***
@@ -913,7 +916,8 @@ X3DBaseNode::addEvent ()
 	{
 		isTainted (true);
 
-		nodeId = getBrowser () -> addTaintedNode (this);
+		if (not nodeId .time)
+			nodeId = getBrowser () -> addTaintedNode (this);
 
 		getBrowser () -> addEvent ();
 	}
@@ -930,8 +934,11 @@ X3DBaseNode::eventsProcessed ()
 	events .clear ();
 	nodeId .time = 0;
 
-	isTainted (false);
-	processInterests ();
+	if (isTainted ())
+	{
+		isTainted (false);
+		processInterests ();
+	}
 }
 
 /***

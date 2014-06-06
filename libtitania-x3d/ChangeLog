@@ -1,5 +1,12 @@
 2014-06-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* X3DFieldDefinition.cpp: 
+
+2014-06-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* X3DChildObject.cpp:
 	* X3DFieldDefinition.h:

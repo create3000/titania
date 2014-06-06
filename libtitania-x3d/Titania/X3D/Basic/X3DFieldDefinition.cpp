@@ -234,7 +234,7 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 				fieldDefinition -> addEvent (fieldDefinition, event);
 			}
 			else
-				fieldDefinition -> addEvent (fieldDefinition, EventPtr (new Event (*event)));
+				fieldDefinition -> addEvent (fieldDefinition, std::make_shared <Event> (*event));
 		}
 	}
 }

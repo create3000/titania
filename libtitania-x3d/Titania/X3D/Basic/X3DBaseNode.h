@@ -509,7 +509,7 @@ private:
 
 	bool                  internal;              // Is this node interally used
 	bool                  enabled;               // Is this node hidden and freezed
-	bool                  extendedEventHandling; // Tool initializeOnlys as input events
+	bool                  extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;
 
