@@ -878,11 +878,11 @@ X3DBaseNode::addEvent (X3DChildObject* const object)
 	addEvent (object, EventPtr (new Event (object)));
 }
 
+//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+
 void
 X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
-	//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
-
 	getBrowser () -> addEvent ();
 
 	// Register for processEvent
@@ -903,7 +903,7 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 }
 
 /***
- *  Marks this node as changed. Call this function if you want to inform requester of this node about a change.
+ *  Marks this node as changed. Call this function if you want to inform the requesters of this node about a change.
  */
 
 void
@@ -913,9 +913,9 @@ X3DBaseNode::addEvent ()
 	{
 		isTainted (true);
 
-		getBrowser () -> addEvent ();
-
 		nodeId = getBrowser () -> addTaintedNode (this);
+
+		getBrowser () -> addEvent ();
 	}
 }
 
@@ -930,11 +930,8 @@ X3DBaseNode::eventsProcessed ()
 	events .clear ();
 	nodeId .time = 0;
 
-	if (isTainted ())
-	{
-		isTainted (false);
-		processInterests ();
-	}
+	isTainted (false);
+	processInterests ();
 }
 
 /***

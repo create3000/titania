@@ -105,11 +105,6 @@ public:
 	
 	///  @name Operations
 
-	virtual
-	bool
-	isCollectable () final override
-	{ return true; }
-
 	bool
 	isClipped (const Matrix4f &, const Vector3f &);
 

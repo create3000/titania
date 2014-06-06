@@ -104,11 +104,6 @@ public:
 	{ return *fields .ambientIntensity; }
 
 	///  @name Operations
-	
-	virtual
-	bool
-	isCollectable () final override
-	{ return true; }
 
 	virtual
 	void

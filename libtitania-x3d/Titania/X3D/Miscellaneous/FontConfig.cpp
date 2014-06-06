@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 Font::Font () :
-	pattern (PatternPtr (FcPatternCreate (), PatternDeleter ()))
+	pattern (PatternPtr (FcPatternCreate (), PatternDeleter { }))
 { }
 
 Font::Font (const Font & font) :

@@ -64,11 +64,6 @@ public:
 	///  @name Operations
 
 	virtual
-	bool
-	isCollectable ()
-	{ return false; }
-
-	virtual
 	void
 	push (const TraverseType)
 	{ }

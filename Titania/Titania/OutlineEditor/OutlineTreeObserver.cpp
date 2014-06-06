@@ -160,7 +160,6 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			field -> addInterest (this, &OutlineTreeObserver::on_row_changed, path);
-
 			break;
 		}
 		case OutlineIterType::X3DField:
@@ -178,7 +177,6 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 					field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::on_row_has_child_toggled, path, false);
 
 					field -> addInterest (this, &OutlineTreeObserver::on_row_has_child_toggled, path, true);
-
 					break;
 				}
 				default:
@@ -214,7 +212,6 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			field -> removeInterest (this, &OutlineTreeObserver::on_row_changed);
-
 			break;
 		}
 		case OutlineIterType::X3DField:

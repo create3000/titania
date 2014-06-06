@@ -185,31 +185,12 @@ X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition) cons
 }
 
 void
-X3DFieldDefinition::addInterest (X3DFieldDefinition & fieldDefinition) const
-{
-	realize ();
-
-	io -> outputInterests .emplace (&fieldDefinition);
-	fieldDefinition .addInputInterest (this);
-}
-
-void
 X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition) const
 {
 	if (io)
 	{
 		io -> outputInterests .erase (fieldDefinition);
 		fieldDefinition -> removeInputInterest (this);
-	}
-}
-
-void
-X3DFieldDefinition::removeInterest (X3DFieldDefinition & fieldDefinition) const
-{
-	if (io)
-	{
-		io -> outputInterests .erase (&fieldDefinition);
-		fieldDefinition .removeInputInterest (this);
 	}
 }
 

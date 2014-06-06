@@ -1,64 +1,24 @@
-#VRML V2.0 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.0
 
-# Comment
-
-META "title" "Scripting test"
-
-Shape {
-  geometry PointSet {
-    coord DEF Circle Coordinate {
-      point [
-        -0.0135119 0.405078 0.914182,
-        0.536901 -0.136566 0.832519,
-        -0.148371 0.635312 0.757869,
-        0.331713 0.350083 0.876018,
-        -0.476541 -0.227777 0.849133,
-        0.656465 0.21261 0.723775,
-        -0.663512 0.0820111 0.743657,
-        0.490788 -0.446666 0.748075,
-        0.481812 0.294116 0.825441,
-        0.023505 0.205611 0.978351
-      ]
-    }
-  }
+DEF BG Background {
+  groundAngle 1.57079
+  groundColor [
+    1 0 0,
+    1 0 0
+  ]
 }
 
-DEF Script Script {
-  field SFString u "äöü"
-  field SFNode circle USE Circle
-
-  url "vrmlscript:
-function initialize ()
-{
-	var d = new Date (2014, 2);
-	var s = d .toLocaleString ('de-DE');
-
-	print (s .length);
-	print (s);
-	print (s [6]);
-	print (s [7]);
-	print (s [8]);
-	print (s [9]);
-
-	print (u .length);
-	print (u [0]);
-	print (u [1]);
-	print (u [2]);
-
-	print (1/7);
-	print (new SFVec3f (1/3, 1/5, 1/7));
-}
-"
-  directOutput TRUE
-}
-
-DEF Sphere Transform {
+Transform {
   children Shape {
     appearance Appearance {
       material Material {
-        transparency 0.6
+        diffuseColor 1 0 0
       }
     }
-    geometry Sphere { }
+    geometry Box { }
   }
+}
+
+TimeSensor {
+  loop TRUE
 }

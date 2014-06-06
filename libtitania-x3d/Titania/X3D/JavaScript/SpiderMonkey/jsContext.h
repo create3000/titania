@@ -67,6 +67,26 @@ class SceneLoader;
 
 namespace MozillaSpiderMonkey {
 
+struct RuntimeDeleter
+{
+	void
+	operator () (JSRuntime* runtime) const
+	{
+		JS_DestroyRuntime (runtime);
+	}
+
+};
+
+struct ContextDeleter
+{
+	void
+	operator () (JSContext* context) const
+	{
+		JS_DestroyContext (context);
+	}
+
+};
+
 class jsContext :
 	public X3DJavaScriptContext
 {
@@ -205,11 +225,11 @@ private:
 
 	///  @name Members
 
-	JSRuntime*               runtime;
-	JSContext*               context;
-	JSClass                  globalClass;
-	JSObject*                global;
-	std::vector <basic::uri> worldURL;
+	std::unique_ptr <JSRuntime, RuntimeDeleter> runtime;
+	std::unique_ptr <JSContext, ContextDeleter> context;
+	JSClass                                     globalClass;
+	JSObject*                                   global;
+	std::vector <basic::uri>                    worldURL;
 
 	jsval initializeFn;
 	jsval prepareEventsFn;

@@ -184,30 +184,47 @@ X3DGroupingNode::add (const MFNode & children)
 		{
 			try
 			{
-				for (const auto & type : basic::reverse_adapter (child -> getInnerNode () -> getType ()))
+				const auto innerNode = child -> getInnerNode ();
+
+				for (const auto & type : basic::reverse_adapter (innerNode -> getType ()))
 				{
 					switch (type)
 					{
-						case X3DConstants::X3DPointingDeviceSensorNode:
-						{
-							pointingDeviceSensors .emplace_back (x3d_cast <X3DPointingDeviceSensorNode*> (child));
-							break;
-						}
 						case X3DConstants::LocalFog:
 						{
-							localFogs .emplace_back (x3d_cast <LocalFog*> (child));
+							localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
+							break;
+						}
+						case X3DConstants::X3DPointingDeviceSensorNode:
+						{
+							pointingDeviceSensors .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));
+							break;
+						}
+						case X3DConstants::ClipPlane:
+						case X3DConstants::X3DLightNode:
+						{
+							collectables .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
 							break;
 						}
 						case X3DConstants::X3DChildNode:
 						{
-							const auto childNode = x3d_cast <X3DChildNode*> (child);
-
-							if (childNode -> isCollectable ())
-								collectables .emplace_back (childNode);
-
-							childNodes .emplace_back (childNode);
+							childNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
 							break;
 						}
+						case X3DConstants::BooleanFilter:
+						case X3DConstants::BooleanToggle:
+						case X3DConstants::NurbsOrientationInterpolator:
+						case X3DConstants::NurbsPositionInterpolator:
+						case X3DConstants::NurbsSurfaceInterpolator:
+						case X3DConstants::TimeSensor:
+						case X3DConstants::X3DFollowerNode:
+						case X3DConstants::X3DInfoNode:
+						case X3DConstants::X3DInterpolatorNode:
+						case X3DConstants::X3DLayoutNode:
+						case X3DConstants::X3DScriptNode:
+						case X3DConstants::X3DSequencerNode:
+						case X3DConstants::X3DTriggerNode:
+							goto NEXT;
 						default:
 							break;
 					}
@@ -217,6 +234,7 @@ X3DGroupingNode::add (const MFNode & children)
 			{ }
 		}
 
+NEXT:
 		++ i;
 	}
 }

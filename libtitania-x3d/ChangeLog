@@ -1,3 +1,19 @@
+2014-06-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* FontConfig.cpp:
+	* X3DChildNode.h:
+	* RenderingProperties.cpp:
+	* ClipPlane.h:
+	* X3DLightNode.h:
+	* jsContext.h:
+	* X3DJavaScriptContext.cpp:
+	* jsContext.cpp:
+	* X3DGroupingNode.cpp: 
+
 2014-06-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

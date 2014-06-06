@@ -229,6 +229,30 @@ RenderingProperties::display ()
 	world -> traverse (TraverseType::DISPLAY);
 }
 
+static
+std::string
+format_time (const time_type & time, const size_t fractions = 0)
+{
+	auto t = std::floor (time);
+	const auto f = std::floor ((t - time) * std::pow (10, fractions));
+
+	const int s = std::fmod (t, 60);
+	t = std::floor (t / 60);
+
+	const int m = std::fmod (t, 60);
+	t = std::floor (t / 60);
+
+	const int h = std::fmod (t, 24);
+	t = std::floor (t / 24);
+
+	const auto d = t;
+
+	if (fractions)
+		return basic::sprintf (("%02.0f:%02d:%02d:%02d.%0" + basic::to_string (fractions) + ".0f") .c_str (), d, h, m, s, f);
+
+	return basic::sprintf ("%02.0f:%02d:%02d:%02d", d, h, m, s);
+}
+
 void
 RenderingProperties::build ()
 {
@@ -269,6 +293,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getBrowser () -> getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
+		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (chrono::now () - getBrowser () -> initialized ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f m/s"), getBrowser () -> getCurrentSpeed ()));
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %"), 100 * renderClock .average () / clock .average ()));

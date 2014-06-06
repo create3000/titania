@@ -78,8 +78,13 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 	if (root == parentToRemove)
 		root = parentToAdd;
 
-	parents .erase (parentToRemove);
-	parents .emplace (parentToAdd);
+	if (parents .erase (parentToRemove))
+	{
+		if (not parents .emplace (parentToAdd) .second)
+			-- referenceCount;
+	}
+	else
+		addParent (parentToAdd);
 }
 
 void

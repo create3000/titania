@@ -201,15 +201,17 @@ public:
 
 	void
 	addInterest (X3DFieldDefinition* const) const;
-
+	
 	void
-	addInterest (X3DFieldDefinition &) const;
+	addInterest (X3DFieldDefinition & fieldDefinition) const
+	{ addInterest (&fieldDefinition); }
 
 	void
 	removeInterest (X3DFieldDefinition* const) const;
 
 	void
-	removeInterest (X3DFieldDefinition &) const;
+	removeInterest (X3DFieldDefinition & fieldDefinition) const
+	{ removeInterest (&fieldDefinition); }
 
 	const FieldDefinitionSet &
 	getInterests () const
