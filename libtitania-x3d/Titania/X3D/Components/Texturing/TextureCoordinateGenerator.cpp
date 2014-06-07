@@ -96,7 +96,7 @@ TextureCoordinateGenerator::initialize ()
 void
 TextureCoordinateGenerator::set_mode ()
 {
-	static const std::map <std::string, GLenum> map = {
+	static const std::map <std::string, GLenum> modes = {
 		std::make_pair ("SPHERE",                      GL_SPHERE_MAP),     // Ok
 		std::make_pair ("SPHERE-LOCAL",                GL_SPHERE_MAP),     // Not supported
 		std::make_pair ("SPHERE-REFLECT",              GL_REFLECTION_MAP), // Not supported
@@ -110,13 +110,14 @@ TextureCoordinateGenerator::set_mode ()
 		std::make_pair ("NOISE",                       GL_SPHERE_MAP)      // Not supported
 	};
 
-	auto iter = map .find (mode ());
-
-	if (iter not_eq map .end ())
-		texGenMode = iter -> second;
-
-	else
+	try
+	{
+		texGenMode = modes .at (mode ());
+	}
+	catch (const std::out_of_range &)
+	{
 		texGenMode = GL_SPHERE_MAP;
+	}
 }
 
 void

@@ -65,11 +65,7 @@ public:
 	///  @name Member access
 
 	const X3DJavaScriptEnginePtr &
-	getJavaScriptEngine () const
-	{ return getJavaScriptEngine (""); }
-
-	const X3DJavaScriptEnginePtr &
-	getJavaScriptEngine (const std::string &) const;
+	getJavaScriptEngine (const std::string & = "javascript") const;
 
 	///  @name Destruction
 
