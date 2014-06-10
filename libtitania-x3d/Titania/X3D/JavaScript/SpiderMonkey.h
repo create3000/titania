@@ -53,22 +53,8 @@
 
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
-#include <jsapi.h>
-
 namespace titania {
 namespace X3D {
-
-struct JSRuntimeDeleter
-{
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
-
-};
-
-using JSRuntimePtr = std::shared_ptr <JSRuntime>;
 
 class SpiderMonkey :
 	public X3DJavaScriptEngine
@@ -118,7 +104,7 @@ public:
 
 	virtual
 	X3DPtr <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &) final override;
+	createContext (Script* const, const std::string &, const basic::uri &) final override;
 
 	///  @name Input/Output
 

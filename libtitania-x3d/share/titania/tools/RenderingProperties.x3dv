@@ -100,7 +100,7 @@ LayoutGroup {
   ]
 }
 
-DEF NotificationScript Script {
+DEF RenderingPropertiesScript Script {
   inputOnly      SFVec2f set_textBounds
   inputOutput    SFFloat cornerRadius 5
   inputOutput    SFFloat linewidthScaleFactor 1
@@ -148,12 +148,12 @@ function is_odd (value)
   directOutput TRUE
 }
 
-ROUTE Text.textBounds TO NotificationScript.set_textBounds
+ROUTE Text.textBounds TO RenderingPropertiesScript.set_textBounds
 ROUTE RenderingProperties.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
 ROUTE RenderingProperties.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
 ROUTE RenderingProperties.string_changed TO Text.set_string
-ROUTE RenderingProperties.cornerRadius_changed TO NotificationScript.set_cornerRadius
-ROUTE RenderingProperties.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
-ROUTE RenderingProperties.borderWidth_changed TO NotificationScript.set_borderWidth
+ROUTE RenderingProperties.cornerRadius_changed TO RenderingPropertiesScript.set_cornerRadius
+ROUTE RenderingProperties.linewidthScaleFactor_changed TO RenderingPropertiesScript.set_linewidthScaleFactor
+ROUTE RenderingProperties.borderWidth_changed TO RenderingPropertiesScript.set_borderWidth
 
 EXPORT RenderingProperties

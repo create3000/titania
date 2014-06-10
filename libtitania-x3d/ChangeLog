@@ -1,3 +1,9 @@
+2014-06-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SpiderMonkey.h:
+	* SpiderMonkey.cpp:
+	* RenderingProperties.x3dv: 
+
 2014-06-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DScriptingContext.h:
