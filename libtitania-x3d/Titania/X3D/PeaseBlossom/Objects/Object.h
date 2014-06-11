@@ -48,33 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
-#include <cstdlib>
+#include "../Object/jsObject.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class Object :
+	public jsObject
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	Object () :
+		jsObject ()
+	{ }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+};
 
-	return ::strtoul (str, &endptr, base);
-}
-
-} // math
+} // pb
 } // titania
 
 #endif

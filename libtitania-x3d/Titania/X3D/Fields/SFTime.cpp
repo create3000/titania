@@ -105,7 +105,7 @@ throw (Error <INVALID_X3D>,
 {
 	std::string spaces;
 	
-	Grammar::spaces (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, spaces);
 
 	istream >> get ();
 

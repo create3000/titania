@@ -48,33 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
 
-#include <cstdlib>
+#include "../Bits/ValueType.h"
+#include "../Base/jsOutputStreamObject.h"
+#include "../Objects/ObjectPtr.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class jsValue :
+	public jsOutputStreamObject
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	virtual
+	ValueType
+	getType () const = 0;
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+	virtual
+	jsValue &
+	operator = (const bool) = 0;
 
-	return ::strtoul (str, &endptr, base);
-}
+	virtual
+	jsValue &
+	operator = (const jsValue &) = 0;
 
-} // math
+	virtual
+	jsValue &
+	operator = (const int32_t) = 0;
+
+	virtual
+	jsValue &
+	operator = (const uint32_t) = 0;
+
+	virtual
+	jsValue &
+	operator = (const double) = 0;
+
+	virtual
+	jsValue &
+	operator = (const ObjectPtr &) = 0;
+
+	virtual
+	bool
+	toBoolean () const = 0;
+
+	virtual
+	int32_t
+	toInt32 () const = 0;
+
+	virtual
+	uint32_t
+	toUInt32 () const = 0;
+
+	virtual
+	double
+	toNumber () const = 0;
+
+	virtual
+	ObjectPtr
+	toObject () const = 0;
+
+
+protected:
+
+	jsValue ()
+	{ }
+
+};
+
+} // pb
 } // titania
 
 #endif

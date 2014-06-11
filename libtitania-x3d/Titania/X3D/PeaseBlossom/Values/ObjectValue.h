@@ -48,33 +48,116 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_OBJECT_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_OBJECT_VALUE_H__
 
-#include <cstdlib>
+#include "../Values/jsValue.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class ObjectValue :
+	public jsValue
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	ObjectValue () :
+		object ()
+	{ }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+	explicit
+	ObjectValue (jsObject* const value) :
+		object (value)
+	{ }
 
-	return ::strtoul (str, &endptr, base);
-}
+	explicit
+	ObjectValue (const jsValue & value) :
+		object (value .toObject ())
+	{ }
 
-} // math
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::OBJECT; }
+
+	virtual
+	ObjectValue &
+	operator = (const jsValue & value) final override
+	{
+		object = value .toObject ();
+		return *this;
+	}
+
+	virtual
+	ObjectValue &
+	operator = (const bool) final override
+	{ return *this; }
+
+	virtual
+	ObjectValue &
+	operator = (const int32_t) final override
+	{ return *this; }
+
+	virtual
+	ObjectValue &
+	operator = (const uint32_t) final override
+	{ return *this; }
+
+	virtual
+	ObjectValue &
+	operator = (const double) final override
+	{ return *this; }
+
+	virtual
+	ObjectValue &
+	operator = (const ObjectPtr & value)
+	{
+		object = value;
+		return *this;
+	}
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return true; }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return 0; }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return 0; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return 0; }
+
+	virtual
+	ObjectPtr
+	toObject () const final override
+	{ return object; }
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		if (object)
+			ostream << *object;
+		else
+			ostream << "null";
+	}
+
+private:
+
+	ObjectPtr object;
+
+};
+
+} // pb
 } // titania
 
 #endif

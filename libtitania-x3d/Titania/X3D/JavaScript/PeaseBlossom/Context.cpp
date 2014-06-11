@@ -48,33 +48,119 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#include "Context.h"
 
-#include <cstdlib>
+#include "../../Browser/X3DBrowser.h"
+#include "../../PeaseBlossom/Parser/Parser.h"
 
 namespace titania {
-namespace math {
+namespace X3D {
+namespace peaseblossom {
 
-inline
-long int
-strtol (const char* str, int base)
+const std::string Context::componentName  = "Browser";
+const std::string Context::typeName       = "Context";
+const std::string Context::containerField = "context";
+
+Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
+	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
+	X3D::X3DJavaScriptContext (script, ecmascript),
+	                 worldURL ({ uri })
 {
-	char* endptr;
-
-	return ::strtol (str, &endptr, base);
+	__LOG__ << std::endl;
 }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
+void
+Context::setContext ()
 {
-	char* endptr;
-
-	return ::strtoul (str, &endptr, base);
 }
 
-} // math
+void
+Context::setFields ()
+{ }
+
+X3DBaseNode*
+Context::create (X3DExecutionContext* const) const
+{
+	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
+}
+
+void
+Context::initialize ()
+{
+	const auto t0 = chrono::now ();
+
+	std::istringstream istream (getECMAScript ());
+
+	try
+	{
+		pb::Parser (istream, getExecutionContext ()) .parseIntoContext ();
+
+		getBrowser () -> println ("istream: ", SFBool (istream), " : ", SFTime (chrono::now () - t0));
+	}
+	catch (const X3DError & error)
+	{
+		 getBrowser () -> println ("PeaseBlossom Error: ", error .what ());
+	}
+
+	if (istream)
+		getBrowser () -> println ("'", istream .rdbuf (), "'");
+}
+
+void
+Context::setEventHandler ()
+{
+}
+
+void
+Context::set_live ()
+{
+}
+
+void
+Context::prepareEvents ()
+{
+}
+
+void
+Context::set_field (X3D::X3DFieldDefinition* const field)
+{
+}
+
+void
+Context::eventsProcessed ()
+{
+}
+
+void
+Context::finish ()
+{
+}
+
+void
+Context::shutdown ()
+{
+}
+
+void
+Context::error (const std::string & trycatch) const
+{
+	X3D::X3DJavaScriptContext::error (trycatch,
+	                                  "filename",
+	                                  0 /*"lineNumber"*/,
+	                                  0 /*"startColumn"*/,
+	                                  "sourceLine");
+}
+
+void
+Context::dispose ()
+{
+	X3D::X3DJavaScriptContext::dispose ();
+}
+
+Context::~Context ()
+{
+}
+
+} // peaseblossom
+} // X3D
 } // titania
-
-#endif

@@ -48,33 +48,113 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_CONTEXT_H__
 
-#include <cstdlib>
+#include "../../Components/Scripting/Script.h"
+#include "../X3DJavaScriptContext.h"
 
 namespace titania {
-namespace math {
+namespace X3D {
+namespace peaseblossom {
 
-inline
-long int
-strtol (const char* str, int base)
+class Context :
+	public X3D::X3DJavaScriptContext
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	///  @name Construction
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+	Context (Script* const, const std::string &, const basic::uri &);
 
-	return ::strtoul (str, &endptr, base);
-}
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
 
-} // math
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Member access
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~Context ();
+
+
+private:
+
+	///  @name Operations
+
+	void
+	setContext ();
+
+	void
+	setFields ();
+
+	/// Event handlers
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	setEventHandler ();
+
+	void
+	set_live ();
+
+	void
+	prepareEvents ();
+
+	void
+	set_field (X3D::X3DFieldDefinition*);
+
+	void
+	eventsProcessed ();
+
+	void
+	finish ();
+
+	void
+	shutdown ();
+
+	void
+	error (const std::string &) const;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	std::vector <basic::uri> worldURL;
+
+};
+
+} // peaseblossom
+} // X3D
 } // titania
 
 #endif

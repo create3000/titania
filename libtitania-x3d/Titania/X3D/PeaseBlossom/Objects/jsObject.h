@@ -48,33 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
 
-#include <cstdlib>
+#include "../Base/jsOutputStreamObject.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class jsObject :
+	public jsOutputStreamObject
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << "Object { }"; }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
 
-	return ::strtoul (str, &endptr, base);
-}
+protected:
 
-} // math
+	jsObject ()
+	{ }
+
+};
+
+} // pb
 } // titania
 
 #endif

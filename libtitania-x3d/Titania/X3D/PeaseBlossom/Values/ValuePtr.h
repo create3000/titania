@@ -48,33 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
 
-#include <cstdlib>
+#include "../Values/jsValue.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
-{
-	char* endptr;
+using ValuePtr = std::shared_ptr <jsValue>;
 
-	return ::strtol (str, &endptr, base);
-}
-
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
-
-	return ::strtoul (str, &endptr, base);
-}
-
-} // math
+} // pb
 } // titania
 
 #endif

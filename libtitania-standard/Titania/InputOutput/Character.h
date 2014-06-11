@@ -70,12 +70,15 @@ public:
 	bool
 	operator () (std::basic_istream <CharT, Traits> &) const;
 
+	bool
+	lookahead (std::basic_istream <CharT, Traits> &) const;
+
 
 private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	const CharT value;
+	const int_type value;
 
 };
 
@@ -90,13 +93,21 @@ template <class CharT, class Traits>
 bool
 basic_character <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream) const
 {
-	if (istream .peek () == (int_type) value)
+	if (istream .peek () == value)
 	{
 		istream .get ();
 		return true;
 	}
 
 	return false;
+}
+
+template <class CharT, class Traits>
+inline
+bool
+basic_character <CharT, Traits>::lookahead (std::basic_istream <CharT, Traits> & istream) const
+{
+	return istream .peek () == value;
 }
 
 typedef basic_character <char>    character;

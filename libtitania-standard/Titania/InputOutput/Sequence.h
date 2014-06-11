@@ -73,7 +73,7 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	const std::set <CharT> value;
+	const std::set <int_type> value;
 
 };
 
@@ -87,17 +87,19 @@ template <class CharT, class Traits>
 bool
 basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
+	const auto size = string .size ();
+
 	while (istream)
 	{
 		const int_type c = istream .peek ();
 
-		if (value .find (c) == value .end ())
+		if (not value .count (c))
 			break;
 
 		string .push_back (istream .get ());
 	}
 
-	return not string .empty ();
+	return string .size () not_eq size;
 }
 
 typedef basic_sequence <char>    sequence;

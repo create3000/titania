@@ -57,7 +57,7 @@ const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\
 
 const pcrecpp::RE RegEx::_LastNumber (R"/((_\d+)$)/");
 const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
 
 } // X3D
 } // titania

@@ -1,50 +1,47 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Grammar.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="230" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="416" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.cpp" Line="96" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.h" Line="128" Column="1" />
-      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="164" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.h" Line="138" Column="29" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="63" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="724" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="267" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="97" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.h" Line="222" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.cpp" Line="119" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.cpp" Line="115" Column="47" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.h" Line="107" Column="35" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
+          <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="TreasureIsland" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-            </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Scripting" expanded="True" />
+              <Node name="Scripting" expanded="True">
+                <Node name="pb" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
+              <Node name="InputOutput" expanded="True" />
               <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
+                <Node name="Utility" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="scripts" expanded="True" />
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="tools" expanded="True" />
-              </Node>
-            </Node>
+            <Node name="share" expanded="True" />
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Scripting" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Followers" expanded="True" />
@@ -54,15 +51,19 @@
                   <Node name="Scripting" expanded="True" />
                 </Node>
                 <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True">
-                      <Node name="jsSFVec4.h" selected="True" />
-                    </Node>
-                  </Node>
+                  <Node name="PeaseBlossom" expanded="True" />
                 </Node>
+                <Node name="Parser" expanded="True">
+                  <Node name="Grammar.h" selected="True" />
+                </Node>
+                <Node name="PeaseBlossom" expanded="True">
+                  <Node name="Parser" expanded="True" />
+                </Node>
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">

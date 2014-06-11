@@ -48,33 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_H__
 
-#include <cstdlib>
-
-namespace titania {
-namespace math {
-
-inline
-long int
-strtol (const char* str, int base)
-{
-	char* endptr;
-
-	return ::strtol (str, &endptr, base);
-}
-
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
-
-	return ::strtoul (str, &endptr, base);
-}
-
-} // math
-} // titania
+#include "Values/Boolean.h"
+#include "Values/Number.h"
+#include "Values/ObjectValue.h"
+#include "Values/ValuePtr.h"
 
 #endif

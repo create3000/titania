@@ -166,15 +166,15 @@ throw (Error <INVALID_X3D>,
 	size_type width, height, components;
 	MFInt32   array;
 
-	Grammar::spaces (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, spaces);
 	
 	if (istream >> width)
 	{
-		if (Grammar::spaces (istream, spaces))
+		if (Grammar::WhiteSpacesNoComma (istream, spaces))
 		{
 			if (istream >> height)
 			{
-				if (Grammar::spaces (istream, spaces))
+				if (Grammar::WhiteSpacesNoComma (istream, spaces))
 				{
 					if (istream >> components)
 					{
@@ -182,7 +182,7 @@ throw (Error <INVALID_X3D>,
 						{
 							int32_t pixel;
 							
-							if (Grammar::spaces (istream, spaces) and Grammar::Int32 (istream, pixel))
+							if (Grammar::WhiteSpacesNoComma (istream, spaces) and Grammar::Int32 (istream, pixel))
 								array .emplace_back (pixel);
 
 							else

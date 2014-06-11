@@ -48,33 +48,104 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_H__
 
-#include <cstdlib>
+#include "../JavaScript/X3DJavaScriptEngine.h"
 
 namespace titania {
-namespace math {
+namespace X3D {
 
-inline
-long int
-strtol (const char* str, int base)
+class PeaseBlossom :
+	public X3DJavaScriptEngine
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	///  @name Construction
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+	PeaseBlossom (X3DExecutionContext* const);
 
-	return ::strtoul (str, &endptr, base);
-}
+	///  @name Common members
 
-} // math
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Member access
+
+	virtual
+	const std::string &
+	getVendor () const final override
+	{ return vendor; }
+
+	virtual
+	const std::string &
+	getDescription () const final override
+	{ return description; }
+
+	virtual
+	const std::string &
+	getVersion () const final override
+	{ return version; }
+
+	///  @name Operations
+
+	virtual
+	X3DPtr <X3DJavaScriptContext>
+	createContext (Script*, const std::string &, const basic::uri &) final override;
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream &) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	PeaseBlossom*
+	create (X3DExecutionContext* const)  const;
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	std::string vendor;
+	std::string description;
+	std::string version;
+
+};
+
+} // X3D
 } // titania
 
 #endif

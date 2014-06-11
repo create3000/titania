@@ -48,33 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
 
-#include <cstdlib>
+#include <locale>
+#include <sstream>
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class jsOutputStreamObject
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
+	std::string
+	toString () const
+	{
+		return toLocaleString (std::locale::classic ());
+	}
+
+	std::string
+	toLocaleString (const std::locale & locale) const
+	{
+		std::ostringstream ostringstream;
+
+		ostringstream .imbue (locale);
+
+		toStream (ostringstream);
+
+		return ostringstream .str ();
+	}
+
+	virtual
+	void
+	toStream (std::ostream &) const = 0;
+
+
+protected:
+
+	jsOutputStreamObject ()
+	{ }
+
+};
+
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const jsOutputStreamObject & value)
+{
+	value .toStream (ostream);
+	return ostream;
 }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
-
-	return ::strtoul (str, &endptr, base);
-}
-
-} // math
+} // pb
 } // titania
 
 #endif

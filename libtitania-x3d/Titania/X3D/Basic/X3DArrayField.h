@@ -805,9 +805,9 @@ throw (Error <INVALID_X3D>,
 {
 	if (istream)
 	{
-		std::string whitespaces;
+		std::string whiteSpaces;
 
-		Grammar::whitespaces (istream, whitespaces);
+		Grammar::WhiteSpaces (istream, whiteSpaces);
 
 		if (Grammar::OpenBracket (istream))
 		{

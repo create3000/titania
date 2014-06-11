@@ -677,18 +677,19 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 
 			std::string header;
 
-			if (X3D::Grammar::comment (text, header))
+			if (X3D::Grammar::Comment (text, header))
 			{
 				std::string encoding, specificationVersion, characterEncoding, comment;
 
 				if (X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
 				{
-					std::string whitespaces;
-					X3D::Grammar::whitespaces (text, whitespaces);
+					std::string whiteSpaces;
+
+					X3D::Grammar::WhiteSpaces (text, whiteSpaces);
 
 					std::string worldURL;
 
-					if (X3D::Grammar::comment (text, worldURL))
+					if (X3D::Grammar::Comment (text, worldURL))
 					{
 						const auto scene = getBrowser () -> createX3DFromStream (worldURL, text);
 
@@ -725,7 +726,7 @@ X3DBrowserEditor::getPasteStatus () const
 
 		std::string header;
 
-		if (X3D::Grammar::comment (text, header))
+		if (X3D::Grammar::Comment (text, header))
 		{
 			std::string encoding, specificationVersion, characterEncoding, comment;
 

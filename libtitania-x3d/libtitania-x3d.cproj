@@ -691,7 +691,22 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.h" />
     <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\pbParser.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Parser\Parser.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Context.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Bits\ValueType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Bits\OperatorType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\jsObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\Object.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsValue.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\ObjectPtr.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\ValuePtr.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\Boolean.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\Number.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\ObjectValue.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Parser\Grammar.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1184,7 +1199,9 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\pbParser.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Parser\Parser.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1242,6 +1259,11 @@
     <Folder Include="Titania\X3D\Browser\ParticleSystems\" />
     <Folder Include="scripts\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Values\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Objects\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Bits\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Base\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

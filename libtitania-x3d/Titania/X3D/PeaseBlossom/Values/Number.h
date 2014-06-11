@@ -48,33 +48,124 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_NUMBER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_NUMBER_H__
 
-#include <cstdlib>
+#include "../Values/jsValue.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class Number :
+	public jsValue
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	Number () :
+		number (0)
+	{ }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+	explicit
+	Number (const double value) :
+		number (value)
+	{ }
 
-	return ::strtoul (str, &endptr, base);
-}
+	explicit
+	Number (const jsValue & value) :
+		number (value .toNumber ())
+	{ }
 
-} // math
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::NUMBER; }
+
+	virtual
+	Number &
+	operator = (const jsValue & value) final override
+	{
+		number = value .toNumber ();
+		return *this;
+	}
+
+	virtual
+	Number &
+	operator = (const bool value) final override
+	{
+		number = value;
+		return *this;
+	}
+
+	virtual
+	Number &
+	operator = (const int32_t value) final override
+	{
+		number = value;
+		return *this;
+	}
+
+	virtual
+	Number &
+	operator = (const uint32_t value) final override
+	{
+		number = value;
+		return *this;
+	}
+
+	virtual
+	Number &
+	operator = (const double value) final override
+	{
+		number = value;
+		return *this;
+	}
+
+	virtual
+	Number &
+	operator = (const ObjectPtr & value)
+	{
+		number = bool (value);
+		return *this;
+	}
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return number; }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return number; }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return number; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return number; }
+
+	virtual
+	ObjectPtr
+	toObject () const final override
+	{ return nullptr; }
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << number; }
+
+
+private:
+
+	double number;
+
+};
+
+} // pb
 } // titania
 
 #endif

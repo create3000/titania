@@ -2448,6 +2448,7 @@
     <None Include="Tests\Scripting\X3DNode.wrl" />
     <None Include="Tests\Scripting\V8.x3dv" />
     <None Include="Tests\Scripting\V8-Inline.x3dv" />
+    <None Include="Tests\Scripting\pb\pb.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2581,6 +2582,7 @@
     <Folder Include="Tests\ParticleSystems\" />
     <Folder Include="Tests\Geospatial\" />
     <Folder Include="Tests\Layering\home1\" />
+    <Folder Include="Tests\Scripting\pb\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

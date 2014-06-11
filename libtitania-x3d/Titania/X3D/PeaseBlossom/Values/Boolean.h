@@ -48,33 +48,124 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_BOOLEAN_H__
 
-#include <cstdlib>
+#include "../Values/jsValue.h"
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+class Boolean :
+	public jsValue
 {
-	char* endptr;
+public:
 
-	return ::strtol (str, &endptr, base);
-}
+	Boolean () :
+		boolean (false)
+	{ }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
+	explicit
+	Boolean (const bool value) :
+		boolean (value)
+	{ }
 
-	return ::strtoul (str, &endptr, base);
-}
+	explicit
+	Boolean (const jsValue & value) :
+		boolean (value .toBoolean ())
+	{ }
 
-} // math
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::BOOLEAN; }
+
+	virtual
+	Boolean &
+	operator = (const jsValue & value) final override
+	{
+		boolean = value .toBoolean ();
+		return *this;
+	}
+
+	virtual
+	Boolean &
+	operator = (const bool value) final override
+	{
+		boolean = value;
+		return *this;
+	}
+
+	virtual
+	Boolean &
+	operator = (const int32_t value) final override
+	{
+		boolean = value;
+		return *this;
+	}
+
+	virtual
+	Boolean &
+	operator = (const uint32_t value) final override
+	{
+		boolean = value;
+		return *this;
+	}
+
+	virtual
+	Boolean &
+	operator = (const double value) final override
+	{
+		boolean = value;
+		return *this;
+	}
+
+	virtual
+	Boolean &
+	operator = (const ObjectPtr & value)
+	{
+		boolean = bool (value);
+		return *this;
+	}
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return boolean; }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return boolean; }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return boolean; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return boolean; }
+
+	virtual
+	ObjectPtr
+	toObject () const final override
+	{ return nullptr; }
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << (boolean ? "true" : "false"); }
+
+
+private:
+
+	double boolean;
+
+};
+
+} // pb
 } // titania
 
 #endif

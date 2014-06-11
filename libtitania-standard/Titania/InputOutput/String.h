@@ -70,7 +70,7 @@ public:
 	operator () (std::basic_istream <CharT, Traits> &) const;
 
 	bool
-	test (std::basic_istream <CharT, Traits> &) const;
+	lookahead (std::basic_istream <CharT, Traits> &) const;
 
 
 private:
@@ -112,7 +112,7 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 
 template <class CharT, class Traits>
 bool
-basic_string <CharT, Traits>::test (std::basic_istream <CharT, Traits> & istream) const
+basic_string <CharT, Traits>::lookahead (std::basic_istream <CharT, Traits> & istream) const
 {
 	const auto state = istream .rdstate ();
 

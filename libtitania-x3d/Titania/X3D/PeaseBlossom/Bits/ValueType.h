@@ -48,181 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_PB_PARSER_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_PB_PARSER_H__
-
-#include "../../Parser/X3DParser.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VALUE_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VALUE_TYPE_H__
 
 namespace titania {
-namespace X3D {
-namespace peaseblossom {
+namespace pb {
 
-class Parser :
-	public X3DParser
+enum class ValueType
 {
-public:
-
-	///  @name Construction
-
-	Parser (std::istream & istream, X3DExecutionContext* const);
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Operations
-
-	void
-	parseIntoContext ();
-
-
-private:
-
-	void
-	comments ();
-
-	// A.1 Lexical Grammar
-
-	bool
-	identifier ();
-	
-	bool
-	identifierName (std::string &);
-
-	bool
-	reservedWord (const std::string &);
-
-	bool
-	literal ();
-
-	bool
-	nullLiteral (std::istream &);
-
-	bool
-	booleanLiteral (std::istream &);
-
-	bool
-	numericLiteral ();
-
-	bool
-	decimalLiteral ();
-
-	bool
-	hexIntegerLiteral ();
-
-	// A.2 Number Conversions
-
-	// A.3 Expressions
-
-	bool
-	primaryExpression ();
-
-	bool
-	memberExpression ();
-
-	bool
-	newExpression ();
-
-	bool
-	leftHandSideExpression ();
-
-	bool
-	postfixExpression ();
-
-	bool
-	unaryExpression ();
-
-	bool
-	multiplicativeExpression ();
-
-	bool
-	additiveExpression ();
-
-	bool
-	shiftExpression ();
-
-	bool
-	relationalExpression ();
-
-	bool
-	equalityExpression ();
-
-	bool
-	bitwiseANDExpression ();
-
-	bool
-	bitwiseXORExpression ();
-
-	bool
-	bitwiseORExpression ();
-
-	bool
-	logicalANDExpression ();
-
-	bool
-	logicalORExpression ();
-
-	bool
-	conditionalExpression ();
-
-	bool
-	assignmentExpression ();
-
-	bool
-	expression ();
-
-	// A.4 Statements
-
-	bool
-	statement ();
-
-	bool
-	expressionStatement ();
-
-	// A.5 Functions and Programs
-
-	bool
-	functionDeclaration ();
-
-	void
-	program ();
-
-	void
-	sourceElements ();
-
-	bool
-	sourceElement ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	std::istream & istream;
-	
-	std::string whitespaces;
+	_NULL,
+	UNDEFINED,
+	BOOLEAN,
+	NUMBER,
+	STRING,
+	OBJECT,
+	CUSTOM
 
 };
 
-} // peaseblossom
-} // X3D
+} // pb
 } // titania
 
 #endif

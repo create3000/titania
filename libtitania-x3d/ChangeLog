@@ -1,3 +1,49 @@
+2014-06-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* SFVec2.h:
+	* Parser.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* RegEx.cpp:
+	* Grammar.h:
+	* Parser.cpp:
+	* SFTime.cpp:
+	* SFMatrix4.h:
+	* SFColor.cpp:
+	* SFMatrix3.h:
+	* SFImage.cpp:
+	* Grammar.cpp:
+	* SFString.cpp:
+	* SFRotation4.h:
+	* X3DScalar.cpp:
+	* X3DArrayField.h:
+	* Values.h:
+	* SFColorRGBA.cpp:
+	* PeaseBlossom.h:
+	* PeaseBlossom.cpp:
+	* Parser.h:
+	* Number.h:
+	* Boolean.h:
+	* jsValue.h:
+	* Object.h:
+	* Grammar.h:
+	* ValueType.h:
+	* ValuePtr.h:
+	* Parser.cpp:
+	* jsObject.h:
+	* OperatorType.h:
+	* ObjectPtr.h:
+	* Inline.cpp:
+	* Context.h:
+	* ObjectValue.h:
+	* pbParser.h:
+	* Context.cpp:
+	* pbParser.cpp:
+	* jsOutputStreamObject.h:
+	* X3DScriptingContext.cpp: 
+
 2014-06-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SpiderMonkey.h:

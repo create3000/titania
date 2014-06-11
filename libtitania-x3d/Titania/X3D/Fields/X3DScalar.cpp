@@ -89,15 +89,15 @@ throw (Error <INVALID_X3D>,
 {
 	std::string spaces;
 	
-	Grammar::spaces (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, spaces);
 
-	if (Grammar::_true (istream))
+	if (Grammar::_TRUE (istream))
 	{
 		setValue (true);
 		return;
 	}
 
-	if (Grammar::_false (istream))
+	if (Grammar::_FALSE (istream))
 	{
 		setValue (false);
 		return;
@@ -116,7 +116,7 @@ throw (Error <INVALID_X3D>,
 {
 	std::string spaces;
 	
-	Grammar::spaces (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, spaces);
 
 	istream >> get ();
 
@@ -134,7 +134,7 @@ throw (Error <INVALID_X3D>,
 {
 	std::string spaces;
 	
-	Grammar::spaces (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, spaces);
 
 	istream >> get ();
 
@@ -152,7 +152,7 @@ throw (Error <INVALID_X3D>,
 {
 	std::string spaces;
 	
-	Grammar::spaces (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, spaces);
 
 	Grammar::Int32 (istream, get ());
 

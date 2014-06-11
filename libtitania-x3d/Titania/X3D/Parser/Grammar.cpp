@@ -57,8 +57,8 @@ namespace X3D {
 
 // VRML lexical elements
 // General
-const io::sequence Grammar::whitespaces ("\r\n \t,");
-const io::comment  Grammar::comment ('#');
+const io::sequence Grammar::WhiteSpaces ("\r\n \t,");
+const io::comment  Grammar::Comment ('#');
 
 // Header
 const pcrecpp::RE Grammar::Header ("(VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?");
@@ -69,16 +69,16 @@ const io::string Grammar::COMPONENT ("COMPONENT");
 const io::string Grammar::DEF ("DEF");
 const io::string Grammar::EXPORT ("EXPORT");
 const io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
-const io::string Grammar::_false ("FALSE");
+const io::string Grammar::_FALSE ("FALSE");
 const io::string Grammar::IMPORT ("IMPORT");
 const io::string Grammar::IS ("IS");
 const io::string Grammar::META ("META");
-const io::string Grammar::_null ("NULL");
+const io::string Grammar::_NULL ("NULL");
 const io::string Grammar::PROFILE ("PROFILE");
 const io::string Grammar::PROTO ("PROTO");
 const io::string Grammar::ROUTE ("ROUTE");
 const io::string Grammar::TO ("TO");
-const io::string Grammar::_true ("TRUE");
+const io::string Grammar::_TRUE ("TRUE");
 const io::string Grammar::UNIT ("UNIT");
 const io::string Grammar::USE ("USE");
 
@@ -103,7 +103,7 @@ const io::character Grammar::Period ('.');
 const io::character Grammar::Colon (':');
 
 // Misc
-const io::quoted_string Grammar::string ('\"');
+const io::quoted_string Grammar::String ('\"');
 const io::sequence      Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
 
 // Values
@@ -112,7 +112,7 @@ const io::string Grammar::HEX ("0X");
 
 // Locale
 
-const io::sequence Grammar::spaces ("\r\n \t");
+const io::sequence Grammar::WhiteSpacesNoComma ("\r\n \t");
 
 bool
 Grammar::Int32 (std::istream & istream, int32_t & _value)

@@ -89,7 +89,7 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	                scene (scene),
 	executionContextStack (),
 	      currentComments (),
-	          whitespaces ()
+	          whiteSpaces ()
 {
 	addType (X3DConstants::Parser);
 }
@@ -126,7 +126,7 @@ Parser::getMessageFromError (const X3DError & error)
 
 	istream .clear ();
 
-	size_t      lineNumber = std::count (whitespaces .begin (), whitespaces .end (), '\n') + 1;
+	size_t      lineNumber = std::count (whiteSpaces .begin (), whiteSpaces .end (), '\n') + 1;
 	std::string string     = error .what ();
 
 	filter_control_characters (string);
@@ -329,10 +329,10 @@ Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
 
-	Grammar::whitespaces (istream, whitespaces);
+	Grammar::WhiteSpaces (istream, whiteSpaces);
 
 	while (comment ())
-		Grammar::whitespaces (istream, whitespaces);
+		Grammar::WhiteSpaces (istream, whiteSpaces);
 }
 
 bool
@@ -342,7 +342,7 @@ Parser::comment ()
 
 	std::string _comment;
 
-	if (Grammar::comment (istream, _comment))
+	if (Grammar::Comment (istream, _comment))
 	{
 		currentComments .push_back (_comment);
 		return true;
@@ -358,7 +358,7 @@ Parser::headerStatement (std::string & _encoding, std::string & _specificationVe
 
 	std::string _header;
 
-	if (Grammar::comment (istream, _header))
+	if (Grammar::Comment (istream, _header))
 	{
 		if (Grammar::Header .FullMatch (_header, &_encoding, &_specificationVersion, &_characterEncoding, &_comment))
 			return true;
@@ -718,7 +718,7 @@ Parser::nodeStatement (SFNode & _node)
 			throw Error <INVALID_X3D> ("No name given after USE.");
 	}
 
-	if (Grammar::_null (istream))
+	if (Grammar::_NULL (istream))
 	{
 		_node = nullptr;
 
@@ -1402,7 +1402,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 	auto state = istream .rdstate ();
 	auto pos   = istream .tellg ();
-	auto ws    = whitespaces .size ();
+	auto ws    = whiteSpaces .size ();
 	auto com   = currentComments .size ();
 
 	std::string _accessTypeId;
@@ -1507,7 +1507,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 		istream .clear (state);
 		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
-		whitespaces .resize (ws);
+		whiteSpaces .resize (ws);
 		currentComments .resize (com);
 	}
 
@@ -1934,9 +1934,9 @@ Parser::String (std::string & _value)
 
 	comments ();
 
-	if (Grammar::string (istream, _value))
+	if (Grammar::String (istream, _value))
 	{
-		whitespaces .append (_value);
+		whiteSpaces .append (_value);
 		return true;
 	}
 
@@ -1952,13 +1952,13 @@ Parser::sfboolValue (SFBool* _field)
 
 	comments ();
 
-	if (Grammar::_true (istream))
+	if (Grammar::_TRUE (istream))
 	{
 		_field -> setValue (true);
 		return true;
 	}
 
-	if (Grammar::_false (istream))
+	if (Grammar::_FALSE (istream))
 	{
 		_field -> setValue (false);
 		return true;

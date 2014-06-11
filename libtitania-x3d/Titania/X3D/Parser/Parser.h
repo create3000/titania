@@ -545,7 +545,7 @@ private:
 	X3DScene*                 scene;
 	ExecutionContextStack     executionContextStack;
 	std::vector <std::string> currentComments;
-	std::string               whitespaces;
+	std::string               whiteSpaces;
 
 };
 

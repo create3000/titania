@@ -48,158 +48,26 @@
  *
  ******************************************************************************/
 
-#include "pbParser.h"
-
 #include "../../Execution/X3DExecutionContext.h"
 
-// Grammar
+#include "Parser.h"
 
-#include <Titania/InputOutput.h>
+#include "../Parser/Grammar.h"
+
+#include <Titania/Math/Utility/strtol.h>
 
 namespace titania {
-namespace X3D {
-namespace peaseblossom {
-
-class Grammar
-{
-public:
-
-	///  @name General
-	static const io::sequence whitespaces;
-
-	// Keywords
-
-	static const io::string _false;
-	static const io::string _null;
-	static const io::string _true;
-
-	static const std::set <std::string> Keyword;
-	static const std::set <std::string> FutureReservedWord;
-	
-	// Operator
-	static const io::character Multiplication;
-	static const io::character Division;
-	static const io::character Remainder;
-	static const io::character Addition;
-	static const io::character Subtraction;
-	static const io::string    LeftShift;
-	static const io::string    RightShift;
-	static const io::string    UnsignedRightShift;
-	static const io::character Less;
-	static const io::character Greater;
-	static const io::string    LessEqual;
-	static const io::string    GreaterEqual;
-	static const io::string    instanceof;
-	static const io::string    in;
-	static const io::string    Equal;
-	static const io::string    NotEqual;
-	static const io::string    StrictEqual;
-	static const io::string    StrictNotEqual;
-	static const io::character BitwiseAND;
-	static const io::character BitwiseXOR;
-	static const io::character BitwiseOR;
-	static const io::string    LogicalAND;
-	static const io::string    LogicalOR;
-	static const io::character QuestionMark;
-	static const io::character Colon;
-	static const io::character Assignment;
-	static const io::string    MultiplicationAssigment;
-	static const io::string    DivisionAssignment;
-	static const io::string    RemainderAssignment;
-	static const io::string    AdditionAssignment;
-	static const io::string    SubtractionAssignment;
-	static const io::string    LeftShiftAssignment;
-	static const io::string    RightShiftAssignment;
-	static const io::string    UnsignedRightShiftAssignment;
-	static const io::string    BitwiseANDAssignment;
-	static const io::string    BitwiseXORAssignment;
-	static const io::string    BitwiseORAssignment;
-
-	///  @name Values
-	static const io::string hex;
-	static const io::string HEX;
-
-};
-
-// General
-const io::sequence Grammar::whitespaces ("\r\n \t");
-
-// Keywords
-const io::string Grammar::_false ("false");
-const io::string Grammar::_null ("null");
-const io::string Grammar::_true ("true");
-
-const std::set <std::string> Grammar::Keyword = {
-	"break",    "do",       "instanceof", "typeof",
-	"case",     "else",     "new",        "var",
-	"catch",    "finally",  "return",     "void",
-	"continue", "for",      "switch",     "while",
-	"debugger", "function", "this",       "with",
-	"default",  "if",       "throw",
-	"delete",   "in",       "try"
-
-};
-
-const std::set <std::string> Grammar::FutureReservedWord = {
-	"class", "enum",   "extends", "super",
-	"const", "export", "import"
-
-};
-	
-// Operator
-const io::character Grammar::Multiplication ('*');
-const io::character Grammar::Division ('/');
-const io::character Grammar::Remainder ('%');
-const io::character Grammar::Addition ('+');
-const io::character Grammar::Subtraction ('-');
-const io::string    Grammar::LeftShift ("<<");
-const io::string    Grammar::RightShift (">>");
-const io::string    Grammar::UnsignedRightShift (">>>");
-const io::character Grammar::Less ('<');
-const io::character Grammar::Greater ('>');
-const io::string    Grammar::LessEqual ("<=");
-const io::string    Grammar::GreaterEqual (">=");
-const io::string    Grammar::instanceof ("instanceof");
-const io::string    Grammar::in ("in");
-const io::string    Grammar::Equal ("==");
-const io::string    Grammar::NotEqual ("!=");
-const io::string    Grammar::StrictEqual ("===");
-const io::string    Grammar::StrictNotEqual ("!==");
-const io::character Grammar::BitwiseAND ('&');
-const io::character Grammar::BitwiseXOR ('^');
-const io::character Grammar::BitwiseOR ('|');
-const io::string    Grammar::LogicalAND ("&&");
-const io::string    Grammar::LogicalOR ("||");
-const io::character Grammar::QuestionMark ('?');
-const io::character Grammar::Colon (':');
-const io::character Grammar::Assignment ('=');
-const io::string    Grammar::MultiplicationAssigment ("*=");
-const io::string    Grammar::DivisionAssignment ("/=");
-const io::string    Grammar::RemainderAssignment ("%=");
-const io::string    Grammar::AdditionAssignment ("+=");
-const io::string    Grammar::SubtractionAssignment ("-=");
-const io::string    Grammar::LeftShiftAssignment ("<<=");
-const io::string    Grammar::RightShiftAssignment (">>=");
-const io::string    Grammar::UnsignedRightShiftAssignment (">>>=");
-const io::string    Grammar::BitwiseANDAssignment ("&=");
-const io::string    Grammar::BitwiseXORAssignment ("^=");
-const io::string    Grammar::BitwiseORAssignment ("|=");
-
-// Values
-const io::string Grammar::hex ("0x");
-const io::string Grammar::HEX ("0X");
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+namespace pb {
 
 const std::string Parser::componentName  = "PeaseBlossom";
 const std::string Parser::typeName       = "Parser";
 const std::string Parser::containerField = "parser";
 
-Parser::Parser (std::istream & istream, X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	  X3DParser (),
-	    istream (istream),
-	whitespaces ()
+Parser::Parser (std::istream & istream, X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3D::X3DParser (),
+	         istream (istream),
+	     whiteSpaces ()
 { }
 
 void
@@ -209,18 +77,20 @@ Parser::parseIntoContext ()
 
 	try
 	{
+		istream .imbue (std::locale::classic ());
+
 		program ();
 	}
-	catch (const X3DError & error)
+	catch (const X3D::X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		throw;
 	}
 }
 
 void
 Parser::comments ()
 {
-	Grammar::whitespaces (istream, whitespaces);
+	Grammar::WhiteSpaces (istream, whiteSpaces);
 }
 
 // A.1 Lexical Grammar
@@ -229,15 +99,23 @@ bool
 Parser::identifier ()
 {
 	//__LOG__ << std::endl;
+	
+	comments ();
+
+	const auto state    = istream .rdstate ();
+	const auto position = istream .tellg ();
 
 	std::string _identifierName;
 
 	if (identifierName (_identifierName))
 	{
-		if (reservedWord (_identifierName))
-			throw Error <INVALID_X3D> ("reservedWord");
+		if (not reservedWord (_identifierName))
+		{
+			return true;
+		}
 
-		return true;
+		istream .clear (state);
+		istream .seekg (position - istream .tellg (), std::ios_base::cur);
 	}
 
 	return false;
@@ -248,9 +126,45 @@ Parser::identifierName (std::string & _identifierName)
 {
 	//__LOG__ << std::endl;
 
-	// ...
+
+	if (identifierStart (_identifierName))
+	{
+		while (identifierStart (_identifierName) or identifierPart (_identifierName))
+			;
+
+		return true;
+	}
 
 	return false;
+}
+
+bool
+Parser::identifierStart (std::string & _identifierStart)
+{
+	//__LOG__ << std::endl;
+
+	// ...
+
+	static const io::sequence IdentifierStart ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_");
+
+	return IdentifierStart (istream, _identifierStart);
+}
+
+bool
+Parser::identifierPart (std::string & _identifierPart)
+{
+	//__LOG__ << std::endl;
+
+	// ...
+
+	static const io::sequence UnicodeDigit ("1234567890");
+
+	bool result = false;
+
+	while (identifierStart (_identifierPart) or UnicodeDigit (istream, _identifierPart))
+		result = true;
+
+	return result;
 }
 
 bool
@@ -264,90 +178,113 @@ Parser::reservedWord (const std::string & _string)
 	if (Grammar::FutureReservedWord .count (_string))
 		return true;
 
-	std::istringstream istream (_string);
-
-	if (nullLiteral (istream))
+	if (_string == "null")
 		return true;
 
-	if (booleanLiteral (istream))
+	if (_string == "false")
+		return true;
+
+	if (_string == "true")
 		return true;
 
 	return false;
 }
 
 bool
-Parser::literal ()
+Parser::literal (ValuePtr & _value)
 {
 	//__LOG__ << std::endl;
 
-	if (nullLiteral (istream))
+	if (nullLiteral (_value))
 		return true;
 
-	if (booleanLiteral (istream))
+	if (booleanLiteral (_value))
 		return true;
 
-	if (numericLiteral ())
+	if (numericLiteral (_value))
 		return true;
 
-	// ...
+	//if (stringLiteral ())
+	//	return true;
+
+	//if (regularExpressionLiteral ())
+	//	return true;
 
 	return false;
 }
 
 bool
-Parser::nullLiteral (std::istream & istream /*, Value & _value*/)
+Parser::nullLiteral (ValuePtr & _value)
 {
 	//__LOG__ << std::endl;
 
 	comments ();
 
 	if (Grammar::_null (istream))
+	{
+		_value .reset (new ObjectValue ());
 		return true;
+	}
 
 	return false;
 }
 
 bool
-Parser::booleanLiteral (std::istream & istream /*, Value & _value*/)
+Parser::booleanLiteral (ValuePtr & _value)
 {
 	//__LOG__ << std::endl;
 
 	comments ();
 
 	if (Grammar::_true (istream))
+	{
+		_value .reset (new Boolean (true));
 		return true;
+	}
 
 	if (Grammar::_false (istream))
+	{
+		_value .reset (new Boolean (false));
 		return true;
+	}
 
 	return false;
 }
 
 bool
-Parser::numericLiteral (/*Value & _value*/)
+Parser::numericLiteral (ValuePtr & _value)
 {
 	//__LOG__ << std::endl;
 
-	if (hexIntegerLiteral ())
+	if (binaryIntegerLiteral (_value))
 		return true;
 
-	if (decimalLiteral ())
+	if (octalIntegerLiteral (_value))
+		return true;
+
+	if (hexIntegerLiteral (_value))
+		return true;
+
+	if (decimalLiteral (_value))
 		return true;
 
 	return false;
 }
 
 bool
-Parser::decimalLiteral (/*Value & _value*/)
+Parser::decimalLiteral (ValuePtr & _value)
 {
 	//__LOG__ << std::endl;
 
 	comments ();
 
-	double _value;
+	double _number;
 
-	if (istream >> _value)
+	if (istream >> std::dec >> _number)
+	{
+		_value .reset (new Number (_number));
 		return true;
+	}
 
 	istream .clear ();
 
@@ -355,7 +292,53 @@ Parser::decimalLiteral (/*Value & _value*/)
 }
 
 bool
-Parser::hexIntegerLiteral (/*Value & _value*/)
+Parser::binaryIntegerLiteral (ValuePtr & _value)
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::bin (istream) or Grammar::BIN (istream))
+	{
+		std::string _digits;
+	
+		if (Grammar::BinaryDigits (istream, _digits))
+		{
+			_value .reset (new Number (math::strtoul (_digits .c_str (), 2)));
+			return true;
+		}
+
+		istream .clear ();
+	}
+
+	return false;
+}
+
+bool
+Parser::octalIntegerLiteral (ValuePtr & _value)
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::oct (istream) or Grammar::OCT (istream))
+	{
+		uint32_t _number;
+
+		if (istream >> std::oct >> _number)
+		{
+			_value .reset (new Number (_number));
+			return true;
+		}
+
+		istream .clear ();
+	}
+
+	return false;
+}
+
+bool
+Parser::hexIntegerLiteral (ValuePtr & _value)
 {
 	//__LOG__ << std::endl;
 
@@ -363,10 +346,13 @@ Parser::hexIntegerLiteral (/*Value & _value*/)
 
 	if (Grammar::hex (istream) or Grammar::HEX (istream))
 	{
-		uint32_t _value;
+		uint32_t _number;
 
-		if (istream >> std::hex >> _value)
+		if (istream >> std::hex >> _number)
+		{
+			_value .reset (new Number (_number));
 			return true;
+		}
 
 		istream .clear ();
 	}
@@ -382,16 +368,46 @@ bool
 Parser::primaryExpression ()
 {
 	//__LOG__ << std::endl;
+	
+	comments ();
 
-	// ...
+	if (Grammar::_this (istream))
+	{
+		// ...
+		return true;
+	}
 
 	if (identifier ())
 		return true;
 
-	if (literal ())
+	ValuePtr _value;
+
+	if (literal (_value))
+	{
+		if (_value)
+			__LOG__ << *_value << std::endl;
+		else
+			__LOG__ << "undefined" << std::endl;
+
 		return true;
+	}
 
 	// ...
+
+	if (Grammar::OpenParenthesis (istream))
+	{
+		if (expression ())
+		{
+			comments ();
+
+			if (Grammar::CloseParenthesis (istream))
+				return true;
+
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected ')' after expression.");
+		}
+
+		throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '('.");
+	}
 
 	return false;
 }
@@ -480,7 +496,7 @@ Parser::multiplicativeExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("multiplicativeExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '*'.");
 			}
 
 			if (Grammar::Division (istream))
@@ -490,7 +506,7 @@ Parser::multiplicativeExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("multiplicativeExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '/'.");
 			}
 
 			if (Grammar::Remainder (istream))
@@ -500,7 +516,7 @@ Parser::multiplicativeExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("multiplicativeExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '/'.");
 			}
 
 			return true;
@@ -528,7 +544,7 @@ Parser::additiveExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("additiveExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '/+'.");
 			}
 
 			if (Grammar::Subtraction (istream))
@@ -538,7 +554,7 @@ Parser::additiveExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("additiveExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '-'.");
 			}
 
 			return true;
@@ -566,7 +582,7 @@ Parser::shiftExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("shiftExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '<<'.");
 			}
 
 			if (Grammar::UnsignedRightShift (istream))
@@ -576,7 +592,7 @@ Parser::shiftExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("shiftExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '>>>'.");
 			}
 
 			if (Grammar::RightShift (istream))
@@ -586,7 +602,7 @@ Parser::shiftExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("shiftExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '>>'.");
 			}
 
 			return true;
@@ -614,7 +630,7 @@ Parser::relationalExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("relationalExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '<='.");
 			}
 
 			if (Grammar::GreaterEqual (istream))
@@ -624,7 +640,7 @@ Parser::relationalExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("relationalExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '>='.");
 			}
 
 			if (Grammar::Less (istream))
@@ -634,7 +650,7 @@ Parser::relationalExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("relationalExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '<'.");
 			}
 
 			if (Grammar::Greater (istream))
@@ -644,7 +660,7 @@ Parser::relationalExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("relationalExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '>'.");
 			}
 
 			if (Grammar::instanceof (istream))
@@ -654,7 +670,7 @@ Parser::relationalExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("relationalExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after 'instanceof'.");
 			}
 
 			if (Grammar::in (istream))
@@ -664,7 +680,7 @@ Parser::relationalExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("relationalExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after 'in'.");
 			}
 
 			return true;
@@ -692,7 +708,7 @@ Parser::equalityExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("equalityExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '==='.");
 			}
 
 			if (Grammar::StrictNotEqual (istream))
@@ -702,7 +718,7 @@ Parser::equalityExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("equalityExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '!=='.");
 			}
 
 			if (Grammar::Equal (istream))
@@ -712,7 +728,7 @@ Parser::equalityExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("equalityExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '=='.");
 			}
 
 			if (Grammar::NotEqual (istream))
@@ -722,7 +738,7 @@ Parser::equalityExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("equalityExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '!='.");
 			}
 
 			return true;
@@ -743,7 +759,7 @@ Parser::bitwiseANDExpression ()
 		{
 			comments ();
 			
-			if (Grammar::LogicalAND .test (istream))
+			if (Grammar::LogicalAND .lookahead (istream))
 				return true;
 
 			if (Grammar::BitwiseAND (istream))
@@ -753,7 +769,7 @@ Parser::bitwiseANDExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("bitwiseANDExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '&'.");
 			}
 
 			return true;
@@ -781,7 +797,7 @@ Parser::bitwiseXORExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("bitwiseXORExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '^'.");
 			}
 
 			return true;
@@ -802,7 +818,7 @@ Parser::bitwiseORExpression ()
 		{
 			comments ();
 
-			if (Grammar::LogicalOR .test (istream))
+			if (Grammar::LogicalOR .lookahead (istream))
 				return true;
 		
 			if (Grammar::BitwiseOR (istream))
@@ -812,7 +828,7 @@ Parser::bitwiseORExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("bitwiseORExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '|'.");
 			}
 
 			return true;
@@ -840,7 +856,7 @@ Parser::logicalANDExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("logicalANDExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '&&'.");
 			}
 
 			return true;
@@ -868,7 +884,7 @@ Parser::logicalORExpression ()
 					continue;
 				}
 
-				throw Error <INVALID_X3D> ("logicalORExpression");
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '||'.");
 			}
 
 			return true;
@@ -900,9 +916,11 @@ Parser::conditionalExpression ()
 						return true;
 					}
 				}
+
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after ':'.");
 			}
 
-			throw Error <INVALID_X3D> ("conditionalExpression");
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '?'.");
 		}
 	
 		return true;
@@ -916,10 +934,111 @@ Parser::assignmentExpression ()
 {
 	//__LOG__ << std::endl;
 
+	const auto state    = istream .rdstate ();
+	const auto position = istream .tellg ();
+
+	if (leftHandSideExpression ())
+	{
+		comments ();
+
+		if (Grammar::Assignment (istream))
+		{
+			if (assignmentExpression ())
+				return true;
+			
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '='.");
+		}
+
+		OperatorType _assignmentOperator;
+
+		if (assignmentOperator (_assignmentOperator))
+		{
+			if (assignmentExpression ())
+				return true;
+	
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after '='."); // XXX
+		}
+
+		istream .clear (state);
+		istream .seekg (position - istream .tellg (), std::ios_base::cur);
+	}
+
 	if (conditionalExpression ())
 		return true;
 
-	// ...
+	return false;
+}
+
+bool
+Parser::assignmentOperator (OperatorType & _assignmentOperator)
+{
+	comments ();
+
+	if (Grammar::MultiplicationAssigment (istream))
+	{
+		_assignmentOperator = OperatorType::MULTIPLICATION_ASSIGMENT;
+		return true;
+	}
+
+	if (Grammar::DivisionAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::DIVISION_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::RemainderAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::REMAINDER_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::AdditionAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::ADDITION_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::SubtractionAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::SUBTRACTION_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::LeftShiftAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::LEFT_SHIFT_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::RightShiftAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::RIGHT_SHIFT_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::UnsignedRightShiftAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::BitwiseANDAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::BITWISE_AND_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::BitwiseXORAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::BITWISE_XOR_ASSIGNMENT;
+		return true;
+	}
+
+	if (Grammar::BitwiseORAssignment (istream))
+	{
+		_assignmentOperator = OperatorType::BITWISE_OR_ASSIGNMENT;
+		return true;
+	}
 
 	return false;
 }
@@ -930,9 +1049,24 @@ Parser::expression ()
 	//__LOG__ << std::endl;
 
 	if (assignmentExpression ())
-		return true;
+	{
+		for (;;)
+		{
+			comments ();
 
-	// ...
+			if (Grammar::Comma (istream))
+			{
+				if (assignmentExpression ())
+				{
+					continue;
+				}
+
+				throw X3D::Error <X3D::INVALID_X3D> ("Expected expression after ','.");
+			}
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -946,6 +1080,9 @@ Parser::statement ()
 
 	if (expressionStatement ())
 		return true;
+	
+	if (emptyStatement ())
+		return true;
 
 	return false;
 }
@@ -958,6 +1095,24 @@ Parser::expressionStatement ()
 	// [lookahead ? {{, function}]
 
 	if (expression ())
+	{
+		if (Grammar::Semicolon (istream))
+			return true;
+
+		throw X3D::Error <X3D::INVALID_X3D> ("Expected ';' after expression.");
+	}
+
+	return false;
+}
+
+bool
+Parser::emptyStatement ()
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::Semicolon (istream))
 		return true;
 
 	return false;
@@ -1002,6 +1157,5 @@ Parser::sourceElement ()
 	return false;
 }
 
-} // peaseblossom
-} // X3D
+} // pb
 } // titania

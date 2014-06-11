@@ -48,33 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#include "../JavaScript/PeaseBlossom.h"
 
-#include <cstdlib>
+#include "../Execution/X3DExecutionContext.h"
+#include "PeaseBlossom/Context.h"
 
 namespace titania {
-namespace math {
+namespace X3D {
 
-inline
-long int
-strtol (const char* str, int base)
+const std::string PeaseBlossom::componentName  = "Browser";
+const std::string PeaseBlossom::typeName       = "PeaseBlossom";
+const std::string PeaseBlossom::containerField = "javaScript";
+
+PeaseBlossom::PeaseBlossom (X3DExecutionContext* const executionContext) :
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DJavaScriptEngine (),
+	             vendor ("Titania"),
+	        description (),
+	            version ()
 {
-	char* endptr;
-
-	return ::strtol (str, &endptr, base);
+	setName ("PeaseBlossom");
 }
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
+PeaseBlossom*
+PeaseBlossom::create (X3DExecutionContext* const executionContext)  const
 {
-	char* endptr;
-
-	return ::strtoul (str, &endptr, base);
+	return new PeaseBlossom (executionContext);
 }
 
-} // math
+void
+PeaseBlossom::initialize ()
+{
+	X3DJavaScriptEngine::initialize ();
+
+	description = "PeaseBlossom";
+	version     = "0.0.0";
+}
+
+X3DPtr <X3DJavaScriptContext>
+PeaseBlossom::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
+{
+	return new peaseblossom::Context (script, ecmascript, uri);
+}
+
+void
+PeaseBlossom::toStream (std::ostream & stream) const
+{
+	stream
+		<< "\tCurrent Javascript Engine" << std::endl
+		<< "\t\tName: " << vendor << ' ' << getName () << std::endl
+		<< "\t\tDescription: " << description << std::endl
+		<< "\t\tVersion: " << version;
+}
+
+void
+PeaseBlossom::dispose ()
+{
+	X3DJavaScriptEngine::dispose ();
+}
+
+} // X3D
 } // titania
-
-#endif

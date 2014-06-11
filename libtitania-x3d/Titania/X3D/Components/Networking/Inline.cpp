@@ -171,7 +171,7 @@ Inline::setScene (ScenePtr && value)
 
 	if (checkLoadState () == COMPLETE_STATE)
 	{
-		scene -> isLive () = getExecutionContext () -> isLive ();
+		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
 		scene -> isInternal (getExecutionContext () -> getRootContext () -> isInternal ());
 		scene -> getRootNodes () .addInterest (group -> children ());
 	}

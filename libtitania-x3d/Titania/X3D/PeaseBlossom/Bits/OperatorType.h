@@ -48,33 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
-
-#include <cstdlib>
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_OPERATOR_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_OPERATOR_TYPE_H__
 
 namespace titania {
-namespace math {
+namespace pb {
 
-inline
-long int
-strtol (const char* str, int base)
+enum class OperatorType
 {
-	char* endptr;
+	ASSIGNMENT,
+	MULTIPLICATION_ASSIGMENT,
+	DIVISION_ASSIGNMENT,
+	REMAINDER_ASSIGNMENT,
+	ADDITION_ASSIGNMENT,
+	SUBTRACTION_ASSIGNMENT,
+	LEFT_SHIFT_ASSIGNMENT,
+	RIGHT_SHIFT_ASSIGNMENT,
+	UNSIGNED_RIGHT_SHIFT_ASSIGNMENT,
+	BITWISE_AND_ASSIGNMENT,
+	BITWISE_XOR_ASSIGNMENT,
+	BITWISE_OR_ASSIGNMENT
 
-	return ::strtol (str, &endptr, base);
-}
+};
 
-inline
-unsigned long int
-strtoul (const char* str, int base)
-{
-	char* endptr;
-
-	return ::strtoul (str, &endptr, base);
-}
-
-} // math
+} // pb
 } // titania
 
 #endif

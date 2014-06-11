@@ -72,8 +72,8 @@ public:
 	Hex (std::istream &, uint32_t &);
 
 	///  @name General
-	static const io::sequence whitespaces;
-	static const io::comment  comment;
+	static const io::sequence WhiteSpaces;
+	static const io::comment  Comment;
 
 	///  @name Header
 	static const pcrecpp::RE Header;
@@ -84,16 +84,16 @@ public:
 	static const io::string DEF;
 	static const io::string EXPORT;
 	static const io::string EXTERNPROTO;
-	static const io::string _false;
+	static const io::string _FALSE;
 	static const io::string IMPORT;
 	static const io::string IS;
 	static const io::string META;
-	static const io::string _null;
+	static const io::string _NULL;
 	static const io::string PROFILE;
 	static const io::string PROTO;
 	static const io::string ROUTE;
 	static const io::string TO;
-	static const io::string _true;
+	static const io::string _TRUE;
 	static const io::string UNIT;
 	static const io::string USE;
 
@@ -117,12 +117,12 @@ public:
 	static const io::character Period;
 	static const io::character Colon;
 
-	static const io::quoted_string string;
+	static const io::quoted_string String;
 	static const io::sequence      ComponentName;
 
 	// Locale
 
-	static const io::sequence spaces; // Whitespaces without comma
+	static const io::sequence WhiteSpacesNoComma;
 
 private:
 
