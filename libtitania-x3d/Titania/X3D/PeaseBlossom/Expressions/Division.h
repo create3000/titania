@@ -57,23 +57,23 @@ namespace titania {
 namespace pb {
 
 class Division :
-	public jsNumber
+	public jsNumberType
 {
 public:
 
-	///  @name Construction
+	///  @name Member access
 
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::EXPRESSION; }
+	{ return EXPRESSION; }
 
 	///  @name Operations
 
 	virtual
 	double
-	toNumber () const final override
-	{ return lhs -> toNumber () / rhs -> toNumber (); }
+	toDouble () const final override
+	{ return lhs -> toDouble () / rhs -> toDouble (); }
 
 
 protected:
@@ -81,15 +81,15 @@ protected:
 	///  @name Friends
 
 	friend
-	jsNumber*
+	jsNumberType*
 	division (const var &, const var &);
 
 	///  @name Construction
 
 	Division (const var & lhs, const var & rhs) :
-		jsNumber (),
-		     lhs (lhs),
-		     rhs (rhs)
+		jsNumberType (),
+		         lhs (lhs),
+		         rhs (rhs)
 	{ }
 
 
@@ -106,11 +106,11 @@ private:
 ///  @name division.
 
 inline
-jsNumber*
+jsNumberType*
 division (const var & lhs, const var & rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (lhs -> toNumber () / rhs -> toNumber ());
+		return new Number (lhs -> toDouble () / rhs -> toDouble ());
 
 	return new Division (lhs, rhs);
 }

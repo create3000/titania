@@ -48,46 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
 
-#include <iostream>
+#include "../Primitives/jsBasicNumber.h"
+#include "../Primitives/jsBasicObject.h"
 
 namespace titania {
 namespace pb {
 
-class jsInputStreamObject
+class NumberObject :
+	public jsBasicObject,
+	public jsBasicNumber
 {
 public:
+
+	///  @name Construction
+
+	NumberObject () :
+		jsBasicObject (),
+		jsBasicNumber ()
+	{ }
+
+	explicit
+	NumberObject (const double value) :
+		jsBasicObject (),
+		jsBasicNumber (value)
+	{ }
+
+	explicit
+	NumberObject (const jsValue & value) :
+		jsBasicObject (),
+		jsBasicNumber (value)
+	{ }
+
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return NUMBER_OBJECT; }
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBool () const final override
+	{ return jsBasicNumber::toBool (); }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return jsBasicNumber::toInt32 (); }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return jsBasicNumber::toUInt32 (); }
+
+	virtual
+	double
+	toDouble () const final override
+	{ return jsBasicNumber::toDouble (); }
+
+	virtual
+	var
+	toObject () const final override
+	{ return jsBasicObject::toObject () ; }
 
 	///  @name Input/Output
 
 	virtual
 	void
-	fromStream (std::istream &) = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	jsInputStreamObject ()
-	{ }
+	toStream (std::ostream & ostream) const final override
+	{ jsBasicNumber::toStream (ostream); }
 
 };
-
-///  @relates jsInputStreamObject
-///  @name Input/Output operators.
-
-///  Extraction operator for jsInputStreamObject.
-template <class CharT, class Traits>
-inline
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, jsInputStreamObject & object)
-{
-	object .fromStream (istream);
-	return istream;
-}
 
 } // pb
 } // titania

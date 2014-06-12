@@ -51,20 +51,20 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
 
-#include "../Values/jsObject.h"
+#include "../Primitives/jsBasicObject.h"
 
 namespace titania {
 namespace pb {
 
 class Object :
-	public jsObject
+	public jsBasicObject
 {
 public:
 
 	///  @name Construction
 
 	Object () :
-		jsObject ()
+		jsBasicObject ()
 	{ }
 
 

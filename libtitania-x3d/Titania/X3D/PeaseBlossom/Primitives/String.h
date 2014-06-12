@@ -51,82 +51,41 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 
-#include "../Values/jsString.h"
-
-#include <glibmm/ustring.h>
+#include "../Primitives/jsBasicString.h"
 
 namespace titania {
 namespace pb {
 
 class String :
-	public jsString
+	public jsBasicString
 {
 public:
 
 	///  @name Construction
 
 	String () :
-		jsString (),
-		  string ()
+		jsBasicString ()
 	{ }
 
 	explicit
 	String (const Glib::ustring & value) :
-		jsString (),
-		  string (value)
+		jsBasicString (value)
 	{ }
 
 	explicit
 	String (Glib::ustring && value) :
-		jsString (),
-		  string ()
-	{
-		const_cast <Glib::ustring &> (string) .swap (value);
-		value .clear ();
-	}
+		jsBasicString (std::move (value))
+	{ }
 
 	explicit
-	String (const std::string & value) :
-		jsString (),
-		  string (value)
+	String (const std::string::value_type* value) :
+		jsBasicString (value)
 	{ }
 
 	explicit
 	String (const jsValue & value) :
-		jsString (),
-		  string (value .toString ())
+		jsBasicString (value)
 	{ }
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return ValueType::STRING; }
-
-	///  @name Operations
-
-	virtual
-	bool
-	toBoolean () const final override
-	{ return not string .empty (); }
-
-	virtual
-	std::string
-	toString () const final override
-	{ return string; }
-
-	virtual
-	std::string
-	toLocaleString (const std::locale &) const final override
-	{ return string; }
-
-
-private:
-
-	///  @name Members
-
-	const Glib::ustring string;
 
 };
 

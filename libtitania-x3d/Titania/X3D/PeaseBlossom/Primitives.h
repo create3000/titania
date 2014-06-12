@@ -54,8 +54,10 @@
 #include "Primitives/Boolean.h"
 #include "Primitives/Null.h"
 #include "Primitives/Number.h"
+#include "Primitives/NumberObject.h"
 #include "Primitives/Object.h"
 #include "Primitives/String.h"
+#include "Primitives/StringObject.h"
 #include "Primitives/Undefined.h"
 
 #endif

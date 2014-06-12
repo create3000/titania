@@ -48,33 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
 
-#include "../Primitives/jsBasicNumber.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class Number :
-	public jsBasicNumber
+class jsStringType :
+	virtual public jsValue
 {
 public:
 
+	///  @name Operations
+
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toBool (); }
+
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toBool (); }
+
+	virtual
+	double
+	toDouble () const override
+	{ return toBool (); }
+
+	virtual
+	var
+	toObject () const override
+	{ return var (); }
+
+	virtual
+	std::string
+	toLocaleString (const std::locale &) const override
+	{ return toString (); }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << toString (); }
+
+
+protected:
+
 	///  @name Construction
 
-	Number () :
-		jsBasicNumber ()
-	{ }
-
-	explicit
-	Number (const double value) :
-		jsBasicNumber (value)
-	{ }
-
-	explicit
-	Number (const jsValue & value) :
-		jsBasicNumber (value)
+	jsStringType ()
 	{ }
 
 };

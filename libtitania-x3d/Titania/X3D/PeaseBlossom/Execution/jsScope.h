@@ -51,14 +51,14 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
 
-#include "../Base/jsInputStreamObject.h"
+#include "../Base/jsInputStreamType.h"
 #include "../Bits/Exception.h"
 
 namespace titania {
 namespace pb {
 
 class jsScope :
-	public jsInputStreamObject
+	public jsInputStreamType
 {
 public:
 

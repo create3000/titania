@@ -1,5 +1,42 @@
 2014-06-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Primitives.h:
+	* Exception.h:
+	* jsValue.h:
+	* jsString.h:
+	* jsNumber.h:
+	* jsObject.h:
+	* Null.h:
+	* ValueType.h:
+	* jsBoolean.h:
+	* Object.h:
+	* String.h:
+	* jsScope.h:
+	* Number.h:
+	* Boolean.h:
+	* jsStringType.h:
+	* jsNumberType.h:
+	* jsBooleanType.h:
+	* Division.h:
+	* Addition.h:
+	* Undefined.h:
+	* Context.cpp:
+	* Remainder.h:
+	* jsInputStreamType.h:
+	* jsOutputStreamType.h:
+	* NumberObject.h:
+	* Subtraction.h:
+	* StringObject.h:
+	* jsInputStreamObject.h:
+	* jsBasicNumber.h:
+	* jsBasicObject.h:
+	* jsBasicString.h:
+	* jsOutputStreamObject.h:
+	* Multiplication.h: 
+
+2014-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* SFVec2.h:

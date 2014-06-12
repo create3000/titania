@@ -48,58 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
 
-#include "../Primitives/Null.h"
+#include "../Bits/jsConstants.h"
 #include "../Values/jsValue.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
-class jsBoolean :
-	public jsValue
+class jsNumberType :
+	virtual public jsValue
 {
 public:
 
 	///  @name Operations
 
 	virtual
+	bool
+	toBool () const override
+	{ return toDouble (); }
+
+	virtual
 	int32_t
-	toInt32 () const final override
-	{ return toBoolean (); }
+	toInt32 () const override
+	{ return toDouble (); }
 
 	virtual
 	uint32_t
-	toUInt32 () const final override
-	{ return toBoolean (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return toBoolean (); }
+	toUInt32 () const override
+	{ return toDouble (); }
 
 	virtual
 	var
-	toObject () const final override
-	{ return null (); }
+	toObject () const override
+	{ return var (); }
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << (toBoolean () ? "true" : "false"); }
+	toStream (std::ostream &) const override;
 
 
 protected:
 
 	///  @name Construction
 
-	jsBoolean ()
+	jsNumberType ()
 	{ }
 
 };
+
+inline
+void
+jsNumberType::toStream (std::ostream & ostream) const
+{
+	const double value = toDouble ();
+
+	if (std::isnan (value))
+		ostream << "NaN";
+
+	else if (value == Infinity ())
+		ostream << "Infinity";
+
+	else if (value == -Infinity ())
+		ostream << "-Infinity";
+
+	else
+		ostream << toDouble ();
+}
 
 } // pb
 } // titania

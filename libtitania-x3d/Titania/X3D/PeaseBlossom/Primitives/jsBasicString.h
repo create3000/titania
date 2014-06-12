@@ -48,34 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
 
-#include "../Primitives/jsBasicNumber.h"
+#include "../Values/jsStringType.h"
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-class Number :
-	public jsBasicNumber
+class jsBasicString :
+	public jsStringType
 {
 public:
 
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return STRING; }
+
+	Glib::ustring::size_type
+	getLength () const
+	{ return string .length (); }
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBool () const override
+	{ return not string .empty (); }
+
+	virtual
+	std::string
+	toString () const override
+	{ return string; }
+
+
+protected:
+
 	///  @name Construction
 
-	Number () :
-		jsBasicNumber ()
+	jsBasicString () :
+		jsStringType (),
+		      string ()
 	{ }
 
 	explicit
-	Number (const double value) :
-		jsBasicNumber (value)
+	jsBasicString (const Glib::ustring & value) :
+		jsStringType (),
+		      string (value)
 	{ }
 
 	explicit
-	Number (const jsValue & value) :
-		jsBasicNumber (value)
+	jsBasicString (Glib::ustring && value) :
+		jsStringType (),
+		      string ()
+	{
+		const_cast <Glib::ustring &> (string) .swap (value);
+		value .clear ();
+	}
+
+	explicit
+	jsBasicString (const std::string::value_type* value) :
+		jsStringType (),
+		      string (value)
 	{ }
+
+	explicit
+	jsBasicString (const jsValue & value) :
+		jsStringType (),
+		      string (value .toString ())
+	{ }
+
+
+private:
+
+	///  @name Members
+
+	const Glib::ustring string;
 
 };
 

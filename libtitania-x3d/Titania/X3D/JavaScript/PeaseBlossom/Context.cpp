@@ -95,6 +95,11 @@ Context::initialize ()
 
 	try
 	{
+		pb::NumberObject number (12345);
+		pb::StringObject string ("abcd");
+
+		getBrowser () -> println (string);
+
 		const pb::ProgramPtr program (new pb::Program (istream));
 
 		getBrowser () -> println ("istream: ", SFBool (istream), " : ", chrono::now () - t0);

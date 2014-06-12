@@ -48,58 +48,69 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
 
-#include "../Primitives/Null.h"
-#include "../Values/jsValue.h"
+#include <locale>
+#include <sstream>
 
 namespace titania {
 namespace pb {
 
-class jsString :
-	public jsValue
+class jsOutputStreamType
 {
 public:
 
 	///  @name Operations
 
 	virtual
-	int32_t
-	toInt32 () const final override
-	{ return toBoolean (); }
+	std::string
+	toString () const
+	{
+		return toLocaleString (std::locale::classic ());
+	}
 
 	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toBoolean (); }
+	std::string
+	toLocaleString (const std::locale & locale) const
+	{
+		std::ostringstream ostringstream;
 
-	virtual
-	double
-	toNumber () const final override
-	{ return toBoolean (); }
+		ostringstream .imbue (locale);
 
-	virtual
-	var
-	toObject () const final override
-	{ return null (); }
+		toStream (ostringstream);
+
+		return ostringstream .str ();
+	}
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << toString (); }
+	toStream (std::ostream &) const = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	jsString ()
+	jsOutputStreamType ()
 	{ }
 
 };
+
+///  @relates jsOutputStreamType
+///  @name Input/Output operators.
+
+///  Insertion operator for jsOutputStreamType.
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const jsOutputStreamType & value)
+{
+	value .toStream (ostream);
+	return ostream;
+}
 
 } // pb
 } // titania

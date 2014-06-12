@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 
-#include "../Values/jsBoolean.h"
+#include "../Values/jsBooleanType.h"
 
 namespace titania {
 namespace pb {
@@ -59,50 +59,75 @@ namespace pb {
 #undef False
 #undef True
 
-class Boolean :
-	public jsBoolean
+class FalseType :
+	public jsBooleanType
 {
 public:
-
-	///  @name Construction
-
-	Boolean () :
-		jsBoolean (),
-		  boolean (false)
-	{ }
-
-	explicit
-	Boolean (const bool value) :
-		jsBoolean (),
-		  boolean (value)
-	{ }
-
-	explicit
-	Boolean (const jsValue & value) :
-		jsBoolean (),
-		  boolean (value .toBoolean ())
-	{ }
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return ValueType::BOOLEAN; }
 
 	///  @name Operations
 
 	virtual
 	bool
-	toBoolean () const final override
-	{ return boolean; }
+	toBool () const final override
+	{ return false; }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << "false"; }
 
 
-private:
+protected:
 
-	///  @name Members
+	///  @name Friends
 
-	const double boolean;
+	friend
+	const var &
+	False ();
+
+	///  @name Construction
+
+	FalseType () :
+		jsBooleanType ()
+	{ }
+
+};
+
+class TrueType :
+	public jsBooleanType
+{
+public:
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBool () const final override
+	{ return true; }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << "true"; }
+
+
+protected:
+
+	///  @name Friends
+
+	friend
+	const var &
+	True ();
+
+	///  @name Construction
+
+	TrueType () :
+		jsBooleanType ()
+	{ }
 
 };
 
@@ -113,7 +138,7 @@ inline
 const var &
 False ()
 {
-	static const var value (new Boolean (false));
+	static const var value (new FalseType ());
 
 	return value;
 }
@@ -122,7 +147,7 @@ inline
 const var &
 True ()
 {
-	static const var value (new Boolean (true));
+	static const var value (new TrueType ());
 
 	return value;
 }

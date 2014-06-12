@@ -48,34 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
 
-#include "../Primitives/jsBasicNumber.h"
+#include "../Values/jsNumberType.h"
 
 namespace titania {
 namespace pb {
 
-class Number :
-	public jsBasicNumber
+class jsBasicNumber :
+	public jsNumberType
 {
 public:
 
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return NUMBER; }
+
+	///  @name Operations
+
+	virtual
+	double
+	toDouble () const override
+	{ return number; }
+
+
+protected:
+
 	///  @name Construction
 
-	Number () :
-		jsBasicNumber ()
+	jsBasicNumber () :
+		jsNumberType (),
+		      number (0)
 	{ }
 
 	explicit
-	Number (const double value) :
-		jsBasicNumber (value)
+	jsBasicNumber (const double value) :
+		jsNumberType (),
+		      number (value)
 	{ }
 
 	explicit
-	Number (const jsValue & value) :
-		jsBasicNumber (value)
+	jsBasicNumber (const jsValue & value) :
+		jsNumberType (),
+		      number (value .toDouble ())
 	{ }
+
+
+private:
+
+	///  @name Members
+
+	const double number;
 
 };
 

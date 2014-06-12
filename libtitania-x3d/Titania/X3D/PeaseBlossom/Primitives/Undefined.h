@@ -53,8 +53,8 @@
 
 #include "../Bits/jsConstants.h"
 #include "../Primitives/Null.h"
-#include "../Values/var.h"
 #include "../Values/jsValue.h"
+#include "../Values/var.h"
 
 namespace titania {
 namespace pb {
@@ -69,13 +69,13 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::UNDEFINED; }
+	{ return UNDEFINED; }
 
-	///  @name Operatins
+	///  @name Operations
 
 	virtual
 	bool
-	toBoolean () const final override
+	toBool () const final override
 	{ return 0; }
 
 	virtual
@@ -90,7 +90,7 @@ public:
 
 	virtual
 	double
-	toNumber () const final override
+	toDouble () const final override
 	{ return NaN (); }
 
 	virtual

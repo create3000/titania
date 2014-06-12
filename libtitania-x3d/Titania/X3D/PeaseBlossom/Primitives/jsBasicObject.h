@@ -48,33 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BASIC_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BASIC_OBJECT_H__
 
-#include "../Primitives/jsBasicNumber.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class Number :
-	public jsBasicNumber
+class jsBasicObject :
+	virtual public jsValue
 {
 public:
 
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return OBJECT; }
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBool () const override
+	{ return true; }
+
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return 1; }
+
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return 1; }
+
+	virtual
+	double
+	toDouble () const override
+	{ return 1; }
+
+	virtual
+	var
+	toObject () const override
+	{ return var (const_cast <jsBasicObject*> (this)); }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[object Object]"; }
+
+
+protected:
+
 	///  @name Construction
 
-	Number () :
-		jsBasicNumber ()
-	{ }
-
-	explicit
-	Number (const double value) :
-		jsBasicNumber (value)
-	{ }
-
-	explicit
-	Number (const jsValue & value) :
-		jsBasicNumber (value)
+	jsBasicObject ()
 	{ }
 
 };

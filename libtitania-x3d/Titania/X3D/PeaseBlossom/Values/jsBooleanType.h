@@ -48,15 +48,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_TYPE_H__
 
 #include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class jsObject :
+class jsBooleanType :
 	public jsValue
 {
 public:
@@ -66,48 +66,43 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::OBJECT; }
+	{ return BOOLEAN; }
 
 	///  @name Operations
 
 	virtual
-	bool
-	toBoolean () const final override
-	{ return true; }
-
-	virtual
 	int32_t
 	toInt32 () const final override
-	{ return 1; }
+	{ return toBool (); }
 
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return 1; }
+	{ return toBool (); }
 
 	virtual
 	double
-	toNumber () const final override
-	{ return 1; }
+	toDouble () const final override
+	{ return toBool (); }
 
 	virtual
 	var
 	toObject () const final override
-	{ return var (const_cast <jsObject*> (this)); }
+	{ return var (); }
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "[object Object]"; }
+	toStream (std::ostream & ostream) const override
+	{ ostream << (toBool () ? "true" : "false"); }
 
 
 protected:
 
 	///  @name Construction
 
-	jsObject ()
+	jsBooleanType ()
 	{ }
 
 };

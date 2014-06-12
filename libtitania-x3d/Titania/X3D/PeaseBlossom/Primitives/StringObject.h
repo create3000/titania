@@ -48,69 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
 
-#include <locale>
-#include <sstream>
+#include "../Primitives/jsBasicObject.h"
+#include "../Primitives/jsBasicString.h"
 
 namespace titania {
 namespace pb {
 
-class jsOutputStreamObject
+class StringObject :
+	public jsBasicObject,
+	public jsBasicString
 {
 public:
+
+	///  @name Construction
+
+	StringObject () :
+		jsBasicString ()
+	{ }
+
+	explicit
+	StringObject (const Glib::ustring & value) :
+		jsBasicObject (),
+		jsBasicString (value)
+	{ }
+
+	explicit
+	StringObject (Glib::ustring && value) :
+		jsBasicObject (),
+		jsBasicString (std::move (value))
+	{ }
+
+	explicit
+	StringObject (const jsValue & value) :
+		jsBasicObject (),
+		jsBasicString (value)
+	{ }
+
+	explicit
+	StringObject (const std::string::value_type* value) :
+		jsBasicObject (),
+		jsBasicString (value)
+	{ }
+
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return STRING_OBJECT; }
 
 	///  @name Operations
 
 	virtual
-	std::string
-	toString () const
-	{
-		return toLocaleString (std::locale::classic ());
-	}
+	bool
+	toBool () const final override
+	{ return jsBasicString::toBool (); }
 
 	virtual
-	std::string
-	toLocaleString (const std::locale & locale) const
-	{
-		std::ostringstream ostringstream;
+	int32_t
+	toInt32 () const final override
+	{ return jsBasicString::toInt32 (); }
 
-		ostringstream .imbue (locale);
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return jsBasicString::toUInt32 (); }
 
-		toStream (ostringstream);
+	virtual
+	double
+	toDouble () const final override
+	{ return jsBasicString::toDouble (); }
 
-		return ostringstream .str ();
-	}
+	virtual
+	var
+	toObject () const final override
+	{ return jsBasicObject::toObject (); }
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream &) const = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	jsOutputStreamObject ()
-	{ }
+	toStream (std::ostream & ostream) const final override
+	{ jsBasicString::toStream (ostream); }
 
 };
-
-///  @relates jsOutputStreamObject
-///  @name Input/Output operators.
-
-///  Insertion operator for jsOutputStreamObject.
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const jsOutputStreamObject & value)
-{
-	value .toStream (ostream);
-	return ostream;
-}
 
 } // pb
 } // titania

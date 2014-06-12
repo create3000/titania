@@ -69,14 +69,14 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::NULL_OBJECT; }
+	{ return NULL_OBJECT; }
 
-	///  @name Operatins
+	///  @name Operations
 
 	virtual
 	bool
-	toBoolean () const final override
-	{ return 0; }
+	toBool () const final override
+	{ return false; }
 
 	virtual
 	int32_t
@@ -90,7 +90,7 @@ public:
 
 	virtual
 	double
-	toNumber () const final override
+	toDouble () const final override
 	{ return 1; }
 
 	virtual

@@ -54,7 +54,7 @@
 namespace titania {
 namespace pb {
 
-enum class ValueType
+enum ValueType
 {
 	UNDEFINED,
 	BOOLEAN,
@@ -62,6 +62,9 @@ enum class ValueType
 	STRING,
 	NULL_OBJECT,
 	OBJECT,
+	BOOLEAN_OBJECT,
+	NUMBER_OBJECT,
+	STRING_OBJECT,
 	EXPRESSION,
 	CUSTOM
 

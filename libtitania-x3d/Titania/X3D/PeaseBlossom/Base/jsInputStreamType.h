@@ -48,77 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
 
-#include "../Bits/jsConstants.h"
-#include "../Values/jsValue.h"
-
-#include <cmath>
+#include <iostream>
 
 namespace titania {
 namespace pb {
 
-class jsNumber :
-	public jsValue
+class jsInputStreamType
 {
 public:
-
-	///  @name Operations
-
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toNumber (); }
-
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return toNumber (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toNumber (); }
-
-	virtual
-	var
-	toObject () const final override
-	{ return null (); }
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	fromStream (std::istream &) = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	jsNumber ()
+	jsInputStreamType ()
 	{ }
 
 };
 
+///  @relates jsInputStreamType
+///  @name Input/Output operators.
+
+///  Extraction operator for jsInputStreamType.
+template <class CharT, class Traits>
 inline
-void
-jsNumber::toStream (std::ostream & ostream) const
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, jsInputStreamType & object)
 {
-	const double value = toNumber ();
-	
-	if (std::isnan (value))
-		ostream << "NaN";
-
-	else if (value == Infinity ())
-		ostream << "Infinity";
-
-	else if (value == -Infinity ())
-		ostream << "-Infinity";
-
-	else
-		ostream << toNumber ();
+	object .fromStream (istream);
+	return istream;
 }
 
 } // pb

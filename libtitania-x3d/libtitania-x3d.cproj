@@ -694,16 +694,15 @@
     <None Include="Titania\X3D\PeaseBlossom\Parser\Parser.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Context.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\jsValue.h" />
     <None Include="Titania\X3D\PeaseBlossom\Parser\Grammar.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\ValueType.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\jsScope.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\Program.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\jsBoolean.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\jsNumber.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Boolean.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\Number.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\Number.h">
+      <DependentUpon>NumberObject.h</DependentUpon>
+    </None>
     <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Addition.h" />
@@ -715,14 +714,21 @@
     <None Include="Titania\X3D\PeaseBlossom\Parser\AssignmentOperatorType.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Undefined.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Null.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\jsObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\var.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\jsString.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\String.h" />
     <None Include="Titania\X3D\PeaseBlossom\Bits\ustring.h" />
     <None Include="Titania\X3D\PeaseBlossom\Bits\Exception.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsInputStreamObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\jsInputStreamType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsBooleanType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsNumberType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsStringType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBasicObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBasicNumber.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\NumberObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBasicString.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\StringObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1099,7 +1105,6 @@
     <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptEngine.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptContext.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsProfileInfo.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsComponentInfo.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExternProtoDeclaration.cpp" />
@@ -1220,6 +1225,7 @@
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Values\var.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\jsScope.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

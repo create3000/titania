@@ -59,23 +59,23 @@ namespace titania {
 namespace pb {
 
 class Remainder :
-	public jsNumber
+	public jsNumberType
 {
 public:
 
-	///  @name Construction
+	///  @name Member access
 
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::EXPRESSION; }
+	{ return EXPRESSION; }
 
 	///  @name Operations
 
 	virtual
 	double
-	toNumber () const final override
-	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
+	toDouble () const final override
+	{ return std::fmod (lhs -> toDouble (), rhs -> toDouble ()); }
 
 
 protected:
@@ -83,15 +83,15 @@ protected:
 	///  @name Friends
 
 	friend
-	jsNumber*
+	jsNumberType*
 	remainder (const var &, const var &);
 
 	///  @name Construction
 
-	Remainder (const var &lhs, const var &rhs) :
-		jsNumber (),
-		     lhs (lhs),
-		     rhs (rhs)
+	Remainder (const var & lhs, const var & rhs) :
+		jsNumberType (),
+		         lhs (lhs),
+		         rhs (rhs)
 	{ }
 
 
@@ -108,11 +108,11 @@ private:
 ///  @name remainder.
 
 inline
-jsNumber*
+jsNumberType*
 remainder (const var & lhs, const var & rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (std::fmod (lhs -> toNumber (), rhs -> toNumber ()));
+		return new Number (std::fmod (lhs -> toDouble (), rhs -> toDouble ()));
 
 	return new Remainder (lhs, rhs);
 }
