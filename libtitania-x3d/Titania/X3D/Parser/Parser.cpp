@@ -1940,8 +1940,6 @@ Parser::String (std::string & _value)
 		return true;
 	}
 
-	istream .clear ();
-
 	return false;
 }
 

@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+#undef False
+#undef True
+
 class Boolean :
 	public jsBoolean
 {
@@ -102,6 +105,27 @@ private:
 	const double boolean;
 
 };
+
+///  @relates Boolean
+///  @name true & false values.
+
+inline
+const var &
+False ()
+{
+	static const var value (new Boolean (false));
+
+	return value;
+}
+
+inline
+const var &
+True ()
+{
+	static const var value (new Boolean (true));
+
+	return value;
+}
 
 } // pb
 } // titania

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.0, http://titania.create3000.de"
-META "modified" "Sun, 01 Jun 2014 03:17:11 GMT"
+META "modified" "Thu, 12 Jun 2014 14:23:13 GMT"
 
 Transform {
   children [
@@ -61,7 +61,12 @@ a - (b * (c + d));
 0 instanceof 0;
 0 in 0;
 a = a + b, a += b;
+1 / 0;
+-1 / 0;
+'\\'single quoted string\\'';
+\"\\\"double quoted string\\\"\";
 Browser;
+a +=
 "
   directOutput TRUE
 }
@@ -73,9 +78,10 @@ DEF Script2 Script {
 
 function _initialize ()
 {
-	print (null instanceof Object);
-	print (typeof null);
-	print (null);
+	print ('' ? 1 : 0);
+	print ('a' ? 1 : 0);
+	print ('0' ? 1 : 0);
+	print ('1' ? 1 : 0);
 }
 
 function set_time (value, time)

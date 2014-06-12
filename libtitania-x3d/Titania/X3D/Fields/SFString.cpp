@@ -153,14 +153,17 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string spaces;
-	
-	Grammar::WhiteSpacesNoComma (istream, spaces);
-	
+	std::string whiteSpaces;
+
+	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
 	std::string string;
-	
+
 	if (Grammar::String (istream, string))
 		setValue (string);
+
+	else
+		istream .setstate (std::ios_base::failbit);
 }
 
 void
@@ -168,9 +171,9 @@ SFString::toStream (std::ostream & ostream) const
 {
 	ostream << '"';
 
-	for (const auto & c : getValue () .raw ())
+	for (const auto & character : getValue () .raw ())
 	{
-		switch (c)
+		switch (character)
 		{
 			case '"':
 			case '\\':
@@ -182,7 +185,7 @@ SFString::toStream (std::ostream & ostream) const
 				break;
 		}
 
-		ostream << c;
+		ostream << character;
 	}
 
 	ostream << '"';

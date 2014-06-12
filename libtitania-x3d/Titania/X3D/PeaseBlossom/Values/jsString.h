@@ -48,33 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_H__
 
-#include "../Base/jsInputStreamObject.h"
-#include "../Bits/Exception.h"
+#include "../Primitives/Null.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class jsScope :
-	public jsInputStreamObject
+class jsString :
+	public jsValue
 {
 public:
 
-	/// @name Input/Output
+	///  @name Operations
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return toBoolean (); }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return toBoolean (); }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return toBoolean (); }
+
+	virtual
+	var
+	toObject () const final override
+	{ return null (); }
+
+	///  @name Input/Output
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Exception <SYNTAX_ERROR>) final override;
+	toStream (std::ostream & ostream) const final override
+	{ ostream << toString (); }
 
 
 protected:
 
 	///  @name Construction
 
-	jsScope ()
+	jsString ()
 	{ }
 
 };

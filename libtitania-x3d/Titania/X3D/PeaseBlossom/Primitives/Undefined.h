@@ -91,7 +91,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return NaN; }
+	{ return NaN (); }
 
 	virtual
 	var

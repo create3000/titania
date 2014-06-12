@@ -63,12 +63,14 @@ public:
 
 	///  @name Operations
 
+	virtual
 	std::string
 	toString () const
 	{
 		return toLocaleString (std::locale::classic ());
 	}
 
+	virtual
 	std::string
 	toLocaleString (const std::locale & locale) const
 	{
@@ -100,6 +102,7 @@ protected:
 ///  @relates jsOutputStreamObject
 ///  @name Input/Output operators.
 
+///  Insertion operator for jsOutputStreamObject.
 template <class CharT, class Traits>
 inline
 std::basic_ostream <CharT, Traits> &

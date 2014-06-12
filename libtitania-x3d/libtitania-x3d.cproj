@@ -700,7 +700,6 @@
     <None Include="Titania\X3D\PeaseBlossom\Values\ValueType.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\jsScope.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\Program.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Execution\Exception.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\jsBoolean.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\jsNumber.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Boolean.h" />
@@ -714,12 +713,16 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Remainder.h" />
     <None Include="Titania\X3D\PeaseBlossom\Bits\jsConstants.h" />
     <None Include="Titania\X3D\PeaseBlossom\Parser\AssignmentOperatorType.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\String.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Undefined.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Null.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\jsObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\var.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsString.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\String.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Bits\ustring.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Bits\Exception.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\jsInputStreamObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1216,6 +1219,7 @@
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Values\var.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Execution\jsScope.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

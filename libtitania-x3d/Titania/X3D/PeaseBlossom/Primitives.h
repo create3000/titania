@@ -52,9 +52,10 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
 
 #include "Primitives/Boolean.h"
+#include "Primitives/Null.h"
 #include "Primitives/Number.h"
 #include "Primitives/Object.h"
+#include "Primitives/String.h"
 #include "Primitives/Undefined.h"
-#include "Values/var.h"
 
 #endif

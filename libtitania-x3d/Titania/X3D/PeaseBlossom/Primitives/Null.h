@@ -56,7 +56,10 @@
 namespace titania {
 namespace pb {
 
-class NullObject :
+#undef Null
+#undef null
+
+class Null :
 	public jsValue
 {
 public:
@@ -93,7 +96,7 @@ public:
 	virtual
 	var
 	toObject () const final override
-	{ return var (const_cast <NullObject*> (this)); }
+	{ return var (const_cast <Null*> (this)); }
 
 	///  @name Input/Output
 
@@ -113,7 +116,7 @@ protected:
 
 	///  @name Construction
 
-	NullObject () :
+	Null () :
 		jsValue ()
 	{ }
 
@@ -126,7 +129,7 @@ inline
 const var &
 null ()
 {
-	static const var value (new NullObject ());
+	static const var value (new Null ());
 
 	return value;
 }

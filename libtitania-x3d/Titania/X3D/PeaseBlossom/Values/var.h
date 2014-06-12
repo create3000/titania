@@ -101,6 +101,7 @@ public:
 ///  @relates var
 ///  @name Input/Output operators.
 
+///  Insertion operator for var.
 template <class CharT, class Traits>
 inline
 std::basic_ostream <CharT, Traits> &

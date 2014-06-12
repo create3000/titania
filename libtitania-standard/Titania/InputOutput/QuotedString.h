@@ -74,7 +74,7 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	const CharT delimiter;
+	const int_type delimiter;
 
 };
 
@@ -89,49 +89,37 @@ template <class CharT, class Traits>
 bool
 basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
-	std::basic_string <CharT> parsed;
-
-	if (istream .peek () == (int_type) delimiter)
+	if (istream .peek () == delimiter)
 	{
 		istream .get ();
 
+		std::basic_string <CharT> characters;
+
 		while (istream)
 		{
-			const int_type c = istream .peek ();
-	
-			if (istream .eof ())
+			int_type c = istream .get ();
+
+			if (c == delimiter)
 			{
-				istream .setstate (std::ios_base::failbit);
-				return false;
-			}
-
-			if (c == '\\')
-			{
-				istream .get ();
-
-				const int_type c = istream .peek ();
-
-				if (istream .eof ())
-				{
-					istream .setstate (std::ios_base::failbit);
-					return false;
-				}
-
-				if (not (c == (int_type) delimiter or c == (int_type) '\\'))
-					parsed .push_back ('\\');
-			}
-			else if (c == (int_type) delimiter)
-			{
-				istream .get ();
-				string = std::move (parsed);
+				string = std::move (characters);
 				return true;
 			}
+			else if (c == '\\')
+			{
+				if (istream)
+				{
+					c = istream .get ();
 
-			parsed .push_back (istream .get ());
+					if (not (c == delimiter or c == (int_type) '\\'))
+						characters .push_back ('\\');
+				}
+				else
+					return false;
+			}
+
+			characters .push_back (c);
 		}
 	}
-
-	istream .setstate (std::ios_base::failbit);
 
 	return false;
 }

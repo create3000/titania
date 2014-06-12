@@ -51,10 +51,12 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 
-#include "../Execution/Exception.h"
 #include "../Execution/jsScope.h"
 #include "../Parser/AssignmentOperatorType.h"
 #include "../Primitives.h"
+
+#include <iostream>
+#include <tuple>
 
 namespace titania {
 namespace pb {
@@ -65,20 +67,31 @@ public:
 
 	///  @name Construction
 
-	Parser (std::istream & istream, jsScope* const);
+	Parser (jsScope* const, std::istream & istream);
 
 	///  @name Operations
 
 	void
-	parseIntoContext ();
+	parseIntoScope ()
+	throw (Exception <SYNTAX_ERROR>);
 
 
 private:
 
+	using State = std::tuple <std::ios_base::iostate, std::istream::pos_type>;
+
+	// Operations
+
 	void
-	comments ();
+	setState (const State & value);
+
+	State
+	getState ();
 
 	// A.1 Lexical Grammar
+
+	void
+	comments ();
 
 	bool
 	identifier ();
@@ -118,6 +131,9 @@ private:
 
 	bool
 	hexIntegerLiteral (var &);
+
+	bool
+	stringLiteral (var &);
 
 	// A.2 Number Conversions
 

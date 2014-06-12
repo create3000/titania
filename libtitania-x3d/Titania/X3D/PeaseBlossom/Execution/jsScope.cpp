@@ -48,17 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_TYPES_STRING_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_TYPES_STRING_H__
+#include "jsScope.h"
 
-#include <glibmm/ustring.h>
+#include "../Parser/Parser.h"
 
 namespace titania {
 namespace pb {
 
-using String = Glib::ustring;
+void
+jsScope::fromStream (std::istream & istream)
+throw (Exception <SYNTAX_ERROR>)
+{
+	Parser (this, istream) .parseIntoScope ();
+}
 
 } // pb
 } // titania
-
-#endif

@@ -48,101 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_EXCEPTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_EXCEPTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
 
-#include <exception>
-#include <string>
+#include <iostream>
 
 namespace titania {
 namespace pb {
 
-enum ExceptionType
-{
-	ERROR,
-	EVAL_ERROR,
-	RANGE_ERROR,
-	REFERENCE_ERROR,
-	SYNTAX_ERROR,
-	TYPE_ERROR,
-	URI_ERROR
-
-};
-
-class jsException :
-	public std::exception
+class jsInputStreamObject
 {
 public:
 
-	///  @name Member access
+	///  @name Input/Output
 
 	virtual
-	const char*
-	what () const
-	noexcept (true) final override
-	{ return message .c_str (); }
-
-	ExceptionType
-	getType () const
-	noexcept (true)
-	{ return type; }
-
-	const std::string &
-	toString () const
-	noexcept (true)
-	{ return message; }
-
-	///  @name Destruction
-
-	virtual
-	~jsException ()
-	noexcept (true)
-	{ }
+	void
+	fromStream (std::istream &) = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	explicit
-	jsException (const ExceptionType type, const std::string & message) :
-		   type (type),
-		message (message)
+	jsInputStreamObject ()
 	{ }
-
-private:
-
-	///  @name Members
-
-	ExceptionType     type;
-	const std::string message;
 
 };
 
-///  @relates jsException
-///  @name Input/Output operations
+///  @relates jsInputStreamObject
+///  @name Input/Output operators.
 
-///  Insertion operator for X3DError.
-template <class StringT, class Traits>
+///  Extraction operator for jsInputStreamObject.
+template <class CharT, class Traits>
 inline
-std::basic_ostream <typename StringT::value_type, Traits> &
-operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const jsException & error)
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, jsInputStreamObject & object)
 {
-	return ostream << error .toString ();
+	object .fromStream (istream);
+	return istream;
 }
-
-template <ExceptionType Type>
-class Exception :
-	public jsException
-{
-public:
-
-	explicit
-	Exception (const std::string & message) :
-		jsException (Type, message)
-	{ }
-
-};
 
 } // pb
 } // titania

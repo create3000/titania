@@ -1,3 +1,8 @@
+2014-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Comment.h:
+	* QuotedString.h: 
+
 2014-06-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* String.h:

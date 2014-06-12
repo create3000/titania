@@ -48,34 +48,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 
-#include "../Base/jsInputStreamObject.h"
-#include "../Bits/Exception.h"
+#include "../Values/jsString.h"
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-class jsScope :
-	public jsInputStreamObject
+class String :
+	public jsString
 {
 public:
 
-	/// @name Input/Output
-
-	virtual
-	void
-	fromStream (std::istream & istream)
-	throw (Exception <SYNTAX_ERROR>) final override;
-
-
-protected:
-
 	///  @name Construction
 
-	jsScope ()
+	String () :
+		jsString (),
+		  string ()
 	{ }
+
+	explicit
+	String (const Glib::ustring & value) :
+		jsString (),
+		  string (value)
+	{ }
+
+	explicit
+	String (Glib::ustring && value) :
+		jsString (),
+		  string ()
+	{
+		const_cast <Glib::ustring &> (string) .swap (value);
+		value .clear ();
+	}
+
+	explicit
+	String (const std::string & value) :
+		jsString (),
+		  string (value)
+	{ }
+
+	explicit
+	String (const jsValue & value) :
+		jsString (),
+		  string (value .toString ())
+	{ }
+
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::STRING; }
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return not string .empty (); }
+
+	virtual
+	std::string
+	toString () const final override
+	{ return string; }
+
+	virtual
+	std::string
+	toLocaleString (const std::locale &) const final override
+	{ return string; }
+
+
+private:
+
+	///  @name Members
+
+	const Glib::ustring string;
 
 };
 

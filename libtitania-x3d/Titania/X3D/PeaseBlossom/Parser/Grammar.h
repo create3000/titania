@@ -76,14 +76,14 @@ public:
 
 	// Keywords
 
+	static const io::string _this;
 	static const io::string _false;
-	static const io::string _null;
 	static const io::string _true;
+	static const io::string null;
 
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
 
-	static const io::string _this;
 
 	// Operator
 	static const io::character Multiplication;
@@ -152,9 +152,10 @@ const io::character Grammar::OpenBrace ('{');
 const io::character Grammar::CloseBrace ('}');
 
 // Keywords
+const io::string Grammar::_this ("this");
 const io::string Grammar::_false ("false");
-const io::string Grammar::_null ("null");
 const io::string Grammar::_true ("true");
+const io::string Grammar::null ("null");
 
 const std::set <std::string> Grammar::Keyword = {
 	"break",    "do",       "instanceof", "typeof",
@@ -172,8 +173,6 @@ const std::set <std::string> Grammar::FutureReservedWord = {
 	"const", "export", "import"
 
 };
-
-const io::string Grammar::_this ("this");
 
 // Operator
 const io::character Grammar::Multiplication ('*');

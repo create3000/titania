@@ -48,60 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_ASSIGNMENT_OPERATOR_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_ASSIGNMENT_OPERATOR_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 
+#include "../Base/jsOutputStreamObject.h"
+
+#include <exception>
 #include <map>
 #include <sstream>
+#include <string>
 
 namespace titania {
 namespace pb {
 
-enum class AssignmentOperatorType
+enum ExceptionType
 {
-	MULTIPLICATION_ASSIGMENT,
-	DIVISION_ASSIGNMENT,
-	REMAINDER_ASSIGNMENT,
-	ADDITION_ASSIGNMENT,
-	SUBTRACTION_ASSIGNMENT,
-	LEFT_SHIFT_ASSIGNMENT,
-	RIGHT_SHIFT_ASSIGNMENT,
-	UNSIGNED_RIGHT_SHIFT_ASSIGNMENT,
-	BITWISE_AND_ASSIGNMENT,
-	BITWISE_XOR_ASSIGNMENT,
-	BITWISE_OR_ASSIGNMENT
+	ERROR,
+	EVAL_ERROR,
+	RANGE_ERROR,
+	REFERENCE_ERROR,
+	SYNTAX_ERROR,
+	TYPE_ERROR,
+	URI_ERROR
 
 };
 
 ///  @relates AssignmentOperatorType
 ///  @name Input/Output operators.
 
-///  Insertion operator for AssignmentOperatorType.
 template <class CharT, class Traits>
 inline
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const AssignmentOperatorType value)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ExceptionType value)
+noexcept (true)
 {
-	static const std::map <AssignmentOperatorType, std::string> assignmentOperators = {
-		std::make_pair (AssignmentOperatorType::MULTIPLICATION_ASSIGMENT,        "*="),
-		std::make_pair (AssignmentOperatorType::DIVISION_ASSIGNMENT,             "/="),
-		std::make_pair (AssignmentOperatorType::REMAINDER_ASSIGNMENT,            "%="),
-		std::make_pair (AssignmentOperatorType::ADDITION_ASSIGNMENT,             "+="),
-		std::make_pair (AssignmentOperatorType::SUBTRACTION_ASSIGNMENT,          "-="),
-		std::make_pair (AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT,           "<<="),
-		std::make_pair (AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT,          ">>="),
-		std::make_pair (AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT, ">>>="),
-		std::make_pair (AssignmentOperatorType::BITWISE_AND_ASSIGNMENT,          "&="),
-		std::make_pair (AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT,          "^="),
-		std::make_pair (AssignmentOperatorType::BITWISE_OR_ASSIGNMENT,           "|=")
+	static const std::map <ExceptionType, std::string> exceptionTypes = {
+		std::make_pair (ExceptionType::ERROR,           "Error"),
+		std::make_pair (ExceptionType::EVAL_ERROR,      "EvalError"),
+		std::make_pair (ExceptionType::RANGE_ERROR,     "RangeError"),
+		std::make_pair (ExceptionType::REFERENCE_ERROR, "ReferenceError"),
+		std::make_pair (ExceptionType::SYNTAX_ERROR,    "SyntaxError"),
+		std::make_pair (ExceptionType::TYPE_ERROR,      "TypeError"),
+		std::make_pair (ExceptionType::URI_ERROR,       "URIError")
 	};
 
-	return ostream << assignmentOperators .at (value);
+	return ostream << exceptionTypes .at (value);
 }
 
 inline
 std::string
-to_string (const AssignmentOperatorType type)
+to_string (const ExceptionType type)
+noexcept (true)
 {
 	std::ostringstream osstream;
 
@@ -109,6 +106,91 @@ to_string (const AssignmentOperatorType type)
 
 	return osstream .str ();
 }
+
+/**
+ *  Base class to represent a JavaScript exception.
+ */
+class jsException :
+	public std::exception,
+	public jsOutputStreamObject
+{
+public:
+
+	///  @name Member access
+
+	virtual
+	const char*
+	what () const
+	noexcept (true) final override
+	{ return message .c_str (); }
+
+	virtual
+	ExceptionType
+	getType () const
+	noexcept (true) = 0;
+
+	const std::string &
+	getMessage () const
+	noexcept (true)
+	{ return message; }
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const
+	noexcept (true) final override
+	{ ostream << getType () << ": " << message; }
+
+	///  @name Destruction
+
+	virtual
+	~jsException ()
+	noexcept (true)
+	{ }
+
+
+protected:
+
+	///  @name Construction
+
+	explicit
+	jsException (const std::string & message) :
+		      std::exception (),
+		jsOutputStreamObject (),
+		             message (message)
+	{ }
+
+
+private:
+
+	///  @name Members
+
+	const std::string message;
+
+};
+
+/**
+ *  Template to represent a JavaScript exception.
+ *
+ *  @param  ExceptionType  Type of exeception.
+ */
+template <ExceptionType type>
+class Exception :
+	public jsException
+{
+public:
+
+	explicit
+	Exception (const std::string & message) :
+		jsException (message)
+	{ }
+
+	virtual
+	ExceptionType
+	getType () const
+	noexcept (true) final override
+	{ return type; }
+
+};
 
 } // pb
 } // titania

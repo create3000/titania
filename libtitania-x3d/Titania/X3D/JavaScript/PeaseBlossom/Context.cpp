@@ -95,15 +95,13 @@ Context::initialize ()
 
 	try
 	{
-		const pb::ProgramPtr program (new pb::Program ());
+		const pb::ProgramPtr program (new pb::Program (istream));
 
-		pb::Parser (istream, program .get ()) .parseIntoContext ();
-
-		getBrowser () -> println ("istream: ", SFBool (istream), " : ", SFTime (chrono::now () - t0));
+		getBrowser () -> println ("istream: ", SFBool (istream), " : ", chrono::now () - t0);
 	}
 	catch (const pb::jsException & error)
 	{
-		 getBrowser () -> println ("PeaseBlossom Error: ", error .what ());
+		getBrowser () -> println (error);
 	}
 
 	if (istream)

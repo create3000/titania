@@ -52,12 +52,20 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
 
 #include <limits>
+#include <type_traits>
 
 namespace titania {
 namespace pb {
 
-constexpr double NaN      = std::numeric_limits <double>::quiet_NaN ();
-constexpr double Infinity = std::numeric_limits <double>::infinity ();
+inline
+constexpr double
+NaN ()
+{ return std::numeric_limits <double>::quiet_NaN (); }
+
+inline
+constexpr double
+Infinity  ()
+{ return std::numeric_limits <double>::infinity (); }
 
 } // pb
 } // titania

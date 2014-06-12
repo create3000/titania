@@ -111,10 +111,10 @@ jsNumber::toStream (std::ostream & ostream) const
 	if (std::isnan (value))
 		ostream << "NaN";
 
-	else if (value == Infinity)
+	else if (value == Infinity ())
 		ostream << "Infinity";
 
-	else if (value == -Infinity)
+	else if (value == -Infinity ())
 		ostream << "-Infinity";
 
 	else

@@ -48,36 +48,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
+#ifndef __TITANIA_X3D_TYPES_STRING_H__
+#define __TITANIA_X3D_TYPES_STRING_H__
 
-#include "../Base/jsInputStreamObject.h"
-#include "../Bits/Exception.h"
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-class jsScope :
-	public jsInputStreamObject
-{
-public:
-
-	/// @name Input/Output
-
-	virtual
-	void
-	fromStream (std::istream & istream)
-	throw (Exception <SYNTAX_ERROR>) final override;
-
-
-protected:
-
-	///  @name Construction
-
-	jsScope ()
-	{ }
-
-};
+using ustring = Glib::ustring;
 
 } // pb
 } // titania

@@ -69,6 +69,13 @@ public:
 		jsScope ()
 	{ }
 
+	Program (std::istream & istream)
+	throw (Exception <SYNTAX_ERROR>) :
+		jsScope ()
+	{
+		fromStream (istream);
+	}
+
 };
 
 using ProgramPtr = std::shared_ptr <Program>;

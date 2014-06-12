@@ -58,13 +58,14 @@
 namespace titania {
 namespace pb {
 
-Parser::Parser (std::istream & istream, jsScope* const scope) :
+Parser::Parser (jsScope* const scope, std::istream & istream) :
 	    istream (istream),
 	whiteSpaces ()
 { }
 
 void
-Parser::parseIntoContext ()
+Parser::parseIntoScope ()
+throw (Exception <SYNTAX_ERROR>)
 {
 	//__LOG__ << std::endl;
 
@@ -81,48 +82,58 @@ Parser::parseIntoContext ()
 }
 
 void
+Parser::setState (const State & value)
+{
+	istream .clear (std::get <0> (value));
+	istream .seekg (std::get <1> (value) - istream .tellg (), std::ios_base::cur);
+}
+
+Parser::State
+Parser::getState ()
+{
+	return State (istream .rdstate (), istream .tellg ());
+}
+
+// A.1 Lexical Grammar
+
+void
 Parser::comments ()
 {
 	Grammar::WhiteSpaces (istream, whiteSpaces);
 }
 
-// A.1 Lexical Grammar
-
 bool
 Parser::identifier ()
 {
 	//__LOG__ << std::endl;
-	
+
 	comments ();
 
-	const auto state    = istream .rdstate ();
-	const auto position = istream .tellg ();
+	const auto state = getState ();
 
-	std::string _identifierName;
+	std::string identifierNameCharacters;
 
-	if (identifierName (_identifierName))
+	if (identifierName (identifierNameCharacters))
 	{
-		if (not reservedWord (_identifierName))
+		if (not reservedWord (identifierNameCharacters))
 		{
 			return true;
 		}
 
-		istream .clear (state);
-		istream .seekg (position - istream .tellg (), std::ios_base::cur);
+		setState (state);
 	}
 
 	return false;
 }
 
 bool
-Parser::identifierName (std::string & _identifierName)
+Parser::identifierName (std::string & identifierNameCharacters)
 {
 	//__LOG__ << std::endl;
 
-
-	if (identifierStart (_identifierName))
+	if (identifierStart (identifierNameCharacters))
 	{
-		while (identifierStart (_identifierName) or identifierPart (_identifierName))
+		while (identifierStart (identifierNameCharacters) or identifierPart (identifierNameCharacters))
 			;
 
 		return true;
@@ -132,7 +143,7 @@ Parser::identifierName (std::string & _identifierName)
 }
 
 bool
-Parser::identifierStart (std::string & _identifierStart)
+Parser::identifierStart (std::string & identifierStartCharacters)
 {
 	//__LOG__ << std::endl;
 
@@ -140,11 +151,11 @@ Parser::identifierStart (std::string & _identifierStart)
 
 	static const io::sequence IdentifierStart ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_");
 
-	return IdentifierStart (istream, _identifierStart);
+	return IdentifierStart (istream, identifierStartCharacters);
 }
 
 bool
-Parser::identifierPart (std::string & _identifierPart)
+Parser::identifierPart (std::string & identifierPartCharacters)
 {
 	//__LOG__ << std::endl;
 
@@ -154,30 +165,30 @@ Parser::identifierPart (std::string & _identifierPart)
 
 	bool result = false;
 
-	while (identifierStart (_identifierPart) or UnicodeDigit (istream, _identifierPart))
+	while (identifierStart (identifierPartCharacters) or UnicodeDigit (istream, identifierPartCharacters))
 		result = true;
 
 	return result;
 }
 
 bool
-Parser::reservedWord (const std::string & _string)
+Parser::reservedWord (const std::string & string)
 {
 	//__LOG__ << std::endl;
 
-	if (Grammar::Keyword .count (_string))
+	if (Grammar::Keyword .count (string))
 		return true;
 
-	if (Grammar::FutureReservedWord .count (_string))
+	if (Grammar::FutureReservedWord .count (string))
 		return true;
 
-	if (_string == "null")
-		return true;
+	static const std::set <std::string> primitives = {
+		"null",
+		"false",
+		"true"
+	};
 
-	if (_string == "false")
-		return true;
-
-	if (_string == "true")
+	if (primitives .count (string))
 		return true;
 
 	return false;
@@ -186,8 +197,6 @@ Parser::reservedWord (const std::string & _string)
 bool
 Parser::literal (var & value)
 {
-	//__LOG__ << std::endl;
-
 	if (nullLiteral (value))
 		return true;
 
@@ -197,8 +206,8 @@ Parser::literal (var & value)
 	if (numericLiteral (value))
 		return true;
 
-	//if (stringLiteral ())
-	//	return true;
+	if (stringLiteral (value))
+		return true;
 
 	//if (regularExpressionLiteral ())
 	//	return true;
@@ -213,7 +222,7 @@ Parser::nullLiteral (var & value)
 
 	comments ();
 
-	if (Grammar::_null (istream))
+	if (Grammar::null (istream))
 	{
 		value = null ();
 		return true;
@@ -231,13 +240,13 @@ Parser::booleanLiteral (var & value)
 
 	if (Grammar::_true (istream))
 	{
-		value .reset (new Boolean (true));
+		value = True ();
 		return true;
 	}
 
 	if (Grammar::_false (istream))
 	{
-		value .reset (new Boolean (false));
+		value = False ();
 		return true;
 	}
 
@@ -271,11 +280,11 @@ Parser::decimalLiteral (var & value)
 
 	comments ();
 
-	double _number;
+	double number;
 
-	if (istream >> std::dec >> _number)
+	if (istream >> std::dec >> number)
 	{
-		value .reset (new Number (_number));
+		value .reset (new Number (number));
 		return true;
 	}
 
@@ -293,11 +302,11 @@ Parser::binaryIntegerLiteral (var & value)
 
 	if (Grammar::bin (istream) or Grammar::BIN (istream))
 	{
-		std::string _digits;
-	
-		if (Grammar::BinaryDigits (istream, _digits))
+		std::string digits;
+
+		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value .reset (new Number (math::strtoul (_digits .c_str (), 2)));
+			value .reset (new Number (math::strtoul (digits .c_str (), 2)));
 			return true;
 		}
 
@@ -316,11 +325,11 @@ Parser::octalIntegerLiteral (var & value)
 
 	if (Grammar::oct (istream) or Grammar::OCT (istream))
 	{
-		uint32_t _number;
+		uint32_t number;
 
-		if (istream >> std::oct >> _number)
+		if (istream >> std::oct >> number)
 		{
-			value .reset (new Number (_number));
+			value .reset (new Number (number));
 			return true;
 		}
 
@@ -339,15 +348,40 @@ Parser::hexIntegerLiteral (var & value)
 
 	if (Grammar::hex (istream) or Grammar::HEX (istream))
 	{
-		uint32_t _number;
+		uint32_t number;
 
-		if (istream >> std::hex >> _number)
+		if (istream >> std::hex >> number)
 		{
-			value .reset (new Number (_number));
+			value .reset (new Number (number));
 			return true;
 		}
 
 		istream .clear ();
+	}
+
+	return false;
+}
+
+bool
+Parser::stringLiteral (var & value)
+{
+	static const io::quoted_string doubleQuotedString ('"');
+	static const io::quoted_string singleQuotedString ('\'');
+
+	comments ();
+
+	std::string characters;
+
+	if (doubleQuotedString (istream, characters))
+	{
+		value .reset (new String (characters));
+		return true;
+	}
+
+	if (singleQuotedString (istream, characters))
+	{
+		value .reset (new String (characters));
+		return true;
 	}
 
 	return false;
@@ -361,7 +395,7 @@ bool
 Parser::primaryExpression (var & value)
 {
 	//__LOG__ << std::endl;
-	
+
 	comments ();
 
 	if (Grammar::_this (istream))
@@ -376,7 +410,11 @@ Parser::primaryExpression (var & value)
 	if (literal (value))
 		return true;
 
-	// ...
+	//if (arrayLiteral (value))
+	//	return true;
+
+	//if (objectLiteral (value))
+	//	return true;
 
 	if (Grammar::OpenParenthesis (istream))
 	{
@@ -470,7 +508,7 @@ Parser::multiplicativeExpression (var & lhs)
 	if (unaryExpression (lhs))
 	{
 		comments ();
-	
+
 		if (Grammar::Multiplication (istream))
 		{
 			var rhs;
@@ -520,11 +558,11 @@ bool
 Parser::additiveExpression (var & lhs)
 {
 	//__LOG__ << std::endl;
-	
+
 	if (multiplicativeExpression (lhs))
 	{
 		comments ();
-	
+
 		if (Grammar::Addition (istream))
 		{
 			var rhs;
@@ -565,7 +603,7 @@ Parser::shiftExpression (var & lhs)
 	if (additiveExpression (lhs))
 	{
 		comments ();
-	
+
 		if (Grammar::LeftShift (istream))
 		{
 			var rhs;
@@ -766,7 +804,7 @@ Parser::bitwiseANDExpression (var & lhs)
 	if (equalityExpression (lhs))
 	{
 		comments ();
-		
+
 		if (Grammar::LogicalAND .lookahead (istream))
 			return true;
 
@@ -796,7 +834,7 @@ Parser::bitwiseXORExpression (var & lhs)
 	if (bitwiseANDExpression (lhs))
 	{
 		comments ();
-		
+
 		if (Grammar::BitwiseXOR (istream))
 		{
 			var rhs;
@@ -826,7 +864,7 @@ Parser::bitwiseORExpression (var & lhs)
 
 		if (Grammar::LogicalOR .lookahead (istream))
 			return true;
-	
+
 		if (Grammar::BitwiseOR (istream))
 		{
 			var rhs;
@@ -931,7 +969,7 @@ Parser::conditionalExpression (var & first)
 
 			throw Exception <SYNTAX_ERROR> ("Expected expression after '?'.");
 		}
-	
+
 		return true;
 	}
 
@@ -943,8 +981,7 @@ Parser::assignmentExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
-	const auto state    = istream .rdstate ();
-	const auto position = istream .tellg ();
+	const auto state = getState ();
 
 	if (leftHandSideExpression (value))
 	{
@@ -954,7 +991,7 @@ Parser::assignmentExpression (var & value)
 		{
 			if (assignmentExpression (value))
 				return true;
-			
+
 			throw Exception <SYNTAX_ERROR> ("Expected expression after '='.");
 		}
 
@@ -964,12 +1001,11 @@ Parser::assignmentExpression (var & value)
 		{
 			if (assignmentExpression (value))
 				return true;
-	
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '='."); // XXX
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '" + to_string (type) + "'."); // XXX
 		}
 
-		istream .clear (state);
-		istream .seekg (position - istream .tellg (), std::ios_base::cur);
+		setState (state);
 	}
 
 	if (conditionalExpression (value))
@@ -1059,7 +1095,7 @@ Parser::expression (var & value)
 
 	if (assignmentExpression (value))
 	{
-		for (;;)
+		for ( ; ;)
 		{
 			comments ();
 
@@ -1086,7 +1122,7 @@ bool
 Parser::statement ()
 {
 	//__LOG__ << std::endl;
-	
+
 	if (expressionStatement ())
 		return true;
 
@@ -1144,6 +1180,8 @@ Parser::functionDeclaration ()
 void
 Parser::program ()
 {
+	//__LOG__ << std::endl;
+
 	sourceElements ();
 }
 

@@ -87,9 +87,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string spaces;
+	std::string whiteSpaces;
 	
-	Grammar::WhiteSpacesNoComma (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 	if (Grammar::_TRUE (istream))
 	{
@@ -114,9 +114,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string spaces;
+	std::string whiteSpaces;
 	
-	Grammar::WhiteSpacesNoComma (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 	istream >> get ();
 
@@ -132,9 +132,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string spaces;
+	std::string whiteSpaces;
 	
-	Grammar::WhiteSpacesNoComma (istream, spaces);
+	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 	istream >> get ();
 
@@ -150,9 +150,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string spaces;
-	
-	Grammar::WhiteSpacesNoComma (istream, spaces);
+	std::string whiteSpaces;
+
+	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 	Grammar::Int32 (istream, get ());
 

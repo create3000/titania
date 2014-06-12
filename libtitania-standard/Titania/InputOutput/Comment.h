@@ -72,7 +72,7 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	const CharT start;
+	const int_type start;
 
 };
 
@@ -87,7 +87,7 @@ template <class CharT, class Traits>
 bool
 basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
-	if (istream .peek () == (int_type) start)
+	if (istream .peek () == start)
 	{
 		istream .get ();
 

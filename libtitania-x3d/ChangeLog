@@ -2,6 +2,47 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* SFVec2.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* Parser.cpp:
+	* SFTime.cpp:
+	* SFColor.cpp:
+	* SFMatrix4.h:
+	* SFImage.cpp:
+	* SFMatrix3.h:
+	* SFString.cpp:
+	* X3DScalar.cpp:
+	* SFRotation4.h:
+	* SFColorRGBA.cpp:
+	* Primitives.h:
+	* var.h:
+	* String.h:
+	* ustring.h:
+	* Parser.h:
+	* Exception.h:
+	* Grammar.h:
+	* Null.h:
+	* jsNumber.h:
+	* jsString.h:
+	* Parser.cpp:
+	* jsConstants.h:
+	* String.h:
+	* jsScope.h:
+	* Program.h:
+	* Boolean.h:
+	* Exception.h:
+	* jsScope.cpp:
+	* Undefined.h:
+	* Context.cpp:
+	* jsInputStreamObject.h:
+	* jsOutputStreamObject.h:
+	* AssignmentOperatorType.h: 
+
+2014-06-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* var.h:
 	* Primitives.h:
 	* String.h:
