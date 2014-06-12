@@ -48,43 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_PB_PARSER_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_PB_PARSER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 
-#include "../../Parser/X3DParser.h"
-
-#include "../Bits/OperatorType.h"
-#include "../Values.h"
+#include "../Execution/Exception.h"
+#include "../Execution/OperatorType.h"
+#include "../Execution/jsScope.h"
+#include "../Primitives.h"
 
 namespace titania {
 namespace pb {
 
-class Parser :
-	public X3D::X3DParser
+class Parser
 {
 public:
 
 	///  @name Construction
 
-	Parser (std::istream & istream, X3D::X3DExecutionContext* const);
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	Parser (std::istream & istream, jsScope* const);
 
 	///  @name Operations
 
@@ -101,7 +82,7 @@ private:
 
 	bool
 	identifier ();
-	
+
 	bool
 	identifierName (std::string &);
 
@@ -143,64 +124,64 @@ private:
 	// A.3 Expressions
 
 	bool
-	primaryExpression ();
+	primaryExpression (ValuePtr &);
 
 	bool
-	memberExpression ();
+	memberExpression (ValuePtr &);
 
 	bool
-	newExpression ();
+	newExpression (ValuePtr &);
 
 	bool
-	leftHandSideExpression ();
+	leftHandSideExpression (ValuePtr &);
 
 	bool
-	postfixExpression ();
+	postfixExpression (ValuePtr &);
 
 	bool
-	unaryExpression ();
+	unaryExpression (ValuePtr &);
 
 	bool
-	multiplicativeExpression ();
+	multiplicativeExpression (ValuePtr &);
 
 	bool
-	additiveExpression ();
+	additiveExpression (ValuePtr &);
 
 	bool
-	shiftExpression ();
+	shiftExpression (ValuePtr &);
 
 	bool
-	relationalExpression ();
+	relationalExpression (ValuePtr &);
 
 	bool
-	equalityExpression ();
+	equalityExpression (ValuePtr &);
 
 	bool
-	bitwiseANDExpression ();
+	bitwiseANDExpression (ValuePtr &);
 
 	bool
-	bitwiseXORExpression ();
+	bitwiseXORExpression (ValuePtr &);
 
 	bool
-	bitwiseORExpression ();
+	bitwiseORExpression (ValuePtr &);
 
 	bool
-	logicalANDExpression ();
+	logicalANDExpression (ValuePtr &);
 
 	bool
-	logicalORExpression ();
+	logicalORExpression (ValuePtr &);
 
 	bool
-	conditionalExpression ();
+	conditionalExpression (ValuePtr &);
 
 	bool
-	assignmentExpression ();
-	
+	assignmentExpression (ValuePtr &);
+
 	bool
 	assignmentOperator (OperatorType &);
 
 	bool
-	expression ();
+	expression (ValuePtr &);
 
 	// A.4 Statements
 
@@ -226,12 +207,6 @@ private:
 
 	bool
 	sourceElement ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
 
 	///  @name Members
 

@@ -48,33 +48,75 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_VALUE_H__
 
-#include "../Base/jsOutputStreamObject.h"
-
-#include <Titania/LOG.h>
+#include "../Values/jsValue.h"
+#include "../Values/ValuePtr.h"
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+class UndefinedValue :
+	public jsValue
 {
 public:
 
 	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::UNDEFINED; }
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return 0; }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return 0; }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return 0; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return 0; }
+
+	virtual
+	ObjectPtr
+	toObject () const final override
+	{ return nullptr; }
+
+	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
-
+	{ ostream << "undefined"; }
 
 protected:
 
-	jsObject ()
+	friend
+	const ValuePtr &
+	undefined ();
+
+	UndefinedValue () :
+		jsValue ()
 	{ }
 
 };
+
+inline
+const ValuePtr &
+undefined ()
+{
+	static const ValuePtr value (new UndefinedValue ());
+
+	return value;
+}
 
 } // pb
 } // titania

@@ -48,23 +48,69 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VALUE_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VALUE_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
 
-enum class ValueType
+class Division :
+	public jsNumber
 {
-	_NULL,
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	STRING,
-	OBJECT,
-	CUSTOM
+public:
+
+	///  @name Construction
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::EXPRESSION; }
+
+	///  @name Operations
+
+	virtual
+	double
+	toNumber () const final override
+	{ return lhs -> toNumber () / rhs -> toNumber (); }
+
+
+protected:
+
+	///  @name Friends
+
+	friend
+	jsNumber*
+	division (const ValuePtr &, const ValuePtr &);
+
+	///  @name Construction
+
+	Division (const ValuePtr & lhs, const ValuePtr & rhs) :
+		jsNumber (),
+		     lhs (lhs),
+		     rhs (rhs)
+	{ }
+
+
+private:
+
+	///  @name Members
+
+	const ValuePtr lhs;
+	const ValuePtr rhs;
 
 };
+
+inline
+jsNumber*
+division (const ValuePtr & lhs, const ValuePtr & rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new Number (lhs -> toNumber () / rhs -> toNumber ());
+
+	return new Division (lhs, rhs);
+}
 
 } // pb
 } // titania

@@ -51,6 +51,8 @@
 #include "Context.h"
 
 #include "../../Browser/X3DBrowser.h"
+
+#include "../../PeaseBlossom/Execution/Program.h"
 #include "../../PeaseBlossom/Parser/Parser.h"
 
 namespace titania {
@@ -93,11 +95,13 @@ Context::initialize ()
 
 	try
 	{
-		pb::Parser (istream, getExecutionContext ()) .parseIntoContext ();
+		const pb::ProgramPtr program (new pb::Program ());
+
+		pb::Parser (istream, program .get ()) .parseIntoContext ();
 
 		getBrowser () -> println ("istream: ", SFBool (istream), " : ", SFTime (chrono::now () - t0));
 	}
-	catch (const X3DError & error)
+	catch (const pb::jsException & error)
 	{
 		 getBrowser () -> println ("PeaseBlossom Error: ", error .what ());
 	}

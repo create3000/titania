@@ -53,10 +53,25 @@
 
 #include "../Values/jsValue.h"
 
+#include <memory>
+
 namespace titania {
 namespace pb {
 
 using ValuePtr = std::shared_ptr <jsValue>;
+
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ValuePtr & value)
+{
+	if (value)
+		ostream << *value;
+	else
+		ostream << "undefined";
+
+	return ostream;
+}
 
 } // pb
 } // titania

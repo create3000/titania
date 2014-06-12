@@ -48,105 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_BOOLEAN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_BOOLEAN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_H__
 
 #include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class Boolean :
+class jsBoolean :
 	public jsValue
 {
 public:
 
-	Boolean () :
-		boolean (false)
-	{ }
-
-	explicit
-	Boolean (const bool value) :
-		boolean (value)
-	{ }
-
-	explicit
-	Boolean (const jsValue & value) :
-		boolean (value .toBoolean ())
-	{ }
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return ValueType::BOOLEAN; }
-
-	virtual
-	Boolean &
-	operator = (const jsValue & value) final override
-	{
-		boolean = value .toBoolean ();
-		return *this;
-	}
-
-	virtual
-	Boolean &
-	operator = (const bool value) final override
-	{
-		boolean = value;
-		return *this;
-	}
-
-	virtual
-	Boolean &
-	operator = (const int32_t value) final override
-	{
-		boolean = value;
-		return *this;
-	}
-
-	virtual
-	Boolean &
-	operator = (const uint32_t value) final override
-	{
-		boolean = value;
-		return *this;
-	}
-
-	virtual
-	Boolean &
-	operator = (const double value) final override
-	{
-		boolean = value;
-		return *this;
-	}
-
-	virtual
-	Boolean &
-	operator = (const ObjectPtr & value)
-	{
-		boolean = bool (value);
-		return *this;
-	}
-
-	virtual
-	bool
-	toBoolean () const final override
-	{ return boolean; }
-
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return boolean; }
+	{ return toBoolean (); }
 
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return boolean; }
+	{ return toBoolean (); }
 
 	virtual
 	double
 	toNumber () const final override
-	{ return boolean; }
+	{ return toBoolean (); }
 
 	virtual
 	ObjectPtr
@@ -156,12 +84,13 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << (boolean ? "true" : "false"); }
+	{ ostream << (toBoolean () ? "true" : "false"); }
 
 
-private:
+protected:
 
-	double boolean;
+	jsBoolean ()
+	{ }
 
 };
 

@@ -44,24 +44,7 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url "peaseblossom:
-;
-true;
-false;
-null;
-1234.56789;
-0xabcdef;
-0o1234567;
-0b1010101;
-this;
-a - (b * (c + d));
-0 - 1 + 2 * 3 % 4;
-0 - 1 + 2 * 3 % 4 || true && false | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5
-? true
-: false;
-0 instanceof 0;
-0 in 0;
-a = a + b, a += b;
-Browser;
+0.75 % 0.5;
 "
   directOutput TRUE
 }

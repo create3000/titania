@@ -48,12 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
 
-#include "Values/Boolean.h"
-#include "Values/Number.h"
-#include "Values/ObjectValue.h"
-#include "Values/ValuePtr.h"
+#include "../Values/jsNumber.h"
+
+namespace titania {
+namespace pb {
+
+class Number :
+	public jsNumber
+{
+public:
+
+	Number () :
+		jsNumber (),
+		  number (0)
+	{ }
+
+	explicit
+	Number (const double value) :
+		jsNumber (),
+		  number (value)
+	{ }
+
+	explicit
+	Number (const jsValue & value) :
+		jsNumber (),
+		  number (value .toNumber ())
+	{ }
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::NUMBER; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return number; }
+
+
+private:
+
+	const double number;
+
+};
+
+} // pb
+} // titania
 
 #endif

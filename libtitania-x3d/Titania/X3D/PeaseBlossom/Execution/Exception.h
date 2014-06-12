@@ -48,30 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_EXCEPTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_EXCEPTION_H__
 
-#include "../Base/jsOutputStreamObject.h"
-
-#include <Titania/LOG.h>
+#include <exception>
+#include <string>
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+enum ExceptionType
+{
+	ERROR,
+	EVAL_ERROR,
+	RANGE_ERROR,
+	REFERENCE_ERROR,
+	SYNTAX_ERROR,
+	TYPE_ERROR,
+	URI_ERROR
+
+};
+
+class jsException :
+	public std::exception
 {
 public:
 
+	explicit
+	jsException (const ExceptionType type, const std::string & message) :
+		   type (type),
+		message (message)
+	{ }
+
 	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
+	const char*
+	what () const
+	noexcept (true) final override
+	{ return message .c_str (); }
+
+	ExceptionType
+	getType () const
+	noexcept (true)
+	{ return type; }
+
+	const std::string &
+	toString () const
+	noexcept (true)
+	{ return message; }
+
+	virtual
+	~jsException ()
+	noexcept (true)
+	{ }
 
 
-protected:
+private:
 
-	jsObject ()
+	ExceptionType     type;
+	const std::string message;
+
+};
+
+///  @relates jsException
+///  @name Input/Output operations
+
+///  Insertion operator for X3DError.
+template <class StringT, class Traits>
+inline
+std::basic_ostream <typename StringT::value_type, Traits> &
+operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const jsException & error)
+{
+	return ostream << error .toString ();
+}
+
+template <ExceptionType Type>
+class Exception :
+	public jsException
+{
+public:
+
+	explicit
+	Exception (const std::string & message) :
+		jsException (Type, message)
 	{ }
 
 };

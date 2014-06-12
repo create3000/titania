@@ -48,30 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-
-#include "../Base/jsOutputStreamObject.h"
-
-#include <Titania/LOG.h>
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+class jsScope
 {
-public:
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
-
-
 protected:
 
-	jsObject ()
+	jsScope ()
 	{ }
 
 };

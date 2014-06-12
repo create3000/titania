@@ -694,19 +694,32 @@
     <None Include="Titania\X3D\PeaseBlossom\Parser\Parser.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Context.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\ValueType.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\OperatorType.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\jsObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\jsValue.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\ObjectPtr.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\ValuePtr.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\Boolean.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\Number.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values\ObjectValue.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Values.h" />
     <None Include="Titania\X3D\PeaseBlossom\Parser\Grammar.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\ValueType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\OperatorType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\jsScope.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\Program.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\Exception.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsBoolean.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsNumber.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Values\jsObjectValue.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\Boolean.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\Number.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\ObjectValue.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\UndefinedValue.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Addition.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Subtraction.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Multiplication.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Division.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Remainder.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1262,8 +1275,10 @@
     <Folder Include="Titania\X3D\PeaseBlossom\" />
     <Folder Include="Titania\X3D\PeaseBlossom\Values\" />
     <Folder Include="Titania\X3D\PeaseBlossom\Objects\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Bits\" />
     <Folder Include="Titania\X3D\PeaseBlossom\Base\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Execution\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Primitives\" />
+    <Folder Include="Titania\X3D\PeaseBlossom\Expressions\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

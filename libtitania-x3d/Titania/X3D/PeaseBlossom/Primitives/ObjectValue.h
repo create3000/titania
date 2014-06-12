@@ -48,31 +48,50 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_VALUE_H__
 
-#include "../Base/jsOutputStreamObject.h"
-
-#include <Titania/LOG.h>
+#include "../Values/jsObjectValue.h"
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+class ObjectValue :
+	public jsObjectValue
 {
 public:
 
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
-
-
-protected:
-
-	jsObject ()
+	ObjectValue () :
+		jsObjectValue (),
+		       object ()
 	{ }
+
+	explicit
+	ObjectValue (const ObjectPtr & value) :
+		jsObjectValue (),
+		       object (value)
+	{ }
+
+	explicit
+	ObjectValue (const jsValue & value) :
+		jsObjectValue (),
+		       object (value .toObject ())
+	{ }
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::OBJECT; }
+
+	virtual
+	ObjectPtr
+	toObject () const final override
+	{ return object; }
+
+
+private:
+
+	const ObjectPtr object;
 
 };
 

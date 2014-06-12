@@ -48,31 +48,50 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 
-#include "../Base/jsOutputStreamObject.h"
-
-#include <Titania/LOG.h>
+#include "../Values/jsBoolean.h"
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+class Boolean :
+	public jsBoolean
 {
 public:
 
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
-
-
-protected:
-
-	jsObject ()
+	Boolean () :
+		jsBoolean (),
+		  boolean (false)
 	{ }
+
+	explicit
+	Boolean (const bool value) :
+		jsBoolean (),
+		  boolean (value)
+	{ }
+
+	explicit
+	Boolean (const jsValue & value) :
+		jsBoolean (),
+		  boolean (value .toBoolean ())
+	{ }
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::BOOLEAN; }
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return boolean; }
+
+
+private:
+
+	const double boolean;
 
 };
 

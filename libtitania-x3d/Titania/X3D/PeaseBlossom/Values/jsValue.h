@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
 
-#include "../Bits/ValueType.h"
 #include "../Base/jsOutputStreamObject.h"
 #include "../Objects/ObjectPtr.h"
+#include "../Values/ValueType.h"
 
 namespace titania {
 namespace pb {
@@ -62,34 +62,13 @@ class jsValue :
 	public jsOutputStreamObject
 {
 public:
+	
+	bool
+	isPrimitive () const;
 
 	virtual
 	ValueType
 	getType () const = 0;
-
-	virtual
-	jsValue &
-	operator = (const bool) = 0;
-
-	virtual
-	jsValue &
-	operator = (const jsValue &) = 0;
-
-	virtual
-	jsValue &
-	operator = (const int32_t) = 0;
-
-	virtual
-	jsValue &
-	operator = (const uint32_t) = 0;
-
-	virtual
-	jsValue &
-	operator = (const double) = 0;
-
-	virtual
-	jsValue &
-	operator = (const ObjectPtr &) = 0;
 
 	virtual
 	bool
@@ -118,6 +97,22 @@ protected:
 	{ }
 
 };
+
+inline
+bool
+jsValue::isPrimitive () const
+{
+	switch (getType ())
+	{
+		case ValueType::UNDEFINED:
+		case ValueType::BOOLEAN:
+		case ValueType::NUMBER:
+		case ValueType::NULL_OBJECT:
+			return true;
+		default:
+			return false;
+	}
+}
 
 } // pb
 } // titania

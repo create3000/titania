@@ -48,122 +48,69 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
 
-#include "../Values/jsValue.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
 
-class Number :
-	public jsValue
+class Subtraction :
+	public jsNumber
 {
 public:
 
-	Number () :
-		number (0)
-	{ }
-
-	explicit
-	Number (const double value) :
-		number (value)
-	{ }
-
-	explicit
-	Number (const jsValue & value) :
-		number (value .toNumber ())
-	{ }
+	///  @name Construction
 
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::NUMBER; }
+	{ return ValueType::EXPRESSION; }
 
-	virtual
-	Number &
-	operator = (const jsValue & value) final override
-	{
-		number = value .toNumber ();
-		return *this;
-	}
-
-	virtual
-	Number &
-	operator = (const bool value) final override
-	{
-		number = value;
-		return *this;
-	}
-
-	virtual
-	Number &
-	operator = (const int32_t value) final override
-	{
-		number = value;
-		return *this;
-	}
-
-	virtual
-	Number &
-	operator = (const uint32_t value) final override
-	{
-		number = value;
-		return *this;
-	}
-
-	virtual
-	Number &
-	operator = (const double value) final override
-	{
-		number = value;
-		return *this;
-	}
-
-	virtual
-	Number &
-	operator = (const ObjectPtr & value)
-	{
-		number = bool (value);
-		return *this;
-	}
-
-	virtual
-	bool
-	toBoolean () const final override
-	{ return number; }
-
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return number; }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return number; }
+	///  @name Operations
 
 	virtual
 	double
 	toNumber () const final override
-	{ return number; }
+	{ return lhs -> toNumber () - rhs -> toNumber (); }
 
-	virtual
-	ObjectPtr
-	toObject () const final override
-	{ return nullptr; }
 
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << number; }
+protected:
+
+	///  @name Friends
+
+	friend
+	jsNumber*
+	subtraction (const ValuePtr &, const ValuePtr &);
+
+	///  @name Construction
+
+	Subtraction (const ValuePtr & lhs, const ValuePtr & rhs) :
+		jsNumber (),
+		     lhs (lhs),
+		     rhs (rhs)
+	{ }
 
 
 private:
 
-	double number;
+	///  @name Members
+
+	const ValuePtr lhs;
+	const ValuePtr rhs;
 
 };
+
+inline
+jsNumber*
+subtraction (const ValuePtr & lhs, const ValuePtr & rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new Number (lhs -> toNumber () - rhs -> toNumber ());
+
+	return new Subtraction (lhs, rhs);
+}
 
 } // pb
 } // titania

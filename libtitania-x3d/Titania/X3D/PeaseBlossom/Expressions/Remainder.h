@@ -48,33 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
 
-#include "../Base/jsOutputStreamObject.h"
+#include "../Primitives/Number.h"
 
-#include <Titania/LOG.h>
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+class Remainder :
+	public jsNumber
 {
 public:
 
+	///  @name Construction
+
 	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
+	ValueType
+	getType () const final override
+	{ return ValueType::EXPRESSION; }
+
+	///  @name Operations
+
+	virtual
+	double
+	toNumber () const final override
+	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
 
 
 protected:
 
-	jsObject ()
+	///  @name Friends
+
+	friend
+	jsNumber*
+	remainder (const ValuePtr &, const ValuePtr &);
+
+	///  @name Construction
+
+	Remainder (const ValuePtr &lhs, const ValuePtr &rhs) :
+		jsNumber (),
+		     lhs (lhs),
+		     rhs (rhs)
 	{ }
 
+
+private:
+
+	///  @name Members
+
+	const ValuePtr lhs;
+	const ValuePtr rhs;
+
 };
+
+inline
+jsNumber*
+remainder (const ValuePtr & lhs, const ValuePtr & rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new Number (std::fmod (lhs -> toNumber (), rhs -> toNumber ()));
+
+	return new Remainder (lhs, rhs);
+}
 
 } // pb
 } // titania

@@ -53,10 +53,25 @@
 
 #include "../Objects/jsObject.h"
 
+#include <memory>
+
 namespace titania {
 namespace pb {
 
 using ObjectPtr = std::shared_ptr <jsObject>;
+
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ObjectPtr & object)
+{
+	if (object)
+		ostream << *object;
+	else
+		ostream << "null";
+
+	return ostream;
+}
 
 } // pb
 } // titania
