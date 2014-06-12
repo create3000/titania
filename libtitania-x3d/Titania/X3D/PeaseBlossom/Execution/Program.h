@@ -63,6 +63,8 @@ class Program :
 {
 public:
 
+	///  @name Construction
+
 	Program () :
 		jsScope ()
 	{ }

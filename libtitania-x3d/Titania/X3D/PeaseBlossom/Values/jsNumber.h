@@ -51,7 +51,10 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_H__
 
+#include "../Bits/jsConstants.h"
 #include "../Values/jsValue.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
@@ -60,6 +63,8 @@ class jsNumber :
 	public jsValue
 {
 public:
+
+	///  @name Operations
 
 	virtual
 	bool
@@ -77,22 +82,44 @@ public:
 	{ return toNumber (); }
 
 	virtual
-	ObjectPtr
+	var
 	toObject () const final override
-	{ return nullptr; }
+	{ return null (); }
+
+	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << toNumber (); }
+	toStream (std::ostream &) const final override;
 
 
 protected:
+
+	///  @name Construction
 
 	jsNumber ()
 	{ }
 
 };
+
+inline
+void
+jsNumber::toStream (std::ostream & ostream) const
+{
+	const double value = toNumber ();
+	
+	if (std::isnan (value))
+		ostream << "NaN";
+
+	else if (value == Infinity)
+		ostream << "Infinity";
+
+	else if (value == -Infinity)
+		ostream << "-Infinity";
+
+	else
+		ostream << toNumber ();
+}
 
 } // pb
 } // titania

@@ -184,7 +184,7 @@ Parser::reservedWord (const std::string & _string)
 }
 
 bool
-Parser::literal (ValuePtr & value)
+Parser::literal (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -207,7 +207,7 @@ Parser::literal (ValuePtr & value)
 }
 
 bool
-Parser::nullLiteral (ValuePtr & value)
+Parser::nullLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -215,7 +215,7 @@ Parser::nullLiteral (ValuePtr & value)
 
 	if (Grammar::_null (istream))
 	{
-		value .reset (new ObjectValue ());
+		value = null ();
 		return true;
 	}
 
@@ -223,7 +223,7 @@ Parser::nullLiteral (ValuePtr & value)
 }
 
 bool
-Parser::booleanLiteral (ValuePtr & value)
+Parser::booleanLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -245,7 +245,7 @@ Parser::booleanLiteral (ValuePtr & value)
 }
 
 bool
-Parser::numericLiteral (ValuePtr & value)
+Parser::numericLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -265,7 +265,7 @@ Parser::numericLiteral (ValuePtr & value)
 }
 
 bool
-Parser::decimalLiteral (ValuePtr & value)
+Parser::decimalLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -285,7 +285,7 @@ Parser::decimalLiteral (ValuePtr & value)
 }
 
 bool
-Parser::binaryIntegerLiteral (ValuePtr & value)
+Parser::binaryIntegerLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -308,7 +308,7 @@ Parser::binaryIntegerLiteral (ValuePtr & value)
 }
 
 bool
-Parser::octalIntegerLiteral (ValuePtr & value)
+Parser::octalIntegerLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -331,7 +331,7 @@ Parser::octalIntegerLiteral (ValuePtr & value)
 }
 
 bool
-Parser::hexIntegerLiteral (ValuePtr & value)
+Parser::hexIntegerLiteral (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -358,7 +358,7 @@ Parser::hexIntegerLiteral (ValuePtr & value)
 // A.3 Expressions
 
 bool
-Parser::primaryExpression (ValuePtr & value)
+Parser::primaryExpression (var & value)
 {
 	//__LOG__ << std::endl;
 	
@@ -397,7 +397,7 @@ Parser::primaryExpression (ValuePtr & value)
 }
 
 bool
-Parser::memberExpression (ValuePtr & value)
+Parser::memberExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -410,7 +410,7 @@ Parser::memberExpression (ValuePtr & value)
 }
 
 bool
-Parser::newExpression (ValuePtr & value)
+Parser::newExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -423,7 +423,7 @@ Parser::newExpression (ValuePtr & value)
 }
 
 bool
-Parser::leftHandSideExpression (ValuePtr & value)
+Parser::leftHandSideExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -437,7 +437,7 @@ Parser::leftHandSideExpression (ValuePtr & value)
 }
 
 bool
-Parser::postfixExpression (ValuePtr & value)
+Parser::postfixExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -450,7 +450,7 @@ Parser::postfixExpression (ValuePtr & value)
 }
 
 bool
-Parser::unaryExpression (ValuePtr & value)
+Parser::unaryExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -463,7 +463,7 @@ Parser::unaryExpression (ValuePtr & value)
 }
 
 bool
-Parser::multiplicativeExpression (ValuePtr & lhs)
+Parser::multiplicativeExpression (var & lhs)
 {
 	//__LOG__ << std::endl;
 
@@ -471,10 +471,10 @@ Parser::multiplicativeExpression (ValuePtr & lhs)
 	{
 		comments ();
 	
-		ValuePtr rhs = undefined ();
-
 		if (Grammar::Multiplication (istream))
 		{
+			var rhs;
+
 			if (multiplicativeExpression (rhs))
 			{
 				lhs .reset (multiplication (lhs, rhs));
@@ -486,6 +486,8 @@ Parser::multiplicativeExpression (ValuePtr & lhs)
 
 		if (Grammar::Division (istream))
 		{
+			var rhs;
+
 			if (multiplicativeExpression (rhs))
 			{
 				lhs .reset (division (lhs, rhs));
@@ -497,6 +499,8 @@ Parser::multiplicativeExpression (ValuePtr & lhs)
 
 		if (Grammar::Remainder (istream))
 		{
+			var rhs;
+
 			if (multiplicativeExpression (rhs))
 			{
 				lhs .reset (remainder (lhs, rhs));
@@ -513,7 +517,7 @@ Parser::multiplicativeExpression (ValuePtr & lhs)
 }
 
 bool
-Parser::additiveExpression (ValuePtr & lhs)
+Parser::additiveExpression (var & lhs)
 {
 	//__LOG__ << std::endl;
 	
@@ -521,10 +525,10 @@ Parser::additiveExpression (ValuePtr & lhs)
 	{
 		comments ();
 	
-		ValuePtr rhs = undefined ();
-
 		if (Grammar::Addition (istream))
 		{
+			var rhs;
+
 			if (additiveExpression (rhs))
 			{
 				lhs .reset (addition (lhs, rhs));
@@ -536,6 +540,8 @@ Parser::additiveExpression (ValuePtr & lhs)
 
 		if (Grammar::Subtraction (istream))
 		{
+			var rhs;
+
 			if (additiveExpression (rhs))
 			{
 				lhs .reset (subtraction (lhs, rhs));
@@ -552,353 +558,369 @@ Parser::additiveExpression (ValuePtr & lhs)
 }
 
 bool
-Parser::shiftExpression (ValuePtr & value)
+Parser::shiftExpression (var & lhs)
 {
 	//__LOG__ << std::endl;
 
-	if (additiveExpression (value))
+	if (additiveExpression (lhs))
 	{
-		for (;;)
+		comments ();
+	
+		if (Grammar::LeftShift (istream))
 		{
-			comments ();
-		
-			if (Grammar::LeftShift (istream))
+			var rhs;
+
+			if (shiftExpression (rhs))
 			{
-				if (additiveExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '<<'.");
-			}
-
-			if (Grammar::UnsignedRightShift (istream))
-			{
-				if (additiveExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '>>>'.");
-			}
-
-			if (Grammar::RightShift (istream))
-			{
-				if (additiveExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '>>'.");
-			}
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool
-Parser::relationalExpression (ValuePtr & value)
-{
-	//__LOG__ << std::endl;
-
-	if (shiftExpression (value))
-	{
-		for (;;)
-		{
-			comments ();
-
-			if (Grammar::LessEqual (istream))
-			{
-				if (shiftExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '<='.");
-			}
-
-			if (Grammar::GreaterEqual (istream))
-			{
-				if (shiftExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '>='.");
-			}
-
-			if (Grammar::Less (istream))
-			{
-				if (shiftExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '<'.");
-			}
-
-			if (Grammar::Greater (istream))
-			{
-				if (shiftExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '>'.");
-			}
-
-			if (Grammar::instanceof (istream))
-			{
-				if (shiftExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after 'instanceof'.");
-			}
-
-			if (Grammar::in (istream))
-			{
-				if (shiftExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after 'in'.");
-			}
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool
-Parser::equalityExpression (ValuePtr & value)
-{
-	//__LOG__ << std::endl;
-
-	if (relationalExpression (value))
-	{
-		for (;;)
-		{
-			comments ();
-
-			if (Grammar::StrictEqual (istream))
-			{
-				if (relationalExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '==='.");
-			}
-
-			if (Grammar::StrictNotEqual (istream))
-			{
-				if (relationalExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '!=='.");
-			}
-
-			if (Grammar::Equal (istream))
-			{
-				if (relationalExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '=='.");
-			}
-
-			if (Grammar::NotEqual (istream))
-			{
-				if (relationalExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '!='.");
-			}
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool
-Parser::bitwiseANDExpression (ValuePtr & value)
-{
-	//__LOG__ << std::endl;
-
-	if (equalityExpression (value))
-	{
-		for (;;)
-		{
-			comments ();
-			
-			if (Grammar::LogicalAND .lookahead (istream))
 				return true;
-
-			if (Grammar::BitwiseAND (istream))
-			{
-				if (equalityExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '&'.");
 			}
 
-			return true;
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '<<'.");
 		}
-	}
 
-	return false;
-}
-
-bool
-Parser::bitwiseXORExpression (ValuePtr & value)
-{
-	//__LOG__ << std::endl;
-
-	if (bitwiseANDExpression (value))
-	{
-		for (;;)
+		if (Grammar::UnsignedRightShift (istream))
 		{
-			comments ();
-			
-			if (Grammar::BitwiseXOR (istream))
+			var rhs;
+
+			if (shiftExpression (rhs))
 			{
-				if (bitwiseANDExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '^'.");
-			}
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool
-Parser::bitwiseORExpression (ValuePtr & value)
-{
-	//__LOG__ << std::endl;
-
-	if (bitwiseXORExpression (value))
-	{
-		for (;;)
-		{
-			comments ();
-
-			if (Grammar::LogicalOR .lookahead (istream))
 				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '>>>'.");
+		}
+
+		if (Grammar::RightShift (istream))
+		{
+			var rhs;
+
+			if (shiftExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '>>'.");
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::relationalExpression (var & lhs)
+{
+	//__LOG__ << std::endl;
+
+	if (shiftExpression (lhs))
+	{
+		comments ();
+
+		if (Grammar::LessEqual (istream))
+		{
+			var rhs;
+
+			if (relationalExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '<='.");
+		}
+
+		if (Grammar::GreaterEqual (istream))
+		{
+			var rhs;
+
+			if (relationalExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '>='.");
+		}
+
+		if (Grammar::Less (istream))
+		{
+			var rhs;
+
+			if (relationalExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '<'.");
+		}
+
+		if (Grammar::Greater (istream))
+		{
+			var rhs;
+
+			if (relationalExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '>'.");
+		}
+
+		if (Grammar::instanceof (istream))
+		{
+			var rhs;
+
+			if (relationalExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after 'instanceof'.");
+		}
+
+		if (Grammar::in (istream))
+		{
+			var rhs;
+
+			if (relationalExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after 'in'.");
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::equalityExpression (var & lhs)
+{
+	//__LOG__ << std::endl;
+
+	if (relationalExpression (lhs))
+	{
+		comments ();
+
+		if (Grammar::StrictEqual (istream))
+		{
+			var rhs;
+
+			if (equalityExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '==='.");
+		}
+
+		if (Grammar::StrictNotEqual (istream))
+		{
+			var rhs;
+
+			if (equalityExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '!=='.");
+		}
+
+		if (Grammar::Equal (istream))
+		{
+			var rhs;
+
+			if (equalityExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '=='.");
+		}
+
+		if (Grammar::NotEqual (istream))
+		{
+			var rhs;
+
+			if (equalityExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '!='.");
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::bitwiseANDExpression (var & lhs)
+{
+	//__LOG__ << std::endl;
+
+	if (equalityExpression (lhs))
+	{
+		comments ();
 		
-			if (Grammar::BitwiseOR (istream))
-			{
-				if (bitwiseXORExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '|'.");
-			}
-
+		if (Grammar::LogicalAND .lookahead (istream))
 			return true;
-		}
-	}
 
-	return false;
-}
-
-bool
-Parser::logicalANDExpression (ValuePtr & value)
-{
-	//__LOG__ << std::endl;
-
-	if (bitwiseORExpression (value))
-	{
-		for (;;)
+		if (Grammar::BitwiseAND (istream))
 		{
-			comments ();
+			var rhs;
 
-			if (Grammar::LogicalAND (istream))
+			if (bitwiseANDExpression (rhs))
 			{
-				if (bitwiseORExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '&&'.");
+				return true;
 			}
 
-			return true;
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '&'.");
 		}
+
+		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::logicalORExpression (ValuePtr & value)
+Parser::bitwiseXORExpression (var & lhs)
 {
 	//__LOG__ << std::endl;
 
-	if (logicalANDExpression (value))
+	if (bitwiseANDExpression (lhs))
 	{
-		for (;;)
+		comments ();
+		
+		if (Grammar::BitwiseXOR (istream))
 		{
-			comments ();
+			var rhs;
 
-			if (Grammar::LogicalOR (istream))
+			if (bitwiseXORExpression (rhs))
 			{
-				if (logicalANDExpression (value))
-				{
-					continue;
-				}
-
-				throw Exception <SYNTAX_ERROR> ("Expected expression after '||'.");
+				return true;
 			}
 
-			return true;
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '^'.");
 		}
+
+		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::conditionalExpression (ValuePtr & value)
+Parser::bitwiseORExpression (var & lhs)
 {
 	//__LOG__ << std::endl;
 
-	if (logicalORExpression (value))
+	if (bitwiseXORExpression (lhs))
+	{
+		comments ();
+
+		if (Grammar::LogicalOR .lookahead (istream))
+			return true;
+	
+		if (Grammar::BitwiseOR (istream))
+		{
+			var rhs;
+
+			if (bitwiseORExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '|'.");
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::logicalANDExpression (var & lhs)
+{
+	//__LOG__ << std::endl;
+
+	if (bitwiseORExpression (lhs))
+	{
+		comments ();
+
+		if (Grammar::LogicalAND (istream))
+		{
+			var rhs;
+
+			if (logicalANDExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '&&'.");
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::logicalORExpression (var & lhs)
+{
+	//__LOG__ << std::endl;
+
+	if (logicalANDExpression (lhs))
+	{
+		comments ();
+
+		if (Grammar::LogicalOR (istream))
+		{
+			var rhs;
+
+			if (logicalORExpression (rhs))
+			{
+				return true;
+			}
+
+			throw Exception <SYNTAX_ERROR> ("Expected expression after '||'.");
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::conditionalExpression (var & first)
+{
+	//__LOG__ << std::endl;
+
+	if (logicalORExpression (first))
 	{
 		comments ();
 
 		if (Grammar::QuestionMark (istream))
 		{
-			if (assignmentExpression (value))
+			var second;
+
+			if (assignmentExpression (second))
 			{
 				comments ();
 
 				if (Grammar::Colon (istream))
 				{
-					if (assignmentExpression (value))
+					var third;
+
+					if (assignmentExpression (third))
 					{
 						return true;
 					}
@@ -917,7 +939,7 @@ Parser::conditionalExpression (ValuePtr & value)
 }
 
 bool
-Parser::assignmentExpression (ValuePtr & value)
+Parser::assignmentExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -936,7 +958,7 @@ Parser::assignmentExpression (ValuePtr & value)
 			throw Exception <SYNTAX_ERROR> ("Expected expression after '='.");
 		}
 
-		OperatorType type;
+		AssignmentOperatorType type;
 
 		if (assignmentOperator (type))
 		{
@@ -957,73 +979,73 @@ Parser::assignmentExpression (ValuePtr & value)
 }
 
 bool
-Parser::assignmentOperator (OperatorType & type)
+Parser::assignmentOperator (AssignmentOperatorType & type)
 {
 	comments ();
 
 	if (Grammar::MultiplicationAssigment (istream))
 	{
-		type = OperatorType::MULTIPLICATION_ASSIGMENT;
+		type = AssignmentOperatorType::MULTIPLICATION_ASSIGMENT;
 		return true;
 	}
 
 	if (Grammar::DivisionAssignment (istream))
 	{
-		type = OperatorType::DIVISION_ASSIGNMENT;
+		type = AssignmentOperatorType::DIVISION_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::RemainderAssignment (istream))
 	{
-		type = OperatorType::REMAINDER_ASSIGNMENT;
+		type = AssignmentOperatorType::REMAINDER_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::AdditionAssignment (istream))
 	{
-		type = OperatorType::ADDITION_ASSIGNMENT;
+		type = AssignmentOperatorType::ADDITION_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::SubtractionAssignment (istream))
 	{
-		type = OperatorType::SUBTRACTION_ASSIGNMENT;
+		type = AssignmentOperatorType::SUBTRACTION_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::LeftShiftAssignment (istream))
 	{
-		type = OperatorType::LEFT_SHIFT_ASSIGNMENT;
+		type = AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::RightShiftAssignment (istream))
 	{
-		type = OperatorType::RIGHT_SHIFT_ASSIGNMENT;
+		type = AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::UnsignedRightShiftAssignment (istream))
 	{
-		type = OperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;
+		type = AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::BitwiseANDAssignment (istream))
 	{
-		type = OperatorType::BITWISE_AND_ASSIGNMENT;
+		type = AssignmentOperatorType::BITWISE_AND_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::BitwiseXORAssignment (istream))
 	{
-		type = OperatorType::BITWISE_XOR_ASSIGNMENT;
+		type = AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT;
 		return true;
 	}
 
 	if (Grammar::BitwiseORAssignment (istream))
 	{
-		type = OperatorType::BITWISE_OR_ASSIGNMENT;
+		type = AssignmentOperatorType::BITWISE_OR_ASSIGNMENT;
 		return true;
 	}
 
@@ -1031,7 +1053,7 @@ Parser::assignmentOperator (OperatorType & type)
 }
 
 bool
-Parser::expression (ValuePtr & value)
+Parser::expression (var & value)
 {
 	//__LOG__ << std::endl;
 
@@ -1058,29 +1080,6 @@ Parser::expression (ValuePtr & value)
 	return false;
 }
 
-//bool
-//Parser::expression (ValuePtr & value)
-//{
-//	//__LOG__ << std::endl;
-//
-//	if (assignmentExpression (value))
-//	{
-//		comments ();
-//
-//		if (Grammar::Comma (istream))
-//		{
-//			if (expression (value))
-//				return true;
-//
-//			throw Exception <SYNTAX_ERROR> ("Expected expression after ','.");
-//		}
-//
-//		return true;
-//	}
-//
-//	return false;
-//}
-
 // A.4 Statements
 
 bool
@@ -1104,7 +1103,7 @@ Parser::expressionStatement ()
 
 	// [lookahead ? {{, function}]
 
-	ValuePtr value = undefined ();
+	var value;
 
 	if (expression (value))
 	{

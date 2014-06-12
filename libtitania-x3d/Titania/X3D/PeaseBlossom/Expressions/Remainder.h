@@ -84,11 +84,11 @@ protected:
 
 	friend
 	jsNumber*
-	remainder (const ValuePtr &, const ValuePtr &);
+	remainder (const var &, const var &);
 
 	///  @name Construction
 
-	Remainder (const ValuePtr &lhs, const ValuePtr &rhs) :
+	Remainder (const var &lhs, const var &rhs) :
 		jsNumber (),
 		     lhs (lhs),
 		     rhs (rhs)
@@ -99,14 +99,17 @@ private:
 
 	///  @name Members
 
-	const ValuePtr lhs;
-	const ValuePtr rhs;
+	const var lhs;
+	const var rhs;
 
 };
 
+///  @relates Remainder
+///  @name remainder.
+
 inline
 jsNumber*
-remainder (const ValuePtr & lhs, const ValuePtr & rhs)
+remainder (const var & lhs, const var & rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
 		return new Number (std::fmod (lhs -> toNumber (), rhs -> toNumber ()));

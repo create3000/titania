@@ -61,6 +61,8 @@ class jsOutputStreamObject
 {
 public:
 
+	///  @name Operations
+
 	std::string
 	toString () const
 	{
@@ -79,6 +81,8 @@ public:
 		return ostringstream .str ();
 	}
 
+	///  @name Input/Output
+
 	virtual
 	void
 	toStream (std::ostream &) const = 0;
@@ -86,10 +90,15 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	jsOutputStreamObject ()
 	{ }
 
 };
+
+///  @relates jsOutputStreamObject
+///  @name Input/Output operators.
 
 template <class CharT, class Traits>
 inline

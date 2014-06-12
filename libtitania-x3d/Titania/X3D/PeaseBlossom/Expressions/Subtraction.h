@@ -82,11 +82,11 @@ protected:
 
 	friend
 	jsNumber*
-	subtraction (const ValuePtr &, const ValuePtr &);
+	subtraction (const var &, const var &);
 
 	///  @name Construction
 
-	Subtraction (const ValuePtr & lhs, const ValuePtr & rhs) :
+	Subtraction (const var & lhs, const var & rhs) :
 		jsNumber (),
 		     lhs (lhs),
 		     rhs (rhs)
@@ -97,14 +97,17 @@ private:
 
 	///  @name Members
 
-	const ValuePtr lhs;
-	const ValuePtr rhs;
+	const var lhs;
+	const var rhs;
 
 };
 
+///  @relates Subtraction
+///  @name subtraction.
+
 inline
 jsNumber*
-subtraction (const ValuePtr & lhs, const ValuePtr & rhs)
+subtraction (const var & lhs, const var & rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
 		return new Number (lhs -> toNumber () - rhs -> toNumber ());

@@ -82,11 +82,11 @@ protected:
 
 	friend
 	jsNumber*
-	addition (const ValuePtr &, const ValuePtr &);
+	addition (const var &, const var &);
 
 	///  @name Construction
 
-	Addition (const ValuePtr & lhs, const ValuePtr & rhs) :
+	Addition (const var & lhs, const var & rhs) :
 		jsNumber (),
 		     lhs (lhs),
 		     rhs (rhs)
@@ -97,14 +97,17 @@ private:
 
 	///  @name Members
 
-	const ValuePtr lhs;
-	const ValuePtr rhs;
+	const var lhs;
+	const var rhs;
 
 };
 
+///  @relates Addition
+///  @name addition.
+
 inline
 jsNumber*
-addition (const ValuePtr & lhs, const ValuePtr & rhs)
+addition (const var & lhs, const var & rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
 		return new Number (lhs -> toNumber () + rhs -> toNumber ());

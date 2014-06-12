@@ -48,49 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_OBJECT_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_OBJECT_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
 
-#include "../Values/jsValue.h"
+#include "../Values/jsObject.h"
 
 namespace titania {
 namespace pb {
 
-class jsObjectValue :
-	public jsValue
+class Object :
+	public jsObject
 {
 public:
 
-	virtual
-	bool
-	toBoolean () const final override
-	{ return bool (toObject ()); }
+	///  @name Construction
 
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return toBoolean (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toBoolean (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return toBoolean (); }
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << toObject (); }
-
-
-protected:
-
-	jsObjectValue ()
+	Object () :
+		jsObject ()
 	{ }
+
+
+private:
 
 };
 

@@ -48,24 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
 
 #include "../Values/jsValue.h"
-#include "../Values/ValuePtr.h"
 
 namespace titania {
 namespace pb {
 
-class UndefinedValue :
+class NullObject :
 	public jsValue
 {
 public:
 
+	///  @name Member access
+
 	virtual
 	ValueType
 	getType () const final override
-	{ return ValueType::UNDEFINED; }
+	{ return ValueType::NULL_OBJECT; }
+
+	///  @name Operatins
 
 	virtual
 	bool
@@ -85,35 +88,45 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return 0; }
+	{ return 1; }
 
 	virtual
-	ObjectPtr
+	var
 	toObject () const final override
-	{ return nullptr; }
+	{ return var (const_cast <NullObject*> (this)); }
+
+	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << "undefined"; }
+	{ ostream << "null"; }
+
 
 protected:
 
-	friend
-	const ValuePtr &
-	undefined ();
+	///  @name Friends
 
-	UndefinedValue () :
+	friend
+	const var &
+	null ();
+
+	///  @name Construction
+
+	NullObject () :
 		jsValue ()
 	{ }
 
 };
 
+///  @relates UndefinedValue
+///  @name undefined value.
+
 inline
-const ValuePtr &
-undefined ()
+const var &
+null ()
 {
-	static const ValuePtr value (new UndefinedValue ());
+	static const var value (new NullObject ());
 
 	return value;
 }

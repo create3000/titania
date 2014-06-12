@@ -82,11 +82,11 @@ protected:
 
 	friend
 	jsNumber*
-	division (const ValuePtr &, const ValuePtr &);
+	division (const var &, const var &);
 
 	///  @name Construction
 
-	Division (const ValuePtr & lhs, const ValuePtr & rhs) :
+	Division (const var & lhs, const var & rhs) :
 		jsNumber (),
 		     lhs (lhs),
 		     rhs (rhs)
@@ -97,14 +97,17 @@ private:
 
 	///  @name Members
 
-	const ValuePtr lhs;
-	const ValuePtr rhs;
+	const var lhs;
+	const var rhs;
 
 };
 
+///  @relates Division
+///  @name division.
+
 inline
 jsNumber*
-division (const ValuePtr & lhs, const ValuePtr & rhs)
+division (const var & lhs, const var & rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
 		return new Number (lhs -> toNumber () / rhs -> toNumber ());

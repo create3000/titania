@@ -58,6 +58,8 @@ class jsScope
 {
 protected:
 
+	///  @name Construction
+
 	jsScope ()
 	{ }
 

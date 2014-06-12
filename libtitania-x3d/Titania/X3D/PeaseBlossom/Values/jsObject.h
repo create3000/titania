@@ -48,171 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_OBJECT_H__
 
-#include "../Execution/Exception.h"
-#include "../Execution/jsScope.h"
-#include "../Parser/AssignmentOperatorType.h"
-#include "../Primitives.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class Parser
+class jsObject :
+	public jsValue
 {
 public:
 
-	///  @name Construction
+	///  @name Member access
 
-	Parser (std::istream & istream, jsScope* const);
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::OBJECT; }
 
 	///  @name Operations
 
+	virtual
+	bool
+	toBoolean () const final override
+	{ return true; }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return 1; }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return 1; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return 1; }
+
+	virtual
+	var
+	toObject () const final override
+	{ return var (const_cast <jsObject*> (this)); }
+
+	///  @name Input/Output
+
+	virtual
 	void
-	parseIntoContext ();
+	toStream (std::ostream & ostream) const final override
+	{ ostream << "[object Object]"; }
 
 
-private:
+protected:
 
-	void
-	comments ();
+	///  @name Construction
 
-	// A.1 Lexical Grammar
-
-	bool
-	identifier ();
-
-	bool
-	identifierName (std::string &);
-
-	bool
-	identifierStart (std::string &);
-
-	bool
-	identifierPart (std::string &);
-
-	bool
-	reservedWord (const std::string &);
-
-	bool
-	literal (var &);
-
-	bool
-	nullLiteral (var &);
-
-	bool
-	booleanLiteral (var &);
-
-	bool
-	numericLiteral (var &);
-
-	bool
-	decimalLiteral (var &);
-
-	bool
-	binaryIntegerLiteral (var &);
-
-	bool
-	octalIntegerLiteral (var &);
-
-	bool
-	hexIntegerLiteral (var &);
-
-	// A.2 Number Conversions
-
-	// A.3 Expressions
-
-	bool
-	primaryExpression (var &);
-
-	bool
-	memberExpression (var &);
-
-	bool
-	newExpression (var &);
-
-	bool
-	leftHandSideExpression (var &);
-
-	bool
-	postfixExpression (var &);
-
-	bool
-	unaryExpression (var &);
-
-	bool
-	multiplicativeExpression (var &);
-
-	bool
-	additiveExpression (var &);
-
-	bool
-	shiftExpression (var &);
-
-	bool
-	relationalExpression (var &);
-
-	bool
-	equalityExpression (var &);
-
-	bool
-	bitwiseANDExpression (var &);
-
-	bool
-	bitwiseXORExpression (var &);
-
-	bool
-	bitwiseORExpression (var &);
-
-	bool
-	logicalANDExpression (var &);
-
-	bool
-	logicalORExpression (var &);
-
-	bool
-	conditionalExpression (var &);
-
-	bool
-	assignmentExpression (var &);
-
-	bool
-	assignmentOperator (AssignmentOperatorType &);
-
-	bool
-	expression (var &);
-
-	// A.4 Statements
-
-	bool
-	statement ();
-
-	bool
-	expressionStatement ();
-
-	bool
-	emptyStatement ();
-
-	// A.5 Functions and Programs
-
-	bool
-	functionDeclaration ();
-
-	void
-	program ();
-
-	void
-	sourceElements ();
-
-	bool
-	sourceElement ();
-
-	///  @name Members
-
-	std::istream & istream;
-
-	std::string whiteSpaces;
+	jsObject ()
+	{ }
 
 };
 

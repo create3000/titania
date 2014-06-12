@@ -48,33 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
 
-#include "../Base/jsOutputStreamObject.h"
-
-#include <Titania/LOG.h>
+#include <memory>
 
 namespace titania {
 namespace pb {
 
-class jsObject :
-	public jsOutputStreamObject
+class jsValue;
+
+class var :
+	public std::shared_ptr <jsValue>
 {
 public:
 
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "Object { }"; }
+	///  @name Construction
 
+	var ();
 
-protected:
-
-	jsObject ()
+	var (const var & value) :
+		std::shared_ptr <jsValue> (value)
 	{ }
 
+	var (var && value) :
+		std::shared_ptr <jsValue> (std::move (value))
+	{ }
+
+	explicit
+	var (jsValue* const value) :
+		std::shared_ptr <jsValue> (value)
+	{ }
+
+	///  @name Assignment operators
+
+	var &
+	operator = (const var & value)
+	{
+		std::shared_ptr <jsValue>::operator = (value);
+		return *this;
+	}
+
+	var &
+	operator = (var && value)
+	{
+		std::shared_ptr <jsValue>::operator = (std::move (value));
+		return *this;
+	}
+
 };
+
+///  @relates var
+///  @name Input/Output operators.
+
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const var & value)
+{
+	ostream << *value;
+	return ostream;
+}
 
 } // pb
 } // titania

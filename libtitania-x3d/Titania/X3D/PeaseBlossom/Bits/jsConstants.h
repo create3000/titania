@@ -48,30 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
 
-#include "../Values/jsValue.h"
-
-#include <memory>
+#include <limits>
 
 namespace titania {
 namespace pb {
 
-using ValuePtr = std::shared_ptr <jsValue>;
-
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ValuePtr & value)
-{
-	if (value)
-		ostream << *value;
-	else
-		ostream << "undefined";
-
-	return ostream;
-}
+constexpr double NaN      = std::numeric_limits <double>::quiet_NaN ();
+constexpr double Infinity = std::numeric_limits <double>::infinity ();
 
 } // pb
 } // titania

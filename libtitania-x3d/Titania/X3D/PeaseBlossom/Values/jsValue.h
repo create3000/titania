@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
 
 #include "../Base/jsOutputStreamObject.h"
-#include "../Objects/ObjectPtr.h"
+#include "../Values/var.h"
 #include "../Values/ValueType.h"
 
 namespace titania {
@@ -63,12 +63,16 @@ class jsValue :
 {
 public:
 	
+	///  @name Member access
+
 	bool
 	isPrimitive () const;
 
 	virtual
 	ValueType
 	getType () const = 0;
+
+	///  @name Operations
 
 	virtual
 	bool
@@ -87,11 +91,13 @@ public:
 	toNumber () const = 0;
 
 	virtual
-	ObjectPtr
+	var
 	toObject () const = 0;
 
 
 protected:
+
+	///  @name Construction
 
 	jsValue ()
 	{ }

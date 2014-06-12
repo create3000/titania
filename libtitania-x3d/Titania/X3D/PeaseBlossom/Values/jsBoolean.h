@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_H__
 
+#include "../Primitives/Null.h"
 #include "../Values/jsValue.h"
 
 namespace titania {
@@ -60,6 +61,8 @@ class jsBoolean :
 	public jsValue
 {
 public:
+
+	///  @name Operations
 
 	virtual
 	int32_t
@@ -77,9 +80,11 @@ public:
 	{ return toBoolean (); }
 
 	virtual
-	ObjectPtr
+	var
 	toObject () const final override
-	{ return nullptr; }
+	{ return null (); }
+
+	///  @name Input/Output
 
 	virtual
 	void
@@ -88,6 +93,8 @@ public:
 
 
 protected:
+
+	///  @name Construction
 
 	jsBoolean ()
 	{ }

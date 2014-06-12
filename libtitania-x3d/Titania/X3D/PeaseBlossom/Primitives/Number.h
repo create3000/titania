@@ -61,6 +61,8 @@ class Number :
 {
 public:
 
+	///  @name Construction
+
 	Number () :
 		jsNumber (),
 		  number (0)
@@ -78,10 +80,14 @@ public:
 		  number (value .toNumber ())
 	{ }
 
+	///  @name Member access
+
 	virtual
 	ValueType
 	getType () const final override
 	{ return ValueType::NUMBER; }
+
+	///  @name Operations
 
 	virtual
 	double
@@ -90,6 +96,8 @@ public:
 
 
 private:
+
+	///  @name Members
 
 	const double number;
 

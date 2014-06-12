@@ -74,11 +74,7 @@ class jsException :
 {
 public:
 
-	explicit
-	jsException (const ExceptionType type, const std::string & message) :
-		   type (type),
-		message (message)
-	{ }
+	///  @name Member access
 
 	virtual
 	const char*
@@ -96,13 +92,27 @@ public:
 	noexcept (true)
 	{ return message; }
 
+	///  @name Destruction
+
 	virtual
 	~jsException ()
 	noexcept (true)
 	{ }
 
 
+protected:
+
+	///  @name Construction
+
+	explicit
+	jsException (const ExceptionType type, const std::string & message) :
+		   type (type),
+		message (message)
+	{ }
+
 private:
+
+	///  @name Members
 
 	ExceptionType     type;
 	const std::string message;

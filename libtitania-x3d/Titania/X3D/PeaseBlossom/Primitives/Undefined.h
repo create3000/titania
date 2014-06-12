@@ -48,24 +48,91 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 
-#include "../Object/jsObject.h"
+#include "../Bits/jsConstants.h"
+#include "../Primitives/Null.h"
+#include "../Values/var.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class Object :
-	public jsObject
+class Undefined :
+	public jsValue
 {
 public:
 
-	Object () :
-		jsObject ()
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return ValueType::UNDEFINED; }
+
+	///  @name Operatins
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return 0; }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return 0; }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return 0; }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return NaN; }
+
+	virtual
+	var
+	toObject () const final override
+	{ return null (); }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << "undefined"; }
+
+
+protected:
+
+	///  @name Friends
+
+	friend
+	const var &
+	undefined ();
+
+	///  @name Construction
+
+	Undefined () :
+		jsValue ()
 	{ }
 
 };
+
+///  @relates UndefinedValue
+///  @name undefined value.
+
+inline
+const var &
+undefined ()
+{
+	static const var value (new Undefined ());
+
+	return value;
+}
 
 } // pb
 } // titania

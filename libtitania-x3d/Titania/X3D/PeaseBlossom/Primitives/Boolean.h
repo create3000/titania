@@ -61,6 +61,8 @@ class Boolean :
 {
 public:
 
+	///  @name Construction
+
 	Boolean () :
 		jsBoolean (),
 		  boolean (false)
@@ -78,10 +80,14 @@ public:
 		  boolean (value .toBoolean ())
 	{ }
 
+	///  @name Member access
+
 	virtual
 	ValueType
 	getType () const final override
 	{ return ValueType::BOOLEAN; }
+
+	///  @name Operations
 
 	virtual
 	bool
@@ -90,6 +96,8 @@ public:
 
 
 private:
+
+	///  @name Members
 
 	const double boolean;
 

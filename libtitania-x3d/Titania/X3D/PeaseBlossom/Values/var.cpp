@@ -48,30 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_OPERATOR_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_OPERATOR_TYPE_H__
+#include "var.h"
+
+#include "../Primitives/Undefined.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-enum class OperatorType
-{
-	ASSIGNMENT,
-	MULTIPLICATION_ASSIGMENT,
-	DIVISION_ASSIGNMENT,
-	REMAINDER_ASSIGNMENT,
-	ADDITION_ASSIGNMENT,
-	SUBTRACTION_ASSIGNMENT,
-	LEFT_SHIFT_ASSIGNMENT,
-	RIGHT_SHIFT_ASSIGNMENT,
-	UNSIGNED_RIGHT_SHIFT_ASSIGNMENT,
-	BITWISE_AND_ASSIGNMENT,
-	BITWISE_XOR_ASSIGNMENT,
-	BITWISE_OR_ASSIGNMENT
-
-};
+var::var () :
+	var (undefined ())
+{ }
 
 } // pb
 } // titania
-
-#endif

@@ -48,52 +48,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_TYPES_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_TYPES_STRING_H__
 
-#include "../Values/jsObjectValue.h"
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-class ObjectValue :
-	public jsObjectValue
-{
-public:
-
-	ObjectValue () :
-		jsObjectValue (),
-		       object ()
-	{ }
-
-	explicit
-	ObjectValue (const ObjectPtr & value) :
-		jsObjectValue (),
-		       object (value)
-	{ }
-
-	explicit
-	ObjectValue (const jsValue & value) :
-		jsObjectValue (),
-		       object (value .toObject ())
-	{ }
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return ValueType::OBJECT; }
-
-	virtual
-	ObjectPtr
-	toObject () const final override
-	{ return object; }
-
-
-private:
-
-	const ObjectPtr object;
-
-};
+using String = Glib::ustring;
 
 } // pb
 } // titania

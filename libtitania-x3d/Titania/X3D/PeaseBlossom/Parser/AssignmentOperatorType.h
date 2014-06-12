@@ -48,30 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_PTR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_PTR_H__
-
-#include "../Objects/jsObject.h"
-
-#include <memory>
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_ASSIGNMENT_OPERATOR_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_ASSIGNMENT_OPERATOR_TYPE_H__
 
 namespace titania {
 namespace pb {
 
-using ObjectPtr = std::shared_ptr <jsObject>;
-
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ObjectPtr & object)
+enum class AssignmentOperatorType
 {
-	if (object)
-		ostream << *object;
-	else
-		ostream << "null";
+	MULTIPLICATION_ASSIGMENT,
+	DIVISION_ASSIGNMENT,
+	REMAINDER_ASSIGNMENT,
+	ADDITION_ASSIGNMENT,
+	SUBTRACTION_ASSIGNMENT,
+	LEFT_SHIFT_ASSIGNMENT,
+	RIGHT_SHIFT_ASSIGNMENT,
+	UNSIGNED_RIGHT_SHIFT_ASSIGNMENT,
+	BITWISE_AND_ASSIGNMENT,
+	BITWISE_XOR_ASSIGNMENT,
+	BITWISE_OR_ASSIGNMENT
 
-	return ostream;
-}
+};
 
 } // pb
 } // titania

@@ -53,8 +53,8 @@
 
 #include "Primitives/Boolean.h"
 #include "Primitives/Number.h"
-#include "Primitives/ObjectValue.h"
-#include "Primitives/UndefinedValue.h"
-#include "Values/ValuePtr.h"
+#include "Primitives/Object.h"
+#include "Primitives/Undefined.h"
+#include "Values/var.h"
 
 #endif
