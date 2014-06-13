@@ -71,9 +71,19 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	isPrimitive () const final override
+	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (new Number (toNumber ())); }
+
+	virtual
 	double
-	toDouble () const final override
-	{ return lhs -> toDouble () / rhs -> toDouble (); }
+	toNumber () const final override
+	{ return lhs -> toNumber () / rhs -> toNumber (); }
 
 
 protected:
@@ -81,7 +91,7 @@ protected:
 	///  @name Friends
 
 	friend
-	jsNumberType*
+	var
 	division (const var &, const var &);
 
 	///  @name Construction
@@ -106,13 +116,15 @@ private:
 ///  @name division.
 
 inline
-jsNumberType*
+var
 division (const var & lhs, const var & rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (lhs -> toDouble () / rhs -> toDouble ());
+	const var expression (new Division (lhs, rhs));
 
-	return new Division (lhs, rhs);
+	if (expression -> isPrimitive ())
+		return expression -> toPrimitive ();
+
+	return expression;
 }
 
 } // pb

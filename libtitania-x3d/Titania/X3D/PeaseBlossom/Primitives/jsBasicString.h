@@ -65,11 +65,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	ValueType
-	getType () const override
-	{ return STRING; }
-
 	Glib::ustring::size_type
 	getLength () const
 	{ return string .length (); }
@@ -78,8 +73,21 @@ public:
 
 	virtual
 	bool
-	toBool () const override
+	toBoolean () const override
 	{ return not string .empty (); }
+
+	virtual
+	double
+	toNumber () const override
+	{
+		double number = 0;
+
+		std::istringstream isstream (string);
+
+		isstream >> number;
+
+		return number;
+	}
 
 	virtual
 	std::string

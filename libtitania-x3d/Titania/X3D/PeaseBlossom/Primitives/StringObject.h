@@ -104,8 +104,13 @@ public:
 
 	virtual
 	bool
-	toBool () const final override
-	{ return jsBasicString::toBool (); }
+	toBoolean () const final override
+	{ return jsBasicString::toBoolean (); }
+
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return jsBasicString::toUInt16 (); }
 
 	virtual
 	int32_t
@@ -119,8 +124,8 @@ public:
 
 	virtual
 	double
-	toDouble () const final override
-	{ return jsBasicString::toDouble (); }
+	toNumber () const final override
+	{ return jsBasicString::toNumber (); }
 
 	virtual
 	var

@@ -73,7 +73,7 @@ public:
 
 	void
 	parseIntoScope ()
-	throw (Exception <SYNTAX_ERROR>);
+	throw (SyntaxError);
 
 
 private:
@@ -81,6 +81,10 @@ private:
 	using State = std::tuple <std::ios_base::iostate, std::istream::pos_type>;
 
 	// Operations
+
+	jsScope*
+	getScope () const
+	{ return scopes .back (); }
 
 	void
 	setState (const State & value);
@@ -226,9 +230,10 @@ private:
 
 	///  @name Members
 
-	std::istream & istream;
-
-	std::string whiteSpaces;
+	jsScope* const         root;
+	std::vector <jsScope*> scopes;
+	std::istream &         istream;
+	std::string            whiteSpaces;
 
 };
 

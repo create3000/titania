@@ -59,13 +59,15 @@ namespace titania {
 namespace pb {
 
 Parser::Parser (jsScope* const scope, std::istream & istream) :
+	       root (scope),
+	     scopes ({ scope }),
 	    istream (istream),
 	whiteSpaces ()
 { }
 
 void
 Parser::parseIntoScope ()
-throw (Exception <SYNTAX_ERROR>)
+throw (SyntaxError)
 {
 	//__LOG__ << std::endl;
 
@@ -425,10 +427,10 @@ Parser::primaryExpression (var & value)
 			if (Grammar::CloseParenthesis (istream))
 				return true;
 
-			throw Exception <SYNTAX_ERROR> ("Expected ')' after expression.");
+			throw SyntaxError ("Expected ')' after expression.");
 		}
 
-		throw Exception <SYNTAX_ERROR> ("Expected expression after '('.");
+		throw SyntaxError ("Expected expression after '('.");
 	}
 
 	return false;
@@ -515,11 +517,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs .reset (multiplication (lhs, rhs));
+				lhs = multiplication (lhs, rhs);
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '*'.");
+			throw SyntaxError ("Expected expression after '*'.");
 		}
 
 		if (Grammar::Division (istream))
@@ -528,11 +530,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs .reset (division (lhs, rhs));
+				lhs = division (lhs, rhs);
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '/'.");
+			throw SyntaxError ("Expected expression after '/'.");
 		}
 
 		if (Grammar::Remainder (istream))
@@ -541,11 +543,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs .reset (remainder (lhs, rhs));
+				lhs = remainder (lhs, rhs);
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '/'.");
+			throw SyntaxError ("Expected expression after '/'.");
 		}
 
 		return true;
@@ -569,11 +571,11 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs .reset (addition (lhs, rhs));
+				lhs = addition (lhs, rhs);
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '+'.");
+			throw SyntaxError ("Expected expression after '+'.");
 		}
 
 		if (Grammar::Subtraction (istream))
@@ -582,11 +584,11 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs .reset (subtraction (lhs, rhs));
+				lhs = subtraction (lhs, rhs);
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '-'.");
+			throw SyntaxError ("Expected expression after '-'.");
 		}
 
 		return true;
@@ -613,7 +615,7 @@ Parser::shiftExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '<<'.");
+			throw SyntaxError ("Expected expression after '<<'.");
 		}
 
 		if (Grammar::UnsignedRightShift (istream))
@@ -625,7 +627,7 @@ Parser::shiftExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '>>>'.");
+			throw SyntaxError ("Expected expression after '>>>'.");
 		}
 
 		if (Grammar::RightShift (istream))
@@ -637,7 +639,7 @@ Parser::shiftExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '>>'.");
+			throw SyntaxError ("Expected expression after '>>'.");
 		}
 
 		return true;
@@ -664,7 +666,7 @@ Parser::relationalExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '<='.");
+			throw SyntaxError ("Expected expression after '<='.");
 		}
 
 		if (Grammar::GreaterEqual (istream))
@@ -676,7 +678,7 @@ Parser::relationalExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '>='.");
+			throw SyntaxError ("Expected expression after '>='.");
 		}
 
 		if (Grammar::Less (istream))
@@ -688,7 +690,7 @@ Parser::relationalExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '<'.");
+			throw SyntaxError ("Expected expression after '<'.");
 		}
 
 		if (Grammar::Greater (istream))
@@ -700,7 +702,7 @@ Parser::relationalExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '>'.");
+			throw SyntaxError ("Expected expression after '>'.");
 		}
 
 		if (Grammar::instanceof (istream))
@@ -712,7 +714,7 @@ Parser::relationalExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after 'instanceof'.");
+			throw SyntaxError ("Expected expression after 'instanceof'.");
 		}
 
 		if (Grammar::in (istream))
@@ -724,7 +726,7 @@ Parser::relationalExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after 'in'.");
+			throw SyntaxError ("Expected expression after 'in'.");
 		}
 
 		return true;
@@ -751,7 +753,7 @@ Parser::equalityExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '==='.");
+			throw SyntaxError ("Expected expression after '==='.");
 		}
 
 		if (Grammar::StrictNotEqual (istream))
@@ -763,7 +765,7 @@ Parser::equalityExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '!=='.");
+			throw SyntaxError ("Expected expression after '!=='.");
 		}
 
 		if (Grammar::Equal (istream))
@@ -775,7 +777,7 @@ Parser::equalityExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '=='.");
+			throw SyntaxError ("Expected expression after '=='.");
 		}
 
 		if (Grammar::NotEqual (istream))
@@ -787,7 +789,7 @@ Parser::equalityExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '!='.");
+			throw SyntaxError ("Expected expression after '!='.");
 		}
 
 		return true;
@@ -817,7 +819,7 @@ Parser::bitwiseANDExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '&'.");
+			throw SyntaxError ("Expected expression after '&'.");
 		}
 
 		return true;
@@ -844,7 +846,7 @@ Parser::bitwiseXORExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '^'.");
+			throw SyntaxError ("Expected expression after '^'.");
 		}
 
 		return true;
@@ -874,7 +876,7 @@ Parser::bitwiseORExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '|'.");
+			throw SyntaxError ("Expected expression after '|'.");
 		}
 
 		return true;
@@ -901,7 +903,7 @@ Parser::logicalANDExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '&&'.");
+			throw SyntaxError ("Expected expression after '&&'.");
 		}
 
 		return true;
@@ -928,7 +930,7 @@ Parser::logicalORExpression (var & lhs)
 				return true;
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '||'.");
+			throw SyntaxError ("Expected expression after '||'.");
 		}
 
 		return true;
@@ -964,10 +966,10 @@ Parser::conditionalExpression (var & first)
 					}
 				}
 
-				throw Exception <SYNTAX_ERROR> ("Expected expression after ':'.");
+				throw SyntaxError ("Expected expression after ':'.");
 			}
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '?'.");
+			throw SyntaxError ("Expected expression after '?'.");
 		}
 
 		return true;
@@ -992,7 +994,7 @@ Parser::assignmentExpression (var & value)
 			if (assignmentExpression (value))
 				return true;
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '='.");
+			throw SyntaxError ("Expected expression after '='.");
 		}
 
 		AssignmentOperatorType type;
@@ -1002,7 +1004,7 @@ Parser::assignmentExpression (var & value)
 			if (assignmentExpression (value))
 				return true;
 
-			throw Exception <SYNTAX_ERROR> ("Expected expression after '" + to_string (type) + "'."); // XXX
+			throw SyntaxError ("Expected expression after '" + to_string (type) + "'."); // XXX
 		}
 
 		setState (state);
@@ -1106,7 +1108,7 @@ Parser::expression (var & value)
 					continue;
 				}
 
-				throw Exception <SYNTAX_ERROR> ("Expected expression after ','.");
+				throw SyntaxError ("Expected expression after ','.");
 			}
 
 			return true;
@@ -1143,12 +1145,13 @@ Parser::expressionStatement ()
 
 	if (expression (value))
 	{
-		__LOG__ << value << std::endl;
-
 		if (Grammar::Semicolon (istream))
+		{
+			getScope () -> getExpressions () .emplace_back (std::move (value));
 			return true;
+		}
 
-		throw Exception <SYNTAX_ERROR> ("Expected ';' after expression.");
+		throw SyntaxError ("Expected ';' after expression.");
 	}
 
 	return false;

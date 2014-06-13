@@ -57,7 +57,7 @@ namespace pb {
 
 void
 jsScope::fromStream (std::istream & istream)
-throw (Exception <SYNTAX_ERROR>)
+throw (SyntaxError)
 {
 	Parser (this, istream) .parseIntoScope ();
 }

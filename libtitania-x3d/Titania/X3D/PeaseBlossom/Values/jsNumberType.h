@@ -68,23 +68,27 @@ public:
 
 	virtual
 	bool
-	toBool () const override
-	{ return toDouble (); }
+	toBoolean () const override
+	{ return toNumber (); }
+
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toNumber (); }
 
 	virtual
 	int32_t
 	toInt32 () const override
-	{ return toDouble (); }
+	{ return toNumber (); }
 
 	virtual
 	uint32_t
 	toUInt32 () const override
-	{ return toDouble (); }
+	{ return toNumber (); }
 
 	virtual
 	var
-	toObject () const override
-	{ return var (); }
+	toObject () const override;
 
 	///  @name Input/Output
 
@@ -106,7 +110,7 @@ inline
 void
 jsNumberType::toStream (std::ostream & ostream) const
 {
-	const double value = toDouble ();
+	const double value = toNumber ();
 
 	if (std::isnan (value))
 		ostream << "NaN";
@@ -118,7 +122,7 @@ jsNumberType::toStream (std::ostream & ostream) const
 		ostream << "-Infinity";
 
 	else
-		ostream << toDouble ();
+		ostream << toNumber ();
 }
 
 } // pb

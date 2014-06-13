@@ -53,6 +53,10 @@
 
 #include "../Base/jsInputStreamType.h"
 #include "../Bits/Exception.h"
+#include "../Values/var.h"
+
+#include <vector>
+#include <stack>
 
 namespace titania {
 namespace pb {
@@ -67,15 +71,45 @@ public:
 	virtual
 	void
 	fromStream (std::istream & istream)
-	throw (Exception <SYNTAX_ERROR>) final override;
+	throw (SyntaxError) final override;
 
 
 protected:
+
+	friend class Parser;
 
 	///  @name Construction
 
 	jsScope ()
 	{ }
+
+	/// @name Member access
+	
+	std::vector <var> &
+	getExpressions ()
+	{ return expressions; }
+	
+	const std::vector <var> &
+	getExpressions () const
+	{ return expressions; }
+
+
+private:
+
+	/// @name Member access
+	
+	std::vector <var> &
+	getDefaultObject ()
+	{ return expressions; }
+	
+	const std::vector <var> &
+	getDefaultObject () const
+	{ return expressions; }
+
+	/// @name Members
+	
+	std::stack <var> defaultObject;
+	std::vector <var> expressions;
 
 };
 

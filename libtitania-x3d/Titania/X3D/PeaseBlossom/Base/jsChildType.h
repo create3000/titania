@@ -48,85 +48,110 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
 
-#include "../Primitives/jsBasicNumber.h"
-#include "../Primitives/jsBasicObject.h"
+#include "../Base/jsGarbageCollector.h"
+
+#include <Titania/Utility/Pass.h>
+#include <cstddef>
+#include <set>
+#include <vector>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace pb {
 
-class NumberObject :
-	public jsBasicObject,
-	public jsBasicNumber
+class jsChildType;
+
+using ChildObjectSet = std::set <jsChildType*>;
+
+class jsChildType :
+	public jsGarbageCollector
 {
 public:
 
-	///  @name Construction
+	///  @name Parent handling
 
-	NumberObject () :
-		jsBasicObject (),
-		jsBasicNumber ()
-	{ }
+	///  Add a parent to this object.
+	void
+	addParent (jsChildType* const);
 
-	explicit
-	NumberObject (const double value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
+	///  Fast replaces @a parentToRemove with @a parentToAdd.
+	void
+	replaceParent (jsChildType* const, jsChildType* const);
 
-	explicit
-	NumberObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
+	///  Remove a parent from this object.
+	void
+	removeParent (jsChildType* const);
 
-	///  @name Member access
+	///  Add a parent to this object.
+	void
+	addWeakParent (jsChildType* const);
 
-	virtual
-	ValueType
-	getType () const final override
-	{ return NUMBER_OBJECT; }
+	///  Remove a parent from this object.
+	void
+	removeWeakParent (jsChildType* const);
 
-	///  @name Operations
+	///  Get all parents of this object.
+	const ChildObjectSet &
+	getParents () const
+	{ return parents; }
 
+	///  Returns true if this object has root objects and collects in @a seen all objects seen.
 	virtual
 	bool
-	toBoolean () const final override
-	{ return jsBasicNumber::toBoolean (); }
+	hasRoots (ChildObjectSet &);
 
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return jsBasicNumber::toUInt16 (); }
+	size_t
+	getReferenceCount () const
+	{ return referenceCount; }
 
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return jsBasicNumber::toInt32 (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return jsBasicNumber::toUInt32 (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return jsBasicNumber::toNumber (); }
-
-	virtual
-	var
-	toObject () const final override
-	{ return jsBasicObject::toObject () ; }
-
-	///  @name Input/Output
+	///  @name Destruction
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ jsBasicNumber::toStream (ostream); }
+	dispose ();
+
+	virtual
+	~jsChildType ();
+
+
+protected:
+
+	jsChildType ();
+
+	///  @name Children handling
+
+	template <typename ... Args>
+	void
+	addChildren (Args & ... args)
+	{ basic::pass ((addChild (args), 1) ...); }
+
+	virtual
+	void
+	addChild (jsChildType & child)
+	{ child .addParent (this); }
+
+	template <typename ... Args>
+	void
+	removeChildren (Args & ... args)
+	{ basic::pass ((removeChild (args), 1) ...); }
+
+	virtual
+	void
+	removeChild (jsChildType & child)
+	{ child .removeParent (this); }
+
+
+private:
+
+	using ChildObjectArray = std::vector <jsChildType*>;
+
+	size_t             referenceCount;
+	ChildObjectSet     parents;
+	jsChildType* root;
 
 };
 

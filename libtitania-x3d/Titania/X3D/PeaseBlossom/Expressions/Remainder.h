@@ -73,9 +73,19 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	isPrimitive () const final override
+	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (new Number (toNumber ())); }
+
+	virtual
 	double
-	toDouble () const final override
-	{ return std::fmod (lhs -> toDouble (), rhs -> toDouble ()); }
+	toNumber () const final override
+	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
 
 
 protected:
@@ -83,7 +93,7 @@ protected:
 	///  @name Friends
 
 	friend
-	jsNumberType*
+	var
 	remainder (const var &, const var &);
 
 	///  @name Construction
@@ -108,13 +118,15 @@ private:
 ///  @name remainder.
 
 inline
-jsNumberType*
+var
 remainder (const var & lhs, const var & rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (std::fmod (lhs -> toDouble (), rhs -> toDouble ()));
+	const var expression (new Remainder (lhs, rhs));
 
-	return new Remainder (lhs, rhs);
+	if (expression -> isPrimitive ())
+		return expression -> toPrimitive ();
+
+	return expression;
 }
 
 } // pb

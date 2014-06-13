@@ -57,45 +57,42 @@ namespace titania {
 namespace pb {
 
 class jsBooleanType :
-	public jsValue
+	virtual public jsValue
 {
 public:
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return BOOLEAN; }
 
 	///  @name Operations
 
 	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toBoolean (); }
+
+	virtual
 	int32_t
-	toInt32 () const final override
-	{ return toBool (); }
+	toInt32 () const override
+	{ return toBoolean (); }
 
 	virtual
 	uint32_t
-	toUInt32 () const final override
-	{ return toBool (); }
+	toUInt32 () const override
+	{ return toBoolean (); }
 
 	virtual
 	double
-	toDouble () const final override
-	{ return toBool (); }
+	toNumber () const override
+	{ return toBoolean (); }
 
 	virtual
 	var
-	toObject () const final override
-	{ return var (); }
+	toObject () const override;
 
 	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
-	{ ostream << (toBool () ? "true" : "false"); }
+	{ ostream << (toBoolean () ? "true" : "false"); }
 
 
 protected:

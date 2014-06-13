@@ -51,7 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 
-#include "../Values/jsBooleanType.h"
+#include "../Primitives/BooleanObject.h"
+#include "../Primitives/jsBasicBoolean.h"
 
 namespace titania {
 namespace pb {
@@ -60,23 +61,23 @@ namespace pb {
 #undef True
 
 class FalseType :
-	public jsBooleanType
+	public jsBasicFalseType
 {
 public:
+
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return BOOLEAN; }
 
 	///  @name Operations
 
 	virtual
-	bool
-	toBool () const final override
-	{ return false; }
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "false"; }
+	var
+	toObject () const final override
+	{ return var (new FalseObject ()); }
 
 
 protected:
@@ -90,29 +91,29 @@ protected:
 	///  @name Construction
 
 	FalseType () :
-		jsBooleanType ()
+		jsBasicFalseType ()
 	{ }
 
 };
 
 class TrueType :
-	public jsBooleanType
+	public jsBasicTrueType
 {
 public:
+
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return BOOLEAN; }
 
 	///  @name Operations
 
 	virtual
-	bool
-	toBool () const final override
-	{ return true; }
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "true"; }
+	var
+	toObject () const final override
+	{ return var (new TrueObject ()); }
 
 
 protected:
@@ -126,13 +127,13 @@ protected:
 	///  @name Construction
 
 	TrueType () :
-		jsBooleanType ()
+		jsBasicTrueType ()
 	{ }
 
 };
 
-///  @relates Boolean
-///  @name true & false values.
+///  @relates FalseType
+///  @name false value.
 
 inline
 const var &
@@ -142,6 +143,9 @@ False ()
 
 	return value;
 }
+
+///  @relates TrueType
+///  @name true value.
 
 inline
 const var &

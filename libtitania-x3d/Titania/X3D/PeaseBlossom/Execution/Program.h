@@ -51,7 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
+#include "../Base/jsGarbageCollector.h"
 #include "../Execution/jsScope.h"
+#include "../Values/jsValue.h"
 
 #include <memory>
 
@@ -59,22 +61,47 @@ namespace titania {
 namespace pb {
 
 class Program :
-	public jsScope
+	public jsScope,
+	public jsGarbageCollector
 {
 public:
 
 	///  @name Construction
 
 	Program () :
-		jsScope ()
+		           jsScope (),
+		jsGarbageCollector ()
 	{ }
 
 	Program (std::istream & istream)
-	throw (Exception <SYNTAX_ERROR>) :
-		jsScope ()
+	throw (SyntaxError) :
+		Program ()
 	{
 		fromStream (istream);
 	}
+
+	var
+	run ()
+	{
+		__LOG__ << getExpressions () .size () << std::endl;
+		
+		var result;
+	
+		for (const auto & expression : getExpressions ())
+			__LOG__ << (result = expression -> toPrimitive ()) << std::endl;
+
+		return result;
+	}
+
+	static
+	void
+	deleteObjectsAsync ()
+	{ jsGarbageCollector::deleteObjectsAsync (); }
+
+	static
+	void
+	trimFreeMemory ()
+	{ jsGarbageCollector::trimFreeMemory (); }
 
 };
 

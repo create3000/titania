@@ -48,85 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
 
-#include "../Primitives/jsBasicNumber.h"
-#include "../Primitives/jsBasicObject.h"
+#include <cstddef>
+#include <deque>
+#include <mutex>
 
 namespace titania {
 namespace pb {
 
-class NumberObject :
-	public jsBasicObject,
-	public jsBasicNumber
+class jsChildType;
+
+class jsGarbageCollector
 {
-public:
+protected:
 
 	///  @name Construction
 
-	NumberObject () :
-		jsBasicObject (),
-		jsBasicNumber ()
+	jsGarbageCollector ()
 	{ }
-
-	explicit
-	NumberObject (const double value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	explicit
-	NumberObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return NUMBER_OBJECT; }
 
 	///  @name Operations
 
-	virtual
-	bool
-	toBoolean () const final override
-	{ return jsBasicNumber::toBoolean (); }
-
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return jsBasicNumber::toUInt16 (); }
-
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return jsBasicNumber::toInt32 (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return jsBasicNumber::toUInt32 (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return jsBasicNumber::toNumber (); }
-
-	virtual
-	var
-	toObject () const final override
-	{ return jsBasicObject::toObject () ; }
-
-	///  @name Input/Output
-
-	virtual
+	static
 	void
-	toStream (std::ostream & ostream) const final override
-	{ jsBasicNumber::toStream (ostream); }
+	addDisposedObject (const jsChildType* const);
+
+	template <class InputIt>
+	static
+	void
+	addDisposedObjects (const InputIt & first, const InputIt & last)
+	{
+		std::lock_guard <std::mutex> lock (mutex);
+
+		objects .insert (objects .end (), first, last);
+	}
+
+	static
+	void
+	deleteObjectsAsync ();
+
+	static
+	void
+	trimFreeMemory ();
+
+
+private:
+
+	using ObjectArray = std::deque <const jsChildType*>;
+
+	///  @name Operations
+
+	static
+	void
+	deleteObjects (ObjectArray);
+
+	///  @name Static members
+
+	static ObjectArray objects;
+	static std::mutex  mutex;
 
 };
 

@@ -83,13 +83,13 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const ExceptionType v
 noexcept (true)
 {
 	static const std::map <ExceptionType, std::string> exceptionTypes = {
-		std::make_pair (ExceptionType::ERROR,           "Error"),
-		std::make_pair (ExceptionType::EVAL_ERROR,      "EvalError"),
-		std::make_pair (ExceptionType::RANGE_ERROR,     "RangeError"),
-		std::make_pair (ExceptionType::REFERENCE_ERROR, "ReferenceError"),
-		std::make_pair (ExceptionType::SYNTAX_ERROR,    "SyntaxError"),
-		std::make_pair (ExceptionType::TYPE_ERROR,      "TypeError"),
-		std::make_pair (ExceptionType::URI_ERROR,       "URIError")
+		std::make_pair (ERROR,           "Error"),
+		std::make_pair (EVAL_ERROR,      "EvalError"),
+		std::make_pair (RANGE_ERROR,     "RangeError"),
+		std::make_pair (REFERENCE_ERROR, "ReferenceError"),
+		std::make_pair (SYNTAX_ERROR,    "SyntaxError"),
+		std::make_pair (TYPE_ERROR,      "TypeError"),
+		std::make_pair (URI_ERROR,       "URIError")
 	};
 
 	return ostream << exceptionTypes .at (value);
@@ -191,6 +191,14 @@ public:
 	{ return type; }
 
 };
+
+using Error          = Exception <ERROR>;
+using EvalError      = Exception <EVAL_ERROR>;
+using RangeError     = Exception <RANGE_ERROR>;
+using ReferenceError = Exception <REFERENCE_ERROR>;
+using SyntaxError    = Exception <SYNTAX_ERROR>;
+using TypeError      = Exception <TYPE_ERROR>;
+using URIError       = Exception <URI_ERROR>;
 
 } // pb
 } // titania

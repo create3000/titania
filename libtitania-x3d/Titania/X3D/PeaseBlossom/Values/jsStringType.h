@@ -53,6 +53,8 @@
 
 #include "../Values/jsValue.h"
 
+#include <sstream>
+
 namespace titania {
 namespace pb {
 
@@ -64,24 +66,36 @@ public:
 	///  @name Operations
 
 	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toNumber (); }
+
+	virtual
 	int32_t
 	toInt32 () const override
-	{ return toBool (); }
+	{ return toNumber (); }
 
 	virtual
 	uint32_t
 	toUInt32 () const override
-	{ return toBool (); }
+	{ return toNumber (); }
 
 	virtual
 	double
-	toDouble () const override
-	{ return toBool (); }
+	toNumber () const override
+	{
+		double number = 0;
+
+		std::istringstream isstream (toString ());
+
+		isstream >> number;
+
+		return number;
+	}
 
 	virtual
 	var
-	toObject () const override
-	{ return var (); }
+	toObject () const override;
 
 	virtual
 	std::string

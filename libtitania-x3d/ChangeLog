@@ -1,3 +1,46 @@
+2014-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Primitives.h:
+	* var.h:
+	* var.cpp:
+	* Parser.h:
+	* jsValue.h:
+	* Exception.h:
+	* Parser.cpp:
+	* Null.h:
+	* jsChildType.h:
+	* String.h:
+	* Number.h:
+	* jsScope.h:
+	* Program.h:
+	* jsChildType.cpp:
+	* Boolean.h:
+	* jsStringType.h:
+	* jsNumberType.h:
+	* jsScope.cpp:
+	* Addition.h:
+	* Division.h:
+	* Context.cpp:
+	* Undefined.h:
+	* jsBooleanType.h:
+	* Remainder.h:
+	* jsStringType.cpp:
+	* jsNumberType.cpp:
+	* jsBooleanType.cpp:
+	* StringObject.h:
+	* jsGarbageCollector.h:
+	* NumberObject.h:
+	* Subtraction.h:
+	* BooleanObject.h:
+	* jsBasicNumber.h:
+	* jsBasicString.h:
+	* jsBasicObject.h:
+	* jsBasicBoolean.h:
+	* Multiplication.h:
+	* X3DGarbargeCollector.cpp: 
+
 2014-06-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

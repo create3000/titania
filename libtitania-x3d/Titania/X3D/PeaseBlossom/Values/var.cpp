@@ -56,9 +56,18 @@
 namespace titania {
 namespace pb {
 
-var::var () :
-	var (undefined ())
-{ }
+template <>
+void
+basic_var <jsValue>::clear ()
+{
+	value = nullptr;
+	reset (undefined () .get ());
+}
+
+template <>
+void
+basic_var <jsValue>::toStream (std::ostream & ostream) const
+{ ostream << *value; }
 
 } // pb
 } // titania

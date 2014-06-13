@@ -48,89 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#include "jsNumberType.h"
 
-#include "../Primitives/jsBasicNumber.h"
-#include "../Primitives/jsBasicObject.h"
+#include "../Primitives/NumberObject.h"
 
 namespace titania {
 namespace pb {
 
-class NumberObject :
-	public jsBasicObject,
-	public jsBasicNumber
-{
-public:
-
-	///  @name Construction
-
-	NumberObject () :
-		jsBasicObject (),
-		jsBasicNumber ()
-	{ }
-
-	explicit
-	NumberObject (const double value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	explicit
-	NumberObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return NUMBER_OBJECT; }
-
-	///  @name Operations
-
-	virtual
-	bool
-	toBoolean () const final override
-	{ return jsBasicNumber::toBoolean (); }
-
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return jsBasicNumber::toUInt16 (); }
-
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return jsBasicNumber::toInt32 (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return jsBasicNumber::toUInt32 (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return jsBasicNumber::toNumber (); }
-
-	virtual
-	var
-	toObject () const final override
-	{ return jsBasicObject::toObject () ; }
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ jsBasicNumber::toStream (ostream); }
-
-};
+var
+jsNumberType::toObject () const
+{ return var (new NumberObject (toNumber ())); }
 
 } // pb
 } // titania
-
-#endif

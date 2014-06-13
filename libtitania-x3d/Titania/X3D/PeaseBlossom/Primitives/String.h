@@ -87,6 +87,13 @@ public:
 		jsBasicString (value)
 	{ }
 
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return STRING; }
+
 };
 
 } // pb

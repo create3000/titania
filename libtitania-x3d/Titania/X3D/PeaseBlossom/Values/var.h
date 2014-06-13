@@ -51,65 +51,171 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
 
-#include <memory>
+#include "../Base/jsOutputStreamType.h"
+#include "../Base/jsChildType.h"
 
 namespace titania {
 namespace pb {
 
-class jsValue;
-
-class var :
-	public std::shared_ptr <jsValue>
+template <class Type>
+class basic_var :
+	public jsChildType,
+	public jsOutputStreamType
 {
 public:
 
 	///  @name Construction
 
-	var ();
+	basic_var () :
+		       jsChildType (),
+		jsOutputStreamType (),
+		             value ()
+	{ clear (); }
 
-	var (const var & value) :
-		std::shared_ptr <jsValue> (value)
+	basic_var (const basic_var & var) :
+		basic_var (var .value)
 	{ }
 
-	var (var && value) :
-		std::shared_ptr <jsValue> (std::move (value))
-	{ }
+	basic_var (basic_var && var) :
+		       jsChildType (),
+		jsOutputStreamType (),
+		             value (var .value)
+	{
+		if (var .value)
+		{
+			var .value -> replaceParent (&var, this);
+			var .clear ();
+		}
+	}
 
 	explicit
-	var (jsValue* const value) :
-		std::shared_ptr <jsValue> (value)
-	{ }
+	basic_var (Type* const value) :
+		       jsChildType (),
+		jsOutputStreamType (),
+		             value (value)
+	{
+		if (value)
+			value -> addParent (this);
+	}
 
 	///  @name Assignment operators
 
-	var &
-	operator = (const var & value)
+	basic_var &
+	operator = (const basic_var & var)
 	{
-		std::shared_ptr <jsValue>::operator = (value);
+		reset (var .value);
 		return *this;
 	}
 
-	var &
-	operator = (var && value)
+	basic_var &
+	operator = (basic_var && var)
 	{
-		std::shared_ptr <jsValue>::operator = (std::move (value));
+		if (&var == this)
+			return *this;
+
+		remove ();
+
+		value = var .value;
+
+		if (value)
+		{
+			value -> replaceParent (&var, this);
+			var .clear ();
+		}
+
 		return *this;
 	}
+	
+	///  @name Access operators
+
+	Type*
+	operator -> () const
+	{ return value; }
+
+	Type &
+	operator * () const
+	{ return *value; }
+
+	///  @name Member access
+	
+	Type*
+	get () const
+	{ return value; }
+
+	void
+	reset (Type* const _value)
+	{
+		if (value not_eq _value)
+		{
+			if (_value)
+				_value -> addParent (this);
+
+			remove ();
+		}
+
+		value = _value;
+	}
+	
+	///  @name Input/Output
+	
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		if (value)
+			ostream << *value;
+		else
+			ostream << "NULL";
+	}
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose ()
+	{
+		remove ();
+
+		value = nullptr;
+
+		jsChildType::dispose ();
+	}
+	
+	virtual
+	~basic_var ()
+	{ remove (); }
+
+
+private:
+
+	void
+	remove ()
+	{
+		if (value)
+			value -> removeParent (this);
+	}
+
+	void
+	clear ()
+	{ value = nullptr; }
+
+	///  @name Members;
+
+	Type* value;
 
 };
 
-///  @relates var
-///  @name Input/Output operators.
+class jsValue;
 
-///  Insertion operator for var.
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const var & value)
-{
-	ostream << *value;
-	return ostream;
-}
+template <>
+void
+basic_var <jsValue>::clear ();
+
+template <>
+void
+basic_var <jsValue>::toStream (std::ostream &) const;
+
+using var = basic_var <jsValue>;
 
 } // pb
 } // titania

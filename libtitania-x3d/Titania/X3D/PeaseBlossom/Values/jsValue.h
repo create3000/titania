@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
 
+#include "../Base/jsChildType.h"
 #include "../Base/jsOutputStreamType.h"
 #include "../Values/var.h"
 #include "../Values/ValueType.h"
@@ -59,14 +60,12 @@ namespace titania {
 namespace pb {
 
 class jsValue :
+	public jsChildType,
 	public jsOutputStreamType
 {
 public:
 	
 	///  @name Member access
-
-	bool
-	isPrimitive () const;
 
 	virtual
 	ValueType
@@ -76,7 +75,20 @@ public:
 
 	virtual
 	bool
-	toBool () const = 0;
+	isPrimitive () const;
+
+	virtual
+	var
+	toPrimitive () const
+	{ return var (const_cast <jsValue*> (this)); }
+
+	virtual
+	bool
+	toBoolean () const = 0;
+
+	virtual
+	uint16_t
+	toUInt16 () const = 0;
 
 	virtual
 	int32_t
@@ -88,7 +100,7 @@ public:
 
 	virtual
 	double
-	toDouble () const = 0;
+	toNumber () const = 0;
 
 	virtual
 	var
@@ -99,7 +111,9 @@ protected:
 
 	///  @name Construction
 
-	jsValue ()
+	jsValue () :
+		       jsChildType (),
+		jsOutputStreamType ()
 	{ }
 
 };

@@ -48,85 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
 
-#include "../Primitives/jsBasicNumber.h"
-#include "../Primitives/jsBasicObject.h"
+#include "../Values/jsBooleanType.h"
 
 namespace titania {
 namespace pb {
 
-class NumberObject :
-	public jsBasicObject,
-	public jsBasicNumber
+#undef False
+#undef True
+
+class jsBasicFalseType :
+	public jsBooleanType
 {
 public:
-
-	///  @name Construction
-
-	NumberObject () :
-		jsBasicObject (),
-		jsBasicNumber ()
-	{ }
-
-	explicit
-	NumberObject (const double value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	explicit
-	NumberObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return NUMBER_OBJECT; }
 
 	///  @name Operations
 
 	virtual
 	bool
-	toBoolean () const final override
-	{ return jsBasicNumber::toBoolean (); }
-
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return jsBasicNumber::toUInt16 (); }
-
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return jsBasicNumber::toInt32 (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return jsBasicNumber::toUInt32 (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return jsBasicNumber::toNumber (); }
-
-	virtual
-	var
-	toObject () const final override
-	{ return jsBasicObject::toObject () ; }
+	toBoolean () const override
+	{ return false; }
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ jsBasicNumber::toStream (ostream); }
+	toStream (std::ostream & ostream) const override
+	{ ostream << "false"; }
+
+
+protected:
+
+	///  @name Construction
+
+	jsBasicFalseType () :
+		jsBooleanType ()
+	{ }
+
+};
+
+class jsBasicTrueType :
+	public jsBooleanType
+{
+public:
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBoolean () const override
+	{ return true; }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "true"; }
+
+
+protected:
+
+	///  @name Construction
+
+	jsBasicTrueType () :
+		jsBooleanType ()
+	{ }
 
 };
 

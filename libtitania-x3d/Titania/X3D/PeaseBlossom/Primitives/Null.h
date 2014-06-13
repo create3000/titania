@@ -75,8 +75,13 @@ public:
 
 	virtual
 	bool
-	toBool () const final override
+	toBoolean () const final override
 	{ return false; }
+
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return 0; }
 
 	virtual
 	int32_t
@@ -90,8 +95,8 @@ public:
 
 	virtual
 	double
-	toDouble () const final override
-	{ return 1; }
+	toNumber () const final override
+	{ return 0; }
 
 	virtual
 	var

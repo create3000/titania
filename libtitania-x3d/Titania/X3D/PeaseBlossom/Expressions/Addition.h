@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 class Addition :
-	public jsNumberType
+	public jsValue
 {
 public:
 
@@ -72,9 +72,56 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	isPrimitive () const final override
+	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+
+	virtual
+	var
+	toPrimitive () const final override
+	{
+		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
+			return var (new String (lhs -> toString () + rhs -> toString ()));
+
+		return var (new Number (lhs -> toNumber () + rhs -> toNumber ()));
+	}
+
+	virtual
+	bool
+	toBoolean () const override
+	{ return toPrimitive () -> toBoolean (); }
+
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toPrimitive () -> toUInt16 (); }
+
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toPrimitive () -> toInt32 (); }
+
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toPrimitive () -> toUInt32 (); }
+
+	virtual
 	double
-	toDouble () const final override
-	{ return lhs -> toDouble () + rhs -> toDouble (); }
+	toNumber () const final override
+	{ return toPrimitive () -> toNumber (); }
+
+	virtual
+	var
+	toObject () const override
+	{ return toPrimitive () -> toObject (); }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ toPrimitive () -> toStream (ostream); }
 
 
 protected:
@@ -82,15 +129,15 @@ protected:
 	///  @name Friends
 
 	friend
-	jsValue*
+	var
 	addition (const var &, const var &);
 
 	///  @name Construction
 
 	Addition (const var & lhs, const var & rhs) :
-		jsNumberType (),
-		         lhs (lhs),
-		         rhs (rhs)
+		jsValue (),
+		    lhs (lhs),
+		    rhs (rhs)
 	{ }
 
 
@@ -107,18 +154,15 @@ private:
 ///  @name addition.
 
 inline
-jsValue*
+var
 addition (const var & lhs, const var & rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-	{
-		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return new String (lhs -> toString () + rhs -> toString ());
+	const var expression (new Addition (lhs, rhs));
 
-		return new Number (lhs -> toDouble () + rhs -> toDouble ());
-	}
+	if (expression -> isPrimitive ())
+		return expression -> toPrimitive ();
 
-	return new Addition (lhs, rhs);
+	return expression;
 }
 
 } // pb

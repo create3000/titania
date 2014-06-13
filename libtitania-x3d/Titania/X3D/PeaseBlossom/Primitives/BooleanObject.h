@@ -48,38 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
 
-#include "../Primitives/jsBasicNumber.h"
+#include "../Primitives/jsBasicBoolean.h"
 #include "../Primitives/jsBasicObject.h"
 
 namespace titania {
 namespace pb {
 
-class NumberObject :
+#undef False
+#undef True
+
+class FalseObject :
 	public jsBasicObject,
-	public jsBasicNumber
+	public jsBasicFalseType
 {
 public:
 
 	///  @name Construction
 
-	NumberObject () :
-		jsBasicObject (),
-		jsBasicNumber ()
-	{ }
-
-	explicit
-	NumberObject (const double value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
-	{ }
-
-	explicit
-	NumberObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
+	FalseObject () :
+		   jsBasicObject (),
+		jsBasicFalseType ()
 	{ }
 
 	///  @name Member access
@@ -87,34 +78,34 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return NUMBER_OBJECT; }
+	{ return BOOLEAN_OBJECT; }
 
 	///  @name Operations
 
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsBasicNumber::toBoolean (); }
+	{ return jsBasicFalseType::toBoolean (); }
 
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsBasicNumber::toUInt16 (); }
+	{ return jsBasicFalseType::toUInt16 (); }
 
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsBasicNumber::toInt32 (); }
+	{ return jsBasicFalseType::toInt32 (); }
 
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsBasicNumber::toUInt32 (); }
+	{ return jsBasicFalseType::toUInt32 (); }
 
 	virtual
 	double
 	toNumber () const final override
-	{ return jsBasicNumber::toNumber (); }
+	{ return jsBasicFalseType::toNumber (); }
 
 	virtual
 	var
@@ -126,7 +117,68 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsBasicNumber::toStream (ostream); }
+	{ jsBasicFalseType::toStream (ostream); }
+
+};
+
+class TrueObject :
+	public jsBasicObject,
+	public jsBasicTrueType
+{
+public:
+
+	///  @name Construction
+
+	TrueObject () :
+		  jsBasicObject (),
+		jsBasicTrueType ()
+	{ }
+
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const final override
+	{ return BOOLEAN_OBJECT; }
+
+	///  @name Operations
+
+	virtual
+	bool
+	toBoolean () const final override
+	{ return jsBasicTrueType::toBoolean (); }
+
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return jsBasicTrueType::toUInt16 (); }
+
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return jsBasicTrueType::toInt32 (); }
+
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return jsBasicTrueType::toUInt32 (); }
+
+	virtual
+	double
+	toNumber () const final override
+	{ return jsBasicTrueType::toNumber (); }
+
+	virtual
+	var
+	toObject () const final override
+	{ return jsBasicObject::toObject () ; }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ jsBasicTrueType::toStream (ostream); }
 
 };
 

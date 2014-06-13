@@ -729,6 +729,10 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\NumberObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBasicString.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\StringObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBasicBoolean.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\BooleanObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\jsChildType.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\jsGarbageCollector.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1226,6 +1230,11 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Values\var.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\jsScope.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Values\jsBooleanType.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Values\jsNumberType.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Values\jsStringType.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Base\jsChildType.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Base\jsGarbargeCollector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

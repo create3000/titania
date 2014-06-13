@@ -95,14 +95,13 @@ Context::initialize ()
 
 	try
 	{
-		pb::NumberObject number (12345);
-		pb::StringObject string ("abcd");
+		const auto program = pb::ProgramPtr (new pb::Program (istream));
+		const auto result  = program -> run ();
 
-		getBrowser () -> println (string);
-
-		const pb::ProgramPtr program (new pb::Program (istream));
-
+		getBrowser () -> println ("result:  ", result);
 		getBrowser () -> println ("istream: ", SFBool (istream), " : ", chrono::now () - t0);
+
+		program -> deleteObjectsAsync ();
 	}
 	catch (const pb::jsException & error)
 	{

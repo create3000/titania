@@ -61,18 +61,11 @@ class jsBasicNumber :
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const override
-	{ return NUMBER; }
-
 	///  @name Operations
 
 	virtual
 	double
-	toDouble () const override
+	toNumber () const override
 	{ return number; }
 
 
@@ -94,7 +87,7 @@ protected:
 	explicit
 	jsBasicNumber (const jsValue & value) :
 		jsNumberType (),
-		      number (value .toDouble ())
+		      number (value .toNumber ())
 	{ }
 
 

@@ -77,6 +77,13 @@ public:
 		jsBasicNumber (value)
 	{ }
 
+	///  @name Member access
+
+	virtual
+	ValueType
+	getType () const override
+	{ return NUMBER; }
+
 };
 
 } // pb
