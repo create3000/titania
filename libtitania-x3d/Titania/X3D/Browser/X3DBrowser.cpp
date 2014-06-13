@@ -309,13 +309,13 @@ throw (Error <INVALID_SCENE>,
 			processEvents ();
 
 			// Replace world.
-			print ("*** The browser is requested to replace the world with '", value -> getWorldURL (), "'.\n");
 
 			setDescription ("");
 			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
 			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
-			
+
+			print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
 			isLive () .addInterest (executionContext -> isLive ());
 			executionContext -> isLive () = isLive ();
 			executionContext -> setup ();

@@ -1,5 +1,12 @@
 2014-06-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPtr.h:
+	* X3DBrowser.cpp:
+	* var.h:
+	* Undefined.h: 
+
+2014-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* var.h:

@@ -131,7 +131,7 @@ protected:
 
 };
 
-///  @relates UndefinedValue
+///  @relates Undefined
 ///  @name undefined value.
 
 ///  Return the unique »undefined« value.

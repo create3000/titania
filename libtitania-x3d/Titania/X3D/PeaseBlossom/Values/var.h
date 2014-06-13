@@ -67,7 +67,7 @@ namespace pb {
  *  @param  Type  Type of pointer.
  */
 template <class Type>
-class basic_var :
+class basic_ptr :
 	public jsChildType,
 	public jsOutputStreamType
 {
@@ -75,28 +75,26 @@ public:
 
 	///  @name Construction
 
-	///  Constructs new basic_var.
-	basic_var () :
+	///  Constructs new basic_ptr.
+	basic_ptr () :
 		       jsChildType (),
 		jsOutputStreamType (),
 		             value (nullptr)
 	{ }
 
-	///  Constructs new basic_var.
-	basic_var (const basic_var & var) :
-		basic_var (var .value)
+	///  Constructs new basic_ptr.
+	basic_ptr (const basic_ptr & var) :
+		basic_ptr (var .value)
 	{ }
 
-	///  Constructs new basic_var.
-	basic_var (basic_var && var) :
-		       jsChildType (),
-		jsOutputStreamType (),
-		             value (var .value)
+	///  Constructs new basic_ptr.
+	basic_ptr (basic_ptr && var) :
+		basic_ptr ()
 	{ move (var); }
 
-	///  Constructs new basic_var.
+	///  Constructs new basic_ptr.
 	explicit
-	basic_var (Type* const value) :
+	basic_ptr (Type* const value) :
 		       jsChildType (),
 		jsOutputStreamType (),
 		             value (value)
@@ -107,24 +105,22 @@ public:
 
 	///  @name Assignment operators
 
-	///  Assigns the basic_var.
-	basic_var &
-	operator = (const basic_var & var)
+	///  Assigns the basic_ptr.
+	basic_ptr &
+	operator = (const basic_ptr & var)
 	{
 		reset (var .value);
 		return *this;
 	}
 
-	///  Assigns the basic_var.
-	basic_var &
-	operator = (basic_var && var)
+	///  Assigns the basic_ptr.
+	basic_ptr &
+	operator = (basic_ptr && var)
 	{
 		if (&var == this)
 			return *this;
 
 		remove (get ());
-
-		set (var .value);
 		move (var);
 
 		return *this;
@@ -157,8 +153,8 @@ public:
 	{
 		if (get () not_eq value)
 		{
-			add (value);
 			remove (get ());
+			add (value);
 		}
 
 		set (value);
@@ -174,12 +170,12 @@ public:
 			ostream << *value;
 
 		else
-			throw Error ("basic_var::toStream");
+			throw Error ("basic_ptr::toStream");
 	}
 
 	///  @name Destruction
 
-	///  Destructs the owned object if no more shared_ptrs link to it 
+	///  Destructs the owned object if no more basic_ptrs link to it 
 	virtual
 	void
 	dispose ()
@@ -190,9 +186,9 @@ public:
 		jsChildType::dispose ();
 	}
 
-	///  Destructs the owned object if no more shared_ptrs link to it 
+	///  Destructs the owned object if no more basic_ptrs link to it 
 	virtual
-	~basic_var ()
+	~basic_ptr ()
 	{ remove (get ()); }
 
 
@@ -206,11 +202,13 @@ private:
 	}
 
 	void
-	move (basic_var & var)
+	move (basic_ptr & var)
 	{
-		if (var .value)
+		set (var .get ());
+
+		if (get ())
 		{
-			var .value -> replaceParent (&var, this);
+			var .get () -> replaceParent (&var, this);
 			var .set (nullptr);
 		}
 	}
@@ -232,34 +230,66 @@ private:
 
 };
 
-///  @relates basic_var
+///  @relates basic_ptr
 ///  @name Comparision operations
 
-///  Compares two basic_var values.
+///  Compares two basic_ptr.
 ///  Return true if @a lhs is equal to @a rhs.
 template <class Type>
 inline
 bool
-operator == (const basic_var <Type> & lhs, const basic_var <Type> & rhs)
-{
-	return lhs .get () == rhs .get ();
-}
+operator == (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
+{ return lhs .get () == rhs .get (); }
 
-///  Compares two basic_var numbers.
+///  Compares two basic_ptr.
 ///  Return true if @a lhs is not equal to @a rhs.
 template <class Type>
 inline
 bool
-operator not_eq (const basic_var <Type> & lhs, const basic_var <Type> & rhs)
-{
-	return lhs .get () not_eq rhs .get ();
-}
+operator not_eq (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
+{ return lhs .get () not_eq rhs .get (); }
+
+///  Compares two basic_ptr.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
+{ return lhs .get () < rhs .get (); }
+
+///  Compares two basic_ptr.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
+{ return lhs .get () <= rhs .get (); }
+
+///  Compares two basic_ptr.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator > (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
+{ return lhs .get () > rhs .get (); }
+
+///  Compares two basic_ptr.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
+{ return lhs .get () >= rhs .get (); }
 
 //
 
 class jsValue;
 
-using var = basic_var <jsValue>;
+///  @relates basic_ptr
+///  @name Typedef
+
+///  Typedef for jsValue.
+using var = basic_ptr <jsValue>;
 
 } // pb
 } // titania

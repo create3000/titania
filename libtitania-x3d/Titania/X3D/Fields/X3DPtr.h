@@ -108,38 +108,19 @@ public:
 	{ }
 
 	X3DPtr (X3DPtr && field) :
-		X3DField <ValueType*> (field .getValue ())
-	{
-		if (getValue ())
-		{
-			getValue () -> replaceParent (&field, this);
-			field .reset ();
-			field .addEvent ();
-		}
-	}
+		X3DField <ValueType*> ()
+	{ moveObject (field); }
 
 	template <class Up>
 	explicit
-	X3DPtr (X3DPtr <Up>&& field) :
-		X3DField <ValueType*> (dynamic_cast <ValueType*> (field .getValue ()))
-	{
-		if (getValue ())
-		{
-			getValue () -> replaceParent (&field, this);
-			field .reset ();
-			field .addEvent ();
-		}
-		else
-			field = nullptr;
-	}
+	X3DPtr (X3DPtr <Up> && field) :
+		X3DField <ValueType*> ()
+	{ moveObject (field); }
 
 	//explicit
 	X3DPtr (ValueType* const value) :
 		X3DField <ValueType*> (value)
-	{
-		if (value)
-			value -> addParent (this);
-	}
+	{ addObject (value); }
 
 	template <class Up>
 	explicit
@@ -163,36 +144,84 @@ public:
 
 	virtual
 	X3DPtr*
-	clone (X3DExecutionContext* const) const
+	clone (X3DExecutionContext* const executionContext) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override
+	{
+		X3DPtr* const field = new X3DPtr ();
+
+		clone (executionContext, field);
+
+		return field;
+	}
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override
+	{
+		X3DPtr* const field = static_cast <X3DPtr*> (fieldDefinition);
+
+		if (getValue ())
+			field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
+
+		else
+			field -> set (nullptr);
+	}
 
 	/// @name Assignment operators
 
 	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
 	X3DPtr &
-	operator = (const X3DPtr &);
+	operator = (const X3DPtr & field)
+	{
+		setValue (field);
+		return *this;
+	}
 
 	X3DPtr &
-	operator = (const X3DPtrBase &);
+	operator = (const X3DPtrBase & field)
+	{
+		setValue (dynamic_cast <ValueType*> (field .getObject ()));
+		return *this;
+	}
 
 	///  Move assignment operator.  Behaves the same as the 6.7.6 setValue service.
 	X3DPtr &
-	operator = (X3DPtr &&);
+	operator = (X3DPtr && field)
+	{
+		if (&field == this)
+			return *this;
+
+		removeObject (getValue ());
+		moveObject (field);
+		addEvent ();
+
+		return *this;
+	}
 
 	template <class Up>
 	X3DPtr &
-	operator = (X3DPtr <Up>&&);
+	operator = (X3DPtr <Up> && field)
+	{
+		if (&field == this)
+			return *this;
+
+		removeObject (getValue ());
+		moveObject (field);
+		addEvent ();
+
+		return *this;
+	}
 
 	template <class Up>
 	X3DPtr &
-	operator = (Up* const);
+	operator = (Up* const value)
+	{
+		setValue (dynamic_cast <ValueType*> (value));
+		return *this;
+	}
 
 	///  @name Field services
 
@@ -211,11 +240,25 @@ public:
 
 	virtual
 	void
-	set (const internal_type &) final override;
+	set (const internal_type & value) final override
+	{
+		if (value not_eq getValue ())
+		{
+			removeObject (getValue ());
+			addObject (value);
+		}
+
+		setObject (value);
+	}
 
 	virtual
 	void
-	write (const X3DChildObject &) final override;
+	write (const X3DChildObject & field) final override
+	{
+		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
+
+		set (dynamic_cast <internal_type> (object));
+	}
 
 	virtual
 	X3DChildObject*
@@ -257,24 +300,46 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) final override
+	{ }
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override
+	{
+		if (getValue ())
+			getValue () -> toStream (ostream);
+
+		else
+			ostream << "NULL";
+	}
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override
+	{
+		if (getValue ())
+			getValue () -> toXMLStream (ostream);
+
+		else
+			ostream << "NULL";
+	}
 
 	///  @name Dispose
 
 	virtual
 	void
-	dispose () final override;
+	dispose () final override
+	{
+		removeObject (getValue ());
+		setObject (nullptr);
+
+		X3DField <ValueType*>::dispose ();
+	}
 
 	virtual
-	~X3DPtr ();
+	~X3DPtr ()
+	{ removeObject (getValue ()); }
 
 
 private:
@@ -285,10 +350,51 @@ private:
 	using X3DField <ValueType*>::reset;
 
 	void
-	addObject (ValueType* const);
+	addObject (ValueType* const value)
+	{
+		if (value)
+			value -> addParent (this);
+	}
 
 	void
-	removeObject (ValueType* const);
+	moveObject (X3DPtr & field)
+	{
+		setObject (field .getValue ());
+
+		if (getValue ())
+		{
+			field .get () -> replaceParent (&field, this);
+			field .setObject (nullptr);
+			field .addEvent ();
+		}
+	}
+
+	template <class Up>
+	void
+	moveObject (X3DPtr <Up> & field)
+	{
+		setObject (dynamic_cast <ValueType*> (field .getValue ()));
+
+		if (getValue ())
+		{
+			field .get () -> replaceParent (&field, this);
+			field .setObject (nullptr);
+			field .addEvent ();
+		}
+		else
+			field = nullptr;
+	}
+
+	void
+	removeObject (ValueType* const value)
+	{
+		if (value)
+			value -> removeParent (this);
+	}
+
+	void
+	setObject (ValueType* const value)
+	{ X3DField <ValueType*>::set (value); }
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
@@ -297,205 +403,6 @@ private:
 
 template <class ValueType>
 const std::string X3DPtr <ValueType>::typeName ("SFNode");
-
-template <class ValueType>
-X3DPtr <ValueType>*
-X3DPtr <ValueType>::clone (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	X3DPtr* const field = new X3DPtr ();
-
-	clone (executionContext, field);
-
-	return field;
-}
-
-template <class ValueType>
-void
-X3DPtr <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	X3DPtr* const field = static_cast <X3DPtr*> (fieldDefinition);
-
-	if (getValue ())
-		field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
-
-	else
-		field -> set (nullptr);
-}
-
-template <class ValueType>
-inline
-X3DPtr <ValueType> &
-X3DPtr <ValueType>::operator = (const X3DPtr & field)
-{
-	X3DField <ValueType*>::operator = (field);
-	return *this;
-}
-
-template <class ValueType>
-inline
-X3DPtr <ValueType> &
-X3DPtr <ValueType>::operator = (const X3DPtrBase & field)
-{
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getObject ()));
-	return *this;
-}
-
-template <class ValueType>
-inline
-X3DPtr <ValueType> &
-X3DPtr <ValueType>::operator = (X3DPtr && field)
-{
-	if (&field == this)
-		return *this;
-
-	removeObject (getValue ());
-
-	X3DField <ValueType*>::set (field .getValue ());
-
-	if (getValue ())
-	{
-		getValue () -> replaceParent (&field, this);
-		field .reset ();
-		field .addEvent ();
-	}
-
-	addEvent ();
-
-	return *this;
-}
-
-template <class ValueType>
-template <class Up>
-inline
-X3DPtr <ValueType> &
-X3DPtr <ValueType>::operator = (X3DPtr <Up>&& field)
-{
-	if (&field == this)
-		return *this;
-
-	removeObject (getValue ());
-
-	X3DField <ValueType*>::set (dynamic_cast <ValueType*> (field .getValue ()));
-
-	if (getValue ())
-	{
-		getValue () -> replaceParent (&field, this);
-		field .reset ();
-		field .addEvent ();
-	}
-	else
-		field = nullptr;
-
-	addEvent ();
-
-	return *this;
-}
-
-template <class ValueType>
-template <class Up>
-inline
-X3DPtr <ValueType> &
-X3DPtr <ValueType>::operator = (Up* const value)
-{
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (value));
-	return *this;
-}
-
-template <class ValueType>
-void
-X3DPtr <ValueType>::set (const internal_type & value)
-{
-	addObject (value);
-	X3DField <ValueType*>::set (value);
-}
-
-template <class ValueType>
-void
-X3DPtr <ValueType>::write (const X3DChildObject & field)
-{
-	X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
-
-	set (dynamic_cast <internal_type> (object));
-}
-
-template <class ValueType>
-void
-X3DPtr <ValueType>::addObject (ValueType* const value)
-{
-	if (getValue () not_eq value)
-	{
-		if (value)
-			value -> addParent (this);
-
-		removeObject (getValue ());
-	}
-}
-
-template <class ValueType>
-void
-X3DPtr <ValueType>::removeObject (ValueType* const value)
-{
-	if (value)
-	{
-		reset ();
-
-		value -> removeParent (this);
-	}
-}
-
-template <class ValueType>
-inline
-void
-X3DPtr <ValueType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{ }
-
-template <class ValueType>
-inline
-void
-X3DPtr <ValueType>::toStream (std::ostream & ostream) const
-{
-	if (getValue ())
-		getValue () -> toStream (ostream);
-
-	else
-		ostream << "NULL";
-}
-
-template <class ValueType>
-inline
-void
-X3DPtr <ValueType>::toXMLStream (std::ostream & ostream) const
-{
-	if (getValue ())
-		getValue () -> toXMLStream (ostream);
-
-	else
-		ostream << "NULL";
-}
-
-template <class ValueType>
-void
-X3DPtr <ValueType>::dispose ()
-{
-	removeObject (getValue ());
-
-	X3DField <ValueType*>::dispose ();
-}
-
-template <class ValueType>
-inline
-X3DPtr <ValueType>::~X3DPtr ()
-{
-	removeObject (getValue ());
-}
 
 ///  @relates X3DPtr
 ///  @name Comparision operations
