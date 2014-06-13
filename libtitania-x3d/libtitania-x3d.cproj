@@ -717,7 +717,6 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Values\var.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\String.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\ustring.h" />
     <None Include="Titania\X3D\PeaseBlossom\Bits\Exception.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsInputStreamType.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamType.h" />
@@ -733,6 +732,8 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\BooleanObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsChildType.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsGarbageCollector.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBasicFunction.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\Function.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

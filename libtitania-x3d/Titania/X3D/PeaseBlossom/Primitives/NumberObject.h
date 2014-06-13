@@ -57,6 +57,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a number object.
+ */
 class NumberObject :
 	public jsBasicObject,
 	public jsBasicNumber
@@ -84,6 +87,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For number objects this is »NUMBER_OBJECT«.
 	virtual
 	ValueType
 	getType () const final override
@@ -118,7 +122,8 @@ public:
 
 	virtual
 	var
-	toObject () const final override
+	toObject () const
+	throw (TypeError) final override
 	{ return jsBasicObject::toObject () ; }
 
 	///  @name Input/Output

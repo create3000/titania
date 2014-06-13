@@ -80,6 +80,7 @@ public:
 	static const io::string _false;
 	static const io::string _true;
 	static const io::string null;
+	static const io::string function;
 
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
@@ -156,6 +157,7 @@ const io::string Grammar::_this ("this");
 const io::string Grammar::_false ("false");
 const io::string Grammar::_true ("true");
 const io::string Grammar::null ("null");
+const io::string Grammar::function ("function");
 
 const std::set <std::string> Grammar::Keyword = {
 	"break",    "do",       "instanceof", "typeof",

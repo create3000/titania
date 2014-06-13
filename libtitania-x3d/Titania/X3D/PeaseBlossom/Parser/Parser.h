@@ -98,7 +98,7 @@ private:
 	comments ();
 
 	bool
-	identifier ();
+	identifier (std::string &);
 
 	bool
 	identifierName (std::string &);
@@ -218,6 +218,15 @@ private:
 
 	bool
 	functionDeclaration ();
+
+	bool
+	functionExpression (var &);
+
+	bool
+	formalParameterList (std::vector <std::string> &);
+
+	void
+	functionBody ();
 
 	void
 	program ();

@@ -57,6 +57,12 @@ namespace titania {
 namespace pb {
 
 template <>
+basic_var <jsValue>::operator bool () const
+{
+	return value -> toBoolean ();
+}
+
+template <>
 void
 basic_var <jsValue>::clear ()
 {

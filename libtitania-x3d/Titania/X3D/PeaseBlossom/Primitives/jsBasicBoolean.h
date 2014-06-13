@@ -59,6 +59,9 @@ namespace pb {
 #undef False
 #undef True
 
+/**
+ *  Class to represent a basic »false« value.
+ */
 class jsBasicFalseType :
 	public jsBooleanType
 {
@@ -89,6 +92,9 @@ protected:
 
 };
 
+/**
+ *  Class to represent a basic »true« value.
+ */
 class jsBasicTrueType :
 	public jsBooleanType
 {

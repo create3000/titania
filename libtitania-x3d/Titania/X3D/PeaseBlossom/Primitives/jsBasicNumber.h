@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a basic number value.
+ */
 class jsBasicNumber :
 	public jsNumberType
 {

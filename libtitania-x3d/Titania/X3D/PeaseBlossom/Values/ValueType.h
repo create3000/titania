@@ -54,6 +54,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Enum type for JavaScript primitives.
+ */
 enum ValueType
 {
 	UNDEFINED,
@@ -65,6 +68,10 @@ enum ValueType
 	BOOLEAN_OBJECT,
 	NUMBER_OBJECT,
 	STRING_OBJECT,
+	ARRAY_OBJECT,
+	DATE_OBJECT,
+	REGEX_OBJECT,
+	FUNCTION_OBJECT,
 	EXPRESSION,
 	CUSTOM
 

@@ -57,8 +57,8 @@ namespace X3D {
 
 // VRML lexical elements
 // General
-const io::sequence Grammar::WhiteSpaces ("\r\n \t,");
-const io::comment  Grammar::Comment ('#');
+const io::sequence            Grammar::WhiteSpaces ("\r\n \t,");
+const io::single_line_comment Grammar::Comment ("#");
 
 // Header
 const pcrecpp::RE Grammar::Header ("(VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?");

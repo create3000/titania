@@ -53,6 +53,7 @@
 
 #include "Primitives/Boolean.h"
 #include "Primitives/BooleanObject.h"
+#include "Primitives/Function.h"
 #include "Primitives/Null.h"
 #include "Primitives/Number.h"
 #include "Primitives/NumberObject.h"

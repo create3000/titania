@@ -383,8 +383,8 @@ Parser::profileStatement ()
 			scene -> addComments (getComments ());
 			scene -> setProfile (getBrowser () -> getProfile (_profileNameId));
 		}
-		else
-			throw Error <INVALID_X3D> ("Expected a profile name.");
+		
+		throw Error <INVALID_X3D> ("Expected a profile name.");
 	}
 }
 
@@ -428,14 +428,14 @@ Parser::componentStatement ()
 
 					return getBrowser () -> getComponent (_componentNameId, _componentSupportLevel);
 				}
-				else
-					throw Error <INVALID_X3D> ("Expected a component support level.");
+				
+				throw Error <INVALID_X3D> ("Expected a component support level.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a ':' after component name.");
+			
+			throw Error <INVALID_X3D> ("Expected a ':' after component name.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Expected a component name.");
+		
+		throw Error <INVALID_X3D> ("Expected a component name.");
 	}
 
 	return nullptr;
@@ -492,14 +492,14 @@ Parser::unitStatement ()
 					scene -> updateUnit (_categoryNameId, _unitNameId, _unitConversionFactor);
 					return true;
 				}
-				else
-					throw Error <INVALID_X3D> ("Expected unit conversion factor.");
+				
+				throw Error <INVALID_X3D> ("Expected unit conversion factor.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected unit name identificator.");
+			
+			throw Error <INVALID_X3D> ("Expected unit name identificator.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Expected category name identificator after UNIT statement.");
+		
+		throw Error <INVALID_X3D> ("Expected category name identificator after UNIT statement.");
 	}
 
 	return false;
@@ -538,8 +538,8 @@ Parser::exportStatement ()
 
 			return true;
 		}
-		else
-			throw Error <INVALID_X3D> ("No name given after EXPORT.");
+		
+		throw Error <INVALID_X3D> ("No name given after EXPORT.");
 	}
 
 	return false;
@@ -587,17 +587,17 @@ Parser::importStatement ()
 
 						return true;
 					}
-					else
-						throw Error <INVALID_X3D> ("Expected exported node name.");
+					
+					throw Error <INVALID_X3D> ("Expected exported node name.");
 				}
-				else
-					throw Error <INVALID_X3D> ("Expected exported a '.' after exported node name.");
+				
+				throw Error <INVALID_X3D> ("Expected exported a '.' after exported node name.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Node named '" + _inlineNodeNameId + "' is not an Inline node.");
+			
+			throw Error <INVALID_X3D> ("Node named '" + _inlineNodeNameId + "' is not an Inline node.");
 		}
-		else
-			throw Error <INVALID_X3D> ("No name given after IMPORT statement.");
+		
+		throw Error <INVALID_X3D> ("No name given after IMPORT statement.");
 	}
 
 	return false;
@@ -633,11 +633,11 @@ Parser::metaStatement ()
 				scene -> addMetaData (_metakey, _metavalue);
 				return true;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected metadata value.");
+			
+			throw Error <INVALID_X3D> ("Expected metadata value.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Expected metadata key.");
+		
+		throw Error <INVALID_X3D> ("Expected metadata key.");
 	}
 
 	return false;
@@ -697,11 +697,11 @@ Parser::nodeStatement (SFNode & _node)
 		{
 			if (node (_node, _nodeNameId))
 				return true;
-			else
-				throw Error <INVALID_X3D> ("Expected node name after DEF.");
+			
+			throw Error <INVALID_X3D> ("Expected node name after DEF.");
 		}
-		else
-			throw Error <INVALID_X3D> ("No name given after DEF.");
+		
+		throw Error <INVALID_X3D> ("No name given after DEF.");
 	}
 
 	if (Grammar::USE (istream))
@@ -714,8 +714,8 @@ Parser::nodeStatement (SFNode & _node)
 
 			return true;
 		}
-		else
-			throw Error <INVALID_X3D> ("No name given after USE.");
+		
+		throw Error <INVALID_X3D> ("No name given after USE.");
 	}
 
 	if (Grammar::_NULL (istream))
@@ -746,11 +746,11 @@ Parser::rootNodeStatement (SFNode & _node)
 		{
 			if (node (_node, _nodeNameId))
 				return true;
-			else
-				throw Error <INVALID_X3D> ("Expected node type name after DEF.");
+			
+			throw Error <INVALID_X3D> ("Expected node type name after DEF.");
 		}
-		else
-			throw Error <INVALID_X3D> ("No name given after DEF.");
+		
+		throw Error <INVALID_X3D> ("No name given after DEF.");
 	}
 
 	if (node (_node))
@@ -835,20 +835,20 @@ Parser::proto ()
 
 							return true;
 						}
-						else
-							throw Error <INVALID_X3D> ("Expected a '}' at the end of PROTO body.");
+						
+						throw Error <INVALID_X3D> ("Expected a '}' at the end of PROTO body.");
 					}
-					else
-						throw Error <INVALID_X3D> ("Expected a '{' at the beginning of PROTO body.");
+					
+					throw Error <INVALID_X3D> ("Expected a '{' at the beginning of PROTO body.");
 				}
-				else
-					throw Error <INVALID_X3D> ("Expected a ']' at the end of PROTO interface declaration.");
+				
+				throw Error <INVALID_X3D> ("Expected a ']' at the end of PROTO interface declaration.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a '[' at the beginning of PROTO interface declaration.");
+			
+			throw Error <INVALID_X3D> ("Expected a '[' at the beginning of PROTO interface declaration.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Invalid PROTO definition name.");
+		
+		throw Error <INVALID_X3D> ("Invalid PROTO definition name.");
 	}
 
 	return false;
@@ -915,11 +915,11 @@ Parser::restrictedInterfaceDeclaration ()
 				_field -> addComments (getComments ());
 				return _field;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	if (Grammar::outputOnly (istream) or Grammar::eventOut (istream))
@@ -938,11 +938,11 @@ Parser::restrictedInterfaceDeclaration ()
 				_field -> addComments (getComments ());
 				return _field;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	if (Grammar::initializeOnly (istream) or Grammar::field (istream))
@@ -964,17 +964,16 @@ Parser::restrictedInterfaceDeclaration ()
 					_field -> addComments (getComments ());
 					return _field;
 				}
-				else
-				{
-					delete _field;
-					throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
-				}
+				
+				delete _field;
+
+				throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	return nullptr;
@@ -1011,17 +1010,16 @@ Parser::interfaceDeclaration ()
 					_field -> addComments (getComments ());
 					return _field;
 				}
-				else
-				{
-					delete _field;
-					throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
-				}
+
+				delete _field;
+
+				throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	return nullptr;
@@ -1068,17 +1066,17 @@ Parser::externproto ()
 
 						return true;
 					}
-					else
-						throw Error <INVALID_X3D> ("Expected a URL list after EXTERNPROTO interface declaration '" + _nodeTypeId + "'.");
+					
+					throw Error <INVALID_X3D> ("Expected a URL list after EXTERNPROTO interface declaration '" + _nodeTypeId + "'.");
 				}
-				else
-					throw Error <INVALID_X3D> ("Expected a ']' at the end of EXTERNPROTO interface declaration.");
+				
+				throw Error <INVALID_X3D> ("Expected a ']' at the end of EXTERNPROTO interface declaration.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a '[' at the beginning of EXTERNPROTO interface declaration.");
+
+			throw Error <INVALID_X3D> ("Expected a '[' at the beginning of EXTERNPROTO interface declaration.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Invalid EXTERNPROTO definition name.");
+
+		throw Error <INVALID_X3D> ("Invalid EXTERNPROTO definition name.");
 	}
 
 	return false;
@@ -1124,11 +1122,11 @@ Parser::externInterfaceDeclaration ()
 				_field -> addComments (getComments ());
 				return _field;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	if (Grammar::outputOnly (istream) or Grammar::eventOut (istream))
@@ -1147,11 +1145,11 @@ Parser::externInterfaceDeclaration ()
 				_field -> addComments (getComments ());
 				return _field;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	if (Grammar::initializeOnly (istream) or Grammar::field (istream))
@@ -1170,11 +1168,11 @@ Parser::externInterfaceDeclaration ()
 				_field -> addComments (getComments ());
 				return _field;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	if (Grammar::inputOutput (istream) or Grammar::exposedField (istream))
@@ -1193,11 +1191,11 @@ Parser::externInterfaceDeclaration ()
 				_field -> addComments (getComments ());
 				return _field;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected a name for field.");
+			
+			throw Error <INVALID_X3D> ("Expected a name for field.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
+		
+		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
 	return nullptr;
@@ -1268,26 +1266,26 @@ Parser::routeStatement ()
 
 									return true;
 								}
-								else
-									throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
+								
+								throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
 							}
-							else
-								throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a '.' after node name.");
+							
+							throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a '.' after node name.");
 						}
-						else
-							throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a node name.");
+						
+						throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a node name.");
 					}
-					else
-						throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a 'TO'.");
+					
+					throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a 'TO'.");
 				}
-				else
-					throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
+				
+				throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
 			}
-			else
-				throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a '.' after node name.");
+			
+			throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a '.' after node name.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a node name.");
+		
+		throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a node name.");
 	}
 
 	return false;
@@ -1375,11 +1373,11 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 				//__LOG__ << this << " " << _nodeTypeId << std::endl;
 				return true;
 			}
-			else
-				throw Error <INVALID_X3D> ("Expected '}' at the end of node body.");
+			
+			throw Error <INVALID_X3D> ("Expected '}' at the end of node body.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Expected '{' at the beginning of node body.");
+		
+		throw Error <INVALID_X3D> ("Expected '{' at the beginning of node body.");
 	}
 
 	//__LOG__ << this << " " << std::endl;
@@ -1466,11 +1464,11 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 														if (_accessType -> second not_eq _field -> getAccessType ())
 															throw Error <INVALID_NAME> ("");
 													}
-													else
-														throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+													
+													throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
 												}
-												else
-													throw Error <INVALID_NAME> ("");
+												
+												throw Error <INVALID_NAME> ("");
 											}
 										}
 										catch (const Error <INVALID_NAME> &)
@@ -1487,17 +1485,17 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 										return true;
 									}
-									else
-										throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' are incompatible as an IS mapping.");
+									
+									throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' are incompatible as an IS mapping.");
 								}
-								else
-									throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' have different types.");
+								
+								throw Error <INVALID_X3D> ("Field '" + _fieldId + "' and '" + _reference -> getName () + "' in PROTO '" + getExecutionContext () -> getName () + "' have different types.");
 							}
-							else
-								throw Error <INVALID_X3D> ("No name give after IS statement.");
+							
+							throw Error <INVALID_X3D> ("No name give after IS statement.");
 						}
-						else
-							throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
+						
+						throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
 					}
 				}
 			}
@@ -1613,17 +1611,17 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 							_field -> addComments (getComments ());
 							return true;
 						}
-						else
-							throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " are incompatible as an IS mapping.");
+						
+						throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " are incompatible as an IS mapping.");
 					}
-					else
-						throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " have different types.");
+					
+					throw Error <INVALID_X3D> ("Field '" + _field -> getName () + "' and '" + _reference -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " have different types.");
 				}
-				else
-					throw Error <INVALID_X3D> ("No name give after IS statement.");
+				
+				throw Error <INVALID_X3D> ("No name give after IS statement.");
 			}
-			else
-				throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
+			
+			throw Error <INVALID_X3D> ("IS statement outside PROTO definition.");
 		}
 
 		if (_field -> isInitializable ())
@@ -1633,11 +1631,11 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 				_field -> addComments (getComments ());
 				return true;
 			}
-			else
-				throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
+			
+			throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 		}
-		else
-			throw Error <INVALID_X3D> ("Couldn't assign value to " + Generator::AccessTypes [_field] + " field '" + _fieldId + "'.");
+		
+		throw Error <INVALID_X3D> ("Couldn't assign value to " + Generator::AccessTypes [_field] + " field '" + _fieldId + "'.");
 	}
 
 	return false;
@@ -1989,8 +1987,7 @@ Parser::mfboolValue (MFBool* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2055,8 +2052,7 @@ Parser::mfcolorValue (MFColor* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2124,8 +2120,7 @@ Parser::mfcolorRGBAValue (MFColorRGBA* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2240,8 +2235,7 @@ Parser::mffloatValue (MFFloat* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2318,8 +2312,7 @@ Parser::mfimageValue (MFImage* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2376,8 +2369,7 @@ Parser::mfint32Value (MFInt32* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2460,8 +2452,7 @@ Parser::mfmatrix3dValue (MFMatrix3d* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2544,8 +2535,7 @@ Parser::mfmatrix3fValue (MFMatrix3f* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2649,8 +2639,7 @@ Parser::mfmatrix4dValue (MFMatrix4d* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2754,8 +2743,7 @@ Parser::mfmatrix4fValue (MFMatrix4f* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2804,8 +2792,7 @@ Parser::mfnodeValue (MFNode* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2871,8 +2858,7 @@ Parser::mfrotationValue (MFRotation* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2929,8 +2915,7 @@ Parser::mfstringValue (MFString* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -2987,8 +2972,7 @@ Parser::mftimeValue (MFTime* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -3050,8 +3034,7 @@ Parser::mfvec2dValue (MFVec2d* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -3113,8 +3096,7 @@ Parser::mfvec2fValue (MFVec2f* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -3179,8 +3161,7 @@ Parser::mfvec3dValue (MFVec3d* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -3245,8 +3226,7 @@ Parser::mfvec3fValue (MFVec3f* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -3314,8 +3294,7 @@ Parser::mfvec4dValue (MFVec4d* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;
@@ -3383,8 +3362,7 @@ Parser::mfvec4fValue (MFVec4f* _field)
 		if (Grammar::CloseBracket (istream))
 			return true;
 
-		else
-			throw Error <INVALID_X3D> ("Expected ']'.");
+		throw Error <INVALID_X3D> ("Expected ']'.");
 	}
 
 	return false;

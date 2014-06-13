@@ -48,17 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
-
-#include <glibmm/ustring.h>
+#include "SingleLineComment.h"
 
 namespace titania {
-namespace pb {
+namespace io {
 
-using ustring = Glib::ustring;
+template class basic_single_line_comment <char>;
+template class basic_single_line_comment <wchar_t>;
 
-} // pb
+} // io
 } // titania
-
-#endif

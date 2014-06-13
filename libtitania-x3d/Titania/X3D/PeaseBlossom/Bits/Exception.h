@@ -82,7 +82,7 @@ std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const ExceptionType value)
 noexcept (true)
 {
-	static const std::map <ExceptionType, std::string> exceptionTypes = {
+	static const std::map <ExceptionType, Glib::ustring> exceptionTypes = {
 		std::make_pair (ERROR,           "Error"),
 		std::make_pair (EVAL_ERROR,      "EvalError"),
 		std::make_pair (RANGE_ERROR,     "RangeError"),
@@ -96,8 +96,8 @@ noexcept (true)
 }
 
 inline
-std::string
-to_string (const ExceptionType type)
+Glib::ustring
+to_ustring (const ExceptionType type)
 noexcept (true)
 {
 	std::ostringstream osstream;
@@ -129,7 +129,7 @@ public:
 	getType () const
 	noexcept (true) = 0;
 
-	const std::string &
+	const Glib::ustring &
 	getMessage () const
 	noexcept (true)
 	{ return message; }
@@ -153,10 +153,10 @@ protected:
 	///  @name Construction
 
 	explicit
-	jsException (const std::string & message) :
-		      std::exception (),
+	jsException (const Glib::ustring & message) :
+		    std::exception (),
 		jsOutputStreamType (),
-		             message (message)
+		           message (message)
 	{ }
 
 
@@ -164,7 +164,7 @@ private:
 
 	///  @name Members
 
-	const std::string message;
+	const Glib::ustring message;
 
 };
 
@@ -180,7 +180,7 @@ class Exception :
 public:
 
 	explicit
-	Exception (const std::string & message) :
+	Exception (const Glib::ustring & message) :
 		jsException (message)
 	{ }
 

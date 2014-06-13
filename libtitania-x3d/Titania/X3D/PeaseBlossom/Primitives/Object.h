@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent an object.
+ */
 class Object :
 	public jsBasicObject
 {

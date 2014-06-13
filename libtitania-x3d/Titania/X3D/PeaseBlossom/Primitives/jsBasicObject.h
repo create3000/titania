@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a basic object.
+ */
 class jsBasicObject :
 	virtual public jsValue
 {
@@ -63,6 +66,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For basic objects this is »OBJECT«.
 	virtual
 	ValueType
 	getType () const override
@@ -97,7 +101,8 @@ public:
 
 	virtual
 	var
-	toObject () const override
+	toObject () const
+	throw (TypeError) override
 	{ return var (const_cast <jsBasicObject*> (this)); }
 
 	///  @name Input/Output

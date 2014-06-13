@@ -52,6 +52,7 @@ perl -p -e '
    replace (sub { $_ [0] =~ s/\s(not_eq|and|or)\s*\*\s*/ $1 */sgo });                                             # not_eq *
    replace (sub { $_ [0] =~ s/(\w)\s+\*\s+const/$1* const/sgo });                                        # remove space befor *
    replace (sub { $_ [0] =~ s/(\w)\s*:\*\s*(\w)/$1 : *$2/so });                                          # remove :* in for loops
+   replace (sub { $_ [0] =~ s/\>&&/> &&/so });                                                           # add space before move operator
 ' | \
 perl -e '
 	# Remove \n in template argument one liner

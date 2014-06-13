@@ -57,6 +57,7 @@ namespace pb {
 
 var
 jsNumberType::toObject () const
+throw (TypeError)
 { return var (new NumberObject (toNumber ())); }
 
 } // pb

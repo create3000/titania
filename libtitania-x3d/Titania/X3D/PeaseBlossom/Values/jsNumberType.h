@@ -59,6 +59,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a number type.
+ */
 class jsNumberType :
 	virtual public jsValue
 {
@@ -88,7 +91,8 @@ public:
 
 	virtual
 	var
-	toObject () const override;
+	toObject () const
+	throw (TypeError) override;
 
 	///  @name Input/Output
 

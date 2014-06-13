@@ -113,7 +113,8 @@ public:
 
 	virtual
 	var
-	toObject () const override
+	toObject () const
+	throw (TypeError) override
 	{ return toPrimitive () -> toObject (); }
 
 	///  @name Input/Output

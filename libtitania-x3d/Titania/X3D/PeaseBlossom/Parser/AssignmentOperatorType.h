@@ -54,6 +54,8 @@
 #include <map>
 #include <sstream>
 
+#include <glibmm/ustring.h>
+
 namespace titania {
 namespace pb {
 
@@ -82,7 +84,7 @@ inline
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const AssignmentOperatorType value)
 {
-	static const std::map <AssignmentOperatorType, std::string> assignmentOperators = {
+	static const std::map <AssignmentOperatorType, Glib::ustring> assignmentOperators = {
 		std::make_pair (AssignmentOperatorType::MULTIPLICATION_ASSIGMENT,        "*="),
 		std::make_pair (AssignmentOperatorType::DIVISION_ASSIGNMENT,             "/="),
 		std::make_pair (AssignmentOperatorType::REMAINDER_ASSIGNMENT,            "%="),
@@ -100,8 +102,8 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const AssignmentOpera
 }
 
 inline
-std::string
-to_string (const AssignmentOperatorType type)
+Glib::ustring
+to_ustring (const AssignmentOperatorType type)
 {
 	std::ostringstream osstream;
 

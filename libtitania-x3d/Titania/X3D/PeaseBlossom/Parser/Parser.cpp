@@ -54,6 +54,7 @@
 #include "../Parser/Grammar.h"
 
 #include <Titania/Math/Utility/strtol.h>
+#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace pb {
@@ -105,19 +106,17 @@ Parser::comments ()
 }
 
 bool
-Parser::identifier ()
+Parser::identifier (std::string & identifierCharacters)
 {
 	//__LOG__ << std::endl;
 
-	comments ();
-
 	const auto state = getState ();
 
-	std::string identifierNameCharacters;
+	comments ();
 
-	if (identifierName (identifierNameCharacters))
+	if (identifierName (identifierCharacters))
 	{
-		if (not reservedWord (identifierNameCharacters))
+		if (not reservedWord (identifierCharacters))
 		{
 			return true;
 		}
@@ -185,9 +184,9 @@ Parser::reservedWord (const std::string & string)
 		return true;
 
 	static const std::set <std::string> primitives = {
-		"null",
-		"false",
-		"true"
+		Grammar::null (),
+		Grammar::_true (),
+		Grammar::_false ()
 	};
 
 	if (primitives .count (string))
@@ -406,7 +405,9 @@ Parser::primaryExpression (var & value)
 		return true;
 	}
 
-	if (identifier ())
+	std::string identiferCharacters;
+
+	if (identifier (identiferCharacters))
 		return true;
 
 	if (literal (value))
@@ -444,7 +445,10 @@ Parser::memberExpression (var & value)
 	if (primaryExpression (value))
 		return true;
 
-	// ...
+	if (functionExpression (value))
+		return true;
+
+	/// ...
 
 	return false;
 }
@@ -991,7 +995,9 @@ Parser::assignmentExpression (var & value)
 
 		if (Grammar::Assignment (istream))
 		{
-			if (assignmentExpression (value))
+			var rhs;
+
+			if (assignmentExpression (rhs))
 				return true;
 
 			throw SyntaxError ("Expected expression after '='.");
@@ -1001,10 +1007,12 @@ Parser::assignmentExpression (var & value)
 
 		if (assignmentOperator (type))
 		{
-			if (assignmentExpression (value))
+			var rhs;
+
+			if (assignmentExpression (rhs))
 				return true;
 
-			throw SyntaxError ("Expected expression after '" + to_string (type) + "'."); // XXX
+			throw SyntaxError ("Expected expression after '" + to_ustring (type) + "'."); // XXX
 		}
 
 		setState (state);
@@ -1123,7 +1131,7 @@ Parser::expression (var & value)
 bool
 Parser::statement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << istream .tellg () << std::endl;
 
 	if (expressionStatement ())
 		return true;
@@ -1139,12 +1147,20 @@ Parser::expressionStatement ()
 {
 	//__LOG__ << std::endl;
 
-	// [lookahead ? {{, function}]
+	comments ();
+	
+	if (Grammar::OpenBrace .lookahead (istream))
+		return false;
+
+	if (Grammar::function .lookahead (istream))
+		return false;
 
 	var value;
 
 	if (expression (value))
 	{
+		comments ();
+	
 		if (Grammar::Semicolon (istream))
 		{
 			getScope () -> getExpressions () .emplace_back (std::move (value));
@@ -1176,8 +1192,156 @@ bool
 Parser::functionDeclaration ()
 {
 	//__LOG__ << std::endl;
+	
+	comments ();
+
+	if (Grammar::function (istream))
+	{
+		std::string name;
+
+		if (identifier (name))
+		{
+			comments ();
+			
+			if (Grammar::OpenParenthesis (istream))
+			{
+				std::vector <std::string> formalParameters;
+
+				formalParameterList (formalParameters);
+
+				comments ();
+			
+				if (Grammar::CloseParenthesis (istream))
+				{
+					comments ();
+				
+					if (Grammar::OpenBrace (istream))
+					{
+						functionBody ();
+
+						comments ();
+					
+						if (Grammar::CloseBrace (istream))
+						{
+							getScope () -> getExpressions () .emplace_back (new Function (name, std::move (formalParameters)));
+
+							return true;
+						}
+						
+						throw SyntaxError ("Expected a '}' after function body.");
+					}
+					
+					throw SyntaxError ("Expected a '{' after parameter list.");
+				}
+	
+				throw SyntaxError ("Expected a ')' after formal parameters.");
+			}
+			
+			throw SyntaxError ("Expected a '(' after function name.");
+		}	
+		
+		throw SyntaxError ("Function statement requires a name.");
+	}
 
 	return false;
+}
+
+bool
+Parser::functionExpression (var & value)
+{
+	//__LOG__ << std::endl;
+	
+	comments ();
+	
+	if (Grammar::function (istream))
+	{
+		std::string name;
+
+		identifier (name);
+
+		comments ();
+		
+		if (Grammar::OpenParenthesis (istream))
+		{
+			std::vector <std::string> formalParameters;
+
+			formalParameterList (formalParameters);
+			
+			comments ();
+		
+			if (Grammar::CloseParenthesis (istream))
+			{
+				comments ();
+			
+				if (Grammar::OpenBrace (istream))
+				{
+					functionBody ();
+
+					comments ();
+
+					if (Grammar::CloseBrace (istream))
+					{
+						value .reset (new Function (name, std::move (formalParameters)));
+
+						return true;
+					}
+
+					throw SyntaxError ("Expected a '}' after function body.");
+				}
+
+				throw SyntaxError ("Expected a '{' after parameter list.");
+			}
+	
+			throw SyntaxError ("Expected a ')' after formal parameters.");
+		}
+
+		throw SyntaxError ("Expected a '(' before formal parameters.");
+	}
+
+	return false;
+}
+
+bool
+Parser::formalParameterList (std::vector <std::string> & formalParameters)
+{
+	//__LOG__ << std::endl;
+	
+	std::string identiferCharacters;
+
+	if (identifier (identiferCharacters))
+	{
+		formalParameters .emplace_back (std::move (identiferCharacters));
+	
+		for ( ; ;)
+		{
+			comments ();
+
+			if (Grammar::Comma (istream))
+			{
+				std::string identiferCharacters;
+
+				if (identifier (identiferCharacters))
+				{
+					formalParameters .emplace_back (std::move (identiferCharacters));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after ','.");
+			}
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void
+Parser::functionBody ()
+{
+	//__LOG__ << std::endl;
+
+	sourceElements ();
 }
 
 void
@@ -1200,7 +1364,7 @@ Parser::sourceElements ()
 bool
 Parser::sourceElement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << istream .tellg () << std::endl;
 
 	if (statement ())
 		return true;

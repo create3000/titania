@@ -66,13 +66,17 @@ public:
 	constexpr
 	basic_quoted_string (const CharT &);
 
+	char
+	operator () () const
+	{ return delimiter; }
+
 	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
 
 private:
 
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
+	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
 
 	const int_type delimiter;
 

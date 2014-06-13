@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a »number« value.
+ */
 class Number :
 	public jsBasicNumber
 {
@@ -79,6 +82,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For number values this is »NUMBER«.
 	virtual
 	ValueType
 	getType () const override

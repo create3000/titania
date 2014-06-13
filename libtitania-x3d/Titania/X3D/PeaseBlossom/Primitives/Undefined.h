@@ -52,13 +52,15 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 
 #include "../Bits/jsConstants.h"
-#include "../Primitives/Null.h"
 #include "../Values/jsValue.h"
 #include "../Values/var.h"
 
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a »undefined« value.
+ */
 class Undefined :
 	public jsValue
 {
@@ -66,6 +68,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For »undefined« values this is »UNDEFINED«.
 	virtual
 	ValueType
 	getType () const final override
@@ -100,8 +103,9 @@ public:
 
 	virtual
 	var
-	toObject () const final override
-	{ return null (); }
+	toObject () const
+	throw (TypeError) final override
+	{ throw TypeError ("Couldn' convert 'undefined' to object."); }
 
 	///  @name Input/Output
 
@@ -130,6 +134,7 @@ protected:
 ///  @relates UndefinedValue
 ///  @name undefined value.
 
+///  Return the unique »undefined« value.
 inline
 const var &
 undefined ()

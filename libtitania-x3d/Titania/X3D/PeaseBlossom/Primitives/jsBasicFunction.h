@@ -48,100 +48,44 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
 
-#include "../Bits/Exception.h"
-#include "../Base/jsChildType.h"
-#include "../Base/jsOutputStreamType.h"
-#include "../Values/var.h"
-#include "../Values/ValueType.h"
+#include "../Primitives/jsBasicObject.h"
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
- */
-class jsValue :
-	public jsChildType,
-	public jsOutputStreamType
+class jsBasicFunction :
+	public jsBasicObject
 {
 public:
-	
+
 	///  @name Member access
 
+	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
 	virtual
 	ValueType
-	getType () const = 0;
+	getType () const override
+	{ return FUNCTION_OBJECT; }
 
-	///  @name Operations
-
-	virtual
-	bool
-	isPrimitive () const;
-
-	virtual
-	var
-	toPrimitive () const
-	{ return var (const_cast <jsValue*> (this)); }
-
-	virtual
-	bool
-	toBoolean () const = 0;
-
-	virtual
-	uint16_t
-	toUInt16 () const = 0;
-
-	virtual
-	int32_t
-	toInt32 () const = 0;
-
-	virtual
-	uint32_t
-	toUInt32 () const = 0;
-
-	virtual
-	double
-	toNumber () const = 0;
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) = 0;
+	///  Returns the name of the function.
+	const Glib::ustring &
+	getName () const
+	{ throw 1; }
 
 
 protected:
 
 	///  @name Construction
 
-	jsValue () :
-		       jsChildType (),
-		jsOutputStreamType ()
+	jsBasicFunction (const Glib::ustring & name) :
+		jsBasicObject ()
 	{ }
 
 };
-
-inline
-bool
-jsValue::isPrimitive () const
-{
-	switch (getType ())
-	{
-		case UNDEFINED:
-		case BOOLEAN:
-		case NUMBER:
-		case STRING:
-		case NULL_OBJECT:
-		case BOOLEAN_OBJECT:
-		case NUMBER_OBJECT:
-		case STRING_OBJECT:
-			return true;
-		default:
-			return false;
-	}
-}
 
 } // pb
 } // titania

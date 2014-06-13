@@ -57,6 +57,7 @@ namespace pb {
 
 var
 jsStringType::toObject () const
+throw (TypeError)
 { return var (new StringObject (toString ())); }
 
 } // pb

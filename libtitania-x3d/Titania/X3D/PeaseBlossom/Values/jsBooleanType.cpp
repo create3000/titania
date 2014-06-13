@@ -57,6 +57,7 @@ namespace pb {
 
 var
 jsBooleanType::toObject () const
+throw (TypeError)
 { return toBoolean () ? var (new TrueObject ()) : var (new FalseObject ()); }
 
 } // pb

@@ -95,7 +95,6 @@
     <None Include="Titania\Math\Geometry\Cylinder3.h" />
     <None Include="Titania\InputOutput.h" />
     <None Include="Titania\InputOutput\Character.h" />
-    <None Include="Titania\InputOutput\Comment.h" />
     <None Include="Titania\InputOutput\QuotedString.h" />
     <None Include="Titania\InputOutput\Sequence.h" />
     <None Include="Titania\InputOutput\String.h" />
@@ -139,6 +138,7 @@
     <None Include="Titania\InputOutput\InverseString.h" />
     <None Include="Titania\OS\realpath.h" />
     <None Include="Titania\Utility\Map.h" />
+    <None Include="Titania\InputOutput\SingleLineComment.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -167,7 +167,6 @@
     <Compile Include="Titania\Math\Image.cpp" />
     <Compile Include="Titania\Math\Geometry\Cylinder3.cpp" />
     <Compile Include="Titania\InputOutput\Character.cpp" />
-    <Compile Include="Titania\InputOutput\Comment.cpp" />
     <Compile Include="Titania\InputOutput\QuotedString.cpp" />
     <Compile Include="Titania\InputOutput\Sequence.cpp" />
     <Compile Include="Titania\InputOutput\String.cpp" />
@@ -199,6 +198,7 @@
     <Compile Include="Titania\OS\system.cpp" />
     <Compile Include="Titania\InputOutput\InverseString.cpp" />
     <Compile Include="Titania\OS\realpath.cpp" />
+    <Compile Include="Titania\InputOutput\SingleLineComment.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -60,6 +60,9 @@ namespace pb {
 #undef False
 #undef True
 
+/**
+ *  Class to represent a »false« value.
+ */
 class FalseType :
 	public jsBasicFalseType
 {
@@ -67,6 +70,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
 	virtual
 	ValueType
 	getType () const override
@@ -76,7 +80,8 @@ public:
 
 	virtual
 	var
-	toObject () const final override
+	toObject () const
+	throw (TypeError) final override
 	{ return var (new FalseObject ()); }
 
 
@@ -96,6 +101,9 @@ protected:
 
 };
 
+/**
+ *  Class to represent a »true« value.
+ */
 class TrueType :
 	public jsBasicTrueType
 {
@@ -103,6 +111,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
 	virtual
 	ValueType
 	getType () const override
@@ -112,7 +121,8 @@ public:
 
 	virtual
 	var
-	toObject () const final override
+	toObject () const
+	throw (TypeError) final override
 	{ return var (new TrueObject ()); }
 
 
@@ -135,6 +145,7 @@ protected:
 ///  @relates FalseType
 ///  @name false value.
 
+///  Returns the unique »false« value.
 inline
 const var &
 False ()
@@ -147,6 +158,7 @@ False ()
 ///  @relates TrueType
 ///  @name true value.
 
+///  Returns the unique »true« value.
 inline
 const var &
 True ()

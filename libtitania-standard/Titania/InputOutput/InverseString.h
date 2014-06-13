@@ -69,6 +69,10 @@ public:
 		delimiter (delimiter)
 	{ }
 
+	const std::basic_string <CharT> &
+	operator () () const
+	{ return delimiter (); }
+
 	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 

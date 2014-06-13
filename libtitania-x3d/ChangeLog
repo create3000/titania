@@ -1,5 +1,48 @@
 2014-06-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Grammar.h:
+	* Parser.cpp:
+	* Grammar.cpp:
+	* Primitives.h:
+	* var.h:
+	* ustring.h:
+	* var.cpp:
+	* Parser.h:
+	* Grammar.h:
+	* Exception.h:
+	* jsValue.h:
+	* Null.h:
+	* Parser.cpp:
+	* ValueType.h:
+	* Object.h:
+	* String.h:
+	* Number.h:
+	* Boolean.h:
+	* jsNumberType.h:
+	* jsStringType.h:
+	* Function.h:
+	* jsBooleanType.h:
+	* Undefined.h:
+	* Context.cpp:
+	* Addition.h:
+	* jsNumberType.cpp:
+	* jsStringType.cpp:
+	* jsBooleanType.cpp:
+	* jsOutputStreamType.h:
+	* StringObject.h:
+	* NumberObject.h:
+	* jsBasicNumber.h:
+	* jsBasicObject.h:
+	* jsBasicString.h:
+	* BooleanObject.h:
+	* jsBasicBoolean.h:
+	* jsBasicFunction.h:
+	* jsGarbargeCollector.cpp:
+	* AssignmentOperatorType.h: 
+
+2014-06-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Primitives.h:

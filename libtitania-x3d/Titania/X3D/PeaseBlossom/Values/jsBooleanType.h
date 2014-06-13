@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a boolean type.
+ */
 class jsBooleanType :
 	virtual public jsValue
 {
@@ -85,7 +88,8 @@ public:
 
 	virtual
 	var
-	toObject () const override;
+	toObject () const
+	throw (TypeError) override;
 
 	///  @name Input/Output
 

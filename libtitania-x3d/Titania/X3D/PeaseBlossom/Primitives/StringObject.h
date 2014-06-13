@@ -57,6 +57,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a »string« object.
+ */
 class StringObject :
 	public jsBasicObject,
 	public jsBasicString
@@ -95,6 +98,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For string objects this is »STRING_OBJECT«.
 	virtual
 	ValueType
 	getType () const final override
@@ -129,7 +133,8 @@ public:
 
 	virtual
 	var
-	toObject () const final override
+	toObject () const
+	throw (TypeError) final override
 	{ return jsBasicObject::toObject (); }
 
 	///  @name Input/Output

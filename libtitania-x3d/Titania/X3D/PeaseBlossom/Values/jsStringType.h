@@ -58,6 +58,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a string type.
+ */
 class jsStringType :
 	virtual public jsValue
 {
@@ -94,13 +97,14 @@ public:
 	}
 
 	virtual
-	var
-	toObject () const override;
-
-	virtual
-	std::string
+	Glib::ustring
 	toLocaleString (const std::locale &) const override
 	{ return toString (); }
+
+	virtual
+	var
+	toObject () const
+	throw (TypeError) override;
 
 	///  @name Input/Output
 

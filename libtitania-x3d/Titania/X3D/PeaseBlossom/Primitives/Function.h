@@ -48,13 +48,37 @@
  *
  ******************************************************************************/
 
-#include "Comment.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
+
+#include "../Primitives/jsBasicFunction.h"
 
 namespace titania {
-namespace io {
+namespace pb {
 
-template class basic_comment <char>;
-template class basic_comment <wchar_t>;
+/**
+ *  Class to represent a JavaScript function.
+ */
+class Function :
+	public jsBasicFunction
+{
+public:
 
-} // io
+	///  @name Construction
+
+	Function (const Glib::ustring & name, std::vector <std::string> && formalParameters = { }) :
+		 jsBasicFunction (name),
+		formalParameters (std::move (formalParameters))
+	{ }
+
+
+private:
+
+	std::vector <std::string> formalParameters;
+
+};
+
+} // pb
 } // titania
+
+#endif

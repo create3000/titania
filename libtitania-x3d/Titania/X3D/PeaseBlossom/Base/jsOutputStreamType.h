@@ -54,6 +54,8 @@
 #include <locale>
 #include <sstream>
 
+#include <glibmm/ustring.h>
+
 namespace titania {
 namespace pb {
 
@@ -64,14 +66,14 @@ public:
 	///  @name Operations
 
 	virtual
-	std::string
+	Glib::ustring
 	toString () const
 	{
 		return toLocaleString (std::locale::classic ());
 	}
 
 	virtual
-	std::string
+	Glib::ustring
 	toLocaleString (const std::locale & locale) const
 	{
 		std::ostringstream ostringstream;

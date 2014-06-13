@@ -51,18 +51,22 @@
 #ifndef __TITANIA_INPUT_OUTPUT_COMMENT_H__
 #define __TITANIA_INPUT_OUTPUT_COMMENT_H__
 
-#include "Character.h"
+#include "String.h"
 
 namespace titania {
 namespace io {
 
 template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_comment
+class basic_single_line_comment
 {
 public:
 
 	constexpr
-	basic_comment (const CharT &);
+	basic_single_line_comment (const std::basic_string <CharT> &);
+
+	const std::basic_string <CharT> &
+	operator () () const
+	{ return start (); }
 
 	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
@@ -70,27 +74,25 @@ public:
 
 private:
 
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
+	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
 
-	const int_type start;
+	const io::basic_string <CharT, Traits> start;
 
 };
 
 template <class CharT, class Traits>
 inline
 constexpr
-basic_comment <CharT, Traits>::basic_comment (const CharT & start) :
+basic_single_line_comment <CharT, Traits>::basic_single_line_comment (const std::basic_string <CharT> & start) :
 	start (start)
 { }
 
 template <class CharT, class Traits>
 bool
-basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
+basic_single_line_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
-	if (istream .peek () == start)
+	if (start (istream))
 	{
-		istream .get ();
-
 		while (istream)
 		{
 			const int_type c = istream .peek ();
@@ -114,11 +116,11 @@ basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> &
 	return false;
 }
 
-typedef basic_comment <char>    comment;
-typedef basic_comment <wchar_t> wcomment;
+typedef basic_single_line_comment <char>    single_line_comment;
+typedef basic_single_line_comment <wchar_t> wsingle_line_comment;
 
-extern template class basic_comment <char>;
-extern template class basic_comment <wchar_t>;
+extern template class basic_single_line_comment <char>;
+extern template class basic_single_line_comment <wchar_t>;
 
 } // io
 } // titania

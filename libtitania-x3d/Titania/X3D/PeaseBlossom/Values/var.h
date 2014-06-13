@@ -57,6 +57,15 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Template to represent a pointer that can handle circular references and that does
+ *  automatic garbage collection.
+ *
+ *  Extern instantiations for jsValue are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of pointer.
+ */
 template <class Type>
 class basic_var :
 	public jsChildType,
@@ -136,6 +145,9 @@ public:
 	operator * () const
 	{ return *value; }
 
+	operator bool () const
+	{ return *value; }
+
 	///  @name Member access
 	
 	Type*
@@ -205,7 +217,35 @@ private:
 
 };
 
+///  @relates basic_var
+///  @name Comparision operations
+
+///  Compares two basic_var values.
+///  Return true if @a lhs is equal to @a rhs.
+template <class Type>
+inline
+bool
+operator == (const basic_var <Type> & lhs, const basic_var <Type> & rhs)
+{
+	return lhs .get () == rhs .get ();
+}
+
+///  Compares two basic_var numbers.
+///  Return true if @a lhs is not equal to @a rhs.
+template <class Type>
+inline
+bool
+operator not_eq (const basic_var <Type> & lhs, const basic_var <Type> & rhs)
+{
+	return lhs .get () not_eq rhs .get ();
+}
+
+//
+
 class jsValue;
+
+template <>
+basic_var <jsValue>::operator bool () const;
 
 template <>
 void

@@ -66,6 +66,10 @@ public:
 
 	basic_string (const std::basic_string <CharT> &);
 
+	const std::basic_string <CharT> &
+	operator () () const
+	{ return value; }
+
 	bool
 	operator () (std::basic_istream <CharT, Traits> &) const;
 
@@ -75,7 +79,7 @@ public:
 
 private:
 
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
+	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
 
 	const std::basic_string <CharT> value;
 	const size_t                    size;

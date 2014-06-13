@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a »string« value.
+ */
 class String :
 	public jsBasicString
 {
@@ -89,6 +92,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For string values this is »STRING«.
 	virtual
 	ValueType
 	getType () const override

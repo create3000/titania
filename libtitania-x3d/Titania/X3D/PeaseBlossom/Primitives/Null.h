@@ -59,6 +59,9 @@ namespace pb {
 #undef Null
 #undef null
 
+/**
+ *  Class to represent a »null« value.
+ */
 class Null :
 	public jsValue
 {
@@ -66,6 +69,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For »null« objects this is »NULL_OBJECT«.
 	virtual
 	ValueType
 	getType () const final override
@@ -100,8 +104,9 @@ public:
 
 	virtual
 	var
-	toObject () const final override
-	{ return var (const_cast <Null*> (this)); }
+	toObject () const
+	throw (TypeError) final override
+	{ throw TypeError ("Couldn' convert 'null' to object."); }
 
 	///  @name Input/Output
 
@@ -127,9 +132,10 @@ protected:
 
 };
 
-///  @relates UndefinedValue
-///  @name undefined value.
+///  @relates Null
+///  @name null value.
 
+///  Returns the unique »null« value.
 inline
 const var &
 null ()

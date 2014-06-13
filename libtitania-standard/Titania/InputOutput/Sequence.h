@@ -63,15 +63,19 @@ class basic_sequence
 {
 public:
 
+	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
+
 	basic_sequence (const std::basic_string <CharT> &);
+
+	const std::set <int_type> &
+	operator () () const
+	{ return value; }
 
 	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
 
 private:
-
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
 	const std::set <int_type> value;
 

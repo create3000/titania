@@ -49,7 +49,7 @@
  ******************************************************************************/
 
 #include "InputOutput/Character.h"
-#include "InputOutput/Comment.h"
+#include "InputOutput/SingleLineComment.h"
 #include "InputOutput/QuotedString.h"
 #include "InputOutput/String.h"
 #include "InputOutput/Sequence.h"

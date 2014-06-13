@@ -53,11 +53,12 @@
 
 #include "../Values/jsStringType.h"
 
-#include <glibmm/ustring.h>
-
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a basic string value.
+ */
 class jsBasicString :
 	public jsStringType
 {
@@ -90,7 +91,7 @@ public:
 	}
 
 	virtual
-	std::string
+	Glib::ustring
 	toString () const override
 	{ return string; }
 

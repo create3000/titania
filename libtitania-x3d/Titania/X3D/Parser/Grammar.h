@@ -72,8 +72,8 @@ public:
 	Hex (std::istream &, uint32_t &);
 
 	///  @name General
-	static const io::sequence WhiteSpaces;
-	static const io::comment  Comment;
+	static const io::sequence            WhiteSpaces;
+	static const io::single_line_comment Comment;
 
 	///  @name Header
 	static const pcrecpp::RE Header;

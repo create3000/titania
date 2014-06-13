@@ -109,7 +109,7 @@ Context::initialize ()
 	}
 
 	if (istream)
-		getBrowser () -> println ("'", istream .rdbuf (), "'");
+		getBrowser () -> println (">>", istream .rdbuf (), "<<");
 }
 
 void
