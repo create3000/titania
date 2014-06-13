@@ -75,28 +75,26 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new basic_var.
 	basic_var () :
 		       jsChildType (),
 		jsOutputStreamType (),
-		             value ()
-	{ clear (); }
+		             value (nullptr)
+	{ }
 
+	///  Constructs new basic_var.
 	basic_var (const basic_var & var) :
 		basic_var (var .value)
 	{ }
 
+	///  Constructs new basic_var.
 	basic_var (basic_var && var) :
 		       jsChildType (),
 		jsOutputStreamType (),
 		             value (var .value)
-	{
-		if (var .value)
-		{
-			var .value -> replaceParent (&var, this);
-			var .clear ();
-		}
-	}
+	{ move (var); }
 
+	///  Constructs new basic_var.
 	explicit
 	basic_var (Type* const value) :
 		       jsChildType (),
@@ -109,6 +107,7 @@ public:
 
 	///  @name Assignment operators
 
+	///  Assigns the basic_var.
 	basic_var &
 	operator = (const basic_var & var)
 	{
@@ -116,100 +115,116 @@ public:
 		return *this;
 	}
 
+	///  Assigns the basic_var.
 	basic_var &
 	operator = (basic_var && var)
 	{
 		if (&var == this)
 			return *this;
 
-		remove ();
+		remove (get ());
 
-		value = var .value;
-
-		if (value)
-		{
-			value -> replaceParent (&var, this);
-			var .clear ();
-		}
+		set (var .value);
+		move (var);
 
 		return *this;
 	}
 	
-	///  @name Access operators
+	///  @name Observers
 
-	Type*
-	operator -> () const
-	{ return value; }
-
-	Type &
-	operator * () const
-	{ return *value; }
-
-	operator bool () const
-	{ return *value; }
-
-	///  @name Member access
-	
+	///  Returns a pointer to the managed object.
 	Type*
 	get () const
 	{ return value; }
 
-	void
-	reset (Type* const _value)
-	{
-		if (value not_eq _value)
-		{
-			if (_value)
-				_value -> addParent (this);
+	///  Dereferences pointer to the managed object.
+	Type*
+	operator -> () const
+	{ return value; }
 
-			remove ();
+	///  Dereferences pointer to the managed object.
+	Type &
+	operator * () const
+	{ return *value; }
+
+	///  Checks if there is associated managed object.
+	operator bool () const
+	{ return value; }
+
+	///  Replaces the managed object.
+	void
+	reset (Type* const value)
+	{
+		if (get () not_eq value)
+		{
+			add (value);
+			remove (get ());
 		}
 
-		value = _value;
+		set (value);
 	}
-	
+
 	///  @name Input/Output
-	
+
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
 	{
 		if (value)
 			ostream << *value;
+
 		else
-			ostream << "NULL";
+			throw Error ("basic_var::toStream");
 	}
 
 	///  @name Destruction
 
+	///  Destructs the owned object if no more shared_ptrs link to it 
 	virtual
 	void
 	dispose ()
 	{
-		remove ();
-
-		value = nullptr;
+		remove (get ());
+		set (nullptr);
 
 		jsChildType::dispose ();
 	}
-	
+
+	///  Destructs the owned object if no more shared_ptrs link to it 
 	virtual
 	~basic_var ()
-	{ remove (); }
+	{ remove (get ()); }
 
 
 private:
 
 	void
-	remove ()
+	add (Type* const value)
+	{
+		if (value)
+			value -> addParent (this);
+	}
+
+	void
+	move (basic_var & var)
+	{
+		if (var .value)
+		{
+			var .value -> replaceParent (&var, this);
+			var .set (nullptr);
+		}
+	}
+
+	void
+	remove (Type* const value)
 	{
 		if (value)
 			value -> removeParent (this);
 	}
 
 	void
-	clear ()
-	{ value = nullptr; }
+	set (Type* const _value)
+	{ value = _value; }
 
 	///  @name Members;
 
@@ -243,17 +258,6 @@ operator not_eq (const basic_var <Type> & lhs, const basic_var <Type> & rhs)
 //
 
 class jsValue;
-
-template <>
-basic_var <jsValue>::operator bool () const;
-
-template <>
-void
-basic_var <jsValue>::clear ();
-
-template <>
-void
-basic_var <jsValue>::toStream (std::ostream &) const;
 
 using var = basic_var <jsValue>;
 

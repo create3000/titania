@@ -517,7 +517,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 		if (Grammar::Multiplication (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
@@ -530,7 +530,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 		if (Grammar::Division (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
@@ -543,7 +543,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 		if (Grammar::Remainder (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
@@ -571,7 +571,7 @@ Parser::additiveExpression (var & lhs)
 
 		if (Grammar::Addition (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (additiveExpression (rhs))
 			{
@@ -584,7 +584,7 @@ Parser::additiveExpression (var & lhs)
 
 		if (Grammar::Subtraction (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (additiveExpression (rhs))
 			{
@@ -612,7 +612,7 @@ Parser::shiftExpression (var & lhs)
 
 		if (Grammar::LeftShift (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -624,7 +624,7 @@ Parser::shiftExpression (var & lhs)
 
 		if (Grammar::UnsignedRightShift (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -636,7 +636,7 @@ Parser::shiftExpression (var & lhs)
 
 		if (Grammar::RightShift (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -663,7 +663,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::LessEqual (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -675,7 +675,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::GreaterEqual (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -687,7 +687,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::Less (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -699,7 +699,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::Greater (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -711,7 +711,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::instanceof (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -723,7 +723,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::in (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -750,7 +750,7 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::StrictEqual (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -762,7 +762,7 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::StrictNotEqual (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -774,7 +774,7 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::Equal (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -786,7 +786,7 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::NotEqual (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -816,7 +816,7 @@ Parser::bitwiseANDExpression (var & lhs)
 
 		if (Grammar::BitwiseAND (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (bitwiseANDExpression (rhs))
 			{
@@ -843,7 +843,7 @@ Parser::bitwiseXORExpression (var & lhs)
 
 		if (Grammar::BitwiseXOR (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (bitwiseXORExpression (rhs))
 			{
@@ -873,7 +873,7 @@ Parser::bitwiseORExpression (var & lhs)
 
 		if (Grammar::BitwiseOR (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (bitwiseORExpression (rhs))
 			{
@@ -900,7 +900,7 @@ Parser::logicalANDExpression (var & lhs)
 
 		if (Grammar::LogicalAND (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (logicalANDExpression (rhs))
 			{
@@ -927,7 +927,7 @@ Parser::logicalORExpression (var & lhs)
 
 		if (Grammar::LogicalOR (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (logicalORExpression (rhs))
 			{
@@ -954,7 +954,7 @@ Parser::conditionalExpression (var & first)
 
 		if (Grammar::QuestionMark (istream))
 		{
-			var second;
+			var second = undefined ();
 
 			if (assignmentExpression (second))
 			{
@@ -962,7 +962,7 @@ Parser::conditionalExpression (var & first)
 
 				if (Grammar::Colon (istream))
 				{
-					var third;
+					var third = undefined ();
 
 					if (assignmentExpression (third))
 					{
@@ -995,7 +995,7 @@ Parser::assignmentExpression (var & value)
 
 		if (Grammar::Assignment (istream))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (assignmentExpression (rhs))
 				return true;
@@ -1007,7 +1007,7 @@ Parser::assignmentExpression (var & value)
 
 		if (assignmentOperator (type))
 		{
-			var rhs;
+			var rhs = undefined ();
 
 			if (assignmentExpression (rhs))
 				return true;
@@ -1155,7 +1155,7 @@ Parser::expressionStatement ()
 	if (Grammar::function .lookahead (istream))
 		return false;
 
-	var value;
+	var value = undefined ();
 
 	if (expression (value))
 	{

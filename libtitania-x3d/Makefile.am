@@ -470,7 +470,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Values/jsBooleanType.cpp \
 	Titania/X3D/PeaseBlossom/Values/jsNumberType.cpp \
 	Titania/X3D/PeaseBlossom/Values/jsStringType.cpp \
-	Titania/X3D/PeaseBlossom/Values/var.cpp \
 	Titania/X3D/Prototype/ExternProtoArray.cpp \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \

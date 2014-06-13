@@ -1228,7 +1228,6 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Parser\Parser.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Values\var.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\jsScope.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Values\jsBooleanType.cpp" />

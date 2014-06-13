@@ -430,7 +430,7 @@ operator == (const box3 <Type> & lhs, const box3 <Type> & rhs)
 }
 
 ///  Compares two box3 numbers.
-///  Return false if @a lhs is not equal to @a rhs.
+///  Return true if @a lhs is not equal to @a rhs.
 template <class Type>
 constexpr bool
 operator not_eq (const box3 <Type> & lhs, const box3 <Type> & rhs)

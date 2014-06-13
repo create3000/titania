@@ -346,7 +346,7 @@ operator == (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 }
 
 ///  Compares two vector4 numbers.
-///  Return false if @a lhs is not equal to @a rhs.
+///  Return true if @a lhs is not equal to @a rhs.
 template <class Type>
 inline
 constexpr

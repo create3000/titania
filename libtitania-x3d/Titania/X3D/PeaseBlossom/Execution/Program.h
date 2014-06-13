@@ -54,6 +54,7 @@
 #include "../Base/jsGarbageCollector.h"
 #include "../Execution/jsScope.h"
 #include "../Values/jsValue.h"
+#include "../Primitives/Undefined.h"
 
 #include <memory>
 
@@ -84,11 +85,23 @@ public:
 	run ()
 	{
 		__LOG__ << getExpressions () .size () << std::endl;
-		
-		var result;
-	
+
+		var result = undefined ();
+
 		for (const auto & expression : getExpressions ())
-			__LOG__ << (result = expression -> toPrimitive ()) << std::endl;
+		{
+			if (expression)
+			{
+				result = expression -> toPrimitive ();
+
+				if  (result)
+					__LOG__ << result << std::endl;
+				else
+				__LOG__ << "XXX no result" << std::endl;
+			}
+			else
+				__LOG__ << "XXX no expression" << std::endl;
+		}
 
 		return result;
 	}
