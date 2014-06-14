@@ -48,127 +48,133 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
 
-#include "../Bits/Exception.h"
-#include "../Bits/jsConstants.h"
 #include "../Base/jsChildType.h"
+#include "../Base/jsInputStreamType.h"
 #include "../Base/jsOutputStreamType.h"
+#include "../Bits/Exception.h"
+#include "../Primitives/Object.h"
+#include "../Primitives/jsBasicFunction.h"
 #include "../Values/var.h"
+
+#include <Titania/Utility/Adapter.h>
+
+#include <vector>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
- */
-class jsValue :
+class jsExecutionContext :
 	virtual public jsChildType,
+	virtual public jsInputStreamType,
 	virtual public jsOutputStreamType
 {
 public:
-	
-	///  @name Common members
-	
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
 
-	///  Returns the type of this value.
-	virtual
-	ValueType
-	getType () const = 0;
+	/// @name Member access
 
-	///  @name Common operations
+	const basic_ptr <jsBasicObject> &
+	getGlobalObject () const
+	{ return globalObject; }
+
+	/// @name Input/Output
 
 	virtual
-	bool
-	isPrimitive () const;
+	void
+	fromStream (std::istream & istream)
+	throw (SyntaxError) final override;
+
+	///  @name Destruction
 
 	virtual
-	var
-	toPrimitive () const
-	{ return var (const_cast <jsValue*> (this)); }
+	void
+	dispose () override;
 
-	virtual
-	bool
-	toBoolean () const
-	{ return toPrimitive () -> toBoolean (); }
 
-	virtual
-	uint16_t
-	toUInt16 () const
-	{ return toPrimitive () -> toUInt16 (); }
+protected:
 
-	virtual
-	int32_t
-	toInt32 () const
-	{ return toPrimitive () -> toInt32 (); }
+	friend class Parser;
+	friend class Identifier;
+	friend class VariableDeclaration;
 
-	virtual
-	uint32_t
-	toUInt32 () const
-	{ return toPrimitive () -> toUInt32 (); }
+	///  @name Construction
 
-	virtual
-	double
-	toNumber () const
-	{ return toPrimitive () -> toNumber (); }
+	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsBasicObject> & globalObject) :
+	         jsChildType (),
+		jsInputStreamType (),
+		 executionContext (executionContext),
+		     globalObject (globalObject),
+		   defaultObjects ({ globalObject }),
+		      expressions ()
+	{
+		addChildren (*executionContext, this -> globalObject);
+	}
 
-	virtual
-	var
-	toObject () const
-	throw (TypeError)
-	{ return toPrimitive () -> toObject (); }
+	/// @name Function services
+
+	void
+	replaceFunction (const basic_ptr <jsBasicFunction> & function);
+
+	/// @name Default object services
+
+	void
+	pushDefaultObject (const basic_ptr <jsBasicObject> & object)
+	{ defaultObjects .emplace_back (object); }
+
+	void
+	popDefaultObject ()
+	{ return defaultObjects .pop_back (); }
+
+	const basic_ptr <jsBasicObject> &
+	getDefaultObject ()
+	{ return defaultObjects .back (); }
+
+	/// @name Property access
+
+	const var &
+	getProperty (const std::string & name) const
+	throw (ReferenceError);
+
+	/// @name Expression access
+
+	std::vector <var> &
+	getExpressions ()
+	{ return expressions; }
+
+	const std::vector <var> &
+	getExpressions () const
+	{ return expressions; }
 
 	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
-	{ toPrimitive () -> toStream (ostream); }
+	{ ostream << "[program Program]"; }
 
 
 protected:
 
-	///  @name Construction
+	///  @name Operation
 
-	jsValue () :
-		       jsChildType (),
-		jsOutputStreamType ()
-	{ }
+	virtual
+	var
+	run ();
 
-		
+
 private:
 
-	///  @name Static members
-	
-	static const std::string typeName;
+	/// @name Members
+
+	jsExecutionContext* const                           executionContext;
+	std::map <std::string, basic_ptr <jsBasicFunction>> functions;
+	basic_ptr <jsBasicObject>                           globalObject;
+	std::vector <basic_ptr <jsBasicObject>>             defaultObjects;
+	std::vector <var>                                   expressions;
 
 };
-
-inline
-bool
-jsValue::isPrimitive () const
-{
-	switch (getType ())
-	{
-		case UNDEFINED:
-		case BOOLEAN:
-		case NUMBER:
-		case STRING:
-		case NULL_OBJECT:
-		case BOOLEAN_OBJECT:
-		case NUMBER_OBJECT:
-		case STRING_OBJECT:
-			return true;
-		default:
-			return false;
-	}
-}
 
 } // pb
 } // titania

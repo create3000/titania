@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a JavaScript subtraction expression.
+ */
 class Subtraction :
 	public jsNumberType
 {

@@ -48,34 +48,51 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VALUE_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VALUE_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PB_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PB_H__
+
+#include "Execution/Program.h"
+
+#include <utility>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Enum type for JavaScript primitives.
- */
-enum ValueType
+inline
+const char*
+getVersion ()
 {
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	STRING,
-	NULL_OBJECT,
-	OBJECT,
-	BOOLEAN_OBJECT,
-	NUMBER_OBJECT,
-	STRING_OBJECT,
-	ARRAY_OBJECT,
-	DATE_OBJECT,
-	REGEX_OBJECT,
-	FUNCTION_OBJECT,
-	EXPRESSION,
-	CUSTOM
+	return "ECMAv5";
+}
 
-};
+inline
+const char*
+getName ()
+{
+	return "Pease Blossom alpha V0.0.1";
+}
+
+inline
+const char*
+getVendor ()
+{
+	return "Titania";
+}
+
+inline
+const char*
+getDescription ()
+{
+	return "JavaScript alpha " __DATE__;
+}
+
+template <class ... Args>
+inline
+basic_ptr <Program>
+createProgram (Args && ... args)
+{
+	return make_ptr <Program> (make_ptr <Object> (), std::forward <Args> (args) ...);
+}
 
 } // pb
 } // titania

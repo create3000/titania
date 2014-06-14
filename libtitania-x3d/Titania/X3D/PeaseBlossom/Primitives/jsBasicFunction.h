@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
 
 #include "../Primitives/jsBasicObject.h"
+#include "../Primitives/String.h"
 
 #include <glibmm/ustring.h>
 
@@ -63,7 +64,13 @@ class jsBasicFunction :
 {
 public:
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
 
 	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
 	virtual
@@ -71,19 +78,35 @@ public:
 	getType () const override
 	{ return FUNCTION_OBJECT; }
 
+	///  @name Member access
+
 	///  Returns the name of the function.
-	const Glib::ustring &
+	const std::string &
 	getName () const
-	{ throw 1; }
+	{ return name; }
 
 
 protected:
 
 	///  @name Construction
 
-	jsBasicFunction (const Glib::ustring & name) :
-		jsBasicObject ()
-	{ }
+	jsBasicFunction (const std::string & name) :
+		jsBasicObject (),
+		         name (name)
+	{
+		defineProperty ("name", make_ptr <String> (name), BUILT_IN);
+	}
+
+
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
+
+	///  @name Members
+
+	const std::string name;
 
 };
 

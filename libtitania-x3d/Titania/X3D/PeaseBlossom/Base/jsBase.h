@@ -48,19 +48,31 @@
  *
  ******************************************************************************/
 
-#include "jsScope.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
 
-#include "../Parser/Parser.h"
+#include <string>
 
 namespace titania {
 namespace pb {
 
-void
-jsScope::fromStream (std::istream & istream)
-throw (SyntaxError)
+class jsBase
 {
-	Parser (this, istream) .parseIntoScope ();
-}
+public:
+
+	jsBase () = default;
+	
+	virtual
+	const std::string &
+	getTypeName () const = 0;
+
+	virtual
+	~jsBase ()
+	{ }
+
+};
 
 } // pb
 } // titania
+
+#endif

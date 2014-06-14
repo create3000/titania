@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 
-#include "../Bits/jsConstants.h"
+#include "../Values/jsNumberType.h"
 #include "../Values/jsValue.h"
 #include "../Values/var.h"
 
@@ -66,7 +66,13 @@ class Undefined :
 {
 public:
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
 
 	///  Returns the type of the value. For »undefined« values this is »UNDEFINED«.
 	virtual
@@ -74,7 +80,7 @@ public:
 	getType () const final override
 	{ return UNDEFINED; }
 
-	///  @name Operations
+	///  @name Common operations
 
 	virtual
 	bool
@@ -99,7 +105,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return NaN (); }
+	{ return jsNumberType::NaN (); }
 
 	virtual
 	var
@@ -128,6 +134,13 @@ protected:
 	Undefined () :
 		jsValue ()
 	{ }
+
+		
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 

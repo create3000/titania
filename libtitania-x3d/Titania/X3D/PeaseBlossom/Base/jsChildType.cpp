@@ -32,6 +32,7 @@ namespace titania {
 namespace pb {
 
 jsChildType::jsChildType () :
+	            jsBase (),
 	jsGarbageCollector (),
 	    referenceCount (0),
 	           parents (),
@@ -75,6 +76,18 @@ jsChildType::removeParent (jsChildType* const parent)
 {
 	if (parents .erase (parent))
 	{
+		///////////////////////////////
+	
+		__LOG__ << this << " : " << getTypeName () << " : " << getParents () .size () << std::endl;
+
+//		for (const auto p1 : getParents ())
+//		{
+//			for  (const auto p2 : p1 -> getParents ())
+//				__LOG__ << p2 -> getTypeName () << std::endl;
+//		}
+		
+		///////////////////////////////
+			
 		if (root == parent)
 			root = nullptr;
 

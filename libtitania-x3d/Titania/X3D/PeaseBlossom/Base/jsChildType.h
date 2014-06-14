@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
 
 #include "../Base/jsGarbageCollector.h"
+#include "../Base/jsBase.h"
 
 #include <Titania/Utility/Pass.h>
 #include <cstddef>
@@ -68,7 +69,8 @@ class jsChildType;
 using ChildObjectSet = std::set <jsChildType*>;
 
 class jsChildType :
-	public jsGarbageCollector
+	public jsGarbageCollector,
+	virtual public jsBase
 {
 public:
 

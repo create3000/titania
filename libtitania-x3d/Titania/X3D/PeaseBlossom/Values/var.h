@@ -48,14 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VALUE_PTR_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VAR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VAR_H__
 
-#include "../Base/jsOutputStreamType.h"
 #include "../Base/jsChildType.h"
+#include "../Base/jsOutputStreamType.h"
 
 namespace titania {
 namespace pb {
+
+/**
+ *  Base class for basic_ptr.
+ */
+class ptr_base :
+	virtual public jsBase
+{
+public:
+
+	///  @name Operations
+
+	virtual
+	jsChildType*
+	get_type () const = 0;
+
+
+protected:
+
+	ptr_base () :
+		jsBase ()
+	{ }
+
+};
 
 /**
  *  Template to represent a pointer that can handle circular references and that does
@@ -68,6 +91,7 @@ namespace pb {
  */
 template <class Type>
 class basic_ptr :
+	public ptr_base,
 	public jsChildType,
 	public jsOutputStreamType
 {
@@ -77,6 +101,7 @@ public:
 
 	///  Constructs new basic_ptr.
 	basic_ptr () :
+		          ptr_base (),
 		       jsChildType (),
 		jsOutputStreamType (),
 		             value (nullptr)
@@ -88,20 +113,36 @@ public:
 	{ }
 
 	///  Constructs new basic_ptr.
+	basic_ptr (const ptr_base & var) :
+		basic_ptr (dynamic_cast <Type*> (var .get_type ()))
+	{ }
+
+	///  Constructs new basic_ptr.
 	basic_ptr (basic_ptr && var) :
+		basic_ptr ()
+	{ move (var); }
+
+	///  Constructs new basic_ptr.
+	template <class Up>
+	basic_ptr (basic_ptr <Up> && var) :
 		basic_ptr ()
 	{ move (var); }
 
 	///  Constructs new basic_ptr.
 	explicit
 	basic_ptr (Type* const value) :
+		          ptr_base (),
 		       jsChildType (),
 		jsOutputStreamType (),
 		             value (value)
-	{
-		if (value)
-			value -> addParent (this);
-	}
+	{ add (value); }
+
+	///  Constructs new basic_ptr.
+	template <class Up>
+	explicit
+	basic_ptr (Up* const value) :
+		basic_ptr (dynamic_cast <Type*> (value))
+	{ }
 
 	///  @name Assignment operators
 
@@ -110,6 +151,14 @@ public:
 	operator = (const basic_ptr & var)
 	{
 		reset (var .value);
+		return *this;
+	}
+
+	///  Assigns the basic_ptr.
+	basic_ptr &
+	operator = (const ptr_base & var)
+	{
+		reset (dynamic_cast <Type*> (var .get_type ()));
 		return *this;
 	}
 
@@ -125,7 +174,21 @@ public:
 
 		return *this;
 	}
-	
+
+	///  Assigns the basic_ptr.
+	template <class Up>
+	basic_ptr &
+	operator = (basic_ptr <Up> && var)
+	{
+		if (&var == this)
+			return *this;
+
+		remove (get ());
+		move (var);
+
+		return *this;
+	}
+
 	///  @name Observers
 
 	///  Returns a pointer to the managed object.
@@ -147,18 +210,35 @@ public:
 	operator bool () const
 	{ return value; }
 
+	///  @name Modifiers
+
 	///  Replaces the managed object.
 	void
 	reset (Type* const value)
 	{
 		if (get () not_eq value)
 		{
-			remove (get ());
+			// First add object to avoid dispose.
 			add (value);
+			remove (get ());
 		}
 
 		set (value);
 	}
+
+	///  Replaces the managed object.
+	template <class Up>
+	void
+	reset (Up* const value)
+	{ reset (dynamic_cast <Type*> (value)); }
+
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
 
 	///  @name Input/Output
 
@@ -175,7 +255,7 @@ public:
 
 	///  @name Destruction
 
-	///  Destructs the owned object if no more basic_ptrs link to it 
+	///  Destructs the owned object if no more basic_ptrs link to it
 	virtual
 	void
 	dispose ()
@@ -186,13 +266,16 @@ public:
 		jsChildType::dispose ();
 	}
 
-	///  Destructs the owned object if no more basic_ptrs link to it 
+	///  Destructs the owned object if no more basic_ptrs link to it
 	virtual
 	~basic_ptr ()
 	{ remove (get ()); }
 
 
 private:
+
+	template <class Up>
+	friend class basic_ptr;
 
 	void
 	add (Type* const value)
@@ -213,22 +296,62 @@ private:
 		}
 	}
 
+	template <class Up>
+	void
+	move (basic_ptr <Up> & var)
+	{
+		set (dynamic_cast <Type*> (var .get ()));
+
+		if (get ())
+		{
+			var .get () -> replaceParent (&var, this);
+			var .set (nullptr);
+		}
+		else
+			var .reset (nullptr);
+	}
+
 	void
 	remove (Type* const value)
 	{
 		if (value)
+		{
+			set (nullptr);
+
 			value -> removeParent (this);
+		}
 	}
 
 	void
 	set (Type* const _value)
 	{ value = _value; }
 
+	virtual
+	jsChildType*
+	get_type () const final override
+	{ return get (); }
+
+	///  @name Static members
+	
+	static const std::string typeName;
+
 	///  @name Members;
 
 	Type* value;
 
 };
+
+template <class Type>
+const std::string basic_ptr <Type>::typeName = "basic_ptr";
+
+///  @relates basic_ptr
+///  @name Utiliy functions
+
+///  Constructs an object of type Type and wraps it in a basic_ptr using
+///  args as the parameter list for the constructor of Type. 
+template< class Type, class... Args >
+basic_ptr <Type> make_ptr (Args && ... args)
+{ return basic_ptr <Type> (new Type (std::forward <Args> (args) ...)); }
 
 ///  @relates basic_ptr
 ///  @name Comparision operations
@@ -239,7 +362,9 @@ template <class Type>
 inline
 bool
 operator == (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{ return lhs .get () == rhs .get (); }
+{
+	return lhs .get () == rhs .get ();
+}
 
 ///  Compares two basic_ptr.
 ///  Return true if @a lhs is not equal to @a rhs.
@@ -247,7 +372,9 @@ template <class Type>
 inline
 bool
 operator not_eq (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{ return lhs .get () not_eq rhs .get (); }
+{
+	return lhs .get () not_eq rhs .get ();
+}
 
 ///  Compares two basic_ptr.
 ///  Returns true if @a lhs less than @a rhs.
@@ -255,7 +382,9 @@ template <class Type>
 inline
 bool
 operator < (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{ return lhs .get () < rhs .get (); }
+{
+	return lhs .get () < rhs .get ();
+}
 
 ///  Compares two basic_ptr.
 ///  Returns true if @a lhs less than equal to @a rhs.
@@ -263,7 +392,9 @@ template <class Type>
 inline
 bool
 operator <= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{ return lhs .get () <= rhs .get (); }
+{
+	return lhs .get () <= rhs .get ();
+}
 
 ///  Compares two basic_ptr.
 ///  Returns true if @a lhs greater than @a rhs.
@@ -271,7 +402,9 @@ template <class Type>
 inline
 bool
 operator > (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{ return lhs .get () > rhs .get (); }
+{
+	return lhs .get () > rhs .get ();
+}
 
 ///  Compares two basic_ptr.
 ///  Returns true if @a lhs greater than equal to @a rhs.
@@ -279,7 +412,9 @@ template <class Type>
 inline
 bool
 operator >= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{ return lhs .get () >= rhs .get (); }
+{
+	return lhs .get () >= rhs .get ();
+}
 
 //
 

@@ -61,7 +61,7 @@ namespace pb {
 // Important: std::deque is used here for objects because it is much more faster than std::vector!
 
 jsGarbageCollector::ObjectArray jsGarbageCollector::objects;
-std::mutex                       jsGarbageCollector::mutex;
+std::mutex                      jsGarbageCollector::mutex;
 
 void
 jsGarbageCollector::trimFreeMemory ()

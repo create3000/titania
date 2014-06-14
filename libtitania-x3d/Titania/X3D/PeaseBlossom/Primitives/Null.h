@@ -67,7 +67,13 @@ class Null :
 {
 public:
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
 
 	///  Returns the type of the value. For »null« objects this is »NULL_OBJECT«.
 	virtual
@@ -75,7 +81,7 @@ public:
 	getType () const final override
 	{ return NULL_OBJECT; }
 
-	///  @name Operations
+	///  @name Common operations
 
 	virtual
 	bool
@@ -129,6 +135,13 @@ protected:
 	Null () :
 		jsValue ()
 	{ }
+
+		
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 

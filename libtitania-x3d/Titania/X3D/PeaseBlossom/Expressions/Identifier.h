@@ -48,21 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IDENTIFIER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IDENTIFIER_H__
 
-#include "../Primitives/Number.h"
+#include "../Execution/jsExecutionContext.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript division expression.
+ *  Class to represent a JavaScript identifier expression.
  */
-class Division :
-	public jsNumberType
+class Identifier :
+	public jsValue
 {
 public:
+
+	///  @name Construction
+
+	Identifier (jsExecutionContext* const executionContext, std::string && name) :
+		         jsValue (),
+		executionContext (executionContext),
+		            name (std::move (name))
+	{ }
 
 	///  @name Member access
 
@@ -76,59 +85,23 @@ public:
 	virtual
 	bool
 	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+	{ return false; }
 
 	virtual
 	var
-	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return lhs -> toNumber () / rhs -> toNumber (); }
-
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	division (const var &, const var &);
-
-	///  @name Construction
-
-	Division (const var & lhs, const var & rhs) :
-		jsNumberType (),
-		         lhs (lhs),
-		         rhs (rhs)
-	{ }
+	toPrimitive () const
+	throw (ReferenceError) final override
+	{ return executionContext -> getProperty (name); }
 
 
 private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	jsExecutionContext* const executionContext;
+	const std::string         name;
 
 };
-
-///  @relates Division
-///  @name division.
-
-inline
-var
-division (const var & lhs, const var & rhs)
-{
-	const var expression (new Division (lhs, rhs));
-
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
-}
 
 } // pb
 } // titania

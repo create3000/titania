@@ -52,8 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 
-#include "../../PeaseBlossom/Execution/Program.h"
-#include "../../PeaseBlossom/Parser/Parser.h"
+#include "../../PeaseBlossom/pb.h"
 
 namespace titania {
 namespace X3D {
@@ -73,8 +72,7 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 
 void
 Context::setContext ()
-{
-}
+{ }
 
 void
 Context::setFields ()
@@ -89,18 +87,31 @@ Context::create (X3DExecutionContext* const) const
 void
 Context::initialize ()
 {
+	getBrowser () -> println ("\tCurrent Javascript Engine", '\n',
+	                          "\t\tName: ", pb::getVendor (), ' ', pb::getName (), '\n',
+	                          "\t\tDescription: ", pb::getDescription (), '\n',
+	                          "\t\tVersion: ", pb::getVersion ());
+
 	const auto t0 = chrono::now ();
 
 	std::istringstream istream (getECMAScript ());
 
 	try
 	{
-		const auto program = pb::ProgramPtr (new pb::Program (istream));
-		const auto result  = program -> run ();
+		const auto program = pb::createProgram (istream);
+		const auto result1 = program -> run ();
 
-		getBrowser () -> println ("result:  ", result);
-		getBrowser () -> println ("istream: ", SFBool (istream), " : ", chrono::now () - t0);
+		getBrowser () -> println ("result:  ", result1, " : ", SFTime (chrono::now () - t0));
+		getBrowser () -> println ("istream: ", SFBool (istream));
 
+		{
+			const auto t0      = chrono::now ();
+			const auto result2 = program -> run ();
+
+			getBrowser () -> println ("result:  ", result2, " : ", SFTime (chrono::now () - t0));
+		}
+
+		program -> dispose ();
 		program -> deleteObjectsAsync ();
 	}
 	catch (const pb::jsException & error)
@@ -114,38 +125,31 @@ Context::initialize ()
 
 void
 Context::setEventHandler ()
-{
-}
+{ }
 
 void
 Context::set_live ()
-{
-}
+{ }
 
 void
 Context::prepareEvents ()
-{
-}
+{ }
 
 void
 Context::set_field (X3D::X3DFieldDefinition* const field)
-{
-}
+{ }
 
 void
 Context::eventsProcessed ()
-{
-}
+{ }
 
 void
 Context::finish ()
-{
-}
+{ }
 
 void
 Context::shutdown ()
-{
-}
+{ }
 
 void
 Context::error (const std::string & trycatch) const
@@ -164,8 +168,7 @@ Context::dispose ()
 }
 
 Context::~Context ()
-{
-}
+{ }
 
 } // peaseblossom
 } // X3D

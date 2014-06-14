@@ -55,6 +55,8 @@
 namespace titania {
 namespace pb {
 
+const std::string jsNumberType::typeName = "Number";
+
 var
 jsNumberType::toObject () const
 throw (TypeError)

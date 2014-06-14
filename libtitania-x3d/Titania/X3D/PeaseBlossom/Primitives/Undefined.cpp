@@ -48,72 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_SCOPE_H__
-
-#include "../Base/jsInputStreamType.h"
-#include "../Bits/Exception.h"
-#include "../Values/var.h"
-
-#include <vector>
-#include <stack>
+#include "Undefined.h"
 
 namespace titania {
 namespace pb {
 
-class jsScope :
-	public jsInputStreamType
-{
-public:
-
-	/// @name Input/Output
-
-	virtual
-	void
-	fromStream (std::istream & istream)
-	throw (SyntaxError) final override;
-
-
-protected:
-
-	friend class Parser;
-
-	///  @name Construction
-
-	jsScope ()
-	{ }
-
-	/// @name Member access
-	
-	std::vector <var> &
-	getExpressions ()
-	{ return expressions; }
-	
-	const std::vector <var> &
-	getExpressions () const
-	{ return expressions; }
-
-
-private:
-
-	/// @name Member access
-	
-	std::vector <var> &
-	getDefaultObject ()
-	{ return expressions; }
-	
-	const std::vector <var> &
-	getDefaultObject () const
-	{ return expressions; }
-
-	/// @name Members
-	
-	std::stack <var> defaultObject;
-	std::vector <var> expressions;
-
-};
+const std::string Undefined::typeName = "Undefined";
 
 } // pb
 } // titania
-
-#endif

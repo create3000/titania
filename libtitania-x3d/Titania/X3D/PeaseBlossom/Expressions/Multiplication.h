@@ -56,6 +56,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a JavaScript multiplication expression.
+ */
 class Multiplication :
 	public jsNumberType
 {

@@ -1,16 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/jsBasicObject.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/Object.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/jsBasicObject.h" Line="66" Column="9" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="88" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="111" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1316" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.cpp" Line="59" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Bits/jsConstants.h" Line="62" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/jsBasicObject.h" Line="125" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/jsBasicFunction.h" Line="55" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableDeclaration.h" Line="70" Column="81" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/Identifier.h" Line="61" Column="58" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="uncrustify-all" expanded="True" />
+          </Node>
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -24,8 +32,8 @@
             <Node name="Titania" expanded="True">
               <Node name="InputOutput" expanded="True" />
               <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
-                <Node name="Utility" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -35,8 +43,13 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
+                <Node name="Browser" expanded="True" />
+                <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
                 <Node name="PeaseBlossom" expanded="True">
@@ -44,14 +57,17 @@
                   <Node name="Bits" expanded="True" />
                   <Node name="Execution" expanded="True" />
                   <Node name="Expressions" expanded="True" />
-                  <Node name="Parser" expanded="True" />
-                  <Node name="Primitives" expanded="True">
-                    <Node name="jsBasicObject.h" selected="True" />
+                  <Node name="Parser" expanded="True">
+                    <Node name="Parser.cpp" selected="True" />
                   </Node>
+                  <Node name="Primitives" expanded="True" />
                   <Node name="Values" expanded="True" />
                 </Node>
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="xxx" expanded="True" />
           </Node>
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">

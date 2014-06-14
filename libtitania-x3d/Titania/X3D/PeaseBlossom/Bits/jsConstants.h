@@ -51,21 +51,41 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
 
-#include <limits>
-#include <type_traits>
-
 namespace titania {
 namespace pb {
 
-inline
-constexpr double
-NaN ()
-{ return std::numeric_limits <double>::quiet_NaN (); }
+#undef NONE
 
-inline
-constexpr double
-Infinity  ()
-{ return std::numeric_limits <double>::infinity (); }
+/**
+ *  Enum type for JavaScript primitives.
+ */
+enum ValueType
+{
+	UNDEFINED,
+	BOOLEAN,
+	NUMBER,
+	STRING,
+	NULL_OBJECT,
+	OBJECT,
+	BOOLEAN_OBJECT,
+	NUMBER_OBJECT,
+	STRING_OBJECT,
+	ARRAY_OBJECT,
+	DATE_OBJECT,
+	REGEX_OBJECT,
+	FUNCTION_OBJECT,
+	EXPRESSION,
+	CUSTOM
+
+};
+
+using PropertyFlagsType = uint8_t;
+
+constexpr PropertyFlagsType NONE         = 0;
+constexpr PropertyFlagsType WRITABLE     = 1 << 0;
+constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
+constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
+constexpr PropertyFlagsType BUILT_IN     = 1 << 3;
 
 } // pb
 } // titania

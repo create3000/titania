@@ -96,7 +96,13 @@ public:
 		jsBasicString (value)
 	{ }
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return jsBasicString::getTypeName (); }
 
 	///  Returns the type of the value. For string objects this is »STRING_OBJECT«.
 	virtual
@@ -104,7 +110,7 @@ public:
 	getType () const final override
 	{ return STRING_OBJECT; }
 
-	///  @name Operations
+	///  @name Common operations
 
 	virtual
 	bool

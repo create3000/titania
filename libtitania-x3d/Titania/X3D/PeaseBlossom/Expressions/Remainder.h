@@ -58,6 +58,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a JavaScript remainder expression.
+ */
 class Remainder :
 	public jsNumberType
 {

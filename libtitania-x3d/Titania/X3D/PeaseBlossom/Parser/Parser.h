@@ -51,23 +51,25 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 
-#include "../Execution/jsScope.h"
 #include "../Parser/AssignmentOperatorType.h"
 #include "../Primitives.h"
 
 #include <iostream>
+#include <stack>
 #include <tuple>
 
 namespace titania {
 namespace pb {
 
+class jsExecutionContext;
+
 class Parser
 {
 public:
 
-	///  @name Construction
+	///  @namjsExecutionContexte Construction
 
-	Parser (jsScope* const, std::istream & istream);
+	Parser (jsExecutionContext* const, std::istream & istream);
 
 	///  @name Operations
 
@@ -82,9 +84,17 @@ private:
 
 	// Operations
 
-	jsScope*
-	getScope () const
-	{ return scopes .back (); }
+	void
+	pushExecutionContext (jsExecutionContext* const executionContext)
+	{ executionContexts .emplace (executionContext); }
+
+	void
+	popExecutionContext ()
+	{ executionContexts .pop (); }
+
+	jsExecutionContext*
+	getExecutionContext () const
+	{ return executionContexts .top (); }
 
 	void
 	setState (const State & value);
@@ -209,6 +219,18 @@ private:
 	statement ();
 
 	bool
+	variableStatement ();
+
+	bool
+	variableDeclarationList ();
+
+	bool
+	variableDeclaration ();
+
+	bool
+	initialiser (var &);
+
+	bool
 	expressionStatement ();
 
 	bool
@@ -239,10 +261,10 @@ private:
 
 	///  @name Members
 
-	jsScope* const         root;
-	std::vector <jsScope*> scopes;
-	std::istream &         istream;
-	std::string            whiteSpaces;
+	jsExecutionContext* const        rootContext;
+	std::stack <jsExecutionContext*> executionContexts;
+	std::istream &                   istream;
+	std::string                      whiteSpaces;
 
 };
 

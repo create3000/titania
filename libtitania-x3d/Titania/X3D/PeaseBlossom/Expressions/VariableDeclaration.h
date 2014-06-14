@@ -48,21 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 
-#include "../Primitives/Number.h"
+#include "../Execution/jsExecutionContext.h"
+#include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript division expression.
+ *  Class to represent a JavaScript variable declaration expression.
  */
-class Division :
-	public jsNumberType
+class VariableDeclaration :
+	public jsValue
 {
 public:
+
+	///  @name Construction
+
+	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && value) :
+		         jsValue (),
+		executionContext (executionContext),
+		       identifier (std::move (identifier)),
+		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
+	{ }
 
 	///  @name Member access
 
@@ -76,59 +86,32 @@ public:
 	virtual
 	bool
 	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+	{ return value -> isPrimitive (); }
 
 	virtual
 	var
 	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
+	{
+		const var result = value -> toPrimitive ();
+
+		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE | CONFIGURABLE);
+		return result;
+	}
 
 	virtual
-	double
-	toNumber () const final override
-	{ return lhs -> toNumber () / rhs -> toNumber (); }
-
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	division (const var &, const var &);
-
-	///  @name Construction
-
-	Division (const var & lhs, const var & rhs) :
-		jsNumberType (),
-		         lhs (lhs),
-		         rhs (rhs)
-	{ }
+	~VariableDeclaration ()
+	{ __LOG__ << std::endl; }
 
 
 private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	jsExecutionContext* const executionContext;
+	const std::string         identifier;
+	const var                 value;
 
 };
-
-///  @relates Division
-///  @name division.
-
-inline
-var
-division (const var & lhs, const var & rhs)
-{
-	const var expression (new Division (lhs, rhs));
-
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
-}
 
 } // pb
 } // titania

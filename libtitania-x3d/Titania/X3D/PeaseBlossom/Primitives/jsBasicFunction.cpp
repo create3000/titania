@@ -48,89 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-
-#include "../Primitives/Number.h"
+#include "jsBasicFunction.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a JavaScript division expression.
- */
-class Division :
-	public jsNumberType
-{
-public:
-
-	///  @name Member access
-
-	virtual
-	ValueType
-	getType () const final override
-	{ return EXPRESSION; }
-
-	///  @name Operations
-
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
-
-	virtual
-	var
-	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return lhs -> toNumber () / rhs -> toNumber (); }
-
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	division (const var &, const var &);
-
-	///  @name Construction
-
-	Division (const var & lhs, const var & rhs) :
-		jsNumberType (),
-		         lhs (lhs),
-		         rhs (rhs)
-	{ }
-
-
-private:
-
-	///  @name Members
-
-	const var lhs;
-	const var rhs;
-
-};
-
-///  @relates Division
-///  @name division.
-
-inline
-var
-division (const var & lhs, const var & rhs)
-{
-	const var expression (new Division (lhs, rhs));
-
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
-}
+const std::string jsBasicFunction::typeName = "Function";
 
 } // pb
 } // titania
-
-#endif

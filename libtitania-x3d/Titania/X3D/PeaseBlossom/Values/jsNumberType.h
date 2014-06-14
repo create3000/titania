@@ -51,10 +51,10 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
 
-#include "../Bits/jsConstants.h"
 #include "../Values/jsValue.h"
 
 #include <cmath>
+#include <limits>
 
 namespace titania {
 namespace pb {
@@ -67,7 +67,15 @@ class jsNumberType :
 {
 public:
 
-	///  @name Operations
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  @name Common operations
 
 	virtual
 	bool
@@ -100,6 +108,38 @@ public:
 	void
 	toStream (std::ostream &) const override;
 
+	///  @name Constants
+
+	///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
+	static
+	constexpr double
+	MIN_VALUE ()
+	{ return std::numeric_limits <double>::min (); }
+
+	///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
+	static
+	constexpr double
+	MAX_VALUE ()
+	{ return std::numeric_limits <double>::max (); }
+
+	///  The value of Number.NaN is NaN.
+	static
+	constexpr double
+	NaN ()
+	{ return std::numeric_limits <double>::quiet_NaN (); }
+
+	///  The value of Number.NEGATIVE_INFINITY is ??.
+	static
+	constexpr double
+	NEGATIVE_INFINITY ()
+	{ return -std::numeric_limits <double>::infinity (); }
+
+	///  The value of Number.POSITIVE_INFINITY is +?.
+	static
+	constexpr double
+	POSITIVE_INFINITY ()
+	{ return std::numeric_limits <double>::infinity (); }
+
 
 protected:
 
@@ -107,6 +147,13 @@ protected:
 
 	jsNumberType ()
 	{ }
+
+		
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 
@@ -119,11 +166,11 @@ jsNumberType::toStream (std::ostream & ostream) const
 	if (std::isnan (value))
 		ostream << "NaN";
 
-	else if (value == Infinity ())
-		ostream << "Infinity";
-
-	else if (value == -Infinity ())
+	else if (value == NEGATIVE_INFINITY ())
 		ostream << "-Infinity";
+
+	else if (value == POSITIVE_INFINITY ())
+		ostream << "Infinity";
 
 	else
 		ostream << toNumber ();

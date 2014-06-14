@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
 
+#include "../Base/jsBase.h"
+
 #include <cstddef>
 #include <deque>
 #include <mutex>
@@ -60,13 +62,15 @@ namespace pb {
 
 class jsChildType;
 
-class jsGarbageCollector
+class jsGarbageCollector :
+	virtual public jsBase
 {
 protected:
 
 	///  @name Construction
 
-	jsGarbageCollector ()
+	jsGarbageCollector () :
+		jsBase ()
 	{ }
 
 	///  @name Operations

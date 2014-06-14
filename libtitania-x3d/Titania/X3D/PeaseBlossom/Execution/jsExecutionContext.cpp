@@ -48,89 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#include "jsExecutionContext.h"
 
-#include "../Primitives/Number.h"
+#include "../Parser/Parser.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a JavaScript division expression.
- */
-class Division :
-	public jsNumberType
+void
+jsExecutionContext::replaceFunction (const basic_ptr <jsBasicFunction> & function)
 {
-public:
+	try
+	{
+		functions .at (function -> getName ()) = function;
+	}
+	catch (const std::out_of_range &)
+	{
+		addChild (functions .emplace (function -> getName (), function) .first -> second);
+	}
+}
 
-	///  @name Member access
+const var &
+jsExecutionContext::getProperty (const std::string & name) const
+throw (ReferenceError)
+{
+	for (const auto & object : basic::reverse_adapter (defaultObjects))
+	{
+		try
+		{
+			return object -> getOwnProperty (name);
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
 
-	virtual
-	ValueType
-	getType () const final override
-	{ return EXPRESSION; }
+	throw ReferenceError (name + " is not defined.");
+}
 
-	///  @name Operations
-
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
-
-	virtual
-	var
-	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return lhs -> toNumber () / rhs -> toNumber (); }
-
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	division (const var &, const var &);
-
-	///  @name Construction
-
-	Division (const var & lhs, const var & rhs) :
-		jsNumberType (),
-		         lhs (lhs),
-		         rhs (rhs)
-	{ }
-
-
-private:
-
-	///  @name Members
-
-	const var lhs;
-	const var rhs;
-
-};
-
-///  @relates Division
-///  @name division.
-
-inline
 var
-division (const var & lhs, const var & rhs)
+jsExecutionContext::run ()
 {
-	const var expression (new Division (lhs, rhs));
+	for (const auto & function : functions)
+		getDefaultObject () -> defineProperty (function .second -> getName (), function .second);
 
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
+	__LOG__ << getExpressions () .size () << std::endl;
 
-	return expression;
+	var result = undefined ();
+
+	for (const auto & expression : getExpressions ())
+	{
+		if (expression)
+		{
+			result = expression -> toPrimitive ();
+
+			if  (result)
+				__LOG__ << result << std::endl;
+			else
+				__LOG__ << "XXX no result" << std::endl;
+		}
+		else
+			__LOG__ << "XXX no expression" << std::endl;
+	}
+
+	return result;
+}
+
+void
+jsExecutionContext::fromStream (std::istream & istream)
+throw (SyntaxError)
+{
+	Parser (this, istream) .parseIntoScope ();
+}
+
+void
+jsExecutionContext::dispose ()
+{
+	functions      .clear ();
+	globalObject   .dispose ();
+	defaultObjects .clear ();
+	expressions    .clear ();
+	
+	jsChildType::dispose ();
 }
 
 } // pb
 } // titania
-
-#endif

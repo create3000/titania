@@ -64,7 +64,15 @@ class jsBooleanType :
 {
 public:
 
-	///  @name Operations
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  @name Common operations
 
 	virtual
 	uint16_t
@@ -105,6 +113,13 @@ protected:
 
 	jsBooleanType ()
 	{ }
+
+		
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 

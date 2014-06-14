@@ -76,7 +76,13 @@ public:
 		jsBasicFalseType ()
 	{ }
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return jsBasicFalseType::getTypeName (); }
 
 	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
 	virtual
@@ -84,7 +90,7 @@ public:
 	getType () const final override
 	{ return BOOLEAN_OBJECT; }
 
-	///  @name Operations
+	///  @name Common operations
 
 	virtual
 	bool
@@ -142,7 +148,13 @@ public:
 		jsBasicTrueType ()
 	{ }
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return jsBasicTrueType::getTypeName (); }
 
 	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
 	virtual
@@ -150,7 +162,7 @@ public:
 	getType () const final override
 	{ return BOOLEAN_OBJECT; }
 
-	///  @name Operations
+	///  @name Common operations
 
 	virtual
 	bool

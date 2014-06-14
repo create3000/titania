@@ -1,3 +1,58 @@
+2014-06-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DPtr.h:
+	* pb.h:
+	* var.h:
+	* jsBase.h:
+	* Expressions.h:
+	* Parser.h:
+	* Exception.h:
+	* jsValue.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* Null.h:
+	* jsValue.cpp:
+	* jsConstants.h:
+	* jsChildType.h:
+	* ValueType.h:
+	* Program.h:
+	* jsScope.h:
+	* Null.cpp:
+	* jsChildType.cpp:
+	* Function.h:
+	* jsNumberType.h:
+	* jsStringType.h:
+	* jsScope.cpp:
+	* Program.cpp:
+	* Division.h:
+	* Undefined.h:
+	* jsBooleanType.h:
+	* Context.cpp:
+	* Addition.h:
+	* Remainder.h:
+	* jsNumberType.cpp:
+	* jsStringType.cpp:
+	* Undefined.cpp:
+	* jsBooleanType.cpp:
+	* Identifier.h:
+	* NumberObject.h:
+	* StringObject.h:
+	* Subtraction.h:
+	* jsGarbageCollector.h:
+	* jsBasicObject.h:
+	* jsBasicString.h:
+	* BooleanObject.h:
+	* jsGarbargeCollector.cpp:
+	* jsBasicFunction.h:
+	* jsBasicObject.cpp:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsBasicFunction.cpp:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
 2014-06-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DPtr.h:

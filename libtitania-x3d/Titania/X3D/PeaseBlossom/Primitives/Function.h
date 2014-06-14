@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
 
+#include "../Execution/jsExecutionContext.h"
 #include "../Primitives/jsBasicFunction.h"
 
 namespace titania {
@@ -60,16 +61,35 @@ namespace pb {
  *  Class to represent a JavaScript function.
  */
 class Function :
-	public jsBasicFunction
+	public jsBasicFunction,
+	public jsExecutionContext
 {
 public:
 
 	///  @name Construction
 
-	Function (const Glib::ustring & name, std::vector <std::string> && formalParameters = { }) :
-		 jsBasicFunction (name),
-		formalParameters (std::move (formalParameters))
+	Function (jsExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters = { }) :
+		   jsBasicFunction (name),
+		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+		  formalParameters (std::move (formalParameters))
 	{ }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ jsBasicFunction::toStream (ostream); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{
+		jsBasicFunction::dispose ();
+		jsExecutionContext::dispose ();
+	}
 
 
 private:

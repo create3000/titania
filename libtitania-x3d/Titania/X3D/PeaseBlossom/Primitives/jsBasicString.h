@@ -53,6 +53,8 @@
 
 #include "../Values/jsStringType.h"
 
+#include <glibmm/ustring.h>
+
 namespace titania {
 namespace pb {
 

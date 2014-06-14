@@ -52,9 +52,10 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
 #include "../Base/jsGarbageCollector.h"
-#include "../Execution/jsScope.h"
-#include "../Values/jsValue.h"
+#include "../Execution/jsExecutionContext.h"
+#include "../Primitives/Object.h"
 #include "../Primitives/Undefined.h"
+#include "../Values/jsValue.h"
 
 #include <memory>
 
@@ -62,63 +63,59 @@ namespace titania {
 namespace pb {
 
 class Program :
-	public jsScope,
-	public jsGarbageCollector
+	public jsExecutionContext
 {
 public:
 
 	///  @name Construction
 
-	Program () :
-		           jsScope (),
-		jsGarbageCollector ()
+	Program (const basic_ptr <jsBasicObject> & globalObject) :
+		jsExecutionContext (this, globalObject)
 	{ }
 
-	Program (std::istream & istream)
+	Program (const basic_ptr <jsBasicObject> & globalObject, std::istream & istream)
 	throw (SyntaxError) :
-		Program ()
+		Program (globalObject)
 	{
 		fromStream (istream);
 	}
 
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  @name Operations
+
+	///  Executes the program code.
+	virtual
 	var
-	run ()
-	{
-		__LOG__ << getExpressions () .size () << std::endl;
+	run () final override
+	{ return jsExecutionContext::run (); }
 
-		var result = undefined ();
-
-		for (const auto & expression : getExpressions ())
-		{
-			if (expression)
-			{
-				result = expression -> toPrimitive ();
-
-				if  (result)
-					__LOG__ << result << std::endl;
-				else
-				__LOG__ << "XXX no result" << std::endl;
-			}
-			else
-				__LOG__ << "XXX no expression" << std::endl;
-		}
-
-		return result;
-	}
-
+	///  Asynchronously deletes all collected garbage.
 	static
 	void
 	deleteObjectsAsync ()
 	{ jsGarbageCollector::deleteObjectsAsync (); }
 
+	///  Gives the allocated memory back to the system.
 	static
 	void
 	trimFreeMemory ()
 	{ jsGarbageCollector::trimFreeMemory (); }
 
-};
+		
+private:
 
-using ProgramPtr = std::shared_ptr <Program>;
+	///  @name Static members
+	
+	static const std::string typeName;
+
+};
 
 } // pb
 } // titania

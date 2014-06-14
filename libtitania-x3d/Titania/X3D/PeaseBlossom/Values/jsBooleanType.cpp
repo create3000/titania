@@ -55,6 +55,8 @@
 namespace titania {
 namespace pb {
 
+const std::string jsBooleanType::typeName = "Boolean";
+
 var
 jsBooleanType::toObject () const
 throw (TypeError)

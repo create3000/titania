@@ -48,13 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BASIC_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BASIC_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
 
 #include "../Values/jsValue.h"
 
 namespace titania {
 namespace pb {
+
+/**
+ *  Type to represent a property.
+ */
+struct PropertyDescriptor
+{
+	var value;
+	PropertyFlagsType flags;
+
+};
 
 /**
  *  Class to represent a basic object.
@@ -64,7 +74,13 @@ class jsBasicObject :
 {
 public:
 
-	///  @name Member access
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
 
 	///  Returns the type of the value. For basic objects this is »OBJECT«.
 	virtual
@@ -72,7 +88,7 @@ public:
 	getType () const override
 	{ return OBJECT; }
 
-	///  @name Operations
+	///  @name Common operations
 
 	virtual
 	bool
@@ -105,20 +121,65 @@ public:
 	throw (TypeError) override
 	{ return var (const_cast <jsBasicObject*> (this)); }
 
+	///  @name Functions
+
+	void
+	defineProperty (const std::string & name,
+	                const var & value,
+	                const PropertyFlagsType flags = NONE);
+
+	const PropertyDescriptor &
+	getOwnPropertyDescriptor (const std::string & name) const
+	throw (std::out_of_range)
+	{ return properyDescriptions .at (name); }
+
+	var &
+	getOwnProperty (const std::string & name)
+	throw (std::out_of_range)
+	{ return properyDescriptions .at (name) .value; }
+
+	const var &
+	getOwnProperty (const std::string & name) const
+	throw (std::out_of_range)
+	{ return properyDescriptions .at (name) .value; }
+
 	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
-	{ ostream << "[object Object]"; }
+	{ ostream << "[object " << getTypeName () << "]"; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{
+		properyDescriptions .clear ();
+
+		jsValue::dispose ();
+	}
 
 protected:
 
 	///  @name Construction
 
-	jsBasicObject ()
+	jsBasicObject () :
+		jsValue (),
+		properyDescriptions ()
 	{ }
+
+	///  @name Members
+
+	std::map <std::string, PropertyDescriptor> properyDescriptions;
+
+		
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 

@@ -57,6 +57,9 @@
 namespace titania {
 namespace pb {
 
+/**
+ *  Class to represent a JavaScript addition expression.
+ */
 class Addition :
 	public jsValue
 {
@@ -85,44 +88,6 @@ public:
 
 		return var (new Number (lhs -> toNumber () + rhs -> toNumber ()));
 	}
-
-	virtual
-	bool
-	toBoolean () const override
-	{ return toPrimitive () -> toBoolean (); }
-
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toPrimitive () -> toUInt16 (); }
-
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return toPrimitive () -> toInt32 (); }
-
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toPrimitive () -> toUInt32 (); }
-
-	virtual
-	double
-	toNumber () const final override
-	{ return toPrimitive () -> toNumber (); }
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) override
-	{ return toPrimitive () -> toObject (); }
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ toPrimitive () -> toStream (ostream); }
 
 
 protected:
