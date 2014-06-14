@@ -59,6 +59,9 @@ namespace X3D {
 
 extern template class X3DField <String>;
 
+/**
+ *  Class to represent a X3D SFString field.
+ */
 class SFString :
 	public X3DField <String>
 {
@@ -70,6 +73,8 @@ public:
 
 	using X3DField <String>::addInterest;
 	using X3DField <String>::operator =;
+
+	///  @name Construction
 
 	SFString ();
 
@@ -97,7 +102,7 @@ public:
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFString (*this); }
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -109,7 +114,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFString &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Assignment operators
 
 	SFString &
 	operator = (const SFString & field)
@@ -135,6 +140,8 @@ public:
 	operator = (const char_type* const);
 
 	operator const std::string & () const;
+
+	///  @name Observers
 
 	const std::string &
 	str () const;

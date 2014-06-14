@@ -61,7 +61,7 @@ namespace pb {
  */
 struct PropertyDescriptor
 {
-	var value;
+	var               value;
 	PropertyFlagsType flags;
 
 };
@@ -90,26 +90,31 @@ public:
 
 	///  @name Common operations
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const override
 	{ return true; }
 
+	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const override
 	{ return 1; }
 
+	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const override
 	{ return 1; }
 
+	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const override
 	{ return 1; }
 
+	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const override
@@ -123,21 +128,25 @@ public:
 
 	///  @name Functions
 
+	///  Adds the named property described by a given descriptor to an object.
 	void
 	defineProperty (const std::string & name,
 	                const var & value,
 	                const PropertyFlagsType flags = NONE);
 
+	///  Returns the property descriptor for a named property on an object.
 	const PropertyDescriptor &
 	getOwnPropertyDescriptor (const std::string & name) const
 	throw (std::out_of_range)
 	{ return properyDescriptions .at (name); }
 
+	///  Returns the value for a named property on an object.
 	var &
 	getOwnProperty (const std::string & name)
 	throw (std::out_of_range)
 	{ return properyDescriptions .at (name) .value; }
 
+	///  Returns the value for a named property on an object.
 	const var &
 	getOwnProperty (const std::string & name) const
 	throw (std::out_of_range)
@@ -145,6 +154,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
@@ -154,12 +164,8 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{
-		properyDescriptions .clear ();
+	dispose () override;
 
-		jsValue::dispose ();
-	}
 
 protected:
 

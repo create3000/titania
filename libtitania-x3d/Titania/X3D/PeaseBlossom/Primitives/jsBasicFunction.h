@@ -94,7 +94,7 @@ protected:
 		jsBasicObject (),
 		         name (name)
 	{
-		defineProperty ("name", make_ptr <String> (name), BUILT_IN);
+		defineProperty ("name", make_ptr <String> (name), NATIVE);
 	}
 
 

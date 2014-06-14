@@ -82,26 +82,31 @@ public:
 
 	///  @name Common operations
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const final override
 	{ return 0; }
 
+	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
 	{ return 0; }
 
+	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
 	{ return 0; }
 
+	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
 	{ return 0; }
 
+	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
@@ -115,6 +120,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override

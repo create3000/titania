@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.0, http://titania.create3000.de"
-META "modified" "Thu, 12 Jun 2014 16:21:44 GMT"
+META "modified" "Sat, 14 Jun 2014 15:13:24 GMT"
 
 DEF Sunset Background {
   skyAngle [
@@ -25,9 +25,9 @@ DEF Sunset Background {
   groundColor 0 0 0
 }
 
-DEF _1 Transform {
+Transform {
   children [
-    DEF _2 TouchSensor {
+    DEF _1 TouchSensor {
       description "Script 1"
     }
     Transform {
@@ -42,9 +42,9 @@ DEF _1 Transform {
   ]
 }
 
-DEF _3 Transform {
+Transform {
   children [
-    DEF _4 TouchSensor {
+    DEF _2 TouchSensor {
       description "Script 2"
     }
     Transform {
@@ -62,10 +62,63 @@ DEF _3 Transform {
 DEF Script1 Script {
   inputOnly SFTime set_time
 
-  url "peaseblossom:
+  url [
+    "peaseblossom:
+var a, b, c, d;
+a - (b * (c + d));
+",
+    "peaseblossom:
+;
+true;
+false;
+null;
+1234.56789;
+0xabcdef;
+0o1234567;
+0b1010101;
+this;
+var a, b, c, d;
+a - (b * (c + d));
+0 - 1 + 2 * 3 % 4;
+0 - 1 + 2 * 3 % 4 || true && false | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5
+? true
+: false;
+0 instanceof 0;
+0 in 0;
+a = a + b, a += b;
+1 / 0;
+-1 / 0;
+'\\'single quoted string\\'';
+\"\\\"double quoted string\\\"\";
+var Browser;
+'a' + 'b';
+'5' * 2;
+
+a = function () { 1 + 2; };
+
+set_time;
+
 function set_time (value, time)
-{ }
+{
+	1 + 2 * 3 / 4;
+	5 + 6 * 7 / 8;
+}
+
+var a;
+var a = set_time;
+var
+	a = set_time,
+	a = 1;
+
+set_time;
+
+var
+	PI   = 3.14159,
+	PI_2 = 2 * PI;
+
+
 "
+  ]
   directOutput TRUE
 }
 
@@ -85,5 +138,5 @@ function set_time (value, time)
   directOutput TRUE
 }
 
-ROUTE _4.touchTime TO Script2.set_time
-ROUTE _2.touchTime TO Script1.set_time
+ROUTE _2.touchTime TO Script2.set_time
+ROUTE _1.touchTime TO Script1.set_time

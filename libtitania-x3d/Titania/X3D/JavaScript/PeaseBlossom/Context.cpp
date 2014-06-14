@@ -87,11 +87,6 @@ Context::create (X3DExecutionContext* const) const
 void
 Context::initialize ()
 {
-	getBrowser () -> println ("\tCurrent Javascript Engine", '\n',
-	                          "\t\tName: ", pb::getVendor (), ' ', pb::getName (), '\n',
-	                          "\t\tDescription: ", pb::getDescription (), '\n',
-	                          "\t\tVersion: ", pb::getVersion ());
-
 	const auto t0 = chrono::now ();
 
 	std::istringstream istream (getECMAScript ());
@@ -110,9 +105,6 @@ Context::initialize ()
 
 			getBrowser () -> println ("result:  ", result2, " : ", SFTime (chrono::now () - t0));
 		}
-
-		program -> dispose ();
-		program -> deleteObjectsAsync ();
 	}
 	catch (const pb::jsException & error)
 	{
@@ -121,6 +113,8 @@ Context::initialize ()
 
 	if (istream)
 		getBrowser () -> println (">>", istream .rdbuf (), "<<");
+
+	pb::Program::deleteObjectsAsync ();
 }
 
 void

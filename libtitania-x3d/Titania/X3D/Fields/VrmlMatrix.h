@@ -61,6 +61,8 @@ class VrmlMatrix :
 {
 public:
 
+	///  @name Construction
+
 	VrmlMatrix () :
 		SFMatrix4f ()
 	{ }
@@ -91,6 +93,8 @@ public:
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new VrmlMatrix (*this); }
+
+	///  @name Arithmetic operations
 
 	VrmlMatrix*
 	transpose () const

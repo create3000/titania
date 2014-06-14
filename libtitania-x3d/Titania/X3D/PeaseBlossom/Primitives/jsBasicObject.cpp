@@ -60,11 +60,14 @@ jsBasicObject::defineProperty (const std::string & name,
                                const var & value,
                                const PropertyFlagsType flags)
 {
+__LOG__ << std::endl;
 	try
 	{
+__LOG__ << std::endl;
 		auto & properyDescription = properyDescriptions .at (name);
 
-		if (properyDescription .flags & BUILT_IN)
+__LOG__ << std::endl;
+		if (properyDescription .flags & NATIVE)
 			return;
 
 		properyDescription .value = value;
@@ -74,8 +77,16 @@ jsBasicObject::defineProperty (const std::string & name,
 	{
 		const auto pair = properyDescriptions .emplace (name, PropertyDescriptor { value, flags });
 
-		addChild (pair .first -> second .value);
+		pair .first -> second .value .addParent (this);
 	}
+}
+
+void
+jsBasicObject::dispose ()
+{
+	properyDescriptions .clear ();
+
+	jsValue::dispose ();
 }
 
 } // pb

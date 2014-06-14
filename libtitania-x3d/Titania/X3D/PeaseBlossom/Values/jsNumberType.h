@@ -77,21 +77,25 @@ public:
 
 	///  @name Common operations
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const override
 	{ return toNumber (); }
 
+	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const override
 	{ return toNumber (); }
 
+	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const override
 	{ return toNumber (); }
 
+	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const override
@@ -104,9 +108,10 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream &) const override;
+	toStream (std::ostream & ostream) const override;
 
 	///  @name Constants
 
@@ -128,13 +133,13 @@ public:
 	NaN ()
 	{ return std::numeric_limits <double>::quiet_NaN (); }
 
-	///  The value of Number.NEGATIVE_INFINITY is ??.
+	///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
 	static
 	constexpr double
 	NEGATIVE_INFINITY ()
 	{ return -std::numeric_limits <double>::infinity (); }
 
-	///  The value of Number.POSITIVE_INFINITY is +?.
+	///  The value of Number.POSITIVE_INFINITY is Infinity.
 	static
 	constexpr double
 	POSITIVE_INFINITY ()

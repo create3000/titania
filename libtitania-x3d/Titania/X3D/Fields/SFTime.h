@@ -58,6 +58,9 @@
 namespace titania {
 namespace X3D {
 
+/**
+ *  Class to represent a X3D SFTime field.
+ */
 class SFTime :
 	public X3DField <time_type>
 {
@@ -67,6 +70,8 @@ public:
 
 	using X3DField <time_type>::addInterest;
 	using X3DField <time_type>::operator =;
+
+	///  @name Construction
 
 	SFTime ();
 
@@ -85,21 +90,7 @@ public:
 	throw (Error <NOT_SUPPORTED>)
 	{ return new SFTime (*this); }
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	X3DConstants::FieldType
-	getType () const final override
-	{ return type; }
-
-	std::string
-	toUTCString () const;
-
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -120,6 +111,24 @@ public:
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (time_type)) const
 	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	X3DConstants::FieldType
+	getType () const final override
+	{ return type; }
+
+	///  @name Operations
+
+	std::string
+	toUTCString () const;
 
 	///  @name Input/Output
 

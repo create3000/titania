@@ -61,6 +61,14 @@ namespace X3D {
 extern template class X3DField <Rotation4d>;
 extern template class X3DField <Rotation4f>;
 
+/**
+ *  Template to represent an arbitary rotation about an axis. This is the base class for the SFRotation field.
+ *
+ *  Extern instantiations for float and double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  ValueType  Type of the internal value of the field.
+ */
 template <class ValueType>
 class SFRotation4 :
 	public X3DField <ValueType>
@@ -76,6 +84,8 @@ public:
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
 	using X3DField <ValueType>::operator =;
+
+	///  @name Construction
 
 	SFRotation4 ();
 
@@ -100,7 +110,7 @@ public:
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override;
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -112,7 +122,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFRotation4 &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Member access
 
 	void
 	setX (const value_type &);
@@ -155,6 +165,8 @@ public:
 
 	void
 	getValue (value_type &, value_type &, value_type &, value_type &) const;
+
+	///  @name Arithmetic operations
 
 	SFRotation4 &
 	operator *= (const SFRotation4 &);

@@ -62,6 +62,14 @@ extern template class X3DField <double>;
 extern template class X3DField <float>;
 extern template class X3DField <int32_t>;
 
+/**
+ *  Template to represent scalar value fields. This is the base class for SFBool, SFDouble, SFFloat and SFInt32 fields.
+ *
+ *  Extern instantiations for bool, float, double and int32_t are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  ValueType  Type of the internal value of the field.
+ */
 template <class ValueType>
 class X3DScalar :
 	public X3DField <ValueType>
@@ -98,7 +106,7 @@ public:
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new X3DScalar (*this); }
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -120,7 +128,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (ValueType)) const
 	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
 
-	///  @name Functions
+	///  @name Arithmetic operations
 
 	X3DScalar &
 	operator += (const X3DScalar &);

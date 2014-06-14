@@ -51,7 +51,8 @@
 #include "../JavaScript/PeaseBlossom.h"
 
 #include "../Execution/X3DExecutionContext.h"
-#include "PeaseBlossom/Context.h"
+#include "../JavaScript/PeaseBlossom/Context.h"
+#include "../PeaseBlossom/pb.h"
 
 namespace titania {
 namespace X3D {
@@ -63,11 +64,11 @@ const std::string PeaseBlossom::containerField = "javaScript";
 PeaseBlossom::PeaseBlossom (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DJavaScriptEngine (),
-	             vendor ("Titania"),
-	        description (),
-	            version ()
+	             vendor (pb::getVendor ()),
+	        description (pb::getDescription ()),
+	            version (pb::getVersion ())
 {
-	setName ("PeaseBlossom");
+	setName (pb::getName ());
 }
 
 PeaseBlossom*
@@ -80,9 +81,6 @@ void
 PeaseBlossom::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
-
-	description = "PeaseBlossom";
-	version     = "0.0.0";
 }
 
 X3DPtr <X3DJavaScriptContext>

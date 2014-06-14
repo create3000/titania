@@ -65,6 +65,7 @@ public:
 
 	///  @name Operations
 
+	///  Converts its argument to a value of type String.
 	virtual
 	Glib::ustring
 	toString () const
@@ -72,6 +73,7 @@ public:
 		return toLocaleString (std::locale::classic ());
 	}
 
+	///  Converts its argument to a value of type String according to @a locale.
 	virtual
 	Glib::ustring
 	toLocaleString (const std::locale & locale) const
@@ -87,6 +89,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream &) const = 0;

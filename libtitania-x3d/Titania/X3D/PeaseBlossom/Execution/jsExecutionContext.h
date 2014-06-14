@@ -73,11 +73,16 @@ class jsExecutionContext :
 {
 public:
 
-	/// @name Member access
+	/// @name Global object access
 
 	const basic_ptr <jsBasicObject> &
 	getGlobalObject () const
 	{ return globalObject; }
+
+	/// @name Function services
+
+	void
+	replaceFunction (const basic_ptr <jsBasicFunction> & function);
 
 	/// @name Input/Output
 
@@ -101,27 +106,16 @@ protected:
 
 	///  @name Construction
 
-	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsBasicObject> & globalObject) :
-	         jsChildType (),
-		jsInputStreamType (),
-		 executionContext (executionContext),
-		     globalObject (globalObject),
-		   defaultObjects ({ globalObject }),
-		      expressions ()
-	{
-		addChildren (*executionContext, this -> globalObject);
-	}
-
-	/// @name Function services
-
-	void
-	replaceFunction (const basic_ptr <jsBasicFunction> & function);
+	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsBasicObject> & globalObject);
 
 	/// @name Default object services
 
 	void
 	pushDefaultObject (const basic_ptr <jsBasicObject> & object)
-	{ defaultObjects .emplace_back (object); }
+	{
+		defaultObjects .emplace_back (object);
+		defaultObjects .back () .addParent (this);
+	}
 
 	void
 	popDefaultObject ()
@@ -139,29 +133,31 @@ protected:
 
 	/// @name Expression access
 
-	std::vector <var> &
-	getExpressions ()
-	{ return expressions; }
+	template <class ... Args>
+	void
+	addExpression (Args && ... args)
+	{
+		expressions .emplace_back (std::forward <Args> (args) ...);
+		expressions .back () .addParent (this);
+	}
 
 	const std::vector <var> &
 	getExpressions () const
 	{ return expressions; }
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "[program Program]"; }
-
-
-protected:
 
 	///  @name Operation
 
 	virtual
 	var
 	run ();
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[program Program]"; }
 
 
 private:

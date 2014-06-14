@@ -59,6 +59,9 @@ namespace X3D {
 
 extern template class X3DField <Color4f>;
 
+/**
+ *  Class to represent a X3D SFColorRGBA field.
+ */
 class SFColorRGBA :
 	public X3DField <Color4f>
 {
@@ -71,6 +74,8 @@ public:
 	using X3DField <Color4f>::setValue;
 	using X3DField <Color4f>::getValue;
 	using X3DField <Color4f>::operator =;
+
+	///  @name Construction
 
 	SFColorRGBA ();
 
@@ -92,7 +97,7 @@ public:
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFColorRGBA (*this); }
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -104,7 +109,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFColorRGBA &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Member access
 
 	void
 	setR (const value_type &);
@@ -142,6 +147,8 @@ public:
 	void
 	getValue (value_type &, value_type &, value_type &, value_type &) const;
 
+	///  @name Operations
+
 	void
 	setHSV (const value_type &, const value_type &, const value_type &);
 
@@ -149,6 +156,7 @@ public:
 	getHSV (value_type &, value_type &, value_type &) const;
 
 	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)

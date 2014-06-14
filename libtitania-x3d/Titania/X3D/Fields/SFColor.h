@@ -59,6 +59,9 @@ namespace X3D {
 
 extern template class X3DField <Color3f>;
 
+/**
+ *  Class to represent a X3D SFColor field.
+ */
 class SFColor :
 	public X3DField <Color3f>
 {
@@ -71,6 +74,8 @@ public:
 	using X3DField <Color3f>::setValue;
 	using X3DField <Color3f>::getValue;
 	using X3DField <Color3f>::operator =;
+
+	///  @name Construction
 
 	SFColor ();
 
@@ -92,7 +97,7 @@ public:
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFColor (*this); }
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -104,7 +109,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFColor &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Member access
 
 	void
 	setR (const value_type &);
@@ -136,6 +141,8 @@ public:
 	void
 	getValue (value_type &, value_type &, value_type &) const;
 
+	///  @name Operations
+
 	void
 	setHSV (const value_type &, const value_type &, const value_type &);
 
@@ -143,6 +150,7 @@ public:
 	getHSV (value_type &, value_type &, value_type &) const;
 
 	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)

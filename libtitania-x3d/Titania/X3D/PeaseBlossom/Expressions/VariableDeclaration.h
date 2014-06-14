@@ -76,6 +76,7 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type of the value. For expressions this is »EXPRESSION«.
 	virtual
 	ValueType
 	getType () const final override
@@ -83,11 +84,13 @@ public:
 
 	///  @name Operations
 
+	///  Returns true if the all arguments is are non-Object type otherwise false.
 	virtual
 	bool
 	isPrimitive () const final override
 	{ return value -> isPrimitive (); }
 
+	///  Converts its input argument to a non-Object type.
 	virtual
 	var
 	toPrimitive () const final override
@@ -97,10 +100,6 @@ public:
 		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE | CONFIGURABLE);
 		return result;
 	}
-
-	virtual
-	~VariableDeclaration ()
-	{ __LOG__ << std::endl; }
 
 
 private:

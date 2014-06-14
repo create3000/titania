@@ -59,6 +59,9 @@ namespace X3D {
 
 extern template class X3DField <Image>;
 
+/**
+ *  Class to represent a X3D SFImage field.
+ */
 class SFImage :
 	public X3DField <Image>
 {
@@ -71,6 +74,8 @@ public:
 	using X3DField <Image>::setValue;
 	using X3DField <Image>::getValue;
 	using X3DField <Image>::operator =;
+
+	///  @name Construction
 
 	SFImage ();
 
@@ -92,7 +97,7 @@ public:
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFImage (*this); }
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -104,7 +109,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Member access
 
 	void
 	setWidth (const size_type);
@@ -140,6 +145,7 @@ public:
 	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
 
 	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)

@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
 
-#include "../Base/jsGarbageCollector.h"
 #include "../Base/jsBase.h"
+#include "../Base/jsGarbageCollector.h"
 
 #include <Titania/Utility/Pass.h>
 #include <cstddef>
@@ -66,7 +66,7 @@ namespace pb {
 
 class jsChildType;
 
-using ChildObjectSet = std::set <jsChildType*>;
+using ChildTypeSet = std::set <jsChildType*>;
 
 class jsChildType :
 	public jsGarbageCollector,
@@ -97,14 +97,14 @@ public:
 	removeWeakParent (jsChildType* const);
 
 	///  Get all parents of this object.
-	const ChildObjectSet &
+	const ChildTypeSet &
 	getParents () const
 	{ return parents; }
 
 	///  Returns true if this object has root objects and collects in @a seen all objects seen.
 	virtual
 	bool
-	hasRoots (ChildObjectSet &);
+	hasRoots (ChildTypeSet &);
 
 	size_t
 	getReferenceCount () const
@@ -122,6 +122,8 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	jsChildType ();
 
 	///  @name Children handling
@@ -131,7 +133,6 @@ protected:
 	addChildren (Args & ... args)
 	{ basic::pass ((addChild (args), 1) ...); }
 
-	virtual
 	void
 	addChild (jsChildType & child)
 	{ child .addParent (this); }
@@ -141,7 +142,6 @@ protected:
 	removeChildren (Args & ... args)
 	{ basic::pass ((removeChild (args), 1) ...); }
 
-	virtual
 	void
 	removeChild (jsChildType & child)
 	{ child .removeParent (this); }
@@ -151,8 +151,8 @@ private:
 
 	using ChildObjectArray = std::vector <jsChildType*>;
 
-	size_t             referenceCount;
-	ChildObjectSet     parents;
+	size_t       referenceCount;
+	ChildTypeSet parents;
 	jsChildType* root;
 
 };

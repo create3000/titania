@@ -74,11 +74,13 @@ public:
 
 	///  @name Operations
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const override
 	{ return not string .empty (); }
 
+	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const override
@@ -92,6 +94,7 @@ public:
 		return number;
 	}
 
+	///  Converts its argument to a value of type String.
 	virtual
 	Glib::ustring
 	toString () const override

@@ -1,5 +1,58 @@
 2014-06-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFVec4.h:
+	* X3DPtr.h:
+	* SFTime.h:
+	* SFColor.h:
+	* SFImage.h:
+	* SFString.h:
+	* SFMatrix3.h:
+	* X3DScalar.h:
+	* SFMatrix4.h:
+	* VrmlMatrix.h:
+	* X3DWeakPtr.h:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* X3DBaseNode.cpp:
+	* var.h:
+	* PeaseBlossom.cpp:
+	* jsValue.h:
+	* Exception.h:
+	* Null.h:
+	* Parser.cpp:
+	* jsChildType.h:
+	* jsConstants.h:
+	* jsChildType.cpp:
+	* Function.h:
+	* jsNumberType.h:
+	* jsStringType.h:
+	* Division.h:
+	* jsBooleanType.h:
+	* Context.cpp:
+	* Addition.h:
+	* Undefined.h:
+	* Remainder.h:
+	* Identifier.h:
+	* Subtraction.h:
+	* NumberObject.h:
+	* StringObject.h:
+	* jsOutputStreamType.h:
+	* BooleanObject.h:
+	* jsBasicString.h:
+	* jsBasicNumber.h:
+	* jsBasicObject.h:
+	* jsBasicBoolean.h:
+	* jsBasicObject.cpp:
+	* Multiplication.h:
+	* jsBasicFunction.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
+2014-06-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DPtr.h:

@@ -46,6 +46,8 @@ jsChildType::addParent (jsChildType* const parent)
 {
 	if (root)
 	{
+		// Best guess
+
 		if (parent -> getParents () .size () < root -> getParents () .size ())
 			root = parent;
 	}
@@ -80,12 +82,15 @@ jsChildType::removeParent (jsChildType* const parent)
 	
 		__LOG__ << this << " : " << getTypeName () << " : " << getParents () .size () << std::endl;
 
-//		for (const auto p1 : getParents ())
-//		{
-//			for  (const auto p2 : p1 -> getParents ())
-//				__LOG__ << p2 -> getTypeName () << std::endl;
-//		}
-		
+		if (getTypeName () == "Undefined")
+		{
+			for (const auto p1 : getParents ())
+			{
+				for  (const auto p2 : p1 -> getParents ())
+					__LOG__ << this << " : " << "\t" << p2 -> getTypeName () << std::endl;
+			}
+		}
+	
 		///////////////////////////////
 			
 		if (root == parent)
@@ -104,7 +109,7 @@ jsChildType::removeParent (jsChildType* const parent)
 			return;
 		}
 
-		ChildObjectSet circle;
+		ChildTypeSet circle;
 
 		if (hasRoots (circle))
 			return;
@@ -135,7 +140,7 @@ jsChildType::removeWeakParent (jsChildType* const parent)
 }
 
 bool
-jsChildType::hasRoots (ChildObjectSet & seen)
+jsChildType::hasRoots (ChildTypeSet & seen)
 {
 	if (parents .empty ())
 		return true;

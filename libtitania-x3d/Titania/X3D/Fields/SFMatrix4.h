@@ -62,6 +62,14 @@ namespace X3D {
 extern template class X3DField <Matrix4d>;
 extern template class X3DField <Matrix4f>;
 
+/**
+ *  Template to represent a 4 x 4 matrix field. This is the base class for SFMatrix4d and SFMatrix4f fields.
+ *
+ *  Extern instantiations for float and double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  ValueType  Type of the internal value of the field.
+ */
 template <class ValueType>
 class SFMatrix4 :
 	public X3DField <ValueType>
@@ -79,6 +87,8 @@ public:
 	using X3DField <ValueType>::setValue;
 	using X3DField <ValueType>::getValue;
 	using X3DField <ValueType>::operator =;
+
+	///  @name Construction
 
 	SFMatrix4 () :
 		X3DField <ValueType> ()
@@ -110,7 +120,7 @@ public:
 	clone () const
 	throw (Error <NOT_SUPPORTED>) override;
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -122,7 +132,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFMatrix4 &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Member access
 
 	void
 	set1Value (const size_type &, const value_type &);
@@ -141,6 +151,8 @@ public:
 	          value_type &, value_type &, value_type &, value_type &,
 	          value_type &, value_type &, value_type &, value_type &,
 	          value_type &, value_type &, value_type &, value_type &) const;
+
+	///  @name Arithmetic operations
 
 	void
 	setTransform ();

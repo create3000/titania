@@ -149,17 +149,6 @@ public:
 		return false;
 	}
 
-	virtual
-	X3DChildObject*
-	getObject () const
-	throw (Error <DISPOSED>) final override
-	{
-		if (*this)
-			return getValue ();
-
-		throw Error <DISPOSED> ("X3DWeakPtr::getObject: value is already disposed!");
-	}
-
 	///  @name Boolean operator
 
 	operator bool () const
@@ -236,6 +225,17 @@ private:
 
 	void
 	removeObject (ValueType* const);
+
+	virtual
+	X3DChildObject*
+	getObject () const
+	throw (Error <DISPOSED>) final override
+	{
+		if (*this)
+			return getValue ();
+
+		throw Error <DISPOSED> ("X3DWeakPtr::getObject: value is already disposed!");
+	}
 
 	void
 	set_shutdown ();

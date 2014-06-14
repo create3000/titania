@@ -725,7 +725,7 @@ X3DBaseNode::addChild (X3DChildObject & child)
 {
 	child .isTainted (true);
 
-	children .insert (&child);
+	children .emplace (&child);
 
 	X3DChildObject::addChild (child);
 }

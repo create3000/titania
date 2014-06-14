@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript function.
+ *  Class to represent a scripted JavaScript function.
  */
 class Function :
 	public jsBasicFunction,
@@ -76,6 +76,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override

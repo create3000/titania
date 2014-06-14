@@ -240,8 +240,25 @@ public:
 	getTypeName () const final override
 	{ return typeName; }
 
+	virtual
+	bool
+	hasRoots (ChildTypeSet & seen) final override
+	{
+		if (getParents () .empty ())
+			return true;
+
+		for (auto & parent : getParents ())
+		{
+			if (parent -> hasRoots (seen))
+				return true;
+		}
+
+		return false;
+	}
+
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
@@ -274,8 +291,12 @@ public:
 
 private:
 
+	///  @name Friends
+
 	template <class Up>
 	friend class basic_ptr;
+
+	///  @name Operations
 
 	void
 	add (Type* const value)
@@ -416,12 +437,10 @@ operator >= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 	return lhs .get () >= rhs .get ();
 }
 
-//
-
-class jsValue;
-
 ///  @relates basic_ptr
 ///  @name Typedef
+
+class jsValue;
 
 ///  Typedef for jsValue.
 using var = basic_ptr <jsValue>;

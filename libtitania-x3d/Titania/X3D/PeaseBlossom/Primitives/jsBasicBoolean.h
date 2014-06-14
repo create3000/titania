@@ -69,6 +69,7 @@ public:
 
 	///  @name Operations
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const override
@@ -76,6 +77,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
@@ -102,6 +104,7 @@ public:
 
 	///  @name Operations
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const override
@@ -109,6 +112,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const override

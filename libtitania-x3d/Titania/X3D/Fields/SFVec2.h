@@ -60,6 +60,14 @@ namespace X3D {
 extern template class X3DField <Vector2d>;
 extern template class X3DField <Vector2f>;
 
+/**
+ *  Template to represent vector2 fields. This is the base class for SFVec2d and SFVec2f fields.
+ *
+ *  Extern instantiations for float and double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  ValueType  Type of the internal value of the field.
+ */
 template <class ValueType>
 class SFVec2 :
 	public X3DField <ValueType>
@@ -75,6 +83,8 @@ public:
 	using X3DField <ValueType>::getValue;
 	using X3DField <ValueType>::operator =;
 
+	///  @name Construction
+	
 	/*
 	 * These constructors are all trival and therefore made inline.
 	 */
@@ -110,7 +120,7 @@ public:
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override;
 
-	///  6.7.7 Add field interest.
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -122,7 +132,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFVec2 &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  @name Functions
+	///  @name Member access
 
 	void
 	setX (const value_type &);
@@ -147,6 +157,8 @@ public:
 
 	void
 	getValue (value_type &, value_type &) const;
+
+	///  @name Arithmetic operations
 
 	SFVec2 &
 	operator += (const SFVec2 &);

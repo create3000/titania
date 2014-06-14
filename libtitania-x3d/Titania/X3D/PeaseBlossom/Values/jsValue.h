@@ -84,35 +84,42 @@ public:
 
 	///  @name Common operations
 
+	///  Returns true if the input argument is a non-Object type otherwise false.
 	virtual
 	bool
 	isPrimitive () const;
 
+	///  Converts its input argument to a non-Object type.
 	virtual
 	var
 	toPrimitive () const
 	{ return var (const_cast <jsValue*> (this)); }
 
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const
 	{ return toPrimitive () -> toBoolean (); }
 
+	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const
 	{ return toPrimitive () -> toUInt16 (); }
 
+	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const
 	{ return toPrimitive () -> toInt32 (); }
 
+	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const
 	{ return toPrimitive () -> toUInt32 (); }
 
+	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const
@@ -126,6 +133,7 @@ public:
 
 	///  @name Input/Output
 
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
@@ -141,7 +149,7 @@ protected:
 		jsOutputStreamType ()
 	{ }
 
-		
+
 private:
 
 	///  @name Static members
@@ -161,9 +169,6 @@ jsValue::isPrimitive () const
 		case NUMBER:
 		case STRING:
 		case NULL_OBJECT:
-		case BOOLEAN_OBJECT:
-		case NUMBER_OBJECT:
-		case STRING_OBJECT:
 			return true;
 		default:
 			return false;

@@ -1211,7 +1211,7 @@ Parser::variableDeclaration ()
 
 		initialiser (value);
 
-		getExecutionContext () -> getExpressions () .emplace_back (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getExecutionContext () -> addExpression (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -1254,7 +1254,7 @@ Parser::expressionStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> getExpressions () .emplace_back (std::move (value));
+			getExecutionContext () -> addExpression (std::move (value));
 			return true;
 		}
 

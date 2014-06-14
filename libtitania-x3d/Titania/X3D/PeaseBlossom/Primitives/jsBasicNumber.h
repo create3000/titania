@@ -66,6 +66,7 @@ public:
 
 	///  @name Operations
 
+	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const override
