@@ -111,11 +111,7 @@ protected:
 	/// @name Default object services
 
 	void
-	pushDefaultObject (const basic_ptr <jsObject> & object)
-	{
-		defaultObjects .emplace_back (object);
-		defaultObjects .back () .addParent (this);
-	}
+	pushDefaultObject (const basic_ptr <jsObject> & object);
 
 	void
 	popDefaultObject ()
@@ -164,11 +160,11 @@ private:
 
 	/// @name Members
 
-	const basic_ptr <jsExecutionContext>                executionContext;
-	std::map <std::string, basic_ptr <jsFunction>> functions;
-	basic_ptr <jsObject>                           globalObject;
-	std::vector <basic_ptr <jsObject>>             defaultObjects;
-	std::vector <var>                                   expressions;
+	const basic_ptr <jsExecutionContext>            executionContext;
+	std::map <std::string, basic_ptr <jsFunction>>  functions;
+	basic_ptr <jsObject>                            globalObject;
+	std::vector <basic_ptr <jsObject>>              defaultObjects;
+	std::vector <var>                               expressions;
 
 };
 

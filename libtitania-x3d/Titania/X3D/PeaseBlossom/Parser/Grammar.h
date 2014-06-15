@@ -61,7 +61,8 @@ class Grammar
 public:
 
 	///  @name General
-	static const io::sequence WhiteSpaces;
+	static const io::sequence            WhiteSpaces;
+	static const io::single_line_comment SingleLineComment;
 
 	// Terminal Symbols
 	static const io::character Period;
@@ -140,7 +141,8 @@ public:
 };
 
 // General
-const io::sequence Grammar::WhiteSpaces ("\r\n \t");
+const io::sequence            Grammar::WhiteSpaces ("\r\n \t");
+const io::single_line_comment Grammar::SingleLineComment ("//");
 
 // Terminal Symbols
 const io::character Grammar::Period ('.');

@@ -108,6 +108,9 @@ private:
 	comments ();
 
 	bool
+	comment ();
+
+	bool
 	identifier (std::string &);
 
 	bool
@@ -265,6 +268,7 @@ private:
 	std::stack <jsExecutionContext*> executionContexts;
 	std::istream &                   istream;
 	std::string                      whiteSpaces;
+	std::string                      commentCharacters;
 
 };
 

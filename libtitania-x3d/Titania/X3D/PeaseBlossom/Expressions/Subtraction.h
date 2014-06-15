@@ -99,14 +99,14 @@ protected:
 
 	friend
 	var
-	subtraction (const var &, const var &);
+	subtraction (var &&, var &&);
 
 	///  @name Construction
 
-	Subtraction (const var & lhs, const var & rhs) :
+	Subtraction (var && lhs, var && rhs) :
 		jsNumberBase (),
-		         lhs (lhs),
-		         rhs (rhs)
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }
 
 
@@ -124,9 +124,9 @@ private:
 
 inline
 var
-subtraction (const var & lhs, const var & rhs)
+subtraction (var && lhs, var && rhs)
 {
-	const var expression (new Subtraction (lhs, rhs));
+	const var expression (new Subtraction (std::move (lhs), std::move (rhs)));
 
 	if (expression -> isPrimitive ())
 		return expression -> toPrimitive ();

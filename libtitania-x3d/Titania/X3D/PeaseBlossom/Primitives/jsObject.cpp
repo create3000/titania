@@ -57,8 +57,8 @@ const std::string jsObject::typeName = "Object";
 
 void
 jsObject::defineProperty (const std::string & name,
-                               const var & value,
-                               const PropertyFlagsType flags)
+                          const var & value,
+                          const PropertyFlagsType flags)
 {
 	try
 	{

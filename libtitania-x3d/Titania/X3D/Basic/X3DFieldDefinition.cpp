@@ -79,14 +79,14 @@ X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
 }
 
 bool
-X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
+X3DFieldDefinition::hasRootedObjects (ChildObjectSet & seen)
 {
 	if (getParents () .empty ())
 		return true;
 
 	for (auto & parent : getParents ())
 	{
-		if (parent -> hasRoots (seen))
+		if (parent -> hasRootedObjects (seen))
 			return true;
 	}
 

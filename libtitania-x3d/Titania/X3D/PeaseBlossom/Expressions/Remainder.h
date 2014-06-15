@@ -101,14 +101,14 @@ protected:
 
 	friend
 	var
-	remainder (const var &, const var &);
+	remainder (var &&, var &&);
 
 	///  @name Construction
 
-	Remainder (const var & lhs, const var & rhs) :
+	Remainder (var && lhs, var && rhs) :
 		jsNumberBase (),
-		         lhs (lhs),
-		         rhs (rhs)
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }
 
 
@@ -126,9 +126,9 @@ private:
 
 inline
 var
-remainder (const var & lhs, const var & rhs)
+remainder (var && lhs, var && rhs)
 {
-	const var expression (new Remainder (lhs, rhs));
+	const var expression (new Remainder (std::move (lhs), std::move (rhs)));
 
 	if (expression -> isPrimitive ())
 		return expression -> toPrimitive ();

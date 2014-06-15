@@ -99,14 +99,14 @@ protected:
 
 	friend
 	var
-	division (const var &, const var &);
+	division (var &&, var &&);
 
 	///  @name Construction
 
-	Division (const var & lhs, const var & rhs) :
+	Division (var && lhs, var && rhs) :
 		jsNumberBase (),
-		         lhs (lhs),
-		         rhs (rhs)
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }
 
 
@@ -124,9 +124,9 @@ private:
 
 inline
 var
-division (const var & lhs, const var & rhs)
+division (var && lhs, var && rhs)
 {
-	const var expression (new Division (lhs, rhs));
+	const var expression (new Division (std::move (lhs), std::move (rhs)));
 
 	if (expression -> isPrimitive ())
 		return expression -> toPrimitive ();

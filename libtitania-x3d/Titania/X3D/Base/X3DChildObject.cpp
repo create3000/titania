@@ -94,6 +94,9 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
+		if (root == parent)
+			root = nullptr;
+
 		-- referenceCount;
 
 		if (referenceCount == 0)
@@ -109,13 +112,8 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 
 		ChildObjectSet circle;
 
-		if (hasRoots (circle))
-		{
-			if (root == parent)
-				root = nullptr;
-
+		if (hasRootedObjects (circle))
 			return;
-		}
 
 		for (auto & child : circle)
 		{
@@ -143,7 +141,7 @@ X3DChildObject::removeWeakParent (X3DChildObject* const parent)
 }
 
 bool
-X3DChildObject::hasRoots (ChildObjectSet & seen)
+X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
 {
 	if (parents .empty ())
 		return true;
@@ -154,7 +152,7 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 
 		if (root)
 		{
-			if (root -> hasRoots (seen))
+			if (root -> hasRootedObjects (seen))
 				return true;
 		}
 
@@ -162,7 +160,7 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 
 		for (auto & parent : parents)
 		{
-			if (parent -> hasRoots (seen))
+			if (parent -> hasRootedObjects (seen))
 			{
 				root = parent;
 				return true;

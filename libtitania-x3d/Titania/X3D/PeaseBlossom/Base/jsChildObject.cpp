@@ -94,23 +94,9 @@ void
 jsChildObject::removeParent (jsChildObject* const parent)
 {
 	if (parents .erase (parent))
-	{
-//		///////////////////////////////
-//	
-//		__LOG__ << this << std::endl;
-//		__LOG__ << this << " : " << getTypeName () << " : " << getParents () .size () << std::endl;
-//
-//		if (getTypeName () == "Undefined" or getTypeName () == "Boolean" or getTypeName () == "Null")
-//		{
-//			for (const auto p1 : getParents ())
-//			{
-//				for  (const auto p2 : p1 -> getParents ())
-//					__LOG__ << this << " : " << "\t" << p2 -> getTypeName () << std::endl;
-//			}
-//		}
-//	
-//		///////////////////////////////
-			
+	{			
+		if (root == parent)
+			root = nullptr;
 
 		-- referenceCount;
 
@@ -125,15 +111,10 @@ jsChildObject::removeParent (jsChildObject* const parent)
 			return;
 		}
 
-		ChildTypeSet circle;
+		ChildObjectSet circle;
 
 		if (hasRootedObjects (circle))
-		{
-			if (root == parent)
-				root = nullptr;
-
 			return;
-		}
 
 		for (auto & child : circle)
 		{
@@ -163,13 +144,13 @@ jsChildObject::removeWeakParent (jsChildObject* const weakParent)
 bool
 jsChildObject::hasRootedObjects ()
 {
-	ChildTypeSet seen;
+	ChildObjectSet seen;
 
 	return hasRootedObjects (seen); 
 }
 
 bool
-jsChildObject::hasRootedObjects (ChildTypeSet & seen)
+jsChildObject::hasRootedObjects (ChildObjectSet & seen)
 {
 	if (parents .empty ())
 		return true;

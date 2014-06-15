@@ -51,8 +51,9 @@
 #include "Context.h"
 
 #include "../../Browser/X3DBrowser.h"
-
 #include "../../PeaseBlossom/pb.h"
+
+#include <cassert>
 
 namespace titania {
 namespace X3D {
@@ -113,6 +114,11 @@ Context::initialize ()
 
 	if (istream)
 		getBrowser () -> println (">>", istream .rdbuf (), "<<");
+
+	assert (pb::undefined () -> getParents () .empty ());
+	assert (pb::False ()     -> getParents () .empty ());
+	assert (pb::True ()      -> getParents () .empty ());
+	assert (pb::null ()      -> getParents () .empty ());
 
 	pb::Program::deleteObjectsAsync ();
 }

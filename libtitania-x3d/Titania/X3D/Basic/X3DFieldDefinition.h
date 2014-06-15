@@ -122,7 +122,7 @@ public:
 
 	virtual
 	bool
-	hasRoots (ChildObjectSet &) override;
+	hasRootedObjects (ChildObjectSet &) override;
 
 	///  @name Member access
 

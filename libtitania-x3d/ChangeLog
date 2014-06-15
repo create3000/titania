@@ -1,5 +1,34 @@
 2014-06-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* X3DPtr.h:
+	* pb.h:
+	* Parser.cpp:
+	* X3DWeakPtr.h:
+	* X3DChildObject.h:
+	* X3DChildObject.cpp:
+	* var.h:
+	* X3DFieldDefinition.h:
+	* jsBase.h:
+	* X3DFieldDefinition.cpp:
+	* Parser.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* jsChildObject.h:
+	* Context.cpp:
+	* Addition.h:
+	* jsChildObject.cpp:
+	* Division.h:
+	* jsObject.cpp:
+	* Remainder.h:
+	* Subtraction.h:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
+2014-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* pb.h:

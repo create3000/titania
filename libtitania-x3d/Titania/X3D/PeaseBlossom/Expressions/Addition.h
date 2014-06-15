@@ -92,21 +92,20 @@ public:
 		return var (new Number (lhs -> toNumber () + rhs -> toNumber ()));
 	}
 
-
 protected:
 
 	///  @name Friends
 
 	friend
 	var
-	addition (const var &, const var &);
+	addition (var &&, var &&);
 
 	///  @name Construction
 
-	Addition (const var & lhs, const var & rhs) :
+	Addition (var && lhs, var && rhs) :
 		jsValue (),
-		    lhs (lhs),
-		    rhs (rhs)
+		    lhs (std::move (lhs)),
+		    rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }
 
 
@@ -124,9 +123,9 @@ private:
 
 inline
 var
-addition (const var & lhs, const var & rhs)
+addition (var && lhs, var && rhs)
 {
-	const var expression (new Addition (lhs, rhs));
+	const var expression (new Addition (std::move (lhs), std::move (rhs)));
 
 	if (expression -> isPrimitive ())
 		return expression -> toPrimitive ();

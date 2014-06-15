@@ -70,9 +70,9 @@ public:
 	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && value) :
 		         jsValue (),
 		executionContext (executionContext),
-		       identifier (std::move (identifier)),
+		      identifier (std::move (identifier)),
 		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
-	{ addChildren (this -> executionContext, this -> value);}
+	{ addChildren (this -> executionContext, this -> value); }
 
 	///  @name Member access
 
@@ -100,7 +100,6 @@ public:
 		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE | CONFIGURABLE);
 		return result;
 	}
-
 
 private:
 

@@ -143,7 +143,7 @@ public:
 	///  @name X3DChildObject
 	virtual
 	bool
-	hasRoots (ChildObjectSet &) final override
+	hasRootedObjects (ChildObjectSet &) final override
 	{
 		// Weak pointers are no roots.
 		return false;

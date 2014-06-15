@@ -88,8 +88,9 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	              istream (istream),
 	                scene (scene),
 	executionContextStack (),
+	          whiteSpaces (),
 	      currentComments (),
-	          whiteSpaces ()
+	    commentCharacters ()
 {
 	addType (X3DConstants::Parser);
 }
@@ -329,10 +330,8 @@ Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
 
-	Grammar::WhiteSpaces (istream, whiteSpaces);
-
 	while (comment ())
-		Grammar::WhiteSpaces (istream, whiteSpaces);
+		;
 }
 
 bool
@@ -340,11 +339,11 @@ Parser::comment ()
 {
 	//__LOG__ << this << " " << std::endl;
 
-	std::string _comment;
+	Grammar::WhiteSpaces (istream, whiteSpaces);
 
-	if (Grammar::Comment (istream, _comment))
+	if (Grammar::Comment (istream, commentCharacters))
 	{
-		currentComments .push_back (_comment);
+		currentComments .emplace_back (std::move (commentCharacters));
 		return true;
 	}
 
@@ -382,6 +381,7 @@ Parser::profileStatement ()
 		{
 			scene -> addComments (getComments ());
 			scene -> setProfile (getBrowser () -> getProfile (_profileNameId));
+			return;
 		}
 		
 		throw Error <INVALID_X3D> ("Expected a profile name.");
@@ -1464,11 +1464,11 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 														if (_accessType -> second not_eq _field -> getAccessType ())
 															throw Error <INVALID_NAME> ("");
 													}
-													
-													throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+													else
+														throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
 												}
-												
-												throw Error <INVALID_NAME> ("");
+												else
+													throw Error <INVALID_NAME> ("");
 											}
 										}
 										catch (const Error <INVALID_NAME> &)

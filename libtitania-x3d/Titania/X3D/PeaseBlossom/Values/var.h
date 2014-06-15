@@ -242,7 +242,7 @@ public:
 
 	virtual
 	bool
-	hasRootedObjects (ChildTypeSet & seen) final override
+	hasRootedObjects (ChildObjectSet & seen) final override
 	{
 		if (getParents () .empty ())
 			return true;

@@ -99,14 +99,14 @@ protected:
 
 	friend
 	var
-	multiplication (const var &, const var &);
+	multiplication (var &&, var &&);
 
 	///  @name Construction
 
-	Multiplication (const var & lhs, const var & rhs) :
+	Multiplication (var && lhs, var && rhs) :
 		jsNumberBase (),
-		         lhs (lhs),
-		         rhs (rhs)
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }
 
 
@@ -124,9 +124,9 @@ private:
 
 inline
 var
-multiplication (const var & lhs, const var & rhs)
+multiplication (var && lhs, var && rhs)
 {
-	const var expression (new Multiplication (lhs, rhs));
+	const var expression (new Multiplication (std::move (lhs), std::move (rhs)));
 
 	if (expression -> isPrimitive ())
 		return expression -> toPrimitive ();

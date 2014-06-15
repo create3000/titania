@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_OBJECT_H__
 
 #include "../Base/jsBase.h"
 #include "../Base/jsGarbageCollector.h"
@@ -58,15 +58,14 @@
 #include <cstddef>
 #include <set>
 #include <vector>
-
-#include <Titania/LOG.h>
+#include <cassert>
 
 namespace titania {
 namespace pb {
 
 class jsChildObject;
 
-using ChildTypeSet = std::set <jsChildObject*>;
+using ChildObjectSet = std::set <jsChildObject*>;
 
 class jsChildObject :
 	public jsGarbageCollector,
@@ -97,7 +96,7 @@ public:
 	removeWeakParent (jsChildObject* const weakParent);
 
 	///  Get all parents of this object.
-	const ChildTypeSet &
+	const ChildObjectSet &
 	getParents () const
 	{ return parents; }
 
@@ -109,7 +108,7 @@ public:
 	///  Returns true if this object has rooted objects and collects in @a seen all objects seen.
 	virtual
 	bool
-	hasRootedObjects (ChildTypeSet & circle);
+	hasRootedObjects (ChildObjectSet & circle);
 
 	size_t
 	getReferenceCount () const
@@ -154,10 +153,10 @@ private:
 
 	using ChildObjectArray = std::vector <jsChildObject*>;
 
-	size_t       referenceCount;
-	ChildTypeSet parents;
+	size_t         referenceCount;
+	ChildObjectSet parents;
 	jsChildObject* root;
-	ChildTypeSet children;
+	ChildObjectSet children;
 
 };
 

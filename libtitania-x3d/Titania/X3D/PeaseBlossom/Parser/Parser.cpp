@@ -64,7 +64,8 @@ Parser::Parser (jsExecutionContext* const executionContext, std::istream & istre
 	      rootContext (executionContext),
 	executionContexts ({ executionContext }),
 	          istream (istream),
-	      whiteSpaces ()
+	      whiteSpaces (),
+	commentCharacters ()
 { }
 
 void
@@ -107,7 +108,26 @@ Parser::getState ()
 void
 Parser::comments ()
 {
+	//__LOG__ << this << " " << std::endl;
+
+	while (comment ())
+		;
+}
+
+bool
+Parser::comment ()
+{
+	//__LOG__ << this << " " << std::endl;
+
 	Grammar::WhiteSpaces (istream, whiteSpaces);
+
+	//if (Grammar::MultiLineComment (istream, commentCharacters))
+	//	return true;
+
+	if (Grammar::SingleLineComment (istream, commentCharacters))
+		return true;
+
+	return false;
 }
 
 bool
@@ -529,7 +549,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = multiplication (lhs, rhs);
+				lhs = multiplication (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -542,7 +562,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = division (lhs, rhs);
+				lhs = division (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -555,7 +575,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = remainder (lhs, rhs);
+				lhs = remainder (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -583,7 +603,7 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs = addition (lhs, rhs);
+				lhs = addition (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -596,7 +616,7 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs = subtraction (lhs, rhs);
+				lhs = subtraction (std::move (lhs), std::move (rhs));
 				return true;
 			}
 

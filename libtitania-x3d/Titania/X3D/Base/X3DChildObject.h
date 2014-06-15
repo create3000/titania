@@ -96,7 +96,7 @@ public:
 	///  Returns true if this object has root objects and collects in @a seen all objects seen.
 	virtual
 	bool
-	hasRoots (ChildObjectSet &);
+	hasRootedObjects (ChildObjectSet &);
 
 	size_t
 	getReferenceCount () const
@@ -142,6 +142,8 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DChildObject ();
 
 	///  @name Children handling
@@ -180,7 +182,9 @@ protected:
 
 private:
 
-	typedef std::vector <X3DChildObject*> ChildObjectArray;
+	using ChildObjectArray = std::vector <X3DChildObject*>;
+
+	///  @name Members
 
 	size_t          referenceCount;
 	ChildObjectSet  parents;

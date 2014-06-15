@@ -67,6 +67,12 @@ jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionConte
 	             this -> globalObject,
 	             defaultObjects .back ());
 }
+void
+jsExecutionContext::pushDefaultObject (const basic_ptr <jsObject> & object)
+{
+	defaultObjects .emplace_back (object);
+	defaultObjects .back () .addParent (this);
+}
 
 void
 jsExecutionContext::replaceFunction (const basic_ptr <jsFunction> & function)

@@ -544,8 +544,9 @@ private:
 	std::istream &            istream;
 	X3DScene*                 scene;
 	ExecutionContextStack     executionContextStack;
-	std::vector <std::string> currentComments;
 	std::string               whiteSpaces;
+	std::vector <std::string> currentComments;
+	std::string               commentCharacters;
 
 };
 
