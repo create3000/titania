@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 
-#include "../Base/jsOutputStreamType.h"
+#include "../Base/jsOutputStreamObject.h"
 
 #include <exception>
 #include <map>
@@ -112,7 +112,7 @@ noexcept (true)
  */
 class jsException :
 	public std::exception,
-	public jsOutputStreamType
+	public jsOutputStreamObject
 {
 public:
 
@@ -156,7 +156,7 @@ protected:
 	explicit
 	jsException (const std::string & message) :
 		      std::exception (),
-		jsOutputStreamType (),
+		jsOutputStreamObject (),
 		             message (message)
 	{ }
 

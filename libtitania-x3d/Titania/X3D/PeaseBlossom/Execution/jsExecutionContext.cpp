@@ -52,26 +52,24 @@
 
 #include "../Parser/Parser.h"
 
-#include <cassert>
-
 namespace titania {
 namespace pb {
 
-jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsBasicObject> & globalObject) :
-         jsChildType (),
-	jsInputStreamType (),
+jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject) :
+         jsChildObject (),
+	jsInputStreamObject (),
 	 executionContext (executionContext),
 	     globalObject (globalObject),
 	   defaultObjects ({ globalObject }),
 	      expressions ()
 {
-	executionContext -> addParent (this);
-
-	addChildren (this -> globalObject, defaultObjects .back ());
+	addChildren (this -> executionContext,
+	             this -> globalObject,
+	             defaultObjects .back ());
 }
 
 void
-jsExecutionContext::replaceFunction (const basic_ptr <jsBasicFunction> & function)
+jsExecutionContext::replaceFunction (const basic_ptr <jsFunction> & function)
 {
 	try
 	{
@@ -111,19 +109,7 @@ jsExecutionContext::run ()
 	var result = undefined ();
 
 	for (const auto & expression : getExpressions ())
-	{
-		if (expression)
-		{
-			result = expression -> toPrimitive ();
-
-			if  (result)
-				__LOG__ << result << std::endl;
-			else
-				__LOG__ << "XXX no result" << std::endl;
-		}
-		else
-			__LOG__ << "XXX no expression" << std::endl;
-	}
+		__LOG__ << (result = expression -> toPrimitive ()) << std::endl ;
 
 	return result;
 }
@@ -138,14 +124,12 @@ throw (SyntaxError)
 void
 jsExecutionContext::dispose ()
 {
-	executionContext -> removeParent (this);
-
 	functions      .clear ();
 	globalObject   .dispose ();
 	defaultObjects .clear ();
 	expressions    .clear ();
 
-	jsChildType::dispose ();
+	jsChildObject::dispose ();
 }
 
 } // pb

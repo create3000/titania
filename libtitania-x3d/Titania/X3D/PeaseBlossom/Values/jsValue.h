@@ -53,8 +53,8 @@
 
 #include "../Bits/Exception.h"
 #include "../Bits/jsConstants.h"
-#include "../Base/jsChildType.h"
-#include "../Base/jsOutputStreamType.h"
+#include "../Base/jsChildObject.h"
+#include "../Base/jsOutputStreamObject.h"
 #include "../Values/var.h"
 
 namespace titania {
@@ -64,8 +64,8 @@ namespace pb {
  *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
  */
 class jsValue :
-	virtual public jsChildType,
-	virtual public jsOutputStreamType
+	virtual public jsChildObject,
+	virtual public jsOutputStreamObject
 {
 public:
 	
@@ -145,8 +145,8 @@ protected:
 	///  @name Construction
 
 	jsValue () :
-		       jsChildType (),
-		jsOutputStreamType ()
+		       jsChildObject (),
+		jsOutputStreamObject ()
 	{ }
 
 

@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
 
-#include "../Primitives/jsBasicObject.h"
-#include "../Primitives/jsBasicString.h"
+#include "../Primitives/jsObject.h"
+#include "../Primitives/jsString.h"
 
 namespace titania {
 namespace pb {
@@ -61,39 +61,39 @@ namespace pb {
  *  Class to represent a »string« object.
  */
 class StringObject :
-	public jsBasicObject,
-	public jsBasicString
+	public jsObject,
+	public jsString
 {
 public:
 
 	///  @name Construction
 
 	StringObject () :
-		jsBasicString ()
+		jsString ()
 	{ }
 
 	explicit
 	StringObject (const Glib::ustring & value) :
-		jsBasicObject (),
-		jsBasicString (value)
+		jsObject (),
+		jsString (value)
 	{ }
 
 	explicit
 	StringObject (Glib::ustring && value) :
-		jsBasicObject (),
-		jsBasicString (std::move (value))
+		jsObject (),
+		jsString (std::move (value))
 	{ }
 
 	explicit
 	StringObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicString (value)
+		jsObject (),
+		jsString (value)
 	{ }
 
 	explicit
 	StringObject (const std::string::value_type* value) :
-		jsBasicObject (),
-		jsBasicString (value)
+		jsObject (),
+		jsString (value)
 	{ }
 
 	///  @name Common members
@@ -102,7 +102,7 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const final override
-	{ return jsBasicString::getTypeName (); }
+	{ return jsString::getTypeName (); }
 
 	///  Returns the type of the value. For string objects this is »STRING_OBJECT«.
 	virtual
@@ -116,37 +116,37 @@ public:
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsBasicString::toBoolean (); }
+	{ return jsString::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsBasicString::toUInt16 (); }
+	{ return jsString::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsBasicString::toInt32 (); }
+	{ return jsString::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsBasicString::toUInt32 (); }
+	{ return jsString::toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsBasicString::toNumber (); }
+	{ return jsString::toNumber (); }
 
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return jsBasicObject::toObject (); }
+	{ return jsObject::toObject (); }
 
 	///  @name Input/Output
 
@@ -154,7 +154,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsBasicString::toStream (ostream); }
+	{ jsString::toStream (ostream); }
 
 };
 

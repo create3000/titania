@@ -48,101 +48,116 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
 
-#include "../Values/jsStringType.h"
+#include "../Base/jsBase.h"
+#include "../Base/jsGarbageCollector.h"
 
-#include <glibmm/ustring.h>
+#include <Titania/Utility/Pass.h>
+#include <cstddef>
+#include <set>
+#include <vector>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a basic string value.
- */
-class jsBasicString :
-	public jsStringType
+class jsChildObject;
+
+using ChildTypeSet = std::set <jsChildObject*>;
+
+class jsChildObject :
+	public jsGarbageCollector,
+	virtual public jsBase
 {
 public:
 
-	///  @name Member access
+	///  @name Parent handling
 
-	Glib::ustring::size_type
-	getLength () const
-	{ return string .length (); }
+	///  Add a parent to this object.
+	void
+	addParent (jsChildObject* const parent);
 
-	///  @name Operations
+	///  Fast replaces @a parentToRemove with @a parentToAdd.
+	void
+	replaceParent (jsChildObject* const parentToRemove, jsChildObject* const parentToAdd);
 
-	///  Converts its argument to a value of type Boolean.
+	///  Remove a parent from this object.
+	void
+	removeParent (jsChildObject* const parent);
+
+	///  Add a parent to this object.
+	void
+	addWeakParent (jsChildObject* const weakParent);
+
+	///  Remove a parent from this object.
+	void
+	removeWeakParent (jsChildObject* const weakParent);
+
+	///  Get all parents of this object.
+	const ChildTypeSet &
+	getParents () const
+	{ return parents; }
+
+	///  Returns true if this object has rooted objects.
 	virtual
 	bool
-	toBoolean () const override
-	{ return not string .empty (); }
+	hasRootedObjects ();
 
-	///  Converts its argument to a value of type Number.
+	///  Returns true if this object has rooted objects and collects in @a seen all objects seen.
 	virtual
-	double
-	toNumber () const override
-	{
-		double number = 0;
+	bool
+	hasRootedObjects (ChildTypeSet & circle);
 
-		std::istringstream isstream (string);
+	size_t
+	getReferenceCount () const
+	{ return referenceCount; }
 
-		isstream >> number;
+	///  @name Destruction
 
-		return number;
-	}
-
-	///  Converts its argument to a value of type String.
 	virtual
-	Glib::ustring
-	toString () const override
-	{ return string; }
+	void
+	dispose ();
+
+	virtual
+	~jsChildObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	jsBasicString () :
-		jsStringType (),
-		      string ()
-	{ }
+	jsChildObject ();
 
-	explicit
-	jsBasicString (const Glib::ustring & value) :
-		jsStringType (),
-		      string (value)
-	{ }
+	///  @name Children handling
 
-	explicit
-	jsBasicString (Glib::ustring && value) :
-		jsStringType (),
-		      string ()
-	{
-		const_cast <Glib::ustring &> (string) .swap (value);
-		value .clear ();
-	}
+	template <typename ... Args>
+	void
+	addChildren (Args & ... args)
+	{ basic::pass ((addChild (args), 1) ...); }
 
-	explicit
-	jsBasicString (const std::string::value_type* value) :
-		jsStringType (),
-		      string (value)
-	{ }
+	void
+	addChild (const jsChildObject & child);
 
-	explicit
-	jsBasicString (const jsValue & value) :
-		jsStringType (),
-		      string (value .toString ())
-	{ }
+	template <typename ... Args>
+	void
+	removeChildren (Args & ... args)
+	{ basic::pass ((removeChild (args), 1) ...); }
+
+	void
+	removeChild (const jsChildObject & child);
 
 
 private:
 
-	///  @name Members
+	using ChildObjectArray = std::vector <jsChildObject*>;
 
-	const Glib::ustring string;
+	size_t       referenceCount;
+	ChildTypeSet parents;
+	jsChildObject* root;
+	ChildTypeSet children;
 
 };
 

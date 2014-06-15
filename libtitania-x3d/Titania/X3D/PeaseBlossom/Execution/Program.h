@@ -69,16 +69,9 @@ public:
 
 	///  @name Construction
 
-	Program (const basic_ptr <jsBasicObject> & globalObject) :
+	Program (const basic_ptr <jsObject> & globalObject) :
 		jsExecutionContext (this, globalObject)
 	{ }
-
-	Program (const basic_ptr <jsBasicObject> & globalObject, std::istream & istream)
-	throw (SyntaxError) :
-		Program (globalObject)
-	{
-		fromStream (istream);
-	}
 
 	///  @name Common members
 	
@@ -107,6 +100,16 @@ public:
 	void
 	trimFreeMemory ()
 	{ jsGarbageCollector::trimFreeMemory (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{
+		__LOG__ << std::endl;
+		jsExecutionContext::dispose ();
+	}
 
 		
 private:

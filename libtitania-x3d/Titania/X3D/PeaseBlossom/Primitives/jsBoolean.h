@@ -48,65 +48,84 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
 
-#include "../Primitives/jsBasicObject.h"
-#include "../Primitives/String.h"
-
-#include <glibmm/ustring.h>
+#include "../Values/jsBooleanBase.h"
 
 namespace titania {
 namespace pb {
 
-class jsBasicFunction :
-	public jsBasicObject
+#undef False
+#undef True
+
+/**
+ *  Class to represent a basic »false« value.
+ */
+class jsFalseType :
+	public jsBooleanBase
 {
 public:
 
-	///  @name Common members
-	
-	///  Returns the type name of this object.
+	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
 	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	bool
+	toBoolean () const override
+	{ return false; }
 
-	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
 	virtual
-	ValueType
-	getType () const override
-	{ return FUNCTION_OBJECT; }
-
-	///  @name Member access
-
-	///  Returns the name of the function.
-	const std::string &
-	getName () const
-	{ return name; }
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "false"; }
 
 
 protected:
 
 	///  @name Construction
 
-	jsBasicFunction (const std::string & name) :
-		jsBasicObject (),
-		         name (name)
-	{
-		defineProperty ("name", make_ptr <String> (name), NATIVE);
-	}
+	jsFalseType () :
+		jsBooleanBase ()
+	{ }
+
+};
+
+/**
+ *  Class to represent a basic »true« value.
+ */
+class jsTrueType :
+	public jsBooleanBase
+{
+public:
+
+	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return true; }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "true"; }
 
 
-private:
+protected:
 
-	///  @name Static members
-	
-	static const std::string typeName;
+	///  @name Construction
 
-	///  @name Members
-
-	const std::string name;
+	jsTrueType () :
+		jsBooleanBase ()
+	{ }
 
 };
 

@@ -51,12 +51,12 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
 
-#include "../Base/jsChildType.h"
-#include "../Base/jsInputStreamType.h"
-#include "../Base/jsOutputStreamType.h"
+#include "../Base/jsChildObject.h"
+#include "../Base/jsInputStreamObject.h"
+#include "../Base/jsOutputStreamObject.h"
 #include "../Bits/Exception.h"
 #include "../Primitives/Object.h"
-#include "../Primitives/jsBasicFunction.h"
+#include "../Primitives/jsFunction.h"
 #include "../Values/var.h"
 
 #include <Titania/Utility/Adapter.h>
@@ -67,22 +67,22 @@ namespace titania {
 namespace pb {
 
 class jsExecutionContext :
-	virtual public jsChildType,
-	virtual public jsInputStreamType,
-	virtual public jsOutputStreamType
+	virtual public jsChildObject,
+	virtual public jsInputStreamObject,
+	virtual public jsOutputStreamObject
 {
 public:
 
 	/// @name Global object access
 
-	const basic_ptr <jsBasicObject> &
+	const basic_ptr <jsObject> &
 	getGlobalObject () const
 	{ return globalObject; }
 
 	/// @name Function services
 
 	void
-	replaceFunction (const basic_ptr <jsBasicFunction> & function);
+	replaceFunction (const basic_ptr <jsFunction> & function);
 
 	/// @name Input/Output
 
@@ -106,12 +106,12 @@ protected:
 
 	///  @name Construction
 
-	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsBasicObject> & globalObject);
+	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
 
 	/// @name Default object services
 
 	void
-	pushDefaultObject (const basic_ptr <jsBasicObject> & object)
+	pushDefaultObject (const basic_ptr <jsObject> & object)
 	{
 		defaultObjects .emplace_back (object);
 		defaultObjects .back () .addParent (this);
@@ -121,7 +121,7 @@ protected:
 	popDefaultObject ()
 	{ return defaultObjects .pop_back (); }
 
-	const basic_ptr <jsBasicObject> &
+	const basic_ptr <jsObject> &
 	getDefaultObject ()
 	{ return defaultObjects .back (); }
 
@@ -164,10 +164,10 @@ private:
 
 	/// @name Members
 
-	jsExecutionContext* const                           executionContext;
-	std::map <std::string, basic_ptr <jsBasicFunction>> functions;
-	basic_ptr <jsBasicObject>                           globalObject;
-	std::vector <basic_ptr <jsBasicObject>>             defaultObjects;
+	const basic_ptr <jsExecutionContext>                executionContext;
+	std::map <std::string, basic_ptr <jsFunction>> functions;
+	basic_ptr <jsObject>                           globalObject;
+	std::vector <basic_ptr <jsObject>>             defaultObjects;
 	std::vector <var>                                   expressions;
 
 };

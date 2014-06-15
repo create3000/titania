@@ -48,17 +48,17 @@
  *
  ******************************************************************************/
 
-#include "jsStringType.h"
+#include "jsStringBase.h"
 
 #include "../Primitives/StringObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsStringType::typeName = "String";
+const std::string jsStringBase::typeName = "String";
 
 var
-jsStringType::toObject () const
+jsStringBase::toObject () const
 throw (TypeError)
 { return var (new StringObject (toString ())); }
 

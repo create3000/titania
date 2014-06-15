@@ -62,6 +62,8 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 {
 	if (root)
 	{
+		// Best guess for the shortest way to a rooted object.
+	
 		if (parent -> getParents () .size () < root -> getParents () .size ())
 			root = parent;
 	}
@@ -92,9 +94,6 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
-		if (root == parent)
-			root = nullptr;
-
 		-- referenceCount;
 
 		if (referenceCount == 0)
@@ -111,7 +110,12 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		ChildObjectSet circle;
 
 		if (hasRoots (circle))
+		{
+			if (root == parent)
+				root = nullptr;
+
 			return;
+		}
 
 		for (auto & child : circle)
 		{

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 
-#include "../Values/jsNumberType.h"
+#include "../Values/jsNumberBase.h"
 #include "../Values/jsValue.h"
 #include "../Values/var.h"
 
@@ -110,7 +110,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return jsNumberType::NaN (); }
+	{ return jsNumberBase::NaN (); }
 
 	virtual
 	var

@@ -48,73 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
 
-#include <locale>
-#include <sstream>
-
-#include <glibmm/ustring.h>
+#include <iostream>
 
 namespace titania {
 namespace pb {
 
-class jsOutputStreamType
+class jsInputStreamObject
 {
 public:
 
-	///  @name Operations
-
-	///  Converts its argument to a value of type String.
-	virtual
-	Glib::ustring
-	toString () const
-	{
-		return toLocaleString (std::locale::classic ());
-	}
-
-	///  Converts its argument to a value of type String according to @a locale.
-	virtual
-	Glib::ustring
-	toLocaleString (const std::locale & locale) const
-	{
-		std::ostringstream ostringstream;
-
-		ostringstream .imbue (locale);
-
-		toStream (ostringstream);
-
-		return ostringstream .str ();
-	}
-
 	///  @name Input/Output
 
-	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream &) const = 0;
+	fromStream (std::istream &) = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	jsOutputStreamType ()
+	jsInputStreamObject ()
 	{ }
 
 };
 
-///  @relates jsOutputStreamType
+///  @relates jsInputStreamObject
 ///  @name Input/Output operators.
 
-///  Insertion operator for jsOutputStreamType.
+///  Extraction operator for jsInputStreamObject.
 template <class CharT, class Traits>
 inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const jsOutputStreamType & value)
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, jsInputStreamObject & object)
 {
-	value .toStream (ostream);
-	return ostream;
+	object .fromStream (istream);
+	return istream;
 }
 
 } // pb

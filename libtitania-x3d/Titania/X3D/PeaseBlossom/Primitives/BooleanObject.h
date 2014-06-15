@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
 
-#include "../Primitives/jsBasicBoolean.h"
-#include "../Primitives/jsBasicObject.h"
+#include "../Primitives/jsBoolean.h"
+#include "../Primitives/jsObject.h"
 
 namespace titania {
 namespace pb {
@@ -64,16 +64,16 @@ namespace pb {
  *  Class to represent a »false« object.
  */
 class FalseObject :
-	public jsBasicObject,
-	public jsBasicFalseType
+	public jsObject,
+	public jsFalseType
 {
 public:
 
 	///  @name Construction
 
 	FalseObject () :
-		   jsBasicObject (),
-		jsBasicFalseType ()
+		   jsObject (),
+		jsFalseType ()
 	{ }
 
 	///  @name Common members
@@ -82,7 +82,7 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const final override
-	{ return jsBasicFalseType::getTypeName (); }
+	{ return jsFalseType::getTypeName (); }
 
 	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
 	virtual
@@ -96,37 +96,37 @@ public:
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsBasicFalseType::toBoolean (); }
+	{ return jsFalseType::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsBasicFalseType::toUInt16 (); }
+	{ return jsFalseType::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsBasicFalseType::toInt32 (); }
+	{ return jsFalseType::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsBasicFalseType::toUInt32 (); }
+	{ return jsFalseType::toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsBasicFalseType::toNumber (); }
+	{ return jsFalseType::toNumber (); }
 
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return jsBasicObject::toObject () ; }
+	{ return jsObject::toObject () ; }
 
 	///  @name Input/Output
 
@@ -134,7 +134,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsBasicFalseType::toStream (ostream); }
+	{ jsFalseType::toStream (ostream); }
 
 };
 
@@ -142,16 +142,16 @@ public:
  *  Class to represent a »true« object.
  */
 class TrueObject :
-	public jsBasicObject,
-	public jsBasicTrueType
+	public jsObject,
+	public jsTrueType
 {
 public:
 
 	///  @name Construction
 
 	TrueObject () :
-		  jsBasicObject (),
-		jsBasicTrueType ()
+		  jsObject (),
+		jsTrueType ()
 	{ }
 
 	///  @name Common members
@@ -160,7 +160,7 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const final override
-	{ return jsBasicTrueType::getTypeName (); }
+	{ return jsTrueType::getTypeName (); }
 
 	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
 	virtual
@@ -174,37 +174,37 @@ public:
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsBasicTrueType::toBoolean (); }
+	{ return jsTrueType::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsBasicTrueType::toUInt16 (); }
+	{ return jsTrueType::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsBasicTrueType::toInt32 (); }
+	{ return jsTrueType::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsBasicTrueType::toUInt32 (); }
+	{ return jsTrueType::toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsBasicTrueType::toNumber (); }
+	{ return jsTrueType::toNumber (); }
 
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return jsBasicObject::toObject () ; }
+	{ return jsObject::toObject () ; }
 
 	///  @name Input/Output
 
@@ -212,7 +212,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsBasicTrueType::toStream (ostream); }
+	{ jsTrueType::toStream (ostream); }
 
 };
 

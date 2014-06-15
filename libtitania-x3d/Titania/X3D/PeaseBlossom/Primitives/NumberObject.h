@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
 
-#include "../Primitives/jsBasicNumber.h"
-#include "../Primitives/jsBasicObject.h"
+#include "../Primitives/jsNumber.h"
+#include "../Primitives/jsObject.h"
 
 namespace titania {
 namespace pb {
@@ -61,28 +61,28 @@ namespace pb {
  *  Class to represent a number object.
  */
 class NumberObject :
-	public jsBasicObject,
-	public jsBasicNumber
+	public jsObject,
+	public jsNumber
 {
 public:
 
 	///  @name Construction
 
 	NumberObject () :
-		jsBasicObject (),
-		jsBasicNumber ()
+		jsObject (),
+		jsNumber ()
 	{ }
 
 	explicit
 	NumberObject (const double value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
+		jsObject (),
+		jsNumber (value)
 	{ }
 
 	explicit
 	NumberObject (const jsValue & value) :
-		jsBasicObject (),
-		jsBasicNumber (value)
+		jsObject (),
+		jsNumber (value)
 	{ }
 
 	///  @name Common members
@@ -91,7 +91,7 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const final override
-	{ return jsBasicNumber::getTypeName (); }
+	{ return jsNumber::getTypeName (); }
 
 	///  Returns the type of the value. For number objects this is »NUMBER_OBJECT«.
 	virtual
@@ -105,37 +105,37 @@ public:
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsBasicNumber::toBoolean (); }
+	{ return jsNumber::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsBasicNumber::toUInt16 (); }
+	{ return jsNumber::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsBasicNumber::toInt32 (); }
+	{ return jsNumber::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsBasicNumber::toUInt32 (); }
+	{ return jsNumber::toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsBasicNumber::toNumber (); }
+	{ return jsNumber::toNumber (); }
 
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return jsBasicObject::toObject () ; }
+	{ return jsObject::toObject () ; }
 
 	///  @name Input/Output
 
@@ -143,7 +143,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsBasicNumber::toStream (ostream); }
+	{ jsNumber::toStream (ostream); }
 
 };
 

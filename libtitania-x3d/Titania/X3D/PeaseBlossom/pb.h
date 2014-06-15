@@ -89,9 +89,9 @@ getDescription ()
 template <class ... Args>
 inline
 basic_ptr <Program>
-createProgram (Args && ... args)
+createProgram ()
 {
-	return make_ptr <Program> (make_ptr <Object> (), std::forward <Args> (args) ...);
+	return make_ptr <Program> (make_ptr <Object> ());
 }
 
 } // pb

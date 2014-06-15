@@ -60,7 +60,7 @@
 namespace titania {
 namespace pb {
 
-class jsChildType;
+class jsChildObject;
 
 class jsGarbageCollector :
 	virtual public jsBase
@@ -77,7 +77,7 @@ protected:
 
 	static
 	void
-	addDisposedObject (const jsChildType* const);
+	addDisposedObject (const jsChildObject* const);
 
 	template <class InputIt>
 	static
@@ -100,7 +100,7 @@ protected:
 
 private:
 
-	using ObjectArray = std::deque <const jsChildType*>;
+	using ObjectArray = std::deque <const jsChildObject*>;
 
 	///  @name Operations
 

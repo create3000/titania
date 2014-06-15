@@ -26,27 +26,44 @@
 //  *
 //  ************************************************************************/
 
-#include "jsChildType.h"
+#include "jsChildObject.h"
 
 namespace titania {
 namespace pb {
 
-jsChildType::jsChildType () :
+jsChildObject::jsChildObject () :
 	            jsBase (),
 	jsGarbageCollector (),
 	    referenceCount (0),
 	           parents (),
-	              root (nullptr)
+	              root (nullptr),
+	          children ()
 { }
 
-// Child
+void
+jsChildObject::addChild (const jsChildObject & child)
+{
+	assert (&child not_eq this);
+
+	children .emplace (const_cast <jsChildObject*> (&child));
+
+	const_cast <jsChildObject &> (child) .addParent (this);
+}
 
 void
-jsChildType::addParent (jsChildType* const parent)
+jsChildObject::removeChild (const jsChildObject & child)
+{
+	children .erase (const_cast <jsChildObject*> (&child));
+
+	const_cast <jsChildObject &> (child) .removeParent (this);
+}
+
+void
+jsChildObject::addParent (jsChildObject* const parent)
 {
 	if (root)
 	{
-		// Best guess
+		// Best guess for the shortest way to a rooted object.
 
 		if (parent -> getParents () .size () < root -> getParents () .size ())
 			root = parent;
@@ -59,7 +76,7 @@ jsChildType::addParent (jsChildType* const parent)
 }
 
 void
-jsChildType::replaceParent (jsChildType* const parentToRemove, jsChildType* const parentToAdd)
+jsChildObject::replaceParent (jsChildObject* const parentToRemove, jsChildObject* const parentToAdd)
 {
 	if (root == parentToRemove)
 		root = parentToAdd;
@@ -74,27 +91,26 @@ jsChildType::replaceParent (jsChildType* const parentToRemove, jsChildType* cons
 }
 
 void
-jsChildType::removeParent (jsChildType* const parent)
+jsChildObject::removeParent (jsChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
-		///////////////////////////////
-	
-		__LOG__ << this << " : " << getTypeName () << " : " << getParents () .size () << std::endl;
-
-		if (getTypeName () == "Undefined")
-		{
-			for (const auto p1 : getParents ())
-			{
-				for  (const auto p2 : p1 -> getParents ())
-					__LOG__ << this << " : " << "\t" << p2 -> getTypeName () << std::endl;
-			}
-		}
-	
-		///////////////////////////////
+//		///////////////////////////////
+//	
+//		__LOG__ << this << std::endl;
+//		__LOG__ << this << " : " << getTypeName () << " : " << getParents () .size () << std::endl;
+//
+//		if (getTypeName () == "Undefined" or getTypeName () == "Boolean" or getTypeName () == "Null")
+//		{
+//			for (const auto p1 : getParents ())
+//			{
+//				for  (const auto p2 : p1 -> getParents ())
+//					__LOG__ << this << " : " << "\t" << p2 -> getTypeName () << std::endl;
+//			}
+//		}
+//	
+//		///////////////////////////////
 			
-		if (root == parent)
-			root = nullptr;
 
 		-- referenceCount;
 
@@ -111,8 +127,13 @@ jsChildType::removeParent (jsChildType* const parent)
 
 		ChildTypeSet circle;
 
-		if (hasRoots (circle))
+		if (hasRootedObjects (circle))
+		{
+			if (root == parent)
+				root = nullptr;
+
 			return;
+		}
 
 		for (auto & child : circle)
 		{
@@ -128,19 +149,27 @@ jsChildType::removeParent (jsChildType* const parent)
 }
 
 void
-jsChildType::addWeakParent (jsChildType* const parent)
+jsChildObject::addWeakParent (jsChildObject* const weakParent)
 {
-	parents .emplace (parent);
+	parents .emplace (weakParent);
 }
 
 void
-jsChildType::removeWeakParent (jsChildType* const parent)
+jsChildObject::removeWeakParent (jsChildObject* const weakParent)
 {
-	parents .erase (parent);
+	parents .erase (weakParent);
 }
 
 bool
-jsChildType::hasRoots (ChildTypeSet & seen)
+jsChildObject::hasRootedObjects ()
+{
+	ChildTypeSet seen;
+
+	return hasRootedObjects (seen); 
+}
+
+bool
+jsChildObject::hasRootedObjects (ChildTypeSet & seen)
 {
 	if (parents .empty ())
 		return true;
@@ -151,7 +180,7 @@ jsChildType::hasRoots (ChildTypeSet & seen)
 
 		if (root)
 		{
-			if (root -> hasRoots (seen))
+			if (root -> hasRootedObjects (seen))
 				return true;
 		}
 
@@ -159,7 +188,7 @@ jsChildType::hasRoots (ChildTypeSet & seen)
 
 		for (auto & parent : parents)
 		{
-			if (parent -> hasRoots (seen))
+			if (parent -> hasRootedObjects (seen))
 			{
 				root = parent;
 				return true;
@@ -177,13 +206,18 @@ jsChildType::hasRoots (ChildTypeSet & seen)
 // Object
 
 void
-jsChildType::dispose ()
+jsChildObject::dispose ()
 {
 	parents .clear ();
 	root = nullptr;
+
+	for (const auto & child : children)
+		child -> dispose ();
+
+	children .clear ();
 }
 
-jsChildType::~jsChildType ()
+jsChildObject::~jsChildObject ()
 { }
 
 } // pb

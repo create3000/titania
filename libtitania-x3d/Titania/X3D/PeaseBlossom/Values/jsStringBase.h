@@ -48,112 +48,99 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
 
-#include "../Base/jsBase.h"
-#include "../Base/jsGarbageCollector.h"
+#include "../Values/jsValue.h"
 
-#include <Titania/Utility/Pass.h>
-#include <cstddef>
-#include <set>
-#include <vector>
-
-#include <Titania/LOG.h>
+#include <sstream>
 
 namespace titania {
 namespace pb {
 
-class jsChildType;
-
-using ChildTypeSet = std::set <jsChildType*>;
-
-class jsChildType :
-	public jsGarbageCollector,
-	virtual public jsBase
+/**
+ *  Class to represent a string type.
+ */
+class jsStringBase :
+	virtual public jsValue
 {
 public:
 
-	///  @name Parent handling
-
-	///  Add a parent to this object.
-	void
-	addParent (jsChildType* const);
-
-	///  Fast replaces @a parentToRemove with @a parentToAdd.
-	void
-	replaceParent (jsChildType* const, jsChildType* const);
-
-	///  Remove a parent from this object.
-	void
-	removeParent (jsChildType* const);
-
-	///  Add a parent to this object.
-	void
-	addWeakParent (jsChildType* const);
-
-	///  Remove a parent from this object.
-	void
-	removeWeakParent (jsChildType* const);
-
-	///  Get all parents of this object.
-	const ChildTypeSet &
-	getParents () const
-	{ return parents; }
-
-	///  Returns true if this object has root objects and collects in @a seen all objects seen.
+	///  @name Common members
+	
+	///  Returns the type name of this object.
 	virtual
-	bool
-	hasRoots (ChildTypeSet &);
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
 
-	size_t
-	getReferenceCount () const
-	{ return referenceCount; }
+	///  @name Common operations
 
-	///  @name Destruction
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toNumber (); }
 
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{
+		double number = 0;
+
+		std::istringstream isstream (toString ());
+
+		isstream >> number;
+
+		return number;
+	}
+
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toLocaleString (const std::locale &) const override
+	{ return toString (); }
+
+	virtual
+	var
+	toObject () const
+	throw (TypeError) override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	dispose ();
-
-	virtual
-	~jsChildType ();
+	toStream (std::ostream & ostream) const override
+	{ ostream << toString (); }
 
 
 protected:
 
 	///  @name Construction
 
-	jsChildType ();
+	jsStringBase ()
+	{ }
 
-	///  @name Children handling
-
-	template <typename ... Args>
-	void
-	addChildren (Args & ... args)
-	{ basic::pass ((addChild (args), 1) ...); }
-
-	void
-	addChild (jsChildType & child)
-	{ child .addParent (this); }
-
-	template <typename ... Args>
-	void
-	removeChildren (Args & ... args)
-	{ basic::pass ((removeChild (args), 1) ...); }
-
-	void
-	removeChild (jsChildType & child)
-	{ child .removeParent (this); }
-
-
+		
 private:
 
-	using ChildObjectArray = std::vector <jsChildType*>;
-
-	size_t       referenceCount;
-	ChildTypeSet parents;
-	jsChildType* root;
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 
-#include "../Primitives/jsBasicString.h"
+#include "../Primitives/jsString.h"
 
 namespace titania {
 namespace pb {
@@ -60,34 +60,34 @@ namespace pb {
  *  Class to represent a »string« value.
  */
 class String :
-	public jsBasicString
+	public jsString
 {
 public:
 
 	///  @name Construction
 
 	String () :
-		jsBasicString ()
+		jsString ()
 	{ }
 
 	explicit
 	String (const Glib::ustring & value) :
-		jsBasicString (value)
+		jsString (value)
 	{ }
 
 	explicit
 	String (Glib::ustring && value) :
-		jsBasicString (std::move (value))
+		jsString (std::move (value))
 	{ }
 
 	explicit
 	String (const std::string::value_type* value) :
-		jsBasicString (value)
+		jsString (value)
 	{ }
 
 	explicit
 	String (const jsValue & value) :
-		jsBasicString (value)
+		jsString (value)
 	{ }
 
 	///  @name Member access

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
 
+#include <cassert>
 #include <string>
 
 namespace titania {
@@ -61,7 +62,7 @@ class jsBase
 public:
 
 	jsBase () = default;
-	
+
 	virtual
 	const std::string &
 	getTypeName () const = 0;

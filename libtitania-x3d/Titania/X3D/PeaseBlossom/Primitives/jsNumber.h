@@ -48,91 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
 
-#include "../Primitives/Number.h"
+#include "../Values/jsNumberBase.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript subtraction expression.
+ *  Class to represent a basic number value.
  */
-class Subtraction :
+class jsNumber :
 	public jsNumberBase
 {
 public:
 
-	///  @name Member access
-
-	///  Returns the type of the value. For expressions this is »EXPRESSION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return EXPRESSION; }
-
 	///  @name Operations
 
-	///  Returns true if the all arguments is are non-Object type otherwise false.
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
-
-	///  Converts its arguments to a value of type Number.
+	///  Converts its argument to a value of type Number.
 	virtual
 	double
-	toNumber () const final override
-	{ return lhs -> toNumber () - rhs -> toNumber (); }
+	toNumber () const override
+	{ return number; }
 
 
 protected:
 
-	///  @name Friends
-
-	friend
-	var
-	subtraction (const var &, const var &);
-
 	///  @name Construction
 
-	Subtraction (const var & lhs, const var & rhs) :
+	jsNumber () :
 		jsNumberBase (),
-		         lhs (lhs),
-		         rhs (rhs)
-	{ addChildren (this -> lhs, this -> rhs); }
+		      number (0)
+	{ }
+
+	explicit
+	jsNumber (const double value) :
+		jsNumberBase (),
+		      number (value)
+	{ }
+
+	explicit
+	jsNumber (const jsValue & value) :
+		jsNumberBase (),
+		      number (value .toNumber ())
+	{ }
 
 
 private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const double number;
 
 };
-
-///  @relates Subtraction
-///  @name subtraction.
-
-inline
-var
-subtraction (const var & lhs, const var & rhs)
-{
-	const var expression (new Subtraction (lhs, rhs));
-
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
-}
 
 } // pb
 } // titania

@@ -48,50 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
 
-#include "../Values/jsNumberType.h"
+#include "../Values/jsStringBase.h"
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a basic number value.
+ *  Class to represent a basic string value.
  */
-class jsBasicNumber :
-	public jsNumberType
+class jsString :
+	public jsStringBase
 {
 public:
 
+	///  @name Member access
+
+	Glib::ustring::size_type
+	getLength () const
+	{ return string .length (); }
+
 	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return not string .empty (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const override
-	{ return number; }
+	{
+		double number = 0;
+
+		std::istringstream isstream (string);
+
+		isstream >> number;
+
+		return number;
+	}
+
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toString () const override
+	{ return string; }
 
 
 protected:
 
 	///  @name Construction
 
-	jsBasicNumber () :
-		jsNumberType (),
-		      number (0)
+	jsString () :
+		jsStringBase (),
+		      string ()
 	{ }
 
 	explicit
-	jsBasicNumber (const double value) :
-		jsNumberType (),
-		      number (value)
+	jsString (const Glib::ustring & value) :
+		jsStringBase (),
+		      string (value)
 	{ }
 
 	explicit
-	jsBasicNumber (const jsValue & value) :
-		jsNumberType (),
-		      number (value .toNumber ())
+	jsString (Glib::ustring && value) :
+		jsStringBase (),
+		      string ()
+	{
+		const_cast <Glib::ustring &> (string) .swap (value);
+		value .clear ();
+	}
+
+	explicit
+	jsString (const std::string::value_type* value) :
+		jsStringBase (),
+		      string (value)
+	{ }
+
+	explicit
+	jsString (const jsValue & value) :
+		jsStringBase (),
+		      string (value .toString ())
 	{ }
 
 
@@ -99,7 +142,7 @@ private:
 
 	///  @name Members
 
-	const double number;
+	const Glib::ustring string;
 
 };
 

@@ -63,10 +63,8 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url [
-    "peaseblossom:
-var a, b, c, d;
-a - (b * (c + d));
-",
+#    "peaseblossom:
+#",
     "peaseblossom:
 ;
 true;

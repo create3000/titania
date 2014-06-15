@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 
 #include "../Primitives/BooleanObject.h"
-#include "../Primitives/jsBasicBoolean.h"
+#include "../Primitives/jsBoolean.h"
 
 namespace titania {
 namespace pb {
@@ -64,7 +64,7 @@ namespace pb {
  *  Class to represent a »false« value.
  */
 class FalseType :
-	public jsBasicFalseType
+	public jsFalseType
 {
 public:
 
@@ -96,7 +96,7 @@ protected:
 	///  @name Construction
 
 	FalseType () :
-		jsBasicFalseType ()
+		jsFalseType ()
 	{ }
 
 };
@@ -105,7 +105,7 @@ protected:
  *  Class to represent a »true« value.
  */
 class TrueType :
-	public jsBasicTrueType
+	public jsTrueType
 {
 public:
 
@@ -137,7 +137,7 @@ protected:
 	///  @name Construction
 
 	TrueType () :
-		jsBasicTrueType ()
+		jsTrueType ()
 	{ }
 
 };

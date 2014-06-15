@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,48 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
-
-#include <iostream>
+#include "jsFunction.h"
 
 namespace titania {
 namespace pb {
 
-class jsInputStreamType
-{
-public:
-
-	///  @name Input/Output
-
-	virtual
-	void
-	fromStream (std::istream &) = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	jsInputStreamType ()
-	{ }
-
-};
-
-///  @relates jsInputStreamType
-///  @name Input/Output operators.
-
-///  Extraction operator for jsInputStreamType.
-template <class CharT, class Traits>
-inline
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, jsInputStreamType & object)
-{
-	object .fromStream (istream);
-	return istream;
-}
+const std::string jsFunction::typeName = "Function";
 
 } // pb
 } // titania
-
-#endif

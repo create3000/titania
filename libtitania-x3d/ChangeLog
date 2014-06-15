@@ -1,3 +1,71 @@
+2014-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* pb.h:
+	* X3DChildObject.cpp:
+	* var.h:
+	* jsBase.h:
+	* jsValue.h:
+	* Exception.h:
+	* Parser.cpp:
+	* jsChildType.h:
+	* String.h:
+	* Object.h:
+	* Number.h:
+	* Program.h:
+	* Boolean.h:
+	* jsChildType.cpp:
+	* jsChildObject.h:
+	* jsObject.h:
+	* jsStringBase.h:
+	* Function.h:
+	* jsNumber.h:
+	* jsStringType.h:
+	* jsNumberType.h:
+	* jsString.h:
+	* jsNumberBase.h:
+	* jsChildObject.cpp:
+	* Undefined.h:
+	* jsBooleanBase.h:
+	* Division.h:
+	* Addition.h:
+	* Context.cpp:
+	* jsBoolean.h:
+	* jsBooleanType.h:
+	* jsStringBase.cpp:
+	* jsStringType.cpp:
+	* Remainder.h:
+	* jsFunction.h:
+	* jsObject.cpp:
+	* jsNumberType.cpp:
+	* jsNumberBase.cpp:
+	* jsBooleanType.cpp:
+	* jsBooleanBase.cpp:
+	* Identifier.h:
+	* jsInputStreamType.h:
+	* Subtraction.h:
+	* jsOutputStreamType.h:
+	* jsGarbageCollector.h:
+	* StringObject.h:
+	* jsFunction.cpp:
+	* NumberObject.h:
+	* jsBasicNumber.h:
+	* jsBasicObject.h:
+	* jsBasicString.h:
+	* jsInputStreamObject.h:
+	* BooleanObject.h:
+	* jsBasicBoolean.h:
+	* jsOutputStreamObject.h:
+	* jsBasicFunction.h:
+	* Multiplication.h:
+	* jsBasicObject.cpp:
+	* jsGarbargeCollector.cpp:
+	* jsBasicFunction.cpp:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
 2014-06-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFVec3.h:

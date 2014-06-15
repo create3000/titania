@@ -48,46 +48,76 @@
  *
  ******************************************************************************/
 
-#include "jsBasicObject.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+
+#include <locale>
+#include <sstream>
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-const std::string jsBasicObject::typeName = "Object";
-
-void
-jsBasicObject::defineProperty (const std::string & name,
-                               const var & value,
-                               const PropertyFlagsType flags)
+class jsOutputStreamObject
 {
-__LOG__ << std::endl;
-	try
+public:
+
+	///  @name Operations
+
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toString () const
 	{
-__LOG__ << std::endl;
-		auto & properyDescription = properyDescriptions .at (name);
-
-__LOG__ << std::endl;
-		if (properyDescription .flags & NATIVE)
-			return;
-
-		properyDescription .value = value;
-		properyDescription .flags = flags;
+		return toLocaleString (std::locale::classic ());
 	}
-	catch (const std::out_of_range &)
+
+	///  Converts its argument to a value of type String according to @a locale.
+	virtual
+	Glib::ustring
+	toLocaleString (const std::locale & locale) const
 	{
-		const auto pair = properyDescriptions .emplace (name, PropertyDescriptor { value, flags });
+		std::ostringstream ostringstream;
 
-		pair .first -> second .value .addParent (this);
+		ostringstream .imbue (locale);
+
+		toStream (ostringstream);
+
+		return ostringstream .str ();
 	}
-}
 
-void
-jsBasicObject::dispose ()
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream &) const = 0;
+
+
+protected:
+
+	///  @name Construction
+
+	jsOutputStreamObject ()
+	{ }
+
+};
+
+///  @relates jsOutputStreamObject
+///  @name Input/Output operators.
+
+///  Insertion operator for jsOutputStreamObject.
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const jsOutputStreamObject & value)
 {
-	properyDescriptions .clear ();
-
-	jsValue::dispose ();
+	value .toStream (ostream);
+	return ostream;
 }
 
 } // pb
 } // titania
+
+#endif

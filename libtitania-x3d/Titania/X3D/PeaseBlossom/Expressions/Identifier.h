@@ -71,7 +71,7 @@ public:
 		         jsValue (),
 		executionContext (executionContext),
 		            name (std::move (name))
-	{ }
+	{ addChild (this -> executionContext); }
 
 	///  @name Member access
 
@@ -101,8 +101,8 @@ private:
 
 	///  @name Members
 
-	jsExecutionContext* const executionContext;
-	const std::string         name;
+	const basic_ptr <jsExecutionContext> executionContext;
+	const std::string                    name;
 
 };
 

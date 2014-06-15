@@ -72,7 +72,7 @@ public:
 		executionContext (executionContext),
 		       identifier (std::move (identifier)),
 		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
-	{ }
+	{ addChildren (this -> executionContext, this -> value);}
 
 	///  @name Member access
 
@@ -88,7 +88,7 @@ public:
 	virtual
 	bool
 	isPrimitive () const final override
-	{ return value -> isPrimitive (); }
+	{ return false; }
 
 	///  Converts its input argument to a non-Object type.
 	virtual
@@ -106,9 +106,9 @@ private:
 
 	///  @name Members
 
-	jsExecutionContext* const executionContext;
-	const std::string         identifier;
-	const var                 value;
+	const basic_ptr <jsExecutionContext> executionContext;
+	const std::string                    identifier;
+	const var                            value;
 
 };
 

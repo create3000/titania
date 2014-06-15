@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VAR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VAR_H__
 
-#include "../Base/jsChildType.h"
-#include "../Base/jsOutputStreamType.h"
+#include "../Base/jsChildObject.h"
+#include "../Base/jsOutputStreamObject.h"
 
 namespace titania {
 namespace pb {
@@ -68,7 +68,7 @@ public:
 	///  @name Operations
 
 	virtual
-	jsChildType*
+	jsChildObject*
 	get_type () const = 0;
 
 
@@ -92,8 +92,8 @@ protected:
 template <class Type>
 class basic_ptr :
 	public ptr_base,
-	public jsChildType,
-	public jsOutputStreamType
+	public jsChildObject,
+	public jsOutputStreamObject
 {
 public:
 
@@ -102,8 +102,8 @@ public:
 	///  Constructs new basic_ptr.
 	basic_ptr () :
 		          ptr_base (),
-		       jsChildType (),
-		jsOutputStreamType (),
+		       jsChildObject (),
+		jsOutputStreamObject (),
 		             value (nullptr)
 	{ }
 
@@ -132,8 +132,8 @@ public:
 	explicit
 	basic_ptr (Type* const value) :
 		          ptr_base (),
-		       jsChildType (),
-		jsOutputStreamType (),
+		       jsChildObject (),
+		jsOutputStreamObject (),
 		             value (value)
 	{ add (value); }
 
@@ -242,14 +242,14 @@ public:
 
 	virtual
 	bool
-	hasRoots (ChildTypeSet & seen) final override
+	hasRootedObjects (ChildTypeSet & seen) final override
 	{
 		if (getParents () .empty ())
 			return true;
 
 		for (auto & parent : getParents ())
 		{
-			if (parent -> hasRoots (seen))
+			if (parent -> hasRootedObjects (seen))
 				return true;
 		}
 
@@ -280,7 +280,7 @@ public:
 		remove (get ());
 		set (nullptr);
 
-		jsChildType::dispose ();
+		jsChildObject::dispose ();
 	}
 
 	///  Destructs the owned object if no more basic_ptrs link to it
@@ -348,7 +348,7 @@ private:
 	{ value = _value; }
 
 	virtual
-	jsChildType*
+	jsChildObject*
 	get_type () const final override
 	{ return get (); }
 
@@ -371,7 +371,8 @@ const std::string basic_ptr <Type>::typeName = "basic_ptr";
 ///  Constructs an object of type Type and wraps it in a basic_ptr using
 ///  args as the parameter list for the constructor of Type. 
 template< class Type, class... Args >
-basic_ptr <Type> make_ptr (Args && ... args)
+basic_ptr <Type>
+make_ptr (Args && ... args)
 { return basic_ptr <Type> (new Type (std::forward <Args> (args) ...)); }
 
 ///  @relates basic_ptr

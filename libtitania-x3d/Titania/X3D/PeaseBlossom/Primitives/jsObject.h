@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
 
 #include "../Values/jsValue.h"
 
@@ -57,9 +57,19 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a boolean type.
+ *  Type to represent a property.
  */
-class jsBooleanType :
+struct PropertyDescriptor
+{
+	var               value;
+	PropertyFlagsType flags;
+
+};
+
+/**
+ *  Class to represent a basic object.
+ */
+class jsObject :
 	virtual public jsValue
 {
 public:
@@ -72,36 +82,75 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
+	///  Returns the type of the value. For basic objects this is »OBJECT«.
+	virtual
+	ValueType
+	getType () const override
+	{ return OBJECT; }
+
 	///  @name Common operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return true; }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const override
-	{ return toBoolean (); }
+	{ return 1; }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const override
-	{ return toBoolean (); }
+	{ return 1; }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const override
-	{ return toBoolean (); }
+	{ return 1; }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const override
-	{ return toBoolean (); }
+	{ return 1; }
 
 	virtual
 	var
 	toObject () const
-	throw (TypeError) override;
+	throw (TypeError) override
+	{ return var (const_cast <jsObject*> (this)); }
+
+	///  @name Functions
+
+	///  Adds the named property described by a given descriptor to an object.
+	void
+	defineProperty (const std::string & name,
+	                const var & value,
+	                const PropertyFlagsType flags = NONE);
+
+	///  Returns the property descriptor for a named property on an object.
+	const PropertyDescriptor &
+	getOwnPropertyDescriptor (const std::string & name) const
+	throw (std::out_of_range)
+	{ return properyDescriptions .at (name); }
+
+	///  Returns the value for a named property on an object.
+	var &
+	getOwnProperty (const std::string & name)
+	throw (std::out_of_range)
+	{ return properyDescriptions .at (name) .value; }
+
+	///  Returns the value for a named property on an object.
+	const var &
+	getOwnProperty (const std::string & name) const
+	throw (std::out_of_range)
+	{ return properyDescriptions .at (name) .value; }
 
 	///  @name Input/Output
 
@@ -109,15 +158,30 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
-	{ ostream << (toBoolean () ? "true" : "false"); }
+	{ ostream << "[object " << getTypeName () << "]"; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+	
+	virtual
+	~jsObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	jsBooleanType ()
+	jsObject () :
+		jsValue (),
+		properyDescriptions ()
 	{ }
+
+	///  @name Members
+
+	std::map <std::string, PropertyDescriptor> properyDescriptions;
 
 		
 private:

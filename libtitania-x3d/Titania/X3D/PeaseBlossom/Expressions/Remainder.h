@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a JavaScript remainder expression.
  */
 class Remainder :
-	public jsNumberType
+	public jsNumberBase
 {
 public:
 
@@ -106,10 +106,10 @@ protected:
 	///  @name Construction
 
 	Remainder (const var & lhs, const var & rhs) :
-		jsNumberType (),
+		jsNumberBase (),
 		         lhs (lhs),
 		         rhs (rhs)
-	{ }
+	{ addChildren (this -> lhs, this -> rhs); }
 
 
 private:

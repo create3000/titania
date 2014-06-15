@@ -48,12 +48,19 @@
  *
  ******************************************************************************/
 
-#include "jsBasicFunction.h"
+#include "jsBooleanBase.h"
+
+#include "../Primitives/BooleanObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsBasicFunction::typeName = "Function";
+const std::string jsBooleanBase::typeName = "Boolean";
+
+var
+jsBooleanBase::toObject () const
+throw (TypeError)
+{ return toBoolean () ? var (new TrueObject ()) : var (new FalseObject ()); }
 
 } // pb
 } // titania

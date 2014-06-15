@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,19 +48,69 @@
  *
  ******************************************************************************/
 
-#include "jsNumberType.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
 
-#include "../Primitives/NumberObject.h"
+#include "../Primitives/jsObject.h"
+#include "../Primitives/String.h"
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-const std::string jsNumberType::typeName = "Number";
+class jsFunction :
+	public jsObject
+{
+public:
 
-var
-jsNumberType::toObject () const
-throw (TypeError)
-{ return var (new NumberObject (toNumber ())); }
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
+	virtual
+	ValueType
+	getType () const override
+	{ return FUNCTION_OBJECT; }
+
+	///  @name Member access
+
+	///  Returns the name of the function.
+	const std::string &
+	getName () const
+	{ return name; }
+
+
+protected:
+
+	///  @name Construction
+
+	jsFunction (const std::string & name) :
+		jsObject (),
+		         name (name)
+	{
+		defineProperty ("name", make_ptr <String> (name), NATIVE);
+	}
+
+
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
+
+	///  @name Members
+
+	const std::string name;
+
+};
 
 } // pb
 } // titania
+
+#endif

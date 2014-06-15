@@ -48,19 +48,19 @@
  *
  ******************************************************************************/
 
-#include "jsBooleanType.h"
+#include "jsNumberBase.h"
 
-#include "../Primitives/BooleanObject.h"
+#include "../Primitives/NumberObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsBooleanType::typeName = "Boolean";
+const std::string jsNumberBase::typeName = "Number";
 
 var
-jsBooleanType::toObject () const
+jsNumberBase::toObject () const
 throw (TypeError)
-{ return toBoolean () ? var (new TrueObject ()) : var (new FalseObject ()); }
+{ return var (new NumberObject (toNumber ())); }
 
 } // pb
 } // titania

@@ -1384,7 +1384,7 @@ Parser::functionExpression (var & value)
 
 					if (Grammar::CloseBrace (istream))
 					{
-						value = function;
+						value = std::move (function);
 
 						return true;
 					}

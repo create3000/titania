@@ -107,7 +107,7 @@ protected:
 		jsValue (),
 		    lhs (lhs),
 		    rhs (rhs)
-	{ }
+	{ addChildren (this -> lhs, this -> rhs); }
 
 
 private:

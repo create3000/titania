@@ -60,7 +60,7 @@ namespace pb {
  *  Class to represent a JavaScript multiplication expression.
  */
 class Multiplication :
-	public jsNumberType
+	public jsNumberBase
 {
 public:
 
@@ -104,10 +104,10 @@ protected:
 	///  @name Construction
 
 	Multiplication (const var & lhs, const var & rhs) :
-		jsNumberType (),
+		jsNumberBase (),
 		         lhs (lhs),
 		         rhs (rhs)
-	{ }
+	{ addChildren (this -> lhs, this -> rhs); }
 
 
 private:

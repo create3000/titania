@@ -50,7 +50,7 @@
 
 #include "jsGarbageCollector.h"
 
-#include "../Base/jsChildType.h"
+#include "../Base/jsChildObject.h"
 
 #include <malloc.h>
 #include <thread>
@@ -70,7 +70,7 @@ jsGarbageCollector::trimFreeMemory ()
 }
 
 void
-jsGarbageCollector::addDisposedObject (const jsChildType* const object)
+jsGarbageCollector::addDisposedObject (const jsChildObject* const object)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 

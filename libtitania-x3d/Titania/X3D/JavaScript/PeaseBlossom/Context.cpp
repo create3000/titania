@@ -93,17 +93,17 @@ Context::initialize ()
 
 	try
 	{
-		const auto program = pb::createProgram (istream);
-		const auto result1 = program -> run ();
+		const auto program = pb::createProgram ();
 
-		getBrowser () -> println ("result:  ", result1, " : ", SFTime (chrono::now () - t0));
+		program -> fromStream (istream);
+
+		getBrowser () -> println ("result:  ", program -> run (), " : ", SFTime (chrono::now () - t0));
 		getBrowser () -> println ("istream: ", SFBool (istream));
 
 		{
-			const auto t0      = chrono::now ();
-			const auto result2 = program -> run ();
+			const auto t0 = chrono::now ();
 
-			getBrowser () -> println ("result:  ", result2, " : ", SFTime (chrono::now () - t0));
+			getBrowser () -> println ("result:  ", program -> run (), " : ", SFTime (chrono::now () - t0));
 		}
 	}
 	catch (const pb::jsException & error)

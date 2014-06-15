@@ -48,103 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
-
-#include "../Values/jsValue.h"
-
-#include <sstream>
+#include "jsObject.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a string type.
- */
-class jsStringType :
-	virtual public jsValue
+const std::string jsObject::typeName = "Object";
+
+void
+jsObject::defineProperty (const std::string & name,
+                               const var & value,
+                               const PropertyFlagsType flags)
 {
-public:
-
-	///  @name Common members
-	
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  @name Common operations
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toNumber (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return toNumber (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toNumber (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
+	try
 	{
-		double number = 0;
+		auto & properyDescription = properyDescriptions .at (name);
 
-		std::istringstream isstream (toString ());
+		if (properyDescription .flags & NATIVE)
+			return;
 
-		isstream >> number;
-
-		return number;
+		properyDescription .value = value;
+		properyDescription .flags = flags;
 	}
+	catch (const std::out_of_range &)
+	{
+		const auto pair = properyDescriptions .emplace (name, PropertyDescriptor { value, flags });
 
-	///  Converts its argument to a value of type String.
-	virtual
-	Glib::ustring
-	toLocaleString (const std::locale &) const override
-	{ return toString (); }
+		pair .first -> second .value .addParent (this);
+	}
+}
 
-	virtual
-	var
-	toObject () const
-	throw (TypeError) override;
+void
+jsObject::dispose ()
+{
+	properyDescriptions .clear ();
 
-	///  @name Input/Output
+	jsValue::dispose ();
+}
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << toString (); }
-
-
-protected:
-
-	///  @name Construction
-
-	jsStringType ()
-	{ }
-
-		
-private:
-
-	///  @name Static members
-	
-	static const std::string typeName;
-
-};
+jsObject::~jsObject ()
+{ }
 
 } // pb
 } // titania
-
-#endif

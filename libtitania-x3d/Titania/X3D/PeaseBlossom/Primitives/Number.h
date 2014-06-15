@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
 
-#include "../Primitives/jsBasicNumber.h"
+#include "../Primitives/jsNumber.h"
 
 namespace titania {
 namespace pb {
@@ -60,24 +60,24 @@ namespace pb {
  *  Class to represent a »number« value.
  */
 class Number :
-	public jsBasicNumber
+	public jsNumber
 {
 public:
 
 	///  @name Construction
 
 	Number () :
-		jsBasicNumber ()
+		jsNumber ()
 	{ }
 
 	explicit
 	Number (const double value) :
-		jsBasicNumber (value)
+		jsNumber (value)
 	{ }
 
 	explicit
 	Number (const jsValue & value) :
-		jsBasicNumber (value)
+		jsNumber (value)
 	{ }
 
 	///  @name Member access

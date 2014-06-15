@@ -48,86 +48,138 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
 
-#include "../Values/jsBooleanType.h"
+#include "../Values/jsValue.h"
+
+#include <cmath>
+#include <limits>
 
 namespace titania {
 namespace pb {
 
-#undef False
-#undef True
-
 /**
- *  Class to represent a basic »false« value.
+ *  Class to represent a number type.
  */
-class jsBasicFalseType :
-	public jsBooleanType
+class jsNumberBase :
+	virtual public jsValue
 {
 public:
 
-	///  @name Operations
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  @name Common operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const override
-	{ return false; }
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toNumber (); }
+
+	virtual
+	var
+	toObject () const
+	throw (TypeError) override;
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "false"; }
+	toStream (std::ostream & ostream) const override;
+
+	///  @name Constants
+
+	///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
+	static
+	constexpr double
+	MIN_VALUE ()
+	{ return std::numeric_limits <double>::min (); }
+
+	///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
+	static
+	constexpr double
+	MAX_VALUE ()
+	{ return std::numeric_limits <double>::max (); }
+
+	///  The value of Number.NaN is NaN.
+	static
+	constexpr double
+	NaN ()
+	{ return std::numeric_limits <double>::quiet_NaN (); }
+
+	///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
+	static
+	constexpr double
+	NEGATIVE_INFINITY ()
+	{ return -std::numeric_limits <double>::infinity (); }
+
+	///  The value of Number.POSITIVE_INFINITY is Infinity.
+	static
+	constexpr double
+	POSITIVE_INFINITY ()
+	{ return std::numeric_limits <double>::infinity (); }
 
 
 protected:
 
 	///  @name Construction
 
-	jsBasicFalseType () :
-		jsBooleanType ()
+	jsNumberBase ()
 	{ }
+
+		
+private:
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 
-/**
- *  Class to represent a basic »true« value.
- */
-class jsBasicTrueType :
-	public jsBooleanType
+inline
+void
+jsNumberBase::toStream (std::ostream & ostream) const
 {
-public:
+	const double value = toNumber ();
 
-	///  @name Operations
+	if (std::isnan (value))
+		ostream << "NaN";
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const override
-	{ return true; }
+	else if (value == NEGATIVE_INFINITY ())
+		ostream << "-Infinity";
 
-	///  @name Input/Output
+	else if (value == POSITIVE_INFINITY ())
+		ostream << "Infinity";
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "true"; }
-
-
-protected:
-
-	///  @name Construction
-
-	jsBasicTrueType () :
-		jsBooleanType ()
-	{ }
-
-};
+	else
+		ostream << toNumber ();
+}
 
 } // pb
 } // titania
