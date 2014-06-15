@@ -75,11 +75,11 @@ public:
 
 	///  @name Member access
 
-	///  Returns the type of the value. For expressions this is »EXPRESSION«.
+	///  Returns the type of the value. For expressions this is »IDENTIFIER«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return EXPRESSION; }
+	{ return IDENTIFIER; }
 
 	///  @name Operations
 

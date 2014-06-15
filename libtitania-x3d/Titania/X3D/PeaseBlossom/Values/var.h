@@ -243,18 +243,7 @@ public:
 	virtual
 	bool
 	hasRootedObjects (ChildObjectSet & seen) final override
-	{
-		if (getParents () .empty ())
-			return true;
-
-		for (auto & parent : getParents ())
-		{
-			if (parent -> hasRootedObjects (seen))
-				return true;
-		}
-
-		return false;
-	}
+	{ return hasRootedObjectsDontCollectObject (seen); }
 
 	///  @name Input/Output
 
@@ -278,7 +267,6 @@ public:
 	dispose ()
 	{
 		remove (get ());
-		set (nullptr);
 
 		jsChildObject::dispose ();
 	}

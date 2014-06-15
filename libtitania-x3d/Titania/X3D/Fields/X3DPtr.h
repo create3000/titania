@@ -972,7 +972,6 @@ public:
 	dispose () final override
 	{
 		removeObject (getValue ());
-		setObject (nullptr);
 
 		X3DField <ValueType*>::dispose ();
 	}

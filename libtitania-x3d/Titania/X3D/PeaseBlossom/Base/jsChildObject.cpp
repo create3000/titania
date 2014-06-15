@@ -94,7 +94,7 @@ void
 jsChildObject::removeParent (jsChildObject* const parent)
 {
 	if (parents .erase (parent))
-	{			
+	{
 		if (root == parent)
 			root = nullptr;
 
@@ -142,14 +142,6 @@ jsChildObject::removeWeakParent (jsChildObject* const weakParent)
 }
 
 bool
-jsChildObject::hasRootedObjects ()
-{
-	ChildObjectSet seen;
-
-	return hasRootedObjects (seen); 
-}
-
-bool
 jsChildObject::hasRootedObjects (ChildObjectSet & seen)
 {
 	if (parents .empty ())
@@ -179,6 +171,21 @@ jsChildObject::hasRootedObjects (ChildObjectSet & seen)
 		// We have no root and must test the next time again as parents can change.
 
 		root = nullptr;
+	}
+
+	return false;
+}
+
+bool
+jsChildObject::hasRootedObjectsDontCollectObject (ChildObjectSet & seen)
+{
+	if (getParents () .empty ())
+		return true;
+
+	for (auto & parent : getParents ())
+	{
+		if (parent -> hasRootedObjects (seen))
+			return true;
 	}
 
 	return false;

@@ -188,9 +188,7 @@
     <None Include="Titania\X3D\Components\Grouping\Group.h" />
     <None Include="Titania\X3D\Components\Grouping\StaticGroup.h" />
     <None Include="Titania\X3D\Components\Grouping\Switch.h" />
-    <None Include="Titania\X3D\Components\Grouping\Transform.h">
-      <DependentUpon>StaticGroup.cpp</DependentUpon>
-    </None>
+    <None Include="Titania\X3D\Components\Grouping\Transform.h"/>
     <None Include="Titania\X3D\Components\Grouping\X3DBoundedObject.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DGroupingNode.h" />
     <None Include="Titania\X3D\Components\Interpolation\ColorInterpolator.h" />
@@ -698,9 +696,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Parser\Grammar.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\Program.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Boolean.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\Number.h">
-      <DependentUpon>NumberObject.h</DependentUpon>
-    </None>
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\Number.h"/>
     <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Addition.h" />
@@ -737,6 +733,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Base\jsChildObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsInputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Debug.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

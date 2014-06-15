@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../PeaseBlossom/pb.h"
 
+#include "../../PeaseBlossom/Debug.h"
 #include <cassert>
 
 namespace titania {
@@ -115,10 +116,15 @@ Context::initialize ()
 	if (istream)
 		getBrowser () -> println (">>", istream .rdbuf (), "<<");
 
-	assert (pb::undefined () -> getParents () .empty ());
-	assert (pb::False ()     -> getParents () .empty ());
-	assert (pb::True ()      -> getParents () .empty ());
-	assert (pb::null ()      -> getParents () .empty ());
+	pb::debug_roots (pb::undefined () .get ());
+	pb::debug_roots (pb::False () .get ());
+	pb::debug_roots (pb::True () .get ());
+	pb::debug_roots (pb::null () .get ());
+
+	assert (pb::undefined () -> getParents () .size () == 1);
+	assert (pb::False ()     -> getParents () .size () == 1);
+	assert (pb::True ()      -> getParents () .size () == 1);
+	assert (pb::null ()      -> getParents () .size () == 1);
 
 	pb::Program::deleteObjectsAsync ();
 }

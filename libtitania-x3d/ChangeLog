@@ -1,5 +1,27 @@
 2014-06-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Debug.h:
+	* libtitania-x3d.cproj:
+	* X3DPtr.h:
+	* Debug.h:
+	* X3DChildObject.h:
+	* var.h:
+	* jsConstants.h:
+	* jsChildObject.h:
+	* Context.cpp:
+	* Division.h:
+	* Addition.h:
+	* jsChildObject.cpp:
+	* Remainder.h:
+	* Identifier.h:
+	* Subtraction.h:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
+2014-06-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* X3DPtr.h:
 	* pb.h:

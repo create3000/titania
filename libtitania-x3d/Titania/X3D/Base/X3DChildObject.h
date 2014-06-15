@@ -182,8 +182,6 @@ protected:
 
 private:
 
-	using ChildObjectArray = std::vector <X3DChildObject*>;
-
 	///  @name Members
 
 	size_t          referenceCount;

@@ -63,9 +63,10 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url [
-    "javascript:
-
-",
+#    "peaseblossom:
+#var a;
+#1 + 1;
+#",
     "peaseblossom:
 ;
 true;

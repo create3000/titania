@@ -48,92 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
-
-#include "../Primitives/Number.h"
-
-#include <cmath>
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_DEBUG_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_DEBUG_H__
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a JavaScript remainder expression.
- */
-class Remainder :
-	public jsNumberBase
+inline
+void
+debug_roots (jsChildObject* node, std::set <jsChildObject*> & seen)
 {
-public:
+	if (not seen .emplace (node) .second)
+		return;
 
-	///  @name Member access
+	static int i = 0;
 
-	///  Returns the type of the value. For expressions this is »REMAINDER«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return REMAINDER; }
+	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << " : " << node -> getTypeName () << " ";
 
-	///  @name Operations
+	const auto value = dynamic_cast <jsValue*> (node);
+	
+	if (value)
+	{
+		switch (value -> getType ())
+		{
+			case UNDEFINED:            std::clog << "UNDEFINED";            break;
+			case BOOLEAN:              std::clog << "BOOLEAN";              break;
+			case NUMBER:               std::clog << "NUMBER";               break;
+			case STRING:               std::clog << "STRING";               break;
+			case NULL_OBJECT:          std::clog << "NULL_OBJECT";          break;
+			case OBJECT:               std::clog << "OBJECT";               break;
+			case BOOLEAN_OBJECT:       std::clog << "BOOLEAN_OBJECT";       break;
+			case NUMBER_OBJECT:        std::clog << "NUMBER_OBJECT";        break;
+			case STRING_OBJECT:        std::clog << "STRING_OBJECT";        break;
+			case ARRAY_OBJECT:         std::clog << "ARRAY_OBJECT";         break;
+			case DATE_OBJECT:          std::clog << "DATE_OBJECT";          break;
+			case REGEX_OBJECT:         std::clog << "REGEX_OBJECT";         break;
+			case FUNCTION_OBJECT:      std::clog << "FUNCTION_OBJECT";      break;
+			case ADDITION:             std::clog << "ADDITION";             break;
+			case DIVISION:             std::clog << "DIVISION";             break;
+			case SUBTRACTION:          std::clog << "SUBTRACTION";          break;
+			case IDENTIFIER:           std::clog << "IDENTIFIER";           break;
+			case MULTIPLICATION:       std::clog << "MULTIPLICATION";       break;
+			case REMAINDER:            std::clog << "REMAINDER";            break;
+			case VARIABLE_DECLARATION: std::clog << "VARIABLE_DECLARATION"; break;
+			case CUSTOM:               std::clog << "CUSTOM";               break;
+		}
+	}
+	
+	std::clog << std::endl;
 
-	///  Returns true if the all arguments is are non-Object type otherwise false.
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+	if (node -> getParents () .size ())
+	{
+		++ i;
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
+		for (auto & child : node -> getParents ())
+			debug_roots (child, seen);
 
-	///  Converts its arguments to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
+		-- i;
 
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	remainder (var &&, var &&);
-
-	///  @name Construction
-
-	Remainder (var && lhs, var && rhs) :
-		jsNumberBase (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ addChildren (this -> lhs, this -> rhs); }
-
-
-private:
-
-	///  @name Members
-
-	const var lhs;
-	const var rhs;
-
-};
-
-///  @relates Remainder
-///  @name remainder.
+		return;
+	}
+}
 
 inline
-var
-remainder (var && lhs, var && rhs)
+void
+debug_roots (jsChildObject* node)
 {
-	const var expression (new Remainder (std::move (lhs), std::move (rhs)));
-
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
+	std::set <jsChildObject*> seen;
+	debug_roots (node, seen);
 }
 
 } // pb

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,11 +67,11 @@ public:
 
 	///  @name Member access
 
-	///  Returns the type of the value. For expressions this is »EXPRESSION«.
+	///  Returns the type of the value. For expressions this is Â»ADDITIONÂ«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return EXPRESSION; }
+	{ return ADDITION; }
 
 	///  @name Operations
 

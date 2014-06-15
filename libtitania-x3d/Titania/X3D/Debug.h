@@ -59,7 +59,7 @@ namespace X3D {
 
 #define GL_ERROR  debug_gl_error (std::string (__FILE__) + ":" + std::to_string (__LINE__) + ": in function '" + __func__)
 
-static
+inline
 void
 debug_gl_error (const std::string & identifer)
 {
@@ -69,7 +69,7 @@ debug_gl_error (const std::string & identifer)
 		std::clog << "OpenGL Error at " << identifer << ": " << gluErrorString (errorNum) << std::endl;
 }
 
-static
+inline
 void
 debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 {
@@ -95,7 +95,7 @@ debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 	__LOG__ << node -> getTypeName () << " : " << node -> getName () << std::endl;
 }
 
-static
+inline
 void
 debug_roots (X3DChildObject* node)
 {
@@ -104,7 +104,7 @@ debug_roots (X3DChildObject* node)
 }
 
 // prints all parent nodes of a nodes parent fields
-static
+inline
 void
 debug_print_parent_nodes (const X3D::X3DChildObject* object)
 {

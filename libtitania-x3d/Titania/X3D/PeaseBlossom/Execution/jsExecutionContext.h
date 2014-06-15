@@ -111,10 +111,10 @@ protected:
 	/// @name Default object services
 
 	void
-	pushDefaultObject (const basic_ptr <jsObject> & object);
+	addDefaultObject (const basic_ptr <jsObject> & object);
 
 	void
-	popDefaultObject ()
+	removeDefaultObject ()
 	{ return defaultObjects .pop_back (); }
 
 	const basic_ptr <jsObject> &
@@ -137,11 +137,7 @@ protected:
 		expressions .back () .addParent (this);
 	}
 
-	const std::vector <var> &
-	getExpressions () const
-	{ return expressions; }
-
-	///  @name Operation
+	///  @name Operations
 
 	virtual
 	var
@@ -163,8 +159,8 @@ private:
 	const basic_ptr <jsExecutionContext>            executionContext;
 	std::map <std::string, basic_ptr <jsFunction>>  functions;
 	basic_ptr <jsObject>                            globalObject;
-	std::vector <basic_ptr <jsObject>>              defaultObjects;
-	std::vector <var>                               expressions;
+	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
+	std::deque <var>                                expressions;    // Use deque to keep iters when inserting value.
 
 };
 

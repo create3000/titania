@@ -60,15 +60,16 @@ jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionConte
 	jsInputStreamObject (),
 	 executionContext (executionContext),
 	     globalObject (globalObject),
-	   defaultObjects ({ globalObject }),
+	   defaultObjects (),
 	      expressions ()
 {
 	addChildren (this -> executionContext,
-	             this -> globalObject,
-	             defaultObjects .back ());
+	             this -> globalObject);
+
+	addDefaultObject (globalObject);
 }
 void
-jsExecutionContext::pushDefaultObject (const basic_ptr <jsObject> & object)
+jsExecutionContext::addDefaultObject (const basic_ptr <jsObject> & object)
 {
 	defaultObjects .emplace_back (object);
 	defaultObjects .back () .addParent (this);
@@ -110,11 +111,11 @@ jsExecutionContext::run ()
 	for (const auto & function : functions)
 		getDefaultObject () -> defineProperty (function .second -> getName (), function .second);
 
-	__LOG__ << getExpressions () .size () << std::endl;
+	__LOG__ << expressions .size () << std::endl;
 
 	var result = undefined ();
 
-	for (const auto & expression : getExpressions ())
+	for (const auto & expression : expressions)
 		__LOG__ << (result = expression -> toPrimitive ()) << std::endl ;
 
 	return result;
@@ -131,7 +132,6 @@ void
 jsExecutionContext::dispose ()
 {
 	functions      .clear ();
-	globalObject   .dispose ();
 	defaultObjects .clear ();
 	expressions    .clear ();
 

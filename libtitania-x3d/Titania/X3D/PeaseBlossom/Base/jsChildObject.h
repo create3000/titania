@@ -100,11 +100,6 @@ public:
 	getParents () const
 	{ return parents; }
 
-	///  Returns true if this object has rooted objects.
-	virtual
-	bool
-	hasRootedObjects ();
-
 	///  Returns true if this object has rooted objects and collects in @a seen all objects seen.
 	virtual
 	bool
@@ -148,10 +143,11 @@ protected:
 	void
 	removeChild (const jsChildObject & child);
 
+	bool
+	hasRootedObjectsDontCollectObject (ChildObjectSet & seen);
+
 
 private:
-
-	using ChildObjectArray = std::vector <jsChildObject*>;
 
 	size_t         referenceCount;
 	ChildObjectSet parents;
