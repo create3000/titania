@@ -151,22 +151,12 @@ private:
 
 };
 
-inline
-void
-Number::toStream (std::ostream & ostream) const
-{
-	if (std::isnan (number))
-		ostream << "NaN";
+///  @relates Subtraction
+///  @name subtraction.
 
-	else if (number == NEGATIVE_INFINITY ())
-		ostream << "-Infinity";
-
-	else if (number == POSITIVE_INFINITY ())
-		ostream << "Infinity";
-
-	else
-		ostream << std::setprecision (std::numeric_limits <double>::digits10) << number;
-}
+///  Returns either a Int32, a UInt32 or a Number value.
+var
+createNumber (const double value);
 
 } // pb
 } // titania

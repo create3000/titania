@@ -79,11 +79,15 @@ DEF Script1 Script {
 true;
 false;
 null;
+'';
 1234.56789;
 0xabcdef;
 0o1234567;
 0b1010101;
+'';
 this;
+'';
+
 var a, b, c, d;
 a - (b * (c + d));
 0 - 1 + 2 * 3 % 4;
@@ -96,15 +100,16 @@ a = a + b, a += b;
 1 / 0;
 -1 / 0;
 
-// String
-
+'';
+'// String';
+'';
 '\\'single quoted string\\'';
 \"\\\"double quoted string\\\"\";
-
+'';
 var a = 1, b = 31;
-
+'';
 '// UnaryExpression';
-
+'';
 var x = delete a;
 var x = void b;
 var x = typeof b;
@@ -114,78 +119,78 @@ var x = + b;
 var x = - b;
 var x = ~ b;
 var x = ! b;
-
+'';
 '// BinaryExpression';
-
+'';
 '// MultiplicativeExpression';
-
+'';
 var x = a * b;
 var x = a / b;
 var x = a % b;
-
+'';
 '// AdditiveExpression';
-
+'';
 var x = a + b;
 var x = a - b;
-
+'';
 '// ShiftExpression';
-
+'';
 var x = a << b;
 var x = a >> b;
 var x = a >>> b;
-
+'';
 '// RelationalExpression';
-
+'';
 var x = a < b;
 var x = a > b;
 var x = a <= b;
 var x = a >= b;
 var x = a instanceof b;
 var x = a in b;
-
+'';
 '// EqualityExpression';
-
+'';
 var x = a == b;
 var x = a != b;
 var x = a === b;
 var x = a !== b;
-
+'';
 '// BitwiseExpression';
-
+'';
 var x = a & b;
 var x = a ^ b;
 var x = a | b;
-
+'';
 '// LogicalExpression';
-
+'';
 var x = a && b;
 var x = a || b;
 var x = a ? b : c;
-
+'';
 '// ';
-
+'';
 var Browser;
 'a' + 'b';
 '5' * 2;
-
+'';
 a = function () { 1 + 2; };
-
+'';
 set_time;
-
+'';
 function set_time (value, time)
 {
 	1 + 2 * 3 / 4;
 	5 + 6 * 7 / 8;
 }
-
+'';
 var a;
 var a = set_time;
 var
 	a = set_time,
 	a = 1;
-
+'';
 set_time;
-
+'';
 var
 	PI   = 3.14159,
 	PI_2 = 2 * PI;

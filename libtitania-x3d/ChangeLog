@@ -1,5 +1,11 @@
 2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* Number.h:
+	* Number.cpp: 
+
+2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Primitives.h:

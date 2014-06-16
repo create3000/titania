@@ -304,7 +304,7 @@ Parser::decimalLiteral (var & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value .reset (new Number (number));
+		value = createNumber (number);
 		return true;
 	}
 
