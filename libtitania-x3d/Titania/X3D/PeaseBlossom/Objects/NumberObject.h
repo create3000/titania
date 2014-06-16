@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 
 #include "../Objects/jsObject.h"
-#include "../Primitives/Number.h"
 #include "../Primitives/Int32.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {

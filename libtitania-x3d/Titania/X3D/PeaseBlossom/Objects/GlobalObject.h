@@ -60,7 +60,9 @@ template <class Type>
 inline
 bool
 isNaN (const Type & value)
-{ return std::isnan (value); }
+{
+	return std::isnan (value);
+}
 
 } // pb
 } // titania

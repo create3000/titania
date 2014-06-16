@@ -123,7 +123,6 @@ public:
 		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
 
-
 protected:
 
 	///  @name Friends

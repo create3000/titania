@@ -115,7 +115,7 @@ jsExecutionContext::run ()
 
 	__LOG__ << expressions .size () << std::endl;
 
-	var result = undefined ();
+	var result = get_undefined ();
 
 	for (const auto & expression : expressions)
 		__LOG__ << (result = expression -> toValue ()) << std::endl;

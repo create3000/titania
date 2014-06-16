@@ -83,10 +83,10 @@ jsValue::toUInt16 () const
 
 	if (isNaN (number))
 		return 0;
-	
+
 	if (number == jsNumber::POSITIVE_INFINITY ())
 		return 0;
-	
+
 	if (number == jsNumber::NEGATIVE_INFINITY ())
 		return 0;
 
@@ -114,10 +114,10 @@ jsValue::toInt32Bit () const
 
 	if (isNaN (number))
 		return 0;
-	
+
 	if (number == jsNumber::POSITIVE_INFINITY ())
 		return 0;
-	
+
 	if (number == jsNumber::NEGATIVE_INFINITY ())
 		return 0;
 

@@ -242,7 +242,7 @@ Parser::nullLiteral (var & value)
 
 	if (Grammar::null (istream))
 	{
-		value = null ();
+		value = get_null ();
 		return true;
 	}
 
@@ -258,13 +258,13 @@ Parser::booleanLiteral (var & value)
 
 	if (Grammar::_true (istream))
 	{
-		value = True ();
+		value = get_true ();
 		return true;
 	}
 
 	if (Grammar::_false (istream))
 	{
-		value = False ();
+		value = get_false ();
 		return true;
 	}
 
@@ -686,7 +686,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
@@ -704,7 +704,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
@@ -722,7 +722,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
@@ -755,7 +755,7 @@ Parser::additiveExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (additiveExpression (rhs))
 			{
@@ -773,7 +773,7 @@ Parser::additiveExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (additiveExpression (rhs))
 			{
@@ -806,7 +806,7 @@ Parser::shiftExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -824,7 +824,7 @@ Parser::shiftExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -842,7 +842,7 @@ Parser::shiftExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -875,7 +875,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -893,7 +893,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -911,7 +911,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -929,7 +929,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -947,7 +947,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -965,7 +965,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -995,7 +995,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1010,7 +1010,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1025,7 +1025,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1040,7 +1040,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1076,7 +1076,7 @@ Parser::bitwiseANDExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (bitwiseANDExpression (rhs))
 			{
@@ -1109,7 +1109,7 @@ Parser::bitwiseXORExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (bitwiseXORExpression (rhs))
 			{
@@ -1145,7 +1145,7 @@ Parser::bitwiseORExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (bitwiseORExpression (rhs))
 			{
@@ -1175,7 +1175,7 @@ Parser::logicalANDExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (logicalANDExpression (rhs))
 			{
@@ -1205,7 +1205,7 @@ Parser::logicalORExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = undefined ();
+			var rhs = get_undefined ();
 
 			if (logicalORExpression (rhs))
 			{
@@ -1235,7 +1235,7 @@ Parser::conditionalExpression (var & first)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var second = undefined ();
+			var second = get_undefined ();
 
 			if (assignmentExpression (second))
 			{
@@ -1243,7 +1243,7 @@ Parser::conditionalExpression (var & first)
 
 				if (Grammar::Colon (istream))
 				{
-					var third = undefined ();
+					var third = get_undefined ();
 
 					if (assignmentExpression (third))
 					{
@@ -1283,7 +1283,7 @@ Parser::assignmentExpression (var & value)
 
 			if (Grammar::Assignment (istream))
 			{
-				var expression = undefined ();
+				var expression = get_undefined ();
 
 				if (assignmentExpression (expression))
 				{
@@ -1298,7 +1298,7 @@ Parser::assignmentExpression (var & value)
 
 			if (assignmentOperator (type))
 			{
-				var expression = undefined ();
+				var expression = get_undefined ();
 
 				if (assignmentExpression (expression))
 				{
@@ -1493,7 +1493,7 @@ Parser::variableDeclaration ()
 
 	if (identifier (identifierCharacters))
 	{
-		var value = undefined ();
+		var value = get_undefined ();
 
 		initialiser (value);
 
@@ -1532,7 +1532,7 @@ Parser::expressionStatement ()
 	if (Grammar::function .lookahead (istream))
 		return false;
 
-	var value = undefined ();
+	var value = get_undefined ();
 
 	if (expression (value))
 	{

@@ -60,15 +60,15 @@ namespace pb {
 #undef True
 
 const var &
-False ();
+get_false ();
 
 const var &
-True ();
+get_true ();
 
 /**
  *  Class to represent a »false« value.
  */
-class FalseType :
+class False :
 	public jsBoolean
 {
 public:
@@ -79,7 +79,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return False (); }
+	{ return get_false (); }
 
 	///  @name Common operations
 
@@ -87,7 +87,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return False (); }
+	{ return get_false (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -116,11 +116,11 @@ protected:
 
 	friend
 	const var &
-	False ();
+	get_false ();
 
 	///  @name Construction
 
-	FalseType () :
+	False () :
 		jsBoolean ()
 	{ }
 
@@ -129,7 +129,7 @@ protected:
 /**
  *  Class to represent a »true« value.
  */
-class TrueType :
+class True :
 	public jsBoolean
 {
 public:
@@ -140,7 +140,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return False (); }
+	{ return get_false (); }
 
 	///  @name Common operations
 
@@ -148,7 +148,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return True (); }
+	{ return get_true (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -177,38 +177,38 @@ protected:
 
 	friend
 	const var &
-	True ();
+	get_true ();
 
 	///  @name Construction
 
-	TrueType () :
+	True () :
 		jsBoolean ()
 	{ }
 
 };
 
-///  @relates FalseType
+///  @relates False
 ///  @name false value.
 
 ///  Returns the unique »false« value.
 inline
 const var &
-False ()
+get_false ()
 {
-	static const var value (new FalseType ());
+	static const var value (new False ());
 
 	return value;
 }
 
-///  @relates TrueType
+///  @relates True
 ///  @name true value.
 
 ///  Returns the unique »true« value.
 inline
 const var &
-True ()
+get_true ()
 {
-	static const var value (new TrueType ());
+	static const var value (new True ());
 
 	return value;
 }

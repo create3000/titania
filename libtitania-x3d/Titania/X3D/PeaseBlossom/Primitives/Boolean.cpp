@@ -56,17 +56,17 @@ namespace titania {
 namespace pb {
 
 var
-FalseType::toObject () const
+False::toObject () const
 throw (TypeError)
 {
-	return make_var <BooleanObject> (False ());
+	return make_var <BooleanObject> (get_false ());
 }
 
 var
-TrueType::toObject () const
+True::toObject () const
 throw (TypeError)
 {
-	return make_var <BooleanObject> (True ());
+	return make_var <BooleanObject> (get_true ());
 }
 
 } // pb

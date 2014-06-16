@@ -54,10 +54,10 @@
 #include "Expressions/Addition.h"
 #include "Expressions/Division.h"
 #include "Expressions/Identifier.h"
+#include "Expressions/LeftShift.h"
 #include "Expressions/Multiplication.h"
 #include "Expressions/Remainder.h"
 #include "Expressions/Subtraction.h"
 #include "Expressions/VariableDeclaration.h"
-#include "Expressions/LeftShift.h"
 
 #endif

@@ -1,5 +1,23 @@
 2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Expressions.h:
+	* Parser.cpp:
+	* Null.h:
+	* Boolean.h:
+	* GlobalObject.h:
+	* NumberObject.h:
+	* Boolean.cpp:
+	* jsValue.cpp:
+	* Undefined.h:
+	* Addition.h:
+	* Context.cpp:
+	* BooleanObject.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h:
+	* AssignmentOperatorType.h: 
+
+2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Debug.h:

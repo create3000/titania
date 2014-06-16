@@ -131,7 +131,6 @@ public:
 		return result;
 	}
 
-
 private:
 
 	///  @name Members

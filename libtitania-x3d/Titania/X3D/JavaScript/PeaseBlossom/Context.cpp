@@ -116,15 +116,15 @@ Context::initialize ()
 	if (istream)
 		getBrowser () -> println (">>", istream .rdbuf (), "<<");
 
-	pb::debug_roots (pb::undefined () .get ());
-	pb::debug_roots (pb::False () .get ());
-	pb::debug_roots (pb::True () .get ());
-	pb::debug_roots (pb::null () .get ());
+	pb::debug_roots (pb::get_undefined () .get ());
+	pb::debug_roots (pb::get_false () .get ());
+	pb::debug_roots (pb::get_true () .get ());
+	pb::debug_roots (pb::get_null () .get ());
 
-	assert (pb::undefined () -> getParents () .size () == 1);
-	assert (pb::False ()     -> getParents () .size () == 1);
-	assert (pb::True ()      -> getParents () .size () == 1);
-	assert (pb::null ()      -> getParents () .size () == 1);
+	assert (pb::get_undefined () -> getParents () .size () == 1);
+	assert (pb::get_false ()     -> getParents () .size () == 1);
+	assert (pb::get_true ()      -> getParents () .size () == 1);
+	assert (pb::get_null ()      -> getParents () .size () == 1);
 
 	pb::Program::deleteObjectsAsync ();
 }

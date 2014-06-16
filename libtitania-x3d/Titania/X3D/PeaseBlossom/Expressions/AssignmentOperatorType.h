@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_ASSIGNMENT_OPERATOR_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_ASSIGNMENT_OPERATOR_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_OPERATOR_TYPE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_OPERATOR_TYPE_H__
 
 #include <map>
 #include <sstream>

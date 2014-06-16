@@ -57,10 +57,9 @@ namespace titania {
 namespace pb {
 
 #undef Null
-#undef null
 
 const var &
-null ();
+get_null ();
 
 /**
  *  Class to represent a »null« value.
@@ -90,7 +89,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return null (); }
+	{ return get_null (); }
 
 	///  @name Common operations
 
@@ -98,7 +97,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return null (); }
+	{ return get_null (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -152,7 +151,7 @@ protected:
 
 	friend
 	const var &
-	null ();
+	get_null ();
 
 	///  @name Construction
 
@@ -175,7 +174,7 @@ private:
 ///  Returns the unique »null« value.
 inline
 const var &
-null ()
+get_null ()
 {
 	static const var value (new Null ());
 

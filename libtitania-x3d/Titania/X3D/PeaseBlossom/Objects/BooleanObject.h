@@ -69,12 +69,12 @@ public:
 
 	BooleanObject () :
 		jsObject (),
-		 boolean (False ())
+		 boolean (get_false ())
 	{ }
 
 	BooleanObject (const bool value) :
 		jsObject (),
-		 boolean (value ? True () : False ())
+		 boolean (value ? get_true () : get_false ())
 	{ }
 
 	BooleanObject (const var value) :
