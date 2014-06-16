@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_STRING_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_STRING_H__
 
-#include "../Values/jsStringBase.h"
+#include "../Primitives/jsValue.h"
 
 #include <glibmm/ustring.h>
 
@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a basic string value.
  */
 class jsString :
-	public jsStringBase
+	virtual public jsValue
 {
 public:
 
@@ -72,6 +72,10 @@ public:
 	getLength () const
 	{ return string .length (); }
 
+	const Glib::ustring &
+	getString () const
+	{ return string; }
+
 	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
@@ -79,6 +83,24 @@ public:
 	bool
 	toBoolean () const override
 	{ return not string .empty (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toNumber (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
@@ -100,26 +122,40 @@ public:
 	toString () const override
 	{ return string; }
 
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toLocaleString (const std::locale &) const override
+	{ return string; }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << string .c_str (); }
+
 
 protected:
 
 	///  @name Construction
 
 	jsString () :
-		jsStringBase (),
-		      string ()
+		jsValue (),
+		 string ()
 	{ }
 
 	explicit
 	jsString (const Glib::ustring & value) :
-		jsStringBase (),
-		      string (value)
+		jsValue (),
+		 string (value)
 	{ }
 
 	explicit
 	jsString (Glib::ustring && value) :
-		jsStringBase (),
-		      string ()
+		jsValue (),
+		 string ()
 	{
 		const_cast <Glib::ustring &> (string) .swap (value);
 		value .clear ();
@@ -127,14 +163,14 @@ protected:
 
 	explicit
 	jsString (const std::string::value_type* value) :
-		jsStringBase (),
-		      string (value)
+		jsValue (),
+		 string (value)
 	{ }
 
 	explicit
 	jsString (const jsValue & value) :
-		jsStringBase (),
-		      string (value .toString ())
+		jsValue (),
+		 string (value .toString ())
 	{ }
 
 

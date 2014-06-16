@@ -351,11 +351,15 @@ main (int argc, char** argv)
 
 	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 
-	B b;
-
-	b .f ();
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::istringstream istream ("--abcd");
+	
+	double d = 0;
+	
+	istream >> d;
+	
+	std::clog << istream .rdbuf () << std::endl;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

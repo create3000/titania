@@ -48,19 +48,13 @@
  *
  ******************************************************************************/
 
-#include "jsBooleanBase.h"
-
-#include "../Primitives/BooleanObject.h"
+#include "MultiLineComment.h"
 
 namespace titania {
-namespace pb {
+namespace io {
 
-const std::string jsBooleanBase::typeName = "Boolean";
+template class basic_multi_line_comment <char>;
+template class basic_multi_line_comment <wchar_t>;
 
-var
-jsBooleanBase::toObject () const
-throw (TypeError)
-{ return toBoolean () ? var (new TrueObject ()) : var (new FalseObject ()); }
-
-} // pb
+} // io
 } // titania

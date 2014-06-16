@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
 
+#include "../Expressions/jsExpression.h"
 #include "../Primitives/Number.h"
 
 #include <cmath>
@@ -62,7 +63,7 @@ namespace pb {
  *  Class to represent a JavaScript remainder expression.
  */
 class Remainder :
-	public jsNumberBase
+	public jsExpression
 {
 public:
 
@@ -106,7 +107,7 @@ protected:
 	///  @name Construction
 
 	Remainder (var && lhs, var && rhs) :
-		jsNumberBase (),
+		jsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }

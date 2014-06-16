@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PB_H__
 
 #include "Execution/Program.h"
+
+#include "Objects.h"
 #include "Primitives.h"
 
 #include <utility>

@@ -53,9 +53,9 @@
 
 #include "../Base/jsGarbageCollector.h"
 #include "../Execution/jsExecutionContext.h"
-#include "../Primitives/Object.h"
+#include "../Objects/Object.h"
 #include "../Primitives/Undefined.h"
-#include "../Values/jsValue.h"
+#include "../Primitives/jsValue.h"
 
 #include <memory>
 

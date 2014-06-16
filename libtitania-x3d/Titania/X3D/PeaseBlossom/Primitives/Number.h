@@ -82,11 +82,46 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
 	///  Returns the type of the value. For number values this is »NUMBER«.
 	virtual
 	ValueType
 	getType () const override
 	{ return NUMBER; }
+
+	virtual
+	var
+	getDefaultValue () const final override
+	{
+		static const var defaultValue (new Number ());
+
+		return defaultValue;
+	}
+
+	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (const_cast <Number*> (this)); }
+
+	virtual
+	var
+	toObject () const
+	throw (TypeError) final override;
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
 
 };
 

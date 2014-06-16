@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
 
-#include "../Values/jsValue.h"
+#include "../Primitives/jsValue.h"
 
 namespace titania {
 namespace pb {
@@ -89,6 +89,12 @@ public:
 	{ return OBJECT; }
 
 	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const override
+	{ return getDefaultValue (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual

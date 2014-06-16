@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,12 +48,21 @@
  *
  ******************************************************************************/
 
-#include "jsFunction.h"
+#include "Number.h"
+
+#include "../Objects/NumberObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsFunction::typeName = "Function";
+const std::string Number::typeName = "Number";
+
+var
+Number::toObject () const
+throw (TypeError)
+{
+	return var (new NumberObject (toNumber ()));
+}
 
 } // pb
 } // titania

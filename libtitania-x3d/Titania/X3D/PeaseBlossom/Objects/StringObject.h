@@ -48,138 +48,117 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_NUMBER_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
 
-#include "../Values/jsValue.h"
-
-#include <cmath>
-#include <limits>
+#include "../Objects/jsObject.h"
+#include "../Primitives/String.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a number type.
+ *  Class to represent a »string« object.
  */
-class jsNumberBase :
-	virtual public jsValue
+class StringObject :
+	public jsObject,
+	public jsString
 {
 public:
 
+	///  @name Construction
+
+	StringObject () :
+		jsString ()
+	{ }
+
+	explicit
+	StringObject (const Glib::ustring & value) :
+		jsObject (),
+		jsString (value)
+	{ }
+
+	explicit
+	StringObject (Glib::ustring && value) :
+		jsObject (),
+		jsString (std::move (value))
+	{ }
+
+	explicit
+	StringObject (const jsValue & value) :
+		jsObject (),
+		jsString (value)
+	{ }
+
+	explicit
+	StringObject (const std::string::value_type* value) :
+		jsObject (),
+		jsString (value)
+	{ }
+
 	///  @name Common members
-	
-	///  Returns the type name of this object.
+
+	///  Returns the type of the value. For string objects this is »STRING_OBJECT«.
 	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	ValueType
+	getType () const final override
+	{ return STRING_OBJECT; }
+	
+	virtual
+	var
+	getDefaultValue () const final override
+	{
+		static const var defaultValue (new String ());
+		return defaultValue;
+	}
 
 	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (new String (getString ())); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
-	toBoolean () const override
-	{ return toNumber (); }
+	toBoolean () const final override
+	{ return jsString::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
-	toUInt16 () const override
-	{ return toNumber (); }
+	toUInt16 () const final override
+	{ return jsString::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
-	toInt32 () const override
-	{ return toNumber (); }
+	toInt32 () const final override
+	{ return jsString::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
-	toUInt32 () const override
-	{ return toNumber (); }
+	toUInt32 () const final override
+	{ return jsString::toUInt32 (); }
 
+	///  Converts its argument to a value of type Number.
 	virtual
-	var
-	toObject () const
-	throw (TypeError) override;
+	double
+	toNumber () const final override
+	{ return jsString::toNumber (); }
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override;
-
-	///  @name Constants
-
-	///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
-	static
-	constexpr double
-	MIN_VALUE ()
-	{ return std::numeric_limits <double>::min (); }
-
-	///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
-	static
-	constexpr double
-	MAX_VALUE ()
-	{ return std::numeric_limits <double>::max (); }
-
-	///  The value of Number.NaN is NaN.
-	static
-	constexpr double
-	NaN ()
-	{ return std::numeric_limits <double>::quiet_NaN (); }
-
-	///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
-	static
-	constexpr double
-	NEGATIVE_INFINITY ()
-	{ return -std::numeric_limits <double>::infinity (); }
-
-	///  The value of Number.POSITIVE_INFINITY is Infinity.
-	static
-	constexpr double
-	POSITIVE_INFINITY ()
-	{ return std::numeric_limits <double>::infinity (); }
-
-
-protected:
-
-	///  @name Construction
-
-	jsNumberBase ()
-	{ }
-
-		
-private:
-
-	///  @name Static members
-	
-	static const std::string typeName;
+	toStream (std::ostream & ostream) const final override
+	{ jsString::toStream (ostream); }
 
 };
-
-inline
-void
-jsNumberBase::toStream (std::ostream & ostream) const
-{
-	const double value = toNumber ();
-
-	if (std::isnan (value))
-		ostream << "NaN";
-
-	else if (value == NEGATIVE_INFINITY ())
-		ostream << "-Infinity";
-
-	else if (value == POSITIVE_INFINITY ())
-		ostream << "Infinity";
-
-	else
-		ostream << toNumber ();
-}
 
 } // pb
 } // titania

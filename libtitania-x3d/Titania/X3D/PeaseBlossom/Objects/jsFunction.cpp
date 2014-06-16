@@ -48,13 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
+#include "jsFunction.h"
 
-#include "Primitives/Boolean.h"
-#include "Primitives/Null.h"
-#include "Primitives/Number.h"
-#include "Primitives/String.h"
-#include "Primitives/Undefined.h"
+namespace titania {
+namespace pb {
 
-#endif
+const std::string jsFunction::typeName = "Function";
+
+} // pb
+} // titania

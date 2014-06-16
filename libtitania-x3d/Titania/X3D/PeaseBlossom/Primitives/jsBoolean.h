@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_BOOLEAN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
 
-#include "../Values/jsBooleanBase.h"
+#include "../Primitives/jsValue.h"
 
 namespace titania {
 namespace pb {
@@ -60,10 +60,69 @@ namespace pb {
 #undef True
 
 /**
+ *  Class to represent a boolean type.
+ */
+class jsBoolean :
+	virtual public jsValue
+{
+public:
+
+	///  @name Common members
+
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  @name Common operations
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toBoolean (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toBoolean (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return toBoolean (); }
+
+
+protected:
+
+	///  @name Construction
+
+	jsBoolean ()
+	{ }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+};
+
+/**
  *  Class to represent a basic »false« value.
  */
-class jsFalseType :
-	public jsBooleanBase
+class jsFalse :
+	public jsBoolean
 {
 public:
 
@@ -88,8 +147,8 @@ protected:
 
 	///  @name Construction
 
-	jsFalseType () :
-		jsBooleanBase ()
+	jsFalse () :
+		jsBoolean ()
 	{ }
 
 };
@@ -97,8 +156,8 @@ protected:
 /**
  *  Class to represent a basic »true« value.
  */
-class jsTrueType :
-	public jsBooleanBase
+class jsTrue :
+	public jsBoolean
 {
 public:
 
@@ -123,8 +182,8 @@ protected:
 
 	///  @name Construction
 
-	jsTrueType () :
-		jsBooleanBase ()
+	jsTrue () :
+		jsBoolean ()
 	{ }
 
 };

@@ -48,105 +48,96 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
 
-#include "../Primitives/jsObject.h"
-#include "../Primitives/jsString.h"
+#include "../Primitives/Number.h"
+#include "../Objects/jsObject.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a »string« object.
+ *  Class to represent a number object.
  */
-class StringObject :
+class NumberObject :
 	public jsObject,
-	public jsString
+	public jsNumber
 {
 public:
 
 	///  @name Construction
 
-	StringObject () :
-		jsString ()
+	NumberObject () :
+		jsObject (),
+		jsNumber ()
 	{ }
 
 	explicit
-	StringObject (const Glib::ustring & value) :
+	NumberObject (const double value) :
 		jsObject (),
-		jsString (value)
+		jsNumber (value)
 	{ }
 
 	explicit
-	StringObject (Glib::ustring && value) :
+	NumberObject (const jsValue & value) :
 		jsObject (),
-		jsString (std::move (value))
-	{ }
-
-	explicit
-	StringObject (const jsValue & value) :
-		jsObject (),
-		jsString (value)
-	{ }
-
-	explicit
-	StringObject (const std::string::value_type* value) :
-		jsObject (),
-		jsString (value)
+		jsNumber (value)
 	{ }
 
 	///  @name Common members
-	
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return jsString::getTypeName (); }
 
-	///  Returns the type of the value. For string objects this is »STRING_OBJECT«.
+	///  Returns the type of the value. For number objects this is »NUMBER_OBJECT«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return STRING_OBJECT; }
+	{ return NUMBER_OBJECT; }
+	
+	virtual
+	var
+	getDefaultValue () const final override
+	{
+		static const var defaultValue (new Number ());
+		return defaultValue;
+	}
 
 	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (new Number (toNumber ())); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsString::toBoolean (); }
+	{ return jsNumber::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsString::toUInt16 (); }
+	{ return jsNumber::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsString::toInt32 (); }
+	{ return jsNumber::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsString::toUInt32 (); }
+	{ return jsNumber::toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsString::toNumber (); }
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) final override
-	{ return jsObject::toObject (); }
+	{ return jsNumber::toNumber (); }
 
 	///  @name Input/Output
 
@@ -154,7 +145,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsString::toStream (ostream); }
+	{ jsNumber::toStream (ostream); }
 
 };
 

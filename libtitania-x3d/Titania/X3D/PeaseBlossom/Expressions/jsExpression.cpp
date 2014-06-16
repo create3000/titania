@@ -48,103 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_STRING_TYPE_H__
-
-#include "../Values/jsValue.h"
-
-#include <sstream>
+#include "jsExpression.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a string type.
- */
-class jsStringBase :
-	virtual public jsValue
-{
-public:
-
-	///  @name Common members
-	
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  @name Common operations
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toNumber (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return toNumber (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toNumber (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{
-		double number = 0;
-
-		std::istringstream isstream (toString ());
-
-		isstream >> number;
-
-		return number;
-	}
-
-	///  Converts its argument to a value of type String.
-	virtual
-	Glib::ustring
-	toLocaleString (const std::locale &) const override
-	{ return toString (); }
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) override;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << toString (); }
-
-
-protected:
-
-	///  @name Construction
-
-	jsStringBase ()
-	{ }
-
-		
-private:
-
-	///  @name Static members
-	
-	static const std::string typeName;
-
-};
+const std::string jsExpression::typeName = "Expression";
 
 } // pb
 } // titania
-
-#endif

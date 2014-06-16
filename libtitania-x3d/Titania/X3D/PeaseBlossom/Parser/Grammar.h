@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_GRAMMAR_H__
 
 #include <Titania/InputOutput.h>
+#include <Titania/InputOutput/MultiLineComment.h>
 
 namespace titania {
 namespace pb {
@@ -63,6 +64,7 @@ public:
 	///  @name General
 	static const io::sequence            WhiteSpaces;
 	static const io::single_line_comment SingleLineComment;
+	static const io::multi_line_comment  MultiLineComment;
 
 	// Terminal Symbols
 	static const io::character Period;
@@ -87,8 +89,18 @@ public:
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
 
+	// Unary Operator
+	static const io::string    _delete;
+	static const io::string    _void;
+	static const               io::string    typeof;
+	static const io::string    Increment;
+	static const io::string    Decrement;
+	static const io::character PlusSign;
+	static const io::character MinusSign;
+	static const io::character Tilde;
+	static const io::character ExclamationMark;
 
-	// Operator
+	// Binary Operator
 	static const io::character Multiplication;
 	static const io::character Division;
 	static const io::character Remainder;
@@ -143,6 +155,7 @@ public:
 // General
 const io::sequence            Grammar::WhiteSpaces ("\r\n \t");
 const io::single_line_comment Grammar::SingleLineComment ("//");
+const io::multi_line_comment  Grammar::MultiLineComment ("/*", "*/");
 
 // Terminal Symbols
 const io::character Grammar::Period ('.');
@@ -164,23 +177,58 @@ const io::string Grammar::function ("function");
 const io::string Grammar::var ("var");
 
 const std::set <std::string> Grammar::Keyword = {
-	"break",    "do",       "instanceof", "typeof",
-	"case",     "else",     "new",        "var",
-	"catch",    "finally",  "return",     "void",
-	"continue", "for",      "switch",     "while",
-	"debugger", "function", "this",       "with",
-	"default",  "if",       "throw",
-	"delete",   "in",       "try"
+	"break",
+	"case",
+	"catch",
+	"continue",
+	"debugger",
+	"default",
+	"delete",
+	"do",
+	"else"
+	"finally",
+	"for",
+	"function",
+	"if",
+	"in",
+	"instanceof",
+	"new",
+	"return",
+	"switch",
+	"this",
+	"throw",
+	"try",
+	"typeof",
+	"var",
+	"void",
+	"while",
+	"with"
 
 };
 
 const std::set <std::string> Grammar::FutureReservedWord = {
-	"class", "enum",   "extends", "super",
-	"const", "export", "import"
+	"class",
+	"const",
+	"enum",
+	"export",
+	"extends",
+	"import",
+	"super"
 
 };
 
-// Operator
+// Unary Operator
+const io::string Grammar::_delete ("delete");
+const io::string Grammar::_void ("void");
+const io::string Grammar::typeof ("typeof");
+const io::string    Grammar::Increment ("++");
+const io::string    Grammar::Decrement ("--");
+const io::character Grammar::PlusSign ('+');
+const io::character Grammar::MinusSign ('-');
+const io::character Grammar::Tilde ('~');
+const io::character Grammar::ExclamationMark ('!');
+
+// Binary Operator
 const io::character Grammar::Multiplication ('*');
 const io::character Grammar::Division ('/');
 const io::character Grammar::Remainder ('%');

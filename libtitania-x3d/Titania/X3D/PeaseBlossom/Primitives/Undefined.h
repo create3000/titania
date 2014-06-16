@@ -51,12 +51,14 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 
-#include "../Values/jsNumberBase.h"
-#include "../Values/jsValue.h"
-#include "../Values/var.h"
+#include "../Primitives/jsNumber.h"
+#include "../Primitives/jsValue.h"
 
 namespace titania {
 namespace pb {
+
+const var &
+undefined ();
 
 /**
  *  Class to represent a »undefined« value.
@@ -67,7 +69,7 @@ class Undefined :
 public:
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -80,7 +82,18 @@ public:
 	getType () const final override
 	{ return UNDEFINED; }
 
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return undefined (); }
+
 	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return undefined (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -110,7 +123,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return jsNumberBase::NaN (); }
+	{ return jsNumber::NaN (); }
 
 	virtual
 	var
@@ -141,11 +154,11 @@ protected:
 		jsValue ()
 	{ }
 
-		
+
 private:
 
 	///  @name Static members
-	
+
 	static const std::string typeName;
 
 };

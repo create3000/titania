@@ -48,10 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_NUMBER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_NUMBER_H__
 
-#include "../Values/jsNumberBase.h"
+#include "../Primitives/jsValue.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
@@ -60,11 +62,35 @@ namespace pb {
  *  Class to represent a basic number value.
  */
 class jsNumber :
-	public jsNumberBase
+	virtual public jsValue
 {
 public:
 
-	///  @name Operations
+	///  @name Common operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return number; }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return number; }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return number; }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return number; }
 
 	///  Converts its argument to a value of type Number.
 	virtual
@@ -72,26 +98,65 @@ public:
 	toNumber () const override
 	{ return number; }
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override;
+
+	///  @name Constants
+
+	///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
+	static
+	constexpr double
+	MIN_VALUE ()
+	{ return std::numeric_limits <double>::min (); }
+
+	///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
+	static
+	constexpr double
+	MAX_VALUE ()
+	{ return std::numeric_limits <double>::max (); }
+
+	///  The value of Number.NaN is NaN.
+	static
+	constexpr double
+	NaN ()
+	{ return std::numeric_limits <double>::quiet_NaN (); }
+
+	///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
+	static
+	constexpr double
+	NEGATIVE_INFINITY ()
+	{ return -std::numeric_limits <double>::infinity (); }
+
+	///  The value of Number.POSITIVE_INFINITY is Infinity.
+	static
+	constexpr double
+	POSITIVE_INFINITY ()
+	{ return std::numeric_limits <double>::infinity (); }
+
 
 protected:
 
 	///  @name Construction
 
 	jsNumber () :
-		jsNumberBase (),
-		      number (0)
+		jsValue (),
+		 number (0)
 	{ }
 
 	explicit
 	jsNumber (const double value) :
-		jsNumberBase (),
-		      number (value)
+		jsValue (),
+		 number (value)
 	{ }
 
 	explicit
 	jsNumber (const jsValue & value) :
-		jsNumberBase (),
-		      number (value .toNumber ())
+		jsValue (),
+		 number (value .toNumber ())
 	{ }
 
 
@@ -102,6 +167,23 @@ private:
 	const double number;
 
 };
+
+inline
+void
+jsNumber::toStream (std::ostream & ostream) const
+{
+	if (std::isnan (number))
+		ostream << "NaN";
+
+	else if (number == NEGATIVE_INFINITY ())
+		ostream << "-Infinity";
+
+	else if (number == POSITIVE_INFINITY ())
+		ostream << "Infinity";
+
+	else
+		ostream << number;
+}
 
 } // pb
 } // titania

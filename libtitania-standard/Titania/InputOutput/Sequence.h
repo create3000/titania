@@ -51,25 +51,33 @@
 #ifndef __TITANIA_INPUT_OUTPUT_SEQUENCE_H__
 #define __TITANIA_INPUT_OUTPUT_SEQUENCE_H__
 
+#include <algorithm>
 #include <istream>
 #include <set>
 #include <string>
+#include <vector>
 
 namespace titania {
 namespace io {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
+/**
+ *  Template to represent a character class sequence. The stream is matched against the characters provided until any
+ *  other character occured or EOF. If no character was matched the sequence returns true otherwise false.
+ *
+ *  Specialization for CharT char is part of the library.
+ *
+ *  Extern instantiations for char and wchar are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of characters.
+ *  @param  Traits  Character traits
+ */
+template <class CharT, class Traits = std::char_traits <CharT>> 
 class basic_sequence
 {
 public:
 
-	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
-
 	basic_sequence (const std::basic_string <CharT> &);
-
-	const std::set <int_type> &
-	operator () () const
-	{ return value; }
 
 	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
@@ -77,14 +85,16 @@ public:
 
 private:
 
-	const std::set <int_type> value;
+	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
+
+	const std::set <int_type> characters;
 
 };
 
 template <class CharT, class Traits>
 inline
-basic_sequence <CharT, Traits>::basic_sequence (const std::basic_string <CharT> & value) :
-	value (value .begin (), value .end ())
+basic_sequence <CharT, Traits>::basic_sequence (const std::basic_string <CharT> & string) :
+	characters (string .begin (), string .end ())
 { }
 
 template <class CharT, class Traits>
@@ -97,14 +107,59 @@ basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> 
 	{
 		const int_type c = istream .peek ();
 
-		if (not value .count (c))
-			break;
+		if (characters .count (c))
+			string .push_back (istream .get ());
 
-		string .push_back (istream .get ());
+		else
+			break;
 	}
 
 	return string .size () not_eq size;
 }
+
+/**
+ *  Template specialization for basic_sequence <char>
+ */
+template <>
+class basic_sequence <char, std::char_traits <char>> 
+{
+public:
+
+	basic_sequence (const std::basic_string <char> & value) :
+		       max (*std::max_element (value .begin (), value .end ()) + 1),
+		characters (max)
+	{
+		for (const auto & c : value)
+			characters [c] = true;
+	}
+
+	bool
+	operator () (std::basic_istream <char> & istream, std::basic_string <char> & string) const
+	{
+		const auto size = string .size ();
+
+		while (istream)
+		{
+			const int_type c = istream .peek ();
+
+			if (c > -1 and c < max and characters [c])
+				string .push_back (istream .get ());
+
+			else
+				break;
+		}
+
+		return string .size () not_eq size;
+	}
+
+private:
+
+	using int_type = typename std::basic_istream <char>::int_type;
+
+	const int_type             max;
+	mutable std::vector <bool> characters;
+
+};
 
 typedef basic_sequence <char>    sequence;
 typedef basic_sequence <wchar_t> wsequence;

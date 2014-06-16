@@ -59,23 +59,47 @@
 namespace titania {
 namespace io {
 
+/**
+ *  Template to represent a character match agains a std::basic_istream.
+ *
+ *  Extern instantiations for char and wchar are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of characters.
+ *  @param  Traits  Character traits
+ */
 template <class CharT, class Traits = std::char_traits <CharT>>
 class basic_character
 {
 public:
 
-	constexpr
-	basic_character (const CharT &);
+	///  @name Construction
 
+	///  Constructs the io::basic_character from @a character.  A std::basic_istream can then be tested against the character.
+	constexpr
+	basic_character (const CharT & character);
+
+	///  Returns the match character.
 	char
 	operator () () const
 	{ return value; }
 
-	bool
-	operator () (std::basic_istream <CharT, Traits> &) const;
+	///  @name Operations
 
+	///  Test whether the next character in @a istream is the match character. Returns true on success and changes
+	///  @a istreams position to the next character after the match character otherwise it returns false and doesn't
+	///  changes the streams current position.
 	bool
-	lookahead (std::basic_istream <CharT, Traits> &) const;
+	operator () (std::basic_istream <CharT, Traits> & istream) const;
+
+	///  Test whether the next character in @a istream is the match character. Returns true on success otherwise false.
+	///  Does not change the streams current position.
+	bool
+	lookahead (std::basic_istream <CharT, Traits> & istream) const;
+
+	///  Rewinds @a istream about one character.  Returns true on success otherwise false.
+	bool
+	rewind (std::basic_istream <CharT, Traits> & istream) const;
 
 
 private:
@@ -112,6 +136,14 @@ bool
 basic_character <CharT, Traits>::lookahead (std::basic_istream <CharT, Traits> & istream) const
 {
 	return istream .peek () == value;
+}
+
+template <class CharT, class Traits>
+inline
+bool
+basic_character <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & istream) const
+{
+	return istream .seekg (-1, std::ios_base::cur);
 }
 
 typedef basic_character <char>    character;

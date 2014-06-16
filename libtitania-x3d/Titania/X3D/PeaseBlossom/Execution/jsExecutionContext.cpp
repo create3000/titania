@@ -51,6 +51,7 @@
 #include "jsExecutionContext.h"
 
 #include "../Parser/Parser.h"
+#include "../Primitives.h"
 
 namespace titania {
 namespace pb {
@@ -125,7 +126,7 @@ void
 jsExecutionContext::fromStream (std::istream & istream)
 throw (SyntaxError)
 {
-	Parser (this, istream) .parseIntoScope ();
+	Parser (this, istream) .parseIntoContext ();
 }
 
 void

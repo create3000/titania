@@ -48,13 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
 
-#include "Primitives/Boolean.h"
-#include "Primitives/Null.h"
-#include "Primitives/Number.h"
-#include "Primitives/String.h"
-#include "Primitives/Undefined.h"
+#include "../Objects/jsObject.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent an object.
+ */
+class Object :
+	public jsObject
+{
+public:
+
+	///  @name Construction
+
+	Object () :
+		jsObject ()
+	{ }
+	
+	///  @name Common members
+
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return var (new Object ()); }
+
+
+private:
+
+};
+
+} // pb
+} // titania
 
 #endif

@@ -57,6 +57,7 @@
 #include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/Utility/Map.h>
+#include <Titania/InputOutput/MultiLineComment.h>
 
 namespace titania {
 namespace puck {
@@ -2140,11 +2141,10 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 void
 X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode & node)
 {
-	io::string         comment_start ("/*");
-	io::inverse_string comment ("*/");
-	io::sequence       whitespaces ("\r\n \t,");
-	io::inverse_string cdata_start ("<![CDATA[");
-	io::inverse_string contents ("]]>");
+	io::multi_line_comment comment ("/*", "*/");
+	io::sequence           whitespaces ("\r\n \t,");
+	io::inverse_string     cdata_start ("<![CDATA[");
+	io::inverse_string     contents ("]]>");
 
 	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
 		return;
@@ -2161,10 +2161,8 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 	while (istream)
 	{
 		whitespaces (istream, ws);
+		comment (istream, ws);
 
-		if (comment_start (istream))
-			comment (istream, ws);
-	
 		if (cdata_start (istream, ws))
 		{
 			std::string value;

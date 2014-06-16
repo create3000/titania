@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 
 #include "../Parser/AssignmentOperatorType.h"
-#include "../Primitives.h"
+#include "../Bits/Exception.h"
+#include "../Primitives/var.h"
 
 #include <iostream>
 #include <stack>
@@ -74,7 +75,7 @@ public:
 	///  @name Operations
 
 	void
-	parseIntoScope ()
+	parseIntoContext ()
 	throw (SyntaxError);
 
 
@@ -83,6 +84,10 @@ private:
 	using State = std::tuple <std::ios_base::iostate, std::istream::pos_type>;
 
 	// Operations
+
+	jsExecutionContext*
+	getRootContext () const
+	{ return rootContext; }
 
 	void
 	pushExecutionContext (jsExecutionContext* const executionContext)
@@ -269,6 +274,7 @@ private:
 	std::istream &                   istream;
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;
+	std::vector <bool>               isLeftHandSideExressions;
 
 };
 

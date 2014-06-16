@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
 
 #include "../Execution/jsExecutionContext.h"
-#include "../Primitives/jsFunction.h"
+#include "../Objects/jsFunction.h"
 
 namespace titania {
 namespace pb {
@@ -68,11 +68,18 @@ public:
 
 	///  @name Construction
 
-	Function (jsExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters = { }) :
+	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
 		   jsFunction (name),
 		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
 		  formalParameters (std::move (formalParameters))
 	{ }
+	
+	///  @name Common members
+
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return var (new Function (getExecutionContext () .get ())); }
 
 	///  @name Input/Output
 

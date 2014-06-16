@@ -467,15 +467,16 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Base/jsGarbargeCollector.cpp \
 	Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Program.cpp \
+	Titania/X3D/PeaseBlossom/Expressions/jsExpression.cpp \
+	Titania/X3D/PeaseBlossom/Objects/jsFunction.cpp \
+	Titania/X3D/PeaseBlossom/Objects/jsObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/jsFunction.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/jsObject.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/Boolean.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/jsBoolean.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Null.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/Number.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/String.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Undefined.cpp \
-	Titania/X3D/PeaseBlossom/Values/jsBooleanBase.cpp \
-	Titania/X3D/PeaseBlossom/Values/jsNumberBase.cpp \
-	Titania/X3D/PeaseBlossom/Values/jsStringBase.cpp \
-	Titania/X3D/PeaseBlossom/Values/jsValue.cpp \
 	Titania/X3D/Prototype/ExternProtoArray.cpp \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \

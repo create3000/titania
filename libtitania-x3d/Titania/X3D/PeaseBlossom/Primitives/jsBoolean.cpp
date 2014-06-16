@@ -48,19 +48,12 @@
  *
  ******************************************************************************/
 
-#include "jsStringBase.h"
-
-#include "../Primitives/StringObject.h"
+#include "jsBoolean.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsStringBase::typeName = "String";
-
-var
-jsStringBase::toObject () const
-throw (TypeError)
-{ return var (new StringObject (toString ())); }
+const std::string jsBoolean::typeName = "Boolean";
 
 } // pb
 } // titania

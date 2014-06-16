@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 
-#include "../Primitives/BooleanObject.h"
 #include "../Primitives/jsBoolean.h"
 
 namespace titania {
@@ -60,11 +59,17 @@ namespace pb {
 #undef False
 #undef True
 
+const var &
+False ();
+
+const var &
+True ();
+
 /**
  *  Class to represent a »false« value.
  */
 class FalseType :
-	public jsFalseType
+	public jsFalse
 {
 public:
 
@@ -76,13 +81,23 @@ public:
 	getType () const override
 	{ return BOOLEAN; }
 
-	///  @name Operations
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return False (); }
+
+	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return False (); }
 
 	virtual
 	var
 	toObject () const
-	throw (TypeError) final override
-	{ return var (new FalseObject ()); }
+	throw (TypeError) final override;
 
 
 protected:
@@ -96,7 +111,7 @@ protected:
 	///  @name Construction
 
 	FalseType () :
-		jsFalseType ()
+		jsFalse ()
 	{ }
 
 };
@@ -105,7 +120,7 @@ protected:
  *  Class to represent a »true« value.
  */
 class TrueType :
-	public jsTrueType
+	public jsTrue
 {
 public:
 
@@ -117,13 +132,23 @@ public:
 	getType () const override
 	{ return BOOLEAN; }
 
-	///  @name Operations
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return False (); }
+
+	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return True (); }
 
 	virtual
 	var
 	toObject () const
-	throw (TypeError) final override
-	{ return var (new TrueObject ()); }
+	throw (TypeError) final override;
 
 
 protected:
@@ -137,7 +162,7 @@ protected:
 	///  @name Construction
 
 	TrueType () :
-		jsTrueType ()
+		jsTrue ()
 	{ }
 
 };

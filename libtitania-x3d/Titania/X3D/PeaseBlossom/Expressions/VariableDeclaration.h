@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 
 #include "../Execution/jsExecutionContext.h"
-#include "../Values/jsValue.h"
+#include "../Expressions/jsExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,17 +61,17 @@ namespace pb {
  *  Class to represent a JavaScript variable declaration expression.
  */
 class VariableDeclaration :
-	public jsValue
+	public jsExpression
 {
 public:
 
 	///  @name Construction
 
 	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && value) :
-		         jsValue (),
-		executionContext (executionContext),
-		      identifier (std::move (identifier)),
-		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
+		     jsExpression (),
+		 executionContext (executionContext),
+		       identifier (std::move (identifier)),
+		            value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
 	{ addChildren (this -> executionContext, this -> value); }
 
 	///  @name Member access

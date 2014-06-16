@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_H__
 
+#include "../Expressions/jsExpression.h"
 #include "../Primitives/Number.h"
 #include "../Primitives/String.h"
 
@@ -61,7 +62,7 @@ namespace pb {
  *  Class to represent a JavaScript addition expression.
  */
 class Addition :
-	public jsValue
+	public jsExpression
 {
 public:
 
@@ -103,9 +104,9 @@ protected:
 	///  @name Construction
 
 	Addition (var && lhs, var && rhs) :
-		jsValue (),
-		    lhs (std::move (lhs)),
-		    rhs (std::move (rhs))
+		jsExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }
 
 

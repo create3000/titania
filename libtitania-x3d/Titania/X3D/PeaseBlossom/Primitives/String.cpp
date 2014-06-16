@@ -48,87 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_TYPE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_BOOLEAN_TYPE_H__
+#include "String.h"
 
-#include "../Values/jsValue.h"
+#include "../Objects/StringObject.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a boolean type.
- */
-class jsBooleanBase :
-	virtual public jsValue
+const std::string String::typeName = "String";
+
+var
+String::toObject () const
+throw (TypeError)
 {
-public:
-
-	///  @name Common members
-	
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  @name Common operations
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toBoolean (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toBoolean (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return toBoolean (); }
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) override;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << (toBoolean () ? "true" : "false"); }
-
-
-protected:
-
-	///  @name Construction
-
-	jsBooleanBase ()
-	{ }
-
-		
-private:
-
-	///  @name Static members
-	
-	static const std::string typeName;
-
-};
+	return var (new StringObject (getString ()));
+}
 
 } // pb
 } // titania
-
-#endif

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VAR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_VAR_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 
 #include "../Base/jsChildObject.h"
 #include "../Base/jsOutputStreamObject.h"
@@ -101,10 +101,10 @@ public:
 
 	///  Constructs new basic_ptr.
 	basic_ptr () :
-		          ptr_base (),
+		            ptr_base (),
 		       jsChildObject (),
 		jsOutputStreamObject (),
-		             value (nullptr)
+		               value (nullptr)
 	{ }
 
 	///  Constructs new basic_ptr.
@@ -131,10 +131,10 @@ public:
 	///  Constructs new basic_ptr.
 	explicit
 	basic_ptr (Type* const value) :
-		          ptr_base (),
+		            ptr_base (),
 		       jsChildObject (),
 		jsOutputStreamObject (),
-		             value (value)
+		               value (value)
 	{ add (value); }
 
 	///  Constructs new basic_ptr.
@@ -233,7 +233,7 @@ public:
 	{ reset (dynamic_cast <Type*> (value)); }
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -341,7 +341,7 @@ private:
 	{ return get (); }
 
 	///  @name Static members
-	
+
 	static const std::string typeName;
 
 	///  @name Members;
@@ -357,11 +357,13 @@ const std::string basic_ptr <Type>::typeName = "basic_ptr";
 ///  @name Utiliy functions
 
 ///  Constructs an object of type Type and wraps it in a basic_ptr using
-///  args as the parameter list for the constructor of Type. 
-template< class Type, class... Args >
+///  args as the parameter list for the constructor of Type.
+template <class Type, class ... Args>
 basic_ptr <Type>
 make_ptr (Args && ... args)
-{ return basic_ptr <Type> (new Type (std::forward <Args> (args) ...)); }
+{
+	return basic_ptr <Type> (new Type (std::forward <Args> (args) ...));
+}
 
 ///  @relates basic_ptr
 ///  @name Comparision operations

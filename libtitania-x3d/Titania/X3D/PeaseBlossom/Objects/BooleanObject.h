@@ -48,132 +48,195 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_VALUES_JS_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
 
-#include "../Bits/Exception.h"
-#include "../Bits/jsConstants.h"
-#include "../Base/jsChildObject.h"
-#include "../Base/jsOutputStreamObject.h"
-#include "../Values/var.h"
+#include "../Primitives/Boolean.h"
+#include "../Objects/jsObject.h"
 
 namespace titania {
 namespace pb {
 
+#undef False
+#undef True
+
 /**
- *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
+ *  Class to represent a »false« object.
  */
-class jsValue :
-	virtual public jsChildObject,
-	virtual public jsOutputStreamObject
+class FalseObject :
+	public jsObject,
+	public jsFalse
 {
 public:
-	
+
+	///  @name Construction
+
+	FalseObject () :
+		   jsObject (),
+		jsFalse ()
+	{ }
+
 	///  @name Common members
 	
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	getTypeName () const final override
+	{ return jsFalse::getTypeName (); }
 
-	///  Returns the type of this value.
+	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
 	virtual
 	ValueType
-	getType () const = 0;
+	getType () const final override
+	{ return BOOLEAN_OBJECT; }
+	
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return False (); }
 
 	///  @name Common operations
-
-	///  Returns true if the input argument is a non-Object type otherwise false.
-	virtual
-	bool
-	isPrimitive () const;
 
 	///  Converts its input argument to a non-Object type.
 	virtual
 	var
-	toPrimitive () const
-	{ return var (const_cast <jsValue*> (this)); }
+	toPrimitive () const final override
+	{ return False (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
-	toBoolean () const
-	{ return toPrimitive () -> toBoolean (); }
+	toBoolean () const final override
+	{ return jsFalse::toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
-	toUInt16 () const
-	{ return toPrimitive () -> toUInt16 (); }
+	toUInt16 () const final override
+	{ return jsFalse::toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
-	toInt32 () const
-	{ return toPrimitive () -> toInt32 (); }
+	toInt32 () const final override
+	{ return jsFalse::toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
-	toUInt32 () const
-	{ return toPrimitive () -> toUInt32 (); }
+	toUInt32 () const final override
+	{ return jsFalse::toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
-	toNumber () const
-	{ return toPrimitive () -> toNumber (); }
+	toNumber () const final override
+	{ return jsFalse::toNumber (); }
 
 	virtual
 	var
 	toObject () const
-	throw (TypeError)
-	{ return toPrimitive () -> toObject (); }
+	throw (TypeError) final override
+	{ return jsObject::toObject () ; }
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
-	{ toPrimitive () -> toStream (ostream); }
-
-
-protected:
-
-	///  @name Construction
-
-	jsValue () :
-		       jsChildObject (),
-		jsOutputStreamObject ()
-	{ }
-
-
-private:
-
-	///  @name Static members
-	
-	static const std::string typeName;
+	toStream (std::ostream & ostream) const final override
+	{ jsFalse::toStream (ostream); }
 
 };
 
-inline
-bool
-jsValue::isPrimitive () const
+/**
+ *  Class to represent a »true« object.
+ */
+class TrueObject :
+	public jsObject,
+	public jsTrue
 {
-	switch (getType ())
-	{
-		case UNDEFINED:
-		case BOOLEAN:
-		case NUMBER:
-		case STRING:
-		case NULL_OBJECT:
-			return true;
-		default:
-			return false;
-	}
-}
+public:
+
+	///  @name Construction
+
+	TrueObject () :
+		  jsObject (),
+		jsTrue ()
+	{ }
+
+	///  @name Common members
+	
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return jsTrue::getTypeName (); }
+
+	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return BOOLEAN_OBJECT; }
+
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return False (); }
+
+	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return True (); }
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return jsTrue::toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return jsTrue::toUInt16 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return jsTrue::toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return jsTrue::toUInt32 (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const final override
+	{ return jsTrue::toNumber (); }
+
+	virtual
+	var
+	toObject () const
+	throw (TypeError) final override
+	{ return jsObject::toObject () ; }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ jsTrue::toStream (ostream); }
+
+};
 
 } // pb
 } // titania

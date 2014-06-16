@@ -53,6 +53,8 @@
 #include "../Execution/jsExecutionContext.h"
 #include "../Expressions.h"
 #include "../Parser/Grammar.h"
+#include "../Objects.h"
+#include "../Primitives.h"
 
 #include <Titania/Backtrace.h>
 #include <Titania/Math/Utility/strtol.h>
@@ -61,33 +63,23 @@ namespace titania {
 namespace pb {
 
 Parser::Parser (jsExecutionContext* const executionContext, std::istream & istream) :
-	      rootContext (executionContext),
-	executionContexts ({ executionContext }),
-	          istream (istream),
-	      whiteSpaces (),
-	commentCharacters ()
+	             rootContext (executionContext),
+	       executionContexts ({ executionContext }),
+	                 istream (istream),
+	             whiteSpaces (),
+	       commentCharacters (),
+	isLeftHandSideExressions ()
 { }
 
 void
-Parser::parseIntoScope ()
+Parser::parseIntoContext ()
 throw (SyntaxError)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
-	try
-	{
-		istream .imbue (std::locale::classic ());
+	istream .imbue (std::locale::classic ());
 
-		program ();
-	}
-	catch (const SyntaxError & error)
-	{
-		throw;
-	}
-	catch (const jsException & error)
-	{
-		throw SyntaxError (error .toString ());
-	}
+	program ();
 }
 
 void
@@ -121,8 +113,8 @@ Parser::comment ()
 
 	Grammar::WhiteSpaces (istream, whiteSpaces);
 
-	//if (Grammar::MultiLineComment (istream, commentCharacters))
-	//	return true;
+	if (Grammar::MultiLineComment (istream, commentCharacters))
+		return true;
 
 	if (Grammar::SingleLineComment (istream, commentCharacters))
 		return true;
@@ -133,7 +125,7 @@ Parser::comment ()
 bool
 Parser::identifier (std::string & identifierCharacters)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	const auto state = getState ();
 
@@ -155,7 +147,7 @@ Parser::identifier (std::string & identifierCharacters)
 bool
 Parser::identifierName (std::string & identifierNameCharacters)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (identifierStart (identifierNameCharacters))
 	{
@@ -171,7 +163,7 @@ Parser::identifierName (std::string & identifierNameCharacters)
 bool
 Parser::identifierStart (std::string & identifierStartCharacters)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	// ...
 
@@ -183,7 +175,7 @@ Parser::identifierStart (std::string & identifierStartCharacters)
 bool
 Parser::identifierPart (std::string & identifierPartCharacters)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	// ...
 
@@ -200,7 +192,7 @@ Parser::identifierPart (std::string & identifierPartCharacters)
 bool
 Parser::reservedWord (const std::string & string)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (Grammar::Keyword .count (string))
 		return true;
@@ -244,7 +236,7 @@ Parser::literal (var & value)
 bool
 Parser::nullLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -260,7 +252,7 @@ Parser::nullLiteral (var & value)
 bool
 Parser::booleanLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -282,7 +274,7 @@ Parser::booleanLiteral (var & value)
 bool
 Parser::numericLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (binaryIntegerLiteral (value))
 		return true;
@@ -302,11 +294,13 @@ Parser::numericLiteral (var & value)
 bool
 Parser::decimalLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
+
+	const auto state = getState ();
 
 	comments ();
 
-	double number;
+	double number = 0;
 
 	if (istream >> std::dec >> number)
 	{
@@ -314,7 +308,7 @@ Parser::decimalLiteral (var & value)
 		return true;
 	}
 
-	istream .clear ();
+	setState (state);
 
 	return false;
 }
@@ -322,7 +316,7 @@ Parser::decimalLiteral (var & value)
 bool
 Parser::binaryIntegerLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -345,13 +339,13 @@ Parser::binaryIntegerLiteral (var & value)
 bool
 Parser::octalIntegerLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
 	if (Grammar::oct (istream) or Grammar::OCT (istream))
 	{
-		uint32_t number;
+		uint32_t number = 0;
 
 		if (istream >> std::oct >> number)
 		{
@@ -368,13 +362,13 @@ Parser::octalIntegerLiteral (var & value)
 bool
 Parser::hexIntegerLiteral (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
 	if (Grammar::hex (istream) or Grammar::HEX (istream))
 	{
-		uint32_t number;
+		uint32_t number = 0;
 
 		if (istream >> std::hex >> number)
 		{
@@ -420,7 +414,7 @@ Parser::stringLiteral (var & value)
 bool
 Parser::primaryExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -468,7 +462,7 @@ Parser::primaryExpression (var & value)
 bool
 Parser::memberExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (primaryExpression (value))
 		return true;
@@ -484,7 +478,7 @@ Parser::memberExpression (var & value)
 bool
 Parser::newExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (memberExpression (value))
 		return true;
@@ -497,13 +491,19 @@ Parser::newExpression (var & value)
 bool
 Parser::leftHandSideExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (newExpression (value))
+	{
+		isLeftHandSideExressions .back () = true;
 		return true;
+	}
 
 	//if (callExpression ())
+	//{
+	//	isLeftHandSideExressions .back () = true;
 	//	return true;
+	//}
 
 	return false;
 }
@@ -511,12 +511,13 @@ Parser::leftHandSideExpression (var & value)
 bool
 Parser::postfixExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (leftHandSideExpression (value))
 		return true;
 
 	// ...
+	//		isLeftHandSideExressions .back () = false;
 
 	return false;
 }
@@ -524,12 +525,147 @@ Parser::postfixExpression (var & value)
 bool
 Parser::unaryExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (postfixExpression (value))
 		return true;
 
-	// ...
+	comments ();
+
+	if (Grammar::_delete (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new Delete (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after delete.");
+	}
+
+	if (Grammar::_void (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new Void (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after void.");
+	}
+
+	if (Grammar::typeof (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new TypeOf (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after typeof.");
+	}
+
+	if (Grammar::Increment (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new PostIncrement (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after ++.");
+	}
+
+	if (Grammar::Decrement (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new PostDecrement (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after --.");
+	}
+
+	if (Grammar::PlusSign (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new ToNumber (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after +.");
+	}
+
+	if (Grammar::MinusSign (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new Negate (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after -.");
+	}
+
+	if (Grammar::Tilde (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new BitwiseNOT (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after ~.");
+	}
+
+	if (Grammar::ExclamationMark (istream))
+	{
+		isLeftHandSideExressions .back () = false;
+
+		var expression;
+
+		if (unaryExpression (expression))
+		{
+			//value .reset (new LogicalNOT (std::move (expression)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected expression after !.");
+	}
 
 	return false;
 }
@@ -537,7 +673,7 @@ Parser::unaryExpression (var & value)
 bool
 Parser::multiplicativeExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (unaryExpression (lhs))
 	{
@@ -545,6 +681,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 		if (Grammar::Multiplication (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Multiplication .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (multiplicativeExpression (rhs))
@@ -558,6 +699,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 		if (Grammar::Division (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Division .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (multiplicativeExpression (rhs))
@@ -571,6 +717,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 		if (Grammar::Remainder (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Remainder .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (multiplicativeExpression (rhs))
@@ -591,7 +742,7 @@ Parser::multiplicativeExpression (var & lhs)
 bool
 Parser::additiveExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (multiplicativeExpression (lhs))
 	{
@@ -599,6 +750,11 @@ Parser::additiveExpression (var & lhs)
 
 		if (Grammar::Addition (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Addition .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (additiveExpression (rhs))
@@ -612,6 +768,11 @@ Parser::additiveExpression (var & lhs)
 
 		if (Grammar::Subtraction (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Subtraction .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (additiveExpression (rhs))
@@ -632,7 +793,7 @@ Parser::additiveExpression (var & lhs)
 bool
 Parser::shiftExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (additiveExpression (lhs))
 	{
@@ -640,10 +801,16 @@ Parser::shiftExpression (var & lhs)
 
 		if (Grammar::LeftShift (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::LeftShift .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (shiftExpression (rhs))
 			{
+				//lhs = left_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -652,10 +819,16 @@ Parser::shiftExpression (var & lhs)
 
 		if (Grammar::UnsignedRightShift (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::UnsignedRightShift .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (shiftExpression (rhs))
 			{
+				//lhs = unsigned_right_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -664,10 +837,16 @@ Parser::shiftExpression (var & lhs)
 
 		if (Grammar::RightShift (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::RightShift .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (shiftExpression (rhs))
 			{
+				//lhs = right_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -683,7 +862,7 @@ Parser::shiftExpression (var & lhs)
 bool
 Parser::relationalExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (shiftExpression (lhs))
 	{
@@ -691,10 +870,16 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::LessEqual (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::LessEqual .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
+				//lhs = less_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -703,10 +888,16 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::GreaterEqual (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::GreaterEqual .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
+				//lhs = greater_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -715,10 +906,16 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::Less (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Less .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
+				//lhs = less (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -727,10 +924,16 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::Greater (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::Greater .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
+				//lhs = greater (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -739,10 +942,16 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::instanceof (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::instanceof .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
+				//lhs = instanceof (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -751,10 +960,16 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::in (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::in .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (relationalExpression (rhs))
 			{
+				//lhs = in (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -770,7 +985,7 @@ Parser::relationalExpression (var & lhs)
 bool
 Parser::equalityExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (relationalExpression (lhs))
 	{
@@ -778,10 +993,13 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::StrictEqual (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
+				//lhs = strict_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -790,10 +1008,13 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::StrictNotEqual (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
+				//lhs = strict_not_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -802,10 +1023,13 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::Equal (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
+				//lhs = equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -814,10 +1038,13 @@ Parser::equalityExpression (var & lhs)
 
 		if (Grammar::NotEqual (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (equalityExpression (rhs))
 			{
+				//lhs = not_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -833,7 +1060,7 @@ Parser::equalityExpression (var & lhs)
 bool
 Parser::bitwiseANDExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (equalityExpression (lhs))
 	{
@@ -844,10 +1071,16 @@ Parser::bitwiseANDExpression (var & lhs)
 
 		if (Grammar::BitwiseAND (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::BitwiseAND .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (bitwiseANDExpression (rhs))
 			{
+				//lhs = bitwise_and (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -863,7 +1096,7 @@ Parser::bitwiseANDExpression (var & lhs)
 bool
 Parser::bitwiseXORExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (bitwiseANDExpression (lhs))
 	{
@@ -871,10 +1104,16 @@ Parser::bitwiseXORExpression (var & lhs)
 
 		if (Grammar::BitwiseXOR (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::BitwiseXOR .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (bitwiseXORExpression (rhs))
 			{
+				//lhs = bitwise_xor (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -890,7 +1129,7 @@ Parser::bitwiseXORExpression (var & lhs)
 bool
 Parser::bitwiseORExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (bitwiseXORExpression (lhs))
 	{
@@ -901,10 +1140,16 @@ Parser::bitwiseORExpression (var & lhs)
 
 		if (Grammar::BitwiseOR (istream))
 		{
+			if (Grammar::Assignment .lookahead (istream))
+				return Grammar::BitwiseOR .rewind (istream);
+
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (bitwiseORExpression (rhs))
 			{
+				//lhs = bitwise_or (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -920,7 +1165,7 @@ Parser::bitwiseORExpression (var & lhs)
 bool
 Parser::logicalANDExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (bitwiseORExpression (lhs))
 	{
@@ -928,10 +1173,13 @@ Parser::logicalANDExpression (var & lhs)
 
 		if (Grammar::LogicalAND (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (logicalANDExpression (rhs))
 			{
+				//lhs = logical_and (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -947,7 +1195,7 @@ Parser::logicalANDExpression (var & lhs)
 bool
 Parser::logicalORExpression (var & lhs)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (logicalANDExpression (lhs))
 	{
@@ -955,10 +1203,13 @@ Parser::logicalORExpression (var & lhs)
 
 		if (Grammar::LogicalOR (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var rhs = undefined ();
 
 			if (logicalORExpression (rhs))
 			{
+				//lhs = logical_or (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -974,7 +1225,7 @@ Parser::logicalORExpression (var & lhs)
 bool
 Parser::conditionalExpression (var & first)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (logicalORExpression (first))
 	{
@@ -982,6 +1233,8 @@ Parser::conditionalExpression (var & first)
 
 		if (Grammar::QuestionMark (istream))
 		{
+			isLeftHandSideExressions .back () = false;
+
 			var second = undefined ();
 
 			if (assignmentExpression (second))
@@ -994,6 +1247,7 @@ Parser::conditionalExpression (var & first)
 
 					if (assignmentExpression (third))
 					{
+						//first = conditional (std::move (first), std::move (second), std::move (third));
 						return true;
 					}
 				}
@@ -1013,41 +1267,53 @@ Parser::conditionalExpression (var & first)
 bool
 Parser::assignmentExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
-	const auto state = getState ();
-
-	if (leftHandSideExpression (value))
-	{
-		comments ();
-
-		if (Grammar::Assignment (istream))
-		{
-			var rhs = undefined ();
-
-			if (assignmentExpression (rhs))
-				return true;
-
-			throw SyntaxError ("Expected expression after '='.");
-		}
-
-		AssignmentOperatorType type;
-
-		if (assignmentOperator (type))
-		{
-			var rhs = undefined ();
-
-			if (assignmentExpression (rhs))
-				return true;
-
-			throw SyntaxError ("Expected expression after '" + to_ustring (type) + "'."); // XXX
-		}
-
-		setState (state);
-	}
+	isLeftHandSideExressions .push_back (false);
 
 	if (conditionalExpression (value))
+	{
+		const bool isLeftHandSideExression = isLeftHandSideExressions .back ();
+
+		isLeftHandSideExressions .pop_back ();
+
+		if (isLeftHandSideExression)
+		{
+			comments ();
+
+			if (Grammar::Assignment (istream))
+			{
+				var expression = undefined ();
+
+				if (assignmentExpression (expression))
+				{
+					//value .reset (new Assignment (std::move (value), std::move (expression), AssignmentOperatorType::ASSIGNMENT));
+					return true;
+				}
+
+				throw SyntaxError ("Expected expression after '='.");
+			}
+
+			AssignmentOperatorType type;
+
+			if (assignmentOperator (type))
+			{
+				var expression = undefined ();
+
+				if (assignmentExpression (expression))
+				{
+					//value .reset (new Assignment (std::move (value), std::move (expression), type));
+					return true;
+				}
+
+				throw SyntaxError ("Expected expression after '" + to_ustring (type) + "'.");
+			}
+		}
+
 		return true;
+	}
+
+	isLeftHandSideExressions .pop_back ();
 
 	return false;
 }
@@ -1129,7 +1395,7 @@ Parser::assignmentOperator (AssignmentOperatorType & type)
 bool
 Parser::expression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (assignmentExpression (value))
 	{
@@ -1197,7 +1463,7 @@ Parser::variableStatement ()
 bool
 Parser::variableDeclarationList ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	if (variableDeclaration ())
 	{
@@ -1256,7 +1522,7 @@ Parser::initialiser (var & value)
 bool
 Parser::expressionStatement ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -1287,7 +1553,7 @@ Parser::expressionStatement ()
 bool
 Parser::emptyStatement ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -1302,7 +1568,7 @@ Parser::emptyStatement ()
 bool
 Parser::functionDeclaration ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -1366,7 +1632,7 @@ Parser::functionDeclaration ()
 bool
 Parser::functionExpression (var & value)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	comments ();
 
@@ -1427,7 +1693,7 @@ Parser::functionExpression (var & value)
 bool
 Parser::formalParameterList (std::vector <std::string> & formalParameters)
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	std::string identifierCharacters;
 
@@ -1462,7 +1728,7 @@ Parser::formalParameterList (std::vector <std::string> & formalParameters)
 void
 Parser::functionBody ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	sourceElements ();
 }
@@ -1470,15 +1736,18 @@ Parser::functionBody ()
 void
 Parser::program ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	sourceElements ();
+
+	if (istream .peek () not_eq std::char_traits <char>::eof ())
+		throw SyntaxError ("Unexpected statement.");
 }
 
 void
 Parser::sourceElements ()
 {
-	//__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	while (sourceElement ())
 		;

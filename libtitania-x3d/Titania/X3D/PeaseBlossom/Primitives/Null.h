@@ -51,13 +51,16 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
 
-#include "../Values/jsValue.h"
+#include "../Primitives/jsValue.h"
 
 namespace titania {
 namespace pb {
 
 #undef Null
 #undef null
+
+const var &
+null ();
 
 /**
  *  Class to represent a »null« value.
@@ -68,7 +71,7 @@ class Null :
 public:
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -81,7 +84,18 @@ public:
 	getType () const final override
 	{ return NULL_OBJECT; }
 
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return null (); }
+
 	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return null (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -142,11 +156,11 @@ protected:
 		jsValue ()
 	{ }
 
-		
+
 private:
 
 	///  @name Static members
-	
+
 	static const std::string typeName;
 
 };

@@ -48,12 +48,26 @@
  *
  ******************************************************************************/
 
-#include "jsValue.h"
+#include "Boolean.h"
+
+#include "../Objects/BooleanObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsValue::typeName = "Value";
+var
+FalseType::toObject () const
+throw (TypeError)
+{
+	return var (new FalseObject ());
+}
+
+var
+TrueType::toObject () const
+throw (TypeError)
+{
+	return var (new TrueObject ());
+}
 
 } // pb
 } // titania

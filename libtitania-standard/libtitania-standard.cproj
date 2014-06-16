@@ -139,6 +139,7 @@
     <None Include="Titania\OS\realpath.h" />
     <None Include="Titania\Utility\Map.h" />
     <None Include="Titania\InputOutput\SingleLineComment.h" />
+    <None Include="Titania\InputOutput\MultiLineComment.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -199,6 +200,7 @@
     <Compile Include="Titania\InputOutput\InverseString.cpp" />
     <Compile Include="Titania\OS\realpath.cpp" />
     <Compile Include="Titania\InputOutput\SingleLineComment.cpp" />
+    <Compile Include="Titania\InputOutput\MultiLineComment.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

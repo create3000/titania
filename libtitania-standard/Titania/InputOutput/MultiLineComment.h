@@ -48,34 +48,69 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
+#ifndef __TITANIA_INPUT_OUTPUT_MULTI_LINE_COMMENT_H__
+#define __TITANIA_INPUT_OUTPUT_MULTI_LINE_COMMENT_H__
 
-#include "../Primitives/jsObject.h"
+#include "InverseString.h"
+#include "String.h"
 
 namespace titania {
-namespace pb {
+namespace io {
 
-/**
- *  Class to represent an object.
- */
-class Object :
-	public jsObject
+template <class CharT, class Traits = std::char_traits <CharT>> 
+class basic_multi_line_comment
 {
 public:
 
-	///  @name Construction
+	constexpr
+	basic_multi_line_comment (const std::basic_string <CharT> & start, const std::basic_string <CharT> & end);
 
-	Object () :
-		jsObject ()
-	{ }
+	const std::basic_string <CharT> &
+	begin () const
+	{ return begin_match (); }
+
+	const std::basic_string <CharT> &
+	end () const
+	{ return end_match (); }
+
+	bool
+	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
 
 private:
 
+	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
+
+	const io::basic_string <CharT, Traits>         begin_match;
+	const io::basic_inverse_string <CharT, Traits> end_match;
+
 };
 
-} // pb
+template <class CharT, class Traits>
+inline
+constexpr
+basic_multi_line_comment <CharT, Traits>::basic_multi_line_comment (const std::basic_string <CharT> & start, const std::basic_string <CharT> & end) :
+	begin_match (start),
+	  end_match (end)
+{ }
+
+template <class CharT, class Traits>
+bool
+basic_multi_line_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
+{
+	if (begin_match (istream))
+		return end_match (istream, string);
+
+	return false;
+}
+
+typedef basic_multi_line_comment <char>    multi_line_comment;
+typedef basic_multi_line_comment <wchar_t> wmulti_line_comment;
+
+extern template class basic_multi_line_comment <char>;
+extern template class basic_multi_line_comment <wchar_t>;
+
+} // io
 } // titania
 
 #endif

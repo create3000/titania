@@ -51,8 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IDENTIFIER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IDENTIFIER_H__
 
+#include "../Expressions/jsExpression.h"
 #include "../Execution/jsExecutionContext.h"
-#include "../Values/jsValue.h"
+#include "../Primitives/jsValue.h"
 
 namespace titania {
 namespace pb {
@@ -61,16 +62,16 @@ namespace pb {
  *  Class to represent a JavaScript identifier expression.
  */
 class Identifier :
-	public jsValue
+	public jsExpression
 {
 public:
 
 	///  @name Construction
 
 	Identifier (jsExecutionContext* const executionContext, std::string && name) :
-		         jsValue (),
-		executionContext (executionContext),
-		            name (std::move (name))
+		     jsExpression (),
+		 executionContext (executionContext),
+		             name (std::move (name))
 	{ addChild (this -> executionContext); }
 
 	///  @name Member access

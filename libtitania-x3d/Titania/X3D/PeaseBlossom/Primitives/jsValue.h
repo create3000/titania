@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,67 +48,116 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
 
-#include "../Primitives/jsObject.h"
-#include "../Primitives/String.h"
-
-#include <glibmm/ustring.h>
+#include "../Base/jsChildObject.h"
+#include "../Base/jsOutputStreamObject.h"
+#include "../Bits/Exception.h"
+#include "../Bits/jsConstants.h"
+#include "../Primitives/var.h"
 
 namespace titania {
 namespace pb {
 
-class jsFunction :
-	public jsObject
+/**
+ *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
+ */
+class jsValue :
+	virtual public jsChildObject,
+	virtual public jsOutputStreamObject
 {
 public:
 
 	///  @name Common members
-	
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
 
-	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
+	///  Returns the type of this value.
 	virtual
 	ValueType
-	getType () const override
-	{ return FUNCTION_OBJECT; }
+	getType () const = 0;
 
-	///  @name Member access
+	virtual
+	var
+	getDefaultValue () const = 0;
 
-	///  Returns the name of the function.
-	const std::string &
-	getName () const
-	{ return name; }
+	///  @name Common operations
+
+	///  Returns true if the input argument is a non-Object type otherwise false.
+	virtual
+	bool
+	isPrimitive () const;
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const = 0;
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const = 0;
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const = 0;
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const = 0;
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const = 0;
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const = 0;
+
+	virtual
+	var
+	toObject () const
+	throw (TypeError) = 0;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ toPrimitive () -> toStream (ostream); }
 
 
 protected:
 
 	///  @name Construction
 
-	jsFunction (const std::string & name) :
-		jsObject (),
-		         name (name)
-	{
-		defineProperty ("name", make_ptr <String> (name), NATIVE);
-	}
-
-
-private:
-
-	///  @name Static members
-	
-	static const std::string typeName;
-
-	///  @name Members
-
-	const std::string name;
+	jsValue () :
+		       jsChildObject (),
+		jsOutputStreamObject ()
+	{ }
 
 };
+
+inline
+bool
+jsValue::isPrimitive () const
+{
+	switch (getType ())
+	{
+		case UNDEFINED:
+		case BOOLEAN:
+		case NUMBER:
+		case STRING:
+		case NULL_OBJECT:
+			return true;
+		default:
+			return false;
+	}
+}
 
 } // pb
 } // titania

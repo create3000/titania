@@ -66,7 +66,7 @@ debug_roots (jsChildObject* node, std::set <jsChildObject*> & seen)
 	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << " : " << node -> getTypeName () << " ";
 
 	const auto value = dynamic_cast <jsValue*> (node);
-	
+
 	if (value)
 	{
 		switch (value -> getType ())
@@ -94,7 +94,7 @@ debug_roots (jsChildObject* node, std::set <jsChildObject*> & seen)
 			case CUSTOM:               std::clog << "CUSTOM";               break;
 		}
 	}
-	
+
 	std::clog << std::endl;
 
 	if (node -> getParents () .size ())

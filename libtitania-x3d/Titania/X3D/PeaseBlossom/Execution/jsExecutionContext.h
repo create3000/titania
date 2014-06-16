@@ -55,9 +55,8 @@
 #include "../Base/jsInputStreamObject.h"
 #include "../Base/jsOutputStreamObject.h"
 #include "../Bits/Exception.h"
-#include "../Primitives/Object.h"
-#include "../Primitives/jsFunction.h"
-#include "../Values/var.h"
+#include "../Objects/Object.h"
+#include "../Objects/jsFunction.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -74,6 +73,10 @@ class jsExecutionContext :
 public:
 
 	/// @name Global object access
+
+	const basic_ptr <jsExecutionContext> &
+	getExecutionContext () const
+	{ return executionContext; }
 
 	const basic_ptr <jsObject> &
 	getGlobalObject () const

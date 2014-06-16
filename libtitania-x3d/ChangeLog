@@ -1,3 +1,69 @@
+2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* pb.h:
+	* Parser.cpp:
+	* Debug.h:
+	* Objects.h:
+	* var.h:
+	* Primitives.h:
+	* Parser.h:
+	* Object.h:
+	* var.h:
+	* Grammar.h:
+	* jsValue.h:
+	* Null.h:
+	* Parser.cpp:
+	* Function.h:
+	* jsValue.cpp:
+	* jsObject.h:
+	* Program.h:
+	* String.h:
+	* Object.h:
+	* Number.h:
+	* jsValue.h:
+	* Boolean.h:
+	* jsObject.cpp:
+	* jsFunction.h:
+	* jsNumber.h:
+	* jsString.h:
+	* jsNumberBase.h:
+	* jsStringBase.h:
+	* Function.h:
+	* Number.cpp:
+	* String.cpp:
+	* jsObject.h:
+	* NumberObject.h:
+	* jsBooleanBase.h:
+	* Boolean.cpp:
+	* jsFunction.cpp:
+	* StringObject.h:
+	* jsBoolean.h:
+	* Undefined.h:
+	* Addition.h:
+	* Division.h:
+	* Remainder.h:
+	* jsStringBase.cpp:
+	* jsNumberBase.cpp:
+	* jsObject.cpp:
+	* BooleanObject.h:
+	* jsFunction.h:
+	* jsBoolean.cpp:
+	* Identifier.h:
+	* jsBooleanBase.cpp:
+	* NumberObject.h:
+	* StringObject.h:
+	* Subtraction.h:
+	* jsFunction.cpp:
+	* BooleanObject.h:
+	* jsExpression.h:
+	* jsExpression.cpp:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
 2014-06-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Debug.h:

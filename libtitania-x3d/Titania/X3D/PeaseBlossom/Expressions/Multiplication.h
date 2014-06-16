@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_H__
 
+#include "../Expressions/jsExpression.h"
 #include "../Primitives/Number.h"
 
 namespace titania {
@@ -60,7 +61,7 @@ namespace pb {
  *  Class to represent a JavaScript multiplication expression.
  */
 class Multiplication :
-	public jsNumberBase
+	public jsExpression
 {
 public:
 
@@ -104,7 +105,7 @@ protected:
 	///  @name Construction
 
 	Multiplication (var && lhs, var && rhs) :
-		jsNumberBase (),
+		jsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ addChildren (this -> lhs, this -> rhs); }

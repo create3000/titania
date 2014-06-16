@@ -319,10 +319,8 @@ Parser::x3dScene ()
 
 	popExecutionContext ();
 
-	if (istream .peek () == std::char_traits <char>::eof ())
-		return;
-
-	throw Error <INVALID_X3D> ("Unknown statement.");
+	if (istream .peek () not_eq std::char_traits <char>::eof ())
+		throw Error <INVALID_X3D> ("Unknown statement.");
 }
 
 void

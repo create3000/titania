@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use v5.10.0;
 
-my $dir = "/home/holger/Projekte/Titania";
+my $dir = "/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom";
 
 $dir = $ARGV [0] if @ARGV and -d $ARGV [0];
 
