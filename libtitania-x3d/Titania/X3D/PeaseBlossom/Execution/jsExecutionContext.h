@@ -65,6 +65,8 @@
 namespace titania {
 namespace pb {
 
+class Function;
+
 class jsExecutionContext :
 	virtual public jsChildObject,
 	virtual public jsInputStreamObject,
@@ -106,12 +108,13 @@ protected:
 	friend class Parser;
 	friend class Identifier;
 	friend class VariableDeclaration;
+	friend class Function;
 
 	///  @name Construction
 
 	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
 
-	/// @name Default object services
+	/// @name Default object service
 
 	void
 	addDefaultObject (const basic_ptr <jsObject> & object);
@@ -124,21 +127,23 @@ protected:
 	getDefaultObject ()
 	{ return defaultObjects .back (); }
 
-	/// @name Property access
+	/// @name Property service
 
 	const var &
 	getProperty (const std::string & name) const
 	throw (ReferenceError);
 
-	/// @name Expression access
+	/// @name Expression service
 
-	template <class ... Args>
+	///  Adds an expression to this context.
 	void
-	addExpression (Args && ... args)
-	{
-		expressions .emplace_back (std::forward <Args> (args) ...);
-		expressions .back () .addParent (this);
-	}
+	addExpression (var &&);
+
+	/// @name Function service
+
+	///  Constructs new Function.
+	basic_ptr <Function>
+	createFunction (const std::string & name = "", std::vector <std::string> && formalParameters = { });
 
 	///  @name Operations
 

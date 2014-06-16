@@ -420,7 +420,7 @@ Parser::primaryExpression (var & value)
 
 	if (Grammar::_this (istream))
 	{
-		// ...
+		value .reset (new Identifier (getExecutionContext (), std::string (Grammar::_this ())));
 		return true;
 	}
 
@@ -489,21 +489,146 @@ Parser::newExpression (var & value)
 }
 
 bool
-Parser::leftHandSideExpression (var & value)
+Parser::callExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
+	if (value not_eq getUndefined () or memberExpression (value))
+	{
+		for ( ; ;)
+		{
+			std::vector <var> argumentsListExpressions;
+
+			//value .reset (new CallExpression (std::move (value), std::move (argumentsListExpressions)));
+			//value = getUndefined ();
+
+			if (arguments (argumentsListExpressions))
+				continue;
+
+			comments ();
+	
+			if (Grammar::OpenBracket (istream))
+			{
+				var arrayIndexExpressions = getUndefined ();
+
+				if (expression (arrayIndexExpressions))
+				{
+					comments ();
+					
+					if (Grammar::CloseBracket (istream))
+					{
+						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
+						continue;
+					}
+
+					throw SyntaxError ("Expected a ']' after expression.");
+				}
+
+				throw SyntaxError ("Expected expression after '['.");
+			}
+
+			if (Grammar::Period (istream))
+			{
+				std::string identifierNameCharacters;
+
+				if (identifierName (identifierNameCharacters))
+				{
+					//value .reset (new ObjectPropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list)));
+					continue;
+				}
+
+				throw SyntaxError ("Expected a identifier name after '.'.");
+			}
+
+			break;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::arguments (std::vector <var> & argumentsListExpressions)
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::OpenParenthesis (istream))
+	{
+		argumentList (argumentsListExpressions);
+
+		comments ();
+
+		if (Grammar::CloseParenthesis (istream))
+		{
+			return true;
+		}
+
+		throw SyntaxError ("Expected a ')' after argument list.");
+	}
+
+	return false;
+}
+
+bool
+Parser::argumentList (std::vector <var> & argumentsListExpressions)
+{
+	//__LOG__ << std::endl;
+	
+	var value = getUndefined ();
+
+	if (assignmentExpression (value))
+	{
+		argumentsListExpressions .emplace_back (std::move (value));
+	
+		for ( ; ;)
+		{
+			comments ();
+
+			if (Grammar::Comma (istream))
+			{
+				value = getUndefined ();
+
+				if (assignmentExpression (value))
+				{
+					argumentsListExpressions .emplace_back (std::move (value));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after ','.");
+			}
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool
+Parser::leftHandSideExpression (var & value)
+{
+	//__LOG__ << std::endl;
+	
 	if (newExpression (value))
+	{
+		comments ();
+
+		if (not Grammar::OpenParenthesis .lookahead (istream))
+		{
+			isLeftHandSideExressions .back () = true;
+			return true;
+		}
+	}
+
+	if (callExpression (value))
 	{
 		isLeftHandSideExressions .back () = true;
 		return true;
 	}
-
-	//if (callExpression ())
-	//{
-	//	isLeftHandSideExressions .back () = true;
-	//	return true;
-	//}
 
 	return false;
 }
@@ -1497,7 +1622,7 @@ Parser::variableDeclaration ()
 
 		initialiser (value);
 
-		getExecutionContext () -> addExpression (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getExecutionContext () -> addExpression (make_var <VariableDeclaration> (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -1594,7 +1719,7 @@ Parser::functionDeclaration ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+						const auto function = getExecutionContext () -> createFunction (name, std::move (formalParameters));
 
 						pushExecutionContext (function .get ());
 
@@ -1658,7 +1783,7 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+					const auto function = getExecutionContext () -> createFunction (name, std::move (formalParameters));
 
 					pushExecutionContext (function .get ());
 

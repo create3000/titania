@@ -67,14 +67,14 @@ DEF Script1 Script {
 #var a = function () { };
 #",
     "peaseblossom:
-
-    
 // single line comment
+
 /*
  *  multi
  *  line
  *  comment
  */
+
 ;
 true;
 false;
@@ -86,6 +86,7 @@ null;
 0b1010101;
 '';
 this;
+undefined;
 '';
 
 var a, b, c, d;
@@ -105,6 +106,14 @@ a = a + b, a += b;
 '';
 '\\'single quoted string\\'';
 \"\\\"double quoted string\\\"\";
+'';
+'// CallExpression';
+'';
+function f (value, time)
+{ }
+
+f () [1 + 2] .name () .name () [f () .index];
+
 '';
 var a = 1, b = 31;
 '';

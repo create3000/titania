@@ -89,10 +89,13 @@ public:
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
 
+	// New Opearator
+	static const io::string _new;
+
 	// Unary Operator
 	static const io::string    _delete;
 	static const io::string    _void;
-	static const               io::string    typeof;
+	static const io::string    typeof;
 	static const io::string    Increment;
 	static const io::string    Decrement;
 	static const io::character PlusSign;
@@ -217,10 +220,13 @@ const std::set <std::string> Grammar::FutureReservedWord = {
 
 };
 
+// New Opearator
+const io::string Grammar::_new ("new");
+
 // Unary Operator
-const io::string Grammar::_delete ("delete");
-const io::string Grammar::_void ("void");
-const io::string Grammar::typeof ("typeof");
+const io::string    Grammar::_delete ("delete");
+const io::string    Grammar::_void ("void");
+const io::string    Grammar::typeof ("typeof");
 const io::string    Grammar::Increment ("++");
 const io::string    Grammar::Decrement ("--");
 const io::character Grammar::PlusSign ('+');

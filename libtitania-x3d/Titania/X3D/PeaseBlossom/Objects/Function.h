@@ -66,21 +66,13 @@ class Function :
 {
 public:
 
-	///  @name Construction
-
-	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        jsFunction (name),
-		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		  formalParameters (std::move (formalParameters))
-	{ __LOG__ << std::endl; }
-
 	///  @name Common members
 
 	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return make_var <Function> (getExecutionContext () .get ()); }
+	{ return getExecutionContext () -> createFunction (); }
 
 	///  @name Input/Output
 
@@ -99,6 +91,23 @@ public:
 		jsFunction::dispose ();
 		jsExecutionContext::dispose ();
 	}
+
+protected:
+
+	///  @name Friends
+	
+	friend
+	class jsExecutionContext;
+
+	///  @name Construction
+
+	///  Constructs new Function.
+	Function (jsExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
+		        jsFunction (name),
+		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+		  formalParameters (std::move (formalParameters))
+	{ __LOG__ << std::endl; }
+
 
 private:
 

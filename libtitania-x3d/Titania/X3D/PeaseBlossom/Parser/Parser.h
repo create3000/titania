@@ -171,6 +171,15 @@ private:
 	newExpression (var &);
 
 	bool
+	callExpression (var &);
+
+	bool
+	arguments (std::vector <var> &);
+
+	bool
+	argumentList (std::vector <var> &);
+
+	bool
 	leftHandSideExpression (var &);
 
 	bool

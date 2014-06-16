@@ -50,6 +50,7 @@
 
 #include "jsExecutionContext.h"
 
+#include "../Objects/Function.h"
 #include "../Parser/Parser.h"
 #include "../Primitives.h"
 
@@ -64,6 +65,9 @@ jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionConte
 	     defaultObjects (),
 	        expressions ()
 {
+	globalObject -> defineProperty ("this",      globalObject,    NATIVE | ENUMERABLE);
+	globalObject -> defineProperty ("undefined", getUndefined (), NATIVE | ENUMERABLE);
+
 	addChildren (this -> executionContext,
 	             this -> globalObject);
 
@@ -105,6 +109,19 @@ throw (ReferenceError)
 	}
 
 	throw ReferenceError (name + " is not defined.");
+}
+
+void
+jsExecutionContext::addExpression (var && expression)
+{
+	expressions .emplace_back (std::move (expression));
+	expressions .back () .addParent (this);
+}
+
+basic_ptr <Function>
+jsExecutionContext::createFunction (const std::string & name, std::vector <std::string> && formalParameters)
+{
+	return basic_ptr <Function> (new Function (this, name, std::move (formalParameters)));
 }
 
 var

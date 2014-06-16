@@ -116,6 +116,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Program.
 	Program (const basic_ptr <jsObject> & globalObject) :
 		jsExecutionContext (this, globalObject)
 	{ }
@@ -129,6 +130,10 @@ private:
 
 };
 
+///  @relates Program
+///  @name Utiliy functions
+
+///  Constructs new Program.
 inline
 basic_ptr <Program>
 createProgram ()
