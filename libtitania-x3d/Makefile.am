@@ -472,7 +472,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Objects/jsObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Boolean.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/Int32.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/jsBoolean.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/jsNumber.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/jsString.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/jsValue.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Null.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Number.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/String.cpp \

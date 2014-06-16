@@ -126,6 +126,7 @@ public:
 	toNumber () const override
 	{ return 1; }
 
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const

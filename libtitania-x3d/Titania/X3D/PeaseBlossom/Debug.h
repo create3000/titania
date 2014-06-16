@@ -91,6 +91,7 @@ debug_roots (jsChildObject* node, std::set <jsChildObject*> & seen)
 			case MULTIPLICATION:       std::clog << "MULTIPLICATION";       break;
 			case REMAINDER:            std::clog << "REMAINDER";            break;
 			case VARIABLE_DECLARATION: std::clog << "VARIABLE_DECLARATION"; break;
+			case LEFT_SHIFT:           std::clog << "LEFT_SHIFT";            break;
 			case CUSTOM:               std::clog << "CUSTOM";               break;
 		}
 	}

@@ -55,7 +55,7 @@
 namespace titania {
 namespace pb {
 
-const std::string String::typeName = "String";
+const var String::defaultValue (new String ());
 
 var
 String::toObject () const

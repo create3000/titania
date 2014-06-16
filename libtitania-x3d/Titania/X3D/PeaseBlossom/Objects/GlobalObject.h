@@ -48,26 +48,21 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_GLOBAL_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_GLOBAL_OBJECT_H__
 
-#include "../Objects/BooleanObject.h"
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
-var
-FalseType::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (False ());
-}
-
-var
-TrueType::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (True ());
-}
+template <class Type>
+inline
+bool
+isNaN (const Type & value)
+{ return std::isnan (value); }
 
 } // pb
 } // titania
+
+#endif

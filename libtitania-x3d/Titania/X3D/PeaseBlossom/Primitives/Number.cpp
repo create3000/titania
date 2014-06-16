@@ -55,7 +55,7 @@
 namespace titania {
 namespace pb {
 
-const std::string Number::typeName = "Number";
+const var Number::defaultValue (new Number ());
 
 var
 Number::toObject () const

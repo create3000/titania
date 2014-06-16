@@ -69,18 +69,13 @@ True ();
  *  Class to represent a »false« value.
  */
 class FalseType :
-	public jsFalse
+	public jsBoolean
 {
 public:
 
-	///  @name Member access
+	///  @name Common members
 
-	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
-	virtual
-	ValueType
-	getType () const override
-	{ return BOOLEAN; }
-
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
@@ -94,10 +89,25 @@ public:
 	toPrimitive () const final override
 	{ return False (); }
 
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return false; }
+
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "false"; }
 
 
 protected:
@@ -111,7 +121,7 @@ protected:
 	///  @name Construction
 
 	FalseType () :
-		jsFalse ()
+		jsBoolean ()
 	{ }
 
 };
@@ -120,18 +130,13 @@ protected:
  *  Class to represent a »true« value.
  */
 class TrueType :
-	public jsTrue
+	public jsBoolean
 {
 public:
 
-	///  @name Member access
+	///  @name Common members
 
-	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
-	virtual
-	ValueType
-	getType () const override
-	{ return BOOLEAN; }
-
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
@@ -145,10 +150,25 @@ public:
 	toPrimitive () const final override
 	{ return True (); }
 
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return true; }
+
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "true"; }
 
 
 protected:
@@ -162,7 +182,7 @@ protected:
 	///  @name Construction
 
 	TrueType () :
-		jsTrue ()
+		jsBoolean ()
 	{ }
 
 };

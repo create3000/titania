@@ -58,5 +58,6 @@
 #include "Expressions/Remainder.h"
 #include "Expressions/Subtraction.h"
 #include "Expressions/VariableDeclaration.h"
+#include "Expressions/LeftShift.h"
 
 #endif

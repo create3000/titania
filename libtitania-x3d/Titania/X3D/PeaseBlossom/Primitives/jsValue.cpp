@@ -48,25 +48,91 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
+#include "jsValue.h"
 
-#include "../Objects/BooleanObject.h"
+#include "../Objects/GlobalObject.h"
+#include "../Primitives/jsNumber.h"
 
 namespace titania {
 namespace pb {
 
-var
-FalseType::toObject () const
-throw (TypeError)
+constexpr double M_2_16 = 65536;
+constexpr double M_2_31 = 2147483648;
+constexpr double M_2_32 = 4294967296;
+
+bool
+jsValue::isPrimitive () const
 {
-	return make_var <BooleanObject> (False ());
+	switch (getType ())
+	{
+		case UNDEFINED:
+		case BOOLEAN:
+		case NUMBER:
+		case STRING:
+		case NULL_OBJECT:
+			return true;
+		default:
+			return false;
+	}
 }
 
-var
-TrueType::toObject () const
-throw (TypeError)
+uint16_t
+jsValue::toUInt16 () const
 {
-	return make_var <BooleanObject> (True ());
+	const double number = toNumber ();
+
+	if (isNaN (number))
+		return 0;
+	
+	if (number == jsNumber::POSITIVE_INFINITY ())
+		return 0;
+	
+	if (number == jsNumber::NEGATIVE_INFINITY ())
+		return 0;
+
+	const double posInt   = std::copysign (std::floor (std::abs (number)), number);
+	const double int16bit = std::fmod (posInt, M_2_16);
+
+	return int16bit;
+}
+
+int32_t
+jsValue::toInt32 () const
+{
+	const double int32bit = toInt32Bit ();
+
+	if (int32bit >= M_2_31)
+		return int32bit - M_2_32;
+
+	return int32bit;
+}
+
+double
+jsValue::toInt32Bit () const
+{
+	const double number = toNumber ();
+
+	if (isNaN (number))
+		return 0;
+	
+	if (number == jsNumber::POSITIVE_INFINITY ())
+		return 0;
+	
+	if (number == jsNumber::NEGATIVE_INFINITY ())
+		return 0;
+
+	const double posInt   = std::copysign (std::floor (std::abs (number)), number);
+	const double int32bit = std::fmod (posInt, M_2_32);
+
+	return int32bit;
+}
+
+double
+jsValue::toInteger () const
+{
+	const double number = toNumber ();
+
+	return std::copysign (std::floor (std::abs (number)), number);
 }
 
 } // pb

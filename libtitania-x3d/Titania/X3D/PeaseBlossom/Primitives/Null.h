@@ -84,6 +84,9 @@ public:
 	getType () const final override
 	{ return NULL_OBJECT; }
 
+	///  @name Common members
+
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
@@ -127,6 +130,7 @@ public:
 	toNumber () const final override
 	{ return 0; }
 
+	///  Throws a TypeError exception.
 	virtual
 	var
 	toObject () const

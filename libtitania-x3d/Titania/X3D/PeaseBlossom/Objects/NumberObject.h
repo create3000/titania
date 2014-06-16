@@ -53,6 +53,7 @@
 
 #include "../Objects/jsObject.h"
 #include "../Primitives/Number.h"
+#include "../Primitives/Int32.h"
 
 namespace titania {
 namespace pb {
@@ -61,8 +62,7 @@ namespace pb {
  *  Class to represent a number object.
  */
 class NumberObject :
-	public jsObject,
-	public jsNumber
+	public jsObject
 {
 public:
 
@@ -70,19 +70,25 @@ public:
 
 	NumberObject () :
 		jsObject (),
-		jsNumber ()
+		  number (new Number ())
+	{ }
+
+	explicit
+	NumberObject (const int32_t value) :
+		jsObject (),
+		  number (new Int32 (value))
 	{ }
 
 	explicit
 	NumberObject (const double value) :
 		jsObject (),
-		jsNumber (value)
+		  number (new Number (value))
 	{ }
 
 	explicit
-	NumberObject (const jsValue & value) :
+	NumberObject (const var & value) :
 		jsObject (),
-		jsNumber (value)
+		  number (new Number (value -> toNumber ()))
 	{ }
 
 	///  @name Common members
@@ -93,6 +99,7 @@ public:
 	getType () const final override
 	{ return NUMBER_OBJECT; }
 
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
@@ -104,37 +111,37 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return make_var <Number> (toNumber ()); }
+	{ return number; }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsNumber::toBoolean (); }
+	{ return number -> toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsNumber::toUInt16 (); }
+	{ return number -> toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsNumber::toInt32 (); }
+	{ return number -> toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsNumber::toUInt32 (); }
+	{ return number -> toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsNumber::toNumber (); }
+	{ return number -> toNumber (); }
 
 	///  @name Input/Output
 
@@ -142,7 +149,12 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsNumber::toStream (ostream); }
+	{ number -> toStream (ostream); }
+
+
+private:
+
+	var number;
 
 };
 

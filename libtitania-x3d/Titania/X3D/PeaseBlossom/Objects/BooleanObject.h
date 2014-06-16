@@ -57,32 +57,31 @@
 namespace titania {
 namespace pb {
 
-#undef False
-#undef True
-
 /**
  *  Class to represent a »false« object.
  */
-class FalseObject :
-	public jsObject,
-	public jsFalse
+class BooleanObject :
+	public jsObject
 {
 public:
 
 	///  @name Construction
 
-	FalseObject () :
+	BooleanObject () :
 		jsObject (),
-		 jsFalse ()
+		 boolean (False ())
+	{ }
+
+	BooleanObject (const bool value) :
+		jsObject (),
+		 boolean (value ? True () : False ())
+	{ }
+
+	BooleanObject (const var value) :
+		BooleanObject (value -> toBoolean ())
 	{ }
 
 	///  @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return jsFalse::getTypeName (); }
 
 	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
 	virtual
@@ -90,10 +89,11 @@ public:
 	getType () const final override
 	{ return BOOLEAN_OBJECT; }
 
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return make_var <FalseObject> (); }
+	{ return make_var <BooleanObject> (); }
 
 	///  @name Common operations
 
@@ -101,43 +101,37 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return False (); }
+	{ return boolean; }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsFalse::toBoolean (); }
+	{ return boolean -> toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsFalse::toUInt16 (); }
+	{ return boolean -> toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsFalse::toInt32 (); }
+	{ return boolean -> toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsFalse::toUInt32 (); }
+	{ return boolean -> toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsFalse::toNumber (); }
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) final override
-	{ return jsObject::toObject (); }
+	{ return boolean -> toNumber (); }
 
 	///  @name Input/Output
 
@@ -145,96 +139,12 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsFalse::toStream (ostream); }
+	{ boolean -> toStream (ostream); }
 
-};
 
-/**
- *  Class to represent a »true« object.
- */
-class TrueObject :
-	public jsObject,
-	public jsTrue
-{
-public:
+private:
 
-	///  @name Construction
-
-	TrueObject () :
-		jsObject (),
-		  jsTrue ()
-	{ }
-
-	///  @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return jsTrue::getTypeName (); }
-
-	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return BOOLEAN_OBJECT; }
-
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return make_var <FalseObject> (); }
-
-	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return True (); }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return jsTrue::toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return jsTrue::toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return jsTrue::toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return jsTrue::toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return jsTrue::toNumber (); }
-
-	virtual
-	var
-	toObject () const
-	throw (TypeError) final override
-	{ return jsObject::toObject (); }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ jsTrue::toStream (ostream); }
+	var boolean;
 
 };
 

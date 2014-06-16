@@ -72,6 +72,7 @@ public:
 
 	///  @name Common members
 
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override

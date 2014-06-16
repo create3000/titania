@@ -48,25 +48,20 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
+#include "Int32.h"
 
-#include "../Objects/BooleanObject.h"
+#include "../Objects/NumberObject.h"
 
 namespace titania {
 namespace pb {
 
-var
-FalseType::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (False ());
-}
+const var Int32::defaultValue (new Int32 ());
 
 var
-TrueType::toObject () const
+Int32::toObject () const
 throw (TypeError)
 {
-	return make_var <BooleanObject> (True ());
+	return make_var <NumberObject> (toInt32 ());
 }
 
 } // pb

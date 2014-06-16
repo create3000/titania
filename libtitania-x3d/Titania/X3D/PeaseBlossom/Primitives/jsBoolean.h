@@ -75,6 +75,12 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
+	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
+	virtual
+	ValueType
+	getType () const override
+	{ return BOOLEAN; }
+
 	///  @name Common operations
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
@@ -115,76 +121,6 @@ private:
 	///  @name Static members
 
 	static const std::string typeName;
-
-};
-
-/**
- *  Class to represent a basic »false« value.
- */
-class jsFalse :
-	public jsBoolean
-{
-public:
-
-	///  @name Operations
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const override
-	{ return false; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "false"; }
-
-
-protected:
-
-	///  @name Construction
-
-	jsFalse () :
-		jsBoolean ()
-	{ }
-
-};
-
-/**
- *  Class to represent a basic »true« value.
- */
-class jsTrue :
-	public jsBoolean
-{
-public:
-
-	///  @name Operations
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const override
-	{ return true; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "true"; }
-
-
-protected:
-
-	///  @name Construction
-
-	jsTrue () :
-		jsBoolean ()
-	{ }
 
 };
 

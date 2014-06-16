@@ -53,6 +53,8 @@
 
 #include "../Primitives/jsNumber.h"
 
+#include <iomanip>
+
 namespace titania {
 namespace pb {
 
@@ -67,41 +69,29 @@ public:
 	///  @name Construction
 
 	Number () :
-		jsNumber ()
+		jsNumber (),
+		  number (0)
 	{ }
 
 	explicit
 	Number (const double value) :
-		jsNumber (value)
+		jsNumber (),
+		  number (value)
 	{ }
 
 	explicit
-	Number (const jsValue & value) :
-		jsNumber (value)
+	Number (const var & value) :
+		jsNumber (),
+		  number (value -> toNumber ())
 	{ }
 
-	///  @name Member access
+	///  @name Common members
 
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  Returns the type of the value. For number values this is »NUMBER«.
-	virtual
-	ValueType
-	getType () const override
-	{ return NUMBER; }
-
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{
-		static const var defaultValue (new Number ());
-
-		return defaultValue;
-	}
+	{ return defaultValue; }
 
 	///  @name Common operations
 
@@ -111,19 +101,72 @@ public:
 	toPrimitive () const final override
 	{ return var (const_cast <Number*> (this)); }
 
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return number; }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toInteger (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toInteger (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return number; }
+
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const
 	throw (TypeError) final override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override;
 
 
 private:
 
 	///  @name Static members
 
-	static const std::string typeName;
+	static const var defaultValue;
+
+	///  @name Members
+
+	const double number;
 
 };
+
+inline
+void
+Number::toStream (std::ostream & ostream) const
+{
+	if (std::isnan (number))
+		ostream << "NaN";
+
+	else if (number == NEGATIVE_INFINITY ())
+		ostream << "-Infinity";
+
+	else if (number == POSITIVE_INFINITY ())
+		ostream << "Infinity";
+
+	else
+		ostream << std::setprecision (std::numeric_limits <double>::digits10) << number;
+}
 
 } // pb
 } // titania

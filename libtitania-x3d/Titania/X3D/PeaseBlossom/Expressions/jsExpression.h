@@ -72,11 +72,11 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
-	///  Converts its argument to a value of type Boolean.
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return toPrimitive (); }
+	{ return toPrimitive () -> getDefaultValue (); }
 
 	///  @name Common operations
 
@@ -87,6 +87,7 @@ public:
 	throw (ReferenceError) final override
 	{ return toValue () -> toPrimitive (); }
 
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const

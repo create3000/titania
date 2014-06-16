@@ -61,39 +61,39 @@ namespace pb {
  *  Class to represent a »string« object.
  */
 class StringObject :
-	public jsObject,
-	public jsString
+	public jsObject
 {
 public:
 
 	///  @name Construction
 
 	StringObject () :
-		jsString ()
+		jsObject (),
+		  string (new String ())
 	{ }
 
 	explicit
 	StringObject (const Glib::ustring & value) :
 		jsObject (),
-		jsString (value)
+		  string (new String (value))
 	{ }
 
 	explicit
 	StringObject (Glib::ustring && value) :
 		jsObject (),
-		jsString (std::move (value))
+		  string (new String (std::move (value)))
 	{ }
 
 	explicit
-	StringObject (const jsValue & value) :
+	StringObject (const var & value) :
 		jsObject (),
-		jsString (value)
+		  string (new String (value))
 	{ }
 
 	explicit
 	StringObject (const std::string::value_type* value) :
 		jsObject (),
-		jsString (value)
+		  string (new String (value))
 	{ }
 
 	///  @name Common members
@@ -104,6 +104,7 @@ public:
 	getType () const final override
 	{ return STRING_OBJECT; }
 
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
@@ -115,37 +116,37 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return make_var <String> (getString ()); }
+	{ return string; }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const final override
-	{ return jsString::toBoolean (); }
+	{ return string -> toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const final override
-	{ return jsString::toUInt16 (); }
+	{ return string -> toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return jsString::toInt32 (); }
+	{ return string -> toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const final override
-	{ return jsString::toUInt32 (); }
+	{ return string -> toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return jsString::toNumber (); }
+	{ return string -> toNumber (); }
 
 	///  @name Input/Output
 
@@ -153,7 +154,12 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsString::toStream (ostream); }
+	{ string -> toStream (ostream); }
+
+
+private:
+
+	var string;
 
 };
 

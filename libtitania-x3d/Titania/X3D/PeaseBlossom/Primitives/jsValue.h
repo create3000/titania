@@ -57,6 +57,8 @@
 #include "../Bits/jsConstants.h"
 #include "../Primitives/var.h"
 
+#include <cmath>
+
 namespace titania {
 namespace pb {
 
@@ -76,6 +78,7 @@ public:
 	ValueType
 	getType () const = 0;
 
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const = 0;
@@ -100,23 +103,29 @@ public:
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
-	toUInt16 () const = 0;
+	toUInt16 () const;
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
-	toInt32 () const = 0;
+	toInt32 () const;
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
-	toUInt32 () const = 0;
+	toUInt32 () const
+	{ return toInt32Bit (); }
+
+	///  Converts its argument to an integral numeric value.
+	double
+	toInteger () const;
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const = 0;
 
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const
@@ -146,24 +155,13 @@ protected:
 		jsOutputStreamObject ()
 	{ }
 
-};
 
-inline
-bool
-jsValue::isPrimitive () const
-{
-	switch (getType ())
-	{
-		case UNDEFINED:
-		case BOOLEAN:
-		case NUMBER:
-		case STRING:
-		case NULL_OBJECT:
-			return true;
-		default:
-			return false;
-	}
-}
+private:
+
+	double
+	toInt32Bit () const;
+
+};
 
 } // pb
 } // titania

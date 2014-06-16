@@ -53,6 +53,8 @@
 
 #include "../Primitives/jsString.h"
 
+#include <glibmm/ustring.h>
+
 namespace titania {
 namespace pb {
 
@@ -67,51 +69,51 @@ public:
 	///  @name Construction
 
 	String () :
-		jsString ()
+		jsString (),
+		  string ()
 	{ }
 
 	explicit
 	String (const Glib::ustring & value) :
-		jsString (value)
+		jsString (),
+		  string (value)
 	{ }
 
 	explicit
 	String (Glib::ustring && value) :
-		jsString (std::move (value))
-	{ }
+		jsString (),
+		  string ()
+	{ const_cast <Glib::ustring &> (string) .swap (value); }
 
 	explicit
 	String (const std::string::value_type* value) :
-		jsString (value)
+		jsString (),
+		  string (value)
 	{ }
 
 	explicit
-	String (const jsValue & value) :
-		jsString (value)
+	String (const var & value) :
+		jsString (),
+		  string (value -> toString ())
 	{ }
 
 	///  @name Member access
 
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	Glib::ustring::size_type
+	getLength () const
+	{ return string .length (); }
 
-	///  Returns the type of the value. For string values this is »STRING«.
-	virtual
-	ValueType
-	getType () const override
-	{ return STRING; }
+	const Glib::ustring &
+	getString () const
+	{ return string; }
 
+	///  @name Common members
+
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{
-		static const var defaultValue (new String ());
-
-		return defaultValue;
-	}
+	{ return defaultValue; }
 
 	///  @name Common operations
 
@@ -121,17 +123,74 @@ public:
 	toPrimitive () const final override
 	{ return var (const_cast <String*> (this)); }
 
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return not string .empty (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toNumber (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{
+		double number = 0;
+
+		std::istringstream isstream (string);
+
+		isstream >> number;
+
+		return number;
+	}
+
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toString () const override
+	{ return string; }
+
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toLocaleString (const std::locale &) const override
+	{ return string; }
+
+	///  Converts its argument to a value of type Object.
 	virtual
 	var
 	toObject () const
 	throw (TypeError) override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << string .c_str (); }
 
 
 private:
 
 	///  @name Static members
 
-	static const std::string typeName;
+	static const var defaultValue;
+
+	///  @name Members
+
+	const Glib::ustring string;
 
 };
 

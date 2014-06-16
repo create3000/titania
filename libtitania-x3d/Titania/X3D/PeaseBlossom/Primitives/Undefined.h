@@ -82,6 +82,7 @@ public:
 	getType () const final override
 	{ return UNDEFINED; }
 
+	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
@@ -125,6 +126,7 @@ public:
 	toNumber () const final override
 	{ return jsNumber::NaN (); }
 
+	///  Throws a TypeError exception.
 	virtual
 	var
 	toObject () const

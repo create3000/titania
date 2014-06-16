@@ -48,26 +48,12 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
-
-#include "../Objects/BooleanObject.h"
+#include "jsNumber.h"
 
 namespace titania {
 namespace pb {
 
-var
-FalseType::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (False ());
-}
-
-var
-TrueType::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (True ());
-}
+const std::string jsNumber::typeName = "Number";
 
 } // pb
 } // titania

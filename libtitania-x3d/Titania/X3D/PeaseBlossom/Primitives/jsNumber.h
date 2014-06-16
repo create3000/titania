@@ -53,8 +53,6 @@
 
 #include "../Primitives/jsValue.h"
 
-#include <cmath>
-
 namespace titania {
 namespace pb {
 
@@ -66,44 +64,19 @@ class jsNumber :
 {
 public:
 
-	///  @name Common operations
+	///  @name Common members
 
-	///  Converts its argument to a value of type Boolean.
+	///  Returns the type name of this object.
 	virtual
-	bool
-	toBoolean () const override
-	{ return number; }
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
 
-	///  Converts its argument to an integral unsigned value of 16 bit.
+	///  Returns the type of the value. For number values this is »NUMBER«.
 	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return number; }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return number; }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return number; }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return number; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override;
+	ValueType
+	getType () const override
+	{ return NUMBER; }
 
 	///  @name Constants
 
@@ -143,47 +116,17 @@ protected:
 	///  @name Construction
 
 	jsNumber () :
-		jsValue (),
-		 number (0)
-	{ }
-
-	explicit
-	jsNumber (const double value) :
-		jsValue (),
-		 number (value)
-	{ }
-
-	explicit
-	jsNumber (const jsValue & value) :
-		jsValue (),
-		 number (value .toNumber ())
+		jsValue ()
 	{ }
 
 
 private:
 
-	///  @name Members
+	///  @name Static members
 
-	const double number;
+	static const std::string typeName;
 
 };
-
-inline
-void
-jsNumber::toStream (std::ostream & ostream) const
-{
-	if (std::isnan (number))
-		ostream << "NaN";
-
-	else if (number == NEGATIVE_INFINITY ())
-		ostream << "-Infinity";
-
-	else if (number == POSITIVE_INFINITY ())
-		ostream << "Infinity";
-
-	else
-		ostream << number;
-}
 
 } // pb
 } // titania

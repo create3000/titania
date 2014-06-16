@@ -810,7 +810,7 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				//lhs = make_left_shift (std::move (lhs), std::move (rhs));
+				lhs = make_left_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 

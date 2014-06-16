@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,63 +48,116 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
 
-#include "../Execution/jsExecutionContext.h"
-#include "../Objects/jsFunction.h"
+#include "../Expressions/jsExpression.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a scripted JavaScript function.
+ *  Class to represent a JavaScript division expression.
  */
-class Function :
-	public jsFunction,
-	public jsExecutionContext
+class LeftShift :
+	public jsExpression
 {
 public:
 
-	///  @name Construction
+	///  @name Member access
 
-	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        jsFunction (name),
-		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		  formalParameters (std::move (formalParameters))
-	{ __LOG__ << std::endl; }
+	///  Returns the type of the value. For expressions this is »DIVISION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return LEFT_SHIFT; }
 
-	///  @name Common members
+	///  @name Operations
 
-	///  Returns the a default of its input argument type.
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	bool
+	isPrimitive () const final override
+	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return toInt32 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return toInt32 (); }
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	double
+	toNumber () const final override
+	{ return toInt32 (); }
+
+	///  Converts its input argument to a non-Object type.
 	virtual
 	var
-	getDefaultValue () const final override
-	{ return make_var <Function> (getExecutionContext () .get ()); }
+	toValue () const final override
+	{ return make_var <Number> (toInt32 ()); }
 
-	///  @name Input/Output
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ jsFunction::toStream (ostream); }
+protected:
 
-	///  @name Destruction
+	///  @name Friends
 
-	virtual
-	void
-	dispose () final override
-	{
-		jsFunction::dispose ();
-		jsExecutionContext::dispose ();
-	}
+	friend
+	var
+	make_left_shift (var &&, var &&);
+
+	///  @name Construction
+
+	LeftShift (var && lhs, var && rhs) :
+		jsExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
+	{ addChildren (this -> lhs, this -> rhs); }
+
 
 private:
 
-	std::vector <std::string> formalParameters;
+	///  @name Members
+
+	const var lhs;
+	const var rhs;
 
 };
+
+///  @relates Division
+///  @name division.
+
+inline
+var
+make_left_shift (var && lhs, var && rhs)
+{
+	const var expression (new LeftShift (std::move (lhs), std::move (rhs)));
+
+	if (expression -> isPrimitive ())
+		return expression -> toPrimitive ();
+
+	return expression;
+}
 
 } // pb
 } // titania

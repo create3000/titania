@@ -101,43 +101,9 @@ a = a + b, a += b;
 '\\'single quoted string\\'';
 \"\\\"double quoted string\\\"\";
 
-// BinaryExpression
+var a = 1/0, b = 0;
 
-var a = 1, b = 2;
-
-var x = a * b;
-var x = a / b;
-var x = a % b;
-
-var x = a + b;
-var x = a - b;
-
-var x = a << b;
-var x = a >> b;
-var x = a >>> b;
-
-var x = a < b;
-var x = a > b;
-var x = a <= b;
-var x = a >= b;
-var x = a instanceof b;
-var x = a in b;
-
-var x = a == b;
-var x = a != b;
-var x = a === b;
-var x = a !== b;
-
-var x = a & b;
-var x = a ^ b;
-var x = a | b;
-
-var x = a && b;
-var x = a || b;
-
-var x = a ? b : c;
-
-// UnaryExpression
+'// UnaryExpression';
 
 var x = delete a;
 var x = void b;
@@ -148,6 +114,55 @@ var x = + b;
 var x = - b;
 var x = ~ b;
 var x = ! b;
+
+'// BinaryExpression';
+
+'// MultiplicativeExpression';
+
+var x = a * b;
+var x = a / b;
+var x = a % b;
+
+'// AdditiveExpression';
+
+var x = a + b;
+var x = a - b;
+
+'// ShiftExpression';
+
+var x = a << b;
+var x = a >> b;
+var x = a >>> b;
+
+'// RelationalExpression';
+
+var x = a < b;
+var x = a > b;
+var x = a <= b;
+var x = a >= b;
+var x = a instanceof b;
+var x = a in b;
+
+'// EqualityExpression';
+
+var x = a == b;
+var x = a != b;
+var x = a === b;
+var x = a !== b;
+
+'// BitwiseExpression';
+
+var x = a & b;
+var x = a ^ b;
+var x = a | b;
+
+'// LogicalExpression';
+
+var x = a && b;
+var x = a || b;
+var x = a ? b : c;
+
+'// ';
 
 var Browser;
 'a' + 'b';
