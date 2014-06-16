@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_VALUE_BASE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_VALUE_BASE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
 
 #include "../Primitives/jsValue.h"
 
@@ -65,7 +65,7 @@ class jsExpression :
 public:
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -80,40 +80,17 @@ public:
 
 	///  @name Common operations
 
-	///  Converts its argument to a value of type Boolean.
+	///  Converts its input argument to a non-Object type.
 	virtual
-	bool
-	toBoolean () const
-	{ return toPrimitive () -> toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const
-	{ return toPrimitive () -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const
-	{ return toPrimitive () -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const
-	{ return toPrimitive () -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const
-	{ return toPrimitive () -> toNumber (); }
+	var
+	toPrimitive () const
+	throw (ReferenceError) final override
+	{ return toValue () -> toPrimitive (); }
 
 	virtual
 	var
 	toObject () const
-	throw (TypeError)
+	throw (TypeError) final override
 	{ return toPrimitive () -> toObject (); }
 
 	///  @name Input/Output
@@ -121,7 +98,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
+	toStream (std::ostream & ostream) const final override
 	{ toPrimitive () -> toStream (ostream); }
 
 
@@ -137,7 +114,7 @@ protected:
 private:
 
 	///  @name Static members
-	
+
 	static const std::string typeName;
 
 };

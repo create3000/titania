@@ -436,6 +436,18 @@ class jsValue;
 ///  Typedef for jsValue.
 using var = basic_ptr <jsValue>;
 
+///  @relates basic_ptr
+///  @name Utiliy functions
+
+///  Constructs an object of type Type and wraps it in a var using
+///  args as the parameter list for the constructor of Type.
+template <class Type, class ... Args>
+basic_ptr <Type>
+make_var (Args && ... args)
+{
+	return var (new Type (std::forward <Args> (args) ...));
+}
+
 } // pb
 } // titania
 

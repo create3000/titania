@@ -83,17 +83,41 @@ public:
 	isPrimitive () const final override
 	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
 
-	///  Converts its input argument to a non-Object type.
+	///  Converts its argument to a value of type Boolean.
 	virtual
-	var
-	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
+	bool
+	toBoolean () const final override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return toNumber (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return toNumber (); }
 
 	///  Converts its arguments to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
 	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const final override
+	{ return make_var <Number> (toNumber ()); }
 
 
 protected:
@@ -102,7 +126,7 @@ protected:
 
 	friend
 	var
-	remainder (var &&, var &&);
+	make_remainder (var &&, var &&);
 
 	///  @name Construction
 
@@ -127,7 +151,7 @@ private:
 
 inline
 var
-remainder (var && lhs, var && rhs)
+make_remainder (var && lhs, var && rhs)
 {
 	const var expression (new Remainder (std::move (lhs), std::move (rhs)));
 

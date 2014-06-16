@@ -68,10 +68,10 @@ public:
 	///  @name Construction
 
 	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && value) :
-		     jsExpression (),
-		 executionContext (executionContext),
-		       identifier (std::move (identifier)),
-		            value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
+		    jsExpression (),
+		executionContext (executionContext),
+		      identifier (std::move (identifier)),
+		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
 	{ addChildren (this -> executionContext, this -> value); }
 
 	///  @name Member access
@@ -90,16 +90,47 @@ public:
 	isPrimitive () const final override
 	{ return false; }
 
-	///  Converts its input argument to a non-Object type.
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return toValue () -> toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return toValue () -> toUInt16 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return toValue () -> toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return toValue () -> toUInt32 (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return toValue () -> toNumber (); }
+
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	toValue () const final override
 	{
-		const var result = value -> toPrimitive ();
+		const var result = value -> toValue ();
 
 		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE | CONFIGURABLE);
 		return result;
 	}
+
 
 private:
 

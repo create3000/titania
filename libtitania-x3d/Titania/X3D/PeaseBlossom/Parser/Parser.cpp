@@ -52,8 +52,8 @@
 
 #include "../Execution/jsExecutionContext.h"
 #include "../Expressions.h"
-#include "../Parser/Grammar.h"
 #include "../Objects.h"
+#include "../Parser/Grammar.h"
 #include "../Primitives.h"
 
 #include <Titania/Backtrace.h>
@@ -75,7 +75,7 @@ void
 Parser::parseIntoContext ()
 throw (SyntaxError)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	istream .imbue (std::locale::classic ());
 
@@ -125,7 +125,7 @@ Parser::comment ()
 bool
 Parser::identifier (std::string & identifierCharacters)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	const auto state = getState ();
 
@@ -147,7 +147,7 @@ Parser::identifier (std::string & identifierCharacters)
 bool
 Parser::identifierName (std::string & identifierNameCharacters)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (identifierStart (identifierNameCharacters))
 	{
@@ -163,7 +163,7 @@ Parser::identifierName (std::string & identifierNameCharacters)
 bool
 Parser::identifierStart (std::string & identifierStartCharacters)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	// ...
 
@@ -175,24 +175,24 @@ Parser::identifierStart (std::string & identifierStartCharacters)
 bool
 Parser::identifierPart (std::string & identifierPartCharacters)
 {
-	__LOG__ << std::endl;
-
-	// ...
+	//__LOG__ << std::endl;
 
 	static const io::sequence UnicodeDigit ("1234567890");
 
-	bool result = false;
+	// ...
+
+	const auto size = identifierPartCharacters .size ();
 
 	while (identifierStart (identifierPartCharacters) or UnicodeDigit (istream, identifierPartCharacters))
-		result = true;
+		;
 
-	return result;
+	return identifierPartCharacters .size () not_eq size;
 }
 
 bool
 Parser::reservedWord (const std::string & string)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (Grammar::Keyword .count (string))
 		return true;
@@ -236,7 +236,7 @@ Parser::literal (var & value)
 bool
 Parser::nullLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -252,7 +252,7 @@ Parser::nullLiteral (var & value)
 bool
 Parser::booleanLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -274,7 +274,7 @@ Parser::booleanLiteral (var & value)
 bool
 Parser::numericLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (binaryIntegerLiteral (value))
 		return true;
@@ -294,7 +294,7 @@ Parser::numericLiteral (var & value)
 bool
 Parser::decimalLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	const auto state = getState ();
 
@@ -316,7 +316,7 @@ Parser::decimalLiteral (var & value)
 bool
 Parser::binaryIntegerLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -339,7 +339,7 @@ Parser::binaryIntegerLiteral (var & value)
 bool
 Parser::octalIntegerLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -362,7 +362,7 @@ Parser::octalIntegerLiteral (var & value)
 bool
 Parser::hexIntegerLiteral (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -414,7 +414,7 @@ Parser::stringLiteral (var & value)
 bool
 Parser::primaryExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -462,7 +462,7 @@ Parser::primaryExpression (var & value)
 bool
 Parser::memberExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (primaryExpression (value))
 		return true;
@@ -478,7 +478,7 @@ Parser::memberExpression (var & value)
 bool
 Parser::newExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (memberExpression (value))
 		return true;
@@ -491,7 +491,7 @@ Parser::newExpression (var & value)
 bool
 Parser::leftHandSideExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (newExpression (value))
 	{
@@ -511,7 +511,7 @@ Parser::leftHandSideExpression (var & value)
 bool
 Parser::postfixExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (leftHandSideExpression (value))
 		return true;
@@ -525,7 +525,7 @@ Parser::postfixExpression (var & value)
 bool
 Parser::unaryExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (postfixExpression (value))
 		return true;
@@ -673,7 +673,7 @@ Parser::unaryExpression (var & value)
 bool
 Parser::multiplicativeExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (unaryExpression (lhs))
 	{
@@ -690,7 +690,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = multiplication (std::move (lhs), std::move (rhs));
+				lhs = make_multiplication (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -708,7 +708,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = division (std::move (lhs), std::move (rhs));
+				lhs = make_division (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -726,7 +726,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = remainder (std::move (lhs), std::move (rhs));
+				lhs = make_remainder (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -742,7 +742,7 @@ Parser::multiplicativeExpression (var & lhs)
 bool
 Parser::additiveExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (multiplicativeExpression (lhs))
 	{
@@ -759,7 +759,7 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs = addition (std::move (lhs), std::move (rhs));
+				lhs = make_addition (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -777,7 +777,7 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs = subtraction (std::move (lhs), std::move (rhs));
+				lhs = make_subtraction (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -793,7 +793,7 @@ Parser::additiveExpression (var & lhs)
 bool
 Parser::shiftExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (additiveExpression (lhs))
 	{
@@ -810,7 +810,7 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				//lhs = left_shift (std::move (lhs), std::move (rhs));
+				//lhs = make_left_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -828,7 +828,7 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				//lhs = unsigned_right_shift (std::move (lhs), std::move (rhs));
+				//lhs = make_unsigned_right_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -846,7 +846,7 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				//lhs = right_shift (std::move (lhs), std::move (rhs));
+				//lhs = make_right_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -862,7 +862,7 @@ Parser::shiftExpression (var & lhs)
 bool
 Parser::relationalExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (shiftExpression (lhs))
 	{
@@ -879,7 +879,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = less_equal (std::move (lhs), std::move (rhs));
+				//lhs = make_less_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -897,7 +897,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = greater_equal (std::move (lhs), std::move (rhs));
+				//lhs = make_greater_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -915,7 +915,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = less (std::move (lhs), std::move (rhs));
+				//lhs = make_less (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -933,7 +933,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = greater (std::move (lhs), std::move (rhs));
+				//lhs = make_greater (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -951,7 +951,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = instanceof (std::move (lhs), std::move (rhs));
+				//lhs = make_instanceof (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -969,7 +969,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = in (std::move (lhs), std::move (rhs));
+				//lhs = make_in (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -985,7 +985,7 @@ Parser::relationalExpression (var & lhs)
 bool
 Parser::equalityExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (relationalExpression (lhs))
 	{
@@ -999,7 +999,7 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				//lhs = strict_equal (std::move (lhs), std::move (rhs));
+				//lhs = make_strict_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1014,7 +1014,7 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				//lhs = strict_not_equal (std::move (lhs), std::move (rhs));
+				//lhs = make_strict_not_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1029,7 +1029,7 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				//lhs = equal (std::move (lhs), std::move (rhs));
+				//lhs = make_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1044,7 +1044,7 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				//lhs = not_equal (std::move (lhs), std::move (rhs));
+				//lhs = make_not_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1060,7 +1060,7 @@ Parser::equalityExpression (var & lhs)
 bool
 Parser::bitwiseANDExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (equalityExpression (lhs))
 	{
@@ -1080,7 +1080,7 @@ Parser::bitwiseANDExpression (var & lhs)
 
 			if (bitwiseANDExpression (rhs))
 			{
-				//lhs = bitwise_and (std::move (lhs), std::move (rhs));
+				//lhs = make_bitwise_and (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1096,7 +1096,7 @@ Parser::bitwiseANDExpression (var & lhs)
 bool
 Parser::bitwiseXORExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (bitwiseANDExpression (lhs))
 	{
@@ -1113,7 +1113,7 @@ Parser::bitwiseXORExpression (var & lhs)
 
 			if (bitwiseXORExpression (rhs))
 			{
-				//lhs = bitwise_xor (std::move (lhs), std::move (rhs));
+				//lhs = make_bitwise_xor (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1129,7 +1129,7 @@ Parser::bitwiseXORExpression (var & lhs)
 bool
 Parser::bitwiseORExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (bitwiseXORExpression (lhs))
 	{
@@ -1149,7 +1149,7 @@ Parser::bitwiseORExpression (var & lhs)
 
 			if (bitwiseORExpression (rhs))
 			{
-				//lhs = bitwise_or (std::move (lhs), std::move (rhs));
+				//lhs = make_bitwise_or (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1165,7 +1165,7 @@ Parser::bitwiseORExpression (var & lhs)
 bool
 Parser::logicalANDExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (bitwiseORExpression (lhs))
 	{
@@ -1179,7 +1179,7 @@ Parser::logicalANDExpression (var & lhs)
 
 			if (logicalANDExpression (rhs))
 			{
-				//lhs = logical_and (std::move (lhs), std::move (rhs));
+				//lhs = make_logical_and (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1195,7 +1195,7 @@ Parser::logicalANDExpression (var & lhs)
 bool
 Parser::logicalORExpression (var & lhs)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (logicalANDExpression (lhs))
 	{
@@ -1209,7 +1209,7 @@ Parser::logicalORExpression (var & lhs)
 
 			if (logicalORExpression (rhs))
 			{
-				//lhs = logical_or (std::move (lhs), std::move (rhs));
+				//lhs = make_logical_or (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1225,7 +1225,7 @@ Parser::logicalORExpression (var & lhs)
 bool
 Parser::conditionalExpression (var & first)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (logicalORExpression (first))
 	{
@@ -1247,7 +1247,7 @@ Parser::conditionalExpression (var & first)
 
 					if (assignmentExpression (third))
 					{
-						//first = conditional (std::move (first), std::move (second), std::move (third));
+						//first = make_conditional (std::move (first), std::move (second), std::move (third));
 						return true;
 					}
 				}
@@ -1267,7 +1267,7 @@ Parser::conditionalExpression (var & first)
 bool
 Parser::assignmentExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	isLeftHandSideExressions .push_back (false);
 
@@ -1395,7 +1395,7 @@ Parser::assignmentOperator (AssignmentOperatorType & type)
 bool
 Parser::expression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (assignmentExpression (value))
 	{
@@ -1463,7 +1463,7 @@ Parser::variableStatement ()
 bool
 Parser::variableDeclarationList ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	if (variableDeclaration ())
 	{
@@ -1522,7 +1522,7 @@ Parser::initialiser (var & value)
 bool
 Parser::expressionStatement ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -1553,7 +1553,7 @@ Parser::expressionStatement ()
 bool
 Parser::emptyStatement ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -1568,7 +1568,7 @@ Parser::emptyStatement ()
 bool
 Parser::functionDeclaration ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -1632,7 +1632,7 @@ Parser::functionDeclaration ()
 bool
 Parser::functionExpression (var & value)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	comments ();
 
@@ -1693,7 +1693,7 @@ Parser::functionExpression (var & value)
 bool
 Parser::formalParameterList (std::vector <std::string> & formalParameters)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	std::string identifierCharacters;
 
@@ -1728,7 +1728,7 @@ Parser::formalParameterList (std::vector <std::string> & formalParameters)
 void
 Parser::functionBody ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	sourceElements ();
 }
@@ -1736,7 +1736,7 @@ Parser::functionBody ()
 void
 Parser::program ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	sourceElements ();
 
@@ -1747,7 +1747,7 @@ Parser::program ()
 void
 Parser::sourceElements ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	while (sourceElement ())
 		;

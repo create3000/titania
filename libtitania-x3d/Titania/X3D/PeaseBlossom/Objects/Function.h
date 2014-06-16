@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
 
 #include "../Execution/jsExecutionContext.h"
 #include "../Objects/jsFunction.h"
@@ -69,17 +69,17 @@ public:
 	///  @name Construction
 
 	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		   jsFunction (name),
+		        jsFunction (name),
 		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
 		  formalParameters (std::move (formalParameters))
-	{ }
-	
+	{ __LOG__ << std::endl; }
+
 	///  @name Common members
 
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return var (new Function (getExecutionContext () .get ())); }
+	{ return make_var <Function> (getExecutionContext () .get ()); }
 
 	///  @name Input/Output
 
@@ -98,7 +98,6 @@ public:
 		jsFunction::dispose ();
 		jsExecutionContext::dispose ();
 	}
-
 
 private:
 

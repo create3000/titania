@@ -55,10 +55,10 @@
 #include "../Base/jsGarbageCollector.h"
 
 #include <Titania/Utility/Pass.h>
+#include <cassert>
 #include <cstddef>
 #include <set>
 #include <vector>
-#include <cassert>
 
 namespace titania {
 namespace pb {

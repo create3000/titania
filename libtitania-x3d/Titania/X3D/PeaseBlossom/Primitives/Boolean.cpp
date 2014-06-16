@@ -59,14 +59,14 @@ var
 FalseType::toObject () const
 throw (TypeError)
 {
-	return var (new FalseObject ());
+	return make_var <FalseObject> ();
 }
 
 var
 TrueType::toObject () const
 throw (TypeError)
 {
-	return var (new TrueObject ());
+	return make_var <TrueObject> ();
 }
 
 } // pb

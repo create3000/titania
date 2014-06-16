@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
 #include "../Objects/jsObject.h"
 
@@ -69,13 +69,13 @@ public:
 	Object () :
 		jsObject ()
 	{ }
-	
+
 	///  @name Common members
 
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return var (new Object ()); }
+	{ return make_var <Object> (); }
 
 
 private:

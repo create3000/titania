@@ -91,7 +91,7 @@ constexpr PropertyFlagsType NONE         = 0;
 constexpr PropertyFlagsType WRITABLE     = 1 << 0;
 constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
 constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
-constexpr PropertyFlagsType NATIVE     = 1 << 3;
+constexpr PropertyFlagsType NATIVE       = 1 << 3;
 
 } // pb
 } // titania

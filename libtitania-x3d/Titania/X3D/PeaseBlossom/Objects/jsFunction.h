@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
 
-#include "../Primitives/String.h"
 #include "../Objects/jsObject.h"
+#include "../Primitives/String.h"
 
 #include <glibmm/ustring.h>
 

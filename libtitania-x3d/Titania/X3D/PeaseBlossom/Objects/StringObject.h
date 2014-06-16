@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
 
 #include "../Objects/jsObject.h"
 #include "../Primitives/String.h"
@@ -103,14 +103,11 @@ public:
 	ValueType
 	getType () const final override
 	{ return STRING_OBJECT; }
-	
+
 	virtual
 	var
 	getDefaultValue () const final override
-	{
-		static const var defaultValue (new String ());
-		return defaultValue;
-	}
+	{ return make_var <StringObject> (); }
 
 	///  @name Common operations
 
@@ -118,7 +115,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return var (new String (getString ())); }
+	{ return make_var <String> (getString ()); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual

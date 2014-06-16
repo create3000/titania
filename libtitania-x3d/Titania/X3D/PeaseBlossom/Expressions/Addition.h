@@ -76,22 +76,53 @@ public:
 
 	///  @name Operations
 
-	///  Returns true if the all arguments is are non-Object type otherwise false.
+	///  Converts its input argument to a non-Object type.
 	virtual
 	bool
 	isPrimitive () const final override
 	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
 
-	///  Converts its input argument to a non-Object type.
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return toPrimitive () -> toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return toPrimitive () -> toUInt16 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return toPrimitive () -> toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return toPrimitive () -> toUInt32 (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return toPrimitive () -> toNumber (); }
+
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	toValue () const final override
 	{
 		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return var (new String (lhs -> toString () + rhs -> toString ()));
+			return make_var <String> (lhs -> toString () + rhs -> toString ());
 
-		return var (new Number (lhs -> toNumber () + rhs -> toNumber ()));
+		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
+
 
 protected:
 
@@ -99,7 +130,7 @@ protected:
 
 	friend
 	var
-	addition (var &&, var &&);
+	make_addition (var &&, var &&);
 
 	///  @name Construction
 
@@ -124,7 +155,7 @@ private:
 
 inline
 var
-addition (var && lhs, var && rhs)
+make_addition (var && lhs, var && rhs)
 {
 	const var expression (new Addition (std::move (lhs), std::move (rhs)));
 

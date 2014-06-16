@@ -63,9 +63,9 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url [
-##   "peaseblossom:
-##var a = 1 !== 1;
-##",
+#   "peaseblossom:
+#var a = function () { };
+#",
     "peaseblossom:
 
     
@@ -102,6 +102,8 @@ a = a + b, a += b;
 \"\\\"double quoted string\\\"\";
 
 // BinaryExpression
+
+var a = 1, b = 2;
 
 var x = a * b;
 var x = a / b;
@@ -172,8 +174,6 @@ set_time;
 var
 	PI   = 3.14159,
 	PI_2 = 2 * PI;
-
-x;
 "
   ]
   directOutput TRUE

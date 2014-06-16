@@ -57,18 +57,19 @@ namespace titania {
 namespace pb {
 
 jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject) :
-         jsChildObject (),
+	      jsChildObject (),
 	jsInputStreamObject (),
-	 executionContext (executionContext),
-	     globalObject (globalObject),
-	   defaultObjects (),
-	      expressions ()
+	   executionContext (executionContext),
+	       globalObject (globalObject),
+	     defaultObjects (),
+	        expressions ()
 {
 	addChildren (this -> executionContext,
 	             this -> globalObject);
 
 	addDefaultObject (globalObject);
 }
+
 void
 jsExecutionContext::addDefaultObject (const basic_ptr <jsObject> & object)
 {
@@ -117,7 +118,7 @@ jsExecutionContext::run ()
 	var result = undefined ();
 
 	for (const auto & expression : expressions)
-		__LOG__ << (result = expression -> toPrimitive ()) << std::endl ;
+		__LOG__ << (result = expression -> toValue ()) << std::endl;
 
 	return result;
 }

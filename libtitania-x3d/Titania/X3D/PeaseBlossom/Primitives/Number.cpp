@@ -61,7 +61,7 @@ var
 Number::toObject () const
 throw (TypeError)
 {
-	return var (new NumberObject (toNumber ()));
+	return make_var <NumberObject> (toNumber ());
 }
 
 } // pb

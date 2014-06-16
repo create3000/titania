@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BASIC_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
 
 #include "../Primitives/jsValue.h"
 
@@ -61,7 +61,7 @@ namespace pb {
  */
 struct PropertyDescriptor
 {
-	var               value;
+	var value;
 	PropertyFlagsType flags;
 
 };
@@ -75,7 +75,7 @@ class jsObject :
 public:
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -171,7 +171,7 @@ public:
 	virtual
 	void
 	dispose () override;
-	
+
 	virtual
 	~jsObject ();
 
@@ -181,7 +181,7 @@ protected:
 	///  @name Construction
 
 	jsObject () :
-		jsValue (),
+		            jsValue (),
 		properyDescriptions ()
 	{ }
 
@@ -189,11 +189,11 @@ protected:
 
 	std::map <std::string, PropertyDescriptor> properyDescriptions;
 
-		
+
 private:
 
 	///  @name Static members
-	
+
 	static const std::string typeName;
 
 };

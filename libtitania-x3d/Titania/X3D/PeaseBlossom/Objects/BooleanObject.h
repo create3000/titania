@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
 
-#include "../Primitives/Boolean.h"
 #include "../Objects/jsObject.h"
+#include "../Primitives/Boolean.h"
 
 namespace titania {
 namespace pb {
@@ -72,12 +72,12 @@ public:
 	///  @name Construction
 
 	FalseObject () :
-		   jsObject (),
-		jsFalse ()
+		jsObject (),
+		 jsFalse ()
 	{ }
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -89,11 +89,11 @@ public:
 	ValueType
 	getType () const final override
 	{ return BOOLEAN_OBJECT; }
-	
+
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return False (); }
+	{ return make_var <FalseObject> (); }
 
 	///  @name Common operations
 
@@ -137,7 +137,7 @@ public:
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return jsObject::toObject () ; }
+	{ return jsObject::toObject (); }
 
 	///  @name Input/Output
 
@@ -161,12 +161,12 @@ public:
 	///  @name Construction
 
 	TrueObject () :
-		  jsObject (),
-		jsTrue ()
+		jsObject (),
+		  jsTrue ()
 	{ }
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -182,7 +182,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return False (); }
+	{ return make_var <FalseObject> (); }
 
 	///  @name Common operations
 
@@ -226,7 +226,7 @@ public:
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return jsObject::toObject () ; }
+	{ return jsObject::toObject (); }
 
 	///  @name Input/Output
 

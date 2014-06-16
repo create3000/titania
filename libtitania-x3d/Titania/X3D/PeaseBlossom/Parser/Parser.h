@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PARSER_PARSER_H__
 
-#include "../Parser/AssignmentOperatorType.h"
 #include "../Bits/Exception.h"
+#include "../Expressions/AssignmentOperatorType.h"
 #include "../Primitives/var.h"
 
 #include <iostream>

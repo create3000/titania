@@ -74,7 +74,7 @@ public:
 	{ }
 
 	///  @name Common members
-	
+
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
@@ -111,11 +111,10 @@ public:
 		jsExecutionContext::dispose ();
 	}
 
-		
 private:
 
 	///  @name Static members
-	
+
 	static const std::string typeName;
 
 };

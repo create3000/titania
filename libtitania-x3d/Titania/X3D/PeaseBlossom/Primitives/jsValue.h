@@ -122,6 +122,12 @@ public:
 	toObject () const
 	throw (TypeError) = 0;
 
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const
+	{ return var (const_cast <jsValue*> (this)); }
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.

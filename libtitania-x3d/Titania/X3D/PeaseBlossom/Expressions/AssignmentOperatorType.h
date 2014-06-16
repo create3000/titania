@@ -61,6 +61,7 @@ namespace pb {
 
 enum class AssignmentOperatorType
 {
+	ASSIGMENT,
 	MULTIPLICATION_ASSIGMENT,
 	DIVISION_ASSIGNMENT,
 	REMAINDER_ASSIGNMENT,

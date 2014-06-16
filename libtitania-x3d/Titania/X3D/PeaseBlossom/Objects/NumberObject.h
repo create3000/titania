@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 
-#include "../Primitives/Number.h"
 #include "../Objects/jsObject.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
@@ -92,14 +92,11 @@ public:
 	ValueType
 	getType () const final override
 	{ return NUMBER_OBJECT; }
-	
+
 	virtual
 	var
 	getDefaultValue () const final override
-	{
-		static const var defaultValue (new Number ());
-		return defaultValue;
-	}
+	{ return make_var <NumberObject> (); }
 
 	///  @name Common operations
 
@@ -107,7 +104,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return var (new Number (toNumber ())); }
+	{ return make_var <Number> (toNumber ()); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual

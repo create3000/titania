@@ -61,7 +61,7 @@ var
 String::toObject () const
 throw (TypeError)
 {
-	return var (new StringObject (getString ()));
+	return make_var <StringObject> (getString ());
 }
 
 } // pb

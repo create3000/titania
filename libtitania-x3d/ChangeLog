@@ -1,5 +1,37 @@
 2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Parser.h:
+	* Object.h:
+	* var.h:
+	* Parser.cpp:
+	* jsObject.h:
+	* Function.h:
+	* jsConstants.h:
+	* Program.h:
+	* jsValue.h:
+	* jsChildObject.h:
+	* jsFunction.h:
+	* Number.cpp:
+	* String.cpp:
+	* StringObject.h:
+	* NumberObject.h:
+	* Boolean.cpp:
+	* Division.h:
+	* Addition.h:
+	* Remainder.h:
+	* BooleanObject.h:
+	* Identifier.h:
+	* Subtraction.h:
+	* jsExpression.h:
+	* Multiplication.h:
+	* AssignmentOperatorType.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h:
+	* AssignmentOperatorType.h: 
+
+2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* pb.h:
