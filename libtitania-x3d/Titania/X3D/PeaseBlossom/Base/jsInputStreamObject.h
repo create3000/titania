@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
 
 #include <iostream>
+#include <sstream>
 
 namespace titania {
 namespace pb {
@@ -64,7 +65,15 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream &) = 0;
+	fromString (const std::string & string);
+
+	virtual
+	void
+	fromLocaleString (const std::string & string, const std::locale & locale);
+
+	virtual
+	void
+	fromStream (std::istream & istream) = 0;
 
 
 protected:
@@ -75,6 +84,24 @@ protected:
 	{ }
 
 };
+
+inline
+void
+jsInputStreamObject::fromString (const std::string & string)
+{
+	fromLocaleString (string, std::locale::classic ());
+}
+
+inline
+void
+jsInputStreamObject::fromLocaleString (const std::string & string, const std::locale & locale)
+{
+	std::istringstream istringstream (string);
+
+	istringstream .imbue (locale);
+
+	fromStream (istringstream);
+}
 
 ///  @relates jsInputStreamObject
 ///  @name Input/Output operators.

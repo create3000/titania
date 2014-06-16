@@ -89,14 +89,6 @@ getDescription ()
 	return "JavaScript alpha " __DATE__;
 }
 
-template <class ... Args>
-inline
-basic_ptr <Program>
-createProgram ()
-{
-	return make_ptr <Program> (make_ptr <Object> ());
-}
-
 } // pb
 } // titania
 

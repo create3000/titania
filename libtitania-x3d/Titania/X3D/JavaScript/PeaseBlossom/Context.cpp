@@ -89,18 +89,14 @@ Context::create (X3DExecutionContext* const) const
 void
 Context::initialize ()
 {
-	const auto t0 = chrono::now ();
-
-	std::istringstream istream (getECMAScript ());
-
 	try
 	{
+		const auto t0      = chrono::now ();
 		const auto program = pb::createProgram ();
 
-		program -> fromStream (istream);
+		program -> fromString (getECMAScript ());
 
 		getBrowser () -> println ("result:  ", program -> run (), " : ", SFTime (chrono::now () - t0));
-		getBrowser () -> println ("istream: ", SFBool (istream));
 
 		{
 			const auto t0 = chrono::now ();
@@ -112,9 +108,6 @@ Context::initialize ()
 	{
 		getBrowser () -> println (error);
 	}
-
-	if (istream)
-		getBrowser () -> println (">>", istream .rdbuf (), "<<");
 
 	pb::debug_roots (pb::getUndefined () .get ());
 	pb::debug_roots (pb::getFalse () .get ());

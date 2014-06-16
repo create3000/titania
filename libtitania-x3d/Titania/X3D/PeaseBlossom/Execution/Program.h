@@ -67,12 +67,6 @@ class Program :
 {
 public:
 
-	///  @name Construction
-
-	Program (const basic_ptr <jsObject> & globalObject) :
-		jsExecutionContext (this, globalObject)
-	{ }
-
 	///  @name Common members
 
 	///  Returns the type name of this object.
@@ -111,6 +105,22 @@ public:
 		jsExecutionContext::dispose ();
 	}
 
+
+protected:
+
+	///  @name Friends
+
+	friend
+	basic_ptr <Program>
+	createProgram ();
+
+	///  @name Construction
+
+	Program (const basic_ptr <jsObject> & globalObject) :
+		jsExecutionContext (this, globalObject)
+	{ }
+
+
 private:
 
 	///  @name Static members
@@ -118,6 +128,13 @@ private:
 	static const std::string typeName;
 
 };
+
+inline
+basic_ptr <Program>
+createProgram ()
+{
+	return basic_ptr <Program> (new Program (make_ptr <Object> ()));
+}
 
 } // pb
 } // titania

@@ -68,31 +68,19 @@ public:
 	///  Converts its argument to a value of type String.
 	virtual
 	Glib::ustring
-	toString () const
-	{
-		return toLocaleString (std::locale::classic ());
-	}
+	toString () const;
 
 	///  Converts its argument to a value of type String according to @a locale.
 	virtual
 	Glib::ustring
-	toLocaleString (const std::locale & locale) const
-	{
-		std::ostringstream ostringstream;
-
-		ostringstream .imbue (locale);
-
-		toStream (ostringstream);
-
-		return ostringstream .str ();
-	}
+	toLocaleString (const std::locale & locale) const;
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream &) const = 0;
+	toStream (std::ostream & ostream) const = 0;
 
 
 protected:
@@ -103,6 +91,26 @@ protected:
 	{ }
 
 };
+
+inline
+Glib::ustring
+jsOutputStreamObject::toString () const
+{
+	return toLocaleString (std::locale::classic ());
+}
+
+inline
+Glib::ustring
+jsOutputStreamObject::toLocaleString (const std::locale & locale) const
+{
+	std::ostringstream ostringstream;
+
+	ostringstream .imbue (locale);
+
+	toStream (ostringstream);
+
+	return ostringstream .str ();
+}
 
 ///  @relates jsOutputStreamObject
 ///  @name Input/Output operators.
