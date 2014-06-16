@@ -60,10 +60,10 @@ namespace pb {
 #undef True
 
 const var &
-get_false ();
+getFalse ();
 
 const var &
-get_true ();
+getTrue ();
 
 /**
  *  Class to represent a »false« value.
@@ -79,7 +79,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return get_false (); }
+	{ return getFalse (); }
 
 	///  @name Common operations
 
@@ -87,7 +87,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return get_false (); }
+	{ return getFalse (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -116,7 +116,7 @@ protected:
 
 	friend
 	const var &
-	get_false ();
+	getFalse ();
 
 	///  @name Construction
 
@@ -140,7 +140,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return get_false (); }
+	{ return getFalse (); }
 
 	///  @name Common operations
 
@@ -148,7 +148,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return get_true (); }
+	{ return getTrue (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -177,7 +177,7 @@ protected:
 
 	friend
 	const var &
-	get_true ();
+	getTrue ();
 
 	///  @name Construction
 
@@ -193,7 +193,7 @@ protected:
 ///  Returns the unique »false« value.
 inline
 const var &
-get_false ()
+getFalse ()
 {
 	static const var value (new False ());
 
@@ -206,7 +206,7 @@ get_false ()
 ///  Returns the unique »true« value.
 inline
 const var &
-get_true ()
+getTrue ()
 {
 	static const var value (new True ());
 

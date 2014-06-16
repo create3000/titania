@@ -124,7 +124,7 @@ protected:
 
 	friend
 	var
-	make_multiplication (var &&, var &&);
+	createMultiplication (var &&, var &&);
 
 	///  @name Construction
 
@@ -149,7 +149,7 @@ private:
 
 inline
 var
-make_multiplication (var && lhs, var && rhs)
+createMultiplication (var && lhs, var && rhs)
 {
 	const var expression (new Multiplication (std::move (lhs), std::move (rhs)));
 

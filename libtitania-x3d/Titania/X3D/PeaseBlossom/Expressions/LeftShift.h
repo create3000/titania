@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
 
 #include "../Expressions/jsExpression.h"
-#include "../Primitives/Number.h"
+#include "../Primitives/Int32.h"
 
 namespace titania {
 namespace pb {
@@ -115,7 +115,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Number> (toInt32 ()); }
+	{ return make_var <Int32> (toInt32 ()); }
 
 
 protected:
@@ -124,7 +124,7 @@ protected:
 
 	friend
 	var
-	make_left_shift (var &&, var &&);
+	createLeftShift (var &&, var &&);
 
 	///  @name Construction
 
@@ -149,7 +149,7 @@ private:
 
 inline
 var
-make_left_shift (var && lhs, var && rhs)
+createLeftShift (var && lhs, var && rhs)
 {
 	const var expression (new LeftShift (std::move (lhs), std::move (rhs)));
 

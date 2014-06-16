@@ -480,6 +480,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Primitives/Null.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Number.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/String.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/UInt32.cpp \
 	Titania/X3D/PeaseBlossom/Primitives/Undefined.cpp \
 	Titania/X3D/Prototype/ExternProtoArray.cpp \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \

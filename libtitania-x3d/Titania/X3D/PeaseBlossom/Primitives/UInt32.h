@@ -48,26 +48,109 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UINT32_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UINT32_H__
 
-#include "../Objects/BooleanObject.h"
+#include "../Primitives/jsNumber.h"
 
 namespace titania {
 namespace pb {
 
-var
-False::toObject () const
-throw (TypeError)
+/**
+ *  Class to represent a basic number value.
+ */
+class UInt32 :
+	public jsNumber
 {
-	return make_var <BooleanObject> (getFalse ());
-}
+public:
 
-var
-True::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (getTrue ());
-}
+	///  @name Construction
+
+	UInt32 () :
+		jsNumber (),
+		  number (0)
+	{ }
+
+	explicit
+	UInt32 (const uint32_t value) :
+		jsNumber (),
+		  number (value)
+	{ }
+
+	explicit
+	UInt32 (const var & value) :
+		jsNumber (),
+		  number (value -> toNumber ())
+	{ }
+
+	///  @name Common members
+
+	///  Returns the a default of its input argument type.
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return defaultValue; }
+
+	///  @name Common operations
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (const_cast <UInt32*> (this)); }
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return number; }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return number; }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return number; }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const final override
+	{ return number; }
+
+	///  Converts its argument to a value of type Object.
+	virtual
+	var
+	toObject () const
+	throw (TypeError) final override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << number; }
+
+
+private:
+
+	///  @name Static members
+
+	static const var defaultValue;
+
+	///  @name Members
+
+	const uint32_t number;
+
+};
 
 } // pb
 } // titania
+
+#endif

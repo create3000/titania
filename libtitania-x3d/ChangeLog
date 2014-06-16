@@ -1,5 +1,28 @@
 2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Primitives.h:
+	* Parser.cpp:
+	* Null.h:
+	* UInt32.h:
+	* Boolean.h:
+	* UInt32.cpp:
+	* Context.cpp:
+	* NumberObject.h:
+	* Undefined.h:
+	* Addition.h:
+	* Boolean.cpp:
+	* Division.h:
+	* LeftShift.h:
+	* Remainder.h:
+	* BooleanObject.h:
+	* Subtraction.h:
+	* Multiplication.h:
+	* jsExecutionContext.cpp: 
+
+2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Expressions.h:
 	* Parser.cpp:
 	* Null.h:

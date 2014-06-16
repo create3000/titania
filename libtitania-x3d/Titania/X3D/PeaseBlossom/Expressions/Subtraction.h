@@ -124,7 +124,7 @@ protected:
 
 	friend
 	var
-	make_subtraction (var &&, var &&);
+	createSubtraction (var &&, var &&);
 
 	///  @name Construction
 
@@ -149,7 +149,7 @@ private:
 
 inline
 var
-make_subtraction (var && lhs, var && rhs)
+createSubtraction (var && lhs, var && rhs)
 {
 	const var expression (new Subtraction (std::move (lhs), std::move (rhs)));
 

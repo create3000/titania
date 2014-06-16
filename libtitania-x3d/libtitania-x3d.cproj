@@ -736,6 +736,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\LeftShift.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\GlobalObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Int32.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1250,6 +1251,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsNumber.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\Int32.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsString.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

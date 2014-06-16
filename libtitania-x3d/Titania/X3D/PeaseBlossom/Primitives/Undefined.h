@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 const var &
-get_undefined ();
+getUndefined ();
 
 /**
  *  Class to represent a »undefined« value.
@@ -86,7 +86,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return get_undefined (); }
+	{ return getUndefined (); }
 
 	///  @name Common operations
 
@@ -94,7 +94,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return get_undefined (); }
+	{ return getUndefined (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -148,7 +148,7 @@ protected:
 
 	friend
 	const var &
-	get_undefined ();
+	getUndefined ();
 
 	///  @name Construction
 
@@ -171,7 +171,7 @@ private:
 ///  Return the unique »undefined« value.
 inline
 const var &
-get_undefined ()
+getUndefined ()
 {
 	static const var value (new Undefined ());
 

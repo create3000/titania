@@ -242,7 +242,7 @@ Parser::nullLiteral (var & value)
 
 	if (Grammar::null (istream))
 	{
-		value = get_null ();
+		value = getNull ();
 		return true;
 	}
 
@@ -258,13 +258,13 @@ Parser::booleanLiteral (var & value)
 
 	if (Grammar::_true (istream))
 	{
-		value = get_true ();
+		value = getTrue ();
 		return true;
 	}
 
 	if (Grammar::_false (istream))
 	{
-		value = get_false ();
+		value = getFalse ();
 		return true;
 	}
 
@@ -326,7 +326,7 @@ Parser::binaryIntegerLiteral (var & value)
 
 		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value .reset (new Number (math::strtoul (digits .c_str (), 2)));
+			value .reset (new UInt32 (math::strtoul (digits .c_str (), 2)));
 			return true;
 		}
 
@@ -349,7 +349,7 @@ Parser::octalIntegerLiteral (var & value)
 
 		if (istream >> std::oct >> number)
 		{
-			value .reset (new Number (number));
+			value .reset (new UInt32 (number));
 			return true;
 		}
 
@@ -372,7 +372,7 @@ Parser::hexIntegerLiteral (var & value)
 
 		if (istream >> std::hex >> number)
 		{
-			value .reset (new Number (number));
+			value .reset (new UInt32 (number));
 			return true;
 		}
 
@@ -686,11 +686,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = make_multiplication (std::move (lhs), std::move (rhs));
+				lhs = createMultiplication (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -704,11 +704,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = make_division (std::move (lhs), std::move (rhs));
+				lhs = createDivision (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -722,11 +722,11 @@ Parser::multiplicativeExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs = make_remainder (std::move (lhs), std::move (rhs));
+				lhs = createRemainder (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -755,11 +755,11 @@ Parser::additiveExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (additiveExpression (rhs))
 			{
-				lhs = make_addition (std::move (lhs), std::move (rhs));
+				lhs = createAddition (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -773,11 +773,11 @@ Parser::additiveExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (additiveExpression (rhs))
 			{
-				lhs = make_subtraction (std::move (lhs), std::move (rhs));
+				lhs = createSubtraction (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -806,11 +806,11 @@ Parser::shiftExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (shiftExpression (rhs))
 			{
-				lhs = make_left_shift (std::move (lhs), std::move (rhs));
+				lhs = createLeftShift (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -824,7 +824,7 @@ Parser::shiftExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -842,7 +842,7 @@ Parser::shiftExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (shiftExpression (rhs))
 			{
@@ -875,7 +875,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -893,7 +893,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -911,7 +911,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -929,7 +929,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -947,7 +947,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -965,7 +965,7 @@ Parser::relationalExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (relationalExpression (rhs))
 			{
@@ -995,7 +995,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1010,7 +1010,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1025,7 +1025,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1040,7 +1040,7 @@ Parser::equalityExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (equalityExpression (rhs))
 			{
@@ -1076,7 +1076,7 @@ Parser::bitwiseANDExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (bitwiseANDExpression (rhs))
 			{
@@ -1109,7 +1109,7 @@ Parser::bitwiseXORExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (bitwiseXORExpression (rhs))
 			{
@@ -1145,7 +1145,7 @@ Parser::bitwiseORExpression (var & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (bitwiseORExpression (rhs))
 			{
@@ -1175,7 +1175,7 @@ Parser::logicalANDExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (logicalANDExpression (rhs))
 			{
@@ -1205,7 +1205,7 @@ Parser::logicalORExpression (var & lhs)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var rhs = get_undefined ();
+			var rhs = getUndefined ();
 
 			if (logicalORExpression (rhs))
 			{
@@ -1235,7 +1235,7 @@ Parser::conditionalExpression (var & first)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			var second = get_undefined ();
+			var second = getUndefined ();
 
 			if (assignmentExpression (second))
 			{
@@ -1243,7 +1243,7 @@ Parser::conditionalExpression (var & first)
 
 				if (Grammar::Colon (istream))
 				{
-					var third = get_undefined ();
+					var third = getUndefined ();
 
 					if (assignmentExpression (third))
 					{
@@ -1283,7 +1283,7 @@ Parser::assignmentExpression (var & value)
 
 			if (Grammar::Assignment (istream))
 			{
-				var expression = get_undefined ();
+				var expression = getUndefined ();
 
 				if (assignmentExpression (expression))
 				{
@@ -1298,7 +1298,7 @@ Parser::assignmentExpression (var & value)
 
 			if (assignmentOperator (type))
 			{
-				var expression = get_undefined ();
+				var expression = getUndefined ();
 
 				if (assignmentExpression (expression))
 				{
@@ -1493,7 +1493,7 @@ Parser::variableDeclaration ()
 
 	if (identifier (identifierCharacters))
 	{
-		var value = get_undefined ();
+		var value = getUndefined ();
 
 		initialiser (value);
 
@@ -1532,7 +1532,7 @@ Parser::expressionStatement ()
 	if (Grammar::function .lookahead (istream))
 		return false;
 
-	var value = get_undefined ();
+	var value = getUndefined ();
 
 	if (expression (value))
 	{

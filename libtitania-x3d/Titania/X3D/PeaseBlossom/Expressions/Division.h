@@ -124,7 +124,7 @@ protected:
 
 	friend
 	var
-	make_division (var &&, var &&);
+	createDivision (var &&, var &&);
 
 	///  @name Construction
 
@@ -149,7 +149,7 @@ private:
 
 inline
 var
-make_division (var && lhs, var && rhs)
+createDivision (var && lhs, var && rhs)
 {
 	const var expression (new Division (std::move (lhs), std::move (rhs)));
 

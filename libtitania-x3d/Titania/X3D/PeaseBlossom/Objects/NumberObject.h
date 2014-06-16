@@ -53,6 +53,7 @@
 
 #include "../Objects/jsObject.h"
 #include "../Primitives/Int32.h"
+#include "../Primitives/UInt32.h"
 #include "../Primitives/Number.h"
 
 namespace titania {
@@ -70,13 +71,19 @@ public:
 
 	NumberObject () :
 		jsObject (),
-		  number (new Number ())
+		  number (new Int32 ())
 	{ }
 
 	explicit
 	NumberObject (const int32_t value) :
 		jsObject (),
 		  number (new Int32 (value))
+	{ }
+
+	explicit
+	NumberObject (const uint32_t value) :
+		jsObject (),
+		  number (new UInt32 (value))
 	{ }
 
 	explicit

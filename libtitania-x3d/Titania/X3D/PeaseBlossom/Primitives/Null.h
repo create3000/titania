@@ -59,7 +59,7 @@ namespace pb {
 #undef Null
 
 const var &
-get_null ();
+getNull ();
 
 /**
  *  Class to represent a »null« value.
@@ -89,7 +89,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return get_null (); }
+	{ return getNull (); }
 
 	///  @name Common operations
 
@@ -97,7 +97,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return get_null (); }
+	{ return getNull (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -151,7 +151,7 @@ protected:
 
 	friend
 	const var &
-	get_null ();
+	getNull ();
 
 	///  @name Construction
 
@@ -174,7 +174,7 @@ private:
 ///  Returns the unique »null« value.
 inline
 const var &
-get_null ()
+getNull ()
 {
 	static const var value (new Null ());
 

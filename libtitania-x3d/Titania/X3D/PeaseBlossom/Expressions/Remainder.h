@@ -126,7 +126,7 @@ protected:
 
 	friend
 	var
-	make_remainder (var &&, var &&);
+	createRemainder (var &&, var &&);
 
 	///  @name Construction
 
@@ -151,7 +151,7 @@ private:
 
 inline
 var
-make_remainder (var && lhs, var && rhs)
+createRemainder (var && lhs, var && rhs)
 {
 	const var expression (new Remainder (std::move (lhs), std::move (rhs)));
 

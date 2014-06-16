@@ -129,7 +129,7 @@ protected:
 
 	friend
 	var
-	make_addition (var &&, var &&);
+	createAddition (var &&, var &&);
 
 	///  @name Construction
 
@@ -154,7 +154,7 @@ private:
 
 inline
 var
-make_addition (var && lhs, var && rhs)
+createAddition (var && lhs, var && rhs)
 {
 	const var expression (new Addition (std::move (lhs), std::move (rhs)));
 
