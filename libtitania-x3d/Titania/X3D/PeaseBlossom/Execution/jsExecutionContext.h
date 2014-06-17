@@ -76,11 +76,6 @@ public:
 
 	/// @name Member access
 
-	///  Returns the execution context this objects belongs to.
-	const basic_ptr <jsExecutionContext> &
-	getExecutionContext () const
-	{ return executionContext; }
-
 	///  Returns the global objects.
 	const basic_ptr <jsObject> &
 	getGlobalObject () const
@@ -88,6 +83,8 @@ public:
 
 	/// @name Input/Output
 
+	///  Parses @a istream and adds the expressions to this context. The stream must contain valid JavaScript content
+	///  otherwise an exception is thrown.
 	virtual
 	void
 	fromStream (std::istream & istream)
@@ -95,6 +92,8 @@ public:
 
 	///  @name Destruction
 
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
 	dispose () override;
@@ -108,7 +107,25 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsExecutionContext.
 	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
+
+	/// @name Member access
+
+	///  Set strict mode.
+	void
+	isStrict (const bool value)
+	{ strict = value; }
+
+	///  Get strict mode.
+	bool
+	isStrict () const
+	{ return true; }
+
+	///  Returns the execution context this objects belongs to.
+	const basic_ptr <jsExecutionContext> &
+	getExecutionContext () const
+	{ return executionContext; }
 
 	/// @name Operations
 
@@ -158,6 +175,7 @@ private:
 
 	/// @name Members
 
+	bool                                            strict;
 	const basic_ptr <jsExecutionContext>            executionContext;
 	basic_ptr <jsObject>                            globalObject;
 	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.

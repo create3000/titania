@@ -112,6 +112,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsBoolean value.
 	jsBoolean ()
 	{ }
 

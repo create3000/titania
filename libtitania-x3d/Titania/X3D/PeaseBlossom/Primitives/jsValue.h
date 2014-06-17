@@ -150,6 +150,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsValue.
 	jsValue () :
 		       jsChildObject (),
 		jsOutputStreamObject ()

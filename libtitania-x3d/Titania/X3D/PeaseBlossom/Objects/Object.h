@@ -66,6 +66,7 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new Object.
 	Object () :
 		jsObject ()
 	{ }

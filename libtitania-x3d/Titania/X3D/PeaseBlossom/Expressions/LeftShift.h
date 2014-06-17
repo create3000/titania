@@ -128,6 +128,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new LeftShift expression.
 	LeftShift (var && lhs, var && rhs) :
 		jsExpression (),
 		         lhs (std::move (lhs)),
@@ -147,6 +148,7 @@ private:
 ///  @relates Division
 ///  @name Construction
 
+///  Constructs new LeftShift expression.
 inline
 var
 createLeftShift (var && lhs, var && rhs)

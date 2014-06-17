@@ -90,6 +90,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsFunction.
 	jsFunction (const std::string & name) :
 		jsObject (),
 		    name (name)

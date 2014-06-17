@@ -68,29 +68,34 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new String value.
 	String () :
 		jsString (),
 		  string ()
 	{ }
 
+	///  Constructs new String value.
 	explicit
 	String (const Glib::ustring & value) :
 		jsString (),
 		  string (value)
 	{ }
 
+	///  Constructs new String value.
 	explicit
 	String (Glib::ustring && value) :
 		jsString (),
 		  string ()
 	{ const_cast <Glib::ustring &> (string) .swap (value); }
 
+	///  Constructs new String value.
 	explicit
 	String (const std::string::value_type* value) :
 		jsString (),
 		  string (value)
 	{ }
 
+	///  Constructs new String value.
 	explicit
 	String (const var & value) :
 		jsString (),

@@ -128,6 +128,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Subtraction expression.
 	Subtraction (var && lhs, var && rhs) :
 		jsExpression (),
 		         lhs (std::move (lhs)),
@@ -147,6 +148,7 @@ private:
 ///  @relates Subtraction
 ///  @name Construction
 
+///  Constructs new Subtraction expression.
 inline
 var
 createSubtraction (var && lhs, var && rhs)

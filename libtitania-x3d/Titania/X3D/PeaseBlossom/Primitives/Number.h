@@ -68,17 +68,20 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new Number value.
 	Number () :
 		jsNumber (),
 		  number (0)
 	{ }
 
+	///  Constructs new Number value.
 	explicit
 	Number (const double value) :
 		jsNumber (),
 		  number (value)
 	{ }
 
+	///  Constructs new Number value.
 	explicit
 	Number (const var & value) :
 		jsNumber (),

@@ -115,6 +115,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsNumber value.
 	jsNumber () :
 		jsValue ()
 	{ }

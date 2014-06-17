@@ -98,6 +98,8 @@ public:
 
 	///  @name Destruction
 
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
 	dispose () final override

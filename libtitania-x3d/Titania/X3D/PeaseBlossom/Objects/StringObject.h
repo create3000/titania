@@ -67,29 +67,34 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new StringObject.
 	StringObject () :
 		jsObject (),
 		  string (new String ())
 	{ }
 
+	///  Constructs new StringObject.
 	explicit
 	StringObject (const Glib::ustring & value) :
 		jsObject (),
 		  string (new String (value))
 	{ }
 
+	///  Constructs new StringObject.
 	explicit
 	StringObject (Glib::ustring && value) :
 		jsObject (),
 		  string (new String (std::move (value)))
 	{ }
 
+	///  Constructs new StringObject.
 	explicit
 	StringObject (const var & value) :
 		jsObject (),
 		  string (new String (value))
 	{ }
 
+	///  Constructs new StringObject.
 	explicit
 	StringObject (const std::string::value_type* value) :
 		jsObject (),
@@ -159,7 +164,7 @@ public:
 
 private:
 
-	var string;
+	const var string;
 
 };
 

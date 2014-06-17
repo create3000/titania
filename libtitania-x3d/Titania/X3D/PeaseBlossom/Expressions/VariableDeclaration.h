@@ -67,6 +67,7 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new VariableDeclaration expression.
 	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && value) :
 		    jsExpression (),
 		executionContext (executionContext),

@@ -68,6 +68,7 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new Identifier expression.
 	Identifier (jsExecutionContext* const executionContext, std::string && name) :
 		    jsExpression (),
 		executionContext (executionContext),

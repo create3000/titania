@@ -66,10 +66,15 @@ class jsExecutionContext;
 
 class Parser
 {
-public:
+protected:
 
-	///  @namjsExecutionContexte Construction
+	///  @name Friends
+	
+	friend class jsExecutionContext;
 
+	///  @name Construction
+
+	///  Constructs new StringObject.
 	Parser (jsExecutionContext* const, std::istream & istream);
 
 	///  @name Operations

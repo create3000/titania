@@ -105,12 +105,16 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet & circle);
 
+	///  Returns the number of instances that share ownership of the managed object, or ?0? if the managed object has
+	///  already been deleted, i.e. *this is empty. 
 	size_t
 	getReferenceCount () const
 	{ return referenceCount; }
 
 	///  @name Destruction
 
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
 	dispose ();
@@ -123,6 +127,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Construction.
 	jsChildObject ();
 
 	///  @name Children handling

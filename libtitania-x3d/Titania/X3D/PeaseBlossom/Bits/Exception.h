@@ -153,6 +153,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsException.
 	explicit
 	jsException (const std::string & message) :
 		      std::exception (),

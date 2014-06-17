@@ -66,17 +66,20 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new UInt32 value.
 	UInt32 () :
 		jsNumber (),
 		  number (0)
 	{ }
 
+	///  Constructs new UInt32 value.
 	explicit
 	UInt32 (const uint32_t value) :
 		jsNumber (),
 		  number (value)
 	{ }
 
+	///  Constructs new UInt32 value.
 	explicit
 	UInt32 (const var & value) :
 		jsNumber (),

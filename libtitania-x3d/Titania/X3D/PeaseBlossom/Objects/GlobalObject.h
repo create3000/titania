@@ -58,6 +58,7 @@
 namespace titania {
 namespace pb {
 
+///  Constructs new default global object.
 basic_ptr <jsObject>
 createGlobalObject ();
 

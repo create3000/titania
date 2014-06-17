@@ -69,29 +69,34 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new NumberObject.
 	NumberObject () :
 		jsObject (),
 		  number (new Int32 ())
 	{ }
 
+	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const int32_t value) :
 		jsObject (),
 		  number (new Int32 (value))
 	{ }
 
+	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const uint32_t value) :
 		jsObject (),
 		  number (new UInt32 (value))
 	{ }
 
+	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const double value) :
 		jsObject (),
 		  number (new Number (value))
 	{ }
 
+	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const var & value) :
 		jsObject (),
@@ -161,7 +166,7 @@ public:
 
 private:
 
-	var number;
+	const var number;
 
 };
 

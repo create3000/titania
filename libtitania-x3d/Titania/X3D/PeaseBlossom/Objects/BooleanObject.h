@@ -67,16 +67,19 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new BooleanObject.
 	BooleanObject () :
 		jsObject (),
 		 boolean (getFalse ())
 	{ }
 
+	///  Constructs new BooleanObject.
 	BooleanObject (const bool value) :
 		jsObject (),
 		 boolean (value ? getTrue () : getFalse ())
 	{ }
 
+	///  Constructs new BooleanObject.
 	BooleanObject (const var value) :
 		BooleanObject (value -> toBoolean ())
 	{ }
@@ -144,7 +147,7 @@ public:
 
 private:
 
-	var boolean;
+	const var boolean;
 
 };
 

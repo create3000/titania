@@ -1,5 +1,42 @@
 2014-06-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* Exception.h:
+	* Object.h:
+	* Null.h:
+	* Function.h:
+	* Int32.h:
+	* jsObject.h:
+	* String.h:
+	* Number.h:
+	* Program.h:
+	* UInt32.h:
+	* Boolean.h:
+	* jsFunction.h:
+	* jsValue.h:
+	* jsChildObject.h:
+	* jsNumber.h:
+	* jsString.h:
+	* NumberObject.h:
+	* jsBoolean.h:
+	* StringObject.h:
+	* GlobalObject.h:
+	* Division.h:
+	* Undefined.h:
+	* Addition.h:
+	* LeftShift.h:
+	* Remainder.h:
+	* BooleanObject.h:
+	* Identifier.h:
+	* Subtraction.h:
+	* jsExpression.h:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
+2014-06-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Parser.cpp:

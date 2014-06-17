@@ -133,6 +133,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Addition expression.
 	Addition (var && lhs, var && rhs) :
 		jsExpression (),
 		         lhs (std::move (lhs)),
@@ -152,6 +153,7 @@ private:
 ///  @relates Addition
 ///  @name Construction
 
+	///  Constructs new Addition expression.
 inline
 var
 createAddition (var && lhs, var && rhs)

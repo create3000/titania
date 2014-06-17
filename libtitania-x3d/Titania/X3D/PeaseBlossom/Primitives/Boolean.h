@@ -120,6 +120,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new False value.
 	False () :
 		jsBoolean ()
 	{ }
@@ -181,6 +182,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new True value.
 	True () :
 		jsBoolean ()
 	{ }

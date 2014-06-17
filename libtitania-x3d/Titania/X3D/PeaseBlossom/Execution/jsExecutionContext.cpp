@@ -60,6 +60,7 @@ namespace pb {
 jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject) :
 	      jsChildObject (),
 	jsInputStreamObject (),
+	             strict (false),
 	   executionContext (executionContext),
 	       globalObject (globalObject),
 	     defaultObjects (),

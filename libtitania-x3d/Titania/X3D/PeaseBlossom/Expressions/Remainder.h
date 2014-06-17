@@ -130,6 +130,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Remainder expression.
 	Remainder (var && lhs, var && rhs) :
 		jsExpression (),
 		         lhs (std::move (lhs)),
@@ -149,6 +150,7 @@ private:
 ///  @relates Remainder
 ///  @name Construction
 
+///  Constructs new Remainder expression.
 inline
 var
 createRemainder (var && lhs, var && rhs)

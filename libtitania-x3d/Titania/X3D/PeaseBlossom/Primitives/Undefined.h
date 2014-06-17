@@ -152,6 +152,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Undefined value.
 	Undefined () :
 		jsValue ()
 	{ }

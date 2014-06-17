@@ -107,6 +107,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsExpression.
 	jsExpression () :
 		jsValue ()
 	{ }

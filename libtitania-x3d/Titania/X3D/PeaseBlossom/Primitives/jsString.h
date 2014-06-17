@@ -83,6 +83,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new jsString value.
 	jsString () :
 		jsValue ()
 	{ }

@@ -66,17 +66,20 @@ public:
 
 	///  @name Construction
 
+	///  Constructs new Int32 value.
 	Int32 () :
 		jsNumber (),
 		  number (0)
 	{ }
 
+	///  Constructs new Int32 value.
 	explicit
 	Int32 (const int32_t value) :
 		jsNumber (),
 		  number (value)
 	{ }
 
+	///  Constructs new Int32 value.
 	explicit
 	Int32 (const var & value) :
 		jsNumber (),

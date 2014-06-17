@@ -155,6 +155,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Null value.
 	Null () :
 		jsValue ()
 	{ }

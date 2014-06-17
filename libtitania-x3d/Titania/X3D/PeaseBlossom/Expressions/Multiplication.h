@@ -128,6 +128,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs new Multiplication expression.
 	Multiplication (var && lhs, var && rhs) :
 		jsExpression (),
 		         lhs (std::move (lhs)),
@@ -147,6 +148,7 @@ private:
 ///  @relates Multiplication
 ///  @name Construction
 
+///  Constructs new Multiplication expression.
 inline
 var
 createMultiplication (var && lhs, var && rhs)
