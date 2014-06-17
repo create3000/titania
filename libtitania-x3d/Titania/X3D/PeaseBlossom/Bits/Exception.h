@@ -143,6 +143,7 @@ public:
 
 	///  @name Destruction
 
+	///  Destructs the jsException.
 	virtual
 	~jsException ()
 	noexcept (true)

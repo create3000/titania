@@ -118,9 +118,9 @@ public:
 	toValue () const final override
 	{
 		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return make_var <String> (lhs -> toString () + rhs -> toString ());
+			return create <String> (lhs -> toString () + rhs -> toString ());
 
-		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
+		return create <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
 
 protected:
@@ -153,7 +153,7 @@ private:
 ///  @relates Addition
 ///  @name Construction
 
-	///  Constructs new Addition expression.
+///  Constructs new Addition expression.
 inline
 var
 createAddition (var && lhs, var && rhs)

@@ -57,6 +57,9 @@
 namespace titania {
 namespace pb {
 
+shared_ptr <Function>
+createFunction (jsExecutionContext* const, const std::string & name = "", std::vector <std::string> && formalParameters = { });
+
 /**
  *  Class to represent a scripted JavaScript function.
  */
@@ -66,22 +69,13 @@ class Function :
 {
 public:
 
-	///  @name Construction
-
-	///  Constructs new Function.
-	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        jsFunction (name),
-		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		  formalParameters (std::move (formalParameters))
-	{ __LOG__ << std::endl; }
-
 	///  @name Common members
 
 	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return make_var <Function> (getExecutionContext () .get ()); }
+	{ return createFunction (getExecutionContext () .get ()); }
 
 	///  @name Input/Output
 
@@ -93,7 +87,7 @@ public:
 
 	///  @name Destruction
 
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
 	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
@@ -103,11 +97,40 @@ public:
 		jsExecutionContext::dispose ();
 	}
 
+protected:
+
+	///  @name Friends
+
+	friend
+	shared_ptr <Function>
+	createFunction (jsExecutionContext* const, const std::string &, std::vector <std::string> &&);
+
+	///  @name Construction
+
+	///  Constructs new Function.
+	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
+		        jsFunction (name),
+		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+		  formalParameters (std::move (formalParameters))
+	{ __LOG__ << std::endl; }
+
+
 private:
 
 	std::vector <std::string> formalParameters;
 
 };
+
+inline
+shared_ptr <Function>
+createFunction (jsExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters)
+{
+	shared_ptr <Function> function (new Function (executionContext, name, std::move (formalParameters)));
+
+	function -> setup ();
+
+	return function;
+}
 
 } // pb
 } // titania

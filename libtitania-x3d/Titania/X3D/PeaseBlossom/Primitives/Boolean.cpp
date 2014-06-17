@@ -59,14 +59,14 @@ var
 False::toObject () const
 throw (TypeError)
 {
-	return make_var <BooleanObject> (getFalse ());
+	return create <BooleanObject> (getFalse ());
 }
 
 var
 True::toObject () const
 throw (TypeError)
 {
-	return make_var <BooleanObject> (getTrue ());
+	return create <BooleanObject> (getTrue ());
 }
 
 } // pb

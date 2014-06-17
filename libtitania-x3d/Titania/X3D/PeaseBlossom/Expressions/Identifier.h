@@ -96,50 +96,61 @@ public:
 	bool
 	toBoolean () const
 	throw (ReferenceError) final override
-	{ return executionContext -> getProperty (name) -> toBoolean (); }
+	{ return getProperty () -> toBoolean (); }
 
 	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
 	uint16_t
 	toUInt16 () const
 	throw (ReferenceError) final override
-	{ return executionContext -> getProperty (name) -> toUInt16 (); }
+	{ return getProperty () -> toUInt16 (); }
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const
 	throw (ReferenceError) final override
-	{ return executionContext -> getProperty (name) -> toInt32 (); }
+	{ return getProperty () -> toInt32 (); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
 	uint32_t
 	toUInt32 () const
 	throw (ReferenceError) final override
-	{ return executionContext -> getProperty (name) -> toUInt32 (); }
+	{ return getProperty () -> toUInt32 (); }
 
 	///  Converts its argument to a value of type Number.
 	virtual
 	double
 	toNumber () const
 	throw (ReferenceError) final override
-	{ return executionContext -> getProperty (name) -> toNumber (); }
+	{ return getProperty () -> toNumber (); }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const
 	throw (ReferenceError) final override
-	{ return executionContext -> getProperty (name); }
+	{ return getProperty (); }
 
 
 private:
 
+	var
+	getProperty () const
+	{
+		const auto & propertyDescriptor = executionContext -> getPropertyDescriptor (name);
+
+		if (propertyDescriptor .get)
+			return propertyDescriptor .get (propertyDescriptor .object);
+
+		return propertyDescriptor .value;
+	}
+
 	///  @name Members
 
-	const basic_ptr <jsExecutionContext> executionContext;
-	const std::string                    name;
+	const shared_ptr <jsExecutionContext> executionContext;
+	const std::string                     name;
 
 };
 

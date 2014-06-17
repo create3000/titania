@@ -1,12 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/GlobalObject.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="106" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="61" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="816" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.h" Line="71" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/LeftShift.h" Line="88" Column="18" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="208" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="73" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1723" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.h" Line="166" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.cpp" Line="124" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/GlobalObject.cpp" Line="43" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,6 +28,8 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
                 </Node>
@@ -34,12 +37,10 @@
                 <Node name="PeaseBlossom" expanded="True">
                   <Node name="Base" expanded="True" />
                   <Node name="Bits" expanded="True" />
-                  <Node name="Execution" expanded="True" />
+                  <Node name="Execution" expanded="True" selected="True" />
                   <Node name="Expressions" expanded="True" />
                   <Node name="Objects" expanded="True" />
-                  <Node name="Parser" expanded="True">
-                    <Node name="Parser.cpp" selected="True" />
-                  </Node>
+                  <Node name="Parser" expanded="True" />
                   <Node name="Primitives" expanded="True" />
                 </Node>
               </Node>

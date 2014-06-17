@@ -50,7 +50,7 @@
 
 #include "jsValue.h"
 
-#include "../Objects/GlobalObject.h"
+#include "../Execution/GlobalObject.h"
 #include "../Primitives/jsNumber.h"
 
 namespace titania {

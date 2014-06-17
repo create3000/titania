@@ -340,24 +340,24 @@ public:
 
 };
 
+bool
+fun ()
+{ return true; }
+
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
+	std::clog << std::boolalpha;
 
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
+	std::function <bool (int)> b = std::bind (&fun);
 
-	std::istringstream istream ("--abcd");
-	
-	double d = 0;
-	
-	istream >> d;
-	
-	std::clog << istream .rdbuf () << std::endl;
+	std::clog << b (1) << std::endl;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

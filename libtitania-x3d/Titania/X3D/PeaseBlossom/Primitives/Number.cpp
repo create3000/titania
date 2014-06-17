@@ -63,7 +63,7 @@ var
 Number::toObject () const
 throw (TypeError)
 {
-	return make_var <NumberObject> (toNumber ());
+	return create <NumberObject> (toNumber ());
 }
 
 void
@@ -88,14 +88,14 @@ createNumber (const double value)
 	const int32_t int32bits = value;
 
 	if (int32bits == value)
-		return make_var <Int32> (int32bits);
+		return create <Int32> (int32bits);
 
 	const uint32_t uint32bits = value;
 
 	if (uint32bits == value)
-		return make_var <UInt32> (uint32bits);
+		return create <UInt32> (uint32bits);
 
-	return make_var <Number> (value);
+	return create <Number> (value);
 }
 
 } // pb

@@ -465,10 +465,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/X3DParser.cpp \
 	Titania/X3D/PeaseBlossom/Base/jsChildObject.cpp \
 	Titania/X3D/PeaseBlossom/Base/jsGarbargeCollector.cpp \
+	Titania/X3D/PeaseBlossom/Execution/GlobalObject.cpp \
 	Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Program.cpp \
 	Titania/X3D/PeaseBlossom/Expressions/jsExpression.cpp \
-	Titania/X3D/PeaseBlossom/Objects/GlobalObject.cpp \
 	Titania/X3D/PeaseBlossom/Objects/jsFunction.cpp \
 	Titania/X3D/PeaseBlossom/Objects/jsObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \

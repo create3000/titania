@@ -50,27 +50,29 @@
 
 #include "Program.h"
 
+#include "../Execution/GlobalObject.h"
+
 namespace titania {
 namespace pb {
 
 const std::string Program::typeName = "Program";
 
 void
-Program::defineFunction (const basic_ptr <jsFunction> & function)
+Program::defineFunction (const shared_ptr <jsFunction> & function)
 {
 	getGlobalObject () -> defineProperty (function -> getName (), function);
 }
 
-basic_ptr <Program>
+shared_ptr <Program>
 createProgram ()
 {
 	return createProgram (createGlobalObject ());
 }
 
-basic_ptr <Program>
-createProgram (const basic_ptr <jsObject> & globalObject)
+shared_ptr <Program>
+createProgram (const shared_ptr <jsObject> & globalObject)
 {
-	return basic_ptr <Program> (new Program (globalObject));
+	return shared_ptr <Program> (new Program (globalObject));
 }
 
 } // pb

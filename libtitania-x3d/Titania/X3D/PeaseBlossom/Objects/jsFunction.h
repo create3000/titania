@@ -78,6 +78,12 @@ public:
 	getType () const override
 	{ return FUNCTION_OBJECT; }
 
+	///  @name Construction
+
+	void
+	setup ()
+	{ defineProperty ("name", create <String> (name)); }
+
 	///  @name Member access
 
 	///  Returns the name of the function.
@@ -94,9 +100,8 @@ protected:
 	jsFunction (const std::string & name) :
 		jsObject (),
 		    name (name)
-	{
-		defineProperty ("name", make_ptr <String> (name), NATIVE);
-	}
+	{ }
+
 
 private:
 

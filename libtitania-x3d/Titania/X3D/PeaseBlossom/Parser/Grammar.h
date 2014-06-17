@@ -95,7 +95,7 @@ public:
 	// Unary Operator
 	static const io::string    _delete;
 	static const io::string    _void;
-	static const io::string    typeof;
+	static const io::string    _typeof;
 	static const io::string    Increment;
 	static const io::string    Decrement;
 	static const io::character PlusSign;
@@ -226,7 +226,7 @@ const io::string Grammar::_new ("new");
 // Unary Operator
 const io::string    Grammar::_delete ("delete");
 const io::string    Grammar::_void ("void");
-const io::string    Grammar::typeof ("typeof");
+const io::string    Grammar::_typeof ("typeof");
 const io::string    Grammar::Increment ("++");
 const io::string    Grammar::Decrement ("--");
 const io::character Grammar::PlusSign ('+');

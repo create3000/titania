@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_GLOBAL_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_GLOBAL_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
 
 #include "../Objects/jsObject.h"
 
@@ -59,13 +59,12 @@ namespace titania {
 namespace pb {
 
 ///  Constructs new default global object.
-basic_ptr <jsObject>
+shared_ptr <jsObject>
 createGlobalObject ();
 
-template <class Type>
 inline
 bool
-isNaN (const Type & value)
+isNaN (const double value)
 {
 	return std::isnan (value);
 }

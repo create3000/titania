@@ -77,7 +77,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return make_var <Object> (); }
+	{ return create <Object> (); }
 
 
 private:

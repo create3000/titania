@@ -53,7 +53,6 @@
 
 #include "../Base/jsGarbageCollector.h"
 #include "../Execution/jsExecutionContext.h"
-#include "../Objects/GlobalObject.h"
 #include "../Objects/Object.h"
 #include "../Primitives/Undefined.h"
 #include "../Primitives/jsValue.h"
@@ -96,9 +95,17 @@ public:
 	trimFreeMemory ()
 	{ jsGarbageCollector::trimFreeMemory (); }
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[program Program]"; }
+
 	///  @name Destruction
 
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
 	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
@@ -108,23 +115,22 @@ public:
 		jsExecutionContext::dispose ();
 	}
 
-
 protected:
 
 	///  @name Friends
 
 	friend
-	basic_ptr <Program>
+	shared_ptr <Program>
 	createProgram ();
 
 	friend
-	basic_ptr <Program>
-	createProgram (const basic_ptr <jsObject> &);
+	shared_ptr <Program>
+	createProgram (const shared_ptr <jsObject> &);
 
 	///  @name Construction
 
 	///  Constructs new Program.
-	Program (const basic_ptr <jsObject> & globalObject) :
+	Program (const shared_ptr <jsObject> & globalObject) :
 		jsExecutionContext (this, globalObject)
 	{ }
 
@@ -133,7 +139,7 @@ protected:
 	///  Defines a global function.
 	virtual
 	void
-	defineFunction (const basic_ptr <jsFunction> & function) final override;
+	defineFunction (const shared_ptr <jsFunction> & function) final override;
 
 
 private:
@@ -148,12 +154,12 @@ private:
 ///  @name Construction
 
 ///  Constructs new Program.
-basic_ptr <Program>
+shared_ptr <Program>
 createProgram ();
 
 ///  Constructs new Program with custom global object.
-basic_ptr <Program>
-createProgram (const basic_ptr <jsObject> & globalObject);
+shared_ptr <Program>
+createProgram (const shared_ptr <jsObject> & globalObject);
 
 } // pb
 } // titania

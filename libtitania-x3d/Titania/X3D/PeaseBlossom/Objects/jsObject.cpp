@@ -58,30 +58,35 @@ const std::string jsObject::typeName = "Object";
 void
 jsObject::defineProperty (const std::string & name,
                           const var & value,
-                          const PropertyFlagsType flags)
+                          const PropertyFlagsType flags,
+                          const Getter & get,
+                          const Setter & set)
 {
 	try
 	{
-		auto & properyDescription = properyDescriptions .at (name);
+		auto & propertyDescriptor = propertyDescriptors .at (name);
 
-		if (properyDescription .flags & NATIVE)
-			return;
-
-		properyDescription .value = value;
-		properyDescription .flags = flags;
+		if (propertyDescriptor .flags & CONFIGURABLE)
+		{
+			propertyDescriptor .value = value;
+			propertyDescriptor .flags = flags;
+			propertyDescriptor .get   = get;
+			propertyDescriptor .set   = set;
+		}
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto pair = properyDescriptions .emplace (name, PropertyDescriptor { value, flags });
+		const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { shared_ptr <jsObject> (this), value, flags, get, set });
 
-		pair .first -> second .value .addParent (this);
+		pair .first -> second .object .addParent (this);
+		pair .first -> second .value  .addParent (this);
 	}
 }
 
 void
 jsObject::dispose ()
 {
-	properyDescriptions .clear ();
+	propertyDescriptors .clear ();
 
 	jsValue::dispose ();
 }

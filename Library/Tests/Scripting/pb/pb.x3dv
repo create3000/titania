@@ -203,6 +203,10 @@ set_time;
 var
 	PI   = 3.14159,
 	PI_2 = 2 * PI;
+	
+
+'Get';
+TRUE;
 "
   ]
   directOutput TRUE

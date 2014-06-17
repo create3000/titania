@@ -53,8 +53,8 @@
 
 #include "../Objects/jsObject.h"
 #include "../Primitives/Int32.h"
-#include "../Primitives/UInt32.h"
 #include "../Primitives/Number.h"
+#include "../Primitives/UInt32.h"
 
 namespace titania {
 namespace pb {
@@ -115,7 +115,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return make_var <NumberObject> (); }
+	{ return create <NumberObject> (); }
 
 	///  @name Common operations
 

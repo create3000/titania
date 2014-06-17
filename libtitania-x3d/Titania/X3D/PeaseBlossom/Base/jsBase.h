@@ -68,6 +68,7 @@ public:
 	const std::string &
 	getTypeName () const = 0;
 
+	///  Destructs the jsBase.
 	virtual
 	~jsBase ()
 	{ }

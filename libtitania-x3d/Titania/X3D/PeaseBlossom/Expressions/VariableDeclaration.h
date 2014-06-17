@@ -136,9 +136,9 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <jsExecutionContext> executionContext;
-	const std::string                    identifier;
-	const var                            value;
+	const shared_ptr <jsExecutionContext> executionContext;
+	const std::string                     identifier;
+	const var                             value;
 
 };
 

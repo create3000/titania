@@ -506,7 +506,7 @@ Parser::callExpression (var & value)
 			}
 
 			comments ();
-	
+
 			if (Grammar::OpenBracket (istream))
 			{
 				var arrayIndexExpressions = getUndefined ();
@@ -514,7 +514,7 @@ Parser::callExpression (var & value)
 				if (expression (arrayIndexExpressions))
 				{
 					comments ();
-					
+
 					if (Grammar::CloseBracket (istream))
 					{
 						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
@@ -577,13 +577,13 @@ bool
 Parser::argumentList (std::vector <var> & argumentsListExpressions)
 {
 	//__LOG__ << std::endl;
-	
+
 	var value = getUndefined ();
 
 	if (assignmentExpression (value))
 	{
 		argumentsListExpressions .emplace_back (std::move (value));
-	
+
 		for ( ; ;)
 		{
 			comments ();
@@ -612,7 +612,7 @@ bool
 Parser::leftHandSideExpression (var & value)
 {
 	//__LOG__ << std::endl;
-	
+
 	if (newExpression (value))
 	{
 		comments ();
@@ -687,7 +687,7 @@ Parser::unaryExpression (var & value)
 		throw SyntaxError ("Expected expression after void.");
 	}
 
-	if (Grammar::typeof (istream))
+	if (Grammar::_typeof (istream))
 	{
 		isLeftHandSideExressions .back () = false;
 
@@ -1622,7 +1622,7 @@ Parser::variableDeclaration ()
 
 		initialiser (value);
 
-		getExecutionContext () -> addExpression (make_var <VariableDeclaration> (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getExecutionContext () -> addExpression (create <VariableDeclaration> (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -1719,7 +1719,7 @@ Parser::functionDeclaration ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+						const auto function = createFunction (getExecutionContext (), name, std::move (formalParameters));
 
 						pushExecutionContext (function .get ());
 
@@ -1783,7 +1783,7 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+					const auto function = createFunction (getExecutionContext (), name, std::move (formalParameters));
 
 					pushExecutionContext (function .get ());
 

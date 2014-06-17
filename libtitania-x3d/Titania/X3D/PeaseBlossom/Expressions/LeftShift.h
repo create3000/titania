@@ -115,7 +115,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Int32> (toInt32 ()); }
+	{ return create <Int32> (toInt32 ()); }
 
 
 protected:

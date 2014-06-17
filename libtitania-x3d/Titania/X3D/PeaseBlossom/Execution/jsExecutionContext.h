@@ -77,7 +77,7 @@ public:
 	/// @name Member access
 
 	///  Returns the global objects.
-	const basic_ptr <jsObject> &
+	const shared_ptr <jsObject> &
 	getGlobalObject () const
 	{ return globalObject; }
 
@@ -92,7 +92,7 @@ public:
 
 	///  @name Destruction
 
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
 	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
@@ -108,7 +108,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new jsExecutionContext.
-	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
+	jsExecutionContext (jsExecutionContext* const executionContext, const shared_ptr <jsObject> & globalObject);
 
 	/// @name Member access
 
@@ -123,7 +123,7 @@ protected:
 	{ return true; }
 
 	///  Returns the execution context this objects belongs to.
-	const basic_ptr <jsExecutionContext> &
+	const shared_ptr <jsExecutionContext> &
 	getExecutionContext () const
 	{ return executionContext; }
 
@@ -131,7 +131,7 @@ protected:
 
 	///  Pushs an object to the default object stack.
 	void
-	addDefaultObject (const basic_ptr <jsObject> & object);
+	addDefaultObject (const shared_ptr <jsObject> & object);
 
 	///  Removes the current default object from the default object stack.
 	void
@@ -139,12 +139,13 @@ protected:
 	{ return defaultObjects .pop_back (); }
 
 	///  Gets the current default object.
-	const basic_ptr <jsObject> &
+	const shared_ptr <jsObject> &
 	getDefaultObject ()
 	{ return defaultObjects .back (); }
 
-	const var &
-	getProperty (const std::string & name) const
+	///  Returns a property descriptor for a named property on an object in the scope hierarchy.
+	const PropertyDescriptor &
+	getPropertyDescriptor (const std::string & name) const
 	throw (ReferenceError);
 
 	///  Adds an expression to this context.
@@ -154,33 +155,26 @@ protected:
 	///  Adds a function to this context.
 	virtual
 	void
-	defineFunction (const basic_ptr <jsFunction> & function);
+	defineFunction (const shared_ptr <jsFunction> & function);
 
 	///  @name Operations
 
+	///  Executes the associated expessions of this context.
 	virtual
 	var
 	run ();
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "[program Program]"; }
 
 
 private:
 
 	/// @name Members
 
-	bool                                            strict;
-	const basic_ptr <jsExecutionContext>            executionContext;
-	basic_ptr <jsObject>                            globalObject;
-	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
-	std::deque <var>                                expressions;    // Use deque to keep iters when inserting value.
-	std::map <std::string, basic_ptr <jsFunction>>  functions;
+	bool                                             strict;
+	const shared_ptr <jsExecutionContext>            executionContext;
+	shared_ptr <jsObject>                            globalObject;
+	std::deque <shared_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
+	std::deque <var>                                 expressions;    // Use deque to keep iters when inserting value.
+	std::map <std::string, shared_ptr <jsFunction>>  functions;
 
 };
 

@@ -53,16 +53,31 @@
 
 #include "../Primitives/jsValue.h"
 
+#include <functional>
+
 namespace titania {
 namespace pb {
 
-/**
- *  Type to represent a property.
- */
+class jsObject;
+class jsFunction;
+
+///  @relates jsObject
+///  @name Type definitions
+
+///  Type definition for property getter.
+using Getter = std::function <var (const shared_ptr <jsObject> &)>;
+
+///  Type definition for property setter.
+using Setter = std::function <var (const shared_ptr <jsObject> &, const var & newValue)>;
+
+///  Type to represent a property descriptor.
 struct PropertyDescriptor
 {
+	shared_ptr <jsObject> object;
 	var value;
 	PropertyFlagsType flags;
+	Getter get;
+	Setter set;
 
 };
 
@@ -135,29 +150,24 @@ public:
 
 	///  @name Functions
 
+	///  The hasOwnProperty () method returns a boolean indicating whether the object has the specified property.
+	bool
+	hasOwnProperty (const std::string & name) const
+	{ return propertyDescriptors .count (name); }
+
 	///  Adds the named property described by a given descriptor to an object.
 	void
 	defineProperty (const std::string & name,
 	                const var & value,
-	                const PropertyFlagsType flags = NONE);
+	                const PropertyFlagsType flags = DEFAULT,
+	                const Getter & get = Getter (),
+	                const Setter & set = Setter ());
 
 	///  Returns the property descriptor for a named property on an object.
 	const PropertyDescriptor &
 	getOwnPropertyDescriptor (const std::string & name) const
 	throw (std::out_of_range)
-	{ return properyDescriptions .at (name); }
-
-	///  Returns the value for a named property on an object.
-	var &
-	getOwnProperty (const std::string & name)
-	throw (std::out_of_range)
-	{ return properyDescriptions .at (name) .value; }
-
-	///  Returns the value for a named property on an object.
-	const var &
-	getOwnProperty (const std::string & name) const
-	throw (std::out_of_range)
-	{ return properyDescriptions .at (name) .value; }
+	{ return propertyDescriptors .at (name); }
 
 	///  @name Input/Output
 
@@ -169,12 +179,13 @@ public:
 
 	///  @name Destruction
 
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this route has already been
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
 	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
 	virtual
 	void
 	dispose () override;
 
+	///  Destructs the jsObject.
 	virtual
 	~jsObject ();
 
@@ -186,12 +197,8 @@ protected:
 	///  Constructs new jsObject.
 	jsObject () :
 		            jsValue (),
-		properyDescriptions ()
+		propertyDescriptors ()
 	{ }
-
-	///  @name Members
-
-	std::map <std::string, PropertyDescriptor> properyDescriptions;
 
 
 private:
@@ -199,6 +206,10 @@ private:
 	///  @name Static members
 
 	static const std::string typeName;
+
+	///  @name Members
+
+	std::map <std::string, PropertyDescriptor> propertyDescriptors;
 
 };
 

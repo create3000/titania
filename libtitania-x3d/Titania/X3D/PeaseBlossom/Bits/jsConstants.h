@@ -88,11 +88,10 @@ enum ValueType
 
 using PropertyFlagsType = uint8_t;
 
-constexpr PropertyFlagsType NONE         = 0;
+constexpr PropertyFlagsType DEFAULT      = 0;
 constexpr PropertyFlagsType WRITABLE     = 1 << 0;
 constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
 constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
-constexpr PropertyFlagsType NATIVE       = 1 << 3;
 
 } // pb
 } // titania

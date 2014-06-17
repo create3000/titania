@@ -115,7 +115,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Number> (toNumber ()); }
+	{ return create <Number> (toNumber ()); }
 
 
 protected:

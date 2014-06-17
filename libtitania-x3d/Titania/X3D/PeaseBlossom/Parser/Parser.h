@@ -69,7 +69,7 @@ class Parser
 protected:
 
 	///  @name Friends
-	
+
 	friend class jsExecutionContext;
 
 	///  @name Construction
