@@ -57,9 +57,6 @@
 namespace titania {
 namespace pb {
 
-shared_ptr <Function>
-createFunction (jsExecutionContext* const, const std::string & name = "", std::vector <std::string> && formalParameters = { });
-
 /**
  *  Class to represent a scripted JavaScript function.
  */
@@ -69,13 +66,22 @@ class Function :
 {
 public:
 
+	///  @name Construction
+
+	///  Constructs new Function.
+	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
+		        jsFunction (name),
+		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+		  formalParameters (std::move (formalParameters))
+	{ }
+
 	///  @name Common members
 
 	///  Returns the a default of its input argument type.
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return createFunction (getExecutionContext () .get ()); }
+	{ return make_var <Function> (getExecutionContext () .get ()); }
 
 	///  @name Input/Output
 
@@ -97,40 +103,12 @@ public:
 		jsExecutionContext::dispose ();
 	}
 
-protected:
-
-	///  @name Friends
-
-	friend
-	shared_ptr <Function>
-	createFunction (jsExecutionContext* const, const std::string &, std::vector <std::string> &&);
-
-	///  @name Construction
-
-	///  Constructs new Function.
-	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        jsFunction (name),
-		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		  formalParameters (std::move (formalParameters))
-	{ __LOG__ << std::endl; }
-
 
 private:
 
 	std::vector <std::string> formalParameters;
 
 };
-
-inline
-shared_ptr <Function>
-createFunction (jsExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters)
-{
-	shared_ptr <Function> function (new Function (executionContext, name, std::move (formalParameters)));
-
-	function -> setup ();
-
-	return function;
-}
 
 } // pb
 } // titania

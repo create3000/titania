@@ -59,7 +59,7 @@ namespace titania {
 namespace pb {
 
 ///  Constructs new default global object.
-shared_ptr <jsObject>
+basic_ptr <jsObject>
 createGlobalObject ();
 
 inline

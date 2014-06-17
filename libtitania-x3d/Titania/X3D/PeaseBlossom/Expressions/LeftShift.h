@@ -65,6 +65,22 @@ class LeftShift :
 {
 public:
 
+	///  @name Construction
+
+	///  Constructs new LeftShift expression.
+	LeftShift (var && lhs, var && rhs) :
+		jsExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
+	{ addChildren (this -> lhs, this -> rhs); }
+
+	///  @name Operations
+
+	static
+	int32_t
+	leftShift (const var & lhs, const var & rhs)
+	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
+
 	///  @name Member access
 
 	///  Returns the type of the value. For expressions this is »DIVISION«.
@@ -74,12 +90,6 @@ public:
 	{ return LEFT_SHIFT; }
 
 	///  @name Operations
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -97,7 +107,7 @@ public:
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
+	{ return leftShift (lhs, rhs); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
@@ -115,25 +125,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return create <Int32> (toInt32 ()); }
-
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	createLeftShift (var &&, var &&);
-
-	///  @name Construction
-
-	///  Constructs new LeftShift expression.
-	LeftShift (var && lhs, var && rhs) :
-		jsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ addChildren (this -> lhs, this -> rhs); }
+	{ return make_var <Int32> (toInt32 ()); }
 
 
 private:
@@ -153,12 +145,10 @@ inline
 var
 createLeftShift (var && lhs, var && rhs)
 {
-	const var expression (new LeftShift (std::move (lhs), std::move (rhs)));
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return make_var <Int32> (LeftShift::leftShift (lhs, rhs));
 
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
+	return make_var <LeftShift> (std::move (lhs), std::move (rhs));
 }
 
 } // pb

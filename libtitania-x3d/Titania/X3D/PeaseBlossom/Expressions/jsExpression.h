@@ -80,12 +80,47 @@ public:
 
 	///  @name Common operations
 
+	///  Returns true if the input argument is a non-Object type otherwise false.
+	virtual
+	bool
+	isPrimitive () const final override
+	{ return false; }
+
 	///  Converts its input argument to a non-Object type.
 	virtual
 	var
-	toPrimitive () const
-	throw (ReferenceError) final override
-	{ return toValue () -> toPrimitive (); }
+	toPrimitive () const final override
+	{ return toValue (); }
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return toValue () -> toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toValue () -> toUInt16 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toValue () -> toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toValue () -> toUInt32 (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return toValue () -> toNumber (); }
 
 	///  Converts its argument to a value of type Object.
 	virtual

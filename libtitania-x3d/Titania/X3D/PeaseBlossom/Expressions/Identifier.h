@@ -85,47 +85,6 @@ public:
 
 	///  @name Operations
 
-	///  Returns true if the all arguments is are non-Object type otherwise false.
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return false; }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const
-	throw (ReferenceError) final override
-	{ return getProperty () -> toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const
-	throw (ReferenceError) final override
-	{ return getProperty () -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const
-	throw (ReferenceError) final override
-	{ return getProperty () -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const
-	throw (ReferenceError) final override
-	{ return getProperty () -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const
-	throw (ReferenceError) final override
-	{ return getProperty () -> toNumber (); }
-
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
@@ -149,7 +108,7 @@ private:
 
 	///  @name Members
 
-	const shared_ptr <jsExecutionContext> executionContext;
+	const basic_ptr <jsExecutionContext> executionContext;
 	const std::string                     name;
 
 };

@@ -113,7 +113,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return create <StringObject> (); }
+	{ return make_var <StringObject> (); }
 
 	///  @name Common operations
 

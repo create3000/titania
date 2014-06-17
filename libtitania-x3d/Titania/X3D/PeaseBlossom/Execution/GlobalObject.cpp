@@ -53,22 +53,20 @@
 #include "../Objects/Object.h"
 #include "../Primitives/Undefined.h"
 
-#include "../Primitives/Boolean.h"
-
 namespace titania {
 namespace pb {
 
-shared_ptr <jsObject>
+basic_ptr <jsObject>
 createGlobalObject ()
 {
 	using namespace std::placeholders;
 
-	shared_ptr <jsObject> globalObject (new Object ());
+	basic_ptr <jsObject> globalObject (new Object ());
 
 	globalObject -> defineProperty ("this",      globalObject,    ENUMERABLE);
 	globalObject -> defineProperty ("undefined", getUndefined (), ENUMERABLE);
 
-	globalObject -> defineProperty ("TRUE", var (), ENUMERABLE, std::bind (getTrue));
+	//globalObject -> defineProperty ("isNaN", createNativeFunction ("isNaN", isNaN), ENUMERABLE);
 
 	return globalObject;
 }

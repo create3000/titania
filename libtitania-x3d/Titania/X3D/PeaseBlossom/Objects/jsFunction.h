@@ -82,7 +82,7 @@ public:
 
 	void
 	setup ()
-	{ defineProperty ("name", create <String> (name)); }
+	{ defineProperty ("name", make_var <String> (name)); }
 
 	///  @name Member access
 
@@ -101,6 +101,11 @@ protected:
 		jsObject (),
 		    name (name)
 	{ }
+
+	virtual
+	void
+	initialize () override
+	{ defineProperty ("name", make_var <String> (name)); }
 
 
 private:

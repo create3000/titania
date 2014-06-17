@@ -65,15 +65,15 @@ class jsFunction;
 ///  @name Type definitions
 
 ///  Type definition for property getter.
-using Getter = std::function <var (const shared_ptr <jsObject> &)>;
+using Getter = std::function <var (jsObject* const)>;
 
 ///  Type definition for property setter.
-using Setter = std::function <var (const shared_ptr <jsObject> &, const var & newValue)>;
+using Setter = std::function <var (jsObject* const, const var & newValue)>;
 
 ///  Type to represent a property descriptor.
 struct PropertyDescriptor
 {
-	shared_ptr <jsObject> object;
+	jsObject* const object;
 	var value;
 	PropertyFlagsType flags;
 	Getter get;
@@ -88,6 +88,13 @@ class jsObject :
 	virtual public jsValue
 {
 public:
+
+	///  @name Construction
+
+	///  Setups a jsObject and calls initialize.
+	void
+	setup ()
+	{ initialize (); }
 
 	///  @name Common members
 
@@ -198,6 +205,12 @@ protected:
 	jsObject () :
 		            jsValue (),
 		propertyDescriptors ()
+	{ }
+
+	///  Default initialize handler.
+	virtual
+	void
+	initialize ()
 	{ }
 
 

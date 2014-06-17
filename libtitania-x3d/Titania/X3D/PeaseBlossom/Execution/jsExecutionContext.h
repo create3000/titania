@@ -77,7 +77,7 @@ public:
 	/// @name Member access
 
 	///  Returns the global objects.
-	const shared_ptr <jsObject> &
+	const basic_ptr <jsObject> &
 	getGlobalObject () const
 	{ return globalObject; }
 
@@ -108,7 +108,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new jsExecutionContext.
-	jsExecutionContext (jsExecutionContext* const executionContext, const shared_ptr <jsObject> & globalObject);
+	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
 
 	/// @name Member access
 
@@ -123,7 +123,7 @@ protected:
 	{ return true; }
 
 	///  Returns the execution context this objects belongs to.
-	const shared_ptr <jsExecutionContext> &
+	const basic_ptr <jsExecutionContext> &
 	getExecutionContext () const
 	{ return executionContext; }
 
@@ -131,7 +131,7 @@ protected:
 
 	///  Pushs an object to the default object stack.
 	void
-	addDefaultObject (const shared_ptr <jsObject> & object);
+	addDefaultObject (const basic_ptr <jsObject> & object);
 
 	///  Removes the current default object from the default object stack.
 	void
@@ -139,7 +139,7 @@ protected:
 	{ return defaultObjects .pop_back (); }
 
 	///  Gets the current default object.
-	const shared_ptr <jsObject> &
+	const basic_ptr <jsObject> &
 	getDefaultObject ()
 	{ return defaultObjects .back (); }
 
@@ -155,7 +155,7 @@ protected:
 	///  Adds a function to this context.
 	virtual
 	void
-	defineFunction (const shared_ptr <jsFunction> & function);
+	defineFunction (const basic_ptr <jsFunction> & function);
 
 	///  @name Operations
 
@@ -170,11 +170,11 @@ private:
 	/// @name Members
 
 	bool                                             strict;
-	const shared_ptr <jsExecutionContext>            executionContext;
-	shared_ptr <jsObject>                            globalObject;
-	std::deque <shared_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
+	const basic_ptr <jsExecutionContext>            executionContext;
+	basic_ptr <jsObject>                            globalObject;
+	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
 	std::deque <var>                                 expressions;    // Use deque to keep iters when inserting value.
-	std::map <std::string, shared_ptr <jsFunction>>  functions;
+	std::map <std::string, basic_ptr <jsFunction>>  functions;
 
 };
 

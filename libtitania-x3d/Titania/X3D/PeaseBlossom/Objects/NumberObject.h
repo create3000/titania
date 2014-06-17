@@ -115,7 +115,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return create <NumberObject> (); }
+	{ return make_var <NumberObject> (); }
 
 	///  @name Common operations
 

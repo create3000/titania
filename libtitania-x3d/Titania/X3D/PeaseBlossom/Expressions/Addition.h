@@ -66,6 +66,27 @@ class Addition :
 {
 public:
 
+	///  @name Construction
+
+	///  Constructs new Addition expression.
+	Addition (var && lhs, var && rhs) :
+		jsExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
+	{ addChildren (this -> lhs, this -> rhs); }
+
+	///  @name Operations
+
+	static
+	var
+	addition (const var & lhs, const var & rhs)
+	{
+		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
+			return make_var <String> (lhs -> toString () + rhs -> toString ());
+
+		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
+	}
+
 	///  @name Member access
 
 	///  Returns the type of the value. For expressions this is »ADDITION«.
@@ -76,69 +97,11 @@ public:
 
 	///  @name Operations
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return lhs -> isPrimitive () and rhs -> isPrimitive (); }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toPrimitive () -> toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return toPrimitive () -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return toPrimitive () -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toPrimitive () -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return toPrimitive () -> toNumber (); }
-
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{
-		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return create <String> (lhs -> toString () + rhs -> toString ());
-
-		return create <Number> (lhs -> toNumber () + rhs -> toNumber ());
-	}
-
-protected:
-
-	///  @name Friends
-
-	friend
-	var
-	createAddition (var &&, var &&);
-
-	///  @name Construction
-
-	///  Constructs new Addition expression.
-	Addition (var && lhs, var && rhs) :
-		jsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ addChildren (this -> lhs, this -> rhs); }
+	{ return addition (lhs, rhs); }
 
 
 private:
@@ -158,12 +121,10 @@ inline
 var
 createAddition (var && lhs, var && rhs)
 {
-	const var expression (new Addition (std::move (lhs), std::move (rhs)));
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return Addition::addition (lhs, rhs);
 
-	if (expression -> isPrimitive ())
-		return expression -> toPrimitive ();
-
-	return expression;
+	return make_var <Addition> (std::move (lhs), std::move (rhs));
 }
 
 } // pb

@@ -737,6 +737,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Int32.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\jsNativeFunction.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

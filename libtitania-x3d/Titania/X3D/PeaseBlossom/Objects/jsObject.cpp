@@ -76,9 +76,8 @@ jsObject::defineProperty (const std::string & name,
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { shared_ptr <jsObject> (this), value, flags, get, set });
+		const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { this, value, flags, get, set });
 
-		pair .first -> second .object .addParent (this);
 		pair .first -> second .value  .addParent (this);
 	}
 }

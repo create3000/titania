@@ -97,6 +97,10 @@ Context::initialize ()
 	{
 		const auto program = pb::createProgram ();
 
+		program -> getGlobalObject () -> defineProperty ("NULL",  pb::var (), pb::ENUMERABLE, std::bind (pb::getNull));
+		program -> getGlobalObject () -> defineProperty ("FALSE", pb::var (), pb::ENUMERABLE, std::bind (pb::getFalse));
+		program -> getGlobalObject () -> defineProperty ("TRUE",  pb::var (), pb::ENUMERABLE, std::bind (pb::getTrue));
+
 		program -> fromStream (istream);
 
 		getBrowser () -> println ("result:  ", program -> run (), " : ", SFTime (chrono::now () - t0));

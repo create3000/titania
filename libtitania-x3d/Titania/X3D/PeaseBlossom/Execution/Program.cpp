@@ -58,21 +58,21 @@ namespace pb {
 const std::string Program::typeName = "Program";
 
 void
-Program::defineFunction (const shared_ptr <jsFunction> & function)
+Program::defineFunction (const basic_ptr <jsFunction> & function)
 {
 	getGlobalObject () -> defineProperty (function -> getName (), function);
 }
 
-shared_ptr <Program>
+basic_ptr <Program>
 createProgram ()
 {
 	return createProgram (createGlobalObject ());
 }
 
-shared_ptr <Program>
-createProgram (const shared_ptr <jsObject> & globalObject)
+basic_ptr <Program>
+createProgram (const basic_ptr <jsObject> & globalObject)
 {
-	return shared_ptr <Program> (new Program (globalObject));
+	return basic_ptr <Program> (new Program (globalObject));
 }
 
 } // pb

@@ -120,17 +120,17 @@ protected:
 	///  @name Friends
 
 	friend
-	shared_ptr <Program>
+	basic_ptr <Program>
 	createProgram ();
 
 	friend
-	shared_ptr <Program>
-	createProgram (const shared_ptr <jsObject> &);
+	basic_ptr <Program>
+	createProgram (const basic_ptr <jsObject> &);
 
 	///  @name Construction
 
 	///  Constructs new Program.
-	Program (const shared_ptr <jsObject> & globalObject) :
+	Program (const basic_ptr <jsObject> & globalObject) :
 		jsExecutionContext (this, globalObject)
 	{ }
 
@@ -139,7 +139,7 @@ protected:
 	///  Defines a global function.
 	virtual
 	void
-	defineFunction (const shared_ptr <jsFunction> & function) final override;
+	defineFunction (const basic_ptr <jsFunction> & function) final override;
 
 
 private:
@@ -154,12 +154,12 @@ private:
 ///  @name Construction
 
 ///  Constructs new Program.
-shared_ptr <Program>
+basic_ptr <Program>
 createProgram ();
 
 ///  Constructs new Program with custom global object.
-shared_ptr <Program>
-createProgram (const shared_ptr <jsObject> & globalObject);
+basic_ptr <Program>
+createProgram (const basic_ptr <jsObject> & globalObject);
 
 } // pb
 } // titania

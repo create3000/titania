@@ -1622,7 +1622,7 @@ Parser::variableDeclaration ()
 
 		initialiser (value);
 
-		getExecutionContext () -> addExpression (create <VariableDeclaration> (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getExecutionContext () -> addExpression (make_var <VariableDeclaration> (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -1719,7 +1719,7 @@ Parser::functionDeclaration ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const auto function = createFunction (getExecutionContext (), name, std::move (formalParameters));
+						const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
 						pushExecutionContext (function .get ());
 
@@ -1783,7 +1783,7 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					const auto function = createFunction (getExecutionContext (), name, std::move (formalParameters));
+					const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
 					pushExecutionContext (function .get ());
 

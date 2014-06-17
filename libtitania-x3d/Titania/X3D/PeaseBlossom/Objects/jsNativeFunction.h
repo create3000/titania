@@ -48,26 +48,71 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
 
-#include "../Objects/BooleanObject.h"
+#include "../Execution/jsExecutionContext.h"
+#include "../Objects/jsFunction.h"
 
 namespace titania {
 namespace pb {
 
-var
-False::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (getFalse ());
-}
+class jsNativeFunction;
 
-var
-True::toObject () const
-throw (TypeError)
+using Call = std::function <var ()>;
+
+basic_ptr <jsNativeFunction>
+createFunction (const std::string & name,  const Call &);
+
+/**
+ *  Class to represent a native JavaScript function.
+ */
+class jsNativeFunction :
+	public jsFunction
 {
-	return make_var <BooleanObject> (getTrue ());
+public:
+
+	///  Constructs new Function.
+	jsNativeFunction (const std::string & name, const Call & callFunction) :
+		        jsFunction (name),
+		  formalParameters (std::move (formalParameters))
+	{ }
+
+
+	///  @name Common members
+
+	///  Returns the a default of its input argument type.
+	virtual
+	var
+	getDefaultValue () const final override
+	{ return createNativeFunction (getName (), callFunction); }
+
+
+protected:
+
+	///  @name Friends
+
+	///  @name Construction
+
+protected:
+
+	const Call callFunction;
+
+};
+
+template <class ... Args>
+inline
+basic_ptr <Function>
+createNativeFunction (const std::string & name, Args ... && args)
+{
+	basic_ptr <jsNativeFunction> function (new jsNativeFunction (name, std::bind (std::forward <Args> (args ...))));
+
+	function -> setup ();
+
+	return function;
 }
 
 } // pb
 } // titania
+
+#endif

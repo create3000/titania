@@ -96,7 +96,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return create <BooleanObject> (); }
+	{ return make_var <BooleanObject> (); }
 
 	///  @name Common operations
 

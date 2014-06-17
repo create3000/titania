@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Base class for shared_ptr.
+ *  Base class for basic_ptr.
  */
 class ptr_base :
 	virtual public jsBase
@@ -90,7 +90,7 @@ protected:
  *  @param  Type  Type of pointer.
  */
 template <class Type>
-class shared_ptr :
+class basic_ptr :
 	public ptr_base,
 	public jsChildObject,
 	public jsOutputStreamObject
@@ -103,72 +103,72 @@ public:
 
 	///  @name Construction
 
-	///  Constructs new shared_ptr.
-	shared_ptr () :
+	///  Constructs new basic_ptr.
+	basic_ptr () :
 		            ptr_base (),
 		       jsChildObject (),
 		jsOutputStreamObject (),
 		               value (nullptr)
 	{ }
 
-	///  Constructs new shared_ptr.
-	shared_ptr (const shared_ptr & var) :
-		shared_ptr (var .value)
+	///  Constructs new basic_ptr.
+	basic_ptr (const basic_ptr & var) :
+		basic_ptr (var .value)
 	{ }
 
-	///  Constructs new shared_ptr.
-	shared_ptr (const ptr_base & var) :
-		shared_ptr (dynamic_cast <Type*> (var .get_type ()))
+	///  Constructs new basic_ptr.
+	basic_ptr (const ptr_base & var) :
+		basic_ptr (dynamic_cast <Type*> (var .get_type ()))
 	{ }
 
-	///  Constructs new shared_ptr.
-	shared_ptr (shared_ptr && var) :
-		shared_ptr ()
+	///  Constructs new basic_ptr.
+	basic_ptr (basic_ptr && var) :
+		basic_ptr ()
 	{ move (var); }
 
-	///  Constructs new shared_ptr.
+	///  Constructs new basic_ptr.
 	template <class Up>
-	shared_ptr (shared_ptr <Up> && var) :
-		shared_ptr ()
+	basic_ptr (basic_ptr <Up> && var) :
+		basic_ptr ()
 	{ move (var); }
 
-	///  Constructs new shared_ptr.
+	///  Constructs new basic_ptr.
 	explicit
-	shared_ptr (Type* const value) :
+	basic_ptr (Type* const value) :
 		            ptr_base (),
 		       jsChildObject (),
 		jsOutputStreamObject (),
 		               value (value)
 	{ add (value); }
 
-	///  Constructs new shared_ptr.
+	///  Constructs new basic_ptr.
 	template <class Up>
 	explicit
-	shared_ptr (Up* const value) :
-		shared_ptr (dynamic_cast <Type*> (value))
+	basic_ptr (Up* const value) :
+		basic_ptr (dynamic_cast <Type*> (value))
 	{ }
 
 	///  @name Assignment operators
 
-	///  Assigns the shared_ptr.
-	shared_ptr &
-	operator = (const shared_ptr & var)
+	///  Assigns the basic_ptr.
+	basic_ptr &
+	operator = (const basic_ptr & var)
 	{
 		reset (var .value);
 		return *this;
 	}
 
-	///  Assigns the shared_ptr.
-	shared_ptr &
+	///  Assigns the basic_ptr.
+	basic_ptr &
 	operator = (const ptr_base & var)
 	{
 		reset (dynamic_cast <Type*> (var .get_type ()));
 		return *this;
 	}
 
-	///  Assigns the shared_ptr.
-	shared_ptr &
-	operator = (shared_ptr && var)
+	///  Assigns the basic_ptr.
+	basic_ptr &
+	operator = (basic_ptr && var)
 	{
 		if (&var == this)
 			return *this;
@@ -179,10 +179,10 @@ public:
 		return *this;
 	}
 
-	///  Assigns the shared_ptr.
+	///  Assigns the basic_ptr.
 	template <class Up>
-	shared_ptr &
-	operator = (shared_ptr <Up> && var)
+	basic_ptr &
+	operator = (basic_ptr <Up> && var)
 	{
 		if (&var == this)
 			return *this;
@@ -222,9 +222,9 @@ public:
 
 	///  Exchanges the contents of *this and @a var.
 	void
-	swap (shared_ptr & var)
+	swap (basic_ptr & var)
 	{
-		shared_ptr temp = std::move (var);
+		basic_ptr temp = std::move (var);
 
 		var   = std::move (*this);
 		*this = std::move (temp);
@@ -274,7 +274,7 @@ public:
 			ostream << *value;
 
 		else
-			throw Error ("shared_ptr::toStream");
+			throw Error ("basic_ptr::toStream");
 	}
 
 	///  @name Destruction
@@ -291,7 +291,7 @@ public:
 
 	///  Destructs the owned object if no more ptrs link to it
 	virtual
-	~shared_ptr ()
+	~basic_ptr ()
 	{ remove (get ()); }
 
 
@@ -300,7 +300,7 @@ private:
 	///  @name Friends
 
 	template <class Up>
-	friend class shared_ptr;
+	friend class basic_ptr;
 
 	///  @name Operations
 
@@ -312,7 +312,7 @@ private:
 	}
 
 	void
-	move (shared_ptr & var)
+	move (basic_ptr & var)
 	{
 		set (var .get ());
 
@@ -325,7 +325,7 @@ private:
 
 	template <class Up>
 	void
-	move (shared_ptr <Up> & var)
+	move (basic_ptr <Up> & var)
 	{
 		set (dynamic_cast <Type*> (var .get ()));
 
@@ -369,99 +369,99 @@ private:
 };
 
 template <class Type>
-const std::string shared_ptr <Type>::typeName = "shared_ptr";
+const std::string basic_ptr <Type>::typeName = "basic_ptr";
 
-///  @relates shared_ptr
+///  @relates basic_ptr
 ///  @name Utiliy functions
 
-///  Constructs an object of type Type and wraps it in a shared_ptr using
+///  Constructs an object of type Type and wraps it in a basic_ptr using
 ///  args as the parameter list for the constructor of Type.
 template <class Type, class ... Args>
-shared_ptr <Type>
-make_shared (Args && ... args)
+basic_ptr <Type>
+make_ptr (Args && ... args)
 {
-	return shared_ptr <Type> (new Type (std::forward <Args> (args) ...));
+	return basic_ptr <Type> (new Type (std::forward <Args> (args) ...));
 }
 
-///  @relates shared_ptr
+///  @relates basic_ptr
 ///  @name Comparision operations
 
-///  Compares two shared_ptr.
+///  Compares two basic_ptr.
 ///  Return true if @a lhs is equal to @a rhs.
 template <class Type>
 inline
 bool
-operator == (const shared_ptr <Type> & lhs, const shared_ptr <Type> & rhs)
+operator == (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 {
 	return lhs .get () == rhs .get ();
 }
 
-///  Compares two shared_ptr.
+///  Compares two basic_ptr.
 ///  Return true if @a lhs is not equal to @a rhs.
 template <class Type>
 inline
 bool
-operator not_eq (const shared_ptr <Type> & lhs, const shared_ptr <Type> & rhs)
+operator not_eq (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 {
 	return lhs .get () not_eq rhs .get ();
 }
 
-///  Compares two shared_ptr.
+///  Compares two basic_ptr.
 ///  Returns true if @a lhs less than @a rhs.
 template <class Type>
 inline
 bool
-operator < (const shared_ptr <Type> & lhs, const shared_ptr <Type> & rhs)
+operator < (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 {
 	return lhs .get () < rhs .get ();
 }
 
-///  Compares two shared_ptr.
+///  Compares two basic_ptr.
 ///  Returns true if @a lhs less than equal to @a rhs.
 template <class Type>
 inline
 bool
-operator <= (const shared_ptr <Type> & lhs, const shared_ptr <Type> & rhs)
+operator <= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 {
 	return lhs .get () <= rhs .get ();
 }
 
-///  Compares two shared_ptr.
+///  Compares two basic_ptr.
 ///  Returns true if @a lhs greater than @a rhs.
 template <class Type>
 inline
 bool
-operator > (const shared_ptr <Type> & lhs, const shared_ptr <Type> & rhs)
+operator > (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 {
 	return lhs .get () > rhs .get ();
 }
 
-///  Compares two shared_ptr.
+///  Compares two basic_ptr.
 ///  Returns true if @a lhs greater than equal to @a rhs.
 template <class Type>
 inline
 bool
-operator >= (const shared_ptr <Type> & lhs, const shared_ptr <Type> & rhs)
+operator >= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 {
 	return lhs .get () >= rhs .get ();
 }
 
-///  @relates shared_ptr
+///  @relates basic_ptr
 ///  @name Typedef
 
 class jsValue;
 
 ///  Typedef for jsValue.
-using var = shared_ptr <jsValue>;
+using var = basic_ptr <jsValue>;
 
-///  @relates shared_ptr
+///  @relates basic_ptr
 ///  @name Utiliy functions
 
 ///  Constructs an object of type Type and wraps it in a var using
 ///  args as the parameter list for the constructor of Type.
 template <class Type, class ... Args>
-shared_ptr <Type>
-create (Args && ... args)
+basic_ptr <Type>
+make_var (Args && ... args)
 {
 	return var (new Type (std::forward <Args> (args) ...));
 }

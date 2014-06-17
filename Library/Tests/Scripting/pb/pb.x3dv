@@ -205,7 +205,10 @@ var
 	PI_2 = 2 * PI;
 	
 
-'Get';
+'// VRMLScript';
+
+NULL;
+FALSE;
 TRUE;
 "
   ]

@@ -61,7 +61,7 @@ var
 UInt32::toObject () const
 throw (TypeError)
 {
-	return create <NumberObject> (toUInt32 ());
+	return make_var <NumberObject> (toUInt32 ());
 }
 
 } // pb
