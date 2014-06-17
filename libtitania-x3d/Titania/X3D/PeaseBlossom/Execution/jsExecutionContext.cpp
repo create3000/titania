@@ -63,11 +63,9 @@ jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionConte
 	   executionContext (executionContext),
 	       globalObject (globalObject),
 	     defaultObjects (),
-	        expressions ()
+	        expressions (),
+	          functions ()
 {
-	globalObject -> defineProperty ("this",      globalObject,    NATIVE | ENUMERABLE);
-	globalObject -> defineProperty ("undefined", getUndefined (), NATIVE | ENUMERABLE);
-
 	addChildren (this -> executionContext,
 	             this -> globalObject);
 
@@ -79,19 +77,6 @@ jsExecutionContext::addDefaultObject (const basic_ptr <jsObject> & object)
 {
 	defaultObjects .emplace_back (object);
 	defaultObjects .back () .addParent (this);
-}
-
-void
-jsExecutionContext::replaceFunction (const basic_ptr <jsFunction> & function)
-{
-	try
-	{
-		functions .at (function -> getName ()) = function;
-	}
-	catch (const std::out_of_range &)
-	{
-		functions .emplace (function -> getName (), function) .first -> second .addParent (this);
-	}
 }
 
 const var &
@@ -118,10 +103,17 @@ jsExecutionContext::addExpression (var && expression)
 	expressions .back () .addParent (this);
 }
 
-basic_ptr <Function>
-jsExecutionContext::createFunction (const std::string & name, std::vector <std::string> && formalParameters)
+void
+jsExecutionContext::defineFunction (const basic_ptr <jsFunction> & function)
 {
-	return basic_ptr <Function> (new Function (this, name, std::move (formalParameters)));
+	try
+	{
+		functions .at (function -> getName ()) = function;
+	}
+	catch (const std::out_of_range &)
+	{
+		functions .emplace (function -> getName (), function) .first -> second .addParent (this);
+	}
 }
 
 var

@@ -150,7 +150,7 @@ private:
 };
 
 ///  @relates Addition
-///  @name addition.
+///  @name Construction
 
 inline
 var

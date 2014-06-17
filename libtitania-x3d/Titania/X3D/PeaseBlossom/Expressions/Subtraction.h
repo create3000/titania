@@ -145,7 +145,7 @@ private:
 };
 
 ///  @relates Subtraction
-///  @name subtraction.
+///  @name Construction
 
 inline
 var

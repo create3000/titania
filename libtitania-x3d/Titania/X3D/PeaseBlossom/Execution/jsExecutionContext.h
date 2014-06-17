@@ -74,20 +74,17 @@ class jsExecutionContext :
 {
 public:
 
-	/// @name Global object access
+	/// @name Member access
 
+	///  Returns the execution context this objects belongs to.
 	const basic_ptr <jsExecutionContext> &
 	getExecutionContext () const
 	{ return executionContext; }
 
+	///  Returns the global objects.
 	const basic_ptr <jsObject> &
 	getGlobalObject () const
 	{ return globalObject; }
-
-	/// @name Function services
-
-	void
-	replaceFunction (const basic_ptr <jsFunction> & function);
 
 	/// @name Input/Output
 
@@ -108,42 +105,39 @@ protected:
 	friend class Parser;
 	friend class Identifier;
 	friend class VariableDeclaration;
-	friend class Function;
 
 	///  @name Construction
 
 	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
 
-	/// @name Default object service
+	/// @name Operations
 
+	///  Pushs an object to the default object stack.
 	void
 	addDefaultObject (const basic_ptr <jsObject> & object);
 
+	///  Removes the current default object from the default object stack.
 	void
 	removeDefaultObject ()
 	{ return defaultObjects .pop_back (); }
 
+	///  Gets the current default object.
 	const basic_ptr <jsObject> &
 	getDefaultObject ()
 	{ return defaultObjects .back (); }
-
-	/// @name Property service
 
 	const var &
 	getProperty (const std::string & name) const
 	throw (ReferenceError);
 
-	/// @name Expression service
-
 	///  Adds an expression to this context.
 	void
 	addExpression (var &&);
 
-	/// @name Function service
-
-	///  Constructs new Function.
-	basic_ptr <Function>
-	createFunction (const std::string & name = "", std::vector <std::string> && formalParameters = { });
+	///  Adds a function to this context.
+	virtual
+	void
+	defineFunction (const basic_ptr <jsFunction> & function);
 
 	///  @name Operations
 
@@ -165,10 +159,10 @@ private:
 	/// @name Members
 
 	const basic_ptr <jsExecutionContext>            executionContext;
-	std::map <std::string, basic_ptr <jsFunction>>  functions;
 	basic_ptr <jsObject>                            globalObject;
 	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
 	std::deque <var>                                expressions;    // Use deque to keep iters when inserting value.
+	std::map <std::string, basic_ptr <jsFunction>>  functions;
 
 };
 

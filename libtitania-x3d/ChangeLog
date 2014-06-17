@@ -1,3 +1,22 @@
+2014-06-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* Function.h:
+	* Program.h:
+	* Program.cpp:
+	* Addition.h:
+	* Division.h:
+	* GlobalObject.h:
+	* LeftShift.h:
+	* Remainder.h:
+	* GlobalObject.cpp:
+	* Subtraction.h:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp: 
+
 2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:

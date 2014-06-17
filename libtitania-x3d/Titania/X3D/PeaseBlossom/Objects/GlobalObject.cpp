@@ -48,65 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
+#include "GlobalObject.h"
 
-#include "../Execution/jsExecutionContext.h"
-#include "../Objects/jsFunction.h"
+#include "../Objects/Object.h"
+#include "../Primitives/Undefined.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a scripted JavaScript function.
- */
-class Function :
-	public jsFunction,
-	public jsExecutionContext
+basic_ptr <jsObject>
+createGlobalObject ()
 {
-public:
+	basic_ptr <jsObject> globalObject (new Object ());
 
-	///  @name Construction
+	globalObject -> defineProperty ("this",      globalObject,    NATIVE | ENUMERABLE);
+	globalObject -> defineProperty ("undefined", getUndefined (), NATIVE | ENUMERABLE);
 
-	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        jsFunction (name),
-		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		  formalParameters (std::move (formalParameters))
-	{ __LOG__ << std::endl; }
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return make_var <Function> (getExecutionContext () .get ()); }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ jsFunction::toStream (ostream); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override
-	{
-		jsFunction::dispose ();
-		jsExecutionContext::dispose ();
-	}
-
-private:
-
-	std::vector <std::string> formalParameters;
-
-};
+	return globalObject;
+}
 
 } // pb
 } // titania
-
-#endif

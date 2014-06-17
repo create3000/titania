@@ -147,7 +147,7 @@ private:
 };
 
 ///  @relates Remainder
-///  @name remainder.
+///  @name Construction
 
 inline
 var

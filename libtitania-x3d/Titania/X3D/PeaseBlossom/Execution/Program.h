@@ -53,6 +53,7 @@
 
 #include "../Base/jsGarbageCollector.h"
 #include "../Execution/jsExecutionContext.h"
+#include "../Objects/GlobalObject.h"
 #include "../Objects/Object.h"
 #include "../Primitives/Undefined.h"
 #include "../Primitives/jsValue.h"
@@ -114,12 +115,23 @@ protected:
 	basic_ptr <Program>
 	createProgram ();
 
+	friend
+	basic_ptr <Program>
+	createProgram (const basic_ptr <jsObject> &);
+
 	///  @name Construction
 
 	///  Constructs new Program.
 	Program (const basic_ptr <jsObject> & globalObject) :
 		jsExecutionContext (this, globalObject)
 	{ }
+
+	///  @name Operations
+
+	///  Defines a global function.
+	virtual
+	void
+	defineFunction (const basic_ptr <jsFunction> & function) final override;
 
 
 private:
@@ -131,15 +143,15 @@ private:
 };
 
 ///  @relates Program
-///  @name Utiliy functions
+///  @name Construction
 
 ///  Constructs new Program.
-inline
 basic_ptr <Program>
-createProgram ()
-{
-	return basic_ptr <Program> (new Program (make_ptr <Object> ()));
-}
+createProgram ();
+
+///  Constructs new Program with custom global object.
+basic_ptr <Program>
+createProgram (const basic_ptr <jsObject> & globalObject);
 
 } // pb
 } // titania

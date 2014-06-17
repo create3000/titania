@@ -55,5 +55,23 @@ namespace pb {
 
 const std::string Program::typeName = "Program";
 
+void
+Program::defineFunction (const basic_ptr <jsFunction> & function)
+{
+	getGlobalObject () -> defineProperty (function -> getName (), function);
+}
+
+basic_ptr <Program>
+createProgram ()
+{
+	return createProgram (createGlobalObject ());
+}
+
+basic_ptr <Program>
+createProgram (const basic_ptr <jsObject> & globalObject)
+{
+	return basic_ptr <Program> (new Program (globalObject));
+}
+
 } // pb
 } // titania

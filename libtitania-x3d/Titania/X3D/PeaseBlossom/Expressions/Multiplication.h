@@ -145,7 +145,7 @@ private:
 };
 
 ///  @relates Multiplication
-///  @name multiplication.
+///  @name Construction
 
 inline
 var

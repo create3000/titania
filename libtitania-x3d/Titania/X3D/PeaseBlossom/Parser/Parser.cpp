@@ -499,11 +499,11 @@ Parser::callExpression (var & value)
 		{
 			std::vector <var> argumentsListExpressions;
 
-			//value .reset (new CallExpression (std::move (value), std::move (argumentsListExpressions)));
-			//value = getUndefined ();
-
 			if (arguments (argumentsListExpressions))
+			{
+				//value .reset (new CallExpression (std::move (value), std::move (argumentsListExpressions)));
 				continue;
+			}
 
 			comments ();
 	
@@ -1719,7 +1719,7 @@ Parser::functionDeclaration ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const auto function = getExecutionContext () -> createFunction (name, std::move (formalParameters));
+						const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
 						pushExecutionContext (function .get ());
 
@@ -1731,7 +1731,7 @@ Parser::functionDeclaration ()
 
 						if (Grammar::CloseBrace (istream))
 						{
-							getExecutionContext () -> replaceFunction (function);
+							getExecutionContext () -> defineFunction (function);
 
 							return true;
 						}
@@ -1783,7 +1783,7 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					const auto function = getExecutionContext () -> createFunction (name, std::move (formalParameters));
+					const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
 					pushExecutionContext (function .get ());
 

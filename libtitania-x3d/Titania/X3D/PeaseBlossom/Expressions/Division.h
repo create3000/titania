@@ -145,7 +145,7 @@ private:
 };
 
 ///  @relates Division
-///  @name division.
+///  @name Construction
 
 inline
 var

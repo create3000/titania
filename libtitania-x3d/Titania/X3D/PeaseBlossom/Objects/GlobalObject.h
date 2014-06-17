@@ -51,10 +51,15 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_GLOBAL_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_GLOBAL_OBJECT_H__
 
+#include "../Objects/jsObject.h"
+
 #include <cmath>
 
 namespace titania {
 namespace pb {
+
+basic_ptr <jsObject>
+createGlobalObject ();
 
 template <class Type>
 inline
