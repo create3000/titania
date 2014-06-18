@@ -101,6 +101,22 @@ public:
 	getGlobalObject () const
 	{ return globalObject; }
 
+	///  Gets the current default object.
+	const basic_ptr <jsObject> &
+	getDefaultObject () const
+	{ return defaultObjects .back (); }
+
+	/// @name Operations
+
+	///  Adds an expression to this context.
+	void
+	addExpression (var &&);
+
+	///  Adds a function to this context.
+	virtual
+	void
+	addFunction (const basic_ptr <jsFunction> & function);
+
 	/// @name Input/Output
 
 	///  Parses @a istream and adds the expressions to this context. The stream must contain valid JavaScript content
@@ -121,10 +137,7 @@ public:
 
 protected:
 
-	friend class Parser;
 	friend class Variable;
-	friend class VariableDeclaration;
-	friend class FunctionCall;
 
 	///  @name Construction
 
@@ -143,23 +156,9 @@ protected:
 	{ return defaultObjects .pop_back (); }
 
 	///  Gets the current default object.
-	const basic_ptr <jsObject> &
-	getDefaultObject () const
-	{ return defaultObjects .back (); }
-
-	///  Gets the current default object.
 	const std::deque <basic_ptr <jsObject>> &
 	getDefaultObjects () const
 	{ return defaultObjects; }
-
-	///  Adds an expression to this context.
-	void
-	addExpression (var &&);
-
-	///  Adds a function to this context.
-	virtual
-	void
-	defineFunction (const basic_ptr <jsFunction> & function);
 
 	///  Executes the associated expessions of this context.
 	virtual

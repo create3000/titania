@@ -69,15 +69,15 @@ public:
 	///  @name Construction
 
 	///  Constructs new Variable expression.
-	Variable (jsExecutionContext* const executionContext, std::string && name) :
+	Variable (jsExecutionContext* const executionContext, std::string && identifier) :
 		    jsExpression (),
 		executionContext (executionContext),
-		            name (std::move (name))
+		      identifier (std::move (identifier))
 	{ construct (); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »VARIABLE«.
+	///  Returns the type of the value. For this expression this is »VARIABLE«.
 	virtual
 	ValueType
 	getType () const final override
@@ -88,8 +88,7 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const
-	throw (ReferenceError) final override
+	toValue () const final override
 	{ return getProperty (); }
 
 
@@ -105,9 +104,8 @@ private:
 
 	var
 	getProperty () const
-	throw (ReferenceError)
 	{
-		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), name);
+		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
 
 		if (propertyDescriptor .get)
 			return propertyDescriptor .get (propertyDescriptor .object);
@@ -116,8 +114,7 @@ private:
 	}
 
 	const PropertyDescriptor &
-	getPropertyDescriptor (jsExecutionContext* executionContext, const std::string & name) const
-	throw (ReferenceError)
+	getPropertyDescriptor (jsExecutionContext* executionContext, const std::string & identifier) const
 	{
 		do 
 		{
@@ -125,7 +122,7 @@ private:
 			{
 				try
 				{
-					return object -> getOwnPropertyDescriptor (name);
+					return object -> getOwnPropertyDescriptor (identifier);
 				}
 				catch (const std::out_of_range &)
 				{ }
@@ -135,13 +132,13 @@ private:
 		}
 		while (not executionContext -> isRootContext ());
 
-		throw ReferenceError (name + " is not defined.");
+		throw ReferenceError (identifier + " is not defined.");
 	}
 
 	///  @name Members
 
 	const basic_ptr <jsExecutionContext> executionContext;
-	const std::string                    name;
+	const std::string                    identifier;
 
 };
 

@@ -93,7 +93,7 @@ jsExecutionContext::addExpression (var && expression)
 }
 
 void
-jsExecutionContext::defineFunction (const basic_ptr <jsFunction> & function)
+jsExecutionContext::addFunction (const basic_ptr <jsFunction> & function)
 {
 	try
 	{
@@ -111,7 +111,7 @@ jsExecutionContext::run ()
 	try
 	{
 		for (const auto & function : functions)
-			getDefaultObject () -> defineProperty (function .second -> getName (), function .second);
+			getDefaultObject () -> defineProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
 
 		for (const auto & expression : expressions)
 			expression -> toValue ();
@@ -137,6 +137,10 @@ jsExecutionContext::run ()
 	catch (const YieldException &)
 	{
 		throw Error ("Uncatched yield exception.");
+	}
+	catch (...)
+	{
+		throw;
 	}
 }
 

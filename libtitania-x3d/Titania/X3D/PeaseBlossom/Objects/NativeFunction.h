@@ -85,8 +85,8 @@ public:
 
 	virtual
 	var
-	call (const basic_ptr <jsObject> & object, const std::vector <var> & arguments) final override
-	{ return function (object, arguments); }
+	call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments) final override
+	{ return function (thisObject, arguments); }
 
 
 protected:

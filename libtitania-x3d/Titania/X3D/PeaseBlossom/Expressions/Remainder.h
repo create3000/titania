@@ -78,7 +78,7 @@ public:
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »REMAINDER«.
+	///  Returns the type of the value. For this expression this is »REMAINDER«.
 	virtual
 	ValueType
 	getType () const final override

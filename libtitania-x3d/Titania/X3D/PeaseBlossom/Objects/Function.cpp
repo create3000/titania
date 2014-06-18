@@ -48,45 +48,33 @@
  *
  ******************************************************************************/
 
-#include "GlobalObject.h"
-
-#include "../Objects/NativeFunction.h"
-#include "../Objects/Object.h"
-#include "../Primitives/Boolean.h"
-#include "../Primitives/Undefined.h"
+#include "Function.h"
 
 namespace titania {
 namespace pb {
-namespace global {
 
-struct isNaN
+var
+Function::call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments)
 {
-	var
-	operator () (const basic_ptr <jsObject> & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return getTrue ();
+	const auto defaultObject = make_ptr <Object> ();
+	
+	defaultObject -> defineProperty ("this", thisObject);
 
-		return pb::isNaN (arguments .front () -> toNumber ()) ? getTrue () : getFalse ();
+	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
+	{
+		if (i < argc)
+			defaultObject -> defineProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
+
+		else
+			defaultObject -> defineProperty (formalParameters [i], getUndefined (), WRITABLE | CONFIGURABLE);
 	}
 
-};
+	addDefaultObject (defaultObject);
 
-}     // global
+	const auto value = run ();
 
-basic_ptr <jsObject>
-createGlobalObject ()
-{
-	using namespace std::placeholders;
-
-	basic_ptr <jsObject> globalObject (new Object ());
-
-	globalObject -> defineProperty ("this",      globalObject);
-	globalObject -> defineProperty ("undefined", getUndefined ());
-
-	globalObject -> defineProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }), WRITABLE | CONFIGURABLE);
-
-	return globalObject;
+	removeDefaultObject ();
+	return value;
 }
 
 } // pb

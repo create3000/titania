@@ -72,12 +72,12 @@ public:
 		    jsExpression (),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
-		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
+		           value (std::move (value))
 	{ construct (); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »VARIABLE_DECLARATION«.
+	///  Returns the type of the value. For this expression this is »VARIABLE_DECLARATION«.
 	virtual
 	ValueType
 	getType () const final override
@@ -92,7 +92,7 @@ public:
 	{
 		const var result = value -> toValue ();
 
-		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE);
+		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | CONFIGURABLE);
 		return result;
 	}
 

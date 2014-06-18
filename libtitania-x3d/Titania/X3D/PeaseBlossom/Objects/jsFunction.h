@@ -88,7 +88,7 @@ public:
 
 	virtual
 	var
-	call (const basic_ptr <jsObject> & object, const std::vector <var> & arguments) = 0;
+	call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments) = 0;
 
 
 protected:

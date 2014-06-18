@@ -77,6 +77,11 @@ public:
 
 	///  @name Operations
 
+	///  Defines a global function.
+	virtual
+	void
+	addFunction (const basic_ptr <jsFunction> & function) final override;
+
 	///  Executes the program code.
 	virtual
 	var
@@ -133,13 +138,6 @@ protected:
 	Program (const basic_ptr <jsObject> & globalObject) :
 		jsExecutionContext (this, globalObject)
 	{ }
-
-	///  @name Operations
-
-	///  Defines a global function.
-	virtual
-	void
-	defineFunction (const basic_ptr <jsFunction> & function) final override;
 
 
 private:

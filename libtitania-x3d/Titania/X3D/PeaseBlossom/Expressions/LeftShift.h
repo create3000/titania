@@ -76,7 +76,7 @@ public:
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »LEFT_SHIFT«.
+	///  Returns the type of the value. For this expression this is »LEFT_SHIFT«.
 	virtual
 	ValueType
 	getType () const final override

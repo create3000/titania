@@ -76,7 +76,7 @@ public:
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »DIVISION«.
+	///  Returns the type of the value. For this expression this is »DIVISION«.
 	virtual
 	ValueType
 	getType () const final override

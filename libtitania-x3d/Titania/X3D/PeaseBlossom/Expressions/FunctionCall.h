@@ -78,7 +78,7 @@ public:
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »FUNCTION_CALL«.
+	///  Returns the type of the value. For this expression this is »FUNCTION_CALL«.
 	virtual
 	ValueType
 	getType () const final override
@@ -100,7 +100,7 @@ public:
 			for (const auto & value : expressions)
 				arguments .emplace_back (value -> toValue ());
 
-			return function -> call (executionContext -> getDefaultObject (), arguments);
+			return function -> call (executionContext -> getGlobalObject (), arguments);
 		}
 
 		throw TypeError ("'" + expression -> toString () + "' is not a function.");

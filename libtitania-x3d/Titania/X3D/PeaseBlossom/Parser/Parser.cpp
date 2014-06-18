@@ -1799,7 +1799,7 @@ Parser::functionDeclaration ()
 
 						if (Grammar::CloseBrace (istream))
 						{
-							getExecutionContext () -> defineFunction (function);
+							getExecutionContext () -> addFunction (function);
 
 							return true;
 						}

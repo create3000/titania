@@ -58,9 +58,9 @@ namespace pb {
 const std::string Program::typeName = "Program";
 
 void
-Program::defineFunction (const basic_ptr <jsFunction> & function)
+Program::addFunction (const basic_ptr <jsFunction> & function)
 {
-	getGlobalObject () -> defineProperty (function -> getName (), function);
+	getGlobalObject () -> defineProperty (function -> getName (), function, WRITABLE | CONFIGURABLE);
 }
 
 basic_ptr <Program>

@@ -77,7 +77,7 @@ public:
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »ADDITION«.
+	///  Returns the type of the value. For this expression this is »ADDITION«.
 	virtual
 	ValueType
 	getType () const final override

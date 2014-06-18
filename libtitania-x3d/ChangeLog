@@ -1,5 +1,31 @@
 2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* Function.h:
+	* Program.h:
+	* Function.cpp:
+	* jsFunction.h:
+	* Return.h:
+	* Program.cpp:
+	* Division.h:
+	* Addition.h:
+	* Variable.h:
+	* LeftShift.h:
+	* Remainder.h:
+	* NativeFunction.h:
+	* Subtraction.h:
+	* FunctionCall.h:
+	* GlobalObject.cpp:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h:
+	* jsExecutionContext (Kopie).h: 
+
+2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Expressions.h:
 	* Parser.h:

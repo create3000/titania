@@ -469,6 +469,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Execution/jsExecutionContext.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Program.cpp \
 	Titania/X3D/PeaseBlossom/Expressions/jsExpression.cpp \
+	Titania/X3D/PeaseBlossom/Objects/Function.cpp \
 	Titania/X3D/PeaseBlossom/Objects/jsFunction.cpp \
 	Titania/X3D/PeaseBlossom/Objects/jsObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \

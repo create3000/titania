@@ -87,10 +87,7 @@ public:
 
 	virtual
 	var
-	call (const basic_ptr <jsObject> & object, const std::vector <var> & arguments) final override
-	{
-		return run ();
-	}
+	call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments) final override;
 
 	///  @name Input/Output
 

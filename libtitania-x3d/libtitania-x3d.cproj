@@ -1257,6 +1257,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsString.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

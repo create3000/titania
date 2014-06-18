@@ -70,12 +70,12 @@ public:
 	///  Constructs new Return statement.
 	Return (var && expression) :
 		jsExpression (),
-		  expression (std::move (expression -> isPrimitive () ? expression -> toPrimitive () : expression))
+		  expression (std::move (expression))
 	{ construct (); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For expressions this is »RETURN«.
+	///  Returns the type of the value. For this expression this is »RETURN«.
 	virtual
 	ValueType
 	getType () const final override
@@ -86,8 +86,7 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const
-	throw (ReturnException) final override
+	toValue () const final override
 	{
 		throw ReturnException (expression -> toValue ());
 	}
