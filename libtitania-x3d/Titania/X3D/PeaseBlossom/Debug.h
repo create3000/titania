@@ -68,25 +68,7 @@ debug_roots (jsChildObject* node, std::set <jsChildObject*> & seen)
 	const auto value = dynamic_cast <jsValue*> (node);
 
 	if (value)
-	{
-		switch (value -> getType ())
-		{
-			case UNDEFINED:            std::clog << "UNDEFINED";            break;
-			case BOOLEAN:              std::clog << "BOOLEAN";              break;
-			case NUMBER:               std::clog << "NUMBER";               break;
-			case STRING:               std::clog << "STRING";               break;
-			case NULL_OBJECT:          std::clog << "NULL_OBJECT";          break;
-			case OBJECT:               std::clog << "OBJECT";               break;
-			case BOOLEAN_OBJECT:       std::clog << "BOOLEAN_OBJECT";       break;
-			case NUMBER_OBJECT:        std::clog << "NUMBER_OBJECT";        break;
-			case STRING_OBJECT:        std::clog << "STRING_OBJECT";        break;
-			case ARRAY_OBJECT:         std::clog << "ARRAY_OBJECT";         break;
-			case DATE_OBJECT:          std::clog << "DATE_OBJECT";          break;
-			case REGEX_OBJECT:         std::clog << "REGEX_OBJECT";         break;
-			case FUNCTION_OBJECT:      std::clog << "FUNCTION_OBJECT";      break;
-			case EXOTIC_OBJECT:        std::clog << "EXOTIC_OBJECT";        break;
-		}
-	}
+		std::clog << value -> getType ();
 
 	std::clog << std::endl;
 

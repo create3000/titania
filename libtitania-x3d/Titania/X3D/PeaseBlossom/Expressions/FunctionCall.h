@@ -76,6 +76,14 @@ public:
 		     expressions (std::move (expressions))
 	{ construct (); }
 
+	///  @name Common members
+
+	///  Returns the type of the value. For expressions this is »FUNCTION_CALL«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return FUNCTION_CALL; }
+
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.

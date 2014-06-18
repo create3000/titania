@@ -75,6 +75,14 @@ public:
 		            name (std::move (name))
 	{ construct (); }
 
+	///  @name Common members
+
+	///  Returns the type of the value. For expressions this is »VARIABLE«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return VARIABLE; }
+
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.

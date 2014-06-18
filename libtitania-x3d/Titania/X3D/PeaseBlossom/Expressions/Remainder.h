@@ -76,12 +76,15 @@ public:
 		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  @name Operations
+	///  @name Common members
 
-	static
-	double
-	remainder (const var & lhs, const var & rhs)
-	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
+	///  Returns the type of the value. For expressions this is »REMAINDER«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return REMAINDER; }
+
+	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -100,6 +103,11 @@ public:
 	var
 	toValue () const final override
 	{ return make_var <Number> (toNumber ()); }
+
+	static
+	double
+	remainder (const var & lhs, const var & rhs)
+	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
 
 
 private:

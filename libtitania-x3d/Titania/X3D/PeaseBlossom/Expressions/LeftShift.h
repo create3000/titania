@@ -74,12 +74,15 @@ public:
 		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  @name Operations
+	///  @name Common members
 
-	static
-	int32_t
-	leftShift (const var & lhs, const var & rhs)
-	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
+	///  Returns the type of the value. For expressions this is »LEFT_SHIFT«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return LEFT_SHIFT; }
+
+	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -116,6 +119,11 @@ public:
 	var
 	toValue () const final override
 	{ return make_var <Int32> (toInt32 ()); }
+
+	static
+	int32_t
+	leftShift (const var & lhs, const var & rhs)
+	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
 
 
 private:

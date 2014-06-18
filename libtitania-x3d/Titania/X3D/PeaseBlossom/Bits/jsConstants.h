@@ -61,6 +61,8 @@ namespace pb {
  */
 enum ValueType
 {
+	// Standard object
+
 	UNDEFINED,
 	BOOLEAN,
 	NUMBER,
@@ -74,9 +76,82 @@ enum ValueType
 	DATE_OBJECT,
 	REGEX_OBJECT,
 	FUNCTION_OBJECT,
-	EXOTIC_OBJECT
+
+	// Expressions
+
+	ADDITION,
+	DIVISION,
+	FUNCTION_CALL,
+	LEFT_SHIFT,
+	MULTIPLICATION,
+	REMAINDER,
+	SUBTRACTION,
+	VARIABLE,
+	VARIABLE_DECLARATION,
+
+	// Exotic objects
+
+	CUSTOM_OBJECT
 
 };
+
+///  @relates ValueType
+///  @name Input/Output operators.
+
+template <class CharT, class Traits>
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ValueType type)
+noexcept (true)
+{
+	switch (type)
+	{
+		// Standard object
+
+		case UNDEFINED:            ostream << "UNDEFINED";            break;
+		case BOOLEAN:              ostream << "BOOLEAN";              break;
+		case NUMBER:               ostream << "NUMBER";               break;
+		case STRING:               ostream << "STRING";               break;
+		case NULL_OBJECT:          ostream << "NULL_OBJECT";          break;
+		case OBJECT:               ostream << "OBJECT";               break;
+		case BOOLEAN_OBJECT:       ostream << "BOOLEAN_OBJECT";       break;
+		case NUMBER_OBJECT:        ostream << "NUMBER_OBJECT";        break;
+		case STRING_OBJECT:        ostream << "STRING_OBJECT";        break;
+		case ARRAY_OBJECT:         ostream << "ARRAY_OBJECT";         break;
+		case DATE_OBJECT:          ostream << "DATE_OBJECT";          break;
+		case REGEX_OBJECT:         ostream << "REGEX_OBJECT";         break;
+		case FUNCTION_OBJECT:      ostream << "FUNCTION_OBJECT";      break;
+
+		// Expressions
+
+		case ADDITION:             ostream << "ADDITION";             break;
+		case DIVISION:             ostream << "DIVISION";             break;
+		case FUNCTION_CALL:        ostream << "FUNCTION_CALL";        break;
+		case SUBTRACTION:          ostream << "SUBTRACTION";          break;
+		case LEFT_SHIFT:           ostream << "LEFT_SHIFT";           break;
+		case MULTIPLICATION:       ostream << "MULTIPLICATION";       break;
+		case REMAINDER:            ostream << "REMAINDER";            break;
+		case VARIABLE:             ostream << "VARIABLE";             break;
+		case VARIABLE_DECLARATION: ostream << "VARIABLE_DECLARATION"; break;
+
+		// Exotic objects
+
+		case CUSTOM_OBJECT:        ostream << "CUSTOM_OBJECT";        break;
+	}
+
+	return ostream;
+}
+
+inline
+std::string
+to_string (const ValueType type)
+noexcept (true)
+{
+	std::ostringstream osstream;
+
+	osstream << type;
+
+	return osstream .str ();
+}
 
 using PropertyFlagsType = uint8_t;
 

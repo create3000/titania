@@ -1,5 +1,21 @@
 2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Debug.h:
+	* Exception.h:
+	* jsConstants.h:
+	* Variable.h:
+	* Addition.h:
+	* Division.h:
+	* LeftShift.h:
+	* Remainder.h:
+	* Subtraction.h:
+	* FunctionCall.h:
+	* jsExpression.h:
+	* Multiplication.h:
+	* VariableDeclaration.h: 
+
+2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Debug.h:
 	* Objects.h:

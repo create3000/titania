@@ -74,12 +74,15 @@ public:
 		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  @name Opearations
+	///  @name Common members
 
-	static
-	double
-	multiplication (const var & lhs, const var & rhs)
-	{ return lhs -> toNumber () * rhs -> toNumber (); }
+	///  Returns the type of the value. For expressions this is »MULTIPLICATION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return MULTIPLICATION; }
+
+	///  @name Opearations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -98,6 +101,11 @@ public:
 	var
 	toValue () const final override
 	{ return make_var <Number> (toNumber ()); }
+
+	static
+	double
+	multiplication (const var & lhs, const var & rhs)
+	{ return lhs -> toNumber () * rhs -> toNumber (); }
 
 
 private:

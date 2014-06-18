@@ -75,7 +75,21 @@ public:
 		         rhs (std::move (rhs))
 	{ construct (); }
 
+	///  @name Common members
+
+	///  Returns the type of the value. For expressions this is »ADDITION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return ADDITION; }
+
 	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const final override
+	{ return addition (lhs, rhs); }
 
 	static
 	var
@@ -86,12 +100,6 @@ public:
 
 		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const final override
-	{ return addition (lhs, rhs); }
 
 
 private:

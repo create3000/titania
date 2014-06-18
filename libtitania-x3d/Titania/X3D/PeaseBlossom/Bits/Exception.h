@@ -79,20 +79,21 @@ enum ExceptionType
 template <class CharT, class Traits>
 inline
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ExceptionType value)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ExceptionType type)
 noexcept (true)
 {
-	static const std::map <ExceptionType, std::string> exceptionTypes = {
-		std::make_pair (ERROR,           "Error"),
-		std::make_pair (EVAL_ERROR,      "EvalError"),
-		std::make_pair (RANGE_ERROR,     "RangeError"),
-		std::make_pair (REFERENCE_ERROR, "ReferenceError"),
-		std::make_pair (SYNTAX_ERROR,    "SyntaxError"),
-		std::make_pair (TYPE_ERROR,      "TypeError"),
-		std::make_pair (URI_ERROR,       "URIError")
-	};
+	switch (type)
+	{
+		case ERROR:           ostream << "Error";          break;
+		case EVAL_ERROR:      ostream << "EvalError";      break;
+		case RANGE_ERROR:     ostream << "RangeError";     break;
+		case REFERENCE_ERROR: ostream << "ReferenceError"; break;
+		case SYNTAX_ERROR:    ostream << "SyntaxError";    break;
+		case TYPE_ERROR:      ostream << "TypeError";      break;
+		case URI_ERROR:       ostream << "URIError";       break;
+	}
 
-	return ostream << exceptionTypes .at (value);
+	return ostream;
 }
 
 inline

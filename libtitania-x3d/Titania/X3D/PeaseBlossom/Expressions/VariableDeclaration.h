@@ -75,6 +75,14 @@ public:
 		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
 	{ construct (); }
 
+	///  @name Common members
+
+	///  Returns the type of the value. For expressions this is »VARIABLE_DECLARATION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return VARIABLE_DECLARATION; }
+
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
