@@ -64,152 +64,199 @@ DEF Script1 Script {
 
   url [
 #   "peaseblossom:
-#var a = function () { };
 #",
     "peaseblossom:
-// single line comment
 
-/*
- *  multi
- *  line
- *  comment
- */
+initialize ();
 
-;
-true;
-false;
-null;
-'';
-1234.56789;
-0xabcdef;
-0o1234567;
-0b1010101;
-'';
-this;
-undefined;
-'';
-
-var a, b, c, d;
-a - (b * (c + d));
-0 - 1 + 2 * 3 % 4;
-var x = 0 - 1 + 2 * 3 % 4 || (true && false) | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5
-? true
-: false;
-0 instanceof 0;
-0 in 0;
-a = a + b, a += b;
-1 / 0;
--1 / 0;
-
-'';
-'// String';
-'';
-'\\'single quoted string\\'';
-\"\\\"double quoted string\\\"\";
-'';
-'// CallExpression';
-'';
-function f (value, time)
-{ }
-
-f () [1 + 2] .name () .name () [f () .index];
-
-'';
-var a = 1, b = 31;
-'';
-'// UnaryExpression';
-'';
-var x = delete a;
-var x = void b;
-var x = typeof b;
-var x = ++ b;
-var x = -- b;
-var x = + b;
-var x = - b;
-var x = ~ b;
-var x = ! b;
-'';
-'// BinaryExpression';
-'';
-'// MultiplicativeExpression';
-'';
-var x = a * b;
-var x = a / b;
-var x = a % b;
-'';
-'// AdditiveExpression';
-'';
-var x = a + b;
-var x = a - b;
-'';
-'// ShiftExpression';
-'';
-var x = a << b;
-var x = a >> b;
-var x = a >>> b;
-'';
-'// RelationalExpression';
-'';
-var x = a < b;
-var x = a > b;
-var x = a <= b;
-var x = a >= b;
-var x = a instanceof b;
-var x = a in b;
-'';
-'// EqualityExpression';
-'';
-var x = a == b;
-var x = a != b;
-var x = a === b;
-var x = a !== b;
-'';
-'// BitwiseExpression';
-'';
-var x = a & b;
-var x = a ^ b;
-var x = a | b;
-'';
-'// LogicalExpression';
-'';
-var x = a && b;
-var x = a || b;
-var x = a ? b : c;
-'';
-'// ';
-'';
-var Browser;
-'a' + 'b';
-'5' * 2;
-'';
-a = function () { 1 + 2; };
-'';
-set_time;
-'';
-function set_time (value, time)
+function initialize ()
 {
-	1 + 2 * 3 / 4;
-	5 + 6 * 7 / 8;
+	test1 ();
 }
-'';
-var a;
-var a = set_time;
-var
-	a = set_time,
-	a = 1;
-'';
-set_time;
-'';
-var
-	PI   = 3.14159,
-	PI_2 = 2 * PI;
-	
 
-'// VRMLScript';
+function test1 ()
+{
+	// single line comment
 
-NULL;
-FALSE;
-TRUE;
+	/*
+	 *  multi
+	 *  line
+	 *  comment
+	 */
+
+	;
+	print (true);
+	print (false);
+	print (null);
+
+	print ();
+	print (1234.56789);
+	print (0xabcdef);
+	print (0o1234567);
+	print (0b1010101);
+
+	print ();
+	print (this);
+	print (undefined);
+
+	var a, b, c, d;
+
+	print ();
+	print (a - (b * (c + d)));
+	print (0 - 1 + 2 * 3 % 4);
+	print (0 - 1 + 2 * 3 % 4 || (true && false) | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5
+	? true
+	: false);
+
+	print ();
+	print (0 instanceof 0);
+	print (0 in 0);
+	print (a = a + b, a += b);
+	print (1 / 0);
+	print (-1 / 0);
+
+	print ();
+	'// String';
+
+	print ();
+	print ('\\'single quoted string\\'');
+	print (\"\\\"double quoted string\\\"\");
+
+	print ();
+	print ('// CallExpression');
+
+	print ();
+	print (isNaN (undefined));
+
+	function f (value, time)
+	{ 'in function f'; }
+
+	print (f ());
+
+	//f () [1 + 2] .name () .name () [f () .index];
+
+	print ();
+	var a = 1, b = 31;
+
+	print ();
+	print ('// UnaryExpression');
+	print ();
+	print (delete a);
+	print (void b);
+	print (typeof b);
+	print (++ b);
+	print (-- b);
+	print (+ b);
+	print (- b);
+	print (~ b);
+	print (! b);
+
+	print ();
+	print ('// BinaryExpression');
+
+	print ();
+	print ('// MultiplicativeExpression');
+
+	print ();
+	print (a * b);
+	print (a / b);
+	print (a % b);
+	print ('5' * 2);
+
+	print ();
+	print ('// AdditiveExpression');
+
+	print ();
+
+	print ('a' + 'b');
+	print (a + b);
+	print (a - b);
+
+	print ();
+	print ('// ShiftExpression');
+
+	print ();
+	print (a << b);
+	print (a >> b);
+	print (a >>> b);
+
+	print ();
+	print ('// RelationalExpression');
+
+	print ();
+	print (a < b);
+	print (a > b);
+	print (a <= b);
+	print (a >= b);
+	print (a instanceof b);
+	print (a in b);
+
+	print ();
+	print ('// EqualityExpression');
+
+	print ();
+	print (a == b);
+	print (a != b);
+	print (a === b);
+	print (a !== b);
+	print ();
+
+	print ('// BitwiseExpression');
+
+	print ();
+	print (a & b);
+	print (a ^ b);
+	print (a | b);
+
+	print ();
+	print ('// LogicalExpression');
+
+	print ();
+	print (a && b);
+	print (a || b);
+	print (a ? b : c);
+
+	print ();
+	var Browser;
+
+	print ();
+	a = function () { 1 + 2; };
+
+	print ();
+	set_time;
+
+
+	function set_time (value, time)
+	{
+		1 + 2 * 3 / 4;
+		5 + 6 * 7 / 8;
+	}
+
+
+	var a;
+	var a = set_time;
+	var
+		a = set_time,
+		a = 1;
+	print ();
+	set_time;
+	print ();
+	var
+		PI   = 3.14159,
+		PI_2 = 2 * PI;
+		
+
+	'// VRMLScript';
+
+	print (NULL);
+	print (FALSE);
+	print (TRUE);
+	print (print);
+
+	print ('Hellö Wöld!');
+
+	print ((12345678901234567) << 0, ' : ', 1 / 7);
+}
 "
   ]
   directOutput TRUE

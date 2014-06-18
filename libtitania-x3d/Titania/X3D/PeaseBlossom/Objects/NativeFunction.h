@@ -48,68 +48,50 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IDENTIFIER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IDENTIFIER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
 
 #include "../Execution/jsExecutionContext.h"
-#include "../Expressions/jsExpression.h"
-#include "../Primitives/jsValue.h"
+#include "../Objects/jsFunction.h"
 
 namespace titania {
 namespace pb {
 
+using Call = std::function <var (const basic_ptr <jsObject> & object, const std::vector <var> & arguments)>;
+
 /**
- *  Class to represent a JavaScript identifier expression.
+ *  Class to represent a native JavaScript function.
  */
-class Identifier :
-	public jsExpression
+class NativeFunction :
+	public jsFunction
 {
 public:
 
-	///  @name Construction
+	///  Constructs new Function.
+	NativeFunction (const std::string & name, const Call & function) :
+		jsFunction (name),
+		  function (function)
+	{ }
 
-	///  Constructs new Identifier expression.
-	Identifier (jsExecutionContext* const executionContext, std::string && name) :
-		    jsExpression (),
-		executionContext (executionContext),
-		            name (std::move (name))
-	{ addChild (this -> executionContext); }
+	///  @name Common members
 
-	///  @name Member access
-
-	///  Returns the type of the value. For expressions this is »IDENTIFIER«.
+	///  Returns the a default of its input argument type.
 	virtual
-	ValueType
-	getType () const final override
-	{ return IDENTIFIER; }
+	var
+	getDefaultValue () const final override
+	{ return make_var <NativeFunction> (getName (), function); }
 
 	///  @name Operations
 
-	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const
-	throw (ReferenceError) final override
-	{ return getProperty (); }
+	call (const basic_ptr <jsObject> & object, const std::vector <var> & arguments) final override
+	{ return function (object, arguments); }
 
 
-private:
+protected:
 
-	var
-	getProperty () const
-	{
-		const auto & propertyDescriptor = executionContext -> getPropertyDescriptor (name);
-
-		if (propertyDescriptor .get)
-			return propertyDescriptor .get (propertyDescriptor .object);
-
-		return propertyDescriptor .value;
-	}
-
-	///  @name Members
-
-	const basic_ptr <jsExecutionContext> executionContext;
-	const std::string                     name;
+	const Call function;
 
 };
 

@@ -1,3 +1,33 @@
+2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Debug.h:
+	* Objects.h:
+	* Expressions.h:
+	* Parser.cpp:
+	* jsObject.h:
+	* jsConstants.h:
+	* Function.h:
+	* jsObject.cpp:
+	* jsFunction.h:
+	* Division.h:
+	* Addition.h:
+	* Context.cpp:
+	* Variable.h:
+	* Remainder.h:
+	* LeftShift.h:
+	* Identifier.h:
+	* NativeFunction.h:
+	* Subtraction.h:
+	* jsExpression.h:
+	* GlobalObject.cpp:
+	* jsNativeFunction.h:
+	* FunctionCall.h:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
 2014-06-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

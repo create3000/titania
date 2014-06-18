@@ -67,9 +67,11 @@ jsObject::defineProperty (const std::string & name,
 		auto & propertyDescriptor = propertyDescriptors .at (name);
 
 		if (propertyDescriptor .flags & CONFIGURABLE)
+			propertyDescriptor .flags = flags;
+	
+		if (propertyDescriptor .flags & WRITABLE)
 		{
 			propertyDescriptor .value = value;
-			propertyDescriptor .flags = flags;
 			propertyDescriptor .get   = get;
 			propertyDescriptor .set   = set;
 		}

@@ -73,7 +73,7 @@ public:
 		jsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
-	{ addChildren (this -> lhs, this -> rhs); }
+	{ construct (); }
 
 	///  @name Operations
 
@@ -87,16 +87,6 @@ public:
 		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
 
-	///  @name Member access
-
-	///  Returns the type of the value. For expressions this is »ADDITION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return ADDITION; }
-
-	///  @name Operations
-
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
@@ -105,6 +95,12 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 

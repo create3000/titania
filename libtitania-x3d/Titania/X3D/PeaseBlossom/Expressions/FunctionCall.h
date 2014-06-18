@@ -48,14 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
 
-#include "Objects/BooleanObject.h"
-#include "Objects/Function.h"
-#include "Objects/NativeFunction.h"
-#include "Objects/NumberObject.h"
-#include "Objects/Object.h"
-#include "Objects/StringObject.h"
+#include "../Execution/jsExecutionContext.h"
+#include "../Expressions/jsExpression.h"
+#include "../Objects/jsFunction.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a JavaScript variable declaration expression.
+ */
+class FunctionCall :
+	public jsExpression
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new FunctionCall expression.
+	FunctionCall (jsExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
+		    jsExpression (),
+		executionContext (executionContext),
+		      expression (std::move (expression)),
+		     expressions (std::move (expressions))
+	{ construct (); }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const final override
+	{
+		const basic_ptr <jsFunction> function = expression -> toValue ();
+
+		if (function)
+		{
+			std::vector <var> arguments;
+
+			for (const auto & value : expressions)
+				arguments .emplace_back (value -> toValue ());
+
+			return function -> call (executionContext -> getDefaultObject (), arguments);
+		}
+
+		throw TypeError ("'" + expression -> toString () + "' is not a function.");
+	}
+
+private:
+
+	///  @name Construction
+
+	void
+	construct ()
+	{
+		addChildren (executionContext, expression);
+
+		for (const auto & value : expressions)
+			addChild (value);
+	}
+
+	///  @name Members
+
+	const basic_ptr <jsExecutionContext> executionContext;
+	const var                            expression;
+	const std::vector <var>              expressions;
+
+};
+
+} // pb
+} // titania
 
 #endif

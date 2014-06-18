@@ -48,69 +48,94 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
 
 #include "../Execution/jsExecutionContext.h"
-#include "../Objects/jsFunction.h"
+#include "../Expressions/jsExpression.h"
+#include "../Primitives/jsValue.h"
 
 namespace titania {
 namespace pb {
 
-class jsNativeFunction;
-
-using Call = std::function <var ()>;
-
-basic_ptr <jsNativeFunction>
-createFunction (const std::string & name,  const Call &);
-
 /**
- *  Class to represent a native JavaScript function.
+ *  Class to represent a JavaScript identifier expression.
  */
-class jsNativeFunction :
-	public jsFunction
+class Variable :
+	public jsExpression
 {
 public:
 
-	///  Constructs new Function.
-	jsNativeFunction (const std::string & name, const Call & callFunction) :
-		        jsFunction (name),
-		  formalParameters (std::move (formalParameters))
-	{ }
+	///  @name Construction
 
+	///  Constructs new Variable expression.
+	Variable (jsExecutionContext* const executionContext, std::string && name) :
+		    jsExpression (),
+		executionContext (executionContext),
+		            name (std::move (name))
+	{ construct (); }
 
-	///  @name Common members
+	///  @name Operations
 
-	///  Returns the a default of its input argument type.
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	getDefaultValue () const final override
-	{ return createNativeFunction (getName (), callFunction); }
+	toValue () const
+	throw (ReferenceError) final override
+	{ return getProperty (); }
 
 
-protected:
-
-	///  @name Friends
+private:
 
 	///  @name Construction
 
-protected:
+	void
+	construct ()
+	{ addChild (executionContext); }
 
-	const Call callFunction;
+	///  @name Operations
+
+	var
+	getProperty () const
+	throw (ReferenceError)
+	{
+		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), name);
+
+		if (propertyDescriptor .get)
+			return propertyDescriptor .get (propertyDescriptor .object);
+
+		return propertyDescriptor .value;
+	}
+
+	const PropertyDescriptor &
+	getPropertyDescriptor (jsExecutionContext* executionContext, const std::string & name) const
+	throw (ReferenceError)
+	{
+		do 
+		{
+			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
+			{
+				try
+				{
+					return object -> getOwnPropertyDescriptor (name);
+				}
+				catch (const std::out_of_range &)
+				{ }
+			}
+
+			executionContext = executionContext -> getExecutionContext () .get ();
+		}
+		while (not executionContext -> isRootContext ());
+
+		throw ReferenceError (name + " is not defined.");
+	}
+
+	///  @name Members
+
+	const basic_ptr <jsExecutionContext> executionContext;
+	const std::string                    name;
 
 };
-
-template <class ... Args>
-inline
-basic_ptr <Function>
-createNativeFunction (const std::string & name, Args ... && args)
-{
-	basic_ptr <jsNativeFunction> function (new jsNativeFunction (name, std::bind (std::forward <Args> (args ...))));
-
-	function -> setup ();
-
-	return function;
-}
 
 } // pb
 } // titania

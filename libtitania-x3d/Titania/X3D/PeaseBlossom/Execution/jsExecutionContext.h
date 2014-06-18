@@ -76,6 +76,26 @@ public:
 
 	/// @name Member access
 
+	///  Set strict mode.
+	void
+	isStrict (const bool value)
+	{ strict = value; }
+
+	///  Get strict mode.
+	bool
+	isStrict () const
+	{ return true; }
+
+	///  Returns true if this execution context belongs to no other context otherwise false;
+	bool
+	isRootContext () const
+	{ return getExecutionContext () .get () == this; }
+
+	///  Returns the execution context this objects belongs to.
+	const basic_ptr <jsExecutionContext> &
+	getExecutionContext () const
+	{ return executionContext; }
+
 	///  Returns the global objects.
 	const basic_ptr <jsObject> &
 	getGlobalObject () const
@@ -102,30 +122,14 @@ public:
 protected:
 
 	friend class Parser;
-	friend class Identifier;
+	friend class Variable;
 	friend class VariableDeclaration;
+	friend class FunctionCall;
 
 	///  @name Construction
 
 	///  Constructs new jsExecutionContext.
 	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
-
-	/// @name Member access
-
-	///  Set strict mode.
-	void
-	isStrict (const bool value)
-	{ strict = value; }
-
-	///  Get strict mode.
-	bool
-	isStrict () const
-	{ return true; }
-
-	///  Returns the execution context this objects belongs to.
-	const basic_ptr <jsExecutionContext> &
-	getExecutionContext () const
-	{ return executionContext; }
 
 	/// @name Operations
 
@@ -140,13 +144,13 @@ protected:
 
 	///  Gets the current default object.
 	const basic_ptr <jsObject> &
-	getDefaultObject ()
+	getDefaultObject () const
 	{ return defaultObjects .back (); }
 
-	///  Returns a property descriptor for a named property on an object in the scope hierarchy.
-	const PropertyDescriptor &
-	getPropertyDescriptor (const std::string & name) const
-	throw (ReferenceError);
+	///  Gets the current default object.
+	const std::deque <basic_ptr <jsObject>> &
+	getDefaultObjects () const
+	{ return defaultObjects; }
 
 	///  Adds an expression to this context.
 	void
@@ -157,8 +161,6 @@ protected:
 	void
 	defineFunction (const basic_ptr <jsFunction> & function);
 
-	///  @name Operations
-
 	///  Executes the associated expessions of this context.
 	virtual
 	var
@@ -167,13 +169,18 @@ protected:
 
 private:
 
+	///  @name Construction
+
+	void
+	construct ();
+
 	/// @name Members
 
-	bool                                             strict;
+	bool                                            strict;
 	const basic_ptr <jsExecutionContext>            executionContext;
 	basic_ptr <jsObject>                            globalObject;
 	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
-	std::deque <var>                                 expressions;    // Use deque to keep iters when inserting value.
+	std::deque <var>                                expressions;    // Use deque to keep iters when inserting value.
 	std::map <std::string, basic_ptr <jsFunction>>  functions;
 
 };

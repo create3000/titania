@@ -72,7 +72,7 @@ public:
 		jsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
-	{ addChildren (this -> lhs, this -> rhs); }
+	{ construct (); }
 
 	///  @name Operations
 
@@ -80,16 +80,6 @@ public:
 	int32_t
 	leftShift (const var & lhs, const var & rhs)
 	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
-
-	///  @name Member access
-
-	///  Returns the type of the value. For expressions this is »DIVISION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return LEFT_SHIFT; }
-
-	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -129,6 +119,12 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 

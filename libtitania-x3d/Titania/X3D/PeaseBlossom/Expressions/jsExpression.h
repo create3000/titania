@@ -72,6 +72,12 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
+	///  Returns the type of the value. For expressions this is »EXPRESSION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return EXOTIC_OBJECT; }
+
 	///  Returns the a default of its input argument type.
 	virtual
 	var

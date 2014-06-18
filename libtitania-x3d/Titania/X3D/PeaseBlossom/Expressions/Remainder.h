@@ -74,7 +74,7 @@ public:
 		jsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
-	{ addChildren (this -> lhs, this -> rhs); }
+	{ construct (); }
 
 	///  @name Operations
 
@@ -82,16 +82,6 @@ public:
 	double
 	remainder (const var & lhs, const var & rhs)
 	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
-
-	///  @name Member access
-
-	///  Returns the type of the value. For expressions this is »REMAINDER«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return REMAINDER; }
-
-	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -113,6 +103,12 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 

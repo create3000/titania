@@ -420,7 +420,7 @@ Parser::primaryExpression (var & value)
 
 	if (Grammar::_this (istream))
 	{
-		value .reset (new Identifier (getExecutionContext (), std::string (Grammar::_this ())));
+		value .reset (new Variable (getExecutionContext (), std::string (Grammar::_this ())));
 		return true;
 	}
 
@@ -428,7 +428,7 @@ Parser::primaryExpression (var & value)
 
 	if (identifier (identifierCharacters))
 	{
-		value .reset (new Identifier (getExecutionContext (), std::move (identifierCharacters)));
+		value .reset (new Variable (getExecutionContext (), std::move (identifierCharacters)));
 		return true;
 	}
 
@@ -501,7 +501,7 @@ Parser::callExpression (var & value)
 
 			if (arguments (argumentsListExpressions))
 			{
-				//value .reset (new CallExpression (std::move (value), std::move (argumentsListExpressions)));
+				value .reset (new FunctionCall (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
 				continue;
 			}
 

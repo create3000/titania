@@ -726,7 +726,6 @@
     <None Include="Titania\X3D\PeaseBlossom\Objects\jsFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Addition.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Subtraction.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Identifier.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\jsExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Division.h" />
@@ -737,7 +736,9 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Int32.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\jsNativeFunction.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionCall.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Variable.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

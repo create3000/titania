@@ -84,15 +84,7 @@ debug_roots (jsChildObject* node, std::set <jsChildObject*> & seen)
 			case DATE_OBJECT:          std::clog << "DATE_OBJECT";          break;
 			case REGEX_OBJECT:         std::clog << "REGEX_OBJECT";         break;
 			case FUNCTION_OBJECT:      std::clog << "FUNCTION_OBJECT";      break;
-			case ADDITION:             std::clog << "ADDITION";             break;
-			case DIVISION:             std::clog << "DIVISION";             break;
-			case SUBTRACTION:          std::clog << "SUBTRACTION";          break;
-			case IDENTIFIER:           std::clog << "IDENTIFIER";           break;
-			case MULTIPLICATION:       std::clog << "MULTIPLICATION";       break;
-			case REMAINDER:            std::clog << "REMAINDER";            break;
-			case VARIABLE_DECLARATION: std::clog << "VARIABLE_DECLARATION"; break;
-			case LEFT_SHIFT:           std::clog << "LEFT_SHIFT";            break;
-			case CUSTOM:               std::clog << "CUSTOM";               break;
+			case EXOTIC_OBJECT:        std::clog << "EXOTIC_OBJECT";        break;
 		}
 	}
 

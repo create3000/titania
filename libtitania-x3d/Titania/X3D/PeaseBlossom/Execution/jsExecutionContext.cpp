@@ -66,9 +66,13 @@ jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionConte
 	     defaultObjects (),
 	        expressions (),
 	          functions ()
+{ construct (); }
+
+void
+jsExecutionContext::construct ()
 {
-	addChildren (this -> executionContext,
-	             this -> globalObject);
+	addChildren (executionContext,
+	             globalObject);
 
 	addDefaultObject (globalObject);
 }
@@ -78,23 +82,6 @@ jsExecutionContext::addDefaultObject (const basic_ptr <jsObject> & object)
 {
 	defaultObjects .emplace_back (object);
 	defaultObjects .back () .addParent (this);
-}
-
-const PropertyDescriptor &
-jsExecutionContext::getPropertyDescriptor (const std::string & name) const
-throw (ReferenceError)
-{
-	for (const auto & object : basic::reverse_adapter (defaultObjects))
-	{
-		try
-		{
-			return object -> getOwnPropertyDescriptor (name);
-		}
-		catch (const std::out_of_range &)
-		{ }
-	}
-
-	throw ReferenceError (name + " is not defined.");
 }
 
 void

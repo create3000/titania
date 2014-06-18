@@ -53,6 +53,7 @@
 
 #include "../Objects/jsObject.h"
 #include "../Primitives/String.h"
+#include "../Primitives/Undefined.h"
 
 #include <glibmm/ustring.h>
 
@@ -78,18 +79,16 @@ public:
 	getType () const override
 	{ return FUNCTION_OBJECT; }
 
-	///  @name Construction
-
-	void
-	setup ()
-	{ defineProperty ("name", make_var <String> (name)); }
-
 	///  @name Member access
 
 	///  Returns the name of the function.
 	const std::string &
 	getName () const
 	{ return name; }
+
+	virtual
+	var
+	call (const basic_ptr <jsObject> & object, const std::vector <var> & arguments) = 0;
 
 
 protected:
@@ -100,7 +99,7 @@ protected:
 	jsFunction (const std::string & name) :
 		jsObject (),
 		    name (name)
-	{ }
+	{ defineProperty ("name", make_var <String> (name)); }
 
 	virtual
 	void

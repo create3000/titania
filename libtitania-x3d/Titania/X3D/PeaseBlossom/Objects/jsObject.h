@@ -89,13 +89,6 @@ class jsObject :
 {
 public:
 
-	///  @name Construction
-
-	///  Setups a jsObject and calls initialize.
-	void
-	setup ()
-	{ initialize (); }
-
 	///  @name Common members
 
 	///  Returns the type name of this object.

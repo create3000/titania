@@ -73,15 +73,7 @@ public:
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		           value (std::move (value -> isPrimitive () ? value -> toPrimitive () : value))
-	{ addChildren (this -> executionContext, this -> value); }
-
-	///  @name Member access
-
-	///  Returns the type of the value. For expressions this is »VARIABLE_DECLARATION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return VARIABLE_DECLARATION; }
+	{ construct (); }
 
 	///  @name Operations
 
@@ -92,17 +84,23 @@ public:
 	{
 		const var result = value -> toValue ();
 
-		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE | CONFIGURABLE);
+		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | ENUMERABLE);
 		return result;
 	}
 
 private:
 
+	///  @name Construction
+
+	void
+	construct ()
+	{ addChildren (executionContext, value); }
+
 	///  @name Members
 
 	const basic_ptr <jsExecutionContext> executionContext;
-	const std::string                     identifier;
-	const var                             value;
+	const std::string                    identifier;
+	const var                            value;
 
 };
 

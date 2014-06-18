@@ -50,11 +50,29 @@
 
 #include "GlobalObject.h"
 
+#include "../Objects/NativeFunction.h"
 #include "../Objects/Object.h"
+#include "../Primitives/Boolean.h"
 #include "../Primitives/Undefined.h"
 
 namespace titania {
 namespace pb {
+namespace global {
+
+struct isNaN
+{
+	var
+	operator () (const basic_ptr <jsObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return getTrue ();
+
+		return pb::isNaN (arguments .front () -> toNumber ()) ? getTrue () : getFalse ();
+	}
+
+};
+
+}     // global
 
 basic_ptr <jsObject>
 createGlobalObject ()
@@ -66,7 +84,7 @@ createGlobalObject ()
 	globalObject -> defineProperty ("this",      globalObject,    ENUMERABLE);
 	globalObject -> defineProperty ("undefined", getUndefined (), ENUMERABLE);
 
-	//globalObject -> defineProperty ("isNaN", createNativeFunction ("isNaN", isNaN), ENUMERABLE);
+	globalObject -> defineProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }), ENUMERABLE);
 
 	return globalObject;
 }

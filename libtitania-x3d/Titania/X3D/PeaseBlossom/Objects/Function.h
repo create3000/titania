@@ -83,6 +83,15 @@ public:
 	getDefaultValue () const final override
 	{ return make_var <Function> (getExecutionContext () .get ()); }
 
+	///  @name Operations
+
+	virtual
+	var
+	call (const basic_ptr <jsObject> & object, const std::vector <var> & arguments) final override
+	{
+		return run ();
+	}
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
@@ -102,7 +111,6 @@ public:
 		jsFunction::dispose ();
 		jsExecutionContext::dispose ();
 	}
-
 
 private:
 

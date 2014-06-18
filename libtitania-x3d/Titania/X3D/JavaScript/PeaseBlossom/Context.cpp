@@ -86,9 +86,29 @@ Context::create (X3DExecutionContext* const) const
 	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
+namespace global {
+
+struct print
+{
+	pb::var
+	operator () (X3DBrowser* const browser, const pb::basic_ptr <pb::jsObject> & object, const std::vector <pb::var> & arguments)
+	{
+		for (const auto & value : arguments)
+			browser -> print (value);
+
+		browser -> println ();
+
+		return pb::getUndefined ();
+	}
+};
+
+} // global
+
 void
 Context::initialize ()
 {
+	using namespace std::placeholders;
+
 	const auto t0 = chrono::now ();
 
 	std::istringstream istream (getECMAScript ());
@@ -101,15 +121,18 @@ Context::initialize ()
 		program -> getGlobalObject () -> defineProperty ("FALSE", pb::var (), pb::ENUMERABLE, std::bind (pb::getFalse));
 		program -> getGlobalObject () -> defineProperty ("TRUE",  pb::var (), pb::ENUMERABLE, std::bind (pb::getTrue));
 
+		program -> getGlobalObject () -> defineProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::ENUMERABLE);
+
 		program -> fromStream (istream);
 
-		getBrowser () -> println ("result:  ", program -> run (), " : ", SFTime (chrono::now () - t0));
-		getBrowser () -> println ("istream: ", SFBool (istream));
+		getBrowser () -> println ("### result: ", program -> run ());
+		getBrowser () -> println ("### time:   ", SFTime (chrono::now () - t0));
 
 		{
 			const auto t0 = chrono::now ();
 
-			getBrowser () -> println ("result:  ", program -> run (), " : ", SFTime (chrono::now () - t0));
+			getBrowser () -> println ("### result: ", program -> run ());
+			getBrowser () -> println ("### time:   ", SFTime (chrono::now () - t0));
 		}
 	}
 	catch (const pb::jsException & error)
