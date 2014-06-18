@@ -122,6 +122,31 @@ Parser::comment ()
 	return false;
 }
 
+void
+Parser::commentsNoLineTerminator ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	while (commentNoLineTerminator ())
+		;
+}
+
+bool
+Parser::commentNoLineTerminator ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	Grammar::WhiteSpacesNoLineTerminator (istream, whiteSpaces);
+
+	if (Grammar::MultiLineComment (istream, commentCharacters))
+		return true;
+
+	if (Grammar::SingleLineComment (istream, commentCharacters))
+		return true;
+
+	return false;
+}
+
 bool
 Parser::identifier (std::string & identifierCharacters)
 {
@@ -1553,10 +1578,13 @@ Parser::statement ()
 	if (variableStatement ())
 		return true;
 
+	if (emptyStatement ())
+		return true;
+
 	if (expressionStatement ())
 		return true;
 
-	if (emptyStatement ())
+	if (returnStatement ())
 		return true;
 
 	return false;
@@ -1645,6 +1673,19 @@ Parser::initialiser (var & value)
 }
 
 bool
+Parser::emptyStatement ()
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::Semicolon (istream))
+		return true;
+
+	return false;
+}
+
+bool
 Parser::expressionStatement ()
 {
 	//__LOG__ << std::endl;
@@ -1676,14 +1717,41 @@ Parser::expressionStatement ()
 }
 
 bool
-Parser::emptyStatement ()
+Parser::returnStatement ()
 {
 	//__LOG__ << std::endl;
 
 	comments ();
 
-	if (Grammar::Semicolon (istream))
-		return true;
+	if (Grammar::_return (istream))
+	{
+		commentsNoLineTerminator ();
+
+		var value = getUndefined ();
+	
+		if (expression (value))
+		{
+			comments ();
+
+			if (Grammar::Semicolon (istream))
+			{
+				getExecutionContext () -> addExpression (make_var <Return> (std::move (value)));
+				return true;
+			}
+
+			throw SyntaxError ("Expected a ';' after expression.");
+		}
+
+		comments ();
+
+		if (Grammar::Semicolon (istream))
+		{
+			getExecutionContext () -> addExpression (make_var <Return> (std::move (value)));
+			return true;
+		}
+
+		throw SyntaxError ("Expected a ';' after return statement.");
+	}
 
 	return false;
 }

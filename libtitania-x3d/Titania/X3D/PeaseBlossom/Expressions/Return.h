@@ -48,114 +48,65 @@
  *
  ******************************************************************************/
 
-#include "jsExecutionContext.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
 
+#include "../Expressions/jsExpression.h"
 #include "../Expressions/ControlFlowException.h"
-#include "../Objects/Function.h"
-#include "../Parser/Parser.h"
-#include "../Primitives.h"
 
 namespace titania {
 namespace pb {
 
-jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject) :
-	      jsChildObject (),
-	jsInputStreamObject (),
-	             strict (false),
-	   executionContext (executionContext),
-	       globalObject (globalObject),
-	     defaultObjects (),
-	        expressions (),
-	          functions ()
-{ construct (); }
-
-void
-jsExecutionContext::construct ()
+/**
+ *  Class to represent a JavaScript return statement.
+ */
+class Return :
+	public jsExpression
 {
-	addChildren (executionContext,
-	             globalObject);
+public:
 
-	addDefaultObject (globalObject);
-}
+	///  @name Construction
 
-void
-jsExecutionContext::addDefaultObject (const basic_ptr <jsObject> & object)
-{
-	defaultObjects .emplace_back (object);
-	defaultObjects .back () .addParent (this);
-}
+	///  Constructs new Return statement.
+	Return (var && expression) :
+		jsExpression (),
+		  expression (std::move (expression -> isPrimitive () ? expression -> toPrimitive () : expression))
+	{ construct (); }
 
-void
-jsExecutionContext::addExpression (var && expression)
-{
-	expressions .emplace_back (std::move (expression));
-	expressions .back () .addParent (this);
-}
+	///  @name Common members
 
-void
-jsExecutionContext::defineFunction (const basic_ptr <jsFunction> & function)
-{
-	try
+	///  Returns the type of the value. For expressions this is »RETURN«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return RETURN; }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const
+	throw (ReturnException) final override
 	{
-		functions .at (function -> getName ()) = function;
+		throw ReturnException (expression -> toValue ());
 	}
-	catch (const std::out_of_range &)
-	{
-		functions .emplace (function -> getName (), function) .first -> second .addParent (this);
-	}
-}
 
-var
-jsExecutionContext::run ()
-{
-	try
-	{
-		for (const auto & function : functions)
-			getDefaultObject () -> defineProperty (function .second -> getName (), function .second);
+private:
 
-		for (const auto & expression : expressions)
-			expression -> toValue ();
+	///  @name Construction
 
-		return getUndefined ();
-	}
-	catch (const ReturnException & exception)
-	{
-		return exception .toValue ();
-	}
-	catch (const BreakException &)
-	{
-		throw SyntaxError ("Unlabeled break must be inside loop or switch.");
-	}
-	catch (const ContinueException &)
-	{
-		throw SyntaxError ("continue must be inside loop.");
-	}
-	catch (const GotoException &)
-	{
-		throw Error ("Uncatched goto exception.");
-	}
-	catch (const YieldException &)
-	{
-		throw Error ("Uncatched yield exception.");
-	}
-}
+	void
+	construct ()
+	{ addChildren (expression); }
 
-void
-jsExecutionContext::fromStream (std::istream & istream)
-throw (SyntaxError)
-{
-	Parser (this, istream) .parseIntoContext ();
-}
+	///  @name Members
 
-void
-jsExecutionContext::dispose ()
-{
-	functions      .clear ();
-	defaultObjects .clear ();
-	expressions    .clear ();
+	const var expression;
 
-	jsChildObject::dispose ();
-}
+};
 
 } // pb
 } // titania
+
+#endif

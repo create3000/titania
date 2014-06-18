@@ -1,5 +1,20 @@
 2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Expressions.h:
+	* Parser.h:
+	* Exception.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* jsObject.h:
+	* jsConstants.h:
+	* Return.h:
+	* FunctionCall.h:
+	* jsExecutionContext.cpp:
+	* ControlFlowException.h: 
+
+2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Debug.h:
 	* Exception.h:
 	* jsConstants.h:

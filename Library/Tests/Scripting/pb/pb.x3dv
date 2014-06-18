@@ -71,7 +71,7 @@ initialize ();
 
 function initialize ()
 {
-	test1 ();
+	print ('test1: ', test1 ());
 }
 
 function test1 ()
@@ -256,6 +256,8 @@ function test1 ()
 	print ('Hellö Wöld!');
 
 	print ((12345678901234567) << 0, ' : ', 1 / 7);
+
+	return PI_2;
 }
 "
   ]

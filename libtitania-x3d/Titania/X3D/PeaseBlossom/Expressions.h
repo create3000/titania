@@ -57,6 +57,7 @@
 #include "Expressions/LeftShift.h"
 #include "Expressions/Multiplication.h"
 #include "Expressions/Remainder.h"
+#include "Expressions/Return.h"
 #include "Expressions/Subtraction.h"
 #include "Expressions/Variable.h"
 #include "Expressions/VariableDeclaration.h"

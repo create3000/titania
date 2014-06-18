@@ -62,11 +62,14 @@ class Grammar
 public:
 
 	///  @name General
+
 	static const io::sequence            WhiteSpaces;
+	static const io::sequence            WhiteSpacesNoLineTerminator;
 	static const io::single_line_comment SingleLineComment;
 	static const io::multi_line_comment  MultiLineComment;
 
-	// Terminal Symbols
+	///  @name Terminal Symbols
+
 	static const io::character Period;
 	static const io::character Comma;
 	static const io::character Semicolon;
@@ -77,7 +80,7 @@ public:
 	static const io::character OpenBrace;
 	static const io::character CloseBrace;
 
-	// Keywords
+	///  @name Keywords
 
 	static const io::string _this;
 	static const io::string _false;
@@ -89,10 +92,12 @@ public:
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
 
-	// New Opearator
+	///  @name New Opearator
+
 	static const io::string _new;
 
-	// Unary Operator
+	///  @name Unary Operator
+
 	static const io::string    _delete;
 	static const io::string    _void;
 	static const io::string    _typeof;
@@ -103,7 +108,8 @@ public:
 	static const io::character Tilde;
 	static const io::character ExclamationMark;
 
-	// Binary Operator
+	///  @name Binary Operator
+
 	static const io::character Multiplication;
 	static const io::character Division;
 	static const io::character Remainder;
@@ -130,7 +136,8 @@ public:
 	static const io::character QuestionMark;
 	static const io::character Colon;
 
-	// Assignment Operators
+	///  @name Assignment Operators
+
 	static const io::character Assignment;
 	static const io::string    MultiplicationAssigment;
 	static const io::string    DivisionAssignment;
@@ -144,7 +151,12 @@ public:
 	static const io::string    BitwiseXORAssignment;
 	static const io::string    BitwiseORAssignment;
 
+	///  @name Return statement
+
+	static const io::string _return;
+
 	///  @name Values
+
 	static const io::string   hex;
 	static const io::string   HEX;
 	static const io::string   oct;
@@ -157,6 +169,7 @@ public:
 
 // General
 const io::sequence            Grammar::WhiteSpaces ("\r\n \t");
+const io::sequence            Grammar::WhiteSpacesNoLineTerminator (" \t");
 const io::single_line_comment Grammar::SingleLineComment ("//");
 const io::multi_line_comment  Grammar::MultiLineComment ("/*", "*/");
 
@@ -274,6 +287,9 @@ const io::string    Grammar::UnsignedRightShiftAssignment (">>>=");
 const io::string    Grammar::BitwiseANDAssignment ("&=");
 const io::string    Grammar::BitwiseXORAssignment ("^=");
 const io::string    Grammar::BitwiseORAssignment ("|=");
+
+// Return statement
+const io::string Grammar::_return ("return");
 
 // Values
 const io::string   Grammar::hex ("0x");

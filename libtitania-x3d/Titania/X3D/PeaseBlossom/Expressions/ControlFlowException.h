@@ -48,84 +48,73 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
-
-#include "../Execution/jsExecutionContext.h"
-#include "../Expressions/jsExpression.h"
-#include "../Objects/jsFunction.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_CONTROL_FLOW_EXCEPTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_CONTROL_FLOW_EXCEPTION_H__
 
 namespace titania {
 namespace pb {
 
+enum class ControlFlowExceptionType
+{
+	BREAK,
+	CONTINUE,
+	GOTO,
+	RETURN,
+	YIELD
+
+};
+
 /**
- *  Class to represent a JavaScript function call expression.
+ *  Template to represent a control flow exception.
  */
-class FunctionCall :
-	public jsExpression
+template <ControlFlowExceptionType type>
+class jsControlFlowException
+{
+public:
+
+	virtual
+	~jsControlFlowException ()
+	noexcept (true)
+	{ }
+
+};
+
+/**
+ *  Class to represent a ReturnException exception.
+ */
+class ReturnException :
+	public jsControlFlowException <ControlFlowExceptionType::RETURN>
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new FunctionCall expression.
-	FunctionCall (jsExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
-		    jsExpression (),
-		executionContext (executionContext),
-		      expression (std::move (expression)),
-		     expressions (std::move (expressions))
-	{ construct (); }
+	ReturnException (const var & value)
+	noexcept (true) :
+		jsControlFlowException <ControlFlowExceptionType::RETURN> (),
+		                                                    value (value)
+	{ }
 
-	///  @name Common members
+	///  @name Member access
 
-	///  Returns the type of the value. For expressions this is »FUNCTION_CALL«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return FUNCTION_CALL; }
+	const var &
+	toValue () const
+	noexcept (true)
+	{ return value; }
 
-	///  @name Operations
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const final override
-	{
-		const basic_ptr <jsFunction> function = expression -> toValue ();
-
-		if (function)
-		{
-			std::vector <var> arguments;
-
-			for (const auto & value : expressions)
-				arguments .emplace_back (value -> toValue ());
-
-			return function -> call (executionContext -> getDefaultObject (), arguments);
-		}
-
-		throw TypeError ("'" + expression -> toString () + "' is not a function.");
-	}
 
 private:
 
-	///  @name Construction
-
-	void
-	construct ()
-	{
-		addChildren (executionContext, expression);
-
-		for (const auto & value : expressions)
-			addChild (value);
-	}
-
 	///  @name Members
 
-	const basic_ptr <jsExecutionContext> executionContext;
-	const var                            expression;
-	const std::vector <var>              expressions;
+	const var value;
 
 };
+
+using BreakException    = jsControlFlowException <ControlFlowExceptionType::BREAK>;
+using ContinueException = jsControlFlowException <ControlFlowExceptionType::CONTINUE>;
+using GotoException     = jsControlFlowException <ControlFlowExceptionType::GOTO>;
+using YieldException    = jsControlFlowException <ControlFlowExceptionType::YIELD>;
 
 } // pb
 } // titania

@@ -120,6 +120,12 @@ private:
 	bool
 	comment ();
 
+	void
+	commentsNoLineTerminator ();
+
+	bool
+	commentNoLineTerminator ();
+
 	bool
 	identifier (std::string &);
 
@@ -253,10 +259,13 @@ private:
 	initialiser (var &);
 
 	bool
+	emptyStatement ();
+
+	bool
 	expressionStatement ();
 
 	bool
-	emptyStatement ();
+	returnStatement ();
 
 	// A.5 Functions and Programs
 

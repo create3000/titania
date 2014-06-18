@@ -85,6 +85,7 @@ enum ValueType
 	LEFT_SHIFT,
 	MULTIPLICATION,
 	REMAINDER,
+	RETURN,
 	SUBTRACTION,
 	VARIABLE,
 	VARIABLE_DECLARATION,
@@ -130,6 +131,7 @@ noexcept (true)
 		case LEFT_SHIFT:           ostream << "LEFT_SHIFT";           break;
 		case MULTIPLICATION:       ostream << "MULTIPLICATION";       break;
 		case REMAINDER:            ostream << "REMAINDER";            break;
+		case RETURN:               ostream << "RETURN";               break;
 		case VARIABLE:             ostream << "VARIABLE";             break;
 		case VARIABLE_DECLARATION: ostream << "VARIABLE_DECLARATION"; break;
 

@@ -54,7 +54,6 @@
 #include "../Base/jsOutputStreamObject.h"
 
 #include <exception>
-#include <map>
 #include <sstream>
 #include <string>
 

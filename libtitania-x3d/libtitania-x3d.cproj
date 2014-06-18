@@ -739,6 +739,8 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionCall.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Variable.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\ControlFlowException.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\Return.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

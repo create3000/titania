@@ -53,6 +53,7 @@
 
 #include "../Primitives/jsValue.h"
 
+#include <map>
 #include <functional>
 
 namespace titania {
