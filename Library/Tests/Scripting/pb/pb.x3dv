@@ -267,6 +267,15 @@ function test1 ()
 
 	return PI_2;
 }
+
+function set_time (value, time)
+{
+	print (time);
+	print ('' ? 1 : 0);
+	print ('a' ? 1 : 0);
+	print ('0' ? 1 : 0);
+	print ('1' ? 1 : 0);
+}
 "
   ]
   directOutput TRUE
@@ -275,10 +284,11 @@ function test1 ()
 DEF Script2 Script {
   inputOnly SFTime set_time
 
-  url "peaseblossom:
+  url "javascript:
 
 function set_time (value, time)
 {
+	print (time);
 	print ('' ? 1 : 0);
 	print ('a' ? 1 : 0);
 	print ('0' ? 1 : 0);

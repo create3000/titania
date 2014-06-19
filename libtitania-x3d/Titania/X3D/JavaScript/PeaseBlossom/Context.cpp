@@ -134,12 +134,14 @@ Context::initialize ()
 
 	try
 	{
-		program -> getFunction ("initialize") -> call (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("initialize") -> call (program -> getGlobalObject ());
 	}
-	catch (const std::exception & error)
+	catch (const pb::vsException & error)
 	{
 		getBrowser () -> println (error .what ());
 	}
+	catch (const std::exception & error)
+	{ }
 }
 
 void
@@ -147,10 +149,10 @@ Context::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
 	{
-		if (program -> hasFunction ("prepareEvents"))
+		if (program -> hasFunctionDeclaration ("prepareEvents"))
 			getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
 
-		if (program -> hasFunction ("eventsProcessed"))
+		if (program -> hasFunctionDeclaration ("eventsProcessed"))
 			getScriptNode () -> addInterest (this, &Context::eventsProcessed);
 
 		getScriptNode () -> addInterest (this, &Context::finish);
@@ -162,7 +164,7 @@ Context::set_live ()
 				case inputOnly:
 				case inputOutput:
 				{
-					if (program -> hasFunction (field -> getName ()))
+					if (program -> hasFunctionDeclaration (field -> getName ()))
 						field -> addInterest (this, &Context::set_field, field);
 
 					break;
@@ -174,10 +176,10 @@ Context::set_live ()
 	}
 	else
 	{
-		if (program -> hasFunction ("prepareEvents"))
+		if (program -> hasFunctionDeclaration ("prepareEvents"))
 			getBrowser () -> prepareEvents () .removeInterest (this, &Context::prepareEvents);
 
-		if (program -> hasFunction ("eventsProcessed"))
+		if (program -> hasFunctionDeclaration ("eventsProcessed"))
 			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
 
 		getScriptNode () -> removeInterest (this, &Context::finish);
@@ -189,7 +191,7 @@ Context::set_live ()
 				case inputOnly   :
 				case inputOutput :
 					{
-						if (program -> hasFunction (field -> getName ()))
+						if (program -> hasFunctionDeclaration (field -> getName ()))
 							field -> removeInterest (this, &Context::set_field);
 
 						break;
@@ -206,12 +208,14 @@ Context::prepareEvents ()
 {
 	try
 	{
-		program -> getFunction ("prepareEvents") -> call (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("prepareEvents") -> call (program -> getGlobalObject ());
 	}
-	catch (const std::exception & error)
+	catch (const pb::vsException & error)
 	{
 		getBrowser () -> println (error .what ());
 	}
+	catch (const std::exception & error)
+	{ }
 }
 
 void
@@ -221,16 +225,18 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 
 	try
 	{
-		program -> getFunction (field -> getName ()) -> call (program -> getGlobalObject (),
+		program -> getFunctionDeclaration (field -> getName ()) -> call (program -> getGlobalObject (),
 		{
 			pb::getUndefined (),
 			pb::make_var <pb::Number> (getCurrentTime ())
 		});
 	}
-	catch (const std::exception & error)
+	catch (const pb::vsException & error)
 	{
 		getBrowser () -> println (error .what ());
 	}
+	catch (const std::exception & error)
+	{ }
 
 	field -> isTainted (false);
 }
@@ -240,12 +246,14 @@ Context::eventsProcessed ()
 {
 	try
 	{
-		program -> getFunction ("eventsProcessed") -> call (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("eventsProcessed") -> call (program -> getGlobalObject ());
 	}
-	catch (const std::exception & error)
+	catch (const pb::vsException & error)
 	{
 		getBrowser () -> println (error .what ());
 	}
+	catch (const std::exception & error)
+	{ }
 }
 
 void
@@ -271,15 +279,15 @@ Context::dispose ()
 {
 	program .dispose ();
 
-//	pb::debug_roots (pb::getUndefined () .get ());
-//	pb::debug_roots (pb::getFalse ()     .get ());
-//	pb::debug_roots (pb::getTrue ()      .get ());
-//	pb::debug_roots (pb::getNull ()      .get ());
-//
-//	assert (pb::getUndefined () -> getParents () .size () == 1);
-//	assert (pb::getFalse ()     -> getParents () .size () == 1);
-//	assert (pb::getTrue ()      -> getParents () .size () == 1);
-//	assert (pb::getNull ()      -> getParents () .size () == 1);
+	pb::debug_roots (pb::getUndefined () .get ());
+	pb::debug_roots (pb::getFalse ()     .get ());
+	pb::debug_roots (pb::getTrue ()      .get ());
+	pb::debug_roots (pb::getNull ()      .get ());
+
+	assert (pb::getUndefined () -> getParents () .size () == 1);
+	assert (pb::getFalse ()     -> getParents () .size () == 1);
+	assert (pb::getTrue ()      -> getParents () .size () == 1);
+	assert (pb::getNull ()      -> getParents () .size () == 1);
 
 	pb::Program::deleteObjectsAsync ();
 

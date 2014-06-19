@@ -93,7 +93,7 @@ vsExecutionContext::addExpression (var && expression)
 }
 
 void
-vsExecutionContext::addFunction (const basic_ptr <vsFunction> & function)
+vsExecutionContext::addFunctionDeclaration (const basic_ptr <vsFunction> & function)
 throw (std::invalid_argument)
 {
 	const auto pair = functions .emplace (function -> getName (), function);
@@ -106,7 +106,7 @@ throw (std::invalid_argument)
 }
 
 void
-vsExecutionContext::updateFunction (const basic_ptr <vsFunction> & function)
+vsExecutionContext::updateFunctionDeclaration (const basic_ptr <vsFunction> & function)
 throw (std::invalid_argument)
 {
 	try
@@ -115,12 +115,12 @@ throw (std::invalid_argument)
 	}
 	catch (const std::out_of_range &)
 	{
-		addFunction (function);
+		addFunctionDeclaration (function);
 	}
 }
 
 void
-vsExecutionContext::removeFunction (const std::string & name)
+vsExecutionContext::removeFunctionDeclaration (const std::string & name)
 noexcept (true)
 {
 	functions .erase (name);
@@ -130,7 +130,7 @@ void
 vsExecutionContext::import (const vsExecutionContext* const executionContext)
 {
 	for (const auto & function : functions)
-		addFunction (function .second -> copy (this));
+		addFunctionDeclaration (function .second -> copy (this));
 
 	for (const auto & expression : expressions)
 		addExpression (expression -> copy (this));

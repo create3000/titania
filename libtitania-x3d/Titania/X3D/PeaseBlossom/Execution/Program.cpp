@@ -57,54 +57,6 @@ namespace pb {
 
 const std::string Program::typeName = "Program";
 
-bool
-Program::hasFunction (const std::string & name) const
-noexcept (true)
-{
-	try
-	{
-		getFunction (name);
-		return true;
-	}
-	catch (const std::exception &)
-	{
-		return false;
-	}
-}
-
-void
-Program::addFunction (const basic_ptr <vsFunction> & function)
-throw (std::invalid_argument)
-{
-	getGlobalObject () -> addProperty (function -> getName (), function);
-}
-
-void
-Program::updateFunction (const basic_ptr <vsFunction> & function)
-throw (std::invalid_argument)
-{
-	getGlobalObject () -> updateProperty (function -> getName (), function);
-}
-
-void
-Program::removeFunction (const std::string & name)
-noexcept (true)
-{
-	getGlobalObject () -> removeProperty (name);
-}
-
-basic_ptr <vsFunction>
-Program::getFunction (const std::string & name) const
-throw (std::out_of_range)
-{
-	basic_ptr <vsFunction> function = getGlobalObject () -> getProperty (name);
-
-	if (function)
-		return function;
-
-	throw std::out_of_range ("Function does not exits.");
-}
-
 basic_ptr <Program>
 createProgram ()
 {

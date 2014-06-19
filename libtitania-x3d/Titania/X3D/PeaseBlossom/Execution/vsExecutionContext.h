@@ -112,24 +112,38 @@ public:
 	void
 	addExpression (var &&);
 
+	///  Checks wehter the global object has a function @a name.
+	bool
+	hasFunctionDeclaration (const std::string & name) const
+	noexcept (true)
+	{ return functions .count (name); }
+
 	///  Adds a function to this context, throws std::invalid_argument if a function with function .name already exists
 	///  or function .name is empty.
 	virtual
 	void
-	addFunction (const basic_ptr <vsFunction> & function)
+	addFunctionDeclaration (const basic_ptr <vsFunction> & function)
 	throw (std::invalid_argument);
 
 	///  Updates a global function, throws std::invalid_argument if function .name is empty.
 	virtual
 	void
-	updateFunction (const basic_ptr <vsFunction> & function)
+	updateFunctionDeclaration (const basic_ptr <vsFunction> & function)
 	throw (std::invalid_argument);
 
 	///  Removes the function identified by @a name from this execution context.
 	virtual
 	void
-	removeFunction (const std::string & name)
+	removeFunctionDeclaration (const std::string & name)
 	noexcept (true);
+
+	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
+	///  name not exists.
+	virtual
+	const basic_ptr <vsFunction> &
+	getFunctionDeclaration (const std::string & name) const
+	throw (std::out_of_range)
+	{ return functions .at (name); }
 
 	/// @name Input/Output
 

@@ -77,37 +77,6 @@ public:
 
 	///  @name Operations
 
-	///  Checks wehter the global object has a function @a name.
-	bool
-	hasFunction (const std::string & name) const
-	noexcept (true);
-
-	///  Adds a global function, throws std::invalid_argument if a function with function .name already exists or
-	///  function .name is empty.
-	virtual
-	void
-	addFunction (const basic_ptr <vsFunction> & function)
-	throw (std::invalid_argument) final override;
-
-	///  Updates a global function, throws std::invalid_argument if function .name is empty.
-	virtual
-	void
-	updateFunction (const basic_ptr <vsFunction> & function)
-	throw (std::invalid_argument) final override;
-
-	///  Removes the function identified by @a name from this execution context.
-	virtual
-	void
-	removeFunction (const std::string & name)
-	noexcept (true) final override;
-
-	///  Returns a global function, throws std::invalid_argument if function .name is empty or a function with @a name
-	///  not exists.
-	virtual
-	basic_ptr <vsFunction>
-	getFunction (const std::string & name) const
-	throw (std::out_of_range);
-
 	///  Executes the program code.
 	virtual
 	var
