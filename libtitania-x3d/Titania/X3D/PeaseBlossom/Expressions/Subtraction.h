@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript subtraction expression.
+ *  Class to represent a ECMAScript subtraction expression.
  */
 class Subtraction :
 	public jsExpression
@@ -94,7 +94,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return subtraction (lhs, rhs); }
+	{ return evaluate (lhs, rhs); }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -104,7 +104,7 @@ public:
 
 	static
 	double
-	subtraction (const var & lhs, const var & rhs)
+	evaluate (const var & lhs, const var & rhs)
 	{ return lhs -> toNumber () - rhs -> toNumber (); }
 
 
@@ -128,13 +128,13 @@ private:
 
 ///  Constructs new Subtraction expression.
 inline
-var
+jsValue*
 createSubtraction (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Number> (Subtraction::subtraction (lhs, rhs));
+		return new Number (Subtraction::evaluate (lhs, rhs));
 
-	return make_var <Subtraction> (std::move (lhs), std::move (rhs));
+	return new Subtraction (std::move (lhs), std::move (rhs));
 }
 
 } // pb

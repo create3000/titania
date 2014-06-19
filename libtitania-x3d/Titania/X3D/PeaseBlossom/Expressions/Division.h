@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript division expression.
+ *  Class to represent a ECMAScript division expression.
  */
 class Division :
 	public jsExpression
@@ -94,7 +94,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return division (lhs, rhs); }
+	{ return evaluate (lhs, rhs); }
 
 	///  Converts its input argument to a non-Object type.
 	virtual
@@ -104,7 +104,7 @@ public:
 
 	static
 	double
-	division (const var & lhs, const var & rhs)
+	evaluate (const var & lhs, const var & rhs)
 	{ return lhs -> toNumber () / rhs -> toNumber (); }
 
 
@@ -128,13 +128,13 @@ private:
 
 ///  Constructs new Division expression.
 inline
-var
+jsValue*
 createDivision (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Number> (Division::division (lhs, rhs));
+		return new Number (Division::evaluate (lhs, rhs));
 
-	return make_var <Division> (std::move (lhs), std::move (rhs));
+	return new Division (std::move (lhs), std::move (rhs));
 }
 
 } // pb

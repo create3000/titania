@@ -64,9 +64,7 @@ DEF Script1 Script {
 
   url [
 #   "peaseblossom:
-#function f (x) { return x; }
-#
-#print (f (1), f (2));
+#var v = new SFVec3f ();
 #",
     "peaseblossom:
 
@@ -99,7 +97,12 @@ function test1 ()
 	print (0b1010101);
 
 	print ();
+	print ('// Global object');
+
+	print ();
 	print (this);
+	print (NaN);
+	print (Infinity);
 	print (undefined);
 
 	var a, b, c, d;
@@ -114,7 +117,8 @@ function test1 ()
 	print ();
 	print (0 instanceof 0);
 	print (0 in 0);
-	print (a = a + b, a += b);
+	print (a = a + b, ' : ', a += b);
+	print (0 / 0);
 	print (1 / 0);
 	print (-1 / 0);
 
@@ -136,7 +140,7 @@ function test1 ()
 
 	print (f ());
 
-	//f () [1 + 2] .name () .name () [f () .index];
+	//f () [1 + 2] .name .name () .name () [f () .index];
 
 	print ();
 	var a = 1, b = 31;

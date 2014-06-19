@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript variable declaration expression.
+ *  Class to represent a ECMAScript variable declaration expression.
  */
 class VariableDeclaration :
 	public jsExpression
@@ -68,11 +68,11 @@ public:
 	///  @name Construction
 
 	///  Constructs new VariableDeclaration expression.
-	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && value) :
+	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && expression) :
 		    jsExpression (),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
-		           value (std::move (value))
+		      expression (std::move (expression))
 	{ construct (); }
 
 	///  @name Common members
@@ -90,10 +90,10 @@ public:
 	var
 	toValue () const final override
 	{
-		const var result = value -> toValue ();
+		const var value = expression -> toValue ();
 
-		executionContext -> getDefaultObject () -> defineProperty (identifier, result, WRITABLE | CONFIGURABLE);
-		return result;
+		executionContext -> getDefaultObject () -> defineProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
+		return value;
 	}
 
 private:
@@ -102,13 +102,13 @@ private:
 
 	void
 	construct ()
-	{ addChildren (executionContext, value); }
+	{ addChildren (executionContext, expression); }
 
 	///  @name Members
 
 	const basic_ptr <jsExecutionContext> executionContext;
 	const std::string                    identifier;
-	const var                            value;
+	const var                            expression;
 
 };
 

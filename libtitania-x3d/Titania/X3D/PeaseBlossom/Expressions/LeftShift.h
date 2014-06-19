@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript division expression.
+ *  Class to represent a ECMAScript division expression.
  */
 class LeftShift :
 	public jsExpression
@@ -100,7 +100,7 @@ public:
 	virtual
 	int32_t
 	toInt32 () const final override
-	{ return leftShift (lhs, rhs); }
+	{ return evaluate (lhs, rhs); }
 
 	///  Converts its argument to an integral unsigned value of 32 bit.
 	virtual
@@ -122,7 +122,7 @@ public:
 
 	static
 	int32_t
-	leftShift (const var & lhs, const var & rhs)
+	evaluate (const var & lhs, const var & rhs)
 	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
 
 
@@ -146,13 +146,13 @@ private:
 
 ///  Constructs new LeftShift expression.
 inline
-var
+jsValue*
 createLeftShift (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Int32> (LeftShift::leftShift (lhs, rhs));
+		return new Int32 (LeftShift::evaluate (lhs, rhs));
 
-	return make_var <LeftShift> (std::move (lhs), std::move (rhs));
+	return new LeftShift (std::move (lhs), std::move (rhs));
 }
 
 } // pb

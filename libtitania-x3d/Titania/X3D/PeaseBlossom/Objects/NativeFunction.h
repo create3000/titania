@@ -60,7 +60,7 @@ namespace pb {
 using Call = std::function <var (const basic_ptr <jsObject> & object, const std::vector <var> & arguments)>;
 
 /**
- *  Class to represent a native JavaScript function.
+ *  Class to represent a native ECMAScript function.
  */
 class NativeFunction :
 	public jsFunction

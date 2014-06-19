@@ -54,6 +54,7 @@
 #include "../Objects/Object.h"
 #include "../Primitives/Boolean.h"
 #include "../Primitives/Undefined.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
@@ -81,10 +82,12 @@ createGlobalObject ()
 
 	basic_ptr <jsObject> globalObject (new Object ());
 
-	globalObject -> defineProperty ("this",      globalObject);
-	globalObject -> defineProperty ("undefined", getUndefined ());
+	globalObject -> defineProperty ("this",      globalObject,                                     NONE);
+	globalObject -> defineProperty ("NaN",       make_var <Number> (Number::NaN ()),               NONE);
+	globalObject -> defineProperty ("Infinity",  make_var <Number> (Number::POSITIVE_INFINITY ()), NONE);
+	globalObject -> defineProperty ("undefined", getUndefined (),                                  NONE);
 
-	globalObject -> defineProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }), WRITABLE | CONFIGURABLE);
+	globalObject -> defineProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }));
 
 	return globalObject;
 }

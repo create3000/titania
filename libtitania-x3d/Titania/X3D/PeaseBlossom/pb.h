@@ -86,7 +86,7 @@ inline
 const char*
 getDescription ()
 {
-	return "JavaScript alpha " __DATE__;
+	return "ECMAScript alpha " __DATE__;
 }
 
 } // pb

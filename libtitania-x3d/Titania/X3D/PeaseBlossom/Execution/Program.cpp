@@ -60,7 +60,7 @@ const std::string Program::typeName = "Program";
 void
 Program::addFunction (const basic_ptr <jsFunction> & function)
 {
-	getGlobalObject () -> defineProperty (function -> getName (), function, WRITABLE | CONFIGURABLE);
+	getGlobalObject () -> defineProperty (function -> getName (), function);
 }
 
 basic_ptr <Program>

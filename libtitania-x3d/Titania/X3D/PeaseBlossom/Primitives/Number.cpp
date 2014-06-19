@@ -82,20 +82,20 @@ Number::toStream (std::ostream & ostream) const
 		ostream << std::setprecision (std::numeric_limits <double>::digits10) << number;
 }
 
-var
+jsValue*
 createNumber (const double value)
 {
 	const int32_t int32bits = value;
 
 	if (int32bits == value)
-		return make_var <Int32> (int32bits);
+		return new Int32 (int32bits);
 
 	const uint32_t uint32bits = value;
 
 	if (uint32bits == value)
-		return make_var <UInt32> (uint32bits);
+		return new UInt32 (uint32bits);
 
-	return make_var <Number> (value);
+	return new Number (value);
 }
 
 } // pb

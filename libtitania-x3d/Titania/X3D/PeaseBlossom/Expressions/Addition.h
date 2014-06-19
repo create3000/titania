@@ -59,7 +59,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript addition expression.
+ *  Class to represent a ECMAScript addition expression.
  */
 class Addition :
 	public jsExpression
@@ -89,16 +89,16 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return addition (lhs, rhs); }
+	{ return var (evaluate (lhs, rhs)); }
 
 	static
-	var
-	addition (const var & lhs, const var & rhs)
+	jsValue*
+	evaluate (const var & lhs, const var & rhs)
 	{
 		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return make_var <String> (lhs -> toString () + rhs -> toString ());
+			return new String (lhs -> toString () + rhs -> toString ());
 
-		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
+		return new Number (lhs -> toNumber () + rhs -> toNumber ());
 	}
 
 
@@ -122,13 +122,13 @@ private:
 
 ///  Constructs new Addition expression.
 inline
-var
+jsValue*
 createAddition (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return Addition::addition (lhs, rhs);
+		return Addition::evaluate (lhs, rhs);
 
-	return make_var <Addition> (std::move (lhs), std::move (rhs));
+	return new Addition (std::move (lhs), std::move (rhs));
 }
 
 } // pb

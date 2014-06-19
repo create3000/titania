@@ -108,7 +108,7 @@ noexcept (true)
 }
 
 /**
- *  Base class to represent a JavaScript exception.
+ *  Base class to represent a ECMAScript exception.
  */
 class jsException :
 	public std::exception,
@@ -172,7 +172,7 @@ private:
 };
 
 /**
- *  Template to represent a JavaScript exception.
+ *  Template to represent a ECMAScript exception.
  *
  *  @param  ExceptionType  Type of exeception.
  */

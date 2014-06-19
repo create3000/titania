@@ -59,7 +59,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript function call expression.
+ *  Class to represent a ECMAScript function call expression.
  */
 class FunctionCall :
 	public jsExpression

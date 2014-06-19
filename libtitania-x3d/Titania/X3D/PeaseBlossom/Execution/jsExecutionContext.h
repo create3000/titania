@@ -119,7 +119,7 @@ public:
 
 	/// @name Input/Output
 
-	///  Parses @a istream and adds the expressions to this context. The stream must contain valid JavaScript content
+	///  Parses @a istream and adds the expressions to this context. The stream must contain valid ECMAScript content
 	///  otherwise an exception is thrown.
 	virtual
 	void

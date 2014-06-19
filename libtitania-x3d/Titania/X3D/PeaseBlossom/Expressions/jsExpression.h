@@ -57,7 +57,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
+ *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
 class jsExpression :
 	public jsValue
@@ -76,7 +76,7 @@ public:
 	virtual
 	var
 	getDefaultValue () const final override
-	{ return toPrimitive () -> getDefaultValue (); }
+	{ return toValue () -> getDefaultValue (); }
 
 	///  @name Common operations
 
@@ -90,7 +90,7 @@ public:
 	virtual
 	var
 	toPrimitive () const final override
-	{ return toValue (); }
+	{ return toValue () -> toPrimitive (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -127,7 +127,7 @@ public:
 	var
 	toObject () const
 	throw (TypeError) final override
-	{ return toPrimitive () -> toObject (); }
+	{ return toValue () -> toObject (); }
 
 	///  @name Input/Output
 
@@ -135,7 +135,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ toPrimitive () -> toStream (ostream); }
+	{ toValue () -> toStream (ostream); }
 
 
 protected:

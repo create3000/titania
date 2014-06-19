@@ -57,7 +57,7 @@ namespace pb {
 #undef NONE
 
 /**
- *  Enum type for JavaScript primitives.
+ *  Enum type for ECMAScript primitives.
  */
 enum ValueType
 {
@@ -157,10 +157,11 @@ noexcept (true)
 
 using PropertyFlagsType = uint8_t;
 
-constexpr PropertyFlagsType DEFAULT      = 0;
+constexpr PropertyFlagsType NONE         = 0;
 constexpr PropertyFlagsType WRITABLE     = 1 << 0;
 constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
 constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
+constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE;
 
 } // pb
 } // titania

@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a scripted JavaScript function.
+ *  Class to represent a scripted ECMAScript function.
  */
 class Function :
 	public jsFunction,

@@ -63,7 +63,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript value. This is the base class for all JavaScript values.
+ *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
 class jsValue :
 	virtual public jsChildObject,

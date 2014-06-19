@@ -60,7 +60,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript remainder expression.
+ *  Class to represent a ECMAScript remainder expression.
  */
 class Remainder :
 	public jsExpression
@@ -96,7 +96,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return remainder (lhs, rhs); }
+	{ return evaluate (lhs, rhs); }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -106,7 +106,7 @@ public:
 
 	static
 	double
-	remainder (const var & lhs, const var & rhs)
+	evaluate (const var & lhs, const var & rhs)
 	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
 
 
@@ -130,13 +130,13 @@ private:
 
 ///  Constructs new Remainder expression.
 inline
-var
+jsValue*
 createRemainder (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Number> (Remainder::remainder (lhs, rhs));
+		return new Number (Remainder::evaluate (lhs, rhs));
 
-	return make_var <Remainder> (std::move (lhs), std::move (rhs));
+	return new Remainder (std::move (lhs), std::move (rhs));
 }
 
 } // pb

@@ -1,3 +1,30 @@
+2014-06-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* pb.h:
+	* Exception.h:
+	* Parser.cpp:
+	* jsConstants.h:
+	* Function.h:
+	* Number.h:
+	* Return.h:
+	* jsValue.h:
+	* Program.cpp:
+	* Number.cpp:
+	* Variable.h:
+	* Addition.h:
+	* Division.h:
+	* Remainder.h:
+	* LeftShift.h:
+	* NativeFunction.h:
+	* Subtraction.h:
+	* jsExpression.h:
+	* FunctionCall.h:
+	* GlobalObject.cpp:
+	* Multiplication.h:
+	* jsExecutionContext.h:
+	* jsExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
 2014-06-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

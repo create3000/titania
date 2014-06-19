@@ -59,7 +59,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript identifier expression.
+ *  Class to represent a ECMAScript identifier expression.
  */
 class Variable :
 	public jsExpression

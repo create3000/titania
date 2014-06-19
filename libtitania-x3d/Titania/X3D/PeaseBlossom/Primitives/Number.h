@@ -158,7 +158,7 @@ private:
 ///  @name subtraction.
 
 ///  Returns either a Int32, a UInt32 or a Number value.
-var
+jsValue*
 createNumber (const double value);
 
 } // pb

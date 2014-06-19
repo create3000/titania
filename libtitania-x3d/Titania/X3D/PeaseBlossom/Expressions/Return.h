@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a JavaScript return statement.
+ *  Class to represent a ECMAScript return statement.
  */
 class Return :
 	public jsExpression

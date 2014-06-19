@@ -111,7 +111,7 @@ jsExecutionContext::run ()
 	try
 	{
 		for (const auto & function : functions)
-			getDefaultObject () -> defineProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
+			getDefaultObject () -> defineProperty (function .second -> getName (), function .second);
 
 		for (const auto & expression : expressions)
 			expression -> toValue ();
