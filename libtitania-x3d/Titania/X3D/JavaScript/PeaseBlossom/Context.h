@@ -66,7 +66,8 @@ public:
 
 	///  @name Construction
 
-	Context (Script* const, const std::string &, const basic::uri &);
+	Context (Script* const, const std::string &, const basic::uri &)
+	throw (std::exception);
 
 	virtual
 	X3DBaseNode*

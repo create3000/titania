@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,27 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
 
 #include "../Expressions/vsExpression.h"
-#include "../Primitives/Number.h"
+#include "../Primitives/Int32.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript subtraction expression.
+ *  Class to represent a ECMAScript division expression.
  */
-class Subtraction :
+class LeftShiftExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Subtraction expression.
-	Subtraction (var && lhs, var && rhs) :
+	///  Constructs new LeftShiftExpression expression.
+	LeftShiftExpression (var && lhs, var && rhs) :
 		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
@@ -78,15 +78,15 @@ public:
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Subtraction> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return make_var <LeftShiftExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »SUBTRACTION«.
+	///  Returns the type of the value. For this expression this is Â»LEFT_SHIFTÂ«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return SUBTRACTION; }
+	{ return LEFT_SHIFT_EXPRESSION; }
 
 	///  @name Operations
 
@@ -94,24 +94,42 @@ public:
 	virtual
 	bool
 	toBoolean () const final override
-	{ return toNumber (); }
+	{ return toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const final override
+	{ return toInt32 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const final override
+	{ return evaluate (lhs, rhs); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const final override
+	{ return toInt32 (); }
 
 	///  Converts its arguments to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return evaluate (lhs, rhs); }
+	{ return toInt32 (); }
 
-	///  Converts its input argument to either Primitive or Object type.
+	///  Converts its input argument to a non-Object type.
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Number> (toNumber ()); }
+	{ return make_var <Int32> (toInt32 ()); }
 
 	static
-	double
+	int32_t
 	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toNumber () - rhs -> toNumber (); }
+	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
 
 
 private:
@@ -128,18 +146,18 @@ private:
 
 };
 
-///  @relates Subtraction
+///  @relates LeftShiftExpression
 ///  @name Construction
 
-///  Constructs new Subtraction expression.
+///  Constructs new LeftShiftExpression expression.
 inline
-vsValue*
-createSubtraction (var && lhs, var && rhs)
+var
+createLeftShiftExpression (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (Subtraction::evaluate (lhs, rhs));
+		return make_var <Int32> (LeftShiftExpression::evaluate (lhs, rhs));
 
-	return new Subtraction (std::move (lhs), std::move (rhs));
+	return make_var <LeftShiftExpression> (std::move (lhs), std::move (rhs));
 }
 
 } // pb

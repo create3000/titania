@@ -132,7 +132,7 @@ vsExecutionContext::import (const vsExecutionContext* const executionContext)
 	for (const auto & function : functions)
 		addFunctionDeclaration (function .second -> copy (this));
 
-	for (const auto & expression : expressions)
+	for (const auto & expression : executionContext -> getExpressions ())
 		addExpression (expression -> copy (this));
 }
 

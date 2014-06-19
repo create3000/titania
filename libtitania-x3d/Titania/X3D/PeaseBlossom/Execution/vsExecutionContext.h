@@ -111,6 +111,11 @@ public:
 	///  Adds an expression to this context.
 	void
 	addExpression (var &&);
+	
+	///  Returns an array of all local root expressions.
+	const std::deque <var> &
+	getExpressions () const
+	{ return expressions; }
 
 	///  Checks wehter the global object has a function @a name.
 	bool
@@ -145,6 +150,10 @@ public:
 	throw (std::out_of_range)
 	{ return functions .at (name); }
 
+	const std::map <std::string, basic_ptr <vsFunction>> &
+	getFunctionDeclarations () const
+	{ return functions; }
+
 	/// @name Input/Output
 
 	///  Parses @a istream and adds the expressions to this context. The stream must contain valid ECMAScript content
@@ -165,7 +174,7 @@ public:
 
 protected:
 
-	friend class Variable;
+	friend class VariableExpression;
 
 	///  @name Construction
 

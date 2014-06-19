@@ -184,7 +184,7 @@ public:
 	basic_ptr &
 	operator = (basic_ptr <Up> && var)
 	{
-		if (&var == this)
+		if (static_cast <void*> (&var) == static_cast <void*> (this))
 			return *this;
 
 		remove (get ());

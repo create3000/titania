@@ -711,22 +711,13 @@
     <None Include="Titania\X3D\PeaseBlossom\Objects\StringObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Addition.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Subtraction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Division.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Multiplication.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Remainder.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\AssignmentOperatorType.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\LeftShift.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Int32.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionCall.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Variable.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ControlFlowException.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\Return.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsBase.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsGarbageCollector.h" />
@@ -742,6 +733,17 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\vsPrimitive.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\vsString.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\vsValue.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\AdditionExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\DivisionExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionCallExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\LeftShiftExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\MultiplicationExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\RemainderExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\StrictEqualExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\SubtractionExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\ReturnStatement.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionExpression.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

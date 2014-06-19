@@ -60,7 +60,7 @@ namespace pb {
  *  Class to represent a primitive type.
  */
 class vsPrimitive :
-	virtual public vsValue
+	public vsValue
 {
 public:
 

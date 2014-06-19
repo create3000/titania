@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,27 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_H__
 
 #include "../Expressions/vsExpression.h"
-#include "../Primitives/Int32.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript division expression.
+ *  Class to represent a ECMAScript multiplication expression.
  */
-class LeftShift :
+class MultiplicationExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new LeftShift expression.
-	LeftShift (var && lhs, var && rhs) :
+	///  Constructs new MultiplicationExpression expression.
+	MultiplicationExpression (var && lhs, var && rhs) :
 		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
@@ -78,58 +78,40 @@ public:
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <LeftShift> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return make_var <MultiplicationExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is Â»LEFT_SHIFTÂ«.
+	///  Returns the type of the value. For this expression this is »MULTIPLICATION«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return LEFT_SHIFT; }
+	{ return MULTIPLICATION_EXPRESSION; }
 
-	///  @name Operations
+	///  @name Opearations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool
 	toBoolean () const final override
-	{ return toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return toInt32 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return evaluate (lhs, rhs); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toInt32 (); }
+	{ return toNumber (); }
 
 	///  Converts its arguments to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
-	{ return toInt32 (); }
+	{ return evaluate (lhs, rhs); }
 
-	///  Converts its input argument to a non-Object type.
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Int32> (toInt32 ()); }
+	{ return make_var <Number> (toNumber ()); }
 
 	static
-	int32_t
+	double
 	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
+	{ return lhs -> toNumber () * rhs -> toNumber (); }
 
 
 private:
@@ -146,18 +128,18 @@ private:
 
 };
 
-///  @relates Division
+///  @relates MultiplicationExpression
 ///  @name Construction
 
-///  Constructs new LeftShift expression.
+///  Constructs new MultiplicationExpression expression.
 inline
-vsValue*
-createLeftShift (var && lhs, var && rhs)
+var
+createMultiplicationExpression (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Int32 (LeftShift::evaluate (lhs, rhs));
+		return make_var <Number> (MultiplicationExpression::evaluate (lhs, rhs));
 
-	return new LeftShift (std::move (lhs), std::move (rhs));
+	return make_var <MultiplicationExpression> (std::move (lhs), std::move (rhs));
 }
 
 } // pb

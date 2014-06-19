@@ -48,70 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
 
+#include "../Execution/vsExecutionContext.h"
 #include "../Expressions/vsExpression.h"
-#include "../Primitives/Number.h"
+#include "../Primitives/vsValue.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript multiplication expression.
+ *  Class to represent a ECMAScript identifier expression.
  */
-class Multiplication :
+class VariableExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Multiplication expression.
-	Multiplication (var && lhs, var && rhs) :
-		vsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+	///  Constructs new VariableExpression expression.
+	VariableExpression (vsExecutionContext* const executionContext, std::string && identifier) :
+		    vsExpression (),
+		executionContext (executionContext),
+		      identifier (std::move (identifier))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Multiplication> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return toValue (); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »MULTIPLICATION«.
+	///  Returns the type of the value. For this expression this is »VARIABLE«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return MULTIPLICATION; }
+	{ return VARIABLE_EXPRESSION; }
 
-	///  @name Opearations
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toNumber (); }
-
-	///  Converts its arguments to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return evaluate (lhs, rhs); }
+	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Number> (toNumber ()); }
-
-	static
-	double
-	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toNumber () * rhs -> toNumber (); }
+	{ return getProperty (); }
 
 
 private:
@@ -119,28 +103,49 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (lhs, rhs); }
+	{ addChild (executionContext); }
+
+	///  @name Operations
+
+	var
+	getProperty () const
+	{
+		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
+
+		if (propertyDescriptor .get)
+			return propertyDescriptor .get (propertyDescriptor .object);
+
+		return propertyDescriptor .value;
+	}
+
+	const PropertyDescriptor &
+	getPropertyDescriptor (vsExecutionContext* executionContext, const std::string & identifier) const
+	{
+		do 
+		{
+			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
+			{
+				try
+				{
+					return object -> getPropertyDescriptor (identifier);
+				}
+				catch (const std::out_of_range &)
+				{ }
+			}
+
+			executionContext = executionContext -> getExecutionContext () .get ();
+		}
+		while (not executionContext -> isRootContext ());
+
+		throw ReferenceError (identifier + " is not defined.");
+	}
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const basic_ptr <vsExecutionContext> executionContext;
+	const std::string                    identifier;
 
 };
-
-///  @relates Multiplication
-///  @name Construction
-
-///  Constructs new Multiplication expression.
-inline
-vsValue*
-createMultiplication (var && lhs, var && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (Multiplication::evaluate (lhs, rhs));
-
-	return new Multiplication (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

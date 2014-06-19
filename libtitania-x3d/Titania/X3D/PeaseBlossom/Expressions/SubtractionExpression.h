@@ -48,97 +48,99 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_H__
 
-#include "../Execution/vsExecutionContext.h"
 #include "../Expressions/vsExpression.h"
-#include "../Objects/vsFunction.h"
+#include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript function call expression.
+ *  Class to represent a ECMAScript subtraction expression.
  */
-class FunctionCall :
+class SubtractionExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new FunctionCall expression.
-	FunctionCall (vsExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
-		    vsExpression (),
-		executionContext (executionContext),
-		      expression (std::move (expression)),
-		     expressions (std::move (expressions))
+	///  Constructs new SubtractionExpression expression.
+	SubtractionExpression (var && lhs, var && rhs) :
+		vsExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{
-		std::vector <var> expressions;
-
-		for (const auto & expression : this -> expressions)
-			expressions .emplace_back (expression -> copy (executionContext));
-
-		return make_var <FunctionCall> (executionContext, expression -> copy (executionContext), std::move (expressions));
-	}
+	{ return make_var <SubtractionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »FUNCTION_CALL«.
+	///  Returns the type of the value. For this expression this is »SUBTRACTION«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return FUNCTION_CALL; }
+	{ return SUBTRACTION_EXPRESSION; }
 
 	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return toNumber (); }
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	double
+	toNumber () const final override
+	{ return evaluate (lhs, rhs); }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{
-		const basic_ptr <vsFunction> function = expression -> toValue ();
+	{ return make_var <Number> (toNumber ()); }
 
-		if (function)
-		{
-			std::vector <var> arguments;
+	static
+	double
+	evaluate (const var & lhs, const var & rhs)
+	{ return lhs -> toNumber () - rhs -> toNumber (); }
 
-			for (const auto & value : expressions)
-				arguments .emplace_back (value -> toValue ());
-
-			return function -> call (executionContext -> getGlobalObject (), arguments);
-		}
-
-		throw TypeError ("'" + expression -> toString () + "' is not a function.");
-	}
 
 private:
-
 
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{
-		addChildren (executionContext, expression);
-
-		for (const auto & value : expressions)
-			addChild (value);
-	}
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
-	const var                            expression;
-	const std::vector <var>              expressions;
+	const var lhs;
+	const var rhs;
 
 };
+
+///  @relates SubtractionExpression
+///  @name Construction
+
+///  Constructs new SubtractionExpression expression.
+inline
+var
+createSubtractionExpression (var && lhs, var && rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return make_var <Number> (SubtractionExpression::evaluate (lhs, rhs));
+
+	return make_var <SubtractionExpression> (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

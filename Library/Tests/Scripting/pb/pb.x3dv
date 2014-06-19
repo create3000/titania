@@ -271,10 +271,19 @@ function test1 ()
 function set_time (value, time)
 {
 	print (time);
-	print ('' ? 1 : 0);
-	print ('a' ? 1 : 0);
-	print ('0' ? 1 : 0);
-	print ('1' ? 1 : 0);
+
+	function f (x)
+	{
+	    var a = x;
+
+	    return function () { return a; };
+	}
+
+	var f1 = f (1);
+	var f2 = f (2);
+
+	print (f1 ());
+	print (f2 ());
 }
 "
   ]
@@ -288,11 +297,11 @@ DEF Script2 Script {
 
 function set_time (value, time)
 {
+	function f () { return function () { return 1 + 2; }; };
+
 	print (time);
-	print ('' ? 1 : 0);
-	print ('a' ? 1 : 0);
-	print ('0' ? 1 : 0);
-	print ('1' ? 1 : 0);
+	print (f () === f ());
+	print (f () ());
 }
 "
   directOutput TRUE

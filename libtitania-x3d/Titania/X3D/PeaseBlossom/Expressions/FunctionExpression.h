@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,70 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
 
 #include "../Expressions/vsExpression.h"
-#include "../Primitives/Number.h"
+#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript division expression.
+ *  Class to represent a ECMAScript return statement.
  */
-class Division :
+class FunctionExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Division expression.
-	Division (var && lhs, var && rhs) :
+	///  Constructs new FunctionExpression statement.
+	FunctionExpression (basic_ptr <Function> && function) :
 		vsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+		    function (std::move (function))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Division> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return make_var <FunctionExpression> (function -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is Â»DIVISIONÂ«.
+	///  FunctionExpressions the type of the value. For this expression this is »RETURN«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return DIVISION; }
+	{ return FUNCTION_EXPRESSION; }
 
 	///  @name Operations
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toNumber (); }
-
-	///  Converts its arguments to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return evaluate (lhs, rhs); }
-
-	///  Converts its input argument to a non-Object type.
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{ return make_var <Number> (toNumber ()); }
-
-	static
-	double
-	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toNumber () / rhs -> toNumber (); }
+	{ return function -> copy (function -> getExecutionContext () .get ()); }
 
 
 private:
@@ -119,28 +101,13 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (lhs, rhs); }
+	{ addChildren (function); }
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const basic_ptr <Function> function;
 
 };
-
-///  @relates Division
-///  @name Construction
-
-///  Constructs new Division expression.
-inline
-vsValue*
-createDivision (var && lhs, var && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (Division::evaluate (lhs, rhs));
-
-	return new Division (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

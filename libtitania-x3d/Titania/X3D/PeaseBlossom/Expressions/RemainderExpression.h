@@ -48,54 +48,72 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
 
-#include "../Execution/vsExecutionContext.h"
 #include "../Expressions/vsExpression.h"
-#include "../Primitives/vsValue.h"
+#include "../Primitives/Number.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript identifier expression.
+ *  Class to represent a ECMAScript remainder expression.
  */
-class Variable :
+class RemainderExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Variable expression.
-	Variable (vsExecutionContext* const executionContext, std::string && identifier) :
-		    vsExpression (),
-		executionContext (executionContext),
-		      identifier (std::move (identifier))
+	///  Constructs new RemainderExpression expression.
+	RemainderExpression (var && lhs, var && rhs) :
+		vsExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Variable> (executionContext, std::string (identifier)); }
+	{ return make_var <RemainderExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »VARIABLE«.
+	///  Returns the type of the value. For this expression this is »REMAINDER«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return VARIABLE; }
+	{ return REMAINDER_EXPRESSION; }
 
 	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return toNumber (); }
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	double
+	toNumber () const final override
+	{ return evaluate (lhs, rhs); }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{ return getProperty (); }
+	{ return make_var <Number> (toNumber ()); }
+
+	static
+	double
+	evaluate (const var & lhs, const var & rhs)
+	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
 
 
 private:
@@ -103,49 +121,28 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChild (executionContext); }
-
-	///  @name Operations
-
-	var
-	getProperty () const
-	{
-		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
-
-		if (propertyDescriptor .get)
-			return propertyDescriptor .get (propertyDescriptor .object);
-
-		return propertyDescriptor .value;
-	}
-
-	const PropertyDescriptor &
-	getPropertyDescriptor (vsExecutionContext* executionContext, const std::string & identifier) const
-	{
-		do 
-		{
-			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
-			{
-				try
-				{
-					return object -> getPropertyDescriptor (identifier);
-				}
-				catch (const std::out_of_range &)
-				{ }
-			}
-
-			executionContext = executionContext -> getExecutionContext () .get ();
-		}
-		while (not executionContext -> isRootContext ());
-
-		throw ReferenceError (identifier + " is not defined.");
-	}
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
-	const std::string                    identifier;
+	const var lhs;
+	const var rhs;
 
 };
+
+///  @relates RemainderExpression
+///  @name Construction
+
+///  Constructs new RemainderExpression expression.
+inline
+var
+createRemainderExpression (var && lhs, var && rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return make_var <Number> (RemainderExpression::evaluate (lhs, rhs));
+
+	return make_var <RemainderExpression> (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

@@ -61,15 +61,15 @@ namespace pb {
 /**
  *  Class to represent a ECMAScript addition expression.
  */
-class Addition :
+class AdditionExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Addition expression.
-	Addition (var && lhs, var && rhs) :
+	///  Constructs new AdditionExpression expression.
+	AdditionExpression (var && lhs, var && rhs) :
 		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
@@ -79,7 +79,7 @@ public:
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Addition> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return make_var <AdditionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -87,7 +87,7 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return ADDITION; }
+	{ return ADDITION_EXPRESSION; }
 
 	///  @name Operations
 
@@ -95,16 +95,16 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return var (evaluate (lhs, rhs)); }
+	{ return evaluate (lhs, rhs); }
 
 	static
-	vsValue*
+	var
 	evaluate (const var & lhs, const var & rhs)
 	{
 		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return new String (lhs -> toString () + rhs -> toString ());
+			return make_var <String> (lhs -> toString () + rhs -> toString ());
 
-		return new Number (lhs -> toNumber () + rhs -> toNumber ());
+		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
 
 
@@ -122,18 +122,18 @@ private:
 
 };
 
-///  @relates Addition
+///  @relates AdditionExpression
 ///  @name Construction
 
-///  Constructs new Addition expression.
+///  Constructs new AdditionExpression expression.
 inline
-vsValue*
-createAddition (var && lhs, var && rhs)
+var
+createAdditionExpression (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return Addition::evaluate (lhs, rhs);
+		return AdditionExpression::evaluate (lhs, rhs);
 
-	return new Addition (std::move (lhs), std::move (rhs));
+	return make_var <AdditionExpression> (std::move (lhs), std::move (rhs));
 }
 
 } // pb

@@ -81,7 +81,8 @@ const std::string Context::componentName  = "Browser";
 const std::string Context::typeName       = "Context";
 const std::string Context::containerField = "context";
 
-Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
+Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri)
+throw (std::exception) :
 	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3D::X3DJavaScriptContext (script, ecmascript),
 	                 worldURL ({ uri }),
@@ -89,23 +90,16 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 {
 	__LOG__ << std::endl;
 
-	try
-	{
-		using namespace std::placeholders;
-	
-		program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::getNull));
-		program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::getFalse));
-		program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::getTrue));
+	using namespace std::placeholders;
 
-		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
+	program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::getNull));
+	program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::getFalse));
+	program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::getTrue));
 
-		program -> fromString (getECMAScript ());
-		program -> run ();
-	}
-	catch (const std::exception & error)
-	{
-		getBrowser () -> println (error .what ());
-	}
+	program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
+
+	program -> fromString (getECMAScript ());
+	program -> run ();
 }
 
 void
@@ -138,7 +132,7 @@ Context::initialize ()
 	}
 	catch (const pb::vsException & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> println (error);
 	}
 	catch (const std::exception & error)
 	{ }
@@ -212,7 +206,7 @@ Context::prepareEvents ()
 	}
 	catch (const pb::vsException & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> println (error);
 	}
 	catch (const std::exception & error)
 	{ }
@@ -233,7 +227,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 	}
 	catch (const pb::vsException & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> println (error);
 	}
 	catch (const std::exception & error)
 	{ }
@@ -250,7 +244,7 @@ Context::eventsProcessed ()
 	}
 	catch (const pb::vsException & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> println (error);
 	}
 	catch (const std::exception & error)
 	{ }

@@ -48,44 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
 
+#include "../Execution/vsExecutionContext.h"
 #include "../Expressions/vsExpression.h"
-#include "../Expressions/ControlFlowException.h"
+#include "../Objects/vsFunction.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript return statement.
+ *  Class to represent a ECMAScript function call expression.
  */
-class Return :
+class FunctionCallExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Return statement.
-	Return (var && expression) :
-		vsExpression (),
-		  expression (std::move (expression))
+	///  Constructs new FunctionCallExpression expression.
+	FunctionCallExpression (vsExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
+		    vsExpression (),
+		executionContext (executionContext),
+		      expression (std::move (expression)),
+		     expressions (std::move (expressions))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Return> (expression -> copy (executionContext)); }
+	{
+		std::vector <var> expressions;
+
+		for (const auto & expression : this -> expressions)
+			expressions .emplace_back (expression -> copy (executionContext));
+
+		return make_var <FunctionCallExpression> (executionContext, expression -> copy (executionContext), std::move (expressions));
+	}
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »RETURN«.
+	///  Returns the type of the value. For this expression this is »FUNCTION_CALL«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return RETURN; }
+	{ return FUNCTION_CALL_EXPRESSION; }
 
 	///  @name Operations
 
@@ -93,19 +103,40 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ throw ReturnException (expression -> toValue ()); }
+	{
+		const basic_ptr <vsFunction> function = expression -> toValue ();
 
+		if (function)
+		{
+			std::vector <var> arguments;
+
+			for (const auto & value : expressions)
+				arguments .emplace_back (value -> toValue ());
+
+			return function -> call (executionContext -> getGlobalObject (), arguments);
+		}
+
+		throw TypeError ("'" + expression -> toString () + "' is not a function.");
+	}
 
 private:
+
 
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expression); }
+	{
+		addChildren (executionContext, expression);
+
+		for (const auto & value : expressions)
+			addChild (value);
+	}
 
 	///  @name Members
 
-	const var expression;
+	const basic_ptr <vsExecutionContext> executionContext;
+	const var                            expression;
+	const std::vector <var>              expressions;
 
 };
 

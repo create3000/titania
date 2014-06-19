@@ -48,20 +48,68 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
 
-#include "Expressions/AdditionExpression.h"
-#include "Expressions/DivisionExpression.h"
-#include "Expressions/FunctionCallExpression.h"
-#include "Expressions/FunctionExpression.h"
-#include "Expressions/LeftShiftExpression.h"
-#include "Expressions/MultiplicationExpression.h"
-#include "Expressions/RemainderExpression.h"
-#include "Expressions/ReturnStatement.h"
-#include "Expressions/SubtractionExpression.h"
-#include "Expressions/StrictEqualExpression.h"
-#include "Expressions/VariableExpression.h"
-#include "Expressions/VariableDeclaration.h"
+#include "../Expressions/vsExpression.h"
+#include "../Expressions/ControlFlowException.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a ECMAScript return statement.
+ */
+class ReturnStatement :
+	public vsExpression
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new ReturnStatement statement.
+	ReturnStatement (var && expression) :
+		vsExpression (),
+		  expression (std::move (expression))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <ReturnStatement> (expression -> copy (executionContext)); }
+
+	///  @name Common members
+
+	///  ReturnStatements the type of the value. For this expression this is »RETURN«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return RETURN_STATEMENT; }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const final override
+	{ throw ReturnException (expression -> toValue ()); }
+
+
+private:
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression); }
+
+	///  @name Members
+
+	const var expression;
+
+};
+
+} // pb
+} // titania
 
 #endif

@@ -327,7 +327,7 @@ Parser::decimalLiteral (var & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value .reset (createNumber (number));
+		value = createNumber (number);
 		return true;
 	}
 
@@ -443,7 +443,7 @@ Parser::primaryExpression (var & value)
 
 	if (Grammar::_this (istream))
 	{
-		value .reset (new Variable (getExecutionContext (), std::string (Grammar::_this ())));
+		value .reset (new VariableExpression (getExecutionContext (), std::string (Grammar::_this ())));
 		return true;
 	}
 
@@ -451,7 +451,7 @@ Parser::primaryExpression (var & value)
 
 	if (identifier (identifierCharacters))
 	{
-		value .reset (new Variable (getExecutionContext (), std::move (identifierCharacters)));
+		value .reset (new VariableExpression (getExecutionContext (), std::move (identifierCharacters)));
 		return true;
 	}
 
@@ -590,7 +590,7 @@ Parser::callExpression (var & value)
 
 			if (arguments (argumentsListExpressions))
 			{
-				value .reset (new FunctionCall (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
+				value .reset (new FunctionCallExpression (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
 				continue;
 			}
 
@@ -907,7 +907,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs .reset (createMultiplication (std::move (lhs), std::move (rhs)));
+				lhs = createMultiplicationExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -925,7 +925,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs .reset (createDivision (std::move (lhs), std::move (rhs)));
+				lhs = createDivisionExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -943,7 +943,7 @@ Parser::multiplicativeExpression (var & lhs)
 
 			if (multiplicativeExpression (rhs))
 			{
-				lhs .reset (createRemainder (std::move (lhs), std::move (rhs)));
+				lhs = createRemainderExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -976,7 +976,7 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs .reset (createAddition (std::move (lhs), std::move (rhs)));
+				lhs = createAdditionExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -994,7 +994,7 @@ Parser::additiveExpression (var & lhs)
 
 			if (additiveExpression (rhs))
 			{
-				lhs .reset (createSubtraction (std::move (lhs), std::move (rhs)));
+				lhs = createSubtractionExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1027,7 +1027,7 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				lhs .reset (createLeftShift (std::move (lhs), std::move (rhs)));
+				lhs = createLeftShiftExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1224,8 +1224,7 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				lhs = getUndefined ();
-				//lhs = make_strict_equal (std::move (lhs), std::move (rhs));
+				lhs = createStrictEqualExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1822,7 +1821,7 @@ Parser::returnStatement ()
 
 			if (Grammar::Semicolon (istream))
 			{
-				getExecutionContext () -> addExpression (make_var <Return> (std::move (value)));
+				getExecutionContext () -> addExpression (make_var <ReturnStatement> (std::move (value)));
 				return true;
 			}
 
@@ -1831,7 +1830,7 @@ Parser::returnStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> addExpression (make_var <Return> (std::move (value)));
+			getExecutionContext () -> addExpression (make_var <ReturnStatement> (std::move (value)));
 			return true;
 		}
 
@@ -1935,7 +1934,7 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+					auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
 					pushExecutionContext (function .get ());
 
@@ -1947,7 +1946,7 @@ Parser::functionExpression (var & value)
 
 					if (Grammar::CloseBrace (istream))
 					{
-						value = std::move (function);
+						value = make_var <FunctionExpression> (std::move (function));
 						return true;
 					}
 

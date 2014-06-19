@@ -79,20 +79,22 @@ enum ValueType
 
 	// Expressions
 
-	ADDITION,
-	DIVISION,
-	FUNCTION_CALL,
-	LEFT_SHIFT,
-	MULTIPLICATION,
-	REMAINDER,
-	RETURN,
-	SUBTRACTION,
-	VARIABLE,
+	ADDITION_EXPRESSION,
+	DIVISION_EXPRESSION,
+	FUNCTION_CALL_EXPRESSION,
+	FUNCTION_EXPRESSION,
+	LEFT_SHIFT_EXPRESSION,
+	MULTIPLICATION_EXPRESSION,
+	REMAINDER_EXPRESSION,
+	RETURN_STATEMENT,
+	STRICT_EQUAL_EXPRESSION,
+	SUBTRACTION_EXPRESSION,
+	VARIABLE_EXPRESSION,
 	VARIABLE_DECLARATION,
 
 	// Exotic objects
 
-	CUSTOM_OBJECT
+	EXOTIC_OBJECT
 
 };
 
@@ -108,36 +110,38 @@ noexcept (true)
 	{
 		// Standard object
 
-		case UNDEFINED:            ostream << "UNDEFINED";            break;
-		case BOOLEAN:              ostream << "BOOLEAN";              break;
-		case NUMBER:               ostream << "NUMBER";               break;
-		case STRING:               ostream << "STRING";               break;
-		case NULL_OBJECT:          ostream << "NULL_OBJECT";          break;
-		case OBJECT:               ostream << "OBJECT";               break;
-		case BOOLEAN_OBJECT:       ostream << "BOOLEAN_OBJECT";       break;
-		case NUMBER_OBJECT:        ostream << "NUMBER_OBJECT";        break;
-		case STRING_OBJECT:        ostream << "STRING_OBJECT";        break;
-		case ARRAY_OBJECT:         ostream << "ARRAY_OBJECT";         break;
-		case DATE_OBJECT:          ostream << "DATE_OBJECT";          break;
-		case REGEX_OBJECT:         ostream << "REGEX_OBJECT";         break;
-		case FUNCTION_OBJECT:      ostream << "FUNCTION_OBJECT";      break;
+		case UNDEFINED:       ostream << "UNDEFINED";       break;
+		case BOOLEAN:         ostream << "BOOLEAN";         break;
+		case NUMBER:          ostream << "NUMBER";          break;
+		case STRING:          ostream << "STRING";          break;
+		case NULL_OBJECT:     ostream << "NULL_OBJECT";     break;
+		case OBJECT:          ostream << "OBJECT";          break;
+		case BOOLEAN_OBJECT:  ostream << "BOOLEAN_OBJECT";  break;
+		case NUMBER_OBJECT:   ostream << "NUMBER_OBJECT";   break;
+		case STRING_OBJECT:   ostream << "STRING_OBJECT";   break;
+		case ARRAY_OBJECT:    ostream << "ARRAY_OBJECT";    break;
+		case DATE_OBJECT:     ostream << "DATE_OBJECT";     break;
+		case REGEX_OBJECT:    ostream << "REGEX_OBJECT";    break;
+		case FUNCTION_OBJECT: ostream << "FUNCTION_OBJECT"; break;
 
 		// Expressions
 
-		case ADDITION:             ostream << "ADDITION";             break;
-		case DIVISION:             ostream << "DIVISION";             break;
-		case FUNCTION_CALL:        ostream << "FUNCTION_CALL";        break;
-		case SUBTRACTION:          ostream << "SUBTRACTION";          break;
-		case LEFT_SHIFT:           ostream << "LEFT_SHIFT";           break;
-		case MULTIPLICATION:       ostream << "MULTIPLICATION";       break;
-		case REMAINDER:            ostream << "REMAINDER";            break;
-		case RETURN:               ostream << "RETURN";               break;
-		case VARIABLE:             ostream << "VARIABLE";             break;
-		case VARIABLE_DECLARATION: ostream << "VARIABLE_DECLARATION"; break;
+		case ADDITION_EXPRESSION:       ostream << "ADDITION";             break;
+		case DIVISION_EXPRESSION:       ostream << "DIVISION";             break;
+		case FUNCTION_CALL_EXPRESSION:  ostream << "FUNCTION_CALL";        break;
+		case FUNCTION_EXPRESSION:       ostream << "FUNCTION_EXPRESSION";  break;
+		case SUBTRACTION_EXPRESSION:    ostream << "SUBTRACTION";          break;
+		case STRICT_EQUAL_EXPRESSION:   ostream << "STRICT_EQUAL";         break;
+		case LEFT_SHIFT_EXPRESSION:     ostream << "LEFT_SHIFT";           break;
+		case MULTIPLICATION_EXPRESSION: ostream << "MULTIPLICATION";       break;
+		case REMAINDER_EXPRESSION:      ostream << "REMAINDER";            break;
+		case RETURN_STATEMENT:          ostream << "RETURN_STATEMENT";     break;
+		case VARIABLE_EXPRESSION:       ostream << "VARIABLE";             break;
+		case VARIABLE_DECLARATION:      ostream << "VARIABLE_DECLARATION"; break;
 
 		// Exotic objects
 
-		case CUSTOM_OBJECT:        ostream << "CUSTOM_OBJECT";        break;
+		case EXOTIC_OBJECT: ostream << "EXOTIC_OBJECT"; break;
 	}
 
 	return ostream;

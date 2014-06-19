@@ -53,8 +53,6 @@
 
 #include "../Primitives/vsString.h"
 
-#include <glibmm/ustring.h>
-
 namespace titania {
 namespace pb {
 
@@ -105,13 +103,15 @@ public:
 	///  @name Member access
 
 	///  Returns the number of characters in the string.
+	virtual
 	Glib::ustring::size_type
-	getLength () const
+	getLength () const final override
 	{ return string .length (); }
 
 	///  Returns a reference to the underlying string representation.
+	virtual
 	const Glib::ustring &
-	getString () const
+	getString () const final override
 	{ return string; }
 
 	///  @name Common operations

@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/FunctionCall.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="139" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="299" Column="53" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="214" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/vsExecutionContext.h" Line="134" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/FunctionCall.h" Line="91" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="278" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="928" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/vsExecutionContext.h" Line="152" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/vsExecutionContext.cpp" Line="135" Column="70" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,6 +26,12 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True">
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="Scripting" expanded="True" />
+                </Node>
                 <Node name="InputOutput" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
@@ -35,11 +41,11 @@
                   <Node name="Base" expanded="True" />
                   <Node name="Bits" expanded="True" />
                   <Node name="Execution" expanded="True" />
-                  <Node name="Expressions" expanded="True">
-                    <Node name="FunctionCall.h" selected="True" />
-                  </Node>
+                  <Node name="Expressions" expanded="True" />
                   <Node name="Objects" expanded="True" />
-                  <Node name="Parser" expanded="True" />
+                  <Node name="Parser" expanded="True">
+                    <Node name="Parser.cpp" selected="True" />
+                  </Node>
                   <Node name="Primitives" expanded="True" />
                 </Node>
               </Node>

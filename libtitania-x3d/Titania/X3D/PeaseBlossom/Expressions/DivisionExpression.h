@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,29 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
 
 #include "../Expressions/vsExpression.h"
 #include "../Primitives/Number.h"
-
-#include <cmath>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript remainder expression.
+ *  Class to represent a ECMAScript division expression.
  */
-class Remainder :
+class DivisionExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Remainder expression.
-	Remainder (var && lhs, var && rhs) :
+	///  Constructs new DivisionExpression expression.
+	DivisionExpression (var && lhs, var && rhs) :
 		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
@@ -80,15 +78,15 @@ public:
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Remainder> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return make_var <DivisionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is ªREMAINDER´.
+	///  Returns the type of the value. For this expression this is ¬ªDIVISION¬´.
 	virtual
 	ValueType
 	getType () const final override
-	{ return REMAINDER; }
+	{ return DIVISION_EXPRESSION; }
 
 	///  @name Operations
 
@@ -104,7 +102,7 @@ public:
 	toNumber () const final override
 	{ return evaluate (lhs, rhs); }
 
-	///  Converts its input argument to either Primitive or Object type.
+	///  Converts its input argument to a non-Object type.
 	virtual
 	var
 	toValue () const final override
@@ -113,7 +111,7 @@ public:
 	static
 	double
 	evaluate (const var & lhs, const var & rhs)
-	{ return std::fmod (lhs -> toNumber (), rhs -> toNumber ()); }
+	{ return lhs -> toNumber () / rhs -> toNumber (); }
 
 
 private:
@@ -130,18 +128,18 @@ private:
 
 };
 
-///  @relates Remainder
+///  @relates DivisionExpression
 ///  @name Construction
 
-///  Constructs new Remainder expression.
+///  Constructs new DivisionExpression expression.
 inline
-vsValue*
-createRemainder (var && lhs, var && rhs)
+var
+createDivisionExpression (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new Number (Remainder::evaluate (lhs, rhs));
+		return make_var <Number> (DivisionExpression::evaluate (lhs, rhs));
 
-	return new Remainder (std::move (lhs), std::move (rhs));
+	return make_var <DivisionExpression> (std::move (lhs), std::move (rhs));
 }
 
 } // pb
