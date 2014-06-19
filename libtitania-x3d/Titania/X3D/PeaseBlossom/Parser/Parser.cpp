@@ -487,13 +487,71 @@ Parser::memberExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
-	if (primaryExpression (value))
-		return true;
+	if (primaryExpression (value) or functionExpression (value))
+	{
+		for ( ; ;)
+		{
+			comments ();
 
-	if (functionExpression (value))
-		return true;
+			if (Grammar::OpenBracket (istream))
+			{
+				var arrayIndexExpressions;
 
-	/// ...
+				if (expression (arrayIndexExpressions))
+				{
+					comments ();
+
+					if (Grammar::CloseBracket (istream))
+					{
+						value = getUndefined ();
+						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
+						continue;
+					}
+
+					throw SyntaxError ("Expected a ']' after expression.");
+				}
+
+				throw SyntaxError ("Expected expression after '['.");
+			}
+
+			if (Grammar::Period (istream))
+			{
+				std::string identifierNameCharacters;
+
+				if (identifierName (identifierNameCharacters))
+				{
+					value = getUndefined ();
+					//value .reset (new ObjectPropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list)));
+					continue;
+				}
+
+				throw SyntaxError ("Expected a identifier name after '.'.");
+			}
+
+			break;
+		}
+
+		return true;
+	}
+
+	if (Grammar::_new (istream))
+	{
+		if (memberExpression (value))
+		{
+			std::vector <var> argumentsListExpressions;
+
+			if (arguments (argumentsListExpressions))
+			{
+				value = getUndefined ();
+				//value .reset (new NewExpression (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
+				return true;
+			}
+
+			throw SyntaxError ("Expected a '(' name after expression.");
+		}
+
+		throw SyntaxError ("Expected a expression after new.");
+	}
 
 	return false;
 }
@@ -505,8 +563,6 @@ Parser::newExpression (var & value)
 
 	if (memberExpression (value))
 		return true;
-
-	comments ();
 
 	if (Grammar::_new (istream))
 	{
@@ -537,8 +593,6 @@ Parser::callExpression (var & value)
 				value .reset (new FunctionCall (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
 				continue;
 			}
-
-			comments ();
 
 			if (Grammar::OpenBracket (istream))
 			{
@@ -685,8 +739,6 @@ Parser::unaryExpression (var & value)
 
 	if (postfixExpression (value))
 		return true;
-
-	comments ();
 
 	if (Grammar::_delete (istream))
 	{
@@ -1776,8 +1828,6 @@ Parser::returnStatement ()
 
 			throw SyntaxError ("Expected a ';' after expression.");
 		}
-
-		comments ();
 
 		if (Grammar::Semicolon (istream))
 		{

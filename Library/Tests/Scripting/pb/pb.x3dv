@@ -63,9 +63,9 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url [
-#   "peaseblossom:
-#var v = new SFVec3f ();
-#",
+   "peaseblossom:
+new name .name ();
+",
     "peaseblossom:
 
 initialize ();
