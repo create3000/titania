@@ -63,9 +63,9 @@ DEF Script1 Script {
   inputOnly SFTime set_time
 
   url [
-   "peaseblossom:
-new name .name ();
-",
+#   "peaseblossom:
+#'';
+#"
     "peaseblossom:
 
 initialize ();
@@ -141,6 +141,7 @@ function test1 ()
 	print (f ());
 
 	//f () [1 + 2] .name .name () .name () [f () .index];
+	object .name .name [1] .name [2] .name;
 
 	print ();
 	var a = 1, b = 31;
@@ -274,7 +275,7 @@ function test1 ()
 DEF Script2 Script {
   inputOnly SFTime set_time
 
-  url "javascript:
+  url "peaseblossom:
 
 function set_time (value, time)
 {

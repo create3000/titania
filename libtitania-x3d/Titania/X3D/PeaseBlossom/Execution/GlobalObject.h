@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
 
-#include "../Objects/jsObject.h"
+#include "../Objects/vsObject.h"
 
 #include <cmath>
 
@@ -59,7 +59,7 @@ namespace titania {
 namespace pb {
 
 ///  Constructs new default global object.
-basic_ptr <jsObject>
+basic_ptr <vsObject>
 createGlobalObject ();
 
 inline

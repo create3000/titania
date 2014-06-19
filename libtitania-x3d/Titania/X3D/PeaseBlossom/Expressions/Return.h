@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
 
-#include "../Expressions/jsExpression.h"
+#include "../Expressions/vsExpression.h"
 #include "../Expressions/ControlFlowException.h"
 
 namespace titania {
@@ -61,7 +61,7 @@ namespace pb {
  *  Class to represent a ECMAScript return statement.
  */
 class Return :
-	public jsExpression
+	public vsExpression
 {
 public:
 
@@ -69,9 +69,15 @@ public:
 
 	///  Constructs new Return statement.
 	Return (var && expression) :
-		jsExpression (),
+		vsExpression (),
 		  expression (std::move (expression))
 	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <Return> (expression -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -87,14 +93,12 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{
-		throw ReturnException (expression -> toValue ());
-	}
+	{ throw ReturnException (expression -> toValue ()); }
+
 
 private:
 
-	///  @name Construction
-
+	///  Performs neccessary operations after construction.
 	void
 	construct ()
 	{ addChildren (expression); }

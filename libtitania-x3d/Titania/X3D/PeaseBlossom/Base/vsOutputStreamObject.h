@@ -48,121 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
 
-#include "../Base/jsChildObject.h"
-#include "../Base/jsOutputStreamObject.h"
-#include "../Bits/Exception.h"
-#include "../Bits/jsConstants.h"
-#include "../Primitives/var.h"
+#include <locale>
+#include <sstream>
 
-#include <cmath>
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
- */
-class jsValue :
-	virtual public jsChildObject,
-	virtual public jsOutputStreamObject
+class vsOutputStreamObject
 {
 public:
 
-	///  @name Common members
+	///  @name Operations
 
-	///  Returns the type of this value.
+	///  Converts its argument to a value of type String.
 	virtual
-	ValueType
-	getType () const = 0;
+	Glib::ustring
+	toString () const;
 
-	///  Returns the a default of its input argument type.
+	///  Converts its argument to a value of type String according to @a locale.
 	virtual
-	var
-	getDefaultValue () const = 0;
-
-	///  @name Common operations
-
-	///  Returns true if the input argument is a non-Object type otherwise false.
-	virtual
-	bool
-	isPrimitive () const;
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const = 0;
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const = 0;
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const;
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const;
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const
-	{ return toInt32Bit (); }
-
-	///  Converts its argument to an integral numeric value.
-	double
-	toInteger () const;
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const = 0;
-
-	///  Converts its argument to a value of type Object.
-	virtual
-	var
-	toObject () const
-	throw (TypeError) = 0;
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const
-	{ return var (const_cast <jsValue*> (this)); }
+	Glib::ustring
+	toLocaleString (const std::locale & locale) const;
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
-	{ toPrimitive () -> toStream (ostream); }
+	toStream (std::ostream & ostream) const = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new jsValue.
-	jsValue () :
-		       jsChildObject (),
-		jsOutputStreamObject ()
+	vsOutputStreamObject ()
 	{ }
 
-
-private:
-
-	double
-	toInt32Bit () const;
-
 };
+
+inline
+Glib::ustring
+vsOutputStreamObject::toString () const
+{
+	return toLocaleString (std::locale::classic ());
+}
+
+inline
+Glib::ustring
+vsOutputStreamObject::toLocaleString (const std::locale & locale) const
+{
+	std::ostringstream ostringstream;
+
+	ostringstream .imbue (locale);
+
+	toStream (ostringstream);
+
+	return ostringstream .str ();
+}
+
+///  @relates vsOutputStreamObject
+///  @name Input/Output operators.
+
+///  Insertion operator for vsOutputStreamObject.
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const vsOutputStreamObject & value)
+{
+	value .toStream (ostream);
+	return ostream;
+}
 
 } // pb
 } // titania

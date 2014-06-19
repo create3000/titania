@@ -62,7 +62,7 @@
 namespace titania {
 namespace pb {
 
-class jsExecutionContext;
+class vsExecutionContext;
 
 class Parser
 {
@@ -70,12 +70,12 @@ protected:
 
 	///  @name Friends
 
-	friend class jsExecutionContext;
+	friend class vsExecutionContext;
 
 	///  @name Construction
 
 	///  Constructs new StringObject.
-	Parser (jsExecutionContext* const, std::istream & istream);
+	Parser (vsExecutionContext* const, std::istream & istream);
 
 	///  @name Operations
 
@@ -90,19 +90,19 @@ private:
 
 	// Operations
 
-	jsExecutionContext*
+	vsExecutionContext*
 	getRootContext () const
 	{ return rootContext; }
 
 	void
-	pushExecutionContext (jsExecutionContext* const executionContext)
+	pushExecutionContext (vsExecutionContext* const executionContext)
 	{ executionContexts .emplace (executionContext); }
 
 	void
 	popExecutionContext ()
 	{ executionContexts .pop (); }
 
-	jsExecutionContext*
+	vsExecutionContext*
 	getExecutionContext () const
 	{ return executionContexts .top (); }
 
@@ -292,8 +292,8 @@ private:
 
 	///  @name Members
 
-	jsExecutionContext* const        rootContext;
-	std::stack <jsExecutionContext*> executionContexts;
+	vsExecutionContext* const        rootContext;
+	std::stack <vsExecutionContext*> executionContexts;
 	std::istream &                   istream;
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;

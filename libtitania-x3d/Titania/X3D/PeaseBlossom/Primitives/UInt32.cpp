@@ -55,8 +55,6 @@
 namespace titania {
 namespace pb {
 
-const var UInt32::defaultValue (new UInt32 ());
-
 var
 UInt32::toObject () const
 throw (TypeError)

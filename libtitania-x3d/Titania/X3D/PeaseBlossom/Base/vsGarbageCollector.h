@@ -48,92 +48,74 @@
  *
  ******************************************************************************/
 
-#include "jsValue.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
 
-#include "../Execution/GlobalObject.h"
-#include "../Primitives/jsNumber.h"
+#include "../Base/vsBase.h"
+
+#include <cstddef>
+#include <deque>
+#include <mutex>
 
 namespace titania {
 namespace pb {
 
-constexpr double M_2_16 = 65536;
-constexpr double M_2_31 = 2147483648;
-constexpr double M_2_32 = 4294967296;
+class vsChildObject;
 
-bool
-jsValue::isPrimitive () const
+class vsGarbageCollector :
+	virtual public vsBase
 {
-	switch (getType ())
+protected:
+
+	///  @name Construction
+
+	vsGarbageCollector () :
+		vsBase ()
+	{ }
+
+	///  @name Operations
+
+	static
+	void
+	addDisposedObject (const vsChildObject* const);
+
+	template <class InputIt>
+	static
+	void
+	addDisposedObjects (const InputIt & first, const InputIt & last)
 	{
-		case UNDEFINED:
-		case BOOLEAN:
-		case NUMBER:
-		case STRING:
-		case NULL_OBJECT:
-			return true;
-		default:
-			return false;
+		std::lock_guard <std::mutex> lock (mutex);
+
+		objects .insert (objects .end (), first, last);
 	}
-}
 
-uint16_t
-jsValue::toUInt16 () const
-{
-	const double number = toNumber ();
+	static
+	void
+	deleteObjectsAsync ();
 
-	if (isNaN (number))
-		return 0;
+	static
+	void
+	trimFreeMemory ();
 
-	if (number == jsNumber::POSITIVE_INFINITY ())
-		return 0;
 
-	if (number == jsNumber::NEGATIVE_INFINITY ())
-		return 0;
+private:
 
-	const double posInt   = std::copysign (std::floor (std::abs (number)), number);
-	const double int16bit = std::fmod (posInt, M_2_16);
+	using ObjectArray = std::deque <const vsChildObject*>;
 
-	return int16bit;
-}
+	///  @name Operations
 
-int32_t
-jsValue::toInt32 () const
-{
-	const double int32bit = toInt32Bit ();
+	static
+	void
+	deleteObjects (ObjectArray);
 
-	if (int32bit >= M_2_31)
-		return int32bit - M_2_32;
+	///  @name Static members
 
-	return int32bit;
-}
+	static ObjectArray objects;
+	static std::mutex  mutex;
 
-double
-jsValue::toInt32Bit () const
-{
-	const double number = toNumber ();
-
-	if (isNaN (number))
-		return 0;
-
-	if (number == jsNumber::POSITIVE_INFINITY ())
-		return 0;
-
-	if (number == jsNumber::NEGATIVE_INFINITY ())
-		return 0;
-
-	const double posInt   = std::copysign (std::floor (std::abs (number)), number);
-	const double int32bit = std::fmod (posInt, M_2_32);
-
-	return int32bit;
-}
-
-double
-jsValue::toInteger () const
-{
-	const double number = toNumber ();
-
-	return std::copysign (std::floor (std::abs (number)), number);
-}
+};
 
 } // pb
 } // titania
+
+#endif

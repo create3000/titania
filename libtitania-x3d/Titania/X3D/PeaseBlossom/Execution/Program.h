@@ -51,11 +51,11 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
-#include "../Base/jsGarbageCollector.h"
-#include "../Execution/jsExecutionContext.h"
+#include "../Base/vsGarbageCollector.h"
+#include "../Execution/vsExecutionContext.h"
 #include "../Objects/Object.h"
 #include "../Primitives/Undefined.h"
-#include "../Primitives/jsValue.h"
+#include "../Primitives/vsValue.h"
 
 #include <memory>
 
@@ -63,7 +63,7 @@ namespace titania {
 namespace pb {
 
 class Program :
-	public jsExecutionContext
+	public vsExecutionContext
 {
 public:
 
@@ -77,28 +77,54 @@ public:
 
 	///  @name Operations
 
-	///  Defines a global function.
+	///  Checks wehter the global object has a function @a name.
+	bool
+	hasFunction (const std::string & name) const
+	noexcept (true);
+
+	///  Adds a global function, throws std::invalid_argument if a function with function .name already exists or
+	///  function .name is empty.
 	virtual
 	void
-	addFunction (const basic_ptr <jsFunction> & function) final override;
+	addFunction (const basic_ptr <vsFunction> & function)
+	throw (std::invalid_argument) final override;
+
+	///  Updates a global function, throws std::invalid_argument if function .name is empty.
+	virtual
+	void
+	updateFunction (const basic_ptr <vsFunction> & function)
+	throw (std::invalid_argument) final override;
+
+	///  Removes the function identified by @a name from this execution context.
+	virtual
+	void
+	removeFunction (const std::string & name)
+	noexcept (true) final override;
+
+	///  Returns a global function, throws std::invalid_argument if function .name is empty or a function with @a name
+	///  not exists.
+	virtual
+	basic_ptr <vsFunction>
+	getFunction (const std::string & name) const
+	throw (std::out_of_range);
 
 	///  Executes the program code.
 	virtual
 	var
 	run () final override
-	{ return jsExecutionContext::run (); }
+	{ return vsExecutionContext::run (); }
 
 	///  Asynchronously deletes all collected garbage.
 	static
 	void
 	deleteObjectsAsync ()
-	{ jsGarbageCollector::deleteObjectsAsync (); }
+	{ vsGarbageCollector::deleteObjectsAsync (); }
 
 	///  Gives the allocated memory back to the system.
 	static
 	void
 	trimFreeMemory ()
-	{ jsGarbageCollector::trimFreeMemory (); }
+	{ vsGarbageCollector::trimFreeMemory (); }
 
 	///  @name Input/Output
 
@@ -117,7 +143,7 @@ public:
 	dispose () final override
 	{
 		__LOG__ << std::endl;
-		jsExecutionContext::dispose ();
+		vsExecutionContext::dispose ();
 	}
 
 protected:
@@ -130,13 +156,13 @@ protected:
 
 	friend
 	basic_ptr <Program>
-	createProgram (const basic_ptr <jsObject> &);
+	createProgram (const basic_ptr <vsObject> &);
 
 	///  @name Construction
 
 	///  Constructs new Program.
-	Program (const basic_ptr <jsObject> & globalObject) :
-		jsExecutionContext (this, globalObject)
+	Program (const basic_ptr <vsObject> & globalObject) :
+		vsExecutionContext (this, globalObject)
 	{ }
 
 
@@ -157,7 +183,7 @@ createProgram ();
 
 ///  Constructs new Program with custom global object.
 basic_ptr <Program>
-createProgram (const basic_ptr <jsObject> & globalObject);
+createProgram (const basic_ptr <vsObject> & globalObject);
 
 } // pb
 } // titania

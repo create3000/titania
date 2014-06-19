@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
-#include "../Objects/jsObject.h"
+#include "../Objects/vsObject.h"
 
 namespace titania {
 namespace pb {
@@ -60,7 +60,7 @@ namespace pb {
  *  Class to represent an object.
  */
 class Object :
-	public jsObject
+	public vsObject
 {
 public:
 
@@ -68,19 +68,14 @@ public:
 
 	///  Constructs new Object.
 	Object () :
-		jsObject ()
+		vsObject ()
 	{ }
 
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
+	///  Creates a new default object.
 	virtual
 	var
-	getDefaultValue () const final override
+	create (vsExecutionContext* const) const final override
 	{ return make_var <Object> (); }
-
-
-private:
 
 };
 

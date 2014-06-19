@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
 
-#include "../Primitives/jsNumber.h"
+#include "../Primitives/vsNumber.h"
 
 #include <iomanip>
 
@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a »number« value.
  */
 class Number :
-	public jsNumber
+	public vsNumber
 {
 public:
 
@@ -70,31 +70,23 @@ public:
 
 	///  Constructs new Number value.
 	Number () :
-		jsNumber (),
+		vsNumber (),
 		  number (0)
 	{ }
 
 	///  Constructs new Number value.
 	explicit
 	Number (const double value) :
-		jsNumber (),
+		vsNumber (),
 		  number (value)
 	{ }
 
 	///  Constructs new Number value.
 	explicit
 	Number (const var & value) :
-		jsNumber (),
+		vsNumber (),
 		  number (value -> toNumber ())
 	{ }
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return defaultValue; }
 
 	///  @name Common operations
 
@@ -144,10 +136,6 @@ public:
 
 private:
 
-	///  @name Static members
-
-	static const var defaultValue;
-
 	///  @name Members
 
 	const double number;
@@ -158,7 +146,7 @@ private:
 ///  @name subtraction.
 
 ///  Returns either a Int32, a UInt32 or a Number value.
-jsValue*
+vsValue*
 createNumber (const double value);
 
 } // pb

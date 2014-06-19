@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
 
-#include "../Objects/jsObject.h"
+#include "../Objects/vsObject.h"
 #include "../Primitives/Boolean.h"
 
 namespace titania {
@@ -61,7 +61,7 @@ namespace pb {
  *  Class to represent a »false« object.
  */
 class BooleanObject :
-	public jsObject
+	public vsObject
 {
 public:
 
@@ -69,13 +69,13 @@ public:
 
 	///  Constructs new BooleanObject.
 	BooleanObject () :
-		jsObject (),
+		vsObject (),
 		 boolean (getFalse ())
 	{ }
 
 	///  Constructs new BooleanObject.
 	BooleanObject (const bool value) :
-		jsObject (),
+		vsObject (),
 		 boolean (value ? getTrue () : getFalse ())
 	{ }
 
@@ -84,6 +84,12 @@ public:
 		BooleanObject (value -> toBoolean ())
 	{ }
 
+	///  Creates a new default object.
+	virtual
+	var
+	create (vsExecutionContext* const) const final override
+	{ return make_var <BooleanObject> (); }
+
 	///  @name Common members
 
 	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
@@ -91,12 +97,6 @@ public:
 	ValueType
 	getType () const final override
 	{ return BOOLEAN_OBJECT; }
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return make_var <BooleanObject> (); }
 
 	///  @name Common operations
 

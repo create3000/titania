@@ -57,8 +57,6 @@
 namespace titania {
 namespace pb {
 
-const var Number::defaultValue (new Number ());
-
 var
 Number::toObject () const
 throw (TypeError)
@@ -82,7 +80,7 @@ Number::toStream (std::ostream & ostream) const
 		ostream << std::setprecision (std::numeric_limits <double>::digits10) << number;
 }
 
-jsValue*
+vsValue*
 createNumber (const double value)
 {
 	const int32_t int32bits = value;

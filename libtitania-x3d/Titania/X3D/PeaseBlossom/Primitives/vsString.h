@@ -48,12 +48,56 @@
  *
  ******************************************************************************/
 
-#include "jsExpression.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_STRING_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_STRING_H__
+
+#include "../Primitives/vsPrimitive.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsExpression::typeName = "Expression";
+/**
+ *  Class to represent a basic string value.
+ */
+class vsString :
+	public vsPrimitive
+{
+public:
+
+	///  @name Common members
+
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  Returns the type of the value. For string values this is »STRING«.
+	virtual
+	ValueType
+	getType () const override
+	{ return STRING; }
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsString value.
+	vsString () :
+		vsPrimitive ()
+	{ }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+};
 
 } // pb
 } // titania
+
+#endif

@@ -48,75 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
-
-#include <iostream>
-#include <sstream>
+#include "vsExpression.h"
 
 namespace titania {
 namespace pb {
 
-class jsInputStreamObject
-{
-public:
-
-	///  @name Input/Output
-
-	virtual
-	void
-	fromString (const std::string & string);
-
-	virtual
-	void
-	fromLocaleString (const std::string & string, const std::locale & locale);
-
-	virtual
-	void
-	fromStream (std::istream & istream) = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	jsInputStreamObject ()
-	{ }
-
-};
-
-inline
-void
-jsInputStreamObject::fromString (const std::string & string)
-{
-	fromLocaleString (string, std::locale::classic ());
-}
-
-inline
-void
-jsInputStreamObject::fromLocaleString (const std::string & string, const std::locale & locale)
-{
-	std::istringstream istringstream (string);
-
-	istringstream .imbue (locale);
-
-	fromStream (istringstream);
-}
-
-///  @relates jsInputStreamObject
-///  @name Input/Output operators.
-
-///  Extraction operator for jsInputStreamObject.
-template <class CharT, class Traits>
-inline
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, jsInputStreamObject & object)
-{
-	object .fromStream (istream);
-	return istream;
-}
+const std::string vsExpression::typeName = "Expression";
 
 } // pb
 } // titania
-
-#endif

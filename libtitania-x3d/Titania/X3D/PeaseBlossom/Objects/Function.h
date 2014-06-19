@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
 
-#include "../Execution/jsExecutionContext.h"
-#include "../Objects/jsFunction.h"
+#include "../Execution/vsExecutionContext.h"
+#include "../Objects/vsFunction.h"
 
 namespace titania {
 namespace pb {
@@ -61,33 +61,36 @@ namespace pb {
  *  Class to represent a scripted ECMAScript function.
  */
 class Function :
-	public jsFunction,
-	public jsExecutionContext
+	public vsFunction,
+	public vsExecutionContext
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (jsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        jsFunction (name),
-		jsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+	Function (vsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
+		        vsFunction (name),
+		vsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
 		  formalParameters (std::move (formalParameters))
 	{ }
 
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
+	///  Creates a new default object.
 	virtual
 	var
-	getDefaultValue () const final override
-	{ return make_var <Function> (getExecutionContext () .get ()); }
+	create (vsExecutionContext* const executionContext) const final override
+	{ return make_var <Function> (executionContext, getName (), std::vector <std::string> (formalParameters)); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const) const final override;
 
 	///  @name Operations
 
 	virtual
 	var
-	call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments) final override;
+	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) final override;
 
 	///  @name Input/Output
 
@@ -95,7 +98,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ jsFunction::toStream (ostream); }
+	{ vsFunction::toStream (ostream); }
 
 	///  @name Destruction
 
@@ -105,8 +108,8 @@ public:
 	void
 	dispose () final override
 	{
-		jsFunction::dispose ();
-		jsExecutionContext::dispose ();
+		vsFunction::dispose ();
+		vsExecutionContext::dispose ();
 	}
 
 private:

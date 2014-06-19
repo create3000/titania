@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
 
-#include "../Execution/jsExecutionContext.h"
-#include "../Expressions/jsExpression.h"
-#include "../Primitives/jsValue.h"
+#include "../Execution/vsExecutionContext.h"
+#include "../Expressions/vsExpression.h"
+#include "../Primitives/vsValue.h"
 
 namespace titania {
 namespace pb {
@@ -62,18 +62,24 @@ namespace pb {
  *  Class to represent a ECMAScript identifier expression.
  */
 class Variable :
-	public jsExpression
+	public vsExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new Variable expression.
-	Variable (jsExecutionContext* const executionContext, std::string && identifier) :
-		    jsExpression (),
+	Variable (vsExecutionContext* const executionContext, std::string && identifier) :
+		    vsExpression (),
 		executionContext (executionContext),
 		      identifier (std::move (identifier))
 	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <Variable> (executionContext, std::string (identifier)); }
 
 	///  @name Common members
 
@@ -94,8 +100,7 @@ public:
 
 private:
 
-	///  @name Construction
-
+	///  Performs neccessary operations after construction.
 	void
 	construct ()
 	{ addChild (executionContext); }
@@ -114,7 +119,7 @@ private:
 	}
 
 	const PropertyDescriptor &
-	getPropertyDescriptor (jsExecutionContext* executionContext, const std::string & identifier) const
+	getPropertyDescriptor (vsExecutionContext* executionContext, const std::string & identifier) const
 	{
 		do 
 		{
@@ -122,7 +127,7 @@ private:
 			{
 				try
 				{
-					return object -> getOwnPropertyDescriptor (identifier);
+					return object -> getPropertyDescriptor (identifier);
 				}
 				catch (const std::out_of_range &)
 				{ }
@@ -137,7 +142,7 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <jsExecutionContext> executionContext;
+	const basic_ptr <vsExecutionContext> executionContext;
 	const std::string                    identifier;
 
 };

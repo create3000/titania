@@ -48,82 +48,73 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
 
-#include "../Primitives/jsValue.h"
+#include <iostream>
+#include <sstream>
 
 namespace titania {
 namespace pb {
 
-#undef False
-#undef True
-
-/**
- *  Class to represent a boolean type.
- */
-class jsBoolean :
-	virtual public jsValue
+class vsInputStreamObject
 {
 public:
 
-	///  @name Common members
+	///  @name Input/Output
 
-	///  Returns the type name of this object.
 	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	void
+	fromString (const std::string & string);
 
-	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
 	virtual
-	ValueType
-	getType () const override
-	{ return BOOLEAN; }
+	void
+	fromLocaleString (const std::string & string, const std::locale & locale);
 
-	///  @name Common operations
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
 	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toBoolean (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toBoolean (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return toBoolean (); }
+	void
+	fromStream (std::istream & istream) = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new jsBoolean value.
-	jsBoolean ()
+	vsInputStreamObject ()
 	{ }
 
-
-private:
-
-	///  @name Static members
-
-	static const std::string typeName;
-
 };
+
+inline
+void
+vsInputStreamObject::fromString (const std::string & string)
+{
+	fromLocaleString (string, std::locale::classic ());
+}
+
+inline
+void
+vsInputStreamObject::fromLocaleString (const std::string & string, const std::locale & locale)
+{
+	std::istringstream istringstream (string);
+
+	istringstream .imbue (locale);
+
+	fromStream (istringstream);
+}
+
+///  @relates vsInputStreamObject
+///  @name Input/Output operators.
+
+///  Extraction operator for vsInputStreamObject.
+template <class CharT, class Traits>
+inline
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, vsInputStreamObject & object)
+{
+	object .fromStream (istream);
+	return istream;
+}
 
 } // pb
 } // titania

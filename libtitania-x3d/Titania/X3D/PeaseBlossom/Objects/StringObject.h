@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
 
-#include "../Objects/jsObject.h"
+#include "../Objects/vsObject.h"
 #include "../Primitives/String.h"
 
 namespace titania {
@@ -61,7 +61,7 @@ namespace pb {
  *  Class to represent a »string« object.
  */
 class StringObject :
-	public jsObject
+	public vsObject
 {
 public:
 
@@ -69,37 +69,43 @@ public:
 
 	///  Constructs new StringObject.
 	StringObject () :
-		jsObject (),
+		vsObject (),
 		  string (new String ())
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (const Glib::ustring & value) :
-		jsObject (),
+		vsObject (),
 		  string (new String (value))
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (Glib::ustring && value) :
-		jsObject (),
+		vsObject (),
 		  string (new String (std::move (value)))
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (const var & value) :
-		jsObject (),
+		vsObject (),
 		  string (new String (value))
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (const std::string::value_type* value) :
-		jsObject (),
+		vsObject (),
 		  string (new String (value))
 	{ }
+
+	///  Creates a new default object.
+	virtual
+	var
+	create (vsExecutionContext* const) const final override
+	{ return make_var <StringObject> (); }
 
 	///  @name Common members
 
@@ -109,11 +115,6 @@ public:
 	getType () const final override
 	{ return STRING_OBJECT; }
 
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return make_var <StringObject> (); }
 
 	///  @name Common operations
 

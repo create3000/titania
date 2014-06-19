@@ -54,19 +54,30 @@ namespace titania {
 namespace pb {
 
 var
-Function::call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments)
+Function::copy (vsExecutionContext* const executionContext) const
+{
+	const basic_ptr <Function> function = vsObject::copy (executionContext);
+
+	function -> isStrict (this -> isStrict ());
+	function -> import (this);
+
+	return function;
+}
+
+var
+Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments)
 {
 	const auto defaultObject = make_ptr <Object> ();
 	
-	defaultObject -> defineProperty ("this", thisObject);
-
+	defaultObject -> addProperty ("this", thisObject);
+	
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 	{
 		if (i < argc)
-			defaultObject -> defineProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
+			defaultObject -> addProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
 
 		else
-			defaultObject -> defineProperty (formalParameters [i], getUndefined (), WRITABLE | CONFIGURABLE);
+			defaultObject -> addProperty (formalParameters [i], getUndefined (), WRITABLE | CONFIGURABLE);
 	}
 
 	addDefaultObject (defaultObject);

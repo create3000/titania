@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,52 +48,73 @@
  *
  ******************************************************************************/
 
-#include "jsObject.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
+
+#include "../Objects/vsObject.h"
+#include "../Primitives/String.h"
+#include "../Primitives/Undefined.h"
+
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-const std::string jsObject::typeName = "Object";
-
-void
-jsObject::defineProperty (const std::string & name,
-                          const var & value,
-                          const PropertyFlagsType flags,
-                          const Getter & get,
-                          const Setter & set)
+class vsFunction :
+	public vsObject
 {
-	try
-	{
-		auto & propertyDescriptor = propertyDescriptors .at (name);
+public:
 
-		if (propertyDescriptor .flags & CONFIGURABLE)
-			propertyDescriptor .flags = flags;
-	
-		if (propertyDescriptor .flags & WRITABLE)
-		{
-			propertyDescriptor .value = value;
-			propertyDescriptor .get   = get;
-			propertyDescriptor .set   = set;
-		}
-	}
-	catch (const std::out_of_range &)
-	{
-		const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { this, value, flags, get, set });
+	///  @name Common members
 
-		pair .first -> second .value  .addParent (this);
-	}
-}
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
 
-void
-jsObject::dispose ()
-{
-	propertyDescriptors .clear ();
+	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
+	virtual
+	ValueType
+	getType () const override
+	{ return FUNCTION_OBJECT; }
 
-	jsValue::dispose ();
-}
+	///  @name Member access
 
-jsObject::~jsObject ()
-{ }
+	///  Returns the name of the function.
+	const std::string &
+	getName () const
+	{ return name; }
+
+	virtual
+	var
+	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) = 0;
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsFunction.
+	vsFunction (const std::string & name) :
+		vsObject (),
+		    name (name)
+	{ addProperty ("name", make_var <String> (name)); }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+	///  @name Members
+
+	const std::string name;
+
+};
 
 } // pb
 } // titania
+
+#endif

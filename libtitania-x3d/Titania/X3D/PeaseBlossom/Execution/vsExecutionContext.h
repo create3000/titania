@@ -51,12 +51,12 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
 
-#include "../Base/jsChildObject.h"
-#include "../Base/jsInputStreamObject.h"
-#include "../Base/jsOutputStreamObject.h"
+#include "../Base/vsChildObject.h"
+#include "../Base/vsInputStreamObject.h"
+#include "../Base/vsOutputStreamObject.h"
 #include "../Bits/Exception.h"
 #include "../Objects/Object.h"
-#include "../Objects/jsFunction.h"
+#include "../Objects/vsFunction.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -67,10 +67,10 @@ namespace pb {
 
 class Function;
 
-class jsExecutionContext :
-	virtual public jsChildObject,
-	virtual public jsInputStreamObject,
-	virtual public jsOutputStreamObject
+class vsExecutionContext :
+	virtual public vsChildObject,
+	virtual public vsInputStreamObject,
+	virtual public vsOutputStreamObject
 {
 public:
 
@@ -92,17 +92,17 @@ public:
 	{ return getExecutionContext () .get () == this; }
 
 	///  Returns the execution context this objects belongs to.
-	const basic_ptr <jsExecutionContext> &
+	const basic_ptr <vsExecutionContext> &
 	getExecutionContext () const
 	{ return executionContext; }
 
 	///  Returns the global objects.
-	const basic_ptr <jsObject> &
+	const basic_ptr <vsObject> &
 	getGlobalObject () const
 	{ return globalObject; }
 
 	///  Gets the current default object.
-	const basic_ptr <jsObject> &
+	const basic_ptr <vsObject> &
 	getDefaultObject () const
 	{ return defaultObjects .back (); }
 
@@ -112,10 +112,24 @@ public:
 	void
 	addExpression (var &&);
 
-	///  Adds a function to this context.
+	///  Adds a function to this context, throws std::invalid_argument if a function with function .name already exists
+	///  or function .name is empty.
 	virtual
 	void
-	addFunction (const basic_ptr <jsFunction> & function);
+	addFunction (const basic_ptr <vsFunction> & function)
+	throw (std::invalid_argument);
+
+	///  Updates a global function, throws std::invalid_argument if function .name is empty.
+	virtual
+	void
+	updateFunction (const basic_ptr <vsFunction> & function)
+	throw (std::invalid_argument);
+
+	///  Removes the function identified by @a name from this execution context.
+	virtual
+	void
+	removeFunction (const std::string & name)
+	noexcept (true);
 
 	/// @name Input/Output
 
@@ -141,14 +155,14 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new jsExecutionContext.
-	jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject);
+	///  Constructs new vsExecutionContext.
+	vsExecutionContext (vsExecutionContext* const executionContext, const basic_ptr <vsObject> & globalObject);
 
 	/// @name Operations
 
 	///  Pushs an object to the default object stack.
 	void
-	addDefaultObject (const basic_ptr <jsObject> & object);
+	addDefaultObject (const basic_ptr <vsObject> & object);
 
 	///  Removes the current default object from the default object stack.
 	void
@@ -156,9 +170,12 @@ protected:
 	{ return defaultObjects .pop_back (); }
 
 	///  Gets the current default object.
-	const std::deque <basic_ptr <jsObject>> &
+	const std::deque <basic_ptr <vsObject>> &
 	getDefaultObjects () const
 	{ return defaultObjects; }
+	
+	void
+	import (const vsExecutionContext* const);
 
 	///  Executes the associated expessions of this context.
 	virtual
@@ -176,11 +193,11 @@ private:
 	/// @name Members
 
 	bool                                            strict;
-	const basic_ptr <jsExecutionContext>            executionContext;
-	basic_ptr <jsObject>                            globalObject;
-	std::deque <basic_ptr <jsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
+	const basic_ptr <vsExecutionContext>            executionContext;
+	basic_ptr <vsObject>                            globalObject;
+	std::deque <basic_ptr <vsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
 	std::deque <var>                                expressions;    // Use deque to keep iters when inserting value.
-	std::map <std::string, basic_ptr <jsFunction>>  functions;
+	std::map <std::string, basic_ptr <vsFunction>>  functions;
 
 };
 

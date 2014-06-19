@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_H__
 
-#include "../Expressions/jsExpression.h"
+#include "../Expressions/vsExpression.h"
 #include "../Primitives/Number.h"
 
 #include <cmath>
@@ -63,7 +63,7 @@ namespace pb {
  *  Class to represent a ECMAScript remainder expression.
  */
 class Remainder :
-	public jsExpression
+	public vsExpression
 {
 public:
 
@@ -71,10 +71,16 @@ public:
 
 	///  Constructs new Remainder expression.
 	Remainder (var && lhs, var && rhs) :
-		jsExpression (),
+		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <Remainder> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -112,8 +118,7 @@ public:
 
 private:
 
-	///  @name Construction
-
+	///  Performs neccessary operations after construction.
 	void
 	construct ()
 	{ addChildren (lhs, rhs); }
@@ -130,7 +135,7 @@ private:
 
 ///  Constructs new Remainder expression.
 inline
-jsValue*
+vsValue*
 createRemainder (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())

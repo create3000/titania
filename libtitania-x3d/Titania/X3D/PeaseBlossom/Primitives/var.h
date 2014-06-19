@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 
-#include "../Base/jsChildObject.h"
-#include "../Base/jsOutputStreamObject.h"
+#include "../Base/vsChildObject.h"
+#include "../Base/vsOutputStreamObject.h"
 
 namespace titania {
 namespace pb {
@@ -61,21 +61,21 @@ namespace pb {
  *  Base class for basic_ptr.
  */
 class ptr_base :
-	virtual public jsBase
+	virtual public vsBase
 {
 public:
 
 	///  @name Operations
 
 	virtual
-	jsChildObject*
+	vsChildObject*
 	get_type () const = 0;
 
 
 protected:
 
 	ptr_base () :
-		jsBase ()
+		vsBase ()
 	{ }
 
 };
@@ -84,7 +84,7 @@ protected:
  *  Template to represent a pointer that can handle circular references and that does
  *  automatic garbage collection.
  *
- *  Extern instantiations for jsValue are part of the
+ *  Extern instantiations for vsValue are part of the
  *  library.  Results with any other type are not guaranteed.
  *
  *  @param  Type  Type of pointer.
@@ -92,8 +92,8 @@ protected:
 template <class Type>
 class basic_ptr :
 	public ptr_base,
-	public jsChildObject,
-	public jsOutputStreamObject
+	public vsChildObject,
+	public vsOutputStreamObject
 {
 public:
 
@@ -106,8 +106,8 @@ public:
 	///  Constructs new basic_ptr.
 	basic_ptr () :
 		            ptr_base (),
-		       jsChildObject (),
-		jsOutputStreamObject (),
+		       vsChildObject (),
+		vsOutputStreamObject (),
 		               value (nullptr)
 	{ }
 
@@ -136,8 +136,8 @@ public:
 	explicit
 	basic_ptr (Type* const value) :
 		            ptr_base (),
-		       jsChildObject (),
-		jsOutputStreamObject (),
+		       vsChildObject (),
+		vsOutputStreamObject (),
 		               value (value)
 	{ add (value); }
 
@@ -224,10 +224,13 @@ public:
 	void
 	swap (basic_ptr & var)
 	{
-		basic_ptr temp = std::move (var);
+		if (value)
+			value -> replaceParent (this, &var);
 
-		var   = std::move (*this);
-		*this = std::move (temp);
+		if (var .value)
+			var .value -> replaceParent (&var, this);
+
+		std::swap (value, var .value);
 	}
 
 	///  Replaces the managed object.
@@ -282,11 +285,11 @@ public:
 	///  Destructs the owned object if no more ptrs link to it
 	virtual
 	void
-	dispose ()
+	dispose () final override
 	{
 		remove (get ());
 
-		jsChildObject::dispose ();
+		vsChildObject::dispose ();
 	}
 
 	///  Destructs the owned object if no more ptrs link to it
@@ -354,7 +357,7 @@ private:
 	{ value = _value; }
 
 	virtual
-	jsChildObject*
+	vsChildObject*
 	get_type () const final override
 	{ return get (); }
 
@@ -449,10 +452,10 @@ operator >= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
 ///  @relates basic_ptr
 ///  @name Typedef
 
-class jsValue;
+class vsValue;
 
-///  Typedef for jsValue.
-using var = basic_ptr <jsValue>;
+///  Typedef for vsValue.
+using var = basic_ptr <vsValue>;
 
 ///  @relates basic_ptr
 ///  @name Utiliy functions

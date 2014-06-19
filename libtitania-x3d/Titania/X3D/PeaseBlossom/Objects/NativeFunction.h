@@ -51,41 +51,39 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
 
-#include "../Execution/jsExecutionContext.h"
-#include "../Objects/jsFunction.h"
+#include "../Execution/vsExecutionContext.h"
+#include "../Objects/vsFunction.h"
 
 namespace titania {
 namespace pb {
 
-using Call = std::function <var (const basic_ptr <jsObject> & object, const std::vector <var> & arguments)>;
+using Call = std::function <var (const basic_ptr <vsObject> & object, const std::vector <var> & arguments)>;
 
 /**
  *  Class to represent a native ECMAScript function.
  */
 class NativeFunction :
-	public jsFunction
+	public vsFunction
 {
 public:
 
 	///  Constructs new Function.
 	NativeFunction (const std::string & name, const Call & function) :
-		jsFunction (name),
+		vsFunction (name),
 		  function (function)
 	{ }
 
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
+	///  Creates a new default object.
 	virtual
 	var
-	getDefaultValue () const final override
+	create (vsExecutionContext* const) const final override
 	{ return make_var <NativeFunction> (getName (), function); }
 
 	///  @name Operations
 
 	virtual
 	var
-	call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments) final override
+	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) final override
 	{ return function (thisObject, arguments); }
 
 

@@ -697,36 +697,22 @@
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Boolean.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Number.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\jsConstants.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Undefined.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\Null.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\String.h" />
     <None Include="Titania\X3D\PeaseBlossom\Bits\Exception.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsGarbageCollector.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Execution\jsExecutionContext.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsBase.h" />
     <None Include="Titania\X3D\PeaseBlossom\pb.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsBoolean.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsNumber.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsString.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsChildObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsInputStreamObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\jsOutputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Debug.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\jsValue.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\var.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\BooleanObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\Function.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\jsObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\NumberObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\StringObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\jsFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Addition.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Subtraction.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\jsExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Division.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Multiplication.h" />
@@ -741,6 +727,21 @@
     <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ControlFlowException.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\Return.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsBase.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsGarbageCollector.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsInputStreamObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsOutputStreamObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Bits\vsConstants.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\vsExecutionContext.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\vsExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\vsFunction.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\vsObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\vsBoolean.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\vsNumber.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\vsPrimitive.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\vsString.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\vsValue.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1236,28 +1237,28 @@
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Base\jsGarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Execution\jsExecutionContext.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\Undefined.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\Null.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\Program.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Base\jsChildObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\Boolean.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsBoolean.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\Number.cpp">
       <DependentUpon>jsNumber.h</DependentUpon>
     </Compile>
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\String.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\jsObject.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\jsFunction.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Expressions\jsExpression.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsValue.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsNumber.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\Int32.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\jsString.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Base\vsGarbargeCollector.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Execution\vsExecutionContext.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Expressions\vsExpression.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\vsFunction.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\vsObject.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsBoolean.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsNumber.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsString.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsValue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

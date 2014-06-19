@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 
-#include "../Objects/jsObject.h"
+#include "../Objects/vsObject.h"
 #include "../Primitives/Int32.h"
 #include "../Primitives/Number.h"
 #include "../Primitives/UInt32.h"
@@ -63,7 +63,7 @@ namespace pb {
  *  Class to represent a number object.
  */
 class NumberObject :
-	public jsObject
+	public vsObject
 {
 public:
 
@@ -71,37 +71,43 @@ public:
 
 	///  Constructs new NumberObject.
 	NumberObject () :
-		jsObject (),
+		vsObject (),
 		  number (new Int32 ())
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const int32_t value) :
-		jsObject (),
+		vsObject (),
 		  number (new Int32 (value))
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const uint32_t value) :
-		jsObject (),
+		vsObject (),
 		  number (new UInt32 (value))
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const double value) :
-		jsObject (),
+		vsObject (),
 		  number (new Number (value))
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const var & value) :
-		jsObject (),
+		vsObject (),
 		  number (new Number (value -> toNumber ()))
 	{ }
+
+	///  Creates a new default object.
+	virtual
+	var
+	create (vsExecutionContext* const) const final override
+	{ return make_var <NumberObject> (); }
 
 	///  @name Common members
 
@@ -110,12 +116,6 @@ public:
 	ValueType
 	getType () const final override
 	{ return NUMBER_OBJECT; }
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return make_var <NumberObject> (); }
 
 	///  @name Common operations
 

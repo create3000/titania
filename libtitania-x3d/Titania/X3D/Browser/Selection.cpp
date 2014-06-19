@@ -70,7 +70,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     enabled (false),
 	        mode (SINGLE),
-	selectLowest (true),
+	selectLowest (false),
 	        over (),
 	      active (),
 	  pickedTime (),

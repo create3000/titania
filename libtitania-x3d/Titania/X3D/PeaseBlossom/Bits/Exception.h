@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 
-#include "../Base/jsOutputStreamObject.h"
+#include "../Base/vsOutputStreamObject.h"
 
 #include <exception>
 #include <sstream>
@@ -110,9 +110,9 @@ noexcept (true)
 /**
  *  Base class to represent a ECMAScript exception.
  */
-class jsException :
+class vsException :
 	public std::exception,
-	public jsOutputStreamObject
+	public vsOutputStreamObject
 {
 public:
 
@@ -143,9 +143,9 @@ public:
 
 	///  @name Destruction
 
-	///  Destructs the jsException.
+	///  Destructs the vsException.
 	virtual
-	~jsException ()
+	~vsException ()
 	noexcept (true)
 	{ }
 
@@ -154,11 +154,11 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new jsException.
+	///  Constructs new vsException.
 	explicit
-	jsException (const std::string & message) :
+	vsException (const std::string & message) :
 		      std::exception (),
-		jsOutputStreamObject (),
+		vsOutputStreamObject (),
 		             message (message)
 	{ }
 
@@ -178,13 +178,13 @@ private:
  */
 template <ExceptionType type>
 class Exception :
-	public jsException
+	public vsException
 {
 public:
 
 	explicit
 	Exception (const std::string & message) :
-		jsException (message)
+		vsException (message)
 	{ }
 
 	virtual

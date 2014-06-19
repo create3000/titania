@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_OBJECT_H__
 
-#include "../Base/jsBase.h"
-#include "../Base/jsGarbageCollector.h"
+#include "../Base/vsBase.h"
+#include "../Base/vsGarbageCollector.h"
 
 #include <Titania/Utility/Pass.h>
 #include <cassert>
@@ -63,13 +63,13 @@
 namespace titania {
 namespace pb {
 
-class jsChildObject;
+class vsChildObject;
 
-using ChildObjectSet = std::set <jsChildObject*>;
+using ChildObjectSet = std::set <vsChildObject*>;
 
-class jsChildObject :
-	public jsGarbageCollector,
-	virtual public jsBase
+class vsChildObject :
+	public vsGarbageCollector,
+	virtual public vsBase
 {
 public:
 
@@ -77,23 +77,23 @@ public:
 
 	///  Add a parent to this object.
 	void
-	addParent (jsChildObject* const parent);
+	addParent (vsChildObject* const parent);
 
 	///  Fast replaces @a parentToRemove with @a parentToAdd.
 	void
-	replaceParent (jsChildObject* const parentToRemove, jsChildObject* const parentToAdd);
+	replaceParent (vsChildObject* const parentToRemove, vsChildObject* const parentToAdd);
 
 	///  Remove a parent from this object.
 	void
-	removeParent (jsChildObject* const parent);
+	removeParent (vsChildObject* const parent);
 
 	///  Add a parent to this object.
 	void
-	addWeakParent (jsChildObject* const weakParent);
+	addWeakParent (vsChildObject* const weakParent);
 
 	///  Remove a parent from this object.
 	void
-	removeWeakParent (jsChildObject* const weakParent);
+	removeWeakParent (vsChildObject* const weakParent);
 
 	///  Get all parents of this object.
 	const ChildObjectSet &
@@ -119,9 +119,9 @@ public:
 	void
 	dispose ();
 
-	///  Destructs the jsChildObject.
+	///  Destructs the vsChildObject.
 	virtual
-	~jsChildObject ();
+	~vsChildObject ();
 
 
 protected:
@@ -129,7 +129,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new Construction.
-	jsChildObject ();
+	vsChildObject ();
 
 	///  @name Children handling
 
@@ -139,7 +139,7 @@ protected:
 	{ basic::pass ((addChild (args), 1) ...); }
 
 	void
-	addChild (const jsChildObject & child);
+	addChild (const vsChildObject & child);
 
 	template <typename ... Args>
 	void
@@ -147,7 +147,7 @@ protected:
 	{ basic::pass ((removeChild (args), 1) ...); }
 
 	void
-	removeChild (const jsChildObject & child);
+	removeChild (const vsChildObject & child);
 
 	bool
 	hasRootedObjectsDontCollectObject (ChildObjectSet & seen);
@@ -157,7 +157,7 @@ private:
 
 	size_t         referenceCount;
 	ChildObjectSet parents;
-	jsChildObject* root;
+	vsChildObject* root;
 	ChildObjectSet children;
 
 };

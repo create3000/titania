@@ -53,6 +53,7 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
+#include "../../PeaseBlossom/pb.h"
 
 namespace titania {
 namespace X3D {
@@ -118,9 +119,6 @@ private:
 	initialize () final override;
 
 	void
-	setEventHandler ();
-
-	void
 	set_live ();
 
 	void
@@ -149,7 +147,8 @@ private:
 
 	///  @name Members
 
-	std::vector <basic::uri> worldURL;
+	std::vector <basic::uri>    worldURL;
+	pb::basic_ptr <pb::Program> program;
 
 };
 

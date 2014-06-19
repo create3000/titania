@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_INT32_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_INT32_H__
 
-#include "../Primitives/jsNumber.h"
+#include "../Primitives/vsNumber.h"
 
 namespace titania {
 namespace pb {
@@ -60,7 +60,7 @@ namespace pb {
  *  Class to represent a basic number value.
  */
 class Int32 :
-	public jsNumber
+	public vsNumber
 {
 public:
 
@@ -68,31 +68,23 @@ public:
 
 	///  Constructs new Int32 value.
 	Int32 () :
-		jsNumber (),
+		vsNumber (),
 		  number (0)
 	{ }
 
 	///  Constructs new Int32 value.
 	explicit
 	Int32 (const int32_t value) :
-		jsNumber (),
+		vsNumber (),
 		  number (value)
 	{ }
 
 	///  Constructs new Int32 value.
 	explicit
 	Int32 (const var & value) :
-		jsNumber (),
+		vsNumber (),
 		  number (value -> toNumber ())
 	{ }
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return defaultValue; }
 
 	///  @name Common operations
 
@@ -142,10 +134,6 @@ public:
 
 
 private:
-
-	///  @name Static members
-
-	static const var defaultValue;
 
 	///  @name Members
 

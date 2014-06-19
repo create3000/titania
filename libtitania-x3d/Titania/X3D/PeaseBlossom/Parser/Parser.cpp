@@ -50,7 +50,7 @@
 
 #include "Parser.h"
 
-#include "../Execution/jsExecutionContext.h"
+#include "../Execution/vsExecutionContext.h"
 #include "../Expressions.h"
 #include "../Objects.h"
 #include "../Parser/Grammar.h"
@@ -62,7 +62,7 @@
 namespace titania {
 namespace pb {
 
-Parser::Parser (jsExecutionContext* const executionContext, std::istream & istream) :
+Parser::Parser (vsExecutionContext* const executionContext, std::istream & istream) :
 	             rootContext (executionContext),
 	       executionContexts ({ executionContext }),
 	                 istream (istream),
@@ -543,7 +543,7 @@ Parser::memberExpression (var & value)
 			if (arguments (argumentsListExpressions))
 			{
 				value = getUndefined ();
-				//value .reset (new NewExpression (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
+				//value .reset (new NewOperation (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
 				return true;
 			}
 
@@ -569,7 +569,7 @@ Parser::newExpression (var & value)
 		if (newExpression (value))
 		{
 			value = getUndefined ();
-			//value .reset (new NewExpression (value));
+			//value .reset (new NewOperation (value));
 			return true;
 		}
 	}
@@ -1884,7 +1884,7 @@ Parser::functionDeclaration ()
 
 						if (Grammar::CloseBrace (istream))
 						{
-							getExecutionContext () -> addFunction (function);
+							getExecutionContext () -> updateFunction (function);
 							return true;
 						}
 

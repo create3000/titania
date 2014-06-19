@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
 
-#include "../Primitives/jsValue.h"
+#include "../Primitives/vsValue.h"
 
 #include <map>
 #include <functional>
@@ -59,22 +59,22 @@
 namespace titania {
 namespace pb {
 
-class jsObject;
-class jsFunction;
+class vsObject;
+class vsFunction;
 
-///  @relates jsObject
+///  @relates vsObject
 ///  @name Type definitions
 
 ///  Type definition for property getter.
-using Getter = std::function <var (jsObject* const)>;
+using Getter = std::function <var (vsObject* const)>;
 
 ///  Type definition for property setter.
-using Setter = std::function <var (jsObject* const, const var & newValue)>;
+using Setter = std::function <var (vsObject* const, const var & newValue)>;
 
 ///  Type to represent a property descriptor.
 struct PropertyDescriptor
 {
-	jsObject* const object;
+	vsObject* const object;
 	var value;
 	PropertyFlagsType flags;
 	Getter get;
@@ -85,10 +85,20 @@ struct PropertyDescriptor
 /**
  *  Class to represent a basic object.
  */
-class jsObject :
-	virtual public jsValue
+class vsObject :
+	virtual public vsValue
 {
 public:
+
+	///  Creates a new default object.
+	virtual
+	var
+	create (vsExecutionContext* const) const = 0;
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const) const override;
 
 	///  @name Common members
 
@@ -110,7 +120,13 @@ public:
 	virtual
 	var
 	toPrimitive () const override
-	{ return getDefaultValue (); }
+	{ return var (const_cast <vsObject*> (this)); }
+
+	///  Returns true if the input argument is a non-Object type otherwise false.
+	virtual
+	bool
+	isPrimitive () const final override
+	{ return false; }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -147,26 +163,49 @@ public:
 	var
 	toObject () const
 	throw (TypeError) override
-	{ return var (const_cast <jsObject*> (this)); }
+	{ return var (const_cast <vsObject*> (this)); }
 
 	///  @name Functions
 
-	///  The hasOwnProperty () method returns a boolean indicating whether the object has the specified property.
+	///  Checks wehter this object has a propterty @a name.
 	bool
-	hasOwnProperty (const std::string & name) const
+	hasProperty (const std::string & name) const
+	noexcept (true)
 	{ return propertyDescriptors .count (name); }
 
-	///  Adds the named property described by a given descriptor to an object.
+	///  Adds the named property described by the given descriptor to this object.
 	void
-	defineProperty (const std::string & name,
+	addProperty (const std::string & name,
+	             const var & value,
+	             const PropertyFlagsType flags = DEFAULT,
+	             const Getter & get = Getter (),
+	             const Setter & set = Setter ())
+	throw (std::invalid_argument);
+
+	///  Updates the named property described by the given descriptor to this object.
+	void
+	updateProperty (const std::string & name,
 	                const var & value,
 	                const PropertyFlagsType flags = DEFAULT,
 	                const Getter & get = Getter (),
-	                const Setter & set = Setter ());
+	                const Setter & set = Setter ())
+	throw (std::invalid_argument);
 
-	///  Returns the property descriptor for a named property on an object.
+	///  Removes the property @a name from this object.
+	const var &
+	getProperty (const std::string & name) const
+	throw (std::out_of_range)
+	{ return propertyDescriptors .at (name) .value; }
+
+	///  Removes the property @a name from this object.
+	void
+	removeProperty (const std::string & name)
+	noexcept (true)
+	{ propertyDescriptors .erase (name); }
+
+	///  Returns the property descriptor for a named property on this object.
 	const PropertyDescriptor &
-	getOwnPropertyDescriptor (const std::string & name) const
+	getPropertyDescriptor (const std::string & name) const
 	throw (std::out_of_range)
 	{ return propertyDescriptors .at (name); }
 
@@ -186,18 +225,18 @@ public:
 	void
 	dispose () override;
 
-	///  Destructs the jsObject.
+	///  Destructs the vsObject.
 	virtual
-	~jsObject ();
+	~vsObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new jsObject.
-	jsObject () :
-		            jsValue (),
+	///  Constructs new vsObject.
+	vsObject () :
+		            vsValue (),
 		propertyDescriptors ()
 	{ }
 

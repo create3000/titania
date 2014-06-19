@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UNDEFINED_H__
 
-#include "../Primitives/jsNumber.h"
-#include "../Primitives/jsValue.h"
+#include "../Primitives/vsNumber.h"
+#include "../Primitives/vsPrimitive.h"
 
 namespace titania {
 namespace pb {
@@ -64,7 +64,7 @@ getUndefined ();
  *  Class to represent a »undefined« value.
  */
 class Undefined :
-	public jsValue
+	public vsPrimitive
 {
 public:
 
@@ -81,12 +81,6 @@ public:
 	ValueType
 	getType () const final override
 	{ return UNDEFINED; }
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return getUndefined (); }
 
 	///  @name Common operations
 
@@ -124,7 +118,7 @@ public:
 	virtual
 	double
 	toNumber () const final override
-	{ return jsNumber::NaN (); }
+	{ return vsNumber::NaN (); }
 
 	///  Throws a TypeError exception.
 	virtual
@@ -154,7 +148,7 @@ protected:
 
 	///  Constructs new Undefined value.
 	Undefined () :
-		jsValue ()
+		vsPrimitive ()
 	{ }
 
 

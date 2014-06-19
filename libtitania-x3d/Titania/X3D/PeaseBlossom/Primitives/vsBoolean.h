@@ -48,12 +48,85 @@
  *
  ******************************************************************************/
 
-#include "String.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
+
+#include "../Primitives/vsPrimitive.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsString::typeName = "String";
+#undef False
+#undef True
+
+/**
+ *  Class to represent a boolean type.
+ */
+class vsBoolean :
+	public vsPrimitive
+{
+public:
+
+	///  @name Common members
+
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  Returns the type of the value. For boolean values this is »BOOLEAN«.
+	virtual
+	ValueType
+	getType () const override
+	{ return BOOLEAN; }
+
+	///  @name Common operations
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toBoolean (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toBoolean (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return toBoolean (); }
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsBoolean value.
+	vsBoolean () :
+		vsPrimitive ()
+	{ }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+};
 
 } // pb
 } // titania
+
+#endif

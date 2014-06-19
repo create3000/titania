@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 
-#include "../Execution/jsExecutionContext.h"
-#include "../Expressions/jsExpression.h"
+#include "../Execution/vsExecutionContext.h"
+#include "../Expressions/vsExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,19 +61,25 @@ namespace pb {
  *  Class to represent a ECMAScript variable declaration expression.
  */
 class VariableDeclaration :
-	public jsExpression
+	public vsExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new VariableDeclaration expression.
-	VariableDeclaration (jsExecutionContext* const executionContext, std::string && identifier, var && expression) :
-		    jsExpression (),
+	VariableDeclaration (vsExecutionContext* const executionContext, std::string && identifier, var && expression) :
+		    vsExpression (),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		      expression (std::move (expression))
 	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <VariableDeclaration> (executionContext, std::string (identifier), expression -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -92,21 +98,20 @@ public:
 	{
 		const var value = expression -> toValue ();
 
-		executionContext -> getDefaultObject () -> defineProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
+		executionContext -> getDefaultObject () -> updateProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
 		return value;
 	}
 
 private:
 
-	///  @name Construction
-
+	///  Performs neccessary operations after construction.
 	void
 	construct ()
 	{ addChildren (executionContext, expression); }
 
 	///  @name Members
 
-	const basic_ptr <jsExecutionContext> executionContext;
+	const basic_ptr <vsExecutionContext> executionContext;
 	const std::string                    identifier;
 	const var                            expression;
 

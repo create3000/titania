@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#include "jsNumber.h"
+#include "String.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsNumber::typeName = "Number";
+const std::string vsString::typeName = "String";
 
 } // pb
 } // titania

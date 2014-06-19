@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,74 +48,123 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
 
-#include "../Objects/jsObject.h"
-#include "../Primitives/String.h"
-#include "../Primitives/Undefined.h"
+#include "../Base/vsChildObject.h"
+#include "../Base/vsOutputStreamObject.h"
+#include "../Bits/Exception.h"
+#include "../Bits/vsConstants.h"
+#include "../Primitives/var.h"
 
-#include <glibmm/ustring.h>
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
-class jsFunction :
-	public jsObject
+class vsExecutionContext;
+
+/**
+ *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
+ */
+class vsValue :
+	virtual public vsChildObject,
+	virtual public vsOutputStreamObject
 {
 public:
 
-	///  @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
-	virtual
-	ValueType
-	getType () const override
-	{ return FUNCTION_OBJECT; }
-
-	///  @name Member access
-
-	///  Returns the name of the function.
-	const std::string &
-	getName () const
-	{ return name; }
-
+	///  @name Construction
+	
+	///  Creates a copy of this object.
 	virtual
 	var
-	call (const basic_ptr <jsObject> & thisObject, const std::vector <var> & arguments) = 0;
+	copy (vsExecutionContext* const) const = 0;
+
+	///  @name Common members
+
+	///  Returns the type of this value.
+	virtual
+	ValueType
+	getType () const = 0;
+
+	///  @name Common operations
+
+	///  Returns true if the input argument is a non-Object type otherwise false.
+	virtual
+	bool
+	isPrimitive () const = 0;
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const = 0;
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const = 0;
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const;
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const;
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const
+	{ return toInt32Bit (); }
+
+	///  Converts its argument to an integral numeric value.
+	double
+	toInteger () const;
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const = 0;
+
+	///  Converts its argument to a value of type Object.
+	virtual
+	var
+	toObject () const
+	throw (TypeError) = 0;
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const
+	{ return var (const_cast <vsValue*> (this)); }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ toPrimitive () -> toStream (ostream); }
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new jsFunction.
-	jsFunction (const std::string & name) :
-		jsObject (),
-		    name (name)
-	{ defineProperty ("name", make_var <String> (name)); }
-
-	virtual
-	void
-	initialize () override
-	{ defineProperty ("name", make_var <String> (name)); }
+	///  Constructs new vsValue.
+	vsValue () :
+		       vsChildObject (),
+		vsOutputStreamObject ()
+	{ }
 
 
 private:
 
-	///  @name Static members
-
-	static const std::string typeName;
-
-	///  @name Members
-
-	const std::string name;
+	double
+	toInt32Bit () const;
 
 };
 

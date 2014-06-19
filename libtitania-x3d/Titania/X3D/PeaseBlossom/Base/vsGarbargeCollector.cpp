@@ -48,117 +48,53 @@
  *
  ******************************************************************************/
 
-#include "jsExecutionContext.h"
+#include "vsGarbageCollector.h"
 
-#include "../Expressions/ControlFlowException.h"
-#include "../Objects/Function.h"
-#include "../Parser/Parser.h"
-#include "../Primitives.h"
+#include "../Base/vsChildObject.h"
+
+#include <malloc.h>
+#include <thread>
 
 namespace titania {
 namespace pb {
 
-jsExecutionContext::jsExecutionContext (jsExecutionContext* const executionContext, const basic_ptr <jsObject> & globalObject) :
-	      jsChildObject (),
-	jsInputStreamObject (),
-	             strict (false),
-	   executionContext (executionContext),
-	       globalObject (globalObject),
-	     defaultObjects (),
-	        expressions (),
-	          functions ()
-{ construct (); }
+// Important: std::deque is used here for objects because it is much more faster than std::vector!
+
+vsGarbageCollector::ObjectArray vsGarbageCollector::objects;
+std::mutex                      vsGarbageCollector::mutex;
 
 void
-jsExecutionContext::construct ()
+vsGarbageCollector::trimFreeMemory ()
 {
-	addChildren (executionContext,
-	             globalObject);
-
-	addDefaultObject (globalObject);
+	malloc_trim (0);
 }
 
 void
-jsExecutionContext::addDefaultObject (const basic_ptr <jsObject> & object)
+vsGarbageCollector::addDisposedObject (const vsChildObject* const object)
 {
-	defaultObjects .emplace_back (object);
-	defaultObjects .back () .addParent (this);
+	std::lock_guard <std::mutex> lock (mutex);
+
+	objects .emplace_back (object);
 }
 
 void
-jsExecutionContext::addExpression (var && expression)
+vsGarbageCollector::deleteObjectsAsync ()
 {
-	expressions .emplace_back (std::move (expression));
-	expressions .back () .addParent (this);
+	std::lock_guard <std::mutex> lock (mutex);
+
+	__LOG__ << objects .size () << std::endl;
+
+	if (objects .empty ())
+		return;
+
+	std::thread (&vsGarbageCollector::deleteObjects, std::move (objects)) .detach ();
 }
 
 void
-jsExecutionContext::addFunction (const basic_ptr <jsFunction> & function)
+vsGarbageCollector::deleteObjects (ObjectArray objects)
 {
-	try
-	{
-		functions .at (function -> getName ()) = function;
-	}
-	catch (const std::out_of_range &)
-	{
-		functions .emplace (function -> getName (), function) .first -> second .addParent (this);
-	}
-}
-
-var
-jsExecutionContext::run ()
-{
-	try
-	{
-		for (const auto & function : functions)
-			getDefaultObject () -> defineProperty (function .second -> getName (), function .second);
-
-		for (const auto & expression : expressions)
-			expression -> toValue ();
-
-		return getUndefined ();
-	}
-	catch (const ReturnException & exception)
-	{
-		return exception .toValue ();
-	}
-	catch (const BreakException &)
-	{
-		throw SyntaxError ("Unlabeled break must be inside loop or switch.");
-	}
-	catch (const ContinueException &)
-	{
-		throw SyntaxError ("continue must be inside loop.");
-	}
-	catch (const GotoException &)
-	{
-		throw Error ("Uncatched goto exception.");
-	}
-	catch (const YieldException &)
-	{
-		throw Error ("Uncatched yield exception.");
-	}
-	catch (...)
-	{
-		throw;
-	}
-}
-
-void
-jsExecutionContext::fromStream (std::istream & istream)
-throw (SyntaxError)
-{
-	Parser (this, istream) .parseIntoContext ();
-}
-
-void
-jsExecutionContext::dispose ()
-{
-	functions      .clear ();
-	defaultObjects .clear ();
-	expressions    .clear ();
-
-	jsChildObject::dispose ();
+	for (const auto & object : objects)
+		delete object;
 }
 
 } // pb

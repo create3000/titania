@@ -48,74 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
-
-#include "../Base/jsBase.h"
-
-#include <cstddef>
-#include <deque>
-#include <mutex>
+#include "vsBoolean.h"
 
 namespace titania {
 namespace pb {
 
-class jsChildObject;
-
-class jsGarbageCollector :
-	virtual public jsBase
-{
-protected:
-
-	///  @name Construction
-
-	jsGarbageCollector () :
-		jsBase ()
-	{ }
-
-	///  @name Operations
-
-	static
-	void
-	addDisposedObject (const jsChildObject* const);
-
-	template <class InputIt>
-	static
-	void
-	addDisposedObjects (const InputIt & first, const InputIt & last)
-	{
-		std::lock_guard <std::mutex> lock (mutex);
-
-		objects .insert (objects .end (), first, last);
-	}
-
-	static
-	void
-	deleteObjectsAsync ();
-
-	static
-	void
-	trimFreeMemory ();
-
-
-private:
-
-	using ObjectArray = std::deque <const jsChildObject*>;
-
-	///  @name Operations
-
-	static
-	void
-	deleteObjects (ObjectArray);
-
-	///  @name Static members
-
-	static ObjectArray objects;
-	static std::mutex  mutex;
-
-};
+const std::string vsBoolean::typeName = "Boolean";
 
 } // pb
 } // titania
-
-#endif

@@ -51,7 +51,6 @@
 #include "Context.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../PeaseBlossom/pb.h"
 
 #include "../../PeaseBlossom/Debug.h"
 #include <cassert>
@@ -60,6 +59,24 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
+namespace global {
+
+struct print
+{
+	pb::var
+	operator () (X3DBrowser* const browser, const pb::basic_ptr <pb::vsObject> & object, const std::vector <pb::var> & arguments)
+	{
+		for (const auto & value : arguments)
+			browser -> print (value);
+
+		browser -> println ();
+
+		return pb::getUndefined ();
+	}
+};
+
+} // global
+
 const std::string Context::componentName  = "Browser";
 const std::string Context::typeName       = "Context";
 const std::string Context::containerField = "context";
@@ -67,9 +84,28 @@ const std::string Context::containerField = "context";
 Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3D::X3DJavaScriptContext (script, ecmascript),
-	                 worldURL ({ uri })
+	                 worldURL ({ uri }),
+	                  program (pb::createProgram ())
 {
 	__LOG__ << std::endl;
+
+	try
+	{
+		using namespace std::placeholders;
+	
+		program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::getNull));
+		program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::getFalse));
+		program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::getTrue));
+
+		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
+
+		program -> fromString (getECMAScript ());
+		program -> run ();
+	}
+	catch (const std::exception & error)
+	{
+		getBrowser () -> println (error .what ());
+	}
 }
 
 void
@@ -86,99 +122,135 @@ Context::create (X3DExecutionContext* const) const
 	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
-namespace global {
-
-struct print
-{
-	pb::var
-	operator () (X3DBrowser* const browser, const pb::basic_ptr <pb::jsObject> & object, const std::vector <pb::var> & arguments)
-	{
-		for (const auto & value : arguments)
-			browser -> print (value);
-
-		browser -> println ();
-
-		return pb::getUndefined ();
-	}
-};
-
-} // global
-
 void
 Context::initialize ()
 {
-	using namespace std::placeholders;
+	X3DJavaScriptContext::initialize ();
 
-	const auto t0 = chrono::now ();
+	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
+	isLive () .addInterest (this, &Context::set_live);
 
-	std::istringstream istream (getECMAScript ());
+	set_live ();
 
 	try
 	{
-		const auto program = pb::createProgram ();
-
-		program -> getGlobalObject () -> defineProperty ("NULL",  pb::var (), pb::ENUMERABLE, std::bind (pb::getNull));
-		program -> getGlobalObject () -> defineProperty ("FALSE", pb::var (), pb::ENUMERABLE, std::bind (pb::getFalse));
-		program -> getGlobalObject () -> defineProperty ("TRUE",  pb::var (), pb::ENUMERABLE, std::bind (pb::getTrue));
-
-		program -> getGlobalObject () -> defineProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::ENUMERABLE);
-
-		program -> fromStream (istream);
-
-		getBrowser () -> println ("### result: ", program -> run ());
-		getBrowser () -> println ("### time:   ", SFTime (chrono::now () - t0));
-
-		{
-			const auto t0 = chrono::now ();
-
-			getBrowser () -> println ("### result: ", program -> run ());
-			getBrowser () -> println ("### time:   ", SFTime (chrono::now () - t0));
-		}
+		program -> getFunction ("initialize") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::jsException & error)
+	catch (const std::exception & error)
 	{
-		getBrowser () -> println (error);
+		getBrowser () -> println (error .what ());
 	}
-
-	if (istream)
-		getBrowser () -> println (">>", istream .rdbuf (), "<<");
-
-	pb::debug_roots (pb::getUndefined () .get ());
-	pb::debug_roots (pb::getFalse () .get ());
-	pb::debug_roots (pb::getTrue () .get ());
-	pb::debug_roots (pb::getNull () .get ());
-
-	assert (pb::getUndefined () -> getParents () .size () == 1);
-	assert (pb::getFalse ()     -> getParents () .size () == 1);
-	assert (pb::getTrue ()      -> getParents () .size () == 1);
-	assert (pb::getNull ()      -> getParents () .size () == 1);
-
-	pb::Program::deleteObjectsAsync ();
 }
 
 void
-Context::setEventHandler ()
-{ }
-
-void
 Context::set_live ()
-{ }
+{
+	if (getExecutionContext () -> isLive () and isLive ())
+	{
+		if (program -> hasFunction ("prepareEvents"))
+			getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
+
+		if (program -> hasFunction ("eventsProcessed"))
+			getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+
+		getScriptNode () -> addInterest (this, &Context::finish);
+
+		for (const auto & field: getScriptNode () -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly:
+				case inputOutput:
+				{
+					if (program -> hasFunction (field -> getName ()))
+						field -> addInterest (this, &Context::set_field, field);
+
+					break;
+				}
+				default:
+					break;
+			}
+		}
+	}
+	else
+	{
+		if (program -> hasFunction ("prepareEvents"))
+			getBrowser () -> prepareEvents () .removeInterest (this, &Context::prepareEvents);
+
+		if (program -> hasFunction ("eventsProcessed"))
+			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
+
+		getScriptNode () -> removeInterest (this, &Context::finish);
+
+		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly   :
+				case inputOutput :
+					{
+						if (program -> hasFunction (field -> getName ()))
+							field -> removeInterest (this, &Context::set_field);
+
+						break;
+					}
+				default:
+					break;
+			}
+		}
+	}
+}
 
 void
 Context::prepareEvents ()
-{ }
+{
+	try
+	{
+		program -> getFunction ("prepareEvents") -> call (program -> getGlobalObject ());
+	}
+	catch (const std::exception & error)
+	{
+		getBrowser () -> println (error .what ());
+	}
+}
 
 void
 Context::set_field (X3D::X3DFieldDefinition* const field)
-{ }
+{
+	field -> isTainted (true);
+
+	try
+	{
+		program -> getFunction (field -> getName ()) -> call (program -> getGlobalObject (),
+		{
+			pb::getUndefined (),
+			pb::make_var <pb::Number> (getCurrentTime ())
+		});
+	}
+	catch (const std::exception & error)
+	{
+		getBrowser () -> println (error .what ());
+	}
+
+	field -> isTainted (false);
+}
 
 void
 Context::eventsProcessed ()
-{ }
+{
+	try
+	{
+		program -> getFunction ("eventsProcessed") -> call (program -> getGlobalObject ());
+	}
+	catch (const std::exception & error)
+	{
+		getBrowser () -> println (error .what ());
+	}
+}
 
 void
 Context::finish ()
-{ }
+{ pb::Program::deleteObjectsAsync (); }
 
 void
 Context::shutdown ()
@@ -197,6 +269,20 @@ Context::error (const std::string & trycatch) const
 void
 Context::dispose ()
 {
+	program .dispose ();
+
+//	pb::debug_roots (pb::getUndefined () .get ());
+//	pb::debug_roots (pb::getFalse ()     .get ());
+//	pb::debug_roots (pb::getTrue ()      .get ());
+//	pb::debug_roots (pb::getNull ()      .get ());
+//
+//	assert (pb::getUndefined () -> getParents () .size () == 1);
+//	assert (pb::getFalse ()     -> getParents () .size () == 1);
+//	assert (pb::getTrue ()      -> getParents () .size () == 1);
+//	assert (pb::getNull ()      -> getParents () .size () == 1);
+
+	pb::Program::deleteObjectsAsync ();
+
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

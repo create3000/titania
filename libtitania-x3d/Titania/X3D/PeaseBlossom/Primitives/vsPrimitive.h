@@ -48,12 +48,49 @@
  *
  ******************************************************************************/
 
-#include "jsBoolean.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_PRIMITIVE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_PRIMITIVE_H__
+
+#include "../Primitives/vsValue.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsBoolean::typeName = "Boolean";
+/**
+ *  Class to represent a primitive type.
+ */
+class vsPrimitive :
+	virtual public vsValue
+{
+public:
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const) const final override
+	{ return var (const_cast <vsPrimitive*> (this)); }
+
+	///  @name Common operations
+
+	///  Returns true if the input argument is a non-Object type otherwise false.
+	virtual
+	bool
+	isPrimitive () const final override
+	{ return true; }
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsBoolean value.
+	vsPrimitive () :
+		vsValue ()
+	{ }
+
+};
 
 } // pb
 } // titania
+
+#endif

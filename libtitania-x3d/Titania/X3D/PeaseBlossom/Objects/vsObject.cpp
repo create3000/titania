@@ -48,56 +48,91 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_STRING_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_STRING_H__
-
-#include "../Primitives/jsValue.h"
+#include "vsObject.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a basic string value.
- */
-class jsString :
-	virtual public jsValue
+const std::string vsObject::typeName = "Object";
+
+var
+vsObject::copy (vsExecutionContext* const executionContext) const
 {
-public:
+	const basic_ptr <vsObject> copy = create (executionContext);
 
-	///  @name Common members
+	for (const auto & propertyDescriptor : propertyDescriptors)
+	{
+		copy -> updateProperty (propertyDescriptor .first,
+		                        propertyDescriptor .second .value -> copy (executionContext),
+		                        propertyDescriptor .second .flags,
+		                        propertyDescriptor .second .get,
+		                        propertyDescriptor .second .set);
+	}
 
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	return copy;
+}
 
-	///  Returns the type of the value. For string values this is »STRING«.
-	virtual
-	ValueType
-	getType () const override
-	{ return STRING; }
+void
+vsObject::addProperty (const std::string & name,
+                          const var & value,
+                          const PropertyFlagsType flags,
+                          const Getter & get,
+                          const Setter & set)
+throw (std::invalid_argument)
+{
+	if (name .empty ())
+		throw std::invalid_argument ("Name is empty.");
 
+	const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { this, value, flags, get, set });
 
-protected:
+	if (pair .second)
+		pair .first -> second .value  .addParent (this);
+	
+	else
+		throw std::invalid_argument ("Property already exists.");
+}
 
-	///  @name Construction
+void
+vsObject::updateProperty (const std::string & name,
+                          const var & value,
+                          const PropertyFlagsType flags,
+                          const Getter & get,
+                          const Setter & set)
+throw (std::invalid_argument)
+{
+	if (name .empty ())
+		throw std::invalid_argument ("Name is empty.");
 
-	///  Constructs new jsString value.
-	jsString () :
-		jsValue ()
-	{ }
+	try
+	{
+		auto & propertyDescriptor = propertyDescriptors .at (name);
 
+		if (propertyDescriptor .flags & CONFIGURABLE)
+			propertyDescriptor .flags = flags;
+	
+		if (propertyDescriptor .flags & WRITABLE)
+		{
+			propertyDescriptor .value = value;
+			propertyDescriptor .get   = get;
+			propertyDescriptor .set   = set;
+		}
+	}
+	catch (const std::out_of_range &)
+	{
+		addProperty (name, value, flags, get, set );
+	}
+}
 
-private:
+void
+vsObject::dispose ()
+{
+	propertyDescriptors .clear ();
 
-	///  @name Static members
+	vsValue::dispose ();
+}
 
-	static const std::string typeName;
-
-};
+vsObject::~vsObject ()
+{ }
 
 } // pb
 } // titania
-
-#endif

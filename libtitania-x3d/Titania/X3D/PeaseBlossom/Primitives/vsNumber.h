@@ -48,30 +48,84 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_NUMBER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_NUMBER_H__
 
-#include <string>
-
-#include <Titania/LOG.h>
+#include "../Primitives/vsPrimitive.h"
 
 namespace titania {
 namespace pb {
 
-class jsBase
+/**
+ *  Class to represent a basic number value.
+ */
+class vsNumber :
+	public vsPrimitive
 {
 public:
 
-	jsBase () = default;
+	///  @name Common members
 
+	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const = 0;
+	getTypeName () const override
+	{ return typeName; }
 
-	///  Destructs the jsBase.
+	///  Returns the type of the value. For number values this is »NUMBER«.
 	virtual
-	~jsBase ()
+	ValueType
+	getType () const override
+	{ return NUMBER; }
+
+	///  @name Constants
+
+	///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
+	static
+	constexpr double
+	MIN_VALUE ()
+	{ return std::numeric_limits <double>::min (); }
+
+	///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
+	static
+	constexpr double
+	MAX_VALUE ()
+	{ return std::numeric_limits <double>::max (); }
+
+	///  The value of Number.NaN is NaN.
+	static
+	constexpr double
+	NaN ()
+	{ return std::numeric_limits <double>::quiet_NaN (); }
+
+	///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
+	static
+	constexpr double
+	NEGATIVE_INFINITY ()
+	{ return -std::numeric_limits <double>::infinity (); }
+
+	///  The value of Number.POSITIVE_INFINITY is Infinity.
+	static
+	constexpr double
+	POSITIVE_INFINITY ()
+	{ return std::numeric_limits <double>::infinity (); }
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsNumber value.
+	vsNumber () :
+		vsPrimitive ()
 	{ }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
 
 };
 

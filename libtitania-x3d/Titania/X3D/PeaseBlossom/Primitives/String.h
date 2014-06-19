@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_STRING_H__
 
-#include "../Primitives/jsString.h"
+#include "../Primitives/vsString.h"
 
 #include <glibmm/ustring.h>
 
@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a »string« value.
  */
 class String :
-	public jsString
+	public vsString
 {
 public:
 
@@ -70,55 +70,49 @@ public:
 
 	///  Constructs new String value.
 	String () :
-		jsString (),
+		vsString (),
 		  string ()
 	{ }
 
 	///  Constructs new String value.
 	explicit
 	String (const Glib::ustring & value) :
-		jsString (),
+		vsString (),
 		  string (value)
 	{ }
 
 	///  Constructs new String value.
 	explicit
 	String (Glib::ustring && value) :
-		jsString (),
+		vsString (),
 		  string ()
 	{ const_cast <Glib::ustring &> (string) .swap (value); }
 
 	///  Constructs new String value.
 	explicit
 	String (const std::string::value_type* value) :
-		jsString (),
+		vsString (),
 		  string (value)
 	{ }
 
 	///  Constructs new String value.
 	explicit
 	String (const var & value) :
-		jsString (),
+		vsString (),
 		  string (value -> toString ())
 	{ }
 
 	///  @name Member access
 
+	///  Returns the number of characters in the string.
 	Glib::ustring::size_type
 	getLength () const
 	{ return string .length (); }
 
+	///  Returns a reference to the underlying string representation.
 	const Glib::ustring &
 	getString () const
 	{ return string; }
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return defaultValue; }
 
 	///  @name Common operations
 
@@ -188,10 +182,6 @@ public:
 
 
 private:
-
-	///  @name Static members
-
-	static const var defaultValue;
 
 	///  @name Members
 

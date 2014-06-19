@@ -48,84 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_OUTPUT_STREAM_OBJECT_H__
+#include "vsValue.h"
 
-#include <locale>
-#include <sstream>
-
-#include <glibmm/ustring.h>
+#include "../Execution/GlobalObject.h"
+#include "../Primitives/vsNumber.h"
 
 namespace titania {
 namespace pb {
 
-class jsOutputStreamObject
+constexpr double M_2_16 = 65536;
+constexpr double M_2_31 = 2147483648;
+constexpr double M_2_32 = 4294967296;
+
+uint16_t
+vsValue::toUInt16 () const
 {
-public:
+	const double number = toNumber ();
 
-	///  @name Operations
+	if (isNaN (number))
+		return 0;
 
-	///  Converts its argument to a value of type String.
-	virtual
-	Glib::ustring
-	toString () const;
+	if (number == vsNumber::POSITIVE_INFINITY ())
+		return 0;
 
-	///  Converts its argument to a value of type String according to @a locale.
-	virtual
-	Glib::ustring
-	toLocaleString (const std::locale & locale) const;
+	if (number == vsNumber::NEGATIVE_INFINITY ())
+		return 0;
 
-	///  @name Input/Output
+	const double posInt   = std::copysign (std::floor (std::abs (number)), number);
+	const double int16bit = std::fmod (posInt, M_2_16);
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	jsOutputStreamObject ()
-	{ }
-
-};
-
-inline
-Glib::ustring
-jsOutputStreamObject::toString () const
-{
-	return toLocaleString (std::locale::classic ());
+	return int16bit;
 }
 
-inline
-Glib::ustring
-jsOutputStreamObject::toLocaleString (const std::locale & locale) const
+int32_t
+vsValue::toInt32 () const
 {
-	std::ostringstream ostringstream;
+	const double int32bit = toInt32Bit ();
 
-	ostringstream .imbue (locale);
+	if (int32bit >= M_2_31)
+		return int32bit - M_2_32;
 
-	toStream (ostringstream);
-
-	return ostringstream .str ();
+	return int32bit;
 }
 
-///  @relates jsOutputStreamObject
-///  @name Input/Output operators.
-
-///  Insertion operator for jsOutputStreamObject.
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const jsOutputStreamObject & value)
+double
+vsValue::toInt32Bit () const
 {
-	value .toStream (ostream);
-	return ostream;
+	const double number = toNumber ();
+
+	if (isNaN (number))
+		return 0;
+
+	if (number == vsNumber::POSITIVE_INFINITY ())
+		return 0;
+
+	if (number == vsNumber::NEGATIVE_INFINITY ())
+		return 0;
+
+	const double posInt   = std::copysign (std::floor (std::abs (number)), number);
+	const double int32bit = std::fmod (posInt, M_2_32);
+
+	return int32bit;
+}
+
+double
+vsValue::toInteger () const
+{
+	const double number = toNumber ();
+
+	return std::copysign (std::floor (std::abs (number)), number);
 }
 
 } // pb
 } // titania
-
-#endif

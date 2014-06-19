@@ -48,12 +48,109 @@
  *
  ******************************************************************************/
 
-#include "jsFunction.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
+
+#include "../Primitives/vsValue.h"
 
 namespace titania {
 namespace pb {
 
-const std::string jsFunction::typeName = "Function";
+/**
+ *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
+ */
+class vsExpression :
+	public vsValue
+{
+public:
+
+	///  @name Common members
+
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const override
+	{ return typeName; }
+
+	///  @name Common operations
+
+	///  Returns true if the input argument is a non-Object type otherwise false.
+	virtual
+	bool
+	isPrimitive () const final override
+	{ return false; }
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return toValue () -> toPrimitive (); }
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const override
+	{ return toValue () -> toBoolean (); }
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	virtual
+	uint16_t
+	toUInt16 () const override
+	{ return toValue () -> toUInt16 (); }
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	virtual
+	int32_t
+	toInt32 () const override
+	{ return toValue () -> toInt32 (); }
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	virtual
+	uint32_t
+	toUInt32 () const override
+	{ return toValue () -> toUInt32 (); }
+
+	///  Converts its argument to a value of type Number.
+	virtual
+	double
+	toNumber () const override
+	{ return toValue () -> toNumber (); }
+
+	///  Converts its argument to a value of type Object.
+	virtual
+	var
+	toObject () const
+	throw (TypeError) final override
+	{ return toValue () -> toObject (); }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ toValue () -> toStream (ostream); }
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsExpression.
+	vsExpression () :
+		vsValue ()
+	{ }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+};
 
 } // pb
 } // titania
+
+#endif

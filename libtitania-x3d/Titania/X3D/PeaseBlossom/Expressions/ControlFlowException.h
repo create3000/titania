@@ -68,12 +68,12 @@ enum class ControlFlowExceptionType
  *  Template to represent a control flow exception.
  */
 template <ControlFlowExceptionType type>
-class jsControlFlowException
+class vsControlFlowException
 {
 public:
 
 	virtual
-	~jsControlFlowException ()
+	~vsControlFlowException ()
 	noexcept (true)
 	{ }
 
@@ -83,7 +83,7 @@ public:
  *  Class to represent a ReturnException exception.
  */
 class ReturnException :
-	public jsControlFlowException <ControlFlowExceptionType::RETURN>
+	public vsControlFlowException <ControlFlowExceptionType::RETURN>
 {
 public:
 
@@ -91,7 +91,7 @@ public:
 
 	ReturnException (const var & value)
 	noexcept (true) :
-		jsControlFlowException <ControlFlowExceptionType::RETURN> (),
+		vsControlFlowException <ControlFlowExceptionType::RETURN> (),
 		                                                    value (value)
 	{ }
 
@@ -111,10 +111,10 @@ private:
 
 };
 
-using BreakException    = jsControlFlowException <ControlFlowExceptionType::BREAK>;
-using ContinueException = jsControlFlowException <ControlFlowExceptionType::CONTINUE>;
-using GotoException     = jsControlFlowException <ControlFlowExceptionType::GOTO>;
-using YieldException    = jsControlFlowException <ControlFlowExceptionType::YIELD>;
+using BreakException    = vsControlFlowException <ControlFlowExceptionType::BREAK>;
+using ContinueException = vsControlFlowException <ControlFlowExceptionType::CONTINUE>;
+using GotoException     = vsControlFlowException <ControlFlowExceptionType::GOTO>;
+using YieldException    = vsControlFlowException <ControlFlowExceptionType::YIELD>;
 
 } // pb
 } // titania

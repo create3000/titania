@@ -55,8 +55,6 @@
 namespace titania {
 namespace pb {
 
-const var String::defaultValue (new String ());
-
 var
 String::toObject () const
 throw (TypeError)

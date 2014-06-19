@@ -63,7 +63,7 @@ namespace global {
 struct isNaN
 {
 	var
-	operator () (const basic_ptr <jsObject> & object, const std::vector <var> & arguments)
+	operator () (const basic_ptr <vsObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return getTrue ();
@@ -75,19 +75,19 @@ struct isNaN
 
 }     // global
 
-basic_ptr <jsObject>
+basic_ptr <vsObject>
 createGlobalObject ()
 {
 	using namespace std::placeholders;
 
-	basic_ptr <jsObject> globalObject (new Object ());
+	basic_ptr <vsObject> globalObject (new Object ());
 
-	globalObject -> defineProperty ("this",      globalObject,                                     NONE);
-	globalObject -> defineProperty ("NaN",       make_var <Number> (Number::NaN ()),               NONE);
-	globalObject -> defineProperty ("Infinity",  make_var <Number> (Number::POSITIVE_INFINITY ()), NONE);
-	globalObject -> defineProperty ("undefined", getUndefined (),                                  NONE);
+	globalObject -> addProperty ("this",      globalObject,                                     NONE);
+	globalObject -> addProperty ("NaN",       make_var <Number> (Number::NaN ()),               NONE);
+	globalObject -> addProperty ("Infinity",  make_var <Number> (Number::POSITIVE_INFINITY ()), NONE);
+	globalObject -> addProperty ("undefined", getUndefined (),                                  NONE);
 
-	globalObject -> defineProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }));
+	globalObject -> addProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }));
 
 	return globalObject;
 }

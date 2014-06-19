@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
 
-#include "../Primitives/jsValue.h"
+#include "../Primitives/vsPrimitive.h"
 
 namespace titania {
 namespace pb {
@@ -65,7 +65,7 @@ getNull ();
  *  Class to represent a »null« value.
  */
 class Null :
-	public jsValue
+	public vsPrimitive
 {
 public:
 
@@ -82,14 +82,6 @@ public:
 	ValueType
 	getType () const final override
 	{ return NULL_OBJECT; }
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return getNull (); }
 
 	///  @name Common operations
 
@@ -157,7 +149,7 @@ protected:
 
 	///  Constructs new Null value.
 	Null () :
-		jsValue ()
+		vsPrimitive ()
 	{ }
 
 

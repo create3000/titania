@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_H__
 
-#include "../Expressions/jsExpression.h"
+#include "../Expressions/vsExpression.h"
 #include "../Primitives/Number.h"
 #include "../Primitives/String.h"
 
@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a ECMAScript addition expression.
  */
 class Addition :
-	public jsExpression
+	public vsExpression
 {
 public:
 
@@ -70,10 +70,16 @@ public:
 
 	///  Constructs new Addition expression.
 	Addition (var && lhs, var && rhs) :
-		jsExpression (),
+		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <Addition> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -92,7 +98,7 @@ public:
 	{ return var (evaluate (lhs, rhs)); }
 
 	static
-	jsValue*
+	vsValue*
 	evaluate (const var & lhs, const var & rhs)
 	{
 		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
@@ -104,8 +110,7 @@ public:
 
 private:
 
-	///  @name Construction
-
+	///  Performs neccessary operations after construction.
 	void
 	construct ()
 	{ addChildren (lhs, rhs); }
@@ -122,7 +127,7 @@ private:
 
 ///  Constructs new Addition expression.
 inline
-jsValue*
+vsValue*
 createAddition (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())

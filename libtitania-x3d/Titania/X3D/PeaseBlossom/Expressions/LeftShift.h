@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_H__
 
-#include "../Expressions/jsExpression.h"
+#include "../Expressions/vsExpression.h"
 #include "../Primitives/Int32.h"
 
 namespace titania {
@@ -61,7 +61,7 @@ namespace pb {
  *  Class to represent a ECMAScript division expression.
  */
 class LeftShift :
-	public jsExpression
+	public vsExpression
 {
 public:
 
@@ -69,10 +69,16 @@ public:
 
 	///  Constructs new LeftShift expression.
 	LeftShift (var && lhs, var && rhs) :
-		jsExpression (),
+		vsExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <LeftShift> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -128,8 +134,7 @@ public:
 
 private:
 
-	///  @name Construction
-
+	///  Performs neccessary operations after construction.
 	void
 	construct ()
 	{ addChildren (lhs, rhs); }
@@ -146,7 +151,7 @@ private:
 
 ///  Constructs new LeftShift expression.
 inline
-jsValue*
+vsValue*
 createLeftShift (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())

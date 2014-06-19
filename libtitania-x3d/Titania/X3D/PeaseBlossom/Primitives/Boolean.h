@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_BOOLEAN_H__
 
-#include "../Primitives/jsBoolean.h"
+#include "../Primitives/vsBoolean.h"
 
 namespace titania {
 namespace pb {
@@ -69,17 +69,9 @@ getTrue ();
  *  Class to represent a »false« value.
  */
 class False :
-	public jsBoolean
+	public vsBoolean
 {
 public:
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return getFalse (); }
 
 	///  @name Common operations
 
@@ -122,7 +114,7 @@ protected:
 
 	///  Constructs new False value.
 	False () :
-		jsBoolean ()
+		vsBoolean ()
 	{ }
 
 };
@@ -131,17 +123,9 @@ protected:
  *  Class to represent a »true« value.
  */
 class True :
-	public jsBoolean
+	public vsBoolean
 {
 public:
-
-	///  @name Common members
-
-	///  Returns the a default of its input argument type.
-	virtual
-	var
-	getDefaultValue () const final override
-	{ return getFalse (); }
 
 	///  @name Common operations
 
@@ -184,7 +168,7 @@ protected:
 
 	///  Constructs new True value.
 	True () :
-		jsBoolean ()
+		vsBoolean ()
 	{ }
 
 };

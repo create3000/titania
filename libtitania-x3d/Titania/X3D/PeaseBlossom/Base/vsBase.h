@@ -48,54 +48,34 @@
  *
  ******************************************************************************/
 
-#include "jsGarbageCollector.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_BASE_H__
 
-#include "../Base/jsChildObject.h"
+#include <string>
 
-#include <malloc.h>
-#include <thread>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace pb {
 
-// Important: std::deque is used here for objects because it is much more faster than std::vector!
-
-jsGarbageCollector::ObjectArray jsGarbageCollector::objects;
-std::mutex                      jsGarbageCollector::mutex;
-
-void
-jsGarbageCollector::trimFreeMemory ()
+class vsBase
 {
-	malloc_trim (0);
-}
+public:
 
-void
-jsGarbageCollector::addDisposedObject (const jsChildObject* const object)
-{
-	std::lock_guard <std::mutex> lock (mutex);
+	vsBase () = default;
 
-	objects .emplace_back (object);
-}
+	virtual
+	const std::string &
+	getTypeName () const = 0;
 
-void
-jsGarbageCollector::deleteObjectsAsync ()
-{
-	std::lock_guard <std::mutex> lock (mutex);
+	///  Destructs the vsBase.
+	virtual
+	~vsBase ()
+	{ }
 
-	__LOG__ << objects .size () << std::endl;
-
-	if (objects .empty ())
-		return;
-
-	std::thread (&jsGarbageCollector::deleteObjects, std::move (objects)) .detach ();
-}
-
-void
-jsGarbageCollector::deleteObjects (ObjectArray objects)
-{
-	for (const auto & object : objects)
-		delete object;
-}
+};
 
 } // pb
 } // titania
+
+#endif
