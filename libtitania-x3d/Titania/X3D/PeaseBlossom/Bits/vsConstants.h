@@ -80,6 +80,7 @@ enum ValueType
 	// Expressions
 
 	ADDITION_EXPRESSION,
+	ASSIGNMENT_EXPRESSION,
 	DIVISION_EXPRESSION,
 	FUNCTION_CALL_EXPRESSION,
 	FUNCTION_EXPRESSION,
@@ -126,18 +127,19 @@ noexcept (true)
 
 		// Expressions
 
-		case ADDITION_EXPRESSION:       ostream << "ADDITION";             break;
-		case DIVISION_EXPRESSION:       ostream << "DIVISION";             break;
-		case FUNCTION_CALL_EXPRESSION:  ostream << "FUNCTION_CALL";        break;
-		case FUNCTION_EXPRESSION:       ostream << "FUNCTION_EXPRESSION";  break;
-		case SUBTRACTION_EXPRESSION:    ostream << "SUBTRACTION";          break;
-		case STRICT_EQUAL_EXPRESSION:   ostream << "STRICT_EQUAL";         break;
-		case LEFT_SHIFT_EXPRESSION:     ostream << "LEFT_SHIFT";           break;
-		case MULTIPLICATION_EXPRESSION: ostream << "MULTIPLICATION";       break;
-		case REMAINDER_EXPRESSION:      ostream << "REMAINDER";            break;
-		case RETURN_STATEMENT:          ostream << "RETURN_STATEMENT";     break;
-		case VARIABLE_EXPRESSION:       ostream << "VARIABLE";             break;
-		case VARIABLE_DECLARATION:      ostream << "VARIABLE_DECLARATION"; break;
+		case ADDITION_EXPRESSION:       ostream << "ADDITION_EXPRESSION";       break;
+		case ASSIGNMENT_EXPRESSION:     ostream << "ASSIGNMENT_EXPRESSION";     break;
+		case DIVISION_EXPRESSION:       ostream << "DIVISION_EXPRESSION";       break;
+		case FUNCTION_CALL_EXPRESSION:  ostream << "FUNCTION_CALL_EXPRESSION";  break;
+		case FUNCTION_EXPRESSION:       ostream << "FUNCTION_EXPRESSION";       break;
+		case SUBTRACTION_EXPRESSION:    ostream << "SUBTRACTION_EXPRESSION";    break;
+		case STRICT_EQUAL_EXPRESSION:   ostream << "STRICT_EQUAL_EXPRESSION";   break;
+		case LEFT_SHIFT_EXPRESSION:     ostream << "LEFT_SHIFT_EXPRESSION";     break;
+		case MULTIPLICATION_EXPRESSION: ostream << "MULTIPLICATION_EXPRESSION"; break;
+		case REMAINDER_EXPRESSION:      ostream << "REMAINDER_EXPRESSION";      break;
+		case RETURN_STATEMENT:          ostream << "RETURN_STATEMENT";          break;
+		case VARIABLE_EXPRESSION:       ostream << "VARIABLE_EXPRESSION";       break;
+		case VARIABLE_DECLARATION:      ostream << "VARIABLE_DECLARATION";      break;
 
 		// Exotic objects
 

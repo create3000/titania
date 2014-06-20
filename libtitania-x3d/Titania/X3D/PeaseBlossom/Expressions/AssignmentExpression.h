@@ -48,11 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
 
 #include "../Execution/vsExecutionContext.h"
+#include "../Expressions/AssignmentOperatorType.h"
 #include "../Expressions/vsExpression.h"
+#include "../Primitives/Int32.h"
+#include "../Primitives/UInt32.h"
 #include "../Primitives/vsValue.h"
 
 namespace titania {
@@ -61,30 +64,27 @@ namespace pb {
 /**
  *  Class to represent a ECMAScript identifier expression.
  */
-class VariableExpression :
+class AssignmentExpression :
 	public vsExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new VariableExpression expression.
-	VariableExpression (vsExecutionContext* const executionContext, std::string && identifier) :
+	///  Constructs new AssignmentExpression expression.
+	AssignmentExpression (vsExecutionContext* const executionContext, var && lhs, var && rhs, AssignmentOperatorType type) :
 		    vsExpression (),
 		executionContext (executionContext),
-		      identifier (std::move (identifier))
+		             lhs (std::move (lhs)),
+		             rhs (std::move (rhs)),
+		            type (type)
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{
-		if (isInRootContextOrNotDefined (this -> executionContext .get (), identifier))
-			return make_var <VariableExpression> (executionContext, std::string (identifier));
-
-		return toValue ();
-	}
+	{ return make_var <AssignmentExpression> (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
 
 	///  @name Common members
 
@@ -92,36 +92,15 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return VARIABLE_EXPRESSION; }
+	{ return ASSIGNMENT_EXPRESSION; }
 
 	///  @name Operations
-
-	virtual
-	var
-	setValue (const var & value) const final override
-	{
-		try
-		{
-			const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
-
-			if (propertyDescriptor .set)
-				return propertyDescriptor .set (propertyDescriptor .object, value);
-
-			return const_cast <PropertyDescriptor &> (propertyDescriptor) .value = value;
-		}
-		catch (const ReferenceError &)
-		{
-			executionContext -> getGlobalObject () -> updateProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
-			
-			return value;
-		}
-	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	toValue () const final override
-	{ return getProperty (); }
+	{ return setProperty (); }
 
 
 private:
@@ -131,67 +110,91 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChild (executionContext); }
+	{
+		if (not lhs)
+			throw ReferenceError ("Invalid assignment left-hand side.");
+
+		addChildren (executionContext, lhs, rhs);
+	}
 
 	///  @name Operations
 
 	var
-	getProperty () const
+	setProperty () const
 	{
-		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
+		var value = rhs -> toValue ();
 
-		if (propertyDescriptor .get)
-			return propertyDescriptor .get (propertyDescriptor .object);
-
-		return propertyDescriptor .value;
-	}
-
-	const PropertyDescriptor &
-	getPropertyDescriptor (vsExecutionContext* executionContext, const std::string & identifier) const
-	{
-		do 
+		switch (type)
 		{
-			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
+			case AssignmentOperatorType::ASSIGNMENT:
+				break;
+
+			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
 			{
-				try
-				{
-					return object -> getPropertyDescriptor (identifier);
-				}
-				catch (const std::out_of_range &)
-				{ }
+				value = make_var <Number> (lhs -> toNumber () * value -> toNumber ());
+				break;
 			}
-
-			executionContext = executionContext -> getExecutionContext () .get ();
-		}
-		while (not executionContext -> isRootContext ());
-
-		throw ReferenceError (identifier + " is not defined.");
-	}
-
-	bool
-	isInRootContextOrNotDefined (vsExecutionContext* executionContext, const std::string & identifier) const
-	{
-		do 
-		{
-			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
+			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
 			{
-				if (object -> hasProperty (identifier))
-					return executionContext -> isRootContext ();
+				value = make_var <Number> (lhs -> toNumber () / value -> toNumber ());
+				break;
 			}
-
-			executionContext = executionContext -> getExecutionContext () .get ();
+			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
+			{
+				value = make_var <Number> (std::fmod (lhs -> toNumber (), value -> toNumber ()));
+				break;
+			}
+			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
+			{
+				value = make_var <Number> (lhs -> toNumber () + value -> toNumber ());
+				break;
+			}
+			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
+			{
+				value = make_var <Number> (lhs -> toNumber () - value -> toNumber ());
+				break;
+			}
+			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
+			{
+				value = make_var <Int32> (lhs -> toInt32 () << (value -> toUInt32 () & 0x1f));
+				break;
+			}
+			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
+			{
+				value = make_var <Int32> (lhs -> toInt32 () >> (value -> toUInt32 () & 0x1f));
+				break;
+			}
+			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
+			{
+				value = make_var <UInt32> (lhs -> toUInt32 () >> (value -> toUInt32 () & 0x1f));
+				break;
+			}
+			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
+			{
+				value = make_var <Int32> (lhs -> toInt32 () & value -> toInt32 ());
+				break;
+			}
+			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
+			{
+				value = make_var <Int32> (lhs -> toInt32 () ^ value -> toInt32 ());
+				break;
+			}
+			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
+			{
+				value = make_var <Int32> (lhs -> toInt32 () | value -> toInt32 ());
+				break;
+			}
 		}
-		while (not executionContext -> isRootContext ());
 
-		// If the variable is not found in any execution context it could be later defined.
-
-		return true;
+		return lhs -> setValue (value);
 	}
 
 	///  @name Members
 
 	const basic_ptr <vsExecutionContext> executionContext;
-	const std::string                    identifier;
+	const basic_ptr <vsExpression>       lhs;
+	const var                            rhs;
+	const AssignmentOperatorType         type;
 
 };
 

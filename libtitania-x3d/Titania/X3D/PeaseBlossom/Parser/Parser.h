@@ -81,7 +81,8 @@ protected:
 
 	void
 	parseIntoContext ()
-	throw (SyntaxError);
+	throw (SyntaxError,
+	       ReferenceError);
 
 
 private:

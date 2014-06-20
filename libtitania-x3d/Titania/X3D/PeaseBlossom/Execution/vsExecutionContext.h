@@ -161,7 +161,8 @@ public:
 	virtual
 	void
 	fromStream (std::istream & istream)
-	throw (SyntaxError) final override;
+	throw (SyntaxError,
+	       ReferenceError) final override;
 
 	///  @name Destruction
 

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
 
 #include "../Primitives/vsValue.h"
+#include "../Objects/vsObject.h"
 
 namespace titania {
 namespace pb {
@@ -122,6 +123,11 @@ public:
 	toObject () const
 	throw (TypeError) final override
 	{ return toValue () -> toObject (); }
+
+	virtual
+	var
+	setValue (const var &) const
+	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 
 	///  @name Input/Output
 

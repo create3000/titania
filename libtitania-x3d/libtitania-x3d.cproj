@@ -744,6 +744,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ReturnStatement.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\AssignmentExpression.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

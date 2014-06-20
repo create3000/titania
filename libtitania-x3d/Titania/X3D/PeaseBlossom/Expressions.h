@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
 
 #include "Expressions/AdditionExpression.h"
+#include "Expressions/AssignmentExpression.h"
 #include "Expressions/DivisionExpression.h"
 #include "Expressions/FunctionCallExpression.h"
 #include "Expressions/FunctionExpression.h"

@@ -118,6 +118,8 @@ public:
 
 private:
 
+	///  @name Construction
+
 	///  Performs neccessary operations after construction.
 	void
 	construct ()

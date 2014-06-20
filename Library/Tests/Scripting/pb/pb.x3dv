@@ -72,18 +72,13 @@ initialize ();
 
 function initialize ()
 {
-	print ('test1: ', test1 ());
+	//print ('test1: ', test1 ());
 }
 
+/*
 function test1 ()
 {
 	// single line comment
-
-	/*
-	 *  multi
-	 *  line
-	 *  comment
-	 */
 
 	;
 	print (true);
@@ -267,16 +262,23 @@ function test1 ()
 
 	return PI_2;
 }
+*/
+
+var a = 0;
 
 function set_time (value, time)
 {
+
 	print (time);
 
 	function f (x)
 	{
-	    var a = x;
+		//var y = 1;
+	   //a = x;
 
-	    return function () { return a; };
+	   print (a);
+
+	   return function () { return a; };
 	}
 
 	var f1 = f (1);
@@ -284,6 +286,23 @@ function set_time (value, time)
 
 	print (f1 ());
 	print (f2 ());
+	print (a = 5);
+	print (a *= 2);
+	print (a *= 3);
+	print (a /= 3);
+	print (a /= 2);
+	print (a %= 2);
+	print (a += 4);
+	print (a -= 5);
+	print (a = 1);
+	print (a <<= 1);
+	print (a >>= 1);
+	print (a >>>= 1);
+	print (a = 0b1111);
+	print (a &= 0b1010);
+	print (a ^= 0b0101);
+	print (a = 0b1100);
+	print (a |= 0b0011);
 }
 "
   ]

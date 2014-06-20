@@ -61,8 +61,8 @@ namespace pb {
 
 enum class AssignmentOperatorType
 {
-	ASSIGMENT,
-	MULTIPLICATION_ASSIGMENT,
+	ASSIGNMENT,
+	MULTIPLICATION_ASSIGNMENT,
 	DIVISION_ASSIGNMENT,
 	REMAINDER_ASSIGNMENT,
 	ADDITION_ASSIGNMENT,
@@ -86,7 +86,7 @@ std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const AssignmentOperatorType value)
 {
 	static const std::map <AssignmentOperatorType, Glib::ustring> assignmentOperators = {
-		std::make_pair (AssignmentOperatorType::MULTIPLICATION_ASSIGMENT,        "*="),
+		std::make_pair (AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT,        "*="),
 		std::make_pair (AssignmentOperatorType::DIVISION_ASSIGNMENT,             "/="),
 		std::make_pair (AssignmentOperatorType::REMAINDER_ASSIGNMENT,            "%="),
 		std::make_pair (AssignmentOperatorType::ADDITION_ASSIGNMENT,             "+="),

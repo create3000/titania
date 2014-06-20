@@ -177,7 +177,8 @@ vsExecutionContext::run ()
 
 void
 vsExecutionContext::fromStream (std::istream & istream)
-throw (SyntaxError)
+throw (SyntaxError,
+       ReferenceError)
 {
 	Parser (this, istream) .parseIntoContext ();
 }

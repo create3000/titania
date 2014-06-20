@@ -119,8 +119,10 @@ public:
 		throw TypeError ("'" + expression -> toString () + "' is not a function.");
 	}
 
+
 private:
 
+	///  @name Construction
 
 	///  Performs neccessary operations after construction.
 	void

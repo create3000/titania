@@ -73,7 +73,8 @@ Parser::Parser (vsExecutionContext* const executionContext, std::istream & istre
 
 void
 Parser::parseIntoContext ()
-throw (SyntaxError)
+throw (SyntaxError,
+       ReferenceError)
 {
 	//__LOG__ << std::endl;
 
@@ -1127,7 +1128,7 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::Less (istream))
 		{
-			if (Grammar::Assignment .lookahead (istream))
+			if (Grammar::LessEqual .lookahead (istream))
 				return Grammar::Less .rewind (istream);
 
 			isLeftHandSideExressions .back () = false;
@@ -1146,7 +1147,10 @@ Parser::relationalExpression (var & lhs)
 
 		if (Grammar::Greater (istream))
 		{
-			if (Grammar::Assignment .lookahead (istream))
+			if (Grammar::RightShift .lookahead (istream))
+				return Grammar::Greater .rewind (istream);
+
+			if (Grammar::GreaterEqual .lookahead (istream))
 				return Grammar::Greater .rewind (istream);
 
 			isLeftHandSideExressions .back () = false;
@@ -1521,8 +1525,7 @@ Parser::assignmentExpression (var & value)
 
 				if (assignmentExpression (expression))
 				{
-					value = getUndefined ();
-					//value .reset (new Assignment (std::move (value), std::move (expression), AssignmentOperatorType::ASSIGNMENT));
+					value .reset (new AssignmentExpression (getExecutionContext (), std::move (value), std::move (expression), AssignmentOperatorType::ASSIGNMENT));
 					return true;
 				}
 
@@ -1537,8 +1540,7 @@ Parser::assignmentExpression (var & value)
 
 				if (assignmentExpression (expression))
 				{
-					value = getUndefined ();
-					//value .reset (new Assignment (std::move (value), std::move (expression), type));
+					value .reset (new AssignmentExpression (getExecutionContext (), std::move (value), std::move (expression), type));
 					return true;
 				}
 
@@ -1561,7 +1563,7 @@ Parser::assignmentOperator (AssignmentOperatorType & type)
 
 	if (Grammar::MultiplicationAssigment (istream))
 	{
-		type = AssignmentOperatorType::MULTIPLICATION_ASSIGMENT;
+		type = AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT;
 		return true;
 	}
 

@@ -163,7 +163,10 @@ public:
 		return false;
 	}
 
+
 private:
+
+	///  @name Construction
 
 	///  Performs neccessary operations after construction.
 	void

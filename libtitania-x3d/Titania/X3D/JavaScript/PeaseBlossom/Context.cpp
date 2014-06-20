@@ -89,17 +89,26 @@ throw (std::exception) :
 	                  program (pb::createProgram ())
 {
 	__LOG__ << std::endl;
+	
+	try
+	{
+		using namespace std::placeholders;
 
-	using namespace std::placeholders;
+		program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::getNull));
+		program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::getFalse));
+		program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::getTrue));
 
-	program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::getNull));
-	program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::getFalse));
-	program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::getTrue));
+		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
 
-	program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
-
-	program -> fromString (getECMAScript ());
-	program -> run ();
+		program -> fromString (getECMAScript ());
+		program -> run ();
+	}
+	catch (const pb::vsException & error)
+	{
+		getBrowser () -> println (error);
+		
+		throw;
+	}
 }
 
 void
@@ -263,8 +272,8 @@ Context::error (const std::string & trycatch) const
 {
 	X3D::X3DJavaScriptContext::error (trycatch,
 	                                  "filename",
-	                                  0 /*"lineNumber"*/,
-	                                  0 /*"startColumn"*/,
+	                                  0, // "lineNumber"
+	                                  0, //"startColumn"
 	                                  "sourceLine");
 }
 
@@ -273,15 +282,15 @@ Context::dispose ()
 {
 	program .dispose ();
 
-	pb::debug_roots (pb::getUndefined () .get ());
-	pb::debug_roots (pb::getFalse ()     .get ());
-	pb::debug_roots (pb::getTrue ()      .get ());
-	pb::debug_roots (pb::getNull ()      .get ());
-
-	assert (pb::getUndefined () -> getParents () .size () == 1);
-	assert (pb::getFalse ()     -> getParents () .size () == 1);
-	assert (pb::getTrue ()      -> getParents () .size () == 1);
-	assert (pb::getNull ()      -> getParents () .size () == 1);
+//	pb::debug_roots (pb::getUndefined () .get ());
+//	pb::debug_roots (pb::getFalse ()     .get ());
+//	pb::debug_roots (pb::getTrue ()      .get ());
+//	pb::debug_roots (pb::getNull ()      .get ());
+//
+//	assert (pb::getUndefined () -> getParents () .size () == 1);
+//	assert (pb::getFalse ()     -> getParents () .size () == 1);
+//	assert (pb::getTrue ()      -> getParents () .size () == 1);
+//	assert (pb::getNull ()      -> getParents () .size () == 1);
 
 	pb::Program::deleteObjectsAsync ();
 

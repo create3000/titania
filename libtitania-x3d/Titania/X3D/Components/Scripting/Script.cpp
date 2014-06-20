@@ -175,7 +175,7 @@ Script::requestImmediateLoad ()
 				setLoadState (COMPLETE_STATE);
 				break;
 			}
-			catch (const std::invalid_argument & error)
+			catch (const std::exception & error)
 			{
 				std::clog << error .what () << std::endl;
 			}
