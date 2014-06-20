@@ -62,11 +62,16 @@ vsObject::clone (vsExecutionContext* const executionContext) const
 
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
-		clone -> updateProperty (propertyDescriptor .first,
-		                         propertyDescriptor .second .value,
-		                         propertyDescriptor .second .flags,
-		                         propertyDescriptor .second .get,
-		                         propertyDescriptor .second .set);
+		try
+		{
+			clone -> addProperty (propertyDescriptor .first,
+			                      propertyDescriptor .second .value,
+			                      propertyDescriptor .second .flags,
+			                      propertyDescriptor .second .get,
+			                      propertyDescriptor .second .set);
+		}
+		catch (const std::exception &)
+		{ }
 	}
 
 	return clone;
@@ -79,11 +84,16 @@ vsObject::copy (vsExecutionContext* const executionContext) const
 
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
-		copy -> updateProperty (propertyDescriptor .first,
-		                        propertyDescriptor .second .value -> copy (executionContext),
-		                        propertyDescriptor .second .flags,
-		                        propertyDescriptor .second .get,
-		                        propertyDescriptor .second .set);
+		try
+		{
+			copy -> addProperty (propertyDescriptor .first,
+			                     propertyDescriptor .second .value -> copy (executionContext),
+			                     propertyDescriptor .second .flags,
+			                     propertyDescriptor .second .get,
+			                     propertyDescriptor .second .set);
+		}
+		catch (const std::exception &)
+		{ }
 	}
 
 	return copy;

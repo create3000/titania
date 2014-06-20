@@ -53,6 +53,7 @@
 
 #include "../Bits/Exception.h"
 #include "../Expressions/AssignmentOperatorType.h"
+#include "../Expressions/ObjectLiteral.h"
 #include "../Primitives/var.h"
 
 #include <iostream>
@@ -175,6 +176,21 @@ private:
 
 	bool
 	primaryExpression (var &);
+
+	bool
+	objectLiteral (var &);
+
+	bool
+	propertyDefinitionList (PropertyDefinitionArray &);
+
+	bool
+	propertyDefinition (PropertyDefinitionArray &);
+
+	bool
+	propertyName (var & value);
+
+	bool
+	propertySetParameterList (std::vector <std::string> &);
 
 	bool
 	memberExpression (var &);

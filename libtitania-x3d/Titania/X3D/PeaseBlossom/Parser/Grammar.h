@@ -88,6 +88,8 @@ public:
 	static const io::string null;
 	static const io::string function;
 	static const io::string var;
+	static const io::string get;
+	static const io::string set;
 
 	static const std::set <std::string> Keyword;
 	static const std::set <std::string> FutureReservedWord;
@@ -191,6 +193,8 @@ const io::string Grammar::_true ("true");
 const io::string Grammar::null ("null");
 const io::string Grammar::function ("function");
 const io::string Grammar::var ("var");
+const io::string Grammar::get ("get");
+const io::string Grammar::set ("set");
 
 const std::set <std::string> Grammar::Keyword = {
 	"break",

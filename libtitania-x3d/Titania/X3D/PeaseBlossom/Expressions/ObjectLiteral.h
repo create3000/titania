@@ -48,22 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
 
-#include "Expressions/AdditionExpression.h"
-#include "Expressions/AssignmentExpression.h"
-#include "Expressions/DivisionExpression.h"
-#include "Expressions/FunctionCallExpression.h"
-#include "Expressions/FunctionExpression.h"
-#include "Expressions/LeftShiftExpression.h"
-#include "Expressions/ObjectLiteral.h"
-#include "Expressions/MultiplicationExpression.h"
-#include "Expressions/RemainderExpression.h"
-#include "Expressions/ReturnStatement.h"
-#include "Expressions/SubtractionExpression.h"
-#include "Expressions/StrictEqualExpression.h"
-#include "Expressions/VariableExpression.h"
-#include "Expressions/VariableDeclaration.h"
+#include "../Expressions/vsExpression.h"
+
+namespace titania {
+namespace pb {
+
+enum class PropertyDefinitionType
+{
+	VALUE,
+	GET,
+	SET
+
+};
+
+using PropertyDefinitionArray = std::vector <std::tuple <PropertyDefinitionType, var, var>> ;
+
+} // pb
+} // titania
 
 #endif

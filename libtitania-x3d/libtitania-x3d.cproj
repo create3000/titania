@@ -744,6 +744,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\DivisionExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\RemainderExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\array.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\ObjectLiteral.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -1,6 +1,16 @@
 2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:
+	* Expressions.h:
+	* Parser.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* vsObject.cpp:
+	* ObjectLiteral.h: 
+
+2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
 	* var.h:
 	* Parser.cpp:
 	* array.h:
