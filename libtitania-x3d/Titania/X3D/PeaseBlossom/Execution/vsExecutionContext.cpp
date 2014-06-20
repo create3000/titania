@@ -74,8 +74,6 @@ vsExecutionContext::construct ()
 {
 	addChildren (executionContext,
 	             globalObject);
-
-	addDefaultObject (globalObject);
 }
 
 void
@@ -134,6 +132,19 @@ vsExecutionContext::import (const vsExecutionContext* const executionContext)
 
 	for (const auto & expression : executionContext -> getExpressions ())
 		addExpression (expression -> copy (this));
+}
+	
+void
+vsExecutionContext::resolve (const std::deque <basic_ptr <vsObject>> & objects)
+{
+	const basic_ptr <vsObject> & first = objects .front ();
+	const basic_ptr <vsObject>   clone = first -> clone (this);
+
+	for (const auto & object : objects)
+	{
+		defaultObjects .emplace_front (object == first ? clone : object);
+		defaultObjects .front () .addParent (this);
+	}
 }
 
 var

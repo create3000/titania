@@ -264,45 +264,27 @@ function test1 ()
 }
 */
 
-var a = 0;
-
 function set_time (value, time)
 {
-
-	print (time);
-
-	function f (x)
+	function i ()
 	{
-		//var y = 1;
-	   //a = x;
+	    var b = 0;
+	 
+	    var f = function ()
+	    {
+	        return b += 1;
+	    };
 
-	   print (a);
-
-	   return function () { return a; };
+	    print (f ());
+	    
+	    return f;
 	}
 
-	var f1 = f (1);
-	var f2 = f (2);
+	var f1 = i ();
+	var f2 = i ();
 
 	print (f1 ());
 	print (f2 ());
-	print (a = 5);
-	print (a *= 2);
-	print (a *= 3);
-	print (a /= 3);
-	print (a /= 2);
-	print (a %= 2);
-	print (a += 4);
-	print (a -= 5);
-	print (a = 1);
-	print (a <<= 1);
-	print (a >>= 1);
-	print (a >>>= 1);
-	print (a = 0b1111);
-	print (a &= 0b1010);
-	print (a ^= 0b0101);
-	print (a = 0b1100);
-	print (a |= 0b0011);
 }
 "
   ]

@@ -1823,7 +1823,7 @@ Parser::returnStatement ()
 
 			if (Grammar::Semicolon (istream))
 			{
-				getExecutionContext () -> addExpression (make_var <ReturnStatement> (std::move (value)));
+				getExecutionContext () -> addExpression (make_var <ReturnStatement> (getExecutionContext (), std::move (value)));
 				return true;
 			}
 
@@ -1832,7 +1832,7 @@ Parser::returnStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> addExpression (make_var <ReturnStatement> (std::move (value)));
+			getExecutionContext () -> addExpression (make_var <ReturnStatement> (getExecutionContext (), std::move (value)));
 			return true;
 		}
 

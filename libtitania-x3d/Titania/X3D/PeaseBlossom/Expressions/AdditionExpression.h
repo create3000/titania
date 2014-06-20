@@ -97,6 +97,7 @@ public:
 	toValue () const final override
 	{ return evaluate (lhs, rhs); }
 
+	///  Evaluates the expression.
 	static
 	var
 	evaluate (const var & lhs, const var & rhs)

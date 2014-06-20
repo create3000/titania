@@ -95,7 +95,11 @@ public:
 	var
 	create (vsExecutionContext* const) const = 0;
 
-	///  Creates a copy of this object.
+	///  Creates a flat copy of this object.
+	var
+	clone (vsExecutionContext* const) const;
+
+	///  Creates a deep copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const) const override;

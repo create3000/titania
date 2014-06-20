@@ -129,6 +129,7 @@ public:
 	toValue () const final override
 	{ return toBoolean () ? getTrue () : getFalse (); }
 
+	///  Evaluates the expression.
 	static
 	bool
 	evaluate (const var & lhs, const var & rhs)

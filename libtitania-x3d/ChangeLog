@@ -1,5 +1,25 @@
 2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* Function.h:
+	* vsObject.h:
+	* Program.h:
+	* vsObject.cpp:
+	* ReturnStatement.h:
+	* vsExecutionContext.h:
+	* DivisionExpression.h:
+	* vsExecutionContext.cpp:
+	* AdditionExpression.h:
+	* VariableExpression.h:
+	* LeftShiftExpression.h:
+	* VariableDeclaration.h:
+	* RemainderExpression.h:
+	* StrictEqualExpression.h:
+	* SubtractionExpression.h: 
+
+2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AssignmentExpression.h: 
 
 2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>

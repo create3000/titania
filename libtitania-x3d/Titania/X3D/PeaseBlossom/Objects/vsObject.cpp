@@ -56,6 +56,23 @@ namespace pb {
 const std::string vsObject::typeName = "Object";
 
 var
+vsObject::clone (vsExecutionContext* const executionContext) const
+{
+	const basic_ptr <vsObject> clone = create (executionContext);
+
+	for (const auto & propertyDescriptor : propertyDescriptors)
+	{
+		clone -> updateProperty (propertyDescriptor .first,
+		                         propertyDescriptor .second .value,
+		                         propertyDescriptor .second .flags,
+		                         propertyDescriptor .second .get,
+		                         propertyDescriptor .second .set);
+	}
+
+	return clone;
+}
+
+var
 vsObject::copy (vsExecutionContext* const executionContext) const
 {
 	const basic_ptr <vsObject> copy = create (executionContext);

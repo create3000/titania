@@ -126,6 +126,7 @@ public:
 	toValue () const final override
 	{ return make_var <Int32> (toInt32 ()); }
 
+	///  Evaluates the expression.
 	static
 	int32_t
 	evaluate (const var & lhs, const var & rhs)

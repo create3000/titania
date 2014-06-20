@@ -79,12 +79,7 @@ public:
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{
-		if (isInRootContextOrNotDefined (this -> executionContext .get (), identifier))
-			return make_var <VariableExpression> (executionContext, std::string (identifier));
-
-		return toValue ();
-	}
+	{ return make_var <VariableExpression> (executionContext, std::string (identifier)); }
 
 	///  @name Common members
 
@@ -102,7 +97,7 @@ public:
 	{
 		try
 		{
-			const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
+			const auto & propertyDescriptor = getPropertyDescriptor (executionContext);
 
 			if (propertyDescriptor .set)
 				return propertyDescriptor .set (propertyDescriptor .object, value);
@@ -137,8 +132,9 @@ private:
 
 	var
 	getProperty () const
+	throw (ReferenceError)
 	{
-		const auto & propertyDescriptor = getPropertyDescriptor (executionContext .get (), identifier);
+		const auto & propertyDescriptor = getPropertyDescriptor (executionContext);
 
 		if (propertyDescriptor .get)
 			return propertyDescriptor .get (propertyDescriptor .object);
@@ -147,45 +143,39 @@ private:
 	}
 
 	const PropertyDescriptor &
-	getPropertyDescriptor (vsExecutionContext* executionContext, const std::string & identifier) const
+	getPropertyDescriptor (const basic_ptr <vsExecutionContext> & executionContext) const
+	throw (ReferenceError)
 	{
-		do 
+		for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
 		{
-			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
+			try
 			{
-				try
-				{
-					return object -> getPropertyDescriptor (identifier);
-				}
-				catch (const std::out_of_range &)
-				{ }
+				return object -> getPropertyDescriptor (identifier);
 			}
-
-			executionContext = executionContext -> getExecutionContext () .get ();
+			catch (const std::out_of_range &)
+			{ }
 		}
-		while (not executionContext -> isRootContext ());
 
-		throw ReferenceError (identifier + " is not defined.");
+		if (executionContext -> isRootContext ())
+			throw ReferenceError (identifier + " is not defined.");
+
+		return getPropertyDescriptor (executionContext -> getExecutionContext ());
 	}
 
 	bool
-	isInRootContextOrNotDefined (vsExecutionContext* executionContext, const std::string & identifier) const
+	isPropertyInRootContextOrNotDefined (const basic_ptr <vsExecutionContext> & executionContext) const
+	noexcept (true)
 	{
-		do 
+		for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
 		{
-			for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
-			{
-				if (object -> hasProperty (identifier))
-					return executionContext -> isRootContext ();
-			}
-
-			executionContext = executionContext -> getExecutionContext () .get ();
+			if (object -> hasProperty (identifier))
+				return executionContext -> isRootContext ();
 		}
-		while (not executionContext -> isRootContext ());
 
-		// If the variable is not found in any execution context it could be later defined.
+		if (executionContext -> isRootContext ())
+			return true; // If the variable is not found in any execution context it could be later defined.
 
-		return true;
+		return isPropertyInRootContextOrNotDefined (executionContext -> getExecutionContext ());
 	}
 
 	///  @name Members

@@ -81,7 +81,7 @@ public:
 	create (vsExecutionContext* const executionContext) const final override
 	{ return make_var <Function> (executionContext, getName (), std::vector <std::string> (formalParameters)); }
 
-	///  Creates a copy of this object.
+	///  Creates a deep copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const) const final override;

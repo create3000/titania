@@ -132,7 +132,12 @@ protected:
 	///  Constructs new Program.
 	Program (const basic_ptr <vsObject> & globalObject) :
 		vsExecutionContext (this, globalObject)
-	{ }
+	{ construct (); }
+
+	///  
+	void
+	construct ()
+	{ addDefaultObject (getGlobalObject ()); }
 
 
 private:

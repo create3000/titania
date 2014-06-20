@@ -175,6 +175,7 @@ public:
 
 protected:
 
+	friend class ReturnStatement;
 	friend class VariableExpression;
 
 	///  @name Construction
@@ -197,9 +198,15 @@ protected:
 	const std::deque <basic_ptr <vsObject>> &
 	getDefaultObjects () const
 	{ return defaultObjects; }
-	
+
+	///  Imports all function declarations and expressions from @a executionContext into this execution context.
 	void
-	import (const vsExecutionContext* const);
+	import (const vsExecutionContext* const executionContext);
+
+	///  Adds @a defaultObjects to the list of default objects at front of this execution context default objects. From
+	///  the first object a clone is made.
+	void
+	resolve (const std::deque <basic_ptr <vsObject>> & defaultObjects);
 
 	///  Executes the associated expessions of this context.
 	virtual

@@ -68,16 +68,17 @@ public:
 	///  @name Construction
 
 	///  Constructs new ReturnStatement statement.
-	ReturnStatement (var && expression) :
-		vsExpression (),
-		  expression (std::move (expression))
+	ReturnStatement (vsExecutionContext* const executionContext, var && expression) :
+		    vsExpression (),
+		executionContext (executionContext),
+		      expression (std::move (expression))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <ReturnStatement> (expression -> copy (executionContext)); }
+	{ return make_var <ReturnStatement> (executionContext, expression -> copy (executionContext)); }
 
 	///  @name Common members
 
@@ -93,7 +94,19 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ throw ReturnException (expression -> toValue ()); }
+	{
+		const var value = expression -> toValue ();
+
+		if (value -> getType () == FUNCTION_OBJECT)
+		{
+			basic_ptr <vsExecutionContext> function = value;
+
+			if (function)
+				basic_ptr <Function> (value) -> resolve (executionContext -> getDefaultObjects ());
+		}
+
+		throw ReturnException (value);
+	}
 
 
 private:
@@ -103,11 +116,12 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expression); }
+	{ addChildren (executionContext, expression); }
 
 	///  @name Members
 
-	const var expression;
+	const basic_ptr <vsExecutionContext> executionContext;
+	const var                            expression;
 
 };
 

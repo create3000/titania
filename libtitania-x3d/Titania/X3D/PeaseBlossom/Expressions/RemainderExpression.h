@@ -110,6 +110,7 @@ public:
 	toValue () const final override
 	{ return make_var <Number> (toNumber ()); }
 
+	///  Evaluates the expression.
 	static
 	double
 	evaluate (const var & lhs, const var & rhs)
