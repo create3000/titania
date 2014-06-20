@@ -1,5 +1,9 @@
 2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* AssignmentExpression.h: 
+
+2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Expressions.h:
 	* Parser.h:

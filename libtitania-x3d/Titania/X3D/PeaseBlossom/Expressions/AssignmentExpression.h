@@ -55,6 +55,7 @@
 #include "../Expressions/AssignmentOperatorType.h"
 #include "../Expressions/vsExpression.h"
 #include "../Primitives/Int32.h"
+#include "../Primitives/String.h"
 #include "../Primitives/UInt32.h"
 #include "../Primitives/vsValue.h"
 
@@ -146,7 +147,12 @@ private:
 			}
 			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
 			{
-				value = make_var <Number> (lhs -> toNumber () + value -> toNumber ());
+				if (lhs -> getType () == STRING or value -> getType () == STRING)
+					value = make_var <String> (lhs -> toString () + value -> toString ());
+
+				else
+					value = make_var <Number> (lhs -> toNumber () + value -> toNumber ());
+
 				break;
 			}
 			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
