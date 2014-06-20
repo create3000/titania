@@ -89,6 +89,16 @@ public:
 
 protected:
 
+	virtual
+	void
+	resolve (const basic_ptr <vsExecutionContext> & executionContext) final override
+	{ }
+
+
+private:
+
+	///  @name Member access
+
 	const Call function;
 
 };

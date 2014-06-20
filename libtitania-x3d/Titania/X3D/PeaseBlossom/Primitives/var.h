@@ -233,6 +233,11 @@ public:
 		std::swap (value, var .value);
 	}
 
+	///  Removes the managed object.
+	void
+	reset ()
+	{ reset (nullptr); }
+
 	///  Replaces the managed object.
 	void
 	reset (Type* const value)
@@ -260,6 +265,8 @@ public:
 	const std::string &
 	getTypeName () const final override
 	{ return typeName; }
+
+	///  @name Garbage collection
 
 	virtual
 	bool

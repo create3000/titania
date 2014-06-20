@@ -73,21 +73,16 @@ public:
 		        vsFunction (name),
 		vsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
 		  formalParameters (std::move (formalParameters))
-	{ }
+	{ construct (); }
 
 	///  Creates a new default object.
 	virtual
 	var
-	create (vsExecutionContext* const executionContext) const final override
-	{ return make_var <Function> (executionContext, getName (), std::vector <std::string> (formalParameters)); }
-
-	///  Creates a deep copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const) const final override;
+	create (vsExecutionContext* const executionContext) const final override;
 
 	///  @name Operations
 
+	///  Executes this function.
 	virtual
 	var
 	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) final override;
@@ -103,18 +98,34 @@ public:
 	///  @name Destruction
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
-	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
-	dispose () final override
-	{
-		vsFunction::dispose ();
-		vsExecutionContext::dispose ();
-	}
+	dispose () final override;
+
+
+protected:
+
+	///  Resolves the closure of the @a executionContext.
+	virtual
+	void
+	resolve (const basic_ptr <vsExecutionContext> & executionContext) final override;
+
 
 private:
 
-	std::vector <std::string> formalParameters;
+	///  @name Construction
+
+	void
+	construct ();
+
+	void
+	addClosure (const basic_ptr <vsExecutionContext> & executionContext);
+
+	///  @name Member access
+
+	std::vector <std::string>                                  formalParameters;
+	std::map <const vsExecutionContext*, basic_ptr <vsObject>> closures;
 
 };
 

@@ -67,15 +67,12 @@ DEF Script1 Script {
 #'';
 #"
     "peaseblossom:
-
-initialize ();
-
+/*
 function initialize ()
 {
 	//print ('test1: ', test1 ());
 }
 
-/*
 function test1 ()
 {
 	// single line comment
@@ -268,21 +265,22 @@ function set_time (value, time)
 {
 	function i ()
 	{
-	    var b = 0;
-	 
-	    var f = function ()
-	    {
-	        return b += 1;
-	    };
+		var b = 0;
+		
+		f ();
 
-	    print (f ());
-	    
-	    return f;
+		function f ()
+		{
+			return b += 1;
+		};
+
+		return f;
 	}
 
 	var f1 = i ();
 	var f2 = i ();
 
+	print (f1 === f2);
 	print (f1 ());
 	print (f2 ());
 }

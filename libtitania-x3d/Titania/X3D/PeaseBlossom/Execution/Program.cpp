@@ -57,6 +57,13 @@ namespace pb {
 
 const std::string Program::typeName = "Program";
 
+void
+Program::construct ()
+{
+	setLocalObject (getGlobalObject ());
+	getDefaultObjects () .emplace_back (getGlobalObject ());
+}
+
 basic_ptr <Program>
 createProgram ()
 {

@@ -106,7 +106,7 @@ public:
 	///  @name Destruction
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
-	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
 	dispose () final override
@@ -134,13 +134,13 @@ protected:
 		vsExecutionContext (this, globalObject)
 	{ construct (); }
 
-	///  
-	void
-	construct ()
-	{ addDefaultObject (getGlobalObject ()); }
-
 
 private:
+
+	///  @name Construction
+
+	void
+	construct ();
 
 	///  @name Static members
 

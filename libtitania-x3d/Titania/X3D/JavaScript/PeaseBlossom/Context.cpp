@@ -282,11 +282,11 @@ Context::dispose ()
 {
 	program .dispose ();
 
-//	pb::debug_roots (pb::getUndefined () .get ());
-//	pb::debug_roots (pb::getFalse ()     .get ());
-//	pb::debug_roots (pb::getTrue ()      .get ());
-//	pb::debug_roots (pb::getNull ()      .get ());
-//
+	pb::debug_roots (pb::getUndefined () .get ());
+	pb::debug_roots (pb::getFalse ()     .get ());
+	pb::debug_roots (pb::getTrue ()      .get ());
+	pb::debug_roots (pb::getNull ()      .get ());
+
 //	assert (pb::getUndefined () -> getParents () .size () == 1);
 //	assert (pb::getFalse ()     -> getParents () .size () == 1);
 //	assert (pb::getTrue ()      -> getParents () .size () == 1);

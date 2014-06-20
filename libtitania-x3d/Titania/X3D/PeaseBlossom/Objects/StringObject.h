@@ -105,7 +105,7 @@ public:
 	virtual
 	var
 	create (vsExecutionContext* const) const final override
-	{ return make_var <StringObject> (); }
+	{ return make_var <StringObject> (string); }
 
 	///  @name Common members
 

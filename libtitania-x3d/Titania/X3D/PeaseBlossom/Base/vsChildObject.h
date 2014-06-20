@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_CHILD_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_CHILD_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_CHILD_OBJECT_H__
 
 #include "../Base/vsBase.h"
 #include "../Base/vsGarbageCollector.h"
@@ -114,7 +114,7 @@ public:
 	///  @name Destruction
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
-	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
 	dispose ();

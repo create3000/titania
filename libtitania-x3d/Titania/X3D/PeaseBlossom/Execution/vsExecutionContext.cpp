@@ -64,6 +64,7 @@ vsExecutionContext::vsExecutionContext (vsExecutionContext* const executionConte
 	             strict (false),
 	   executionContext (executionContext),
 	       globalObject (globalObject),
+	        localObject (),
 	     defaultObjects (),
 	        expressions (),
 	          functions ()
@@ -73,21 +74,10 @@ void
 vsExecutionContext::construct ()
 {
 	addChildren (executionContext,
-	             globalObject);
-}
-
-void
-vsExecutionContext::addDefaultObject (const basic_ptr <vsObject> & object)
-{
-	defaultObjects .emplace_back (object);
-	defaultObjects .back () .addParent (this);
-}
-
-void
-vsExecutionContext::addExpression (var && expression)
-{
-	expressions .emplace_back (std::move (expression));
-	expressions .back () .addParent (this);
+	             globalObject,
+	             localObject,
+	             defaultObjects,
+	             expressions);
 }
 
 void
@@ -127,24 +117,11 @@ noexcept (true)
 void
 vsExecutionContext::import (const vsExecutionContext* const executionContext)
 {
-	for (const auto & function : functions)
-		addFunctionDeclaration (function .second -> copy (this));
+	for (const auto & function : executionContext -> getFunctionDeclarations ())
+		addFunctionDeclaration (function .second);
 
 	for (const auto & expression : executionContext -> getExpressions ())
-		addExpression (expression -> copy (this));
-}
-	
-void
-vsExecutionContext::resolve (const std::deque <basic_ptr <vsObject>> & objects)
-{
-	const basic_ptr <vsObject> & first = objects .front ();
-	const basic_ptr <vsObject>   clone = first -> clone (this);
-
-	for (const auto & object : objects)
-	{
-		defaultObjects .emplace_front (object == first ? clone : object);
-		defaultObjects .front () .addParent (this);
-	}
+		getExpressions () .emplace_back (expression -> copy (this));
 }
 
 var
@@ -153,7 +130,7 @@ vsExecutionContext::run ()
 	try
 	{
 		for (const auto & function : functions)
-			getDefaultObject () -> updateProperty (function .second -> getName (), function .second);
+			getLocalObject () -> updateProperty (function .second -> getName (), function .second -> copy (this));
 
 		for (const auto & expression : expressions)
 			expression -> toValue ();

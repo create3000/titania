@@ -86,12 +86,17 @@ public:
 	getName () const
 	{ return name; }
 
+	///  @name Operations
+
+	///  Executes this function.
 	virtual
 	var
 	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) = 0;
 
 
 protected:
+
+	friend class ReturnStatement;
 
 	///  @name Construction
 
@@ -100,6 +105,13 @@ protected:
 		vsObject (),
 		    name (name)
 	{ addProperty ("name", make_var <String> (name)); }
+
+	///  @name Operations
+
+	///  Resolves the closure of the @a executionContext.
+	virtual
+	void
+	resolve (const basic_ptr <vsExecutionContext> & executionContext) = 0;
 
 
 private:

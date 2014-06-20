@@ -1,6 +1,30 @@
 2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:
+	* var.h:
+	* Parser.cpp:
+	* array.h:
+	* Function.h:
+	* vsObject.h:
+	* Program.h:
+	* vsChildObject.h:
+	* vsFunction.h:
+	* Function.cpp:
+	* Program.cpp:
+	* Context.cpp:
+	* NumberObject.h:
+	* StringObject.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* ReturnStatement.h:
+	* vsExecutionContext.h:
+	* vsExecutionContext.cpp:
+	* VariableExpression.h:
+	* VariableDeclaration.h: 
+
+2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
 	* Parser.cpp:
 	* Function.h:
 	* vsObject.h:

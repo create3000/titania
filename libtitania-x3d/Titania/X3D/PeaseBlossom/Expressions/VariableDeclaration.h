@@ -98,7 +98,7 @@ public:
 	{
 		const var value = expression -> toValue ();
 
-		executionContext -> getDefaultObject () -> updateProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
+		executionContext -> getLocalObject () -> updateProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
 		return value;
 	}
 

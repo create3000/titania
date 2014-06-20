@@ -743,6 +743,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\AssignmentExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\DivisionExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\RemainderExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Primitives\array.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

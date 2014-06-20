@@ -1738,7 +1738,7 @@ Parser::variableDeclaration ()
 
 		initialiser (value);
 
-		getExecutionContext () -> addExpression (make_var <VariableDeclaration> (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getExecutionContext () -> getExpressions () .emplace_back (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -1794,7 +1794,7 @@ Parser::expressionStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> addExpression (std::move (value));
+			getExecutionContext () -> getExpressions () .emplace_back (std::move (value));
 			return true;
 		}
 
@@ -1823,7 +1823,7 @@ Parser::returnStatement ()
 
 			if (Grammar::Semicolon (istream))
 			{
-				getExecutionContext () -> addExpression (make_var <ReturnStatement> (getExecutionContext (), std::move (value)));
+				getExecutionContext () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
 				return true;
 			}
 
@@ -1832,7 +1832,7 @@ Parser::returnStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> addExpression (make_var <ReturnStatement> (getExecutionContext (), std::move (value)));
+			getExecutionContext () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
 			return true;
 		}
 

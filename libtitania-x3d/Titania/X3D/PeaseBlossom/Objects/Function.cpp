@@ -54,38 +54,97 @@ namespace titania {
 namespace pb {
 
 var
-Function::copy (vsExecutionContext* const executionContext) const
+Function::create (vsExecutionContext* const executionContext) const
 {
-	const basic_ptr <Function> function = vsObject::copy (executionContext);
+	const auto function = make_var <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 
 	function -> isStrict (this -> isStrict ());
 	function -> import (this);
-
+	
 	return function;
+}
+
+void
+Function::construct ()
+{
+	addClosure (getExecutionContext ());
+}
+
+void
+Function::addClosure (const basic_ptr <vsExecutionContext> & executionContext)
+{
+	const auto & defaultObjects = executionContext -> getDefaultObjects ();
+
+	if (defaultObjects .empty ())
+		return;
+
+	const auto pair = closures .emplace (executionContext .get (), executionContext -> getLocalObject ());
+
+	pair .first -> second .addParent (this);
+	
+	for (const auto & object : basic::adapter (defaultObjects .rbegin (), defaultObjects .rend () - 1))
+	{
+		if (object == executionContext -> getLocalObject ())
+			break;
+
+		getDefaultObjects () .emplace_front (object);
+	}
+
+	if (executionContext -> isRootContext ())
+		return;
+
+	addClosure (executionContext -> getExecutionContext ());
+}
+
+void
+Function::resolve (const basic_ptr <vsExecutionContext> & executionContext)
+{
+	if (getExecutionContext () -> isRootContext ())
+		return;
+
+	const auto iter = closures .find (executionContext .get ());
+
+	if (iter not_eq closures .end ())
+	{
+		getDefaultObjects () .emplace_front (iter -> second -> clone (this));
+
+		closures .erase (iter);
+		setExecutionContext (getExecutionContext () -> getExecutionContext ());
+	}
 }
 
 var
 Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments)
 {
-	const auto defaultObject = make_ptr <Object> ();
-	
-	defaultObject -> addProperty ("this", thisObject);
-	
+	auto localObject = make_ptr <Object> ();
+
+	localObject -> addProperty ("this", thisObject);
+
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 	{
 		if (i < argc)
-			defaultObject -> addProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
+			localObject -> addProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
 
 		else
-			defaultObject -> addProperty (formalParameters [i], getUndefined (), WRITABLE | CONFIGURABLE);
+			localObject -> addProperty (formalParameters [i], getUndefined (), WRITABLE | CONFIGURABLE);
 	}
 
-	addDefaultObject (defaultObject);
+	setLocalObject (localObject);
+	getDefaultObjects () .emplace_back (std::move (localObject));
 
 	const auto value = run ();
 
-	removeDefaultObject ();
+	getDefaultObjects () .pop_back ();
 	return value;
+}
+
+void
+Function::dispose ()
+{
+	closures .clear ();
+
+	vsFunction::dispose ();
+	vsExecutionContext::dispose ();
 }
 
 } // pb

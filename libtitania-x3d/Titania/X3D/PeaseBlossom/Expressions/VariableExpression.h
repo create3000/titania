@@ -162,22 +162,6 @@ private:
 		return getPropertyDescriptor (executionContext -> getExecutionContext ());
 	}
 
-	bool
-	isPropertyInRootContextOrNotDefined (const basic_ptr <vsExecutionContext> & executionContext) const
-	noexcept (true)
-	{
-		for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
-		{
-			if (object -> hasProperty (identifier))
-				return executionContext -> isRootContext ();
-		}
-
-		if (executionContext -> isRootContext ())
-			return true; // If the variable is not found in any execution context it could be later defined.
-
-		return isPropertyInRootContextOrNotDefined (executionContext -> getExecutionContext ());
-	}
-
 	///  @name Members
 
 	const basic_ptr <vsExecutionContext> executionContext;

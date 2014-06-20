@@ -98,12 +98,7 @@ public:
 		const var value = expression -> toValue ();
 
 		if (value -> getType () == FUNCTION_OBJECT)
-		{
-			basic_ptr <vsExecutionContext> function = value;
-
-			if (function)
-				basic_ptr <Function> (value) -> resolve (executionContext -> getDefaultObjects ());
-		}
+			basic_ptr <vsFunction> (value) -> resolve (executionContext);
 
 		throw ReturnException (value);
 	}

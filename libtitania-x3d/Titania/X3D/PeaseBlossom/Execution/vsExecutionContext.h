@@ -57,6 +57,7 @@
 #include "../Bits/Exception.h"
 #include "../Objects/Object.h"
 #include "../Objects/vsFunction.h"
+#include "../Primitives/array.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -101,21 +102,32 @@ public:
 	getGlobalObject () const
 	{ return globalObject; }
 
-	///  Gets the current default object.
+	///  Returns the local objects.
 	const basic_ptr <vsObject> &
-	getDefaultObject () const
-	{ return defaultObjects .back (); }
+	getLocalObject () const
+	{ return localObject; }
 
-	/// @name Operations
+	///  Returns the default objects stack.
+	basic_array <basic_ptr <vsObject>> &
+	getDefaultObjects ()
+	{ return defaultObjects; }
 
-	///  Adds an expression to this context.
-	void
-	addExpression (var &&);
+	///  Returns the default objects stack.
+	const basic_array <basic_ptr <vsObject>> &
+	getDefaultObjects () const
+	{ return defaultObjects; }
 	
-	///  Returns an array of all local root expressions.
-	const std::deque <var> &
+	///  Returns an array with all local root expressions.
+	array &
+	getExpressions ()
+	{ return expressions; }
+	
+	///  Returns an array with all local root expressions.
+	const array &
 	getExpressions () const
 	{ return expressions; }
+
+	/// @name Operations
 
 	///  Checks wehter the global object has a function @a name.
 	bool
@@ -167,7 +179,7 @@ public:
 	///  @name Destruction
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
-	///  disposed, further requests have no effect. Disposing of an object does not remove object itself.
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
 	dispose () override;
@@ -175,38 +187,28 @@ public:
 
 protected:
 
-	friend class ReturnStatement;
-	friend class VariableExpression;
-
 	///  @name Construction
 
 	///  Constructs new vsExecutionContext.
 	vsExecutionContext (vsExecutionContext* const executionContext, const basic_ptr <vsObject> & globalObject);
 
+	/// @name Member access
+
+	///  Replaces the current execution context by @a executionContext.
+	void
+	setExecutionContext (const basic_ptr <vsExecutionContext> & value)
+	{ executionContext = value; }
+
+	///  Replaces the local objects.
+	void
+	setLocalObject (const basic_ptr <vsObject> & value)
+	{ localObject = value; }
+
 	/// @name Operations
-
-	///  Pushs an object to the default object stack.
-	void
-	addDefaultObject (const basic_ptr <vsObject> & object);
-
-	///  Removes the current default object from the default object stack.
-	void
-	removeDefaultObject ()
-	{ return defaultObjects .pop_back (); }
-
-	///  Gets the current default object.
-	const std::deque <basic_ptr <vsObject>> &
-	getDefaultObjects () const
-	{ return defaultObjects; }
 
 	///  Imports all function declarations and expressions from @a executionContext into this execution context.
 	void
 	import (const vsExecutionContext* const executionContext);
-
-	///  Adds @a defaultObjects to the list of default objects at front of this execution context default objects. From
-	///  the first object a clone is made.
-	void
-	resolve (const std::deque <basic_ptr <vsObject>> & defaultObjects);
 
 	///  Executes the associated expessions of this context.
 	virtual
@@ -224,12 +226,12 @@ private:
 	/// @name Members
 
 	bool                                            strict;
-	const basic_ptr <vsExecutionContext>            executionContext;
+	basic_ptr <vsExecutionContext>                  executionContext;
 	basic_ptr <vsObject>                            globalObject;
-	std::deque <basic_ptr <vsObject>>               defaultObjects; // Use deque to keep iters when inserting value.
-	std::deque <var>                                expressions;    // Use deque to keep iters when inserting value.
+	basic_ptr <vsObject>                            localObject;
+	basic_array <basic_ptr <vsObject>>              defaultObjects; // Use deque to keep iters when inserting value.
+	array                                           expressions;    // Use deque to keep iters when inserting value.
 	std::map <std::string, basic_ptr <vsFunction>>  functions;
-
 };
 
 } // pb

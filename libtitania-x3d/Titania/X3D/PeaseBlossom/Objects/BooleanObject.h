@@ -88,7 +88,7 @@ public:
 	virtual
 	var
 	create (vsExecutionContext* const) const final override
-	{ return make_var <BooleanObject> (); }
+	{ return make_var <BooleanObject> (boolean); }
 
 	///  @name Common members
 
