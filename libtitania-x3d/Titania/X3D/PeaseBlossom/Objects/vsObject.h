@@ -55,6 +55,7 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 
 namespace titania {
 namespace pb {
@@ -76,6 +77,9 @@ struct PropertyDescriptor
 	~PropertyDescriptor ();
 
 };
+
+///  Type to represent a property descriptor pointer.
+using PropertyDescriptorPtr = std::unique_ptr <PropertyDescriptor>;
 
 /**
  *  Class to represent a basic object.
@@ -194,7 +198,7 @@ public:
 	const var &
 	getProperty (const std::string & name) const
 	throw (std::out_of_range)
-	{ return propertyDescriptors .at (name) .value; }
+	{ return propertyDescriptors .at (name) -> value; }
 
 	///  Removes the property @a name from this object.
 	void
@@ -203,7 +207,7 @@ public:
 	{ propertyDescriptors .erase (name); }
 
 	///  Returns the property descriptor for a named property on this object.
-	const PropertyDescriptor &
+	const PropertyDescriptorPtr &
 	getPropertyDescriptor (const std::string & name) const
 	throw (std::out_of_range)
 	{ return propertyDescriptors .at (name); }
@@ -254,7 +258,7 @@ private:
 
 	///  @name Members
 
-	std::map <std::string, PropertyDescriptor> propertyDescriptors;
+	std::map <std::string, PropertyDescriptorPtr> propertyDescriptors;
 
 };
 

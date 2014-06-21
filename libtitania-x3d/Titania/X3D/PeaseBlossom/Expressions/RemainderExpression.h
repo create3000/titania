@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
 
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/vsNumberExpression.h"
 #include "../Primitives/Number.h"
 
 #include <cmath>
@@ -63,7 +63,7 @@ namespace pb {
  *  Class to represent a ECMAScript remainder expression.
  */
 class RemainderExpression :
-	public vsExpression
+	public vsNumberExpression
 {
 public:
 
@@ -71,9 +71,9 @@ public:
 
 	///  Constructs new RemainderExpression expression.
 	RemainderExpression (var && lhs, var && rhs) :
-		vsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+		vsNumberExpression (),
+		               lhs (std::move (lhs)),
+		               rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -92,23 +92,11 @@ public:
 
 	///  @name Operations
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toNumber (); }
-
 	///  Converts its arguments to a value of type Number.
 	virtual
 	double
 	toNumber () const final override
 	{ return evaluate (lhs, rhs); }
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const final override
-	{ return make_var <Number> (toNumber ()); }
 
 	///  Evaluates the expression.
 	static

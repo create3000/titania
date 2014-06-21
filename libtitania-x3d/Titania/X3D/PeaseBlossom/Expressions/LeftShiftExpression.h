@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 
-#include "../Expressions/vsExpression.h"
-#include "../Primitives/Int32.h"
+#include "../Expressions/vsInt32Expression.h"
 
 namespace titania {
 namespace pb {
@@ -61,7 +60,7 @@ namespace pb {
  *  Class to represent a ECMAScript division expression.
  */
 class LeftShiftExpression :
-	public vsExpression
+	public vsInt32Expression
 {
 public:
 
@@ -69,9 +68,9 @@ public:
 
 	///  Constructs new LeftShiftExpression expression.
 	LeftShiftExpression (var && lhs, var && rhs) :
-		vsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+		vsInt32Expression (),
+		              lhs (std::move (lhs)),
+		              rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -90,41 +89,11 @@ public:
 
 	///  @name Operations
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return toInt32 (); }
-
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	int32_t
 	toInt32 () const final override
 	{ return evaluate (lhs, rhs); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toInt32 (); }
-
-	///  Converts its arguments to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return toInt32 (); }
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toValue () const final override
-	{ return make_var <Int32> (toInt32 ()); }
 
 	///  Evaluates the expression.
 	static

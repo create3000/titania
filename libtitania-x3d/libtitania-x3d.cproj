@@ -745,6 +745,9 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\RemainderExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives\array.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ObjectLiteral.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\vsNumberExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\vsBooleanExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\vsInt32Expression.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

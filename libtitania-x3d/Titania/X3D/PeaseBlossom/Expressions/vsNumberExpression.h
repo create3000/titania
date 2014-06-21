@@ -48,90 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_EXPRESSION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_NUMBER_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_NUMBER_EXPRESSION_H__
 
-#include "../Expressions/vsNumberExpression.h"
+#include "../Expressions/vsExpression.h"
 #include "../Primitives/Number.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript subtraction expression.
+ *  Class to represent a ECMAScript number expression.
  */
-class SubtractionExpression :
-	public vsNumberExpression
+class vsNumberExpression :
+	public vsExpression
 {
 public:
 
-	///  @name Construction
-
-	///  Constructs new SubtractionExpression expression.
-	SubtractionExpression (var && lhs, var && rhs) :
-		vsNumberExpression (),
-		               lhs (std::move (lhs)),
-		               rhs (std::move (rhs))
-	{ construct (); }
-
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <SubtractionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »SUBTRACTION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return SUBTRACTION_EXPRESSION; }
-
 	///  @name Operations
 
-	///  Converts its arguments to a value of type Number.
+	///  Converts its argument to a value of type Boolean.
 	virtual
-	double
-	toNumber () const final override
-	{ return evaluate (lhs, rhs); }
+	bool
+	toBoolean () const final override
+	{ return toNumber (); }
 
-	///  Evaluates the expression.
-	static
-	double
-	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toNumber () - rhs -> toNumber (); }
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toValue () const final override
+	{ return make_var <Number> (toNumber ()); }
 
 
-private:
+protected:
 
 	///  @name Construction
 
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{ addChildren (lhs, rhs); }
-
-	///  @name Members
-
-	const var lhs;
-	const var rhs;
+	///  Constructs new vsNumberExpression expression.
+	vsNumberExpression () :
+		vsExpression ()
+	{ }
 
 };
-
-///  @relates SubtractionExpression
-///  @name Construction
-
-///  Constructs new SubtractionExpression expression.
-inline
-var
-createSubtractionExpression (var && lhs, var && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Number> (SubtractionExpression::evaluate (lhs, rhs));
-
-	return make_var <SubtractionExpression> (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

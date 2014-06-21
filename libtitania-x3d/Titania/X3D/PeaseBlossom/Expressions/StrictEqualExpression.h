@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 
-#include "../Expressions/vsExpression.h"
-#include "../Primitives/Boolean.h"
+#include "../Expressions/vsBooleanExpression.h"
 #include "../Primitives/vsString.h"
 
 #include <cmath>
@@ -64,7 +63,7 @@ namespace pb {
  *  Class to represent a ECMAScript remainder expression.
  */
 class StrictEqualExpression :
-	public vsExpression
+	public vsBooleanExpression
 {
 public:
 
@@ -72,9 +71,9 @@ public:
 
 	///  Constructs new StrictEqualExpression expression.
 	StrictEqualExpression (var && lhs, var && rhs) :
-		vsExpression (),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+		vsBooleanExpression (),
+		                lhs (std::move (lhs)),
+		                rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -98,36 +97,6 @@ public:
 	bool
 	toBoolean () const final override
 	{ return evaluate (lhs, rhs); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return toBoolean (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return toBoolean (); }
-
-	///  Converts its arguments to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return toBoolean (); }
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const final override
-	{ return toBoolean () ? make_var <True> () : make_var <False> (); }
 
 	///  Evaluates the expression.
 	static

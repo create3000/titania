@@ -70,10 +70,10 @@ vsObject::clone (vsExecutionContext* const executionContext) const
 		try
 		{
 			clone -> addProperty (propertyDescriptor .first,
-			                      propertyDescriptor .second .value,
-			                      propertyDescriptor .second .flags,
-			                      propertyDescriptor .second .get,
-			                      propertyDescriptor .second .set);
+			                      propertyDescriptor .second -> value,
+			                      propertyDescriptor .second -> flags,
+			                      propertyDescriptor .second -> get,
+			                      propertyDescriptor .second -> set);
 		}
 		catch (const std::exception &)
 		{ }
@@ -92,10 +92,10 @@ vsObject::copy (vsExecutionContext* const executionContext) const
 		try
 		{
 			copy -> addProperty (propertyDescriptor .first,
-			                     propertyDescriptor .second .value -> copy (executionContext),
-			                     propertyDescriptor .second .flags,
-			                     propertyDescriptor .second .get,
-			                     propertyDescriptor .second .set);
+			                     propertyDescriptor .second -> value -> copy (executionContext),
+			                     propertyDescriptor .second -> flags,
+			                     propertyDescriptor .second -> get,
+			                     propertyDescriptor .second -> set);
 		}
 		catch (const std::exception &)
 		{ }
@@ -112,13 +112,19 @@ vsObject::addProperty (const std::string & name,
                        const var & set)
 throw (std::invalid_argument)
 {
-	const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { value ? value : make_var <Undefined> (), flags, get, set });
+	const auto pair = propertyDescriptors .emplace (name,
+	                                                PropertyDescriptorPtr (new PropertyDescriptor {
+	                                                                          value ? value : make_var <Undefined> (),
+	                                                                          flags,
+	                                                                          get,
+	                                                                          set
+																								  }));
 
 	if (pair .second)
 	{
-		pair .first -> second .value .addParent (this);
-		pair .first -> second .get   .addParent (this);
-		pair .first -> second .set   .addParent (this);
+		pair .first -> second -> value .addParent (this);
+		pair .first -> second -> get   .addParent (this);
+		pair .first -> second -> set   .addParent (this);
 	}
 	else
 		throw std::invalid_argument ("Property already exists.");
@@ -134,24 +140,24 @@ throw (std::invalid_argument)
 {
 	try
 	{
-		auto & propertyDescriptor = propertyDescriptors .at (name);
+		const auto & propertyDescriptor = propertyDescriptors .at (name);
 
-		if (propertyDescriptor .flags & WRITABLE)
+		if (propertyDescriptor -> flags & WRITABLE)
 		{
 			if (value)
-				propertyDescriptor .value = value;
+				propertyDescriptor -> value = value;
 		}
 
-		if (propertyDescriptor .flags & CONFIGURABLE)
+		if (propertyDescriptor -> flags & CONFIGURABLE)
 		{
-			if (not (propertyDescriptor .flags & SKIP))
-				propertyDescriptor .flags = flags;
+			if (not (propertyDescriptor -> flags & SKIP))
+				propertyDescriptor -> flags = flags;
 
 			if (get)
-				propertyDescriptor .get = get;
+				propertyDescriptor -> get = get;
 
 			if (set)
-				propertyDescriptor .set = set;
+				propertyDescriptor -> set = set;
 		}
 	}
 	catch (const std::out_of_range &)

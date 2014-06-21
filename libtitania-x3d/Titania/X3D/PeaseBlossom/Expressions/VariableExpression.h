@@ -100,10 +100,10 @@ public:
 		{
 			const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
-			if (propertyDescriptor .second .set)
-				return propertyDescriptor .second .set -> call (propertyDescriptor .first, { value });
+			if (propertyDescriptor .second -> set)
+				return propertyDescriptor .second -> set -> call (propertyDescriptor .first, { value });
 
-			return const_cast <PropertyDescriptor &> (propertyDescriptor .second) .value = value;
+			return propertyDescriptor .second -> value = value;
 		}
 		catch (const ReferenceError &)
 		{
@@ -137,13 +137,13 @@ private:
 	{
 		const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
-		if (propertyDescriptor .second .get)
-			return propertyDescriptor .second .get -> call (propertyDescriptor .first);
+		if (propertyDescriptor .second -> get)
+			return propertyDescriptor .second -> get -> call (propertyDescriptor .first);
 
-		return propertyDescriptor .second .value;
+		return propertyDescriptor .second -> value;
 	}
 
-	std::pair <basic_ptr <vsObject>, const PropertyDescriptor &>
+	std::pair <const basic_ptr <vsObject> &, const PropertyDescriptorPtr &>
 	getPropertyDescriptor (const basic_ptr <vsExecutionContext> & executionContext) const
 	throw (ReferenceError)
 	{
@@ -151,7 +151,7 @@ private:
 		{
 			try
 			{
-				return std::make_pair (object, std::ref (object -> getPropertyDescriptor (identifier)));
+				return std::make_pair (std::ref (object), std::ref (object -> getPropertyDescriptor (identifier)));
 			}
 			catch (const std::out_of_range &)
 			{ }
