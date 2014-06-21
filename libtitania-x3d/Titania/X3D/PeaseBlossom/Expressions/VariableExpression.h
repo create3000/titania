@@ -94,16 +94,16 @@ public:
 
 	virtual
 	var
-	setValue (const var & value) const final override
+	setValue (var && value) const final override
 	{
 		try
 		{
 			const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
 			if (propertyDescriptor .second -> set)
-				return propertyDescriptor .second -> set -> call (propertyDescriptor .first, { value });
+				return propertyDescriptor .second -> set -> call (propertyDescriptor .first, { std::move (value) });
 
-			return propertyDescriptor .second -> value = value;
+			return propertyDescriptor .second -> value = std::move (value);
 		}
 		catch (const ReferenceError &)
 		{

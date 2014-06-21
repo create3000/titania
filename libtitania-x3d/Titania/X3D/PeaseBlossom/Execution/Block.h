@@ -48,15 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_BLOCK_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_BLOCK_H__
 
-#include "Objects/Array.h"
-#include "Objects/BooleanObject.h"
-#include "Objects/Function.h"
-#include "Objects/NativeFunction.h"
-#include "Objects/NumberObject.h"
-#include "Objects/Object.h"
-#include "Objects/StringObject.h"
+#include "../Execution/vsBlock.h"
+
+namespace titania {
+namespace pb {
+
+class Block :
+	public vsBlock
+{
+public:
+
+	using vsBlock::import;
+	using vsBlock::run;
+
+	///  Constructs new Block.
+	Block () :
+		vsBlock ()
+	{ }
+
+	///  @name Common members
+
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << "[block Block]"; }
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+};
+
+} // pb
+} // titania
 
 #endif

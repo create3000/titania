@@ -48,15 +48,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
 
-#include "Objects/Array.h"
-#include "Objects/BooleanObject.h"
-#include "Objects/Function.h"
-#include "Objects/NativeFunction.h"
-#include "Objects/NumberObject.h"
-#include "Objects/Object.h"
-#include "Objects/StringObject.h"
+#include "../Objects/vsObject.h"
+#include "../Primitives/array.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a »false« object.
+ */
+class Array :
+	public vsObject
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new Array.
+	Array () :
+		vsObject (),
+		   array ()
+	{ }
+
+	///  Constructs new Array.
+	Array (const Array & value) :
+		vsObject (),
+		   array (value .array)
+	{ }
+
+	///  Constructs new Array.
+	Array (Array && value) :
+		vsObject (),
+		   array (std::move (value .array))
+	{ }
+
+	///  Constructs new Array.
+	Array (const pb::array & value) :
+		vsObject (),
+		   array (value)
+	{ }
+
+	///  Constructs new Array.
+	Array (pb::array && value) :
+		vsObject (),
+		   array (std::move (value))
+	{ }
+
+	///  Creates a new default object.
+	virtual
+	var
+	create (vsExecutionContext* const) const final override
+	{ return make_var <Array> (array); }
+
+	///  @name Common members
+
+	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return ARRAY_OBJECT; }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ array .toStream (ostream); }
+
+
+private:
+
+	pb::array array;
+
+};
+
+} // pb
+} // titania
 
 #endif

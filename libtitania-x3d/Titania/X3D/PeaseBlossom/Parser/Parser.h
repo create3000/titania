@@ -64,6 +64,7 @@ namespace titania {
 namespace pb {
 
 class vsExecutionContext;
+class vsBlock;
 
 class Parser
 {
@@ -97,16 +98,26 @@ private:
 	{ return rootContext; }
 
 	void
-	pushExecutionContext (vsExecutionContext* const executionContext)
-	{ executionContexts .emplace (executionContext); }
+	pushExecutionContext (vsExecutionContext* const executionContext);
 
 	void
-	popExecutionContext ()
-	{ executionContexts .pop (); }
+	popExecutionContext ();
 
 	vsExecutionContext*
 	getExecutionContext () const
 	{ return executionContexts .top (); }
+
+	void
+	pushBlock (vsBlock* const block)
+	{ blocks .emplace (block); }
+
+	void
+	popBlock ()
+	{ blocks .pop (); }
+
+	vsBlock*
+	getBlock () const
+	{ return blocks .top (); }
 
 	void
 	setState (const State & value);
@@ -262,6 +273,12 @@ private:
 
 	bool
 	statement ();
+	
+	bool
+	block ();
+	
+	bool
+	statementList ();
 
 	bool
 	variableStatement ();
@@ -280,6 +297,9 @@ private:
 
 	bool
 	expressionStatement ();
+
+	bool
+	ifStatement ();
 
 	bool
 	returnStatement ();
@@ -311,6 +331,7 @@ private:
 
 	vsExecutionContext* const        rootContext;
 	std::stack <vsExecutionContext*> executionContexts;
+	std::stack <vsBlock*>            blocks;
 	std::istream &                   istream;
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;

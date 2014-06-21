@@ -48,15 +48,97 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
 
-#include "Objects/Array.h"
-#include "Objects/BooleanObject.h"
-#include "Objects/Function.h"
-#include "Objects/NativeFunction.h"
-#include "Objects/NumberObject.h"
-#include "Objects/Object.h"
-#include "Objects/StringObject.h"
+#include "../Base/vsChildObject.h"
+#include "../Primitives/Undefined.h"
+#include "../Primitives/array.h"
+
+namespace titania {
+namespace pb {
+
+class vsBlock :
+	virtual public vsChildObject,
+	virtual public vsOutputStreamObject
+{
+public:
+
+	/// @name Member access
+
+	///  Returns an array with all local root expressions.
+	array &
+	getExpressions ()
+	{ return expressions; }
+
+	///  Returns an array with all local root expressions.
+	const array &
+	getExpressions () const
+	{ return expressions; }
+
+	///  @name Destruction
+
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
+	virtual
+	void
+	dispose () override
+	{
+		expressions .clear ();
+
+		vsChildObject::dispose ();
+	}
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new vsBlock.
+	vsBlock () :
+		       vsChildObject (),
+		vsOutputStreamObject (),
+		         expressions (),
+		           undefined (new Undefined ())
+	{ construct (); }
+
+	/// @name Operations
+
+	///  Imports all expressions from @a block into @a executionContext.
+	void
+	import (const vsBlock* const block, vsExecutionContext* const executionContext)
+	{
+		for (const auto & expression : block -> getExpressions ())
+			getExpressions () .emplace_back (expression -> copy (executionContext));
+	}
+
+	///  Executes the associated expessions of this context.
+	virtual
+	var
+	run ()
+	{
+		for (const auto & expression : expressions)
+			expression -> toValue ();
+
+		return undefined;
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expressions, undefined); }
+
+	/// @name Members
+
+	array expressions; // Use deque to keep iters when inserting value.
+	var   undefined;
+
+};
+
+} // pb
+} // titania
 
 #endif

@@ -60,7 +60,7 @@ const std::string Program::typeName = "Program";
 void
 Program::construct ()
 {
-	setLocalObject (getGlobalObject ());
+	getLocalObject () = getGlobalObject ();
 	getDefaultObjects () .emplace_back (getGlobalObject ());
 }
 

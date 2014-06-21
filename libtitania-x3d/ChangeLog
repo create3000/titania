@@ -1,5 +1,39 @@
 2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DArrayField.h:
+	* Objects.h:
+	* Expressions.h:
+	* Array.h:
+	* Parser.h:
+	* Grammar.h:
+	* Exception.h:
+	* Parser.cpp:
+	* Block.h:
+	* Function.h:
+	* array.h:
+	* vsConstants.h:
+	* Block.cpp:
+	* vsBlock.h:
+	* Program.h:
+	* Function.cpp:
+	* vsChildObject.h:
+	* X3DExecutionContext.cpp:
+	* Program.cpp:
+	* IfStatement.h:
+	* vsExpression.h:
+	* ObjectLiteral.h:
+	* vsExecutionContext.h:
+	* VariableExpression.h:
+	* vsExecutionContext.cpp:
+	* FunctionExpression.h:
+	* AdditionExpression.h:
+	* vsBooleanExpression.h:
+	* AssignmentExpression.h: 
+
+2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AdditionExpression.h: 
 
 2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>

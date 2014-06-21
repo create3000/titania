@@ -95,7 +95,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return toBoolean () ? make_var <True> () : make_var <False> (); }
+	{ return toBoolean () ? trueValue : falseValue; }
 
 
 protected:
@@ -104,8 +104,20 @@ protected:
 
 	///  Constructs new vsBooleanExpression expression.
 	vsBooleanExpression () :
-		vsExpression ()
-	{ }
+		vsExpression (),
+		  falseValue (make_var <False> ()),
+		   trueValue (make_var <True> ())
+	{ construct (); }
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (falseValue, trueValue); }
+
+	///  @name Members
+	
+	const var falseValue;
+	const var trueValue;
 
 };
 

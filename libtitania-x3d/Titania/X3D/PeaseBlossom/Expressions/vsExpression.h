@@ -126,7 +126,7 @@ public:
 
 	virtual
 	var
-	setValue (const var &) const
+	setValue (var &&) const
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 
 	///  @name Input/Output

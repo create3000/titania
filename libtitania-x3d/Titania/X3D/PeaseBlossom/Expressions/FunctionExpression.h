@@ -68,16 +68,17 @@ public:
 	///  @name Construction
 
 	///  Constructs new FunctionExpression statement.
-	FunctionExpression (basic_ptr <Function> && function) :
-		vsExpression (),
-		    function (std::move (function))
+	FunctionExpression (vsExecutionContext* const executionContext, basic_ptr <Function> && function) :
+		    vsExpression (),
+		executionContext (executionContext),
+		        function (std::move (function))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <FunctionExpression> (function -> copy (executionContext)); }
+	{ return make_var <FunctionExpression> (executionContext, basic_ptr <Function> (function)); }
 
 	///  @name Common members
 
@@ -93,7 +94,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return function -> copy (function -> getExecutionContext () .get ()); }
+	{ return function -> copy (executionContext .get ()); }
 
 
 private:
@@ -103,11 +104,12 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (function); }
+	{ addChildren (executionContext, function); }
 
 	///  @name Members
 
-	const basic_ptr <Function> function;
+	const basic_ptr <vsExecutionContext> executionContext;
+	const basic_ptr <Function>           function;
 
 };
 

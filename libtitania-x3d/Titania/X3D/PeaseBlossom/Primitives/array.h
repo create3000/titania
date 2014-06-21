@@ -567,7 +567,7 @@ template <class ... Args>
 void
 basic_array <Type>::emplace_front (Args && ... args)
 {
-	Type* const element = new Type (args ...);
+	Type* const element = new Type (std::forward <Args> (args) ...);
 
 	value .emplace_front (element);
 
@@ -579,7 +579,7 @@ template <class ... Args>
 void
 basic_array <Type>::emplace_back (Args && ... args)
 {
-	Type* const element = new Type (args ...);
+	Type* const element = new Type (std::forward <Args> (args) ...);
 
 	value .emplace_back (element);
 

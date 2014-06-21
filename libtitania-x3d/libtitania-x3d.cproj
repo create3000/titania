@@ -748,6 +748,10 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\vsNumberExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\vsBooleanExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\vsInt32Expression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\Array.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\IfStatement.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\Block.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Execution\vsBlock.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1265,6 +1269,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsNumber.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsString.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsValue.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Execution\Block.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

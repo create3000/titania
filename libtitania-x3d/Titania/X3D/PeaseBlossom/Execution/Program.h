@@ -100,7 +100,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
+	toStream (std::ostream & ostream) const final override
 	{ ostream << "[program Program]"; }
 
 	///  @name Destruction

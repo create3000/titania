@@ -133,7 +133,7 @@ X3DExecutionContext::realize ()
 	{
 		while (not uninitializedNodes .empty ())
 		{
-			for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+			for (const auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
 				uninitializedNode -> setup ();
 		}
 	}

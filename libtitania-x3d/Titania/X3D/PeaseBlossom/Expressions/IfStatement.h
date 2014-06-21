@@ -48,15 +48,91 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
 
-#include "Objects/Array.h"
-#include "Objects/BooleanObject.h"
-#include "Objects/Function.h"
-#include "Objects/NativeFunction.h"
-#include "Objects/NumberObject.h"
-#include "Objects/Object.h"
-#include "Objects/StringObject.h"
+#include "../Execution/Block.h"
+#include "../Expressions/vsExpression.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a ECMAScript object literal expression.
+ */
+class IfStatement :
+	public vsExpression
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new IfStatement expression.
+	IfStatement (var && expression) :
+		vsExpression (),
+		  expression (expression),
+		   thenBlock (new Block ()),
+		   elseBlock (new Block ())
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{
+		const auto copy = make_ptr <IfStatement> (expression -> copy (executionContext));
+
+		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
+		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
+
+		return copy;
+	}
+
+	///  @name Common members
+
+	///  Returns the type of the value. For this expression this is »ADDITION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return IF_STATEMENT; }
+
+	///  @name Member access
+
+	const basic_ptr <Block> &
+	getThenBlock () const
+	{ return thenBlock; }
+
+	const basic_ptr <Block> &
+	getElseBlock () const
+	{ return elseBlock; }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const final override
+	{ return expression -> toBoolean () ? thenBlock -> run () : elseBlock -> run (); }
+
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression, thenBlock, elseBlock); }
+
+	///  @name Members
+
+	const var               expression;
+	const basic_ptr <Block> thenBlock;
+	const basic_ptr <Block> elseBlock;
+
+};
+
+} // pb
+} // titania
 
 #endif

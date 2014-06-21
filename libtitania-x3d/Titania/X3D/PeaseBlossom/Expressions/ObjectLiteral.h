@@ -67,7 +67,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new ObjectLiteral expression.
-	ObjectLiteral (vsExecutionContext* const executionContext, var && object) :
+	ObjectLiteral (vsExecutionContext* const executionContext, basic_ptr <Object> && object) :
 		    vsExpression (),
 		executionContext (executionContext),
 		          object (object)
@@ -77,7 +77,7 @@ public:
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <ObjectLiteral> (executionContext, object -> copy (executionContext)); }
+	{ return make_var <ObjectLiteral> (executionContext, basic_ptr <Object> (object)); }
 
 	///  @name Common members
 
@@ -85,7 +85,7 @@ public:
 	virtual
 	ValueType
 	getType () const final override
-	{ return ADDITION_EXPRESSION; }
+	{ return OBJECT_LITERAL; }
 
 	///  @name Operations
 
@@ -108,7 +108,7 @@ private:
 	///  @name Members
 
 	const basic_ptr <vsExecutionContext> executionContext;
-	const var                            object;
+	const basic_ptr <Object>             object;
 
 };
 

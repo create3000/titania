@@ -153,8 +153,10 @@ public:
 	static const io::string    BitwiseXORAssignment;
 	static const io::string    BitwiseORAssignment;
 
-	///  @name Return statement
+	///  @name Statements
 
+	static const io::string _if;
+	static const io::string _else;
 	static const io::string _return;
 
 	///  @name Values
@@ -238,9 +240,11 @@ const std::set <std::string> Grammar::FutureReservedWord = {
 };
 
 // New Opearator
+
 const io::string Grammar::_new ("new");
 
 // Unary Operator
+
 const io::string    Grammar::_delete ("delete");
 const io::string    Grammar::_void ("void");
 const io::string    Grammar::_typeof ("typeof");
@@ -252,6 +256,7 @@ const io::character Grammar::Tilde ('~');
 const io::character Grammar::ExclamationMark ('!');
 
 // Binary Operator
+
 const io::character Grammar::Multiplication ('*');
 const io::character Grammar::Division ('/');
 const io::character Grammar::Remainder ('%');
@@ -279,6 +284,7 @@ const io::character Grammar::QuestionMark ('?');
 const io::character Grammar::Colon (':');
 
 // Assignment Operators
+
 const io::character Grammar::Assignment ('=');
 const io::string    Grammar::MultiplicationAssigment ("*=");
 const io::string    Grammar::DivisionAssignment ("/=");
@@ -292,10 +298,14 @@ const io::string    Grammar::BitwiseANDAssignment ("&=");
 const io::string    Grammar::BitwiseXORAssignment ("^=");
 const io::string    Grammar::BitwiseORAssignment ("|=");
 
-// Return statement
+// Statements
+
+const io::string Grammar::_if ("if");
+const io::string Grammar::_else ("else");
 const io::string Grammar::_return ("return");
 
 // Values
+
 const io::string   Grammar::hex ("0x");
 const io::string   Grammar::HEX ("0X");
 const io::string   Grammar::oct ("0o");

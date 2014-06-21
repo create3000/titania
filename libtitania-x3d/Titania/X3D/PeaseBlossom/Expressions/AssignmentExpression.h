@@ -192,7 +192,7 @@ private:
 			}
 		}
 
-		return lhs -> setValue (value);
+		return lhs -> setValue (std::move (value));
 	}
 
 	///  @name Members

@@ -56,6 +56,7 @@
 #include "Expressions/DivisionExpression.h"
 #include "Expressions/FunctionCallExpression.h"
 #include "Expressions/FunctionExpression.h"
+#include "Expressions/IfStatement.h"
 #include "Expressions/LeftShiftExpression.h"
 #include "Expressions/MultiplicationExpression.h"
 #include "Expressions/ObjectLiteral.h"

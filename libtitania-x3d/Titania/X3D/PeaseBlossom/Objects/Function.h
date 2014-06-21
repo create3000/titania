@@ -54,6 +54,8 @@
 #include "../Execution/vsExecutionContext.h"
 #include "../Objects/vsFunction.h"
 
+#include <atomic>
+
 namespace titania {
 namespace pb {
 
@@ -70,9 +72,13 @@ public:
 
 	///  Constructs new Function.
 	Function (vsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		        vsFunction (name),
-		vsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		  formalParameters (std::move (formalParameters))
+		         vsFunction (name),
+		 vsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+		   formalParameters (std::move (formalParameters)),
+		           closures (),
+		     recursionDepth (0),
+		  localObjectsStack (),
+		defaultObjectsStack ()
 	{ construct (); }
 
 	///  Creates a new default object.
@@ -97,16 +103,28 @@ public:
 
 	///  @name Destruction
 
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
+	///  Reclaims any resources consumed by this object, now or at any time in the future.  If this object has already been
 	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
 	dispose () final override;
 
+	///  Sets the recusion limit to @a value.  The default value for the recursion limit is 1000.
+	static
+	void
+	setRecursionLimit (const size_t value)
+	{ recursionLimit = value; }
+
+	///  Returns the recursion limit.
+	static
+	size_t
+	getRecursionLimit ()
+	{ return recursionLimit; }
+
 
 protected:
 
-	///  Resolves the closure of the @a executionContext.
+	///  Resolves the next closure of the @a executionContext.
 	virtual
 	void
 	resolve (const basic_ptr <vsExecutionContext> & executionContext) final override;
@@ -116,16 +134,38 @@ private:
 
 	///  @name Construction
 
+	///  Performs neccessary operations after construction.
 	void
 	construct ();
 
+	///  Recursively add all default objects to the list of closures.
 	void
 	addClosure (const basic_ptr <vsExecutionContext> & executionContext);
 
+	///  @name Operations
+
+	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
+	///  detected.
+	void
+	push (basic_ptr <vsObject> && localObject);
+
+	///  Reverses the effect of pop.
+	void
+	pop ();
+
+	///  @name Static members
+
+	static std::atomic <size_t> recursionLimit;
+
 	///  @name Member access
+
+	using DefaultObjectsStack = basic_array <basic_array <basic_ptr <vsObject>>   >;
 
 	std::vector <std::string>                                   formalParameters;
 	std::map <const vsExecutionContext*, basic_ptr <vsObject>>  closures;
+	size_t                                                      recursionDepth;
+	basic_array <basic_ptr <vsObject>>                          localObjectsStack;
+	DefaultObjectsStack                                         defaultObjectsStack;
 
 };
 

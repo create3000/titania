@@ -736,7 +736,7 @@ template <class ... Args>
 void
 X3DArrayField <ValueType>::emplace_front (Args && ... args)
 {
-	ValueType* const field = new ValueType (args ...);
+	ValueType* const field = new ValueType (std::forward <Args> (args) ...);
 
 	get () .insert (get () .begin (), field);
 
@@ -750,7 +750,7 @@ template <class ... Args>
 void
 X3DArrayField <ValueType>::emplace_back (Args && ... args)
 {
-	ValueType* const field = new ValueType (args ...);
+	ValueType* const field = new ValueType (std::forward <Args> (args) ...);
 
 	get () .emplace_back (field);
 

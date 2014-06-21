@@ -105,8 +105,8 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet & circle);
 
-	///  Returns the number of instances that share ownership of the managed object, or ?0? if the managed object has
-	///  already been deleted, i.e. *this is empty.
+	///  Returns the number of instances that share ownership of this object, or »0« if this object has already been
+	///  disposed or is a root object.
 	size_t
 	getReferenceCount () const
 	{ return referenceCount; }

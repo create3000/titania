@@ -51,17 +51,13 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
 
-#include "../Base/vsChildObject.h"
 #include "../Base/vsInputStreamObject.h"
 #include "../Base/vsOutputStreamObject.h"
 #include "../Bits/Exception.h"
-#include "../Objects/Object.h"
+#include "../Execution/vsBlock.h"
 #include "../Objects/vsFunction.h"
+#include "../Objects/vsObject.h"
 #include "../Primitives/array.h"
-
-#include <Titania/Utility/Adapter.h>
-
-#include <vector>
 
 namespace titania {
 namespace pb {
@@ -69,9 +65,8 @@ namespace pb {
 class Function;
 
 class vsExecutionContext :
-	virtual public vsChildObject,
-	virtual public vsInputStreamObject,
-	virtual public vsOutputStreamObject
+	virtual public vsBlock,
+	virtual public vsInputStreamObject
 {
 public:
 
@@ -101,31 +96,6 @@ public:
 	const basic_ptr <vsObject> &
 	getGlobalObject () const
 	{ return globalObject; }
-
-	///  Returns the local objects.
-	const basic_ptr <vsObject> &
-	getLocalObject () const
-	{ return localObject; }
-
-	///  Returns the default objects stack.
-	basic_array <basic_ptr <vsObject>>  &
-	getDefaultObjects ()
-	{ return defaultObjects; }
-
-	///  Returns the default objects stack.
-	const basic_array <basic_ptr <vsObject>>  &
-	getDefaultObjects () const
-	{ return defaultObjects; }
-
-	///  Returns an array with all local root expressions.
-	array &
-	getExpressions ()
-	{ return expressions; }
-
-	///  Returns an array with all local root expressions.
-	const array &
-	getExpressions () const
-	{ return expressions; }
 
 	/// @name Operations
 
@@ -162,7 +132,7 @@ public:
 	throw (std::out_of_range)
 	{ return functions .at (name); }
 
-	const std::map <std::string, basic_ptr <vsFunction>>  &
+	const std::map <std::string, basic_ptr <vsFunction>> &
 	getFunctionDeclarations () const
 	{ return functions; }
 
@@ -187,6 +157,12 @@ public:
 
 protected:
 
+	///  @name Friends
+	
+	friend class Function;
+	friend class VariableDeclaration;
+	friend class VariableExpression;
+
 	///  @name Construction
 
 	///  Constructs new vsExecutionContext.
@@ -199,10 +175,25 @@ protected:
 	setExecutionContext (const basic_ptr <vsExecutionContext> & value)
 	{ executionContext = value; }
 
-	///  Replaces the local objects.
-	void
-	setLocalObject (const basic_ptr <vsObject> & value)
-	{ localObject = value; }
+	///  Returns the local objects.
+	basic_ptr <vsObject> &
+	getLocalObject ()
+	{ return localObject; }
+
+	///  Returns the local objects.
+	const basic_ptr <vsObject> &
+	getLocalObject () const
+	{ return localObject; }
+
+	///  Returns the default objects stack.
+	basic_array <basic_ptr <vsObject>> &
+	getDefaultObjects ()
+	{ return defaultObjects; }
+
+	///  Returns the default objects stack.
+	const basic_array <basic_ptr <vsObject>> &
+	getDefaultObjects () const
+	{ return defaultObjects; }
 
 	/// @name Operations
 
@@ -230,7 +221,6 @@ private:
 	basic_ptr <vsObject>                            globalObject;
 	basic_ptr <vsObject>                            localObject;
 	basic_array <basic_ptr <vsObject>>              defaultObjects; // Use deque to keep iters when inserting value.
-	array                                           expressions;    // Use deque to keep iters when inserting value.
 	std::map <std::string, basic_ptr <vsFunction>>  functions;
 
 };

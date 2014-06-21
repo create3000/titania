@@ -55,19 +55,20 @@
 #include "../Parser/Parser.h"
 #include "../Primitives.h"
 
+#include <Titania/Utility/Adapter.h>
+
 namespace titania {
 namespace pb {
 
 vsExecutionContext::vsExecutionContext (vsExecutionContext* const executionContext, const basic_ptr <vsObject> & globalObject) :
-	      vsChildObject (),
-	vsInputStreamObject (),
-	             strict (false),
-	   executionContext (executionContext),
-	       globalObject (globalObject),
-	        localObject (),
-	     defaultObjects (),
-	        expressions (),
-	          functions ()
+	             vsBlock (),
+	 vsInputStreamObject (),
+	              strict (false),
+	    executionContext (executionContext),
+	        globalObject (globalObject),
+	         localObject (),
+	      defaultObjects (),
+	           functions ()
 {
 	construct ();
 }
@@ -78,8 +79,7 @@ vsExecutionContext::construct ()
 	addChildren (executionContext,
 	             globalObject,
 	             localObject,
-	             defaultObjects,
-	             expressions);
+	             defaultObjects);
 }
 
 void
@@ -122,8 +122,7 @@ vsExecutionContext::import (const vsExecutionContext* const executionContext)
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
 		addFunctionDeclaration (function .second);
 
-	for (const auto & expression : executionContext -> getExpressions ())
-		getExpressions () .emplace_back (expression -> copy (this));
+	vsBlock::import (executionContext, this);
 }
 
 var
@@ -134,10 +133,7 @@ vsExecutionContext::run ()
 		for (const auto & function : functions)
 			getLocalObject () -> updateProperty (function .second -> getName (), function .second -> copy (this));
 
-		for (const auto & expression : expressions)
-			expression -> toValue ();
-
-		return make_var <Undefined> ();
+		return vsBlock::run ();
 	}
 	catch (const ReturnException & exception)
 	{
@@ -178,9 +174,8 @@ vsExecutionContext::dispose ()
 {
 	functions      .clear ();
 	defaultObjects .clear ();
-	expressions    .clear ();
 
-	vsChildObject::dispose ();
+	vsBlock::dispose ();
 }
 
 } // pb

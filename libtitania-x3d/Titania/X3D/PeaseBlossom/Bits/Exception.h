@@ -68,7 +68,8 @@ enum ExceptionType
 	REFERENCE_ERROR,
 	SYNTAX_ERROR,
 	TYPE_ERROR,
-	URI_ERROR
+	URI_ERROR,
+	RUNTIME_ERROR
 
 };
 
@@ -90,6 +91,7 @@ noexcept (true)
 		case SYNTAX_ERROR:    ostream << "SyntaxError";    break;
 		case TYPE_ERROR:      ostream << "TypeError";      break;
 		case URI_ERROR:       ostream << "URIError";       break;
+		case RUNTIME_ERROR:   ostream << "RuntimeError";   break;
 	}
 
 	return ostream;
@@ -202,6 +204,7 @@ using ReferenceError = Exception <REFERENCE_ERROR>;
 using SyntaxError    = Exception <SYNTAX_ERROR>;
 using TypeError      = Exception <TYPE_ERROR>;
 using URIError       = Exception <URI_ERROR>;
+using RuntimeError   = Exception <RUNTIME_ERROR>;
 
 } // pb
 } // titania

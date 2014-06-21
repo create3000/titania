@@ -50,8 +50,12 @@
 
 #include "Function.h"
 
+#include "../Objects/Object.h"
+
 namespace titania {
 namespace pb {
+
+std::atomic <size_t> Function::recursionLimit (100000);
 
 var
 Function::create (vsExecutionContext* const executionContext) const
@@ -67,6 +71,9 @@ Function::create (vsExecutionContext* const executionContext) const
 void
 Function::construct ()
 {
+	addChildren (localObjectsStack,
+	             defaultObjectsStack);
+
 	addClosure (getExecutionContext ());
 }
 
@@ -129,13 +136,57 @@ Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var>
 			localObject -> addProperty (formalParameters [i], make_var <Undefined> (), WRITABLE | CONFIGURABLE);
 	}
 
-	setLocalObject (localObject);
+	try
+	{
+		push (localObject);
+
+		const auto value = run ();
+
+		pop ();
+		return value;
+	}
+	catch (...)
+	{
+		pop ();
+		throw;
+	}
+}
+
+void
+Function::push (basic_ptr <vsObject> && localObject)
+{
+	if (recursionDepth)
+	{
+		localObjectsStack   .emplace_back (std::move (getLocalObject ()));
+		defaultObjectsStack .emplace_back (std::move (getDefaultObjects ()));
+	}
+
+	++ recursionDepth;
+
+	getLocalObject () = localObject;
 	getDefaultObjects () .emplace_back (std::move (localObject));
 
-	const auto value = run ();
+	// As LAST step check recursion depth.
 
+	if (recursionDepth > recursionLimit)
+		throw RuntimeError ("Maximum recursion depth exceeded while calling function '" + getName () + "'.");
+}
+
+void
+Function::pop ()
+{
 	getDefaultObjects () .pop_back ();
-	return value;
+
+	-- recursionDepth;
+
+	if (recursionDepth)
+	{
+		getLocalObject ()    = std::move (localObjectsStack   .back ());
+		getDefaultObjects () = std::move (defaultObjectsStack .back ());
+
+		localObjectsStack   .pop_back ();
+		defaultObjectsStack .pop_back ();
+	}
 }
 
 void

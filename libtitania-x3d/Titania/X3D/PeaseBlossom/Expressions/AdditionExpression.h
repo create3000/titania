@@ -103,7 +103,7 @@ public:
 	evaluate (const var & lhs, const var & rhs)
 	{
 		const var x = lhs -> toValue ();
-		const var y = y -> toValue ();
+		const var y = rhs -> toValue ();
 	
 		if (x -> getType () == STRING or y -> getType () == STRING)
 			return make_var <String> (x -> toString () + y -> toString ());

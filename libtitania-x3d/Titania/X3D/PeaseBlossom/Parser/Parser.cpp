@@ -65,6 +65,7 @@ namespace pb {
 Parser::Parser (vsExecutionContext* const executionContext, std::istream & istream) :
 	             rootContext (executionContext),
 	       executionContexts ({ executionContext }),
+	                  blocks ({ executionContext }),
 	                 istream (istream),
 	             whiteSpaces (),
 	       commentCharacters (),
@@ -89,6 +90,20 @@ throw (SyntaxError,
 		__LOG__ << ">>>" << istream .rdbuf () << "<<<" << std::endl;
 		throw;
 	}
+}
+
+void
+Parser::pushExecutionContext (vsExecutionContext* const executionContext)
+{
+	pushBlock (executionContext);
+	executionContexts .emplace (executionContext);
+}
+
+void
+Parser::popExecutionContext ()
+{
+	popBlock ();
+	executionContexts .pop ();
 }
 
 void
@@ -612,7 +627,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 						if (Grammar::CloseBrace (istream))
 						{
-							object -> updateProperty (std::move (propertyNameValue -> toString ()), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, std::move (function));
+							object -> updateProperty (propertyNameValue -> toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, std::move (function));
 							return true;
 						}
 
@@ -663,7 +678,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 							if (Grammar::CloseBrace (istream))
 							{
-								object -> updateProperty (std::move (propertyNameValue -> toString ()), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, var (), std::move (function));
+								object -> updateProperty (propertyNameValue -> toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, var (), std::move (function));
 								return true;
 							}
 
@@ -1906,6 +1921,9 @@ Parser::statement ()
 {
 	//__LOG__ << istream .tellg () << std::endl;
 
+	if (block ())
+		return true;
+
 	if (variableStatement ())
 		return true;
 
@@ -1915,8 +1933,77 @@ Parser::statement ()
 	if (expressionStatement ())
 		return true;
 
+	if (ifStatement ())
+		return true;
+
+	//if (iterationStatement ())
+	//	return true;
+
+	//if (continueStatement ())
+	//	return true;
+
+	//if (breakStatement ())
+	//	return true;
+
 	if (returnStatement ())
 		return true;
+
+	//if (withStatement ())
+	//	return true;
+
+	//if (labelledStatement ())
+	//	return true;
+
+	//if (switchStatement ())
+	//	return true;
+
+	//if (throwStatement ())
+	//	return true;
+
+	//if (tryStatement ())
+	//	return true;
+
+	//if (sDebuggerStatement ())
+	//	return true;
+
+	return false;
+}
+
+bool
+Parser::block ()
+{
+	comments ();
+
+	if (Grammar::OpenBrace (istream))
+	{
+		statementList ();
+
+		comments ();
+
+		if (Grammar::CloseBrace (istream))
+			return true;
+
+		throw SyntaxError ("Expected a '}' at end of block statement.");	
+	}
+
+	return false;
+}
+
+bool
+Parser::statementList ()
+{
+	//__LOG__ << std::endl;
+
+	if (statement ())
+	{
+		for ( ; ;)
+		{
+			if (statement ())
+				continue;
+
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -1981,7 +2068,7 @@ Parser::variableDeclaration ()
 
 		initialiser (value);
 
-		getExecutionContext () -> getExpressions () .emplace_back (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getBlock () -> getExpressions () .emplace_back (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -2037,11 +2124,66 @@ Parser::expressionStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> getExpressions () .emplace_back (std::move (value));
+			getBlock () -> getExpressions () .emplace_back (std::move (value));
 			return true;
 		}
 
 		throw SyntaxError ("Expected ';' after expression.");
+	}
+
+	return false;
+}
+
+bool
+Parser::ifStatement ()
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	if (Grammar::_if (istream))
+	{
+		comments ();
+		
+		if (Grammar::OpenParenthesis (istream))
+		{
+			var booleanExpression;
+			
+			if (expression (booleanExpression))
+			{
+				comments ();
+				
+				if (Grammar::CloseParenthesis (istream))
+				{
+					auto value = make_ptr <IfStatement> (std::move (booleanExpression));
+
+					pushBlock (value -> getThenBlock () .get ());
+
+					statement ();
+
+					popBlock ();
+
+					if (Grammar::_else (istream))
+					{
+						pushBlock (value -> getElseBlock () .get ());
+
+						statement ();
+
+						popBlock ();
+					}
+
+					getBlock () -> getExpressions () .emplace_back (std::move (value));
+
+					return true;
+				}
+
+				throw SyntaxError ("Expected a ')'.");
+			}
+
+			throw SyntaxError ("Expected boolean expression after '('.");
+		}
+		
+		throw SyntaxError ("Expected a '(' after 'if'.");
 	}
 
 	return false;
@@ -2066,7 +2208,7 @@ Parser::returnStatement ()
 
 			if (Grammar::Semicolon (istream))
 			{
-				getExecutionContext () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
+				getBlock () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
 				return true;
 			}
 
@@ -2075,7 +2217,7 @@ Parser::returnStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getExecutionContext () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
+			getBlock () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
 			return true;
 		}
 
@@ -2191,7 +2333,7 @@ Parser::functionExpression (var & value)
 
 					if (Grammar::CloseBrace (istream))
 					{
-						value = make_var <FunctionExpression> (std::move (function));
+						value = make_var <FunctionExpression> (getExecutionContext (), std::move (function));
 						return true;
 					}
 
