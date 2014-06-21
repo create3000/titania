@@ -58,9 +58,6 @@ namespace pb {
 
 #undef Null
 
-const var &
-getNull ();
-
 /**
  *  Class to represent a »null« value.
  */
@@ -68,6 +65,13 @@ class Null :
 	public vsPrimitive
 {
 public:
+
+	///  @name Construction
+
+	///  Constructs new Null value.
+	Null () :
+		vsPrimitive ()
+	{ }
 
 	///  @name Common members
 
@@ -84,12 +88,6 @@ public:
 	{ return NULL_OBJECT; }
 
 	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return getNull (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -137,22 +135,6 @@ public:
 	{ ostream << "null"; }
 
 
-protected:
-
-	///  @name Friends
-
-	friend
-	const var &
-	getNull ();
-
-	///  @name Construction
-
-	///  Constructs new Null value.
-	Null () :
-		vsPrimitive ()
-	{ }
-
-
 private:
 
 	///  @name Static members
@@ -161,18 +143,6 @@ private:
 
 };
 
-///  @relates Null
-///  @name null value.
-
-///  Returns the unique »null« value.
-inline
-const var &
-getNull ()
-{
-	static const var value (new Null ());
-
-	return value;
-}
 
 } // pb
 } // titania

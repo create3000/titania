@@ -66,9 +66,9 @@ struct isNaN
 	operator () (const basic_ptr <vsObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
-			return getTrue ();
+			return make_var <True> ();
 
-		return pb::isNaN (arguments .front () -> toNumber ()) ? getTrue () : getFalse ();
+		return pb::isNaN (arguments .front () -> toNumber ()) ? make_var <True> () : make_var <False> ();
 	}
 
 };
@@ -85,7 +85,7 @@ createGlobalObject ()
 	globalObject -> addProperty ("this",      globalObject,                                     NONE);
 	globalObject -> addProperty ("NaN",       make_var <Number> (Number::NaN ()),               NONE);
 	globalObject -> addProperty ("Infinity",  make_var <Number> (Number::POSITIVE_INFINITY ()), NONE);
-	globalObject -> addProperty ("undefined", getUndefined (),                                  NONE);
+	globalObject -> addProperty ("undefined", make_var <Undefined> (),                                  NONE);
 
 	globalObject -> addProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }));
 

@@ -56,7 +56,7 @@ namespace pb {
 var
 Function::create (vsExecutionContext* const executionContext) const
 {
-	const auto function = make_var <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
+	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 
 	function -> isStrict (this -> isStrict ());
 	function -> import (this);
@@ -126,7 +126,7 @@ Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var>
 			localObject -> addProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
 
 		else
-			localObject -> addProperty (formalParameters [i], getUndefined (), WRITABLE | CONFIGURABLE);
+			localObject -> addProperty (formalParameters [i], make_var <Undefined> (), WRITABLE | CONFIGURABLE);
 	}
 
 	setLocalObject (localObject);

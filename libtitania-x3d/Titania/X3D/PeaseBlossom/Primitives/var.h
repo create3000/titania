@@ -184,7 +184,7 @@ public:
 	basic_ptr &
 	operator = (basic_ptr <Up> && var)
 	{
-		if (static_cast <void*> (&var) == static_cast <void*> (this))
+		if (&var == this)
 			return *this;
 
 		remove (get ());
@@ -470,7 +470,7 @@ using var = basic_ptr <vsValue>;
 ///  Constructs an object of type Type and wraps it in a var using
 ///  args as the parameter list for the constructor of Type.
 template <class Type, class ... Args>
-basic_ptr <Type>
+var
 make_var (Args && ... args)
 {
 	return var (new Type (std::forward <Args> (args) ...));

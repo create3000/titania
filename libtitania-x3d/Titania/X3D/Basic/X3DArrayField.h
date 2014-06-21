@@ -661,7 +661,7 @@ X3DArrayField <ValueType>::insert (const iterator & location, const size_type co
 
 	for (auto & field : basic::adapter (iter, iter + count))
 	{
-		field = new ValueType ();
+		field = new ValueType (value);
 
 		addChild (field);
 	}

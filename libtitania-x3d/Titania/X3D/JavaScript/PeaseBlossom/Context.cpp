@@ -71,7 +71,7 @@ struct print
 
 		browser -> println ();
 
-		return pb::getUndefined ();
+		return pb::make_var <pb::Undefined> ();
 	}
 };
 
@@ -94,9 +94,9 @@ throw (std::exception) :
 	{
 		using namespace std::placeholders;
 
-		program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::getNull));
-		program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::getFalse));
-		program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::getTrue));
+		program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::make_var <pb::Null>));
+		program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::make_var <pb::False>));
+		program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::make_var <pb::True>));
 
 		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
 
@@ -230,7 +230,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 	{
 		program -> getFunctionDeclaration (field -> getName ()) -> call (program -> getGlobalObject (),
 		{
-			pb::getUndefined (),
+			pb::make_var <pb::Undefined> (),
 			pb::make_var <pb::Number> (getCurrentTime ())
 		});
 	}
@@ -280,17 +280,12 @@ Context::error (const std::string & trycatch) const
 void
 Context::dispose ()
 {
+	const auto p = program .get ();
+
 	program .dispose ();
 
-	pb::debug_roots (pb::getUndefined () .get ());
-	pb::debug_roots (pb::getFalse ()     .get ());
-	pb::debug_roots (pb::getTrue ()      .get ());
-	pb::debug_roots (pb::getNull ()      .get ());
-
-//	assert (pb::getUndefined () -> getParents () .size () == 1);
-//	assert (pb::getFalse ()     -> getParents () .size () == 1);
-//	assert (pb::getTrue ()      -> getParents () .size () == 1);
-//	assert (pb::getNull ()      -> getParents () .size () == 1);
+	pb::debug_roots (p);
+	assert (p -> getParents () .empty ());
 
 	pb::Program::deleteObjectsAsync ();
 

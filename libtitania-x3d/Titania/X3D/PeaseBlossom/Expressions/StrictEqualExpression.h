@@ -127,7 +127,7 @@ public:
 	virtual
 	var
 	toValue () const final override
-	{ return toBoolean () ? getTrue () : getFalse (); }
+	{ return toBoolean () ? make_var <True> () : make_var <False> (); }
 
 	///  Evaluates the expression.
 	static
@@ -155,7 +155,7 @@ public:
 				return static_cast <vsString*> (x .get ()) -> getString () == static_cast <vsString*> (y .get ()) -> getString ();
 
 			case BOOLEAN:
-				return x == y;
+				return x -> toBoolean () == y -> toBoolean ();
 
 			default:
 				return x == y;
@@ -190,7 +190,7 @@ var
 createStrictEqualExpression (var && lhs, var && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return StrictEqualExpression::evaluate (lhs, rhs) ? getTrue () : getFalse ();
+		return StrictEqualExpression::evaluate (lhs, rhs) ? make_var <True> () : make_var <False> ();
 
 	return make_var <StrictEqualExpression> (std::move (lhs), std::move (rhs));
 }

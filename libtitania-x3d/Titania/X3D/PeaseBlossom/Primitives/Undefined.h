@@ -57,9 +57,6 @@
 namespace titania {
 namespace pb {
 
-const var &
-getUndefined ();
-
 /**
  *  Class to represent a »undefined« value.
  */
@@ -67,6 +64,13 @@ class Undefined :
 	public vsPrimitive
 {
 public:
+
+	///  @name Construction
+
+	///  Constructs new Undefined value.
+	Undefined () :
+		vsPrimitive ()
+	{ }
 
 	///  @name Common members
 
@@ -83,12 +87,6 @@ public:
 	{ return UNDEFINED; }
 
 	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return getUndefined (); }
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -136,22 +134,6 @@ public:
 	{ ostream << "undefined"; }
 
 
-protected:
-
-	///  @name Friends
-
-	friend
-	const var &
-	getUndefined ();
-
-	///  @name Construction
-
-	///  Constructs new Undefined value.
-	Undefined () :
-		vsPrimitive ()
-	{ }
-
-
 private:
 
 	///  @name Static members
@@ -159,19 +141,6 @@ private:
 	static const std::string typeName;
 
 };
-
-///  @relates Undefined
-///  @name undefined value.
-
-///  Return the unique »undefined« value.
-inline
-const var &
-getUndefined ()
-{
-	static const var value (new Undefined ());
-
-	return value;
-}
 
 } // pb
 } // titania

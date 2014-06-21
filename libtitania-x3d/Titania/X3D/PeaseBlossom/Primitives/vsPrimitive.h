@@ -64,6 +64,8 @@ class vsPrimitive :
 {
 public:
 
+	///  @name Construction
+
 	///  Creates a copy of this object.
 	virtual
 	var
@@ -77,6 +79,12 @@ public:
 	bool
 	isPrimitive () const final override
 	{ return true; }
+
+	///  Converts its input argument to a non-Object type.
+	virtual
+	var
+	toPrimitive () const final override
+	{ return var (const_cast <vsPrimitive*> (this)); }
 
 
 protected:

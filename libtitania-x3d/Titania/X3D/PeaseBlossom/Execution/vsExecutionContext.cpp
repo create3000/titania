@@ -135,7 +135,7 @@ vsExecutionContext::run ()
 		for (const auto & expression : expressions)
 			expression -> toValue ();
 
-		return getUndefined ();
+		return make_var <Undefined> ();
 	}
 	catch (const ReturnException & exception)
 	{

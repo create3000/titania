@@ -116,12 +116,6 @@ public:
 
 	///  @name Common operations
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return var (const_cast <String*> (this)); }
-
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	bool

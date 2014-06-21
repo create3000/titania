@@ -1,3 +1,24 @@
+2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DArrayField.h:
+	* var.h:
+	* Null.h:
+	* Parser.cpp:
+	* Int32.h:
+	* String.h:
+	* UInt32.h:
+	* Number.h:
+	* Function.cpp:
+	* Boolean.h:
+	* Undefined.h:
+	* Boolean.cpp:
+	* Context.cpp:
+	* BooleanObject.h:
+	* vsPrimitive.h:
+	* GlobalObject.cpp:
+	* vsExecutionContext.cpp:
+	* StrictEqualExpression.h: 
+
 2014-06-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

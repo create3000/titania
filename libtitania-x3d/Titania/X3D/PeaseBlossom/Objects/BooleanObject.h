@@ -70,13 +70,13 @@ public:
 	///  Constructs new BooleanObject.
 	BooleanObject () :
 		vsObject (),
-		 boolean (getFalse ())
+		 boolean (make_var <False> ())
 	{ }
 
 	///  Constructs new BooleanObject.
 	BooleanObject (const bool value) :
 		vsObject (),
-		 boolean (value ? getTrue () : getFalse ())
+		 boolean (value ? make_var <True> () : make_var <False> ())
 	{ }
 
 	///  Constructs new BooleanObject.

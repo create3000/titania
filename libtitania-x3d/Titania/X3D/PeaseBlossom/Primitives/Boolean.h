@@ -59,12 +59,6 @@ namespace pb {
 #undef False
 #undef True
 
-const var &
-getFalse ();
-
-const var &
-getTrue ();
-
 /**
  *  Class to represent a »false« value.
  */
@@ -73,13 +67,14 @@ class False :
 {
 public:
 
-	///  @name Common operations
+	///  @name Construction
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return getFalse (); }
+	///  Constructs new False value.
+	False () :
+		vsBoolean ()
+	{ }
+
+	///  @name Common operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -101,22 +96,6 @@ public:
 	toStream (std::ostream & ostream) const override
 	{ ostream << "false"; }
 
-
-protected:
-
-	///  @name Friends
-
-	friend
-	const var &
-	getFalse ();
-
-	///  @name Construction
-
-	///  Constructs new False value.
-	False () :
-		vsBoolean ()
-	{ }
-
 };
 
 /**
@@ -127,13 +106,14 @@ class True :
 {
 public:
 
-	///  @name Common operations
+	///  @name Construction
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return getTrue (); }
+	///  Constructs new True value.
+	True () :
+		vsBoolean ()
+	{ }
+
+	///  @name Common operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
@@ -155,49 +135,7 @@ public:
 	toStream (std::ostream & ostream) const override
 	{ ostream << "true"; }
 
-
-protected:
-
-	///  @name Friends
-
-	friend
-	const var &
-	getTrue ();
-
-	///  @name Construction
-
-	///  Constructs new True value.
-	True () :
-		vsBoolean ()
-	{ }
-
 };
-
-///  @relates False
-///  @name false value.
-
-///  Returns the unique »false« value.
-inline
-const var &
-getFalse ()
-{
-	static const var value (new False ());
-
-	return value;
-}
-
-///  @relates True
-///  @name true value.
-
-///  Returns the unique »true« value.
-inline
-const var &
-getTrue ()
-{
-	static const var value (new True ());
-
-	return value;
-}
 
 } // pb
 } // titania
