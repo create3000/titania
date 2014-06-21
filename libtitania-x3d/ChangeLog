@@ -1,5 +1,9 @@
 2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* AdditionExpression.h: 
+
+2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* vsObject.h:
 	* vsObject.cpp:

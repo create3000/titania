@@ -102,10 +102,13 @@ public:
 	var
 	evaluate (const var & lhs, const var & rhs)
 	{
-		if (lhs -> getType () == STRING or rhs -> getType () == STRING)
-			return make_var <String> (lhs -> toString () + rhs -> toString ());
+		const var x = lhs -> toValue ();
+		const var y = y -> toValue ();
+	
+		if (x -> getType () == STRING or y -> getType () == STRING)
+			return make_var <String> (x -> toString () + y -> toString ());
 
-		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
+		return make_var <Number> (x -> toNumber () + y -> toNumber ());
 	}
 
 private:
