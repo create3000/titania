@@ -122,6 +122,11 @@ function test1 ()
 	print (\"\\\"double quoted string\\\"\");
 
 	print ();
+	print ('// ObjectLiteral');
+
+	print ({ p: 123, get p () { }, set p (value) { }, 1: 123, '': 'abc', });
+
+	print ();
 	print ('// CallExpression');
 
 	print ();
@@ -197,7 +202,18 @@ function test1 ()
 	print ();
 	print (a == b);
 	print (a != b);
-	print (a === b);
+
+	print ();
+	print ('// StrictEqual');
+	
+	print (undefined === undefined);
+	print (false     === false);
+	print (true      === true);
+	print (null      === null);
+	print (1         === 1);
+	print (''        === '');
+	print (this      === this);
+
 	print (a !== b);
 	print ();
 
@@ -261,8 +277,6 @@ function test1 ()
 }
 */
 
-var o = { p: 123 };
-
 function set_time (value, time)
 {
 	function i ()
@@ -278,6 +292,7 @@ function set_time (value, time)
 
 		return f;
 	}
+
 
 	var f1 = i ();
 	var f2 = i ();

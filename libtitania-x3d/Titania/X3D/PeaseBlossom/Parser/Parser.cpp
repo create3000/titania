@@ -77,7 +77,7 @@ throw (SyntaxError,
        ReferenceError)
 {
 	//__LOG__ << std::endl;
-	
+
 	try
 	{
 		istream .imbue (std::locale::classic ());
@@ -85,7 +85,7 @@ throw (SyntaxError,
 		program ();
 	}
 	catch (const vsException & error)
-	{	
+	{
 		__LOG__ << ">>>" << istream .rdbuf () << "<<<" << std::endl;
 		throw;
 	}
@@ -163,8 +163,6 @@ Parser::identifier (std::string & identifierCharacters)
 
 	const auto state = getState ();
 
-	comments ();
-
 	if (identifierName (identifierCharacters))
 	{
 		if (not reservedWord (identifierCharacters))
@@ -180,6 +178,8 @@ bool
 Parser::identifierName (std::string & identifierNameCharacters)
 {
 	//__LOG__ << std::endl;
+
+	comments ();
 
 	if (identifierStart (identifierNameCharacters))
 	{
@@ -501,22 +501,22 @@ Parser::objectLiteral (var & value)
 	if (Grammar::OpenBrace (istream))
 	{
 		comments ();
-		
+
 		if (Grammar::CloseBrace (istream))
 		{
-			value = make_var <Undefined> ();
+			value .reset (new ObjectLiteral (getExecutionContext (), make_var <Object> ()));
 			return true;
 		}
 
-		PropertyDefinitionArray propertyDefinitions;
+		auto object = make_ptr <Object> ();
 
-		if (propertyDefinitionList (propertyDefinitions))
+		if (propertyDefinitionList (object))
 		{
 			comments ();
 
 			if (Grammar::CloseBrace (istream))
 			{
-				value = make_var <Undefined> ();
+				value .reset (new ObjectLiteral (getExecutionContext (), std::move (object)));
 				return true;
 			}
 
@@ -528,11 +528,11 @@ Parser::objectLiteral (var & value)
 }
 
 bool
-Parser::propertyDefinitionList (PropertyDefinitionArray & propertyDefinitions)
+Parser::propertyDefinitionList (basic_ptr <Object> & object)
 {
 	//__LOG__ << std::endl;
 
-	if (propertyDefinition (propertyDefinitions))
+	if (propertyDefinition (object))
 	{
 		for ( ; ;)
 		{
@@ -540,7 +540,7 @@ Parser::propertyDefinitionList (PropertyDefinitionArray & propertyDefinitions)
 
 			if (Grammar::Comma (istream))
 			{
-				if (propertyDefinition (propertyDefinitions))
+				if (propertyDefinition (object))
 					continue;
 			}
 
@@ -552,40 +552,44 @@ Parser::propertyDefinitionList (PropertyDefinitionArray & propertyDefinitions)
 }
 
 bool
-Parser::propertyDefinition (PropertyDefinitionArray & propertyDefinitions)
+Parser::propertyDefinition (basic_ptr <Object> & object)
 {
 	//__LOG__ << std::endl;
 
-	var propertyNameValue;
+	var         propertyNameValue;
+	std::string propertyNameCharacters;
 
 	if (propertyName (propertyNameValue))
 	{
+		propertyNameCharacters = propertyNameValue -> toString ();
+	
 		comments ();
-		
+
 		if (Grammar::Colon (istream))
 		{
 			var value;
 
 			if (assignmentExpression (value))
 			{
-				propertyDefinitions .emplace_back (PropertyDefinitionType::VALUE, std::move (propertyNameValue), std::move (value));
+				object -> updateProperty (std::move (propertyNameCharacters), std::move (value), WRITABLE | ENUMERABLE | CONFIGURABLE);
 				return true;
 			}
 
 			throw SyntaxError ("Expected expression after property name.");
 		}
-		
-		throw SyntaxError ("Expected a ':' after property name.");
+
+		if (propertyNameCharacters not_eq Grammar::get () and propertyNameCharacters not_eq Grammar::set ())
+			throw SyntaxError ("Expected a ':' after property name.");
 	}
 
 	comments ();
-	
-	if (Grammar::get (istream))
+
+	if (propertyNameCharacters == Grammar::get () or Grammar::get (istream))
 	{
 		if (propertyName (propertyNameValue))
 		{
 			comments ();
-			
+
 			if (Grammar::OpenParenthesis (istream))
 			{
 				comments ();
@@ -593,7 +597,7 @@ Parser::propertyDefinition (PropertyDefinitionArray & propertyDefinitions)
 				if (Grammar::CloseParenthesis (istream))
 				{
 					comments ();
-					
+
 					if (Grammar::OpenBrace (istream))
 					{
 						const auto function = make_ptr <Function> (getExecutionContext ());
@@ -603,40 +607,40 @@ Parser::propertyDefinition (PropertyDefinitionArray & propertyDefinitions)
 						functionBody ();
 
 						popExecutionContext ();
-						
+
 						comments ();
-						
+
 						if (Grammar::CloseBrace (istream))
 						{
-							propertyDefinitions .emplace_back (PropertyDefinitionType::GET, std::move (propertyNameValue), std::move (function));
-							return true;						
+							object -> updateProperty (std::move (propertyNameValue -> toString ()), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, std::move (function));
+							return true;
 						}
-		
+
 						throw SyntaxError ("Expected a '}' after function body.");
 					}
-		
+
 					throw SyntaxError ("Expected a '{' before function body.");
 				}
-		
+
 				throw SyntaxError ("Expected a ')'.");
 			}
-		
+
 			throw SyntaxError ("Expected a '(' after property name.");
 		}
-		
+
 		throw SyntaxError ("Expected property name after 'get'.");
 	}
-	
-	if (Grammar::set (istream))
+
+	if (propertyNameCharacters == Grammar::set () or Grammar::set (istream))
 	{
 		if (propertyName (propertyNameValue))
 		{
 			comments ();
-			
+
 			if (Grammar::OpenParenthesis (istream))
 			{
 				std::vector <std::string> formalParameters;
-			
+
 				if (propertySetParameterList (formalParameters))
 				{
 					comments ();
@@ -644,7 +648,7 @@ Parser::propertyDefinition (PropertyDefinitionArray & propertyDefinitions)
 					if (Grammar::CloseParenthesis (istream))
 					{
 						comments ();
-						
+
 						if (Grammar::OpenBrace (istream))
 						{
 							const auto function = make_ptr <Function> (getExecutionContext (), "", std::move (formalParameters));
@@ -654,31 +658,31 @@ Parser::propertyDefinition (PropertyDefinitionArray & propertyDefinitions)
 							functionBody ();
 
 							popExecutionContext ();
-							
+
 							comments ();
-							
+
 							if (Grammar::CloseBrace (istream))
 							{
-								propertyDefinitions .emplace_back (PropertyDefinitionType::GET, std::move (propertyNameValue), std::move (function));
-								return true;						
+								object -> updateProperty (std::move (propertyNameValue -> toString ()), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, var (), std::move (function));
+								return true;
 							}
-			
+
 							throw SyntaxError ("Expected a '}' after function body.");
 						}
-			
+
 						throw SyntaxError ("Expected a '{' before function body.");
 					}
-			
+
 					throw SyntaxError ("Expected a ')'.");
 				}
 
 				throw SyntaxError ("Expected a property set parameter list.");
 			}
-		
+
 			throw SyntaxError ("Expected a '(' after property name.");
 		}
-		
-		throw SyntaxError ("Expected property name after 'get'.");
+
+		throw SyntaxError ("Expected property name after 'set'.");
 	}
 
 	return false;
@@ -688,7 +692,7 @@ bool
 Parser::propertyName (var & value)
 {
 	//__LOG__ << std::endl;
-	
+
 	std::string propertyNameCharacters;
 
 	if (identifierName (propertyNameCharacters))
@@ -721,7 +725,7 @@ Parser::propertySetParameterList (std::vector <std::string> & formalParameters)
 
 	return false;
 }
-	
+
 bool
 Parser::memberExpression (var & value)
 {
@@ -2055,7 +2059,7 @@ Parser::returnStatement ()
 		commentsNoLineTerminator ();
 
 		var value;
-	
+
 		if (expression (value))
 		{
 			comments ();

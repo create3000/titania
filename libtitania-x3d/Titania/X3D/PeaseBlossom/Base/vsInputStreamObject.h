@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_INPUT_STREAM_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_INPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_INPUT_STREAM_OBJECT_H__
 
 #include <iostream>
 #include <sstream>

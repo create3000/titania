@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_OBJECT_H__
 
 #include "../Primitives/vsValue.h"
 
-#include <map>
 #include <functional>
+#include <map>
 
 namespace titania {
 namespace pb {
@@ -65,20 +65,15 @@ class vsFunction;
 ///  @relates vsObject
 ///  @name Type definitions
 
-///  Type definition for property getter.
-using Getter = std::function <var (vsObject* const)>;
-
-///  Type definition for property setter.
-using Setter = std::function <var (vsObject* const, const var & newValue)>;
-
 ///  Type to represent a property descriptor.
 struct PropertyDescriptor
 {
-	vsObject* const object;
 	var value;
 	PropertyFlagsType flags;
-	Getter get;
-	Setter set;
+	basic_ptr <vsFunction> get;
+	basic_ptr <vsFunction> set;
+
+	~PropertyDescriptor ();
 
 };
 
@@ -182,8 +177,8 @@ public:
 	addProperty (const std::string & name,
 	             const var & value,
 	             const PropertyFlagsType flags = DEFAULT,
-	             const Getter & get = Getter (),
-	             const Setter & set = Setter ())
+	             const var & get = var (),
+	             const var & set = var ())
 	throw (std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor to this object.
@@ -191,8 +186,8 @@ public:
 	updateProperty (const std::string & name,
 	                const var & value,
 	                const PropertyFlagsType flags = DEFAULT,
-	                const Getter & get = Getter (),
-	                const Setter & set = Setter ())
+	                const var & get = var (),
+	                const var & set = var ())
 	throw (std::invalid_argument);
 
 	///  Removes the property @a name from this object.

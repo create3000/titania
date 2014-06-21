@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_EXPRESSION_H__
 
 #include "../Expressions/vsExpression.h"
 #include "../Primitives/Number.h"
@@ -107,7 +107,6 @@ public:
 
 		return make_var <Number> (lhs -> toNumber () + rhs -> toNumber ());
 	}
-
 
 private:
 

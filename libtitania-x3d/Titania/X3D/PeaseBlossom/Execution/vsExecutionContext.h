@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_JS_EXECUTION_CONTEXT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
 
 #include "../Base/vsChildObject.h"
 #include "../Base/vsInputStreamObject.h"
@@ -108,20 +108,20 @@ public:
 	{ return localObject; }
 
 	///  Returns the default objects stack.
-	basic_array <basic_ptr <vsObject>> &
+	basic_array <basic_ptr <vsObject>>  &
 	getDefaultObjects ()
 	{ return defaultObjects; }
 
 	///  Returns the default objects stack.
-	const basic_array <basic_ptr <vsObject>> &
+	const basic_array <basic_ptr <vsObject>>  &
 	getDefaultObjects () const
 	{ return defaultObjects; }
-	
+
 	///  Returns an array with all local root expressions.
 	array &
 	getExpressions ()
 	{ return expressions; }
-	
+
 	///  Returns an array with all local root expressions.
 	const array &
 	getExpressions () const
@@ -162,7 +162,7 @@ public:
 	throw (std::out_of_range)
 	{ return functions .at (name); }
 
-	const std::map <std::string, basic_ptr <vsFunction>> &
+	const std::map <std::string, basic_ptr <vsFunction>>  &
 	getFunctionDeclarations () const
 	{ return functions; }
 
@@ -232,6 +232,7 @@ private:
 	basic_array <basic_ptr <vsObject>>              defaultObjects; // Use deque to keep iters when inserting value.
 	array                                           expressions;    // Use deque to keep iters when inserting value.
 	std::map <std::string, basic_ptr <vsFunction>>  functions;
+
 };
 
 } // pb

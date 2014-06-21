@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
 
-#include "../Expressions/vsExpression.h"
 #include "../Expressions/ControlFlowException.h"
+#include "../Expressions/vsExpression.h"
 
 namespace titania {
 namespace pb {
@@ -102,7 +102,6 @@ public:
 
 		throw ReturnException (value);
 	}
-
 
 private:
 

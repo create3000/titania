@@ -94,11 +94,11 @@ throw (std::exception) :
 	{
 		using namespace std::placeholders;
 
-		program -> getGlobalObject () -> addProperty ("NULL",  pb::var (), pb::DEFAULT, std::bind (pb::make_var <pb::Null>));
-		program -> getGlobalObject () -> addProperty ("FALSE", pb::var (), pb::DEFAULT, std::bind (pb::make_var <pb::False>));
-		program -> getGlobalObject () -> addProperty ("TRUE",  pb::var (), pb::DEFAULT, std::bind (pb::make_var <pb::True>));
+		program -> getGlobalObject () -> addProperty ("NULL",  pb::make_var <pb::Null> (),  pb::NONE);
+		program -> getGlobalObject () -> addProperty ("FALSE", pb::make_var <pb::False> (), pb::NONE);
+		program -> getGlobalObject () -> addProperty ("TRUE",  pb::make_var <pb::True> (),  pb::NONE);
 
-		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)));
+		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
 
 		program -> fromString (getECMAScript ());
 		program -> run ();

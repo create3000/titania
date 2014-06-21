@@ -48,11 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
 
 #include "../Execution/vsExecutionContext.h"
 #include "../Expressions/vsExpression.h"
+#include "../Objects/vsFunction.h"
 #include "../Primitives/vsValue.h"
 
 namespace titania {
@@ -97,17 +98,17 @@ public:
 	{
 		try
 		{
-			const auto & propertyDescriptor = getPropertyDescriptor (executionContext);
+			const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
-			if (propertyDescriptor .set)
-				return propertyDescriptor .set (propertyDescriptor .object, value);
+			if (propertyDescriptor .second .set)
+				return propertyDescriptor .second .set -> call (propertyDescriptor .first, { value });
 
-			return const_cast <PropertyDescriptor &> (propertyDescriptor) .value = value;
+			return const_cast <PropertyDescriptor &> (propertyDescriptor .second) .value = value;
 		}
 		catch (const ReferenceError &)
 		{
-			executionContext -> getGlobalObject () -> updateProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
-			
+			executionContext -> getGlobalObject () -> addProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
+
 			return value;
 		}
 	}
@@ -134,15 +135,15 @@ private:
 	getProperty () const
 	throw (ReferenceError)
 	{
-		const auto & propertyDescriptor = getPropertyDescriptor (executionContext);
+		const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
-		if (propertyDescriptor .get)
-			return propertyDescriptor .get (propertyDescriptor .object);
+		if (propertyDescriptor .second .get)
+			return propertyDescriptor .second .get -> call (propertyDescriptor .first);
 
-		return propertyDescriptor .value;
+		return propertyDescriptor .second .value;
 	}
 
-	const PropertyDescriptor &
+	std::pair <basic_ptr <vsObject>, const PropertyDescriptor &>
 	getPropertyDescriptor (const basic_ptr <vsExecutionContext> & executionContext) const
 	throw (ReferenceError)
 	{
@@ -150,7 +151,7 @@ private:
 		{
 			try
 			{
-				return object -> getPropertyDescriptor (identifier);
+				return std::make_pair (object, std::ref (object -> getPropertyDescriptor (identifier)));
 			}
 			catch (const std::out_of_range &)
 			{ }

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_EXPRESSION_H__
 
 #include "../Expressions/vsExpression.h"
 #include "../Primitives/Number.h"

@@ -60,7 +60,7 @@ Function::create (vsExecutionContext* const executionContext) const
 
 	function -> isStrict (this -> isStrict ());
 	function -> import (this);
-	
+
 	return function;
 }
 
@@ -81,7 +81,7 @@ Function::addClosure (const basic_ptr <vsExecutionContext> & executionContext)
 	const auto pair = closures .emplace (executionContext .get (), executionContext -> getLocalObject ());
 
 	pair .first -> second .addParent (this);
-	
+
 	for (const auto & object : basic::adapter (defaultObjects .rbegin (), defaultObjects .rend () - 1))
 	{
 		if (object == executionContext -> getLocalObject ())

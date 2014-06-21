@@ -124,8 +124,8 @@ private:
 
 	///  @name Member access
 
-	std::vector <std::string>                                  formalParameters;
-	std::map <const vsExecutionContext*, basic_ptr <vsObject>> closures;
+	std::vector <std::string>                                   formalParameters;
+	std::map <const vsExecutionContext*, basic_ptr <vsObject>>  closures;
 
 };
 

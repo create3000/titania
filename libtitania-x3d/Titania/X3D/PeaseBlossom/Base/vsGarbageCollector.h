@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_JS_GARBAGE_COLLECTOR_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_GARBAGE_COLLECTOR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_GARBAGE_COLLECTOR_H__
 
 #include "../Base/vsBase.h"
 

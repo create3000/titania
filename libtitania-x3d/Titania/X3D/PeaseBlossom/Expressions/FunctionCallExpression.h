@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
 
 #include "../Execution/vsExecutionContext.h"
 #include "../Expressions/vsExpression.h"
@@ -118,7 +118,6 @@ public:
 
 		throw TypeError ("'" + expression -> toString () + "' is not a function.");
 	}
-
 
 private:
 

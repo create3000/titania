@@ -1,5 +1,45 @@
 2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* vsBase.h:
+	* Expressions.h:
+	* Parser.h:
+	* Null.h:
+	* Parser.cpp:
+	* vsObject.h:
+	* Function.h:
+	* vsConstants.h:
+	* vsFunction.h:
+	* vsValue.h:
+	* Function.cpp:
+	* vsObject.cpp:
+	* vsNumber.h:
+	* vsString.h:
+	* Context.cpp:
+	* vsBoolean.h:
+	* StringObject.h:
+	* vsPrimitive.h:
+	* vsGarbageCollector.h:
+	* GlobalObject.cpp:
+	* vsInputStreamObject.h:
+	* vsExpression.h:
+	* ObjectLiteral.h:
+	* vsOutputStreamObject.h:
+	* ReturnStatement.h:
+	* vsExecutionContext.h:
+	* DivisionExpression.h:
+	* VariableExpression.h:
+	* vsExecutionContext.cpp:
+	* AdditionExpression.h:
+	* VariableDeclaration.h:
+	* LeftShiftExpression.h:
+	* RemainderExpression.h:
+	* SubtractionExpression.h:
+	* StrictEqualExpression.h:
+	* FunctionCallExpression.h:
+	* MultiplicationExpression.h: 
+
+2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DArrayField.h:
 	* var.h:
 	* Null.h:

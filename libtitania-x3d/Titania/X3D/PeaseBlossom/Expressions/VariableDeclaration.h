@@ -102,7 +102,6 @@ public:
 		return value;
 	}
 
-
 private:
 
 	///  @name Construction

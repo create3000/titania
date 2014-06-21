@@ -50,8 +50,13 @@
 
 #include "vsObject.h"
 
+#include "../Objects/vsFunction.h"
+
 namespace titania {
 namespace pb {
+
+PropertyDescriptor::~PropertyDescriptor ()
+{ }
 
 const std::string vsObject::typeName = "Object";
 
@@ -101,20 +106,20 @@ vsObject::copy (vsExecutionContext* const executionContext) const
 
 void
 vsObject::addProperty (const std::string & name,
-                          const var & value,
-                          const PropertyFlagsType flags,
-                          const Getter & get,
-                          const Setter & set)
+                       const var & value,
+                       const PropertyFlagsType flags,
+                       const var & get,
+                       const var & set)
 throw (std::invalid_argument)
 {
-	if (name .empty ())
-		throw std::invalid_argument ("Name is empty.");
-
-	const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { this, value, flags, get, set });
+	const auto pair = propertyDescriptors .emplace (name, PropertyDescriptor { value ? value : make_var <Undefined> (), flags, get, set });
 
 	if (pair .second)
-		pair .first -> second .value  .addParent (this);
-	
+	{
+		pair .first -> second .value .addParent (this);
+		pair .first -> second .get   .addParent (this);
+		pair .first -> second .set   .addParent (this);
+	}
 	else
 		throw std::invalid_argument ("Property already exists.");
 }
@@ -123,30 +128,35 @@ void
 vsObject::updateProperty (const std::string & name,
                           const var & value,
                           const PropertyFlagsType flags,
-                          const Getter & get,
-                          const Setter & set)
+                          const var & get,
+                          const var & set)
 throw (std::invalid_argument)
 {
-	if (name .empty ())
-		throw std::invalid_argument ("Name is empty.");
-
 	try
 	{
 		auto & propertyDescriptor = propertyDescriptors .at (name);
 
-		if (propertyDescriptor .flags & CONFIGURABLE)
-			propertyDescriptor .flags = flags;
-	
 		if (propertyDescriptor .flags & WRITABLE)
 		{
-			propertyDescriptor .value = value;
-			propertyDescriptor .get   = get;
-			propertyDescriptor .set   = set;
+			if (value)
+				propertyDescriptor .value = value;
+		}
+
+		if (propertyDescriptor .flags & CONFIGURABLE)
+		{
+			if (not (propertyDescriptor .flags & SKIP))
+				propertyDescriptor .flags = flags;
+
+			if (get)
+				propertyDescriptor .get = get;
+
+			if (set)
+				propertyDescriptor .set = set;
 		}
 	}
 	catch (const std::out_of_range &)
 	{
-		addProperty (name, value, flags, get, set );
+		addProperty (name, value, flags, get, set);
 	}
 }
 

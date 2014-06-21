@@ -68,7 +68,9 @@ vsExecutionContext::vsExecutionContext (vsExecutionContext* const executionConte
 	     defaultObjects (),
 	        expressions (),
 	          functions ()
-{ construct (); }
+{
+	construct ();
+}
 
 void
 vsExecutionContext::construct ()
@@ -85,7 +87,7 @@ vsExecutionContext::addFunctionDeclaration (const basic_ptr <vsFunction> & funct
 throw (std::invalid_argument)
 {
 	const auto pair = functions .emplace (function -> getName (), function);
-	
+
 	if (pair .second)
 		pair .first -> second .addParent (this);
 

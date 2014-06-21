@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_JS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
 
 #include "../Objects/vsObject.h"
 #include "../Primitives/String.h"

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 
 #include "../Expressions/vsExpression.h"
 #include "../Primitives/Boolean.h"
@@ -163,7 +163,6 @@ public:
 
 		return false;
 	}
-
 
 private:
 

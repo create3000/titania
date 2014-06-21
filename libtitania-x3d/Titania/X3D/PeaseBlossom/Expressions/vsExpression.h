@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_JS_EXPRESSION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
 
-#include "../Primitives/vsValue.h"
 #include "../Objects/vsObject.h"
+#include "../Primitives/vsValue.h"
 
 namespace titania {
 namespace pb {

@@ -53,8 +53,8 @@
 #include "../Objects/NativeFunction.h"
 #include "../Objects/Object.h"
 #include "../Primitives/Boolean.h"
-#include "../Primitives/Undefined.h"
 #include "../Primitives/Number.h"
+#include "../Primitives/Undefined.h"
 
 namespace titania {
 namespace pb {

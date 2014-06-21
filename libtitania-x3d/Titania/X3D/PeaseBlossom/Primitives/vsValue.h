@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_VALUE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_VALUE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_VALUE_H__
 
 #include "../Base/vsChildObject.h"
 #include "../Base/vsOutputStreamObject.h"
@@ -74,7 +74,7 @@ class vsValue :
 public:
 
 	///  @name Construction
-	
+
 	///  Creates a copy of this object.
 	virtual
 	var

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_JS_CONSTANTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
 
 namespace titania {
 namespace pb {
@@ -167,6 +167,7 @@ constexpr PropertyFlagsType NONE         = 0;
 constexpr PropertyFlagsType WRITABLE     = 1 << 0;
 constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
 constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
+constexpr PropertyFlagsType SKIP         = 1 << 3;
 constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE;
 
 } // pb

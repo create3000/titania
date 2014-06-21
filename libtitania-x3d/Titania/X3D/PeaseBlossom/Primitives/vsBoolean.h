@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_JS_BOOLEAN_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_BOOLEAN_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_BOOLEAN_H__
 
 #include "../Primitives/vsPrimitive.h"
 

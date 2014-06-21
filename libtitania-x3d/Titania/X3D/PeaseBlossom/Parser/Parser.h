@@ -53,7 +53,7 @@
 
 #include "../Bits/Exception.h"
 #include "../Expressions/AssignmentOperatorType.h"
-#include "../Expressions/ObjectLiteral.h"
+#include "../Objects/Object.h"
 #include "../Primitives/var.h"
 
 #include <iostream>
@@ -181,10 +181,10 @@ private:
 	objectLiteral (var &);
 
 	bool
-	propertyDefinitionList (PropertyDefinitionArray &);
+	propertyDefinitionList (basic_ptr <Object> &);
 
 	bool
-	propertyDefinition (PropertyDefinitionArray &);
+	propertyDefinition (basic_ptr <Object> &);
 
 	bool
 	propertyName (var & value);

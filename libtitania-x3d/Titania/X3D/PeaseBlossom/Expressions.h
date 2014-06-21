@@ -57,13 +57,13 @@
 #include "Expressions/FunctionCallExpression.h"
 #include "Expressions/FunctionExpression.h"
 #include "Expressions/LeftShiftExpression.h"
-#include "Expressions/ObjectLiteral.h"
 #include "Expressions/MultiplicationExpression.h"
+#include "Expressions/ObjectLiteral.h"
 #include "Expressions/RemainderExpression.h"
 #include "Expressions/ReturnStatement.h"
-#include "Expressions/SubtractionExpression.h"
 #include "Expressions/StrictEqualExpression.h"
-#include "Expressions/VariableExpression.h"
+#include "Expressions/SubtractionExpression.h"
 #include "Expressions/VariableDeclaration.h"
+#include "Expressions/VariableExpression.h"
 
 #endif

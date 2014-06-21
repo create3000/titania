@@ -115,7 +115,6 @@ public:
 	getType () const final override
 	{ return STRING_OBJECT; }
 
-
 	///  @name Common operations
 
 	///  Converts its input argument to a non-Object type.

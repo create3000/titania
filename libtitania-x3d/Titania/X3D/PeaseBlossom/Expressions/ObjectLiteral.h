@@ -56,15 +56,61 @@
 namespace titania {
 namespace pb {
 
-enum class PropertyDefinitionType
+/**
+ *  Class to represent a ECMAScript object literal expression.
+ */
+class ObjectLiteral :
+	public vsExpression
 {
-	VALUE,
-	GET,
-	SET
+public:
+
+	///  @name Construction
+
+	///  Constructs new ObjectLiteral expression.
+	ObjectLiteral (vsExecutionContext* const executionContext, var && object) :
+		    vsExpression (),
+		executionContext (executionContext),
+		          object (object)
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <ObjectLiteral> (executionContext, object -> copy (executionContext)); }
+
+	///  @name Common members
+
+	///  Returns the type of the value. For this expression this is »ADDITION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return ADDITION_EXPRESSION; }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const final override
+	{ return object -> copy (executionContext .get ()); }
+
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (executionContext, object); }
+
+	///  @name Members
+
+	const basic_ptr <vsExecutionContext> executionContext;
+	const var                            object;
 
 };
-
-using PropertyDefinitionArray = std::vector <std::tuple <PropertyDefinitionType, var, var>> ;
 
 } // pb
 } // titania
