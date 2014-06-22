@@ -86,6 +86,12 @@ public:
 	toPrimitive () const final override
 	{ return var (const_cast <vsPrimitive*> (this)); }
 
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const
+	{ return var (const_cast <vsPrimitive*> (this)); }
+
 
 protected:
 

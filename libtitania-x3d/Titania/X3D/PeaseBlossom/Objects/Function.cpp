@@ -51,6 +51,9 @@
 #include "Function.h"
 
 #include "../Objects/Object.h"
+#include "../Primitives/Undefined.h"
+
+#include <Titania/String/to_string.h>
 
 namespace titania {
 namespace pb {
@@ -169,7 +172,7 @@ Function::push (basic_ptr <vsObject> && localObject)
 	// As LAST step check recursion depth.
 
 	if (recursionDepth > recursionLimit)
-		throw RuntimeError ("Maximum recursion depth exceeded while calling function '" + getName () + "'.");
+		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () + "'.");
 }
 
 void

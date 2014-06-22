@@ -340,9 +340,10 @@ public:
 
 };
 
-bool
-fun ()
-{ return true; }
+template <class Arg>
+Arg
+fun (Arg && arg)
+{ return Arg (std::forward <Arg> (arg)); }
 
 int
 main (int argc, char** argv)
@@ -355,9 +356,13 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::function <bool (int)> b = std::bind (&fun);
-
-	std::clog << b (1) << std::endl;
+	std::string s = "1234567";
+	
+	fun (s);
+	std::clog << s << std::endl;
+	
+	fun (std::move (s));
+	std::clog << s << std::endl;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

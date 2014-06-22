@@ -51,12 +51,13 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
 
-#include "../Base/vsChildObject.h"
-#include "../Primitives/Undefined.h"
+#include "../Primitives/vsValue.h"
 #include "../Primitives/array.h"
 
 namespace titania {
 namespace pb {
+
+class vsExecutionContext;
 
 class vsBlock :
 	virtual public vsChildObject,
@@ -97,8 +98,7 @@ protected:
 	vsBlock () :
 		       vsChildObject (),
 		vsOutputStreamObject (),
-		         expressions (),
-		           undefined (new Undefined ())
+		         expressions ()
 	{ construct (); }
 
 	/// @name Operations
@@ -112,14 +112,11 @@ protected:
 	}
 
 	///  Executes the associated expessions of this context.
-	virtual
-	var
+	void
 	run ()
 	{
 		for (const auto & expression : expressions)
-			expression -> toValue ();
-
-		return undefined;
+			expression -> evaluate ();
 	}
 
 private:
@@ -129,12 +126,11 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expressions, undefined); }
+	{ addChildren (expressions); }
 
 	/// @name Members
 
 	array expressions; // Use deque to keep iters when inserting value.
-	var   undefined;
 
 };
 

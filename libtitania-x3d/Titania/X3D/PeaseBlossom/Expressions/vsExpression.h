@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
 
 #include "../Objects/vsObject.h"
+#include "../Primitives/Undefined.h"
 #include "../Primitives/vsValue.h"
 
 namespace titania {
@@ -124,10 +125,21 @@ public:
 	throw (TypeError) final override
 	{ return toValue () -> toObject (); }
 
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const override
+	{ return make_var <Undefined> (); }
+
 	virtual
 	var
 	setValue (var &&) const
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
+
+	virtual
+	void
+	evaluate () const
+	{ toValue (); }
 
 	///  @name Input/Output
 

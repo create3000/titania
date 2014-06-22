@@ -109,7 +109,7 @@ public:
 	void
 	dispose () final override;
 
-	///  Sets the recusion limit to @a value.  The default value for the recursion limit is 1000.
+	///  Sets the recusion limit to @a value.  The default value for the recursion limit is 100,000.
 	static
 	void
 	setRecursionLimit (const size_t value)
@@ -159,7 +159,7 @@ private:
 
 	///  @name Member access
 
-	using DefaultObjectsStack = basic_array <basic_array <basic_ptr <vsObject>>   >;
+	using DefaultObjectsStack = basic_array <basic_array <basic_ptr <vsObject>>>;
 
 	std::vector <std::string>                                   formalParameters;
 	std::map <const vsExecutionContext*, basic_ptr <vsObject>>  closures;

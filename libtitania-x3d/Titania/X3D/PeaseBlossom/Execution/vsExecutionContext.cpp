@@ -133,7 +133,9 @@ vsExecutionContext::run ()
 		for (const auto & function : functions)
 			getLocalObject () -> updateProperty (function .second -> getName (), function .second -> copy (this));
 
-		return vsBlock::run ();
+		vsBlock::run ();
+
+		return make_var <Undefined> ();
 	}
 	catch (const ReturnException & exception)
 	{

@@ -138,8 +138,13 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const
-	{ return var (const_cast <vsValue*> (this)); }
+	toValue () const = 0;
+
+	///  Evaluates the expression.
+	virtual
+	void
+	evaluate () const
+	{ }
 
 	///  @name Input/Output
 

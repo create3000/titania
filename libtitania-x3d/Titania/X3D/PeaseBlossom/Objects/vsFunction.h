@@ -53,9 +53,6 @@
 
 #include "../Objects/vsObject.h"
 #include "../Primitives/String.h"
-#include "../Primitives/Undefined.h"
-
-#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {

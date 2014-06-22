@@ -1395,8 +1395,7 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
-				//lhs = make_less (std::move (lhs), std::move (rhs));
+				lhs = createLessExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1517,8 +1516,7 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
-				//lhs = make_equal (std::move (lhs), std::move (rhs));
+				lhs = createEqualExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1936,8 +1934,8 @@ Parser::statement ()
 	if (ifStatement ())
 		return true;
 
-	//if (iterationStatement ())
-	//	return true;
+	if (iterationStatement ())
+		return true;
 
 	//if (continueStatement ())
 	//	return true;
@@ -2185,6 +2183,79 @@ Parser::ifStatement ()
 		
 		throw SyntaxError ("Expected a '(' after 'if'.");
 	}
+
+	return false;
+}
+
+bool
+Parser::iterationStatement ()
+{
+	//__LOG__ << std::endl;
+
+	comments ();
+
+	// ...
+
+	if (Grammar::_for (istream))
+	{
+		comments ();
+		
+		if (Grammar::OpenParenthesis (istream))
+		{
+			comments ();
+			
+			if (Grammar::var (istream))
+			{
+				if (variableDeclarationList ())
+				{
+					comments ();
+					
+					if (Grammar::Semicolon (istream))
+					{
+						var booleanExpression;
+
+						expression (booleanExpression);
+
+						comments ();
+						
+						if (Grammar::Semicolon (istream))
+						{
+							var iterationExpression;
+
+							expression (iterationExpression);
+
+							comments ();
+						
+							if (Grammar::CloseParenthesis (istream))
+							{
+								auto value = make_ptr <ForStatement> (std::move (booleanExpression), std::move (iterationExpression));
+
+								pushBlock (value -> getBlock () .get ());
+
+								statement ();
+
+								popBlock ();
+
+								getBlock () -> getExpressions () .emplace_back (std::move (value));
+							
+								return true;
+							}
+
+							throw SyntaxError ("Expected a ')'.");
+						}
+
+						throw SyntaxError ("Expected a ';'.");
+					}
+
+					throw SyntaxError ("Expected a ';'.");
+				}
+			}
+		}
+
+		throw SyntaxError ("Expected a '(' after 'for'.");
+	}
+
+	// ...
 
 	return false;
 }

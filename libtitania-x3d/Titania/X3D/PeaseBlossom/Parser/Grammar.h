@@ -157,6 +157,7 @@ public:
 
 	static const io::string _if;
 	static const io::string _else;
+	static const io::string _for;
 	static const io::string _return;
 
 	///  @name Values
@@ -302,6 +303,7 @@ const io::string    Grammar::BitwiseORAssignment ("|=");
 
 const io::string Grammar::_if ("if");
 const io::string Grammar::_else ("else");
+const io::string Grammar::_for ("for");
 const io::string Grammar::_return ("return");
 
 // Values

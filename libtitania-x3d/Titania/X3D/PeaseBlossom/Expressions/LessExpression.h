@@ -48,26 +48,101 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
 
-#include "Expressions/AdditionExpression.h"
-#include "Expressions/AssignmentExpression.h"
-#include "Expressions/DivisionExpression.h"
-#include "Expressions/EqualExpression.h"
-#include "Expressions/ForStatement.h"
-#include "Expressions/FunctionCallExpression.h"
-#include "Expressions/FunctionExpression.h"
-#include "Expressions/IfStatement.h"
-#include "Expressions/LeftShiftExpression.h"
-#include "Expressions/LessExpression.h"
-#include "Expressions/MultiplicationExpression.h"
-#include "Expressions/ObjectLiteral.h"
-#include "Expressions/RemainderExpression.h"
-#include "Expressions/ReturnStatement.h"
-#include "Expressions/StrictEqualExpression.h"
-#include "Expressions/SubtractionExpression.h"
-#include "Expressions/VariableDeclaration.h"
-#include "Expressions/VariableExpression.h"
+#include "../Expressions/vsBooleanExpression.h"
+#include "../Primitives/vsString.h"
+
+#include <cmath>
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a ECMAScript remainder expression.
+ */
+class LessExpression :
+	public vsBooleanExpression
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new LessExpression expression.
+	LessExpression (var && lhs, var && rhs) :
+		vsBooleanExpression (),
+		                lhs (std::move (lhs)),
+		                rhs (std::move (rhs))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{ return make_var <LessExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+
+	///  @name Common members
+
+	///  Returns the type of the value. For this expression this is »REMAINDER«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return LESS_EXPRESSION; }
+
+	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	bool
+	toBoolean () const final override
+	{ return evaluate (lhs, rhs); }
+
+	///  Evaluates the expression.
+	static
+	bool
+	evaluate (const var & lhs, const var & rhs)
+	{
+		const var x = lhs -> toValue ();
+		const var y = rhs -> toValue ();
+
+		if (x -> getType () == STRING and y -> getType () == STRING)
+			return static_cast <vsString*> (x .get ()) -> getString () < static_cast <vsString*> (y .get ()) -> getString ();
+
+		return x -> toNumber () < y -> toNumber ();
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
+
+	///  @name Members
+
+	const var lhs;
+	const var rhs;
+
+};
+
+///  @relates LessExpression
+///  @name Construction
+
+///  Constructs new LessExpression expression.
+inline
+var
+createLessExpression (var && lhs, var && rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return LessExpression::evaluate (lhs, rhs) ? make_var <True> () : make_var <False> ();
+
+	return make_var <LessExpression> (std::move (lhs), std::move (rhs));
+}
+
+} // pb
+} // titania
 
 #endif

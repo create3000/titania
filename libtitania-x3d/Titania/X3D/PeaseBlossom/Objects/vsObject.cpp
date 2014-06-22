@@ -51,6 +51,7 @@
 #include "vsObject.h"
 
 #include "../Objects/vsFunction.h"
+#include "../Primitives/Undefined.h"
 
 namespace titania {
 namespace pb {

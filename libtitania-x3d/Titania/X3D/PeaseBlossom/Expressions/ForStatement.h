@@ -48,26 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
 
-#include "Expressions/AdditionExpression.h"
-#include "Expressions/AssignmentExpression.h"
-#include "Expressions/DivisionExpression.h"
-#include "Expressions/EqualExpression.h"
-#include "Expressions/ForStatement.h"
-#include "Expressions/FunctionCallExpression.h"
-#include "Expressions/FunctionExpression.h"
-#include "Expressions/IfStatement.h"
-#include "Expressions/LeftShiftExpression.h"
-#include "Expressions/LessExpression.h"
-#include "Expressions/MultiplicationExpression.h"
-#include "Expressions/ObjectLiteral.h"
-#include "Expressions/RemainderExpression.h"
-#include "Expressions/ReturnStatement.h"
-#include "Expressions/StrictEqualExpression.h"
-#include "Expressions/SubtractionExpression.h"
-#include "Expressions/VariableDeclaration.h"
-#include "Expressions/VariableExpression.h"
+#include "../Execution/Block.h"
+#include "../Expressions/vsExpression.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a ECMAScript object literal expression.
+ */
+class ForStatement :
+	public vsExpression
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new ForStatement expression.
+	ForStatement (var && booleanExpression, var && iterationExpression) :
+		       vsExpression (),
+		  booleanExpression (std::move (booleanExpression ? booleanExpression : make_var <True> ())),
+		iterationExpression (std::move (iterationExpression)),
+		              block (new Block ())
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	var
+	copy (vsExecutionContext* const executionContext) const final override
+	{
+		const auto copy = make_ptr <ForStatement> (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
+
+		copy -> getBlock () -> import (block .get (), executionContext);
+
+		return copy;
+	}
+
+	///  @name Common members
+
+	///  Returns the type of the value. For this expression this is »ADDITION«.
+	virtual
+	ValueType
+	getType () const final override
+	{ return FOR_STATEMENT; }
+
+	///  @name Member access
+
+	const basic_ptr <Block> &
+	getBlock () const
+	{ return block; }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	void
+	evaluate () const final override
+	{
+		for ( ; booleanExpression -> toBoolean (); iterationExpression -> toValue ())
+			block -> run ();
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (booleanExpression, iterationExpression, block); }
+
+	///  @name Members
+
+	const var               booleanExpression;
+	const var               iterationExpression;
+	const basic_ptr <Block> block;
+
+};
+
+} // pb
+} // titania
 
 #endif

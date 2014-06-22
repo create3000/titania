@@ -58,7 +58,7 @@
 #include <Titania/Basic/ReferenceIterator.h>
 #include <Titania/Utility/Adapter.h>
 
-#include <deque>
+#include <vector>
 #include <initializer_list>
 
 namespace titania {
@@ -76,7 +76,7 @@ public:
 
 private:
 
-	using array_type = std::deque <value_type*>;
+	using array_type = std::vector <value_type*>;
 
 
 public:
@@ -569,7 +569,7 @@ basic_array <Type>::emplace_front (Args && ... args)
 {
 	Type* const element = new Type (std::forward <Args> (args) ...);
 
-	value .emplace_front (element);
+	value .insert (value .begin (), element);
 
 	add (element);
 }

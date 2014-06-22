@@ -37,7 +37,8 @@ perl -p -e '
 	replace (sub { $_ [0] =~ s/\[\]/[ ]/go });                                                          # add space between [ ]
 	replace (sub { $_ [0] =~ s/\!=/not_eq/go });                                                        # change != to not_eq
 	replace (sub { $_ [0] =~ s/\|\|/or/go });                                                           # change || to or
-	replace (sub { $_ [0] =~ s/>(\s+)>/>>$1/go });                                                      # change > > to >>
+	replace (sub { while ($_ [0] =~ s/>(\s+)>/>>$1/go) { } });                                          # change > > to >>
+   replace (sub { $_ [0] =~ s/\s+;/;/so });                                                            # remove space before semicolon
 	replace (sub { $_ [0] =~ s/></> </go });                                                            # add space between ><
 	replace (sub { $_ [0] =~ s/(\s+-\>)\s*/$1 /go });                                                   # change variable->member to variable -> member
 	replace (sub { $_ [0] =~ s/([\w\d\)\]])(-\>)\s*/$1 $2 /go });                                       # change variable->member to variable -> member

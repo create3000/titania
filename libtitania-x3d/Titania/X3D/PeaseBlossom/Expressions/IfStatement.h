@@ -68,11 +68,11 @@ public:
 	///  @name Construction
 
 	///  Constructs new IfStatement expression.
-	IfStatement (var && expression) :
-		vsExpression (),
-		  expression (expression),
-		   thenBlock (new Block ()),
-		   elseBlock (new Block ())
+	IfStatement (var && booleanExpression) :
+		     vsExpression (),
+		booleanExpression (std::move (booleanExpression)),
+		        thenBlock (new Block ()),
+		        elseBlock (new Block ())
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -80,7 +80,7 @@ public:
 	var
 	copy (vsExecutionContext* const executionContext) const final override
 	{
-		const auto copy = make_ptr <IfStatement> (expression -> copy (executionContext));
+		const auto copy = make_ptr <IfStatement> (booleanExpression -> copy (executionContext));
 
 		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
 		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
@@ -110,9 +110,15 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
-	toValue () const final override
-	{ return expression -> toBoolean () ? thenBlock -> run () : elseBlock -> run (); }
+	void
+	evaluate () const final override
+	{
+		if (booleanExpression -> toBoolean ())
+			thenBlock -> run ();
+		
+		 else
+		   elseBlock -> run ();
+	}
 
 
 private:
@@ -122,11 +128,11 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expression, thenBlock, elseBlock); }
+	{ addChildren (booleanExpression, thenBlock, elseBlock); }
 
 	///  @name Members
 
-	const var               expression;
+	const var               booleanExpression;
 	const basic_ptr <Block> thenBlock;
 	const basic_ptr <Block> elseBlock;
 

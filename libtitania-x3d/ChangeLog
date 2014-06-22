@@ -1,3 +1,32 @@
+2014-06-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Expressions.h:
+	* Parser.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* Function.h:
+	* vsObject.h:
+	* array.h:
+	* vsConstants.h:
+	* Program.h:
+	* vsBlock.h:
+	* vsObject.cpp:
+	* vsFunction.h:
+	* Function.cpp:
+	* vsValue.h:
+	* Context.cpp:
+	* vsPrimitive.h:
+	* IfStatement.h:
+	* ForStatement.h:
+	* vsExpression.h:
+	* LessExpression.h:
+	* ReturnStatement.h:
+	* EqualExpression.h:
+	* vsExecutionContext.cpp:
+	* VariableDeclaration.h:
+	* AssignmentOperatorType.h: 
+
 2014-06-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

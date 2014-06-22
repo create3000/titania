@@ -168,6 +168,12 @@ public:
 	throw (TypeError) override
 	{ return var (const_cast <vsObject*> (this)); }
 
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	toValue () const
+	{ return var (const_cast <vsObject*> (this)); }
+
 	///  @name Functions
 
 	///  Checks wehter this object has a propterty @a name.

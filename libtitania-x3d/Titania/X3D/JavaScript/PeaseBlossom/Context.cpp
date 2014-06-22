@@ -75,6 +75,15 @@ struct print
 	}
 };
 
+struct now
+{
+	pb::var
+	operator () (const pb::basic_ptr <pb::vsObject> & object, const std::vector <pb::var> & arguments)
+	{
+		return pb::make_var <pb::Number> (chrono::now ());
+	}
+};
+
 } // global
 
 const std::string Context::componentName  = "Browser";
@@ -99,6 +108,7 @@ throw (std::exception) :
 		program -> getGlobalObject () -> addProperty ("TRUE",  pb::make_var <pb::True> (),  pb::NONE);
 
 		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
+		program -> getGlobalObject () -> addProperty ("now",   pb::make_var <pb::NativeFunction> ("now",   global::now { }),                                      pb::NONE);
 
 		program -> fromString (getECMAScript ());
 		program -> run ();

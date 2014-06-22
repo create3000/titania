@@ -189,6 +189,16 @@ function test1 ()
 	print ('// RelationalExpression');
 
 	print ();
+	print (undefined < undefined);
+	print (undefined < null);
+	print (undefined < true);
+	print (undefined < false);
+	print (undefined < 0);
+	print (undefined < 1);
+	print (undefined < '');
+	print (undefined < 'a');
+	print (undefined < { });
+
 	print (a < b);
 	print (a > b);
 	print (a <= b);
@@ -277,51 +287,71 @@ function test1 ()
 }
 */
 
-function r (x)
+var n = 0;
+
+function fibonacci_recursive (value)
 {
-	print (x);
+	n = n + 1;
 
-	if (x === 10)
-		var a = 10;
+	if (value === 0)
+		return 0;
 
-	if (x)
-		return r (x - 1);
+	if (value === 1)
+		return 1;
 
-	return x + a;
+	return fibonacci_recursive (value - 1) + fibonacci_recursive (value - 2);
+}
+
+function fibonacci_iterative (value)
+{
+	if (value === 0)
+		return 0;
+
+	if (value === 1)
+		return 1;
+
+	var result;
+	var h1 = 0;
+	var h2 = 1;
+
+	for (var i = 1; i < value; i = i + 1)
+	{
+		result = h1 + h2;
+		h1     = h2;
+		h2     = result;
+	}
+
+	return result;
+}
+
+function for_time (n)
+{
+	var result = 0;
+
+	for (var i = 0; i < n; i = i + 1)
+		result = result + now ();
+	
+	return result;
 }
 
 function set_time (value, time)
 {
-	function i ()
-	{
-		var b = 0;
-		
-		f ();
-
-		function f ()
-		{
-			return b += 1;
-		};
-
-		return f;
-	}
-
-	if (1)
-	{
-		var f1 = i ();
-		var f2 = i ();
-
-		print (f1 === f2);
-		print (f1 ());
-		print (f2 ());
-	}
-	
 	print ('Recursion');
-	
-	var x = r (1000);
 
-	print ('result: ', x);
+	n = 0;
 	
+	var t0 = now ();
+	print ('result: ', fibonacci_recursive (24));
+	print ('result: ', n);
+	print ('time: ',   now () - t0);
+
+	//var t0 = now ();
+	//print ('result: ', fibonacci_iterative (1000000));
+	//print ('time: ',   now () - t0);
+	
+	//var t0 = now ();
+	//print ('result: ', for_time (1000000));
+	//print ('time: ',   now () - t0);
 }
 "
   ]
@@ -330,16 +360,73 @@ function set_time (value, time)
 
 DEF Script2 Script {
   inputOnly SFTime set_time
+  field SFFloat now 1
+  field SFNode node Script {
+  exposedField SFDouble result 0
+  exposedField SFDouble h1 0
+  exposedField SFDouble h2 1
+  
+  }
 
   url "javascript:
+ 
+var n = 0;
+
+function fibonacci_recursive (value)
+{
+	n = n + 1;
+
+	if (value === 0)
+		return 0;
+
+	if (value === 1)
+		return 1;
+
+	return fibonacci_recursive (value - 1) + fibonacci_recursive (value - 2);
+}
+ 
+function fibonacci_iterative (value)
+{
+	if (value === 0)
+		return 0;
+
+	if (value === 1)
+		return 1;
+
+	for (var i = 1; i < value; i = i + 1)
+	{
+		node .result = node .h1 + node .h2;
+		node .h1     = node .h2;
+		node .h2     = node .result;
+	}
+
+	return node .result;
+}
+
+function for_time (n)
+{
+	var result = 0;
+
+	for (var i = 0; i < n; i = i + 1)
+		result = result + now;
+	
+	return result;
+}
 
 function set_time (value, time)
 {
-	function f () { return function () { return 1 + 2; }; };
+	var t0 = Date .now ();
+	print ('result: ', fibonacci_recursive (24));
+	print ('result: ', n);
+	print ('time: ',   (Date .now () - t0) / 1000);
 
-	print (time);
-	print (f () === f ());
-	print (f () ());
+	//var t0 = Date .now ();
+	//print ('result: ', fibonacci_iterative (1000000));
+	//print ('time: ',   (Date .now () - t0) / 1000);
+
+	//var t0 = Date .now ();
+	//print ('result: ', for_time (1000000));
+	//print ('time: ',   (Date .now () - t0) / 1000);
 }
 "
   directOutput TRUE

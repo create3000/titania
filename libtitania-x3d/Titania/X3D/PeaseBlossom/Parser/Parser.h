@@ -302,6 +302,9 @@ private:
 	ifStatement ();
 
 	bool
+	iterationStatement ();
+
+	bool
 	returnStatement ();
 
 	// A.5 Functions and Programs

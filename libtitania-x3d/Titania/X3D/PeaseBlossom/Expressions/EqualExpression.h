@@ -48,55 +48,92 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_EQUAL_EXPRESSION__H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_EQUAL_EXPRESSION__H__
 
-#include "../Execution/vsExecutionContext.h"
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/vsBooleanExpression.h"
+#include "../Primitives/vsString.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript variable declaration expression.
+ *  Class to represent a ECMAScript remainder expression.
  */
-class VariableDeclaration :
-	public vsExpression
+class EqualExpression :
+	public vsBooleanExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new VariableDeclaration expression.
-	VariableDeclaration (vsExecutionContext* const executionContext, std::string && identifier, var && expression) :
-		    vsExpression (),
-		executionContext (executionContext),
-		      identifier (std::move (identifier)),
-		      expression (std::move (expression))
+	///  Constructs new EqualExpression expression.
+	EqualExpression (var && lhs, var && rhs) :
+		vsBooleanExpression (),
+		                lhs (std::move (lhs)),
+		                rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	var
 	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <VariableDeclaration> (executionContext, std::string (identifier), expression -> copy (executionContext)); }
+	{ return make_var <EqualExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »VARIABLE_DECLARATION«.
+	///  Returns the type of the value. For this expression this is »REMAINDER«.
 	virtual
 	ValueType
 	getType () const final override
-	{ return VARIABLE_DECLARATION; }
+	{ return EQUAL_EXPRESSION; }
 
 	///  @name Operations
 
-	///  Converts its input argument to either Primitive or Object type.
+	///  Converts its argument to a value of type Boolean.
 	virtual
-	void
-	evaluate () const final override
+	bool
+	toBoolean () const final override
+	{ return evaluate (lhs, rhs); }
+
+	///  Evaluates the expression.
+	static
+	bool
+	evaluate (const var & lhs, const var & rhs)
 	{
-		executionContext -> getLocalObject () -> updateProperty (identifier, expression -> toValue (), WRITABLE | ENUMERABLE | CONFIGURABLE);
+		const var x = lhs -> toPrimitive ();
+		const var y = rhs -> toPrimitive ();
+
+		if (x -> getType () == y -> getType ())
+		{
+			switch (x -> getType ())
+			{
+				case UNDEFINED:
+					return true;
+
+				case NULL_OBJECT:
+					return true;
+
+				case NUMBER:
+					return x -> toNumber () == y -> toNumber ();
+
+				case STRING:
+					return static_cast <vsString*> (x .get ()) -> getString () == static_cast <vsString*> (y .get ()) -> getString ();
+
+				case BOOLEAN:
+					return x -> toBoolean () == y -> toBoolean ();
+
+				default:
+					return x == y;
+			}
+		}
+
+		if (x -> isPrimitive () and y -> isPrimitive ())
+			return x -> toNumber () == y -> toNumber ();
+
+		return false;
 	}
 
 private:
@@ -106,15 +143,28 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (executionContext, expression); }
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
-	const std::string                    identifier;
-	const var                            expression;
+	const var lhs;
+	const var rhs;
 
 };
+
+///  @relates EqualExpression
+///  @name Construction
+
+///  Constructs new EqualExpression expression.
+inline
+var
+createEqualExpression (var && lhs, var && rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return EqualExpression::evaluate (lhs, rhs) ? make_var <True> () : make_var <False> ();
+
+	return make_var <EqualExpression> (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

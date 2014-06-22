@@ -92,8 +92,8 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
-	toValue () const final override
+	void
+	evaluate () const final override
 	{
 		const var value = expression -> toValue ();
 

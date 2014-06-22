@@ -54,7 +54,6 @@
 #include "../Base/vsGarbageCollector.h"
 #include "../Execution/vsExecutionContext.h"
 #include "../Objects/Object.h"
-#include "../Primitives/Undefined.h"
 #include "../Primitives/vsValue.h"
 
 #include <memory>
@@ -67,6 +66,10 @@ class Program :
 {
 public:
 
+	using vsExecutionContext::run;
+	using vsGarbageCollector::deleteObjectsAsync;
+	using vsGarbageCollector::trimFreeMemory;
+
 	///  @name Common members
 
 	///  Returns the type name of this object.
@@ -74,26 +77,6 @@ public:
 	const std::string &
 	getTypeName () const override
 	{ return typeName; }
-
-	///  @name Operations
-
-	///  Executes the program code.
-	virtual
-	var
-	run () final override
-	{ return vsExecutionContext::run (); }
-
-	///  Asynchronously deletes all collected garbage.
-	static
-	void
-	deleteObjectsAsync ()
-	{ vsGarbageCollector::deleteObjectsAsync (); }
-
-	///  Gives the allocated memory back to the system.
-	static
-	void
-	trimFreeMemory ()
-	{ vsGarbageCollector::trimFreeMemory (); }
 
 	///  @name Input/Output
 
