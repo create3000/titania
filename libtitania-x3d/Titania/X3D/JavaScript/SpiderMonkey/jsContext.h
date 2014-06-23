@@ -191,7 +191,7 @@ private:
 	prepareEvents ();
 
 	void
-	set_field (X3DFieldDefinition*);
+	set_field (X3DFieldDefinition* const, const jsval &);
 
 	void
 	eventsProcessed ();

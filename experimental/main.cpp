@@ -340,10 +340,10 @@ public:
 
 };
 
-template <class Arg>
-Arg
-fun (Arg && arg)
-{ return Arg (std::forward <Arg> (arg)); }
+template <class ... Args>
+std::tuple <Args ...>
+fun (Args && ... args)
+{ return std::tuple <Args ...> (std::forward <Args> (args) ...); }
 
 int
 main (int argc, char** argv)
@@ -358,11 +358,19 @@ main (int argc, char** argv)
 
 	std::string s = "1234567";
 	
-	fun (s);
-	std::clog << s << std::endl;
+	auto p = fun (s);
+	std::clog << std::get <0> (p) << std::endl;
 	
 	fun (std::move (s));
-	std::clog << s << std::endl;
+	std::clog << std::get <0> (p) << std::endl;
+
+	size_t t = 1234567;
+	
+	auto o = fun (t);
+	std::clog << std::get <0> (o) << std::endl;
+	
+	fun (std::move (t));
+	std::clog << std::get <0> (o) << std::endl;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

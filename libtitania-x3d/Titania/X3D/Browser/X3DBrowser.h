@@ -370,7 +370,7 @@ throw (Error <DISPOSED>)
 
 	ostream .imbue (std::locale::classic ());
 
-	print (ostream, args ...);
+	print (ostream, std::forward <Args> (args) ...);
 
 	getConsole () -> string () .emplace_back (ostream .str ());
 }
@@ -382,7 +382,7 @@ X3DBrowser::print (std::ostringstream & ostream, First && first, Args && ... arg
 {
 	ostream << first;
 
-	print (ostream, args ...);
+	print (ostream, std::forward <Args> (args) ...);
 }
 
 } // X3D

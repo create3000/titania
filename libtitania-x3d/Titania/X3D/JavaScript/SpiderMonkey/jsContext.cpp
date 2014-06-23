@@ -94,9 +94,16 @@ const std::string jsContext::typeName       = "jsContext";
 const std::string jsContext::containerField = "context";
 
 JSClass jsContext::GlobalClass = {
-	"global", JSCLASS_GLOBAL_FLAGS,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	"global",
+	JSCLASS_GLOBAL_FLAGS,
+	JS_PropertyStub,
+	JS_PropertyStub,
+	JS_PropertyStub,
+	JS_StrictPropertyStub,
+	JS_EnumerateStub,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -293,19 +300,27 @@ jsContext::defineProperty (JSContext* const context,
 		case X3DConstants::SFInt32:
 		case X3DConstants::SFString:
 		case X3DConstants::SFTime:
+		{
 			JS_DefineProperty (context,
-			                   obj, name .c_str (),
+			                   obj,
+			                   name .c_str (),
 			                   JSVAL_VOID,
-			                   getBuildInProperty, setProperty,
+			                   getBuildInProperty,
+			                   setProperty,
 			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
 			break;
+		}
 		default:
+		{
 			JS_DefineProperty (context,
-			                   obj, name .c_str (),
+			                   obj,
+			                   name .c_str (),
 			                   JSVAL_VOID,
-			                   getProperty, setProperty,
+			                   getProperty,
+			                   setProperty,
 			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
 			break;
+		}
 	}
 }
 
@@ -511,7 +526,7 @@ jsContext::set_live ()
 				case inputOutput:
 				{
 					if (functions .count (field))
-						field -> addInterest (this, &jsContext::set_field, field);
+						field -> addInterest (this, &jsContext::set_field, field, std::ref (functions [field]));
 
 					break;
 				}
@@ -556,7 +571,7 @@ jsContext::prepareEvents ()
 }
 
 void
-jsContext::set_field (X3DFieldDefinition* const field)
+jsContext::set_field (X3DFieldDefinition* const field, const jsval & function)
 {
 	field -> isTainted (true);
 
@@ -566,7 +581,7 @@ jsContext::set_field (X3DFieldDefinition* const field)
 	JS_NewNumberValue (context .get (), getCurrentTime (), &argv [1]);
 
 	jsval rval;
-	JS_CallFunctionValue (context .get (), global, functions [field], 2, argv, &rval);
+	JS_CallFunctionValue (context .get (), global, function, 2, argv, &rval);
 
 	field -> isTainted (false);
 }

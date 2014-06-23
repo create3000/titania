@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,21 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_TESSELATOR_H__
-#define __TITANIA_X3D_RENDERING_TESSELATOR_H__
+#ifndef __TITANIA_X3D_RENDERING_TESSELLATOR_H__
+#define __TITANIA_X3D_RENDERING_TESSELLATOR_H__
 
 #include <Titania/Math/Numbers/Vector3.h>
-#include <vector>
 #include <iostream>
 #include <tuple>
+#include <vector>
 
 #include "../Rendering/OpenGL.h"
 
 namespace titania {
 namespace opengl {
-
-typedef math::vector3 <double> vector3d;
-typedef math::vector3 <float>  vector3f;
 
 template <class ... Args>
 class tessellator;
@@ -72,27 +69,31 @@ class tessellator_vertex
 {
 public:
 
-	typedef std::tuple <Args ...> Data;
+	using Data = std::tuple <Args ...>;
 
-	tessellator_vertex (const vector3f & point, const std::tuple <Args ...> data) :
+	template <class ... A>
+	tessellator_vertex (const math::vector3 <double> & point, A && ... data) :
 		m_point (point),
-		m_data  (data)
+		m_data  (std::forward <A> (data) ...)
 	{ }
 
-	vector3d &
-	point () { return m_point; }
+	math::vector3 <double> &
+	point ()
+	{ return m_point; }
 
-	const vector3d &
-	point () const { return m_point; }
+	const math::vector3 <double> &
+	point () const
+	{ return m_point; }
 
 	const Data &
-	data () const { return m_data; }
+	data () const
+	{ return m_data; }
 
 
 private:
 
-	vector3d m_point;
-	Data     m_data;
+	math::vector3 <double> m_point;
+	Data                   m_data;
 
 };
 
@@ -101,31 +102,34 @@ class polygon_element
 {
 public:
 
-	typedef tessellator_vertex <Args ...>   Vertex;
-	typedef std::vector <Vertex*>           VertexArray;
-	typedef typename VertexArray::size_type size_type;
+	using Vertex      = tessellator_vertex <Args ...>;
+	using VertexArray = std::vector <Vertex*>;
+	using size_type   = typename VertexArray::size_type;
 
 	polygon_element (GLenum type) :
-		m_type (type),
+		    m_type (type),
 		m_vertices ()
 	{ }
 
 	const GLenum &
-	type () const { return m_type; }
+	type () const
+	{ return m_type; }
 
 	const Vertex &
-	operator [ ] (size_t i) const { return *m_vertices [i]; }
+	operator [ ] (size_t i) const
+	{ return *m_vertices [i]; }
 
 	size_type
-	size () const { return m_vertices .size (); }
+	size () const
+	{ return m_vertices .size (); }
 
 
 private:
 
+	friend class tessellator <Args ...>;
+
 	GLenum      m_type;
 	VertexArray m_vertices;
-
-	friend class tessellator <Args ...>;
 
 };
 
@@ -134,13 +138,18 @@ class tessellator
 {
 public:
 
-	typedef std::vector <polygon_element <Args ...>> Polygon;
-	typedef tessellator_vertex <Args ...>             Vertex;
+	using Polygon = std::vector <polygon_element <Args ...>>;
+	using Vertex  = tessellator_vertex <Args ...>;
 
 	tessellator ();
 
+	template <class ... A>
 	void
-	add_vertex (const vector3f &, const Args & ... args);
+	add_vertex (const math::vector3 <double> &, A && ... args);
+
+	template <class ... A>
+	void
+	add_vertex (const math::vector3 <float> &, A && ... args);
 
 	void
 	tessellate ();
@@ -153,17 +162,22 @@ public:
 
 private:
 
-	static void tessBeginData (GLenum, void*);
+	static
+	void tessBeginData (GLenum, void*);
 
-	static void
+	static
+	void
 	tessVertexData (void*, void*);
 
-	static void tessCombineData (GLdouble [3], void* [4], GLfloat [4], void**, void*);
+	static
+	void tessCombineData (GLdouble [3], void* [4], GLfloat [4], void**, void*);
 
-	static void
+	static
+	void
 	tessEndData (void*);
 
-	static void tessError (GLenum);
+	static
+	void tessError (GLenum);
 
 	GLUtesselator*       tess;
 	std::vector <Vertex> vertices;
@@ -172,10 +186,11 @@ private:
 };
 
 template <class ... Args>
-tessellator <Args ...>::tessellator ()
+tessellator <Args ...>::tessellator () :
+	              tess (gluNewTess ()),
+	          vertices (),
+	tessellatedPolygon ()
 {
-	tess = gluNewTess ();
-
 	if (tess)
 	{
 		gluTessProperty (tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
@@ -189,10 +204,21 @@ tessellator <Args ...>::tessellator ()
 }
 
 template <class ... Args>
+template <class ... A>
+inline
 void
-tessellator <Args ...>::add_vertex (const vector3f & point, const Args & ... args)
+tessellator <Args ...>::add_vertex (const math::vector3 <double> & point, A && ... args)
 {
-	vertices .emplace_back (point, std::forward_as_tuple (args ...));
+	vertices .emplace_back ((math::vector3 <double>)point, std::forward <A> (args) ...);
+}
+
+template <class ... Args>
+template <class ... A>
+inline
+void
+tessellator <Args ...>::add_vertex (const math::vector3 <float> & point, A && ... args)
+{
+	vertices .emplace_back (math::vector3 <double> (point), std::forward <A> (args) ...);
 }
 
 template <class ... Args>
@@ -231,8 +257,8 @@ tessellator <Args ...>::tessVertexData (void* vertex_data, void* polygon_data)
 template <class ... Args>
 void
 tessellator <Args ...>::tessCombineData (GLdouble coords [3], void* vertex_data [4],
-                                        GLfloat weight [4], void** outData,
-                                        void* polygon_data)
+                                         GLfloat weight [4], void** outData,
+                                         void* polygon_data)
 {
 	// Not used yet
 }
