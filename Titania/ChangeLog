@@ -1,3 +1,19 @@
+2014-06-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* MaterialEditor.xml:
+	* RenderStyleEditor.h:
+	* RenderStyleEditor.xml:
+	* RenderStyleEditor.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DRenderStyleEditorInterface.h:
+	* X3DRenderStyleEditorInterface.cpp: 
+
 2014-06-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.cpp: 

@@ -57,6 +57,7 @@
 #include "../MaterialEditor/MaterialEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../RenderStyleEditor/RenderStyleEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
@@ -1043,6 +1044,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getMaterialEditorButton ()          .set_visible (enabled);
 	getUpdateViewpointButton ()         .set_visible (enabled);
 	getCreatePrototypeInstanceButton () .set_visible (enabled);
+	getRenderStyleEditorButton ()       .set_visible (enabled);
 
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -1467,7 +1469,7 @@ BrowserWindow::on_standard_size ()
 /// Toolbar
 
 void
-BrowserWindow::on_node_properties_editor ()
+BrowserWindow::on_node_properties_editor_clicked ()
 {
 	if (isDialogOpen ("NodePropertiesEditor"))
 		return;
@@ -1477,7 +1479,7 @@ BrowserWindow::on_node_properties_editor ()
 }
 
 void
-BrowserWindow::on_material_editor ()
+BrowserWindow::on_material_editor_clicked ()
 {
 	if (isDialogOpen ("MaterialEditor"))
 		return;
@@ -1487,7 +1489,7 @@ BrowserWindow::on_material_editor ()
 }
 
 void
-BrowserWindow::on_update_viewpoint ()
+BrowserWindow::on_update_viewpoint_clicked ()
 {
 	if (getBrowser () -> getActiveLayer ())
 	{
@@ -1523,7 +1525,7 @@ BrowserWindow::on_update_viewpoint ()
 }
 
 void
-BrowserWindow::on_prototype_instance_dialog ()
+BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
 	// Find all available proto objects
 
@@ -1556,6 +1558,15 @@ BrowserWindow::on_prototype_instance_dialog ()
 		addPrototypeInstance (getPrototypeLabel () .get_text ());
 
 	getPrototypeInstanceDialog () .hide ();
+}
+
+void
+BrowserWindow::on_render_style_editor_clicked ()
+{
+	if (isDialogOpen ("RenderStyleEditor"))
+		return;
+
+	addDialog ("RenderStyleEditor", std::make_shared <RenderStyleEditor> (getBrowserWindow ()));
 }
 
 // Browser dashboard handling

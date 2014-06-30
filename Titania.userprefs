@@ -1,58 +1,55 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/ObjectLiteral.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="127" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="56" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="577" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/vsExecutionContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/vsExecutionContext.cpp" Line="135" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/ObjectLiteral.h" Line="88" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/vsObject.h" Line="201" Column="45" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="329" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="315" Column="21" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="459" Column="24" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1048" Column="1" />
+      <File FileName="Titania/Titania/RenderStyleEditor/RenderStyleEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/RenderStyleEditor/RenderStyleEditor.cpp" Line="64" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="uncrustify-all" expanded="True" />
+          </Node>
+          <Node name="build" expanded="True" />
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
+              <Node name="Handles" expanded="True" />
               <Node name="Scripting" expanded="True">
                 <Node name="pb" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Algorithm" expanded="True" />
+              <Node name="Chrono" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="Scripting" expanded="True" />
-                </Node>
-                <Node name="InputOutput" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True" />
-                </Node>
-                <Node name="Parser" expanded="True" />
-                <Node name="PeaseBlossom" expanded="True">
-                  <Node name="Base" expanded="True" />
-                  <Node name="Bits" expanded="True" />
-                  <Node name="Execution" expanded="True" />
-                  <Node name="Expressions" expanded="True">
-                    <Node name="ObjectLiteral.h" selected="True" />
-                  </Node>
-                  <Node name="Objects" expanded="True" />
-                  <Node name="Parser" expanded="True" />
-                  <Node name="Primitives" expanded="True" />
-                </Node>
-                <Node name="Types" expanded="True" />
-              </Node>
+              <Node name="X3D" expanded="True" />
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="ui" expanded="True">
+                  <Node name="Dialogs" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.cpp" selected="True" />
+              </Node>
+              <Node name="MaterialEditor" expanded="True" />
+              <Node name="RenderStyleEditor" expanded="True" />
             </Node>
           </Node>
         </State>

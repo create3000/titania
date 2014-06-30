@@ -304,6 +304,8 @@ function fibonacci_recursive (value)
 
 function fibonacci_iterative (value)
 {
+	print ('fibonacci_iterative: ', value);
+
 	if (value === 0)
 		return 0;
 
@@ -326,32 +328,32 @@ function fibonacci_iterative (value)
 
 function for_time (n)
 {
-	var result = 0;
+	var result = 1;
 
 	for (var i = 0; i < n; i = i + 1)
-		result = result + now ();
+		result = result;
 	
 	return result;
 }
 
 function set_time (value, time)
 {
-	print ('Recursion');
+	print ('set_time:');
 
 	n = 0;
 	
-	var t0 = now ();
-	print ('result: ', fibonacci_recursive (24));
-	print ('result: ', n);
-	print ('time: ',   now () - t0);
+	//var t0 = now ();
+	//print ('fibonacci_recursive: ', fibonacci_recursive (24));
+	//print ('fibonacci_recursive: ', n);
+	//print ('time: ',                now () - t0);
 
 	//var t0 = now ();
-	//print ('result: ', fibonacci_iterative (1000000));
-	//print ('time: ',   now () - t0);
-	
-	//var t0 = now ();
-	//print ('result: ', for_time (1000000));
-	//print ('time: ',   now () - t0);
+	//print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
+	//print ('time: ',                now () - t0);
+
+	var t0 = now ();
+	print ('result: ', for_time (2000000));
+	print ('time: ',   now () - t0);
 }
 "
   ]
@@ -385,7 +387,7 @@ function fibonacci_recursive (value)
 	return fibonacci_recursive (value - 1) + fibonacci_recursive (value - 2);
 }
  
-function fibonacci_iterative (value)
+function fibonacci_iterative (o, value)
 {
 	if (value === 0)
 		return 0;
@@ -393,14 +395,17 @@ function fibonacci_iterative (value)
 	if (value === 1)
 		return 1;
 
+	o .h1 = 0;
+	o .h2 = 1;
+
 	for (var i = 1; i < value; i = i + 1)
 	{
-		node .result = node .h1 + node .h2;
-		node .h1     = node .h2;
-		node .h2     = node .result;
+		o .result = o .h1 + o .h2;
+		o .h1     = o .h2;
+		o .h2     = o .result;
 	}
 
-	return node .result;
+	return o .result;
 }
 
 function for_time (n)
@@ -415,14 +420,14 @@ function for_time (n)
 
 function set_time (value, time)
 {
-	var t0 = Date .now ();
-	print ('result: ', fibonacci_recursive (24));
-	print ('result: ', n);
-	print ('time: ',   (Date .now () - t0) / 1000);
-
 	//var t0 = Date .now ();
-	//print ('result: ', fibonacci_iterative (1000000));
+	//print ('fibonacci_recursive: ', fibonacci_recursive (24));
+	//print ('fibonacci_recursive: ', n);
 	//print ('time: ',   (Date .now () - t0) / 1000);
+
+	var t0 = Date .now ();
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 1000000));
+	print ('time: ',   (Date .now () - t0) / 1000);
 
 	//var t0 = Date .now ();
 	//print ('result: ', for_time (1000000));

@@ -2449,6 +2449,7 @@
     <None Include="Tests\Scripting\V8.x3dv" />
     <None Include="Tests\Scripting\V8-Inline.x3dv" />
     <None Include="Tests\Scripting\pb\pb.x3dv" />
+    <None Include="Tests\Handles\QuadSphere.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

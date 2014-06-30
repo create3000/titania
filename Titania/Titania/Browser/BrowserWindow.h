@@ -440,19 +440,23 @@ private:
 
 	virtual
 	void
-	on_node_properties_editor () final override;
+	on_node_properties_editor_clicked () final override;
 
 	virtual
 	void
-	on_material_editor () final override;
+	on_material_editor_clicked () final override;
 	
 	virtual
 	void
-	on_update_viewpoint () final override;
+	on_update_viewpoint_clicked () final override;
 
 	virtual
 	void
-	on_prototype_instance_dialog () final override;
+	on_prototype_instance_dialog_clicked () final override;
+
+	virtual
+	void
+	on_render_style_editor_clicked () final override;
 
 	///  @name Browser dashboard handling
 

@@ -171,6 +171,8 @@ perl -e '
 	# add new line before end of class body.
 	$f =~ s/([^\n])\n};/$1\n\n};/sgo;
 
+	$f =~ s/\n(\n\s*\{ \})/$1/sgo;
+
 	print $f;
 ' \
 > /tmp/uncrustify.txt

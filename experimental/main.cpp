@@ -55,6 +55,9 @@
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
 #include <Titania/Chrono/Now.h>
+#include <Titania/Geospatial/Geodetic.h>
+#include <Titania/Geospatial/ReferenceEllipsoids.h>
+#include <Titania/Geospatial/UniversalTransverseMercator.h>
 #include <Titania/InputOutput.h>
 #include <Titania/Math/Functional.h>
 #include <Titania/Math/Geometry/Box2.h>
@@ -69,9 +72,6 @@
 #include <Titania/Math/Numbers/Vector2.h>
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
-#include <Titania/Geospatial/ReferenceEllipsoids.h>
-#include <Titania/Geospatial/Geodetic.h>
-#include <Titania/Geospatial/UniversalTransverseMercator.h>
 #include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
@@ -219,132 +219,6 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
-float
-random1 ()
-{
-	static std::uniform_real_distribution <float> uniform_real_distribution (0, 1);
-	static std::default_random_engine             random_engine;
-
-	return uniform_real_distribution (random_engine);
-}
-
-////
-//// Quaternion multiplication with cartesian vector
-//// v' = q*v*q(star)
-////
-//void mult_vec( const vec3 &src, vec3 &dst ) const
-//{
-//	real v_coef = w * w - x * x - y * y - z * z;                     
-//	real u_coef = GLH_TWO * (src.v[0] * x + src.v[1] * y + src.v[2] * z);  
-//	real c_coef = GLH_TWO * w;                                       
-//
-//	dst.v[0] = v_coef * src.v[0] + u_coef * x + c_coef * (y * src.v[2] - z * src.v[1]);
-//	dst.v[1] = v_coef * src.v[1] + u_coef * y + c_coef * (z * src.v[0] - x * src.v[2]);
-//	dst.v[2] = v_coef * src.v[2] + u_coef * z + c_coef * (x * src.v[1] - y * src.v[0]);
-//}
-
-template <class Type>
-vector3 <Type>
-mult_vec_quat (const vector3 <Type> & vector, const quaternion <Type> & q)
-{
-	const Type a = q .w () * q .w () - q .x () * q .x () - q .y () * q .y () - q .z () * q .z ();                     
-	const Type b = 2 * (vector .x () * q .x () + vector .y () * q .y () + vector .z () * q .z ());  
-	const Type c = 2 * q .w ();                                       
-
-	return vector3 <Type> (a * vector .x () + b * q .x () + c * (q .y () * vector .z () - q .z () * vector .y ()),
-	                       a * vector .y () + b * q .y () + c * (q .z () * vector .x () - q .x () * vector .z ()),
-	                       a * vector .z () + b * q .z () + c * (q .x () * vector .y () - q .y () * vector .x ()));
-}
-
-template <class Type>
-vector3 <Type>
-mult_quat_vec (const quaternion <Type> & q, const vector3 <Type> & vector)
-{
-	const Type a = q .w () * q .w () - q .x () * q .x () - q .y () * q .y () - q .z () * q .z ();                     
-	const Type b = 2 * (vector .x () * q .x () + vector .y () * q .y () + vector .z () * q .z ());  
-	const Type c = 2 * q .w ();                                       
-
-	return vector3 <Type> (a * vector .x () + b * q .x () - c * (q .y () * vector .z () - q .z () * vector .y ()),
-	                       a * vector .y () + b * q .y () - c * (q .z () * vector .x () - q .x () * vector .z ()),
-	                       a * vector .z () + b * q .z () - c * (q .x () * vector .y () - q .y () * vector .x ()));
-}
-
-using Type = int*;
-
-void
-f (Type p)
-{
-	if (p)
-		__LOG__ << p << std::endl;
-}
-
-class X
-{
-public:
-	
-	X (int i = 0)
-	{
-		__LOG__ << i << std::endl;
-	}
-};
-
-class A :
-	virtual public X
-{
-public:
-
-	A () :
-		X ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	A (int i) :
-		X ()
-	{
-		__LOG__ << i << std::endl;
-	}
-
-	virtual
-	void
-	f () = 0;
-};
-
-class O :
-	virtual public A
-{
-public:
-
-	O () :
-		A ()
-	{ }
-
-	virtual
-	void
-	f () final override
-	{
-		__LOG__ << std::endl;
-	}
-};
-
-class B :
-	virtual public A,
-	public O
-{
-public:
-
-	B () :
-		X (1),
-		A (1)
-	{ }
-
-};
-
-template <class ... Args>
-std::tuple <Args ...>
-fun (Args && ... args)
-{ return std::tuple <Args ...> (std::forward <Args> (args) ...); }
-
 int
 main (int argc, char** argv)
 {
@@ -356,22 +230,23 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::string s = "1234567";
-	
-	auto p = fun (s);
-	std::clog << std::get <0> (p) << std::endl;
-	
-	fun (std::move (s));
-	std::clog << std::get <0> (p) << std::endl;
+	std::clog .imbue (std::locale (""));
 
-	size_t t = 1234567;
+	std::map <size_t, int> map = { std::make_pair (1, 1), std::make_pair (2, 2), std::make_pair (3, 3) };
 	
-	auto o = fun (t);
-	std::clog << std::get <0> (o) << std::endl;
+	std::string si = "i";
+	std::string sr = "result";
 	
-	fun (std::move (t));
-	std::clog << std::get <0> (o) << std::endl;
+	const auto t0 = chrono::now ();
 	
+	for (size_t i = 0; i < 110000000; ++ i)
+	{
+		map .at (1);
+		map .at (2);
+	}
+
+	std::clog << chrono::now () - t0 << std::endl;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;
