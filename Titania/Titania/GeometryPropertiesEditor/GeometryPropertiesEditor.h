@@ -51,26 +51,26 @@
 #ifndef __TITANIA_RENDER_STYLE_EDITOR_RENDER_STYLE_EDITOR_H__
 #define __TITANIA_RENDER_STYLE_EDITOR_RENDER_STYLE_EDITOR_H__
 
-#include "../UserInterfaces/X3DRenderStyleEditorInterface.h"
+#include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserWindow;
 
-class RenderStyleEditor :
-	public X3DRenderStyleEditorInterface
+class GeometryPropertiesEditor :
+	public X3DGeometryPropertiesEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	RenderStyleEditor (BrowserWindow* const);
+	GeometryPropertiesEditor (BrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~RenderStyleEditor ();
+	~GeometryPropertiesEditor ();
 
 
 private:
@@ -80,6 +80,31 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_selection ();
+
+	virtual
+	void
+	on_solid_toggled () final override;
+
+	virtual
+	void
+	on_ccw_toggled () final override;
+
+	virtual
+	void
+	on_convex_toggled () final override;
+
+	virtual
+	void
+	on_creaseAngle_changed () final override;
+
+	///  @name Members
+
+	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
 
 };
 

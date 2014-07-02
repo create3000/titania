@@ -16,6 +16,7 @@ titania_SOURCES =  \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Console/Console.cpp \
+	Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/HistoryEditor/History.cpp \
 	Titania/HistoryEditor/HistoryEditor.cpp \
 	Titania/LibraryView/LibraryView.cpp \
@@ -36,19 +37,18 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineTreeObserver.cpp \
 	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
-	Titania/RenderStyleEditor/RenderStyleEditor.cpp \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
 	Titania/Undo/UndoStep.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
+	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
-	Titania/UserInterfaces/X3DRenderStyleEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
 	Titania/ViewpointList/ViewpointList.cpp

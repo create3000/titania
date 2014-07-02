@@ -276,8 +276,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_UpdateViewpointButton -> set_name ("UpdateViewpointButton");
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
 	m_CreatePrototypeInstanceButton -> set_name ("CreatePrototypeInstanceButton");
-	m_builder -> get_widget ("RenderStyleEditorButton", m_RenderStyleEditorButton);
-	m_RenderStyleEditorButton -> set_name ("RenderStyleEditorButton");
+	m_builder -> get_widget ("GeometryPropertiesEditorButton", m_GeometryPropertiesEditorButton);
+	m_GeometryPropertiesEditorButton -> set_name ("GeometryPropertiesEditorButton");
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_VPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_HPaned);
@@ -481,7 +481,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_MaterialEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_material_editor_clicked));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_update_viewpoint_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
-	m_RenderStyleEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_render_style_editor_clicked));
+	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
 
 	// Connect object Gtk::Box with id 'SurfaceBox'.
 	m_SurfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));

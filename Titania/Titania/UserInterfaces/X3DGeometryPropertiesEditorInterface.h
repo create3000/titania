@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_RENDER_STYLE_EDITOR_H__
-#define __TMP_GLAD2CPP_RENDER_STYLE_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_GEOMETRY_PROPERTIES_EDITOR_H__
+#define __TMP_GLAD2CPP_GEOMETRY_PROPERTIES_EDITOR_H__
 
 #include "../Base/X3DDialogInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DRenderStyleEditorInterface :
+class X3DGeometryPropertiesEditorInterface :
 	public X3DDialogInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DRenderStyleEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DGeometryPropertiesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -103,8 +103,44 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::CheckButton &
+	getSolidCheckButton () const
+	{ return *m_SolidCheckButton; }
+
+	Gtk::CheckButton &
+	getCCWCheckButton () const
+	{ return *m_CCWCheckButton; }
+
+	Gtk::Box &
+	getCreaseAngleBox () const
+	{ return *m_CreaseAngleBox; }
+
+	Gtk::Scale &
+	getCreaseAngleScale () const
+	{ return *m_CreaseAngleScale; }
+
+	Gtk::CheckButton &
+	getConvexCheckButton () const
+	{ return *m_ConvexCheckButton; }
+
 	virtual
-	~X3DRenderStyleEditorInterface ();
+	void
+	on_solid_toggled () = 0;
+
+	virtual
+	void
+	on_ccw_toggled () = 0;
+
+	virtual
+	void
+	on_creaseAngle_changed () = 0;
+
+	virtual
+	void
+	on_convex_toggled () = 0;
+
+	virtual
+	~X3DGeometryPropertiesEditorInterface ();
 
 
 private:
@@ -119,6 +155,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::CheckButton*              m_SolidCheckButton;
+	Gtk::CheckButton*              m_CCWCheckButton;
+	Gtk::Box*                      m_CreaseAngleBox;
+	Gtk::Scale*                    m_CreaseAngleScale;
+	Gtk::CheckButton*              m_ConvexCheckButton;
 
 };
 

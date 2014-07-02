@@ -456,7 +456,7 @@ private:
 
 	virtual
 	void
-	on_render_style_editor_clicked () final override;
+	on_geometry_properties_editor_clicked () final override;
 
 	///  @name Browser dashboard handling
 

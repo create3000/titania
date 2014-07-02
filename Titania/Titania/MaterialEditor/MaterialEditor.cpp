@@ -78,6 +78,8 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	initDialog (getBackSpecularDialog (), &MaterialEditor::on_backSpecularColor);
 	initDialog (getBackEmissiveDialog (), &MaterialEditor::on_backEmissiveColor);
 
+	twoSidedMaterial -> separateBackColor () = true;
+
 	material -> setup ();
 	twoSidedMaterial -> setup ();
 

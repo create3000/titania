@@ -1269,6 +1269,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="GeometryPropertiesEditorButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Open Geometry Properties Editor.</property>
+                <property name="label" translatable="yes">Geometry Properties Editor</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-convert</property>
+                <signal name="clicked" handler="on_geometry_properties_editor_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="UpdateViewpointButton">
                 <property name="can_focus">True</property>
                 <property name="has_tooltip">True</property>
@@ -1294,21 +1309,6 @@
                 <property name="use_underline">True</property>
                 <property name="stock_id">Prototype</property>
                 <signal name="clicked" handler="on_prototype_instance_dialog_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="RenderStyleEditorButton">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Open Render Style Editor.</property>
-                <property name="label" translatable="yes">Render Style Editor</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-convert</property>
-                <signal name="clicked" handler="on_render_style_editor_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1622,7 +1622,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="stock">gtk-execute</property>
-                                    <property name="icon_size">2</property>
+                                    <property name="icon_size">1</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1984,6 +1984,7 @@
   <object class="GtkFileChooserDialog" id="FileSaveDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="type">popup</property>
     <property name="title" translatable="yes">Save as ...</property>
     <property name="role">GtkFileChooserDialog</property>
     <property name="window_position">center-on-parent</property>
@@ -2391,6 +2392,7 @@
   <object class="GtkDialog" id="PrototypeInstanceDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>

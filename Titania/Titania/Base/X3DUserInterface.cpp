@@ -127,6 +127,7 @@ X3DUserInterface::addDialog (const std::string & key, const std::shared_ptr <X3D
 {
 	dialogs .emplace (key, dialog);
 	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), key), false);
+	dialog -> getWindow () .set_transient_for (getWindow ());
 	dialog -> getWindow () .present ();
 }
 

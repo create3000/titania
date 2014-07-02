@@ -57,7 +57,7 @@
 #include "../MaterialEditor/MaterialEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
-#include "../RenderStyleEditor/RenderStyleEditor.h"
+#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
@@ -115,12 +115,12 @@ BrowserWindow::initialize ()
 	getFileFilterVideo () -> set_name (_ ("Videos"));
 
 	// Dialogs
-	getFileOpenDialog ()        .set_transient_for (getWindow ());
-	getOpenLocationDialog ()    .set_transient_for (getWindow ());
-	getFileImportDialog ()      .set_transient_for (getWindow ());
-	getFileSaveWarningDialog () .set_transient_for (getWindow ());
-	getFileSaveDialog ()        .set_transient_for (getWindow ());
-	getMessageDialog ()         .set_transient_for (getWindow ());
+	getFileOpenDialog ()          .set_transient_for (getWindow ());
+	getOpenLocationDialog ()      .set_transient_for (getWindow ());
+	getFileImportDialog ()        .set_transient_for (getWindow ());
+	getFileSaveWarningDialog ()   .set_transient_for (getWindow ());
+	getFileSaveDialog ()          .set_transient_for (getWindow ());
+	getMessageDialog ()           .set_transient_for (getWindow ());
 
 	getFileOpenDialog ()   .set_filename (os::home () + _ ("scene.x3dv"));
 	getFileImportDialog () .set_filename (os::home () + _ ("scene.x3dv"));
@@ -1044,7 +1044,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getMaterialEditorButton ()          .set_visible (enabled);
 	getUpdateViewpointButton ()         .set_visible (enabled);
 	getCreatePrototypeInstanceButton () .set_visible (enabled);
-	getRenderStyleEditorButton ()       .set_visible (enabled);
+	getGeometryPropertiesEditorButton ()       .set_visible (enabled);
 
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -1561,12 +1561,12 @@ BrowserWindow::on_prototype_instance_dialog_clicked ()
 }
 
 void
-BrowserWindow::on_render_style_editor_clicked ()
+BrowserWindow::on_geometry_properties_editor_clicked ()
 {
-	if (isDialogOpen ("RenderStyleEditor"))
+	if (isDialogOpen ("GeometryPropertiesEditor"))
 		return;
 
-	addDialog ("RenderStyleEditor", std::make_shared <RenderStyleEditor> (getBrowserWindow ()));
+	addDialog ("GeometryPropertiesEditor", std::make_shared <GeometryPropertiesEditor> (getBrowserWindow ()));
 }
 
 // Browser dashboard handling

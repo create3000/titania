@@ -532,8 +532,8 @@ public:
 	{ return *m_CreatePrototypeInstanceButton; }
 
 	Gtk::ToolButton &
-	getRenderStyleEditorButton () const
-	{ return *m_RenderStyleEditorButton; }
+	getGeometryPropertiesEditorButton () const
+	{ return *m_GeometryPropertiesEditorButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -977,7 +977,7 @@ public:
 
 	virtual
 	void
-	on_render_style_editor_clicked () = 0;
+	on_geometry_properties_editor_clicked () = 0;
 
 	virtual
 	void
@@ -1154,7 +1154,7 @@ private:
 	Gtk::ToolButton*                m_MaterialEditorButton;
 	Gtk::ToolButton*                m_UpdateViewpointButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
-	Gtk::ToolButton*                m_RenderStyleEditorButton;
+	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;
 	Gtk::Box*                       m_SurfaceBox;

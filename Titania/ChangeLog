@@ -1,3 +1,30 @@
+2014-07-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* titania:
+	* Makefile.am:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* MaterialEditor.cpp:
+	* .dirstamp:
+	* MaterialEditor.xml:
+	* RenderStyleEditor.h:
+	* RenderStyleEditor.xml:
+	* RenderStyleEditor.cpp:
+	* .dirstamp:
+	* NodePropertiesEditor.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* GeometryPropertiesEditor.xml:
+	* X3DRenderStyleEditorInterface.h:
+	* X3DRenderStyleEditorInterface.cpp:
+	* GeometryPropertiesEditor.h:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
 2014-06-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* titania:

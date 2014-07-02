@@ -47,28 +47,56 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#include "RenderStyleEditor.h"
-
-#include "../Browser/BrowserWindow.h"
-#include "../Configuration/config.h"
+#include "X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-RenderStyleEditor::RenderStyleEditor (BrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DRenderStyleEditorInterface (get_ui ("Dialogs/RenderStyleEditor.xml"), gconf_dir ())
-{ }
+const std::string X3DGeometryPropertiesEditorInterface::m_widgetName = "GeometryPropertiesEditor";
 
 void
-RenderStyleEditor::initialize ()
+X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 {
-	X3DRenderStyleEditorInterface::initialize ();
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
+
+	// Get objects.
+	m_CreaseAngleAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
+
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
+	m_SolidCheckButton -> set_name ("SolidCheckButton");
+	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
+	m_CCWCheckButton -> set_name ("CCWCheckButton");
+	m_builder -> get_widget ("CreaseAngleBox", m_CreaseAngleBox);
+	m_CreaseAngleBox -> set_name ("CreaseAngleBox");
+	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
+	m_CreaseAngleScale -> set_name ("CreaseAngleScale");
+	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
+	m_ConvexCheckButton -> set_name ("ConvexCheckButton");
+
+	// Connect object Gtk::CheckButton with id 'SolidCheckButton'.
+	m_SolidCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_solid_toggled));
+	m_CCWCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_ccw_toggled));
+
+	// Connect object Gtk::Scale with id 'CreaseAngleScale'.
+	m_CreaseAngleScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_creaseAngle_changed));
+
+	// Connect object Gtk::CheckButton with id 'ConvexCheckButton'.
+	m_ConvexCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_convex_toggled));
+
+	// Call construct handler of base class.
+	construct ();
 }
 
-RenderStyleEditor::~RenderStyleEditor ()
-{ }
+X3DGeometryPropertiesEditorInterface::~X3DGeometryPropertiesEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
