@@ -96,6 +96,10 @@ public:
 	void
 	redoChanges ();
 
+	void
+	clearRedoFunctions ()
+	{ redoFunctions .clear (); }
+
 	bool
 	isEmpty () const
 	{ return undoFunctions .empty (); }

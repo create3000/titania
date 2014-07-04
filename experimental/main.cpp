@@ -219,6 +219,74 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
+class I
+{
+public:
+
+	I ()
+	{ }
+
+	I (int)
+	{ }
+
+	virtual
+	void
+	a () = 0;
+
+	virtual
+	void
+	b () = 0;
+
+};
+
+class A :
+	virtual public I
+{
+public:
+
+	A () :
+		I ()
+	{ }
+
+	void
+	a () final override
+	{
+		__LOG__ << "a" << std::endl;
+	}
+
+};
+
+class B :
+	virtual public I
+{
+public:
+
+	B () :
+		I ()
+	{ }
+
+	void
+	b () final override
+	{
+		__LOG__ << "b" << std::endl;
+	}
+
+};
+
+class C :
+	public A,
+	public B
+{
+public:
+
+	C () :
+		I (1),
+		A (),
+		B ()
+	{ }
+
+};
+
 int
 main (int argc, char** argv)
 {
@@ -232,20 +300,10 @@ main (int argc, char** argv)
 
 	std::clog .imbue (std::locale (""));
 
-	std::map <size_t, int> map = { std::make_pair (1, 1), std::make_pair (2, 2), std::make_pair (3, 3) };
-	
-	std::string si = "i";
-	std::string sr = "result";
-	
-	const auto t0 = chrono::now ();
-	
-	for (size_t i = 0; i < 110000000; ++ i)
-	{
-		map .at (1);
-		map .at (2);
-	}
+	C c;
 
-	std::clog << chrono::now () - t0 << std::endl;
+	c .a ();
+	c .b ();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

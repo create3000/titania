@@ -524,16 +524,16 @@ public:
 	{ return *m_MaterialEditorButton; }
 
 	Gtk::ToolButton &
+	getGeometryPropertiesEditorButton () const
+	{ return *m_GeometryPropertiesEditorButton; }
+
+	Gtk::ToolButton &
 	getUpdateViewpointButton () const
 	{ return *m_UpdateViewpointButton; }
 
 	Gtk::ToolButton &
 	getCreatePrototypeInstanceButton () const
 	{ return *m_CreatePrototypeInstanceButton; }
-
-	Gtk::ToolButton &
-	getGeometryPropertiesEditorButton () const
-	{ return *m_GeometryPropertiesEditorButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -969,15 +969,15 @@ public:
 
 	virtual
 	void
+	on_geometry_properties_editor_clicked () = 0;
+
+	virtual
+	void
 	on_update_viewpoint_clicked () = 0;
 
 	virtual
 	void
 	on_prototype_instance_dialog_clicked () = 0;
-
-	virtual
-	void
-	on_geometry_properties_editor_clicked () = 0;
 
 	virtual
 	void
@@ -1152,9 +1152,9 @@ private:
 	Gtk::SeparatorToolItem*         m_SeparatorToolItem2;
 	Gtk::ToolButton*                m_NodePropertiesEditorButton;
 	Gtk::ToolButton*                m_MaterialEditorButton;
+	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton*                m_UpdateViewpointButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
-	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;
 	Gtk::Box*                       m_SurfaceBox;

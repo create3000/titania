@@ -52,6 +52,7 @@
 #define __TITANIA_RENDER_STYLE_EDITOR_RENDER_STYLE_EDITOR_H__
 
 #include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -102,9 +103,19 @@ private:
 	void
 	on_creaseAngle_changed () final override;
 
+	///  @name Operations
+
+	void
+	addUndoFunctions ();
+
+	void
+	addRedoFunctions ();
+
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
+	UndoStepPtr                             undoStep;
+	bool                                    initialized;
 
 };
 

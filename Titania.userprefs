@@ -2,20 +2,15 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="329" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="315" Column="21" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="459" Column="24" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1048" Column="1" />
-      <File FileName="Titania/Titania/RenderStyleEditor/RenderStyleEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/RenderStyleEditor/RenderStyleEditor.cpp" Line="64" Column="5" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="459" Column="39" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="500" Column="16" />
+      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="107" Column="43" />
+      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="61" Column="83" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="761" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
-          <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
@@ -29,11 +24,20 @@
             <Node name="Titania" expanded="True">
               <Node name="Algorithm" expanded="True" />
               <Node name="Chrono" expanded="True" />
+              <Node name="Math" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="X3D" expanded="True" />
+              <Node name="X3D" expanded="True">
+                <Node name="Bits" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="PeaseBlossom" expanded="True" />
+                </Node>
+                <Node name="PeaseBlossom" expanded="True">
+                  <Node name="Primitives" expanded="True" />
+                </Node>
+              </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
@@ -45,11 +49,13 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True">
                 <Node name="BrowserWindow.cpp" selected="True" />
               </Node>
+              <Node name="GeometryPropertiesEditor" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
-              <Node name="RenderStyleEditor" expanded="True" />
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

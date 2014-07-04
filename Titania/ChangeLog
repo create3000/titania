@@ -1,3 +1,12 @@
+2014-07-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* UndoStep.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-07-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* run.pl:
