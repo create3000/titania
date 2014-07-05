@@ -1984,7 +1984,6 @@
   <object class="GtkFileChooserDialog" id="FileSaveDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="type">popup</property>
     <property name="title" translatable="yes">Save as ...</property>
     <property name="role">GtkFileChooserDialog</property>
     <property name="window_position">center-on-parent</property>
