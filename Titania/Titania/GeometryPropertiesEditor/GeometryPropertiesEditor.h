@@ -91,17 +91,41 @@ private:
 	void
 	on_solid_toggled () final override;
 
+	void
+	set_solid ();
+
+	void
+	connect_solid (const X3D::SFBool &);
+
 	virtual
 	void
 	on_ccw_toggled () final override;
+
+	void
+	set_ccw ();
+
+	void
+	connect_ccw (const X3D::SFBool &);
 
 	virtual
 	void
 	on_convex_toggled () final override;
 
+	void
+	set_convex ();
+
+	void
+	connect_convex (const X3D::SFBool &);
+
 	virtual
 	void
 	on_creaseAngle_changed () final override;
+
+	void
+	set_creaseAngle ();
+
+	void
+	connect_creaseAngle (const X3D::SFFloat &);
 
 	///  @name Operations
 

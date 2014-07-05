@@ -77,15 +77,48 @@ GeometryPropertiesEditor::initialize ()
 void
 GeometryPropertiesEditor::set_selection ()
 {
-	initialized = false;
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("solid") .removeInterest (this, &GeometryPropertiesEditor::set_solid);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("ccw") .removeInterest (this, &GeometryPropertiesEditor::set_ccw);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("convex") .removeInterest (this, &GeometryPropertiesEditor::set_convex);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("creaseAngle") .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
 	geometryNodes .clear ();
 	undoStep .reset ();
-
-	getSolidCheckButton ()  .set_active (false);
-	getCCWCheckButton ()    .set_active (false);
-	getConvexCheckButton () .set_active (false);
-	getCreaseAngleScale ()  .set_value (0);
 
 	// Find X3DGeometryNodes
 
@@ -110,14 +143,88 @@ GeometryPropertiesEditor::set_selection ()
 	                  return true;
 						});
 
-	// Initialize sensitivity flags.
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("solid") .addInterest (this, &GeometryPropertiesEditor::set_solid);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
-	bool hasSolid       = false;
-	bool hasCCW         = false;
-	bool hasConvex      = false;
-	bool hasCreaseAngle = false;
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("ccw") .addInterest (this, &GeometryPropertiesEditor::set_ccw);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("convex") .addInterest (this, &GeometryPropertiesEditor::set_convex);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			geometry -> getField <X3D::SFFloat> ("creaseAngle") .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	set_solid ();
+	set_ccw ();
+	set_convex ();
+	set_creaseAngle ();
+}
+
+void
+GeometryPropertiesEditor::on_solid_toggled ()
+{
+	if (not initialized)
+		return;
+
+	addUndoFunctions ();
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			auto & solid = geometry -> getField <X3D::SFBool> ("solid");
+			
+			solid = getSolidCheckButton () .get_active ();
+			
+			solid .removeInterest (this, &GeometryPropertiesEditor::set_solid);
+			solid .addInterest (this, &GeometryPropertiesEditor::connect_solid);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunctions ();
+}
+
+void
+GeometryPropertiesEditor::set_solid ()
+{
+	initialized = false;
+
+	getSolidCheckButton () .set_active (false);
 
 	// Find first »solid« field.
+
+	bool hasSolid = false;
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -131,7 +238,54 @@ GeometryPropertiesEditor::set_selection ()
 		{ }
 	}
 
+	getSolidCheckButton () .set_sensitive (hasSolid);
+
+	initialized = true;
+}
+
+void
+GeometryPropertiesEditor::connect_solid (const X3D::SFBool & solid)
+{
+	solid .removeInterest (this, &GeometryPropertiesEditor::connect_solid);
+	solid .addInterest (this, &GeometryPropertiesEditor::set_solid);
+}
+
+void
+GeometryPropertiesEditor::on_ccw_toggled ()
+{
+	if (not initialized)
+		return;
+
+	addUndoFunctions ();
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			auto & ccw = geometry -> getField <X3D::SFBool> ("ccw");
+			
+			ccw = getCCWCheckButton () .get_active ();
+			
+			ccw .removeInterest (this, &GeometryPropertiesEditor::set_ccw);
+			ccw .addInterest (this, &GeometryPropertiesEditor::connect_ccw);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunctions ();
+}
+
+void
+GeometryPropertiesEditor::set_ccw ()
+{
+	initialized = false;
+
+	getCCWCheckButton () .set_active (false);
+
 	// Find first »ccw« field.
+
+	bool hasCCW = false;
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -145,7 +299,54 @@ GeometryPropertiesEditor::set_selection ()
 		{ }
 	}
 
+	getCCWCheckButton () .set_sensitive (hasCCW);
+
+	initialized = true;
+}
+
+void
+GeometryPropertiesEditor::connect_ccw (const X3D::SFBool & ccw)
+{
+	ccw .removeInterest (this, &GeometryPropertiesEditor::connect_ccw);
+	ccw .addInterest (this, &GeometryPropertiesEditor::set_ccw);
+}
+
+void
+GeometryPropertiesEditor::on_convex_toggled ()
+{
+	if (not initialized)
+		return;
+
+	addUndoFunctions ();
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			auto & convex = geometry -> getField <X3D::SFBool> ("convex");
+			
+			convex = not getConvexCheckButton () .get_active ();
+			
+			convex .removeInterest (this, &GeometryPropertiesEditor::set_convex);
+			convex .addInterest (this, &GeometryPropertiesEditor::connect_convex);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunctions ();
+}
+
+void
+GeometryPropertiesEditor::set_convex ()
+{
+	initialized = false;
+
+	getConvexCheckButton () .set_active (false);
+
 	// Find first »convex« field.
+
+	bool hasConvex = false;
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -159,7 +360,54 @@ GeometryPropertiesEditor::set_selection ()
 		{ }
 	}
 
+	getConvexCheckButton () .set_sensitive (hasConvex);
+
+	initialized = true;
+}
+
+void
+GeometryPropertiesEditor::connect_convex (const X3D::SFBool & convex)
+{
+	convex .removeInterest (this, &GeometryPropertiesEditor::connect_convex);
+	convex .addInterest (this, &GeometryPropertiesEditor::set_convex);
+}
+
+void
+GeometryPropertiesEditor::on_creaseAngle_changed ()
+{
+	if (not initialized)
+		return;
+
+	addUndoFunctions ();
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			auto & creaseAngle = geometry -> getField <X3D::SFFloat> ("creaseAngle");
+
+			creaseAngle  = math::radians (getCreaseAngleScale () .get_value ());
+			
+			creaseAngle .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
+			creaseAngle .addInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunctions ();
+}
+
+void
+GeometryPropertiesEditor::set_creaseAngle ()
+{
+	initialized = false;
+
+	getCreaseAngleScale () .set_value (0);
+
 	// Find first »creaseAngle« field.
+
+	bool hasCreaseAngle = false;
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -173,94 +421,21 @@ GeometryPropertiesEditor::set_selection ()
 		{ }
 	}
 
-	// Sensitivity
-
-	getSolidCheckButton ()  .set_sensitive (hasSolid);
-	getCCWCheckButton ()    .set_sensitive (hasCCW);
-	getConvexCheckButton () .set_sensitive (hasConvex);
-	getCreaseAngleBox ()    .set_sensitive (hasCreaseAngle);
+	getCreaseAngleBox () .set_sensitive (hasCreaseAngle);
 
 	initialized = true;
 }
 
 void
-GeometryPropertiesEditor::on_solid_toggled ()
+GeometryPropertiesEditor::connect_creaseAngle (const X3D::SFFloat & creaseAngle)
 {
-	addUndoFunctions ();
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			geometry -> getField <X3D::SFBool> ("solid") = getSolidCheckButton () .get_active ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	addRedoFunctions ();
-}
-
-void
-GeometryPropertiesEditor::on_ccw_toggled ()
-{
-	addUndoFunctions ();
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			geometry -> getField <X3D::SFBool> ("ccw") = getCCWCheckButton () .get_active ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	addRedoFunctions ();
-}
-
-void
-GeometryPropertiesEditor::on_convex_toggled ()
-{
-	addUndoFunctions ();
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			geometry -> getField <X3D::SFBool> ("convex") = not getConvexCheckButton () .get_active ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	addRedoFunctions ();
-}
-
-void
-GeometryPropertiesEditor::on_creaseAngle_changed ()
-{
-	addUndoFunctions ();
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			geometry -> getField <X3D::SFFloat> ("creaseAngle") = math::radians (getCreaseAngleScale () .get_value ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	addRedoFunctions ();
+	creaseAngle .removeInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
+	creaseAngle .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 }
 
 void
 GeometryPropertiesEditor::addUndoFunctions ()
 {
-	if (not initialized)
-		return;
-
 	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep)

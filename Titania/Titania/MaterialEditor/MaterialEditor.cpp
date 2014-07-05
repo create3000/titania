@@ -232,8 +232,6 @@ MaterialEditor::on_paste ()
 void
 MaterialEditor::on_frontAndBackButton_toggled ()
 {
-	__LOG__ << std::endl;
-
 	// Copy front material
 
 	if (initialized)
