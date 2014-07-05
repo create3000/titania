@@ -139,6 +139,10 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::Box &
+	getMaterialBox () const
+	{ return *m_MaterialBox; }
+
 	Gtk::ToggleButton &
 	getFrontAndBackButton () const
 	{ return *m_FrontAndBackButton; }
@@ -356,6 +360,7 @@ private:
 	Gtk::ImageMenuItem*            m_CopyMenuItem;
 	Gtk::ImageMenuItem*            m_PasteMenuItem;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::Box*                      m_MaterialBox;
 	Gtk::ToggleButton*             m_FrontAndBackButton;
 	Gtk::Expander*                 m_FrontExpander;
 	Gtk::Scale*                    m_AmbientScale;

@@ -81,6 +81,8 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_PasteMenuItem -> set_name ("PasteMenuItem");
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_PreviewBox -> set_name ("PreviewBox");
+	m_builder -> get_widget ("MaterialBox", m_MaterialBox);
+	m_MaterialBox -> set_name ("MaterialBox");
 	m_builder -> get_widget ("FrontAndBackButton", m_FrontAndBackButton);
 	m_FrontAndBackButton -> set_name ("FrontAndBackButton");
 	m_builder -> get_widget ("FrontExpander", m_FrontExpander);
