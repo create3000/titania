@@ -293,7 +293,6 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
-	getMaterialEditorButton ()       .set_sensitive (haveSelection);
 
 	getSelectParentButton ()   .set_sensitive (haveSelection);
 	getSelectChildrenButton () .set_sensitive (haveSelection);
@@ -1035,16 +1034,16 @@ BrowserWindow::enableEditor (const bool enabled)
 	getObjectIconsMenuItem ()                  .set_visible (enabled);
 	getSelectionMenuItem ()                    .set_visible (enabled);
 
-	getImportButton ()                  .set_visible (enabled);
-	getSeparatorToolItem1 ()            .set_visible (enabled);
-	getUndoButton ()                    .set_visible (enabled);
-	getRedoButton ()                    .set_visible (enabled);
-	getSeparatorToolItem2 ()            .set_visible (enabled);
-	getNodePropertiesEditorButton ()    .set_visible (enabled);
-	getMaterialEditorButton ()          .set_visible (enabled);
-	getUpdateViewpointButton ()         .set_visible (enabled);
-	getCreatePrototypeInstanceButton () .set_visible (enabled);
-	getGeometryPropertiesEditorButton ()       .set_visible (enabled);
+	getImportButton ()                   .set_visible (enabled);
+	getSeparatorToolItem1 ()             .set_visible (enabled);
+	getUndoButton ()                     .set_visible (enabled);
+	getRedoButton ()                     .set_visible (enabled);
+	getSeparatorToolItem2 ()             .set_visible (enabled);
+	getNodePropertiesEditorButton ()     .set_visible (enabled);
+	getMaterialEditorButton ()           .set_visible (enabled);
+	getGeometryPropertiesEditorButton () .set_visible (enabled);
+	getUpdateViewpointButton ()          .set_visible (enabled);
+	getCreatePrototypeInstanceButton ()  .set_visible (enabled);
 
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());

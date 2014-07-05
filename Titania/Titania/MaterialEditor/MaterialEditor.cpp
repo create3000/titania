@@ -212,6 +212,8 @@ MaterialEditor::set_selection ()
 	updateDialog (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
 	updateDialog (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
 
+	getMaterialBox () .set_sensitive (not appearances .empty ());
+
 	initialized = true;
 }
 
