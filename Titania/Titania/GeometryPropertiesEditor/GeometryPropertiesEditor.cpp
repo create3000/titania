@@ -100,7 +100,7 @@ GeometryPropertiesEditor::set_selection ()
 									case X3D::X3DConstants::X3DGeometryNode:
 										{
 										   geometryNodes .emplace_back (node);
-										   break;
+										   return true;
 										}
 									default:
 										break;

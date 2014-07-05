@@ -56,19 +56,17 @@
 namespace titania {
 namespace puck {
 
-MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode nodes) :
+MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.xml"), gconf_dir ()),
 	            browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
 	               appearances (),
-	                  material (new X3D::Material (browserWindow -> getExecutionContext ())),
-	          twoSidedMaterial (new X3D::TwoSidedMaterial (browserWindow -> getExecutionContext ())),
+	                  material (),
+	          twoSidedMaterial (),
 	                  undoStep (),
 	               initialized (false)
 {
 	browserSurface -> set_antialiasing (4);
-
-	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 
 	initDialog (getDiffuseDialog (),  &MaterialEditor::on_diffuseColor);
 	initDialog (getSpecularDialog (), &MaterialEditor::on_specularColor);
@@ -77,15 +75,71 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	initDialog (getBackDiffuseDialog (),  &MaterialEditor::on_backDiffuseColor);
 	initDialog (getBackSpecularDialog (), &MaterialEditor::on_backSpecularColor);
 	initDialog (getBackEmissiveDialog (), &MaterialEditor::on_backEmissiveColor);
+}
+
+void
+MaterialEditor::initialize ()
+{
+	X3DMaterialEditorInterface::initialize ();
+
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &MaterialEditor::set_selection);
+
+	set_selection ();
+
+	// Connect to initialized event.
+	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_splashScreen);
+
+	// Insert Surface, this will initialize the Browser.
+	getPreviewBox () .pack_start (*browserSurface, true, true, 0);
+
+	// Show Surface and start the X3D Main Loop.
+	browserSurface -> show ();
+}
+
+void
+MaterialEditor::set_splashScreen ()
+{
+	browserSurface -> initialized () .removeInterest (this, &MaterialEditor::set_splashScreen);
+	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_initialized);
+
+	try
+	{
+		browserSurface -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+MaterialEditor::set_initialized ()
+{
+	updateMaterial ();
+}
+	
+void
+MaterialEditor::set_selection ()
+{
+	__LOG__ << std::endl;
+
+	initialized = false;
+
+	undoStep .reset ();
+
+	material         = new X3D::Material (getExecutionContext ());
+	twoSidedMaterial = new X3D::TwoSidedMaterial (getExecutionContext ());
 
 	twoSidedMaterial -> separateBackColor () = true;
 
 	material -> setup ();
 	twoSidedMaterial -> setup ();
 
-	// Find Appearances
+	// Find Appearances.
+	
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	X3D::traverse (nodes, [&] (X3D::SFNode & node)
+	appearances .clear ();
+
+	X3D::traverse (selection, [&] (X3D::SFNode & node)
 	               {
 	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
@@ -95,7 +149,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	                  return true;
 						});
 
-	// Find last Material and TwoSidedMaterial node
+	// Find last Material and TwoSidedMaterial node.
 
 	size_t materialIndex = 0;
 
@@ -147,44 +201,20 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	getFrontAndBackButton () .set_active (twoSidedMaterialIndex < materialIndex);
 
 	on_frontAndBackButton_toggled ();
-}
 
-void
-MaterialEditor::initialize ()
-{
-	X3DMaterialEditorInterface::initialize ();
-
-	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_splashScreen);
-
-	// Insert Surface, this will initialize the Browser.
-	getPreviewBox () .pack_start (*browserSurface, true, true, 0);
-
-	// Show Surface and start the X3D Main Loop.
-	browserSurface -> show ();
-}
-
-void
-MaterialEditor::set_splashScreen ()
-{
-	browserSurface -> initialized () .removeInterest (this, &MaterialEditor::set_splashScreen);
-	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_initialized);
-
-	try
-	{
-		browserSurface -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
-	}
-	catch (const X3D::X3DError &)
-	{ }
-}
-
-void
-MaterialEditor::set_initialized ()
-{
 	updateMaterial ();
+
+	updateDialog (getDiffuseDialog (),  twoSidedMaterial -> diffuseColor (),  material -> diffuseColor ());
+	updateDialog (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
+	updateDialog (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor ());
+
+	updateDialog (getBackDiffuseDialog (),  twoSidedMaterial -> backDiffuseColor (),  twoSidedMaterial -> backDiffuseColor ());
+	updateDialog (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
+	updateDialog (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
 
 	initialized = true;
 }
-	
+
 void
 MaterialEditor::on_copy ()
 {
@@ -200,6 +230,8 @@ MaterialEditor::on_paste ()
 void
 MaterialEditor::on_frontAndBackButton_toggled ()
 {
+	__LOG__ << std::endl;
+
 	// Copy front material
 
 	if (initialized)
@@ -275,7 +307,7 @@ MaterialEditor::on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> & context)
 void
 MaterialEditor::on_diffuse_clicked ()
 {
-	on_color_clicked (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor ());
+	getDiffuseDialog () .present ();
 }
 
 void
@@ -295,7 +327,7 @@ MaterialEditor::on_specular_draw (const Cairo::RefPtr <Cairo::Context> & context
 void
 MaterialEditor::on_specular_clicked ()
 {
-	on_color_clicked (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
+	getSpecularDialog () .present ();
 }
 
 void
@@ -315,7 +347,7 @@ MaterialEditor::on_emissive_draw (const Cairo::RefPtr <Cairo::Context> & context
 void
 MaterialEditor::on_emissive_clicked ()
 {
-	on_color_clicked (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor ());
+	getEmissiveDialog () .present ();
 }
 
 void
@@ -373,7 +405,7 @@ MaterialEditor::on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> & cont
 void
 MaterialEditor::on_backDiffuse_clicked ()
 {
-	on_color_clicked (getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor ());
+	getBackDiffuseDialog () .present ();
 }
 
 void
@@ -393,7 +425,7 @@ MaterialEditor::on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> & con
 void
 MaterialEditor::on_backSpecular_clicked ()
 {
-	on_color_clicked (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor ());
+	getBackSpecularDialog () .present ();
 }
 
 void
@@ -413,7 +445,7 @@ MaterialEditor::on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> & con
 void
 MaterialEditor::on_backEmissive_clicked ()
 {
-	on_color_clicked (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
+	getBackEmissiveDialog () .present ();
 }
 
 void
@@ -460,6 +492,21 @@ MaterialEditor::initDialog (Gtk::ColorSelectionDialog & dialog, void (MaterialEd
 	dialog .property_cancel_button () .get_value () -> hide ();
 }
 
+void
+MaterialEditor::updateDialog (Gtk::ColorSelectionDialog & dialog, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color)
+{
+	if (getFrontAndBackButton () .get_active ())
+	{
+		dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
+		dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
+	}
+	else
+	{
+		dialog .get_color_selection () -> set_current_color  (toColor (color));
+		dialog .get_color_selection () -> set_previous_color (toColor (color));
+	}
+}
+
 bool
 MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color, Gtk::DrawingArea & drawingArea)
 {
@@ -473,23 +520,6 @@ MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, c
 	context -> fill ();
 
 	return true;
-}
-
-void
-MaterialEditor::on_color_clicked (Gtk::ColorSelectionDialog & dialog, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color)
-{
-	if (getFrontAndBackButton () .get_active ())
-	{
-		dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
-		dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
-	}
-	else
-	{
-		dialog .get_color_selection () -> set_current_color  (toColor (color));
-		dialog .get_color_selection () -> set_previous_color (toColor (color));
-	}
-
-	dialog .present ();
 }
 
 void
@@ -517,6 +547,9 @@ MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & two
 void
 MaterialEditor::updateAppearance ()
 {
+	if (not initialized)
+		return;
+
 	// Update material
 
 	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
@@ -570,8 +603,7 @@ MaterialEditor::updateAppearance ()
 		getExecutionContext () -> realize ();
 		getBrowser () -> update ();
 
-		if (initialized or appearances .size () > 1)
-			getBrowserWindow () -> addUndoStep (undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
 
 		browserSurface -> addEvent ();
 	}

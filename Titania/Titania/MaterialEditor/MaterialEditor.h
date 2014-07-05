@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	MaterialEditor (BrowserWindow* const, X3D::MFNode);
+	MaterialEditor (BrowserWindow* const);
 
 	///  @name Destruction
 
@@ -82,14 +82,17 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+	
 	void
 	set_splashScreen ();
 
 	void
 	set_initialized ();
 
-	///  @name Event handlers
-	
+	void
+	set_selection ();
+
 	virtual
 	void
 	on_copy () final override;
@@ -201,11 +204,11 @@ private:
 	void
 	initDialog (Gtk::ColorSelectionDialog &, void (MaterialEditor::* callback)());
 
+	void
+	updateDialog (Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
+
 	bool
 	on_color_draw (const Cairo::RefPtr <Cairo::Context> &, const X3D::Color3f &, const X3D::Color3f &, Gtk::DrawingArea &);
-
-	void
-	on_color_clicked (Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
 
 	void
 	on_color (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);

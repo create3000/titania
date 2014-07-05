@@ -115,8 +115,6 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                editExportedNode (false)
 
 {
-	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
-
 	getHeaderLabel ()         .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
 	getTypeNameEntry ()       .set_text (node -> getTypeName ());
 	getNameEntry ()           .set_text (node -> getName ());
