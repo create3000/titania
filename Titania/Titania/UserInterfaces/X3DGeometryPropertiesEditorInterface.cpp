@@ -64,6 +64,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_CreaseAngleAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("TextureGeneratorModeMenu", m_TextureGeneratorModeMenu);
+	m_TextureGeneratorModeMenu -> set_name ("TextureGeneratorModeMenu");
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -78,6 +80,14 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_CreaseAngleScale -> set_name ("CreaseAngleScale");
 	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
 	m_ConvexCheckButton -> set_name ("ConvexCheckButton");
+	m_builder -> get_widget ("TextureCoordinateGeneratorExpander", m_TextureCoordinateGeneratorExpander);
+	m_TextureCoordinateGeneratorExpander -> set_name ("TextureCoordinateGeneratorExpander");
+	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);
+	m_TextureCoordinateGeneratorBox -> set_name ("TextureCoordinateGeneratorBox");
+	m_builder -> get_widget ("TextureCoordinateGeneratorCheckButton", m_TextureCoordinateGeneratorCheckButton);
+	m_TextureCoordinateGeneratorCheckButton -> set_name ("TextureCoordinateGeneratorCheckButton");
+	m_builder -> get_widget ("TextureCoordinateGeneratorModeButton", m_TextureCoordinateGeneratorModeButton);
+	m_TextureCoordinateGeneratorModeButton -> set_name ("TextureCoordinateGeneratorModeButton");
 
 	// Connect object Gtk::CheckButton with id 'SolidCheckButton'.
 	m_SolidCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_solid_toggled));
@@ -88,6 +98,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'ConvexCheckButton'.
 	m_ConvexCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_convex_toggled));
+	m_TextureCoordinateGeneratorCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_textureCoordinateGenerator_toggled));
 
 	// Call construct handler of base class.
 	construct ();

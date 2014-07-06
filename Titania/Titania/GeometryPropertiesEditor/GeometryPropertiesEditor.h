@@ -94,7 +94,7 @@ private:
 	set_solid ();
 
 	void
-	connect_solid (const X3D::SFBool &);
+	connectSolid (const X3D::SFBool &);
 
 	virtual
 	void
@@ -104,7 +104,7 @@ private:
 	set_ccw ();
 
 	void
-	connect_ccw (const X3D::SFBool &);
+	connectCCW (const X3D::SFBool &);
 
 	virtual
 	void
@@ -114,7 +114,7 @@ private:
 	set_convex ();
 
 	void
-	connect_convex (const X3D::SFBool &);
+	connectConvex (const X3D::SFBool &);
 
 	virtual
 	void
@@ -124,7 +124,17 @@ private:
 	set_creaseAngle ();
 
 	void
-	connect_creaseAngle (const X3D::SFFloat &);
+	connectCreaseAngle (const X3D::SFFloat &);
+
+	virtual
+	void
+	on_textureCoordinateGenerator_toggled () final override;
+
+	void
+	set_textureCoordinateGenerator ();
+
+	void
+	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
 	///  @name Operations
 
@@ -138,10 +148,11 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
-	UndoStepPtr                             undoStep;
-	std::string                             currentField;
-	bool                                    changing;
+	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
+	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
+	UndoStepPtr                                   undoStep;
+	std::string                                   currentField;
+	bool                                          changing;
 
 };
 
