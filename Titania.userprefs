@@ -3,12 +3,9 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1490" Column="1" />
-      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="118" Column="53" />
-      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="75" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="761" Column="1" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="69" Column="38" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="59" Column="67" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1485" Column="1" />
+      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="142" Column="50" />
+      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -32,13 +29,7 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Bits" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True" />
-                </Node>
-                <Node name="PeaseBlossom" expanded="True">
-                  <Node name="Primitives" expanded="True" />
-                </Node>
+                <Node name="Fields" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -52,10 +43,10 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True">
-                <Node name="BrowserWindow.cpp" selected="True" />
+              <Node name="Browser" expanded="True" />
+              <Node name="GeometryPropertiesEditor" expanded="True">
+                <Node name="GeometryPropertiesEditor.cpp" selected="True" />
               </Node>
-              <Node name="GeometryPropertiesEditor" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
               <Node name="Undo" expanded="True" />

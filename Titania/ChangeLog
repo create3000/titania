@@ -1,5 +1,15 @@
 2014-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* MaterialEditor.xml:
+	* X3DMaterialEditorInterface.h:
+	* X3DMaterialEditorInterface.cpp:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp: 
+
+2014-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* style.css:
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:

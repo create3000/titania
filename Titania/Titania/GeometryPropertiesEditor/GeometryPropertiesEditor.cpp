@@ -50,7 +50,6 @@
 
 #include "GeometryPropertiesEditor.h"
 
-#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 
 namespace titania {
@@ -61,6 +60,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browser
 	X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
 	                       geometryNodes (),
 	                            undoStep (),
+	                        currentField (),
 	                            changing (false)
 { }
 
@@ -117,12 +117,13 @@ GeometryPropertiesEditor::set_selection ()
 		{ }
 	}
 
-	geometryNodes .clear ();
 	undoStep .reset ();
 
 	// Find X3DGeometryNodes
 
 	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	geometryNodes .clear ();
 
 	X3D::traverse (selection, [&] (X3D::SFNode & node)
 	               {
@@ -195,7 +196,7 @@ GeometryPropertiesEditor::on_solid_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunctions ();
+	addUndoFunction <X3D::SFBool> ("solid");
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -212,7 +213,7 @@ GeometryPropertiesEditor::on_solid_toggled ()
 		{ }
 	}
 
-	addRedoFunctions ();
+	addRedoFunction <X3D::SFBool> ("solid");
 }
 
 void
@@ -256,7 +257,7 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunctions ();
+	addUndoFunction <X3D::SFBool> ("ccw");
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -273,7 +274,7 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 		{ }
 	}
 
-	addRedoFunctions ();
+	addRedoFunction <X3D::SFBool> ("ccw");
 }
 
 void
@@ -317,7 +318,7 @@ GeometryPropertiesEditor::on_convex_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunctions ();
+	addUndoFunction <X3D::SFBool> ("convex");
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -334,7 +335,7 @@ GeometryPropertiesEditor::on_convex_toggled ()
 		{ }
 	}
 
-	addRedoFunctions ();
+	addRedoFunction <X3D::SFBool> ("convex");
 }
 
 void
@@ -378,7 +379,7 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 	if (changing)
 		return;
 
-	addUndoFunctions ();
+	addUndoFunction <X3D::SFFloat> ("creaseAngle");
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -395,7 +396,7 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 		{ }
 	}
 
-	addRedoFunctions ();
+	addRedoFunction <X3D::SFFloat> ("creaseAngle");
 }
 
 void
@@ -431,139 +432,6 @@ GeometryPropertiesEditor::connect_creaseAngle (const X3D::SFFloat & creaseAngle)
 {
 	creaseAngle .removeInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
 	creaseAngle .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
-}
-
-void
-GeometryPropertiesEditor::addUndoFunctions ()
-{
-	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
-
-	if (undoStep and lastUndoStep == undoStep)
-		return;
-
-	undoStep = std::make_shared <UndoStep> (_ ("Geometry Change"));
-
-	undoStep -> addVariables (geometryNodes);
-
-	// Undo solid
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("solid");
-
-			undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	// Undo ccw
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("ccw");
-
-			undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	// Undo convex
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("convex");
-
-			undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	// Undo creaseAngle
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFFloat> ("creaseAngle");
-
-			undoStep -> addUndoFunction (&X3D::SFFloat::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	getBrowserWindow () -> addUndoStep (undoStep);
-}
-
-void
-GeometryPropertiesEditor::addRedoFunctions ()
-{
-	undoStep -> clearRedoFunctions ();
-
-	// Undo solid
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("solid");
-
-			undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	// Undo ccw
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("ccw");
-
-			undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	// Undo convex
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("convex");
-
-			undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	// Undo creaseAngle
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFFloat> ("creaseAngle");
-
-			undoStep -> addRedoFunction (&X3D::SFFloat::setValue, std::ref (field), field .getValue ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
 }
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()

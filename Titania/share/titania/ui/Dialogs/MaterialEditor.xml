@@ -264,7 +264,7 @@
                             <property name="round_digits">2</property>
                             <property name="digits">2</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_ambient" swapped="no"/>
+                            <signal name="value-changed" handler="on_ambient_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -282,7 +282,7 @@
                             <property name="round_digits">2</property>
                             <property name="digits">2</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_shininess" swapped="no"/>
+                            <signal name="value-changed" handler="on_shininess_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -300,7 +300,7 @@
                             <property name="round_digits">2</property>
                             <property name="digits">2</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_transparency" swapped="no"/>
+                            <signal name="value-changed" handler="on_transparency_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -509,7 +509,7 @@
                             <property name="round_digits">2</property>
                             <property name="digits">2</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_backAmbient" swapped="no"/>
+                            <signal name="value-changed" handler="on_backAmbient_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -527,7 +527,7 @@
                             <property name="round_digits">2</property>
                             <property name="digits">2</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_backShininess" swapped="no"/>
+                            <signal name="value-changed" handler="on_backShininess_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -545,7 +545,7 @@
                             <property name="round_digits">2</property>
                             <property name="digits">2</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_backTransparency" swapped="no"/>
+                            <signal name="value-changed" handler="on_backTransparency_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>

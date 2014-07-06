@@ -64,17 +64,17 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	                  material (),
 	          twoSidedMaterial (),
 	                  undoStep (),
-	               initialized (false)
+	               changing (false)
 {
 	browserSurface -> set_antialiasing (4);
 
-	initDialog (getDiffuseDialog (),  &MaterialEditor::on_diffuseColor);
-	initDialog (getSpecularDialog (), &MaterialEditor::on_specularColor);
-	initDialog (getEmissiveDialog (), &MaterialEditor::on_emissiveColor);
+	initDialog (getDiffuseDialog (),  &MaterialEditor::on_diffuseColor_changed);
+	initDialog (getSpecularDialog (), &MaterialEditor::on_specularColor_changed);
+	initDialog (getEmissiveDialog (), &MaterialEditor::on_emissiveColor_changed);
 
-	initDialog (getBackDiffuseDialog (),  &MaterialEditor::on_backDiffuseColor);
-	initDialog (getBackSpecularDialog (), &MaterialEditor::on_backSpecularColor);
-	initDialog (getBackEmissiveDialog (), &MaterialEditor::on_backEmissiveColor);
+	initDialog (getBackDiffuseDialog (),  &MaterialEditor::on_backDiffuseColor_changed);
+	initDialog (getBackSpecularDialog (), &MaterialEditor::on_backSpecularColor_changed);
+	initDialog (getBackEmissiveDialog (), &MaterialEditor::on_backEmissiveColor_changed);
 }
 
 void
@@ -113,7 +113,7 @@ MaterialEditor::set_splashScreen ()
 void
 MaterialEditor::set_initialized ()
 {
-	updateMaterial ();
+	updatePreview ();
 }
 	
 void
@@ -121,9 +121,7 @@ MaterialEditor::set_selection ()
 {
 	__LOG__ << std::endl;
 
-	initialized = false;
-
-	undoStep .reset ();
+	changing = true;
 
 	material         = new X3D::Material (getExecutionContext ());
 	twoSidedMaterial = new X3D::TwoSidedMaterial (getExecutionContext ());
@@ -132,6 +130,8 @@ MaterialEditor::set_selection ()
 
 	material -> setup ();
 	twoSidedMaterial -> setup ();
+
+	undoStep .reset ();
 
 	// Find Appearances.
 	
@@ -202,7 +202,7 @@ MaterialEditor::set_selection ()
 
 	on_frontAndBackButton_toggled ();
 
-	updateMaterial ();
+	updatePreview ();
 
 	updateDialog (getDiffuseDialog (),  twoSidedMaterial -> diffuseColor (),  material -> diffuseColor ());
 	updateDialog (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
@@ -214,7 +214,7 @@ MaterialEditor::set_selection ()
 
 	getMaterialBox () .set_sensitive (not appearances .empty ());
 
-	initialized = true;
+	changing = false;
 }
 
 void
@@ -234,7 +234,7 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 {
 	// Copy front material
 
-	if (initialized)
+	if (not changing)
 	{
 		if (getFrontAndBackButton () .get_active ())
 		{
@@ -255,10 +255,6 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 			material -> transparency ()     = twoSidedMaterial -> transparency ();
 		}
 	}
-
-	// Update material
-	
-	updateAppearance ();
 
 	// Update color buttons
 
@@ -294,6 +290,10 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 	// Update browser immediately
 
 	getBrowser () -> update ();
+
+	// Update material
+	
+	updateAppearance ();
 }
 
 // Front diffuse color
@@ -311,9 +311,9 @@ MaterialEditor::on_diffuse_clicked ()
 }
 
 void
-MaterialEditor::on_diffuseColor ()
+MaterialEditor::on_diffuseColor_changed ()
 {
-	on_color (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor (), getDiffuseArea ());
+	on_color_changed (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor (), getDiffuseArea ());
 }
 
 // Front specular color
@@ -331,9 +331,9 @@ MaterialEditor::on_specular_clicked ()
 }
 
 void
-MaterialEditor::on_specularColor ()
+MaterialEditor::on_specularColor_changed ()
 {
-	on_color (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor (), getSpecularArea ());
+	on_color_changed (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor (), getSpecularArea ());
 }
 
 // Front emissive color
@@ -351,15 +351,15 @@ MaterialEditor::on_emissive_clicked ()
 }
 
 void
-MaterialEditor::on_emissiveColor ()
+MaterialEditor::on_emissiveColor_changed ()
 {
-	on_color (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor (), getEmissiveArea ());
+	on_color_changed (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor (), getEmissiveArea ());
 }
 
 // Front scale widgets
 
 void
-MaterialEditor::on_ambient ()
+MaterialEditor::on_ambient_changed ()
 {
 	if (getFrontAndBackButton () .get_active ())
 		twoSidedMaterial -> ambientIntensity () = getAmbientScale () .get_value ();
@@ -371,7 +371,7 @@ MaterialEditor::on_ambient ()
 }
 
 void
-MaterialEditor::on_shininess ()
+MaterialEditor::on_shininess_changed ()
 {
 	if (getFrontAndBackButton () .get_active ())
 		twoSidedMaterial -> shininess () = getShininessScale () .get_value ();
@@ -383,7 +383,7 @@ MaterialEditor::on_shininess ()
 }
 
 void
-MaterialEditor::on_transparency ()
+MaterialEditor::on_transparency_changed ()
 {
 	if (getFrontAndBackButton () .get_active ())
 		twoSidedMaterial -> transparency () = getTransparencyScale () .get_value ();
@@ -409,9 +409,9 @@ MaterialEditor::on_backDiffuse_clicked ()
 }
 
 void
-MaterialEditor::on_backDiffuseColor ()
+MaterialEditor::on_backDiffuseColor_changed ()
 {
-	on_color (getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor (), getBackDiffuseArea ());
+	on_color_changed (getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor (), getBackDiffuseArea ());
 }
 
 // Back specular color
@@ -429,9 +429,9 @@ MaterialEditor::on_backSpecular_clicked ()
 }
 
 void
-MaterialEditor::on_backSpecularColor ()
+MaterialEditor::on_backSpecularColor_changed ()
 {
-	on_color (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor (), getBackSpecularArea ());
+	on_color_changed (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor (), getBackSpecularArea ());
 }
 
 // Back emissive color
@@ -449,15 +449,15 @@ MaterialEditor::on_backEmissive_clicked ()
 }
 
 void
-MaterialEditor::on_backEmissiveColor ()
+MaterialEditor::on_backEmissiveColor_changed ()
 {
-	on_color (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor (), getBackEmissiveArea ());
+	on_color_changed (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor (), getBackEmissiveArea ());
 }
 
 // Back scale widgets
 
 void
-MaterialEditor::on_backAmbient ()
+MaterialEditor::on_backAmbient_changed ()
 {
 	twoSidedMaterial -> backAmbientIntensity () = getBackAmbientScale () .get_value ();
 
@@ -465,7 +465,7 @@ MaterialEditor::on_backAmbient ()
 }
 
 void
-MaterialEditor::on_backShininess ()
+MaterialEditor::on_backShininess_changed ()
 {
 	twoSidedMaterial -> backShininess () = getBackShininessScale () .get_value ();
 
@@ -473,7 +473,7 @@ MaterialEditor::on_backShininess ()
 }
 
 void
-MaterialEditor::on_backTransparency ()
+MaterialEditor::on_backTransparency_changed ()
 {
 	twoSidedMaterial -> backTransparency () = getBackTransparencyScale () .get_value ();
 
@@ -523,7 +523,7 @@ MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, c
 }
 
 void
-MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & twoSidedColor, X3D::SFColor & color, Gtk::DrawingArea & drawingArea)
+MaterialEditor::on_color_changed (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & twoSidedColor, X3D::SFColor & color, Gtk::DrawingArea & drawingArea)
 {
 	const auto rgba = dialog .get_color_selection () -> get_current_rgba ();
 
@@ -547,7 +547,7 @@ MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & two
 void
 MaterialEditor::updateAppearance ()
 {
-	if (not initialized)
+	if (changing)
 		return;
 
 	// Update material
@@ -583,7 +583,7 @@ MaterialEditor::updateAppearance ()
 		{
 			twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
 			
-			updateMaterial ();
+			updatePreview ();
 
 			for (const auto & appearance : appearances)
 	         getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), appearance -> material (), X3D::SFNode (twoSidedMaterial), undoStep);
@@ -592,7 +592,7 @@ MaterialEditor::updateAppearance ()
 		{
 			material = material -> copy (material -> getExecutionContext ());
 			
-			updateMaterial ();
+			updatePreview ();
 
 			for (const auto & appearance : appearances)
 	         getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), appearance -> material (), X3D::SFNode (material), undoStep);
@@ -610,7 +610,7 @@ MaterialEditor::updateAppearance ()
 }
 
 void
-MaterialEditor::updateMaterial ()
+MaterialEditor::updatePreview ()
 {
 	try
 	{
@@ -632,21 +632,12 @@ MaterialEditor::updateMaterial ()
 // Helper functions
 
 Gdk::Color
-MaterialEditor::toColor (const X3D::Color3f & color)
+MaterialEditor::toColor (const X3D::Color3f & value)
 {
-	Gdk::Color rgb;
+	Gdk::Color color;
 
-	rgb .set_rgb_p (color .r (), color .g (), color .b ());
-	return rgb;
-}
-
-Gdk::Color
-MaterialEditor::toColor (const float value)
-{
-	Gdk::Color rgb;
-
-	rgb .set_rgb_p (value, value, value);
-	return rgb;
+	color .set_rgb_p (value .r (), value .g (), value .b ());
+	return color;
 }
 
 MaterialEditor::~MaterialEditor ()

@@ -52,12 +52,11 @@
 #define __TITANIA_RENDER_STYLE_EDITOR_RENDER_STYLE_EDITOR_H__
 
 #include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../Browser/BrowserWindow.h"
 #include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
-
-class BrowserWindow;
 
 class GeometryPropertiesEditor :
 	public X3DGeometryPropertiesEditorInterface
@@ -129,19 +128,75 @@ private:
 
 	///  @name Operations
 
+	template <class Type>
 	void
-	addUndoFunctions ();
+	addUndoFunction (const std::string &);
 
+	template <class Type>
 	void
-	addRedoFunctions ();
+	addRedoFunction (const std::string &);
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
 	UndoStepPtr                             undoStep;
+	std::string                             currentField;
 	bool                                    changing;
 
 };
+
+template <class Type>
+void
+GeometryPropertiesEditor::addUndoFunction (const std::string & name)
+{
+	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
+
+	if (undoStep and lastUndoStep == undoStep and name == currentField)
+		return;
+		
+	currentField = name;
+
+	undoStep = std::make_shared <UndoStep> (_ ("Geometry Change"));
+
+	undoStep -> addVariables (geometryNodes);
+
+	// Undo field change
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			auto & field = geometry -> getField <Type> (name);
+
+			undoStep -> addUndoFunction (&Type::setValue, std::ref (field), field .getValue ());
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+template <class Type>
+void
+GeometryPropertiesEditor::addRedoFunction (const std::string & name)
+{
+	undoStep -> clearRedoFunctions ();
+
+	// Redo field change
+
+	for (const auto & geometry : geometryNodes)
+	{
+		try
+		{
+			auto & field = geometry -> getField <Type> (name);
+
+			undoStep -> addRedoFunction (&Type::setValue, std::ref (field), field .getValue ());
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+}
 
 } // puck
 } // titania

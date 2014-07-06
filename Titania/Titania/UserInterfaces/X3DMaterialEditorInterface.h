@@ -265,15 +265,15 @@ public:
 
 	virtual
 	void
-	on_ambient () = 0;
+	on_ambient_changed () = 0;
 
 	virtual
 	void
-	on_shininess () = 0;
+	on_shininess_changed () = 0;
 
 	virtual
 	void
-	on_transparency () = 0;
+	on_transparency_changed () = 0;
 
 	virtual
 	void
@@ -301,15 +301,15 @@ public:
 
 	virtual
 	void
-	on_backAmbient () = 0;
+	on_backAmbient_changed () = 0;
 
 	virtual
 	void
-	on_backShininess () = 0;
+	on_backShininess_changed () = 0;
 
 	virtual
 	void
-	on_backTransparency () = 0;
+	on_backTransparency_changed () = 0;
 
 	virtual
 	void

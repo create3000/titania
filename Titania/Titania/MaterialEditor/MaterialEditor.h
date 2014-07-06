@@ -116,7 +116,7 @@ private:
 	on_diffuse_clicked () final override;
 
 	void
-	on_diffuseColor ();
+	on_diffuseColor_changed ();
 
 	virtual
 	bool
@@ -127,7 +127,7 @@ private:
 	on_specular_clicked () final override;
 
 	void
-	on_specularColor ();
+	on_specularColor_changed ();
 
 	virtual
 	bool
@@ -138,19 +138,19 @@ private:
 	on_emissive_clicked () final override;
 
 	void
-	on_emissiveColor ();
+	on_emissiveColor_changed ();
 
 	virtual
 	void
-	on_ambient () final override;
+	on_ambient_changed () final override;
 
 	virtual
 	void
-	on_shininess () final override;
+	on_shininess_changed () final override;
 
 	virtual
 	void
-	on_transparency () final override;
+	on_transparency_changed () final override;
 
 	///  @name Back color handler
 
@@ -163,7 +163,7 @@ private:
 	on_backDiffuse_clicked () final override;
 
 	void
-	on_backDiffuseColor ();
+	on_backDiffuseColor_changed ();
 
 	virtual
 	bool
@@ -174,7 +174,7 @@ private:
 	on_backSpecular_clicked () final override;
 
 	void
-	on_backSpecularColor ();
+	on_backSpecularColor_changed ();
 
 	virtual
 	bool
@@ -185,19 +185,19 @@ private:
 	on_backEmissive_clicked () final override;
 
 	void
-	on_backEmissiveColor ();
+	on_backEmissiveColor_changed ();
 
 	virtual
 	void
-	on_backAmbient () final override;
+	on_backAmbient_changed () final override;
 
 	virtual
 	void
-	on_backShininess () final override;
+	on_backShininess_changed () final override;
 
 	virtual
 	void
-	on_backTransparency () final override;
+	on_backTransparency_changed () final override;
 
 	///  @name Operations for all colors
 
@@ -211,22 +211,19 @@ private:
 	on_color_draw (const Cairo::RefPtr <Cairo::Context> &, const X3D::Color3f &, const X3D::Color3f &, Gtk::DrawingArea &);
 
 	void
-	on_color (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);
+	on_color_changed (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);
 
 	void
 	updateAppearance ();
 	
 	void
-	updateMaterial ();
+	updatePreview ();
 
 
 	///  @name Helper functions
 
 	Gdk::Color
 	toColor (const X3D::Color3f &);
-
-	Gdk::Color
-	toColor (const float value);
 
 	///  @name Members
 
@@ -238,7 +235,7 @@ private:
 	
 	UndoStepPtr undoStep;
 
-	bool initialized;
+	bool changing;
 
 };
 
