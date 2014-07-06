@@ -1,3 +1,14 @@
+2014-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* style.css:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* MaterialEditor.xml:
+	* NodePropertiesEditor.xml:
+	* GeometryPropertiesEditor.xml:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-07-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MaterialEditor.cpp:

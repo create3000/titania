@@ -1483,8 +1483,7 @@ BrowserWindow::on_material_editor_clicked ()
 	if (isDialogOpen ("MaterialEditor"))
 		return;
 
-	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-		addDialog ("MaterialEditor", std::make_shared <MaterialEditor> (getBrowserWindow ()));
+	addDialog ("MaterialEditor", std::make_shared <MaterialEditor> (getBrowserWindow ()));
 }
 
 void

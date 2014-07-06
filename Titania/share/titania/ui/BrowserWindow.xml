@@ -2485,10 +2485,6 @@
                         <property name="label" translatable="yes">Create Prototype Instance</property>
                         <property name="wrap">True</property>
                         <property name="max_width_chars">46</property>
-                        <attributes>
-                          <attribute name="weight" value="bold"/>
-                          <attribute name="scale" value="1.2"/>
-                        </attributes>
                         <style>
                           <class name="titania-header"/>
                         </style>

@@ -61,7 +61,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browser
 	X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
 	                       geometryNodes (),
 	                            undoStep (),
-	                         initialized (false)
+	                            changing (false)
 { }
 
 void
@@ -192,7 +192,7 @@ GeometryPropertiesEditor::set_selection ()
 void
 GeometryPropertiesEditor::on_solid_toggled ()
 {
-	if (not initialized)
+	if (changing)
 		return;
 
 	addUndoFunctions ();
@@ -202,9 +202,9 @@ GeometryPropertiesEditor::on_solid_toggled ()
 		try
 		{
 			auto & solid = geometry -> getField <X3D::SFBool> ("solid");
-			
+
 			solid = getSolidCheckButton () .get_active ();
-			
+
 			solid .removeInterest (this, &GeometryPropertiesEditor::set_solid);
 			solid .addInterest (this, &GeometryPropertiesEditor::connect_solid);
 		}
@@ -218,7 +218,7 @@ GeometryPropertiesEditor::on_solid_toggled ()
 void
 GeometryPropertiesEditor::set_solid ()
 {
-	initialized = false;
+	changing = true;
 
 	getSolidCheckButton () .set_active (false);
 
@@ -240,7 +240,7 @@ GeometryPropertiesEditor::set_solid ()
 
 	getSolidCheckButton () .set_sensitive (hasSolid);
 
-	initialized = true;
+	changing = false;
 }
 
 void
@@ -253,7 +253,7 @@ GeometryPropertiesEditor::connect_solid (const X3D::SFBool & solid)
 void
 GeometryPropertiesEditor::on_ccw_toggled ()
 {
-	if (not initialized)
+	if (changing)
 		return;
 
 	addUndoFunctions ();
@@ -263,9 +263,9 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 		try
 		{
 			auto & ccw = geometry -> getField <X3D::SFBool> ("ccw");
-			
+
 			ccw = getCCWCheckButton () .get_active ();
-			
+
 			ccw .removeInterest (this, &GeometryPropertiesEditor::set_ccw);
 			ccw .addInterest (this, &GeometryPropertiesEditor::connect_ccw);
 		}
@@ -279,7 +279,7 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 void
 GeometryPropertiesEditor::set_ccw ()
 {
-	initialized = false;
+	changing = true;
 
 	getCCWCheckButton () .set_active (false);
 
@@ -301,7 +301,7 @@ GeometryPropertiesEditor::set_ccw ()
 
 	getCCWCheckButton () .set_sensitive (hasCCW);
 
-	initialized = true;
+	changing = false;
 }
 
 void
@@ -314,7 +314,7 @@ GeometryPropertiesEditor::connect_ccw (const X3D::SFBool & ccw)
 void
 GeometryPropertiesEditor::on_convex_toggled ()
 {
-	if (not initialized)
+	if (changing)
 		return;
 
 	addUndoFunctions ();
@@ -324,9 +324,9 @@ GeometryPropertiesEditor::on_convex_toggled ()
 		try
 		{
 			auto & convex = geometry -> getField <X3D::SFBool> ("convex");
-			
+
 			convex = not getConvexCheckButton () .get_active ();
-			
+
 			convex .removeInterest (this, &GeometryPropertiesEditor::set_convex);
 			convex .addInterest (this, &GeometryPropertiesEditor::connect_convex);
 		}
@@ -340,7 +340,7 @@ GeometryPropertiesEditor::on_convex_toggled ()
 void
 GeometryPropertiesEditor::set_convex ()
 {
-	initialized = false;
+	changing = true;
 
 	getConvexCheckButton () .set_active (false);
 
@@ -362,7 +362,7 @@ GeometryPropertiesEditor::set_convex ()
 
 	getConvexCheckButton () .set_sensitive (hasConvex);
 
-	initialized = true;
+	changing = false;
 }
 
 void
@@ -375,7 +375,7 @@ GeometryPropertiesEditor::connect_convex (const X3D::SFBool & convex)
 void
 GeometryPropertiesEditor::on_creaseAngle_changed ()
 {
-	if (not initialized)
+	if (changing)
 		return;
 
 	addUndoFunctions ();
@@ -386,8 +386,8 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 		{
 			auto & creaseAngle = geometry -> getField <X3D::SFFloat> ("creaseAngle");
 
-			creaseAngle  = math::radians (getCreaseAngleScale () .get_value ());
-			
+			creaseAngle = math::radians (getCreaseAngleScale () .get_value ());
+
 			creaseAngle .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 			creaseAngle .addInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
 		}
@@ -401,7 +401,7 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 void
 GeometryPropertiesEditor::set_creaseAngle ()
 {
-	initialized = false;
+	changing = true;
 
 	getCreaseAngleScale () .set_value (0);
 
@@ -423,7 +423,7 @@ GeometryPropertiesEditor::set_creaseAngle ()
 
 	getCreaseAngleBox () .set_sensitive (hasCreaseAngle);
 
-	initialized = true;
+	changing = false;
 }
 
 void
@@ -442,7 +442,7 @@ GeometryPropertiesEditor::addUndoFunctions ()
 		return;
 
 	undoStep = std::make_shared <UndoStep> (_ ("Geometry Change"));
-	
+
 	undoStep -> addVariables (geometryNodes);
 
 	// Undo solid
@@ -507,9 +507,6 @@ GeometryPropertiesEditor::addUndoFunctions ()
 void
 GeometryPropertiesEditor::addRedoFunctions ()
 {
-	if (not initialized)
-		return;
-
 	undoStep -> clearRedoFunctions ();
 
 	// Undo solid

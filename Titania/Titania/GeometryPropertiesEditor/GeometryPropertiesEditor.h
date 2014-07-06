@@ -139,7 +139,7 @@ private:
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
 	UndoStepPtr                             undoStep;
-	bool                                    initialized;
+	bool                                    changing;
 
 };
 
