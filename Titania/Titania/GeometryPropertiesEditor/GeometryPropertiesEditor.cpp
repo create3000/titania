@@ -197,17 +197,19 @@ GeometryPropertiesEditor::on_solid_toggled ()
 		return;
 
 	addUndoFunction <X3D::SFBool> ("solid");
+	
+	getSolidCheckButton () .set_inconsistent (false);
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			auto & solid = geometry -> getField <X3D::SFBool> ("solid");
+			auto & field = geometry -> getField <X3D::SFBool> ("solid");
 
-			solid = getSolidCheckButton () .get_active ();
+			field = getSolidCheckButton () .get_active ();
 
-			solid .removeInterest (this, &GeometryPropertiesEditor::set_solid);
-			solid .addInterest (this, &GeometryPropertiesEditor::connect_solid);
+			field .removeInterest (this, &GeometryPropertiesEditor::set_solid);
+			field .addInterest (this, &GeometryPropertiesEditor::connect_solid);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -225,30 +227,42 @@ GeometryPropertiesEditor::set_solid ()
 
 	// Find first »solid« field.
 
-	bool hasSolid = false;
+	bool hasField = false;
+	int  active   = -1;
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			getSolidCheckButton () .set_active (geometry -> getField <X3D::SFBool> ("solid"));
-			hasSolid = true;
-			break;
+			auto & field = geometry -> getField <X3D::SFBool> ("solid");
+			
+			if (active < 0)
+			{
+				hasField = true;
+				active   = field;
+			}
+			else if (field .getValue () not_eq active)
+			{
+				active = -1;
+				break;
+			}
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
-
-	getSolidCheckButton () .set_sensitive (hasSolid);
+	
+	getSolidCheckButton () .set_inconsistent (active < 0);
+	getSolidCheckButton () .set_active (active);
+	getSolidCheckButton () .set_sensitive (hasField);
 
 	changing = false;
 }
 
 void
-GeometryPropertiesEditor::connect_solid (const X3D::SFBool & solid)
+GeometryPropertiesEditor::connect_solid (const X3D::SFBool & field)
 {
-	solid .removeInterest (this, &GeometryPropertiesEditor::connect_solid);
-	solid .addInterest (this, &GeometryPropertiesEditor::set_solid);
+	field .removeInterest (this, &GeometryPropertiesEditor::connect_solid);
+	field .addInterest (this, &GeometryPropertiesEditor::set_solid);
 }
 
 void
@@ -258,17 +272,19 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 		return;
 
 	addUndoFunction <X3D::SFBool> ("ccw");
+	
+	getCCWCheckButton () .set_inconsistent (false);
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			auto & ccw = geometry -> getField <X3D::SFBool> ("ccw");
+			auto & field = geometry -> getField <X3D::SFBool> ("ccw");
 
-			ccw = getCCWCheckButton () .get_active ();
+			field = getCCWCheckButton () .get_active ();
 
-			ccw .removeInterest (this, &GeometryPropertiesEditor::set_ccw);
-			ccw .addInterest (this, &GeometryPropertiesEditor::connect_ccw);
+			field .removeInterest (this, &GeometryPropertiesEditor::set_ccw);
+			field .addInterest (this, &GeometryPropertiesEditor::connect_ccw);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -286,30 +302,42 @@ GeometryPropertiesEditor::set_ccw ()
 
 	// Find first »ccw« field.
 
-	bool hasCCW = false;
+	bool hasField = false;
+	int  active   = -1;
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			getCCWCheckButton () .set_active (geometry -> getField <X3D::SFBool> ("ccw"));
-			hasCCW = true;
-			break;
+			auto & field = geometry -> getField <X3D::SFBool> ("ccw");
+			
+			if (active < 0)
+			{
+				hasField = true;
+				active   = field;
+			}
+			else if (field .getValue () not_eq active)
+			{
+				active = -1;
+				break;
+			}
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
-
-	getCCWCheckButton () .set_sensitive (hasCCW);
+	
+	getCCWCheckButton () .set_inconsistent (active < 0);
+	getCCWCheckButton () .set_active (active);
+	getCCWCheckButton () .set_sensitive (hasField);
 
 	changing = false;
 }
 
 void
-GeometryPropertiesEditor::connect_ccw (const X3D::SFBool & ccw)
+GeometryPropertiesEditor::connect_ccw (const X3D::SFBool & field)
 {
-	ccw .removeInterest (this, &GeometryPropertiesEditor::connect_ccw);
-	ccw .addInterest (this, &GeometryPropertiesEditor::set_ccw);
+	field .removeInterest (this, &GeometryPropertiesEditor::connect_ccw);
+	field .addInterest (this, &GeometryPropertiesEditor::set_ccw);
 }
 
 void
@@ -319,17 +347,19 @@ GeometryPropertiesEditor::on_convex_toggled ()
 		return;
 
 	addUndoFunction <X3D::SFBool> ("convex");
+	
+	getConvexCheckButton () .set_inconsistent (false);
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			auto & convex = geometry -> getField <X3D::SFBool> ("convex");
+			auto & field = geometry -> getField <X3D::SFBool> ("convex");
 
-			convex = not getConvexCheckButton () .get_active ();
+			field = not getConvexCheckButton () .get_active ();
 
-			convex .removeInterest (this, &GeometryPropertiesEditor::set_convex);
-			convex .addInterest (this, &GeometryPropertiesEditor::connect_convex);
+			field .removeInterest (this, &GeometryPropertiesEditor::set_convex);
+			field .addInterest (this, &GeometryPropertiesEditor::connect_convex);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -347,30 +377,42 @@ GeometryPropertiesEditor::set_convex ()
 
 	// Find first »convex« field.
 
-	bool hasConvex = false;
+	bool hasField = false;
+	int  active   = -1;
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			getConvexCheckButton () .set_active (not geometry -> getField <X3D::SFBool> ("convex"));
-			hasConvex = true;
-			break;
+			auto & field = geometry -> getField <X3D::SFBool> ("convex");
+			
+			if (active < 0)
+			{
+				hasField = true;
+				active   = field;
+			}
+			else if (field .getValue () not_eq active)
+			{
+				active = -1;
+				break;
+			}
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
-
-	getConvexCheckButton () .set_sensitive (hasConvex);
+	
+	getConvexCheckButton () .set_inconsistent (active < 0);
+	getConvexCheckButton () .set_active (not active);
+	getConvexCheckButton () .set_sensitive (hasField);
 
 	changing = false;
 }
 
 void
-GeometryPropertiesEditor::connect_convex (const X3D::SFBool & convex)
+GeometryPropertiesEditor::connect_convex (const X3D::SFBool & field)
 {
-	convex .removeInterest (this, &GeometryPropertiesEditor::connect_convex);
-	convex .addInterest (this, &GeometryPropertiesEditor::set_convex);
+	field .removeInterest (this, &GeometryPropertiesEditor::connect_convex);
+	field .addInterest (this, &GeometryPropertiesEditor::set_convex);
 }
 
 void
@@ -385,12 +427,12 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 	{
 		try
 		{
-			auto & creaseAngle = geometry -> getField <X3D::SFFloat> ("creaseAngle");
+			auto & field = geometry -> getField <X3D::SFFloat> ("creaseAngle");
 
-			creaseAngle = math::radians (getCreaseAngleScale () .get_value ());
+			field = math::radians (getCreaseAngleScale () .get_value ());
 
-			creaseAngle .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
-			creaseAngle .addInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
+			field .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
+			field .addInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -408,30 +450,30 @@ GeometryPropertiesEditor::set_creaseAngle ()
 
 	// Find first »creaseAngle« field.
 
-	bool hasCreaseAngle = false;
+	bool hasField = false;
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
 			getCreaseAngleScale () .set_value (math::degrees <float> (geometry -> getField <X3D::SFFloat> ("creaseAngle")));
-			hasCreaseAngle = true;
+			hasField = true;
 			break;
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	getCreaseAngleBox () .set_sensitive (hasCreaseAngle);
+	getCreaseAngleBox () .set_sensitive (hasField);
 
 	changing = false;
 }
 
 void
-GeometryPropertiesEditor::connect_creaseAngle (const X3D::SFFloat & creaseAngle)
+GeometryPropertiesEditor::connect_creaseAngle (const X3D::SFFloat & field)
 {
-	creaseAngle .removeInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
-	creaseAngle .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
+	field .removeInterest (this, &GeometryPropertiesEditor::connect_creaseAngle);
+	field .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 }
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()

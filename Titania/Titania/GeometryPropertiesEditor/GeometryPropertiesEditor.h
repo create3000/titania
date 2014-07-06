@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_RENDER_STYLE_EDITOR_RENDER_STYLE_EDITOR_H__
-#define __TITANIA_RENDER_STYLE_EDITOR_RENDER_STYLE_EDITOR_H__
+#ifndef __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
+#define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 
-#include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 #include "../Browser/BrowserWindow.h"
 #include "../Undo/UndoStep.h"
+#include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
@@ -153,7 +153,7 @@ GeometryPropertiesEditor::addUndoFunction (const std::string & name)
 
 	if (undoStep and lastUndoStep == undoStep and name == currentField)
 		return;
-		
+
 	currentField = name;
 
 	undoStep = std::make_shared <UndoStep> (_ ("Geometry Change"));

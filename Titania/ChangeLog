@@ -1,5 +1,10 @@
 2014-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp: 
+
+2014-07-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MaterialEditor.h:
 	* MaterialEditor.cpp:
 	* MaterialEditor.xml:
