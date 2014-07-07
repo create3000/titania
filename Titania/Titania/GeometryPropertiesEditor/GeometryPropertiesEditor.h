@@ -136,6 +136,9 @@ private:
 	void
 	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
+	void
+	setTextureCoordinateGeneratorFields ();
+
 	///  @name Operations
 
 	template <class Type>
@@ -179,7 +182,7 @@ GeometryPropertiesEditor::addUndoFunction (const std::string & name)
 		{
 			auto & field = geometry -> getField <Type> (name);
 
-			undoStep -> addUndoFunction (&Type::setValue, std::ref (field), field .getValue ());
+			undoStep -> addUndoFunction (&Type::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -202,7 +205,7 @@ GeometryPropertiesEditor::addRedoFunction (const std::string & name)
 		{
 			auto & field = geometry -> getField <Type> (name);
 
-			undoStep -> addRedoFunction (&Type::setValue, std::ref (field), field .getValue ());
+			undoStep -> addRedoFunction (&Type::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }

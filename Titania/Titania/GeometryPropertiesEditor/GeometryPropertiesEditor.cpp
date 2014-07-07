@@ -509,12 +509,6 @@ GeometryPropertiesEditor::on_textureCoordinateGenerator_toggled ()
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (false);
 	getTextureCoordinateGeneratorModeButton ()  .set_sensitive (getTextureCoordinateGeneratorCheckButton () .get_active ());
 
-	if (not textureCoordinateGenerator)
-	{
-		textureCoordinateGenerator = new X3D::TextureCoordinateGenerator (getExecutionContext ());
-		textureCoordinateGenerator -> setup ();
-	}
-
 	for (const auto & geometry : geometryNodes)
 	{
 		try
@@ -543,28 +537,28 @@ GeometryPropertiesEditor::set_textureCoordinateGenerator ()
 
 	getTextureCoordinateGeneratorCheckButton () .set_active (false);
 
-	// Find first »convex« field.
+	// Find first »texCoord« field.
+	
+	textureCoordinateGenerator = nullptr;
 
 	bool hasField = false;
 	int  active   = -1;
 
-	for (const auto & geometry : geometryNodes)
+	for (const auto & geometry : basic::reverse_adapter (geometryNodes))
 	{
 		try
 		{
 			auto & field = geometry -> getField <X3D::SFNode> ("texCoord");
 
-			const bool value = field and field -> getType () .back () == X3D::X3DConstants::TextureCoordinateGenerator;
-
-			if (value)
+			if (not textureCoordinateGenerator and field and field -> getType () .back () == X3D::X3DConstants::TextureCoordinateGenerator)
 				textureCoordinateGenerator = field;
 
 			if (active < 0)
 			{
 				hasField = true;
-				active   = value;
+				active   = bool (textureCoordinateGenerator);
 			}
-			else if (value not_eq active)
+			else if (field not_eq textureCoordinateGenerator)
 			{
 				active = -1;
 				break;
@@ -574,10 +568,18 @@ GeometryPropertiesEditor::set_textureCoordinateGenerator ()
 		{ }
 	}
 
+	if (not textureCoordinateGenerator)
+	{
+		textureCoordinateGenerator = new X3D::TextureCoordinateGenerator (getExecutionContext ());
+		textureCoordinateGenerator -> setup ();
+	}
+
 	getTextureCoordinateGeneratorBox ()         .set_sensitive (hasField);
 	getTextureCoordinateGeneratorCheckButton () .set_active (active > 0);
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (active < 0);
 	getTextureCoordinateGeneratorModeButton ()  .set_sensitive (active > 0);
+
+	getModeLabel () .set_text (textureCoordinateGenerator -> mode ());
 
 	changing = false;
 }
@@ -587,6 +589,11 @@ GeometryPropertiesEditor::connectTextureCoordinateGenerator (const X3D::SFNode &
 {
 	field .removeInterest (this, &GeometryPropertiesEditor::connectTextureCoordinateGenerator);
 	field .addInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator);
+}
+
+void
+GeometryPropertiesEditor::setTextureCoordinateGeneratorFields ()
+{
 }
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()

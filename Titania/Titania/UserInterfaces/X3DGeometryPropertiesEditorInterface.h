@@ -143,6 +143,10 @@ public:
 	getTextureCoordinateGeneratorModeButton () const
 	{ return *m_TextureCoordinateGeneratorModeButton; }
 
+	Gtk::Label &
+	getModeLabel () const
+	{ return *m_ModeLabel; }
+
 	virtual
 	void
 	on_solid_toggled () = 0;
@@ -189,6 +193,7 @@ private:
 	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
 	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
 	Gtk::MenuButton*               m_TextureCoordinateGeneratorModeButton;
+	Gtk::Label*                    m_ModeLabel;
 
 };
 

@@ -1,3 +1,12 @@
+2014-07-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MaterialEditor.xml:
+	* GeometryPropertiesEditor.xml:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
 2014-07-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GeometryPropertiesEditor.xml:

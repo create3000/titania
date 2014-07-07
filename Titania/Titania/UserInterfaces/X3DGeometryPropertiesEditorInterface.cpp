@@ -88,6 +88,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_TextureCoordinateGeneratorCheckButton -> set_name ("TextureCoordinateGeneratorCheckButton");
 	m_builder -> get_widget ("TextureCoordinateGeneratorModeButton", m_TextureCoordinateGeneratorModeButton);
 	m_TextureCoordinateGeneratorModeButton -> set_name ("TextureCoordinateGeneratorModeButton");
+	m_builder -> get_widget ("ModeLabel", m_ModeLabel);
+	m_ModeLabel -> set_name ("ModeLabel");
 
 	// Connect object Gtk::CheckButton with id 'SolidCheckButton'.
 	m_SolidCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_solid_toggled));

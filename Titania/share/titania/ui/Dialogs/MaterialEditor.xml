@@ -261,8 +261,8 @@
                             <property name="can_focus">False</property>
                             <property name="adjustment">AmbientAdjustment</property>
                             <property name="upper_stepper_sensitivity">off</property>
-                            <property name="round_digits">2</property>
-                            <property name="digits">2</property>
+                            <property name="round_digits">3</property>
+                            <property name="digits">3</property>
                             <property name="value_pos">right</property>
                             <signal name="value-changed" handler="on_ambient_changed" swapped="no"/>
                           </object>
@@ -279,8 +279,8 @@
                             <property name="can_focus">False</property>
                             <property name="adjustment">ShininessAdjustment</property>
                             <property name="upper_stepper_sensitivity">off</property>
-                            <property name="round_digits">2</property>
-                            <property name="digits">2</property>
+                            <property name="round_digits">3</property>
+                            <property name="digits">3</property>
                             <property name="value_pos">right</property>
                             <signal name="value-changed" handler="on_shininess_changed" swapped="no"/>
                           </object>
@@ -297,8 +297,8 @@
                             <property name="can_focus">False</property>
                             <property name="adjustment">TransparencyAdjustment</property>
                             <property name="upper_stepper_sensitivity">off</property>
-                            <property name="round_digits">2</property>
-                            <property name="digits">2</property>
+                            <property name="round_digits">3</property>
+                            <property name="digits">3</property>
                             <property name="value_pos">right</property>
                             <signal name="value-changed" handler="on_transparency_changed" swapped="no"/>
                           </object>
@@ -506,8 +506,8 @@
                             <property name="can_focus">False</property>
                             <property name="adjustment">BackAmbientAdjustment</property>
                             <property name="upper_stepper_sensitivity">off</property>
-                            <property name="round_digits">2</property>
-                            <property name="digits">2</property>
+                            <property name="round_digits">3</property>
+                            <property name="digits">3</property>
                             <property name="value_pos">right</property>
                             <signal name="value-changed" handler="on_backAmbient_changed" swapped="no"/>
                           </object>
@@ -524,8 +524,8 @@
                             <property name="can_focus">False</property>
                             <property name="adjustment">BackShininessAdjustment</property>
                             <property name="upper_stepper_sensitivity">off</property>
-                            <property name="round_digits">2</property>
-                            <property name="digits">2</property>
+                            <property name="round_digits">3</property>
+                            <property name="digits">3</property>
                             <property name="value_pos">right</property>
                             <signal name="value-changed" handler="on_backShininess_changed" swapped="no"/>
                           </object>
@@ -542,8 +542,8 @@
                             <property name="can_focus">False</property>
                             <property name="adjustment">BackTransparencyAdjustment</property>
                             <property name="upper_stepper_sensitivity">off</property>
-                            <property name="round_digits">2</property>
-                            <property name="digits">2</property>
+                            <property name="round_digits">3</property>
+                            <property name="digits">3</property>
                             <property name="value_pos">right</property>
                             <signal name="value-changed" handler="on_backTransparency_changed" swapped="no"/>
                           </object>
