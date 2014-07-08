@@ -58,7 +58,6 @@
     <None Include="cl.hpp" />
     <None Include="OddEvenMergeSort.h" />
     <None Include="URI.h" />
-    <None Include="main.dump" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -287,10 +287,21 @@ public:
 
 };
 
+template <class T, class U>
+void
+f (U u)
+{
+	T t;
+	
+	__LOG__ << u << std::endl;
+	__LOG__ << t << std::endl;
+}
+
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
+	std::clog << std::boolalpha;
 	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 	std::clog << std::boolalpha;
 
@@ -300,10 +311,7 @@ main (int argc, char** argv)
 
 	std::clog .imbue (std::locale (""));
 
-	C c;
-
-	c .a ();
-	c .b ();
+	f <bool> (1);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

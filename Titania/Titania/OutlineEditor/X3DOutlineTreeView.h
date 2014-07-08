@@ -144,8 +144,9 @@ public:
 	OutlineUserDataPtr
 	get_user_data (const Gtk::TreeModel::iterator &) const;
 
+	static
 	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject* const) const;
+	get_user_data (X3D::X3DChildObject* const);
 
 	OutlineIterType
 	get_data_type (const Gtk::TreeModel::iterator &) const;

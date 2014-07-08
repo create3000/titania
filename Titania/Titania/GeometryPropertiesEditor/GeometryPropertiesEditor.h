@@ -137,7 +137,10 @@ private:
 	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
 	void
-	setTextureCoordinateGeneratorFields ();
+	on_textureCoordinateGenerator_mode_changed ();
+
+	void
+	set_textureCoordinateGenerator_mode ();
 
 	///  @name Operations
 
@@ -149,6 +152,14 @@ private:
 	void
 	addRedoFunction (const std::string &);
 
+	template <class FieldType, class NodeType>
+	void
+	addUndoFunction (const X3D::X3DPtr <NodeType> &, FieldType &, UndoStepPtr &);
+
+	template <class FieldType>
+	void
+	addRedoFunction (FieldType &, const UndoStepPtr &);
+
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
@@ -159,16 +170,16 @@ private:
 
 };
 
-template <class Type>
+template <class FieldType>
 void
-GeometryPropertiesEditor::addUndoFunction (const std::string & name)
+GeometryPropertiesEditor::addUndoFunction (const std::string & fieldName)
 {
 	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
 
-	if (undoStep and lastUndoStep == undoStep and name == currentField)
+	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 		return;
 
-	currentField = name;
+	currentField = fieldName;
 
 	undoStep = std::make_shared <UndoStep> (_ ("Geometry Change"));
 
@@ -180,9 +191,9 @@ GeometryPropertiesEditor::addUndoFunction (const std::string & name)
 	{
 		try
 		{
-			auto & field = geometry -> getField <Type> (name);
+			auto & field = geometry -> getField <FieldType> (fieldName);
 
-			undoStep -> addUndoFunction (&Type::setValue, std::ref (field), field);
+			undoStep -> addUndoFunction (&FieldType::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -191,9 +202,9 @@ GeometryPropertiesEditor::addUndoFunction (const std::string & name)
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
-template <class Type>
+template <class FieldType>
 void
-GeometryPropertiesEditor::addRedoFunction (const std::string & name)
+GeometryPropertiesEditor::addRedoFunction (const std::string & fieldName)
 {
 	undoStep -> clearRedoFunctions ();
 
@@ -203,13 +214,47 @@ GeometryPropertiesEditor::addRedoFunction (const std::string & name)
 	{
 		try
 		{
-			auto & field = geometry -> getField <Type> (name);
+			auto & field = geometry -> getField <FieldType> (fieldName);
 
-			undoStep -> addRedoFunction (&Type::setValue, std::ref (field), field);
+			undoStep -> addRedoFunction (&FieldType::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
+}
+
+template <class FieldType, class NodeType>
+void
+GeometryPropertiesEditor::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, UndoStepPtr & undoStep)
+{
+	const auto fieldName    = node -> getTypeName () + "." + field .getName ();
+	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
+
+	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
+		return;
+
+	currentField = fieldName;
+
+	undoStep = std::make_shared <UndoStep> (_ ("Geometry Change"));
+
+	undoStep -> addVariables (node);
+
+	// Undo field change
+
+	undoStep -> addUndoFunction (&FieldType::setValue, std::ref (field), field);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+template <class FieldType>
+void
+GeometryPropertiesEditor::addRedoFunction (FieldType & field, const UndoStepPtr & undoStep)
+{
+	undoStep -> clearRedoFunctions ();
+
+	// Redo field change
+
+	undoStep -> addRedoFunction (&FieldType::setValue, std::ref (field), field);
 }
 
 } // puck

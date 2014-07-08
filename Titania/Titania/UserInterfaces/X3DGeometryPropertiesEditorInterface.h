@@ -95,10 +95,6 @@ public:
 	getCreaseAngleAdjustment () const
 	{ return m_CreaseAngleAdjustment; }
 
-	Gtk::Menu &
-	getTextureGeneratorModeMenu () const
-	{ return *m_TextureGeneratorModeMenu; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -139,13 +135,9 @@ public:
 	getTextureCoordinateGeneratorCheckButton () const
 	{ return *m_TextureCoordinateGeneratorCheckButton; }
 
-	Gtk::MenuButton &
+	Gtk::ComboBoxText &
 	getTextureCoordinateGeneratorModeButton () const
 	{ return *m_TextureCoordinateGeneratorModeButton; }
-
-	Gtk::Label &
-	getModeLabel () const
-	{ return *m_ModeLabel; }
 
 	virtual
 	void
@@ -168,6 +160,10 @@ public:
 	on_textureCoordinateGenerator_toggled () = 0;
 
 	virtual
+	void
+	on_textureCoordinateGenerator_mode_changed () = 0;
+
+	virtual
 	~X3DGeometryPropertiesEditorInterface ();
 
 
@@ -181,7 +177,6 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
-	Gtk::Menu*                     m_TextureGeneratorModeMenu;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::CheckButton*              m_SolidCheckButton;
@@ -192,8 +187,7 @@ private:
 	Gtk::Expander*                 m_TextureCoordinateGeneratorExpander;
 	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
 	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
-	Gtk::MenuButton*               m_TextureCoordinateGeneratorModeButton;
-	Gtk::Label*                    m_ModeLabel;
+	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeButton;
 
 };
 

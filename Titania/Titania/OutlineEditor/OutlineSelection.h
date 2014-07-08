@@ -78,6 +78,10 @@ public:
 	void
 	select (const X3D::SFNode &);
 
+	static
+	void
+	update (const X3D::SFNode &);
+
 
 private:
 
@@ -86,17 +90,21 @@ private:
 	void
 	set_children (const X3D::MFNode &);
 
+	static
 	void
-	select (X3D::X3DBaseNode* const, const bool) const;
+	select (X3D::X3DBaseNode* const, const bool);
 
+	static
 	void
-	select (X3D::X3DBaseNode* const, const bool, X3D::ChildObjectSet &) const;
+	select (X3D::X3DBaseNode* const, const bool, X3D::ChildObjectSet &);
 
+	static
 	void
-	select (X3D::X3DFieldDefinition* const, const bool, X3D::ChildObjectSet &) const;
+	select (X3D::X3DFieldDefinition* const, const bool, X3D::ChildObjectSet &);
 
+	static
 	void
-	select (const OutlineUserDataPtr &, const bool) const;
+	select (const OutlineUserDataPtr &, const bool);
 
 	///  @name Members
 

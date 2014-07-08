@@ -1,3 +1,15 @@
+2014-07-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OutlineSelection.h:
+	* OutlineSelection.cpp:
+	* X3DOutlineTreeView.h:
+	* X3DOutlineTreeView.cpp:
+	* GeometryPropertiesEditor.xml:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
 2014-07-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MaterialEditor.xml:

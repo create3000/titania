@@ -317,9 +317,9 @@ X3DOutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
 }
 
 OutlineUserDataPtr
-X3DOutlineTreeView::get_user_data (X3D::X3DChildObject* const object) const
+X3DOutlineTreeView::get_user_data (X3D::X3DChildObject* const object)
 {
-	return get_model () -> get_user_data (object);
+	return OutlineTreeModel::get_user_data (object);
 }
 
 OutlineIterType
