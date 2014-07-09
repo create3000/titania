@@ -16,6 +16,6 @@ echo "Generating Interfaces\n"
 -n titania -n puck \
 -p X3D \
 -s Interface \
--b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DDialogInterface.h \
+-b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DEditorInterface.h \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Dialogs/ -name \*.xml;`

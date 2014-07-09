@@ -1,3 +1,20 @@
+2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec4.h:
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFColor.h:
+	* SFTime.cpp:
+	* SFColor.cpp:
+	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* SFColorRGBA.cpp:
+	* Color.cpp:
+	* ColorRGBA.cpp:
+	* ColorChaser.cpp: 
+
 2014-06-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.h:

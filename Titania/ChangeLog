@@ -1,3 +1,19 @@
+2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* X3DEditorInterface.h:
+	* X3DMaterialEditorInterface.h:
+	* GeometryPropertiesEditor.xml:
+	* X3DNodePropertiesEditorInterface.h:
+	* OutlineCellRenderer.cpp:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
 2014-07-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineSelection.h:

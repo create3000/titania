@@ -84,23 +84,11 @@ SFColorRGBA::setR (const value_type & r)
 	addEvent ();
 }
 
-typename SFColorRGBA::value_type
-SFColorRGBA::getR () const
-{
-	return getValue () .r ();
-}
-
 void
 SFColorRGBA::setG (const value_type & g)
 {
 	get () .g (g);
 	addEvent ();
-}
-
-typename SFColorRGBA::value_type
-SFColorRGBA::getG () const
-{
-	return getValue () .g ();
 }
 
 void
@@ -110,23 +98,11 @@ SFColorRGBA::setB (const value_type & b)
 	addEvent ();
 }
 
-typename SFColorRGBA::value_type
-SFColorRGBA::getB () const
-{
-	return getValue () .b ();
-}
-
 void
 SFColorRGBA::setA (const value_type & a)
 {
 	get () .a (a);
 	addEvent ();
-}
-
-typename SFColorRGBA::value_type
-SFColorRGBA::getA () const
-{
-	return getValue () .a ();
 }
 
 void
@@ -151,20 +127,23 @@ SFColorRGBA::setValue (const value_type & r, const value_type & g, const value_t
 void
 SFColorRGBA::getValue (value_type & r, value_type & g, value_type & b, value_type & a) const
 {
-	getValue () .get (r, g, b, a);
+	r = getR ();
+	g = getG ();
+	b = getB ();
+	a = getA ();
 }
 
 void
 SFColorRGBA::setHSV (const value_type  & h, const value_type  & s, const value_type  & v)
 {
-	get () .setHSV (h, s, v);
+	get () .set_hsv (h, s, v);
 	addEvent ();
 }
 
 void
 SFColorRGBA::getHSV (value_type & h, value_type & s, value_type & v) const
 {
-	getValue () .getHSV (h, s, v);
+	getValue () .get_hsv (h, s, v);
 }
 
 void
@@ -187,15 +166,11 @@ throw (Error <INVALID_X3D>,
 		const float b = (value >> 8 & 0xff) / 255.0f;
 		const float a = (value & 0xff) / 255.0f;
 
-		get () .set (r, g, b, a);
-
-		addEvent ();
+		setValue (Color4f (r, g, b, a));
 	}
 	else
 	{
-		istream >> get ();
-
-		if (istream)
+		if (istream >> get ())
 			addEvent ();
 	}
 }

@@ -48,115 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-#define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
+#ifndef __TITANIA_BASE_X3DEDITOR_INTERFACE_H__
+#define __TITANIA_BASE_X3DEDITOR_INTERFACE_H__
 
-#include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../Base/X3DDialogInterface.h"
+#include "../Base/X3DEditorObject.h"
 
 namespace titania {
 namespace puck {
 
-class GeometryPropertiesEditor :
-	public X3DGeometryPropertiesEditorInterface
+class X3DEditorInterface :
+	public X3DDialogInterface,
+	public X3DEditorObject
 {
 public:
 
-	///  @name Construction
-
-	GeometryPropertiesEditor (BrowserWindow* const);
-
-	///  @name Destruction
-
 	virtual
-	~GeometryPropertiesEditor ();
+	~X3DEditorInterface ()
+	{ }
 
 
-private:
+protected:
 
-	///  @name Construction
+	/// @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_selection ();
-
-	virtual
-	void
-	on_solid_toggled () final override;
-
-	void
-	set_solid ();
-
-	void
-	connectSolid (const X3D::SFBool &);
-
-	virtual
-	void
-	on_ccw_toggled () final override;
-
-	void
-	set_ccw ();
-
-	void
-	connectCCW (const X3D::SFBool &);
-
-	virtual
-	void
-	on_convex_toggled () final override;
-
-	void
-	set_convex ();
-
-	void
-	connectConvex (const X3D::SFBool &);
-
-	virtual
-	void
-	on_creaseAngle_text_changed () final override;
-
-	virtual
-	void
-	on_creaseAngle_value_changed () final override;
-
-	void
-	on_creaseAngle_changed (const double);
-
-	void
-	set_creaseAngle ();
-
-	void
-	connectCreaseAngle (const X3D::SFFloat &);
-
-	virtual
-	void
-	on_textureCoordinateGenerator_toggled () final override;
-
-	void
-	set_textureCoordinateGenerator ();
-
-	void
-	connectTextureCoordinateGenerator (const X3D::SFNode &);
-
-	void
-	on_textureCoordinateGenerator_mode_changed ();
-
-	void
-	set_textureCoordinateGenerator_mode ();
-
-	void
-	connectTextureCoordinateGeneratorMode (const X3D::SFString &);
-
-
-	///  @name Members
-
-	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
-	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
-	UndoStepPtr                                   undoStep;
-	bool                                          changing;
+	X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
+		X3DDialogInterface (widgetName, configKey),
+		   X3DEditorObject ()
+	{ }
 
 };
 

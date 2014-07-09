@@ -158,14 +158,14 @@ ColorChaser::prepareEvents ()
 	
 	float ho, so, vo;
 	
-	output .getHSV (ho, so, vo);
+	output .get_hsv (ho, so, vo);
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
 		float h, s, v, h1, s1, v1;
 
-		buffer [i] .getHSV (h, s, v);
-		buffer [i + 1] .getHSV (h1, s1, v1);
+		buffer [i] .get_hsv (h, s, v);
+		buffer [i + 1] .get_hsv (h1, s1, v1);
 		
 		const float t = stepResponse ((i + fraction) * getStepTime ());
 	

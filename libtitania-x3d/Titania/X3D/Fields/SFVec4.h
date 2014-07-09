@@ -555,9 +555,7 @@ throw (Error <INVALID_X3D>,
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	istream >> get ();
-
-	if (istream)
+	if (istream >> get ())
 		addEvent ();
 }
 

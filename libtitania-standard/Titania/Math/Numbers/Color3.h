@@ -107,16 +107,6 @@ public:
 
 	{ }
 
-	///  Construct a color from hsv.
-	static
-	color3
-	HSV (const Type & h, const Type & s, const Type & v)
-	{
-		color3 <Type> color;
-		color .setHSV (h, s, v);
-		return color;
-	}
-
 	///  Return number of components.
 	static
 	constexpr size_type
@@ -172,22 +162,13 @@ public:
 	data () const
 	{ return value; }
 
-	//  Set all components.
-	void
-	set (const Type &, const Type &, const Type &);
-
-	//  Get all components.
-	template <typename T>
-	void
-	get (T &, T &, T &) const;
-
 	///  Return hsv components of this color.
 	void
-	setHSV (const Type &, Type, Type);
+	set_hsv (const Type &, Type, Type);
 
 	///  Set hsv components of this color.
 	void
-	getHSV (Type &, Type &, Type &) const;
+	get_hsv (Type &, Type &, Type &) const;
 
 
 private:
@@ -198,26 +179,7 @@ private:
 
 template <typename Type>
 void
-color3 <Type>::set (const Type & r, const Type & g, const Type & b)
-{
-	value [0] = clamp (r, Type (0), Type (1));
-	value [1] = clamp (g, Type (0), Type (1));
-	value [2] = clamp (b, Type (0), Type (1));
-}
-
-template <typename Type>
-template <typename T>
-void
-color3 <Type>::get (T & r, T & g, T & b) const
-{
-	r = value [0];
-	g = value [1];
-	b = value [2];
-}
-
-template <typename Type>
-void
-color3 <Type>::setHSV (const Type & h, Type s, Type v)
+color3 <Type>::set_hsv (const Type & h, Type s, Type v)
 {
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
@@ -283,7 +245,7 @@ color3 <Type>::setHSV (const Type & h, Type s, Type v)
 
 template <typename Type>
 void
-color3 <Type>::getHSV (Type & h, Type & s, Type & v) const
+color3 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 {
 	const Type min = std::min ({ r (), g (), b () });
 	const Type max = std::max ({ r (), g (), b () });
@@ -317,7 +279,22 @@ color3 <Type>::getHSV (Type & h, Type & s, Type & v) const
 		h += 2 * Type (M_PI);
 }
 
-// Operators:
+///  @relates color3
+///  @name Utility functions
+
+///  Construct a color from hsv.
+template <typename Type>	
+color3 <Type>
+make_hsv (const Type & h, const Type & s, const Type & v)
+{
+	color3 <Type> color;
+	color .set_hsv (h, s, v);
+	return color;
+}
+
+///  @relates color3
+///  @name Comparision operations
+
 ///  Return true if @a a is equal to @a b.
 template <typename Type>
 constexpr bool
@@ -338,6 +315,9 @@ operator not_eq (const color3 <Type> & a, const color3 <Type> & b)
 	       a .b () not_eq b .b ();
 }
 
+///  @relates color3
+///  @name Arithmetic operations
+
 ///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t.
 template <typename Type>
 color3 <Type>
@@ -347,16 +327,16 @@ clerp (const color3 <Type> & source, const color3 <Type> & destination, const Ty
 	   a_h, a_s, a_v,
 	   b_h, b_s, b_v;
 
-	source      .getHSV (a_h, a_s, a_v);
-	destination .getHSV (b_h, b_s, b_v);
+	source      .get_hsv (a_h, a_s, a_v);
+	destination .get_hsv (b_h, b_s, b_v);
 
 	const Type range = std::abs (b_h - a_h);
 
 	if (range <= Type (M_PI))
 	{
-		return color3 <Type>::HSV (lerp (a_h, b_h, t),
-		                           lerp (a_s, b_s, t),
-		                           lerp (a_v, b_v, t));
+		return make_hsv <Type> (lerp (a_h, b_h, t),
+		                        lerp (a_s, b_s, t),
+		                        lerp (a_v, b_v, t));
 	}
 	else
 	{
@@ -369,12 +349,13 @@ clerp (const color3 <Type> & source, const color3 <Type> & destination, const Ty
 		else if (h > Type (M_PI2))
 			h -= Type (M_PI2);
 
-		return color3 <Type>::HSV (h,
-		                           lerp (a_s, b_s, t),
-		                           lerp (a_v, b_v, t));
+		return make_hsv <Type> (h,
+		                        lerp (a_s, b_s, t),
+		                        lerp (a_v, b_v, t));
 	}
 }
 
+///  Circular linear interpolate between source color and destination color in hsv space by an amout of @a t.
 template <class Type>
 static
 void
@@ -408,6 +389,9 @@ hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
 	}
 }
 
+///  @relates color3
+///  @name Input/Output operations
+
 ///  Extraction operator for color values.
 template <typename CharT, class Traits, typename Type>
 std::basic_istream <CharT, Traits> &
@@ -418,7 +402,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, color3 <Type> & color
 	istream >> r >> g >> b;
 
 	if (istream)
-		color .set (r, g, b);
+		color = color3 <Type> (r, g, b);
 
 	return istream;
 }

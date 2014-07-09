@@ -115,19 +115,22 @@ public:
 	setR (const value_type &);
 
 	value_type
-	getR () const;
+	getR () const
+	{ return getValue () .r (); }
 
 	void
 	setG (const value_type &);
 
 	value_type
-	getG () const;
+	getG () const
+	{ return getValue () .g (); }
 
 	void
 	setB (const value_type &);
 
 	value_type
-	getB () const;
+	getB () const
+	{ return getValue () .b (); }
 
 	void
 	set1Value (const size_type &, const value_type &);

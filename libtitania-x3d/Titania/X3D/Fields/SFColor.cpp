@@ -84,12 +84,6 @@ SFColor::setR (const value_type & r)
 	addEvent ();
 }
 
-typename SFColor::value_type
-SFColor::getR () const
-{
-	return getValue () .r ();
-}
-
 void
 SFColor::setG (const value_type & g)
 {
@@ -97,23 +91,11 @@ SFColor::setG (const value_type & g)
 	addEvent ();
 }
 
-typename SFColor::value_type
-SFColor::getG () const
-{
-	return getValue () .g ();
-}
-
 void
 SFColor::setB (const value_type & b)
 {
 	get () .b (b);
 	addEvent ();
-}
-
-typename SFColor::value_type
-SFColor::getB () const
-{
-	return getValue () .b ();
 }
 
 void
@@ -138,20 +120,22 @@ SFColor::setValue (const value_type & r, const value_type & g, const value_type 
 void
 SFColor::getValue (value_type & r, value_type & g, value_type & b) const
 {
-	getValue () .get (r, g, b);
+	r = getR ();
+	g = getG ();
+	b = getB ();
 }
 
 void
 SFColor::setHSV (const value_type & h, const value_type & s, const value_type & v)
 {
-	get () .setHSV (h, s, v);
+	get () .set_hsv (h, s, v);
 	addEvent ();
 }
 
 void
 SFColor::getHSV (value_type & h, value_type & s, value_type & v) const
 {
-	getValue () .getHSV (h, s, v);
+	getValue () .get_hsv (h, s, v);
 }
 
 void
@@ -173,15 +157,11 @@ throw (Error <INVALID_X3D>,
 		const float g = (value >> 8 & 0xff) / 255.0f;
 		const float b = (value & 0xff) / 255.0f;
 
-		get () .set (r, g, b);
-
-		addEvent ();
+		setValue (Color3f (r, g, b));
 	}
 	else
 	{
-		istream >> get ();
-
-		if (istream)
+		if (istream >> get ())
 			addEvent ();
 	}
 }

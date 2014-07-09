@@ -197,9 +197,17 @@ sub h_signal_handler
 		return;
 	}
 
+	return
+		if exists $attributes {swapped} && $attributes {swapped} eq "yes";
+
 	$prototype =~ s/(virtual)\s/$1\n/s;
 	$prototype =~ s/on_($attributes{name})/\n$attributes{handler}/s;
-	$prototype =~ s/;/ = 0;/s if $self -> {pure_virtual};
+
+	#$prototype =~ s/\)/, Gtk\:\:$self->{class} &)/s
+	#	unless $prototype =~ s/\(\s*\)/Gtk\:\:$self->{class} &)/s;
+
+	$prototype =~ s/;/ = 0;/s
+		if $self -> {pure_virtual};
 
 	say $file $prototype;
 }
@@ -261,14 +269,16 @@ sub cpp_signals
 	
 	my $signal = "m_" . $self -> {id} . " -> signal_$attributes{name} ()";
 
-	if (exists $attributes {after})
+	my $after   = exists $attributes {after} && $attributes {after} eq "yes" ? ", false" : "";
+	my $swapped = exists $attributes {swapped} && $attributes {swapped} eq "yes";
+
+	if ($swapped)
 	{
-		my $after = $attributes {after} eq "yes" ? "false" : "true";
-		say $file "$signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), $after);";
+		say $file "$signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after);";
 	}
 	else
 	{
-		say $file "$signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}));";
+		say $file "$signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after);";
 	}
 }
 

@@ -110,17 +110,6 @@ public:
 
 	{ }
 
-	///  Construct a color from hsv and alpha.
-	static
-	color4
-	HSVA (const Type & h, const Type & s, const Type & v, const Type & a)
-	{
-		color4 <Type> color;
-		color .setHSV (h, s, v);
-		color .a (a);
-		return color;
-	}
-
 	///  Return number of components.
 	static
 	constexpr size_type
@@ -187,22 +176,13 @@ public:
 	data () const
 	{ return value; }
 
-	//  Set all components.
-	void
-	set (const Type &, const Type &, const Type &, const Type &);
-
-	//  Get all components.
-	template <typename T>
-	void
-	get (T &, T &, T &, T &) const;
-
 	///  Return hsv components of this color.
 	void
-	setHSV (const Type &, Type, Type);
+	set_hsv (const Type &, Type, Type);
 
 	///  Set hsv components of this color.
 	void
-	getHSV (Type &, Type &, Type &) const;
+	get_hsv (Type &, Type &, Type &) const;
 
 
 private:
@@ -213,28 +193,7 @@ private:
 
 template <typename Type>
 void
-color4 <Type>::set (const Type & r, const Type & g, const Type & b, const Type & a)
-{
-	value [0] = clamp (r, Type (0), Type (1));
-	value [1] = clamp (g, Type (0), Type (1));
-	value [2] = clamp (b, Type (0), Type (1));
-	value [3] = clamp (a, Type (0), Type (1));
-}
-
-template <typename Type>
-template <typename T>
-void
-color4 <Type>::get (T & r, T & g, T & b, T & a) const
-{
-	r = value [0];
-	g = value [1];
-	b = value [2];
-	a = value [3];
-}
-
-template <typename Type>
-void
-color4 <Type>::setHSV (const Type & h, Type s, Type v)
+color4 <Type>::set_hsv (const Type & h, Type s, Type v)
 {
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
@@ -300,7 +259,7 @@ color4 <Type>::setHSV (const Type & h, Type s, Type v)
 
 template <typename Type>
 void
-color4 <Type>::getHSV (Type & h, Type & s, Type & v) const
+color4 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 {
 	const Type min = std::min ({ r (), g (), b () });
 	const Type max = std::max ({ r (), g (), b () });
@@ -332,7 +291,23 @@ color4 <Type>::getHSV (Type & h, Type & s, Type & v) const
 		h += 2 * Type (Type (M_PI));
 }
 
-// Operators:
+///  @relates color3
+///  @name Utility functions
+
+///  Construct a color from hsv and alpha.
+template <typename Type>
+color4 <Type>
+make_hsva (const Type & h, const Type & s, const Type & v, const Type & a)
+{
+	color4 <Type> color;
+	color .set_hsv (h, s, v);
+	color .a (a);
+	return color;
+}
+
+///  @relates color3
+///  @name Comparision operations
+
 ///  Return true if @a a is equal to @a b.
 template <typename Type>
 constexpr bool
@@ -355,6 +330,9 @@ operator not_eq (const color4 <Type> & a, const color4 <Type> & b)
 	       a .a () not_eq b .a ();
 }
 
+///  @relates color4
+///  @name Arithmetic operations
+
 ///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t.
 template <typename Type>
 color4 <Type>
@@ -364,17 +342,17 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 	   a_h, a_s, a_v,
 	   b_h, b_s, b_v;
 
-	source      .getHSV (a_h, a_s, a_v);
-	destination .getHSV (b_h, b_s, b_v);
+	source      .get_hsv (a_h, a_s, a_v);
+	destination .get_hsv (b_h, b_s, b_v);
 
 	const Type range = std::abs (b_h - a_h);
 
 	if (range <= Type (Type (M_PI)))
 	{
-		return color4 <Type>::HSVA (lerp (a_h, b_h, t),
-		                            lerp (a_s, b_s, t),
-		                            lerp (a_v, b_v, t),
-		                            lerp (source .a (), destination .a (), t));
+		return make_hsva <Type> (lerp (a_h, b_h, t),
+		                         lerp (a_s, b_s, t),
+		                         lerp (a_v, b_v, t),
+		                         lerp (source .a (), destination .a (), t));
 	}
 	else
 	{
@@ -387,13 +365,16 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 		else if (h > Type (M_PI2))
 			h -= Type (M_PI2);
 
-		return color4 <Type>::HSVA (h,
-		                            lerp (a_s, b_s, t),
-		                            lerp (a_v, b_v, t),
-		                            lerp (source .a (), destination .a (), t));
+		return make_hsva <Type> (h,
+		                         lerp (a_s, b_s, t),
+		                         lerp (a_v, b_v, t),
+		                         lerp (source .a (), destination .a (), t));
 
 	}
 }
+
+///  @relates color4
+///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
 template <typename CharT, class Traits, typename Type>
@@ -405,7 +386,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, color4 <Type> & color
 	istream >> r >> g >> b >> a;
 
 	if (istream)
-		color .set (r, g, b, a);
+		color = color4 <Type> (r, g, b, a);
 
 	return istream;
 }

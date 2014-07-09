@@ -48,119 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-#define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-
-#include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "X3DEditorObject.h"
 
 namespace titania {
 namespace puck {
 
-class GeometryPropertiesEditor :
-	public X3DGeometryPropertiesEditorInterface
+X3DEditorObject::X3DEditorObject () :
+	X3DBaseInterface (),
+	    currentField ()
+{ }
+
+void
+X3DEditorObject::on_number_insert_text (const Glib::ustring & insert, int* position, Gtk::Entry & entry)
 {
-public:
+	const std::string text = entry .get_text () .insert (*position, insert);
 
-	///  @name Construction
+	if (not validateNumber (text))
+		entry .signal_insert_text () .emission_stop ();
+}
 
-	GeometryPropertiesEditor (BrowserWindow* const);
+void
+X3DEditorObject::on_number_delete_text (int start_pos, int end_pos, Gtk::Entry & entry)
+{
+	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
 
-	///  @name Destruction
+	if (text .length () and not validateNumber (text))
+		entry .signal_delete_text () .emission_stop ();
+}
 
-	virtual
-	~GeometryPropertiesEditor ();
+bool
+X3DEditorObject::validateNumber (const std::string & text) const
+{
+	std::istringstream istream (text);
 
+	double value = 0;
 
-private:
+	if (istream >> value)
+		return istream .eof ();
 
-	///  @name Construction
+	return false;
+}
 
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_selection ();
-
-	virtual
-	void
-	on_solid_toggled () final override;
-
-	void
-	set_solid ();
-
-	void
-	connectSolid (const X3D::SFBool &);
-
-	virtual
-	void
-	on_ccw_toggled () final override;
-
-	void
-	set_ccw ();
-
-	void
-	connectCCW (const X3D::SFBool &);
-
-	virtual
-	void
-	on_convex_toggled () final override;
-
-	void
-	set_convex ();
-
-	void
-	connectConvex (const X3D::SFBool &);
-
-	virtual
-	void
-	on_creaseAngle_text_changed () final override;
-
-	virtual
-	void
-	on_creaseAngle_value_changed () final override;
-
-	void
-	on_creaseAngle_changed (const double);
-
-	void
-	set_creaseAngle ();
-
-	void
-	connectCreaseAngle (const X3D::SFFloat &);
-
-	virtual
-	void
-	on_textureCoordinateGenerator_toggled () final override;
-
-	void
-	set_textureCoordinateGenerator ();
-
-	void
-	connectTextureCoordinateGenerator (const X3D::SFNode &);
-
-	void
-	on_textureCoordinateGenerator_mode_changed ();
-
-	void
-	set_textureCoordinateGenerator_mode ();
-
-	void
-	connectTextureCoordinateGeneratorMode (const X3D::SFString &);
-
-
-	///  @name Members
-
-	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
-	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
-	UndoStepPtr                                   undoStep;
-	bool                                          changing;
-
-};
+X3DEditorObject::~X3DEditorObject ()
+{ }
 
 } // puck
 } // titania
-
-#endif

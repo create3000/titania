@@ -61,7 +61,6 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browser
 	                       geometryNodes (),
 	          textureCoordinateGenerator (),
 	                            undoStep (),
-	                        currentField (),
 	                            changing (false)
 { }
 
@@ -218,7 +217,7 @@ GeometryPropertiesEditor::on_solid_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFBool> ("solid");
+	addUndoFunction <X3D::SFBool> (geometryNodes, "solid", undoStep);
 
 	getSolidCheckButton () .set_inconsistent (false);
 
@@ -237,7 +236,7 @@ GeometryPropertiesEditor::on_solid_toggled ()
 		{ }
 	}
 
-	addRedoFunction <X3D::SFBool> ("solid");
+	addRedoFunction <X3D::SFBool> (geometryNodes, "solid", undoStep);
 }
 
 void
@@ -293,7 +292,7 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFBool> ("ccw");
+	addUndoFunction <X3D::SFBool> (geometryNodes, "ccw", undoStep);
 
 	getCCWCheckButton () .set_inconsistent (false);
 
@@ -312,7 +311,7 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 		{ }
 	}
 
-	addRedoFunction <X3D::SFBool> ("ccw");
+	addRedoFunction <X3D::SFBool> (geometryNodes, "ccw", undoStep);
 }
 
 void
@@ -368,7 +367,7 @@ GeometryPropertiesEditor::on_convex_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFBool> ("convex");
+	addUndoFunction <X3D::SFBool> (geometryNodes, "convex", undoStep);
 
 	getConvexCheckButton () .set_inconsistent (false);
 
@@ -387,7 +386,7 @@ GeometryPropertiesEditor::on_convex_toggled ()
 		{ }
 	}
 
-	addRedoFunction <X3D::SFBool> ("convex");
+	addRedoFunction <X3D::SFBool> (geometryNodes, "convex", undoStep);
 }
 
 void
@@ -437,13 +436,50 @@ GeometryPropertiesEditor::connectConvex (const X3D::SFBool & field)
 	field .addInterest (this, &GeometryPropertiesEditor::set_convex);
 }
 
+double
+to_double (const std::string & string)
+{
+	std::istringstream istream (string);
+
+	double value = 0;
+
+	istream >> value;
+
+	return value;
+}
+
 void
-GeometryPropertiesEditor::on_creaseAngle_changed ()
+GeometryPropertiesEditor::on_creaseAngle_text_changed ()
 {
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFFloat> ("creaseAngle");
+	const double value = to_double (getCreaseAngleEntry () .get_text ());
+
+	on_creaseAngle_changed (value);
+
+	changing = true;
+	getCreaseAngleScale () .set_value (value);
+	changing = false;
+}
+
+void
+GeometryPropertiesEditor::on_creaseAngle_value_changed ()
+{
+	if (changing)
+		return;
+
+	on_creaseAngle_changed (getCreaseAngleScale () .get_value ());
+
+	changing = true;
+	getCreaseAngleEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getCreaseAngleScale () .get_value ()));
+	changing = false;
+}
+
+void
+GeometryPropertiesEditor::on_creaseAngle_changed (const double value)
+{
+	addUndoFunction <X3D::SFFloat> (geometryNodes, "creaseAngle", undoStep);
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -451,7 +487,7 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 		{
 			auto & field = geometry -> getField <X3D::SFFloat> ("creaseAngle");
 
-			field = math::radians (getCreaseAngleScale () .get_value ());
+			field = math::radians (value);
 
 			field .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 			field .addInterest (this, &GeometryPropertiesEditor::connectCreaseAngle);
@@ -460,7 +496,7 @@ GeometryPropertiesEditor::on_creaseAngle_changed ()
 		{ }
 	}
 
-	addRedoFunction <X3D::SFFloat> ("creaseAngle");
+	addRedoFunction <X3D::SFFloat> (geometryNodes, "creaseAngle", undoStep);
 }
 
 void
@@ -487,6 +523,7 @@ GeometryPropertiesEditor::set_creaseAngle ()
 	}
 
 	getCreaseAngleBox () .set_sensitive (hasField);
+	getCreaseAngleEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getCreaseAngleScale () .get_value ()));
 
 	changing = false;
 }
@@ -504,7 +541,7 @@ GeometryPropertiesEditor::on_textureCoordinateGenerator_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFNode> ("texCoord");
+	addUndoFunction <X3D::SFNode> (geometryNodes, "texCoord", undoStep);
 
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (false);
 	getTextureCoordinateGeneratorModeButton ()  .set_sensitive (getTextureCoordinateGeneratorCheckButton () .get_active ());
@@ -533,14 +570,14 @@ GeometryPropertiesEditor::on_textureCoordinateGenerator_toggled ()
 		{ }
 	}
 
-	addRedoFunction <X3D::SFNode> ("texCoord");
+	addRedoFunction <X3D::SFNode> (geometryNodes, "texCoord", undoStep);
 }
 
 void
 GeometryPropertiesEditor::set_textureCoordinateGenerator ()
 {
 	if (textureCoordinateGenerator)
-		textureCoordinateGenerator -> getField <X3D::SFString> ("mode") .removeInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
+		textureCoordinateGenerator -> mode () .removeInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
 
 	textureCoordinateGenerator = nullptr;
 
@@ -588,7 +625,7 @@ GeometryPropertiesEditor::set_textureCoordinateGenerator ()
 
 	changing = false;
 
-	textureCoordinateGenerator -> getField <X3D::SFString> ("mode") .addInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
+	textureCoordinateGenerator -> mode () .addInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
 
 	set_textureCoordinateGenerator_mode ();
 }
@@ -610,6 +647,9 @@ GeometryPropertiesEditor::on_textureCoordinateGenerator_mode_changed ()
 
 	textureCoordinateGenerator -> mode () = getTextureCoordinateGeneratorModeButton () .get_active_text ();
 
+	textureCoordinateGenerator -> mode () .removeInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
+	textureCoordinateGenerator -> mode () .addInterest (this, &GeometryPropertiesEditor::connectTextureCoordinateGeneratorMode);
+
 	addRedoFunction <X3D::SFString> (textureCoordinateGenerator -> mode (), undoStep);
 }
 
@@ -621,6 +661,13 @@ GeometryPropertiesEditor::set_textureCoordinateGenerator_mode ()
 	getTextureCoordinateGeneratorModeButton () .set_active_text (textureCoordinateGenerator -> mode ());
 
 	changing = false;
+}
+
+void
+GeometryPropertiesEditor::connectTextureCoordinateGeneratorMode (const X3D::SFString & field)
+{
+	field .removeInterest (this, &GeometryPropertiesEditor::connectTextureCoordinateGeneratorMode);
+	field .addInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
 }
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()

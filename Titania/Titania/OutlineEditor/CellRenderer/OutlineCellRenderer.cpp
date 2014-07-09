@@ -58,6 +58,7 @@
 #include "OutlineFields.h"
 
 #include <Titania/String/to_string.h>
+#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace puck {
@@ -759,16 +760,12 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 		if (string not_eq currentValue)
 		{
-			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
 			undoStep -> addVariables (node);
-			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
 
 			undoStep -> addUndoFunction (&X3D::SFString::setValue, sfstring, currentValue);
 			undoStep -> addRedoFunction (&X3D::SFString::setValue, sfstring, string);
-
-			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
-			row_changed (treeView -> get_model (), textview -> get_path ());
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -781,7 +778,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 	if (field -> fromLocaleString (string, locale))
 	{
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
 		const X3D::InlinePtr inlineNode (node);
 		
@@ -798,13 +795,9 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		if (field -> toString () not_eq currentValue or not undoStep -> isEmpty ())
 		{
 			undoStep -> addVariables (node);
-			undoStep -> addUndoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
 
 			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue);
 			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromLocaleString, field, string, locale);
-
-			undoStep -> addRedoFunction (&OutlineCellRenderer::row_changed, treeView -> get_model (), textview -> get_path ()); // XXX
-			row_changed (treeView -> get_model (), textview -> get_path ());
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}

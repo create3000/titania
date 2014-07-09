@@ -226,16 +226,12 @@ public:
 	I ()
 	{ }
 
-	I (int)
-	{ }
-
 	virtual
 	void
-	a () = 0;
-
-	virtual
-	void
-	b () = 0;
+	a ()
+	{
+		__LOG__ << "a" << std::endl;
+	}
 
 };
 
@@ -248,61 +244,19 @@ public:
 		I ()
 	{ }
 
+	virtual
 	void
-	a () final override
-	{
-		__LOG__ << "a" << std::endl;
-	}
+	a () = 0;
 
 };
-
-class B :
-	virtual public I
-{
-public:
-
-	B () :
-		I ()
-	{ }
-
-	void
-	b () final override
-	{
-		__LOG__ << "b" << std::endl;
-	}
-
-};
-
-class C :
-	public A,
-	public B
-{
-public:
-
-	C () :
-		I (1),
-		A (),
-		B ()
-	{ }
-
-};
-
-template <class T, class U>
-void
-f (U u)
-{
-	T t;
-	
-	__LOG__ << u << std::endl;
-	__LOG__ << t << std::endl;
-}
 
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
 	std::clog << std::boolalpha;
-	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
+	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
+	//std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 	std::clog << std::boolalpha;
 
 	#ifdef _GLIBCXX_PARALLEL
@@ -311,7 +265,7 @@ main (int argc, char** argv)
 
 	std::clog .imbue (std::locale (""));
 
-	f <bool> (1);
+	A () .a ();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
