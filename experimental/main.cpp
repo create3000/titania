@@ -265,8 +265,6 @@ main (int argc, char** argv)
 
 	std::clog .imbue (std::locale (""));
 
-	A () .a ();
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;

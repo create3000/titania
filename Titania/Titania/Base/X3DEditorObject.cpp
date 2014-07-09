@@ -89,6 +89,18 @@ X3DEditorObject::validateNumber (const std::string & text) const
 	return false;
 }
 
+double
+X3DEditorObject::toDouble (const std::string & string)
+{
+	std::istringstream istream (string);
+
+	double value = 0;
+
+	istream >> value;
+
+	return value;
+}
+
 X3DEditorObject::~X3DEditorObject ()
 { }
 

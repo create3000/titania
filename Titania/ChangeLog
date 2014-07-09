@@ -1,5 +1,16 @@
 2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* style.css:
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* BrowserWindow.xml:
+	* X3DDialogInterface.cpp:
+	* MaterialEditor.xml:
+	* GeometryPropertiesEditor.xml:
+	* GeometryPropertiesEditor.cpp: 
+
+2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineSelection.h:
 	* X3DOutlineTreeView.h:
 	* OutlineSelection.cpp:

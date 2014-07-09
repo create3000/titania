@@ -26,6 +26,9 @@ GtkSeparator {
 	font-weight: bold;
 }
 
+GtkExpander {
+}
+
 GtkExpander > GtkLabel {
 	font-weight: bold;
 }

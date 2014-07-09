@@ -71,7 +71,7 @@ X3DDialogInterface::restoreSession ()
 	X3DUserInterface::restoreSession ();
 
 	restoreExpander (getWidget ());
-	//setupGridLabels (getWidget ()); // XXX does not realy work.
+	setupGridLabels (getWidget ()); // XXX does not realy work.
 }
 
 void

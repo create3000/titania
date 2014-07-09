@@ -1103,7 +1103,7 @@
             <child>
               <object class="GtkToolButton" id="NewButton">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Create new file (Ctrl-N).</property>
                 <property name="tooltip_text" translatable="yes">Create new file (Ctrl-N).</property>
@@ -1120,7 +1120,7 @@
             <child>
               <object class="GtkMenuToolButton" id="OpenButton">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Open file or media (Ctrl-O).</property>
                 <property name="tooltip_text" translatable="yes">Open file or media (Ctrl-O).</property>
@@ -1136,7 +1136,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="ImportButton">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Import file or media.</property>
                 <property name="tooltip_text" translatable="yes">Import file or media.</property>
@@ -1153,7 +1153,7 @@
             <child>
               <object class="GtkToolButton" id="SaveButton">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Save current file (Ctrl-S).</property>
                 <property name="tooltip_text" translatable="yes">Save current file (Ctrl-S).</property>
@@ -1170,7 +1170,7 @@
             <child>
               <object class="GtkToolButton" id="RefreshButton">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Reload file (F5).</property>
                 <property name="tooltip_text" translatable="yes">Reload file (F5).</property>
@@ -1195,8 +1195,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="UndoButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Undo last action (Ctrl-Z).</property>
                 <property name="tooltip_text" translatable="yes">Undo last action (Ctrl-Z).</property>
@@ -1212,8 +1211,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="RedoButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
                 <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
@@ -1238,7 +1236,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="NodePropertiesEditorButton">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Open Node Properties Editor.</property>
                 <property name="tooltip_text" translatable="yes">Open Node Properties Editor.</property>
@@ -1254,7 +1252,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="MaterialEditorButton">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Open Material Editor.</property>
                 <property name="tooltip_text" translatable="yes">Open Material Editor.</property>
@@ -1270,7 +1268,6 @@
             </child>
             <child>
               <object class="GtkToolButton" id="GeometryPropertiesEditorButton">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Open Geometry Properties Editor.</property>
                 <property name="label" translatable="yes">Geometry Properties Editor</property>
@@ -1285,7 +1282,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="UpdateViewpointButton">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Update active viewpoint from current view.</property>
                 <property name="tooltip_text" translatable="yes">Update active viewpoint from current view.</property>
@@ -1301,7 +1298,7 @@
             </child>
             <child>
               <object class="GtkToolButton" id="CreatePrototypeInstanceButton">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_markup" translatable="yes">Open Texture Editor.</property>
                 <property name="tooltip_text" translatable="yes">Create Prototype Instance.</property>
@@ -1373,7 +1370,7 @@
                                 <property name="icon_size">1</property>
                                 <child>
                                   <object class="GtkRadioToolButton" id="HandButton">
-                                    <property name="can_focus">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Switch to browser mode.</property>
                                     <property name="tooltip_text" translatable="yes">Switch to browser mode.</property>
@@ -1390,7 +1387,7 @@
                                 </child>
                                 <child>
                                   <object class="GtkRadioToolButton" id="ArrowButton">
-                                    <property name="can_focus">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Switch to selection mode.</property>
                                     <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
@@ -1469,7 +1466,7 @@
                                 <child>
                                   <object class="GtkMenuToolButton" id="ViewerButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Activate viewer.</property>
@@ -1487,7 +1484,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="StraightenButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Straighten camera.</property>
                                     <property name="tooltip_text" translatable="yes">Straighten camera.</property>
@@ -1514,7 +1511,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="LookAtAllButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Look at all objects in active layer.</property>
                                     <property name="tooltip_text" translatable="yes">Look at all objects in active layer.</property>
@@ -1530,7 +1527,7 @@
                                 </child>
                                 <child>
                                   <object class="GtkToggleToolButton" id="LookAtButton">
-                                    <property name="can_focus">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Look at.</property>
                                     <property name="tooltip_text" translatable="yes">Look at.</property>

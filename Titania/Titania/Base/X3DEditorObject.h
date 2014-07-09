@@ -103,6 +103,9 @@ protected:
 	void
 	addRedoFunction (FieldType &, const UndoStepPtr &);
 
+	double
+	toDouble (const std::string &);
+
 
 private:
 

@@ -140,6 +140,23 @@ public:
 
 private:
 
+	enum ModeType 
+	{
+		SPHERE,
+		SPHERE_LOCAL,
+		SPHERE_REFLECT,
+		SPHERE_REFLECT_LOCAL,
+		CAMERASPACENORMAL,
+		CAMERASPACEPOSITION,
+		CAMERASPACEREFLECTIONVECTOR,
+		COORD_EYE,
+		COORD,
+		NOISE_EYE,
+		NOISE
+	};
+
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
@@ -167,7 +184,7 @@ private:
 
 	Fields fields;
 
-	GLenum texGenMode;
+	ModeType modeType;
 
 };
 

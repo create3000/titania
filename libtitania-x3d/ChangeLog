@@ -1,5 +1,10 @@
 2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextureCoordinateGenerator.h:
+	* TextureCoordinateGenerator.cpp: 
+
+2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec4.h:
 	* SFVec3.h:
 	* SFVec2.h:

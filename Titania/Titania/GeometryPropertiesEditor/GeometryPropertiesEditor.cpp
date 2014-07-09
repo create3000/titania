@@ -436,25 +436,13 @@ GeometryPropertiesEditor::connectConvex (const X3D::SFBool & field)
 	field .addInterest (this, &GeometryPropertiesEditor::set_convex);
 }
 
-double
-to_double (const std::string & string)
-{
-	std::istringstream istream (string);
-
-	double value = 0;
-
-	istream >> value;
-
-	return value;
-}
-
 void
 GeometryPropertiesEditor::on_creaseAngle_text_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = to_double (getCreaseAngleEntry () .get_text ());
+	const double value = toDouble (getCreaseAngleEntry () .get_text ());
 
 	on_creaseAngle_changed (value);
 
