@@ -55,6 +55,7 @@
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "CellRenderer/OutlineSeparator.h"
 #include "OutlineRouteGraph.h"
+#include "OutlineSelection.h"
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
@@ -65,6 +66,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	        X3DBaseInterface (),
 	           Gtk::TreeView (),
 	                   model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
+	               selection (new OutlineSelection (getBrowserWindow (), this)),
 	            treeObserver (new OutlineTreeObserver (this)),
 	              routeGraph (new OutlineRouteGraph (this)),
 	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
@@ -574,6 +576,52 @@ X3DOutlineTreeView::set_rootNodes ()
 	enable_shift_key ();
 }
 
+void
+X3DOutlineTreeView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
+{
+	select_node (get_model () -> get_iter (path), path);
+}
+
+void
+X3DOutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+{
+	selection -> set_select_multiple (get_shift_key ());
+
+	switch (get_data_type (iter))
+	{
+		case OutlineIterType::X3DBaseNode:
+		{
+			const auto & localNode = *static_cast <X3D::SFNode*> (get_object (iter));
+
+			if (localNode)
+			{
+				if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
+					selection -> select (localNode);
+			}
+
+			break;
+		}
+		case OutlineIterType::ExportedNode:
+		{
+			try
+			{
+				const auto sfnode       = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
+				const auto localNode    = exportedNode -> getLocalNode ();
+
+				if (exportedNode -> getExecutionContext () == get_model () -> get_execution_context ())
+					selection -> select (localNode);
+			}
+			catch (...)
+			{ }
+
+			break;
+		}
+		default:
+			break;
+	}
+}
+
 bool
 X3DOutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
@@ -674,7 +722,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				case X3D::X3DConstants::SFNode:
 				{
-					get_model () -> append (iter, OutlineIterType::X3DBaseNode, static_cast <X3D::SFNode*> (field) -> getValue ());
+					const auto & sfnode = *static_cast <X3D::SFNode*> (field);
+
+					get_model () -> append (iter, OutlineIterType::X3DBaseNode, sfnode .getValue ());
+					selection -> update (sfnode);
 					break;
 				}
 				case X3D::X3DConstants::MFNode:
@@ -690,7 +741,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					size_t i = 0;
 
 					for (auto & value : *mfnode)
+					{
 						get_model () -> append (iter, OutlineIterType::X3DBaseNode, value, i ++);
+						selection -> update (value);
+					}
 
 					break;
 				}

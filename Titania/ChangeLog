@@ -1,5 +1,14 @@
 2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineSelection.h:
+	* X3DOutlineTreeView.h:
+	* OutlineSelection.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
+2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* X3DEditorObject.h:

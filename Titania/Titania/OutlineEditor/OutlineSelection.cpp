@@ -52,12 +52,12 @@
 
 #include "../Browser/BrowserWindow.h"
 #include "OutlineTreeModel.h"
-#include "OutlineTreeViewEditor.h"
+#include "X3DOutlineTreeView.h"
 
 namespace titania {
 namespace puck {
 
-OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const treeView) :
+OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, X3DOutlineTreeView* const treeView) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	        treeView (treeView),
 	  selectMultiple (false),
@@ -189,12 +189,16 @@ OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value)
 void
 OutlineSelection::update (const X3D::SFNode & node)
 {
-	bool selected = false;
+	if (node)
+	{
+		bool selected = false;
 
-	for (const auto & parent : node -> getParents ())
-		selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
+		for (const auto & parent : node -> getParents ())
+			selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
 
-	select (node, selected);
+		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) not_eq selected)
+			select (node, selected);
+	}
 }
 
 } // puck

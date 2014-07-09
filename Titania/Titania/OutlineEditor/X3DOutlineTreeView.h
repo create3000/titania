@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,11 +63,12 @@ namespace puck {
 
 class OutlineCellRenderer;
 class OutlineRouteGraph;
+class OutlineSelection;
 class OutlineTreeModel;
 class OutlineTreeObserver;
 
 class X3DOutlineTreeView :
-	 virtual public X3DBaseInterface, public Gtk::TreeView
+	virtual public X3DBaseInterface, public Gtk::TreeView
 {
 public:
 
@@ -102,7 +103,7 @@ public:
 
 	bool
 	get_show_imported_nodes () const
-	{ return importedNodes ; }
+	{ return importedNodes; }
 
 	void
 	set_show_exported_nodes (const bool value)
@@ -257,6 +258,13 @@ private:
 	set_rootNodes ();
 
 	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	void
+	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	virtual
 	bool
 	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
 
@@ -296,6 +304,7 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <OutlineTreeModel>       model;
+	std::unique_ptr <OutlineSelection>    selection;
 	std::unique_ptr <OutlineTreeObserver> treeObserver;
 	std::unique_ptr <OutlineRouteGraph>   routeGraph;
 	OutlineCellRenderer*                  cellrenderer;

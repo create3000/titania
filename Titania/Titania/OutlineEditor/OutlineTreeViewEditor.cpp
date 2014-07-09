@@ -54,7 +54,6 @@
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineDragDrop.h"
 #include "OutlineRouteGraph.h"
-#include "OutlineSelection.h"
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
@@ -67,7 +66,6 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
-	               selection (new OutlineSelection (browserWindow, this)),
 	                dragDrop (new OutlineDragDrop (browserWindow, this)),
 	            overUserData (new OutlineUserData ()),
 	        selectedUserData (new OutlineUserData ()),
@@ -92,12 +90,6 @@ OutlineTreeViewEditor::watch_motion (const bool value)
 
 	if (value)
 		motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
-}
-
-void
-OutlineTreeViewEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
-{
-	select_node (get_model () -> get_iter (path), path);
 }
 
 bool
@@ -173,46 +165,6 @@ OutlineTreeViewEditor::set_motion_notify_event (GdkEventMotion* event)
 		return true;
 
 	return false;
-}
-
-void
-OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-{
-	selection -> set_select_multiple (get_shift_key ());
-
-	switch (get_data_type (iter))
-	{
-		case OutlineIterType::X3DBaseNode:
-		{
-			const auto & localNode = *static_cast <X3D::SFNode*> (get_object (iter));
-
-			if (localNode)
-			{
-				if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
-					selection -> select (localNode);
-			}
-
-			break;
-		}
-		case OutlineIterType::ExportedNode:
-		{
-			try
-			{
-				const auto sfnode       = static_cast <X3D::SFNode*> (get_object (iter));
-				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
-				const auto localNode    = exportedNode -> getLocalNode ();
-
-				if (exportedNode -> getExecutionContext () == get_model () -> get_execution_context ())
-					selection -> select (localNode);
-			}
-			catch (...)
-			{ }
-
-			break;
-		}
-		default:
-			break;
-	}
 }
 
 bool

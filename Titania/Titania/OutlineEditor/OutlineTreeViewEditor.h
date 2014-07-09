@@ -57,7 +57,6 @@ namespace titania {
 namespace puck {
 
 class OutlineDragDrop;
-class OutlineSelection;
 
 class OutlineTreeViewEditor :
 	public X3DOutlineTreeView
@@ -77,10 +76,6 @@ private:
 	watch_motion (const bool);
 
 	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
-
-	virtual
 	bool
 	on_button_press_event (GdkEventButton*) final override;
 
@@ -90,9 +85,6 @@ private:
 
 	bool
 	set_motion_notify_event (GdkEventMotion*);
-
-	void
-	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	bool
 	select_field_value (const double x, const double y);
@@ -137,7 +129,6 @@ private:
 
 	using FieldType = X3D::X3DConstants::FieldType;
 
-	std::unique_ptr <OutlineSelection> selection;
 	std::unique_ptr <OutlineDragDrop>  dragDrop;
 	OutlineUserDataPtr                 overUserData;
 	OutlineUserDataPtr                 selectedUserData;

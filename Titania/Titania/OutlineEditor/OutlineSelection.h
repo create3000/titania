@@ -61,14 +61,14 @@
 namespace titania {
 namespace puck {
 
-class OutlineTreeViewEditor;
+class X3DOutlineTreeView;
 
 class OutlineSelection :
 	public X3DBaseInterface
 {
 public:
 
-	OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const);
+	OutlineSelection (BrowserWindow* const browserWindow, X3DOutlineTreeView* const);
 
 	///  @name Operations
 
@@ -108,9 +108,9 @@ private:
 
 	///  @name Members
 
-	OutlineTreeViewEditor* const treeView;
-	bool                         selectMultiple;
-	X3D::MFNode                  children;
+	X3DOutlineTreeView* const treeView;
+	bool                      selectMultiple;
+	X3D::MFNode               children;
 
 };
 
