@@ -63,7 +63,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	               appearances (),
 	                  material (),
 	          twoSidedMaterial (),
-	       hasTwoSidedMaterial (false),
+	       isTwoSidedMaterial (false),
 	                  undoStep (),
 	                  changing (false)
 {
@@ -182,7 +182,7 @@ MaterialEditor::set_preview ()
 				}
 				default:
 				{
-					if (hasTwoSidedMaterial)
+					if (isTwoSidedMaterial)
 						appearance -> material () = twoSidedMaterial;
 					else
 						appearance -> material () = material;
@@ -194,6 +194,36 @@ MaterialEditor::set_preview ()
 			if (appearance -> material ())
 				appearance -> material () -> addInterest (*preview, &X3D::Browser::addEvent);
 		}
+		
+		const X3D::AppearancePtr backAppearance (preview -> getExecutionContext () -> getNamedNode ("BackAppearance"));
+		
+		if (backAppearance)
+		{
+			X3D::MaterialPtr backMaterial (new X3D::Material (preview -> getExecutionContext ()));
+			
+			twoSidedMaterial -> backDiffuseColor ()  .addInterest (backMaterial -> diffuseColor ());
+			twoSidedMaterial -> backSpecularColor () .addInterest (backMaterial -> specularColor ());
+			twoSidedMaterial -> backEmissiveColor () .addInterest (backMaterial -> specularColor ());
+
+			twoSidedMaterial -> backAmbientIntensity () .addInterest (backMaterial -> ambientIntensity ());
+			twoSidedMaterial -> backShininess ()        .addInterest (backMaterial -> shininess ());
+			twoSidedMaterial -> backTransparency ()     .addInterest (backMaterial -> transparency ());	
+
+			backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
+			backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
+			backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
+			backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
+			backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
+			backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
+			backMaterial -> setup ();
+
+			backAppearance -> material () = backMaterial;
+		}
+
+		const X3D::X3DPtr <X3D::Switch> sphere (preview -> getExecutionContext () -> getNamedNode ("Sphere"));
+
+		if (sphere)
+			sphere -> whichChoice () = isTwoSidedMaterial;
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -254,7 +284,7 @@ MaterialEditor::on_material_changed ()
 	{
 		case 1:
 		{
-			if (hasTwoSidedMaterial)
+			if (isTwoSidedMaterial)
 			{
 				material -> ambientIntensity () = twoSidedMaterial -> ambientIntensity ();
 				material -> diffuseColor ()     = twoSidedMaterial -> diffuseColor ();
@@ -268,7 +298,7 @@ MaterialEditor::on_material_changed ()
 		}
 		case 2:
 		{
-			if (not hasTwoSidedMaterial)
+			if (not isTwoSidedMaterial)
 			{
 				twoSidedMaterial -> ambientIntensity () = material -> ambientIntensity ();
 				twoSidedMaterial -> diffuseColor ()     = material -> diffuseColor ();
@@ -296,7 +326,7 @@ MaterialEditor::on_material_changed ()
 		twoSidedMaterial -> setup ();
 	}
 
-	hasTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
+	isTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
 
 	addUndoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
@@ -409,7 +439,7 @@ MaterialEditor::set_material ()
 
 	material            = materialNode;
 	twoSidedMaterial    = materialNode;
-	hasTwoSidedMaterial = twoSidedMaterial;
+	isTwoSidedMaterial = twoSidedMaterial;
 
 	if (not material)
 	{
@@ -432,7 +462,7 @@ MaterialEditor::set_material ()
 		case 1:
 		{
 			// Material or TwoSidedMaterial
-			getMaterialButton () .set_active (hasTwoSidedMaterial + 1);
+			getMaterialButton () .set_active (isTwoSidedMaterial + 1);
 			break;
 		}
 		case -1:
@@ -675,7 +705,7 @@ MaterialEditor::set_ambient ()
 {
 	changing = true;
 
-	getAmbientScale () .set_value (hasTwoSidedMaterial ? twoSidedMaterial -> ambientIntensity () : material -> ambientIntensity ());
+	getAmbientScale () .set_value (isTwoSidedMaterial ? twoSidedMaterial -> ambientIntensity () : material -> ambientIntensity ());
 	getAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getAmbientScale () .get_value ()));
 
 	changing = false;
@@ -731,7 +761,7 @@ MaterialEditor::set_shininess ()
 {
 	changing = true;
 
-	getShininessScale () .set_value (hasTwoSidedMaterial ? twoSidedMaterial -> shininess () : material -> shininess ());
+	getShininessScale () .set_value (isTwoSidedMaterial ? twoSidedMaterial -> shininess () : material -> shininess ());
 	getShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getShininessScale () .get_value ()));
 
 	changing = false;
@@ -787,7 +817,7 @@ MaterialEditor::set_transparency ()
 {
 	changing = true;
 
-	getTransparencyScale () .set_value (hasTwoSidedMaterial ? twoSidedMaterial -> transparency () : material -> transparency ());
+	getTransparencyScale () .set_value (isTwoSidedMaterial ? twoSidedMaterial -> transparency () : material -> transparency ());
 	getTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getTransparencyScale () .get_value ()));
 
 	changing = false;
@@ -1140,7 +1170,7 @@ MaterialEditor::initDialog (Gtk::ColorSelectionDialog & dialog, void (MaterialEd
 bool
 MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color, Gtk::DrawingArea & drawingArea)
 {
-	if (hasTwoSidedMaterial)
+	if (isTwoSidedMaterial)
 		context -> set_source_rgb (twoSidedColor .r (), twoSidedColor .g (), twoSidedColor .b ());
 
 	else
@@ -1170,7 +1200,7 @@ MaterialEditor::on_color_changed (Gtk::ColorSelectionDialog & dialog,
 
 	// Update material
 
-	if (hasTwoSidedMaterial)
+	if (isTwoSidedMaterial)
 	{
 		addUndoFunction (twoSidedMaterial, twoSidedColor, undoStep);
 
@@ -1199,7 +1229,7 @@ MaterialEditor::set_color (Gtk::ColorSelectionDialog & dialog, const X3D::Color3
 {
 	changing = true;
 
-	if (hasTwoSidedMaterial)
+	if (isTwoSidedMaterial)
 	{
 		dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
 		dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
@@ -1220,7 +1250,7 @@ MaterialEditor::on_value_changed (X3D::SFFloat & backField,
                                   void (MaterialEditor::* set_value)(),
                                   void (MaterialEditor::* connectValue) (const X3D::SFFloat &))
 {
-	if (hasTwoSidedMaterial)
+	if (isTwoSidedMaterial)
 	{
 		addUndoFunction (twoSidedMaterial, backField, undoStep);
 
@@ -1256,7 +1286,7 @@ MaterialEditor::updateAppearance ()
 //
 //	if (undoStep and lastUndoStep == undoStep)
 //	{
-//		if (hasTwoSidedMaterial)
+//		if (isTwoSidedMaterial)
 //		{
 //			for (const auto & appearance : appearances)
 //				appearance -> material () = twoSidedMaterial;
@@ -1279,7 +1309,7 @@ MaterialEditor::updateAppearance ()
 //
 //		undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 //
-//		if (hasTwoSidedMaterial)
+//		if (isTwoSidedMaterial)
 //		{
 //			twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
 //

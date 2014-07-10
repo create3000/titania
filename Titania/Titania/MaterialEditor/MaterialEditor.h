@@ -406,7 +406,7 @@ private:
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::MaterialPtr                   material;
 	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
-	bool                               hasTwoSidedMaterial;
+	bool                               isTwoSidedMaterial;
 	UndoStepPtr                        undoStep;
 	bool                               changing;
 
