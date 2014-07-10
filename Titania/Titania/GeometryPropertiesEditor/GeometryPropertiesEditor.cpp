@@ -139,15 +139,10 @@ GeometryPropertiesEditor::set_selection ()
 	               {
 	                  for (const auto & type: node -> getType ())
 	                  {
-	                     switch (type)
-	                     {
-									case X3D::X3DConstants::X3DGeometryNode:
-										{
-										   geometryNodes .emplace_back (node);
-										   return true;
-										}
-									default:
-										break;
+	                     if (type == X3D::X3DConstants::X3DGeometryNode)
+								{
+								   geometryNodes .emplace_back (node);
+								   return true;
 								}
 							}
 
@@ -569,7 +564,7 @@ GeometryPropertiesEditor::set_textureCoordinateGenerator ()
 
 	textureCoordinateGenerator = nullptr;
 
-	// Find first »texCoord« field.
+	// Find last »texCoord« field.
 
 	bool hasField = false;
 	int  active   = -1;
@@ -631,14 +626,14 @@ GeometryPropertiesEditor::on_textureCoordinateGenerator_mode_changed ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFString> (textureCoordinateGenerator, textureCoordinateGenerator -> mode (), undoStep);
+	addUndoFunction (textureCoordinateGenerator, textureCoordinateGenerator -> mode (), undoStep);
 
 	textureCoordinateGenerator -> mode () = getTextureCoordinateGeneratorModeButton () .get_active_text ();
 
 	textureCoordinateGenerator -> mode () .removeInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator_mode);
 	textureCoordinateGenerator -> mode () .addInterest (this, &GeometryPropertiesEditor::connectTextureCoordinateGeneratorMode);
 
-	addRedoFunction <X3D::SFString> (textureCoordinateGenerator -> mode (), undoStep);
+	addRedoFunction (textureCoordinateGenerator -> mode (), undoStep);
 }
 
 void

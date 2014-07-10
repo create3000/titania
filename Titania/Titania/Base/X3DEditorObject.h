@@ -190,8 +190,10 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 	undoStep -> addVariables (node);
 
 	// Undo field change
+	
+	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
 
-	undoStep -> addUndoFunction (&FieldType::setValue, std::ref (field), field);
+	undoStep -> addUndoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -204,7 +206,9 @@ X3DEditorObject::addRedoFunction (FieldType & field, const UndoStepPtr & undoSte
 
 	// Redo field change
 
-	undoStep -> addRedoFunction (&FieldType::setValue, std::ref (field), field);
+	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+
+	undoStep -> addRedoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
 }
 
 } // puck

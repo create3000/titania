@@ -90,9 +90,6 @@ private:
 	void
 	set_initialized ();
 
-	void
-	set_selection ();
-
 	virtual
 	void
 	on_copy () final override;
@@ -101,11 +98,22 @@ private:
 	void
 	on_paste () final override;
 
+	void
+	set_selection ();
+
 	virtual
 	void
-	on_frontAndBackButton_toggled () final override;
+	on_material_changed () final override;
+
+	void
+	set_material ();
+
+	void
+	connectMaterial (const X3D::SFNode &);
 
 	///  @name Front color handler
+
+	///  @name diffuseColor
 
 	virtual
 	bool
@@ -118,6 +126,14 @@ private:
 	void
 	on_diffuseColor_changed ();
 
+	void
+	set_diffuseColor ();
+
+	void
+	connectDiffuseColor (const X3D::SFColor &);
+
+	///  @name specularColor
+
 	virtual
 	bool
 	on_specular_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
@@ -128,6 +144,14 @@ private:
 
 	void
 	on_specularColor_changed ();
+
+	void
+	set_specularColor ();
+
+	void
+	connectSpecularColor (const X3D::SFColor &);
+
+	///  @name emissiveColor
 
 	virtual
 	bool
@@ -140,19 +164,84 @@ private:
 	void
 	on_emissiveColor_changed ();
 
-	virtual
 	void
-	on_ambient_changed () final override;
+	set_emissiveColor ();
+
+	void
+	connectEmissiveColor (const X3D::SFColor &);
+
+	///  @name ambient
 
 	virtual
 	void
-	on_shininess_changed () final override;
+	on_ambient_text_changed () final override;
 
 	virtual
 	void
-	on_transparency_changed () final override;
+	on_ambient_value_changed () final override;
+
+	void
+	on_ambient_changed (const double);
+
+	void
+	set_ambient ();
+
+	void
+	connectAmbient (const X3D::SFFloat &);
+
+	///  @name shininess
+
+	virtual
+	void
+	on_shininess_text_changed () final override;
+
+	virtual
+	void
+	on_shininess_value_changed () final override;
+
+	void
+	on_shininess_changed (const double);
+
+	void
+	set_shininess ();
+
+	void
+	connectShininess (const X3D::SFFloat &);
+
+	///  @name transparency
+
+	virtual
+	void
+	on_transparency_text_changed () final override;
+
+	virtual
+	void
+	on_transparency_value_changed () final override;
+
+	void
+	on_transparency_changed (const double);
+
+	void
+	set_transparency ();
+
+	void
+	connectTransparency (const X3D::SFFloat &);
 
 	///  @name Back color handler
+
+	///  @name separateBackColor
+
+	virtual
+	void
+	on_separateBackColor_toggled () final override;
+
+	void
+	set_separateBackColor ();
+
+	void
+	connectSeparateBackColor (const X3D::SFBool &);
+
+	///  @name backDiffuseColor
 
 	virtual
 	bool
@@ -165,6 +254,14 @@ private:
 	void
 	on_backDiffuseColor_changed ();
 
+	void
+	set_backDiffuseColor ();
+
+	void
+	connectBackDiffuseColor (const X3D::SFColor &);
+
+	///  @name backSpecularColor
+
 	virtual
 	bool
 	on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
@@ -175,6 +272,14 @@ private:
 
 	void
 	on_backSpecularColor_changed ();
+
+	void
+	set_backSpecularColor ();
+
+	void
+	connectBackSpecularColor (const X3D::SFColor &);
+
+	///  @name backEmissiveColor
 
 	virtual
 	bool
@@ -187,31 +292,95 @@ private:
 	void
 	on_backEmissiveColor_changed ();
 
-	virtual
 	void
-	on_backAmbient_changed () final override;
+	set_backEmissiveColor ();
+
+	void
+	connectBackEmissiveColor (const X3D::SFColor &);
+
+	///  @name backAmbientIntensity
 
 	virtual
 	void
-	on_backShininess_changed () final override;
+	on_backAmbient_text_changed () final override;
 
 	virtual
 	void
-	on_backTransparency_changed () final override;
+	on_backAmbient_value_changed () final override;
+
+	void
+	on_backAmbient_changed (const double);
+
+	void
+	set_backAmbient ();
+
+	void
+	connectBackAmbient (const X3D::SFFloat &);
+
+	///  @name backShininess
+
+	virtual
+	void
+	on_backShininess_text_changed () final override;
+
+	virtual
+	void
+	on_backShininess_value_changed () final override;
+
+	void
+	on_backShininess_changed (const double);
+
+	void
+	set_backShininess ();
+
+	void
+	connectBackShininess (const X3D::SFFloat &);
+	
+	///  @name backTransparency
+
+	virtual
+	void
+	on_backTransparency_text_changed () final override;
+
+	virtual
+	void
+	on_backTransparency_value_changed () final override;
+
+	void
+	on_backTransparency_changed (const double);
+
+	void
+	set_backTransparency ();
+
+	void
+	connectBackTransparency (const X3D::SFFloat &);
+
 
 	///  @name Operations for all colors
 
 	void
 	initDialog (Gtk::ColorSelectionDialog &, void (MaterialEditor::* callback)());
 
-	void
-	updateDialog (Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
-
 	bool
 	on_color_draw (const Cairo::RefPtr <Cairo::Context> &, const X3D::Color3f &, const X3D::Color3f &, Gtk::DrawingArea &);
 
 	void
-	on_color_changed (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);
+	on_color_changed (Gtk::ColorSelectionDialog &,
+	                  X3D::SFColor &,
+	                  X3D::SFColor &,
+	                  Gtk::DrawingArea &,
+	                  void (MaterialEditor::*) (),
+	                  void (MaterialEditor::*) (const X3D::SFColor &));
+
+	void
+	set_color (Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
+
+	void
+	on_value_changed (X3D::SFFloat &,
+                     X3D::SFFloat &,
+                     const double,
+                     void (MaterialEditor::*) (),
+                     void (MaterialEditor::*) (const X3D::SFFloat &));
 
 	void
 	updateAppearance ();
@@ -229,10 +398,11 @@ private:
 
 	X3D::BrowserPtr browserSurface;
 
-	std::vector <X3D::AppearancePtr> appearances;
-	X3D::MaterialPtr                 material;
-	X3D::TwoSidedMaterialPtr         twoSidedMaterial;
-	
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::MaterialPtr                   material;
+	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
+	bool                               hasTwoSidedMaterial;
+
 	UndoStepPtr undoStep;
 
 	bool changing;

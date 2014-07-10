@@ -89,12 +89,12 @@ OutlineSelection::set_children (const X3D::MFNode & value)
 }
 
 void
-OutlineSelection::select (const X3D::SFNode & node)
+OutlineSelection::select (const X3D::SFNode & node) const
 {
 	if (node)
 	{
-		const auto selection  = getBrowser () -> getSelection ();
-		const bool isSelected = selection -> isSelected (node);
+		const auto & selection  = getBrowser () -> getSelection ();
+		const bool   isSelected = selection -> isSelected (node);
 
 		if (isSelected)
 		{
@@ -187,10 +187,15 @@ OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value)
 }
 
 void
-OutlineSelection::update (const X3D::SFNode & node)
+OutlineSelection::update (const X3D::SFNode & node) const
 {
 	if (node)
 	{
+		const auto & selection = getBrowser () -> getSelection ();
+
+		if (selection -> isSelected (node))
+			return;
+
 		bool selected = false;
 
 		for (const auto & parent : node -> getParents ())

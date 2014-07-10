@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.0
 
 META "title" "TwoSidedMaterial"
 
@@ -6,7 +6,7 @@ Background {
   skyColor 0.2 0.2 0.2
 }
 
-Transform {
+DEF _1 Transform {
   translation -2 0 0
   children Shape {
     appearance Appearance {
@@ -19,15 +19,26 @@ Transform {
     geometry IndexedFaceSet {
       solid FALSE
       #ccw FALSE
-      coordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
       coord Coordinate {
-        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
       }
     }
   }
 }
 
-Transform {
+DEF _2 Transform {
   translation 2 0 0
   children Shape {
     appearance Appearance {
@@ -39,6 +50,63 @@ Transform {
     }
     geometry Rectangle2D {
       solid FALSE
+    }
+  }
+}
+
+DEF _3 Transform {
+  translation 2 2.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        ambientIntensity 0.25
+        diffuseColor 0.282435 0.0851587 0.134462
+        specularColor 0.276305 0.11431 0.139857
+        shininess 0.127273
+      }
+    }
+    geometry IndexedFaceSet {
+      solid FALSE
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
+    }
+  }
+}
+
+DEF _4 Transform {
+  translation -2 2.5 0
+  children Shape {
+    appearance Appearance { }
+    geometry IndexedFaceSet {
+      solid FALSE
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
     }
   }
 }

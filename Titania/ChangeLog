@@ -1,3 +1,15 @@
+2014-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DEditorObject.h:
+	* MaterialEditor.h:
+	* OutlineSelection.h:
+	* MaterialEditor.cpp:
+	* OutlineSelection.cpp:
+	* MaterialEditor.xml:
+	* X3DMaterialEditorInterface.h:
+	* X3DMaterialEditorInterface.cpp:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-07-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* style.css:

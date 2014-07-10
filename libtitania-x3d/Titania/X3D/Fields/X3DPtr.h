@@ -1063,10 +1063,10 @@ const std::string X3DPtr <ValueType>::typeName ("SFNode");
 
 ///  Compares two X3DPtr.
 ///  Returns true if @a lhs is equal to @a rhs.
-template <class ValueType>
+template <class LHS, class RHS>
 inline
 bool
-operator == (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+operator == (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
 	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
 	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
@@ -1076,10 +1076,10 @@ operator == (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 
 ///  Compares two X3DPtr.
 ///  Returns true if @a lhs is not equal to @a rhs.
-template <class ValueType>
+template <class LHS, class RHS>
 inline
 bool
-operator not_eq (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+operator not_eq (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
 	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
 	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
@@ -1089,10 +1089,10 @@ operator not_eq (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 
 ///  Compares two X3DPtr.
 ///  Returns true if @a lhs less than @a rhs.
-template <class ValueType>
+template <class LHS, class RHS>
 inline
 bool
-operator < (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+operator < (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
 	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
 	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
@@ -1102,10 +1102,10 @@ operator < (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 
 ///  Compares two X3DPtr.
 ///  Returns true if @a lhs less than equal to @a rhs.
-template <class ValueType>
+template <class LHS, class RHS>
 inline
 bool
-operator <= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+operator <= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
 	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
 	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
@@ -1115,10 +1115,10 @@ operator <= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 
 ///  Compares two X3DPtr.
 ///  Returns true if @a lhs greater than @a rhs.
-template <class ValueType>
+template <class LHS, class RHS>
 inline
 bool
-operator > (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+operator > (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
 	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
 	X3DBase* const b = rhs ? rhs -> getId () : nullptr;
@@ -1128,10 +1128,10 @@ operator > (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
 
 ///  Compares two X3DPtr.
 ///  Returns true if @a lhs greater than equal to @a rhs.
-template <class ValueType>
+template <class LHS, class RHS>
 inline
 bool
-operator >= (const X3DPtr <ValueType> & lhs, const X3DPtr <ValueType> & rhs)
+operator >= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
 	X3DBase* const a = lhs ? lhs -> getId () : nullptr;
 	X3DBase* const b = rhs ? rhs -> getId () : nullptr;

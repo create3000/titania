@@ -76,11 +76,10 @@ public:
 	set_select_multiple (const bool);
 
 	void
-	select (const X3D::SFNode &);
+	select (const X3D::SFNode &) const;
 
-	static
 	void
-	update (const X3D::SFNode &);
+	update (const X3D::SFNode &) const;
 
 
 private:

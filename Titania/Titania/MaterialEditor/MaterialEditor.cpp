@@ -63,8 +63,9 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	               appearances (),
 	                  material (),
 	          twoSidedMaterial (),
+	       hasTwoSidedMaterial (false),
 	                  undoStep (),
-	               changing (false)
+	                  changing (false)
 {
 	browserSurface -> set_antialiasing (4);
 
@@ -86,50 +87,49 @@ MaterialEditor::initialize ()
 
 	set_selection ();
 
-	// Connect to initialized event.
-	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_splashScreen);
-
-	// Insert Surface, this will initialize the Browser.
-	getPreviewBox () .pack_start (*browserSurface, true, true, 0);
-
-	// Show Surface and start the X3D Main Loop.
-	browserSurface -> show ();
+//	// Connect to initialized event.
+//	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_splashScreen);
+//
+//	// Insert Surface, this will initialize the Browser.
+//	getPreviewBox () .pack_start (*browserSurface, true, true, 0);
+//
+//	// Show Surface and start the X3D Main Loop.
+//	browserSurface -> show ();
 }
 
 void
 MaterialEditor::set_splashScreen ()
 {
-	browserSurface -> initialized () .removeInterest (this, &MaterialEditor::set_splashScreen);
-	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_initialized);
-
-	try
-	{
-		browserSurface -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
-	}
-	catch (const X3D::X3DError &)
-	{ }
+//	browserSurface -> initialized () .removeInterest (this, &MaterialEditor::set_splashScreen);
+//	browserSurface -> initialized () .addInterest (this, &MaterialEditor::set_initialized);
+//
+//	try
+//	{
+//		browserSurface -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
+//	}
+//	catch (const X3D::X3DError &)
+//	{ }
 }
 
 void
 MaterialEditor::set_initialized ()
 {
-	updatePreview ();
+//	updatePreview ();
 }
-	
+
+void
+MaterialEditor::on_copy ()
+{ }
+
+void
+MaterialEditor::on_paste ()
+{ }
+
 void
 MaterialEditor::set_selection ()
 {
-	__LOG__ << std::endl;
-
-	changing = true;
-
-	material         = new X3D::Material (getExecutionContext ());
-	twoSidedMaterial = new X3D::TwoSidedMaterial (getExecutionContext ());
-
-	twoSidedMaterial -> separateBackColor () = true;
-
-	material -> setup ();
-	twoSidedMaterial -> setup ();
+	for (const auto & appearance : appearances)
+		appearance -> material () .removeInterest (this, &MaterialEditor::set_material);
 
 	undoStep .reset ();
 
@@ -141,159 +141,298 @@ MaterialEditor::set_selection ()
 
 	X3D::traverse (selection, [&] (X3D::SFNode & node)
 	               {
-	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
-
-	                  if (appearance)
-								appearances .emplace_back (appearance);
+	                  for (const auto & type: node -> getType ())
+	                  {
+	                     if (type == X3D::X3DConstants::Appearance)
+								{
+									appearances .emplace_back (node);
+									return true;
+								}
+							}
 
 	                  return true;
 						});
 
-	// Find last Material and TwoSidedMaterial node.
+	for (const auto & appearance : appearances)
+		appearance -> material () .addInterest (this, &MaterialEditor::set_material);
 
-	size_t materialIndex = 0;
+	set_material ();
+}
+
+void
+MaterialEditor::on_material_changed ()
+{
+	getFrontBox () .set_sensitive (getMaterialButton () .get_active_row_number () > 0);
+	getBackBox ()  .set_sensitive (getMaterialButton () .get_active_row_number () > 1);
+
+	if (getMaterialButton () .get_active_row_number () < 1)
+	{
+		getDiffuseDialog ()  .hide ();
+		getSpecularDialog () .hide ();
+		getEmissiveDialog () .hide ();
+	}
+
+	if (getMaterialButton () .get_active_row_number () < 2)
+	{
+		getBackDiffuseDialog ()  .hide ();
+		getBackSpecularDialog () .hide ();
+		getBackEmissiveDialog () .hide ();
+	}
+
+	if (changing)
+		return;
+
+	switch (getMaterialButton () .get_active_row_number ())
+	{
+		case 1:
+		{
+			if (hasTwoSidedMaterial)
+			{
+				material -> ambientIntensity () = twoSidedMaterial -> ambientIntensity ();
+				material -> diffuseColor ()     = twoSidedMaterial -> diffuseColor ();
+				material -> specularColor ()    = twoSidedMaterial -> specularColor ();
+				material -> emissiveColor ()    = twoSidedMaterial -> emissiveColor ();
+				material -> shininess ()        = twoSidedMaterial -> shininess ();
+				material -> transparency ()     = twoSidedMaterial -> transparency ();
+			}
+			break;
+		}
+		case 2:
+		{
+			if (not hasTwoSidedMaterial)
+			{
+				twoSidedMaterial -> ambientIntensity () = material -> ambientIntensity ();
+				twoSidedMaterial -> diffuseColor ()     = material -> diffuseColor ();
+				twoSidedMaterial -> specularColor ()    = material -> specularColor ();
+				twoSidedMaterial -> emissiveColor ()    = material -> emissiveColor ();
+				twoSidedMaterial -> shininess ()        = material -> shininess ();
+				twoSidedMaterial -> transparency ()     = material -> transparency ();
+			}
+			break;
+		}
+		default:
+			break;
+	}
+
+	if (getMaterialButton () .get_active_row_number () not_eq 1)
+	{
+		material = material -> copy (material -> getExecutionContext ());
+		material -> setup ();
+	}
+
+	if (getMaterialButton () .get_active_row_number () not_eq 2)
+	{
+		twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
+		twoSidedMaterial -> setup ();
+	}
+
+	hasTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
+
+	addUndoFunction <X3D::SFNode> (appearances, "material", undoStep);
+
+	for (const auto & appearance : appearances)
+	{
+		try
+		{
+			auto & field = appearance -> material ();
+
+			switch (getMaterialButton () .get_active_row_number ())
+			{
+				case 0:
+				{
+					field = nullptr;
+					break;
+				}
+				case 1:
+				{
+					field = material;
+					break;
+				}
+				case 2:
+				{
+					field = twoSidedMaterial;
+					break;
+				}
+				default:
+					break;
+			}
+
+			field .removeInterest (this, &MaterialEditor::set_material);
+			field .addInterest (this, &MaterialEditor::connectMaterial);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
+
+	getWidget () .queue_draw ();
+}
+
+void
+MaterialEditor::set_material ()
+{
+	if (material)
+	{
+		material -> diffuseColor ()  .removeInterest (this, &MaterialEditor::set_diffuseColor);
+		material -> specularColor () .removeInterest (this, &MaterialEditor::set_specularColor);
+		material -> emissiveColor () .removeInterest (this, &MaterialEditor::set_emissiveColor);
+
+		material -> ambientIntensity () .removeInterest (this, &MaterialEditor::set_ambient);
+		material -> shininess ()        .removeInterest (this, &MaterialEditor::set_shininess);
+		material -> transparency ()     .removeInterest (this, &MaterialEditor::set_transparency);
+	}
+
+	if (twoSidedMaterial)
+	{
+		twoSidedMaterial -> separateBackColor () .removeInterest (this, &MaterialEditor::set_separateBackColor);
+
+		twoSidedMaterial -> diffuseColor ()  .removeInterest (this, &MaterialEditor::set_diffuseColor);
+		twoSidedMaterial -> specularColor () .removeInterest (this, &MaterialEditor::set_specularColor);
+		twoSidedMaterial -> emissiveColor () .removeInterest (this, &MaterialEditor::set_emissiveColor);
+
+		twoSidedMaterial -> ambientIntensity () .removeInterest (this, &MaterialEditor::set_ambient);
+		twoSidedMaterial -> shininess ()        .removeInterest (this, &MaterialEditor::set_shininess);
+		twoSidedMaterial -> transparency ()     .removeInterest (this, &MaterialEditor::set_transparency);
+	
+		twoSidedMaterial -> backDiffuseColor ()  .removeInterest (this, &MaterialEditor::set_backDiffuseColor);
+		twoSidedMaterial -> backSpecularColor () .removeInterest (this, &MaterialEditor::set_backSpecularColor);
+		twoSidedMaterial -> backEmissiveColor () .removeInterest (this, &MaterialEditor::set_backEmissiveColor);
+
+		twoSidedMaterial -> backAmbientIntensity () .removeInterest (this, &MaterialEditor::set_backAmbient);
+		twoSidedMaterial -> backShininess ()        .removeInterest (this, &MaterialEditor::set_backShininess);
+		twoSidedMaterial -> backTransparency ()     .removeInterest (this, &MaterialEditor::set_backTransparency);
+	}
+
+	const bool hasField = not appearances .empty ();
+
+	// Find last »material« field.
+
+	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
+
+	int active = -1;
 
 	for (const auto & appearance : basic::reverse_adapter (appearances))
 	{
-		X3D::MaterialPtr m (appearance -> material ());
-
-		if (m)
+		try
 		{
-			material -> ambientIntensity () = m -> ambientIntensity ();
-			material -> diffuseColor ()     = m -> diffuseColor ();
-			material -> specularColor ()    = m -> specularColor ();
-			material -> emissiveColor ()    = m -> emissiveColor ();
-			material -> shininess ()        = m -> shininess ();
-			material -> transparency ()     = m -> transparency ();
-			break;
-		}
+			const auto & field = appearance -> material ();
 
-		++ materialIndex;
+			if (not materialNode)
+				materialNode = field;
+
+			if (active < 0)
+			{
+				active = bool (materialNode);
+			}
+			else if (field not_eq materialNode)
+			{
+				active = -1;
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
-	size_t twoSidedMaterialIndex = 0;
+	material            = materialNode;
+	twoSidedMaterial    = materialNode;
+	hasTwoSidedMaterial = twoSidedMaterial;
 
-	for (const auto & appearance : basic::reverse_adapter (appearances))
+	if (not material)
 	{
-		X3D::TwoSidedMaterialPtr m (appearance -> material ());
-
-		if (m)
-		{
-			twoSidedMaterial -> ambientIntensity () = m -> ambientIntensity ();
-			twoSidedMaterial -> diffuseColor ()     = m -> diffuseColor ();
-			twoSidedMaterial -> specularColor ()    = m -> specularColor ();
-			twoSidedMaterial -> emissiveColor ()    = m -> emissiveColor ();
-			twoSidedMaterial -> shininess ()        = m -> shininess ();
-			twoSidedMaterial -> transparency ()     = m -> transparency ();
-
-			twoSidedMaterial -> backAmbientIntensity () = m -> backAmbientIntensity ();
-			twoSidedMaterial -> backDiffuseColor ()     = m -> backDiffuseColor ();
-			twoSidedMaterial -> backSpecularColor ()    = m -> backSpecularColor ();
-			twoSidedMaterial -> backEmissiveColor ()    = m -> backEmissiveColor ();
-			twoSidedMaterial -> backShininess ()        = m -> backShininess ();
-			twoSidedMaterial -> backTransparency ()     = m -> backTransparency ();
-			break;
-		}
-
-		++ twoSidedMaterialIndex;
+		material = new X3D::Material (getExecutionContext ());
+		material -> setup ();
 	}
 
-	getFrontAndBackButton () .set_active (twoSidedMaterialIndex < materialIndex);
+	if (not twoSidedMaterial)
+	{
+		twoSidedMaterial = new X3D::TwoSidedMaterial (getExecutionContext ());
+		twoSidedMaterial -> setup ();
+	}
 
-	on_frontAndBackButton_toggled ();
+	changing = true;
 
-	updatePreview ();
+	getMaterialButton () .set_sensitive (hasField);
 
-	updateDialog (getDiffuseDialog (),  twoSidedMaterial -> diffuseColor (),  material -> diffuseColor ());
-	updateDialog (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
-	updateDialog (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor ());
-
-	updateDialog (getBackDiffuseDialog (),  twoSidedMaterial -> backDiffuseColor (),  twoSidedMaterial -> backDiffuseColor ());
-	updateDialog (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
-	updateDialog (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
-
-	getMaterialBox () .set_sensitive (not appearances .empty ());
+	switch (active)
+	{
+		case 1:
+		{
+			// Material or TwoSidedMaterial
+			getMaterialButton () .set_active (hasTwoSidedMaterial + 1);
+			break;
+		}
+		case -1:
+		{
+			if (hasField)
+			{
+				// Inconsistent
+				getMaterialButton () .set_active_text ("");
+				break;
+			}
+			// Procceed with next step.
+		}
+		default:
+		{
+			// None
+			getMaterialButton () .set_active (0);
+			break;
+		}
+	}
 
 	changing = false;
-}
 
-void
-MaterialEditor::on_copy ()
-{
-	__LOG__ << std::endl;
-}
+	material -> diffuseColor ()  .addInterest (this, &MaterialEditor::set_diffuseColor);
+	material -> specularColor () .addInterest (this, &MaterialEditor::set_specularColor);
+	material -> emissiveColor () .addInterest (this, &MaterialEditor::set_emissiveColor);
 
-void
-MaterialEditor::on_paste ()
-{
-	__LOG__ << std::endl;
-}
+	material -> ambientIntensity () .addInterest (this, &MaterialEditor::set_ambient);
+	material -> shininess ()        .addInterest (this, &MaterialEditor::set_shininess);
+	material -> transparency ()     .addInterest (this, &MaterialEditor::set_transparency);
 
-void
-MaterialEditor::on_frontAndBackButton_toggled ()
-{
-	// Copy front material
+	twoSidedMaterial -> separateBackColor () .addInterest (this, &MaterialEditor::set_separateBackColor);
 
-	if (not changing)
-	{
-		if (getFrontAndBackButton () .get_active ())
-		{
-			twoSidedMaterial -> ambientIntensity () = material -> ambientIntensity ();
-			twoSidedMaterial -> diffuseColor ()     = material -> diffuseColor ();
-			twoSidedMaterial -> specularColor ()    = material -> specularColor ();
-			twoSidedMaterial -> emissiveColor ()    = material -> emissiveColor ();
-			twoSidedMaterial -> shininess ()        = material -> shininess ();
-			twoSidedMaterial -> transparency ()     = material -> transparency ();
-		}
-		else
-		{
-			material -> ambientIntensity () = twoSidedMaterial -> ambientIntensity ();
-			material -> diffuseColor ()     = twoSidedMaterial -> diffuseColor ();
-			material -> specularColor ()    = twoSidedMaterial -> specularColor ();
-			material -> emissiveColor ()    = twoSidedMaterial -> emissiveColor ();
-			material -> shininess ()        = twoSidedMaterial -> shininess ();
-			material -> transparency ()     = twoSidedMaterial -> transparency ();
-		}
-	}
+	twoSidedMaterial -> diffuseColor ()  .addInterest (this, &MaterialEditor::set_diffuseColor);
+	twoSidedMaterial -> specularColor () .addInterest (this, &MaterialEditor::set_specularColor);
+	twoSidedMaterial -> emissiveColor () .addInterest (this, &MaterialEditor::set_emissiveColor);
 
-	// Update color buttons
+	twoSidedMaterial -> ambientIntensity () .addInterest (this, &MaterialEditor::set_ambient);
+	twoSidedMaterial -> shininess ()        .addInterest (this, &MaterialEditor::set_shininess);
+	twoSidedMaterial -> transparency ()     .addInterest (this, &MaterialEditor::set_transparency);
 
-	getDiffuseArea ()  .queue_draw ();
-	getSpecularArea () .queue_draw ();
-	getEmissiveArea () .queue_draw ();
+	twoSidedMaterial -> backDiffuseColor ()  .addInterest (this, &MaterialEditor::set_backDiffuseColor);
+	twoSidedMaterial -> backSpecularColor () .addInterest (this, &MaterialEditor::set_backSpecularColor);
+	twoSidedMaterial -> backEmissiveColor () .addInterest (this, &MaterialEditor::set_backEmissiveColor);
 
-	getBackDiffuseArea ()  .queue_draw ();
-	getBackSpecularArea () .queue_draw ();
-	getBackEmissiveArea () .queue_draw ();
+	twoSidedMaterial -> backAmbientIntensity () .addInterest (this, &MaterialEditor::set_backAmbient);
+	twoSidedMaterial -> backShininess ()        .addInterest (this, &MaterialEditor::set_backShininess);
+	twoSidedMaterial -> backTransparency ()     .addInterest (this, &MaterialEditor::set_backTransparency);
 
-	if (getFrontAndBackButton () .get_active ())
-	{
-		getAmbientScale ()      .set_value (twoSidedMaterial -> ambientIntensity ());
-		getShininessScale ()    .set_value (twoSidedMaterial -> shininess ());
-		getTransparencyScale () .set_value (twoSidedMaterial -> transparency ());
+	set_diffuseColor ();
+	set_specularColor ();
+	set_emissiveColor ();
 
-		getBackAmbientScale ()      .set_value (twoSidedMaterial -> backAmbientIntensity ());
-		getBackShininessScale ()    .set_value (twoSidedMaterial -> backShininess ());
-		getBackTransparencyScale () .set_value (twoSidedMaterial -> backTransparency ());
-	}
-	else
-	{
-		getAmbientScale ()      .set_value (material -> ambientIntensity ());
-		getShininessScale ()    .set_value (material -> shininess ());
-		getTransparencyScale () .set_value (material -> transparency ());
-	}
-
-	// Back expander
-
-	getBackExpander () .set_sensitive (getFrontAndBackButton () .get_active ());
-
-	// Update browser immediately
-
-	getBrowser () -> update ();
-
-	// Update material
+	set_ambient ();
+	set_shininess ();
+	set_transparency ();
 	
-	updateAppearance ();
+	set_separateBackColor ();
+
+	set_backDiffuseColor ();
+	set_backSpecularColor ();
+	set_backEmissiveColor ();
+	
+	set_backAmbient ();
+	set_backShininess ();
+	set_backTransparency ();
+}
+
+void
+MaterialEditor::connectMaterial (const X3D::SFNode & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectMaterial);
+	field .addInterest (this, &MaterialEditor::set_material);
 }
 
 // Front diffuse color
@@ -313,7 +452,25 @@ MaterialEditor::on_diffuse_clicked ()
 void
 MaterialEditor::on_diffuseColor_changed ()
 {
-	on_color_changed (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor (), getDiffuseArea ());
+	on_color_changed (getDiffuseDialog (),
+	                  twoSidedMaterial -> diffuseColor (),
+	                  material -> diffuseColor (),
+	                  getDiffuseArea (),
+	                  &MaterialEditor::set_diffuseColor,
+	                  &MaterialEditor::connectDiffuseColor);
+}
+
+void
+MaterialEditor::set_diffuseColor ()
+{
+	set_color (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (),  material -> diffuseColor ());
+}
+
+void
+MaterialEditor::connectDiffuseColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectDiffuseColor);
+	field .addInterest (this, &MaterialEditor::set_diffuseColor);
 }
 
 // Front specular color
@@ -333,7 +490,25 @@ MaterialEditor::on_specular_clicked ()
 void
 MaterialEditor::on_specularColor_changed ()
 {
-	on_color_changed (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor (), getSpecularArea ());
+	on_color_changed (getSpecularDialog (),
+	                  twoSidedMaterial -> specularColor (),
+	                  material -> specularColor (),
+	                  getSpecularArea (),
+	                  &MaterialEditor::set_specularColor,
+	                  &MaterialEditor::connectSpecularColor);
+}
+
+void
+MaterialEditor::set_specularColor ()
+{
+	set_color (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
+}
+
+void
+MaterialEditor::connectSpecularColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectSpecularColor);
+	field .addInterest (this, &MaterialEditor::set_specularColor);
 }
 
 // Front emissive color
@@ -353,45 +528,236 @@ MaterialEditor::on_emissive_clicked ()
 void
 MaterialEditor::on_emissiveColor_changed ()
 {
-	on_color_changed (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor (), getEmissiveArea ());
+	on_color_changed (getEmissiveDialog (),
+	                  twoSidedMaterial -> emissiveColor (),
+	                  material -> emissiveColor (),
+	                  getEmissiveArea (),
+	                  &MaterialEditor::set_emissiveColor,
+	                  &MaterialEditor::connectEmissiveColor);
+}
+
+void
+MaterialEditor::set_emissiveColor ()
+{
+	set_color (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor ());
+}
+
+void
+MaterialEditor::connectEmissiveColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectEmissiveColor);
+	field .addInterest (this, &MaterialEditor::set_emissiveColor);
 }
 
 // Front scale widgets
 
 void
-MaterialEditor::on_ambient_changed ()
+MaterialEditor::on_ambient_text_changed ()
 {
-	if (getFrontAndBackButton () .get_active ())
-		twoSidedMaterial -> ambientIntensity () = getAmbientScale () .get_value ();
+	if (changing)
+		return;
 
-	else
-		material -> ambientIntensity () = getAmbientScale () .get_value ();
+	const double value = toDouble (getAmbientEntry () .get_text ());
 
-	updateAppearance ();
+	on_ambient_changed (value);
+
+	changing = true;
+	getAmbientScale () .set_value (value);
+	changing = false;
 }
 
 void
-MaterialEditor::on_shininess_changed ()
+MaterialEditor::on_ambient_value_changed ()
 {
-	if (getFrontAndBackButton () .get_active ())
-		twoSidedMaterial -> shininess () = getShininessScale () .get_value ();
+	if (changing)
+		return;
 
-	else
-		material -> shininess () = getShininessScale () .get_value ();
+	on_ambient_changed (getAmbientScale () .get_value ());
 
-	updateAppearance ();
+	changing = true;
+	getAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getAmbientScale () .get_value ()));
+	changing = false;
 }
 
 void
-MaterialEditor::on_transparency_changed ()
+MaterialEditor::on_ambient_changed (const double value)
 {
-	if (getFrontAndBackButton () .get_active ())
-		twoSidedMaterial -> transparency () = getTransparencyScale () .get_value ();
+	on_value_changed (twoSidedMaterial -> ambientIntensity (),
+                     material -> ambientIntensity (),
+                     value,
+                     &MaterialEditor::set_ambient,
+                     &MaterialEditor::connectAmbient);
+}
 
-	else
-		material -> transparency () = getTransparencyScale () .get_value ();
+void
+MaterialEditor::set_ambient ()
+{
+	changing = true;
 
-	updateAppearance ();
+	getAmbientScale () .set_value (hasTwoSidedMaterial ? twoSidedMaterial -> ambientIntensity () : material -> ambientIntensity ());
+	getAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getAmbientScale () .get_value ()));
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectAmbient (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectAmbient);
+	field .addInterest (this, &MaterialEditor::set_ambient);
+}
+
+void
+MaterialEditor::on_shininess_text_changed ()
+{
+	if (changing)
+		return;
+
+	const double value = toDouble (getShininessEntry () .get_text ());
+
+	on_shininess_changed (value);
+
+	changing = true;
+	getShininessScale () .set_value (value);
+	changing = false;
+}
+
+void
+MaterialEditor::on_shininess_value_changed ()
+{
+	if (changing)
+		return;
+
+	on_shininess_changed (getShininessScale () .get_value ());
+
+	changing = true;
+	getShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getShininessScale () .get_value ()));
+	changing = false;
+}
+
+void
+MaterialEditor::on_shininess_changed (const double value)
+{
+	on_value_changed (twoSidedMaterial -> shininess (),
+                     material -> shininess (),
+                     value,
+                     &MaterialEditor::set_shininess,
+                     &MaterialEditor::connectShininess);
+}
+
+void
+MaterialEditor::set_shininess ()
+{
+	changing = true;
+
+	getShininessScale () .set_value (hasTwoSidedMaterial ? twoSidedMaterial -> shininess () : material -> shininess ());
+	getShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getShininessScale () .get_value ()));
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectShininess (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectShininess);
+	field .addInterest (this, &MaterialEditor::set_shininess);
+}
+
+void
+MaterialEditor::on_transparency_text_changed ()
+{
+	if (changing)
+		return;
+
+	const double value = toDouble (getTransparencyEntry () .get_text ());
+
+	on_transparency_changed (value);
+
+	changing = true;
+	getTransparencyScale () .set_value (value);
+	changing = false;
+}
+
+void
+MaterialEditor::on_transparency_value_changed ()
+{
+	if (changing)
+		return;
+
+	on_transparency_changed (getTransparencyScale () .get_value ());
+
+	changing = true;
+	getTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getTransparencyScale () .get_value ()));
+	changing = false;
+}
+
+void
+MaterialEditor::on_transparency_changed (const double value)
+{
+	on_value_changed (twoSidedMaterial -> transparency (),
+                     material -> transparency (),
+                     value,
+                     &MaterialEditor::set_transparency,
+                     &MaterialEditor::connectTransparency);
+}
+
+void
+MaterialEditor::set_transparency ()
+{
+	changing = true;
+
+	getTransparencyScale () .set_value (hasTwoSidedMaterial ? twoSidedMaterial -> transparency () : material -> transparency ());
+	getTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getTransparencyScale () .get_value ()));
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectTransparency (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectTransparency);
+	field .addInterest (this, &MaterialEditor::set_transparency);
+}
+
+/* ********************************************************************************************************************
+ *
+ *  Back Material
+ *
+ * ********************************************************************************************************************/
+
+// Separate back color
+
+void
+MaterialEditor::on_separateBackColor_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (twoSidedMaterial, twoSidedMaterial -> separateBackColor (), undoStep);
+
+	twoSidedMaterial -> separateBackColor () = getSeparateBackColorCheckButton () .get_active ();
+
+	twoSidedMaterial -> separateBackColor () .removeInterest (this, &MaterialEditor::set_separateBackColor);
+	twoSidedMaterial -> separateBackColor () .addInterest (this, &MaterialEditor::connectSeparateBackColor);
+
+	addRedoFunction (twoSidedMaterial -> separateBackColor (), undoStep);
+}
+
+void
+MaterialEditor::set_separateBackColor ()
+{
+	changing = true;
+
+	getSeparateBackColorCheckButton () .set_active (twoSidedMaterial -> separateBackColor ());
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectSeparateBackColor (const X3D::SFBool & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectSeparateBackColor);
+	field .addInterest (this, &MaterialEditor::set_separateBackColor);
 }
 
 // Back diffuse color
@@ -411,7 +777,25 @@ MaterialEditor::on_backDiffuse_clicked ()
 void
 MaterialEditor::on_backDiffuseColor_changed ()
 {
-	on_color_changed (getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor (), getBackDiffuseArea ());
+	on_color_changed (getBackDiffuseDialog (),
+	                  twoSidedMaterial -> backDiffuseColor (),
+	                  twoSidedMaterial -> backDiffuseColor (),
+	                  getBackDiffuseArea (),
+	                  &MaterialEditor::set_backDiffuseColor,
+	                  &MaterialEditor::connectBackDiffuseColor);
+}
+
+void
+MaterialEditor::set_backDiffuseColor ()
+{
+	set_color (getBackDiffuseDialog (),  twoSidedMaterial -> backDiffuseColor (),  twoSidedMaterial -> backDiffuseColor ());
+}
+
+void
+MaterialEditor::connectBackDiffuseColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectBackDiffuseColor);
+	field .addInterest (this, &MaterialEditor::set_backDiffuseColor);
 }
 
 // Back specular color
@@ -431,7 +815,25 @@ MaterialEditor::on_backSpecular_clicked ()
 void
 MaterialEditor::on_backSpecularColor_changed ()
 {
-	on_color_changed (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor (), getBackSpecularArea ());
+	on_color_changed (getBackSpecularDialog (),
+	                  twoSidedMaterial -> backSpecularColor (),
+	                  twoSidedMaterial -> backSpecularColor (),
+	                  getBackSpecularArea (),
+	                  &MaterialEditor::set_backSpecularColor,
+	                  &MaterialEditor::connectBackSpecularColor);
+}
+
+void
+MaterialEditor::set_backSpecularColor ()
+{
+	set_color (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor ());
+}
+
+void
+MaterialEditor::connectBackSpecularColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectSpecularColor);
+	field .addInterest (this, &MaterialEditor::set_backSpecularColor);
 }
 
 // Back emissive color
@@ -451,33 +853,195 @@ MaterialEditor::on_backEmissive_clicked ()
 void
 MaterialEditor::on_backEmissiveColor_changed ()
 {
-	on_color_changed (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor (), getBackEmissiveArea ());
+	on_color_changed (getBackEmissiveDialog (),
+	                  twoSidedMaterial -> backEmissiveColor (),
+	                  twoSidedMaterial -> backEmissiveColor (),
+	                  getBackEmissiveArea (),
+	                  &MaterialEditor::set_backEmissiveColor,
+	                  &MaterialEditor::connectBackEmissiveColor);
+}
+
+void
+MaterialEditor::set_backEmissiveColor ()
+{
+	set_color (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
+}
+
+void
+MaterialEditor::connectBackEmissiveColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectEmissiveColor);
+	field .addInterest (this, &MaterialEditor::set_backEmissiveColor);
 }
 
 // Back scale widgets
 
 void
-MaterialEditor::on_backAmbient_changed ()
+MaterialEditor::on_backAmbient_text_changed ()
 {
-	twoSidedMaterial -> backAmbientIntensity () = getBackAmbientScale () .get_value ();
+	if (changing)
+		return;
 
-	updateAppearance ();
+	const double value = toDouble (getBackAmbientEntry () .get_text ());
+
+	on_backAmbient_changed (value);
+
+	changing = true;
+	getBackAmbientScale () .set_value (value);
+	changing = false;
 }
 
 void
-MaterialEditor::on_backShininess_changed ()
+MaterialEditor::on_backAmbient_value_changed ()
 {
-	twoSidedMaterial -> backShininess () = getBackShininessScale () .get_value ();
+	if (changing)
+		return;
 
-	updateAppearance ();
+	on_backAmbient_changed (getBackAmbientScale () .get_value ());
+
+	changing = true;
+	getBackAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackAmbientScale () .get_value ()));
+	changing = false;
 }
 
 void
-MaterialEditor::on_backTransparency_changed ()
+MaterialEditor::on_backAmbient_changed (const double value)
 {
-	twoSidedMaterial -> backTransparency () = getBackTransparencyScale () .get_value ();
+	on_value_changed (twoSidedMaterial -> backAmbientIntensity (),
+                     twoSidedMaterial -> backAmbientIntensity (),
+                     value,
+                     &MaterialEditor::set_backAmbient,
+                     &MaterialEditor::connectBackAmbient);
+}
 
-	updateAppearance ();
+void
+MaterialEditor::set_backAmbient ()
+{
+	changing = true;
+
+	getBackAmbientScale () .set_value (twoSidedMaterial -> backAmbientIntensity ());
+	getBackAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackAmbientScale () .get_value ()));
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectBackAmbient (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectBackAmbient);
+	field .addInterest (this, &MaterialEditor::set_backAmbient);
+}
+
+void
+MaterialEditor::on_backShininess_text_changed ()
+{
+	if (changing)
+		return;
+
+	const double value = toDouble (getBackShininessEntry () .get_text ());
+
+	on_backShininess_changed (value);
+
+	changing = true;
+	getBackShininessScale () .set_value (value);
+	changing = false;
+}
+
+void
+MaterialEditor::on_backShininess_value_changed ()
+{
+	if (changing)
+		return;
+
+	on_backShininess_changed (getBackShininessScale () .get_value ());
+
+	changing = true;
+	getBackShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackShininessScale () .get_value ()));
+	changing = false;
+}
+
+void
+MaterialEditor::on_backShininess_changed (const double value)
+{
+	on_value_changed (twoSidedMaterial -> backShininess (),
+                     twoSidedMaterial -> backShininess (),
+                     value,
+                     &MaterialEditor::set_backShininess,
+                     &MaterialEditor::connectBackShininess);
+}
+
+void
+MaterialEditor::set_backShininess ()
+{
+	changing = true;
+
+	getBackShininessScale () .set_value (twoSidedMaterial -> backShininess ());
+	getBackShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackShininessScale () .get_value ()));
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectBackShininess (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectBackShininess);
+	field .addInterest (this, &MaterialEditor::set_backShininess);
+}
+
+void
+MaterialEditor::on_backTransparency_text_changed ()
+{
+	if (changing)
+		return;
+
+	const double value = toDouble (getBackTransparencyEntry () .get_text ());
+
+	on_backTransparency_changed (value);
+
+	changing = true;
+	getBackTransparencyScale () .set_value (value);
+	changing = false;
+}
+
+void
+MaterialEditor::on_backTransparency_value_changed ()
+{
+	if (changing)
+		return;
+
+	on_backTransparency_changed (getBackTransparencyScale () .get_value ());
+
+	changing = true;
+	getBackTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackTransparencyScale () .get_value ()));
+	changing = false;
+}
+
+void
+MaterialEditor::on_backTransparency_changed (const double value)
+{
+	on_value_changed (twoSidedMaterial -> backTransparency (),
+                     twoSidedMaterial -> backTransparency (),
+                     value,
+                     &MaterialEditor::set_backTransparency,
+                     &MaterialEditor::connectBackTransparency);
+}
+
+void
+MaterialEditor::set_backTransparency ()
+{
+	changing = true;
+
+	getBackTransparencyScale () .set_value (twoSidedMaterial -> backTransparency ());
+	getBackTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackTransparencyScale () .get_value ()));
+
+	changing = false;
+}
+
+void
+MaterialEditor::connectBackTransparency (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &MaterialEditor::connectBackTransparency);
+	field .addInterest (this, &MaterialEditor::set_backTransparency);
 }
 
 // Operations for all colors
@@ -492,25 +1056,10 @@ MaterialEditor::initDialog (Gtk::ColorSelectionDialog & dialog, void (MaterialEd
 	dialog .property_cancel_button () .get_value () -> hide ();
 }
 
-void
-MaterialEditor::updateDialog (Gtk::ColorSelectionDialog & dialog, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color)
-{
-	if (getFrontAndBackButton () .get_active ())
-	{
-		dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
-		dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
-	}
-	else
-	{
-		dialog .get_color_selection () -> set_current_color  (toColor (color));
-		dialog .get_color_selection () -> set_previous_color (toColor (color));
-	}
-}
-
 bool
 MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color, Gtk::DrawingArea & drawingArea)
 {
-	if (getFrontAndBackButton () .get_active ())
+	if (hasTwoSidedMaterial)
 		context -> set_source_rgb (twoSidedColor .r (), twoSidedColor .g (), twoSidedColor .b ());
 
 	else
@@ -523,25 +1072,95 @@ MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, c
 }
 
 void
-MaterialEditor::on_color_changed (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & twoSidedColor, X3D::SFColor & color, Gtk::DrawingArea & drawingArea)
+MaterialEditor::on_color_changed (Gtk::ColorSelectionDialog & dialog,
+                                  X3D::SFColor & twoSidedColor,
+                                  X3D::SFColor & color,
+                                  Gtk::DrawingArea & drawingArea,
+                                  void (MaterialEditor::* set_color) (),
+                                  void (MaterialEditor::* connectColor) (const X3D::SFColor &))
 {
-	const auto rgba = dialog .get_color_selection () -> get_current_rgba ();
+	drawingArea .queue_draw ();
 
-	const X3D::Color3f color3 (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
+	if (changing)
+		return;
+
+	const auto rgba   = dialog .get_color_selection () -> get_current_rgba ();
+	const auto color3 = X3D::Color3f (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
 
 	// Update material
 
-	if (getFrontAndBackButton () .get_active ())
+	if (hasTwoSidedMaterial)
+	{
+		addUndoFunction (twoSidedMaterial, twoSidedColor, undoStep);
+
 		twoSidedColor = color3;
 
+		twoSidedColor .removeInterest (this, set_color);
+		twoSidedColor .addInterest (this, connectColor);
+
+		addRedoFunction (twoSidedColor, undoStep);
+	}
 	else
+	{
+		addUndoFunction (material, color, undoStep);
+
 		color = color3;
 
-	// Update materials
+		color .removeInterest (this, set_color);
+		color .addInterest (this, connectColor);
 
-	updateAppearance ();
+		addRedoFunction (color, undoStep);
+	}
+}
 
-	drawingArea .queue_draw ();
+void
+MaterialEditor::set_color (Gtk::ColorSelectionDialog & dialog, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color)
+{
+	changing = true;
+
+	if (hasTwoSidedMaterial)
+	{
+		dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
+		dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
+	}
+	else
+	{
+		dialog .get_color_selection () -> set_current_color  (toColor (color));
+		dialog .get_color_selection () -> set_previous_color (toColor (color));
+	}
+
+	changing = false;
+}
+
+void
+MaterialEditor::on_value_changed (X3D::SFFloat & backField,
+                                  X3D::SFFloat & field,
+                                  const double value,
+                                  void (MaterialEditor::* set_value) (),
+                                  void (MaterialEditor::* connectValue) (const X3D::SFFloat &))
+{
+	if (hasTwoSidedMaterial)
+	{
+		addUndoFunction (twoSidedMaterial, backField, undoStep);
+
+		backField = value;
+
+		backField .removeInterest (this, set_value);
+		backField .addInterest (this, connectValue);
+
+		addRedoFunction (backField, undoStep);
+	}
+	else
+	{
+		addUndoFunction (material, field, undoStep);
+
+		field = value;
+
+		field .removeInterest (this, set_value);
+		field .addInterest (this, connectValue);
+
+		addRedoFunction (field, undoStep);
+	}
 }
 
 void
@@ -556,7 +1175,7 @@ MaterialEditor::updateAppearance ()
 
 	if (undoStep and lastUndoStep == undoStep)
 	{
-		if (getFrontAndBackButton () .get_active ())
+		if (hasTwoSidedMaterial)
 		{
 			for (const auto & appearance : appearances)
 				appearance -> material () = twoSidedMaterial;
@@ -579,7 +1198,7 @@ MaterialEditor::updateAppearance ()
 
 		undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
-		if (getFrontAndBackButton () .get_active ())
+		if (hasTwoSidedMaterial)
 		{
 			twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
 			
@@ -618,7 +1237,7 @@ MaterialEditor::updatePreview ()
 
 		if (appearance)
 		{
-			if (getFrontAndBackButton () .get_active ())
+			if (hasTwoSidedMaterial)
 				appearance -> material () = twoSidedMaterial;
 
 			else
