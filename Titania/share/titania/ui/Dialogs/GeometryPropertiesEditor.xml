@@ -5,7 +5,7 @@
   <object class="GtkAdjustment" id="CreaseAngleAdjustment">
     <property name="upper">180</property>
     <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="page_increment">1</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>

@@ -286,8 +286,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 
 			const auto undoStep  = std::make_shared <UndoStep> (_ ("Import"));
 			auto       selection = getBrowser () -> getSelection () -> getChildren ();
-
-			getSelection () -> clear (undoStep);
+			bool       first     = true;
 
 			for (const auto & worldURL : uris)
 			{
@@ -295,6 +294,12 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 
 				if (magicImport -> import (selection, scene, undoStep))
 					continue;
+
+				if (first)
+				{
+					first = false;
+					getSelection () -> clear (undoStep);
+				}
 
 				importScene (scene, undoStep);
 			}

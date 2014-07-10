@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #ifndef __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
 #define __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
 
-#include "../UserInterfaces/X3DMaterialEditorInterface.h"
 #include "../Undo/UndoStep.h"
+#include "../UserInterfaces/X3DMaterialEditorInterface.h"
 
 namespace titania {
 namespace puck {
@@ -83,9 +83,6 @@ private:
 	initialize () final override;
 
 	///  @name Event handlers
-	
-	void
-	set_splashScreen ();
 
 	void
 	set_initialized ();
@@ -93,13 +90,27 @@ private:
 	virtual
 	void
 	on_copy () final override;
-	
+
 	virtual
 	void
 	on_paste () final override;
 
 	void
 	set_selection ();
+
+	void
+	set_preview ();
+
+	virtual
+	void
+	on_sphere_clicked () final override;
+	
+	virtual
+	void
+	on_model_clicked () final override;
+
+	void
+	set_whichChoice (const int32_t);
 
 	virtual
 	void
@@ -335,7 +346,7 @@ private:
 
 	void
 	connectBackShininess (const X3D::SFFloat &);
-	
+
 	///  @name backTransparency
 
 	virtual
@@ -355,7 +366,6 @@ private:
 	void
 	connectBackTransparency (const X3D::SFFloat &);
 
-
 	///  @name Operations for all colors
 
 	void
@@ -369,7 +379,7 @@ private:
 	                  X3D::SFColor &,
 	                  X3D::SFColor &,
 	                  Gtk::DrawingArea &,
-	                  void (MaterialEditor::*) (),
+	                  void (MaterialEditor::*)(),
 	                  void (MaterialEditor::*) (const X3D::SFColor &));
 
 	void
@@ -377,17 +387,13 @@ private:
 
 	void
 	on_value_changed (X3D::SFFloat &,
-                     X3D::SFFloat &,
-                     const double,
-                     void (MaterialEditor::*) (),
-                     void (MaterialEditor::*) (const X3D::SFFloat &));
+	                  X3D::SFFloat &,
+	                  const double,
+	                  void (MaterialEditor::*)(),
+	                  void (MaterialEditor::*) (const X3D::SFFloat &));
 
 	void
 	updateAppearance ();
-	
-	void
-	updatePreview ();
-
 
 	///  @name Helper functions
 
@@ -396,16 +402,13 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr browserSurface;
-
+	X3D::BrowserPtr                    preview;
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::MaterialPtr                   material;
 	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
 	bool                               hasTwoSidedMaterial;
-
-	UndoStepPtr undoStep;
-
-	bool changing;
+	UndoStepPtr                        undoStep;
+	bool                               changing;
 
 };
 

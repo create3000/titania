@@ -139,6 +139,14 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::Button &
+	getSphereButton () const
+	{ return *m_SphereButton; }
+
+	Gtk::Button &
+	getModelButton () const
+	{ return *m_ModelButton; }
+
 	Gtk::Box &
 	getMaterialBox () const
 	{ return *m_MaterialBox; }
@@ -297,6 +305,14 @@ public:
 
 	virtual
 	void
+	on_sphere_clicked () = 0;
+
+	virtual
+	void
+	on_model_clicked () = 0;
+
+	virtual
+	void
 	on_material_changed () = 0;
 
 	virtual
@@ -424,6 +440,8 @@ private:
 	Gtk::ImageMenuItem*            m_CopyMenuItem;
 	Gtk::ImageMenuItem*            m_PasteMenuItem;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::Button*                   m_SphereButton;
+	Gtk::Button*                   m_ModelButton;
 	Gtk::Box*                      m_MaterialBox;
 	Gtk::ComboBoxText*             m_MaterialButton;
 	Gtk::Expander*                 m_FrontExpander;

@@ -81,6 +81,10 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_PasteMenuItem -> set_name ("PasteMenuItem");
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_PreviewBox -> set_name ("PreviewBox");
+	m_builder -> get_widget ("SphereButton", m_SphereButton);
+	m_SphereButton -> set_name ("SphereButton");
+	m_builder -> get_widget ("ModelButton", m_ModelButton);
+	m_ModelButton -> set_name ("ModelButton");
 	m_builder -> get_widget ("MaterialBox", m_MaterialBox);
 	m_MaterialBox -> set_name ("MaterialBox");
 	m_builder -> get_widget ("MaterialButton", m_MaterialButton);
@@ -159,6 +163,10 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_copy));
 	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_paste));
+
+	// Connect object Gtk::Button with id 'SphereButton'.
+	m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_sphere_clicked));
+	m_ModelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_model_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'MaterialButton'.
 	m_MaterialButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_material_changed));

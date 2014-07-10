@@ -1,5 +1,19 @@
 2014-07-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Circle.svg:
+	* Sphere.svg:
+	* Dragon.svg:
+	* X3DBrowserEditor.cpp:
+	* Material.x3dv:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* MaterialEditor.xml:
+	* X3DMaterialEditorInterface.h:
+	* GeometryPropertiesEditor.xml:
+	* X3DMaterialEditorInterface.cpp: 
+
+2014-07-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DEditorObject.h:
 	* MaterialEditor.h:
 	* OutlineSelection.h:
