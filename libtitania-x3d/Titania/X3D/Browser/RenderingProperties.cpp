@@ -147,25 +147,6 @@ RenderingProperties::initialize ()
 		maxLights ()      = getBrowser () -> getMaxLights ();
 		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
-		// Visual display of RenderingProperties
-
-		ScenePtr scene;
-
-		try
-		{
-			scene = Loader (getBrowser () -> getScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
-		}
-		catch (const X3DError & error)
-		{
-			std::clog << error .what () << std::endl;
-
-			scene = getBrowser () -> createScene ();
-			scene -> setup ();
-		}
-
-		world = new World (scene);
-		world -> setup ();
-
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 
 		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_enabled);
@@ -179,6 +160,28 @@ RenderingProperties::set_enabled ()
 
 	if (enabled ())
 	{
+		if (not world)
+		{
+			// Visual display of RenderingProperties
+
+			ScenePtr scene;
+
+			try
+			{
+				scene = Loader (getBrowser () -> getScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
+			}
+			catch (const X3DError & error)
+			{
+				std::clog << error .what () << std::endl;
+
+				scene = getBrowser () -> createScene ();
+				scene -> setup ();
+			}
+
+			world = new World (scene);
+			world -> setup ();
+		}
+	
 		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::reset);
 		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepare);
 		getBrowser () -> displayed ()     .addInterest (this, &RenderingProperties::display);

@@ -89,7 +89,15 @@ Notification::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	if (glXGetCurrentContext ())
+	string () .addInterest (this, &Notification::set_string);
+}
+
+void
+Notification::set_string ()
+{
+	string () .removeInterest (this, &Notification::set_string);
+
+	if (not world)
 	{
 		ScenePtr scene;
 
@@ -108,8 +116,10 @@ Notification::initialize ()
 			// string
 			
 			SFString & set_string = notification -> getField <SFString> ("set_string");
-			
+
 			string () .addInterest (set_string);
+
+			set_string = string ();
 		}
 		catch (const X3DError & error)
 		{
