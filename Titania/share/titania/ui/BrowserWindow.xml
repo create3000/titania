@@ -12,7 +12,7 @@
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="Prototype" filename="icons/Node/Prototype.16.svg"/>
+      <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
@@ -2459,7 +2459,7 @@
                   <object class="GtkImage" id="image9">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="stock">gtk-execute</property>
+                    <property name="stock">Prototype</property>
                     <property name="icon_size">6</property>
                   </object>
                   <packing>
