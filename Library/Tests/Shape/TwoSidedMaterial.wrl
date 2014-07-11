@@ -6,14 +6,16 @@ Background {
   skyColor 0.2 0.2 0.2
 }
 
-DEF _1 Transform {
+Transform {
   translation -2 0 0
   children Shape {
     appearance Appearance {
       material TwoSidedMaterial {
         separateBackColor TRUE
         diffuseColor 1 0 0
-        backDiffuseColor 0 1 0
+        specularColor 0 1 0.918187
+        backDiffuseColor 0 0.309211 1
+        backSpecularColor 0 1 0.0893574
       }
     }
     geometry IndexedFaceSet {
@@ -38,7 +40,7 @@ DEF _1 Transform {
   }
 }
 
-DEF _2 Transform {
+Transform {
   translation 2 0 0
   children Shape {
     appearance Appearance {
@@ -54,11 +56,11 @@ DEF _2 Transform {
   }
 }
 
-DEF _3 Transform {
+DEF _1 Transform {
   translation 2 2.5 0
   children Shape {
     appearance Appearance {
-      material Material {
+      material DEF _2 Material {
         ambientIntensity 0.25
         diffuseColor 0.282435 0.0851587 0.134462
         specularColor 0.276305 0.11431 0.139857
@@ -86,7 +88,7 @@ DEF _3 Transform {
   }
 }
 
-DEF _4 Transform {
+Transform {
   translation -2 2.5 0
   children Shape {
     appearance Appearance { }

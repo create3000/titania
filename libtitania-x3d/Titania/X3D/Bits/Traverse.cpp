@@ -52,6 +52,9 @@
 
 #include "../Basic/NodeSet.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Components/Grouping/Switch.h"
+#include "../Components/Navigation/Collision.h"
+#include "../Components/Navigation/LOD.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ImportedNode.h"
 #include "../Prototype/ExternProtoDeclaration.h"
@@ -265,6 +268,17 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 	if (node == object)
 		return true;
 
+	if (flags & TRAVERSE_VISIBLE_NODES)
+	{
+		switch (node -> getType () .back ())
+		{
+			case X3DConstants::Script:
+				goto END;
+			default:
+				break;
+		}
+	}
+
 	for (const auto & field : node -> getFieldDefinitions ())
 	{
 		if (field == object)
@@ -277,9 +291,33 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 		{
 			case X3DConstants::SFNode:
 			{
-				hierarchy .emplace_back (field);
-
 				auto sfnode = static_cast <X3D::SFNode*> (field);
+
+				if (flags & TRAVERSE_VISIBLE_NODES)
+				{
+					for (const auto & type : basic::reverse_adapter (node -> getType ()))
+					{
+						switch (type)
+						{
+							case X3DConstants::Collision:
+							{
+								if (sfnode == &dynamic_cast <Collision*> (node) -> proxy ())
+									continue;
+							}
+							case X3DConstants::X3DNode:
+							{
+								if (sfnode == &dynamic_cast <X3DNode*> (node) -> metadata ())
+									continue;
+							}
+							default:
+								break;
+						}
+					}
+				}
+
+				// Normal case:
+
+				hierarchy .emplace_back (field);
 
 				if (find (*sfnode, object, flags, hierarchy, seen))
 					return true;
@@ -289,9 +327,62 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 			}
 			case X3DConstants::MFNode:
 			{
-				hierarchy .emplace_back (field);
-
 				auto mfnode = static_cast <X3D::MFNode*> (field);
+
+				if (flags & TRAVERSE_VISIBLE_NODES)
+				{
+					switch (node -> getType () .back ())
+					{
+						case X3DConstants::Switch:
+						{
+							const auto switchNode = dynamic_cast <Switch*> (node);
+								
+							if (mfnode == &switchNode -> children ())
+							{
+								if (switchNode -> whichChoice () >= 0 and switchNode -> whichChoice () < (int32_t) switchNode -> children () .size ())
+								{
+									hierarchy .emplace_back (field);
+
+									if (find (switchNode -> children () [switchNode -> whichChoice ()], object, flags, hierarchy, seen))
+										return true;
+
+									hierarchy .pop_back ();
+								}
+								
+								continue;
+							}
+
+							break;
+						}
+						case X3DConstants::LOD:
+						{
+							const auto lod = dynamic_cast <LOD*> (node);
+								
+							if (mfnode == &lod -> children ())
+							{
+								if (lod -> level_changed () >= 0 and lod -> level_changed () < (int32_t) lod -> children () .size ())
+								{
+									hierarchy .emplace_back (field);
+
+									if (find (lod -> children () [lod -> level_changed ()], object, flags, hierarchy, seen))
+										return true;
+
+									hierarchy .pop_back ();
+								}
+								
+								continue;
+							}
+
+							break;
+						}
+						default:
+							break;
+					}
+				}
+
+				// Normal case:
+
+				hierarchy .emplace_back (field);
 
 				for (const auto & value : *mfnode)
 				{
@@ -377,6 +468,8 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 			}
 		}
 	}
+
+END:
 
 	hierarchy .pop_back ();
 	return false;

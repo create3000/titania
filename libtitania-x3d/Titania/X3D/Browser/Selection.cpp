@@ -185,7 +185,8 @@ Selection::select ()
 		                             TRAVERSE_ROOT_NODES |
 		                             TRAVERSE_PROTOTYPE_INSTANCES |
 		                             TRAVERSE_INLINE_NODES |
-		                             TRAVERSE_TOOL_OBJECTS);
+		                             TRAVERSE_TOOL_OBJECTS |
+		                             TRAVERSE_VISIBLE_NODES);
 
 
 		if (not hierarchy .empty ())

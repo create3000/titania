@@ -392,9 +392,6 @@ private:
 	                  void (MaterialEditor::*)(),
 	                  void (MaterialEditor::*) (const X3D::SFFloat &));
 
-	void
-	updateAppearance ();
-
 	///  @name Helper functions
 
 	Gdk::Color
