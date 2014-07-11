@@ -32,8 +32,8 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="5.12"
-     inkscape:cx="28.983833"
-     inkscape:cy="32.098734"
+     inkscape:cx="14.042427"
+     inkscape:cy="34.833109"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -79,7 +79,7 @@
        height="1.3">
       <feGaussianBlur
          id="feGaussianBlur4928-2-9"
-         stdDeviation="4"
+         stdDeviation="14"
          result="result8" />
       <feOffset
          id="feOffset4930-8-9"
@@ -160,7 +160,7 @@
      style="display:inline">
     <path
        sodipodi:type="arc"
-       style="fill:#6e6e6e;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#919191;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        id="path3519"
        sodipodi:cx="58"
        sodipodi:cy="50"
