@@ -95,12 +95,12 @@ find (const X3D::SFNode &, X3DChildObject* const, const int = TRAVERSE_ROOT_NODE
 
 template <class Type>
 void
-findParents (X3DChildObject* const self, std::vector <Type*> & parents, ChildObjectSet & seen)
+findParents (X3DChildObject* const object, std::vector <Type*> & parents, const int flags, ChildObjectSet & seen)
 {
-	if (not seen .emplace (self) .second)
+	if (not seen .emplace (object) .second)
 		return;
 
-	const auto node = dynamic_cast <X3DBaseNode*> (self);
+	const auto node = dynamic_cast <X3DBaseNode*> (object);
 
 	if (node)
 	{
@@ -111,10 +111,16 @@ findParents (X3DChildObject* const self, std::vector <Type*> & parents, ChildObj
 				case X3DConstants::X3DProtoObject:
 				case X3DConstants::X3DScriptNode:
 				case X3DConstants::X3DProgrammableShaderObject:
-				case X3DConstants::X3DBaseNode:
-					return;
+				{
+					if (flags & TRAVERSE_VISIBLE_NODES)
+						return;
+
+					goto NEXT;
+				}
 				case X3DConstants::X3DNode:
 					goto NEXT;
+				case X3DConstants::X3DBaseNode:
+					return;
 				default:
 					break;
 			}
@@ -123,7 +129,7 @@ findParents (X3DChildObject* const self, std::vector <Type*> & parents, ChildObj
 
 NEXT:
 
-	const auto parent = dynamic_cast <Type*> (self);
+	const auto parent = dynamic_cast <Type*> (object);
 
 	if (parent)
 	{
@@ -131,19 +137,19 @@ NEXT:
 		return;
 	}
 
-	for (const auto & object : self -> getParents ())
-		findParents <Type> (object, parents, seen);
+	for (const auto & parent : object -> getParents ())
+		findParents <Type> (parent, parents, flags, seen);
 }
 
 template <class Type>
 std::vector <Type*>
-findParents (const X3DNode* const self)
+findParents (const X3DChildObject* const object, const int flags = 0)
 {
 	std::vector <Type*> parents;
 	ChildObjectSet      seen;
 
-	for (const auto & object : self -> getParents ())
-		findParents <Type> (object, parents, seen);
+	for (const auto & parent : object -> getParents ())
+		findParents <Type> (parent, parents, flags, seen);
 
 	return parents;
 }

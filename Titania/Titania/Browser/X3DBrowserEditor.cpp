@@ -1482,9 +1482,9 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 			if (not group)
 				continue;
 
-			undoStep -> addVariables (node);
+			const auto layers = X3D::findParents <X3D::X3DLayerNode> (node);
 
-			const auto layers = group -> getLayers ();
+			undoStep -> addVariables (node);
 
 			// Ungroup children
 
@@ -1637,20 +1637,17 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 {
 	for (const auto & child : children)
 	{
-		X3D::X3DNodePtr node (child);
+		// Get layers before removing from scene graph.
 
-		if (not node)
-			continue;
-
-		const auto layers = node -> getLayers ();
+		const auto layers = X3D::findParents <X3D::X3DLayerNode> (child);
 
 		// Adjust transformation
 
-		const X3D::X3DTransformNodePtr transform (node);
+		const X3D::X3DTransformNodePtr transform (child);
 
 		if (transform)
 		{
-			X3D::Matrix4d childModelViewMatrix = findModelViewMatrix (node);
+			X3D::Matrix4d childModelViewMatrix = findModelViewMatrix (child);
 
 			childModelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -1662,7 +1659,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 		removeNodeFromSceneGraph (getExecutionContext (), child, undoStep);
 
 		// Add to layers
-
+		
 		if (detachToLayer0)
 			emplaceBack (getExecutionContext () -> getRootNodes (), child, undoStep);
 

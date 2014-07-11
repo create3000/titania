@@ -57,6 +57,7 @@ main (int argc, char** argv)
 	using namespace titania::puck;
 
 	std::clog
+		<< std::boolalpha
 		<< "Titania started ..." << std::endl
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;

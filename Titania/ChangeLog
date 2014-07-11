@@ -1,5 +1,11 @@
 2014-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* main.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineTreeModel.cpp: 
+
+2014-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MaterialEditor.h:
 	* MaterialEditor.cpp: 
 
