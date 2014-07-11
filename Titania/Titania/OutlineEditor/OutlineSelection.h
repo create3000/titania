@@ -81,6 +81,9 @@ public:
 	void
 	update (const X3D::SFNode &) const;
 
+	void
+	update (X3D::X3DFieldDefinition* const) const;
+
 
 private:
 

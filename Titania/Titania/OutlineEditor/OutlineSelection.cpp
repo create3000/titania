@@ -118,9 +118,9 @@ OutlineSelection::select (const X3D::SFNode & node) const
 void
 OutlineSelection::select (X3D::X3DBaseNode* const node, const bool value)
 {
-	X3D::ChildObjectSet objects;
+	X3D::ChildObjectSet seen;
 
-	select (node, value, objects);
+	select (node, value, seen);
 }
 
 void
@@ -203,6 +203,22 @@ OutlineSelection::update (const X3D::SFNode & node) const
 
 		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) not_eq selected)
 			select (node, selected);
+	}
+}
+
+void
+OutlineSelection::update (X3D::X3DFieldDefinition* const field) const
+{
+	bool selected = false;
+
+	for (const auto & parent : field -> getParents ())
+		selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
+
+	if ((X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED) not_eq selected)
+	{
+		X3D::ChildObjectSet seen;
+
+		select (field, selected, seen);
 	}
 }
 

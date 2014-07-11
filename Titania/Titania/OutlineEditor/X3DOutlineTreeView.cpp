@@ -947,10 +947,15 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 		{
 			// Select visible fields
 
+			const auto fields = get_fields (node);
+
 			if (get_shift_key () or is_full_expanded (iter))
 			{
-				for (const auto & field : get_fields (node))
+				for (const auto & field : fields)
+				{
 					get_model () -> append (iter, OutlineIterType::X3DField, field);
+					selection -> update (field);
+				}
 
 				is_full_expanded (iter, true);
 			}
@@ -958,7 +963,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 			{
 				bool visibleFields = false;
 
-				for (const auto & field : get_fields (node))
+				for (const auto & field : fields)
 				{
 					try
 					{
@@ -978,13 +983,17 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 					}
 
 					get_model () -> append (iter, OutlineIterType::X3DField, field);
+					selection -> update (field);
 					visibleFields = true;
 				}
 
 				if (not visibleFields)
 				{
-					for (const auto & field : get_fields (node))
+					for (const auto & field : fields)
+					{
 						get_model () -> append (iter, OutlineIterType::X3DField, field);
+						selection -> update (field);
+					}
 				}
 
 				is_full_expanded (iter, false);

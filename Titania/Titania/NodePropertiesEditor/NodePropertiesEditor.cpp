@@ -1125,11 +1125,6 @@ NodePropertiesEditor::on_apply ()
 
 				// Set user defined fields.
 
-				const auto selection = getBrowser () -> getSelection ();
-
-				undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
-				undoStep -> addUndoFunction (&X3D::Selection::setChildren, selection, selection -> getChildren ());
-
 				undoStep -> addUndoFunction (&NodePropertiesEditor::setUserDefinedFields,
 				                             getBrowserWindow (),
 				                             node,
@@ -1141,9 +1136,6 @@ NodePropertiesEditor::on_apply ()
 				                             node,
 				                             userDefinedFields,
 				                             fieldsToRemove);
-
-				undoStep -> addRedoFunction (&X3D::Selection::setChildren, selection, selection -> getChildren ());
-				undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 				setUserDefinedFields (getBrowserWindow (),
 				                      node,

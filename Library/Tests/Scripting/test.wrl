@@ -45,7 +45,8 @@ DEF Gray Background {
 }
 
 DEF Checkerboard Transform {
-  children [NULL
+  children [
+    NULL
     Transform {
       translation 15 15 -2
       scale 15 15 1
@@ -76,7 +77,9 @@ DEF Checkerboard Transform {
 }
 
 DEF PrimitiveQuality Script {
-  field SFNode geometry Sphere { }
+  field SFNode  geometry Sphere { }
+  field SFImage i 0 0 0
+  field MFImage mi [ ]
 
   url "vrmlscript:
 function initialize ()
