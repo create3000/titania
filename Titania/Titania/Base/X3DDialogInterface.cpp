@@ -71,7 +71,7 @@ X3DDialogInterface::restoreSession ()
 	X3DUserInterface::restoreSession ();
 
 	restoreExpander (getWidget ());
-	setupGridLabels (getWidget ()); // XXX does not realy work.
+	setupGridLabels (getWidget ());
 }
 
 void
@@ -83,7 +83,7 @@ X3DDialogInterface::saveSession ()
 }
 
 void
-X3DDialogInterface::restoreExpander (Gtk::Widget & widget) const
+X3DDialogInterface::restoreExpander (Gtk::Widget & widget)
 {
 	std::vector <Gtk::Expander*> expanders;
 
@@ -123,7 +123,16 @@ X3DDialogInterface::setupGridLabels (Gtk::Widget & widget)
 	int width = 0;
 
 	for (auto & label : labels)
-		width = std::max (width, label -> get_width ());
+	{
+		const auto layout = label -> create_pango_layout (label -> get_text ());
+		
+		int w = 0;
+		int h = 0;
+
+		layout -> get_pixel_size (w, h);
+
+		width = std::max (width, w);
+	}
 
 	for (auto & label : labels)
 	{

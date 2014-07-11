@@ -90,7 +90,7 @@ protected:
 private:
 	
 	void
-	restoreExpander (Gtk::Widget &) const;
+	restoreExpander (Gtk::Widget &);
 
 	void
 	saveExpander (Gtk::Widget &);
