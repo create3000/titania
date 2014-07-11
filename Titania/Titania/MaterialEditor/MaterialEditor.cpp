@@ -63,7 +63,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	               appearances (),
 	                  material (),
 	          twoSidedMaterial (),
-	       isTwoSidedMaterial (false),
+	        isTwoSidedMaterial (false),
 	                  undoStep (),
 	                  changing (false)
 {
@@ -111,11 +111,30 @@ MaterialEditor::set_initialized ()
 
 void
 MaterialEditor::on_copy ()
-{ }
+{
+	std::string text = "#X3D V3.3 utf8 Titania\n"
+	                   "\n"
+	                   "# " + getExecutionContext () -> getWorldURL () + "\n"
+	                   "\n"
+	                   "META \"titania magic\" \"Material\"\n"
+	                   "\n"
+	                   "Transform {\n"
+	                   "  children Shape {\n"
+	                   "    appearance Appearance {\n"
+	                   "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n"
+	                   "    }\n"
+	                   "    geometry Sphere { }\n"
+	                   "  }\n"
+	                   "}";
+
+	Gtk::Clipboard::get () -> set_text (text);
+}
 
 void
 MaterialEditor::on_paste ()
-{ }
+{
+	getBrowserWindow () -> getPasteMenuItem () .activate ();
+}
 
 void
 MaterialEditor::set_selection ()
@@ -194,20 +213,20 @@ MaterialEditor::set_preview ()
 			if (appearance -> material ())
 				appearance -> material () -> addInterest (*preview, &X3D::Browser::addEvent);
 		}
-		
+
 		const X3D::AppearancePtr backAppearance (preview -> getExecutionContext () -> getNamedNode ("BackAppearance"));
-		
+
 		if (backAppearance)
 		{
 			X3D::MaterialPtr backMaterial (new X3D::Material (preview -> getExecutionContext ()));
-			
+
 			twoSidedMaterial -> backDiffuseColor ()  .addInterest (backMaterial -> diffuseColor ());
 			twoSidedMaterial -> backSpecularColor () .addInterest (backMaterial -> specularColor ());
 			twoSidedMaterial -> backEmissiveColor () .addInterest (backMaterial -> specularColor ());
 
 			twoSidedMaterial -> backAmbientIntensity () .addInterest (backMaterial -> ambientIntensity ());
 			twoSidedMaterial -> backShininess ()        .addInterest (backMaterial -> shininess ());
-			twoSidedMaterial -> backTransparency ()     .addInterest (backMaterial -> transparency ());	
+			twoSidedMaterial -> backTransparency ()     .addInterest (backMaterial -> transparency ());
 
 			backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
 			backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
@@ -365,7 +384,7 @@ MaterialEditor::on_material_changed ()
 	}
 
 	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
-	
+
 	set_preview ();
 
 	getWidget () .queue_draw ();
@@ -437,8 +456,8 @@ MaterialEditor::set_material ()
 		{ }
 	}
 
-	material            = materialNode;
-	twoSidedMaterial    = materialNode;
+	material           = materialNode;
+	twoSidedMaterial   = materialNode;
 	isTwoSidedMaterial = twoSidedMaterial;
 
 	if (not material)
@@ -529,7 +548,7 @@ MaterialEditor::set_material ()
 	set_backAmbient ();
 	set_backShininess ();
 	set_backTransparency ();
-	
+
 	set_preview ();
 }
 

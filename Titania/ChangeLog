@@ -1,5 +1,14 @@
 2014-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* MaterialEditor.cpp:
+	* MaterialEditor.xml: 
+
+2014-07-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Geometry.svg: 
 
 2014-07-11  Holger Seelig  <holger.seelig@yahoo.de>

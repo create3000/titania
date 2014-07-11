@@ -118,7 +118,7 @@ public:
 	copyNodes (X3D::MFNode) const;
 
 	void
-	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
+	pasteNodes (X3D::MFNode &, const UndoStepPtr &);
 
 	/// @name Edit operations
 

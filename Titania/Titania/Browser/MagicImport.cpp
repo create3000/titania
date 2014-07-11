@@ -124,8 +124,6 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 	                  return true;
 						});
 
-	getBrowserWindow () -> getSelection () -> setChildren (selection, undoStep);
-
 	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	getExecutionContext () -> realize ();
@@ -171,8 +169,6 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	                  return true;
 						});
-
-	getBrowserWindow () -> getSelection () -> setChildren (selection, undoStep);
 
 	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 

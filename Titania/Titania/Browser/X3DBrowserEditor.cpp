@@ -669,7 +669,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 }
 
 void
-X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::pasteNodes (X3D::MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -699,9 +699,12 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 					{
 						const auto scene = getBrowser () -> createX3DFromStream (worldURL, text);
 
-						getSelection () -> clear (undoStep);
+						if (not magicImport -> import (nodes, scene, undoStep))
+						{
+							getSelection () -> clear (undoStep);
 
-						importScene (scene, undoStep);
+							importScene (scene, undoStep);
+						}
 					}
 				}
 			}

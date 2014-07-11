@@ -787,7 +787,7 @@ BrowserWindow::on_copy_nodes_activate ()
 void
 BrowserWindow::on_paste_nodes_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
 
