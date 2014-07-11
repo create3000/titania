@@ -5,15 +5,16 @@
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="Geometry" filename="icons/Geometry.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
+      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
-      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
@@ -1272,7 +1273,7 @@
                 <property name="tooltip_text" translatable="yes">Open Geometry Properties Editor.</property>
                 <property name="label" translatable="yes">Geometry Properties Editor</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-convert</property>
+                <property name="stock_id">Geometry</property>
                 <signal name="clicked" handler="on_geometry_properties_editor_clicked" swapped="no"/>
               </object>
               <packing>
