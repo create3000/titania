@@ -38,6 +38,7 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineTreeObserver.cpp \
 	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
+	Titania/TextEditor/TextEditor.cpp \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
 	Titania/Undo/UndoStep.cpp \
@@ -50,6 +51,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
+	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
 	Titania/ViewpointList/ViewpointList.cpp

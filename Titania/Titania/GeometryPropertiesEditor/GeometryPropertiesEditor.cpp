@@ -85,40 +85,28 @@ GeometryPropertiesEditor::set_selection ()
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("ccw") .removeInterest (this, &GeometryPropertiesEditor::set_ccw);
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("convex") .removeInterest (this, &GeometryPropertiesEditor::set_convex);
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("creaseAngle") .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("texCoord") .removeInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator);
@@ -157,40 +145,28 @@ GeometryPropertiesEditor::set_selection ()
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("ccw") .addInterest (this, &GeometryPropertiesEditor::set_ccw);
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("convex") .addInterest (this, &GeometryPropertiesEditor::set_convex);
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("creaseAngle") .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 		}
 		catch (const X3D::X3DError &)
 		{ }
-	}
 
-	for (const auto & geometry : geometryNodes)
-	{
 		try
 		{
 			geometry -> getField <X3D::SFFloat> ("texCoord") .addInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator);
@@ -212,9 +188,9 @@ GeometryPropertiesEditor::on_solid_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFBool> (geometryNodes, "solid", undoStep);
-
 	getSolidCheckButton () .set_inconsistent (false);
+
+	addUndoFunction <X3D::SFBool> (geometryNodes, "solid", undoStep);
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -287,9 +263,9 @@ GeometryPropertiesEditor::on_ccw_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFBool> (geometryNodes, "ccw", undoStep);
-
 	getCCWCheckButton () .set_inconsistent (false);
+
+	addUndoFunction <X3D::SFBool> (geometryNodes, "ccw", undoStep);
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -362,9 +338,9 @@ GeometryPropertiesEditor::on_convex_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction <X3D::SFBool> (geometryNodes, "convex", undoStep);
-
 	getConvexCheckButton () .set_inconsistent (false);
+
+	addUndoFunction <X3D::SFBool> (geometryNodes, "convex", undoStep);
 
 	for (const auto & geometry : geometryNodes)
 	{
@@ -573,18 +549,19 @@ GeometryPropertiesEditor::set_textureCoordinateGenerator ()
 	{
 		try
 		{
-			const auto & field = geometry -> getField <X3D::SFNode> ("texCoord");
-
-			if (not textureCoordinateGenerator and field and field -> getType () .back () == X3D::X3DConstants::TextureCoordinateGenerator)
-				textureCoordinateGenerator = field;
+			const X3D::X3DPtr <X3D::TextureCoordinateGenerator> field (geometry -> getField <X3D::SFNode> ("texCoord"));
 
 			if (active < 0)
 			{
-				hasField = true;
-				active   = bool (textureCoordinateGenerator);
+				textureCoordinateGenerator = std::move (field);
+				hasField                   = true;
+				active                     = bool (textureCoordinateGenerator);
 			}
 			else if (field not_eq textureCoordinateGenerator)
 			{
+				if (not textureCoordinateGenerator)
+					textureCoordinateGenerator = std::move (field);
+
 				active = -1;
 				break;
 			}

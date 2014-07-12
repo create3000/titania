@@ -307,23 +307,32 @@ private:
 
 	virtual
 	void
-	phong_activate () final override;
+	on_phong_activate () final override;
 
 	virtual
 	void
-	gouraud_activate () final override;
+	on_gouraud_activate () final override;
 
 	virtual
 	void
-	flat_activate () final override;
+	on_flat_activate () final override;
 
 	virtual
 	void
-	wireframe_activate () final override;
+	on_wireframe_activate () final override;
 
 	virtual
 	void
-	pointset_activate () final override;
+	on_pointset_activate () final override;
+
+	void
+	on_shading_activate (const std::string &);
+
+	void
+	set_shading (const X3D::SFString &);
+
+	void
+	connectShading (const X3D::SFString &);
 
 	///  @name Rendering quality
 
@@ -338,6 +347,15 @@ private:
 	virtual
 	void
 	on_low_quality_activate () final override;
+
+	void
+	on_primitiveQuality_activate (const std::string &);
+
+	void
+	set_primitiveQuality (const X3D::SFString &);
+
+	void
+	connectPrimitiveQuality (const X3D::SFString &);
 
 	///  @name Object Icons
 
@@ -445,6 +463,14 @@ private:
 	virtual
 	void
 	on_material_editor_clicked () final override;
+
+	virtual
+	void
+	on_text_editor_clicked () final override;
+
+	virtual
+	void
+	on_geometry_properties_editor_clicked () final override;
 	
 	virtual
 	void
@@ -453,10 +479,6 @@ private:
 	virtual
 	void
 	on_prototype_instance_dialog_clicked () final override;
-
-	virtual
-	void
-	on_geometry_properties_editor_clicked () final override;
 
 	///  @name Browser dashboard handling
 
@@ -548,6 +570,7 @@ private:
 	X3D::Keys keys;
 	bool      shortcuts;
 	bool      toggle;
+	bool      changing;
 
 	X3D::ViewerType viewer;
 

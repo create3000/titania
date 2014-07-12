@@ -659,7 +659,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">GouraudMenuItem</property>
-                                <signal name="activate" handler="phong_activate" swapped="no"/>
+                                <signal name="activate" handler="on_phong_activate" swapped="no"/>
                                 <accelerator key="5" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
@@ -671,7 +671,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="active">True</property>
                                 <property name="draw_as_radio">True</property>
-                                <signal name="activate" handler="gouraud_activate" swapped="no"/>
+                                <signal name="activate" handler="on_gouraud_activate" swapped="no"/>
                                 <accelerator key="4" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
@@ -683,7 +683,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">GouraudMenuItem</property>
-                                <signal name="activate" handler="flat_activate" swapped="no"/>
+                                <signal name="activate" handler="on_flat_activate" swapped="no"/>
                                 <accelerator key="3" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
@@ -695,7 +695,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">GouraudMenuItem</property>
-                                <signal name="activate" handler="wireframe_activate" swapped="no"/>
+                                <signal name="activate" handler="on_wireframe_activate" swapped="no"/>
                                 <accelerator key="2" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
@@ -707,7 +707,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="draw_as_radio">True</property>
                                 <property name="group">GouraudMenuItem</property>
-                                <signal name="activate" handler="pointset_activate" swapped="no"/>
+                                <signal name="activate" handler="on_pointset_activate" swapped="no"/>
                                 <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
@@ -1268,6 +1268,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="TextEditorButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Open Text Editor.</property>
+                <property name="label" translatable="yes">Text Editor</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-select-font</property>
+                <signal name="clicked" handler="on_text_editor_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="GeometryPropertiesEditorButton">
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Open Geometry Properties Editor.</property>
@@ -1335,7 +1350,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="position">437</property>
+                    <property name="position">350</property>
                     <property name="position_set">True</property>
                     <child>
                       <object class="GtkBox" id="box1">

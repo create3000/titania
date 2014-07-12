@@ -175,32 +175,6 @@ X3DBrowserWidget::restoreSession ()
 	if (getConfig () .hasItem ("footer"))
 		getFooterMenuItem () .set_active (getConfig () .getBoolean ("footer"));
 
-	// Shading
-	if (getConfig () .getString ("shading") == "PHONG")
-		getPhongMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("shading") == "GOURAUD")
-		getGouraudMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("shading") == "FLAT")
-		getFlatMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("shading") == "WIREFRAME")
-		getWireFrameMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("shading") == "POINTSET")
-		getPointSetMenuItem () .set_active (true);
-
-	// PrimitiveQuality
-	if (getConfig () .getString ("primitiveQuality") == "HIGH")
-		getHighQualityMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("primitiveQuality") == "MEDIUM")
-		getMediumQualityMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("primitiveQuality") == "LOW")
-		getLowQualityMenuItem () .set_active (true);
-
 	// RenderingProperties
 	if (getConfig () .hasItem ("renderingProperties"))
 		getRenderingPropertiesMenuItem () .set_active (getConfig () .getBoolean ("renderingProperties"));

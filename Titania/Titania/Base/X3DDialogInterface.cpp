@@ -136,8 +136,12 @@ X3DDialogInterface::setupGridLabels (Gtk::Widget & widget)
 
 	for (auto & label : labels)
 	{
+		float xalign = 0;
+		float yalign = 0;
+
 		label -> set_size_request (width, -1);
-		label -> set_alignment (1, 0.5);
+		label -> get_alignment (xalign, yalign);
+		label -> set_alignment (1, yalign);
 	}
 }
 

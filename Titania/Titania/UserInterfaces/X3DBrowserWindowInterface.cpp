@@ -272,6 +272,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_NodePropertiesEditorButton -> set_name ("NodePropertiesEditorButton");
 	m_builder -> get_widget ("MaterialEditorButton", m_MaterialEditorButton);
 	m_MaterialEditorButton -> set_name ("MaterialEditorButton");
+	m_builder -> get_widget ("TextEditorButton", m_TextEditorButton);
+	m_TextEditorButton -> set_name ("TextEditorButton");
 	m_builder -> get_widget ("GeometryPropertiesEditorButton", m_GeometryPropertiesEditorButton);
 	m_GeometryPropertiesEditorButton -> set_name ("GeometryPropertiesEditorButton");
 	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
@@ -417,11 +419,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::RadioMenuItem with id 'BrowserMenuItem'.
 	m_BrowserMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_toggled));
 	m_EditorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_toggled));
-	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::phong_activate));
-	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::gouraud_activate));
-	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::flat_activate));
-	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::wireframe_activate));
-	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::pointset_activate));
+	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activate));
+	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activate));
+	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activate));
+	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activate));
+	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activate));
 	m_HighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_high_quality_activate));
 	m_MediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_medium_quality_activate));
 	m_LowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_low_quality_activate));
@@ -479,6 +481,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
 	m_NodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor_clicked));
 	m_MaterialEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_material_editor_clicked));
+	m_TextEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_text_editor_clicked));
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_update_viewpoint_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));

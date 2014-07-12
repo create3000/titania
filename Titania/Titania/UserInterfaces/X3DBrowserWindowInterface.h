@@ -524,6 +524,10 @@ public:
 	{ return *m_MaterialEditorButton; }
 
 	Gtk::ToolButton &
+	getTextEditorButton () const
+	{ return *m_TextEditorButton; }
+
+	Gtk::ToolButton &
 	getGeometryPropertiesEditorButton () const
 	{ return *m_GeometryPropertiesEditorButton; }
 
@@ -845,23 +849,23 @@ public:
 
 	virtual
 	void
-	phong_activate () = 0;
+	on_phong_activate () = 0;
 
 	virtual
 	void
-	gouraud_activate () = 0;
+	on_gouraud_activate () = 0;
 
 	virtual
 	void
-	flat_activate () = 0;
+	on_flat_activate () = 0;
 
 	virtual
 	void
-	wireframe_activate () = 0;
+	on_wireframe_activate () = 0;
 
 	virtual
 	void
-	pointset_activate () = 0;
+	on_pointset_activate () = 0;
 
 	virtual
 	void
@@ -966,6 +970,10 @@ public:
 	virtual
 	void
 	on_material_editor_clicked () = 0;
+
+	virtual
+	void
+	on_text_editor_clicked () = 0;
 
 	virtual
 	void
@@ -1152,6 +1160,7 @@ private:
 	Gtk::SeparatorToolItem*         m_SeparatorToolItem2;
 	Gtk::ToolButton*                m_NodePropertiesEditorButton;
 	Gtk::ToolButton*                m_MaterialEditorButton;
+	Gtk::ToolButton*                m_TextEditorButton;
 	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton*                m_UpdateViewpointButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;

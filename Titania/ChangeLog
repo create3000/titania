@@ -1,3 +1,23 @@
+2014-07-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* BrowserWindow.h:
+	* TextEditor.h:
+	* BrowserWindow.cpp:
+	* TextEditor.cpp:
+	* BrowserWindow.xml:
+	* X3DDialogInterface.cpp:
+	* X3DBrowserWidget.cpp:
+	* TextEditor.xml:
+	* MaterialEditor.cpp:
+	* GeometryPropertiesEditor.h:
+	* X3DTextEditorInterface.h:
+	* X3DTextEditorInterface.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-07-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MagicImport.cpp:

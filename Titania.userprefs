@@ -1,22 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1485" Column="1" />
-      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="142" Column="50" />
-      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="470" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="83" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
               <Node name="Scripting" expanded="True">
                 <Node name="pb" expanded="True" />
               </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -29,28 +38,39 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Fields" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                </Node>
+                <Node name="Execution" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True">
+                  <Node name="Materials" expanded="True">
+                    <Node name="Artdeco" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="ui" expanded="True">
-                  <Node name="Dialogs" expanded="True" />
+                  <Node name="icons" expanded="True">
+                    <Node name="Node" expanded="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="GeometryPropertiesEditor" expanded="True">
-                <Node name="GeometryPropertiesEditor.cpp" selected="True" />
-              </Node>
-              <Node name="MaterialEditor" expanded="True" />
-              <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="Undo" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
+              <Node name="GeometryPropertiesEditor" expanded="True" />
+              <Node name="TextEditor" expanded="True" />
+              <Node name="UserInterfaces" selected="True" />
             </Node>
           </Node>
         </State>

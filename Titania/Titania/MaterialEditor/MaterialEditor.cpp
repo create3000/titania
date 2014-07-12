@@ -437,17 +437,18 @@ MaterialEditor::set_material ()
 	{
 		try
 		{
-			const auto & field = appearance -> material ();
-
-			if (not materialNode)
-				materialNode = field;
+			const X3D::X3DPtr <X3D::X3DMaterialNode> field (appearance -> material ());
 
 			if (active < 0)
 			{
-				active = bool (materialNode);
+				materialNode = std::move (field);
+				active       = bool (materialNode);
 			}
 			else if (field not_eq materialNode)
 			{
+				if (not materialNode)
+					materialNode = std::move (field);
+
 				active = -1;
 				break;
 			}

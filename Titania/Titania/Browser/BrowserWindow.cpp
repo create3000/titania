@@ -52,17 +52,18 @@
 
 #include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
+#include "../Console/Console.h"
+#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../LibraryView/LibraryView.h"
 #include "../MaterialEditor/MaterialEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
-#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
+#include "../TextEditor/TextEditor.h"
 #include "../ViewpointList/ViewpointList.h"
-#include "../Console/Console.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -84,6 +85,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	            keys (),
 	       shortcuts (true),
 	          toggle (true),
+	        changing (false),
 	          viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
@@ -165,7 +167,9 @@ BrowserWindow::initialize ()
 	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers ()     .addInterest (this, &BrowserWindow::set_available_viewers);
 
-	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
+	getBrowser () -> getBrowserOptions () -> dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
+	getBrowser () -> getBrowserOptions () -> shading ()          .addInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
 
 	set_selection (getBrowser () -> getSelection () -> getChildren ());
@@ -1041,6 +1045,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getSeparatorToolItem2 ()             .set_visible (enabled);
 	getNodePropertiesEditorButton ()     .set_visible (enabled);
 	getMaterialEditorButton ()           .set_visible (enabled);
+	getTextEditorButton ()               .set_visible (enabled);
 	getGeometryPropertiesEditorButton () .set_visible (enabled);
 	getUpdateViewpointButton ()          .set_visible (enabled);
 	getCreatePrototypeInstanceButton ()  .set_visible (enabled);
@@ -1068,53 +1073,80 @@ BrowserWindow::enableEditor (const bool enabled)
 // Shading menu
 
 void
-BrowserWindow::phong_activate ()
+BrowserWindow::on_phong_activate ()
 {
 	if (getPhongMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "PHONG");
-		getBrowser () -> getBrowserOptions () -> shading () = "PHONG";
-	}
+		on_shading_activate ("PHONG");
 }
 
 void
-BrowserWindow::gouraud_activate ()
+BrowserWindow::on_gouraud_activate ()
 {
 	if (getGouraudMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "GOURAUD");
-		getBrowser () -> getBrowserOptions () -> shading () = "GOURAUD";
-	}
+		on_shading_activate ("GOURAUD");
 }
 
 void
-BrowserWindow::flat_activate ()
+BrowserWindow::on_flat_activate ()
 {
 	if (getFlatMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "FLAT");
-		getBrowser () -> getBrowserOptions () -> shading () = "FLAT";
-	}
+		on_shading_activate ("FLAT");
 }
 
 void
-BrowserWindow::wireframe_activate ()
+BrowserWindow::on_wireframe_activate ()
 {
 	if (getWireFrameMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "WIREFRAME");
-		getBrowser () -> getBrowserOptions () -> shading () = "WIREFRAME";
-	}
+		on_shading_activate ("WIREFRAME");
 }
 
 void
-BrowserWindow::pointset_activate ()
+BrowserWindow::on_pointset_activate ()
 {
 	if (getPointSetMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "POINTSET");
-		getBrowser () -> getBrowserOptions () -> shading () = "POINTSET";
-	}
+		on_shading_activate ("POINTSET");
+}
+
+void
+BrowserWindow::on_shading_activate (const std::string & value)
+{
+	if (changing)
+		return;
+
+	getBrowser () -> getBrowserOptions () -> shading () = value;
+
+	getBrowser () -> getBrowserOptions () -> shading () .removeInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> shading () .addInterest (this, &BrowserWindow::connectShading);
+}
+
+void
+BrowserWindow::set_shading (const X3D::SFString & value)
+{
+	changing = true;
+
+	if (value == "PHONG")
+		getPhongMenuItem () .set_active (true);
+
+	else if (value == "FLAT")
+		getFlatMenuItem () .set_active (true);
+
+	else if (value == "WIREFRAME")
+		getWireFrameMenuItem () .set_active (true);
+
+	else if (value == "POINTSET")
+		getPointSetMenuItem () .set_active (true);
+
+	else
+		getGouraudMenuItem () .set_active (true);
+
+	changing = false;
+}
+
+void
+BrowserWindow::connectShading (const X3D::SFString & field)
+{
+	field .removeInterest (this, &BrowserWindow::connectShading);
+	field .addInterest (this, &BrowserWindow::set_shading);
 }
 
 // Primitive Quality
@@ -1123,30 +1155,57 @@ void
 BrowserWindow::on_high_quality_activate ()
 {
 	if (getHighQualityMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("primitiveQuality", "HIGH");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
-	}
+		on_primitiveQuality_activate ("HIGH");
 }
 
 void
 BrowserWindow::on_medium_quality_activate ()
 {
 	if (getMediumQualityMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("primitiveQuality", "MEDIUM");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "MEDIUM";
-	}
+		on_primitiveQuality_activate ("MEDIUM");
 }
 
 void
 BrowserWindow::on_low_quality_activate ()
 {
 	if (getLowQualityMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("primitiveQuality", "LOW");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
-	}
+		on_primitiveQuality_activate ("LOW");
+}
+
+void
+BrowserWindow::on_primitiveQuality_activate (const std::string & value)
+{
+	if (changing)
+		return;
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () = value;
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
+}
+
+void
+BrowserWindow::set_primitiveQuality (const X3D::SFString & value)
+{
+	changing = true;
+
+	if (value == "HIGH")
+		getHighQualityMenuItem () .set_active (true);
+
+	else if (value == "LOW")
+		getLowQualityMenuItem () .set_active (true);
+
+	else
+		getMediumQualityMenuItem () .set_active (true);
+
+	changing = false;
+}
+
+void
+BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
+{
+	field .removeInterest (this, &BrowserWindow::connectPrimitiveQuality);
+	field .addInterest (this, &BrowserWindow::set_primitiveQuality);
 }
 
 // Object Icons
@@ -1167,7 +1226,7 @@ BrowserWindow::on_backgrounds_toggled ()
 
 		                  return true;
 							},
-							true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 
 	toggle = true;
@@ -1189,7 +1248,7 @@ BrowserWindow::on_fogs_toggled ()
 
 		                  return true;
 							},
-							true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 
 	toggle = true;
@@ -1213,7 +1272,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 
 			                  return true;
 								},
-								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 		else
 		{
@@ -1226,7 +1285,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 
 			                  return true;
 								},
-								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 	}
 
@@ -1249,7 +1308,7 @@ BrowserWindow::on_visibility_sensors_toggled ()
 
 			                  return true;
 								},
-								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 		else
 		{
@@ -1262,7 +1321,7 @@ BrowserWindow::on_visibility_sensors_toggled ()
 
 			                  return true;
 								},
-								true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 	}
 
@@ -1331,14 +1390,14 @@ BrowserWindow::on_hide_selected_objects_activate ()
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	               {
-							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
-							if (shape)
+	                  if (shape)
 								shape -> isHidden (true);
-	
+
 	                  return true;
 						},
-						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -1350,28 +1409,28 @@ BrowserWindow::on_hide_unselected_objects_activate ()
 
 	X3D::traverse (selection, [&visibles] (X3D::SFNode & node)
 	               {
-							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
-							if (shape)
+	                  if (shape)
 								visibles .emplace (shape);
-	
+
 	                  return true;
 						},
-						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [&visibles] (X3D::SFNode & node)
 	               {
-							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
-							if (shape)
-							{
-		                  if (not visibles .count (shape))
+	                  if (shape)
+	                  {
+	                     if (not visibles .count (shape))
 									shape -> isHidden (true);
 							}
 
 	                  return true;
 						},
-						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -1381,14 +1440,14 @@ BrowserWindow::on_show_selected_objects_activate ()
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	               {
-							const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
-							if (shape)
+	                  if (shape)
 								shape -> isHidden (false);
-	
+
 	                  return true;
 						},
-						true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -1398,7 +1457,7 @@ BrowserWindow::on_show_all_objects_activate ()
 	               {
 	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
-							if (shape)
+	                  if (shape)
 								shape -> isHidden (false);
 
 	                  return true;
@@ -1418,7 +1477,7 @@ void
 BrowserWindow::on_follow_primary_selection_toggled ()
 {
 	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
-	
+
 	if (getFollowPrimarySelectionMenuItem () .get_active ())
 		getBrowser () -> getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_pickedTime);
 
@@ -1484,6 +1543,24 @@ BrowserWindow::on_material_editor_clicked ()
 		return;
 
 	addDialog ("MaterialEditor", std::make_shared <MaterialEditor> (getBrowserWindow ()));
+}
+
+void
+BrowserWindow::on_text_editor_clicked ()
+{
+	if (isDialogOpen ("TextEditor"))
+		return;
+
+	addDialog ("TextEditor", std::make_shared <TextEditor> (getBrowserWindow ()));
+}
+
+void
+BrowserWindow::on_geometry_properties_editor_clicked ()
+{
+	if (isDialogOpen ("GeometryPropertiesEditor"))
+		return;
+
+	addDialog ("GeometryPropertiesEditor", std::make_shared <GeometryPropertiesEditor> (getBrowserWindow ()));
 }
 
 void
@@ -1558,15 +1635,6 @@ BrowserWindow::on_prototype_instance_dialog_clicked ()
 	getPrototypeInstanceDialog () .hide ();
 }
 
-void
-BrowserWindow::on_geometry_properties_editor_clicked ()
-{
-	if (isDialogOpen ("GeometryPropertiesEditor"))
-		return;
-
-	addDialog ("GeometryPropertiesEditor", std::make_shared <GeometryPropertiesEditor> (getBrowserWindow ()));
-}
-
 // Browser dashboard handling
 
 void
@@ -1631,13 +1699,13 @@ BrowserWindow::on_select_parent_button_clicked ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::X3DGroupingNode:
-					case X3D::X3DConstants::X3DPrototypeInstance:
-					{
-						hasParents = true;
-						parentIndex .emplace (parent);
-						break;
-					}
+					case X3D::X3DConstants::X3DGroupingNode      :
+					case X3D::X3DConstants::X3DPrototypeInstance :
+						{
+							hasParents = true;
+							parentIndex .emplace (parent);
+							break;
+						}
 					default:
 						break;
 				}
@@ -1650,7 +1718,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 	// Get all hierarchies sorted by length.
 
-	std::multimap <size_t, std::vector <X3D::X3DChildObject*>> hierachies;
+	std::multimap <size_t, std::vector <X3D::X3DChildObject*>>  hierachies;
 
 	for (const auto & parent : parentIndex)
 	{
@@ -1663,13 +1731,13 @@ BrowserWindow::on_select_parent_button_clicked ()
 	}
 
 	// Sort out parent if parent is a child of another parent.
-	
+
 	std::map <X3D::X3DChildObject*, bool> tree;
 
 	for (auto & pair : hierachies)
 	{
 		auto & hierarchy = pair .second;
-		
+
 		// Insert parent.
 
 		tree .emplace (hierarchy .back (), true);
@@ -1756,29 +1824,29 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 	{
 		switch (type)
 		{
-			case X3D::X3DConstants::LOD:
-			{
-				const auto lodNode = dynamic_cast <X3D::LOD*> (parent .getValue ());
-				const auto index   = lodNode -> level_changed ();
-
-				if (index >= 0 and index < (int32_t) lodNode -> children () .size ())
+			case X3D::X3DConstants::LOD :
 				{
-					const auto & child = lodNode -> children () [index];
-					
-					if (not child)
-						return children;
-						
-					if (not sharedNodes)
+					const auto lodNode = dynamic_cast <X3D::LOD*> (parent .getValue ());
+					const auto index   = lodNode -> level_changed ();
+
+					if (index >= 0 and index < (int32_t) lodNode -> children () .size ())
 					{
-						if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+						const auto & child = lodNode -> children () [index];
+
+						if (not child)
 							return children;
+
+						if (not sharedNodes)
+						{
+							if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+								return children;
+						}
+
+						children .emplace_back (child);
 					}
 
-					children .emplace_back (child);	
+					return children;
 				}
-
-				return children;
-			}
 			case X3D::X3DConstants::Switch:
 			{
 				const auto switchNode = dynamic_cast <X3D::Switch*> (parent .getValue ());
@@ -1787,24 +1855,24 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 				if (index >= 0 and index < (int32_t) switchNode -> children () .size ())
 				{
 					const auto & child = switchNode -> children () [index];
-					
+
 					if (not child)
 						return children;
-						
+
 					if (not sharedNodes)
 					{
 						if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
 							return children;
 					}
 
-					children .emplace_back (child);	
+					children .emplace_back (child);
 				}
 
 				return children;
 			}
 			case X3D::X3DConstants::X3DGroupingNode:
 			{
-				const auto groupingNode = dynamic_cast <X3D::X3DGroupingNode*> (parent .getValue ()); 
+				const auto groupingNode = dynamic_cast <X3D::X3DGroupingNode*> (parent .getValue ());
 
 				for (const auto & child : groupingNode -> children ())
 				{
@@ -1824,38 +1892,38 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 			}
 			case X3D::X3DConstants::X3DPrototypeInstance:
 			{
-				const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (parent .getValue ()); 
+				const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (parent .getValue ());
 
 				// Create child index.
 
 				std::set <X3D::SFNode> childIndex;
-			
+
 				for (const auto & field : instance -> getFieldDefinitions ())
 				{
 					if (field -> isInitializable ())
 					{
 						switch (field -> getType ())
 						{
-							case X3D::X3DConstants::SFNode:
-							{
-								const auto child = *static_cast <X3D::SFNode*> (field);
-
-								if (not child)
-									break;
-
-								if (child == parent)
-									break;
-
-								if (not sharedNodes)
+							case X3D::X3DConstants::SFNode :
 								{
-									if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+									const auto child = *static_cast <X3D::SFNode*> (field);
+
+									if (not child)
 										break;
+
+									if (child == parent)
+										break;
+
+									if (not sharedNodes)
+									{
+										if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
+											break;
+									}
+
+									childIndex .emplace (child);
+
+									break;
 								}
-
-								childIndex .emplace (child);
-
-								break;
-							}
 							case X3D::X3DConstants::MFNode:
 							{
 								const auto mfnode = *static_cast <X3D::MFNode*> (field);
@@ -1884,7 +1952,7 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 						}
 					}
 				}
-			
+
 				// Get children.
 
 				try
@@ -1960,7 +2028,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 			getArrowButton () .set_sensitive (false);
 
 			//if (getArrowButton () .get_active ())
-				//getSelection () -> disconnect ();
+			//getSelection () -> disconnect ();
 
 			break;
 		}
@@ -1972,7 +2040,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 			getArrowButton () .set_sensitive (true);
 
 			//if (getArrowButton () .get_active ())
-				//getSelection () -> connect ();
+			//getSelection () -> connect ();
 
 			if (getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (false);
