@@ -359,6 +359,7 @@ NodePropertiesEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContex
 	if (getUserDefinedFieldsTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
 	{
 		auto destination = userDefinedFieldsListStore -> get_iter (destinationPath);
+
 		dest = userDefinedFieldsListStore -> get_path (destination) .front ();
 
 		switch (position)

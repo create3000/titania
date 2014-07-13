@@ -1,3 +1,27 @@
+2014-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TextEditor.h:
+	* X3DDialogInterface.h:
+	* TextEditor.cpp:
+	* BrowserWindow.xml:
+	* info.wrl:
+	* TextEditor.xml:
+	* MaterialEditor.cpp:
+	* X3DConsoleInterface.h:
+	* X3DTextEditorInterface.h:
+	* X3DLibraryViewInterface.h:
+	* X3DTextEditorInterface.cpp:
+	* X3DViewpointListInterface.h:
+	* X3DOutlineEditorInterface.h:
+	* X3DHistoryEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DMaterialEditorInterface.h:
+	* X3DMotionBlurEditorInterface.h:
+	* Text.x3dv:
+	* NodePropertiesEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.h: 
+
 2014-07-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* titania:

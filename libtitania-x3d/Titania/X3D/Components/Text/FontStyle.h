@@ -123,12 +123,14 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFFloat &
-	size ()
+	size () final override
 	{ return *fields .size; }
 
+	virtual
 	const SFFloat &
-	size () const
+	size () const final override
 	{ return *fields .size; }
 
 	///  @name Member access

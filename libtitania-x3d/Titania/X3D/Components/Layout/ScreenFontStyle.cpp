@@ -71,9 +71,14 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 	      textureId (0),
 	            min (),
 	            max (),
-	modelViewMatrix (),
-	   screenMatrix ()
+	           bbox (),
+	         matrix ()
 {
+	const auto screenText = dynamic_cast <ScreenText*> (text -> getTextGeometry () .get ());
+
+	if (screenText)
+		matrix = screenText -> matrix;
+
 	glGenTextures (1, &textureId);
 
 	configure (context);
@@ -87,8 +92,8 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	const ScreenFontPtr font     = fontStyle -> getScreenFont ();
-	const auto          fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
+	const auto & font     = fontStyle -> getScreenFont ();
+	const auto   fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
 
 	context -> set_font_face (fontFace);
 	context -> set_font_size (fontStyle -> getSize ());
@@ -115,7 +120,7 @@ ScreenText::setTextBounds ()
 {
 	text -> textBounds () = math::ceil (text -> textBounds () .getValue ());
 
-	getBBox () .extents (min, max);
+	X3DTextGeometry::getBBox () .extents (min, max);
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
@@ -372,17 +377,11 @@ ScreenText::getBBox () const
 	return bbox;
 }
 
-Matrix4f
-ScreenText::getMatrix () const
-{
-	return screenMatrix * inverse (modelViewMatrix);
-}
-
 // Same as in ScreenGroup
 void
 ScreenText::scale ()
 {
-	modelViewMatrix = ModelViewMatrix4d ();
+	const auto modelViewMatrix = ModelViewMatrix4d ();
 
 	Vector3d   translation, scale;
 	Rotation4d rotation;
@@ -392,11 +391,15 @@ ScreenText::scale ()
 	const double   distance    = math::abs (modelViewMatrix .origin ());
 	const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
+	Matrix4d screenMatrix;
+
 	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
 	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
 	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
 	glLoadMatrixd (screenMatrix .data ());
+
+	matrix = screenMatrix * inverse (modelViewMatrix);
 }
 
 void

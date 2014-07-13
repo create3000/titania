@@ -175,6 +175,10 @@ public:
 	float
 	getLength (const size_t);
 
+	const std::unique_ptr <X3DTextGeometry> &
+	getTextGeometry () const
+	{ return textGeometry; }
+
 	///  @name Operations
 
 	virtual
@@ -235,8 +239,8 @@ private:
 
 	Fields fields;
 
-	std::unique_ptr <X3DTextGeometry> textGeometry;
 	X3DPtr <X3DFontStyleNode>         fontStyleNode;
+	std::unique_ptr <X3DTextGeometry> textGeometry;
 
 };
 

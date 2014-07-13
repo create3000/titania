@@ -600,7 +600,7 @@ X3DFontStyleNode::getFont () const
 
 	for (const auto & familyName : family ())
 	{
-		const Font font = getFont (familyName, isExactMatch);
+		const Font font = getFont (familyName .empty () ? "SERIF" : familyName .getValue (), isExactMatch);
 
 		if (isExactMatch)
 			return font;

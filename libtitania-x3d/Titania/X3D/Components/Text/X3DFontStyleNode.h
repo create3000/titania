@@ -189,6 +189,14 @@ public:
 	style () const
 	{ return *fields .style; }
 
+	virtual
+	SFFloat &
+	size () = 0;
+
+	virtual
+	const SFFloat &
+	size () const = 0;
+
 	SFFloat &
 	spacing ()
 	{ return *fields .spacing; }

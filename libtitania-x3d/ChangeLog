@@ -1,3 +1,13 @@
+2014-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Text.h:
+	* Text.cpp:
+	* FontStyle.h:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp: 
+
 2014-07-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp: 

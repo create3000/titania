@@ -119,10 +119,72 @@ private:
 	void
 	connectMaxExtent (const X3D::SFFloat &);
 
+	///  @name fontStyle
+
+	void
+	on_fontStyle_changed ();
+
+	void
+	set_fontStyle ();
+
+	void
+	connectFontStyle (const X3D::SFNode &);
+
+	///  @name family
+
+	virtual
+	void
+	on_family_changed () final override;
+
+	virtual
+	void
+	on_family_edited (const Glib::ustring &, const Glib::ustring &) final override;
+
+	virtual
+	bool
+	on_family_button_release_event (GdkEventButton*) final override;
+
+	virtual
+	void
+	on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
+	                              int, int,
+	                              const Gtk::SelectionData &,
+	                              guint,
+	                              guint) final override;
+
+	virtual
+	void
+	on_add_family_clicked () final override;
+
+	virtual
+	void
+	on_remove_family_clicked () final override;
+
+	void
+	openFontChooserDialog (const int);
+
+	void
+	set_family ();
+
+	void
+	connectFamily (const X3D::MFString &);
+
+	///  @name fontStyle
+
+	void
+	on_size_changed ();
+
+	void
+	set_size ();
+
+	void
+	connectSize (const X3D::SFFloat &);
+
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 	X3D::X3DPtr <X3D::Text>              text;
+	X3D::X3DPtr <X3D::X3DFontStyleNode>  fontStyleNode;
 	UndoStepPtr                          undoStep;
 	bool                                 changing;
 

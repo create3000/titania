@@ -78,7 +78,8 @@ public:
 
 	virtual
 	Matrix4f
-	getMatrix () const final override;
+	getMatrix () const final override
+	{ return matrix; }
 
 	virtual
 	void
@@ -119,8 +120,7 @@ private:
 	Vector3f max;
 	Box3f    bbox;
 	
-	Matrix4d modelViewMatrix;
-	Matrix4d screenMatrix;
+	Matrix4d matrix;
 
 };
 
@@ -166,6 +166,16 @@ public:
 	const SFFloat &
 	pointSize () const
 	{ return *fields .pointSize; }
+
+	virtual
+	SFFloat &
+	size () final override
+	{ return pointSize (); }
+
+	virtual
+	const SFFloat &
+	size () const final override
+	{ return pointSize (); }
 
 	///  @name Member access
 

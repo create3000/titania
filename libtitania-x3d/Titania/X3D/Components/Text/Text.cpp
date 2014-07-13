@@ -76,8 +76,8 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	   textGeometry (),
-	  fontStyleNode ()
+	  fontStyleNode (),
+	   textGeometry ()
 {
 	addType (X3DConstants::Text);
 
@@ -155,7 +155,7 @@ Text::build ()
 
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
-	const Box3f bbox = textGeometry -> getBBox ();
+	const Box3f bbox = textGeometry -> X3DTextGeometry::getBBox ();
 
 	/* const */ Vector3f min, max;
 	bbox .extents (min, max);

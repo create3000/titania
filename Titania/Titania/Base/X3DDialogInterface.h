@@ -87,6 +87,13 @@ protected:
 	saveSession () override;
 
 
+protected:
+
+	static
+	void
+	setupGridLabels (Gtk::Widget &);
+
+
 private:
 	
 	void
@@ -94,10 +101,6 @@ private:
 
 	void
 	saveExpander (Gtk::Widget &);
-
-	static
-	void
-	setupGridLabels (Gtk::Widget &);
 
 	static
 	void
@@ -114,12 +117,12 @@ template <class Type>
 void
 X3DDialogInterface::getWidgets (Gtk::Widget* widget, std::vector <Type*> & types)
 {
-	Type* type = dynamic_cast <Type*> (widget);
+	Type* const type = dynamic_cast <Type*> (widget);
 	
 	if (type)
 		types .emplace_back (type);
 
-	auto container = dynamic_cast <Gtk::Container*> (widget);
+	const auto container = dynamic_cast <Gtk::Container*> (widget);
 	
 	if (container)
 	{

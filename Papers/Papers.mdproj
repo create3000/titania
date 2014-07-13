@@ -281,6 +281,7 @@
     <Compile Include="V8\v8Context.cpp" />
     <Compile Include="V8\v8Globals.cpp" />
     <Compile Include="V8.cpp" />
+    <Compile Include="xxx\TextEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CosmoWorlds\icons\Fields.xcf" />

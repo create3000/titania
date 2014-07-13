@@ -77,8 +77,12 @@ public:
 	getWidgetName () const { return m_widgetName; }
 
 	void
-	updateWidget (const std::string & name) const
+	updateWidget (const Glib::ustring & name) const
 	{ getBuilder () -> add_from_file (filename, name); }
+
+	void
+	updateWidgets (const std::vector <Glib::ustring> & names) const
+	{ getBuilder () -> add_from_file (filename, names); }
 
 	template <class Type>
 	Type*

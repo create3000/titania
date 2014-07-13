@@ -1,200 +1,85 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.1
 
 META "title" "Text test"
 
-PROTO LineRectangle2D [ ]
-{
-  IndexedLineSet {
-    coordIndex [ 0, 1, 2, 3, 0, -1 ]
-    coord Coordinate {
-      point [ -0.5 -0.5 0, 0.5 -0.5 0, 0.5 0.5 0, -0.5 0.5 0 ]
-    }
-  }
-}
-
-PROTO BBox2 [
-  exposedField SFVec3f translation 0 0 0
-  exposedField SFVec3f scale 1 1 1
-  exposedField SFColor color 1 1 1
-]
-{
-  Transform {
-    translation IS translation
-    scale IS scale
-    children Transform {
-      translation 0.5 -0.5 0
-      children Shape {
-        appearance Appearance {
-          material Material {
-            emissiveColor IS color
-          }
-        }
-        geometry LineRectangle2D { }
-      }
-    }
-  }
-}
-
-Background {
-  skyColor 0.2 0.2 0.2
-}
-
-Viewpoint {
-  position 0 -0.0839844 21.8746
-  centerOfRotation 0 -0.0839844 0
-}
-
-DEF Lines Shape {
-  appearance Appearance {
-    material Material {
-      diffuseColor 1 0 0
-    }
-  }
-  geometry DEF Text Text {
-    string [ "Hällö Wörld!", "This is my line!", "now a new one." ]
-    length [ 12, 0, 10 ]
-    fontStyle FontStyle {
-      family "SANS"
-      style "BOLDITALIC"
-      justify [ "BEGIN", "BEGIN" ]
-    }
-  }
-}
-
-DEF RedBox Transform {
-  translation -0.5 0.5 0
+DEF Text Transform {
+  translation -5.99367 2.25213 0
   children Shape {
     appearance Appearance {
-      material Material {
-        diffuseColor 1 0 0
+      material TwoSidedMaterial {
+        separateBackColor TRUE
+        ambientIntensity 0.245763
+        diffuseColor 0.288982 0.330084 0.172823
+        specularColor 0.108805 0.0980667 0.0968068
+        shininess 0.0612245
+        backDiffuseColor 1 0 0
+        backShininess 0.199655
       }
     }
-    geometry Box {
-      size 1 1 1
+    geometry Text {
+      string [
+        "Lieber Text,",
+        "",
+        "ich schreib Dir was schönes,",
+        "damit Du nicht so leer",
+        "bist."
+      ]
+      maxExtent 6
+      fontStyle FontStyle {
+        size 0.63
+      }
     }
   }
 }
 
-DEF GreenBox Transform {
-  translation -0.5 -0.5 0
+DEF ScreenText Transform {
+  translation 1.55893 2.25213 0
   children Shape {
     appearance Appearance {
       material Material {
         diffuseColor 0 1 0
       }
     }
-    geometry Box {
-      size 1 1 1
-    }
-  }
-}
-
-DEF BlueBox Transform {
-  translation -0.5 -1.5 0
-  children Shape {
-    appearance Appearance {
-      material Material {
-        diffuseColor 0 0 1
+    geometry Text {
+      string [
+        "Screen",
+        "Text"
+      ]
+      fontStyle ScreenFontStyle {
+        family [
+          "Univers Condensed",
+          "RuniK50",
+          "Chalet",
+          "ChopinScript",
+          "XmasGingerbread",
+          "OfficinaSansBook",
+          "Dorisorange"
+        ]
+        pointSize 24
       }
     }
-    geometry Box {
-      size 1 1 1
-    }
   }
 }
 
-DEF YellowBox Transform {
-  translation 6 1.5 0
-  scale 12 1 1
+DEF Sphere Transform {
+  translation 5.46225 -2.65672 0
+  scale 0.323278 0.323278 0.323278
   children Shape {
     appearance Appearance {
-      material Material {
-        diffuseColor 1 1 0
-      }
+      material Material { }
     }
-    geometry Box {
-      size 1 1 1
-    }
+    geometry Sphere { }
   }
 }
 
-DEF LineBounds Transform {
-  children [
-    BBox2 {
-      scale 12 1 1
-      color 1 0 0
+DEF DefaultText Transform {
+  translation 1.55893 0.120463 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
     }
-    BBox2 {
-      translation 0 -1 0
-      scale 5.28516 1 1
-      color 0 1 0
+    geometry Text {
+      string "3D Text"
     }
-    BBox2 {
-      translation 0 -2 0
-      scale 10 1 1
-      color 0 0 1
-    }
-  ]
+  }
 }
-
-DEF TextBounds Transform {
-  scale 12 2.49588 1
-  children BBox2 { }
-}
-
-DEF Bounds Script {
-  eventIn  MFVec2f set_lineBounds
-  eventIn  SFVec2f set_textBounds
-  eventOut SFVec3f translation_changed
-  eventOut SFVec3f scale_changed
-  field    SFNode  lineBounds USE LineBounds
-  field    MFColor color [ 1 0 0, 0 1 0, 0 0 1 ]
-  field    SFNode  text USE Text
-
-  url "vrmlscript:
-
-function get_majorAlignment (index)
-{
-	if (text .fontStyle .justify [0] == 'END')
-		return text .textBounds .x - text .lineBounds [index] .x;
-		
-	if (text .fontStyle .justify [0] == 'MIDDLE')
-		return (text .textBounds .x - text .lineBounds [index] .x) / 2;
-		
-	return 0;
-}
-
-function set_lineBounds (value, time)
-{
-	var transforms = new MFNode ();
-	
-	var y = 0;
-		
-	for (var i in value)
-	{
-		var transform = Browser .currentScene .createProto ('BBox2');
-		
-		transform .translation = new SFVec3f (get_majorAlignment (i), y, 0);
-		transform .scale       = new SFVec3f (value [i] .x, value [i] .y, 1);
-		transform .color       = color [i % color .length];
-
-		transforms [transforms .length] = transform;
-	
-		y += -value [i] .y ;
-	}
-
-	lineBounds .children = transforms;
-}
-
-function set_textBounds (value, time)
-{
-	scale_changed = new SFVec3f (value .x, value .y, 1);
-}
-  "
-}
-
-ROUTE Text.origin TO LineBounds.set_translation
-ROUTE Text.lineBounds TO Bounds.set_lineBounds
-ROUTE Text.textBounds TO Bounds.set_textBounds
-ROUTE Text.origin TO TextBounds.set_translation
-ROUTE Bounds.scale_changed TO TextBounds.set_scale

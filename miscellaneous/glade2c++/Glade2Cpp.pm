@@ -4,9 +4,13 @@ use strict;
 use warnings;
 use v5.10.0;
 
+binmode STDIN,  ":utf8";
+binmode STDOUT, ":utf8";
+
 use XML::Parser;
 use File::Basename qw (basename dirname);
 use File::Spec;
+use Tie::IxHash;
 
 use constant true  => 1;
 use constant false => 0;
@@ -61,7 +65,11 @@ sub new
 		prototypes         => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
 		windows            => { },
 	};
-	
+
+	tie %{ $self -> {h_signal_handler} },   'Tie::IxHash';
+	tie %{ $self -> {cpp_signal_handler} }, 'Tie::IxHash';
+	tie %{ $self -> {windows} },            'Tie::IxHash';
+
 	bless $self, $class;
 	return $self;
 }
@@ -408,8 +416,12 @@ sub generate
 	say OUT "";
 	
 	# updateWidget
-	say OUT "  void updateWidget (const std::string & name) const";
+	say OUT "  void updateWidget (const Glib::ustring & name) const";
 	say OUT "  { getBuilder () -> add_from_file (filename, name); }";
+	say OUT "";
+
+	say OUT "  void updateWidgets (const std::vector <Glib::ustring> & names) const";
+	say OUT "  { getBuilder () -> add_from_file (filename, names); }";
 	say OUT "";
 
 	# getWidget
@@ -661,3 +673,7 @@ button_press_event
   virtual bool on_button_press_event(GdkEventButton* event);
 color_activated
   virtual void on_color_activated(const Gdk::RGBA& color);
+font_activated
+  virtual void on_font_activated(const Glib::ustring& fontname);
+close
+  virtual void on_close();

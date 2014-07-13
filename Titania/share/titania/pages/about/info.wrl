@@ -1,21 +1,21 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.1
 
 META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:info"
 
 EXTERNPROTO Rotor [
-  inputOutput SFBool     enabled
-  inputOutput SFTime     cycleInterval
-  inputOutput SFVec3f    axis
-  inputOutput SFFloat    angle
-  inputOutput SFBool     loop
-  inputOutput SFTime     startTime
-  inputOutput SFTime     pauseTime
-  inputOutput SFTime     resumeTime
-  inputOutput SFTime     stopTime
-  outputOnly  SFBool     isActive
-  outputOnly  SFTime     cycleTime
-  outputOnly  SFRotation rotation_changed
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFVec3f    axis
+  exposedField SFFloat    angle
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     pauseTime
+  exposedField SFTime     resumeTime
+  exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
+  eventOut     SFTime     cycleTime
+  eventOut     SFRotation rotation_changed
 ]
 "library/Rotor.wrl"
 
@@ -76,7 +76,7 @@ DEF about:info_1 LayerSet {
           children [
             DEF Image Switch {
               whichChoice 1
-              children Shape {
+              choice Shape {
                 appearance Appearance {
                   texture ImageTexture {
                     url "info/info.png"
@@ -139,7 +139,7 @@ DEF about:info_1 LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 1 0.922884
+                      rotation 0 0 -1 1.87781
                       center 5.6 -5.9 0
                       children Inline {
                         url "library/logo.wrl"
@@ -290,7 +290,8 @@ DEF about:info_1 LayerSet {
                         }
                       }
                       geometry DEF VersionNumberText Text {
-                        string "0.6.5"
+                        string "0.7.10"
+                        maxExtent 0.65
                         fontStyle FontStyle {
                           family [
                             "../../fonts/pt-sans/PTN77F.ttf",
@@ -302,7 +303,7 @@ DEF about:info_1 LayerSet {
                       }
                     }
                     DEF VersionNumberScript Script {
-                      initializeOnly SFNode text USE VersionNumberText
+                      field SFNode text USE VersionNumberText
 
                       url "vrmlscript:
 function initialize ()

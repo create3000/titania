@@ -77,8 +77,12 @@ public:
 	getWidgetName () const { return m_widgetName; }
 
 	void
-	updateWidget (const std::string & name) const
+	updateWidget (const Glib::ustring & name) const
 	{ getBuilder () -> add_from_file (filename, name); }
+
+	void
+	updateWidgets (const std::vector <Glib::ustring> & names) const
+	{ getBuilder () -> add_from_file (filename, names); }
 
 	template <class Type>
 	Type*
@@ -91,13 +95,49 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getFamilyListStore () const
+	{ return m_FamilyListStore; }
+
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getMaxExtentAdjustment () const
 	{ return m_MaxExtentAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSizeAdjustment () const
+	{ return m_SizeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSpacingAdjustment () const
+	{ return m_SpacingAdjustment; }
+
 	const Glib::RefPtr <Gtk::TextBuffer> &
 	getStringTextBuffer () const
 	{ return m_StringTextBuffer; }
+
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getFamilySelection () const
+	{ return m_FamilySelection; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFamilyNameColumn () const
+	{ return m_FamilyNameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getFamilyNameCellrendererText () const
+	{ return m_FamilyNameCellrendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFamilyPadColumn () const
+	{ return m_FamilyPadColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFamilyFontColumn () const
+	{ return m_FamilyFontColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getFamilyFontCellrendererPixbuf () const
+	{ return m_FamilyFontCellrendererPixbuf; }
 
 	Gtk::Window &
 	getWindow () const
@@ -127,6 +167,74 @@ public:
 	getLenghtBox () const
 	{ return *m_LenghtBox; }
 
+	Gtk::Box &
+	getFontStyleBox () const
+	{ return *m_FontStyleBox; }
+
+	Gtk::ComboBoxText &
+	getFontStyleButton () const
+	{ return *m_FontStyleButton; }
+
+	Gtk::Grid &
+	getFontStyleNodeBox () const
+	{ return *m_FontStyleNodeBox; }
+
+	Gtk::Label &
+	getSizeLabel () const
+	{ return *m_SizeLabel; }
+
+	Gtk::SpinButton &
+	getSizeSpinButton () const
+	{ return *m_SizeSpinButton; }
+
+	Gtk::SpinButton &
+	getSpacingSpinButton () const
+	{ return *m_SpacingSpinButton; }
+
+	Gtk::CheckButton &
+	getHorizontalCheckButton () const
+	{ return *m_HorizontalCheckButton; }
+
+	Gtk::CheckButton &
+	getLeftToRightCheckButton () const
+	{ return *m_LeftToRightCheckButton; }
+
+	Gtk::CheckButton &
+	getTopToBottomCheckButton () const
+	{ return *m_TopToBottomCheckButton; }
+
+	Gtk::ComboBoxText &
+	getMajorAlignmentButton () const
+	{ return *m_MajorAlignmentButton; }
+
+	Gtk::ComboBoxText &
+	getMinorAlignMentButton () const
+	{ return *m_MinorAlignMentButton; }
+
+	Gtk::ToggleButton &
+	getItalicToggleButton () const
+	{ return *m_ItalicToggleButton; }
+
+	Gtk::ToggleButton &
+	getBoldToggleButton () const
+	{ return *m_BoldToggleButton; }
+
+	Gtk::TreeView &
+	getFamilyTreeView () const
+	{ return *m_FamilyTreeView; }
+
+	Gtk::Button &
+	getAddFamilyButton () const
+	{ return *m_AddFamilyButton; }
+
+	Gtk::Button &
+	getRemoveFamilyButton () const
+	{ return *m_RemoveFamilyButton; }
+
+	Gtk::FontChooserDialog &
+	getFamilyChooserDialog () const
+	{ return *m_FamilyChooserDialog; }
+
 	virtual
 	void
 	on_string_changed () = 0;
@@ -140,6 +248,38 @@ public:
 	on_maxExtent_changed () = 0;
 
 	virtual
+	void
+	on_fontStyle_changed () = 0;
+
+	virtual
+	void
+	on_size_changed () = 0;
+
+	virtual
+	bool
+	on_family_button_release_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
+	on_family_changed () = 0;
+
+	virtual
+	void
+	on_family_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_add_family_clicked () = 0;
+
+	virtual
+	void
+	on_remove_family_clicked () = 0;
+
+	virtual
 	~X3DTextEditorInterface ();
 
 
@@ -150,17 +290,43 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_MaxExtentAdjustment;
-	Glib::RefPtr <Gtk::TextBuffer> m_StringTextBuffer;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::CheckButton*              m_TextCheckButton;
-	Gtk::Grid*                     m_TextBox;
-	Gtk::SpinButton*               m_MaxExtentSpinButton;
-	Gtk::TextView*                 m_StringTextView;
-	Gtk::Box*                      m_LenghtBox;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::ListStore>          m_FamilyListStore;
+	Glib::RefPtr <Gtk::Adjustment>         m_MaxExtentAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SizeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SpacingAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer>         m_StringTextBuffer;
+	Glib::RefPtr <Gtk::TreeSelection>      m_FamilySelection;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_FamilyNameColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_FamilyNameCellrendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_FamilyPadColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_FamilyFontColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_FamilyFontCellrendererPixbuf;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::CheckButton*                      m_TextCheckButton;
+	Gtk::Grid*                             m_TextBox;
+	Gtk::SpinButton*                       m_MaxExtentSpinButton;
+	Gtk::TextView*                         m_StringTextView;
+	Gtk::Box*                              m_LenghtBox;
+	Gtk::Box*                              m_FontStyleBox;
+	Gtk::ComboBoxText*                     m_FontStyleButton;
+	Gtk::Grid*                             m_FontStyleNodeBox;
+	Gtk::Label*                            m_SizeLabel;
+	Gtk::SpinButton*                       m_SizeSpinButton;
+	Gtk::SpinButton*                       m_SpacingSpinButton;
+	Gtk::CheckButton*                      m_HorizontalCheckButton;
+	Gtk::CheckButton*                      m_LeftToRightCheckButton;
+	Gtk::CheckButton*                      m_TopToBottomCheckButton;
+	Gtk::ComboBoxText*                     m_MajorAlignmentButton;
+	Gtk::ComboBoxText*                     m_MinorAlignMentButton;
+	Gtk::ToggleButton*                     m_ItalicToggleButton;
+	Gtk::ToggleButton*                     m_BoldToggleButton;
+	Gtk::TreeView*                         m_FamilyTreeView;
+	Gtk::Button*                           m_AddFamilyButton;
+	Gtk::Button*                           m_RemoveFamilyButton;
+	Gtk::FontChooserDialog*                m_FamilyChooserDialog;
 
 };
 

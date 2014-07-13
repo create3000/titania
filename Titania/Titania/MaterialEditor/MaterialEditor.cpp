@@ -170,6 +170,8 @@ MaterialEditor::set_selection ()
 	set_material ();
 }
 
+// Preview
+
 void
 MaterialEditor::set_preview ()
 {
@@ -276,6 +278,8 @@ MaterialEditor::set_whichChoice (const int32_t value)
 	{ }
 }
 
+// Material
+
 void
 MaterialEditor::on_material_changed ()
 {
@@ -298,6 +302,8 @@ MaterialEditor::on_material_changed ()
 
 	if (changing)
 		return;
+
+	// Copy material.
 
 	switch (getMaterialButton () .get_active_row_number ())
 	{
@@ -346,6 +352,8 @@ MaterialEditor::on_material_changed ()
 	}
 
 	isTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
+	
+	// Set field.
 
 	addUndoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
