@@ -680,7 +680,7 @@ TextEditor::openFontChooserDialog (const int index)
 	if (response_id == Gtk::RESPONSE_OK)
 	{
 		auto &     field           = fontStyleNode -> family ();
-		const auto fontDescription = getFamilyChooserDialog () .get_font_desc ();
+		const auto fontDescription = familyChooserDialog -> get_font_desc ();
 		const auto value           = fontDescription .get_family ();
 	
 		if (index == -1)
@@ -731,8 +731,6 @@ TextEditor::openFontChooserDialog (const int index)
 void
 TextEditor::set_family ()
 {
-	getFamilyChooserDialog () .hide ();
-
 	getFamilyListStore () -> clear ();
 
 	for (const auto & familyName : fontStyleNode -> family ())

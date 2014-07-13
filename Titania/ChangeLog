@@ -1,5 +1,11 @@
 2014-07-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextEditor.cpp:
+	* Text.x3dv:
+	* IndexedFaceSet.x3dv: 
+
+2014-07-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextEditor.h:
 	* X3DDialogInterface.h:
 	* TextEditor.cpp:

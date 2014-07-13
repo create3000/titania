@@ -3,7 +3,6 @@
 Transform {
   children Shape {
     geometry DEF Cube IndexedFaceSet {
-      solid FALSE
       colorPerVertex FALSE
       texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
       colorIndex [ 0, 1, 2, 3, 4, 5 ]
