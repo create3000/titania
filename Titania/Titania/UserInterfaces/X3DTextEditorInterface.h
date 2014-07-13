@@ -256,6 +256,22 @@ public:
 	on_size_changed () = 0;
 
 	virtual
+	void
+	on_spacing_changed () = 0;
+
+	virtual
+	void
+	on_horizontal_toggled () = 0;
+
+	virtual
+	void
+	on_leftToRight_toggled () = 0;
+
+	virtual
+	void
+	on_topToBottom_toggled () = 0;
+
+	virtual
 	bool
 	on_family_button_release_event (GdkEventButton* event) = 0;
 

@@ -137,6 +137,12 @@ X3DTextEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::SpinButton with id 'SizeSpinButton'.
 	m_SizeSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
+	m_SpacingSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_spacing_changed));
+
+	// Connect object Gtk::CheckButton with id 'HorizontalCheckButton'.
+	m_HorizontalCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_horizontal_toggled));
+	m_LeftToRightCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_leftToRight_toggled));
+	m_TopToBottomCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_topToBottom_toggled));
 
 	// Connect object Gtk::TreeView with id 'FamilyTreeView'.
 	m_FamilyTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_button_release_event));

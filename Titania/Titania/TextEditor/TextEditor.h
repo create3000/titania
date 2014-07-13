@@ -110,8 +110,9 @@ private:
 
 	///  @name maxExtent
 
+	virtual
 	void
-	on_maxExtent_changed ();
+	on_maxExtent_changed () final override;
 
 	void
 	set_maxExtent ();
@@ -121,8 +122,9 @@ private:
 
 	///  @name fontStyle
 
+	virtual
 	void
-	on_fontStyle_changed ();
+	on_fontStyle_changed () final override;
 
 	void
 	set_fontStyle ();
@@ -169,16 +171,65 @@ private:
 	void
 	connectFamily (const X3D::MFString &);
 
-	///  @name fontStyle
+	///  @name size
 
+	virtual
 	void
-	on_size_changed ();
+	on_size_changed () final override;
 
 	void
 	set_size ();
 
 	void
 	connectSize (const X3D::SFFloat &);
+
+	///  @name spacing
+
+	virtual
+	void
+	on_spacing_changed () final override;
+
+	void
+	set_spacing ();
+
+	void
+	connectSpacing (const X3D::SFFloat &);
+
+	///  @name horizontal
+
+	virtual
+	void
+	on_horizontal_toggled () final override;
+
+	void
+	set_horizontal ();
+
+	void
+	connectHorizontal (const X3D::SFBool &);
+
+	///  @name leftToRight
+
+	virtual
+	void
+	on_leftToRight_toggled () final override;
+
+	void
+	set_leftToRight ();
+
+	void
+	connectLeftToRight (const X3D::SFBool &);
+
+	///  @name topToBottom
+
+	virtual
+	void
+	on_topToBottom_toggled () final override;
+
+	void
+	set_topToBottom ();
+
+	void
+	connectTopToBottom (const X3D::SFBool &);
 
 	///  @name Members
 

@@ -27,6 +27,7 @@ DEF Text Transform {
       maxExtent 6
       fontStyle FontStyle {
         size 0.63
+        spacing 1.44
       }
     }
   }
@@ -56,6 +57,7 @@ DEF ScreenText Transform {
           "Dorisorange"
         ]
         pointSize 24
+        topToBottom FALSE
       }
     }
   }

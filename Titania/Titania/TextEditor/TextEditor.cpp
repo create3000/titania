@@ -427,8 +427,12 @@ TextEditor::set_fontStyle ()
 {
 	if (fontStyleNode)
 	{
-		fontStyleNode -> family () .removeInterest (this, &TextEditor::set_family);
-		fontStyleNode -> size ()   .removeInterest (this, &TextEditor::set_size);
+		fontStyleNode -> family ()      .removeInterest (this, &TextEditor::set_family);
+		fontStyleNode -> size ()        .removeInterest (this, &TextEditor::set_size);
+		fontStyleNode -> spacing ()     .removeInterest (this, &TextEditor::set_spacing);
+		fontStyleNode -> horizontal ()  .removeInterest (this, &TextEditor::set_horizontal);
+		fontStyleNode -> leftToRight () .removeInterest (this, &TextEditor::set_leftToRight);
+		fontStyleNode -> topToBottom () .removeInterest (this, &TextEditor::set_topToBottom);
 	}
 
 	changing = true;
@@ -468,11 +472,19 @@ TextEditor::set_fontStyle ()
 
 	changing = false;
 	
-	fontStyleNode -> family () .addInterest (this, &TextEditor::set_family);
-	fontStyleNode -> size ()   .addInterest (this, &TextEditor::set_size);
+	fontStyleNode -> family ()      .addInterest (this, &TextEditor::set_family);
+	fontStyleNode -> size ()        .addInterest (this, &TextEditor::set_size);
+	fontStyleNode -> spacing ()     .addInterest (this, &TextEditor::set_spacing);
+	fontStyleNode -> horizontal ()  .addInterest (this, &TextEditor::set_horizontal);
+	fontStyleNode -> leftToRight () .addInterest (this, &TextEditor::set_leftToRight);
+	fontStyleNode -> topToBottom () .addInterest (this, &TextEditor::set_topToBottom);
 	
 	set_family ();
 	set_size ();
+	set_spacing ();
+	set_horizontal ();
+	set_leftToRight ();
+	set_topToBottom ();
 }
 
 void
@@ -784,6 +796,162 @@ TextEditor::connectSize (const X3D::SFFloat & field)
 {
 	field .removeInterest (this, &TextEditor::connectSize);
 	field .addInterest (this, &TextEditor::set_size);
+}
+
+/***********************************************************************************************************************
+ *
+ *  spacing
+ *
+ **********************************************************************************************************************/
+
+void
+TextEditor::on_spacing_changed ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (fontStyleNode, fontStyleNode -> spacing (), undoStep);
+
+	fontStyleNode -> spacing () = getSpacingSpinButton () .get_value ();
+
+	fontStyleNode -> spacing () .removeInterest (this, &TextEditor::set_spacing);
+	fontStyleNode -> spacing () .addInterest (this, &TextEditor::connectSpacing);
+
+	addRedoFunction (fontStyleNode -> spacing (), undoStep);
+}
+
+void
+TextEditor::set_spacing ()
+{
+	changing = true;
+
+	getSpacingSpinButton () .set_value (fontStyleNode -> spacing ());
+
+	changing = false;
+}
+
+void
+TextEditor::connectSpacing (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &TextEditor::connectSpacing);
+	field .addInterest (this, &TextEditor::set_spacing);
+}
+
+/***********************************************************************************************************************
+ *
+ *  horizontal
+ *
+ **********************************************************************************************************************/
+
+void
+TextEditor::on_horizontal_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (fontStyleNode, fontStyleNode -> horizontal (), undoStep);
+
+	fontStyleNode -> horizontal () = getHorizontalCheckButton () .get_active ();
+
+	fontStyleNode -> horizontal () .removeInterest (this, &TextEditor::set_horizontal);
+	fontStyleNode -> horizontal () .addInterest (this, &TextEditor::connectHorizontal);
+
+	addRedoFunction (fontStyleNode -> horizontal (), undoStep);
+}
+
+void
+TextEditor::set_horizontal ()
+{
+	changing = true;
+
+	getHorizontalCheckButton () .set_active (fontStyleNode -> horizontal ());
+
+	changing = false;
+}
+
+void
+TextEditor::connectHorizontal (const X3D::SFBool & field)
+{
+	field .removeInterest (this, &TextEditor::connectHorizontal);
+	field .addInterest (this, &TextEditor::set_horizontal);
+}
+
+/***********************************************************************************************************************
+ *
+ *  leftToRight
+ *
+ **********************************************************************************************************************/
+
+void
+TextEditor::on_leftToRight_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (fontStyleNode, fontStyleNode -> leftToRight (), undoStep);
+
+	fontStyleNode -> leftToRight () = getLeftToRightCheckButton () .get_active ();
+
+	fontStyleNode -> leftToRight () .removeInterest (this, &TextEditor::set_leftToRight);
+	fontStyleNode -> leftToRight () .addInterest (this, &TextEditor::connectLeftToRight);
+
+	addRedoFunction (fontStyleNode -> leftToRight (), undoStep);
+}
+
+void
+TextEditor::set_leftToRight ()
+{
+	changing = true;
+
+	getLeftToRightCheckButton () .set_active (fontStyleNode -> leftToRight ());
+
+	changing = false;
+}
+
+void
+TextEditor::connectLeftToRight (const X3D::SFBool & field)
+{
+	field .removeInterest (this, &TextEditor::connectLeftToRight);
+	field .addInterest (this, &TextEditor::set_leftToRight);
+}
+
+/***********************************************************************************************************************
+ *
+ *  topToBottom
+ *
+ **********************************************************************************************************************/
+
+void
+TextEditor::on_topToBottom_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (fontStyleNode, fontStyleNode -> topToBottom (), undoStep);
+
+	fontStyleNode -> topToBottom () = getTopToBottomCheckButton () .get_active ();
+
+	fontStyleNode -> topToBottom () .removeInterest (this, &TextEditor::set_topToBottom);
+	fontStyleNode -> topToBottom () .addInterest (this, &TextEditor::connectTopToBottom);
+
+	addRedoFunction (fontStyleNode -> topToBottom (), undoStep);
+}
+
+void
+TextEditor::set_topToBottom ()
+{
+	changing = true;
+
+	getTopToBottomCheckButton () .set_active (fontStyleNode -> topToBottom ());
+
+	changing = false;
+}
+
+void
+TextEditor::connectTopToBottom (const X3D::SFBool & field)
+{
+	field .removeInterest (this, &TextEditor::connectTopToBottom);
+	field .addInterest (this, &TextEditor::set_topToBottom);
 }
 
 TextEditor::~TextEditor ()
