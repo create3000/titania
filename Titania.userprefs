@@ -3,22 +3,18 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="459" Column="54" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="260" Column="6" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="1094" Column="44" />
-      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="631" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="579" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="161" Column="1" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="297" Column="52" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="699" Column="1" />
+      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="613" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
             <Node name="uncrustify-all" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
@@ -43,11 +39,17 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Layout" expanded="True" />
                   <Node name="Text" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -70,9 +72,7 @@
               <Node name="GeometryPropertiesEditor" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="TextEditor" expanded="True">
-                <Node name="TextEditor.cpp" selected="True" />
-              </Node>
+              <Node name="TextEditor" expanded="True" />
               <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>

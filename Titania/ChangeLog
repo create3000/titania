@@ -1,5 +1,11 @@
 2014-07-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextEditor.cpp:
+	* TextEditor.xml:
+	* NodePropertiesEditor.cpp: 
+
+2014-07-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Console.xml:
 	* LibraryView.xml:
 	* TextEditor.cpp:

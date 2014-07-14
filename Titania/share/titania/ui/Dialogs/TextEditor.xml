@@ -809,6 +809,7 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <property name="font">Serif 10</property>
     <property name="preview_text">The quick brown fox jumps over the lazy dog.</property>
     <child internal-child="vbox">

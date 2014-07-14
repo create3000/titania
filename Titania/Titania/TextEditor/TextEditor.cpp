@@ -689,14 +689,14 @@ TextEditor::openFontChooserDialog (const int index)
 	fontDescription .set_family (family);
 	
 	// Run Dialog
+	
 
 	updateWidget ("FamilyChooserDialog");
 	const auto familyChooserDialog = getWidget <Gtk::FontChooserDialog> ("FamilyChooserDialog");
 
-	familyChooserDialog -> set_modal (true);
-	familyChooserDialog -> set_transient_for (getWindow ());
 	familyChooserDialog -> set_font_desc (fontDescription);
 
+	getWindow () .set_sensitive (false);
 	const auto response_id = familyChooserDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
@@ -748,6 +748,7 @@ TextEditor::openFontChooserDialog (const int index)
 	}
 
 	delete familyChooserDialog;
+	getWindow () .set_sensitive (true);
 }
 
 void

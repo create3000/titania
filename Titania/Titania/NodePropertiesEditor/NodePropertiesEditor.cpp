@@ -431,6 +431,7 @@ NodePropertiesEditor::on_user_defined_field_activated (const Gtk::TreeModel::Pat
 	getFieldNameEntry () .set_text (userDefinedField -> getName ());
 	on_field_name_changed ();
 
+	getWindow () .set_sensitive (false);
 	getUserDefinedFieldDialog () .set_title (_ ("Edit User Defined Field"));
 	getUserDefinedFieldDialog () .present ();
 
@@ -447,6 +448,7 @@ NodePropertiesEditor::on_add_user_defined_field_clicked ()
 	getFieldNameEntry () .set_text ("");
 	on_field_name_changed ();
 
+	getWindow () .set_sensitive (false);
 	getUserDefinedFieldDialog () .set_title (_ ("Add User Defined Field"));
 	getUserDefinedFieldDialog () .present ();
 
@@ -558,6 +560,7 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 	try
 	{
 		getUserDefinedFieldDialog () .hide ();
+		getWindow () .set_sensitive (true);
 
 		if (editUserDefinedField)
 		{
@@ -594,6 +597,7 @@ void
 NodePropertiesEditor::on_add_field_cancel_clicked ()
 {
 	getUserDefinedFieldDialog () .hide ();
+	getWindow () .set_sensitive (true);
 }
 
 bool
@@ -909,6 +913,7 @@ NodePropertiesEditor::on_exported_node_activated (const Gtk::TreeModel::Path & p
 	getExportedNameEntry () .set_text (exportedName);
 	on_exported_name_changed ();
 
+	getWindow () .set_sensitive (false);
 	getExportedNodeDialog () .set_title (_ ("Edit Exported Node"));
 	getExportedNodeDialog () .present ();
 }
@@ -921,6 +926,7 @@ NodePropertiesEditor::on_add_exported_node ()
 	getExportedNameEntry () .set_text (getNameEntry () .get_text ());
 	on_exported_name_changed ();
 
+	getWindow () .set_sensitive (false);
 	getExportedNodeDialog () .set_title (_ ("Add Exported Node"));
 	getExportedNodeDialog () .present ();
 }
@@ -967,6 +973,7 @@ void
 NodePropertiesEditor::on_exported_node_ok_clicked ()
 {
 	getExportedNodeDialog () .hide ();
+	getWindow () .set_sensitive (true);
 
 	const std::string exportedName = getExportedNameEntry () .get_text ();
 
@@ -1003,6 +1010,7 @@ void
 NodePropertiesEditor::on_exported_node_cancel_clicked ()
 {
 	getExportedNodeDialog () .hide ();
+	getWindow () .set_sensitive (true);
 }
 
 bool
