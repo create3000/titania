@@ -1,15 +1,15 @@
 #!/usr/bin/perl
+
 package Glade2Cpp;
 use strict;
 use warnings;
 use v5.10.0;
-
-binmode STDIN,  ":utf8";
-binmode STDOUT, ":utf8";
+use open qw/:std :utf8/;
 
 use XML::Parser;
 use File::Basename qw (basename dirname);
 use File::Spec;
+use File::Compare;
 use Tie::IxHash;
 
 use constant true  => 1;
@@ -71,10 +71,6 @@ sub new
 		prototypes         => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
 		windows            => { },
 	};
-
-	tie %{ $self -> {h_signal_handler} },   'Tie::IxHash';
-	tie %{ $self -> {cpp_signal_handler} }, 'Tie::IxHash';
-	tie %{ $self -> {windows} },            'Tie::IxHash';
 
 	bless $self, $class;
 	return $self;
@@ -353,7 +349,11 @@ sub generate
 	$self -> {class_name}         = "$self->{class_prefix}${name}$self->{class_suffix}";
 	$self -> {windows}            = { }; 
 
-	say $self -> {class_name};
+	tie %{ $self -> {h_signal_handler} },   'Tie::IxHash';
+	tie %{ $self -> {cpp_signal_handler} }, 'Tie::IxHash';
+	tie %{ $self -> {windows} },            'Tie::IxHash';
+
+	print $self -> {class_name}, " ";
 
 	my $h_tmp   = "/tmp/glad2cpp.$name.h";
 	my $h_out   = "$directory/$self->{class_name}.h";
@@ -504,9 +504,10 @@ sub generate
 	#print get_file ($h_tmp);
 
  	system "call_uncrustify.sh", $h_tmp;
-	system "mv", $h_tmp, $h_out
-		if get_file ($h_tmp) ne get_file ($h_out);
+	print compare ($h_tmp, $h_out) != 0, " ";
 
+	system "mv", $h_tmp, $h_out
+		if compare ($h_tmp, $h_out) != 0;
 
 	# Source file
 	open OUT, ">", $cpp_tmp;
@@ -597,8 +598,12 @@ sub generate
 	#print get_file ($cpp_tmp);
 
 	system "call_uncrustify.sh", $cpp_tmp;
+	print compare ($cpp_tmp, $cpp_out) != 0, " ";
+
 	system "mv", $cpp_tmp, $cpp_out
-		if get_file ($cpp_tmp) ne get_file ($cpp_out);
+		if compare ($cpp_tmp, $cpp_out) != 0;
+
+	print "\n";
 }
 
 

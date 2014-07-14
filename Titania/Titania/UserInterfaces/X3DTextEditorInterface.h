@@ -147,6 +147,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Expander &
+	getTextExpander () const
+	{ return *m_TextExpander; }
+
 	Gtk::CheckButton &
 	getTextCheckButton () const
 	{ return *m_TextCheckButton; }
@@ -166,6 +170,10 @@ public:
 	Gtk::Box &
 	getLenghtBox () const
 	{ return *m_LenghtBox; }
+
+	Gtk::Expander &
+	getFontStyleExpander () const
+	{ return *m_FontStyleExpander; }
 
 	Gtk::Box &
 	getFontStyleBox () const
@@ -337,11 +345,13 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_FamilyFontCellrendererPixbuf;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Expander*                         m_TextExpander;
 	Gtk::CheckButton*                      m_TextCheckButton;
 	Gtk::Grid*                             m_TextBox;
 	Gtk::SpinButton*                       m_MaxExtentSpinButton;
 	Gtk::TextView*                         m_StringTextView;
 	Gtk::Box*                              m_LenghtBox;
+	Gtk::Expander*                         m_FontStyleExpander;
 	Gtk::Box*                              m_FontStyleBox;
 	Gtk::ComboBoxText*                     m_FontStyleButton;
 	Gtk::Grid*                             m_FontStyleNodeBox;

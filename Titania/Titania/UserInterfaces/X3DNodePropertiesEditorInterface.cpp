@@ -311,9 +311,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 
 X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()
 {
+	delete m_Window;
 	delete m_ExportedNodeDialog;
 	delete m_UserDefinedFieldDialog;
-	delete m_Window;
 }
 
 } // puck

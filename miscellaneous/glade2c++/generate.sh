@@ -9,7 +9,7 @@ echo "Generating Interfaces\n"
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DUserInterface.h \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
-`find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -name \*.xml;`
+`find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -maxdepth 1 -name \*.xml;`
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
 -v \
@@ -18,4 +18,4 @@ echo "Generating Interfaces\n"
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DEditorInterface.h \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
-`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Dialogs/ -name \*.xml;`
+`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Dialogs/ -maxdepth 1 -name \*.xml;`

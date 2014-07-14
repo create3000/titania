@@ -693,6 +693,8 @@ TextEditor::openFontChooserDialog (const int index)
 	updateWidget ("FamilyChooserDialog");
 	const auto familyChooserDialog = getWidget <Gtk::FontChooserDialog> ("FamilyChooserDialog");
 
+	familyChooserDialog -> set_modal (true);
+	familyChooserDialog -> set_transient_for (getWindow ());
 	familyChooserDialog -> set_font_desc (fontDescription);
 
 	const auto response_id = familyChooserDialog -> run ();

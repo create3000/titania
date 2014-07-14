@@ -1,3 +1,8 @@
+2014-07-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* uncrustify_all.pl:
+	* rename-header-guards.pl: 
+
 2014-07-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* rename-header-guards.pl: 

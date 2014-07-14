@@ -68,6 +68,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
+	m_GeometryExpander -> set_name ("GeometryExpander");
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_SolidCheckButton -> set_name ("SolidCheckButton");
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

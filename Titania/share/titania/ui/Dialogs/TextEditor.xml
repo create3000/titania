@@ -37,6 +37,7 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
+    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -60,7 +61,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkExpander" id="expander1">
+          <object class="GtkExpander" id="TextExpander">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -252,7 +253,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkExpander" id="expander2">
+          <object class="GtkExpander" id="FontStyleExpander">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>

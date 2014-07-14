@@ -1,5 +1,27 @@
 2014-07-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Console.xml:
+	* LibraryView.xml:
+	* TextEditor.cpp:
+	* ViewpointList.xml:
+	* HistoryEditor.xml:
+	* BrowserWindow.xml:
+	* OutlineEditor.xml:
+	* MotionBlurEditor.xml:
+	* TextEditor.xml:
+	* MaterialEditor.xml:
+	* X3DTextEditorInterface.h:
+	* NodePropertiesEditor.xml:
+	* X3DTextEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* GeometryPropertiesEditor.xml:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
+2014-07-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextEditor.h:
 	* TextEditor.cpp:
 	* TextEditor.xml:

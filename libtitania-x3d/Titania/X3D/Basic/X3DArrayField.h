@@ -230,11 +230,9 @@ public:
 
 	///  @name Element access
 
+	template <class Arg>
 	void
-	set1Value (const size_type index, const ValueType &);
-
-	void
-	set1Value (const size_type index, const typename ValueType::internal_type &);
+	set1Value (const size_type index, Arg &&);
 
 	ValueType*
 	get1Value (const size_type);
@@ -525,21 +523,15 @@ X3DArrayField <ValueType>::operator == (const X3DFieldDefinition & field) const
 }
 
 template <class ValueType>
+template <class Arg>
 inline
 void
-X3DArrayField <ValueType>::set1Value (const size_type index, const ValueType & field)
-{
-	set1Value (index, field .getValue ());
-}
-
-template <class ValueType>
-void
-X3DArrayField <ValueType>::set1Value (const size_type index, const typename ValueType::internal_type & value)
+X3DArrayField <ValueType>::set1Value (const size_type index, Arg && value)
 {
 	if (index >= size ())
 		resize (index + 1);
 
-	*get () [index] = value;
+	*get () [index] = std::forward <Arg> (value);
 }
 
 template <class ValueType>

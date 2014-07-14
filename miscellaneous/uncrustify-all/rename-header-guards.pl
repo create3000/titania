@@ -3,9 +3,7 @@
 use strict;
 use warnings;
 use v5.10.0;
-
-binmode STDIN,  ":utf8";
-binmode STDOUT, ":utf8";
+use open qw/:std :utf8/;
 
 use File::Basename qw(basename);
 

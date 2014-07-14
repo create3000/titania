@@ -107,6 +107,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Expander &
+	getGeometryExpander () const
+	{ return *m_GeometryExpander; }
+
 	Gtk::CheckButton &
 	getSolidCheckButton () const
 	{ return *m_SolidCheckButton; }
@@ -191,6 +195,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
 	Gtk::CheckButton*              m_ConvexCheckButton;

@@ -47,6 +47,7 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
+    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -944,10 +945,12 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Back Diffuse Color</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="colorselectiondialog-vbox1">
         <property name="can_focus">False</property>
@@ -1017,10 +1020,12 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Back Emissive Color</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="colorselectiondialog-vbox2">
         <property name="can_focus">False</property>
@@ -1090,10 +1095,12 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Back Specular Color</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="colorselectiondialog-vbox3">
         <property name="can_focus">False</property>
@@ -1163,10 +1170,12 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Diffuse Color</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="colorselectiondialog-vbox4">
         <property name="can_focus">False</property>
@@ -1236,10 +1245,12 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Emissive Color</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="colorselectiondialog-vbox5">
         <property name="can_focus">False</property>
@@ -1309,10 +1320,12 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Specular Color</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <property name="has_resize_grip">False</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="colorselectiondialog-vbox6">
         <property name="can_focus">False</property>
