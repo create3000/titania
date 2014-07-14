@@ -1,3 +1,8 @@
+2014-07-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DFontStyleNode.h:
+	* X3DFontStyleNode.cpp: 
+
 2014-07-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Text.h:

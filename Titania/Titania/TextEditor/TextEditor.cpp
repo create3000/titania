@@ -166,6 +166,8 @@ TextEditor::on_text_toggled ()
 	}
 
 	addRedoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
+
+	set_fontStyle ();
 }
 
 void
@@ -428,11 +430,13 @@ TextEditor::set_fontStyle ()
 	if (fontStyleNode)
 	{
 		fontStyleNode -> family ()      .removeInterest (this, &TextEditor::set_family);
+		fontStyleNode -> style ()       .removeInterest (this, &TextEditor::set_style);
 		fontStyleNode -> size ()        .removeInterest (this, &TextEditor::set_size);
 		fontStyleNode -> spacing ()     .removeInterest (this, &TextEditor::set_spacing);
 		fontStyleNode -> horizontal ()  .removeInterest (this, &TextEditor::set_horizontal);
 		fontStyleNode -> leftToRight () .removeInterest (this, &TextEditor::set_leftToRight);
 		fontStyleNode -> topToBottom () .removeInterest (this, &TextEditor::set_topToBottom);
+		fontStyleNode -> justify ()     .removeInterest (this, &TextEditor::set_justify);
 	}
 
 	changing = true;
@@ -473,18 +477,22 @@ TextEditor::set_fontStyle ()
 	changing = false;
 	
 	fontStyleNode -> family ()      .addInterest (this, &TextEditor::set_family);
+	fontStyleNode -> style ()       .addInterest (this, &TextEditor::set_style);
 	fontStyleNode -> size ()        .addInterest (this, &TextEditor::set_size);
 	fontStyleNode -> spacing ()     .addInterest (this, &TextEditor::set_spacing);
 	fontStyleNode -> horizontal ()  .addInterest (this, &TextEditor::set_horizontal);
 	fontStyleNode -> leftToRight () .addInterest (this, &TextEditor::set_leftToRight);
 	fontStyleNode -> topToBottom () .addInterest (this, &TextEditor::set_topToBottom);
+	fontStyleNode -> justify ()     .addInterest (this, &TextEditor::set_justify);
 	
 	set_family ();
+	set_style ();
 	set_size ();
 	set_spacing ();
 	set_horizontal ();
 	set_leftToRight ();
 	set_topToBottom ();
+	set_justify ();
 }
 
 void
@@ -761,6 +769,82 @@ TextEditor::connectFamily (const X3D::MFString & field)
 
 /***********************************************************************************************************************
  *
+ *  style
+ *
+ **********************************************************************************************************************/
+
+void
+TextEditor::on_bold_toggled ()
+{
+	on_style_toggled ();
+}
+
+void
+TextEditor::on_italic_toggled ()
+{
+	on_style_toggled ();
+}
+
+void
+TextEditor::on_style_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (fontStyleNode, fontStyleNode -> style (), undoStep);
+
+	switch ((getBoldToggleButton () .get_active () << 1) | getItalicToggleButton () .get_active ())
+	{
+		case 0:
+		{
+			fontStyleNode -> style () = "PLAIN";
+			break;
+		}
+		case 1:
+		{
+			fontStyleNode -> style () = "ITALIC";
+			break;
+		}
+		case 2:
+		{
+			fontStyleNode -> style () = "BOLD";
+			break;
+		}
+		case 3:
+		{
+			fontStyleNode -> style () = "BOLDITALIC";
+			break;
+		}
+		default:
+			break;
+	}
+
+	fontStyleNode -> style () .removeInterest (this, &TextEditor::set_style);
+	fontStyleNode -> style () .addInterest (this, &TextEditor::connectStyle);
+
+	addRedoFunction (fontStyleNode -> style (), undoStep);
+}
+
+void
+TextEditor::set_style ()
+{
+	changing = true;
+
+	getBoldToggleButton ()   .set_active (fontStyleNode -> isBold ());
+	getItalicToggleButton () .set_active (fontStyleNode -> isItalic ());
+
+	changing = false;
+}
+
+void
+TextEditor::connectStyle (const X3D::SFString & field)
+{
+	field .removeInterest (this, &TextEditor::connectStyle);
+	field .addInterest (this, &TextEditor::set_style);
+}
+
+/***********************************************************************************************************************
+ *
  *  size or pointSize
  *
  **********************************************************************************************************************/
@@ -952,6 +1036,81 @@ TextEditor::connectTopToBottom (const X3D::SFBool & field)
 {
 	field .removeInterest (this, &TextEditor::connectTopToBottom);
 	field .addInterest (this, &TextEditor::set_topToBottom);
+}
+
+/***********************************************************************************************************************
+ *
+ *  justify
+ *
+ **********************************************************************************************************************/
+
+void
+TextEditor::on_majorAlignment_changed ()
+{
+	on_justify_changed ();
+}
+
+void
+TextEditor::on_minorAlignment_changed ()
+{
+	on_justify_changed ();
+}
+
+void
+TextEditor::on_justify_changed ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (fontStyleNode, fontStyleNode -> justify (), undoStep);
+
+	fontStyleNode -> justify () .set1Value (0, getMajorAlignmentButton () .get_active_text ());
+	fontStyleNode -> justify () .set1Value (1, getMinorAlignmentButton () .get_active_text ());
+
+	fontStyleNode -> justify () .removeInterest (this, &TextEditor::set_justify);
+	fontStyleNode -> justify () .addInterest (this, &TextEditor::connectJustify);
+
+	addRedoFunction (fontStyleNode -> justify (), undoStep);
+}
+
+void
+TextEditor::set_justify ()
+{
+	static const std::map <std::string, int> alignments = {
+		std::make_pair ("FIRST",  0),
+		std::make_pair ("BEGIN",  1),
+		std::make_pair ("MIDDLE", 2),
+		std::make_pair ("END",    3)
+	};
+
+	changing = true;
+
+	try
+	{
+		getMajorAlignmentButton () .set_active (alignments .at (fontStyleNode -> justify () .at (0)));
+	}
+	catch (const std::out_of_range &)
+	{
+		getMajorAlignmentButton () .set_active (1);
+	}
+
+	try
+	{
+		getMinorAlignmentButton () .set_active (alignments .at (fontStyleNode -> justify () .at (1)));
+	}
+	catch (const std::out_of_range &)
+	{
+		getMinorAlignmentButton () .set_active (0);
+	}
+
+	changing = false;
+}
+
+void
+TextEditor::connectJustify (const X3D::MFString & field)
+{
+	field .removeInterest (this, &TextEditor::connectJustify);
+	field .addInterest (this, &TextEditor::set_justify);
 }
 
 TextEditor::~TextEditor ()

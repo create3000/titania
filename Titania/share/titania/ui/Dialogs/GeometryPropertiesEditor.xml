@@ -324,17 +324,17 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <items>
-                      <item translatable="yes">SPHERE</item>
-                      <item translatable="yes">SPHERE-LOCAL</item>
-                      <item translatable="yes">SPHERE-REFLECT</item>
-                      <item translatable="yes">SPHERE-REFLECT-LOCAL</item>
-                      <item translatable="yes">CAMERASPACENORMAL</item>
-                      <item translatable="yes">CAMERASPACEPOSITION</item>
-                      <item translatable="yes">CAMERASPACEREFLECTIONVECTOR</item>
-                      <item translatable="yes">COORD-EYE</item>
-                      <item translatable="yes">COORD</item>
-                      <item translatable="yes">NOISE-EYE</item>
-                      <item translatable="yes">NOISE</item>
+                      <item>SPHERE</item>
+                      <item>SPHERE-LOCAL</item>
+                      <item>SPHERE-REFLECT</item>
+                      <item>SPHERE-REFLECT-LOCAL</item>
+                      <item>CAMERASPACENORMAL</item>
+                      <item>CAMERASPACEPOSITION</item>
+                      <item>CAMERASPACEREFLECTIONVECTOR</item>
+                      <item>COORD-EYE</item>
+                      <item>COORD</item>
+                      <item>NOISE-EYE</item>
+                      <item>NOISE</item>
                     </items>
                     <signal name="changed" handler="on_textureCoordinateGenerator_mode_changed" swapped="no"/>
                   </object>

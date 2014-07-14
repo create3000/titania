@@ -170,7 +170,11 @@ MaterialEditor::set_selection ()
 	set_material ();
 }
 
-// Preview
+/***********************************************************************************************************************
+ *
+ *  Preview
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::set_preview ()
@@ -278,7 +282,11 @@ MaterialEditor::set_whichChoice (const int32_t value)
 	{ }
 }
 
-// Material
+/***********************************************************************************************************************
+ *
+ *  Material
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::on_material_changed ()
@@ -574,7 +582,11 @@ MaterialEditor::connectMaterial (const X3D::SFNode & field)
 *
 * ********************************************************************************************************************/
 
-// Front diffuse color
+/***********************************************************************************************************************
+ *
+ *  diffuseColor
+ *
+ **********************************************************************************************************************/
 
 bool
 MaterialEditor::on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -612,7 +624,11 @@ MaterialEditor::connectDiffuseColor (const X3D::SFColor & field)
 	field .addInterest (this, &MaterialEditor::set_diffuseColor);
 }
 
-// Front specular color
+/***********************************************************************************************************************
+ *
+ *  specularColor
+ *
+ **********************************************************************************************************************/
 
 bool
 MaterialEditor::on_specular_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -650,7 +666,11 @@ MaterialEditor::connectSpecularColor (const X3D::SFColor & field)
 	field .addInterest (this, &MaterialEditor::set_specularColor);
 }
 
-// Front emissive color
+/***********************************************************************************************************************
+ *
+ *  emissiveColor
+ *
+ **********************************************************************************************************************/
 
 bool
 MaterialEditor::on_emissive_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -688,7 +708,11 @@ MaterialEditor::connectEmissiveColor (const X3D::SFColor & field)
 	field .addInterest (this, &MaterialEditor::set_emissiveColor);
 }
 
-// Front scale widgets
+/***********************************************************************************************************************
+ *
+ *  ambientIntensity
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::on_ambient_text_changed ()
@@ -746,6 +770,12 @@ MaterialEditor::connectAmbient (const X3D::SFFloat & field)
 	field .addInterest (this, &MaterialEditor::set_ambient);
 }
 
+/***********************************************************************************************************************
+ *
+ *  shininess
+ *
+ **********************************************************************************************************************/
+
 void
 MaterialEditor::on_shininess_text_changed ()
 {
@@ -801,6 +831,12 @@ MaterialEditor::connectShininess (const X3D::SFFloat & field)
 	field .removeInterest (this, &MaterialEditor::connectShininess);
 	field .addInterest (this, &MaterialEditor::set_shininess);
 }
+
+/***********************************************************************************************************************
+ *
+ *  ransparency
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::on_transparency_text_changed ()
@@ -864,7 +900,11 @@ MaterialEditor::connectTransparency (const X3D::SFFloat & field)
 *
 * ********************************************************************************************************************/
 
-// Separate back color
+/***********************************************************************************************************************
+ *
+ *  separateBackColor
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::on_separateBackColor_toggled ()
@@ -899,7 +939,11 @@ MaterialEditor::connectSeparateBackColor (const X3D::SFBool & field)
 	field .addInterest (this, &MaterialEditor::set_separateBackColor);
 }
 
-// Back diffuse color
+/***********************************************************************************************************************
+ *
+ *  backDiffuseColor
+ *
+ **********************************************************************************************************************/
 
 bool
 MaterialEditor::on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -937,7 +981,11 @@ MaterialEditor::connectBackDiffuseColor (const X3D::SFColor & field)
 	field .addInterest (this, &MaterialEditor::set_backDiffuseColor);
 }
 
-// Back specular color
+/***********************************************************************************************************************
+ *
+ *  backSpecularColor
+ *
+ **********************************************************************************************************************/
 
 bool
 MaterialEditor::on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -975,7 +1023,11 @@ MaterialEditor::connectBackSpecularColor (const X3D::SFColor & field)
 	field .addInterest (this, &MaterialEditor::set_backSpecularColor);
 }
 
-// Back emissive color
+/***********************************************************************************************************************
+ *
+ *  backEmissiveColor
+ *
+ **********************************************************************************************************************/
 
 bool
 MaterialEditor::on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -1013,7 +1065,11 @@ MaterialEditor::connectBackEmissiveColor (const X3D::SFColor & field)
 	field .addInterest (this, &MaterialEditor::set_backEmissiveColor);
 }
 
-// Back scale widgets
+/***********************************************************************************************************************
+ *
+ *  backAmbientIntensity
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::on_backAmbient_text_changed ()
@@ -1071,6 +1127,12 @@ MaterialEditor::connectBackAmbient (const X3D::SFFloat & field)
 	field .addInterest (this, &MaterialEditor::set_backAmbient);
 }
 
+/***********************************************************************************************************************
+ *
+ *  backShininess
+ *
+ **********************************************************************************************************************/
+
 void
 MaterialEditor::on_backShininess_text_changed ()
 {
@@ -1126,6 +1188,12 @@ MaterialEditor::connectBackShininess (const X3D::SFFloat & field)
 	field .removeInterest (this, &MaterialEditor::connectBackShininess);
 	field .addInterest (this, &MaterialEditor::set_backShininess);
 }
+
+/***********************************************************************************************************************
+ *
+ *  backTransparency
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::on_backTransparency_text_changed ()
@@ -1183,7 +1251,11 @@ MaterialEditor::connectBackTransparency (const X3D::SFFloat & field)
 	field .addInterest (this, &MaterialEditor::set_backTransparency);
 }
 
-// Operations for all colors
+/***********************************************************************************************************************
+ *
+ *  Operations for all colors
+ *
+ **********************************************************************************************************************/
 
 void
 MaterialEditor::initDialog (Gtk::ColorSelectionDialog & dialog, void (MaterialEditor::* callback)())
@@ -1302,7 +1374,11 @@ MaterialEditor::on_value_changed (X3D::SFFloat & backField,
 	}
 }
 
-// Helper functions
+/***********************************************************************************************************************
+ *
+ *  Helper functions
+ *
+ **********************************************************************************************************************/
 
 Gdk::Color
 MaterialEditor::toColor (const X3D::Color3f & value)

@@ -286,6 +286,12 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	}
 }
 
+/***********************************************************************************************************************
+ *
+ *  Validate Id
+ *
+ **********************************************************************************************************************/
+
 void
 NodePropertiesEditor::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
 {
@@ -310,6 +316,12 @@ NodePropertiesEditor::validateId (const std::string & text) const
 	return X3D::RegEx::Id .FullMatch (text) and text not_eq "NULL";
 }
 
+/***********************************************************************************************************************
+ *
+ *  typeName
+ *
+ **********************************************************************************************************************/
+
 void
 NodePropertiesEditor::on_type_name_insert_text (const Glib::ustring & text, int* position)
 {
@@ -322,6 +334,12 @@ NodePropertiesEditor::on_type_name_delete_text (int start_pos, int end_pos)
 	validateIdOnDelete (getTypeNameEntry (), start_pos, end_pos);
 }
 
+/***********************************************************************************************************************
+ *
+ *  name
+ *
+ **********************************************************************************************************************/
+
 void
 NodePropertiesEditor::on_name_insert_text (const Glib::ustring & text, int* position)
 {
@@ -333,6 +351,12 @@ NodePropertiesEditor::on_name_delete_text (int start_pos, int end_pos)
 {
 	validateIdOnDelete (getNameEntry (), start_pos, end_pos);
 }
+
+/***********************************************************************************************************************
+ *
+ *  User defined fields
+ *
+ **********************************************************************************************************************/
 
 void
 NodePropertiesEditor::on_user_defined_field_changed ()
@@ -681,11 +705,23 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 	}
 }
 
+/***********************************************************************************************************************
+ *
+ *  CDATA
+ *
+ **********************************************************************************************************************/
+
 void
 NodePropertiesEditor::on_edit_cdata_clicked ()
 {
 	getBrowserWindow () -> editCDATA (node);
 }
+
+/***********************************************************************************************************************
+ *
+ *  Imported nodes
+ *
+ **********************************************************************************************************************/
 
 void
 NodePropertiesEditor::on_imported_toggled (const Glib::ustring & path)
@@ -847,6 +883,12 @@ NodePropertiesEditor::validateImportedName (const std::string & exportedName, co
 	return true;
 }
 
+/***********************************************************************************************************************
+ *
+ *  Exported nodes
+ *
+ **********************************************************************************************************************/
+
 void
 NodePropertiesEditor::on_exported_node_changed ()
 {
@@ -988,6 +1030,12 @@ NodePropertiesEditor::validateExportedName (const std::string & exportedName)
 
 	return not exportedName .empty ();
 }
+
+/***********************************************************************************************************************
+ *
+ *  Action buttons
+ *
+ **********************************************************************************************************************/
 
 void
 NodePropertiesEditor::on_ok ()
@@ -1302,6 +1350,12 @@ NodePropertiesEditor::on_cancel ()
 {
 	close ();
 }
+
+/***********************************************************************************************************************
+ *
+ *  Undo operations
+ *
+ **********************************************************************************************************************/
 
 void
 NodePropertiesEditor::updateNamedNode (BrowserWindow* const browserWindow, const std::string & name, const X3D::SFNode & node)

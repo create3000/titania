@@ -3,7 +3,7 @@
 META "title" "Text test"
 
 DEF Text Transform {
-  translation -5.99367 2.25213 0
+  translation -6.61719 2.25213 0
   children Shape {
     appearance Appearance {
       material TwoSidedMaterial {
@@ -24,10 +24,16 @@ DEF Text Transform {
         "damit Du nicht so leer",
         "bist."
       ]
-      maxExtent 6
+      maxExtent 7.57
       fontStyle FontStyle {
-        size 0.63
-        spacing 1.44
+        family [
+          "Univers Condensed",
+          "ChopinScript",
+          "SERIF"
+        ]
+        style "BOLDITALIC"
+        size 0.81
+        spacing 0.88
       }
     }
   }
@@ -48,15 +54,17 @@ DEF ScreenText Transform {
       ]
       fontStyle ScreenFontStyle {
         family [
+          "Chalet",
+          "XmasGingerbread",
           "Univers Condensed",
           "RuniK50",
-          "Chalet",
           "ChopinScript",
-          "XmasGingerbread",
           "OfficinaSansBook",
           "Dorisorange"
         ]
+        style "BOLD"
         pointSize 24
+        spacing 1.2
         topToBottom FALSE
       }
     }
@@ -82,6 +90,7 @@ DEF DefaultText Transform {
     }
     geometry Text {
       string "3D Text"
+      fontStyle FontStyle { }
     }
   }
 }

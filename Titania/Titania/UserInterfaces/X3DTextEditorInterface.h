@@ -208,16 +208,16 @@ public:
 	{ return *m_MajorAlignmentButton; }
 
 	Gtk::ComboBoxText &
-	getMinorAlignMentButton () const
-	{ return *m_MinorAlignMentButton; }
-
-	Gtk::ToggleButton &
-	getItalicToggleButton () const
-	{ return *m_ItalicToggleButton; }
+	getMinorAlignmentButton () const
+	{ return *m_MinorAlignmentButton; }
 
 	Gtk::ToggleButton &
 	getBoldToggleButton () const
 	{ return *m_BoldToggleButton; }
+
+	Gtk::ToggleButton &
+	getItalicToggleButton () const
+	{ return *m_ItalicToggleButton; }
 
 	Gtk::TreeView &
 	getFamilyTreeView () const
@@ -270,6 +270,22 @@ public:
 	virtual
 	void
 	on_topToBottom_toggled () = 0;
+
+	virtual
+	void
+	on_majorAlignment_changed () = 0;
+
+	virtual
+	void
+	on_minorAlignment_changed () = 0;
+
+	virtual
+	void
+	on_bold_toggled () = 0;
+
+	virtual
+	void
+	on_italic_toggled () = 0;
 
 	virtual
 	bool
@@ -336,9 +352,9 @@ private:
 	Gtk::CheckButton*                      m_LeftToRightCheckButton;
 	Gtk::CheckButton*                      m_TopToBottomCheckButton;
 	Gtk::ComboBoxText*                     m_MajorAlignmentButton;
-	Gtk::ComboBoxText*                     m_MinorAlignMentButton;
-	Gtk::ToggleButton*                     m_ItalicToggleButton;
+	Gtk::ComboBoxText*                     m_MinorAlignmentButton;
 	Gtk::ToggleButton*                     m_BoldToggleButton;
+	Gtk::ToggleButton*                     m_ItalicToggleButton;
 	Gtk::TreeView*                         m_FamilyTreeView;
 	Gtk::Button*                           m_AddFamilyButton;
 	Gtk::Button*                           m_RemoveFamilyButton;

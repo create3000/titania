@@ -20,9 +20,15 @@ my %windows = ();
 $windows {$_} = true foreach qw(
 	Gtk::Window
 	Gtk::FileChooserDialog
-	Gtk::ColorSelectionDialog
+	Gtk::ColorChooserDialog
+	Gtk::FontChooserDialog
+	Gtk::RecentChooserDialog
+	Gtk::AppChooserDialog
 	Gtk::MessageDialog
+	Gtk::AboutDialog
 	Gtk::Dialog
+	Gtk::Assistant
+	Gtk::ColorSelectionDialog
 );
 
 my %objects = ();
@@ -579,7 +585,7 @@ sub generate
 	# Destructor
 	say OUT "$self->{class_name}\::~$self->{class_name} ()";
 	say OUT "{";
-	say OUT "delete $_;" foreach sort keys %{$self -> {windows}};
+	say OUT "delete $_;" foreach keys %{$self -> {windows}};
 	say OUT "}";
 
 	# Namespaces end

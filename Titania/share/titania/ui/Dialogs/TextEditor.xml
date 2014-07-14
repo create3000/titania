@@ -182,9 +182,11 @@
                     </child>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow1">
-                        <property name="height_request">150</property>
+                        <property name="height_request">100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTextView" id="StringTextView">
@@ -228,7 +230,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -244,7 +246,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
@@ -506,11 +508,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <items>
-                          <item translatable="yes">FIRST</item>
-                          <item translatable="yes">BEGIN</item>
-                          <item translatable="yes">MIDDLE</item>
-                          <item translatable="yes">END</item>
+                          <item>FIRST</item>
+                          <item>BEGIN</item>
+                          <item>MIDDLE</item>
+                          <item>END</item>
                         </items>
+                        <signal name="changed" handler="on_majorAlignment_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -520,15 +523,16 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="MinorAlignMentButton">
+                      <object class="GtkComboBoxText" id="MinorAlignmentButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <items>
-                          <item translatable="yes">FIRST</item>
-                          <item translatable="yes">BEGIN</item>
-                          <item translatable="yes">MIDDLE</item>
-                          <item translatable="yes">END</item>
+                          <item>FIRST</item>
+                          <item>BEGIN</item>
+                          <item>MIDDLE</item>
+                          <item>END</item>
                         </items>
+                        <signal name="changed" handler="on_minorAlignment_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -596,15 +600,16 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkToggleButton" id="ItalicToggleButton">
+                          <object class="GtkToggleButton" id="BoldToggleButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="toggled" handler="on_bold_toggled" swapped="no"/>
                             <child>
-                              <object class="GtkImage" id="image2">
+                              <object class="GtkImage" id="image3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-italic</property>
+                                <property name="stock">gtk-bold</property>
                                 <property name="icon_size">1</property>
                               </object>
                             </child>
@@ -616,15 +621,16 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToggleButton" id="BoldToggleButton">
+                          <object class="GtkToggleButton" id="ItalicToggleButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="toggled" handler="on_italic_toggled" swapped="no"/>
                             <child>
-                              <object class="GtkImage" id="image3">
+                              <object class="GtkImage" id="image2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-bold</property>
+                                <property name="stock">gtk-italic</property>
                                 <property name="icon_size">1</property>
                               </object>
                             </child>

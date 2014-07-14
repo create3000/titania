@@ -264,13 +264,13 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 
 X3DMaterialEditorInterface::~X3DMaterialEditorInterface ()
 {
-	delete m_BackDiffuseDialog;
-	delete m_BackEmissiveDialog;
 	delete m_BackSpecularDialog;
-	delete m_DiffuseDialog;
+	delete m_BackEmissiveDialog;
+	delete m_BackDiffuseDialog;
+	delete m_Window;
 	delete m_EmissiveDialog;
 	delete m_SpecularDialog;
-	delete m_Window;
+	delete m_DiffuseDialog;
 }
 
 } // puck

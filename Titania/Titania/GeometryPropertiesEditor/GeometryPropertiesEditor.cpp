@@ -182,6 +182,12 @@ GeometryPropertiesEditor::set_selection ()
 	set_textureCoordinateGenerator ();
 }
 
+/***********************************************************************************************************************
+ *
+ *  solid
+ *
+ **********************************************************************************************************************/
+
 void
 GeometryPropertiesEditor::on_solid_toggled ()
 {
@@ -256,6 +262,12 @@ GeometryPropertiesEditor::connectSolid (const X3D::SFBool & field)
 	field .removeInterest (this, &GeometryPropertiesEditor::connectSolid);
 	field .addInterest (this, &GeometryPropertiesEditor::set_solid);
 }
+
+/***********************************************************************************************************************
+ *
+ *  ccw
+ *
+ **********************************************************************************************************************/
 
 void
 GeometryPropertiesEditor::on_ccw_toggled ()
@@ -332,6 +344,12 @@ GeometryPropertiesEditor::connectCCW (const X3D::SFBool & field)
 	field .addInterest (this, &GeometryPropertiesEditor::set_ccw);
 }
 
+/***********************************************************************************************************************
+ *
+ *  convex
+ *
+ **********************************************************************************************************************/
+
 void
 GeometryPropertiesEditor::on_convex_toggled ()
 {
@@ -406,6 +424,12 @@ GeometryPropertiesEditor::connectConvex (const X3D::SFBool & field)
 	field .removeInterest (this, &GeometryPropertiesEditor::connectConvex);
 	field .addInterest (this, &GeometryPropertiesEditor::set_convex);
 }
+
+/***********************************************************************************************************************
+ *
+ *  creaseAngle
+ *
+ **********************************************************************************************************************/
 
 void
 GeometryPropertiesEditor::on_creaseAngle_text_changed ()
@@ -493,6 +517,12 @@ GeometryPropertiesEditor::connectCreaseAngle (const X3D::SFFloat & field)
 	field .removeInterest (this, &GeometryPropertiesEditor::connectCreaseAngle);
 	field .addInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 }
+
+/***********************************************************************************************************************
+ *
+ *  textureCoordinateGenerator
+ *
+ **********************************************************************************************************************/
 
 void
 GeometryPropertiesEditor::on_textureCoordinateGenerator_toggled ()
@@ -596,6 +626,12 @@ GeometryPropertiesEditor::connectTextureCoordinateGenerator (const X3D::SFNode &
 	field .removeInterest (this, &GeometryPropertiesEditor::connectTextureCoordinateGenerator);
 	field .addInterest (this, &GeometryPropertiesEditor::set_textureCoordinateGenerator);
 }
+
+/***********************************************************************************************************************
+ *
+ *  mode
+ *
+ **********************************************************************************************************************/
 
 void
 GeometryPropertiesEditor::on_textureCoordinateGenerator_mode_changed ()

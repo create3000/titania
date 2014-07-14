@@ -171,6 +171,25 @@ private:
 	void
 	connectFamily (const X3D::MFString &);
 
+	///  @name style
+
+	virtual
+	void
+	on_bold_toggled () final override;
+
+	virtual
+	void
+	on_italic_toggled () final override;
+
+	void
+	on_style_toggled ();
+
+	void
+	set_style ();
+
+	void
+	connectStyle (const X3D::SFString & field);
+
 	///  @name size
 
 	virtual
@@ -230,6 +249,25 @@ private:
 
 	void
 	connectTopToBottom (const X3D::SFBool &);
+
+	///  @name justify
+
+	virtual
+	void
+	on_majorAlignment_changed () final override;
+
+	virtual
+	void
+	on_minorAlignment_changed () final override;
+
+	void
+	on_justify_changed ();
+
+	void
+	set_justify ();
+
+	void
+	connectJustify (const X3D::MFString &);
 
 	///  @name Members
 

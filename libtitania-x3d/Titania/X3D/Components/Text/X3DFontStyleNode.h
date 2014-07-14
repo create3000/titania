@@ -157,8 +157,8 @@ public:
 
 	enum Alignment : uint8_t
 	{
-		BEGIN,
 		FIRST,
+		BEGIN,
 		MIDDLE,
 		END
 	};

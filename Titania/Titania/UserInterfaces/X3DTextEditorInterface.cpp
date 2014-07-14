@@ -108,12 +108,12 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_TopToBottomCheckButton -> set_name ("TopToBottomCheckButton");
 	m_builder -> get_widget ("MajorAlignmentButton", m_MajorAlignmentButton);
 	m_MajorAlignmentButton -> set_name ("MajorAlignmentButton");
-	m_builder -> get_widget ("MinorAlignMentButton", m_MinorAlignMentButton);
-	m_MinorAlignMentButton -> set_name ("MinorAlignMentButton");
-	m_builder -> get_widget ("ItalicToggleButton", m_ItalicToggleButton);
-	m_ItalicToggleButton -> set_name ("ItalicToggleButton");
+	m_builder -> get_widget ("MinorAlignmentButton", m_MinorAlignmentButton);
+	m_MinorAlignmentButton -> set_name ("MinorAlignmentButton");
 	m_builder -> get_widget ("BoldToggleButton", m_BoldToggleButton);
 	m_BoldToggleButton -> set_name ("BoldToggleButton");
+	m_builder -> get_widget ("ItalicToggleButton", m_ItalicToggleButton);
+	m_ItalicToggleButton -> set_name ("ItalicToggleButton");
 	m_builder -> get_widget ("FamilyTreeView", m_FamilyTreeView);
 	m_FamilyTreeView -> set_name ("FamilyTreeView");
 	m_builder -> get_widget ("AddFamilyButton", m_AddFamilyButton);
@@ -144,6 +144,14 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_LeftToRightCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_leftToRight_toggled));
 	m_TopToBottomCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_topToBottom_toggled));
 
+	// Connect object Gtk::ComboBoxText with id 'MajorAlignmentButton'.
+	m_MajorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_majorAlignment_changed));
+	m_MinorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_minorAlignment_changed));
+
+	// Connect object Gtk::ToggleButton with id 'BoldToggleButton'.
+	m_BoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_bold_toggled));
+	m_ItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_italic_toggled));
+
 	// Connect object Gtk::TreeView with id 'FamilyTreeView'.
 	m_FamilyTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_button_release_event));
 	m_FamilyTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_drag_data_received));
@@ -165,6 +173,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 X3DTextEditorInterface::~X3DTextEditorInterface ()
 {
 	delete m_Window;
+	delete m_FamilyChooserDialog;
 }
 
 } // puck

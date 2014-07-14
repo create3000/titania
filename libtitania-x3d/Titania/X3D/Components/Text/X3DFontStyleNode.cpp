@@ -562,8 +562,8 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 		// Return for west-european normal alignment.
 
 		static const std::map <std::string, Alignment> alignments = {
-			std::make_pair ("BEGIN",  Alignment::BEGIN),
 			std::make_pair ("FIRST",  Alignment::FIRST),
+			std::make_pair ("BEGIN",  Alignment::BEGIN),
 			std::make_pair ("MIDDLE", Alignment::MIDDLE),
 			std::make_pair ("END",    Alignment::END)
 		};
@@ -578,8 +578,8 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 		// Return appropriate alignment if topToBottom or leftToRight are FALSE.
 
 		static const std::map <std::string, Alignment> ralignments = {
-			std::make_pair ("BEGIN",  Alignment::END),
 			std::make_pair ("FIRST",  Alignment::END),
+			std::make_pair ("BEGIN",  Alignment::END),
 			std::make_pair ("MIDDLE", Alignment::MIDDLE),
 			std::make_pair ("END",    Alignment::BEGIN)
 		};
