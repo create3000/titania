@@ -63,17 +63,21 @@
 namespace titania {
 namespace X3D {
 
-constexpr int TRAVERSE_EXTERN_PROTO_DECLARATIONS = 1;
-constexpr int TRAVERSE_PROTO_DECLARATIONS        = 1 << 1;
-constexpr int TRAVERSE_ROOT_NODES                = 1 << 2;
-constexpr int TRAVERSE_PROTOTYPE_INSTANCES       = 1 << 3;
-constexpr int TRAVERSE_IMPORTED_NODES            = 1 << 4;
-constexpr int TRAVERSE_EXPORTED_NODES            = 1 << 5;
-constexpr int TRAVERSE_INLINE_NODES              = 1 << 6;
-constexpr int TRAVERSE_TOOL_OBJECTS              = 1 << 7;
-constexpr int TRAVERSE_VISIBLE_NODES             = 1 << 8;
+constexpr int TRAVERSE_EXTERNPROTO_DECLARATIONS       = 1;
+constexpr int TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS = 1 << 1;
+constexpr int TRAVERSE_PROTO_DECLARATIONS             = 1 << 2;
+constexpr int TRAVERSE_ROOT_NODES                     = 1 << 3;
+constexpr int TRAVERSE_PROTOTYPE_INSTANCES            = 1 << 4;
+constexpr int TRAVERSE_IMPORTED_NODES                 = 1 << 5;
+constexpr int TRAVERSE_EXPORTED_NODES                 = 1 << 6;
+constexpr int TRAVERSE_INLINE_NODES                   = 1 << 7;
+constexpr int TRAVERSE_TOOL_OBJECTS                   = 1 << 8;
+constexpr int TRAVERSE_VISIBLE_NODES                  = 1 << 9;
 
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
+
+bool
+traverse (X3DExecutionContext* const, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
 
 bool
 traverse (MFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);

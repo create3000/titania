@@ -163,7 +163,7 @@ iurlstream::parse_response_header ()
 	if (buf -> headers () .get () not_eq '\n')
 		return close ();
 
-	response_headers_map .emplace (header, value .str ());
+	response_headers_map [header] = value .str ();
 }
 
 void

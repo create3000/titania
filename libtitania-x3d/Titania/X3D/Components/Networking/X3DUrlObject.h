@@ -55,6 +55,8 @@
 #include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 
+#include <Titania/Basic/URI.h>
+
 namespace titania {
 namespace X3D {
 
@@ -99,7 +101,7 @@ public:
 
 	static
 	void
-	transform (MFString &, X3DExecutionContext* const, X3DExecutionContext* const);
+	transform (MFString &, const basic::uri &, const basic::uri &);
 
 
 protected:

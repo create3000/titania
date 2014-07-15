@@ -117,7 +117,7 @@ throw (Error <INVALID_NAME>,
 
 	executionContext -> addExternProtoDeclaration (getName (), copy);
 
-	transform (copy -> url (), getExecutionContext (), executionContext);
+	transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 
 	return copy;
 }

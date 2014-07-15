@@ -76,23 +76,23 @@ throw (Error <INVALID_NAME>,
 {
 	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
 
-	transform (copy -> url (), getExecutionContext (), executionContext);
+	transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 
 	return copy;
 }
 
 void
-X3DUrlObject::transform (MFString & url, X3DExecutionContext* const oldExecutionContext, X3DExecutionContext* const newExecutionContext)
+X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
 {
 	for (auto & value : url)
 	{
 		const basic::uri URL = value .str ();
-	
+
 		if (URL .is_relative ())
 		{
-			const auto transformed = oldExecutionContext -> getWorldURL () .transform (URL);
+			const auto transformed = oldWorldURL .transform (URL);
 
-			value = newExecutionContext -> getWorldURL () .relative_path (transformed) .str ();
+			value .set (newWorldURL .relative_path (transformed) .str ());
 		}
 	}
 }

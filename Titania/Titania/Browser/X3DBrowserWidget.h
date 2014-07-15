@@ -92,6 +92,9 @@ public:
 	save (const basic::uri &, const bool);
 
 	void
+	transform (const X3D::X3DExecutionContextPtr &, const basic::uri &) const;
+
+	void
 	reload ();
 
 	///  @name Destruction
@@ -132,7 +135,7 @@ protected:
 
 private:
 
-	///  @name Operations
+	///  @name Event handlers
 
 	void
 	parseOptions (int, char**);
@@ -148,6 +151,8 @@ private:
 
 	void
 	set_urlError (const X3D::MFString &);
+
+	///  @name Operations
 
 	void
 	loadIcon ();

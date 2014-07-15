@@ -121,12 +121,12 @@ throw (Error <INVALID_NAME>,
 {
 	Background* const copy = dynamic_cast <Background*> (X3DBaseNode::copy (executionContext));
 
-	X3DUrlObject::transform (copy -> frontUrl (),  getExecutionContext (), executionContext);
-	X3DUrlObject::transform (copy -> backUrl (),   getExecutionContext (), executionContext);
-	X3DUrlObject::transform (copy -> leftUrl (),   getExecutionContext (), executionContext);
-	X3DUrlObject::transform (copy -> rightUrl (),  getExecutionContext (), executionContext);
-	X3DUrlObject::transform (copy -> topUrl (),    getExecutionContext (), executionContext);
-	X3DUrlObject::transform (copy -> bottomUrl (), getExecutionContext (), executionContext);
+	X3DUrlObject::transform (copy -> frontUrl (),  getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (copy -> backUrl (),   getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (copy -> leftUrl (),   getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (copy -> rightUrl (),  getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (copy -> topUrl (),    getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (copy -> bottomUrl (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 
 	return copy;
 }

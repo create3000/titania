@@ -291,6 +291,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	const auto suffix           = worldURL .suffix ();
 	const auto executionContext = X3D::X3DExecutionContextPtr (getRootContext ());
 
+	transform (executionContext, worldURL);
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);
 
@@ -357,6 +358,48 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 				<< executionContext;
 		}
 	}
+}
+
+void
+X3DBrowserWidget::transform (const X3D::X3DExecutionContextPtr & executionContext, const basic::uri & worldURL) const
+{
+	X3D::traverse (executionContext, [&] (X3D::SFNode & node)
+	               {
+	                  for (const auto & type: node -> getType ())
+	                  {
+	                     switch (type)
+	                     {
+									case X3D::X3DConstants::Background:
+										{
+										   X3D::X3DPtr <X3D::Background> background (node);
+
+										   X3D::X3DUrlObject::transform (background -> frontUrl (),  executionContext -> getWorldURL (), worldURL);
+										   X3D::X3DUrlObject::transform (background -> backUrl (),   executionContext -> getWorldURL (), worldURL);
+										   X3D::X3DUrlObject::transform (background -> leftUrl (),   executionContext -> getWorldURL (), worldURL);
+										   X3D::X3DUrlObject::transform (background -> rightUrl (),  executionContext -> getWorldURL (), worldURL);
+										   X3D::X3DUrlObject::transform (background -> topUrl (),    executionContext -> getWorldURL (), worldURL);
+										   X3D::X3DUrlObject::transform (background -> bottomUrl (), executionContext -> getWorldURL (), worldURL);
+										   break;
+										}
+									case X3D::X3DConstants::X3DUrlObject:
+										{
+										   X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
+
+										   X3D::X3DUrlObject::transform (urlObject -> url (), executionContext -> getWorldURL (), worldURL);
+										   break;
+										}
+									default:
+										break;
+								}
+							}
+
+	                  return true;
+						},
+						true,
+						X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+						X3D::TRAVERSE_PROTO_DECLARATIONS |
+						X3D::TRAVERSE_ROOT_NODES);
+
 }
 
 void

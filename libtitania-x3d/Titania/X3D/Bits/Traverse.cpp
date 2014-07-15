@@ -66,6 +66,83 @@ namespace X3D {
 
 static
 bool
+traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen);
+
+static
+bool
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen)
+{
+	if (not executionContext)
+		return true;
+
+	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
+	{
+		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		{
+			SFNode node (externProto);
+
+			if (traverse (node, callback, distinct, flags, seen))
+				continue;
+
+			return false;
+		}
+	}
+
+	if (flags & TRAVERSE_PROTO_DECLARATIONS)
+	{
+		for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		{
+			SFNode node (prototype);
+
+			if (traverse (node, callback, distinct, flags, seen))
+				continue;
+
+			return false;
+		}
+	}
+
+	if (flags & TRAVERSE_ROOT_NODES)
+	{
+		for (auto & node : executionContext -> getRootNodes ())
+		{
+			if (traverse (node, callback, distinct, flags, seen))
+				continue;
+
+			return false;
+		}
+	}
+
+	if (flags & TRAVERSE_IMPORTED_NODES)
+	{
+		for (const auto & importedNode : executionContext -> getImportedNodes ())
+		{
+			try
+			{
+				SFNode exportedNode (importedNode .second -> getExportedNode ());
+
+				if (traverse (exportedNode, callback, distinct, flags, seen))
+				   continue;
+
+			   return false;
+			}
+			catch (...)
+			{ }
+		}
+	}
+
+	return true;
+}
+
+bool
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int flags)
+{
+	NodeSet seen;
+
+	return traverse (executionContext, callback, distinct, flags, seen);
+}
+
+static
+bool
 traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen)
 {
 	if (not node)
@@ -117,6 +194,32 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 		{
 			switch (type)
 			{
+				case X3DConstants::ExternProtoDeclaration:
+				{
+					if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
+					{
+						SFNode externProto (node);
+
+						if (traverse (externProto, callback, distinct, flags, seen))
+							continue;
+
+						return false;
+					}
+
+					break;
+				}
+				case X3DConstants::ProtoDeclaration:
+				{
+					if (flags & TRAVERSE_PROTO_DECLARATIONS)
+					{
+						if (traverse (dynamic_cast <X3DExecutionContext*> (node .getValue ()), callback, distinct, flags, seen))
+							continue;
+
+						return false;
+					}
+
+					break;
+				}
 				case X3DConstants::X3DPrototypeInstance:
 				{
 					if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
@@ -187,9 +290,11 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	return traverse (node, callback, distinct, flags, seen);
 }
 
+static
 bool
 find (X3DBaseNode* const, X3DChildObject* const, const int, std::vector <X3DChildObject*> &, NodeSet &);
 
+static
 bool
 find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
@@ -201,7 +306,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	if (executionContext == object)
 		return true;
 
-	if (flags & TRAVERSE_EXTERN_PROTO_DECLARATIONS)
+	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 	{
 		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		{
@@ -248,12 +353,14 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	return false;
 }
 
+static
 bool
 find (X3DScene* const scene, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	return find (static_cast <X3DExecutionContext*> (scene), object, flags, hierarchy, seen);
 }
 
+static
 bool
 find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
@@ -404,19 +511,9 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 		{
 			switch (type)
 			{
-				case X3DConstants::X3DPrototypeInstance:
-				{
-					if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
-					{
-						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
-							return true;
-					}
-					
-					break;
-				}
 				case X3DConstants::ExternProtoDeclaration:
 				{
-					if (flags & TRAVERSE_EXTERN_PROTO_DECLARATIONS)
+					if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
 					{
 						const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
 
@@ -434,6 +531,16 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 							return true;
 					}
 
+					break;
+				}
+				case X3DConstants::X3DPrototypeInstance:
+				{
+					if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
+					{
+						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
+							return true;
+					}
+					
 					break;
 				}
 				case X3DConstants::Inline:

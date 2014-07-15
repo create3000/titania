@@ -1,0 +1,44 @@
+#X3D V3.3 utf8 Titania V0.7.1
+
+META "comment" "World of Titania"
+META "created" "Tue, 15 Jul 2014 04:36:37 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.1, http://titania.create3000.de"
+META "modified" "Tue, 15 Jul 2014 04:36:37 GMT"
+
+EXTERNPROTO Rotor [
+  inputOutput SFNode     metadata
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFRotation value_changed
+]
+"Rotor.wrl"
+
+PROTO Test [ ]
+{
+  EXTERNPROTO Rotor [
+    inputOutput SFNode     metadata
+    inputOutput SFBool     enabled
+    inputOutput SFTime     cycleInterval
+    inputOutput SFVec3f    axis
+    inputOutput SFFloat    angle
+    inputOutput SFBool     loop
+    inputOutput SFTime     startTime
+    inputOutput SFTime     stopTime
+    outputOnly  SFRotation value_changed
+  ]
+  "Rotor.wrl"
+
+  Inline {
+    url "Inline.wrl"
+  }
+}
+
+Inline {
+  url "Inline.wrl"
+}

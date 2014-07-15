@@ -105,7 +105,10 @@ golden_x3d (basic::ifilestream && istream)
 	// Open pipe
 
 	if (os::popen3 (x3d2vrml, &stdin, &stdout, &stderr) <= 0)
+	{
+		__LOG__ << "Couldn't open " << x3d2vrml << "." << std::endl;
 		throw false;
+	}
 
 	// Write to pipe
 

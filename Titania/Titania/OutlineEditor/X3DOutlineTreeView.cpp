@@ -188,7 +188,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 		flags |= X3D::TRAVERSE_INLINE_NODES;
 
 	if (expandExternProtos and externProtos)
-		flags |= X3D::TRAVERSE_EXTERN_PROTO_DECLARATIONS;
+		flags |= X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS | X3D::TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS;
 
 	if (prototypes)
 		flags |= X3D::TRAVERSE_PROTO_DECLARATIONS;
