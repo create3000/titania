@@ -237,8 +237,6 @@ X3DBrowserEditor::isModified (const bool value)
 	modified      = value;
 	saveConfirmed = false;
 
-	updateTitle (value);
-
 	if (not value)
 		undoHistory .setSaved ();
 }
