@@ -470,6 +470,10 @@ private:
 
 	virtual
 	void
+	on_texture_editor_clicked () final override;
+
+	virtual
+	void
 	on_text_editor_clicked () final override;
 
 	virtual

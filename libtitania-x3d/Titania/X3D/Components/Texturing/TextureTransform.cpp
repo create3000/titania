@@ -60,10 +60,10 @@ const std::string TextureTransform::typeName       = "TextureTransform";
 const std::string TextureTransform::containerField = "textureTransform";
 
 TextureTransform::Fields::Fields () :
-	     center (new SFVec2f ()),
+	translation (new SFVec2f ()),
 	   rotation (new SFFloat ()),
 	      scale (new SFVec2f (1, 1)),
-	translation (new SFVec2f ())
+	     center (new SFVec2f ())
 { }
 
 TextureTransform::TextureTransform (X3DExecutionContext* const executionContext) :

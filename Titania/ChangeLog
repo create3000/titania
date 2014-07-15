@@ -1,5 +1,20 @@
 2014-07-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* TextureEditor.h:
+	* TextureEditor.cpp:
+	* TextureEditor.xml:
+	* X3DTextureEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DTextureEditorInterface.cpp: 
+
+2014-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* History.cpp:
 	* BrowserWindow.cpp:

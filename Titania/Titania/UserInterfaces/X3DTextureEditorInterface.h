@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_TEXTURE_EDITOR_H__
 #define __TMP_GLAD2CPP_TEXTURE_EDITOR_H__
 
-#include "../Base/X3DDialogInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -60,13 +60,13 @@ namespace puck {
 using namespace Gtk;
 
 class X3DTextureEditorInterface :
-	public X3DDialogInterface
+	public X3DEditorInterface
 {
 public:
 
 	template <class ... Arguments>
 	X3DTextureEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DDialogInterface (m_widgetName, arguments ...),
+		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
 
@@ -77,8 +77,12 @@ public:
 	getWidgetName () const { return m_widgetName; }
 
 	void
-	updateWidget (const std::string & name) const
+	updateWidget (const Glib::ustring & name) const
 	{ getBuilder () -> add_from_file (filename, name); }
+
+	void
+	updateWidgets (const std::vector <Glib::ustring> & names) const
+	{ getBuilder () -> add_from_file (filename, names); }
 
 	template <class Type>
 	Type*
@@ -92,72 +96,32 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAlphaAdjustment () const
-	{ return m_AlphaAdjustment; }
+	getCenterXAdjustment () const
+	{ return m_CenterXAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAnisotropicDegreeAdjustment () const
-	{ return m_AnisotropicDegreeAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBorderWidthAdjustment () const
-	{ return m_BorderWidthAdjustment; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getBoundryModeListStore () const
-	{ return m_BoundryModeListStore; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getFunctionListStore () const
-	{ return m_FunctionListStore; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getMagnificationFilterListStore () const
-	{ return m_MagnificationFilterListStore; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getMinificationFilterListStore () const
-	{ return m_MinificationFilterListStore; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getModeListStore () const
-	{ return m_ModeListStore; }
+	getCenterYAdjustment () const
+	{ return m_CenterYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getRotationAdjustment () const
 	{ return m_RotationAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getScaleSAdjustment () const
-	{ return m_ScaleSAdjustment; }
+	getScaleXAdjustment () const
+	{ return m_ScaleXAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getScaleTdjustment () const
-	{ return m_ScaleTdjustment; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getSourceListStore () const
-	{ return m_SourceListStore; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getTextureCompressionListStore () const
-	{ return m_TextureCompressionListStore; }
+	getScaleYAdjustment () const
+	{ return m_ScaleYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getTexturePriorityAdjustment () const
-	{ return m_TexturePriorityAdjustment; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getTextureUnitListStore () const
-	{ return m_TextureUnitListStore; }
+	getTranslationXAdjustment () const
+	{ return m_TranslationXAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getTranslateSAdjustment () const
-	{ return m_TranslateSAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getTranslateTAdjustment () const
-	{ return m_TranslateTAdjustment; }
+	getTranslationYAdjustment () const
+	{ return m_TranslationYAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -167,61 +131,65 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::ImageMenuItem &
-	getCopyMenuItem () const
-	{ return *m_CopyMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getPasteMenuItem () const
-	{ return *m_PasteMenuItem; }
-
-	Gtk::Box &
-	getPreviewBox () const
-	{ return *m_PreviewBox; }
-
-	Gtk::Expander &
-	getMultiTextureExpander () const
-	{ return *m_MultiTextureExpander; }
-
 	Gtk::Expander &
 	getTextureExpander () const
 	{ return *m_TextureExpander; }
 
-	Gtk::Grid &
-	getTextureGrid () const
-	{ return *m_TextureGrid; }
+	Gtk::ComboBoxText &
+	getTextureButton () const
+	{ return *m_TextureButton; }
 
-	Gtk::Expander &
-	getTexturePropertiesExpander () const
-	{ return *m_TexturePropertiesExpander; }
+	Gtk::Notebook &
+	getTextureNotebook () const
+	{ return *m_TextureNotebook; }
+
+	Gtk::CheckButton &
+	getRepeatSCheckbutton () const
+	{ return *m_RepeatSCheckbutton; }
+
+	Gtk::CheckButton &
+	getRepeatTCheckButton () const
+	{ return *m_RepeatTCheckButton; }
 
 	Gtk::Expander &
 	getTextureTransformExpander () const
 	{ return *m_TextureTransformExpander; }
 
-	Gtk::Grid &
-	getTextureTranformGrid () const
-	{ return *m_TextureTranformGrid; }
+	Gtk::ComboBoxText &
+	getTextureTransformButton () const
+	{ return *m_TextureTransformButton; }
+
+	Gtk::Notebook &
+	getTextureTransformNotebook () const
+	{ return *m_TextureTransformNotebook; }
 
 	Gtk::SpinButton &
-	getTranslateSButton () const
-	{ return *m_TranslateSButton; }
+	getTranslationXSpinButton () const
+	{ return *m_TranslationXSpinButton; }
 
 	Gtk::SpinButton &
-	getTranslateTButton () const
-	{ return *m_TranslateTButton; }
-
-	Gtk::Scale &
-	getRotationScale () const
-	{ return *m_RotationScale; }
+	getTranslationYSpinButton () const
+	{ return *m_TranslationYSpinButton; }
 
 	Gtk::SpinButton &
-	getScaleSButton () const
-	{ return *m_ScaleSButton; }
+	getRotationSpinButton () const
+	{ return *m_RotationSpinButton; }
 
 	Gtk::SpinButton &
-	getScaleTButton () const
-	{ return *m_ScaleTButton; }
+	getScaleXSpinButton () const
+	{ return *m_ScaleXSpinButton; }
+
+	Gtk::SpinButton &
+	getScaleYSpinButton () const
+	{ return *m_ScaleYSpinButton; }
+
+	Gtk::SpinButton &
+	getCenterXSpinButton () const
+	{ return *m_CenterXSpinButton; }
+
+	Gtk::SpinButton &
+	getCenterYSpinButton () const
+	{ return *m_CenterYSpinButton; }
 
 	virtual
 	~X3DTextureEditorInterface ();
@@ -236,39 +204,30 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_AlphaAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_AnisotropicDegreeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BorderWidthAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_BoundryModeListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_FunctionListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_MagnificationFilterListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_MinificationFilterListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_ModeListStore;
+	Glib::RefPtr <Gtk::Adjustment> m_CenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_CenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_RotationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ScaleSAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ScaleTdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_SourceListStore;
-	Glib::RefPtr <Gtk::ListStore>  m_TextureCompressionListStore;
-	Glib::RefPtr <Gtk::Adjustment> m_TexturePriorityAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_TextureUnitListStore;
-	Glib::RefPtr <Gtk::Adjustment> m_TranslateSAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TranslateTAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TranslationYAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::ImageMenuItem*            m_CopyMenuItem;
-	Gtk::ImageMenuItem*            m_PasteMenuItem;
-	Gtk::Box*                      m_PreviewBox;
-	Gtk::Expander*                 m_MultiTextureExpander;
 	Gtk::Expander*                 m_TextureExpander;
-	Gtk::Grid*                     m_TextureGrid;
-	Gtk::Expander*                 m_TexturePropertiesExpander;
+	Gtk::ComboBoxText*             m_TextureButton;
+	Gtk::Notebook*                 m_TextureNotebook;
+	Gtk::CheckButton*              m_RepeatSCheckbutton;
+	Gtk::CheckButton*              m_RepeatTCheckButton;
 	Gtk::Expander*                 m_TextureTransformExpander;
-	Gtk::Grid*                     m_TextureTranformGrid;
-	Gtk::SpinButton*               m_TranslateSButton;
-	Gtk::SpinButton*               m_TranslateTButton;
-	Gtk::Scale*                    m_RotationScale;
-	Gtk::SpinButton*               m_ScaleSButton;
-	Gtk::SpinButton*               m_ScaleTButton;
+	Gtk::ComboBoxText*             m_TextureTransformButton;
+	Gtk::Notebook*                 m_TextureTransformNotebook;
+	Gtk::SpinButton*               m_TranslationXSpinButton;
+	Gtk::SpinButton*               m_TranslationYSpinButton;
+	Gtk::SpinButton*               m_RotationSpinButton;
+	Gtk::SpinButton*               m_ScaleXSpinButton;
+	Gtk::SpinButton*               m_ScaleYSpinButton;
+	Gtk::SpinButton*               m_CenterXSpinButton;
+	Gtk::SpinButton*               m_CenterYSpinButton;
 
 };
 

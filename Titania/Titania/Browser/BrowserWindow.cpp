@@ -58,6 +58,7 @@
 #include "../LibraryView/LibraryView.h"
 #include "../MaterialEditor/MaterialEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
+#include "../TextureEditor/TextureEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
@@ -1048,6 +1049,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getSeparatorToolItem2 ()             .set_visible (enabled);
 	getNodePropertiesEditorButton ()     .set_visible (enabled);
 	getMaterialEditorButton ()           .set_visible (enabled);
+	getTextureEditorButton ()            .set_visible (enabled);
 	getTextEditorButton ()               .set_visible (enabled);
 	getGeometryPropertiesEditorButton () .set_visible (enabled);
 	getUpdateViewpointButton ()          .set_visible (enabled);
@@ -1549,6 +1551,15 @@ BrowserWindow::on_material_editor_clicked ()
 }
 
 void
+BrowserWindow::on_texture_editor_clicked ()
+{
+	if (isDialogOpen ("TextureEditor"))
+		return;
+
+	addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
+}
+
+void
 BrowserWindow::on_text_editor_clicked ()
 {
 	if (isDialogOpen ("TextEditor"))
@@ -1765,14 +1776,12 @@ BrowserWindow::on_select_parent_button_clicked ()
 			parents .emplace_back (hierarchy .second .back ());
 	}
 
-	//{ DEBUG
-
-	__LOG__ << parents .size () << std::endl;
-
-	for (const auto & parent : parents)
-		__LOG__ << parent -> getTypeName () << std::endl;
-
-	//} DEBUG
+	//	{ // DEBUG
+	//		__LOG__ << parents .size () << std::endl;
+	//
+	//		for (const auto & parent : parents)
+	//			__LOG__ << parent -> getTypeName () << std::endl;
+	//	} // DEBUG
 
 	if (parents .empty ())
 		return;

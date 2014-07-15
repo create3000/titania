@@ -528,6 +528,10 @@ public:
 	{ return *m_MaterialEditorButton; }
 
 	Gtk::ToolButton &
+	getTextureEditorButton () const
+	{ return *m_TextureEditorButton; }
+
+	Gtk::ToolButton &
 	getTextEditorButton () const
 	{ return *m_TextEditorButton; }
 
@@ -977,6 +981,10 @@ public:
 
 	virtual
 	void
+	on_texture_editor_clicked () = 0;
+
+	virtual
+	void
 	on_text_editor_clicked () = 0;
 
 	virtual
@@ -1164,6 +1172,7 @@ private:
 	Gtk::SeparatorToolItem*         m_SeparatorToolItem2;
 	Gtk::ToolButton*                m_NodePropertiesEditorButton;
 	Gtk::ToolButton*                m_MaterialEditorButton;
+	Gtk::ToolButton*                m_TextureEditorButton;
 	Gtk::ToolButton*                m_TextEditorButton;
 	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton*                m_UpdateViewpointButton;

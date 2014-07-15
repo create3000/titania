@@ -132,13 +132,15 @@ throw (std::invalid_argument)
 
 	if (c::sqlite3_exec (database, statement .c_str (), callback, const_cast <sqlite3*> (this), &errorMessage) not_eq SQLITE_OK)
 	{
-		if (database)
-			error ("Can't exec query: ", errorMessage ? errorMessage : "unknown error", statement);
-		
-		else
-			error ("Can't exec query: ", "database not open", "");
+		std::string string = errorMessage ? errorMessage : "unknown error";
 
 		c::sqlite3_free (errorMessage);
+	
+		if (database)
+			error ("Can't exec query: ", string, statement);
+
+		else
+			error ("Can't exec query: ", "database not open", "");
 	}
 }
 

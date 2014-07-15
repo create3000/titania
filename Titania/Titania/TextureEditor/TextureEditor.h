@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,116 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_TEXTURE_TRANSFORM_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING_TEXTURE_TRANSFORM_H__
+#ifndef __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
 
-#include "../Texturing/X3DTextureTransformNode.h"
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class TextureTransform :
-	public X3DTextureTransformNode
+class X3DBrowserWidget;
+
+class TextureEditor :
+	public X3DTextureEditorInterface
 {
 public:
 
-	///  @name Construction
-
-	TextureTransform (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFVec2f &
-	translation ()
-	{ return *fields .translation; }
-
-	const SFVec2f &
-	translation () const
-	{ return *fields .translation; }
-
-	SFFloat &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFFloat &
-	rotation () const
-	{ return *fields .rotation; }
-
-	SFVec2f &
-	scale ()
-	{ return *fields .scale; }
-
-	const SFVec2f &
-	scale () const
-	{ return *fields .scale; }
-
-	SFVec2f &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec2f &
-	center () const
-	{ return *fields .center; }
+	TextureEditor (BrowserWindow* const);
 
 
 private:
 
-	///  @name Construction
-	
 	virtual
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFVec2f* const translation;
-		SFFloat* const rotation;
-		SFVec2f* const scale;
-		SFVec2f* const center;
-	};
-
-	Fields fields;
-
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif
