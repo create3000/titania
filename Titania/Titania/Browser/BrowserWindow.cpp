@@ -86,7 +86,8 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	       shortcuts (true),
 	          toggle (true),
 	        changing (false),
-	          viewer (X3D::ViewerType::NONE)
+	          viewer (X3D::ViewerType::NONE),
+	    saveAsOutput ()
 {
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
@@ -685,6 +686,8 @@ BrowserWindow::on_save_as ()
 	if (response_id == Gtk::RESPONSE_OK)
 	{
 		save (Glib::uri_unescape_string (fileSaveDialog -> get_uri ()), saveCompressedButton -> get_active ());
+		
+		saveAsOutput .processInterests ();
 	}
 
 	if (not fileSaveDialog -> get_uri () .empty ())

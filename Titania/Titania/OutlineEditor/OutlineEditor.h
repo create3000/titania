@@ -73,6 +73,10 @@ public:
 	getTreeView () const
 	{ return treeView; }
 
+	///  @name Destruction
+
+	~OutlineEditor ();
+
 
 private:
 
@@ -85,10 +89,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	virtual
-	void
-	restoreSession () final override;
 
 	///  @name Event handlers
 
@@ -193,6 +193,17 @@ private:
 	Gtk::TreePath
 	getPathAtPosition (const double, const double);
 
+	// Expanded
+
+	void
+	restoreExpanded (const X3D::X3DExecutionContextPtr &);
+
+	void
+	saveExpanded (const X3D::X3DExecutionContextPtr &);
+
+	void
+	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
+
 	///  @name Members
 	
 	using MenuItemPair = std::pair <X3D::X3DExecutionContextPtr, Gtk::RadioMenuItem*>;
@@ -205,6 +216,7 @@ private:
 	Gtk::TreePath nodePath;
 	Gtk::TreePath fieldPath;
 	bool          realized;
+	bool          button;
 
 };
 

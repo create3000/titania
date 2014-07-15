@@ -54,6 +54,7 @@
 #include "../Configuration/config.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
+#include "../OutlineEditor/OutlineEditorDatabase.h"
 
 #include <Titania/String.h>
 
@@ -69,7 +70,8 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	                   scenes (),
 	                 nodePath (),
 	                fieldPath (),
-	                 realized (false)
+	                 realized (false),
+	                   button (false)
 { }
 
 void
@@ -86,14 +88,6 @@ OutlineEditor::initialize ()
 	getViewport () .add (*treeView);
 	treeView -> show ();
 
-	// Register browser interest
-	getScene ()            .addInterest (this, &OutlineEditor::set_scene);
-	getExecutionContext () .addInterest (this, &OutlineEditor::set_executionContext);
-}
-
-void
-OutlineEditor::restoreSession ()
-{
 	getShowExternProtosMenuItem ()         .set_active (getConfig () .getBoolean ("showExternProtos"));
 	getShowPrototypesMenuItem ()           .set_active (getConfig () .getBoolean ("showPrototypes"));
 	getShowImportedNodesMenuItem ()        .set_active (getConfig () .getBoolean ("showImportedNodes"));
@@ -103,6 +97,9 @@ OutlineEditor::restoreSession ()
 	getExpandInlineNodesMenuItem ()        .set_active (getConfig () .getBoolean ("expandInlineNodes"));
 
 	realized = true;
+
+	getScene ()            .addInterest (this, &OutlineEditor::set_scene);
+	getExecutionContext () .addInterest (this, &OutlineEditor::set_executionContext);
 
 	set_scene ();
 	set_executionContext ();
@@ -136,7 +133,14 @@ OutlineEditor::set_executionContext ()
 
 	// Tree view
 
+	saveExpanded (currentScene);
+
 	treeView -> set_execution_context (getExecutionContext ());
+
+	if (not button)
+		restoreExpanded (getExecutionContext ());
+
+	button = false;
 }
 
 // Pointing Device
@@ -263,7 +267,10 @@ OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size
 		const auto & scene = scenes [index] .first;
 
 		if (scene not_eq getExecutionContext ())
+		{
+			button = true;
 			setExecutionContext (scene);
+		}
 	}
 }
 
@@ -434,7 +441,7 @@ OutlineEditor::on_remove_activate ()
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node"));
 
 	const auto iter = treeView -> get_model () -> get_iter (nodePath);
-	
+
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::X3DBaseNode:
@@ -446,10 +453,10 @@ OutlineEditor::on_remove_activate ()
 				case 1:
 				{
 					// Root node
-					
+
 					X3D::SFNode parent (treeView -> get_model () -> get_execution_context ());
 					auto &      rootNodes = treeView -> get_model () -> get_execution_context () -> getRootNodes ();
-					const auto      index = treeView -> get_index (iter);
+					const auto  index     = treeView -> get_index (iter);
 
 					getBrowserWindow () -> removeNode (parent, rootNodes, index, undoStep);
 					break;
@@ -457,13 +464,13 @@ OutlineEditor::on_remove_activate ()
 				default:
 				{
 					// Child node
-					
+
 					auto path = nodePath;
-					
+
 					if (path .up ())
 					{
 						const auto fieldIter = treeView -> get_model () -> get_iter (path);
-					
+
 						if (treeView -> get_data_type (fieldIter) == OutlineIterType::X3DField)
 						{
 							const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
@@ -471,11 +478,11 @@ OutlineEditor::on_remove_activate ()
 							if (path .up ())
 							{
 								const auto parentIter = treeView -> get_model () -> get_iter (path);
-							
+
 								if (treeView -> get_data_type (parentIter) == OutlineIterType::X3DBaseNode)
 								{
 									const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-									
+
 									switch (field -> getType ())
 									{
 										case X3D::X3DConstants::SFNode:
@@ -501,7 +508,7 @@ OutlineEditor::on_remove_activate ()
 					break;
 				}
 			}
-			
+
 			break;
 		}
 		default:
@@ -574,13 +581,12 @@ OutlineEditor::selectNode (const double x, const double y)
 {
 	nodePath = getNodeAtPosition (x, y);
 
-	bool null                = false;
 	bool isBaseNode          = false;
 	bool isExternProto       = false;
 	bool isPrototype         = false;
 	bool isPrototypeInstance = false;
 	bool isInlineNode        = false;
-	bool isLocalNode         = false;
+	bool isLocalNode         = true;
 
 	if (not nodePath .empty ())
 	{
@@ -594,10 +600,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
 				if (not sfnode)
-				{
-					null = true;
 					break;
-				}
 
 				isBaseNode          = sfnode .getValue ();
 				isPrototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
@@ -623,13 +626,17 @@ OutlineEditor::selectNode (const double x, const double y)
 				break;
 			}
 			case OutlineIterType::ImportedNode:
+			{
+				isLocalNode = false;
+				break;
+			}
 			case OutlineIterType::ExportedNode:
 			default:
 				break;
 		}
 	}
 
-	getSetAsCurrentSceneMenuItem () .set_visible (not null and (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode));
+	getSetAsCurrentSceneMenuItem () .set_visible (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode);
 	getCreateInstanceMenuItem ()    .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
 	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 }
@@ -646,7 +653,7 @@ OutlineEditor::selectField (const double x, const double y)
 	{
 		const Gtk::TreeIter iter  = treeView -> get_model () -> get_iter (fieldPath);
 		const auto          field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-		
+
 		hasReferences = not field -> getReferences () .empty ();
 
 		// Create reference menu
@@ -679,7 +686,7 @@ OutlineEditor::selectField (const double x, const double y)
 					}
 				}
 			}
-		}		
+		}
 
 		// Remove reference menu
 
@@ -702,7 +709,7 @@ OutlineEditor::selectField (const double x, const double y)
 			{
 				// menuItem ???
 			}
-		}	
+		}
 	}
 
 	getCreateReferenceMenuItem () .set_visible (inProtoDeclaration () and isField and not getCreateReferenceMenu () .get_children () .empty ());
@@ -743,6 +750,7 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 
 			break;
 		}
+		case OutlineIterType::Separator:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::ProtoDeclaration:
@@ -790,6 +798,83 @@ OutlineEditor::getPathAtPosition (const double x, const double y)
 	treeView -> get_path_at_pos (x, y, path, column, cell_x, cell_y);
 
 	return path;
+}
+
+/***********************************************************************************************************************
+ *
+ * Save & restore expanded nodes
+ *
+ **********************************************************************************************************************/
+
+void
+OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionContext)
+{
+	if (not executionContext -> isRootContext ())
+		return;
+
+	try
+	{
+		OutlineEditorDatabase database;
+
+		const auto & expanded = database .getItem (executionContext -> getWorldURL ());
+		const auto   paths    = basic::split (expanded, ";");
+
+		for (const auto & path : paths)
+			treeView -> expand_row (Gtk::TreePath (path), false);
+	}
+	catch (...)
+	{ }
+}
+
+void
+OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContext)
+{
+	if (executionContext -> getWorldURL () .empty ())
+		return;
+
+	if (not executionContext -> isRootContext ())
+		return;
+
+	std::deque <std::string> paths;
+
+	getExpanded (treeView -> get_model () -> children (), paths);
+
+	OutlineEditorDatabase database;
+
+	database .setItem (executionContext -> getWorldURL (), basic::join (paths, ";"));
+}
+
+void
+OutlineEditor::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths) const
+{
+	for (const auto & child : children)
+	{
+		const auto path     = treeView -> get_model () -> get_path (child);
+		const bool expanded = treeView -> row_expanded (path);
+
+		if (expanded)
+		{
+			paths .emplace_back (path .to_string ());
+			getExpanded (child -> children (), paths);
+		}
+	}
+}
+
+OutlineEditor::~OutlineEditor ()
+{
+	if (isInitialized ())
+	{
+		if (getExecutionContext () not_eq getScene ())
+		{
+			const X3D::X3DExecutionContextPtr scene (getScene ());
+			
+			treeView -> set_execution_context (scene);
+			
+			saveExpanded (scene);
+		}
+		else
+			saveExpanded (getExecutionContext ());
+	}
 }
 
 } // puck

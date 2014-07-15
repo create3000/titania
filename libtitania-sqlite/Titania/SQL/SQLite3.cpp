@@ -50,20 +50,20 @@
 
 #include "SQLite3.h"
 
-#include <pcrecpp.h>
 #include <iostream>
+#include <pcrecpp.h>
 
 namespace titania {
 namespace sql {
 
 sqlite3::sqlite3 () :
-	 database (NULL),
+	 database (nullptr),
 	    array (),
 	array_map ()
 { }
 
 sqlite3::sqlite3 (const std::string & filename) :
-	  sqlite3 ()
+	sqlite3 ()
 {
 	open (filename);
 }
@@ -73,14 +73,14 @@ sqlite3::open (const std::string & filename)
 throw (std::invalid_argument)
 {
 	if (c::sqlite3_open (filename .c_str (), &database))
-		error ("Can't open database: ", c::sqlite3_errmsg (database));
+		error ("Can't open database: ", c::sqlite3_errmsg (database), "");
 }
 
 void
 sqlite3::query (const std::string & statement)
 throw (std::invalid_argument)
 {
-	exec (statement, NULL);
+	exec (statement, nullptr);
 }
 
 const sqlite3::array_type &
@@ -116,9 +116,9 @@ std::string
 sqlite3::quote (const std::string & value) const
 {
 	static const pcrecpp::RE SingleQuote ("'");
-	
+
 	std::string string = value;
-	
+
 	SingleQuote .GlobalReplace ("''", &string);
 
 	return "'" + string + "'";
@@ -128,11 +128,15 @@ void
 sqlite3::exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
 throw (std::invalid_argument)
 {
-	char* errorMessage = NULL;
+	char* errorMessage = nullptr;
 
 	if (c::sqlite3_exec (database, statement .c_str (), callback, const_cast <sqlite3*> (this), &errorMessage) not_eq SQLITE_OK)
 	{
-		error ("Can't exec query: ", errorMessage);
+		if (database)
+			error ("Can't exec query: ", errorMessage ? errorMessage : "unknown error", statement);
+		
+		else
+			error ("Can't exec query: ", "database not open", "");
 
 		c::sqlite3_free (errorMessage);
 	}
@@ -160,7 +164,7 @@ sqlite3::array_callback (void* object, int argc, char** argv, char** columns)
 	}
 
 	if (array .size ())
-		self -> array .emplace_back (array);
+		self -> array .emplace_back (std::move (array));
 
 	//print (argc, argv, columns);
 
@@ -179,7 +183,7 @@ sqlite3::map_callback (void* object, int argc, char** argv, char** columns)
 		map .emplace (columns [i], argv [i] ? argv [i] : "");
 	}
 
-	self -> array_map .emplace_back (map);
+	self -> array_map .emplace_back (std::move (map));
 
 	//print (argc, argv, columns);
 
@@ -196,10 +200,10 @@ sqlite3::print (int argc, char** argv, char** columns)
 }
 
 void
-sqlite3::error (const std::string & what, const std::string & message) const
+sqlite3::error (const std::string & what, const std::string & message, const std::string & statement) const
 throw (std::invalid_argument)
 {
-	throw std::invalid_argument ("SQL error: " + what + message + '.');
+	throw std::invalid_argument ("SQL error: " + what + message + (statement .empty () ? "." : ":\n" + statement));
 }
 
 sqlite3::~sqlite3 ()

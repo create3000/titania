@@ -106,10 +106,16 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
-	///  @name Destruction
+	///  @name Expanded
+	
+	void
+	restoreExpanded ();
+	
+	void
+	saveExpanded ();
 
 	void
-	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &);
+	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
 
 };
 

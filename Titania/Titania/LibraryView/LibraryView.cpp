@@ -77,11 +77,7 @@ LibraryView::initialize ()
 {
 	append (getRoot ());
 
-	const auto expanded = getConfig () .getString ("expanded");
-	const auto paths    = basic::split (expanded, ";");
-
-	for (const auto & path : paths)
-		getTreeView () .expand_row (Gtk::TreePath (path), false);
+	restoreExpanded ();
 }
 
 std::string
@@ -236,7 +232,29 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 }
 
 void
-LibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths)
+LibraryView::restoreExpanded ()
+{
+	const auto expanded = getConfig () .getString ("expanded");
+	const auto paths    = basic::split (expanded, ";");
+
+	for (const auto & path : paths)
+		getTreeView () .expand_row (Gtk::TreePath (path), false);
+}
+
+void
+LibraryView::saveExpanded ()
+{
+	std::deque <std::string> paths;
+
+	getExpanded (getTreeStore () -> children (), paths);
+
+	const auto expanded = basic::join (paths, ";");
+
+	getConfig () .setItem ("expanded", expanded);
+}
+
+void
+LibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths) const
 {
 	for (const auto & child : children)
 	{
@@ -253,13 +271,8 @@ LibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque 
 
 LibraryView::~LibraryView ()
 {
-	std::deque <std::string> paths;
-
-	getExpanded (getTreeStore () -> children (), paths);
-
-	const auto expanded = basic::join (paths, ";");
-
-	getConfig () .setItem ("expanded", expanded);
+	if (isInitialized ())
+		saveExpanded ();
 }
 
 } // puck

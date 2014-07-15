@@ -140,32 +140,14 @@ Configuration::getString (const std::string & name) const
 	return client -> get_string (getKey (name));
 }
 
-bool
-Configuration::exists ()
-{
-	return client -> dir_exists (key);
-}
-
-void
-Configuration::remove ()
-{
-	client -> recursive_unset (key);
-}
-
 Configuration
-Configuration::getSession (size_t id)
-{
-	return getDirectory ("Sessions/" + basic::to_string (id));
-}
-
-Configuration
-Configuration::getDirectory (const std::string & subdir)
+Configuration::getDirectory (const std::string & subdir) const
 {
 	return Configuration (path, name + '/' + subdir);
 }
 
 Configuration::Array
-Configuration::getDirectories ()
+Configuration::getDirectories () const
 {
 	Array directories;
 
@@ -176,6 +158,18 @@ Configuration::getDirectories ()
 	}
 
 	return directories;
+}
+
+bool
+Configuration::exists () const
+{
+	return client -> dir_exists (key);
+}
+
+void
+Configuration::remove ()
+{
+	client -> recursive_unset (key);
 }
 
 } // puck

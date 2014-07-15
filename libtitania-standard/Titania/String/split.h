@@ -63,6 +63,9 @@ ContainerType <StringT>
 basic_split (const StringT & string, const StringT & delimiter)
 {
 	ContainerType <StringT> container;
+	
+	if (string .empty ())
+		return container;
 
 	typename StringT::size_type first = 0;
 	typename StringT::size_type last  = string .find (delimiter, first);
@@ -109,6 +112,9 @@ ContainerType <StringT>
 basic_ssplit (const StringT & string, const StringT & delimiter)
 {
 	ContainerType <StringT> container;
+	
+	if (string .empty ())
+		return container;
 
 	typename StringT::size_type first = 0;
 	typename StringT::size_type last  = string .find (delimiter, first);

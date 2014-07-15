@@ -73,6 +73,10 @@ public:
 
 	std::string
 	getKey (const std::string &) const;
+	
+	const std::string &
+	getName () const
+	{ return name; }
 
 	/// @name Key lockup
 
@@ -109,20 +113,17 @@ public:
 
 	/// @name Directory handling
 
+	Configuration
+	getDirectory (const std::string &) const;
+
+	Array
+	getDirectories () const;
+
 	bool
-	exists ();
+	exists () const;
 
 	void
 	remove ();
-
-	Configuration
-	getSession (size_t);
-
-	Configuration
-	getDirectory (const std::string &);
-
-	Array
-	getDirectories ();
 
 
 private:

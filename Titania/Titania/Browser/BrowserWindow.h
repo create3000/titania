@@ -113,6 +113,10 @@ public:
 	getKeys () const
 	{ return keys; }
 
+	const X3D::Output &
+	saveAs () const
+	{ return saveAsOutput; }
+
 	/// @name Menu
 
 	void
@@ -573,6 +577,8 @@ private:
 	bool      changing;
 
 	X3D::ViewerType viewer;
+	
+	X3D::Output saveAsOutput;
 
 };
 

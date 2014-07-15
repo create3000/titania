@@ -70,7 +70,7 @@ History::History () :
 	database .open (filename);
 
 	database .query ("CREATE TABLE IF NOT EXISTS History ("
-	                 "id           INTEGER, "
+	                 "id           INTEGER,"
 	                 "icon         BLOB,"
 	                 "title        TEXT,"
 	                 "worldURL     TEXT,"
@@ -186,10 +186,10 @@ History::update (const std::string & id, const std::string & title)
 {
 	database .query ("UPDATE History "
 	                 "SET "
-	                 "title      = " + database .quote (title) + ","
-	                                                             "visited    = (visited + 1), "
-	                                                             "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
-	                                                             "WHERE id = " + id);
+	                 "title = " + database .quote (title) + ","
+	                                                        "visited    = (visited + 1), "
+	                                                        "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
+	                                                        "WHERE id = " + id);
 }
 
 const std::string &

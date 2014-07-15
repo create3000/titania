@@ -358,8 +358,6 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 				<< executionContext;
 		}
 	}
-	
-	scene .addEvent ();
 }
 
 void

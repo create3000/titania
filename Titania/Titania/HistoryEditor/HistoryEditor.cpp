@@ -87,6 +87,8 @@ HistoryEditor::set_splashScreen ()
 {
 	getScene () .removeInterest (this, &HistoryEditor::set_splashScreen);
 	getScene () .addInterest    (this, &HistoryEditor::set_scene);
+
+	getBrowserWindow () -> saveAs () .addInterest (this, &HistoryEditor::set_scene);
 }
 
 void

@@ -48,110 +48,95 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_SQL_SQLITE3_H__
-#define __TITANIA_SQL_SQLITE3_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
 
-#include <deque>
-#include <map>
-#include <stdexcept>
-#include <string>
+#include "../Configuration/config.h"
+
+#include <Titania/OS.h>
+#include <Titania/SQL/SQLite3.h>
 
 namespace titania {
-namespace sql {
+namespace puck {
 
-namespace c {
-extern "C"
-{
-#include <sqlite3.h>
-}
-}
-
-class sqlite3
+class OutlineEditorDatabase
 {
 public:
 
-	typedef std::deque <std::string>    array_row_type;
-	typedef std::deque <array_row_type> array_type;
+	OutlineEditorDatabase () :
+		database ()
+	{
+		os::system ("mkdir", "-p", config_dir ());
 
-	typedef std::map <std::string, std::string> assoc_row_type;
-	typedef std::deque <assoc_row_type>         assoc_type;
+		database .open (config_dir ("outline-editor.db"));
 
-	/// @name Constructors
-
-	sqlite3 ();
-
-	sqlite3 (const std::string &);
-
-	/// @name Database handling
-	void
-	open (const std::string &)
-	throw (std::invalid_argument);
-
-	/// @name Query handling
+		database .query ("CREATE TABLE IF NOT EXISTS Paths ("
+		                 "id           INTEGER,"
+		                 "worldURL     TEXT, "
+		                 "expanded     TEXT,"
+		                 "PRIMARY KEY (id ASC))");
+	}
 
 	void
-	query (const std::string &)
-	throw (std::invalid_argument);
-
-	const array_type &
-	query_array (const std::string &) const
-	throw (std::invalid_argument);
-
-	const assoc_type &
-	query_assoc (const std::string &) const
-	throw (std::invalid_argument);
+	setItem (const std::string & worldURL, const std::string & expanded)
+	{
+		try
+		{
+			update (getId (worldURL), expanded);
+		}
+		catch (const std::out_of_range &)
+		{
+			insert (worldURL, expanded);
+		}
+	}
 
 	const std::string &
-	last_insert_rowid () const
-	throw (std::out_of_range);
+	getItem (const std::string & worldURL) const
+	throw (std::out_of_range)
+	{
+		const auto & result = database .query_array ("SELECT expanded FROM Paths "
+		                                             "WHERE worldURL = " + database .quote (worldURL));
 
-	/// @name Utility funtions
-
-	std::string
-	quote (const std::string &) const;
-
-	/// @name Destructor
-
-	~sqlite3 ();
-
+		return result .at (0) .at (0);
+	}
 
 private:
 
 	void
-	exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
-	throw (std::invalid_argument);
-
-	static
-	int
-	pass (void*, int, char**, char**);
-
-	static
-	int
-	array_callback (void*, int, char**, char**);
-
-	static
-	int
-	map_callback (void*, int, char**, char**);
-
-	static
-	void
-	print (int, char**, char**);
+	insert (const std::string & worldURL, const std::string & expanded)
+	{
+		database .query ("INSERT INTO Paths "
+		                 "(worldURL, expanded)"
+		                 "VALUES ("
+		                 + database .quote (worldURL) + ","
+		                 + database .quote (expanded)
+		                 + ")");
+	}
 
 	void
-	error (const std::string &, const std::string &, const std::string & statement) const
-	throw (std::invalid_argument);
+	update (const std::string & id, const std::string & expanded)
+	{
+		database .query ("UPDATE Paths "
+		                 "SET "
+		                 "expanded = " + database .quote (expanded) + " "
+		                                                              "WHERE id = " + id);
+	}
 
+	const std::string &
+	getId (const std::string & worldURL) const
+	throw (std::out_of_range)
+	{
+		const auto & result = database .query_array ("SELECT id FROM Paths WHERE "
+		                                             "worldURL = " + database .quote (worldURL));
 
-private:
+		return result .at (0) .at (0);
+	}
 
-	c::sqlite3* database;
-
-	mutable array_type array;
-	mutable assoc_type array_map;
+	sql::sqlite3 database;
 
 };
 
-} // sql
+} // puck
 } // titania
 
 #endif
