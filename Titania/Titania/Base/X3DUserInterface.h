@@ -89,11 +89,6 @@ public:
 	///  @name Destruction
 
 	virtual
-	void
-	saveSession ()
-	{ }
-
-	virtual
 	~X3DUserInterface ();
 
 
@@ -115,6 +110,11 @@ protected:
 	virtual
 	void
 	restoreSession ()
+	{ }
+
+	virtual
+	void
+	saveSession ()
 	{ }
 
 	bool

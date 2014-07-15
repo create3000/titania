@@ -1,5 +1,13 @@
 2014-07-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* LibraryView.h:
+	* LibraryView.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp: 
+
+2014-07-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.cpp:
 	* X3DBrowserWidget.cpp: 
 

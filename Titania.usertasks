@@ -14,4 +14,8 @@
   <Task file="" description="Exception in addUserDefinedField wenn Name leer hinzufügen." />
   <Task file="" description="getType bei X3DBaseNode ändern." />
   <Task file="" description="DoubleClick zu Protos" />
+  <Task file="" description="Colors in Material Editor insensitive rastern" />
+  <Task file="" description="Tasten für rotate und scale tool" />
+  <Task file="" description="BBox stimmt nicht bei Text when maxExtent &lt; maxCharWidth" />
+  <Task file="" description="Library expanded speichern" />
 </ListOfTask>

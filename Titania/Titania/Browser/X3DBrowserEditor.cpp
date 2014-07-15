@@ -405,28 +405,43 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
                                         std::map <X3D::ExternProtoDeclarationPtr, size_t> & externProtos,
                                         std::map <X3D::ProtoDeclarationPtr, size_t> & prototypes) const
 {
-	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & child)
+	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
-	                  const X3D::X3DPrototypeInstancePtr instance (child);
-
-	                  if (instance)
+	                  for (const auto & type : basic::reverse_adapter (node -> getType ()))
 	                  {
-	                     const X3D::ExternProtoDeclarationPtr externProto (instance -> getProtoObject ());
-
-	                     if (externProto)
-									externProtos .erase (externProto);
-
-	                     else
+	                     switch (type)
 	                     {
-	                        const X3D::ProtoDeclarationPtr prototype (instance -> getProtoObject ());
-
-	                        if (prototype)
+	                        case X3D::X3DConstants::X3DPrototypeInstance:
 	                        {
-	                           prototypes .erase (prototype);
+				                  const X3D::X3DPrototypeInstancePtr instance (node);
 
-	                           // This is not neccessary:
-	                           // removeUsedPrototypes (prototype, externProtos, prototypes);
+			                     switch (instance -> getProtoObject () -> getType () .back ())
+			                     {
+			                        case  X3D::X3DConstants::ExternProtoDeclaration:
+			                        {
+					                     const X3D::ExternProtoDeclarationPtr externProto (instance -> getProtoObject ());
+
+					                     externProtos .erase (externProto);
+			                           break;
+			                        }
+			                        case  X3D::X3DConstants::ProtoDeclaration:
+			                        {
+			                           const X3D::ProtoDeclarationPtr prototype (instance -> getProtoObject ());
+
+			                           prototypes .erase (prototype);
+
+			                           // This is not neccessary:
+			                           // removeUsedPrototypes (prototype, externProtos, prototypes);
+			                           break;
+			                        }
+											default:
+												break;
+										}
+
+										break;
 									}
+									default:
+										break;
 								}
 							}
 

@@ -63,13 +63,19 @@ class LibraryView :
 {
 public:
 
+	///  @name Construction
+
 	LibraryView (BrowserWindow* const);
+
+	///  @name Destruction
 
 	virtual
 	~LibraryView ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -94,9 +100,16 @@ private:
 	void
 	append (Gtk::TreeModel::iterator &, const Glib::RefPtr <Gio::File> &) const;
 
+	///  @name Event handlers
+
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	///  @name Destruction
+
+	void
+	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &);
 
 };
 

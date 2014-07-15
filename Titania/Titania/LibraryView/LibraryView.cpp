@@ -53,7 +53,7 @@
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 
-#include <Titania/String/naturally_compare.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -76,6 +76,12 @@ void
 LibraryView::initialize ()
 {
 	append (getRoot ());
+
+	const auto expanded = getConfig () .getString ("expanded");
+	const auto paths    = basic::split (expanded, ";");
+
+	for (const auto & path : paths)
+		getTreeView () .expand_row (Gtk::TreePath (path), false);
 }
 
 std::string
@@ -229,8 +235,32 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 	{ }
 }
 
+void
+LibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths)
+{
+	for (const auto & child : children)
+	{
+		const auto path     = getTreeStore () -> get_path (child);
+		const bool expanded = getTreeView () .row_expanded (path);
+
+		if (expanded)
+		{
+			paths .emplace_back (path .to_string ());
+			getExpanded (child -> children (), paths);
+		}
+	}
+}
+
 LibraryView::~LibraryView ()
-{ }
+{
+	std::deque <std::string> paths;
+
+	getExpanded (getTreeStore () -> children (), paths);
+
+	const auto expanded = basic::join (paths, ";");
+
+	getConfig () .setItem ("expanded", expanded);
+}
 
 } // puck
 } // titania
