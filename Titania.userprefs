@@ -1,16 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="699" Column="1" />
-      <File FileName="Titania/Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="613" Column="24" />
+      <File FileName="Titania/Titania/TextureEditor/TextureEditor.h" Line="52" Column="52" />
+      <File FileName="Titania/Titania/TextureEditor/TextureEditor.cpp" Line="71" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h" Line="81" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp" Line="61" Column="16" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="82" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
             <Node name="uncrustify-all" expanded="True" />
@@ -24,9 +25,9 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
+          <Node name="libtitania-sqlite" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True" />
+              <Node name="SQL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -34,15 +35,25 @@
               <Node name="Algorithm" expanded="True" />
               <Node name="Chrono" expanded="True" />
               <Node name="Math" expanded="True" />
+              <Node name="String" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Components" expanded="True">
+                  <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Layout" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                   <Node name="Text" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="JavaScript" expanded="True">
@@ -50,30 +61,24 @@
                     <Node name="Fields" expanded="True" />
                   </Node>
                 </Node>
+                <Node name="Miscellaneous" expanded="True" />
+                <Node name="Prototype" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="Primitives" expanded="True">
-                    <Node name="Geometry3D" expanded="True" />
-                  </Node>
-                </Node>
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="GeometryPropertiesEditor" expanded="True" />
-              <Node name="MaterialEditor" expanded="True" />
-              <Node name="NodePropertiesEditor" expanded="True" />
               <Node name="TextEditor" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
+              <Node name="TextureEditor" expanded="True">
+                <Node name="TextureEditor.h" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

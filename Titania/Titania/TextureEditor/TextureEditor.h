@@ -52,6 +52,7 @@
 #define __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
 
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../TextureEditor/X3DTextureTransformNodeEditor.h"
 
 namespace titania {
 namespace puck {
@@ -59,14 +60,19 @@ namespace puck {
 class X3DBrowserWidget;
 
 class TextureEditor :
-	public X3DTextureEditorInterface
+	virtual public X3DTextureEditorInterface,
+	public X3DTextureTransformNodeEditor
 {
 public:
+
+	///  @name Construction
 
 	TextureEditor (BrowserWindow* const);
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void

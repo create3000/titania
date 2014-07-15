@@ -145,6 +145,8 @@ TextEditor::on_text_toggled ()
 		getExecutionContext () -> realize ();
 	}
 
+	// Set field.
+
 	addUndoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
 
 	for (const auto & shapeNode : shapeNodes)
@@ -179,7 +181,7 @@ TextEditor::set_text ()
 		text -> maxExtent () .removeInterest (this, &TextEditor::set_maxExtent);
 		text -> fontStyle () .removeInterest (this, &TextEditor::set_fontStyle);
 	}
-	
+
 	text = nullptr;
 
 	const bool hasField = not shapeNodes .empty ();

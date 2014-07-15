@@ -48,163 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#include "X3DTextureTransformEditor.h"
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+#include "../Browser/BrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+X3DTextureTransformEditor::X3DTextureTransformEditor () :
+	         X3DBaseInterface (),
+	X3DTextureEditorInterface ("", ""),
+	         textureTransform (),
+	                 undoStep (),
+	                 changing (false)
+{ }
+
+void
+X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
 {
-public:
+	if (textureTransform)
+	{
+		textureTransform -> rotation () .removeInterest (this, &X3DTextureTransformEditor::set_rotation);
+	}
 
-	///  @name Widget members
+	textureTransform = value;
 
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
+	if (textureTransform)
+	{
+		textureTransform -> rotation () .addInterest (this, &X3DTextureTransformEditor::set_rotation);
+	}
+}
 
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
+/***********************************************************************************************************************
+ *
+ *  rotation
+ *
+ **********************************************************************************************************************/
 
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
+void
+X3DTextureTransformEditor::on_textureTransform_rotation_changed ()
+{
+	if (changing)
+		return;
 
-	///  @name Operations
+	addUndoFunction (textureTransform, textureTransform -> rotation (), undoStep);
 
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
+	textureTransform -> rotation () = getTextureTransformRotationSpinButton () .get_value ();
 
-	void
-	toggleWidget (Gtk::Widget &, bool);
+	textureTransform -> rotation () .removeInterest (this, &X3DTextureTransformEditor::set_rotation);
+	textureTransform -> rotation () .addInterest (this, &X3DTextureTransformEditor::connectRotation);
 
-	///  @name Destruction
+	addRedoFunction (textureTransform -> rotation (), undoStep);
 
-	virtual
-	~X3DUserInterface ();
+}
 
+void
+X3DTextureTransformEditor::set_rotation ()
+{
+	changing = true;
 
-protected:
+	getTextureTransformRotationSpinButton () .set_value (textureTransform -> rotation ());
 
-	/// @name Construction
+	changing = false;
+}
 
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
-	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	isDialogOpen (const std::string &) const;
-
-	void
-	addDialog (const std::string &, const std::shared_ptr <X3DUserInterface> &);
-
-	/// @name Destruction
-
-	virtual
-	bool
-	close ();
-
-
-private:
-
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
-
-	///  @name Construction
-
-	X3DUserInterface (const X3DUserInterface &) = delete;
-
-	///  @name Event handlers
-
-	void
-	set_constructed ();
-
-	void
-	on_map ();
-	
-	bool
-	on_window_state_event (GdkEventWindowState*);
-
-	bool
-	on_delete_event (GdkEventAny*);
-
-	///  @name Operations
-
-	void
-	removeDialog (const std::string &);
-
-	void
-	restoreInterface ();
-
-	void
-	saveInterfaces ();
-
-	void
-	saveInterface ();
-
-	///  @name Static members
-
-	static UserInterfaceArray userInterfaces;
-
-	///  @name Members
-
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
-
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
-
-
-};
+void
+X3DTextureTransformEditor::connectRotation (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &X3DTextureTransformEditor::connectRotation);
+	field .addInterest (this, &X3DTextureTransformEditor::set_rotation);
+}
 
 } // puck
 } // titania
-
-#endif

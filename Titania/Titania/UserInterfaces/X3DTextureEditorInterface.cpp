@@ -61,13 +61,13 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_CenterXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CenterXAdjustment"));
-	m_CenterYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CenterYAdjustment"));
-	m_RotationAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RotationAdjustment"));
-	m_ScaleXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ScaleXAdjustment"));
-	m_ScaleYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ScaleYAdjustment"));
-	m_TranslationXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslationXAdjustment"));
-	m_TranslationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslationYAdjustment"));
+	m_TextureTransformCenterXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterXAdjustment"));
+	m_TextureTransformCenterYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterYAdjustment"));
+	m_TextureTransformRotationAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformRotationAdjustment"));
+	m_TextureTransformScaleXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleXAdjustment"));
+	m_TextureTransformScaleYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleYAdjustment"));
+	m_TextureTransformTranslationXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationXAdjustment"));
+	m_TextureTransformTranslationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationYAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -90,20 +90,30 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformButton -> set_name ("TextureTransformButton");
 	m_builder -> get_widget ("TextureTransformNotebook", m_TextureTransformNotebook);
 	m_TextureTransformNotebook -> set_name ("TextureTransformNotebook");
-	m_builder -> get_widget ("TranslationXSpinButton", m_TranslationXSpinButton);
-	m_TranslationXSpinButton -> set_name ("TranslationXSpinButton");
-	m_builder -> get_widget ("TranslationYSpinButton", m_TranslationYSpinButton);
-	m_TranslationYSpinButton -> set_name ("TranslationYSpinButton");
-	m_builder -> get_widget ("RotationSpinButton", m_RotationSpinButton);
-	m_RotationSpinButton -> set_name ("RotationSpinButton");
-	m_builder -> get_widget ("ScaleXSpinButton", m_ScaleXSpinButton);
-	m_ScaleXSpinButton -> set_name ("ScaleXSpinButton");
-	m_builder -> get_widget ("ScaleYSpinButton", m_ScaleYSpinButton);
-	m_ScaleYSpinButton -> set_name ("ScaleYSpinButton");
-	m_builder -> get_widget ("CenterXSpinButton", m_CenterXSpinButton);
-	m_CenterXSpinButton -> set_name ("CenterXSpinButton");
-	m_builder -> get_widget ("CenterYSpinButton", m_CenterYSpinButton);
-	m_CenterYSpinButton -> set_name ("CenterYSpinButton");
+	m_builder -> get_widget ("TextureTransformLabel", m_TextureTransformLabel);
+	m_TextureTransformLabel -> set_name ("TextureTransformLabel");
+	m_builder -> get_widget ("TextureTransformBox", m_TextureTransformBox);
+	m_TextureTransformBox -> set_name ("TextureTransformBox");
+	m_builder -> get_widget ("TextureTransformTranslationXSpinButton", m_TextureTransformTranslationXSpinButton);
+	m_TextureTransformTranslationXSpinButton -> set_name ("TextureTransformTranslationXSpinButton");
+	m_builder -> get_widget ("TextureTransformTranslationYSpinButton", m_TextureTransformTranslationYSpinButton);
+	m_TextureTransformTranslationYSpinButton -> set_name ("TextureTransformTranslationYSpinButton");
+	m_builder -> get_widget ("TextureTransformScaleXSpinButton", m_TextureTransformScaleXSpinButton);
+	m_TextureTransformScaleXSpinButton -> set_name ("TextureTransformScaleXSpinButton");
+	m_builder -> get_widget ("TextureTransformScaleYSpinButton", m_TextureTransformScaleYSpinButton);
+	m_TextureTransformScaleYSpinButton -> set_name ("TextureTransformScaleYSpinButton");
+	m_builder -> get_widget ("TextureTransformCenterXSpinButton", m_TextureTransformCenterXSpinButton);
+	m_TextureTransformCenterXSpinButton -> set_name ("TextureTransformCenterXSpinButton");
+	m_builder -> get_widget ("TextureTransformCenterYSpinButton", m_TextureTransformCenterYSpinButton);
+	m_TextureTransformCenterYSpinButton -> set_name ("TextureTransformCenterYSpinButton");
+	m_builder -> get_widget ("TextureTransformRotationSpinButton", m_TextureTransformRotationSpinButton);
+	m_TextureTransformRotationSpinButton -> set_name ("TextureTransformRotationSpinButton");
+
+	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
+	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
+
+	// Connect object Gtk::SpinButton with id 'TextureTransformRotationSpinButton'.
+	m_TextureTransformRotationSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_rotation_changed));
 
 	// Call construct handler of base class.
 	construct ();

@@ -2,45 +2,45 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkAdjustment" id="CenterXAdjustment">
+  <object class="GtkAdjustment" id="TextureTransformCenterXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="CenterYAdjustment">
+  <object class="GtkAdjustment" id="TextureTransformCenterYAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="RotationAdjustment">
+  <object class="GtkAdjustment" id="TextureTransformRotationAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="ScaleXAdjustment">
-    <property name="lower">-1000000000</property>
-    <property name="upper">1000000000</property>
-    <property name="value">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
-  </object>
-  <object class="GtkAdjustment" id="ScaleYAdjustment">
+  <object class="GtkAdjustment" id="TextureTransformScaleXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="TranslationXAdjustment">
+  <object class="GtkAdjustment" id="TextureTransformScaleYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="value">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="TextureTransformTranslationXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="TranslationYAdjustment">
+  <object class="GtkAdjustment" id="TextureTransformTranslationYAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
@@ -312,8 +312,10 @@
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
                         <items>
+                          <item translatable="yes">None</item>
                           <item translatable="yes">TextureTransform</item>
                         </items>
+                        <signal name="changed" handler="on_textureTransform_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -336,8 +338,21 @@
                     <property name="show_tabs">False</property>
                     <property name="show_border">False</property>
                     <child>
-                      <object class="GtkGrid" id="grid3">
-                        <property name="visible">True</property>
+                      <object class="GtkLabel" id="TextureTransformLabel">
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child type="tab">
+                      <object class="GtkLabel" id="label11">
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">page 1</property>
+                      </object>
+                      <packing>
+                        <property name="tab_fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkGrid" id="TextureTransformBox">
                         <property name="can_focus">False</property>
                         <property name="row_spacing">4</property>
                         <property name="column_spacing">16</property>
@@ -362,12 +377,14 @@
                             <property name="hexpand">True</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <object class="GtkSpinButton" id="TranslationXSpinButton">
+                              <object class="GtkSpinButton" id="TextureTransformTranslationXSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">TranslationXAdjustment</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">TextureTransformTranslationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -376,12 +393,14 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="TranslationYSpinButton">
+                              <object class="GtkSpinButton" id="TextureTransformTranslationYSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">TranslationYAdjustment</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">TextureTransformTranslationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -412,33 +431,20 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="RotationSpinButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="adjustment">RotationAdjustment</property>
-                            <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkBox" id="box4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <object class="GtkSpinButton" id="ScaleXSpinButton">
+                              <object class="GtkSpinButton" id="TextureTransformScaleXSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">ScaleXAdjustment</property>
+                                <property name="text" translatable="yes">1,000</property>
+                                <property name="adjustment">TextureTransformScaleXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
+                                <property name="numeric">True</property>
                                 <property name="value">1</property>
                               </object>
                               <packing>
@@ -448,12 +454,14 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="ScaleYSpinButton">
+                              <object class="GtkSpinButton" id="TextureTransformScaleYSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">ScaleYAdjustment</property>
+                                <property name="text" translatable="yes">1,000</property>
+                                <property name="adjustment">TextureTransformScaleYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
+                                <property name="numeric">True</property>
                                 <property name="value">1</property>
                               </object>
                               <packing>
@@ -477,10 +485,11 @@
                             <property name="hexpand">True</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <object class="GtkSpinButton" id="CenterXSpinButton">
+                              <object class="GtkSpinButton" id="TextureTransformCenterXSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">CenterXAdjustment</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">TextureTransformCenterXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
                               </object>
@@ -491,10 +500,11 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="CenterYSpinButton">
+                              <object class="GtkSpinButton" id="TextureTransformCenterYSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">CenterYAdjustment</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">TextureTransformCenterYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
                               </object>
@@ -540,20 +550,28 @@
                             <property name="height">1</property>
                           </packing>
                         </child>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label11">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 1</property>
+                        <child>
+                          <object class="GtkSpinButton" id="TextureTransformRotationSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">TextureTransformRotationAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                            <signal name="value-changed" handler="on_textureTransform_rotation_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="tab_fill">False</property>
+                        <property name="position">1</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                     <child type="tab">
                       <object class="GtkLabel" id="label13">
