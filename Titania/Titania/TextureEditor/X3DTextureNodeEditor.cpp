@@ -48,19 +48,19 @@
  *
  ******************************************************************************/
 
-#include "X3DTextureTransformNodeEditor.h"
+#include "X3DTextureNodeEditor.h"
 
 #include "../Browser/BrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
+X3DTextureNodeEditor::X3DTextureNodeEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	X3DTextureTransformEditor (),
+	   X3DTexture2DNodeEditor (),
 	              appearances (),
-	     textureTransformNode (),
+	              textureNode (),
 	                 undoStep (),
 	                 changing (false)
 {
@@ -68,18 +68,18 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 }
 
 void
-X3DTextureTransformNodeEditor::initialize ()
+X3DTextureNodeEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureTransformNodeEditor::set_selection);
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureNodeEditor::set_selection);
 
 	set_selection ();
 }
 
 void
-X3DTextureTransformNodeEditor::set_selection ()
+X3DTextureNodeEditor::set_selection ()
 {
 	for (const auto & appearance : appearances)
-		appearance -> textureTransform () .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+		appearance -> texture () .removeInterest (this, &X3DTextureNodeEditor::set_texture);
 
 	undoStep .reset ();
 
@@ -104,31 +104,32 @@ X3DTextureTransformNodeEditor::set_selection ()
 						});
 
 	for (const auto & appearance : appearances)
-		appearance -> textureTransform () .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+		appearance -> texture () .addInterest (this, &X3DTextureNodeEditor::set_texture);
 
-	set_textureTransform ();
+	set_texture ();
 }
 
 /***********************************************************************************************************************
  *
- *  textureTransform
+ *  texture
  *
  **********************************************************************************************************************/
 
 void
-X3DTextureTransformNodeEditor::on_textureTransform_changed ()
+X3DTextureNodeEditor::on_texture_changed ()
 {
-	getTextureTransformNotebook () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0);
+	getTextureNotebook () .set_sensitive (getTextureButton () .get_active_row_number () > 0);
+	getTexture2DBox ()    .set_sensitive (getTextureButton () .get_active_row_number () > 0);
 
-	getTextureTransformBox () .set_visible (false);
+	getImageTextureBox () .set_visible (false);
 
-	if (textureTransformNode)
+	if (textureNode)
 	{
-		switch (getTextureTransformButton () .get_active_row_number ())
+		switch (getTextureButton () .get_active_row_number ())
 		{
 			case 1:
-				getTextureTransformBox () .set_visible (true);
-				getTextureTransformNotebook () .set_current_page (1);
+				//getImageTextureBox () .set_visible (true);
+				//getTextureNotebook () .set_current_page (1);
 				break;
 			default:
 				break;
@@ -140,53 +141,53 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 	if (changing)
 		return;
 
-	if (getTextureTransformButton () .get_active_row_number () > 0)
+	if (getTextureButton () .get_active_row_number () > 0)
 	{
-		switch (getTextureTransformButton () .get_active_row_number ())
+		switch (getTextureButton () .get_active_row_number ())
 		{
 			case 1:
 			{
-				textureTransformNode = new X3D::TextureTransform (getExecutionContext ());
-				setTextureTransform (textureTransformNode, true);
+				textureNode = new X3D::ImageTexture (getExecutionContext ());
+				setTexture2DNode (textureNode, true);
 				break;
 			}
 			default:
 				break;
 		}
 
-		getExecutionContext () -> addUninitializedNode (textureTransformNode);
+		getExecutionContext () -> addUninitializedNode (textureNode);
 		getExecutionContext () -> realize ();
 	}
 
 	// Set field.
 
-	addUndoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
+	addUndoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 
 	for (const auto & appearance : appearances)
 	{
 		try
 		{
-			auto & field = appearance -> textureTransform ();
+			auto & field = appearance -> texture ();
 
-			if (getTextureTransformButton () .get_active_row_number () > 0)
-				field = textureTransformNode;
+			if (getTextureButton () .get_active_row_number () > 0)
+				field = textureNode;
 			else
 				field = nullptr;
 
-			field .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
-			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
+			field .removeInterest (this, &X3DTextureNodeEditor::set_texture);
+			field .addInterest (this, &X3DTextureNodeEditor::connectTexture);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	addRedoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
+	addRedoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 }
 
 void
-X3DTextureTransformNodeEditor::set_textureTransform ()
+X3DTextureNodeEditor::set_texture ()
 {
-	textureTransformNode = nullptr;
+	textureNode = nullptr;
 
 	const bool hasField = not appearances .empty ();
 
@@ -198,17 +199,17 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 	{
 		try
 		{
-			const X3D::X3DPtr <X3D::X3DTextureTransformNode> field (appearance -> textureTransform ());
+			const X3D::X3DPtr <X3D::X3DTextureNode> field (appearance -> texture ());
 
 			if (active < 0)
 			{
-				textureTransformNode = std::move (field);
-				active               = bool (textureTransformNode);
+				textureNode = std::move (field);
+				active      = bool (textureNode);
 			}
-			else if (field not_eq textureTransformNode)
+			else if (field not_eq textureNode)
 			{
-				if (not textureTransformNode)
-					textureTransformNode = std::move (field);
+				if (not textureNode)
+					textureNode = std::move (field);
 
 				active = -1;
 				break;
@@ -218,44 +219,44 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 		{ }
 	}
 
-	if (not textureTransformNode)
+	if (not textureNode)
 	{
-		textureTransformNode = new X3D::TextureTransform (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (textureTransformNode);
+		textureNode = new X3D::ImageTexture (getExecutionContext ());
+		getExecutionContext () -> addUninitializedNode (textureNode);
 		getExecutionContext () -> realize ();
 	}
 
-	setTextureTransform (textureTransformNode, false);
+	setTexture2DNode (textureNode, false);
 
 	changing = true;
 
 	if (active > 0)
 	{
-		switch (textureTransformNode -> getType () .back ())
+		switch (textureNode -> getType () .back ())
 		{
-			case X3D::X3DConstants::TextureTransform:
-				getTextureTransformButton () .set_active (1);
+			case X3D::X3DConstants::ImageTexture:
+				getTextureButton () .set_active (1);
 				break;
 			default:
-				getTextureTransformButton () .set_active (-1);
+				getTextureButton () .set_active (-1);
 				break;
 		}
 	}
 	else if (active == 0)
-		getTextureTransformButton () .set_active (0);
+		getTextureButton () .set_active (0);
 	else
-		getTextureTransformButton () .set_active (-1);
+		getTextureButton () .set_active (-1);
 
-	getTextureTransformButton () .set_sensitive (hasField);
+	getTextureButton () .set_sensitive (hasField);
 
 	changing = false;
 }
 
 void
-X3DTextureTransformNodeEditor::connectTextureTransform (const X3D::SFNode & field)
+X3DTextureNodeEditor::connectTexture (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
-	field .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+	field .removeInterest (this, &X3DTextureNodeEditor::connectTexture);
+	field .addInterest (this, &X3DTextureNodeEditor::set_texture);
 }
 
 } // puck

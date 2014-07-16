@@ -70,7 +70,7 @@ perl -e '
 
 	$constructor_rx  = qr/(\w+)\:\:(\w+)\s\(/so;
 	$member_value_rx = qr/\((?:[^()]*|(?0))*\)|\{(?:[^{}]*|(?0))*\}/so;
-	$member_rx       = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
+	$member_rx       = qr/^(\t+)([\/\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
 
 	@lines = <>;
 

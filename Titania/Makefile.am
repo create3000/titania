@@ -40,6 +40,9 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
 	Titania/TextEditor/TextEditor.cpp \
 	Titania/TextureEditor/TextureEditor.cpp \
+	Titania/TextureEditor/X3DImageTextureEditor.cpp \
+	Titania/TextureEditor/X3DTexture2DNodeEditor.cpp \
+	Titania/TextureEditor/X3DTextureNodeEditor.cpp \
 	Titania/TextureEditor/X3DTextureTransformEditor.cpp \
 	Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Undo/UndoGroup.cpp \

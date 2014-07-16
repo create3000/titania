@@ -48,28 +48,66 @@
  *
  ******************************************************************************/
 
-#include "TextureEditor.h"
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
 
-#include "../Browser/BrowserWindow.h"
-#include "../Configuration/config.h"
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../TextureEditor/X3DImageTextureEditor.h"
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	    X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
-	         X3DTextureNodeEditor (),
-	X3DTextureTransformNodeEditor ()
-{ }
-
-void
-TextureEditor::initialize ()
+class X3DTexture2DNodeEditor :
+	virtual public X3DTextureEditorInterface,
+	public X3DImageTextureEditor
 {
-	X3DTextureEditorInterface::initialize ();
-	X3DTextureNodeEditor::initialize ();
-	X3DTextureTransformNodeEditor::initialize ();
-}
+protected:
+
+	///  @name Construction
+
+	X3DTexture2DNodeEditor ();
+
+	///  @name Construction
+
+	void
+	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &, const bool);
+
+
+private:
+
+	///  @name repeatS
+
+	virtual
+	void
+	on_texture2DNode_repeatS_toggled () final override;
+
+	void
+	set_repeatS ();
+
+	void
+	connectRepeatS (const X3D::SFBool &);
+
+	///  @name repeatT
+
+	virtual
+	void
+	on_texture2DNode_repeatT_toggled () final override;
+
+	void
+	set_repeatT ();
+
+	void
+	connectRepeatT (const X3D::SFBool &);
+
+	///  @name Members
+
+	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode;
+	UndoStepPtr                         undoStep;
+	bool                                changing;
+
+};
 
 } // puck
 } // titania
+
+#endif

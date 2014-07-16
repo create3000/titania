@@ -80,10 +80,16 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureButton -> set_name ("TextureButton");
 	m_builder -> get_widget ("TextureNotebook", m_TextureNotebook);
 	m_TextureNotebook -> set_name ("TextureNotebook");
-	m_builder -> get_widget ("RepeatSCheckbutton", m_RepeatSCheckbutton);
-	m_RepeatSCheckbutton -> set_name ("RepeatSCheckbutton");
-	m_builder -> get_widget ("RepeatTCheckButton", m_RepeatTCheckButton);
-	m_RepeatTCheckButton -> set_name ("RepeatTCheckButton");
+	m_builder -> get_widget ("TextureLabel", m_TextureLabel);
+	m_TextureLabel -> set_name ("TextureLabel");
+	m_builder -> get_widget ("ImageTextureBox", m_ImageTextureBox);
+	m_ImageTextureBox -> set_name ("ImageTextureBox");
+	m_builder -> get_widget ("Texture2DBox", m_Texture2DBox);
+	m_Texture2DBox -> set_name ("Texture2DBox");
+	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);
+	m_Texture2DNodeRepeatSCheckButton -> set_name ("Texture2DNodeRepeatSCheckButton");
+	m_builder -> get_widget ("Texture2DNodeRepeatTCheckButton", m_Texture2DNodeRepeatTCheckButton);
+	m_Texture2DNodeRepeatTCheckButton -> set_name ("Texture2DNodeRepeatTCheckButton");
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
 	m_builder -> get_widget ("TextureTransformButton", m_TextureTransformButton);
@@ -117,6 +123,13 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformScaleYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_scale_changed));
 	m_TextureTransformTranslationXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_translation_changed));
 	m_TextureTransformTranslationYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_translation_changed));
+
+	// Connect object Gtk::ComboBoxText with id 'TextureButton'.
+	m_TextureButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
+
+	// Connect object Gtk::CheckButton with id 'Texture2DNodeRepeatSCheckButton'.
+	m_Texture2DNodeRepeatSCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatS_toggled));
+	m_Texture2DNodeRepeatTCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatT_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
 	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));

@@ -48,28 +48,59 @@
  *
  ******************************************************************************/
 
-#include "TextureEditor.h"
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
 
-#include "../Browser/BrowserWindow.h"
-#include "../Configuration/config.h"
+#include "../TextureEditor/X3DTexture2DNodeEditor.h"
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	    X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
-	         X3DTextureNodeEditor (),
-	X3DTextureTransformNodeEditor ()
-{ }
-
-void
-TextureEditor::initialize ()
+class X3DTextureNodeEditor :
+	virtual public X3DTextureEditorInterface,
+	public X3DTexture2DNodeEditor
 {
-	X3DTextureEditorInterface::initialize ();
-	X3DTextureNodeEditor::initialize ();
-	X3DTextureTransformNodeEditor::initialize ();
-}
+protected:
+
+	///  @name Construction
+
+	X3DTextureNodeEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_selection ();
+
+	///  @name textureTransform
+
+	virtual
+	void
+	on_texture_changed () final override;
+
+	void
+	set_texture ();
+
+	void
+	connectTexture (const X3D::SFNode &);
+
+	///  @name Members
+
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::X3DPtr <X3D::X3DTextureNode>  textureNode;
+	UndoStepPtr                        undoStep;
+	bool                               changing;
+
+};
 
 } // puck
 } // titania
+
+#endif

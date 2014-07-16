@@ -1,12 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="240" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="1039" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h" Line="72" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp" Line="78" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp" Line="151" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h" Line="71" Column="85" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp" Line="83" Column="16" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureNodeEditor.h" Line="56" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureNodeEditor.cpp" Line="151" Column="40" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.h" Line="71" Column="73" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.cpp" Line="67" Column="102" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -74,8 +75,9 @@
               <Node name="Browser" expanded="True" />
               <Node name="TextEditor" expanded="True" />
               <Node name="TextureEditor" expanded="True">
-                <Node name="X3DTextureTransformEditor.cpp" selected="True" />
+                <Node name="X3DTextureNodeEditor.cpp" selected="True" />
               </Node>
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

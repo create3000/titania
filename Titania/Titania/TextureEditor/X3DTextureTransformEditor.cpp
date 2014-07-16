@@ -64,7 +64,7 @@ X3DTextureTransformEditor::X3DTextureTransformEditor () :
 { }
 
 void
-X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
+X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value, const bool copy)
 {
 	if (textureTransform)
 	{
@@ -80,7 +80,7 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 
 	if (textureTransform)
 	{
-		if (tmp)
+		if (copy and tmp)
 		{
 			textureTransform -> translation () = tmp -> translation ();
 			textureTransform -> rotation ()    = tmp -> rotation ();

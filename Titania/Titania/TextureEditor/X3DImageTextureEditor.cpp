@@ -48,27 +48,44 @@
  *
  ******************************************************************************/
 
-#include "TextureEditor.h"
+#include "X3DImageTextureEditor.h"
 
 #include "../Browser/BrowserWindow.h"
-#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	    X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
-	         X3DTextureNodeEditor (),
-	X3DTextureTransformNodeEditor ()
+X3DImageTextureEditor::X3DImageTextureEditor () :
+	         X3DBaseInterface (),
+	X3DTextureEditorInterface ("", ""),
+	             imageTexture (),
+	                 undoStep (),
+	                 changing (false)
 { }
 
 void
-TextureEditor::initialize ()
+X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value, const bool copy)
 {
-	X3DTextureEditorInterface::initialize ();
-	X3DTextureNodeEditor::initialize ();
-	X3DTextureTransformNodeEditor::initialize ();
+	if (imageTexture)
+	{
+		//imageTexture -> url () .removeInterest (this, &X3DImageTextureEditor::set_url);
+	}
+
+	X3D::X3DPtr <X3D::ImageTexture> tmp = imageTexture;
+
+	imageTexture = value;
+
+	if (imageTexture)
+	{
+		if (copy and tmp)
+		{
+			imageTexture -> url () = tmp -> url ();
+		}
+
+		//imageTexture -> url () .addInterest (this, &X3DImageTextureEditor::set_url);
+
+		//set_url ();
+	}
 }
 
 } // puck

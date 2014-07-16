@@ -143,13 +143,25 @@ public:
 	getTextureNotebook () const
 	{ return *m_TextureNotebook; }
 
-	Gtk::CheckButton &
-	getRepeatSCheckbutton () const
-	{ return *m_RepeatSCheckbutton; }
+	Gtk::Label &
+	getTextureLabel () const
+	{ return *m_TextureLabel; }
+
+	Gtk::Box &
+	getImageTextureBox () const
+	{ return *m_ImageTextureBox; }
+
+	Gtk::Grid &
+	getTexture2DBox () const
+	{ return *m_Texture2DBox; }
 
 	Gtk::CheckButton &
-	getRepeatTCheckButton () const
-	{ return *m_RepeatTCheckButton; }
+	getTexture2DNodeRepeatSCheckButton () const
+	{ return *m_Texture2DNodeRepeatSCheckButton; }
+
+	Gtk::CheckButton &
+	getTexture2DNodeRepeatTCheckButton () const
+	{ return *m_Texture2DNodeRepeatTCheckButton; }
 
 	Gtk::Expander &
 	getTextureTransformExpander () const
@@ -217,6 +229,18 @@ public:
 
 	virtual
 	void
+	on_texture_changed () = 0;
+
+	virtual
+	void
+	on_texture2DNode_repeatS_toggled () = 0;
+
+	virtual
+	void
+	on_texture2DNode_repeatT_toggled () = 0;
+
+	virtual
+	void
 	on_textureTransform_changed () = 0;
 
 	virtual
@@ -244,8 +268,11 @@ private:
 	Gtk::Expander*                 m_TextureExpander;
 	Gtk::ComboBoxText*             m_TextureButton;
 	Gtk::Notebook*                 m_TextureNotebook;
-	Gtk::CheckButton*              m_RepeatSCheckbutton;
-	Gtk::CheckButton*              m_RepeatTCheckButton;
+	Gtk::Label*                    m_TextureLabel;
+	Gtk::Box*                      m_ImageTextureBox;
+	Gtk::Grid*                     m_Texture2DBox;
+	Gtk::CheckButton*              m_Texture2DNodeRepeatSCheckButton;
+	Gtk::CheckButton*              m_Texture2DNodeRepeatTCheckButton;
 	Gtk::Expander*                 m_TextureTransformExpander;
 	Gtk::ComboBoxText*             m_TextureTransformButton;
 	Gtk::Notebook*                 m_TextureTransformNotebook;

@@ -48,28 +48,40 @@
  *
  ******************************************************************************/
 
-#include "TextureEditor.h"
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DIMAGE_TEXTURE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DIMAGE_TEXTURE_EDITOR_H__
 
-#include "../Browser/BrowserWindow.h"
-#include "../Configuration/config.h"
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	    X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
-	         X3DTextureNodeEditor (),
-	X3DTextureTransformNodeEditor ()
-{ }
-
-void
-TextureEditor::initialize ()
+class X3DImageTextureEditor :
+	virtual public X3DTextureEditorInterface
 {
-	X3DTextureEditorInterface::initialize ();
-	X3DTextureNodeEditor::initialize ();
-	X3DTextureTransformNodeEditor::initialize ();
-}
+protected:
+
+	///  @name Construction
+
+	X3DImageTextureEditor ();
+
+	///  @name Construction
+
+	void
+	setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &, const bool);
+
+
+private:
+
+	///  @name Members
+
+	X3D::X3DPtr <X3D::ImageTexture> imageTexture;
+	UndoStepPtr                     undoStep;
+	bool                            changing;
+
+};
 
 } // puck
 } // titania
+
+#endif
