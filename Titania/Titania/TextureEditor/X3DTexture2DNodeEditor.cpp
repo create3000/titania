@@ -65,9 +65,12 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 { }
 
 void
-X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value, const bool copy)
+X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	setImageTexture (value, copy);
+	if (value == texture2DNode)
+		return;
+
+	setImageTexture (value);
 
 	if (texture2DNode)
 	{
@@ -75,16 +78,16 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode
 		texture2DNode -> repeatT () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
 	}
 
-	X3D::X3DPtr <X3D::X3DTexture2DNode> tmp = texture2DNode;
+	X3D::X3DPtr <X3D::X3DTexture2DNode> last = texture2DNode;
 
 	texture2DNode = value;
 
 	if (texture2DNode)
 	{
-		if (copy and tmp)
+		if (last == getTextureNode ())
 		{
-			texture2DNode -> repeatS () = tmp -> repeatS ();
-			texture2DNode -> repeatT () = tmp -> repeatT ();
+			texture2DNode -> repeatS () = last -> repeatS ();
+			texture2DNode -> repeatT () = last -> repeatT ();
 		}
 
 		texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatS);

@@ -143,20 +143,26 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	if (getTextureButton () .get_active_row_number () > 0)
 	{
+		X3D::X3DPtr <X3D::X3DTextureNode> value;
+
 		switch (getTextureButton () .get_active_row_number ())
 		{
 			case 1:
 			{
-				textureNode = new X3D::ImageTexture (getExecutionContext ());
-				setTexture2DNode (textureNode, true);
+				value = new X3D::ImageTexture (getExecutionContext ());
+				setTexture2DNode (value);
 				break;
 			}
 			default:
 				break;
 		}
 
-		getExecutionContext () -> addUninitializedNode (textureNode);
-		getExecutionContext () -> realize ();
+		if (value)
+		{
+			textureNode = value;
+			getExecutionContext () -> addUninitializedNode (textureNode);
+			getExecutionContext () -> realize ();
+		}
 	}
 
 	// Set field.
@@ -226,7 +232,7 @@ X3DTextureNodeEditor::set_texture ()
 		getExecutionContext () -> realize ();
 	}
 
-	setTexture2DNode (textureNode, false);
+	setTexture2DNode (textureNode);
 
 	changing = true;
 

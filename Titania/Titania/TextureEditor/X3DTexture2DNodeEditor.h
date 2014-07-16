@@ -70,7 +70,7 @@ protected:
 	///  @name Construction
 
 	void
-	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &, const bool);
+	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 
 private:

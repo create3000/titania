@@ -142,20 +142,26 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	if (getTextureTransformButton () .get_active_row_number () > 0)
 	{
+		X3D::X3DPtr <X3D::X3DTextureTransformNode> value;
+	
 		switch (getTextureTransformButton () .get_active_row_number ())
 		{
 			case 1:
 			{
-				textureTransformNode = new X3D::TextureTransform (getExecutionContext ());
-				setTextureTransform (textureTransformNode, true);
+				value = new X3D::TextureTransform (getExecutionContext ());
+				setTextureTransform (value);
 				break;
 			}
 			default:
 				break;
 		}
 
-		getExecutionContext () -> addUninitializedNode (textureTransformNode);
-		getExecutionContext () -> realize ();
+		if (value)
+		{
+			textureTransformNode = value;
+			getExecutionContext () -> addUninitializedNode (textureTransformNode);
+			getExecutionContext () -> realize ();
+		}
 	}
 
 	// Set field.
@@ -225,7 +231,7 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 		getExecutionContext () -> realize ();
 	}
 
-	setTextureTransform (textureTransformNode, false);
+	setTextureTransform (textureTransformNode);
 
 	changing = true;
 

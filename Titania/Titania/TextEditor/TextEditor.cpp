@@ -366,7 +366,7 @@ TextEditor::on_fontStyle_changed ()
 
 	if (getFontStyleButton () .get_active_row_number () > 0)
 	{
-		const auto tmp = fontStyleNode;
+		const auto last = fontStyleNode;
 
 		switch (getFontStyleButton () .get_active_row_number ())
 		{
@@ -384,15 +384,15 @@ TextEditor::on_fontStyle_changed ()
 				break;
 		}
 
-		fontStyleNode -> language ()    = tmp -> language ();
-		fontStyleNode -> family ()      = tmp -> family ();
-		fontStyleNode -> style ()       = tmp -> style ();
-		fontStyleNode -> size ()        = tmp -> size ();
-		fontStyleNode -> spacing ()     = tmp -> spacing ();
-		fontStyleNode -> horizontal ()  = tmp -> horizontal ();
-		fontStyleNode -> leftToRight () = tmp -> leftToRight ();
-		fontStyleNode -> topToBottom () = tmp -> topToBottom ();
-		fontStyleNode -> justify ()     = tmp -> justify ();
+		fontStyleNode -> language ()    = last -> language ();
+		fontStyleNode -> family ()      = last -> family ();
+		fontStyleNode -> style ()       = last -> style ();
+		fontStyleNode -> size ()        = last -> size ();
+		fontStyleNode -> spacing ()     = last -> spacing ();
+		fontStyleNode -> horizontal ()  = last -> horizontal ();
+		fontStyleNode -> leftToRight () = last -> leftToRight ();
+		fontStyleNode -> topToBottom () = last -> topToBottom ();
+		fontStyleNode -> justify ()     = last -> justify ();
 
 		getExecutionContext () -> addUninitializedNode (fontStyleNode);
 		getExecutionContext () -> realize ();

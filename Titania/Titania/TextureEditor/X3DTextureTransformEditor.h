@@ -68,7 +68,11 @@ protected:
 	///  @name Construction
 
 	void
-	setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &, const bool);
+	setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
+
+	virtual
+	const X3D::X3DPtr <X3D::X3DTextureTransformNode> &
+	getTextureTransformNode () const = 0;
 
 
 private:

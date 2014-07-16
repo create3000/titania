@@ -64,8 +64,11 @@ X3DTextureTransformEditor::X3DTextureTransformEditor () :
 { }
 
 void
-X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value, const bool copy)
+X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
 {
+	if (value == textureTransform)
+		return;
+
 	if (textureTransform)
 	{
 		textureTransform -> translation () .removeInterest (this, &X3DTextureTransformEditor::set_translation);
@@ -74,18 +77,18 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 		textureTransform -> center ()      .removeInterest (this, &X3DTextureTransformEditor::set_center);
 	}
 
-	X3D::X3DPtr <X3D::TextureTransform> tmp = textureTransform;
+	X3D::X3DPtr <X3D::TextureTransform> last = textureTransform;
 
 	textureTransform = value;
 
 	if (textureTransform)
 	{
-		if (copy and tmp)
+		if (last == getTextureTransformNode ())
 		{
-			textureTransform -> translation () = tmp -> translation ();
-			textureTransform -> rotation ()    = tmp -> rotation ();
-			textureTransform -> scale ()       = tmp -> scale ();
-			textureTransform -> center ()      = tmp -> center ();
+			textureTransform -> translation () = last -> translation ();
+			textureTransform -> rotation ()    = last -> rotation ();
+			textureTransform -> scale ()       = last -> scale ();
+			textureTransform -> center ()      = last -> center ();
 		}
 
 		textureTransform -> translation () .addInterest (this, &X3DTextureTransformEditor::set_translation);

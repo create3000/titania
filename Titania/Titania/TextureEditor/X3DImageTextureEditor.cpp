@@ -64,22 +64,25 @@ X3DImageTextureEditor::X3DImageTextureEditor () :
 { }
 
 void
-X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value, const bool copy)
+X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
+	if (value == imageTexture)
+		return;
+
 	if (imageTexture)
 	{
 		//imageTexture -> url () .removeInterest (this, &X3DImageTextureEditor::set_url);
 	}
 
-	X3D::X3DPtr <X3D::ImageTexture> tmp = imageTexture;
+	X3D::X3DPtr <X3D::ImageTexture> last = imageTexture;
 
 	imageTexture = value;
 
 	if (imageTexture)
 	{
-		if (copy and tmp)
+		if (last == getTextureNode ())
 		{
-			imageTexture -> url () = tmp -> url ();
+			imageTexture -> url () = last -> url ();
 		}
 
 		//imageTexture -> url () .addInterest (this, &X3DImageTextureEditor::set_url);
