@@ -245,19 +245,7 @@ public:
 
 	virtual
 	void
-	on_string_changed () = 0;
-
-	virtual
-	void
-	on_text_toggled () = 0;
-
-	virtual
-	void
 	on_maxExtent_changed () = 0;
-
-	virtual
-	void
-	on_fontStyle_changed () = 0;
 
 	virtual
 	void
@@ -266,6 +254,18 @@ public:
 	virtual
 	void
 	on_spacing_changed () = 0;
+
+	virtual
+	void
+	on_string_changed () = 0;
+
+	virtual
+	void
+	on_text_toggled () = 0;
+
+	virtual
+	void
+	on_fontStyle_changed () = 0;
 
 	virtual
 	void
@@ -281,19 +281,11 @@ public:
 
 	virtual
 	void
-	on_majorAlignment_changed () = 0;
+	on_justify_changed () = 0;
 
 	virtual
 	void
-	on_minorAlignment_changed () = 0;
-
-	virtual
-	void
-	on_bold_toggled () = 0;
-
-	virtual
-	void
-	on_italic_toggled () = 0;
+	on_style_toggled () = 0;
 
 	virtual
 	bool

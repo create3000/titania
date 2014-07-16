@@ -301,6 +301,30 @@ public:
 
 	virtual
 	void
+	on_ambient_value_changed () = 0;
+
+	virtual
+	void
+	on_backAmbient_value_changed () = 0;
+
+	virtual
+	void
+	on_backShininess_value_changed () = 0;
+
+	virtual
+	void
+	on_backTransparency_value_changed () = 0;
+
+	virtual
+	void
+	on_shininess_value_changed () = 0;
+
+	virtual
+	void
+	on_transparency_value_changed () = 0;
+
+	virtual
+	void
 	on_copy () = 0;
 
 	virtual
@@ -349,23 +373,11 @@ public:
 
 	virtual
 	void
-	on_ambient_value_changed () = 0;
-
-	virtual
-	void
 	on_shininess_text_changed () = 0;
 
 	virtual
 	void
-	on_shininess_value_changed () = 0;
-
-	virtual
-	void
 	on_transparency_text_changed () = 0;
-
-	virtual
-	void
-	on_transparency_value_changed () = 0;
 
 	virtual
 	void
@@ -401,23 +413,11 @@ public:
 
 	virtual
 	void
-	on_backAmbient_value_changed () = 0;
-
-	virtual
-	void
 	on_backShininess_text_changed () = 0;
 
 	virtual
 	void
-	on_backShininess_value_changed () = 0;
-
-	virtual
-	void
 	on_backTransparency_text_changed () = 0;
-
-	virtual
-	void
-	on_backTransparency_value_changed () = 0;
 
 	virtual
 	~X3DMaterialEditorInterface ();

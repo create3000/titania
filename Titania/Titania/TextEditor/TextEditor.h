@@ -173,14 +173,7 @@ private:
 
 	virtual
 	void
-	on_bold_toggled () final override;
-
-	virtual
-	void
-	on_italic_toggled () final override;
-
-	void
-	on_style_toggled ();
+	on_style_toggled () final override;
 
 	void
 	set_style ();
@@ -252,14 +245,7 @@ private:
 
 	virtual
 	void
-	on_majorAlignment_changed () final override;
-
-	virtual
-	void
-	on_minorAlignment_changed () final override;
-
-	void
-	on_justify_changed ();
+	on_justify_changed () final override;
 
 	void
 	set_justify ();

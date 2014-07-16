@@ -68,15 +68,78 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 {
 	if (textureTransform)
 	{
-		textureTransform -> rotation () .removeInterest (this, &X3DTextureTransformEditor::set_rotation);
+		textureTransform -> translation () .removeInterest (this, &X3DTextureTransformEditor::set_translation);
+		textureTransform -> rotation ()    .removeInterest (this, &X3DTextureTransformEditor::set_rotation);
+		textureTransform -> scale ()       .removeInterest (this, &X3DTextureTransformEditor::set_scale);
+		textureTransform -> center ()      .removeInterest (this, &X3DTextureTransformEditor::set_center);
 	}
+
+	X3D::X3DPtr <X3D::TextureTransform> tmp = textureTransform;
 
 	textureTransform = value;
 
 	if (textureTransform)
 	{
-		textureTransform -> rotation () .addInterest (this, &X3DTextureTransformEditor::set_rotation);
+		if (tmp)
+		{
+			textureTransform -> translation () = tmp -> translation ();
+			textureTransform -> rotation ()    = tmp -> rotation ();
+			textureTransform -> scale ()       = tmp -> scale ();
+			textureTransform -> center ()      = tmp -> center ();
+		}
+
+		textureTransform -> translation () .addInterest (this, &X3DTextureTransformEditor::set_translation);
+		textureTransform -> rotation ()    .addInterest (this, &X3DTextureTransformEditor::set_rotation);
+		textureTransform -> scale ()       .addInterest (this, &X3DTextureTransformEditor::set_scale);
+		textureTransform -> center ()      .addInterest (this, &X3DTextureTransformEditor::set_center);
+
+		set_translation ();
+		set_rotation ();
+		set_scale ();
+		set_center ();
 	}
+}
+
+/***********************************************************************************************************************
+ *
+ *  translation
+ *
+ **********************************************************************************************************************/
+
+void
+X3DTextureTransformEditor::on_textureTransform_translation_changed ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (textureTransform, textureTransform -> translation (), undoStep);
+
+	textureTransform -> translation () .setX (getTextureTransformTranslationXSpinButton () .get_value ());
+	textureTransform -> translation () .setY (getTextureTransformTranslationYSpinButton () .get_value ());
+
+	textureTransform -> translation () .removeInterest (this, &X3DTextureTransformEditor::set_translation);
+	textureTransform -> translation () .addInterest (this, &X3DTextureTransformEditor::connectTranslation);
+
+	addRedoFunction (textureTransform -> translation (), undoStep);
+
+}
+
+void
+X3DTextureTransformEditor::set_translation ()
+{
+	changing = true;
+
+	getTextureTransformTranslationXSpinButton () .set_value (textureTransform -> translation () .getX ());
+	getTextureTransformTranslationYSpinButton () .set_value (textureTransform -> translation () .getY ());
+
+	changing = false;
+}
+
+void
+X3DTextureTransformEditor::connectTranslation (const X3D::SFVec2f & field)
+{
+	field .removeInterest (this, &X3DTextureTransformEditor::connectTranslation);
+	field .addInterest (this, &X3DTextureTransformEditor::set_translation);
 }
 
 /***********************************************************************************************************************
@@ -117,6 +180,89 @@ X3DTextureTransformEditor::connectRotation (const X3D::SFFloat & field)
 {
 	field .removeInterest (this, &X3DTextureTransformEditor::connectRotation);
 	field .addInterest (this, &X3DTextureTransformEditor::set_rotation);
+}
+
+/***********************************************************************************************************************
+ *
+ *  scale
+ *
+ **********************************************************************************************************************/
+
+void
+X3DTextureTransformEditor::on_textureTransform_scale_changed ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (textureTransform, textureTransform -> scale (), undoStep);
+
+	textureTransform -> scale () .setX (getTextureTransformScaleXSpinButton () .get_value ());
+	textureTransform -> scale () .setY (getTextureTransformScaleYSpinButton () .get_value ());
+
+	textureTransform -> scale () .removeInterest (this, &X3DTextureTransformEditor::set_scale);
+	textureTransform -> scale () .addInterest (this, &X3DTextureTransformEditor::connectScale);
+
+	addRedoFunction (textureTransform -> scale (), undoStep);
+
+}
+
+void
+X3DTextureTransformEditor::set_scale ()
+{
+	changing = true;
+
+	getTextureTransformScaleXSpinButton () .set_value (textureTransform -> scale () .getX ());
+	getTextureTransformScaleYSpinButton () .set_value (textureTransform -> scale () .getY ());
+
+	changing = false;
+}
+
+void
+X3DTextureTransformEditor::connectScale (const X3D::SFVec2f & field)
+{
+	field .removeInterest (this, &X3DTextureTransformEditor::connectScale);
+	field .addInterest (this, &X3DTextureTransformEditor::set_scale);
+}
+
+/***********************************************************************************************************************
+ *
+ *  center
+ *
+ **********************************************************************************************************************/
+
+void
+X3DTextureTransformEditor::on_textureTransform_center_changed ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (textureTransform, textureTransform -> center (), undoStep);
+
+	textureTransform -> center () .setX (getTextureTransformCenterXSpinButton () .get_value ());
+	textureTransform -> center () .setY (getTextureTransformCenterYSpinButton () .get_value ());
+
+	textureTransform -> center () .removeInterest (this, &X3DTextureTransformEditor::set_center);
+	textureTransform -> center () .addInterest (this, &X3DTextureTransformEditor::connectCenter);
+
+	addRedoFunction (textureTransform -> center (), undoStep);
+}
+
+void
+X3DTextureTransformEditor::set_center ()
+{
+	changing = true;
+
+	getTextureTransformCenterXSpinButton () .set_value (textureTransform -> center () .getX ());
+	getTextureTransformCenterYSpinButton () .set_value (textureTransform -> center () .getY ());
+
+	changing = false;
+}
+
+void
+X3DTextureTransformEditor::connectCenter (const X3D::SFVec2f & field)
+{
+	field .removeInterest (this, &X3DTextureTransformEditor::connectCenter);
+	field .addInterest (this, &X3DTextureTransformEditor::set_center);
 }
 
 } // puck

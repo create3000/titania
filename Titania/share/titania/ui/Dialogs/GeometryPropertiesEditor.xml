@@ -6,6 +6,7 @@
     <property name="upper">180</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
+    <signal name="value-changed" handler="on_creaseAngle_value_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -226,7 +227,6 @@
                             <property name="digits">3</property>
                             <property name="draw_value">False</property>
                             <property name="value_pos">right</property>
-                            <signal name="value-changed" handler="on_creaseAngle_value_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>

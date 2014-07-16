@@ -70,12 +70,20 @@ protected:
 	void
 	setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
 
-	const X3D::X3DPtr <X3D::TextureTransform> &
-	getTextureTransform () const
-	{ return textureTransform; }
-
 
 private:
+
+	///  @name translation
+
+	virtual
+	void
+	on_textureTransform_translation_changed () final override;
+
+	void
+	set_translation ();
+
+	void
+	connectTranslation (const X3D::SFVec2f &);
 
 	///  @name rotation
 
@@ -88,6 +96,30 @@ private:
 
 	void
 	connectRotation (const X3D::SFFloat &);
+
+	///  @name scale
+
+	virtual
+	void
+	on_textureTransform_scale_changed () final override;
+
+	void
+	set_scale ();
+
+	void
+	connectScale (const X3D::SFVec2f &);
+
+	///  @name center
+
+	virtual
+	void
+	on_textureTransform_center_changed () final override;
+
+	void
+	set_center ();
+
+	void
+	connectCenter (const X3D::SFVec2f &);
 
 	///  @name Members
 

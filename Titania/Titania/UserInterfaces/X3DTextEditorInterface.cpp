@@ -127,21 +127,19 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 	m_FamilyChooserDialog -> set_name ("FamilyChooserDialog");
 
+	// Connect object Gtk::Adjustment with id 'MaxExtentAdjustment'.
+	m_MaxExtentAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_maxExtent_changed));
+	m_SizeAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
+	m_SpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_spacing_changed));
+
 	// Connect object Gtk::TextBuffer with id 'StringTextBuffer'.
 	m_StringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));
 
 	// Connect object Gtk::CheckButton with id 'TextCheckButton'.
 	m_TextCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_toggled));
 
-	// Connect object Gtk::SpinButton with id 'MaxExtentSpinButton'.
-	m_MaxExtentSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_maxExtent_changed));
-
 	// Connect object Gtk::ComboBoxText with id 'FontStyleButton'.
 	m_FontStyleButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed));
-
-	// Connect object Gtk::SpinButton with id 'SizeSpinButton'.
-	m_SizeSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
-	m_SpacingSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_spacing_changed));
 
 	// Connect object Gtk::CheckButton with id 'HorizontalCheckButton'.
 	m_HorizontalCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_horizontal_toggled));
@@ -149,12 +147,12 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_TopToBottomCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_topToBottom_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'MajorAlignmentButton'.
-	m_MajorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_majorAlignment_changed));
-	m_MinorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_minorAlignment_changed));
+	m_MajorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
+	m_MinorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
 
 	// Connect object Gtk::ToggleButton with id 'BoldToggleButton'.
-	m_BoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_bold_toggled));
-	m_ItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_italic_toggled));
+	m_BoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
+	m_ItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
 
 	// Connect object Gtk::TreeView with id 'FamilyTreeView'.
 	m_FamilyTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_button_release_event));

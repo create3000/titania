@@ -12,18 +12,21 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
+    <signal name="value-changed" handler="on_maxExtent_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="SizeAdjustment">
     <property name="upper">1000000000</property>
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_size_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="SpacingAdjustment">
     <property name="upper">1000000000</property>
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_spacing_changed" swapped="no"/>
   </object>
   <object class="GtkTextBuffer" id="StringTextBuffer">
     <signal name="changed" handler="on_string_changed" swapped="no"/>
@@ -172,7 +175,6 @@
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
-                        <signal name="value-changed" handler="on_maxExtent_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -382,7 +384,6 @@
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
                         <property name="value">1</property>
-                        <signal name="value-changed" handler="on_size_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -415,7 +416,6 @@
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
                         <property name="value">1</property>
-                        <signal name="value-changed" handler="on_spacing_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -514,7 +514,7 @@
                           <item>MIDDLE</item>
                           <item>END</item>
                         </items>
-                        <signal name="changed" handler="on_majorAlignment_changed" swapped="no"/>
+                        <signal name="changed" handler="on_justify_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -533,7 +533,7 @@
                           <item>MIDDLE</item>
                           <item>END</item>
                         </items>
-                        <signal name="changed" handler="on_minorAlignment_changed" swapped="no"/>
+                        <signal name="changed" handler="on_justify_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -605,7 +605,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <signal name="toggled" handler="on_bold_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_style_toggled" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image3">
                                 <property name="visible">True</property>
@@ -626,7 +626,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <signal name="toggled" handler="on_italic_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_style_toggled" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image2">
                                 <property name="visible">True</property>

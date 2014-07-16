@@ -153,6 +153,10 @@ public:
 
 	virtual
 	void
+	on_creaseAngle_value_changed () = 0;
+
+	virtual
+	void
 	on_solid_toggled () = 0;
 
 	virtual
@@ -166,10 +170,6 @@ public:
 	virtual
 	void
 	on_creaseAngle_text_changed () = 0;
-
-	virtual
-	void
-	on_creaseAngle_value_changed () = 0;
 
 	virtual
 	void

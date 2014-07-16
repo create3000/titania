@@ -779,18 +779,6 @@ TextEditor::connectFamily (const X3D::MFString & field)
  **********************************************************************************************************************/
 
 void
-TextEditor::on_bold_toggled ()
-{
-	on_style_toggled ();
-}
-
-void
-TextEditor::on_italic_toggled ()
-{
-	on_style_toggled ();
-}
-
-void
 TextEditor::on_style_toggled ()
 {
 	if (changing)
@@ -1048,18 +1036,6 @@ TextEditor::connectTopToBottom (const X3D::SFBool & field)
  *  justify
  *
  **********************************************************************************************************************/
-
-void
-TextEditor::on_majorAlignment_changed ()
-{
-	on_justify_changed ();
-}
-
-void
-TextEditor::on_minorAlignment_changed ()
-{
-	on_justify_changed ();
-}
 
 void
 TextEditor::on_justify_changed ()

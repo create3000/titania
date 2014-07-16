@@ -109,11 +109,17 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureTransformRotationSpinButton", m_TextureTransformRotationSpinButton);
 	m_TextureTransformRotationSpinButton -> set_name ("TextureTransformRotationSpinButton");
 
+	// Connect object Gtk::Adjustment with id 'TextureTransformCenterXAdjustment'.
+	m_TextureTransformCenterXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_center_changed));
+	m_TextureTransformCenterYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_center_changed));
+	m_TextureTransformRotationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_rotation_changed));
+	m_TextureTransformScaleXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_scale_changed));
+	m_TextureTransformScaleYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_scale_changed));
+	m_TextureTransformTranslationXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_translation_changed));
+	m_TextureTransformTranslationYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_translation_changed));
+
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
 	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
-
-	// Connect object Gtk::SpinButton with id 'TextureTransformRotationSpinButton'.
-	m_TextureTransformRotationSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_rotation_changed));
 
 	// Call construct handler of base class.
 	construct ();

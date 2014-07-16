@@ -9,7 +9,7 @@ Viewpoint {
 }
 
 DEF None Transform {
-  translation -1.47211 0 0
+  translation -2.59604 0 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -65,7 +65,10 @@ DEF TextureTransform Transform {
         url "../images/image.png"
       }
       textureTransform TextureTransform {
-        rotation -0.79
+        translation 0.5 0.5
+        rotation -0.701
+        scale 4 4
+        center 0.5 0.5
       }
     }
     geometry IndexedFaceSet {

@@ -248,47 +248,47 @@ X3DBrowserEditor::isModified (const bool value)
 void
 X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool importAsInline)
 {
-	try
+	if (importAsInline)
 	{
-		if (importAsInline)
+		// Imported As Inline
+
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Import As Inline"));
+
+		getSelection () -> clear (undoStep);
+
+		for (const auto & worldURL : uris)
 		{
-			// Imported As Inline
+			const auto relativePath = getExecutionContext () -> getWorldURL () .relative_path (worldURL);
 
-			const auto undoStep = std::make_shared <UndoStep> (_ ("Import As Inline"));
+			std::string string;
 
-			getSelection () -> clear (undoStep);
+			string += "DEF " + X3D::get_name_from_uri (worldURL) + " Transform {";
+			string += "  children Inline {";
+			string += "    url [";
+			string += "      \"" + relativePath + "\"";
+			string += "      \"" + worldURL + "\"";
+			string += "    ]";
+			string += "  }";
+			string += "}";
 
-			for (const auto & worldURL : uris)
-			{
-				const auto relativePath = getExecutionContext () -> getWorldURL () .relative_path (worldURL);
+			const auto scene = getBrowser () -> createX3DFromString (string);
 
-				std::string string;
-
-				string += "DEF " + X3D::get_name_from_uri (worldURL) + " Transform {";
-				string += "  children Inline {";
-				string += "    url [";
-				string += "      \"" + relativePath + "\"";
-				string += "      \"" + worldURL + "\"";
-				string += "    ]";
-				string += "  }";
-				string += "}";
-
-				const auto scene = getBrowser () -> createX3DFromString (string);
-
-				importScene (scene, undoStep);
-			}
-
-			addUndoStep (undoStep);
+			importScene (scene, undoStep);
 		}
-		else
+
+		addUndoStep (undoStep);
+	}
+	else
+	{
+		// Imported file
+
+		const auto undoStep  = std::make_shared <UndoStep> (_ ("Import"));
+		auto       selection = getBrowser () -> getSelection () -> getChildren ();
+		bool       first     = true;
+
+		for (const auto & worldURL : uris)
 		{
-			// Imported file
-
-			const auto undoStep  = std::make_shared <UndoStep> (_ ("Import"));
-			auto       selection = getBrowser () -> getSelection () -> getChildren ();
-			bool       first     = true;
-
-			for (const auto & worldURL : uris)
+			try
 			{
 				const auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
 
@@ -303,13 +303,13 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 
 				importScene (scene, undoStep);
 			}
-
-			addUndoStep (undoStep);
+			catch (const X3D::X3DError & error)
+			{
+				std::clog << error .what () << std::endl;
+			}
 		}
-	}
-	catch (const X3D::X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
+
+		addUndoStep (undoStep);
 	}
 }
 

@@ -12,31 +12,37 @@
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+    <signal name="value-changed" handler="on_ambient_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="BackAmbientAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+    <signal name="value-changed" handler="on_backAmbient_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="BackShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+    <signal name="value-changed" handler="on_backShininess_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="BackTransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+    <signal name="value-changed" handler="on_backTransparency_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="ShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+    <signal name="value-changed" handler="on_shininess_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+    <signal name="value-changed" handler="on_transparency_value_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">320</property>
@@ -431,7 +437,6 @@
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
                                 <property name="value_pos">right</property>
-                                <signal name="value-changed" handler="on_ambient_value_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -477,7 +482,6 @@
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
                                 <property name="value_pos">right</property>
-                                <signal name="value-changed" handler="on_shininess_value_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -523,7 +527,6 @@
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
                                 <property name="value_pos">right</property>
-                                <signal name="value-changed" handler="on_transparency_value_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -780,7 +783,6 @@
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
                                 <property name="value_pos">right</property>
-                                <signal name="value-changed" handler="on_backAmbient_value_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -826,7 +828,6 @@
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
                                 <property name="value_pos">right</property>
-                                <signal name="value-changed" handler="on_backShininess_value_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -872,7 +873,6 @@
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
                                 <property name="value_pos">right</property>
-                                <signal name="value-changed" handler="on_backTransparency_value_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>

@@ -160,6 +160,14 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SpecularDialog", m_SpecularDialog);
 	m_SpecularDialog -> set_name ("SpecularDialog");
 
+	// Connect object Gtk::Adjustment with id 'AmbientAdjustment'.
+	m_AmbientAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient_value_changed));
+	m_BackAmbientAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient_value_changed));
+	m_BackShininessAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess_value_changed));
+	m_BackTransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency_value_changed));
+	m_ShininessAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess_value_changed));
+	m_TransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency_value_changed));
+
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_copy));
 	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_paste));
@@ -193,25 +201,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_AmbientEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient_text_changed));
 	m_AmbientEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_AmbientEntry)), false);
 	m_AmbientEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_AmbientEntry)), false);
-
-	// Connect object Gtk::Scale with id 'AmbientScale'.
-	m_AmbientScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient_value_changed));
-
-	// Connect object Gtk::Entry with id 'ShininessEntry'.
 	m_ShininessEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess_text_changed));
 	m_ShininessEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_ShininessEntry)), false);
 	m_ShininessEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_ShininessEntry)), false);
-
-	// Connect object Gtk::Scale with id 'ShininessScale'.
-	m_ShininessScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess_value_changed));
-
-	// Connect object Gtk::Entry with id 'TransparencyEntry'.
 	m_TransparencyEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency_text_changed));
 	m_TransparencyEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_TransparencyEntry)), false);
 	m_TransparencyEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_TransparencyEntry)), false);
-
-	// Connect object Gtk::Scale with id 'TransparencyScale'.
-	m_TransparencyScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency_value_changed));
 
 	// Connect object Gtk::Button with id 'BackEmissiveButton'.
 	m_BackEmissiveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_clicked));
@@ -238,25 +233,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_BackAmbientEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient_text_changed));
 	m_BackAmbientEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_BackAmbientEntry)), false);
 	m_BackAmbientEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_BackAmbientEntry)), false);
-
-	// Connect object Gtk::Scale with id 'BackAmbientScale'.
-	m_BackAmbientScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient_value_changed));
-
-	// Connect object Gtk::Entry with id 'BackShininessEntry'.
 	m_BackShininessEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess_text_changed));
 	m_BackShininessEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_BackShininessEntry)), false);
 	m_BackShininessEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_BackShininessEntry)), false);
-
-	// Connect object Gtk::Scale with id 'BackShininessScale'.
-	m_BackShininessScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess_value_changed));
-
-	// Connect object Gtk::Entry with id 'BackTransparencyEntry'.
 	m_BackTransparencyEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency_text_changed));
 	m_BackTransparencyEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_BackTransparencyEntry)), false);
 	m_BackTransparencyEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_BackTransparencyEntry)), false);
-
-	// Connect object Gtk::Scale with id 'BackTransparencyScale'.
-	m_BackTransparencyScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency_value_changed));
 
 	// Call construct handler of base class.
 	construct ();

@@ -7,18 +7,21 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_center_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TextureTransformCenterYAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_center_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TextureTransformRotationAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_rotation_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TextureTransformScaleXAdjustment">
     <property name="lower">-1000000000</property>
@@ -26,6 +29,7 @@
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_scale_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TextureTransformScaleYAdjustment">
     <property name="lower">-1000000000</property>
@@ -33,18 +37,21 @@
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_scale_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TextureTransformTranslationXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_translation_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TextureTransformTranslationYAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="on_textureTransform_translation_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -559,7 +566,6 @@
                             <property name="climb_rate">0.01</property>
                             <property name="digits">3</property>
                             <property name="numeric">True</property>
-                            <signal name="value-changed" handler="on_textureTransform_rotation_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>

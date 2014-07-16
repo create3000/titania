@@ -146,19 +146,8 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 		{
 			case 1:
 			{
-				X3D::X3DPtr <X3D::TextureTransform> tmp (textureTransformNode);
-
 				textureTransformNode = new X3D::TextureTransform (getExecutionContext ());
 				setTextureTransform (textureTransformNode);
-
-				if (tmp)
-				{
-					getTextureTransform () -> translation () = tmp -> translation ();
-					getTextureTransform () -> rotation ()    = tmp -> rotation ();
-					getTextureTransform () -> scale ()       = tmp -> scale ();
-					getTextureTransform () -> center ()      = tmp -> center ();
-				}
-
 				break;
 			}
 			default:

@@ -201,11 +201,23 @@ public:
 
 	virtual
 	void
-	on_textureTransform_changed () = 0;
+	on_textureTransform_center_changed () = 0;
 
 	virtual
 	void
 	on_textureTransform_rotation_changed () = 0;
+
+	virtual
+	void
+	on_textureTransform_scale_changed () = 0;
+
+	virtual
+	void
+	on_textureTransform_translation_changed () = 0;
+
+	virtual
+	void
+	on_textureTransform_changed () = 0;
 
 	virtual
 	~X3DTextureEditorInterface ();

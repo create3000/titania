@@ -1,13 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/TextureEditor/TextureEditor.h" Line="52" Column="52" />
-      <File FileName="Titania/Titania/TextureEditor/TextureEditor.cpp" Line="71" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h" Line="81" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp" Line="61" Column="16" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="82" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="240" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="1039" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.h" Line="72" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp" Line="78" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp" Line="151" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -54,17 +53,14 @@
                   <Node name="Networking" expanded="True" />
                   <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
+                  <Node name="Texturing3D" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="Miscellaneous" expanded="True" />
-                <Node name="Prototype" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
@@ -75,9 +71,10 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True" />
               <Node name="TextEditor" expanded="True" />
               <Node name="TextureEditor" expanded="True">
-                <Node name="TextureEditor.h" selected="True" />
+                <Node name="X3DTextureTransformEditor.cpp" selected="True" />
               </Node>
             </Node>
           </Node>

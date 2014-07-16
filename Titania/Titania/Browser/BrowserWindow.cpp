@@ -531,7 +531,6 @@ BrowserWindow::on_import ()
 	getKeys () .clear ();
 
 	updateWidget ("FileImportDialog");
-
 	const auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
 
 	fileImportDialog -> add_filter (getFileFilterX3D ());
