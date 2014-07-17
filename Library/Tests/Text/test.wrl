@@ -71,17 +71,6 @@ DEF ScreenText Transform {
   }
 }
 
-DEF Sphere Transform {
-  translation 5.46225 -2.65672 0
-  scale 0.323278 0.323278 0.323278
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Sphere { }
-  }
-}
-
 DEF DefaultText Transform {
   translation 1.55893 0.120463 0
   children Shape {
@@ -90,7 +79,17 @@ DEF DefaultText Transform {
     }
     geometry Text {
       string "3D Text"
-      fontStyle FontStyle { }
     }
+  }
+}
+
+DEF Sphere Transform {
+  translation 5.46225 -2.65672 0
+  scale 0.323278 0.323278 0.323278
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Sphere { }
   }
 }

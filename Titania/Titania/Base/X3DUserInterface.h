@@ -64,7 +64,7 @@ class X3DUserInterface :
 {
 public:
 
-	///  @name Widget members
+	///  @name Member access
 
 	virtual
 	const std::string &
@@ -77,6 +77,14 @@ public:
 	virtual
 	Gtk::Widget &
 	getWidget () const = 0;
+
+	Configuration &
+	getConfig ()
+	{ return gconf; }
+
+	const Configuration &
+	getConfig () const
+	{ return gconf; }
 
 	///  @name Operations
 
@@ -129,14 +137,6 @@ protected:
 	bool
 	isFullscreen () const
 	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
 
 	/// @name Dialog handling
 	

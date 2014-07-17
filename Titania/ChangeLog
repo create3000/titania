@@ -1,5 +1,10 @@
 2014-07-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* OutlineEditor.cpp: 
+
+2014-07-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* TextEditor.h:

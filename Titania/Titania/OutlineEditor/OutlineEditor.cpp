@@ -72,7 +72,10 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	                fieldPath (),
 	                 realized (false),
 	                   button (false)
-{ }
+{
+	if (getBrowserWindow () -> getConfig () .getString ("workspace") not_eq "BROWSER")
+		initialize ();
+}
 
 void
 OutlineEditor::on_map ()
@@ -83,6 +86,9 @@ OutlineEditor::on_map ()
 void
 OutlineEditor::initialize ()
 {
+	if (realized)
+		return;
+
 	X3DOutlineEditorInterface::initialize ();
 
 	getViewport () .add (*treeView);
