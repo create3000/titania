@@ -287,10 +287,12 @@ public:
 	bool
 	hasRoutes () const;
 
+	virtual
 	bool
 	isInternal () const
 	{ return internal; }
 
+	virtual
 	void
 	isInternal (const bool);
 
@@ -472,7 +474,7 @@ private:
 	///  @name Misc
 
 	void
-	replace (X3DBaseNode* const, const std::set <const X3DFieldDefinition*> & = { });
+	replace (X3DBaseNode* const);
 
 	void
 	removeField (const FieldIndex::iterator &, const bool);

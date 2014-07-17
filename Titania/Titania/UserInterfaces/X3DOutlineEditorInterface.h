@@ -131,6 +131,10 @@ public:
 	getRemoveReferenceMenu () const
 	{ return *m_RemoveReferenceMenu; }
 
+	Gtk::MenuItem &
+	getUnlinkCloneMenuItem () const
+	{ return *m_UnlinkCloneMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getRemoveMenuItem () const
 	{ return *m_RemoveMenuItem; }
@@ -221,6 +225,10 @@ public:
 
 	virtual
 	void
+	on_unlink_clone_activate () = 0;
+
+	virtual
+	void
 	on_remove_activate () = 0;
 
 	virtual
@@ -289,6 +297,7 @@ private:
 	Gtk::Menu*                      m_CreateReferenceMenu;
 	Gtk::MenuItem*                  m_RemoveReferenceMenuItem;
 	Gtk::Menu*                      m_RemoveReferenceMenu;
+	Gtk::MenuItem*                  m_UnlinkCloneMenuItem;
 	Gtk::ImageMenuItem*             m_RemoveMenuItem;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ShowExternProtosMenuItem;

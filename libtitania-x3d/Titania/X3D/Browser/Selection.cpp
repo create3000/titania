@@ -158,7 +158,8 @@ Selection::setChildren (const MFNode & value)
 		                     sortedValue .begin (), sortedValue .end (),
 		                     std::back_inserter (difference));
 
-		removeChildren (difference);
+		for (const auto & child : difference)
+			child -> removeTool ();
 
 		children .clear ();
 	}

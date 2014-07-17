@@ -3,7 +3,7 @@
 META "title" "Text test"
 
 DEF Text Transform {
-  translation -6.61719 2.25213 0
+  translation -6.13288 2.37259 0
   children Shape {
     appearance Appearance {
       material TwoSidedMaterial {
@@ -40,7 +40,7 @@ DEF Text Transform {
 }
 
 DEF ScreenText Transform {
-  translation 1.55893 2.25213 0
+  translation 3.11786 2.37259 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -72,7 +72,7 @@ DEF ScreenText Transform {
 }
 
 DEF DefaultText Transform {
-  translation 1.55893 0.120463 0
+  translation 3.02212 0.120463 0
   children Shape {
     appearance Appearance {
       material Material { }
@@ -84,7 +84,7 @@ DEF DefaultText Transform {
 }
 
 DEF Sphere Transform {
-  translation 5.46225 -2.65672 0
+  translation 7.02118 -2.53626 0
   scale 0.323278 0.323278 0.323278
   children Shape {
     appearance Appearance {

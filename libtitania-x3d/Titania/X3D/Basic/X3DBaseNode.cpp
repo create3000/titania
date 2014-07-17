@@ -306,6 +306,15 @@ throw (Error <INVALID_NAME>,
 	return copy;
 }
 
+/**
+ *  Creates a flat copy of this node into @a executionContext.
+ *
+ *  The node must be setuped with:
+ *
+ *      auto copy = node -> copy (executionContext);
+ *      executionContext -> realize ();
+ */
+
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlattCopyType &) const
 throw (Error <NOT_SUPPORTED>)
@@ -330,12 +339,20 @@ throw (Error <NOT_SUPPORTED>)
 	return copy;
 }
 
+/**
+ *  NOT SUPPORTED;
+ */
+
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext, const DeepCopyType &) const
 throw (Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Deep copy is currently not supported.");
 }
+
+/**
+ *  Assigns all fields from @a node to this node. @a Node must be of the same type.
+ */
 
 void
 X3DBaseNode::assign (const X3DBaseNode* const node)
@@ -362,7 +379,7 @@ throw (Error <INVALID_NODE>,
  */
 
 void
-X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
+X3DBaseNode::replace (X3DBaseNode* const node)
 {
 	std::vector <X3DFieldDefinition*> parents;
 
@@ -371,23 +388,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 		const auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
 
 		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
-		{
-			if (not exclude .count (sfnode))
-			{
-				bool insert = true;
-
-				for (auto & secondParent : sfnode -> getParents ())
-				{
-					const auto mfnode = dynamic_cast <X3DFieldDefinition*> (secondParent);
-
-					if (mfnode and mfnode -> getType () == X3DConstants::MFNode)
-						insert = not exclude .count (mfnode);
-				}
-
-				if (insert)
-					parents .emplace_back (sfnode);
-			}
-		}
+			parents .emplace_back (sfnode);
 	}
 
 	SFNode replacement (this);
@@ -496,7 +497,7 @@ X3DBaseNode::addField (const VersionType version, const std::string & alias, con
 }
 
 /***
- *  Removes @a field from the set fields.
+ *  Removes @a field from the set of fields.
  */
 
 void
@@ -504,6 +505,10 @@ X3DBaseNode::removeField (const std::string & name)
 {
 	removeField (fields .find (name), true);
 }
+
+/***
+ *  Removes @a field from the set fields.
+ */
 
 void
 X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool removeParent)
@@ -566,6 +571,10 @@ throw (Error <INVALID_NAME>,
 	throw Error <INVALID_NAME> ("No such field '" + name + "' in node " + getTypeName () + ".");
 }
 
+/***
+ *  Returns the standard field name for @a alias.
+ */
+
 const std::string &
 X3DBaseNode::getFieldName (const std::string & alias) const
 {
@@ -579,6 +588,10 @@ X3DBaseNode::getFieldName (const std::string & alias) const
 
 	return alias;
 }
+
+/***
+ *  Returns the standard field name for @a alias.
+ */
 
 const std::string &
 X3DBaseNode::getFieldName (const std::string & name, const VersionType version) const
@@ -799,26 +812,26 @@ X3DBaseNode::hasRoutes () const
 
 /***
  *  Marks this node as a node for internal use only. Such nodes are not routeable and
- *  scriptable. The clone count of child nodes is not incrementd.
+ *  scriptable and they do not increment the clone count of its child nodes.
  */
 
 void
 X3DBaseNode::isInternal (const bool value)
 {
-	if (value not_eq internal)
-	{
-		internal = value;
+	if (value == internal)
+		return;
 
-		if (internal)
-		{
-			for (const auto & field : fieldDefinitions)
-				field -> setName ("");
-		}
-		else
-		{
-			for (const auto & field : fields)
-				field .second -> setName (field .first);
-		}
+	internal = value;
+
+	if (internal)
+	{
+		for (const auto & field : fieldDefinitions)
+			field -> setName ("");
+	}
+	else
+	{
+		for (const auto & field : fields)
+			field .second -> setName (field .first);
 	}
 }
 
@@ -867,6 +880,10 @@ throw (Error <DISPOSED>)
 		live = false;
 }
 
+/***
+ *  Adds @a object to the router event queue.
+ */
+
 void
 X3DBaseNode::addEvent (X3DChildObject* const object)
 {
@@ -879,6 +896,10 @@ X3DBaseNode::addEvent (X3DChildObject* const object)
 }
 
 //__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+
+/***
+ *  Adds @a object to the router event queue.
+ */
 
 void
 X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
@@ -960,6 +981,10 @@ X3DBaseNode::removeEvents ()
 	}
 }
 
+/***
+ *  NOT SUPPORTED.
+ */
+
 void
 X3DBaseNode::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
@@ -969,6 +994,10 @@ throw (Error <INVALID_X3D>,
 {
 	//	return istream >> value;
 }
+
+/***
+ *  Inserts this node into @a ostream.
+ */
 
 void
 X3DBaseNode::toStream (std::ostream & ostream) const
@@ -1141,6 +1170,10 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 	Generator::PopContext ();
 }
 
+/***
+ *  Inserts this @a field into @a ostream.
+ */
+
 void
 X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t fieldTypeLength, const size_t accessTypeLength) const
 {
@@ -1219,6 +1252,10 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 		}
 	}
 }
+
+/***
+ *  Inserts this @a field into @a ostream.
+ */
 
 void
 X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t fieldTypeLength, const size_t accessTypeLength) const
@@ -1325,6 +1362,10 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 		}
 	}
 }
+
+/***
+ *  Inserts this node into @a ostream in XML output format.
+ */
 
 void
 X3DBaseNode::toXMLStream (std::ostream & ostream) const
@@ -1668,6 +1709,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 	Generator::PopContext ();
 }
 
+/***
+ *  Disposes this node.  Note: it is normaly not needed to call this function.
+ */
+
 void
 X3DBaseNode::dispose ()
 {
@@ -1690,6 +1735,10 @@ X3DBaseNode::dispose ()
 
 	executionContext -> removeParent (this);
 }
+
+/***
+ *  Destructs this node.
+ */
 
 X3DBaseNode::~X3DBaseNode ()
 { }

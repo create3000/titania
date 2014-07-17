@@ -53,8 +53,6 @@
 
 #include "../Core/X3DToolObject.h"
 
-#include <cassert>
-
 namespace titania {
 namespace X3D {
 
@@ -105,6 +103,16 @@ public:
 	const SFBool &
 	isLive () const final override
 	{ return node -> isLive (); }
+
+	virtual
+	bool
+	isInternal () const final override
+	{ return node -> isInternal (); }
+
+	virtual
+	void
+	isInternal (const bool value) final override
+	{ node -> isInternal (value); }
 
 	virtual
 	void
@@ -194,14 +202,18 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	X3DToolObject (),
 	         node (node)
 {
-	assert (node);
 	node -> addParent (this);
+
+	const bool internal = node -> isInternal ();
+	node -> isInternal (false);
 
 	for (auto & field : node -> getPreDefinedFields ())
 		addField (field -> getAccessType (), field -> getName (), *field);
 
 	for (auto & field : node -> getUserDefinedFields ())
 		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+	node -> isInternal (internal);
 }
 
 template <class Type>

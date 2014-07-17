@@ -78,14 +78,6 @@ public:
 	Gtk::Widget &
 	getWidget () const = 0;
 
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
 	///  @name Operations
 
 	void
@@ -137,6 +129,14 @@ protected:
 	bool
 	isFullscreen () const
 	{ return getConfig () .getBoolean ("fullscreen"); }
+
+	Configuration &
+	getConfig ()
+	{ return gconf; }
+
+	const Configuration &
+	getConfig () const
+	{ return gconf; }
 
 	/// @name Dialog handling
 	

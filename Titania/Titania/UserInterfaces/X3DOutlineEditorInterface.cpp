@@ -80,6 +80,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_RemoveReferenceMenuItem -> set_name ("RemoveReferenceMenuItem");
 	m_builder -> get_widget ("RemoveReferenceMenu", m_RemoveReferenceMenu);
 	m_RemoveReferenceMenu -> set_name ("RemoveReferenceMenu");
+	m_builder -> get_widget ("UnlinkCloneMenuItem", m_UnlinkCloneMenuItem);
+	m_UnlinkCloneMenuItem -> set_name ("UnlinkCloneMenuItem");
 	m_builder -> get_widget ("RemoveMenuItem", m_RemoveMenuItem);
 	m_RemoveMenuItem -> set_name ("RemoveMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
@@ -124,6 +126,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuItem with id 'SetAsCurrentSceneMenuItem'.
 	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));
 	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
+	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unlink_clone_activate));
 
 	// Connect object Gtk::ImageMenuItem with id 'RemoveMenuItem'.
 	m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate));

@@ -63,7 +63,7 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 	if (root)
 	{
 		// Best guess for the shortest way to a rooted object.
-	
+
 		if (parent -> getParents () .size () < root -> getParents () .size ())
 			root = parent;
 	}
@@ -106,7 +106,6 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			dispose ();
 
 			addDisposedObject (this);
-
 			return;
 		}
 

@@ -79,6 +79,15 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="UnlinkCloneMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Unlink Clone</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_unlink_clone_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="RemoveMenuItem">
         <property name="label">gtk-remove</property>
         <property name="visible">True</property>

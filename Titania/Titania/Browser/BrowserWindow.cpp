@@ -832,15 +832,13 @@ BrowserWindow::on_create_clone_activate ()
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Create Clone"));
 
-	getSelection () -> undoRestoreSelection (undoStep);
-
 	const auto clone = selection .back ();
 	selection .pop_back ();
 
 	createClone (clone, selection, undoStep);
 
 	getSelection () -> setChildren ({ clone }, undoStep);
-
+	
 	addUndoStep (undoStep);
 }
 
@@ -853,8 +851,6 @@ BrowserWindow::on_unlink_clone_activate ()
 		return;
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
-
-	getSelection () -> undoRestoreSelection (undoStep);
 
 	X3D::MFNode nodes = unlinkClone (selection, undoStep);
 

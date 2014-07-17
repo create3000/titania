@@ -783,7 +783,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 													  });
 
 		if (remove)
-			removeNodesFromScene ({ oldValue }, undoStep);
+			removeNodeFromScene (getExecutionContext (), oldValue, undoStep);
 	}
 }
 
@@ -823,7 +823,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 													  });
 
 		if (remove)
-			removeNodesFromScene ({ oldValue }, undoStep);
+			removeNodeFromScene (getExecutionContext (), oldValue, undoStep);
 	}
 }
 
@@ -859,7 +859,7 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 													  });
 
 		if (remove)
-			removeNodesFromScene ({ oldValue }, undoStep);
+			removeNodeFromScene (getExecutionContext (), oldValue, undoStep);
 	}
 }
 
@@ -1220,6 +1220,12 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 {
 	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
 
+	if (sourceNode -> getRootContext () -> isInternal ())
+		return;
+
+	if (destinationNode -> getRootContext () -> isInternal ())
+		return;
+
 	bool sourceImported      = false;
 	bool destinationImported = false;
 
@@ -1325,7 +1331,6 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 											   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 											   replaceNode (parent, *mfnode, node, clone, undoStep);
-
 											   break;
 											}
 										default:

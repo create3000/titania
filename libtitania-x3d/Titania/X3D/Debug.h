@@ -78,7 +78,7 @@ debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 
 	static int i = 0;
 
-	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << " : " << node -> getTypeName () << std::endl;
+	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << " : " << node -> getTypeName () << " : " << node -> getName () << " : " << node << std::endl;
 
 	if (node -> getParents () .size ())
 	{
@@ -115,7 +115,7 @@ debug_print_parent_nodes (const X3D::X3DChildObject* object)
 		auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
 
 		if (node)
-			__LOG__ << std::string (i, '\t') << node -> getName () << " : " << node -> getTypeName () << std::endl;
+			__LOG__ << std::string (i, '\t') << node -> getName () << " : " << node -> getTypeName () << " : " << node << std::endl;
 
 		else
 		{
