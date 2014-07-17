@@ -48,79 +48,174 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
+#ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
+#define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
 
 #include "../UserInterfaces/X3DTextEditorInterface.h"
-#include "../TextEditor/X3DFontStyleNodeEditor.h"
 
 namespace titania {
 namespace puck {
 
-class TextEditor :
-	virtual public X3DTextEditorInterface,
-	public X3DFontStyleNodeEditor
+class X3DFontStyleNodeEditor :
+	virtual public X3DTextEditorInterface
 {
-public:
+protected:
 
 	///  @name Construction
 
-	TextEditor (BrowserWindow* const);
-
-
-private:
-
-	///  @name Construction
+	X3DFontStyleNodeEditor ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 	void
 	set_selection ();
 
-	///  @name text
+
+private:
+
+	///  @name fontStyle
 
 	virtual
 	void
-	on_text_toggled () final override;
+	on_fontStyle_changed () final override;
 
 	void
-	set_text ();
+	set_fontStyle ();
 
 	void
-	connectText (const X3D::SFNode &);
+	connectFontStyle (const X3D::SFNode &);
 
-	///  @name string
+	///  @name family
 
 	virtual
 	void
-	on_string_changed () final override;
-
-	void
-	set_string ();
-
-	void
-	connectString (const X3D::MFString &);
-
-	///  @name maxExtent
+	on_family_changed () final override;
 
 	virtual
 	void
-	on_maxExtent_changed () final override;
+	on_family_edited (const Glib::ustring &, const Glib::ustring &) final override;
+
+	virtual
+	bool
+	on_family_button_release_event (GdkEventButton*) final override;
+
+	virtual
+	void
+	on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
+	                              int, int,
+	                              const Gtk::SelectionData &,
+	                              guint,
+	                              guint) final override;
+
+	virtual
+	void
+	on_add_family_clicked () final override;
+
+	virtual
+	void
+	on_remove_family_clicked () final override;
 
 	void
-	set_maxExtent ();
+	openFontChooserDialog (const int);
 
 	void
-	connectMaxExtent (const X3D::SFFloat &);
+	set_family ();
+
+	void
+	connectFamily (const X3D::MFString &);
+
+	///  @name style
+
+	virtual
+	void
+	on_style_toggled () final override;
+
+	void
+	set_style ();
+
+	void
+	connectStyle (const X3D::SFString & field);
+
+	///  @name size
+
+	virtual
+	void
+	on_size_changed () final override;
+
+	void
+	set_size ();
+
+	void
+	connectSize (const X3D::SFFloat &);
+
+	///  @name spacing
+
+	virtual
+	void
+	on_spacing_changed () final override;
+
+	void
+	set_spacing ();
+
+	void
+	connectSpacing (const X3D::SFFloat &);
+
+	///  @name horizontal
+
+	virtual
+	void
+	on_horizontal_toggled () final override;
+
+	void
+	set_horizontal ();
+
+	void
+	connectHorizontal (const X3D::SFBool &);
+
+	///  @name leftToRight
+
+	virtual
+	void
+	on_leftToRight_toggled () final override;
+
+	void
+	set_leftToRight ();
+
+	void
+	connectLeftToRight (const X3D::SFBool &);
+
+	///  @name topToBottom
+
+	virtual
+	void
+	on_topToBottom_toggled () final override;
+
+	void
+	set_topToBottom ();
+
+	void
+	connectTopToBottom (const X3D::SFBool &);
+
+	///  @name justify
+
+	virtual
+	void
+	on_justify_changed () final override;
+
+	void
+	set_justify ();
+
+	void
+	connectJustify (const X3D::MFString &);
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::X3DPtr <X3D::Text>              text;
-	UndoStepPtr                          undoStep;
-	bool                                 changing;
+	X3D::X3DPtrArray <X3D::Text>        texts;
+	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
+	UndoStepPtr                         undoStep;
+	bool                                changing;
 
 };
 

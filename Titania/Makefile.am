@@ -39,6 +39,7 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
 	Titania/TextEditor/TextEditor.cpp \
+	Titania/TextEditor/X3DFontStyleNodeEditor.cpp \
 	Titania/TextureEditor/TextureEditor.cpp \
 	Titania/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/TextureEditor/X3DTexture2DNodeEditor.cpp \
