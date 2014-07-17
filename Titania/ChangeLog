@@ -1,3 +1,12 @@
+2014-07-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoHistory.h:
+	* UndoHistory.cpp:
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp: 
+
 2014-07-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextEditor.cpp:

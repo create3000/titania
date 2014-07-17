@@ -98,10 +98,14 @@ public:
 
 	void
 	addUndoStep (const UndoStepPtr &);
+	
+	void
+	removeUndoStep ()
+	{ undoHistory .removeUndoStep (); }
 
-	std::shared_ptr <const UndoStep>
-	getLastUndoStep () const
-	{ return undoHistory .getLastUndoStep (); }
+	const std::shared_ptr <UndoStep> &
+	getUndoStep () const
+	{ return undoHistory .getUndoStep (); }
 
 	void
 	undo ();

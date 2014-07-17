@@ -84,7 +84,7 @@ X3DBrowserEditor::initialize ()
 
 	getBrowser () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
 
-	undoHistory .changed () .addInterest (this, &X3DBrowserEditor::set_undoHistory);
+	undoHistory .addInterest (this, &X3DBrowserEditor::set_undoHistory);
 
 	set_undoHistory ();
 }

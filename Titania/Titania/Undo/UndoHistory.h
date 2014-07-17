@@ -59,23 +59,14 @@
 namespace titania {
 namespace puck {
 
-class UndoHistory
+class UndoHistory :
+	public X3D::X3DOutput
 {
 public:
 
 	///  @name Construction
 
 	UndoHistory ();
-
-	///  @name Fields
-
-	X3D::Output &
-	changed ()
-	{ return changedOutput; }
-
-	const X3D::Output &
-	changed () const
-	{ return changedOutput; }
 
 	///  @name Member access
 	
@@ -105,9 +96,12 @@ public:
 
 	void
 	addUndoStep (const UndoStepPtr &);
-	
-	std::shared_ptr <const UndoStep>
-	getLastUndoStep () const;
+
+	void
+	removeUndoStep ();
+
+	const std::shared_ptr <UndoStep> &
+	getUndoStep () const;
 
 	void
 	undoChanges ();
@@ -131,11 +125,9 @@ private:
 
 	///  @name Members
 
-	std::vector <UndoStepPtr>  list;
-
-	int         index;
-	int         savedIndex;
-	X3D::Output changedOutput;
+	std::vector <UndoStepPtr> list;
+	int                       index;
+	int                       savedIndex;
 
 };
 

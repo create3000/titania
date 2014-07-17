@@ -54,10 +54,10 @@ namespace titania {
 namespace puck {
 
 UndoHistory::UndoHistory () :
-	         list (),
-	        index (-1),
-	   savedIndex (-1),
-	changedOutput ()
+	X3D::X3DOutput (),
+	          list (),
+	         index (-1),
+	    savedIndex (-1)
 { }
 
 std::string
@@ -87,16 +87,31 @@ UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
 
 	++ index;
 
-	changed () .processInterests ();
+	processInterests ();
 }
-	
-std::shared_ptr <const UndoStep>
-UndoHistory::getLastUndoStep () const
-{
-	if (list .empty () or index < 0)
-		return std::shared_ptr <const UndoStep> ();
 
-	return std::static_pointer_cast <const UndoStep> (list [index]);
+void
+UndoHistory::removeUndoStep ()
+{
+	if (index >= 0)
+	{
+		list .pop_back ();
+
+		-- index;
+
+		processInterests ();
+	}
+}
+
+const std::shared_ptr <UndoStep> &
+UndoHistory::getUndoStep () const
+{
+	static const std::shared_ptr <UndoStep> empty;
+
+	if (list .empty () or index < 0)
+		return empty;
+
+	return list [index];
 }
 
 void
@@ -108,7 +123,7 @@ UndoHistory::undoChanges ()
 
 		-- index;
 
-		changed () .processInterests ();
+		processInterests ();
 	}
 }
 
@@ -121,7 +136,7 @@ UndoHistory::redoChanges ()
 
 		list [index] -> redoChanges ();
 
-		changed () .processInterests ();
+		processInterests ();
 	}
 }
 
@@ -131,10 +146,10 @@ UndoHistory::clear ()
 	list .clear ();
 
 	index = -1;
-	
+
 	setSaved ();
 
-	changed () .processInterests ();
+	processInterests ();
 }
 
 } // puck

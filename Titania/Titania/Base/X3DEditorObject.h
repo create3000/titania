@@ -93,7 +93,7 @@ protected:
 
 	template <class FieldType, class NodeType>
 	void
-	addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string &, const UndoStepPtr & undoStep);
+	addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string &, UndoStepPtr & undoStep);
 
 	template <class FieldType, class NodeType>
 	void
@@ -101,7 +101,7 @@ protected:
 
 	template <class FieldType>
 	void
-	addRedoFunction (FieldType &, const UndoStepPtr &);
+	addRedoFunction (FieldType &, UndoStepPtr &);
 
 	double
 	toDouble (const std::string &);
@@ -116,7 +116,8 @@ private:
 
 	///  @name Members
 
-	std::string currentField;
+	std::string                 currentField;
+	X3D::X3DPtr <X3D::FieldSet> fields;
 
 };
 
@@ -124,12 +125,53 @@ template <class FieldType, class NodeType>
 void
 X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
 {
-	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
+	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 		return;
 
 	currentField = fieldName;
+
+	// Remember field value if all values are equal.
+
+	bool      first        = true;
+	bool      inconsistent = false;
+	FieldType value;
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			auto & field = node -> template getField <FieldType> (fieldName);
+
+			if (first)
+			{
+				first = false;
+				value = field;
+			}
+			else if (field not_eq value)
+			{
+				inconsistent = true;
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	if (inconsistent)
+	{
+		try
+		{
+			fields -> removeUserDefinedField (fields -> getField (fieldName));
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+	else
+		fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (value));
+
+	// Undo
 
 	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
 
@@ -154,9 +196,36 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 template <class FieldType, class NodeType>
 void
-X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, const UndoStepPtr & undoStep)
+X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
 {
 	undoStep -> clearRedoFunctions ();
+
+	// Test if there is no change.
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			auto & field = node -> template getField <FieldType> (fieldName);
+
+			try
+			{
+				if (fields -> template getField <FieldType> (currentField) == field)
+				{
+					undoStep .reset ();
+
+					getBrowserWindow () -> removeUndoStep ();
+					return;
+				}
+			}
+			catch (const X3D::X3DError &)
+			{
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
 	// Redo field change
 
@@ -178,12 +247,16 @@ void
 X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, UndoStepPtr & undoStep)
 {
 	const auto fieldName    = node -> getTypeName () + "." + field .getName ();
-	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
+	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 		return;
 
 	currentField = fieldName;
+
+	fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (field));
+	
+	// Undo
 
 	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), field .getName () .c_str ()));
 
@@ -200,15 +273,28 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 template <class FieldType>
 void
-X3DEditorObject::addRedoFunction (FieldType & field, const UndoStepPtr & undoStep)
+X3DEditorObject::addRedoFunction (FieldType & field, UndoStepPtr & undoStep)
 {
-	undoStep -> clearRedoFunctions ();
+	if (fields -> template getField <FieldType> (currentField) == field)
+	{
+		// No change.
 
-	// Redo field change
+		undoStep .reset ();
 
-	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+		getBrowserWindow () -> removeUndoStep ();
+	}
+	else
+	{
+		// Redo
 
-	undoStep -> addRedoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
+		undoStep -> clearRedoFunctions ();
+
+		// Redo field change
+
+		using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+
+		undoStep -> addRedoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
+	}
 }
 
 } // puck
