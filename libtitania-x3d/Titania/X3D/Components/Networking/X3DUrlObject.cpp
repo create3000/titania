@@ -70,11 +70,11 @@ X3DUrlObject::X3DUrlObject () :
 }
 
 X3DUrlObject*
-X3DUrlObject::copy (X3DExecutionContext* const executionContext) const
+X3DUrlObject::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
+	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext, type));
 
 	transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 

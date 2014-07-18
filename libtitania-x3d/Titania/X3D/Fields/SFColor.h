@@ -93,8 +93,9 @@ public:
 
 	virtual
 	SFColor*
-	clone () const
-	throw (Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
 	{ return new SFColor (*this); }
 
 	///  @name Interest service

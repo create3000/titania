@@ -78,10 +78,17 @@ public:
 	{ return *fields .url; }
 
 	///  @name Construction
+	
+	virtual
+	X3DUrlObject*
+	copy (const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) override
+	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	X3DUrlObject*
-	copy (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) override;
 

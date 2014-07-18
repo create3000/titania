@@ -70,24 +70,25 @@ public:
 	ExportedNode (X3DScene* const,
 	              const std::string &, const SFNode &);
 
+	///  NOT SUPPORTED
+
+	virtual
+	ExportedNode*
+	copy (const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
+	{ return copy (getExecutionContext (), type); }
+
+	virtual
+	ExportedNode*
+	copy (X3DExecutionContext* const, const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override;
+
 	ExportedNode*
 	copy (X3DScene* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
-
-	///  @name Construction (NOT SUPPORTED)
-
-	virtual
-	ExportedNode*
-	clone (X3DExecutionContext* const) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
-
-	virtual
-	ExportedNode*
-	copy (X3DExecutionContext* const) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 

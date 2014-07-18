@@ -113,8 +113,9 @@ public:
 
 	virtual
 	SFMatrix3*
-	clone () const
-	throw (Error <NOT_SUPPORTED>) final override;
+	copy (const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Interest service
 
@@ -259,8 +260,9 @@ private:
 template <class ValueType>
 inline
 SFMatrix3 <ValueType>*
-SFMatrix3 <ValueType>::clone () const
-throw (Error <NOT_SUPPORTED>)
+SFMatrix3 <ValueType>::copy (const CopyType) const
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>)
 {
 	return new SFMatrix3 (*this);
 }

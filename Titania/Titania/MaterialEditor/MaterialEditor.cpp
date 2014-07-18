@@ -349,13 +349,13 @@ MaterialEditor::on_material_changed ()
 
 	if (getMaterialButton () .get_active_row_number () not_eq 1)
 	{
-		material = material -> copy (material -> getExecutionContext ());
+		material = material -> copy (material -> getExecutionContext (), X3D::FLAT_COPY);
 		material -> setup ();
 	}
 
 	if (getMaterialButton () .get_active_row_number () not_eq 2)
 	{
-		twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
+		twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext (), X3D::FLAT_COPY);
 		twoSidedMaterial -> setup ();
 	}
 

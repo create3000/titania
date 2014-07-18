@@ -279,11 +279,11 @@ OutlineEditor::on_previous_scene_clicked ()
 {
 	const auto iter = sceneIndex .find (getExecutionContext ());
 
-	if (iter not_eq sceneIndex .end ())
-	{
-		if (iter -> second > 0)
-			scenes [iter -> second - 1] .second -> set_active (true);
-	}
+	if (iter == sceneIndex .end ())
+		return;
+
+	if (iter -> second > 0)
+		scenes [iter -> second - 1] .second -> set_active (true);
 }
 
 void
@@ -291,11 +291,11 @@ OutlineEditor::on_next_scene_clicked ()
 {
 	const auto iter = sceneIndex .find (getExecutionContext ());
 
-	if (iter not_eq sceneIndex .end ())
-	{
-		if (iter -> second + 1 < scenes .size ())
-			scenes [iter -> second + 1] .second -> set_active (true);
-	}
+	if (iter == sceneIndex .end ())
+		return;
+
+	if (iter -> second + 1 < scenes .size ())
+		scenes [iter -> second + 1] .second -> set_active (true);
 }
 
 std::pair <Gtk::RadioMenuItem*, size_t>
@@ -455,7 +455,7 @@ OutlineEditor::on_unlink_clone_activate ()
 		const X3D::SFNode parent (treeView -> get_model () -> get_execution_context ());
 		auto &            rootNodes = treeView -> get_model () -> get_execution_context () -> getRootNodes ();
 		const auto        index     = treeView -> get_index (iter);
-		const X3D::SFNode copy      = rootNodes [index] -> copy (rootNodes [index] -> getExecutionContext (), X3D::FlattCopyType ());
+		const X3D::SFNode copy      = rootNodes [index] -> copy (rootNodes [index] -> getExecutionContext (), X3D::DEEP_COPY);
 
 		getBrowserWindow () -> replaceNode (parent, rootNodes, index, copy, undoStep);
 		copy -> getExecutionContext () -> realize ();
@@ -466,49 +466,49 @@ OutlineEditor::on_unlink_clone_activate ()
 
 		auto path = nodePath;
 
-		if (path .up ())
-		{
+		if (not path .up ())
+			return;
+
 			const auto fieldIter = treeView -> get_model () -> get_iter (path);
 
-			if (treeView -> get_data_type (fieldIter) == OutlineIterType::X3DField)
+		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
+			return;
+	
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+
+		if (not path .up ())
+			return;
+
+		const auto parentIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
+			return;
+	
+		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
 			{
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+				auto &            sfnode = *static_cast <X3D::SFNode*> (field);
+				const X3D::SFNode copy   = sfnode -> copy (sfnode -> getExecutionContext (), X3D::DEEP_COPY);
 
-				if (path .up ())
-				{
-					const auto parentIter = treeView -> get_model () -> get_iter (path);
-
-					if (treeView -> get_data_type (parentIter) == OutlineIterType::X3DBaseNode)
-					{
-						const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-
-						switch (field -> getType ())
-						{
-							case X3D::X3DConstants::SFNode:
-							{
-								auto &            sfnode = *static_cast <X3D::SFNode*> (field);
-								const X3D::SFNode copy   = sfnode -> copy (sfnode -> getExecutionContext (), X3D::FlattCopyType ());
-
-								getBrowserWindow () -> replaceNode (parent, sfnode, copy, undoStep);
-								copy -> getExecutionContext () -> realize ();
-								break;
-							}
-							case X3D::X3DConstants::MFNode:
-							{
-								auto &            mfnode = *static_cast <X3D::MFNode*> (field);
-								const auto        index  = treeView -> get_index (iter);
-								const X3D::SFNode copy   = mfnode [index] -> copy (mfnode [index] -> getExecutionContext (), X3D::FlattCopyType ());
-
-								getBrowserWindow () -> replaceNode (parent, mfnode, index, copy, undoStep);
-								copy -> getExecutionContext () -> realize ();
-								break;
-							}
-							default:
-								break;
-						}
-					}
-				}
+				getBrowserWindow () -> replaceNode (parent, sfnode, copy, undoStep);
+				copy -> getExecutionContext () -> realize ();
+				break;
 			}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto &            mfnode = *static_cast <X3D::MFNode*> (field);
+				const auto        index  = treeView -> get_index (iter);
+				const X3D::SFNode copy   = mfnode [index] -> copy (mfnode [index] -> getExecutionContext (), X3D::DEEP_COPY);
+
+				getBrowserWindow () -> replaceNode (parent, mfnode, index, copy, undoStep);
+				copy -> getExecutionContext () -> realize ();
+				break;
+			}
+			default:
+				break;
 		}
 	}
 
@@ -544,42 +544,42 @@ OutlineEditor::on_remove_activate ()
 
 		auto path = nodePath;
 
-		if (path .up ())
+		if (not path .up ())
+			return;
+
+		const auto fieldIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
+			return;
+	
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+
+		if (not path .up ())
+			return;
+	
+		const auto parentIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
+			return;
+
+		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+
+		switch (field -> getType ())
 		{
-			const auto fieldIter = treeView -> get_model () -> get_iter (path);
-
-			if (treeView -> get_data_type (fieldIter) == OutlineIterType::X3DField)
+			case X3D::X3DConstants::SFNode:
 			{
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-
-				if (path .up ())
-				{
-					const auto parentIter = treeView -> get_model () -> get_iter (path);
-
-					if (treeView -> get_data_type (parentIter) == OutlineIterType::X3DBaseNode)
-					{
-						const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-
-						switch (field -> getType ())
-						{
-							case X3D::X3DConstants::SFNode:
-							{
-								getBrowserWindow () -> removeNode (parent, *static_cast <X3D::SFNode*> (field), undoStep);
-								break;
-							}
-							case X3D::X3DConstants::MFNode:
-							{
-								const auto index = treeView -> get_index (iter);
-
-								getBrowserWindow () -> removeNode (parent, *static_cast <X3D::MFNode*> (field), index, undoStep);
-								break;
-							}
-							default:
-								break;
-						}
-					}
-				}
+				getBrowserWindow () -> removeNode (parent, *static_cast <X3D::SFNode*> (field), undoStep);
+				break;
 			}
+			case X3D::X3DConstants::MFNode:
+			{
+				const auto index = treeView -> get_index (iter);
+
+				getBrowserWindow () -> removeNode (parent, *static_cast <X3D::MFNode*> (field), index, undoStep);
+				break;
+			}
+			default:
+				break;
 		}
 	}
 
@@ -671,7 +671,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				if (not sfnode)
 					break;
 
-				isCloned            = sfnode -> getNumClones () > 1;
+				isCloned            = sfnode -> getCloneCount () > 1;
 				isBaseNode          = bool (sfnode);
 				isPrototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 				isInlineNode        = inlineNode and inlineNode -> checkLoadState () == X3D::COMPLETE_STATE;
@@ -734,27 +734,27 @@ OutlineEditor::selectField (const double x, const double y)
 
 		for (const auto & reference : getExecutionContext () -> getFieldDefinitions ())
 		{
-			if (field -> getType () == reference -> getType ())
+			if (field -> getType () not_eq reference -> getType ())
+				continue;
+	
+			if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
 			{
-				if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
+				if (field -> getReferences () .count (reference))
+					continue;
+
+				try
 				{
-					if (field -> getReferences () .count (reference))
-						continue;
+					const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
+					menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_create_reference_activate),
+					                                                     X3D::FieldPtr (field),
+					                                                     X3D::FieldPtr (reference)));
+					menuItem -> show ();
 
-					try
-					{
-						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
-						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_create_reference_activate),
-						                                                     X3D::FieldPtr (field),
-						                                                     X3D::FieldPtr (reference)));
-						menuItem -> show ();
-
-						getCreateReferenceMenu () .append (*menuItem);
-					}
-					catch (const X3D::X3DError &)
-					{
-						// menuItem ???
-					}
+					getCreateReferenceMenu () .append (*menuItem);
+				}
+				catch (const X3D::X3DError &)
+				{
+					// menuItem ???
 				}
 			}
 		}

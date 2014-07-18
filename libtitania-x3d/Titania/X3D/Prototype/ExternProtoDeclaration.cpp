@@ -89,38 +89,49 @@ ExternProtoDeclaration::create (X3DExecutionContext* const executionContext) con
 }
 
 ExternProtoDeclaration*
-ExternProtoDeclaration::clone (X3DExecutionContext* const executionContext) const
+ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProtoDeclaration*> (this));
-
-	return const_cast <ExternProtoDeclaration*> (this);
-}
-
-ExternProtoDeclaration*
-ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	try
+	switch (type)
 	{
-		const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+		case COPY_OR_CLONE:
+		{
+			executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProtoDeclaration*> (this));
 
-		if (externProto)
-			return externProto;
+			return const_cast <ExternProtoDeclaration*> (this);
+		}
+		case FLAT_COPY:
+		case DEEP_COPY:
+		{
+			try
+			{
+				const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+
+				if (externProto)
+					return externProto;
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			FieldDefinitionArray userDefinedFields;
+			
+			for (const auto & fieldDefinition : getUserDefinedFields ())
+				userDefinedFields .emplace_back (fieldDefinition -> create ());
+
+			const auto copy = executionContext -> createExternProtoDeclaration (getName (), userDefinedFields, url ());
+
+			executionContext -> addExternProtoDeclaration (getName (), copy);
+
+			transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+
+			return copy;
+		}
 	}
-	catch (const X3D::X3DError &)
-	{ }
 
-	const auto copy = executionContext -> createExternProtoDeclaration (getName (), getUserDefinedFields (), url ());
-
-	executionContext -> addExternProtoDeclaration (getName (), copy);
-
-	transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
-
-	return copy;
+	throw Error <NOT_SUPPORTED> ("Not supported.");
 }
+
 X3DPrototypeInstance*
 ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
 // Spec says

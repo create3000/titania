@@ -80,19 +80,11 @@ ExportedNode::create (X3DExecutionContext* const executionContext) const
 }
 
 ExportedNode*
-ExportedNode::clone (X3DExecutionContext* const executionContext) const
+ExportedNode::copy (X3DExecutionContext* const executionContext, const CopyType) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	throw Error <NOT_SUPPORTED> ("Cloning exported nodes to execution context is not supported.");
-}
-
-ExportedNode*
-ExportedNode::copy (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	throw Error <NOT_SUPPORTED> ("Copying exported nodes to execution context is not supported.");
+	throw Error <NOT_SUPPORTED> ("Cloning exported nodes into execution context is not supported.");
 }
 
 ExportedNode*

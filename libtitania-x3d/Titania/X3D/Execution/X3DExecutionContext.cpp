@@ -1120,7 +1120,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProto -> clone (this);
+		externProto -> copy (this, COPY_OR_CLONE);
 }
 
 void
@@ -1129,7 +1129,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProto -> copy (this);
+		externProto -> copy (this, DEEP_COPY);
 }
 
 void
@@ -1138,7 +1138,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		proto -> clone (this);
+		proto -> copy (this, COPY_OR_CLONE);
 }
 
 void
@@ -1147,7 +1147,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		proto -> copy (this);
+		proto -> copy (this, DEEP_COPY);
 }
 
 void
@@ -1158,7 +1158,7 @@ throw (Error <INVALID_NAME>,
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
 		if (rootNode)
-			getRootNodes () .emplace_back (rootNode -> clone (this));
+			getRootNodes () .emplace_back (rootNode -> copy (this, COPY_OR_CLONE));
 
 		else
 			getRootNodes () .emplace_back ();
@@ -1171,7 +1171,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode .second -> copy (this);
+		importedNode .second -> copy (this, DEEP_COPY);
 }
 
 void
@@ -1180,7 +1180,7 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> copy (this);
+		route -> copy (this, DEEP_COPY);
 }
 
 void

@@ -191,24 +191,37 @@ X3DBaseNode::setup ()
  */
 
 X3DBaseNode*
-X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
+X3DBaseNode::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	if (getName () .empty ())
-		return copy (executionContext);
-
-	else
+	switch (type)
 	{
-		try
+		case COPY_OR_CLONE:
 		{
-			return executionContext -> getNamedNode (getName ());
+			if (getName () .empty ())
+				return copy (executionContext);
+
+			try
+			{
+				return executionContext -> getNamedNode (getName ());
+			}
+			catch (const X3DError &)
+			{
+				return copy (executionContext);
+			}
 		}
-		catch (const X3DError &)
+		case FLAT_COPY:
 		{
-			return copy (executionContext);
+			return copy (executionContext, FlatCopyType { });
+		}
+		case DEEP_COPY:
+		{
+			return copy (executionContext, DeepCopyType { });
 		}
 	}
+
+	throw Error <NOT_SUPPORTED> ("Not supported.");
 }
 
 /**
@@ -244,7 +257,7 @@ throw (Error <INVALID_NAME>,
 				if (fieldDefinition -> getReferences () .empty ())
 				{
 					if (fieldDefinition -> isInitializable ())
-						fieldDefinition -> clone (executionContext, field);
+						fieldDefinition -> copy (executionContext, field, COPY_OR_CLONE);
 				}
 				else
 				{
@@ -274,13 +287,13 @@ throw (Error <INVALID_NAME>,
 			{
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
-				                             fieldDefinition -> clone (executionContext));
+				                             fieldDefinition -> copy (executionContext, COPY_OR_CLONE));
 			}
 			else
 			{
 				// IS relationship
 
-				X3DFieldDefinition* const field = fieldDefinition -> clone ();
+				X3DFieldDefinition* const field = fieldDefinition -> copy (COPY_OR_CLONE);
 
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
@@ -311,13 +324,14 @@ throw (Error <INVALID_NAME>,
  *
  *  The node must be setuped with:
  *
- *      auto copy = node -> copy (executionContext);
+ *      auto copy = node -> copy (executionContext, FlatCopyType { });
  *      executionContext -> realize ();
  */
 
 X3DBaseNode*
-X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlattCopyType &) const
-throw (Error <NOT_SUPPORTED>)
+X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>)
 {
 	const SFNode copy = create (executionContext);
 
@@ -340,14 +354,47 @@ throw (Error <NOT_SUPPORTED>)
 }
 
 /**
- *  NOT SUPPORTED;
+ *  Creates a deep copy of this node into @a executionContext.
+ *
+ *  The node must be setuped with:
+ *
+ *      auto copy = node -> copy (executionContext, DeepCopyType { });
+ *      executionContext -> realize ();
  */
 
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext, const DeepCopyType &) const
-throw (Error <NOT_SUPPORTED>)
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>)
 {
-	throw Error <NOT_SUPPORTED> ("Deep copy is currently not supported.");
+	const SFNode copy = create (executionContext);
+
+	if (not getName () .empty ())
+		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
+
+	for (const auto & fieldDefinition : fieldDefinitions)
+	{
+		try
+		{
+			// Default fields
+
+			X3DFieldDefinition* const field = copy -> getField (fieldDefinition -> getName ());
+
+			fieldDefinition -> copy (executionContext, field, DEEP_COPY);
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			// User defined fields from Script and Shader
+
+			copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
+			                             fieldDefinition -> getName (),
+			                             fieldDefinition -> copy (executionContext, DEEP_COPY));
+		}
+	}
+
+	executionContext -> addUninitializedNode (copy);
+
+	return copy;
 }
 
 /**
@@ -761,7 +808,7 @@ X3DBaseNode::removeChild (X3DChildObject & child)
  */
 
 size_t
-X3DBaseNode::getNumClones () const
+X3DBaseNode::getCloneCount () const
 {
 	size_t numClones = 0;
 

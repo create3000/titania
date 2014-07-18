@@ -102,8 +102,9 @@ public:
 
 	virtual
 	X3DScalar*
-	clone () const
-	throw (Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
 	{ return new X3DScalar (*this); }
 
 	///  @name Interest service

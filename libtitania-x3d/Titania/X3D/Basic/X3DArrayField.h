@@ -149,17 +149,17 @@ public:
 
 	virtual
 	X3DArrayField*
-	clone () const
+	copy (const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) override
 	{ return new X3DArrayField (*this); }
 
 	virtual
 	X3DArrayField*
-	clone (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) override
-	{ return clone (); }
+	{ return copy (type); }
 
 	///  @name Assignment operators
 
@@ -207,12 +207,12 @@ public:
 
 	virtual
 	bool
-	isArray () const final override
+	isArray () const override
 	{ return true; }
 
 	virtual
 	bool
-	operator == (const X3DFieldDefinition &) const final override;
+	operator == (const X3DFieldDefinition &) const override;
 
 	///  @name Event handling
 
@@ -240,7 +240,7 @@ public:
 	///  Set @a value to this field without notfying parents.
 	virtual
 	void
-	set (const internal_type &) final override;
+	set (const internal_type &) override;
 
 	template <class InputIterator>
 	void

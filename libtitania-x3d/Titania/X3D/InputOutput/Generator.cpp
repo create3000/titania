@@ -718,7 +718,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 bool
 Generator::needsName (const X3DBaseNode* const baseNode)
 {
-	if (baseNode -> getNumClones () > 1)
+	if (baseNode -> getCloneCount () > 1)
 		return true;
 
 	if (baseNode -> hasRoutes ())

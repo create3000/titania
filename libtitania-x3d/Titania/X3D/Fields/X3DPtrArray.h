@@ -116,20 +116,19 @@ public:
 
 	virtual
 	X3DPtrArray*
-	clone () const
+	copy (const CopyType) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
-	{ return new X3DPtrArray (*this); }
+	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	X3DPtrArray*
-	clone (X3DExecutionContext* const executionContext) const
+	copy (X3DExecutionContext* const executionContext, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	copy (X3DExecutionContext* const, X3DFieldDefinition* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
@@ -229,32 +228,61 @@ X3DPtrArray <ValueType>::X3DPtrArray (X3DPtrArray <Up>&& field) :
 
 template <class ValueType>
 X3DPtrArray <ValueType>*
-X3DPtrArray <ValueType>::clone (X3DExecutionContext* const executionContext) const
+X3DPtrArray <ValueType>::copy (const CopyType type) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	if (type == FLAT_COPY)
+		return new X3DPtrArray (*this);
+
+	const auto field = new X3DPtrArray ();
+
+	for (const auto & value : *this)
+	{
+		if (value)
+			field -> emplace_back (value -> copy (type));
+		else
+			field -> emplace_back ();
+	}
+
+	return field;
+}
+
+template <class ValueType>
+X3DPtrArray <ValueType>*
+X3DPtrArray <ValueType>::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	X3DPtrArray* const field = new X3DPtrArray ();
 
-	clone (executionContext, field);
+	copy (executionContext, field, type);
 
 	return field;
 }
 
 template <class ValueType>
 void
-X3DPtrArray <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+X3DPtrArray <ValueType>::copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType type) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	X3DPtrArray* const field = static_cast <X3DPtrArray*> (fieldDefinition);
 
-	for (const auto & value : *this)
+	if (type == FLAT_COPY)
 	{
-		if (value)
-			field -> emplace_back (value -> clone (executionContext));
+		*field = *this;
+	}
+	else
+	{
+		for (const auto & value : *this)
+		{
+			if (value)
+				field -> emplace_back (value -> copy (executionContext, type));
 
-		else
-			field -> emplace_back ();
+			else
+				field -> emplace_back ();
+		}
 	}
 }
 

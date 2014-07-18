@@ -93,41 +93,91 @@ ProtoDeclaration::create (X3DExecutionContext* const executionContext) const
 }
 
 ProtoDeclaration*
-ProtoDeclaration::clone (X3DExecutionContext* const executionContext) const
+ProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	executionContext -> updateProtoDeclaration (this -> getName (), const_cast <ProtoDeclaration*> (this));
-
-	return const_cast <ProtoDeclaration*> (this);
-}
-
-ProtoDeclaration*
-ProtoDeclaration::copy (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	try
+	switch (type)
 	{
-		const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+		case COPY_OR_CLONE:
+		{
+			executionContext -> updateProtoDeclaration (this -> getName (), const_cast <ProtoDeclaration*> (this));
 
-		if (proto)
-			return proto;
+			return const_cast <ProtoDeclaration*> (this);
+		}
+		case FLAT_COPY:
+		{
+			try
+			{
+				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+
+				if (proto)
+					return proto;
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			// XXX: copy metadata
+			
+			FieldDefinitionArray userDefinedFields;
+			
+			for (const auto & fieldDefinition : getUserDefinedFields ())
+			{
+				X3DFieldDefinition* field = fieldDefinition -> create ();
+				*field = *fieldDefinition;
+				userDefinedFields .emplace_back (field);
+			}
+
+			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
+
+			copy -> metadata () = metadata ();
+
+			executionContext -> addProtoDeclaration (getName (), copy);
+
+			copy -> importExternProtos (this);
+			copy -> importProtos (this);
+			copy -> importRootNodes (this);
+			copy -> importImportedNodes (this);
+			copy -> importRoutes (this);
+
+			return copy;
+		}
+		case DEEP_COPY:
+		{
+			try
+			{
+				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+
+				if (proto)
+					return proto;
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			// XXX: copy metadata
+
+			FieldDefinitionArray userDefinedFields;
+			
+			for (const auto & fieldDefinition : getUserDefinedFields ())
+				userDefinedFields .emplace_back (fieldDefinition -> copy (executionContext, DEEP_COPY));
+
+			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
+	
+			metadata () .copy (executionContext, &copy -> metadata (), DEEP_COPY);
+
+			executionContext -> addProtoDeclaration (getName (), copy);
+
+			copy -> importExternProtos (this);
+			copy -> importProtos (this);
+			copy -> importRootNodes (this);
+			copy -> importImportedNodes (this);
+			copy -> importRoutes (this);
+
+			return copy;
+		}
 	}
-	catch (const X3D::X3DError &)
-	{ }
 
-	const auto copy = executionContext -> createProtoDeclaration (getName (), getUserDefinedFields ());
-
-	executionContext -> addProtoDeclaration (getName (), copy);
-
-	copy -> importExternProtos (this);
-	copy -> importProtos (this);
-	copy -> importRootNodes (this);
-	copy -> importImportedNodes (this);
-	copy -> importRoutes (this);
-
-	return copy;
+	throw Error <NOT_SUPPORTED> ("Not supported.");
 }
 
 X3DPrototypeInstance*

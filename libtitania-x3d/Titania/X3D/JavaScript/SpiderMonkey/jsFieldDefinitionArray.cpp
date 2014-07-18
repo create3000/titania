@@ -104,17 +104,17 @@ public:
 
 	virtual
 	X3DConstArrayField*
-	clone () const
+	copy (const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
 	{ return new X3DConstArrayField (*this); }
 
 	virtual
 	X3DConstArrayField*
-	clone (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ return clone (); }
+	{ return copy (type); }
 
 	///  @name Tests
 

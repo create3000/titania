@@ -770,21 +770,29 @@ public:
 	///  Constructs new X3DPtr.
 	virtual
 	X3DPtr*
-	clone () const
+	copy (const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ return new X3DPtr (*this); }
+	{
+		if (type == FLAT_COPY)
+			return new X3DPtr (getValue ());
+
+		if (getValue ())
+			return new X3DPtr (getValue () -> copy (type));
+
+		return new X3DPtr ();
+	}
 
 	///  Constructs new X3DPtr.
 	virtual
 	X3DPtr*
-	clone (X3DExecutionContext* const executionContext) const
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
 	{
 		X3DPtr* const field = new X3DPtr ();
 
-		clone (executionContext, field);
+		copy (executionContext, field, type);
 
 		return field;
 	}
@@ -792,17 +800,24 @@ public:
 	///  Constructs new X3DPtr.
 	virtual
 	void
-	clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+	copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
 	{
 		X3DPtr* const field = static_cast <X3DPtr*> (fieldDefinition);
 
-		if (getValue ())
-			field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
-
+		if (type == FLAT_COPY)
+		{
+			field -> set (getValue ());
+		}
 		else
-			field -> set (nullptr);
+		{
+			if (getValue ())
+				field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext, type)));
+
+			else
+				field -> set (nullptr);
+		}
 	}
 
 	/// @name Assignment operators

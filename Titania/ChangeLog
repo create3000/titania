@@ -1,3 +1,13 @@
+2014-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MagicImport.cpp:
+	* TextEditor.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* MaterialEditor.cpp:
+	* OutlineCellRenderer.cpp:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-07-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DUserInterface.h:

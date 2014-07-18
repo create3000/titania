@@ -107,8 +107,9 @@ public:
 
 	virtual
 	SFRotation4*
-	clone () const
-	throw (Error <NOT_SUPPORTED>) final override;
+	copy (const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Interest service
 
@@ -244,8 +245,9 @@ SFRotation4 <ValueType>::SFRotation4 (const vector3_type & fromVector, const vec
 template <class ValueType>
 inline
 SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::clone () const
-throw (Error <NOT_SUPPORTED>)
+SFRotation4 <ValueType>::copy (const CopyType) const
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>)
 {
 	return new SFRotation4 (*this);
 }

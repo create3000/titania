@@ -73,7 +73,7 @@ public:
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition* field) const
+	copy (X3DExecutionContext* const, X3DFieldDefinition* field, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) override
 	{ static_cast <X3DField*> (field) -> set (value); }

@@ -108,24 +108,24 @@ public:
 
 	virtual
 	X3DWeakPtr*
-	clone () const
+	copy (const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::clone: not supported!"); }
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
 	virtual
 	X3DWeakPtr*
-	clone (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::clone: not supported!"); }
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	copy (X3DExecutionContext* const, X3DFieldDefinition*, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::clone: not supported!"); }
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
 	///  @name Field services
 

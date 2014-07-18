@@ -79,13 +79,14 @@ public:
 
 	virtual
 	ExternProtoDeclaration*
-	clone (X3DExecutionContext* const) const
+	copy (const CopyType type) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override
+	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	ExternProtoDeclaration*
-	copy (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 

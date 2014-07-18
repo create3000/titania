@@ -65,6 +65,7 @@
 #include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 #include "../Types/Time.h"
+#include "../Types/Struct.h"
 
 #include <map>
 
@@ -75,9 +76,6 @@ typedef std::map <std::string, X3DFieldDefinition*> FieldIndex;
 
 class X3DBrowser;
 class X3DExecutionContext;
-
-struct FlattCopyType { };
-struct DeepCopyType { };
 
 class X3DBaseNode :
 	public X3DChildObject
@@ -95,38 +93,21 @@ public:
 
 	virtual
 	X3DBaseNode*
-	clone (X3DExecutionContext* const) const
+	copy (const CopyType type) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	       Error <NOT_SUPPORTED>)
+	{ return copy (executionContext, type); }
 
 	virtual
 	X3DBaseNode*
-	copy (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
-
-	X3DBaseNode*
-	copy (X3DExecutionContext* const, const FlattCopyType &) const
-	throw (Error <NOT_SUPPORTED>);
-
-	X3DBaseNode*
-	copy (X3DExecutionContext* const, const DeepCopyType &) const
-	throw (Error <NOT_SUPPORTED>);
 
 	void
 	assign (const X3DBaseNode* const)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
-
-	virtual
-	SFBool &
-	isLive ()
-	{ return live; }
-
-	virtual
-	const SFBool &
-	isLive () const
-	{ return live; }
 
 	virtual
 	void
@@ -282,10 +263,20 @@ public:
 	///  @name Special functions
 
 	size_t
-	getNumClones () const;
+	getCloneCount () const;
 
 	bool
 	hasRoutes () const;
+
+	virtual
+	SFBool &
+	isLive ()
+	{ return live; }
+
+	virtual
+	const SFBool &
+	isLive () const
+	{ return live; }
 
 	virtual
 	bool
@@ -469,7 +460,27 @@ protected:
 
 private:
 
+	struct FlatCopyType { };
+	struct DeepCopyType { };
+
 	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>  >;
+
+	///  @name Construction
+
+	X3DBaseNode*
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
+
+	X3DBaseNode*
+	copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
+	throw (Error <INVALID_NAME>,
+		    Error <NOT_SUPPORTED>);
+
+	X3DBaseNode*
+	copy (X3DExecutionContext* const executionContext, const DeepCopyType &) const
+	throw (Error <INVALID_NAME>,
+		    Error <NOT_SUPPORTED>);
 
 	///  @name Misc
 

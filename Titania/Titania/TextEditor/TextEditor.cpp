@@ -129,7 +129,7 @@ TextEditor::on_text_toggled ()
 
 	if (not getTextCheckButton () .get_active ())
 	{
-		text = text -> copy (text -> getExecutionContext ());
+		text = text -> copy (text -> getExecutionContext (), X3D::FLAT_COPY);
 		getExecutionContext () -> addUninitializedNode (text);
 		getExecutionContext () -> realize ();
 	}

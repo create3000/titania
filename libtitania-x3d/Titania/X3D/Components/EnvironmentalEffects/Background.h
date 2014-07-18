@@ -70,10 +70,17 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
+	
+	virtual
+	Background*
+	copy (const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
+	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	Background*
-	copy (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 

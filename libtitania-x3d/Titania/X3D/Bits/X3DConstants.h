@@ -595,6 +595,14 @@ using X3DConstants::inputOnly;
 using X3DConstants::outputOnly;
 using X3DConstants::inputOutput;
 
+enum CopyType
+{
+	COPY_OR_CLONE,
+	FLAT_COPY,
+	DEEP_COPY
+
+};
+
 } // X3D
 } // titania
 

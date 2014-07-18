@@ -93,7 +93,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	{
 		addField (userDefinedField -> getAccessType (),
 		          userDefinedField -> getName (),
-		          *userDefinedField -> clone ());
+		          *userDefinedField -> copy (FLAT_COPY));
 	}
 
 	// X3DExecutionContext

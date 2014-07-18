@@ -537,7 +537,7 @@ GeometryPropertiesEditor::on_textureCoordinateGenerator_toggled ()
 
 	if (not getTextureCoordinateGeneratorCheckButton () .get_active ())
 	{
-		textureCoordinateGenerator = textureCoordinateGenerator -> copy (textureCoordinateGenerator -> getExecutionContext ());
+		textureCoordinateGenerator = textureCoordinateGenerator -> copy (textureCoordinateGenerator -> getExecutionContext (), X3D::FLAT_COPY);
 		textureCoordinateGenerator -> setup ();
 	}
 

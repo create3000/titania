@@ -56,6 +56,7 @@
 #include "../Basic/FieldDefinitionSet.h"
 #include "../Bits/X3DConstants.h"
 #include "../Routing/RouteSet.h"
+#include "../Types/Struct.h"
 
 #include <vector>
 
@@ -80,20 +81,20 @@ public:
 
 	virtual
 	X3DFieldDefinition*
-	clone () const
+	copy (const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) = 0;
 
 	virtual
 	X3DFieldDefinition*
-	clone (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>)
-	{ return clone (); }
+	{ return copy (type); }
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	copy (X3DExecutionContext* const, X3DFieldDefinition* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) = 0;
 

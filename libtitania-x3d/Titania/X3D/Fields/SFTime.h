@@ -86,8 +86,9 @@ public:
 	{ return new SFTime (); }
 
 	SFTime*
-	clone () const
-	throw (Error <NOT_SUPPORTED>)
+	copy (const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>)
 	{ return new SFTime (*this); }
 
 	///  @name Interest service

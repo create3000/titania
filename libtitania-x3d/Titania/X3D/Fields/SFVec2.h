@@ -117,8 +117,9 @@ public:
 
 	virtual
 	SFVec2*
-	clone () const
-	throw (Error <NOT_SUPPORTED>) final override;
+	copy (const CopyType) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Interest service
 
@@ -248,8 +249,9 @@ private:
 template <class ValueType>
 inline
 SFVec2 <ValueType>*
-SFVec2 <ValueType>::clone () const
-throw (Error <NOT_SUPPORTED>)
+SFVec2 <ValueType>::copy (const CopyType) const
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>)
 {
 	return new SFVec2 (*this);
 }
