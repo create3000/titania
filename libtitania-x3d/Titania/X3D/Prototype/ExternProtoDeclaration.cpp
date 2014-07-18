@@ -95,14 +95,13 @@ throw (Error <INVALID_NAME>,
 {
 	switch (type)
 	{
-		case COPY_OR_CLONE:
+		case CLONE:
 		{
 			executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProtoDeclaration*> (this));
 
 			return const_cast <ExternProtoDeclaration*> (this);
 		}
-		case FLAT_COPY:
-		case DEEP_COPY:
+		case COPY_OR_CLONE:
 		{
 			try
 			{
@@ -127,6 +126,8 @@ throw (Error <INVALID_NAME>,
 
 			return copy;
 		}
+		case FLAT_COPY:
+			break;
 	}
 
 	throw Error <NOT_SUPPORTED> ("Not supported.");

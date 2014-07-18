@@ -84,10 +84,11 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode
 
 	if (texture2DNode)
 	{
-		if (last == getTextureNode ())
+		if (last == getTextureNode ()) // XXX
 		{
-			texture2DNode -> repeatS () = last -> repeatS ();
-			texture2DNode -> repeatT () = last -> repeatT ();
+			texture2DNode -> repeatS ()           = last -> repeatS ();
+			texture2DNode -> repeatT ()           = last -> repeatT ();
+			texture2DNode -> textureProperties () = last -> textureProperties ();
 		}
 
 		texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatS);

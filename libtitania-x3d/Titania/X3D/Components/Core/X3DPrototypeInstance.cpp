@@ -89,6 +89,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	ProtoDeclaration* const prototype = protoObject -> getProtoDeclaration ();
 
+	metadata () = prototype -> metadata ();
+
 	for (const auto & userDefinedField : prototype -> getUserDefinedFields ())
 	{
 		addField (userDefinedField -> getAccessType (),

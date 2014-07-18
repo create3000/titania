@@ -17,4 +17,5 @@
   <Task file="" description="Tasten für rotate und scale tool" />
   <Task file="" description="BBox stimmt nicht bei Text when maxExtent &lt; maxCharWidth" />
   <Task file="" description="Library expanded speichern" completed="True" />
+  <Task file="" description="modelviewmatrix stack and projection matrix stack to browser rendering context" />
 </ListOfTask>

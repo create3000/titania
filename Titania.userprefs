@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="162" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.h" Line="47" Column="28" />
-      <File FileName="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.cpp" Line="910" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp" Line="256" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.h" Line="127" Column="36" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.cpp" Line="444" Column="68" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1438" Column="5" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="825" Column="5" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="488" Column="119" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -43,21 +43,30 @@
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="tools" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
+                <Node name="Basic" expanded="True">
+                  <Node name="X3DBaseNode.cpp" selected="True" />
+                </Node>
                 <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Layout" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="Text" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
-                  <Node name="Texturing3D" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -73,14 +82,14 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="TextEditor" expanded="True">
-                <Node name="X3DFontStyleNodeEditor.cpp" selected="True" />
-              </Node>
+              <Node name="GeometryPropertiesEditor" expanded="True" />
+              <Node name="MaterialEditor" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
+              <Node name="TextEditor" expanded="True" />
               <Node name="TextureEditor" expanded="True" />
               <Node name="Undo" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

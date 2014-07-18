@@ -461,7 +461,6 @@ protected:
 private:
 
 	struct FlatCopyType { };
-	struct DeepCopyType { };
 
 	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>  >;
 
@@ -474,11 +473,6 @@ private:
 
 	X3DBaseNode*
 	copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
-	throw (Error <INVALID_NAME>,
-		    Error <NOT_SUPPORTED>);
-
-	X3DBaseNode*
-	copy (X3DExecutionContext* const executionContext, const DeepCopyType &) const
 	throw (Error <INVALID_NAME>,
 		    Error <NOT_SUPPORTED>);
 

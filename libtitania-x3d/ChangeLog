@@ -1,5 +1,18 @@
 2014-07-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Route.cpp:
+	* X3DBaseNode.h:
+	* X3DConstants.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* ImportedNode.cpp:
+	* ProtoDeclaration.cpp:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec3.h:
 	* SFVec2.h:
 	* Route.h:

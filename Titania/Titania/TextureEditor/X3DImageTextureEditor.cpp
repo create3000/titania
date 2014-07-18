@@ -80,7 +80,7 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	if (imageTexture)
 	{
-		if (last == getTextureNode ())
+		if (last == getTextureNode ()) // XXX
 		{
 			imageTexture -> url () = last -> url ();
 		}

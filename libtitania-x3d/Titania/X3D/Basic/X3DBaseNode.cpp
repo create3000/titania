@@ -197,6 +197,10 @@ throw (Error <INVALID_NAME>,
 {
 	switch (type)
 	{
+		case CLONE:
+		{
+			return const_cast <X3DBaseNode*> (this);
+		}
 		case COPY_OR_CLONE:
 		{
 			if (getName () .empty ())
@@ -214,10 +218,6 @@ throw (Error <INVALID_NAME>,
 		case FLAT_COPY:
 		{
 			return copy (executionContext, FlatCopyType { });
-		}
-		case DEEP_COPY:
-		{
-			return copy (executionContext, DeepCopyType { });
 		}
 	}
 
@@ -347,50 +347,6 @@ throw (Error <INVALID_NAME>,
 	}
 	catch (const X3DError &)
 	{ }
-
-	executionContext -> addUninitializedNode (copy);
-
-	return copy;
-}
-
-/**
- *  Creates a deep copy of this node into @a executionContext.
- *
- *  The node must be setuped with:
- *
- *      auto copy = node -> copy (executionContext, DeepCopyType { });
- *      executionContext -> realize ();
- */
-
-X3DBaseNode*
-X3DBaseNode::copy (X3DExecutionContext* const executionContext, const DeepCopyType &) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	const SFNode copy = create (executionContext);
-
-	if (not getName () .empty ())
-		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
-
-	for (const auto & fieldDefinition : fieldDefinitions)
-	{
-		try
-		{
-			// Default fields
-
-			X3DFieldDefinition* const field = copy -> getField (fieldDefinition -> getName ());
-
-			fieldDefinition -> copy (executionContext, field, DEEP_COPY);
-		}
-		catch (const Error <INVALID_NAME> &)
-		{
-			// User defined fields from Script and Shader
-
-			copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
-			                             fieldDefinition -> getName (),
-			                             fieldDefinition -> copy (executionContext, DEEP_COPY));
-		}
-	}
 
 	executionContext -> addUninitializedNode (copy);
 

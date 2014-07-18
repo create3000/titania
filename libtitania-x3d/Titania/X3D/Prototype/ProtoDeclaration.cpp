@@ -99,13 +99,13 @@ throw (Error <INVALID_NAME>,
 {
 	switch (type)
 	{
-		case COPY_OR_CLONE:
+		case CLONE:
 		{
 			executionContext -> updateProtoDeclaration (this -> getName (), const_cast <ProtoDeclaration*> (this));
 
 			return const_cast <ProtoDeclaration*> (this);
 		}
-		case FLAT_COPY:
+		case COPY_OR_CLONE:
 		{
 			try
 			{
@@ -117,53 +117,14 @@ throw (Error <INVALID_NAME>,
 			catch (const X3D::X3DError &)
 			{ }
 
-			// XXX: copy metadata
-			
 			FieldDefinitionArray userDefinedFields;
 			
 			for (const auto & fieldDefinition : getUserDefinedFields ())
-			{
-				X3DFieldDefinition* field = fieldDefinition -> create ();
-				*field = *fieldDefinition;
-				userDefinedFields .emplace_back (field);
-			}
-
-			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
-
-			copy -> metadata () = metadata ();
-
-			executionContext -> addProtoDeclaration (getName (), copy);
-
-			copy -> importExternProtos (this);
-			copy -> importProtos (this);
-			copy -> importRootNodes (this);
-			copy -> importImportedNodes (this);
-			copy -> importRoutes (this);
-
-			return copy;
-		}
-		case DEEP_COPY:
-		{
-			try
-			{
-				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
-
-				if (proto)
-					return proto;
-			}
-			catch (const X3D::X3DError &)
-			{ }
-
-			// XXX: copy metadata
-
-			FieldDefinitionArray userDefinedFields;
-			
-			for (const auto & fieldDefinition : getUserDefinedFields ())
-				userDefinedFields .emplace_back (fieldDefinition -> copy (executionContext, DEEP_COPY));
+				userDefinedFields .emplace_back (fieldDefinition -> copy (executionContext, COPY_OR_CLONE));
 
 			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
 	
-			metadata () .copy (executionContext, &copy -> metadata (), DEEP_COPY);
+			metadata () .copy (executionContext, &copy -> metadata (), COPY_OR_CLONE);
 
 			executionContext -> addProtoDeclaration (getName (), copy);
 
@@ -175,6 +136,8 @@ throw (Error <INVALID_NAME>,
 
 			return copy;
 		}
+		case FLAT_COPY:
+			break;
 	}
 
 	throw Error <NOT_SUPPORTED> ("Not supported.");

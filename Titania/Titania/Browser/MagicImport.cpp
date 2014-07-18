@@ -102,7 +102,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 	                     getBrowser () -> makeCurrent ();
 	                     
 	                     importProtoDeclaration (appearance -> material (), undoStep);
-	                     material = appearance -> material () -> copy (getExecutionContext (), X3D::DEEP_COPY);
+	                     material = appearance -> material () -> copy (getExecutionContext (), X3D::FLAT_COPY);
 
 	                     return false;
 							}
@@ -148,7 +148,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 	                     getBrowser () -> makeCurrent ();
 	                     
 	                     importProtoDeclaration (appearance -> texture (), undoStep);
-	                     texture = appearance -> texture () -> copy (getExecutionContext (), X3D::DEEP_COPY);
+	                     texture = appearance -> texture () -> copy (getExecutionContext (), X3D::FLAT_COPY);
 
 	                     return false;
 							}
@@ -225,7 +225,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			}
 		}
 
-		const auto protoObject = prototypeInstance -> getProtoObject () -> copy (getExecutionContext (), X3D::DEEP_COPY);
+		const auto protoObject = prototypeInstance -> getProtoObject () -> copy (getExecutionContext (), X3D::COPY_OR_CLONE);
 		
 		if (isExternProto)
 		{

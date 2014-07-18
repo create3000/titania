@@ -83,7 +83,7 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 
 	if (textureTransform)
 	{
-		if (last == getTextureTransformNode ())
+		if (last == getTextureTransformNode ()) // XXX
 		{
 			textureTransform -> translation () = last -> translation ();
 			textureTransform -> rotation ()    = last -> rotation ();

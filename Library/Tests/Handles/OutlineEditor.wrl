@@ -81,7 +81,7 @@ PROTO B [ ]
 }
 
 PROTO Children1 [
-  exposedField SFNode metadata NULL
+  exposedField SFNode metadata MetadataDouble { }
   exposedField SFNode node DEF _1 Transform { }
   exposedField MFNode children1 [ ]
 ]

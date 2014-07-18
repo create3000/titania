@@ -1,6 +1,15 @@
 2014-07-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MagicImport.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* X3DImageTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextureTransformEditor.cpp: 
+
+2014-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MagicImport.cpp:
 	* TextEditor.cpp:
 	* X3DBrowserEditor.cpp:
 	* OutlineEditor.cpp:

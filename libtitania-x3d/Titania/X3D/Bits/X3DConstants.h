@@ -597,9 +597,9 @@ using X3DConstants::inputOutput;
 
 enum CopyType
 {
+	CLONE,
 	COPY_OR_CLONE,
-	FLAT_COPY,
-	DEEP_COPY
+	FLAT_COPY
 
 };
 

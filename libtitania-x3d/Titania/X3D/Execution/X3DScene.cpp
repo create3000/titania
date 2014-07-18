@@ -224,10 +224,10 @@ throw (Error <INVALID_NAME>,
 	{
 		X3DExecutionContext::import (executionContext);
 
-		const auto scene = dynamic_cast <X3DScene*> (executionContext);
+		//const auto scene = dynamic_cast <X3DScene*> (executionContext);
 
-		if (scene)
-			importExportedNodes (scene);
+		//if (scene)
+		//	importExportedNodes (scene);
 
 		return;
 	}
