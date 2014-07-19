@@ -15,8 +15,12 @@ DEF Text Transform {
         backDiffuseColor 1 0 0
         backShininess 0.199655
       }
-      texture ImageTexture {
-        textureProperties DEF _1 TextureProperties { }
+      texture DEF _1 ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+        ]
+        textureProperties TextureProperties { }
       }
     }
     geometry Text {
@@ -79,14 +83,10 @@ DEF DefaultText Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture ImageTexture {
-        url [
-          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
-        ]
-        repeatS FALSE
-        repeatT FALSE
-        textureProperties USE _1
+      texture USE _1
+      textureTransform TextureTransform {
+        translation 4.66 0
+        scale 7.51 7.59
       }
     }
     geometry Text {

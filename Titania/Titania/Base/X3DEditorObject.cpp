@@ -63,24 +63,6 @@ X3DEditorObject::X3DEditorObject () :
 	// call isInternal on »fields« to prevent adding a clone count to nodes.
 }
 
-void
-X3DEditorObject::on_number_insert_text (const Glib::ustring & insert, int* position, Gtk::Entry & entry)
-{
-	const std::string text = entry .get_text () .insert (*position, insert);
-
-	if (not validateNumber (text))
-		entry .signal_insert_text () .emission_stop ();
-}
-
-void
-X3DEditorObject::on_number_delete_text (int start_pos, int end_pos, Gtk::Entry & entry)
-{
-	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
-
-	if (text .length () and not validateNumber (text))
-		entry .signal_delete_text () .emission_stop ();
-}
-
 bool
 X3DEditorObject::validateNumber (const std::string & text) const
 {

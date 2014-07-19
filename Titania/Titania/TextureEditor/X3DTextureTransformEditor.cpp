@@ -64,8 +64,7 @@ X3DTextureTransformEditor::X3DTextureTransformEditor () :
 void
 X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
 {
-	if (value == textureTransform)
-		return;
+	undoStep .reset ();
 
 	if (textureTransform)
 	{
@@ -75,30 +74,49 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 		textureTransform -> center ()      .removeInterest (this, &X3DTextureTransformEditor::set_center);
 	}
 
-	X3D::X3DPtr <X3D::TextureTransform> last = textureTransform;
-
 	textureTransform = value;
-
-	if (textureTransform)
+	
+	if (not textureTransform)
 	{
-		if (last == getTextureTransformNode ()) // XXX
+		textureTransform = new X3D::TextureTransform (getExecutionContext ());
+		getExecutionContext () -> addUninitializedNode (textureTransform);
+		getExecutionContext () -> realize ();
+	}
+
+	textureTransform -> translation () .addInterest (this, &X3DTextureTransformEditor::set_translation);
+	textureTransform -> rotation ()    .addInterest (this, &X3DTextureTransformEditor::set_rotation);
+	textureTransform -> scale ()       .addInterest (this, &X3DTextureTransformEditor::set_scale);
+	textureTransform -> center ()      .addInterest (this, &X3DTextureTransformEditor::set_center);
+
+	set_translation ();
+	set_rotation ();
+	set_scale ();
+	set_center ();
+}
+
+const X3D::X3DPtr <X3D::TextureTransform> &
+X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
+{
+	if (not value)
+		return textureTransform;
+
+	switch (value -> getType () .back ()) 
+	{
+		case X3D::X3DConstants::TextureTransform:
 		{
+			const X3D::X3DPtr <X3D::TextureTransform> last (value);
+
 			textureTransform -> translation () = last -> translation ();
 			textureTransform -> rotation ()    = last -> rotation ();
 			textureTransform -> scale ()       = last -> scale ();
 			textureTransform -> center ()      = last -> center ();
+			break;
 		}
-
-		textureTransform -> translation () .addInterest (this, &X3DTextureTransformEditor::set_translation);
-		textureTransform -> rotation ()    .addInterest (this, &X3DTextureTransformEditor::set_rotation);
-		textureTransform -> scale ()       .addInterest (this, &X3DTextureTransformEditor::set_scale);
-		textureTransform -> center ()      .addInterest (this, &X3DTextureTransformEditor::set_center);
-
-		set_translation ();
-		set_rotation ();
-		set_scale ();
-		set_center ();
+		default:
+			break;
 	}
+
+	return textureTransform;
 }
 
 /***********************************************************************************************************************

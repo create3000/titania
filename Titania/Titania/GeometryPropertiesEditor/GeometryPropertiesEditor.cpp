@@ -420,35 +420,7 @@ GeometryPropertiesEditor::connectConvex (const X3D::SFBool & field)
  **********************************************************************************************************************/
 
 void
-GeometryPropertiesEditor::on_creaseAngle_text_changed ()
-{
-	if (changing)
-		return;
-
-	const double value = toDouble (getCreaseAngleEntry () .get_text ());
-
-	on_creaseAngle_changed (value);
-
-	changing = true;
-	getCreaseAngleScale () .set_value (value);
-	changing = false;
-}
-
-void
-GeometryPropertiesEditor::on_creaseAngle_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_creaseAngle_changed (getCreaseAngleScale () .get_value ());
-
-	changing = true;
-	getCreaseAngleEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getCreaseAngleScale () .get_value ()));
-	changing = false;
-}
-
-void
-GeometryPropertiesEditor::on_creaseAngle_changed (const double value)
+GeometryPropertiesEditor::on_creaseAngle_changed ()
 {
 	addUndoFunction <X3D::SFFloat> (geometryNodes, "creaseAngle", undoStep);
 
@@ -461,7 +433,7 @@ GeometryPropertiesEditor::on_creaseAngle_changed (const double value)
 			field .removeInterest (this, &GeometryPropertiesEditor::set_creaseAngle);
 			field .addInterest (this, &GeometryPropertiesEditor::connectCreaseAngle);
 
-			field = value;
+			field = getCreaseAngleAdjustment () -> get_value ();
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -485,7 +457,7 @@ GeometryPropertiesEditor::set_creaseAngle ()
 	{
 		try
 		{
-			getCreaseAngleScale () .set_value (geometry -> getField <X3D::SFFloat> ("creaseAngle"));
+			getCreaseAngleAdjustment () -> set_value (geometry -> getField <X3D::SFFloat> ("creaseAngle"));
 			hasField = true;
 			break;
 		}
@@ -494,7 +466,6 @@ GeometryPropertiesEditor::set_creaseAngle ()
 	}
 
 	getCreaseAngleBox () .set_sensitive (hasField);
-	getCreaseAngleEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getCreaseAngleScale () .get_value ()));
 
 	changing = false;
 }

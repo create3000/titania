@@ -65,30 +65,72 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 void
 X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	if (value == texture2DNode)
-		return;
+	undoStep .reset ();
+
+	disconnect ();
+
+	texture2DNode = value;
 
 	setImageTexture (value);
+	//setPixelTexture (value);
 
+	connect ();
+}
+
+const X3D::X3DPtr <X3D::X3DTexture2DNode> &
+X3DTexture2DNodeEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	disconnect ();
+
+	texture2DNode = X3DImageTextureEditor::getImageTexture (value);
+
+	connect ();
+
+	return getTexture2DNode (value);
+}
+
+const X3D::X3DPtr <X3D::X3DTexture2DNode> &
+X3DTexture2DNodeEditor::getTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	if (not value)
+		return texture2DNode;
+
+	for (const auto & type : value -> getType ())
+	{
+		switch (type) 
+		{
+			case X3D::X3DConstants::X3DTexture2DNode:
+			{
+				const X3D::X3DPtr <X3D::X3DTexture2DNode> last (value);
+
+				texture2DNode -> repeatS ()           = last -> repeatS ();
+				texture2DNode -> repeatT ()           = last -> repeatT ();
+				texture2DNode -> textureProperties () = last -> textureProperties ();
+				return texture2DNode;
+			}
+			default:
+				break;
+		}
+	}
+
+	return texture2DNode;
+}
+
+void
+X3DTexture2DNodeEditor::disconnect ()
+{
 	if (texture2DNode)
 	{
 		texture2DNode -> repeatS () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
 		texture2DNode -> repeatT () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
 	}
+}
 
-	X3D::X3DPtr <X3D::X3DTexture2DNode> last = texture2DNode;
-
-	texture2DNode = value;
-
+void
+X3DTexture2DNodeEditor::connect ()
+{
 	if (texture2DNode)
 	{
-		if (last == getTextureNode ()) // XXX
-		{
-			texture2DNode -> repeatS ()           = last -> repeatS ();
-			texture2DNode -> repeatT ()           = last -> repeatT ();
-			texture2DNode -> textureProperties () = last -> textureProperties ();
-		}
-
 		texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
 		texture2DNode -> repeatT () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
 

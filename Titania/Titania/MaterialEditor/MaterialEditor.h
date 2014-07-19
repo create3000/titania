@@ -193,14 +193,7 @@ private:
 
 	virtual
 	void
-	on_ambient_text_changed () final override;
-
-	virtual
-	void
-	on_ambient_value_changed () final override;
-
-	void
-	on_ambient_changed (const double);
+	on_ambient_changed () final override;
 
 	void
 	set_ambient ();
@@ -212,14 +205,7 @@ private:
 
 	virtual
 	void
-	on_shininess_text_changed () final override;
-
-	virtual
-	void
-	on_shininess_value_changed () final override;
-
-	void
-	on_shininess_changed (const double);
+	on_shininess_changed () final override;
 
 	void
 	set_shininess ();
@@ -231,14 +217,7 @@ private:
 
 	virtual
 	void
-	on_transparency_text_changed () final override;
-
-	virtual
-	void
-	on_transparency_value_changed () final override;
-
-	void
-	on_transparency_changed (const double);
+	on_transparency_changed () final override;
 
 	void
 	set_transparency ();
@@ -321,14 +300,7 @@ private:
 
 	virtual
 	void
-	on_backAmbient_text_changed () final override;
-
-	virtual
-	void
-	on_backAmbient_value_changed () final override;
-
-	void
-	on_backAmbient_changed (const double);
+	on_backAmbient_changed () final override;
 
 	void
 	set_backAmbient ();
@@ -340,14 +312,7 @@ private:
 
 	virtual
 	void
-	on_backShininess_text_changed () final override;
-
-	virtual
-	void
-	on_backShininess_value_changed () final override;
-
-	void
-	on_backShininess_changed (const double);
+	on_backShininess_changed () final override;
 
 	void
 	set_backShininess ();
@@ -359,14 +324,7 @@ private:
 
 	virtual
 	void
-	on_backTransparency_text_changed () final override;
-
-	virtual
-	void
-	on_backTransparency_value_changed () final override;
-
-	void
-	on_backTransparency_changed (const double);
+	on_backTransparency_changed () final override;
 
 	void
 	set_backTransparency ();

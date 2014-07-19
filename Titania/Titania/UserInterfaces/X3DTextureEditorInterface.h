@@ -151,6 +151,10 @@ public:
 	getTextureButton () const
 	{ return *m_TextureButton; }
 
+	Gtk::Button &
+	getTextureUnlinkButton () const
+	{ return *m_TextureUnlinkButton; }
+
 	Gtk::Notebook &
 	getTextureNotebook () const
 	{ return *m_TextureNotebook; }
@@ -198,6 +202,10 @@ public:
 	Gtk::ComboBoxText &
 	getTextureTransformButton () const
 	{ return *m_TextureTransformButton; }
+
+	Gtk::Button &
+	getTextureTransformUnlinkButton () const
+	{ return *m_TextureTransformUnlinkButton; }
 
 	Gtk::Notebook &
 	getTextureTransformNotebook () const
@@ -261,6 +269,10 @@ public:
 
 	virtual
 	void
+	on_texture_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_texture2DNode_repeatS_toggled () = 0;
 
 	virtual
@@ -278,6 +290,10 @@ public:
 	virtual
 	void
 	on_textureTransform_changed () = 0;
+
+	virtual
+	void
+	on_textureTransform_unlink_clicked () = 0;
 
 	virtual
 	~X3DTextureEditorInterface ();
@@ -306,6 +322,7 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_TextureExpander;
 	Gtk::ComboBoxText*             m_TextureButton;
+	Gtk::Button*                   m_TextureUnlinkButton;
 	Gtk::Notebook*                 m_TextureNotebook;
 	Gtk::Label*                    m_TextureLabel;
 	Gtk::Box*                      m_ImageTextureBox;
@@ -318,6 +335,7 @@ private:
 	Gtk::Grid*                     m_TexturePropertiesBox;
 	Gtk::Expander*                 m_TextureTransformExpander;
 	Gtk::ComboBoxText*             m_TextureTransformButton;
+	Gtk::Button*                   m_TextureTransformUnlinkButton;
 	Gtk::Notebook*                 m_TextureTransformNotebook;
 	Gtk::Label*                    m_TextureTransformLabel;
 	Gtk::Grid*                     m_TextureTransformBox;

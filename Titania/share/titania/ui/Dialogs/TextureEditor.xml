@@ -142,15 +142,50 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="TextureButton">
+                      <object class="GtkBox" id="box9">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
-                        <items>
-                          <item translatable="yes">None</item>
-                          <item translatable="yes">ImageTexture</item>
-                        </items>
-                        <signal name="changed" handler="on_texture_changed" swapped="no"/>
+                        <child>
+                          <object class="GtkComboBoxText" id="TextureButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <items>
+                              <item translatable="yes">None</item>
+                              <item translatable="yes">ImageTexture</item>
+                            </items>
+                            <signal name="changed" handler="on_texture_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="TextureUnlinkButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                            <signal name="clicked" handler="on_texture_unlink_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixel_size">12</property>
+                                <property name="icon_name">emblem-shared-symbolic</property>
+                                <property name="icon_size">0</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -365,6 +400,8 @@
                       <object class="GtkBox" id="box7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="resize_mode">immediate</property>
                         <property name="spacing">8</property>
                         <child>
                           <object class="GtkCheckButton" id="TexturePropertiesCheckButton">
@@ -404,9 +441,6 @@
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -602,6 +636,7 @@
                       <object class="GtkSpinButton" id="spinbutton1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="halign">start</property>
                         <property name="adjustment">TexturePropertiesBorderWidthAdjustment</property>
                         <property name="numeric">True</property>
                       </object>
@@ -637,6 +672,7 @@
                       <object class="GtkSpinButton" id="spinbutton2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="halign">start</property>
                         <property name="adjustment">TexturePropertiesAnisotropicDegreeAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
@@ -653,6 +689,7 @@
                       <object class="GtkComboBoxText" id="comboboxtext1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <items>
                           <item translatable="yes">AVG_PIXEL_AVG_MIPMAP</item>
                           <item translatable="yes">AVG_PIXEL</item>
@@ -676,6 +713,7 @@
                       <object class="GtkComboBoxText" id="comboboxtext2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <items>
                           <item translatable="yes">AVG_PIXEL</item>
                           <item translatable="yes">NEAREST_PIXEL</item>
@@ -695,6 +733,7 @@
                       <object class="GtkComboBoxText" id="comboboxtext3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <items>
                           <item translatable="yes">CLAMP</item>
                           <item translatable="yes">CLAMP_TO_EDGE</item>
@@ -714,6 +753,7 @@
                       <object class="GtkComboBoxText" id="comboboxtext6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <items>
                           <item translatable="yes">HIGH</item>
                           <item translatable="yes">MEDIUM</item>
@@ -734,6 +774,7 @@
                       <object class="GtkSpinButton" id="spinbutton3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="halign">start</property>
                         <property name="adjustment">TexturePropertiesTexturePriorityAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
@@ -750,6 +791,7 @@
                       <object class="GtkComboBoxText" id="comboboxtext4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <items>
                           <item translatable="yes">CLAMP</item>
                           <item translatable="yes">CLAMP_TO_EDGE</item>
@@ -769,6 +811,7 @@
                       <object class="GtkComboBoxText" id="comboboxtext5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <items>
                           <item translatable="yes">CLAMP</item>
                           <item translatable="yes">CLAMP_TO_EDGE</item>
@@ -840,15 +883,50 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="TextureTransformButton">
+                      <object class="GtkBox" id="box8">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
-                        <items>
-                          <item translatable="yes">None</item>
-                          <item translatable="yes">TextureTransform</item>
-                        </items>
-                        <signal name="changed" handler="on_textureTransform_changed" swapped="no"/>
+                        <child>
+                          <object class="GtkComboBoxText" id="TextureTransformButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <items>
+                              <item translatable="yes">None</item>
+                              <item translatable="yes">TextureTransform</item>
+                            </items>
+                            <signal name="changed" handler="on_textureTransform_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="TextureTransformUnlinkButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                            <signal name="clicked" handler="on_textureTransform_unlink_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixel_size">12</property>
+                                <property name="icon_name">emblem-shared-symbolic</property>
+                                <property name="icon_size">0</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -907,6 +985,7 @@
                           <object class="GtkBox" id="box3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="homogeneous">True</property>
                             <child>
@@ -967,6 +1046,7 @@
                           <object class="GtkBox" id="box4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="homogeneous">True</property>
                             <child>
@@ -1015,6 +1095,7 @@
                           <object class="GtkBox" id="box5">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="homogeneous">True</property>
                             <child>
@@ -1087,6 +1168,7 @@
                           <object class="GtkSpinButton" id="TextureTransformRotationSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TextureTransformRotationAdjustment</property>
                             <property name="climb_rate">0.01</property>

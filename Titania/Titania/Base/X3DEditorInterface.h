@@ -64,18 +64,14 @@ class X3DEditorInterface :
 public:
 
 	virtual
-	~X3DEditorInterface ()
-	{ }
+	~X3DEditorInterface ();
 
 
 protected:
 
 	/// @name Construction
 
-	X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
-		X3DDialogInterface (widgetName, configKey),
-		   X3DEditorObject ()
-	{ }
+	X3DEditorInterface (const std::string &, const std::string &);
 
 };
 

@@ -77,14 +77,6 @@ protected:
 
 	X3DEditorObject ();
 
-	virtual
-	void
-	on_number_insert_text (const Glib::ustring &, int*, Gtk::Entry &);
-
-	virtual
-	void
-	on_number_delete_text (int, int, Gtk::Entry &);
-
 	///  @name Operations
 
 	template <class NodeType>

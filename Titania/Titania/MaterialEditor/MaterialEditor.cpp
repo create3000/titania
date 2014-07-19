@@ -722,39 +722,14 @@ MaterialEditor::connectEmissiveColor (const X3D::SFColor & field)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_ambient_text_changed ()
+MaterialEditor::on_ambient_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = toDouble (getAmbientEntry () .get_text ());
-
-	on_ambient_changed (value);
-
-	changing = true;
-	getAmbientScale () .set_value (value);
-	changing = false;
-}
-
-void
-MaterialEditor::on_ambient_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_ambient_changed (getAmbientScale () .get_value ());
-
-	changing = true;
-	getAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getAmbientScale () .get_value ()));
-	changing = false;
-}
-
-void
-MaterialEditor::on_ambient_changed (const double value)
-{
 	on_value_changed (twoSidedMaterial -> ambientIntensity (),
 	                  material -> ambientIntensity (),
-	                  value,
+	                  getAmbientAdjustment () -> get_value (),
 	                  &MaterialEditor::set_ambient,
 	                  &MaterialEditor::connectAmbient);
 }
@@ -764,8 +739,7 @@ MaterialEditor::set_ambient ()
 {
 	changing = true;
 
-	getAmbientScale () .set_value (isTwoSidedMaterial ? twoSidedMaterial -> ambientIntensity () : material -> ambientIntensity ());
-	getAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getAmbientScale () .get_value ()));
+	getAmbientAdjustment () -> set_value (isTwoSidedMaterial ? twoSidedMaterial -> ambientIntensity () : material -> ambientIntensity ());
 
 	changing = false;
 }
@@ -784,39 +758,14 @@ MaterialEditor::connectAmbient (const X3D::SFFloat & field)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_shininess_text_changed ()
+MaterialEditor::on_shininess_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = toDouble (getShininessEntry () .get_text ());
-
-	on_shininess_changed (value);
-
-	changing = true;
-	getShininessScale () .set_value (value);
-	changing = false;
-}
-
-void
-MaterialEditor::on_shininess_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_shininess_changed (getShininessScale () .get_value ());
-
-	changing = true;
-	getShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getShininessScale () .get_value ()));
-	changing = false;
-}
-
-void
-MaterialEditor::on_shininess_changed (const double value)
-{
 	on_value_changed (twoSidedMaterial -> shininess (),
 	                  material -> shininess (),
-	                  value,
+	                  getShininessAdjustment () -> get_value (),
 	                  &MaterialEditor::set_shininess,
 	                  &MaterialEditor::connectShininess);
 }
@@ -826,8 +775,7 @@ MaterialEditor::set_shininess ()
 {
 	changing = true;
 
-	getShininessScale () .set_value (isTwoSidedMaterial ? twoSidedMaterial -> shininess () : material -> shininess ());
-	getShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getShininessScale () .get_value ()));
+	getShininessAdjustment () -> set_value (isTwoSidedMaterial ? twoSidedMaterial -> shininess () : material -> shininess ());
 
 	changing = false;
 }
@@ -846,39 +794,14 @@ MaterialEditor::connectShininess (const X3D::SFFloat & field)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_transparency_text_changed ()
+MaterialEditor::on_transparency_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = toDouble (getTransparencyEntry () .get_text ());
-
-	on_transparency_changed (value);
-
-	changing = true;
-	getTransparencyScale () .set_value (value);
-	changing = false;
-}
-
-void
-MaterialEditor::on_transparency_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_transparency_changed (getTransparencyScale () .get_value ());
-
-	changing = true;
-	getTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getTransparencyScale () .get_value ()));
-	changing = false;
-}
-
-void
-MaterialEditor::on_transparency_changed (const double value)
-{
 	on_value_changed (twoSidedMaterial -> transparency (),
 	                  material -> transparency (),
-	                  value,
+	                  getTransparencyAdjustment () -> get_value (),
 	                  &MaterialEditor::set_transparency,
 	                  &MaterialEditor::connectTransparency);
 }
@@ -888,8 +811,7 @@ MaterialEditor::set_transparency ()
 {
 	changing = true;
 
-	getTransparencyScale () .set_value (isTwoSidedMaterial ? twoSidedMaterial -> transparency () : material -> transparency ());
-	getTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getTransparencyScale () .get_value ()));
+	getTransparencyAdjustment () -> set_value (isTwoSidedMaterial ? twoSidedMaterial -> transparency () : material -> transparency ());
 
 	changing = false;
 }
@@ -1079,39 +1001,14 @@ MaterialEditor::connectBackEmissiveColor (const X3D::SFColor & field)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_backAmbient_text_changed ()
+MaterialEditor::on_backAmbient_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = toDouble (getBackAmbientEntry () .get_text ());
-
-	on_backAmbient_changed (value);
-
-	changing = true;
-	getBackAmbientScale () .set_value (value);
-	changing = false;
-}
-
-void
-MaterialEditor::on_backAmbient_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_backAmbient_changed (getBackAmbientScale () .get_value ());
-
-	changing = true;
-	getBackAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackAmbientScale () .get_value ()));
-	changing = false;
-}
-
-void
-MaterialEditor::on_backAmbient_changed (const double value)
-{
 	on_value_changed (twoSidedMaterial -> backAmbientIntensity (),
 	                  twoSidedMaterial -> backAmbientIntensity (),
-	                  value,
+	                  getBackAmbientAdjustment () -> get_value (),
 	                  &MaterialEditor::set_backAmbient,
 	                  &MaterialEditor::connectBackAmbient);
 }
@@ -1121,8 +1018,7 @@ MaterialEditor::set_backAmbient ()
 {
 	changing = true;
 
-	getBackAmbientScale () .set_value (twoSidedMaterial -> backAmbientIntensity ());
-	getBackAmbientEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackAmbientScale () .get_value ()));
+	getBackAmbientAdjustment () -> set_value (twoSidedMaterial -> backAmbientIntensity ());
 
 	changing = false;
 }
@@ -1141,39 +1037,14 @@ MaterialEditor::connectBackAmbient (const X3D::SFFloat & field)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_backShininess_text_changed ()
+MaterialEditor::on_backShininess_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = toDouble (getBackShininessEntry () .get_text ());
-
-	on_backShininess_changed (value);
-
-	changing = true;
-	getBackShininessScale () .set_value (value);
-	changing = false;
-}
-
-void
-MaterialEditor::on_backShininess_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_backShininess_changed (getBackShininessScale () .get_value ());
-
-	changing = true;
-	getBackShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackShininessScale () .get_value ()));
-	changing = false;
-}
-
-void
-MaterialEditor::on_backShininess_changed (const double value)
-{
 	on_value_changed (twoSidedMaterial -> backShininess (),
 	                  twoSidedMaterial -> backShininess (),
-	                  value,
+	                  getBackShininessAdjustment () -> get_value (),
 	                  &MaterialEditor::set_backShininess,
 	                  &MaterialEditor::connectBackShininess);
 }
@@ -1183,8 +1054,7 @@ MaterialEditor::set_backShininess ()
 {
 	changing = true;
 
-	getBackShininessScale () .set_value (twoSidedMaterial -> backShininess ());
-	getBackShininessEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackShininessScale () .get_value ()));
+	getBackShininessAdjustment () -> set_value (twoSidedMaterial -> backShininess ());
 
 	changing = false;
 }
@@ -1203,39 +1073,14 @@ MaterialEditor::connectBackShininess (const X3D::SFFloat & field)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_backTransparency_text_changed ()
+MaterialEditor::on_backTransparency_changed ()
 {
 	if (changing)
 		return;
 
-	const double value = toDouble (getBackTransparencyEntry () .get_text ());
-
-	on_backTransparency_changed (value);
-
-	changing = true;
-	getBackTransparencyScale () .set_value (value);
-	changing = false;
-}
-
-void
-MaterialEditor::on_backTransparency_value_changed ()
-{
-	if (changing)
-		return;
-
-	on_backTransparency_changed (getBackTransparencyScale () .get_value ());
-
-	changing = true;
-	getBackTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackTransparencyScale () .get_value ()));
-	changing = false;
-}
-
-void
-MaterialEditor::on_backTransparency_changed (const double value)
-{
 	on_value_changed (twoSidedMaterial -> backTransparency (),
 	                  twoSidedMaterial -> backTransparency (),
-	                  value,
+	                  getBackTransparencyAdjustment () -> get_value (),
 	                  &MaterialEditor::set_backTransparency,
 	                  &MaterialEditor::connectBackTransparency);
 }
@@ -1245,8 +1090,7 @@ MaterialEditor::set_backTransparency ()
 {
 	changing = true;
 
-	getBackTransparencyScale () .set_value (twoSidedMaterial -> backTransparency ());
-	getBackTransparencyEntry () .set_text (Glib::ustring::format (std::fixed, std::setprecision (3), getBackTransparencyScale () .get_value ()));
+	getBackTransparencyAdjustment () -> set_value (twoSidedMaterial -> backTransparency ());
 
 	changing = false;
 }

@@ -117,6 +117,12 @@ X3DTextureNodeEditor::set_selection ()
  **********************************************************************************************************************/
 
 void
+X3DTextureNodeEditor::on_texture_unlink_clicked ()
+{
+	unlinkClone (appearances, "texture", undoStep);
+}
+
+void
 X3DTextureNodeEditor::on_texture_changed ()
 {
 	getTextureNotebook () .set_sensitive (getTextureButton () .get_active_row_number () > 0);
@@ -144,25 +150,13 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	if (getTextureButton () .get_active_row_number () > 0)
 	{
-		X3D::X3DPtr <X3D::X3DTextureNode> value;
-
 		switch (getTextureButton () .get_active_row_number ())
 		{
 			case 1:
-			{
-				value = new X3D::ImageTexture (getExecutionContext ());
-				setTexture2DNode (value);
+				textureNode = getImageTexture (textureNode);
 				break;
-			}
 			default:
 				break;
-		}
-
-		if (value)
-		{
-			textureNode = value;
-			getExecutionContext () -> addUninitializedNode (textureNode);
-			getExecutionContext () -> realize ();
 		}
 	}
 
@@ -189,6 +183,8 @@ X3DTextureNodeEditor::on_texture_changed ()
 	}
 
 	addRedoFunction <X3D::SFNode> (appearances, "texture", undoStep);
+
+	getTextureUnlinkButton () .set_sensitive (getTextureButton () .get_active_row_number () > 0 and textureNode -> getCloneCount () > 1);
 
 	X3DTexturePropertiesEditor::set_selection ();
 }
@@ -228,14 +224,11 @@ X3DTextureNodeEditor::set_texture ()
 		{ }
 	}
 
-	if (not textureNode)
-	{
-		textureNode = new X3D::ImageTexture (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (textureNode);
-		getExecutionContext () -> realize ();
-	}
-
 	setTexture2DNode (textureNode);
+	//setTexture3DNode (textureNode);
+
+	if (not textureNode)
+		textureNode = getImageTexture (textureNode);
 
 	changing = true;
 
@@ -256,7 +249,8 @@ X3DTextureNodeEditor::set_texture ()
 	else
 		getTextureButton () .set_active (-1);
 
-	getTextureButton () .set_sensitive (hasField);
+	getTextureButton ()       .set_sensitive (hasField);
+	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> getCloneCount () > 1);
 
 	changing = false;
 

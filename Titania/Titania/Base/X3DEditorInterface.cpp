@@ -48,64 +48,18 @@
  *
  ******************************************************************************/
 
-#include "X3DImageTextureEditor.h"
+#include "../Base/X3DEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DImageTextureEditor::X3DImageTextureEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface ("", ""),
-	             imageTexture (),
-	                 undoStep (),
-	                 changing (false)
+X3DEditorInterface::X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
+	X3DDialogInterface (widgetName, configKey),
+	   X3DEditorObject ()
 { }
 
-void
-X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-{
-	undoStep .reset ();
-
-	if (imageTexture)
-	{
-		//imageTexture -> url () .removeInterest (this, &X3DImageTextureEditor::set_url);
-	}
-
-	imageTexture = value;
-
-	if (not imageTexture)
-	{
-		imageTexture = new X3D::ImageTexture (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (imageTexture);
-		getExecutionContext () -> realize ();
-	}
-	
-	//imageTexture -> url () .addInterest (this, &X3DImageTextureEditor::set_url);
-
-	//set_url ();
-}
-	
-const X3D::X3DPtr <X3D::ImageTexture> &
-X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value) const
-{
-	if (not value)
-		return imageTexture;
-
-	switch (value -> getType () .back ()) 
-	{
-		case X3D::X3DConstants::ImageTexture:
-		{
-			const X3D::X3DPtr <X3D::ImageTexture> last (value);
-
-			imageTexture -> url () = last -> url ();
-			break;
-		}
-		default:
-			break;
-	}
-
-	return imageTexture;
-}
+X3DEditorInterface::~X3DEditorInterface ()
+{ }
 
 } // puck
 } // titania

@@ -12,37 +12,37 @@
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_ambient_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_ambient_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="BackAmbientAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_backAmbient_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_backAmbient_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="BackShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_backShininess_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_backShininess_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="BackTransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_backTransparency_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_backTransparency_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="ShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_shininess_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_shininess_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="TransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_transparency_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_transparency_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">320</property>
@@ -288,7 +288,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">7</property>
+                            <property name="top_attach">6</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -302,7 +302,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">6</property>
+                            <property name="top_attach">5</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -316,7 +316,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">5</property>
+                            <property name="top_attach">4</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -328,7 +328,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">4</property>
+                            <property name="top_attach">3</property>
                             <property name="width">2</property>
                             <property name="height">1</property>
                           </packing>
@@ -342,7 +342,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">3</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -364,7 +364,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">3</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -386,7 +386,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
+                            <property name="top_attach">1</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -400,7 +400,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">2</property>
+                            <property name="top_attach">1</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -414,7 +414,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">1</property>
+                            <property name="top_attach">0</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -437,7 +437,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
+                            <property name="top_attach">0</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -448,14 +448,13 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
                             <child>
-                              <object class="GtkEntry" id="AmbientEntry">
+                              <object class="GtkSpinButton" id="spinbutton1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="width_chars">11</property>
-                                <property name="input_purpose">digits</property>
-                                <signal name="changed" handler="on_ambient_text_changed" swapped="no"/>
-                                <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                                <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                                <property name="adjustment">AmbientAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -482,7 +481,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">5</property>
+                            <property name="top_attach">4</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -493,14 +492,13 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
                             <child>
-                              <object class="GtkEntry" id="ShininessEntry">
+                              <object class="GtkSpinButton" id="spinbutton2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="width_chars">11</property>
-                                <property name="input_purpose">digits</property>
-                                <signal name="changed" handler="on_shininess_text_changed" swapped="no"/>
-                                <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                                <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                                <property name="adjustment">ShininessAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -527,7 +525,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">6</property>
+                            <property name="top_attach">5</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -538,14 +536,13 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
                             <child>
-                              <object class="GtkEntry" id="TransparencyEntry">
+                              <object class="GtkSpinButton" id="spinbutton3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="width_chars">11</property>
-                                <property name="input_purpose">digits</property>
-                                <signal name="changed" handler="on_transparency_text_changed" swapped="no"/>
-                                <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                                <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                                <property name="adjustment">TransparencyAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -572,16 +569,10 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">7</property>
+                            <property name="top_attach">6</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
                         </child>
                       </object>
                     </child>
@@ -619,7 +610,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">8</property>
+                            <property name="top_attach">7</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -633,7 +624,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">6</property>
+                            <property name="top_attach">5</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -645,7 +636,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">5</property>
+                            <property name="top_attach">4</property>
                             <property name="width">2</property>
                             <property name="height">1</property>
                           </packing>
@@ -659,7 +650,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">4</property>
+                            <property name="top_attach">3</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -673,7 +664,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">3</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -687,7 +678,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">2</property>
+                            <property name="top_attach">1</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -709,7 +700,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">4</property>
+                            <property name="top_attach">3</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -731,7 +722,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">3</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -754,7 +745,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
+                            <property name="top_attach">1</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -771,7 +762,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
+                            <property name="top_attach">0</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -783,7 +774,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">1</property>
+                            <property name="top_attach">0</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -794,14 +785,13 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
                             <child>
-                              <object class="GtkEntry" id="BackAmbientEntry">
+                              <object class="GtkSpinButton" id="spinbutton4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="width_chars">11</property>
-                                <property name="input_purpose">digits</property>
-                                <signal name="changed" handler="on_backAmbient_text_changed" swapped="no"/>
-                                <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                                <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                                <property name="adjustment">BackAmbientAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -828,7 +818,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">6</property>
+                            <property name="top_attach">5</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -839,14 +829,13 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
                             <child>
-                              <object class="GtkEntry" id="BackShininessEntry">
+                              <object class="GtkSpinButton" id="spinbutton5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="width_chars">11</property>
-                                <property name="input_purpose">digits</property>
-                                <signal name="changed" handler="on_backShininess_text_changed" swapped="no"/>
-                                <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                                <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                                <property name="adjustment">BackShininessAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -873,7 +862,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">7</property>
+                            <property name="top_attach">6</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -884,14 +873,13 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
                             <child>
-                              <object class="GtkEntry" id="BackTransparencyEntry">
+                              <object class="GtkSpinButton" id="spinbutton6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="width_chars">11</property>
-                                <property name="input_purpose">digits</property>
-                                <signal name="changed" handler="on_backTransparency_text_changed" swapped="no"/>
-                                <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                                <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                                <property name="adjustment">BackTransparencyAdjustment</property>
+                                <property name="climb_rate">0.0099999997764825821</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -918,7 +906,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">8</property>
+                            <property name="top_attach">7</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -932,16 +920,10 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">7</property>
+                            <property name="top_attach">6</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
                         </child>
                       </object>
                     </child>

@@ -51,6 +51,7 @@
 #include "X3DDialogInterface.h"
 
 #include "../Configuration/config.h"
+#include "../Browser/BrowserWindow.h"
 
 namespace titania {
 namespace puck {
@@ -63,6 +64,14 @@ void
 X3DDialogInterface::construct ()
 {
 	X3DUserInterface::construct ();
+}
+
+void
+X3DDialogInterface::initialize ()
+{
+	X3DUserInterface::initialize ();
+
+	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 }
 
 void

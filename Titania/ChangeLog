@@ -1,3 +1,39 @@
+2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* X3DUserInterface.cpp:
+	* X3DEditorInterface.h:
+	* X3DDialogInterface.h:
+	* X3DEditorInterface.cpp:
+	* X3DDialogInterface.cpp:
+	* MaterialEditor.h:
+	* TextEditor.xml:
+	* MaterialEditor.cpp:
+	* TextureEditor.xml:
+	* MaterialEditor.xml:
+	* X3DTextureNodeEditor.h:
+	* X3DImageTextureEditor.h:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTexture2DNodeEditor.h:
+	* X3DImageTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextureTransformEditor.h:
+	* X3DTextureEditorInterface.h:
+	* X3DTextureTransformEditor.cpp:
+	* X3DMaterialEditorInterface.h:
+	* X3DTextureEditorInterface.cpp:
+	* GeometryPropertiesEditor.xml:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DTextureTransformNodeEditor.h:
+	* X3DTextureTransformNodeEditor.cpp:
+	* GeometryPropertiesEditor.h:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
 2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DEditorObject.h:

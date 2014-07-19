@@ -107,16 +107,10 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_DiffuseButton -> set_name ("DiffuseButton");
 	m_builder -> get_widget ("DiffuseArea", m_DiffuseArea);
 	m_DiffuseArea -> set_name ("DiffuseArea");
-	m_builder -> get_widget ("AmbientEntry", m_AmbientEntry);
-	m_AmbientEntry -> set_name ("AmbientEntry");
 	m_builder -> get_widget ("AmbientScale", m_AmbientScale);
 	m_AmbientScale -> set_name ("AmbientScale");
-	m_builder -> get_widget ("ShininessEntry", m_ShininessEntry);
-	m_ShininessEntry -> set_name ("ShininessEntry");
 	m_builder -> get_widget ("ShininessScale", m_ShininessScale);
 	m_ShininessScale -> set_name ("ShininessScale");
-	m_builder -> get_widget ("TransparencyEntry", m_TransparencyEntry);
-	m_TransparencyEntry -> set_name ("TransparencyEntry");
 	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
 	m_TransparencyScale -> set_name ("TransparencyScale");
 	m_builder -> get_widget ("BackExpander", m_BackExpander);
@@ -137,16 +131,10 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_BackDiffuseArea -> set_name ("BackDiffuseArea");
 	m_builder -> get_widget ("SeparateBackColorCheckButton", m_SeparateBackColorCheckButton);
 	m_SeparateBackColorCheckButton -> set_name ("SeparateBackColorCheckButton");
-	m_builder -> get_widget ("BackAmbientEntry", m_BackAmbientEntry);
-	m_BackAmbientEntry -> set_name ("BackAmbientEntry");
 	m_builder -> get_widget ("BackAmbientScale", m_BackAmbientScale);
 	m_BackAmbientScale -> set_name ("BackAmbientScale");
-	m_builder -> get_widget ("BackShininessEntry", m_BackShininessEntry);
-	m_BackShininessEntry -> set_name ("BackShininessEntry");
 	m_builder -> get_widget ("BackShininessScale", m_BackShininessScale);
 	m_BackShininessScale -> set_name ("BackShininessScale");
-	m_builder -> get_widget ("BackTransparencyEntry", m_BackTransparencyEntry);
-	m_BackTransparencyEntry -> set_name ("BackTransparencyEntry");
 	m_builder -> get_widget ("BackTransparencyScale", m_BackTransparencyScale);
 	m_BackTransparencyScale -> set_name ("BackTransparencyScale");
 	m_builder -> get_widget ("BackDiffuseDialog", m_BackDiffuseDialog);
@@ -163,12 +151,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_SpecularDialog -> set_name ("SpecularDialog");
 
 	// Connect object Gtk::Adjustment with id 'AmbientAdjustment'.
-	m_AmbientAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient_value_changed));
-	m_BackAmbientAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient_value_changed));
-	m_BackShininessAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess_value_changed));
-	m_BackTransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency_value_changed));
-	m_ShininessAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess_value_changed));
-	m_TransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency_value_changed));
+	m_AmbientAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient_changed));
+	m_BackAmbientAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient_changed));
+	m_BackShininessAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess_changed));
+	m_BackTransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency_changed));
+	m_ShininessAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess_changed));
+	m_TransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency_changed));
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_copy));
@@ -200,17 +188,6 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::DrawingArea with id 'DiffuseArea'.
 	m_DiffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_draw));
 
-	// Connect object Gtk::Entry with id 'AmbientEntry'.
-	m_AmbientEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient_text_changed));
-	m_AmbientEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_AmbientEntry)), false);
-	m_AmbientEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_AmbientEntry)), false);
-	m_ShininessEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess_text_changed));
-	m_ShininessEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_ShininessEntry)), false);
-	m_ShininessEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_ShininessEntry)), false);
-	m_TransparencyEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency_text_changed));
-	m_TransparencyEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_TransparencyEntry)), false);
-	m_TransparencyEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_TransparencyEntry)), false);
-
 	// Connect object Gtk::Button with id 'BackEmissiveButton'.
 	m_BackEmissiveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_clicked));
 
@@ -231,17 +208,6 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'SeparateBackColorCheckButton'.
 	m_SeparateBackColorCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_separateBackColor_toggled));
-
-	// Connect object Gtk::Entry with id 'BackAmbientEntry'.
-	m_BackAmbientEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient_text_changed));
-	m_BackAmbientEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_BackAmbientEntry)), false);
-	m_BackAmbientEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_BackAmbientEntry)), false);
-	m_BackShininessEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess_text_changed));
-	m_BackShininessEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_BackShininessEntry)), false);
-	m_BackShininessEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_BackShininessEntry)), false);
-	m_BackTransparencyEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency_text_changed));
-	m_BackTransparencyEntry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_delete_text), sigc::ref (*m_BackTransparencyEntry)), false);
-	m_BackTransparencyEntry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_number_insert_text), sigc::ref (*m_BackTransparencyEntry)), false);
 
 	// Call construct handler of base class.
 	construct ();

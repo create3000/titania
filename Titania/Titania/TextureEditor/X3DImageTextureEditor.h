@@ -69,10 +69,9 @@ protected:
 
 	void
 	setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-	
-	virtual
-	const X3D::X3DPtr <X3D::X3DTextureNode> &
-	getTextureNode () const = 0;
+
+	const X3D::X3DPtr <X3D::ImageTexture> &
+	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) const;
 
 
 private:

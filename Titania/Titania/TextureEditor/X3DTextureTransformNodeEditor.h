@@ -70,13 +70,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-	
-	///  @name Member access
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DTextureTransformNode> &
-	getTextureTransformNode () const
-	{ return textureTransformNode; }
 
 
 private:
@@ -87,6 +80,10 @@ private:
 	set_selection ();
 
 	///  @name textureTransform
+
+	virtual
+	void
+	on_textureTransform_unlink_clicked () final override;
 
 	virtual
 	void

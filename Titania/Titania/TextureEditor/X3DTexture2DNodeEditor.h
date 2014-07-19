@@ -67,13 +67,25 @@ protected:
 
 	X3DTexture2DNodeEditor ();
 
-	///  @name Construction
-
 	void
 	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> &
+	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
 
 private:
+
+	///  @name Construction
+
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> &
+	getTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	void
+	disconnect ();
+
+	void
+	connect ();
 
 	///  @name repeatS
 

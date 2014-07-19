@@ -114,6 +114,12 @@ X3DTextureTransformNodeEditor::set_selection ()
  **********************************************************************************************************************/
 
 void
+X3DTextureTransformNodeEditor::on_textureTransform_unlink_clicked ()
+{
+	unlinkClone (appearances, "textureTransform", undoStep);
+}
+
+void
 X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 {
 	getTextureTransformNotebook () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0);
@@ -140,25 +146,13 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	if (getTextureTransformButton () .get_active_row_number () > 0)
 	{
-		X3D::X3DPtr <X3D::X3DTextureTransformNode> value;
-	
 		switch (getTextureTransformButton () .get_active_row_number ())
 		{
 			case 1:
-			{
-				value = new X3D::TextureTransform (getExecutionContext ());
-				setTextureTransform (value);
+				textureTransformNode = getTextureTransform (textureTransformNode);
 				break;
-			}
 			default:
 				break;
-		}
-
-		if (value)
-		{
-			textureTransformNode = value;
-			getExecutionContext () -> addUninitializedNode (textureTransformNode);
-			getExecutionContext () -> realize ();
 		}
 	}
 
@@ -185,6 +179,8 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 	}
 
 	addRedoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
+
+	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0 and textureTransformNode -> getCloneCount () > 1);
 }
 
 void
@@ -222,14 +218,10 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 		{ }
 	}
 
-	if (not textureTransformNode)
-	{
-		textureTransformNode = new X3D::TextureTransform (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (textureTransformNode);
-		getExecutionContext () -> realize ();
-	}
-
 	setTextureTransform (textureTransformNode);
+
+	if (not textureTransformNode)
+		textureTransformNode = getTextureTransform (textureTransformNode);
 
 	changing = true;
 
@@ -250,7 +242,8 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 	else
 		getTextureTransformButton () .set_active (-1);
 
-	getTextureTransformButton () .set_sensitive (hasField);
+	getTextureTransformButton ()       .set_sensitive (hasField);
+	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> getCloneCount () > 1);
 
 	changing = false;
 }

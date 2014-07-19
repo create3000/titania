@@ -70,9 +70,8 @@ protected:
 	void
 	setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
 
-	virtual
-	const X3D::X3DPtr <X3D::X3DTextureTransformNode> &
-	getTextureTransformNode () const = 0;
+	const X3D::X3DPtr <X3D::TextureTransform> &
+	getTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);	
 
 
 private:

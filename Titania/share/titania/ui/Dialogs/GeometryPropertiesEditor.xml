@@ -6,7 +6,7 @@
     <property name="upper">3.1400000000000001</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
-    <signal name="value-changed" handler="on_creaseAngle_value_changed" swapped="no"/>
+    <signal name="value-changed" handler="on_creaseAngle_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -162,14 +162,14 @@
                     <property name="can_focus">False</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkEntry" id="CreaseAngleEntry">
+                      <object class="GtkSpinButton" id="CreaseAngleScaleSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="width_chars">11</property>
-                        <property name="input_purpose">digits</property>
-                        <signal name="changed" handler="on_creaseAngle_text_changed" swapped="no"/>
-                        <signal name="delete-text" handler="on_number_delete_text" after="yes" swapped="yes"/>
-                        <signal name="insert-text" handler="on_number_insert_text" after="yes" swapped="yes"/>
+                        <property name="input_purpose">number</property>
+                        <property name="adjustment">CreaseAngleAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -300,6 +300,7 @@
                       <object class="GtkBox" id="box4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <property name="spacing">8</property>
                         <child>
                           <object class="GtkCheckButton" id="TextureCoordinateGeneratorCheckButton">
@@ -340,9 +341,6 @@
                             <property name="position">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -381,6 +379,7 @@
                       <object class="GtkComboBoxText" id="TextureCoordinateGeneratorModeButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <property name="hexpand">True</property>
                         <items>
                           <item>SPHERE</item>

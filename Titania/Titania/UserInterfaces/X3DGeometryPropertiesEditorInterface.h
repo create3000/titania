@@ -123,9 +123,9 @@ public:
 	getConvexCheckButton () const
 	{ return *m_ConvexCheckButton; }
 
-	Gtk::Entry &
-	getCreaseAngleEntry () const
-	{ return *m_CreaseAngleEntry; }
+	Gtk::SpinButton &
+	getCreaseAngleScaleSpinButton () const
+	{ return *m_CreaseAngleScaleSpinButton; }
 
 	Gtk::Box &
 	getCreaseAngleBox () const
@@ -161,7 +161,7 @@ public:
 
 	virtual
 	void
-	on_creaseAngle_value_changed () = 0;
+	on_creaseAngle_changed () = 0;
 
 	virtual
 	void
@@ -174,10 +174,6 @@ public:
 	virtual
 	void
 	on_convex_toggled () = 0;
-
-	virtual
-	void
-	on_creaseAngle_text_changed () = 0;
 
 	virtual
 	void
@@ -211,7 +207,7 @@ private:
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
 	Gtk::CheckButton*              m_ConvexCheckButton;
-	Gtk::Entry*                    m_CreaseAngleEntry;
+	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Box*                      m_CreaseAngleBox;
 	Gtk::Scale*                    m_CreaseAngleScale;
 	Gtk::Expander*                 m_TextureCoordinateGeneratorExpander;

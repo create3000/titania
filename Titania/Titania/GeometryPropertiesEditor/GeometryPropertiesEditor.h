@@ -119,14 +119,7 @@ private:
 
 	virtual
 	void
-	on_creaseAngle_text_changed () final override;
-
-	virtual
-	void
-	on_creaseAngle_value_changed () final override;
-
-	void
-	on_creaseAngle_changed (const double);
+	on_creaseAngle_changed () final override;
 
 	void
 	set_creaseAngle ();

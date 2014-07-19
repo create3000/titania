@@ -80,6 +80,10 @@ protected:
 
 	virtual
 	void
+	initialize () override;
+
+	virtual
+	void
 	restoreSession () override;
 
 	virtual
@@ -89,13 +93,17 @@ protected:
 
 protected:
 
+	///  @name Operations
+
 	static
 	void
 	setupGridLabels (Gtk::Widget &);
 
 
 private:
-	
+
+	///  @name Operations
+
 	void
 	restoreExpander (Gtk::Widget &);
 

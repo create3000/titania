@@ -195,25 +195,13 @@ public:
 	getDiffuseArea () const
 	{ return *m_DiffuseArea; }
 
-	Gtk::Entry &
-	getAmbientEntry () const
-	{ return *m_AmbientEntry; }
-
 	Gtk::Scale &
 	getAmbientScale () const
 	{ return *m_AmbientScale; }
 
-	Gtk::Entry &
-	getShininessEntry () const
-	{ return *m_ShininessEntry; }
-
 	Gtk::Scale &
 	getShininessScale () const
 	{ return *m_ShininessScale; }
-
-	Gtk::Entry &
-	getTransparencyEntry () const
-	{ return *m_TransparencyEntry; }
 
 	Gtk::Scale &
 	getTransparencyScale () const
@@ -255,25 +243,13 @@ public:
 	getSeparateBackColorCheckButton () const
 	{ return *m_SeparateBackColorCheckButton; }
 
-	Gtk::Entry &
-	getBackAmbientEntry () const
-	{ return *m_BackAmbientEntry; }
-
 	Gtk::Scale &
 	getBackAmbientScale () const
 	{ return *m_BackAmbientScale; }
 
-	Gtk::Entry &
-	getBackShininessEntry () const
-	{ return *m_BackShininessEntry; }
-
 	Gtk::Scale &
 	getBackShininessScale () const
 	{ return *m_BackShininessScale; }
-
-	Gtk::Entry &
-	getBackTransparencyEntry () const
-	{ return *m_BackTransparencyEntry; }
 
 	Gtk::Scale &
 	getBackTransparencyScale () const
@@ -305,27 +281,27 @@ public:
 
 	virtual
 	void
-	on_ambient_value_changed () = 0;
+	on_ambient_changed () = 0;
 
 	virtual
 	void
-	on_backAmbient_value_changed () = 0;
+	on_backAmbient_changed () = 0;
 
 	virtual
 	void
-	on_backShininess_value_changed () = 0;
+	on_backShininess_changed () = 0;
 
 	virtual
 	void
-	on_backTransparency_value_changed () = 0;
+	on_backTransparency_changed () = 0;
 
 	virtual
 	void
-	on_shininess_value_changed () = 0;
+	on_shininess_changed () = 0;
 
 	virtual
 	void
-	on_transparency_value_changed () = 0;
+	on_transparency_changed () = 0;
 
 	virtual
 	void
@@ -377,18 +353,6 @@ public:
 
 	virtual
 	void
-	on_ambient_text_changed () = 0;
-
-	virtual
-	void
-	on_shininess_text_changed () = 0;
-
-	virtual
-	void
-	on_transparency_text_changed () = 0;
-
-	virtual
-	void
 	on_backEmissive_clicked () = 0;
 
 	virtual
@@ -414,18 +378,6 @@ public:
 	virtual
 	void
 	on_separateBackColor_toggled () = 0;
-
-	virtual
-	void
-	on_backAmbient_text_changed () = 0;
-
-	virtual
-	void
-	on_backShininess_text_changed () = 0;
-
-	virtual
-	void
-	on_backTransparency_text_changed () = 0;
 
 	virtual
 	~X3DMaterialEditorInterface ();
@@ -465,11 +417,8 @@ private:
 	Gtk::DrawingArea*              m_SpecularArea;
 	Gtk::Button*                   m_DiffuseButton;
 	Gtk::DrawingArea*              m_DiffuseArea;
-	Gtk::Entry*                    m_AmbientEntry;
 	Gtk::Scale*                    m_AmbientScale;
-	Gtk::Entry*                    m_ShininessEntry;
 	Gtk::Scale*                    m_ShininessScale;
-	Gtk::Entry*                    m_TransparencyEntry;
 	Gtk::Scale*                    m_TransparencyScale;
 	Gtk::Expander*                 m_BackExpander;
 	Gtk::Grid*                     m_BackBox;
@@ -480,11 +429,8 @@ private:
 	Gtk::Button*                   m_BackDiffuseButton;
 	Gtk::DrawingArea*              m_BackDiffuseArea;
 	Gtk::CheckButton*              m_SeparateBackColorCheckButton;
-	Gtk::Entry*                    m_BackAmbientEntry;
 	Gtk::Scale*                    m_BackAmbientScale;
-	Gtk::Entry*                    m_BackShininessEntry;
 	Gtk::Scale*                    m_BackShininessScale;
-	Gtk::Entry*                    m_BackTransparencyEntry;
 	Gtk::Scale*                    m_BackTransparencyScale;
 	Gtk::ColorSelectionDialog*     m_BackDiffuseDialog;
 	Gtk::ColorSelectionDialog*     m_BackEmissiveDialog;

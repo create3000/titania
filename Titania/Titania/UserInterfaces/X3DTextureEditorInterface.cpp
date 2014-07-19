@@ -81,6 +81,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureExpander -> set_name ("TextureExpander");
 	m_builder -> get_widget ("TextureButton", m_TextureButton);
 	m_TextureButton -> set_name ("TextureButton");
+	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
+	m_TextureUnlinkButton -> set_name ("TextureUnlinkButton");
 	m_builder -> get_widget ("TextureNotebook", m_TextureNotebook);
 	m_TextureNotebook -> set_name ("TextureNotebook");
 	m_builder -> get_widget ("TextureLabel", m_TextureLabel);
@@ -105,6 +107,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
 	m_builder -> get_widget ("TextureTransformButton", m_TextureTransformButton);
 	m_TextureTransformButton -> set_name ("TextureTransformButton");
+	m_builder -> get_widget ("TextureTransformUnlinkButton", m_TextureTransformUnlinkButton);
+	m_TextureTransformUnlinkButton -> set_name ("TextureTransformUnlinkButton");
 	m_builder -> get_widget ("TextureTransformNotebook", m_TextureTransformNotebook);
 	m_TextureTransformNotebook -> set_name ("TextureTransformNotebook");
 	m_builder -> get_widget ("TextureTransformLabel", m_TextureTransformLabel);
@@ -138,6 +142,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ComboBoxText with id 'TextureButton'.
 	m_TextureButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
 
+	// Connect object Gtk::Button with id 'TextureUnlinkButton'.
+	m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked));
+
 	// Connect object Gtk::CheckButton with id 'Texture2DNodeRepeatSCheckButton'.
 	m_Texture2DNodeRepeatSCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatS_toggled));
 	m_Texture2DNodeRepeatTCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatT_toggled));
@@ -148,6 +155,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
 	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
+
+	// Connect object Gtk::Button with id 'TextureTransformUnlinkButton'.
+	m_TextureTransformUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_unlink_clicked));
 
 	// Call construct handler of base class.
 	construct ();

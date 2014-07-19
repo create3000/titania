@@ -481,7 +481,9 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	field .addParent (this);
 	field .setAccessType (accessType);
 
-	if (not internal)
+	if (internal)
+		field .setName ("");
+	else
 		field .setName (name);
 
 	fieldDefinitions .emplace_back (&field);
