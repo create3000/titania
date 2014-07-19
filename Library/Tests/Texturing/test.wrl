@@ -58,13 +58,13 @@ DEF TextureTransform Transform {
   translation 1.32973 0 0
   children Shape {
     appearance Appearance {
-      material Material {
+      material TwoSidedMaterial {
+        separateBackColor TRUE
         diffuseColor 0.8 0 0
+        backDiffuseColor 0.992187 0 1
       }
       texture ImageTexture {
         url "../images/image.png"
-        repeatS FALSE
-        repeatT FALSE
       }
       textureTransform TextureTransform {
         translation -0.25 -0.25
@@ -74,6 +74,7 @@ DEF TextureTransform Transform {
       }
     }
     geometry IndexedFaceSet {
+      solid FALSE
       texCoordIndex [
         0,
         1,
@@ -88,13 +89,8 @@ DEF TextureTransform Transform {
         3,
         -1
       ]
-      texCoord TextureCoordinate {
-        point [
-          0 0,
-          0.5 0,
-          0.5 0.5,
-          0 0.5
-        ]
+      texCoord TextureCoordinateGenerator {
+        mode "CAMERASPACEREFLECTIONVECTOR"
       }
       coord Coordinate {
         point [

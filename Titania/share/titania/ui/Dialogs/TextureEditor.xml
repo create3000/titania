@@ -1225,7 +1225,7 @@
               <object class="GtkLabel" id="label12">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">TextureTransform</property>
+                <property name="label" translatable="yes">Texture Transform</property>
               </object>
             </child>
           </object>

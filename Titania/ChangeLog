@@ -1,5 +1,11 @@
 2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextEditor.xml:
+	* TextureEditor.xml:
+	* GeometryPropertiesEditor.xml: 
+
+2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* X3DEditorObject.h:
