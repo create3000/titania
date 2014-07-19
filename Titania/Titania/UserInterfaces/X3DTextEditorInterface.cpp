@@ -98,6 +98,8 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_FontStyleBox -> set_name ("FontStyleBox");
 	m_builder -> get_widget ("FontStyleButton", m_FontStyleButton);
 	m_FontStyleButton -> set_name ("FontStyleButton");
+	m_builder -> get_widget ("FontStyleUnlinkButton", m_FontStyleUnlinkButton);
+	m_FontStyleUnlinkButton -> set_name ("FontStyleUnlinkButton");
 	m_builder -> get_widget ("FontStyleNodeBox", m_FontStyleNodeBox);
 	m_FontStyleNodeBox -> set_name ("FontStyleNodeBox");
 	m_builder -> get_widget ("SizeLabel", m_SizeLabel);
@@ -145,6 +147,9 @@ X3DTextEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'FontStyleButton'.
 	m_FontStyleButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed));
+
+	// Connect object Gtk::Button with id 'FontStyleUnlinkButton'.
+	m_FontStyleUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_unlink_clicked));
 
 	// Connect object Gtk::CheckButton with id 'HorizontalCheckButton'.
 	m_HorizontalCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_horizontal_toggled));

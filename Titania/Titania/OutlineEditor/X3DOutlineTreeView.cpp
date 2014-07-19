@@ -741,11 +741,9 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					size_t i = 0;
 
 					for (auto & value : *mfnode)
-					{
 						get_model () -> append (iter, OutlineIterType::X3DBaseNode, value, i ++);
-						selection -> update (value);
-					}
 
+					selection -> update (mfnode);
 					break;
 				}
 				default:

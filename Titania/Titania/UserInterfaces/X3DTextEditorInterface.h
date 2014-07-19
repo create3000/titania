@@ -187,6 +187,10 @@ public:
 	getFontStyleButton () const
 	{ return *m_FontStyleButton; }
 
+	Gtk::Button &
+	getFontStyleUnlinkButton () const
+	{ return *m_FontStyleUnlinkButton; }
+
 	Gtk::Grid &
 	getFontStyleNodeBox () const
 	{ return *m_FontStyleNodeBox; }
@@ -277,6 +281,10 @@ public:
 
 	virtual
 	void
+	on_fontStyle_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_horizontal_toggled () = 0;
 
 	virtual
@@ -355,6 +363,7 @@ private:
 	Gtk::Expander*                         m_FontStyleExpander;
 	Gtk::Box*                              m_FontStyleBox;
 	Gtk::ComboBoxText*                     m_FontStyleButton;
+	Gtk::Button*                           m_FontStyleUnlinkButton;
 	Gtk::Grid*                             m_FontStyleNodeBox;
 	Gtk::Label*                            m_SizeLabel;
 	Gtk::SpinButton*                       m_SizeSpinButton;

@@ -50,18 +50,8 @@
 
 #include "X3DTexturePropertiesEditor.h"
 
-#include "../Configuration/config.h"
-
-#include <Titania/String.h>
-
 namespace titania {
 namespace puck {
-
-enum FamilyEditorColumns
-{
-	FAMILY_NAME
-
-};
 
 X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	X3DTextureEditorInterface ("", ""),

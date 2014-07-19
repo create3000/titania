@@ -89,6 +89,8 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_MaterialBox -> set_name ("MaterialBox");
 	m_builder -> get_widget ("MaterialButton", m_MaterialButton);
 	m_MaterialButton -> set_name ("MaterialButton");
+	m_builder -> get_widget ("MaterialUnlinkButton", m_MaterialUnlinkButton);
+	m_MaterialUnlinkButton -> set_name ("MaterialUnlinkButton");
 	m_builder -> get_widget ("FrontExpander", m_FrontExpander);
 	m_FrontExpander -> set_name ("FrontExpander");
 	m_builder -> get_widget ("FrontBox", m_FrontBox);
@@ -179,7 +181,8 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ComboBoxText with id 'MaterialButton'.
 	m_MaterialButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_material_changed));
 
-	// Connect object Gtk::Button with id 'EmissiveButton'.
+	// Connect object Gtk::Button with id 'MaterialUnlinkButton'.
+	m_MaterialUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_material_unlink_clicked));
 	m_EmissiveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_clicked));
 
 	// Connect object Gtk::DrawingArea with id 'EmissiveArea'.

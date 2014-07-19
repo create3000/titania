@@ -58,7 +58,10 @@ X3DEditorObject::X3DEditorObject () :
 	    currentField (),
 	          fields (new X3D::FieldSet (getBrowser ())),
 	        undoSize (0)
-{ }
+{
+	// If for nodes are concrete X3DPtr like X3DPtr <Appearance> and not only SFNode we do not need
+	// call isInternal on »fields« to prevent adding a clone count to nodes.
+}
 
 void
 X3DEditorObject::on_number_insert_text (const Glib::ustring & insert, int* position, Gtk::Entry & entry)

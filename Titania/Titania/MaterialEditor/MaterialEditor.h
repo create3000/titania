@@ -82,10 +82,13 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
 	void
 	set_initialized ();
+
+	void
+	set_selection ();
+
+	///  @name Copy & Paste
 
 	virtual
 	void
@@ -95,8 +98,7 @@ private:
 	void
 	on_paste () final override;
 
-	void
-	set_selection ();
+	///  @name preview
 
 	void
 	set_preview ();
@@ -111,6 +113,12 @@ private:
 
 	void
 	set_whichChoice (const int32_t);
+
+	///  @name material
+
+	virtual
+	void
+	on_material_unlink_clicked () final override;
 
 	virtual
 	void

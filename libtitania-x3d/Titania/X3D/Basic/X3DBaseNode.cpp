@@ -480,7 +480,9 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 
 	field .addParent (this);
 	field .setAccessType (accessType);
-	field .setName (name);
+
+	if (not internal)
+		field .setName (name);
 
 	fieldDefinitions .emplace_back (&field);
 	fields .emplace (name, &field);
@@ -636,12 +638,9 @@ X3DBaseNode::removeUserDefinedField (X3DFieldDefinition* const field)
 {
 	// Test if field is a user defined field.
 
-	const auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field);
+	const auto iter = std::find (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end (), field);
 	
 	if (iter == fieldDefinitions .end ())
-		return;
-
-	if (not (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields)))
 		return;
 
 	removeField (field -> getName ());
@@ -814,8 +813,8 @@ X3DBaseNode::hasRoutes () const
 }
 
 /***
- *  Marks this node as a node for internal use only. Such nodes are not routeable and
- *  scriptable and they do not increment the clone count of its child nodes.
+ *  Marks this node as a node for internal use only. Such nodes are not removeable, not routeable,
+ *  not scriptable and they do not increment the clone count of its child nodes.
  */
 
 void

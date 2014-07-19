@@ -159,6 +159,10 @@ public:
 	getMaterialButton () const
 	{ return *m_MaterialButton; }
 
+	Gtk::Button &
+	getMaterialUnlinkButton () const
+	{ return *m_MaterialUnlinkButton; }
+
 	Gtk::Expander &
 	getFrontExpander () const
 	{ return *m_FrontExpander; }
@@ -345,6 +349,10 @@ public:
 
 	virtual
 	void
+	on_material_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_emissive_clicked () = 0;
 
 	virtual
@@ -448,6 +456,7 @@ private:
 	Gtk::Button*                   m_ModelButton;
 	Gtk::Box*                      m_MaterialBox;
 	Gtk::ComboBoxText*             m_MaterialButton;
+	Gtk::Button*                   m_MaterialUnlinkButton;
 	Gtk::Expander*                 m_FrontExpander;
 	Gtk::Grid*                     m_FrontBox;
 	Gtk::Button*                   m_EmissiveButton;

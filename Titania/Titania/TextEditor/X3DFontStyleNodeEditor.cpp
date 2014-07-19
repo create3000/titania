@@ -65,6 +65,8 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	X3DTextEditorInterface ("", ""),
 	                 texts (),
 	         fontStyleNode (),
+	             fontStyle (),
+	       screenFontStyle (),
 	              undoStep (),
 	              changing (false)
 {
@@ -123,6 +125,12 @@ X3DFontStyleNodeEditor::set_selection ()
  **********************************************************************************************************************/
 
 void
+X3DFontStyleNodeEditor::on_fontStyle_unlink_clicked ()
+{
+	unlinkClone (texts, "fontStyle", undoStep);
+}
+
+void
 X3DFontStyleNodeEditor::on_fontStyle_changed ()
 {
 	getFontStyleNodeBox () .set_sensitive (getFontStyleButton () .get_active_row_number () > 0);
@@ -150,12 +158,12 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		{
 			case 1:
 			{
-				fontStyleNode = new X3D::FontStyle (getExecutionContext ());
+				fontStyleNode = fontStyle;
 				break;
 			}
 			case 2:
 			{
-				fontStyleNode = new X3D::ScreenFontStyle (getExecutionContext ());
+				fontStyleNode = screenFontStyle;
 				break;
 			}
 			default:
@@ -171,9 +179,6 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		fontStyleNode -> leftToRight () = last -> leftToRight ();
 		fontStyleNode -> topToBottom () = last -> topToBottom ();
 		fontStyleNode -> justify ()     = last -> justify ();
-
-		getExecutionContext () -> addUninitializedNode (fontStyleNode);
-		getExecutionContext () -> realize ();
 	}
 
 	// Set field.
@@ -199,6 +204,8 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 	}
 
 	addRedoFunction <X3D::SFNode> (texts, "fontStyle", undoStep);
+
+	getFontStyleUnlinkButton () .set_sensitive (getFontStyleButton () .get_active () > 0 and fontStyleNode -> getCloneCount () > 1);
 }
 
 void
@@ -255,6 +262,23 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 		getExecutionContext () -> realize ();
 	}
 
+	fontStyle       = fontStyleNode;
+	screenFontStyle = fontStyleNode;
+
+	if (not fontStyle)
+	{
+		fontStyle = new X3D::FontStyle (getExecutionContext ());
+		getExecutionContext () -> addUninitializedNode (fontStyle);
+		getExecutionContext () -> realize ();
+	}
+
+	if (not screenFontStyle)
+	{
+		screenFontStyle = new X3D::ScreenFontStyle (getExecutionContext ());
+		getExecutionContext () -> addUninitializedNode (screenFontStyle);
+		getExecutionContext () -> realize ();
+	}
+
 	changing = true;
 
 	if (active > 0)
@@ -272,10 +296,7 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 				break;
 			}
 			default:
-			{
-				getFontStyleButton () .set_active (-1);
 				break;
-			}
 		}
 	}
 	else if (active == 0)
@@ -283,7 +304,8 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 	else
 		getFontStyleButton () .set_active (-1);
 
-	getFontStyleButton () .set_sensitive (hasField);
+	getFontStyleButton ()       .set_sensitive (hasField);
+	getFontStyleUnlinkButton () .set_sensitive (active > 0 and fontStyleNode -> getCloneCount () > 1);
 
 	changing = false;
 

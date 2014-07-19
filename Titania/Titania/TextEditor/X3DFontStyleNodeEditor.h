@@ -76,6 +76,10 @@ protected:
 private:
 
 	///  @name fontStyle
+	
+	virtual
+	void
+	on_fontStyle_unlink_clicked () final override;
 
 	virtual
 	void
@@ -214,6 +218,8 @@ private:
 
 	X3D::X3DPtrArray <X3D::Text>        texts;
 	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
+	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
+	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
 	UndoStepPtr                         undoStep;
 	bool                                changing;
 

@@ -78,11 +78,17 @@ public:
 	void
 	select (const X3D::SFNode &) const;
 
+	static
 	void
-	update (const X3D::SFNode &) const;
+	update (const X3D::SFNode &);
 
+	static
 	void
-	update (X3D::X3DFieldDefinition* const) const;
+	update (X3D::X3DFieldDefinition* const);
+
+	static
+	void
+	update (X3D::MFNode* const);
 
 
 private:

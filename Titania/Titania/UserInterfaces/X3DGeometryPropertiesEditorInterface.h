@@ -143,10 +143,6 @@ public:
 	getTextureCoordinateGeneratorMainBox () const
 	{ return *m_TextureCoordinateGeneratorMainBox; }
 
-	Gtk::Grid &
-	getTextureCoordinateGeneratorBox () const
-	{ return *m_TextureCoordinateGeneratorBox; }
-
 	Gtk::CheckButton &
 	getTextureCoordinateGeneratorCheckButton () const
 	{ return *m_TextureCoordinateGeneratorCheckButton; }
@@ -154,6 +150,10 @@ public:
 	Gtk::Button &
 	getTextureCoordinateGeneratorUnlinkButton () const
 	{ return *m_TextureCoordinateGeneratorUnlinkButton; }
+
+	Gtk::Grid &
+	getTextureCoordinateGeneratorBox () const
+	{ return *m_TextureCoordinateGeneratorBox; }
 
 	Gtk::ComboBoxText &
 	getTextureCoordinateGeneratorModeButton () const
@@ -216,9 +216,9 @@ private:
 	Gtk::Scale*                    m_CreaseAngleScale;
 	Gtk::Expander*                 m_TextureCoordinateGeneratorExpander;
 	Gtk::Box*                      m_TextureCoordinateGeneratorMainBox;
-	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
 	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
 	Gtk::Button*                   m_TextureCoordinateGeneratorUnlinkButton;
+	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
 	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeButton;
 
 };

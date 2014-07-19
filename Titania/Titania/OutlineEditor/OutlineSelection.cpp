@@ -187,11 +187,11 @@ OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value)
 }
 
 void
-OutlineSelection::update (const X3D::SFNode & node) const
+OutlineSelection::update (const X3D::SFNode & node)
 {
 	if (node)
 	{
-		const auto & selection = getBrowser () -> getSelection ();
+		const auto & selection = node -> getBrowser () -> getSelection ();
 
 		if (selection -> isSelected (node))
 			return;
@@ -207,7 +207,7 @@ OutlineSelection::update (const X3D::SFNode & node) const
 }
 
 void
-OutlineSelection::update (X3D::X3DFieldDefinition* const field) const
+OutlineSelection::update (X3D::X3DFieldDefinition* const field)
 {
 	bool selected = false;
 
@@ -220,6 +220,29 @@ OutlineSelection::update (X3D::X3DFieldDefinition* const field) const
 
 		select (field, selected, seen);
 	}
+}
+
+void
+OutlineSelection::update (X3D::MFNode* const field) 
+{
+	bool selected = false;
+
+	for (const auto & parent : field -> getParents ())
+		selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
+
+	if (selected)
+	{
+		for (auto & value : *field)
+			X3DOutlineTreeView::get_user_data (&value) -> selected |= OUTLINE_SELECTED;
+	}
+	else
+	{
+		for (auto & value : *field)
+			X3DOutlineTreeView::get_user_data (&value) -> selected &= ~OUTLINE_SELECTED;
+	}
+
+	for (const auto & value : *field)
+		update (value);
 }
 
 } // puck

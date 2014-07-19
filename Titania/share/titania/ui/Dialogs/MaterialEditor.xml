@@ -119,6 +119,7 @@
                 <property name="spacing">4</property>
                 <child>
                   <object class="GtkBox" id="PreviewBox">
+                    <property name="height_request">50</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
@@ -216,15 +217,49 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MaterialButton">
+                  <object class="GtkBox" id="box9">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <items>
-                      <item translatable="yes">None</item>
-                      <item translatable="yes">Material</item>
-                      <item translatable="yes">TwoSidedMaterial</item>
-                    </items>
-                    <signal name="changed" handler="on_material_changed" swapped="no"/>
+                    <child>
+                      <object class="GtkComboBoxText" id="MaterialButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <items>
+                          <item translatable="yes">None</item>
+                          <item translatable="yes">Material</item>
+                          <item translatable="yes">TwoSidedMaterial</item>
+                        </items>
+                        <signal name="changed" handler="on_material_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="MaterialUnlinkButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                        <signal name="clicked" handler="on_material_unlink_clicked" swapped="no"/>
+                        <child>
+                          <object class="GtkImage" id="image3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixel_size">12</property>
+                            <property name="icon_name">emblem-shared-symbolic</property>
+                            <property name="icon_size">0</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>

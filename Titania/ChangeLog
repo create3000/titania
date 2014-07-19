@@ -1,5 +1,31 @@
 2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* MaterialEditor.h:
+	* TextEditor.xml:
+	* OutlineSelection.h:
+	* MaterialEditor.cpp:
+	* OutlineSelection.cpp:
+	* X3DFontStyleNodeEditor.h:
+	* MaterialEditor.xml:
+	* X3DOutlineTreeView.cpp:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTextEditorInterface.h:
+	* X3DImageTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextEditorInterface.cpp:
+	* X3DMaterialEditorInterface.h:
+	* X3DTextureTransformEditor.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
+2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* X3DEditorObject.h:

@@ -86,12 +86,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_TextureCoordinateGeneratorExpander -> set_name ("TextureCoordinateGeneratorExpander");
 	m_builder -> get_widget ("TextureCoordinateGeneratorMainBox", m_TextureCoordinateGeneratorMainBox);
 	m_TextureCoordinateGeneratorMainBox -> set_name ("TextureCoordinateGeneratorMainBox");
-	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);
-	m_TextureCoordinateGeneratorBox -> set_name ("TextureCoordinateGeneratorBox");
 	m_builder -> get_widget ("TextureCoordinateGeneratorCheckButton", m_TextureCoordinateGeneratorCheckButton);
 	m_TextureCoordinateGeneratorCheckButton -> set_name ("TextureCoordinateGeneratorCheckButton");
 	m_builder -> get_widget ("TextureCoordinateGeneratorUnlinkButton", m_TextureCoordinateGeneratorUnlinkButton);
 	m_TextureCoordinateGeneratorUnlinkButton -> set_name ("TextureCoordinateGeneratorUnlinkButton");
+	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);
+	m_TextureCoordinateGeneratorBox -> set_name ("TextureCoordinateGeneratorBox");
 	m_builder -> get_widget ("TextureCoordinateGeneratorModeButton", m_TextureCoordinateGeneratorModeButton);
 	m_TextureCoordinateGeneratorModeButton -> set_name ("TextureCoordinateGeneratorModeButton");
 

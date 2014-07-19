@@ -50,8 +50,6 @@
 
 #include "X3DTextureTransformNodeEditor.h"
 
-#include "../Browser/BrowserWindow.h"
-
 namespace titania {
 namespace puck {
 

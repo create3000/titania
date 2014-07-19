@@ -177,44 +177,44 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 	// Remember field value if all values are equal.
 
-	bool      first        = true;
-	bool      inconsistent = false;
-	FieldType value;
-
-	for (const auto & node : nodes)
 	{
-		try
+		bool      first        = true;
+		bool      inconsistent = false;
+		FieldType value;
+
+		for (const auto & node : nodes)
 		{
-			auto & field = node -> template getField <FieldType> (fieldName);
+			try
+			{
+				auto & field = node -> template getField <FieldType> (fieldName);
 
-			if (first)
-			{
-				first = false;
-				value = field;
+				if (first)
+				{
+					first = false;
+					value = field;
+				}
+				else if (field not_eq value)
+				{
+					inconsistent = true;
+					break;
+				}
 			}
-			else if (field not_eq value)
-			{
-				inconsistent = true;
-				break;
-			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
 
-	if (inconsistent)
-	{
-		try
+		if (inconsistent)
 		{
-			fields -> removeUserDefinedField (fields -> getField (fieldName));
+			try
+			{
+				fields -> removeUserDefinedField (fields -> getField (fieldName));
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
+		else
+			fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (std::move (value)));
 	}
-	else
-		fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (value));
-
-	fields -> isInternal (true);
 
 	// Undo
 

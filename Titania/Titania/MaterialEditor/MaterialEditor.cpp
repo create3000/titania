@@ -101,39 +101,14 @@ MaterialEditor::set_initialized ()
 	try
 	{
 		preview -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
+
+		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isInternal (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }
 
 	set_preview ();
 	set_whichChoice (getConfig () .getInteger ("whichChoice"));
-}
-
-void
-MaterialEditor::on_copy ()
-{
-	std::string text = "#X3D V3.3 utf8 Titania\n"
-	                   "\n"
-	                   "# " + getExecutionContext () -> getWorldURL () + "\n"
-	                   "\n"
-	                   "META \"titania magic\" \"Material\"\n"
-	                   "\n"
-	                   "Transform {\n"
-	                   "  children Shape {\n"
-	                   "    appearance Appearance {\n"
-	                   "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n"
-	                   "    }\n"
-	                   "    geometry Sphere { }\n"
-	                   "  }\n"
-	                   "}";
-
-	Gtk::Clipboard::get () -> set_text (text);
-}
-
-void
-MaterialEditor::on_paste ()
-{
-	getBrowserWindow () -> getPasteMenuItem () .activate ();
 }
 
 void
@@ -168,6 +143,39 @@ MaterialEditor::set_selection ()
 		appearance -> material () .addInterest (this, &MaterialEditor::set_material);
 
 	set_material ();
+}
+
+/***********************************************************************************************************************
+ *
+ *  Copy & Paste
+ *
+ **********************************************************************************************************************/
+
+void
+MaterialEditor::on_copy ()
+{
+	std::string text = "#X3D V3.3 utf8 Titania\n"
+	                   "\n"
+	                   "# " + getExecutionContext () -> getWorldURL () + "\n"
+	                   "\n"
+	                   "META \"titania magic\" \"Material\"\n"
+	                   "\n"
+	                   "Transform {\n"
+	                   "  children Shape {\n"
+	                   "    appearance Appearance {\n"
+	                   "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n"
+	                   "    }\n"
+	                   "    geometry Sphere { }\n"
+	                   "  }\n"
+	                   "}";
+
+	Gtk::Clipboard::get () -> set_text (text);
+}
+
+void
+MaterialEditor::on_paste ()
+{
+	getBrowserWindow () -> getPasteMenuItem () .activate ();
 }
 
 /***********************************************************************************************************************
@@ -289,6 +297,12 @@ MaterialEditor::set_whichChoice (const int32_t value)
  **********************************************************************************************************************/
 
 void
+MaterialEditor::on_material_unlink_clicked ()
+{
+	unlinkClone (appearances, "material", undoStep);
+}
+
+void
 MaterialEditor::on_material_changed ()
 {
 	getFrontBox () .set_sensitive (getMaterialButton () .get_active_row_number () > 0);
@@ -347,18 +361,6 @@ MaterialEditor::on_material_changed ()
 			break;
 	}
 
-	if (getMaterialButton () .get_active_row_number () not_eq 1)
-	{
-		material = material -> copy (X3D::FLAT_COPY);
-		material -> getExecutionContext () -> realize ();
-	}
-
-	if (getMaterialButton () .get_active_row_number () not_eq 2)
-	{
-		twoSidedMaterial = twoSidedMaterial -> copy (X3D::FLAT_COPY);
-		twoSidedMaterial -> getExecutionContext () -> realize ();
-	}
-
 	isTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
 	
 	// Set field.
@@ -401,9 +403,14 @@ MaterialEditor::on_material_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
+	if (isTwoSidedMaterial)
+		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and twoSidedMaterial -> getCloneCount () > 1);
+	else
+		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and material -> getCloneCount () > 1);
+
 	set_preview ();
 
-	getWidget () .queue_draw ();
+	getWidget () .queue_draw (); // Update color buttons;
 }
 
 void
@@ -491,34 +498,34 @@ MaterialEditor::set_material ()
 
 	changing = true;
 
-	getMaterialButton () .set_sensitive (hasField);
-
 	switch (active)
 	{
+		case 0:
+		{
+			// None
+			getMaterialButton () .set_active (0);
+			break;
+		}
 		case 1:
 		{
 			// Material or TwoSidedMaterial
 			getMaterialButton () .set_active (isTwoSidedMaterial + 1);
 			break;
 		}
-		case -1:
-		{
-			if (hasField)
-			{
-				// Inconsistent
-				getMaterialButton () .set_active_text ("");
-				break;
-			}
-
-			// Procceed with next step.
-		}
 		default:
 		{
-			// None
-			getMaterialButton () .set_active (0);
+			// Inconsistent
+			getMaterialButton () .set_active (-1);
 			break;
 		}
 	}
+
+	getMaterialButton () .set_sensitive (hasField);
+
+	if (isTwoSidedMaterial)
+		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> getCloneCount () > 1);
+	else
+		getMaterialUnlinkButton () .set_sensitive (active > 0 and material -> getCloneCount () > 1);
 
 	changing = false;
 
