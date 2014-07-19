@@ -155,6 +155,10 @@ public:
 	getTextCheckButton () const
 	{ return *m_TextCheckButton; }
 
+	Gtk::Button &
+	getTextUnlinkButton () const
+	{ return *m_TextUnlinkButton; }
+
 	Gtk::Grid &
 	getTextBox () const
 	{ return *m_TextBox; }
@@ -265,6 +269,10 @@ public:
 
 	virtual
 	void
+	on_text_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_fontStyle_changed () = 0;
 
 	virtual
@@ -339,6 +347,7 @@ private:
 	Gtk::Box*                              m_Widget;
 	Gtk::Expander*                         m_TextExpander;
 	Gtk::CheckButton*                      m_TextCheckButton;
+	Gtk::Button*                           m_TextUnlinkButton;
 	Gtk::Grid*                             m_TextBox;
 	Gtk::SpinButton*                       m_MaxExtentSpinButton;
 	Gtk::TextView*                         m_StringTextView;

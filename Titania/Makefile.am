@@ -18,6 +18,7 @@ titania_SOURCES =  \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Console/Console.cpp \
 	Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
+	Titania/GeometryPropertiesEditor/X3DTextureCoordinateGeneratorEditor.cpp \
 	Titania/HistoryEditor/History.cpp \
 	Titania/HistoryEditor/HistoryEditor.cpp \
 	Titania/LibraryView/LibraryView.cpp \
@@ -44,6 +45,7 @@ titania_SOURCES =  \
 	Titania/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/TextureEditor/X3DTexture2DNodeEditor.cpp \
 	Titania/TextureEditor/X3DTextureNodeEditor.cpp \
+	Titania/TextureEditor/X3DTexturePropertiesEditor.cpp \
 	Titania/TextureEditor/X3DTextureTransformEditor.cpp \
 	Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Undo/UndoGroup.cpp \

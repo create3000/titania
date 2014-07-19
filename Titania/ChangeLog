@@ -1,5 +1,39 @@
 2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* X3DEditorObject.h:
+	* TextEditor.h:
+	* BrowserWindow.cpp:
+	* TextEditor.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* TextEditor.xml:
+	* MaterialEditor.cpp:
+	* TextureEditor.xml:
+	* X3DTextureNodeEditor.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTextEditorInterface.h:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextEditorInterface.cpp:
+	* X3DTexturePropertiesEditor.h:
+	* X3DTextureEditorInterface.h:
+	* X3DTextureTransformEditor.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DTextureEditorInterface.cpp:
+	* GeometryPropertiesEditor.xml:
+	* X3DTextureTransformNodeEditor.cpp:
+	* GeometryPropertiesEditor.h:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.cpp:
+	* X3DTextureCoordinateGeneratorEditor.h:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
+2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UndoStep.h:
 	* UndoStep.cpp:
 	* X3DEditorObject.h:

@@ -61,13 +61,16 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_TextureTransformCenterXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterXAdjustment"));
-	m_TextureTransformCenterYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterYAdjustment"));
-	m_TextureTransformRotationAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformRotationAdjustment"));
-	m_TextureTransformScaleXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleXAdjustment"));
-	m_TextureTransformScaleYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleYAdjustment"));
-	m_TextureTransformTranslationXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationXAdjustment"));
-	m_TextureTransformTranslationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationYAdjustment"));
+	m_TexturePropertiesAnisotropicDegreeAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesAnisotropicDegreeAdjustment"));
+	m_TexturePropertiesBorderWidthAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderWidthAdjustment"));
+	m_TexturePropertiesTexturePriorityAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesTexturePriorityAdjustment"));
+	m_TextureTransformCenterXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterXAdjustment"));
+	m_TextureTransformCenterYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterYAdjustment"));
+	m_TextureTransformRotationAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformRotationAdjustment"));
+	m_TextureTransformScaleXAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleXAdjustment"));
+	m_TextureTransformScaleYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleYAdjustment"));
+	m_TextureTransformTranslationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationXAdjustment"));
+	m_TextureTransformTranslationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationYAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -90,6 +93,14 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_Texture2DNodeRepeatSCheckButton -> set_name ("Texture2DNodeRepeatSCheckButton");
 	m_builder -> get_widget ("Texture2DNodeRepeatTCheckButton", m_Texture2DNodeRepeatTCheckButton);
 	m_Texture2DNodeRepeatTCheckButton -> set_name ("Texture2DNodeRepeatTCheckButton");
+	m_builder -> get_widget ("TexturePropertiesExpander", m_TexturePropertiesExpander);
+	m_TexturePropertiesExpander -> set_name ("TexturePropertiesExpander");
+	m_builder -> get_widget ("TexturePropertiesCheckButton", m_TexturePropertiesCheckButton);
+	m_TexturePropertiesCheckButton -> set_name ("TexturePropertiesCheckButton");
+	m_builder -> get_widget ("TexturePropertiesUnlinkButton", m_TexturePropertiesUnlinkButton);
+	m_TexturePropertiesUnlinkButton -> set_name ("TexturePropertiesUnlinkButton");
+	m_builder -> get_widget ("TexturePropertiesBox", m_TexturePropertiesBox);
+	m_TexturePropertiesBox -> set_name ("TexturePropertiesBox");
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
 	m_builder -> get_widget ("TextureTransformButton", m_TextureTransformButton);
@@ -130,6 +141,10 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckButton with id 'Texture2DNodeRepeatSCheckButton'.
 	m_Texture2DNodeRepeatSCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatS_toggled));
 	m_Texture2DNodeRepeatTCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatT_toggled));
+	m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_toggled));
+
+	// Connect object Gtk::Button with id 'TexturePropertiesUnlinkButton'.
+	m_TexturePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
 	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));

@@ -349,14 +349,14 @@ MaterialEditor::on_material_changed ()
 
 	if (getMaterialButton () .get_active_row_number () not_eq 1)
 	{
-		material = material -> copy (material -> getExecutionContext (), X3D::FLAT_COPY);
-		material -> setup ();
+		material = material -> copy (X3D::FLAT_COPY);
+		material -> getExecutionContext () -> realize ();
 	}
 
 	if (getMaterialButton () .get_active_row_number () not_eq 2)
 	{
-		twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext (), X3D::FLAT_COPY);
-		twoSidedMaterial -> setup ();
+		twoSidedMaterial = twoSidedMaterial -> copy (X3D::FLAT_COPY);
+		twoSidedMaterial -> getExecutionContext () -> realize ();
 	}
 
 	isTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
@@ -370,6 +370,9 @@ MaterialEditor::on_material_changed ()
 		try
 		{
 			auto & field = appearance -> material ();
+
+			field .removeInterest (this, &MaterialEditor::set_material);
+			field .addInterest (this, &MaterialEditor::connectMaterial);
 
 			switch (getMaterialButton () .get_active_row_number ())
 			{
@@ -391,9 +394,6 @@ MaterialEditor::on_material_changed ()
 				default:
 					break;
 			}
-
-			field .removeInterest (this, &MaterialEditor::set_material);
-			field .addInterest (this, &MaterialEditor::connectMaterial);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -914,10 +914,10 @@ MaterialEditor::on_separateBackColor_toggled ()
 
 	addUndoFunction (twoSidedMaterial, twoSidedMaterial -> separateBackColor (), undoStep);
 
-	twoSidedMaterial -> separateBackColor () = getSeparateBackColorCheckButton () .get_active ();
-
 	twoSidedMaterial -> separateBackColor () .removeInterest (this, &MaterialEditor::set_separateBackColor);
 	twoSidedMaterial -> separateBackColor () .addInterest (this, &MaterialEditor::connectSeparateBackColor);
+
+	twoSidedMaterial -> separateBackColor () = getSeparateBackColorCheckButton () .get_active ();
 
 	addRedoFunction (twoSidedMaterial -> separateBackColor (), undoStep);
 }
@@ -1304,10 +1304,10 @@ MaterialEditor::on_color_changed (Gtk::ColorSelectionDialog & dialog,
 	{
 		addUndoFunction (twoSidedMaterial, twoSidedColor, undoStep);
 
-		twoSidedColor = color3;
-
 		twoSidedColor .removeInterest (this, set_color);
 		twoSidedColor .addInterest (this, connectColor);
+
+		twoSidedColor = color3;
 
 		addRedoFunction (twoSidedColor, undoStep);
 	}
@@ -1315,10 +1315,10 @@ MaterialEditor::on_color_changed (Gtk::ColorSelectionDialog & dialog,
 	{
 		addUndoFunction (material, color, undoStep);
 
-		color = color3;
-
 		color .removeInterest (this, set_color);
 		color .addInterest (this, connectColor);
+
+		color = color3;
 
 		addRedoFunction (color, undoStep);
 	}
@@ -1354,10 +1354,10 @@ MaterialEditor::on_value_changed (X3D::SFFloat & backField,
 	{
 		addUndoFunction (twoSidedMaterial, backField, undoStep);
 
-		backField = value;
-
 		backField .removeInterest (this, set_value);
 		backField .addInterest (this, connectValue);
+
+		backField = value;
 
 		addRedoFunction (backField, undoStep);
 	}
@@ -1365,10 +1365,10 @@ MaterialEditor::on_value_changed (X3D::SFFloat & backField,
 	{
 		addUndoFunction (material, field, undoStep);
 
-		field = value;
-
 		field .removeInterest (this, set_value);
 		field .addInterest (this, connectValue);
+
+		field = value;
 
 		addRedoFunction (field, undoStep);
 	}

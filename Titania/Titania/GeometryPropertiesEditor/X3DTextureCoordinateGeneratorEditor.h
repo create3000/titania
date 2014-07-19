@@ -48,64 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
+#ifndef __TITANIA_GEOMETRY_PROPERTIES_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
+#define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
 
-#include "../TextureEditor/X3DTexture2DNodeEditor.h"
-#include "../TextureEditor/X3DTexturePropertiesEditor.h"
-#include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DTextureNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DTexture2DNodeEditor,
-	public X3DTexturePropertiesEditor
+class X3DTextureCoordinateGeneratorEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 protected:
 
 	///  @name Construction
 
-	X3DTextureNodeEditor ();
+	X3DTextureCoordinateGeneratorEditor ();
 
 	virtual
 	void
 	initialize () override;
-	
-	///  @name Member access
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DTextureNode> &
-	getTextureNode () const final override
-	{ return textureNode; }
-
-
-private:
-
-	///  @name Construction
 
 	void
 	set_selection ();
 
-	///  @name textureTransform
+
+private:
+
+	///  @name textureCoordinateGenerator
 
 	virtual
 	void
-	on_texture_changed () final override;
+	on_textureCoordinateGenerator_unlink_clicked () final override;
+
+	virtual
+	void
+	on_textureCoordinateGenerator_toggled () final override;
 
 	void
-	set_texture ();
+	set_textureCoordinateGenerator ();
 
 	void
-	connectTexture (const X3D::SFNode &);
+	connectTextureCoordinateGenerator (const X3D::SFNode &);
+
+	void
+	on_textureCoordinateGenerator_mode_changed ();
+
+	void
+	set_textureCoordinateGenerator_mode ();
+
+	void
+	connectTextureCoordinateGeneratorMode (const X3D::SFString &);
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::X3DPtr <X3D::X3DTextureNode>  textureNode;
-	UndoStepPtr                        undoStep;
-	bool                               changing;
+	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
+	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
+	UndoStepPtr                                   undoStep;
+	bool                                          changing;
 
 };
 

@@ -769,9 +769,6 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 {
 	const auto oldValue = sfnode;
 
-	if (newValue == oldValue)
-		return;
-
 	undoStep -> addVariables (parent);
 	
 	const auto removeNode = std::make_shared <UndoStep> ();
@@ -803,9 +800,6 @@ void
 X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
 	const X3D::SFNode oldValue = mfnode [index];
-
-	if (newValue == oldValue)
-		return;
 
 	undoStep -> addVariables (parent);
 
@@ -1376,7 +1370,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											      {
 											         if (not first)
 											         {
-											            const X3D::SFNode node = (*sfnode) -> copy (getExecutionContext (), X3D::FLAT_COPY);
+											            const X3D::SFNode node = (*sfnode) -> copy (X3D::FLAT_COPY);
 
 											            replaceNode (parent, *sfnode, node, undoStep);
 
@@ -1395,7 +1389,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											{
 											   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-											   unlinkClone (getExecutionContext (), parent, *mfnode, clone, nodes, first, undoStep);
+											   unlinkClone (parent, *mfnode, clone, nodes, first, undoStep);
 
 											   break;
 											}
@@ -1410,7 +1404,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 
 		// Unlink in rootNodes array.
 
-		unlinkClone (getExecutionContext (), getExecutionContext () .getValue (), getExecutionContext () -> getRootNodes (), clone, nodes, first, undoStep);
+		unlinkClone (getExecutionContext () .getValue (), getExecutionContext () -> getRootNodes (), clone, nodes, first, undoStep);
 	}
 
 	// Setup new nodes.
@@ -1420,8 +1414,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 }
 
 void
-X3DBrowserEditor::unlinkClone (X3D::X3DExecutionContext* const executionContext,
-                               const X3D::SFNode & parent,
+X3DBrowserEditor::unlinkClone (const X3D::SFNode & parent,
                                X3D::MFNode & mfnode,
                                const X3D::SFNode & clone,
                                X3D::MFNode & nodes,
@@ -1439,7 +1432,7 @@ X3DBrowserEditor::unlinkClone (X3D::X3DExecutionContext* const executionContext,
 		{
 			if (not first)
 			{
-				const X3D::SFNode node = mfnode [index] -> copy (executionContext, X3D::FLAT_COPY);
+				const X3D::SFNode node = mfnode [index] -> copy (X3D::FLAT_COPY);
 
 				replaceNode (parent, mfnode, index, node, undoStep);
 

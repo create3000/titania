@@ -119,6 +119,12 @@ TextEditor::set_selection ()
  **********************************************************************************************************************/
 
 void
+TextEditor::on_text_unlink_clicked ()
+{
+	unlinkClone (shapeNodes, "geometry", undoStep);
+}
+
+void
 TextEditor::on_text_toggled ()
 {
 	if (changing)
@@ -126,13 +132,6 @@ TextEditor::on_text_toggled ()
 
 	getTextCheckButton () .set_inconsistent (false);
 	getTextBox ()         .set_sensitive (getTextCheckButton () .get_active ());
-
-	if (not getTextCheckButton () .get_active ())
-	{
-		text = text -> copy (text -> getExecutionContext (), X3D::FLAT_COPY);
-		getExecutionContext () -> addUninitializedNode (text);
-		getExecutionContext () -> realize ();
-	}
 
 	// Set field.
 
@@ -144,13 +143,13 @@ TextEditor::on_text_toggled ()
 		{
 			auto & field = shapeNode -> geometry ();
 
+			field .removeInterest (this, &TextEditor::set_text);
+			field .addInterest (this, &TextEditor::connectText);
+
 			if (getTextCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (X3D::SFNode (shapeNode), field, X3D::SFNode (text), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (shapeNode), field, nullptr, undoStep);
-
-			field .removeInterest (this, &TextEditor::set_text);
-			field .addInterest (this, &TextEditor::connectText);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -159,6 +158,8 @@ TextEditor::on_text_toggled ()
 	addRedoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
 
 	X3DFontStyleNodeEditor::set_selection ();
+
+	getTextUnlinkButton () .set_sensitive (getTextCheckButton () .get_active () and text -> getCloneCount () > 1);
 }
 
 void
@@ -215,7 +216,8 @@ TextEditor::set_text ()
 	getTextCheckButton () .set_active (active > 0);
 	getTextCheckButton () .set_inconsistent (active < 0);
 
-	getTextBox () .set_sensitive (active > 0);
+	getTextUnlinkButton () .set_sensitive (active > 0 and text -> getCloneCount () > 1);
+	getTextBox ()          .set_sensitive (active > 0);
 
 	changing = false;
 
@@ -224,6 +226,7 @@ TextEditor::set_text ()
 
 	set_string ();
 	set_maxExtent ();
+
 	X3DFontStyleNodeEditor::set_selection ();
 }
 
@@ -248,15 +251,15 @@ TextEditor::on_string_changed ()
 
 	addUndoFunction (text, text -> string (), undoStep);
 
+	text -> string () .removeInterest (this, &TextEditor::set_string);
+	text -> string () .addInterest (this, &TextEditor::connectString);
+
 	text -> string () .clear ();
 
 	const auto string = basic::split (getStringTextBuffer () -> get_text (), "\n");
 
 	for (auto & value : string)
 		text -> string () .emplace_back (std::move (value));
-
-	text -> string () .removeInterest (this, &TextEditor::set_string);
-	text -> string () .addInterest (this, &TextEditor::connectString);
 
 	addRedoFunction (text -> string (), undoStep);
 }
@@ -299,10 +302,10 @@ TextEditor::on_maxExtent_changed ()
 
 	addUndoFunction (text, text -> maxExtent (), undoStep);
 
-	text -> maxExtent () = getMaxExtentSpinButton () .get_value ();
-
 	text -> maxExtent () .removeInterest (this, &TextEditor::set_maxExtent);
 	text -> maxExtent () .addInterest (this, &TextEditor::connectMaxExtent);
+
+	text -> maxExtent () = getMaxExtentSpinButton () .get_value ();
 
 	addRedoFunction (text -> maxExtent (), undoStep);
 }

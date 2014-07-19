@@ -113,10 +113,10 @@ X3DTexture2DNodeEditor::on_texture2DNode_repeatS_toggled ()
 
 	addUndoFunction (texture2DNode, texture2DNode -> repeatS (), undoStep);
 
-	texture2DNode -> repeatS () = getTexture2DNodeRepeatSCheckButton () .get_active ();
-
 	texture2DNode -> repeatS () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
 	texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::connectRepeatS);
+
+	texture2DNode -> repeatS () = getTexture2DNodeRepeatSCheckButton () .get_active ();
 
 	addRedoFunction (texture2DNode -> repeatS (), undoStep);
 
@@ -153,10 +153,10 @@ X3DTexture2DNodeEditor::on_texture2DNode_repeatT_toggled ()
 
 	addUndoFunction (texture2DNode, texture2DNode -> repeatT (), undoStep);
 
-	texture2DNode -> repeatT () = getTexture2DNodeRepeatTCheckButton () .get_active ();
-
 	texture2DNode -> repeatT () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
 	texture2DNode -> repeatT () .addInterest (this, &X3DTexture2DNodeEditor::connectRepeatT);
+
+	texture2DNode -> repeatT () = getTexture2DNodeRepeatTCheckButton () .get_active ();
 
 	addRedoFunction (texture2DNode -> repeatT (), undoStep);
 

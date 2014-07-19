@@ -82,6 +82,8 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_TextExpander -> set_name ("TextExpander");
 	m_builder -> get_widget ("TextCheckButton", m_TextCheckButton);
 	m_TextCheckButton -> set_name ("TextCheckButton");
+	m_builder -> get_widget ("TextUnlinkButton", m_TextUnlinkButton);
+	m_TextUnlinkButton -> set_name ("TextUnlinkButton");
 	m_builder -> get_widget ("TextBox", m_TextBox);
 	m_TextBox -> set_name ("TextBox");
 	m_builder -> get_widget ("MaxExtentSpinButton", m_MaxExtentSpinButton);
@@ -137,6 +139,9 @@ X3DTextEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'TextCheckButton'.
 	m_TextCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_toggled));
+
+	// Connect object Gtk::Button with id 'TextUnlinkButton'.
+	m_TextUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'FontStyleButton'.
 	m_FontStyleButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed));

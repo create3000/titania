@@ -96,6 +96,18 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTexturePropertiesAnisotropicDegreeAdjustment () const
+	{ return m_TexturePropertiesAnisotropicDegreeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTexturePropertiesBorderWidthAdjustment () const
+	{ return m_TexturePropertiesBorderWidthAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTexturePropertiesTexturePriorityAdjustment () const
+	{ return m_TexturePropertiesTexturePriorityAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTextureTransformCenterXAdjustment () const
 	{ return m_TextureTransformCenterXAdjustment; }
 
@@ -162,6 +174,22 @@ public:
 	Gtk::CheckButton &
 	getTexture2DNodeRepeatTCheckButton () const
 	{ return *m_Texture2DNodeRepeatTCheckButton; }
+
+	Gtk::Expander &
+	getTexturePropertiesExpander () const
+	{ return *m_TexturePropertiesExpander; }
+
+	Gtk::CheckButton &
+	getTexturePropertiesCheckButton () const
+	{ return *m_TexturePropertiesCheckButton; }
+
+	Gtk::Button &
+	getTexturePropertiesUnlinkButton () const
+	{ return *m_TexturePropertiesUnlinkButton; }
+
+	Gtk::Grid &
+	getTexturePropertiesBox () const
+	{ return *m_TexturePropertiesBox; }
 
 	Gtk::Expander &
 	getTextureTransformExpander () const
@@ -241,6 +269,14 @@ public:
 
 	virtual
 	void
+	on_textureProperties_toggled () = 0;
+
+	virtual
+	void
+	on_textureProperties_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_textureTransform_changed () = 0;
 
 	virtual
@@ -256,6 +292,9 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesAnisotropicDegreeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderWidthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesTexturePriorityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformRotationAdjustment;
@@ -273,6 +312,10 @@ private:
 	Gtk::Grid*                     m_Texture2DBox;
 	Gtk::CheckButton*              m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*              m_Texture2DNodeRepeatTCheckButton;
+	Gtk::Expander*                 m_TexturePropertiesExpander;
+	Gtk::CheckButton*              m_TexturePropertiesCheckButton;
+	Gtk::Button*                   m_TexturePropertiesUnlinkButton;
+	Gtk::Grid*                     m_TexturePropertiesBox;
 	Gtk::Expander*                 m_TextureTransformExpander;
 	Gtk::ComboBoxText*             m_TextureTransformButton;
 	Gtk::Notebook*                 m_TextureTransformNotebook;

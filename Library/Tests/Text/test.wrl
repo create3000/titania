@@ -15,6 +15,9 @@ DEF Text Transform {
         backDiffuseColor 1 0 0
         backShininess 0.199655
       }
+      texture ImageTexture {
+        textureProperties DEF _1 TextureProperties { }
+      }
     }
     geometry Text {
       string [
@@ -83,6 +86,7 @@ DEF DefaultText Transform {
         ]
         repeatS FALSE
         repeatT FALSE
+        textureProperties USE _1
       }
     }
     geometry Text {

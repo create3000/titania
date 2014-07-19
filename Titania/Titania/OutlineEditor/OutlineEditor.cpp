@@ -455,7 +455,7 @@ OutlineEditor::on_unlink_clone_activate ()
 		const X3D::SFNode parent (treeView -> get_model () -> get_execution_context ());
 		auto &            rootNodes = treeView -> get_model () -> get_execution_context () -> getRootNodes ();
 		const auto        index     = treeView -> get_index (iter);
-		const X3D::SFNode copy      = rootNodes [index] -> copy (rootNodes [index] -> getExecutionContext (), X3D::FLAT_COPY);
+		const X3D::SFNode copy      = rootNodes [index] -> copy (X3D::FLAT_COPY);
 
 		getBrowserWindow () -> replaceNode (parent, rootNodes, index, copy, undoStep);
 		copy -> getExecutionContext () -> realize ();
@@ -491,7 +491,7 @@ OutlineEditor::on_unlink_clone_activate ()
 			case X3D::X3DConstants::SFNode:
 			{
 				auto &            sfnode = *static_cast <X3D::SFNode*> (field);
-				const X3D::SFNode copy   = sfnode -> copy (sfnode -> getExecutionContext (), X3D::FLAT_COPY);
+				const X3D::SFNode copy   = sfnode -> copy (X3D::FLAT_COPY);
 
 				getBrowserWindow () -> replaceNode (parent, sfnode, copy, undoStep);
 				copy -> getExecutionContext () -> realize ();
@@ -501,7 +501,7 @@ OutlineEditor::on_unlink_clone_activate ()
 			{
 				auto &            mfnode = *static_cast <X3D::MFNode*> (field);
 				const auto        index  = treeView -> get_index (iter);
-				const X3D::SFNode copy   = mfnode [index] -> copy (mfnode [index] -> getExecutionContext (), X3D::FLAT_COPY);
+				const X3D::SFNode copy   = mfnode [index] -> copy (X3D::FLAT_COPY);
 
 				getBrowserWindow () -> replaceNode (parent, mfnode, index, copy, undoStep);
 				copy -> getExecutionContext () -> realize ();

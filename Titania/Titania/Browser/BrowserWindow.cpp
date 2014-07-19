@@ -1113,10 +1113,10 @@ BrowserWindow::on_shading_activate (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading () = value;
-
 	getBrowser () -> getBrowserOptions () -> shading () .removeInterest (this, &BrowserWindow::set_shading);
 	getBrowser () -> getBrowserOptions () -> shading () .addInterest (this, &BrowserWindow::connectShading);
+
+	getBrowser () -> getBrowserOptions () -> shading () = value;
 }
 
 void
@@ -1178,10 +1178,10 @@ BrowserWindow::on_primitiveQuality_activate (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () = value;
-
 	getBrowser () -> getBrowserOptions () -> primitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
 	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
+
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () = value;
 }
 
 void

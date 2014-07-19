@@ -117,11 +117,11 @@ X3DTextureTransformEditor::on_textureTransform_translation_changed ()
 
 	addUndoFunction (textureTransform, textureTransform -> translation (), undoStep);
 
-	textureTransform -> translation () .setX (getTextureTransformTranslationXSpinButton () .get_value ());
-	textureTransform -> translation () .setY (getTextureTransformTranslationYSpinButton () .get_value ());
-
 	textureTransform -> translation () .removeInterest (this, &X3DTextureTransformEditor::set_translation);
 	textureTransform -> translation () .addInterest (this, &X3DTextureTransformEditor::connectTranslation);
+
+	textureTransform -> translation () .setX (getTextureTransformTranslationXSpinButton () .get_value ());
+	textureTransform -> translation () .setY (getTextureTransformTranslationYSpinButton () .get_value ());
 
 	addRedoFunction (textureTransform -> translation (), undoStep);
 
@@ -159,10 +159,10 @@ X3DTextureTransformEditor::on_textureTransform_rotation_changed ()
 
 	addUndoFunction (textureTransform, textureTransform -> rotation (), undoStep);
 
-	textureTransform -> rotation () = getTextureTransformRotationSpinButton () .get_value ();
-
 	textureTransform -> rotation () .removeInterest (this, &X3DTextureTransformEditor::set_rotation);
 	textureTransform -> rotation () .addInterest (this, &X3DTextureTransformEditor::connectRotation);
+
+	textureTransform -> rotation () = getTextureTransformRotationSpinButton () .get_value ();
 
 	addRedoFunction (textureTransform -> rotation (), undoStep);
 
@@ -199,11 +199,11 @@ X3DTextureTransformEditor::on_textureTransform_scale_changed ()
 
 	addUndoFunction (textureTransform, textureTransform -> scale (), undoStep);
 
-	textureTransform -> scale () .setX (getTextureTransformScaleXSpinButton () .get_value ());
-	textureTransform -> scale () .setY (getTextureTransformScaleYSpinButton () .get_value ());
-
 	textureTransform -> scale () .removeInterest (this, &X3DTextureTransformEditor::set_scale);
 	textureTransform -> scale () .addInterest (this, &X3DTextureTransformEditor::connectScale);
+
+	textureTransform -> scale () .setX (getTextureTransformScaleXSpinButton () .get_value ());
+	textureTransform -> scale () .setY (getTextureTransformScaleYSpinButton () .get_value ());
 
 	addRedoFunction (textureTransform -> scale (), undoStep);
 
@@ -241,11 +241,11 @@ X3DTextureTransformEditor::on_textureTransform_center_changed ()
 
 	addUndoFunction (textureTransform, textureTransform -> center (), undoStep);
 
-	textureTransform -> center () .setX (getTextureTransformCenterXSpinButton () .get_value ());
-	textureTransform -> center () .setY (getTextureTransformCenterYSpinButton () .get_value ());
-
 	textureTransform -> center () .removeInterest (this, &X3DTextureTransformEditor::set_center);
 	textureTransform -> center () .addInterest (this, &X3DTextureTransformEditor::connectCenter);
+
+	textureTransform -> center () .setX (getTextureTransformCenterXSpinButton () .get_value ());
+	textureTransform -> center () .setY (getTextureTransformCenterYSpinButton () .get_value ());
 
 	addRedoFunction (textureTransform -> center (), undoStep);
 }

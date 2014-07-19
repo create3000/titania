@@ -87,6 +87,10 @@ protected:
 
 	///  @name Operations
 
+	template <class NodeType>
+	void
+	unlinkClone (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
+
 	template <class FieldType, class NodeType>
 	void
 	addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string &, UndoStepPtr & undoStep);
@@ -121,6 +125,37 @@ private:
 	size_t                      undoSize;
 
 };
+
+template <class NodeType>
+void
+X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
+{
+	if (nodes .empty ())
+		return;
+
+	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Unlink Clone From Field »%s«"), fieldName .c_str ()));
+
+	const size_t cloneCount = nodes [0] -> template getField <X3D::SFNode> (fieldName) -> getCloneCount ();
+	bool         first      = (cloneCount == nodes .size ());
+
+	for (const auto & node : nodes)
+	{
+		if (not first)
+		{
+			auto &            field = node -> template getField <X3D::SFNode> (fieldName);
+			const X3D::SFNode copy  = field -> copy (X3D::FLAT_COPY);
+
+			getBrowserWindow () -> replaceNode (X3D::SFNode (node), field, copy, undoStep);
+		}
+
+		first = false;
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+	nodes [0] -> getExecutionContext () -> realize ();
+
+	undoStep .reset ();
+}
 
 template <class FieldType, class NodeType>
 void
@@ -260,12 +295,19 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
+	{
+		for (const auto & undoFunction : basic::adapter (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
+			undoFunction ();
+
+		undoStep -> getUndoFunctions () .resize (undoSize);
+		undoStep -> getRedoFunctions () .clear ();
 		return;
+	}
 
 	currentField = fieldName;
 
 	fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (field));
-	
+
 	// Undo
 
 	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), field .getName () .c_str ()));
@@ -273,12 +315,14 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 	undoStep -> addVariables (node);
 
 	// Undo field change
-	
+
 	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
 
-	undoStep -> addUndoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
+	undoStep -> addUndoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	undoSize = undoStep -> getUndoFunctions () .size ();
 }
 
 template <class FieldType>
@@ -295,15 +339,11 @@ X3DEditorObject::addRedoFunction (FieldType & field, UndoStepPtr & undoStep)
 	}
 	else
 	{
-		// Redo
-
-		undoStep -> getRedoFunctions () .clear ();
-
 		// Redo field change
 
 		using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
 
-		undoStep -> addRedoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
+		undoStep -> addRedoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
 	}
 }
 

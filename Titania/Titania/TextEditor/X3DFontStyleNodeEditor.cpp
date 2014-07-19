@@ -50,8 +50,6 @@
 
 #include "X3DFontStyleNodeEditor.h"
 
-#include "../Configuration/config.h"
-
 #include <Titania/String.h>
 
 namespace titania {
@@ -188,13 +186,13 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		{
 			auto & field = text -> fontStyle ();
 
+			field .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
+			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
+
 			if (getFontStyleButton () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (X3D::SFNode (text), field, X3D::SFNode (fontStyleNode), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (text), field, nullptr, undoStep);
-
-			field .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
-			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -347,10 +345,10 @@ X3DFontStyleNodeEditor::on_family_edited (const Glib::ustring & path, const Glib
 
 	addUndoFunction (fontStyleNode, field, undoStep);
 
-	field .set1Value (Gtk::TreePath (path) .front (), value);
-
 	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
 	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
+
+	field .set1Value (Gtk::TreePath (path) .front (), value);
 
 	addRedoFunction (field, undoStep);
 }
@@ -428,6 +426,9 @@ X3DFontStyleNodeEditor::on_family_drag_data_received (const Glib::RefPtr <Gdk::D
 
 	addUndoFunction (fontStyleNode, field, undoStep);
 
+	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
+	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
+
 	if (index < dest)
 	{
 		field .insert (field .begin () + dest, value);
@@ -438,9 +439,6 @@ X3DFontStyleNodeEditor::on_family_drag_data_received (const Glib::RefPtr <Gdk::D
 		field .erase (field .begin () + index);
 		field .insert (field .begin () + dest, value);
 	}
-
-	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
 
 	addRedoFunction (field, undoStep);
 
@@ -470,10 +468,10 @@ X3DFontStyleNodeEditor::on_remove_family_clicked ()
 
 	addUndoFunction (fontStyleNode, field, undoStep);
 
-	field .erase (field .begin () + index);
-
 	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
 	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
+
+	field .erase (field .begin () + index);
 
 	addRedoFunction (field, undoStep);
 }
@@ -530,10 +528,10 @@ X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
 
 			addUndoFunction (fontStyleNode, field, undoStep);
 
-			field .emplace_back (value);
-
 			field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
 			field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
+
+			field .emplace_back (value);
 
 			addRedoFunction (field, undoStep);
 		}
@@ -550,10 +548,10 @@ X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
 
 			addUndoFunction (fontStyleNode, field, undoStep);
 
-			field .set1Value (index, value);
-
 			field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
 			field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
+
+			field .set1Value (index, value);
 
 			addRedoFunction (field, undoStep);
 		}
@@ -596,6 +594,9 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> style (), undoStep);
 
+	fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
+	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::connectStyle);
+
 	switch ((getBoldToggleButton () .get_active () << 1) | getItalicToggleButton () .get_active ())
 	{
 		case 0:
@@ -621,9 +622,6 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 		default:
 			break;
 	}
-
-	fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
-	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::connectStyle);
 
 	addRedoFunction (fontStyleNode -> style (), undoStep);
 }
@@ -660,10 +658,10 @@ X3DFontStyleNodeEditor::on_size_changed ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> size (), undoStep);
 
-	fontStyleNode -> size () = getSizeSpinButton () .get_value ();
-
 	fontStyleNode -> size () .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
 	fontStyleNode -> size () .addInterest (this, &X3DFontStyleNodeEditor::connectSize);
+
+	fontStyleNode -> size () = getSizeSpinButton () .get_value ();
 
 	addRedoFunction (fontStyleNode -> size (), undoStep);
 }
@@ -699,10 +697,10 @@ X3DFontStyleNodeEditor::on_spacing_changed ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> spacing (), undoStep);
 
-	fontStyleNode -> spacing () = getSpacingSpinButton () .get_value ();
-
 	fontStyleNode -> spacing () .removeInterest (this, &X3DFontStyleNodeEditor::set_spacing);
 	fontStyleNode -> spacing () .addInterest (this, &X3DFontStyleNodeEditor::connectSpacing);
+
+	fontStyleNode -> spacing () = getSpacingSpinButton () .get_value ();
 
 	addRedoFunction (fontStyleNode -> spacing (), undoStep);
 }
@@ -738,10 +736,10 @@ X3DFontStyleNodeEditor::on_horizontal_toggled ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> horizontal (), undoStep);
 
-	fontStyleNode -> horizontal () = getHorizontalCheckButton () .get_active ();
-
 	fontStyleNode -> horizontal () .removeInterest (this, &X3DFontStyleNodeEditor::set_horizontal);
 	fontStyleNode -> horizontal () .addInterest (this, &X3DFontStyleNodeEditor::connectHorizontal);
+
+	fontStyleNode -> horizontal () = getHorizontalCheckButton () .get_active ();
 
 	addRedoFunction (fontStyleNode -> horizontal (), undoStep);
 }
@@ -777,10 +775,10 @@ X3DFontStyleNodeEditor::on_leftToRight_toggled ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> leftToRight (), undoStep);
 
-	fontStyleNode -> leftToRight () = getLeftToRightCheckButton () .get_active ();
-
 	fontStyleNode -> leftToRight () .removeInterest (this, &X3DFontStyleNodeEditor::set_leftToRight);
 	fontStyleNode -> leftToRight () .addInterest (this, &X3DFontStyleNodeEditor::connectLeftToRight);
+
+	fontStyleNode -> leftToRight () = getLeftToRightCheckButton () .get_active ();
 
 	addRedoFunction (fontStyleNode -> leftToRight (), undoStep);
 }
@@ -816,10 +814,10 @@ X3DFontStyleNodeEditor::on_topToBottom_toggled ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> topToBottom (), undoStep);
 
-	fontStyleNode -> topToBottom () = getTopToBottomCheckButton () .get_active ();
-
 	fontStyleNode -> topToBottom () .removeInterest (this, &X3DFontStyleNodeEditor::set_topToBottom);
 	fontStyleNode -> topToBottom () .addInterest (this, &X3DFontStyleNodeEditor::connectTopToBottom);
+
+	fontStyleNode -> topToBottom () = getTopToBottomCheckButton () .get_active ();
 
 	addRedoFunction (fontStyleNode -> topToBottom (), undoStep);
 }
@@ -855,11 +853,11 @@ X3DFontStyleNodeEditor::on_justify_changed ()
 
 	addUndoFunction (fontStyleNode, fontStyleNode -> justify (), undoStep);
 
-	fontStyleNode -> justify () .set1Value (0, getMajorAlignmentButton () .get_active_text ());
-	fontStyleNode -> justify () .set1Value (1, getMinorAlignmentButton () .get_active_text ());
-
 	fontStyleNode -> justify () .removeInterest (this, &X3DFontStyleNodeEditor::set_justify);
 	fontStyleNode -> justify () .addInterest (this, &X3DFontStyleNodeEditor::connectJustify);
+
+	fontStyleNode -> justify () .set1Value (0, getMajorAlignmentButton () .get_active_text ());
+	fontStyleNode -> justify () .set1Value (1, getMinorAlignmentButton () .get_active_text ());
 
 	addRedoFunction (fontStyleNode -> justify (), undoStep);
 }

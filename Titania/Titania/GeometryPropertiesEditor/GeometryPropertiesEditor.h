@@ -52,23 +52,20 @@
 #define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 
 #include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../GeometryPropertiesEditor/X3DTextureCoordinateGeneratorEditor.h"
 
 namespace titania {
 namespace puck {
 
 class GeometryPropertiesEditor :
-	public X3DGeometryPropertiesEditorInterface
+	virtual public X3DGeometryPropertiesEditorInterface,
+	public X3DTextureCoordinateGeneratorEditor
 {
 public:
 
 	///  @name Construction
 
 	GeometryPropertiesEditor (BrowserWindow* const);
-
-	///  @name Destruction
-
-	virtual
-	~GeometryPropertiesEditor ();
 
 
 private:
@@ -79,10 +76,10 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
 	void
 	set_selection ();
+
+	///  @name solid
 
 	virtual
 	void
@@ -94,6 +91,8 @@ private:
 	void
 	connectSolid (const X3D::SFBool &);
 
+	///  @name ccw
+
 	virtual
 	void
 	on_ccw_toggled () final override;
@@ -104,6 +103,8 @@ private:
 	void
 	connectCCW (const X3D::SFBool &);
 
+	///  @name convex
+
 	virtual
 	void
 	on_convex_toggled () final override;
@@ -113,6 +114,8 @@ private:
 
 	void
 	connectConvex (const X3D::SFBool &);
+
+	///  @name creaseAngle
 
 	virtual
 	void
@@ -131,32 +134,11 @@ private:
 	void
 	connectCreaseAngle (const X3D::SFFloat &);
 
-	virtual
-	void
-	on_textureCoordinateGenerator_toggled () final override;
-
-	void
-	set_textureCoordinateGenerator ();
-
-	void
-	connectTextureCoordinateGenerator (const X3D::SFNode &);
-
-	void
-	on_textureCoordinateGenerator_mode_changed ();
-
-	void
-	set_textureCoordinateGenerator_mode ();
-
-	void
-	connectTextureCoordinateGeneratorMode (const X3D::SFString &);
-
-
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
-	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
-	UndoStepPtr                                   undoStep;
-	bool                                          changing;
+	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
+	UndoStepPtr                             undoStep;
+	bool                                    changing;
 
 };
 

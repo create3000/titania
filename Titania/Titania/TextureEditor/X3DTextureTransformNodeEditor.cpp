@@ -174,13 +174,13 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 		{
 			auto & field = appearance -> textureTransform ();
 
+			field .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
+
 			if (getTextureTransformButton () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (textureTransformNode), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
-
-			field .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
-			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
 		}
 		catch (const X3D::X3DError &)
 		{ }

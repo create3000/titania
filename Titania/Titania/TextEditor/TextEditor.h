@@ -83,6 +83,10 @@ private:
 
 	virtual
 	void
+	on_text_unlink_clicked () final override;
+
+	virtual
+	void
 	on_text_toggled () final override;
 
 	void

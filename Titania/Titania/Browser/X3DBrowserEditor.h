@@ -296,7 +296,7 @@ private:
 	deleteRoutes (const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	unlinkClone (X3D::X3DExecutionContext* const, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
+	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
 	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;

@@ -56,13 +56,14 @@ namespace titania {
 namespace puck {
 
 X3DTextureNodeEditor::X3DTextureNodeEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface ("", ""),
-	   X3DTexture2DNodeEditor (),
+	          X3DBaseInterface (),
+	 X3DTextureEditorInterface ("", ""),
+	    X3DTexture2DNodeEditor (),
+	X3DTexturePropertiesEditor (),
 	              appearances (),
-	              textureNode (),
-	                 undoStep (),
-	                 changing (false)
+	               textureNode (),
+	                  undoStep (),
+	                  changing (false)
 {
 	getWidget () .signal_map () .connect (sigc::bind (sigc::mem_fun (getWindow (), &Gtk::Window::resize), 1, 1));
 }
@@ -70,6 +71,8 @@ X3DTextureNodeEditor::X3DTextureNodeEditor () :
 void
 X3DTextureNodeEditor::initialize ()
 {
+	X3DTexturePropertiesEditor::initialize ();
+
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureNodeEditor::set_selection);
 
 	set_selection ();
@@ -175,19 +178,21 @@ X3DTextureNodeEditor::on_texture_changed ()
 		{
 			auto & field = appearance -> texture ();
 
+			field .removeInterest (this, &X3DTextureNodeEditor::set_texture);
+			field .addInterest (this, &X3DTextureNodeEditor::connectTexture);
+
 			if (getTextureButton () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (textureNode), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
-
-			field .removeInterest (this, &X3DTextureNodeEditor::set_texture);
-			field .addInterest (this, &X3DTextureNodeEditor::connectTexture);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
 	addRedoFunction <X3D::SFNode> (appearances, "texture", undoStep);
+
+	X3DTexturePropertiesEditor::set_selection ();
 }
 
 void
@@ -256,6 +261,8 @@ X3DTextureNodeEditor::set_texture ()
 	getTextureButton () .set_sensitive (hasField);
 
 	changing = false;
+
+	X3DTexturePropertiesEditor::set_selection ();
 }
 
 void
