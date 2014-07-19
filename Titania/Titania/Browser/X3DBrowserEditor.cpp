@@ -769,22 +769,22 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 {
 	const auto oldValue = sfnode;
 
+	if (newValue == oldValue)
+		return;
+
 	undoStep -> addVariables (parent);
+	
+	const auto removeNode = std::make_shared <UndoStep> ();
+	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, removeNode);
+	removeNode -> undoChanges ();
+	undoStep -> addUndoStepReverse (removeNode);
+
 	undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
 	undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (sfnode), newValue);
 
 	sfnode = newValue;
-
-	if (oldValue)
-	{
-		const bool remove = X3D::traverse (getExecutionContext () -> getRootNodes (), [&oldValue] (X3D::SFNode & node)
-		                                   {
-		                                      return oldValue not_eq node;
-													  });
-
-		if (remove)
-			removeNodeFromScene (getExecutionContext (), oldValue, undoStep);
-	}
+	
+	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
 void
@@ -802,9 +802,17 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 void
 X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
+	const X3D::SFNode oldValue = mfnode [index];
+
+	if (newValue == oldValue)
+		return;
+
 	undoStep -> addVariables (parent);
 
-	const X3D::SFNode oldValue = mfnode [index];
+	const auto removeNode = std::make_shared <UndoStep> ();
+	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, removeNode);
+	removeNode -> undoChanges ();
+	undoStep -> addUndoStepReverse (removeNode);
 
 	using set1Value = void (X3D::MFNode::*) (const X3D::MFNode::size_type, const X3D::SFNode &);
 
@@ -812,19 +820,8 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 	undoStep -> addRedoFunction ((set1Value) & X3D::MFNode::set1Value, std::ref (mfnode), index, newValue);
 
 	mfnode [index] = newValue;
-
-	if (oldValue)
-	{
-		// Remove node completely from scene if not exists in scene graph anymore.
-
-		const bool remove = X3D::traverse (getExecutionContext () -> getRootNodes (), [&oldValue] (X3D::SFNode & node)
-		                                   {
-		                                      return oldValue not_eq node;
-													  });
-
-		if (remove)
-			removeNodeFromScene (getExecutionContext (), oldValue, undoStep);
-	}
+	
+	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
 void
@@ -848,19 +845,8 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 	undoStep -> addRedoFunction (&X3DBrowserEditor::eraseNode, this, std::ref (mfnode), index, oldValue);
 
 	eraseNode (mfnode, index, oldValue);
-
-	if (oldValue)
-	{
-		// Remove node completely from scene if not exists in scene graph anymore.
 	
-		const bool remove = X3D::traverse (getExecutionContext () -> getRootNodes (), [&oldValue] (X3D::SFNode & node)
-		                                   {
-		                                      return oldValue not_eq node;
-													  });
-
-		if (remove)
-			removeNodeFromScene (getExecutionContext (), oldValue, undoStep);
-	}
+	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
 void
@@ -868,6 +854,23 @@ X3DBrowserEditor::eraseNode (X3D::MFNode & mfnode, const size_t index, const X3D
 {
 	if (index < mfnode .size () and mfnode [index] == value)
 		mfnode .erase (mfnode .begin () + index);
+}
+
+void
+X3DBrowserEditor::removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr & executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+{
+	if (node)
+	{
+		// Remove node completely from scene if not exists in scene graph anymore.
+
+		const bool remove = X3D::traverse (executionContext -> getRootNodes (), [&node] (X3D::SFNode & child)
+		                                   {
+		                                      return node not_eq child;
+													  });
+
+		if (remove)
+			removeNodeFromScene (executionContext, node, undoStep);
+	}
 }
 
 void

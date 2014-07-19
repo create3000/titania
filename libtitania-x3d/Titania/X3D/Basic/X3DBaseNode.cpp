@@ -821,9 +821,6 @@ X3DBaseNode::hasRoutes () const
 void
 X3DBaseNode::isInternal (const bool value)
 {
-	if (value == internal)
-		return;
-
 	internal = value;
 
 	if (internal)

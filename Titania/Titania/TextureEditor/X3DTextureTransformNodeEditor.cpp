@@ -175,9 +175,9 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			auto & field = appearance -> textureTransform ();
 
 			if (getTextureTransformButton () .get_active_row_number () > 0)
-				field = textureTransformNode;
+				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (textureTransformNode), undoStep);
 			else
-				field = nullptr;
+				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
 
 			field .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
 			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);

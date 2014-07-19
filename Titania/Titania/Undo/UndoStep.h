@@ -60,6 +60,11 @@
 namespace titania {
 namespace puck {
 
+class UndoStep;
+
+using UndoFunction = std::function <void ()>;
+using UndoStepPtr  = std::shared_ptr <UndoStep>;
+
 /**
  *  An UndoStep represents a group of UndoFunctions.
  */
@@ -67,13 +72,35 @@ class UndoStep
 {
 public:
 
+	///  @name Construction
+
 	UndoStep ();
 
 	UndoStep (const std::string &);
 
+	///  @name Member access
+
 	const std::string &
 	getDescription () const
 	{ return description; }
+
+	std::vector <UndoFunction> &
+	getUndoFunctions ()
+	{ return undoFunctions; }
+
+	const std::vector <UndoFunction> &
+	getUndoFunctions () const
+	{ return undoFunctions; }
+
+	std::vector <UndoFunction> &
+	getRedoFunctions ()
+	{ return redoFunctions; }
+
+	const std::vector <UndoFunction> &
+	getRedoFunctions () const
+	{ return redoFunctions; }
+
+	///  @name Operations
 
 	template <class ... Args>
 	void
@@ -91,14 +118,13 @@ public:
 	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
 
 	void
+	addUndoStepReverse (const UndoStepPtr &);
+
+	void
 	undoChanges ();
 
 	void
 	redoChanges ();
-
-	void
-	clearRedoFunctions ()
-	{ redoFunctions .clear (); }
 
 	bool
 	isEmpty () const
@@ -111,18 +137,14 @@ public:
 
 private:
 
-	using Variables    = std::function <void ()>;
-	using UndoFunction = std::function <void ()>;
-	using RedoFunction = std::function <void ()>;
+	using Variables = std::function <void ()>;
 
 	const std::string          description;
 	std::vector <Variables>    variables;
 	std::vector <UndoFunction> undoFunctions;
-	std::vector <RedoFunction> redoFunctions;
+	std::vector <UndoFunction> redoFunctions;
 
 };
-
-using UndoStepPtr = std::shared_ptr <UndoStep>;
 
 } // puck
 } // titania

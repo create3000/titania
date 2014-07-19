@@ -375,17 +375,17 @@ MaterialEditor::on_material_changed ()
 			{
 				case 0:
 				{
-					field = nullptr;
+					getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
 					break;
 				}
 				case 1:
 				{
-					field = material;
+					getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (material), undoStep);
 					break;
 				}
 				case 2:
 				{
-					field = twoSidedMaterial;
+					getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (twoSidedMaterial), undoStep);
 					break;
 				}
 				default:

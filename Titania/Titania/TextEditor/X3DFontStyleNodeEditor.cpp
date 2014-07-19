@@ -189,9 +189,9 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 			auto & field = text -> fontStyle ();
 
 			if (getFontStyleButton () .get_active_row_number () > 0)
-				field = fontStyleNode;
+				getBrowserWindow () -> replaceNode (X3D::SFNode (text), field, X3D::SFNode (fontStyleNode), undoStep);
 			else
-				field = nullptr;
+				getBrowserWindow () -> replaceNode (X3D::SFNode (text), field, nullptr, undoStep);
 
 			field .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
 			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);

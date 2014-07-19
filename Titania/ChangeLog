@@ -1,3 +1,17 @@
+2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoStep.h:
+	* UndoStep.cpp:
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* TextEditor.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* MaterialEditor.cpp:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTextureTransformNodeEditor.cpp: 
+
 2014-07-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MagicImport.cpp:

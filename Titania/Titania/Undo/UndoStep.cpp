@@ -67,6 +67,18 @@ UndoStep::UndoStep (const std::string & description) :
 { }
 
 void
+UndoStep::addUndoStepReverse (const UndoStepPtr & undoStep)
+{
+	redoFunctions .insert (redoFunctions .end (),
+	                       undoStep -> getUndoFunctions () .rbegin (),
+	                       undoStep -> getUndoFunctions () .rend ());
+
+	undoFunctions .insert (undoFunctions .end (),
+	                       undoStep -> getRedoFunctions () .rbegin (),
+	                       undoStep -> getRedoFunctions () .rend ());
+}
+
+void
 UndoStep::undoChanges ()
 {
 	for (const auto & undoFunction : basic::reverse_adapter (undoFunctions))

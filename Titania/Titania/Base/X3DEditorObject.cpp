@@ -56,7 +56,8 @@ namespace puck {
 X3DEditorObject::X3DEditorObject () :
 	X3DBaseInterface (),
 	    currentField (),
-	          fields (new X3D::FieldSet (getBrowser ()))
+	          fields (new X3D::FieldSet (getBrowser ())),
+	        undoSize (0)
 { }
 
 void
