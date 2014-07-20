@@ -1,5 +1,11 @@
 2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Material.x3dv:
+	* MaterialEditor.cpp:
+	* MaterialEditorPreview.x3dv: 
+
+2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextEditor.xml:
 	* TextureEditor.xml:
 	* GeometryPropertiesEditor.xml: 

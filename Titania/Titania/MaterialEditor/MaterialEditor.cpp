@@ -100,7 +100,7 @@ MaterialEditor::set_initialized ()
 
 	try
 	{
-		preview -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
+		preview -> loadURL ({ get_ui ("Dialogs/MaterialEditorPreview.x3dv") });
 
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isInternal (true);
 	}
