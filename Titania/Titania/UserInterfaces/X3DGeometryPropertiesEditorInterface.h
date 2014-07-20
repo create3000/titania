@@ -136,22 +136,6 @@ public:
 	{ return *m_CreaseAngleScale; }
 
 	virtual
-	void
-	on_creaseAngle_changed () = 0;
-
-	virtual
-	void
-	on_solid_toggled () = 0;
-
-	virtual
-	void
-	on_ccw_toggled () = 0;
-
-	virtual
-	void
-	on_convex_toggled () = 0;
-
-	virtual
 	~X3DGeometryPropertiesEditorInterface ();
 
 

@@ -180,7 +180,7 @@ X3DTexturePropertiesEditor::set_textureProperties ()
 {
 	if (textureProperties)
 	{
-		//textureProperties -> generateMipMaps () .removeInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
+		textureProperties -> generateMipMaps () .removeInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
 	}
 
 	auto       pair     = getNode <X3D::TextureProperties> (textureNodes, "textureProperties");
@@ -207,9 +207,9 @@ X3DTexturePropertiesEditor::set_textureProperties ()
 
 	changing = false;
 
-	//textureProperties -> generateMipMaps () .addInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
+	textureProperties -> generateMipMaps () .addInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
 
-	//set_generateMipMaps ();
+	set_generateMipMaps ();
 }
 
 void
@@ -217,6 +217,45 @@ X3DTexturePropertiesEditor::connectTextureProperties (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DTexturePropertiesEditor::connectTextureProperties);
 	field .addInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
+}
+
+/***********************************************************************************************************************
+ *
+ *  generateMipMaps
+ *
+ **********************************************************************************************************************/
+
+void
+X3DTexturePropertiesEditor::on_generateMipMaps_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (textureProperties, textureProperties -> generateMipMaps (), undoStep);
+
+	textureProperties -> generateMipMaps () .removeInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
+	textureProperties -> generateMipMaps () .addInterest (this, &X3DTexturePropertiesEditor::connectGenerateMipMaps);
+
+	textureProperties -> generateMipMaps () = getGenerateMipMapsCheckButton () .get_active ();
+
+	addRedoFunction (textureProperties -> generateMipMaps (), undoStep);
+}
+
+void
+X3DTexturePropertiesEditor::set_generateMipMaps ()
+{
+	changing = true;
+
+	getGenerateMipMapsCheckButton () .set_active (textureProperties -> generateMipMaps ());
+
+	changing = false;
+}
+
+void
+X3DTexturePropertiesEditor::connectGenerateMipMaps (const X3D::SFBool & field)
+{
+	field .removeInterest (this, &X3DTexturePropertiesEditor::connectGenerateMipMaps);
+	field .addInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
 }
 
 } // puck

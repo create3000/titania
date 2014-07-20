@@ -195,6 +195,10 @@ public:
 	getTexturePropertiesBox () const
 	{ return *m_TexturePropertiesBox; }
 
+	Gtk::CheckButton &
+	getGenerateMipMapsCheckButton () const
+	{ return *m_GenerateMipMapsCheckButton; }
+
 	Gtk::Expander &
 	getTextureTransformExpander () const
 	{ return *m_TextureTransformExpander; }
@@ -313,6 +317,10 @@ public:
 
 	virtual
 	void
+	on_generateMipMaps_toggled () = 0;
+
+	virtual
+	void
 	on_textureTransform_changed () = 0;
 
 	virtual
@@ -369,6 +377,7 @@ private:
 	Gtk::CheckButton*              m_TexturePropertiesCheckButton;
 	Gtk::Button*                   m_TexturePropertiesUnlinkButton;
 	Gtk::Grid*                     m_TexturePropertiesBox;
+	Gtk::CheckButton*              m_GenerateMipMapsCheckButton;
 	Gtk::Expander*                 m_TextureTransformExpander;
 	Gtk::ComboBoxText*             m_TextureTransformButton;
 	Gtk::Button*                   m_TextureTransformUnlinkButton;

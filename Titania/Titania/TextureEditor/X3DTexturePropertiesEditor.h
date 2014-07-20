@@ -91,6 +91,18 @@ private:
 	void
 	connectTextureProperties (const X3D::SFNode &);
 
+	///  @name generateMipMaps
+
+	virtual
+	void
+	on_generateMipMaps_toggled () final override;
+
+	void
+	set_generateMipMaps ();
+
+	void
+	connectGenerateMipMaps (const X3D::SFBool &);
+
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DTextureNode> textureNodes;

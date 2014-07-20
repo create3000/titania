@@ -74,7 +74,7 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode
 	setImageTexture (value);
 	//setPixelTexture (value);
 
-	connect ();
+	connect (texture2DNode);
 }
 
 const X3D::X3DPtr <X3D::X3DTexture2DNode> &
@@ -84,7 +84,7 @@ X3DTexture2DNodeEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode>
 
 	texture2DNode = X3DImageTextureEditor::getImageTexture (value);
 
-	connect ();
+	connect (value);
 
 	return getTexture2DNode (value);
 }
@@ -127,8 +127,10 @@ X3DTexture2DNodeEditor::disconnect ()
 }
 
 void
-X3DTexture2DNodeEditor::connect ()
+X3DTexture2DNodeEditor::connect (const bool active)
 {
+	getTexture2DBox () .set_visible (active);
+
 	if (texture2DNode)
 	{
 		texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatS);

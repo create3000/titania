@@ -52,6 +52,7 @@
 #define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 
 #include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../Fields.h"
 
 namespace titania {
 namespace puck {
@@ -77,59 +78,12 @@ private:
 	void
 	set_selection ();
 
-	///  @name solid
-
-	virtual
-	void
-	on_solid_toggled () final override;
-
-	void
-	set_solid ();
-
-	void
-	connectSolid (const X3D::SFBool &);
-
-	///  @name ccw
-
-	virtual
-	void
-	on_ccw_toggled () final override;
-
-	void
-	set_ccw ();
-
-	void
-	connectCCW (const X3D::SFBool &);
-
-	///  @name convex
-
-	virtual
-	void
-	on_convex_toggled () final override;
-
-	void
-	set_convex ();
-
-	void
-	connectConvex (const X3D::SFBool &);
-
-	///  @name creaseAngle
-
-	virtual
-	void
-	on_creaseAngle_changed () final override;
-
-	void
-	set_creaseAngle ();
-
-	void
-	connectCreaseAngle (const X3D::SFFloat &);
-
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::X3DGeometryNode> geometryNodes;
-	UndoStepPtr                             undoStep;
-	bool                                    changing;
+	std::unique_ptr <ToggleButton <X3D::SFBool>> solid;
+	std::unique_ptr <ToggleButton <X3D::SFBool>> ccw;
+	std::unique_ptr <ToggleButton <X3D::SFBool>> convex;
+	std::unique_ptr <Adjustment <X3D::SFFloat>>  creaseAngle;
 
 };
 

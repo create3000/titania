@@ -1,5 +1,26 @@
 2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Fields.h:
+	* Adjustment.h:
+	* ToggleButton.h:
+	* X3DEditorObject.h:
+	* TextureEditor.xml:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTexture2DNodeEditor.h:
+	* X3DImageTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextureEditorInterface.h:
+	* X3DTexturePropertiesEditor.h:
+	* X3DTextureEditorInterface.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* GeometryPropertiesEditor.xml:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
+2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* X3DEditorObject.h:

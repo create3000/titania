@@ -85,7 +85,7 @@ private:
 	disconnect ();
 
 	void
-	connect ();
+	connect (const bool);
 
 	///  @name repeatS
 

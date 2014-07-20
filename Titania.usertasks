@@ -18,4 +18,6 @@
   <Task file="" description="BBox stimmt nicht bei Text when maxExtent &lt; maxCharWidth" />
   <Task file="" description="Library expanded speichern" completed="True" />
   <Task file="" description="modelviewmatrix stack and projection matrix stack to browser rendering context" />
+  <Task file="" description="FieldDefintions" />
+  <Task file="" description="Tools mit if" />
 </ListOfTask>

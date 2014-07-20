@@ -87,15 +87,18 @@ protected:
 
 	///  @name Operations
 
-	template <class NodeType>
-	static
-	int
-	getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+	X3D::MFNode
+	getNodes (X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> & types) const;
 
 	template <class FieldType, class NodeType>
 	static
 	std::pair <X3D::X3DPtr <FieldType>, int>
 	getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+
+	template <class NodeType>
+	static
+	int
+	getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
 
 	template <class NodeType>
 	void
@@ -128,37 +131,36 @@ private:
 
 };
 
-template <class NodeType>
-int
-X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+/***
+ *  Traverses @a selection and returns all nodes of a type specified in @a types.
+ */
+inline
+X3D::MFNode
+X3DEditorObject::getNodes (X3D::MFNode & selection, const std::set <X3D::X3DConstants::NodeType> & types) const
 {
-	int active = -2;
+	// Find X3DGeometryNodes
 
-	for (const auto & node : basic::reverse_adapter (nodes))
-	{
-		try
-		{
-			auto & field = node -> template getField <X3D::SFBool> (fieldName);
+	X3D::MFNode nodes;
 
-			if (active < 0)
-			{
-				active = field;
-			}
-			else if (field .getValue () not_eq active)
-			{
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	X3D::traverse (selection, [&] (X3D::SFNode & node)
+	               {
+	                  for (const auto & type: node -> getType ())
+	                  {
+	                     if (types .count (type))
+								{
+								   nodes .emplace_back (node);
+								   return true;
+								}
+							}
 
-	return active;
+	                  return true;
+						});
+
+	return nodes;
 }
 
 /***
- *  Find the last node of @a FieldType in @a nodes in field @a fieldName.
+ *  Returns the last node of type @a FieldType in @a nodes in field @a fieldName.
  */
 template <class FieldType, class NodeType>
 std::pair <X3D::X3DPtr <FieldType>, int>
@@ -192,6 +194,35 @@ X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::
 	}
 
 	return std::make_pair (std::move (found), active);
+}
+
+template <class NodeType>
+int
+X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+{
+	int active = -2;
+
+	for (const auto & node : basic::reverse_adapter (nodes))
+	{
+		try
+		{
+			auto & field = node -> template getField <X3D::SFBool> (fieldName);
+
+			if (active < 0)
+			{
+				active = field;
+			}
+			else if (field .getValue () not_eq active)
+			{
+				active = -1;
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return active;
 }
 
 template <class NodeType>

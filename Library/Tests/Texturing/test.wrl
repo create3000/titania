@@ -65,6 +65,7 @@ DEF TextureTransform Transform {
       }
       texture ImageTexture {
         url "../images/image.png"
+        textureProperties TextureProperties { }
       }
       textureTransform TextureTransform {
         translation -0.25 -0.25

@@ -103,6 +103,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TexturePropertiesUnlinkButton -> set_name ("TexturePropertiesUnlinkButton");
 	m_builder -> get_widget ("TexturePropertiesBox", m_TexturePropertiesBox);
 	m_TexturePropertiesBox -> set_name ("TexturePropertiesBox");
+	m_builder -> get_widget ("GenerateMipMapsCheckButton", m_GenerateMipMapsCheckButton);
+	m_GenerateMipMapsCheckButton -> set_name ("GenerateMipMapsCheckButton");
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
 	m_builder -> get_widget ("TextureTransformButton", m_TextureTransformButton);
@@ -164,6 +166,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'TexturePropertiesUnlinkButton'.
 	m_TexturePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_unlink_clicked));
+
+	// Connect object Gtk::CheckButton with id 'GenerateMipMapsCheckButton'.
+	m_GenerateMipMapsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_generateMipMaps_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
 	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));

@@ -126,9 +126,6 @@ void
 X3DTextureNodeEditor::on_texture_changed ()
 {
 	getTextureNotebook () .set_sensitive (getTextureButton () .get_active_row_number () > 0);
-	getTexture2DBox ()    .set_sensitive (getTextureButton () .get_active_row_number () > 0);
-
-	getImageTextureBox () .set_visible (false);
 
 	if (textureNode)
 	{
