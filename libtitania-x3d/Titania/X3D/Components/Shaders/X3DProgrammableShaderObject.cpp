@@ -97,11 +97,28 @@ X3DProgrammableShaderObject::setFields ()
 }
 
 void
-X3DProgrammableShaderObject::removeUserDefinedField (X3DFieldDefinition* const field)
+X3DProgrammableShaderObject::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
 {
-	field -> removeInterest (this, &X3DProgrammableShaderObject::set_field);
+	X3DBaseNode::updateUserDefinedField (accessType, name, field);
 
-	X3DBaseNode::removeUserDefinedField (field);
+	set_field (field);
+}
+
+void
+X3DProgrammableShaderObject::removeUserDefinedField (const std::string & name)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getField (name) -> removeInterest (this, &X3DProgrammableShaderObject::set_field);
+	}
+	catch (const X3DError &)
+	{ }
+
+	X3DBaseNode::removeUserDefinedField (name);
 }
 
 void
@@ -111,7 +128,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 	const GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
 
-	if (location not_eq - 1)
+	if (location not_eq -1)
 	{
 		switch (field -> getType ())
 		{
@@ -347,13 +364,13 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				{
 					std::vector <size_t> textureUnits;
 
-					for (size_t i = 0; ; ++ i)
+					for (size_t i = 0;; ++ i)
 					{
 						GLint textureUnit = 0;
 
 						const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i) + "]") .c_str ());
 
-						if (location not_eq - 1)
+						if (location not_eq -1)
 						{
 							glGetUniformiv (getProgramId (), location, &textureUnit);
 
@@ -511,7 +528,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 
 	const GLint location = glGetUniformLocation (getProgramId (), name .c_str ());
 
-	if (location not_eq - 1)
+	if (location not_eq -1)
 	{
 		GLint textureUnit = 0;
 		glGetUniformiv (getProgramId (), location, &textureUnit);

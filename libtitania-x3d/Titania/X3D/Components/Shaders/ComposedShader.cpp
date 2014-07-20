@@ -109,6 +109,9 @@ ComposedShader::initialize ()
 
 void
 ComposedShader::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
 {
 	X3DProgrammableShaderObject::addUserDefinedField (accessType, name, field);
 
@@ -117,9 +120,10 @@ ComposedShader::addUserDefinedField (const AccessType accessType, const std::str
 }
 
 void
-ComposedShader::removeUserDefinedField (X3DFieldDefinition* const field)
+ComposedShader::removeUserDefinedField (const std::string & name)
+throw (Error <DISPOSED>)
 {
-	X3DProgrammableShaderObject::removeUserDefinedField (field);
+	X3DProgrammableShaderObject::removeUserDefinedField (name);
 
 	if (isInitialized ())
 		loadSensor -> isActive () .addEvent ();

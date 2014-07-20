@@ -276,6 +276,7 @@
                     <child>
                       <object class="GtkGrid" id="FrontBox">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="row_spacing">4</property>
                         <property name="column_spacing">16</property>
@@ -598,6 +599,7 @@
                     <child>
                       <object class="GtkGrid" id="BackBox">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="row_spacing">4</property>
                         <property name="column_spacing">16</property>

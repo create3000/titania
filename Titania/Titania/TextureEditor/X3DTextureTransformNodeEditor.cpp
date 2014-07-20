@@ -186,37 +186,11 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 void
 X3DTextureTransformNodeEditor::set_textureTransform ()
 {
-	textureTransformNode = nullptr;
+	auto       pair     = getNode <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	const bool hasField = not appearances .empty ();
-
-	// Find last »geometry« field.
-
-	int active = -1;
-
-	for (const auto & appearance : basic::reverse_adapter (appearances))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::X3DTextureTransformNode> field (appearance -> textureTransform ());
-
-			if (active < 0)
-			{
-				textureTransformNode = std::move (field);
-				active               = bool (textureTransformNode);
-			}
-			else if (field not_eq textureTransformNode)
-			{
-				if (not textureTransformNode)
-					textureTransformNode = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	textureTransformNode = std::move (pair .first);
 
 	setTextureTransform (textureTransformNode);
 

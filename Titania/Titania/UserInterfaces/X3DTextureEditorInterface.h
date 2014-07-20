@@ -247,6 +247,30 @@ public:
 	getTextureTransformRotationSpinButton () const
 	{ return *m_TextureTransformRotationSpinButton; }
 
+	Gtk::Expander &
+	getTextureCoordinateGeneratorExpander () const
+	{ return *m_TextureCoordinateGeneratorExpander; }
+
+	Gtk::Box &
+	getTextureCoordinateGeneratorMainBox () const
+	{ return *m_TextureCoordinateGeneratorMainBox; }
+
+	Gtk::CheckButton &
+	getTextureCoordinateGeneratorCheckButton () const
+	{ return *m_TextureCoordinateGeneratorCheckButton; }
+
+	Gtk::Button &
+	getTextureCoordinateGeneratorUnlinkButton () const
+	{ return *m_TextureCoordinateGeneratorUnlinkButton; }
+
+	Gtk::Grid &
+	getTextureCoordinateGeneratorBox () const
+	{ return *m_TextureCoordinateGeneratorBox; }
+
+	Gtk::ComboBoxText &
+	getTextureCoordinateGeneratorModeButton () const
+	{ return *m_TextureCoordinateGeneratorModeButton; }
+
 	virtual
 	void
 	on_textureTransform_center_changed () = 0;
@@ -294,6 +318,18 @@ public:
 	virtual
 	void
 	on_textureTransform_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_textureCoordinateGenerator_toggled () = 0;
+
+	virtual
+	void
+	on_textureCoordinateGenerator_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_textureCoordinateGenerator_mode_changed () = 0;
 
 	virtual
 	~X3DTextureEditorInterface ();
@@ -346,6 +382,12 @@ private:
 	Gtk::SpinButton*               m_TextureTransformCenterXSpinButton;
 	Gtk::SpinButton*               m_TextureTransformCenterYSpinButton;
 	Gtk::SpinButton*               m_TextureTransformRotationSpinButton;
+	Gtk::Expander*                 m_TextureCoordinateGeneratorExpander;
+	Gtk::Box*                      m_TextureCoordinateGeneratorMainBox;
+	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
+	Gtk::Button*                   m_TextureCoordinateGeneratorUnlinkButton;
+	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
+	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeButton;
 
 };
 

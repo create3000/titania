@@ -167,7 +167,8 @@ public:
 	///  @name Field handling
 
 	bool
-	hasField (X3DFieldDefinition* const) const;
+	hasField (const std::string &) const
+	throw (Error <DISPOSED>);
 
 	template <class FieldType, class ValueType>
 	void
@@ -237,11 +238,22 @@ public:
 
 	virtual
 	void
-	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const);
+	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>);
 
 	virtual
 	void
-	removeUserDefinedField (X3DFieldDefinition* const);
+	updateUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>);
+
+	virtual
+	void
+	removeUserDefinedField (const std::string &)
+	throw (Error <DISPOSED>);
 
 	FieldDefinitionArray
 	getPreDefinedFields () const;
@@ -419,13 +431,15 @@ protected:
 	{ type .emplace_back (value); }
 
 	void
-	addField (const AccessType, const std::string &, X3DFieldDefinition &);
+	addField (const AccessType, const std::string &, X3DFieldDefinition &)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>);
 
 	void
-	addField (const VersionType, const std::string &, const std::string &);
-
-	void
-	removeField (const std::string &);
+	addField (const VersionType, const std::string &, const std::string &)
+	throw (Error <INVALID_NAME>,
+	       Error <DISPOSED>);
 
 	FieldDefinitionArray
 	getChangedFields () const;
@@ -482,7 +496,11 @@ private:
 	replace (X3DBaseNode* const);
 
 	void
-	removeField (const FieldIndex::iterator &, const bool);
+	removeField (const std::string &)
+	throw (Error <DISPOSED>);
+
+	void
+	removeField (const FieldIndex::iterator &, const bool, const bool);
 
 	const std::string &
 	getFieldName (const std::string &) const;

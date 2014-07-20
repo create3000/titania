@@ -183,37 +183,11 @@ X3DTexturePropertiesEditor::set_textureProperties ()
 		//textureProperties -> generateMipMaps () .removeInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
 	}
 
-	textureProperties = nullptr;
+	auto       pair     = getNode <X3D::TextureProperties> (textureNodes, "textureProperties");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	const bool hasField = not textureNodes .empty ();
-
-	// Find last »geometry« field.
-
-	int active = -1;
-
-	for (const auto & textureNode : basic::reverse_adapter (textureNodes))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::TextureProperties> field (textureNode -> getField <X3D::SFNode> ("textureProperties"));
-
-			if (active < 0)
-			{
-				textureProperties = std::move (field);
-				active            = bool (textureProperties);
-			}
-			else if (field not_eq textureProperties)
-			{
-				if (not textureProperties)
-					textureProperties = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	textureProperties = std::move (pair .first);
 
 	if (not textureProperties)
 	{

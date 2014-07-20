@@ -73,6 +73,18 @@ public:
 	{ return true; }
 
 	virtual
+	void
+	updateUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>) final override;
+
+	virtual
+	void
+	removeUserDefinedField (const std::string &)
+	throw (Error <DISPOSED>) override;
+
+	virtual
 	GLuint
 	getProgramId () const = 0;
 	
@@ -82,6 +94,7 @@ public:
 
 	void
 	setTextureBuffer (const std::string &, GLuint);
+
 
 protected:
 
@@ -101,10 +114,6 @@ protected:
 
 	void
 	setFields ();
-
-	virtual
-	void
-	removeUserDefinedField (X3DFieldDefinition* const) override;
 
 	///  @name Destructions
 

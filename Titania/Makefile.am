@@ -7,8 +7,6 @@ bin_PROGRAMS =  \
 titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
-	Titania/Base/X3DEditorInterface.cpp \
-	Titania/Base/X3DEditorObject.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -19,7 +17,6 @@ titania_SOURCES =  \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Console/Console.cpp \
 	Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
-	Titania/GeometryPropertiesEditor/X3DTextureCoordinateGeneratorEditor.cpp \
 	Titania/HistoryEditor/History.cpp \
 	Titania/HistoryEditor/HistoryEditor.cpp \
 	Titania/LibraryView/LibraryView.cpp \
@@ -45,6 +42,7 @@ titania_SOURCES =  \
 	Titania/TextureEditor/TextureEditor.cpp \
 	Titania/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/TextureEditor/X3DTexture2DNodeEditor.cpp \
+	Titania/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp \
 	Titania/TextureEditor/X3DTextureNodeEditor.cpp \
 	Titania/TextureEditor/X3DTexturePropertiesEditor.cpp \
 	Titania/TextureEditor/X3DTextureTransformEditor.cpp \

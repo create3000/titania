@@ -135,30 +135,6 @@ public:
 	getCreaseAngleScale () const
 	{ return *m_CreaseAngleScale; }
 
-	Gtk::Expander &
-	getTextureCoordinateGeneratorExpander () const
-	{ return *m_TextureCoordinateGeneratorExpander; }
-
-	Gtk::Box &
-	getTextureCoordinateGeneratorMainBox () const
-	{ return *m_TextureCoordinateGeneratorMainBox; }
-
-	Gtk::CheckButton &
-	getTextureCoordinateGeneratorCheckButton () const
-	{ return *m_TextureCoordinateGeneratorCheckButton; }
-
-	Gtk::Button &
-	getTextureCoordinateGeneratorUnlinkButton () const
-	{ return *m_TextureCoordinateGeneratorUnlinkButton; }
-
-	Gtk::Grid &
-	getTextureCoordinateGeneratorBox () const
-	{ return *m_TextureCoordinateGeneratorBox; }
-
-	Gtk::ComboBoxText &
-	getTextureCoordinateGeneratorModeButton () const
-	{ return *m_TextureCoordinateGeneratorModeButton; }
-
 	virtual
 	void
 	on_creaseAngle_changed () = 0;
@@ -174,18 +150,6 @@ public:
 	virtual
 	void
 	on_convex_toggled () = 0;
-
-	virtual
-	void
-	on_textureCoordinateGenerator_toggled () = 0;
-
-	virtual
-	void
-	on_textureCoordinateGenerator_unlink_clicked () = 0;
-
-	virtual
-	void
-	on_textureCoordinateGenerator_mode_changed () = 0;
 
 	virtual
 	~X3DGeometryPropertiesEditorInterface ();
@@ -210,12 +174,6 @@ private:
 	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Box*                      m_CreaseAngleBox;
 	Gtk::Scale*                    m_CreaseAngleScale;
-	Gtk::Expander*                 m_TextureCoordinateGeneratorExpander;
-	Gtk::Box*                      m_TextureCoordinateGeneratorMainBox;
-	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
-	Gtk::Button*                   m_TextureCoordinateGeneratorUnlinkButton;
-	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
-	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeButton;
 
 };
 

@@ -104,6 +104,9 @@ Script::initialize ()
 
 void
 Script::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
 {
 	X3DScriptNode::addUserDefinedField (accessType, name, field);
 	
@@ -112,9 +115,22 @@ Script::addUserDefinedField (const AccessType accessType, const std::string & na
 }
 
 void
-Script::removeUserDefinedField (X3DFieldDefinition* const field)
+Script::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
 {
-	X3DScriptNode::removeUserDefinedField (field);
+	X3DScriptNode::updateUserDefinedField (accessType, name, field);
+	
+	if (isInitialized ())
+		url () .addEvent ();
+}
+
+void
+Script::removeUserDefinedField (const std::string & name)
+throw (Error <DISPOSED>)
+{
+	X3DScriptNode::removeUserDefinedField (name);
 
 	if (isInitialized ())
 		url () .addEvent ();

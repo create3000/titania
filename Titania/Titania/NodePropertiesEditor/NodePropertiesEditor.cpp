@@ -688,7 +688,7 @@ NodePropertiesEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const ol
 
 	// Remember old existing node fields that should be replaced by newField.
 
-	if (node -> hasField (oldField))
+	if (node -> hasField (oldField -> getName ()))
 	{
 		fieldsToReplace [newField] = oldField;
 		fieldsToRemove .emplace_back (oldField);
@@ -1386,7 +1386,7 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
 		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
 	for (const auto & field : fieldsToRemove)
-		node -> removeUserDefinedField (field);
+		node -> removeUserDefinedField (field -> getName ());
 
 	browserWindow -> getOutlineTreeView () -> update (node);
 }

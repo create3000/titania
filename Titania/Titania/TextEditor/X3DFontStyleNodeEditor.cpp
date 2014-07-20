@@ -223,37 +223,11 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 		fontStyleNode -> justify ()     .removeInterest (this, &X3DFontStyleNodeEditor::set_justify);
 	}
 
-	fontStyleNode = nullptr;
+	auto       pair     = getNode <X3D::X3DFontStyleNode> (texts, "fontStyle");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	const bool hasField = not texts .empty ();
-
-	// Find last »geometry« field.
-
-	int active = -1;
-
-	for (const auto & text : basic::reverse_adapter (texts))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::X3DFontStyleNode> field (text -> fontStyle ());
-
-			if (active < 0)
-			{
-				fontStyleNode = std::move (field);
-				active        = bool (fontStyleNode);
-			}
-			else if (field not_eq fontStyleNode)
-			{
-				if (not fontStyleNode)
-					fontStyleNode = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	fontStyleNode = std::move (pair .first);
 
 	if (not fontStyleNode)
 	{

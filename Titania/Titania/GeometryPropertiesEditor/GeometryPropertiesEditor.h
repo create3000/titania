@@ -52,14 +52,12 @@
 #define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 
 #include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
-#include "../GeometryPropertiesEditor/X3DTextureCoordinateGeneratorEditor.h"
 
 namespace titania {
 namespace puck {
 
 class GeometryPropertiesEditor :
-	virtual public X3DGeometryPropertiesEditorInterface,
-	public X3DTextureCoordinateGeneratorEditor
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
 

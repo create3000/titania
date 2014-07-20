@@ -48,48 +48,68 @@
  *
  ******************************************************************************/
 
-#include "X3DEditorObject.h"
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
+
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DEditorObject::X3DEditorObject () :
-	X3DBaseInterface (),
-	    currentField (),
-	          fields (new X3D::FieldSet (getBrowser ())),
-	        undoSize (0)
+class X3DTextureCoordinateGeneratorEditor :
+	virtual public X3DTextureEditorInterface
 {
-	// If for nodes are concrete X3DPtr like X3DPtr <Appearance> and not only SFNode we do not need
-	// call isInternal on »fields« to prevent adding a clone count to nodes.
-}
+protected:
 
-bool
-X3DEditorObject::validateNumber (const std::string & text) const
-{
-	std::istringstream istream (text);
+	///  @name Construction
 
-	double value = 0;
+	X3DTextureCoordinateGeneratorEditor ();
 
-	if (istream >> value)
-		return istream .eof ();
+	virtual
+	void
+	initialize () override;
 
-	return false;
-}
+	void
+	set_selection ();
 
-double
-X3DEditorObject::toDouble (const std::string & string)
-{
-	std::istringstream istream (string);
 
-	double value = 0;
+private:
 
-	istream >> value;
+	///  @name textureCoordinateGenerator
 
-	return value;
-}
+	virtual
+	void
+	on_textureCoordinateGenerator_unlink_clicked () final override;
 
-X3DEditorObject::~X3DEditorObject ()
-{ }
+	virtual
+	void
+	on_textureCoordinateGenerator_toggled () final override;
+
+	void
+	set_textureCoordinateGenerator ();
+
+	void
+	connectTextureCoordinateGenerator (const X3D::SFNode &);
+
+	void
+	on_textureCoordinateGenerator_mode_changed ();
+
+	void
+	set_textureCoordinateGenerator_mode ();
+
+	void
+	connectTextureCoordinateGeneratorMode (const X3D::SFString &);
+
+	///  @name Members
+
+	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
+	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
+	UndoStepPtr                                   undoStep;
+	bool                                          changing;
+
+};
 
 } // puck
 } // titania
+
+#endif

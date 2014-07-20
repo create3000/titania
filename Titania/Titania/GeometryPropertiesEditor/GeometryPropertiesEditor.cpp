@@ -58,7 +58,6 @@ namespace puck {
 GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browserWindow) :
 	                    X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
-	 X3DTextureCoordinateGeneratorEditor (),
 	                       geometryNodes (),
 	                            undoStep (),
 	                            changing (false)
@@ -70,7 +69,6 @@ void
 GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
-	X3DTextureCoordinateGeneratorEditor::initialize ();
 
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
 
@@ -209,33 +207,8 @@ GeometryPropertiesEditor::set_solid ()
 {
 	changing = true;
 
-	getSolidCheckButton () .set_active (false);
-
-	// Find first »solid« field.
-
-	bool hasField = false;
-	int  active   = -1;
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("solid");
-
-			if (active < 0)
-			{
-				hasField = true;
-				active   = field;
-			}
-			else if (field .getValue () not_eq active)
-			{
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	const int  active   = getBoolean (geometryNodes, "solid");
+	const bool hasField = (active not_eq -2);
 
 	getSolidCheckButton () .set_sensitive (hasField);
 	getSolidCheckButton () .set_active (active > 0);
@@ -290,33 +263,8 @@ GeometryPropertiesEditor::set_ccw ()
 {
 	changing = true;
 
-	getCCWCheckButton () .set_active (false);
-
-	// Find first »ccw« field.
-
-	bool hasField = false;
-	int  active   = -1;
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("ccw");
-
-			if (active < 0)
-			{
-				hasField = true;
-				active   = field;
-			}
-			else if (field .getValue () not_eq active)
-			{
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	const int  active   = getBoolean (geometryNodes, "ccw");
+	const bool hasField = (active not_eq -2);
 
 	getCCWCheckButton () .set_sensitive (hasField);
 	getCCWCheckButton () .set_active (active > 0);
@@ -371,33 +319,8 @@ GeometryPropertiesEditor::set_convex ()
 {
 	changing = true;
 
-	getConvexCheckButton () .set_active (false);
-
-	// Find first »convex« field.
-
-	bool hasField = false;
-	int  active   = -1;
-
-	for (const auto & geometry : geometryNodes)
-	{
-		try
-		{
-			auto & field = geometry -> getField <X3D::SFBool> ("convex");
-
-			if (active < 0)
-			{
-				hasField = true;
-				active   = field;
-			}
-			else if (field .getValue () not_eq active)
-			{
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	const int  active   = getBoolean (geometryNodes, "convex");
+	const bool hasField = (active not_eq -2);
 
 	getConvexCheckButton () .set_sensitive (hasField);
 	getConvexCheckButton () .set_active (not (active > 0));
@@ -449,11 +372,11 @@ GeometryPropertiesEditor::set_creaseAngle ()
 
 	getCreaseAngleScale () .set_value (0);
 
-	// Find first »creaseAngle« field.
+	// Find last »creaseAngle« field.
 
 	bool hasField = false;
 
-	for (const auto & geometry : geometryNodes)
+	for (const auto & geometry : basic::reverse_adapter (geometryNodes))
 	{
 		try
 		{

@@ -68,20 +68,38 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DEditorObject ();
+	~X3DEditorObject ()
+	{ }
 
 
 protected:
 
 	///  @name Construction
 
-	X3DEditorObject ();
+	X3DEditorObject () :
+		X3DBaseInterface (),
+		    currentField (),
+		          fields (new X3D::FieldSet (getBrowser ())),
+		        undoSize (0)
+	{
+		fields -> isInternal (true);
+	}
 
 	///  @name Operations
 
 	template <class NodeType>
+	static
+	int
+	getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+
+	template <class FieldType, class NodeType>
+	static
+	std::pair <X3D::X3DPtr <FieldType>, int>
+	getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+
+	template <class NodeType>
 	void
-	unlinkClone (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
+	unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep);
 
 	template <class FieldType, class NodeType>
 	void
@@ -99,16 +117,8 @@ protected:
 	void
 	addRedoFunction (FieldType &, UndoStepPtr &);
 
-	double
-	toDouble (const std::string &);
-
 
 private:
-
-	///  @name Operations
-
-	bool
-	validateNumber (const std::string &) const;
 
 	///  @name Members
 
@@ -117,6 +127,72 @@ private:
 	size_t                      undoSize;
 
 };
+
+template <class NodeType>
+int
+X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+{
+	int active = -2;
+
+	for (const auto & node : basic::reverse_adapter (nodes))
+	{
+		try
+		{
+			auto & field = node -> template getField <X3D::SFBool> (fieldName);
+
+			if (active < 0)
+			{
+				active = field;
+			}
+			else if (field .getValue () not_eq active)
+			{
+				active = -1;
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return active;
+}
+
+/***
+ *  Find the last node of @a FieldType in @a nodes in field @a fieldName.
+ */
+template <class FieldType, class NodeType>
+std::pair <X3D::X3DPtr <FieldType>, int>
+X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+{
+	X3D::X3DPtr <FieldType> found;
+	int                     active = -2;
+
+	for (const auto & node : basic::reverse_adapter (nodes))
+	{
+		try
+		{
+			X3D::X3DPtr <FieldType> field (node -> template getField <X3D::SFNode> (fieldName));
+
+			if (active < 0)
+			{
+				found  = std::move (field);
+				active = bool (found);
+			}
+			else if (field not_eq found)
+			{
+				if (not found)
+					found = std::move (field);
+
+				active = -1;
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return std::make_pair (std::move (found), active);
+}
 
 template <class NodeType>
 void
@@ -196,16 +272,9 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		}
 
 		if (inconsistent)
-		{
-			try
-			{
-				fields -> removeUserDefinedField (fields -> getField (fieldName));
-			}
-			catch (const X3D::X3DError &)
-			{ }
-		}
+			fields -> removeUserDefinedField (fieldName);
 		else
-			fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (std::move (value)));
+			fields -> updateUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (std::move (value)));
 	}
 
 	// Undo
@@ -298,7 +367,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	currentField = fieldName;
 
-	fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (field));
+	fields -> updateUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (field));
 
 	// Undo
 

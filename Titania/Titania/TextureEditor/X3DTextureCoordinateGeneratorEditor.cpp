@@ -54,11 +54,11 @@ namespace titania {
 namespace puck {
 
 X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
-	X3DGeometryPropertiesEditorInterface ("", ""),
-	                       geometryNodes (),
-	          textureCoordinateGenerator (),
-	                            undoStep (),
-	                            changing (false)
+	 X3DTextureEditorInterface ("", ""),
+	             geometryNodes (),
+	textureCoordinateGenerator (),
+	                  undoStep (),
+	                  changing (false)
 { }
 
 void
@@ -169,37 +169,11 @@ X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator ()
 	if (textureCoordinateGenerator)
 		textureCoordinateGenerator -> mode () .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator_mode);
 
-	textureCoordinateGenerator = nullptr;
+	auto       pair     = getNode <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	// Find last »texCoord« field.
-
-	bool hasField = false;
-	int  active   = -1;
-
-	for (const auto & geometry : basic::reverse_adapter (geometryNodes))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::TextureCoordinateGenerator> field (geometry -> getField <X3D::SFNode> ("texCoord"));
-
-			if (active < 0)
-			{
-				textureCoordinateGenerator = std::move (field);
-				hasField                   = true;
-				active                     = bool (textureCoordinateGenerator);
-			}
-			else if (field not_eq textureCoordinateGenerator)
-			{
-				if (not textureCoordinateGenerator)
-					textureCoordinateGenerator = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	textureCoordinateGenerator = std::move (pair .first);
 
 	if (not textureCoordinateGenerator)
 	{

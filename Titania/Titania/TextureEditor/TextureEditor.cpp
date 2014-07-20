@@ -57,10 +57,11 @@ namespace titania {
 namespace puck {
 
 TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	    X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
-	         X3DTextureNodeEditor (),
-	X3DTextureTransformNodeEditor ()
+	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	          X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
+	               X3DTextureNodeEditor (),
+	      X3DTextureTransformNodeEditor (),
+	X3DTextureCoordinateGeneratorEditor ()
 { }
 
 void
@@ -69,6 +70,7 @@ TextureEditor::initialize ()
 	X3DTextureEditorInterface::initialize ();
 	X3DTextureNodeEditor::initialize ();
 	X3DTextureTransformNodeEditor::initialize ();
+	X3DTextureCoordinateGeneratorEditor::initialize ();
 }
 
 } // puck

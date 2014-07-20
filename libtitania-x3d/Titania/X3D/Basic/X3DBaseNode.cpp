@@ -181,12 +181,11 @@ X3DBaseNode::setup ()
 }
 
 /**
- *  Creates either a clone or a copy of this node. If the named node already exists in @a executionContext this node is
- *  returned otherwise a copy of this node and all of its children is made.  See copy ().
+ *  Creates copy of this node as specified by @a type.
  *
- *  The nodes must be setuped with:
+ *  The node must be created and setuped like this:
  *
- *      auto clone = node -> clone (executionContext);
+ *      auto clone = node -> copy (executionContext, FLAT_COPY);
  *      executionContext -> realize ();
  */
 
@@ -227,11 +226,6 @@ throw (Error <INVALID_NAME>,
 /**
  *  Creates a copy of this node and all of its child nodes into @a executionContext. If a named node of one of this
  *  node children already exists in @a executionContext then only a clone is created.
- *
- *  The nodes must be setuped with:
- *
- *      auto copy = node -> copy (executionContext);
- *      executionContext -> realize ();
  */
 
 X3DBaseNode*
@@ -321,11 +315,6 @@ throw (Error <INVALID_NAME>,
 
 /**
  *  Creates a flat copy of this node into @a executionContext.
- *
- *  The node must be setuped with:
- *
- *      auto copy = node -> copy (executionContext, FlatCopyType { });
- *      executionContext -> realize ();
  */
 
 X3DBaseNode*
@@ -451,11 +440,13 @@ throw (Error <DISPOSED>)
  */
 
 bool
-X3DBaseNode::hasField (X3DFieldDefinition* const field) const
+X3DBaseNode::hasField (const std::string & name) const
+throw (Error <DISPOSED>)
 {
 	try
 	{
-		return field == getField (field -> getName ());
+		getField (name);
+		return true;
 	}
 	catch (const X3D::X3DError &)
 	{
@@ -469,11 +460,14 @@ X3DBaseNode::hasField (X3DFieldDefinition* const field) const
 
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
 {
 	const auto iter = fields .find (name);
 
 	if (iter not_eq fields .end ())
-		removeField (iter, iter -> second not_eq &field);
+		removeField (iter, false, iter -> second not_eq &field);
 
 	if (not isInitialized ())
 		field .isTainted (true);
@@ -496,6 +490,8 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 
 void
 X3DBaseNode::addField (const VersionType version, const std::string & alias, const std::string & name)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
 {
 	auto & fieldAlias = fieldAliases [version];
 
@@ -509,8 +505,9 @@ X3DBaseNode::addField (const VersionType version, const std::string & alias, con
 
 void
 X3DBaseNode::removeField (const std::string & name)
+throw (Error <DISPOSED>)
 {
-	removeField (fields .find (name), true);
+	removeField (fields .find (name), false, true);
 }
 
 /***
@@ -518,17 +515,23 @@ X3DBaseNode::removeField (const std::string & name)
  */
 
 void
-X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool removeParent)
+X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDefined, const bool removeParent)
 {
 	if (field == fields .end ())
 		return;
 
-	const auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+	const auto iter = userDefined
+	                  ? std::find (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end (), field -> second)
+	                  : std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+
+	if (iter == fieldDefinitions .end ())
+		return;
 
 	if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 	{
 		-- numUserDefinedFields;
 
+		// If the field is added twice we must not remove the parent to prevent dispose.
 		if (removeParent)
 			field -> second -> removeParent (this);
 	}
@@ -625,6 +628,24 @@ X3DBaseNode::getFieldName (const std::string & name, const VersionType version) 
 
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
+{
+	addField (accessType, name, *field);
+
+	++ numUserDefinedFields;
+}
+
+/***
+ *  Updates @a field in the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+ */
+
+void
+X3DBaseNode::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
 {
 	addField (accessType, name, *field);
 
@@ -636,16 +657,10 @@ X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string
  */
 
 void
-X3DBaseNode::removeUserDefinedField (X3DFieldDefinition* const field)
+X3DBaseNode::removeUserDefinedField (const std::string & name)
+throw (Error <DISPOSED>)
 {
-	// Test if field is a user defined field.
-
-	const auto iter = std::find (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end (), field);
-	
-	if (iter == fieldDefinitions .end ())
-		return;
-
-	removeField (field -> getName ());
+	removeField (fields .find (name), true, true);
 }
 
 /***
@@ -815,8 +830,8 @@ X3DBaseNode::hasRoutes () const
 }
 
 /***
- *  Marks this node as a node for internal use only. Such nodes are not removeable, not routeable,
- *  not scriptable and they do not increment the clone count of its child nodes.
+ *  Marks this node as a node for internal use only. Such nodes are not routeable, not scriptable, not fully printable
+ *  and they do not increment the clone count of its child nodes.
  */
 
 void

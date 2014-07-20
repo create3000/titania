@@ -171,37 +171,11 @@ TextEditor::set_text ()
 		text -> maxExtent () .removeInterest (this, &TextEditor::set_maxExtent);
 	}
 
-	text = nullptr;
+	auto       pair     = getNode <X3D::Text> (shapeNodes, "geometry");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	const bool hasField = not shapeNodes .empty ();
-
-	// Find last »geometry« field.
-
-	int active = -1;
-
-	for (const auto & shapeNode : basic::reverse_adapter (shapeNodes))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::Text> field (shapeNode -> geometry ());
-
-			if (active < 0)
-			{
-				text   = std::move (field);
-				active = bool (text);
-			}
-			else if (field not_eq text)
-			{
-				if (not text)
-					text = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	text = std::move (pair .first);
 
 	if (not text)
 	{

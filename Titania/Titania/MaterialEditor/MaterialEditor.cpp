@@ -448,37 +448,11 @@ MaterialEditor::set_material ()
 		twoSidedMaterial -> backTransparency ()     .removeInterest (this, &MaterialEditor::set_backTransparency);
 	}
 
-	const bool hasField = not appearances .empty ();
+	auto       pair     = getNode <X3D::X3DMaterialNode> (appearances, "material");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	// Find last »material« field.
-
-	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
-
-	int active = -1;
-
-	for (const auto & appearance : basic::reverse_adapter (appearances))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::X3DMaterialNode> field (appearance -> material ());
-
-			if (active < 0)
-			{
-				materialNode = std::move (field);
-				active       = bool (materialNode);
-			}
-			else if (field not_eq materialNode)
-			{
-				if (not materialNode)
-					materialNode = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode = std::move (pair .first);
 
 	material           = materialNode;
 	twoSidedMaterial   = materialNode;

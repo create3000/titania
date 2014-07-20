@@ -1,5 +1,18 @@
 2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Script.h:
+	* Script.cpp:
+	* ShaderProgram.h:
+	* ComposedShader.h:
+	* ShaderProgram.cpp:
+	* ComposedShader.cpp:
+	* X3DProgrammableShaderObject.h:
+	* X3DProgrammableShaderObject.cpp: 
+
+2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp: 
 
 2014-07-19  Holger Seelig  <holger.seelig@yahoo.de>

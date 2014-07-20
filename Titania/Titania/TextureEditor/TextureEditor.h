@@ -54,6 +54,7 @@
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 #include "../TextureEditor/X3DTextureTransformNodeEditor.h"
 #include "../TextureEditor/X3DTextureNodeEditor.h"
+#include "../TextureEditor/X3DTextureCoordinateGeneratorEditor.h"
 
 namespace titania {
 namespace puck {
@@ -63,7 +64,8 @@ class X3DBrowserWidget;
 class TextureEditor :
 	virtual public X3DTextureEditorInterface,
 	public X3DTextureNodeEditor,
-	public X3DTextureTransformNodeEditor
+	public X3DTextureTransformNodeEditor,
+	public X3DTextureCoordinateGeneratorEditor
 {
 public:
 

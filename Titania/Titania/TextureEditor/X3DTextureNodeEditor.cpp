@@ -192,37 +192,11 @@ X3DTextureNodeEditor::on_texture_changed ()
 void
 X3DTextureNodeEditor::set_texture ()
 {
-	textureNode = nullptr;
+	auto       pair     = getNode <X3D::X3DTextureNode> (appearances, "texture");
+	const int  active   = pair .second;
+	const bool hasField = (active not_eq -2);
 
-	const bool hasField = not appearances .empty ();
-
-	// Find last »geometry« field.
-
-	int active = -1;
-
-	for (const auto & appearance : basic::reverse_adapter (appearances))
-	{
-		try
-		{
-			const X3D::X3DPtr <X3D::X3DTextureNode> field (appearance -> texture ());
-
-			if (active < 0)
-			{
-				textureNode = std::move (field);
-				active      = bool (textureNode);
-			}
-			else if (field not_eq textureNode)
-			{
-				if (not textureNode)
-					textureNode = std::move (field);
-
-				active = -1;
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	textureNode = std::move (pair .first);
 
 	setTexture2DNode (textureNode);
 	//setTexture3DNode (textureNode);
