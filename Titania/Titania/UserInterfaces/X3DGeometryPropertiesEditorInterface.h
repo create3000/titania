@@ -123,13 +123,13 @@ public:
 	getConvexCheckButton () const
 	{ return *m_ConvexCheckButton; }
 
-	Gtk::SpinButton &
-	getCreaseAngleScaleSpinButton () const
-	{ return *m_CreaseAngleScaleSpinButton; }
-
 	Gtk::Box &
 	getCreaseAngleBox () const
 	{ return *m_CreaseAngleBox; }
+
+	Gtk::SpinButton &
+	getCreaseAngleScaleSpinButton () const
+	{ return *m_CreaseAngleScaleSpinButton; }
 
 	Gtk::Scale &
 	getCreaseAngleScale () const
@@ -155,8 +155,8 @@ private:
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
 	Gtk::CheckButton*              m_ConvexCheckButton;
-	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Box*                      m_CreaseAngleBox;
+	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
 
 };

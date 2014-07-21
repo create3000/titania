@@ -19,5 +19,5 @@
   <Task file="" description="Library expanded speichern" completed="True" />
   <Task file="" description="modelviewmatrix stack and projection matrix stack to browser rendering context" />
   <Task file="" description="FieldDefintions" />
-  <Task file="" description="Tools mit if" />
+  <Task file="" description="addChild not virtual and rename addChildren in X3DBaseNode to addFields" />
 </ListOfTask>

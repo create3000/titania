@@ -87,7 +87,12 @@ protected:
 
 	///  @name Operations
 
-	X3D::MFNode
+	template <class NodeType>
+	X3D::X3DPtrArray <NodeType>
+	getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const;
+
+	template <class NodeType>
+	X3D::X3DPtrArray <NodeType>
 	getNodes (X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> & types) const;
 
 	template <class FieldType, class NodeType>
@@ -99,6 +104,11 @@ protected:
 	static
 	int
 	getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+
+	template <class NodeType>
+	static
+	std::pair <X3D::String, int>
+	getString (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
 
 	template <class NodeType>
 	void
@@ -131,16 +141,25 @@ private:
 
 };
 
+template <class NodeType>
+X3D::X3DPtrArray <NodeType>
+X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const
+{
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	return getNodes <NodeType> (selection, types);
+}
+
 /***
  *  Traverses @a selection and returns all nodes of a type specified in @a types.
  */
-inline
-X3D::MFNode
+template <class NodeType>
+X3D::X3DPtrArray <NodeType>
 X3DEditorObject::getNodes (X3D::MFNode & selection, const std::set <X3D::X3DConstants::NodeType> & types) const
 {
 	// Find X3DGeometryNodes
 
-	X3D::MFNode nodes;
+	X3D::X3DPtrArray <NodeType> nodes;
 
 	X3D::traverse (selection, [&] (X3D::SFNode & node)
 	               {
@@ -160,7 +179,12 @@ X3DEditorObject::getNodes (X3D::MFNode & selection, const std::set <X3D::X3DCons
 }
 
 /***
- *  Returns the last node of type @a FieldType in @a nodes in field @a fieldName.
+ *  Returns the last node of type @a FieldType in @a nodes in field @a fieldName. The second value indicates if the node
+ *  was found, where:
+ *  -2 means no field named @a fieldName found
+ *  -1 means inconsistent
+ *   0 means all values are NULL
+ *   1 means all values share the found node
  */
 template <class FieldType, class NodeType>
 std::pair <X3D::X3DPtr <FieldType>, int>
@@ -173,17 +197,17 @@ X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::
 	{
 		try
 		{
-			X3D::X3DPtr <FieldType> field (node -> template getField <X3D::SFNode> (fieldName));
+			const auto & field = node -> template getField <X3D::SFNode> (fieldName);
 
 			if (active < 0)
 			{
-				found  = std::move (field);
+				found  = field;
 				active = bool (found);
 			}
 			else if (field not_eq found)
 			{
 				if (not found)
-					found = std::move (field);
+					found = field;
 
 				active = -1;
 				break;
@@ -196,6 +220,14 @@ X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::
 	return std::make_pair (std::move (found), active);
 }
 
+/***
+ *  Returns the boolean in @a nodes in field @a fieldName. The value indicates if the field
+ *  was found and what value it has, where:
+ *  -2 means no field named @a fieldName found
+ *  -1 means inconsistent
+ *   0 means all values are false
+ *   1 means all values are true
+ */
 template <class NodeType>
 int
 X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
@@ -206,7 +238,7 @@ X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const st
 	{
 		try
 		{
-			auto & field = node -> template getField <X3D::SFBool> (fieldName);
+			const auto & field = node -> template getField <X3D::SFBool> (fieldName);
 
 			if (active < 0)
 			{
@@ -225,6 +257,48 @@ X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const st
 	return active;
 }
 
+/***
+ *  Returns the string in @a nodes in field @a fieldName. The second value indicates if the field
+ *  was found and what value it has, where:
+ *  -2 means no field named @a fieldName found
+ *  -1 means inconsistent
+ *   0 means all values are empty
+ *   1 means all values are equal
+ */
+template <class NodeType>
+std::pair <X3D::String, int>
+X3DEditorObject::getString (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+{
+	X3D::String found;
+	int         active = -2;
+
+	for (const auto & node : basic::reverse_adapter (nodes))
+	{
+		try
+		{
+			const auto & field = node -> template getField <X3D::SFString> (fieldName);
+
+			if (active < 0)
+			{
+				found  = field .getValue ();
+				active = not found .empty ();
+			}
+			else if (field not_eq found)
+			{
+				if (found .empty ())
+					found = field .getValue ();
+
+				active = -1;
+				break;
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return std::make_pair (std::move (found), active);
+}
+
 template <class NodeType>
 void
 X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
@@ -232,7 +306,7 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 	if (nodes .empty ())
 		return;
 
-	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Unlink Clone From Field »%s«"), fieldName .c_str ()));
+	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Unlink Clone »%s«"), fieldName .c_str ()));
 
 	const size_t cloneCount = nodes [0] -> template getField <X3D::SFNode> (fieldName) -> getCloneCount ();
 	bool         first      = (cloneCount == nodes .size ());
@@ -321,8 +395,10 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		try
 		{
 			auto & field = node -> template getField <FieldType> (fieldName);
+			
+			using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
 
-			undoStep -> addUndoFunction (&FieldType::setValue, std::ref (field), field);
+			undoStep -> addUndoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -372,7 +448,9 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		{
 			auto & field = node -> template getField <FieldType> (fieldName);
 
-			undoStep -> addRedoFunction (&FieldType::setValue, std::ref (field), field);
+			using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+
+			undoStep -> addRedoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }

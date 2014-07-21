@@ -51,7 +51,9 @@
 #ifndef __TITANIA_FIELDS_H__
 #define __TITANIA_FIELDS_H__
 
-#include "Fields/Adjustment.h"
-#include "Fields/ToggleButton.h"
+#include "ComposedWidgets/SFStringComboBoxText.h"
+#include "ComposedWidgets/X3DFieldAdjustment.h"
+#include "ComposedWidgets/X3DFieldAdjustment2.h"
+#include "ComposedWidgets/X3DFieldToggleButton.h"
 
 #endif

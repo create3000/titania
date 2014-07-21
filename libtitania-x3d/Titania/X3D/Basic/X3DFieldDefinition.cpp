@@ -220,13 +220,18 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 	if (event -> object not_eq this)
 		write (*event -> object);
 
+	std::vector <X3DFieldDefinition*> outputInterests;
+
+	if (io)
+		outputInterests .assign (io -> outputInterests .begin (), io -> outputInterests .end ());
+
 	processInterests ();
 
 	if (io)
 	{
 		bool first = true;
 
-		for (const auto & fieldDefinition : io -> outputInterests)
+		for (const auto & fieldDefinition : outputInterests)
 		{
 			if (first)
 			{

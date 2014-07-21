@@ -1,3 +1,11 @@
+2014-07-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DPtrArray.h:
+	* X3DBaseNode.cpp:
+	* Generator.cpp:
+	* X3DFieldDefinition.cpp: 
+
 2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

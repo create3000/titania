@@ -128,6 +128,9 @@ private:
 	set_material ();
 
 	void
+	set_node ();
+
+	void
 	connectMaterial (const X3D::SFNode &);
 
 	///  @name Front color handler
@@ -367,6 +370,7 @@ private:
 
 	X3D::BrowserPtr                    preview;
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::SFTime                        materialBuffer;
 	X3D::MaterialPtr                   material;
 	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
 	bool                               isTwoSidedMaterial;

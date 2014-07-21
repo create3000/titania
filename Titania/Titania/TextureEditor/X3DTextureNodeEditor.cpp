@@ -181,7 +181,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 
-	getTextureUnlinkButton () .set_sensitive (getTextureButton () .get_active_row_number () > 0 and textureNode -> getCloneCount () > 1);
+	getTextureUnlinkButton () .set_sensitive (getTextureButton () .get_active_row_number () > 0 and textureNode -> isCloned () > 1);
 
 	X3DTexturePropertiesEditor::set_selection ();
 }
@@ -221,7 +221,7 @@ X3DTextureNodeEditor::set_texture ()
 		getTextureButton () .set_active (-1);
 
 	getTextureButton ()       .set_sensitive (hasField);
-	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> getCloneCount () > 1);
+	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> isCloned () > 1);
 
 	changing = false;
 

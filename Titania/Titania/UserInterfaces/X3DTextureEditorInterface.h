@@ -223,6 +223,10 @@ public:
 	getTextureTransformBox () const
 	{ return *m_TextureTransformBox; }
 
+	Gtk::Box &
+	getTextureTransformTranslationBox () const
+	{ return *m_TextureTransformTranslationBox; }
+
 	Gtk::SpinButton &
 	getTextureTransformTranslationXSpinButton () const
 	{ return *m_TextureTransformTranslationXSpinButton; }
@@ -231,6 +235,10 @@ public:
 	getTextureTransformTranslationYSpinButton () const
 	{ return *m_TextureTransformTranslationYSpinButton; }
 
+	Gtk::Box &
+	getTextureTransformScaleBox () const
+	{ return *m_TextureTransformScaleBox; }
+
 	Gtk::SpinButton &
 	getTextureTransformScaleXSpinButton () const
 	{ return *m_TextureTransformScaleXSpinButton; }
@@ -238,6 +246,10 @@ public:
 	Gtk::SpinButton &
 	getTextureTransformScaleYSpinButton () const
 	{ return *m_TextureTransformScaleYSpinButton; }
+
+	Gtk::Box &
+	getTextureTransformCenterBox () const
+	{ return *m_TextureTransformCenterBox; }
 
 	Gtk::SpinButton &
 	getTextureTransformCenterXSpinButton () const
@@ -277,22 +289,6 @@ public:
 
 	virtual
 	void
-	on_textureTransform_center_changed () = 0;
-
-	virtual
-	void
-	on_textureTransform_rotation_changed () = 0;
-
-	virtual
-	void
-	on_textureTransform_scale_changed () = 0;
-
-	virtual
-	void
-	on_textureTransform_translation_changed () = 0;
-
-	virtual
-	void
 	on_texture_changed () = 0;
 
 	virtual
@@ -317,10 +313,6 @@ public:
 
 	virtual
 	void
-	on_generateMipMaps_toggled () = 0;
-
-	virtual
-	void
 	on_textureTransform_changed () = 0;
 
 	virtual
@@ -334,10 +326,6 @@ public:
 	virtual
 	void
 	on_textureCoordinateGenerator_unlink_clicked () = 0;
-
-	virtual
-	void
-	on_textureCoordinateGenerator_mode_changed () = 0;
 
 	virtual
 	~X3DTextureEditorInterface ();
@@ -384,10 +372,13 @@ private:
 	Gtk::Notebook*                 m_TextureTransformNotebook;
 	Gtk::Label*                    m_TextureTransformLabel;
 	Gtk::Grid*                     m_TextureTransformBox;
+	Gtk::Box*                      m_TextureTransformTranslationBox;
 	Gtk::SpinButton*               m_TextureTransformTranslationXSpinButton;
 	Gtk::SpinButton*               m_TextureTransformTranslationYSpinButton;
+	Gtk::Box*                      m_TextureTransformScaleBox;
 	Gtk::SpinButton*               m_TextureTransformScaleXSpinButton;
 	Gtk::SpinButton*               m_TextureTransformScaleYSpinButton;
+	Gtk::Box*                      m_TextureTransformCenterBox;
 	Gtk::SpinButton*               m_TextureTransformCenterXSpinButton;
 	Gtk::SpinButton*               m_TextureTransformCenterYSpinButton;
 	Gtk::SpinButton*               m_TextureTransformRotationSpinButton;

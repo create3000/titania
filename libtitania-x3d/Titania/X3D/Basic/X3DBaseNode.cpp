@@ -776,6 +776,45 @@ X3DBaseNode::removeChild (X3DChildObject & child)
 }
 
 /***
+ *  Does the same as getCloneCount but returns only 0, 1 or 2.
+ */
+
+size_t
+X3DBaseNode::isCloned () const
+{
+	size_t numClones = 0;
+
+	for (const auto & parent : getParents ())
+	{
+		if (dynamic_cast <SFNode*> (parent))
+		{
+			// Only X3DNodes, ie nodes in the scene graph, have field names
+
+			if (parent -> getName () .empty ())
+			{
+				for (const auto & secondParent : parent -> getParents ())
+				{
+					// Only X3DNodes, ie nodes in the scene graph, have field names
+
+					if (secondParent -> getName () .empty ())
+						continue;
+
+					if (dynamic_cast <MFNode*> (secondParent))
+						++ numClones;
+				}
+			}
+			else
+				++ numClones;
+		}
+
+		if (numClones > 1)
+			return numClones;
+	}
+
+	return numClones;
+}
+
+/***
  *  Determines how often this node is used in the scene graph.
  */
 

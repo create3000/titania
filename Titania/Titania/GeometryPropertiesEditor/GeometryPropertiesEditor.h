@@ -52,7 +52,7 @@
 #define __TITANIA_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 
 #include "../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
-#include "../Fields.h"
+#include "../ComposedWidgets.h"
 
 namespace titania {
 namespace puck {
@@ -80,10 +80,10 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <ToggleButton <X3D::SFBool>> solid;
-	std::unique_ptr <ToggleButton <X3D::SFBool>> ccw;
-	std::unique_ptr <ToggleButton <X3D::SFBool>> convex;
-	std::unique_ptr <Adjustment <X3D::SFFloat>>  creaseAngle;
+	X3DFieldToggleButton <X3D::SFBool> solid;
+	X3DFieldToggleButton <X3D::SFBool> ccw;
+	X3DFieldToggleButton <X3D::SFBool> convex;
+	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
 
 };
 

@@ -1,3 +1,42 @@
+2014-07-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Fields.h:
+	* ComposedWidgets.h:
+	* Adjustment.h:
+	* ToggleButton.h:
+	* X3DEditorObject.h:
+	* X3DBaseInterface.h:
+	* FieldAdjustment.h:
+	* TextEditor.cpp:
+	* FieldToggleButton.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* TextureEditor.xml:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment2.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* SFStringComboBoxText.h:
+	* X3DTextureNodeEditor.cpp:
+	* X3DFieldToggleButton.h:
+	* X3DTextureTransformEditor.h:
+	* X3DTextureEditorInterface.h:
+	* X3DTexturePropertiesEditor.h:
+	* X3DTextureTransformEditor.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DTextureEditorInterface.cpp:
+	* X3DTextureTransformNodeEditor.h:
+	* X3DTextureTransformNodeEditor.cpp:
+	* GeometryPropertiesEditor.h:
+	* X3DTextureCoordinateGeneratorEditor.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
 2014-07-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Fields.h:

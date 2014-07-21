@@ -94,9 +94,15 @@ public:
 
 	template <class Up>
 	explicit
-	X3DPtrArray (X3DPtrArray <Up>&&);
+	X3DPtrArray (const X3DPtrArray <Up> & field) :
+		ArrayField (field .begin (), field .end ())
+	{ }
 
-	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>>      initializer_list) :
+	template <class Up>
+	explicit
+	X3DPtrArray (X3DPtrArray <Up> &&);
+
+	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 

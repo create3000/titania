@@ -159,7 +159,7 @@ TextEditor::on_text_toggled ()
 
 	X3DFontStyleNodeEditor::set_selection ();
 
-	getTextUnlinkButton () .set_sensitive (getTextCheckButton () .get_active () and text -> getCloneCount () > 1);
+	getTextUnlinkButton () .set_sensitive (getTextCheckButton () .get_active () and text -> isCloned () > 1);
 }
 
 void
@@ -190,7 +190,7 @@ TextEditor::set_text ()
 	getTextCheckButton () .set_active (active > 0);
 	getTextCheckButton () .set_inconsistent (active < 0);
 
-	getTextUnlinkButton () .set_sensitive (active > 0 and text -> getCloneCount () > 1);
+	getTextUnlinkButton () .set_sensitive (active > 0 and text -> isCloned () > 1);
 	getTextBox ()          .set_sensitive (active > 0);
 
 	changing = false;

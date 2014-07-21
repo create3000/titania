@@ -76,10 +76,10 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_CCWCheckButton -> set_name ("CCWCheckButton");
 	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
 	m_ConvexCheckButton -> set_name ("ConvexCheckButton");
-	m_builder -> get_widget ("CreaseAngleScaleSpinButton", m_CreaseAngleScaleSpinButton);
-	m_CreaseAngleScaleSpinButton -> set_name ("CreaseAngleScaleSpinButton");
 	m_builder -> get_widget ("CreaseAngleBox", m_CreaseAngleBox);
 	m_CreaseAngleBox -> set_name ("CreaseAngleBox");
+	m_builder -> get_widget ("CreaseAngleScaleSpinButton", m_CreaseAngleScaleSpinButton);
+	m_CreaseAngleScaleSpinButton -> set_name ("CreaseAngleScaleSpinButton");
 	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
 	m_CreaseAngleScale -> set_name ("CreaseAngleScale");
 

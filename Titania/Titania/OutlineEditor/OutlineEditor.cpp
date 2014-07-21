@@ -671,7 +671,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				if (not sfnode)
 					break;
 
-				isCloned            = sfnode -> getCloneCount () > 1;
+				isCloned            = sfnode -> isCloned () > 1;
 				isBaseNode          = bool (sfnode);
 				isPrototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 				isInlineNode        = inlineNode and inlineNode -> checkLoadState () == X3D::COMPLETE_STATE;

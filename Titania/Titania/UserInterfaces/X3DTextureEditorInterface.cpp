@@ -117,14 +117,20 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformLabel -> set_name ("TextureTransformLabel");
 	m_builder -> get_widget ("TextureTransformBox", m_TextureTransformBox);
 	m_TextureTransformBox -> set_name ("TextureTransformBox");
+	m_builder -> get_widget ("TextureTransformTranslationBox", m_TextureTransformTranslationBox);
+	m_TextureTransformTranslationBox -> set_name ("TextureTransformTranslationBox");
 	m_builder -> get_widget ("TextureTransformTranslationXSpinButton", m_TextureTransformTranslationXSpinButton);
 	m_TextureTransformTranslationXSpinButton -> set_name ("TextureTransformTranslationXSpinButton");
 	m_builder -> get_widget ("TextureTransformTranslationYSpinButton", m_TextureTransformTranslationYSpinButton);
 	m_TextureTransformTranslationYSpinButton -> set_name ("TextureTransformTranslationYSpinButton");
+	m_builder -> get_widget ("TextureTransformScaleBox", m_TextureTransformScaleBox);
+	m_TextureTransformScaleBox -> set_name ("TextureTransformScaleBox");
 	m_builder -> get_widget ("TextureTransformScaleXSpinButton", m_TextureTransformScaleXSpinButton);
 	m_TextureTransformScaleXSpinButton -> set_name ("TextureTransformScaleXSpinButton");
 	m_builder -> get_widget ("TextureTransformScaleYSpinButton", m_TextureTransformScaleYSpinButton);
 	m_TextureTransformScaleYSpinButton -> set_name ("TextureTransformScaleYSpinButton");
+	m_builder -> get_widget ("TextureTransformCenterBox", m_TextureTransformCenterBox);
+	m_TextureTransformCenterBox -> set_name ("TextureTransformCenterBox");
 	m_builder -> get_widget ("TextureTransformCenterXSpinButton", m_TextureTransformCenterXSpinButton);
 	m_TextureTransformCenterXSpinButton -> set_name ("TextureTransformCenterXSpinButton");
 	m_builder -> get_widget ("TextureTransformCenterYSpinButton", m_TextureTransformCenterYSpinButton);
@@ -144,15 +150,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureCoordinateGeneratorModeButton", m_TextureCoordinateGeneratorModeButton);
 	m_TextureCoordinateGeneratorModeButton -> set_name ("TextureCoordinateGeneratorModeButton");
 
-	// Connect object Gtk::Adjustment with id 'TextureTransformCenterXAdjustment'.
-	m_TextureTransformCenterXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_center_changed));
-	m_TextureTransformCenterYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_center_changed));
-	m_TextureTransformRotationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_rotation_changed));
-	m_TextureTransformScaleXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_scale_changed));
-	m_TextureTransformScaleYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_scale_changed));
-	m_TextureTransformTranslationXAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_translation_changed));
-	m_TextureTransformTranslationYAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_translation_changed));
-
 	// Connect object Gtk::ComboBoxText with id 'TextureButton'.
 	m_TextureButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
 
@@ -167,9 +164,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'TexturePropertiesUnlinkButton'.
 	m_TexturePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_unlink_clicked));
 
-	// Connect object Gtk::CheckButton with id 'GenerateMipMapsCheckButton'.
-	m_GenerateMipMapsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_generateMipMaps_toggled));
-
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
 	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
 
@@ -181,9 +175,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'TextureCoordinateGeneratorUnlinkButton'.
 	m_TextureCoordinateGeneratorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_unlink_clicked));
-
-	// Connect object Gtk::ComboBoxText with id 'TextureCoordinateGeneratorModeButton'.
-	m_TextureCoordinateGeneratorModeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_mode_changed));
 
 	// Call construct handler of base class.
 	construct ();

@@ -58,10 +58,10 @@ namespace puck {
 GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browserWindow) :
 	                    X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
-	                               solid (),
-	                                 ccw (),
-	                              convex (),
-	                         creaseAngle ()
+	                               solid (browserWindow, getSolidCheckButton (),  "solid"),
+	                                 ccw (browserWindow, getCCWCheckButton (),    "ccw"),
+	                              convex (browserWindow, getConvexCheckButton (), "convex"),
+	                         creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle")
 {
 	getCreaseAngleAdjustment () -> set_upper (M_PI); // getExecutionContext () .fromRadiant (M_PI);
 }
@@ -79,14 +79,12 @@ GeometryPropertiesEditor::initialize ()
 void
 GeometryPropertiesEditor::set_selection ()
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
-	X3D::MFNode geometryNodes = getNodes (selection, { X3D::X3DConstants::X3DGeometryNode });
-
-	solid  .reset (new ToggleButton <X3D::SFBool> (getBrowserWindow (), getSolidCheckButton (),  geometryNodes, "solid"));
-	ccw    .reset (new ToggleButton <X3D::SFBool> (getBrowserWindow (), getCCWCheckButton (),    geometryNodes, "ccw"));
-	convex .reset (new ToggleButton <X3D::SFBool> (getBrowserWindow (), getConvexCheckButton (), geometryNodes, "convex"));
-	creaseAngle .reset (new Adjustment <X3D::SFFloat> (getBrowserWindow (), getCreaseAngleAdjustment (), getCreaseAngleBox (), geometryNodes, "creaseAngle"));
+	solid       .setNodes (nodes);
+	ccw         .setNodes (nodes);
+	convex      .setNodes (nodes);
+	creaseAngle .setNodes (nodes);
 }
 
 } // puck

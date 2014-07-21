@@ -51,6 +51,7 @@
 #ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
 #define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
 
+#include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
@@ -91,21 +92,15 @@ private:
 	void
 	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
-	void
-	on_textureCoordinateGenerator_mode_changed ();
-
-	void
-	set_textureCoordinateGenerator_mode ();
-
-	void
-	connectTextureCoordinateGeneratorMode (const X3D::SFString &);
-
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
+	X3D::SFNode                                   textureCoordinateGeneratorBuffer;
 	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
 	UndoStepPtr                                   undoStep;
 	bool                                          changing;
+
+	SFStringComboBoxText mode;
 
 };
 

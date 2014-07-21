@@ -48,26 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_FIELDS_TOGGLE_BUTTON_H__
-#define __TITANIA_FIELDS_TOGGLE_BUTTON_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_SFSTRING_COMBO_BOX_TEXT_H__
+#define __TITANIA_COMPOSED_WIDGETS_SFSTRING_COMBO_BOX_TEXT_H__
 
 #include "../Base/X3DEditorObject.h"
 
 namespace titania {
 namespace puck {
 
-template <class Type>
-class ToggleButton :
+class SFStringComboBoxText :
 	public X3DEditorObject
 {
 public:
 
 	///  @name Construction
 
-	ToggleButton (BrowserWindow* const,
-	              Gtk::ToggleButton &,
-	              const X3D::MFNode &,
-	              const std::string &);
+	SFStringComboBoxText (BrowserWindow* const,
+	                      Gtk::ComboBoxText &,
+	                      const std::string &);
+
+	///  @name Member access
+
+	void
+	setNodes (const X3D::MFNode &);
 
 
 private:
@@ -75,44 +78,62 @@ private:
 	///  @name Event handler
 
 	void
-	on_toggled ();
+	on_changed ();
 
 	void
 	set_field ();
 
 	void
-	connect (const Type &);
+	connect (const X3D::SFString &);
 
 	///  @name Members
 
-	Gtk::ToggleButton & toggleButton;
-	const X3D::MFNode   nodes;
+	Gtk::ComboBoxText & comboBoxText;
+	X3D::MFNode         nodes;
 	const std::string   name;
 	UndoStepPtr         undoStep;
 	bool                changing;
 
 };
 
-template <class Type>
-ToggleButton <Type>::ToggleButton (BrowserWindow* const browserWindow,
-                                   Gtk::ToggleButton & toggleButton,
-                                   const X3D::MFNode & nodes,
-                                   const std::string & name) :
+inline
+SFStringComboBoxText::SFStringComboBoxText (BrowserWindow* const browserWindow,
+                                            Gtk::ComboBoxText & comboBoxText,
+                                            const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DEditorObject (),
-	    toggleButton (toggleButton),
-	           nodes (nodes),
+	    comboBoxText (comboBoxText),
+	           nodes (),
 	            name (name),
 	        undoStep (),
 	        changing (false)
 {
-	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &ToggleButton::on_toggled));
+	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &SFStringComboBoxText::on_changed));
+}
+
+inline
+void
+SFStringComboBoxText::setNodes (const X3D::MFNode & value)
+{
+	undoStep .reset ();
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &ToggleButton::set_field);
+			node -> getField <X3D::SFString> (name) .removeInterest (this, &SFStringComboBoxText::set_field);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	nodes = value;
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> getField <X3D::SFString> (name) .addInterest (this, &SFStringComboBoxText::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -121,57 +142,57 @@ ToggleButton <Type>::ToggleButton (BrowserWindow* const browserWindow,
 	set_field ();
 }
 
-template <class Type>
+inline
 void
-ToggleButton <Type>::on_toggled ()
+SFStringComboBoxText::on_changed ()
 {
 	if (changing)
 		return;
 
-	toggleButton .set_inconsistent (false);
-
-	addUndoFunction <Type> (nodes, name, undoStep);
+	addUndoFunction <X3D::SFString> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			auto & field = node -> getField <Type> (name);
+			auto & field = node -> getField <X3D::SFString> (name);
 
-			field .removeInterest (this, &ToggleButton::set_field);
-			field .addInterest (this, &ToggleButton::connect);
+			field .removeInterest (this, &SFStringComboBoxText::set_field);
+			field .addInterest (this, &SFStringComboBoxText::connect);
 
-			field = toggleButton .get_active ();
+			field = comboBoxText .get_active_text ();
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	addRedoFunction <Type> (nodes, name, undoStep);
+	addRedoFunction <X3D::SFString> (nodes, name, undoStep);
 }
 
-template <class Type>
+inline
 void
-ToggleButton <Type>::set_field ()
+SFStringComboBoxText::set_field ()
 {
 	changing = true;
 
-	const int  active   = getBoolean (nodes, name);
-	const bool hasField = (active not_eq -2);
+	const auto pair = getString (nodes, name);
 
-	toggleButton .set_sensitive (hasField);
-	toggleButton .set_active (active > 0);
-	toggleButton .set_inconsistent (active < 0);
+	if (pair .second > 0)
+		comboBoxText .set_active_text (pair .first);
+	else
+		comboBoxText .set_active (-1);
+
+	comboBoxText .set_sensitive (pair .second not_eq -2);
 
 	changing = false;
 }
 
-template <class Type>
+inline
 void
-ToggleButton <Type>::connect (const Type & field)
+SFStringComboBoxText::connect (const X3D::SFString & field)
 {
-	field .removeInterest (this, &ToggleButton::connect);
-	field .addInterest (this, &ToggleButton::set_field);
+	field .removeInterest (this, &SFStringComboBoxText::connect);
+	field .addInterest (this, &SFStringComboBoxText::set_field);
 }
 
 } // puck

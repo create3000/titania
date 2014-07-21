@@ -1,24 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/X3DEditorInterface.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/TextEditor/TextEditor.h" Line="74" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/TextEditor.cpp" Line="163" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexturePropertiesEditor.h" Line="82" Column="29" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexturePropertiesEditor.cpp" Line="52" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureProperties.cpp" Line="199" Column="44" />
-      <File FileName="Titania/Titania/TextureEditor/X3DImageTextureEditor.h" Line="76" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DImageTextureEditor.cpp" Line="69" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureNodeEditor.cpp" Line="229" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp" Line="67" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.h" Line="83" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.cpp" Line="91" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DEditorInterface.h" Line="68" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DEditorInterface.cpp" Line="50" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldToggleButton.h" Line="121" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment.h" Line="120" Column="5" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureTransformEditor.cpp" Line="85" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="uncrustify-all" expanded="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
@@ -28,14 +21,22 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
                   <Node name="Shaders" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                   <Node name="Texturing3D" expanded="True" />
+                </Node>
+                <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -49,12 +50,12 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True">
-                <Node name="X3DEditorInterface.h" selected="True" />
-              </Node>
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="ComposedWidgets" expanded="True" selected="True" />
               <Node name="GeometryPropertiesEditor" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True" />
               <Node name="TextEditor" expanded="True" />
               <Node name="TextureEditor" expanded="True" />
             </Node>

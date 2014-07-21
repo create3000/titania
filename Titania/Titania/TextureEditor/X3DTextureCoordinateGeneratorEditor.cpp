@@ -54,12 +54,17 @@ namespace titania {
 namespace puck {
 
 X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
-	 X3DTextureEditorInterface ("", ""),
-	             geometryNodes (),
-	textureCoordinateGenerator (),
-	                  undoStep (),
-	                  changing (false)
-{ }
+	       X3DTextureEditorInterface ("", ""),
+	                   geometryNodes (),
+	textureCoordinateGeneratorBuffer (),
+	      textureCoordinateGenerator (),
+	                        undoStep (),
+	                        changing (false),
+	                            mode (getBrowserWindow (), getTextureCoordinateGeneratorModeButton (), "mode")
+{
+	textureCoordinateGeneratorBuffer .addParent (getBrowser ());
+	textureCoordinateGeneratorBuffer .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+}
 
 void
 X3DTextureCoordinateGeneratorEditor::initialize ()
@@ -72,43 +77,27 @@ X3DTextureCoordinateGeneratorEditor::initialize ()
 void
 X3DTextureCoordinateGeneratorEditor::set_selection ()
 {
+	undoStep .reset ();
+
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			geometry -> getField <X3D::SFFloat> ("texCoord") .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+			geometry -> getField <X3D::SFFloat> ("texCoord") .removeInterest (textureCoordinateGeneratorBuffer);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	undoStep .reset ();
-
 	// Find X3DGeometryNodes
 
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	geometryNodes .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (type == X3D::X3DConstants::X3DGeometryNode)
-	                     {
-	                        geometryNodes .emplace_back (node);
-	                        return true;
-								}
-							}
-
-	                  return true;
-						});
+	geometryNodes = getSelection <X3D::X3DGeometryNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
 	for (const auto & geometry : geometryNodes)
 	{
 		try
 		{
-			geometry -> getField <X3D::SFFloat> ("texCoord") .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+			geometry -> getField <X3D::SFFloat> ("texCoord") .addInterest (textureCoordinateGeneratorBuffer);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -146,7 +135,7 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 		{
 			auto & field = geometry -> getField <X3D::SFNode> ("texCoord");
 
-			field .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+			field .removeInterest (textureCoordinateGeneratorBuffer);
 			field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator);
 
 			if (getTextureCoordinateGeneratorCheckButton () .get_active ())
@@ -160,15 +149,12 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 
 	addRedoFunction <X3D::SFNode> (geometryNodes, "texCoord", undoStep);
 
-	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (getTextureCoordinateGeneratorCheckButton () .get_active () and textureCoordinateGenerator -> getCloneCount () > 1);
+	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (getTextureCoordinateGeneratorCheckButton () .get_active () and textureCoordinateGenerator -> isCloned () > 1);
 }
 
 void
 X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator ()
 {
-	if (textureCoordinateGenerator)
-		textureCoordinateGenerator -> mode () .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator_mode);
-
 	auto       pair     = getNode <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);
@@ -187,60 +173,19 @@ X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator ()
 	getTextureCoordinateGeneratorCheckButton () .set_active (active > 0);
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (active < 0);
 
-	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (active > 0 and textureCoordinateGenerator -> getCloneCount () > 1);
+	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (active > 0 and textureCoordinateGenerator -> isCloned () > 1);
 	getTextureCoordinateGeneratorBox ()          .set_sensitive (active > 0);
 
 	changing = false;
 
-	textureCoordinateGenerator -> mode () .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator_mode);
-
-	set_textureCoordinateGenerator_mode ();
+	mode .setNodes ({ textureCoordinateGenerator });
 }
 
 void
 X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator);
-	field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
-}
-
-/***********************************************************************************************************************
- *
- *  mode
- *
- **********************************************************************************************************************/
-
-void
-X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_mode_changed ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (textureCoordinateGenerator, textureCoordinateGenerator -> mode (), undoStep);
-
-	textureCoordinateGenerator -> mode () .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator_mode);
-	textureCoordinateGenerator -> mode () .addInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGeneratorMode);
-
-	textureCoordinateGenerator -> mode () = getTextureCoordinateGeneratorModeButton () .get_active_text ();
-
-	addRedoFunction (textureCoordinateGenerator -> mode (), undoStep);
-}
-
-void
-X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator_mode ()
-{
-	changing = true;
-
-	getTextureCoordinateGeneratorModeButton () .set_active_text (textureCoordinateGenerator -> mode ());
-
-	changing = false;
-}
-
-void
-X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGeneratorMode (const X3D::SFString & field)
-{
-	field .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGeneratorMode);
-	field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator_mode);
+	field .addInterest (textureCoordinateGeneratorBuffer);
 }
 
 } // puck

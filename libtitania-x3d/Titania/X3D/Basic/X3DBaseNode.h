@@ -275,6 +275,9 @@ public:
 	///  @name Special functions
 
 	size_t
+	isCloned () const;
+
+	size_t
 	getCloneCount () const;
 
 	bool

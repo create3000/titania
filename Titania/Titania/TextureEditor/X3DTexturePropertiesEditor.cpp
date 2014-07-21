@@ -58,7 +58,8 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	             textureNodes (),
 	        textureProperties (),
 	                 undoStep (),
-	                 changing (false)
+	                 changing (false),
+	          generateMipMaps (getBrowserWindow (), getGenerateMipMapsCheckButton (), "generateMipMaps")
 { }
 
 void
@@ -84,35 +85,14 @@ X3DTexturePropertiesEditor::set_selection ()
 
 	undoStep .reset ();
 
-	// Find Appearances.
-
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	textureNodes .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     switch (type)
-	                     {
-									case X3D::X3DConstants::ImageTexture:
-									case X3D::X3DConstants::MovieTexture:
-									case X3D::X3DConstants::PixelTexture:
-									case X3D::X3DConstants::ComposedTexture3D:
-									case X3D::X3DConstants::ImageTexture3D:
-									case X3D::X3DConstants::PixelTexture3D:
-										{
-										   textureNodes .emplace_back (node);
-										   return true;
-										}
-									default:
-										break;
-								}
-							}
-
-	                  return true;
-						});
+	textureNodes = getSelection <X3D::X3DTextureNode> ({
+		X3D::X3DConstants::ImageTexture,
+		X3D::X3DConstants::MovieTexture,
+		X3D::X3DConstants::PixelTexture,
+		X3D::X3DConstants::ComposedTexture3D,
+		X3D::X3DConstants::ImageTexture3D,
+		X3D::X3DConstants::PixelTexture3D
+	});
 
 	for (const auto & textureNode : textureNodes)
 	{
@@ -172,17 +152,12 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 
 	addRedoFunction <X3D::SFNode> (textureNodes, "textureProperties", undoStep);
 
-	getTexturePropertiesUnlinkButton () .set_sensitive (getTexturePropertiesCheckButton () .get_active () and textureProperties -> getCloneCount () > 1);
+	getTexturePropertiesUnlinkButton () .set_sensitive (getTexturePropertiesCheckButton () .get_active () and textureProperties -> isCloned () > 1);
 }
 
 void
 X3DTexturePropertiesEditor::set_textureProperties ()
 {
-	if (textureProperties)
-	{
-		textureProperties -> generateMipMaps () .removeInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
-	}
-
 	auto       pair     = getNode <X3D::TextureProperties> (textureNodes, "textureProperties");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);
@@ -202,14 +177,12 @@ X3DTexturePropertiesEditor::set_textureProperties ()
 	getTexturePropertiesCheckButton () .set_active (active > 0);
 	getTexturePropertiesCheckButton () .set_inconsistent (active < 0);
 
-	getTexturePropertiesUnlinkButton () .set_sensitive (active > 0 and textureProperties -> getCloneCount () > 1);
+	getTexturePropertiesUnlinkButton () .set_sensitive (active > 0 and textureProperties -> isCloned () > 1);
 	getTexturePropertiesBox ()          .set_sensitive (active > 0);
 
 	changing = false;
 
-	textureProperties -> generateMipMaps () .addInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
-
-	set_generateMipMaps ();
+	generateMipMaps .setNodes ({ textureProperties });
 }
 
 void
@@ -217,45 +190,6 @@ X3DTexturePropertiesEditor::connectTextureProperties (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DTexturePropertiesEditor::connectTextureProperties);
 	field .addInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
-}
-
-/***********************************************************************************************************************
- *
- *  generateMipMaps
- *
- **********************************************************************************************************************/
-
-void
-X3DTexturePropertiesEditor::on_generateMipMaps_toggled ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (textureProperties, textureProperties -> generateMipMaps (), undoStep);
-
-	textureProperties -> generateMipMaps () .removeInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
-	textureProperties -> generateMipMaps () .addInterest (this, &X3DTexturePropertiesEditor::connectGenerateMipMaps);
-
-	textureProperties -> generateMipMaps () = getGenerateMipMapsCheckButton () .get_active ();
-
-	addRedoFunction (textureProperties -> generateMipMaps (), undoStep);
-}
-
-void
-X3DTexturePropertiesEditor::set_generateMipMaps ()
-{
-	changing = true;
-
-	getGenerateMipMapsCheckButton () .set_active (textureProperties -> generateMipMaps ());
-
-	changing = false;
-}
-
-void
-X3DTexturePropertiesEditor::connectGenerateMipMaps (const X3D::SFBool & field)
-{
-	field .removeInterest (this, &X3DTexturePropertiesEditor::connectGenerateMipMaps);
-	field .addInterest (this, &X3DTexturePropertiesEditor::set_generateMipMaps);
 }
 
 } // puck

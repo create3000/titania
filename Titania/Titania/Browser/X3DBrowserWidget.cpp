@@ -69,7 +69,8 @@ X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
 	                    scene (getBrowser () -> getExecutionContext ()),
 	         executionContext (scene)
 {
-	addChildren (scene, executionContext);
+	scene            .addParent (getBrowser ());
+	executionContext .addParent (getBrowser ());
 
 	parseOptions (argc, argv);
 }

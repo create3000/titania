@@ -51,6 +51,7 @@
 #ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM_EDITOR_H__
 #define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM_EDITOR_H__
 
+#include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
@@ -76,59 +77,14 @@ protected:
 
 private:
 
-	///  @name translation
-
-	virtual
-	void
-	on_textureTransform_translation_changed () final override;
-
-	void
-	set_translation ();
-
-	void
-	connectTranslation (const X3D::SFVec2f &);
-
-	///  @name rotation
-
-	virtual
-	void
-	on_textureTransform_rotation_changed () final override;
-
-	void
-	set_rotation ();
-
-	void
-	connectRotation (const X3D::SFFloat &);
-
-	///  @name scale
-
-	virtual
-	void
-	on_textureTransform_scale_changed () final override;
-
-	void
-	set_scale ();
-
-	void
-	connectScale (const X3D::SFVec2f &);
-
-	///  @name center
-
-	virtual
-	void
-	on_textureTransform_center_changed () final override;
-
-	void
-	set_center ();
-
-	void
-	connectCenter (const X3D::SFVec2f &);
-
 	///  @name Members
 
 	X3D::X3DPtr <X3D::TextureTransform> textureTransform;
-	UndoStepPtr                         undoStep;
-	bool                                changing;
+
+	X3DFieldAdjustment2 <X3D::SFVec2f> translation;	
+	X3DFieldAdjustment <X3D::SFFloat>  rotation;	
+	X3DFieldAdjustment2 <X3D::SFVec2f> scale;	
+	X3DFieldAdjustment2 <X3D::SFVec2f> center;	
 
 };
 

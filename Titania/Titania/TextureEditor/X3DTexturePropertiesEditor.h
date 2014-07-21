@@ -51,6 +51,7 @@
 #ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_PROPERTIES_EDITOR_H__
 #define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_PROPERTIES_EDITOR_H__
 
+#include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
@@ -91,24 +92,14 @@ private:
 	void
 	connectTextureProperties (const X3D::SFNode &);
 
-	///  @name generateMipMaps
-
-	virtual
-	void
-	on_generateMipMaps_toggled () final override;
-
-	void
-	set_generateMipMaps ();
-
-	void
-	connectGenerateMipMaps (const X3D::SFBool &);
-
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DTextureNode> textureNodes;
 	X3D::X3DPtr <X3D::TextureProperties>   textureProperties;
 	UndoStepPtr                            undoStep;
 	bool                                   changing;
+
+	X3DFieldToggleButton <X3D::SFBool> generateMipMaps;
 
 };
 

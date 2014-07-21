@@ -58,10 +58,14 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 	X3DTextureEditorInterface ("", ""),
 	X3DTextureTransformEditor (),
 	              appearances (),
+	   textureTransformBuffer (),
 	     textureTransformNode (),
 	                 undoStep (),
 	                 changing (false)
 {
+	textureTransformBuffer .addParent (getBrowser ());
+	textureTransformBuffer .addInterest (this, &X3DTextureTransformNodeEditor::set_node);
+
 	getWidget () .signal_map () .connect (sigc::bind (sigc::mem_fun (getWindow (), &Gtk::Window::resize), 1, 1));
 }
 
@@ -76,30 +80,12 @@ X3DTextureTransformNodeEditor::initialize ()
 void
 X3DTextureTransformNodeEditor::set_selection ()
 {
+	undoStep .reset ();
+
 	for (const auto & appearance : appearances)
 		appearance -> textureTransform () .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
 
-	undoStep .reset ();
-
-	// Find Appearances.
-
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	appearances .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (type == X3D::X3DConstants::Appearance)
-	                     {
-	                        appearances .emplace_back (node);
-	                        return true;
-								}
-							}
-
-	                  return true;
-						});
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> textureTransform () .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
@@ -117,11 +103,13 @@ void
 X3DTextureTransformNodeEditor::on_textureTransform_unlink_clicked ()
 {
 	unlinkClone (appearances, "textureTransform", undoStep);
+	__LOG__ << std::endl;
 }
 
 void
 X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 {
+	__LOG__ << std::endl;
 	getTextureTransformNotebook () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0);
 
 	getTextureTransformBox () .set_visible (false);
@@ -180,12 +168,19 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
 
-	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0 and textureTransformNode -> getCloneCount () > 1);
+	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0 and textureTransformNode -> isCloned () > 1);
 }
 
 void
 X3DTextureTransformNodeEditor::set_textureTransform ()
 {
+	textureTransformBuffer .addEvent ();
+}
+
+void
+X3DTextureTransformNodeEditor::set_node ()
+{
+	__LOG__ << std::endl;
 	auto       pair     = getNode <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);
@@ -217,7 +212,7 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 		getTextureTransformButton () .set_active (-1);
 
 	getTextureTransformButton ()       .set_sensitive (hasField);
-	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> getCloneCount () > 1);
+	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> isCloned () > 1);
 
 	changing = false;
 }

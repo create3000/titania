@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_FIELDS_ADJUSTMENT_H__
-#define __TITANIA_FIELDS_ADJUSTMENT_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT2_H__
+#define __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT2_H__
 
 #include "../Base/X3DEditorObject.h"
 
@@ -57,18 +57,23 @@ namespace titania {
 namespace puck {
 
 template <class Type>
-class Adjustment :
+class X3DFieldAdjustment2 :
 	public X3DEditorObject
 {
 public:
 
 	///  @name Construction
 
-	Adjustment (BrowserWindow* const,
-	            const Glib::RefPtr <Gtk::Adjustment> &, 
-	            Gtk::Widget &,
-	            const X3D::MFNode &,
-	            const std::string &);
+	X3DFieldAdjustment2 (BrowserWindow* const,
+	                     const Glib::RefPtr <Gtk::Adjustment> &,
+	                     const Glib::RefPtr <Gtk::Adjustment> &,
+	                     Gtk::Widget &,
+	                     const std::string &);
+
+	///  @name Member access
+
+	void
+	setNodes (const X3D::MFNode &);
 
 
 private:
@@ -86,9 +91,10 @@ private:
 
 	///  @name Members
 
-	const Glib::RefPtr <Gtk::Adjustment> adjustment;
+	const Glib::RefPtr <Gtk::Adjustment> adjustment1;
+	const Glib::RefPtr <Gtk::Adjustment> adjustment2;
 	Gtk::Widget &                        widget;
-	const X3D::MFNode                    nodes;
+	X3D::MFNode                          nodes;
 	const std::string                    name;
 	UndoStepPtr                          undoStep;
 	bool                                 changing;
@@ -96,27 +102,48 @@ private:
 };
 
 template <class Type>
-Adjustment <Type>::Adjustment (BrowserWindow* const browserWindow,
-                               const Glib::RefPtr <Gtk::Adjustment> & adjustment,
-                               Gtk::Widget & widget,
-                               const X3D::MFNode & nodes,
-                               const std::string & name) :
+X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (BrowserWindow* const browserWindow,
+                                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment1,
+                                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
+                                                 Gtk::Widget & widget,
+                                                 const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DEditorObject (),
-	      adjustment (adjustment),
+	     adjustment1 (adjustment1),
+	     adjustment2 (adjustment2),
 	          widget (widget),
-	           nodes (nodes),
+	           nodes (),
 	            name (name),
 	        undoStep (),
 	        changing (false)
 {
-	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &Adjustment::on_value_changed));
+	adjustment1 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed));
+	adjustment2 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed));
+}
+
+template <class Type>
+void
+X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
+{
+	undoStep .reset ();
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &Adjustment::set_field);
+			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment2::set_field);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	nodes = value;
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment2::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -127,8 +154,11 @@ Adjustment <Type>::Adjustment (BrowserWindow* const browserWindow,
 
 template <class Type>
 void
-Adjustment <Type>::on_value_changed ()
+X3DFieldAdjustment2 <Type>::on_value_changed ()
 {
+	if (changing)
+		return;
+
 	addUndoFunction <Type> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)
@@ -137,10 +167,11 @@ Adjustment <Type>::on_value_changed ()
 		{
 			auto & field = node -> getField <Type> (name);
 
-			field .removeInterest (this, &Adjustment::set_field);
-			field .addInterest (this, &Adjustment::connect);
+			field .removeInterest (this, &X3DFieldAdjustment2::set_field);
+			field .addInterest (this, &X3DFieldAdjustment2::connect);
 
-			field = adjustment -> get_value ();
+			field .set1Value (0, adjustment1 -> get_value ());
+			field .set1Value (1, adjustment2 -> get_value ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -151,11 +182,9 @@ Adjustment <Type>::on_value_changed ()
 
 template <class Type>
 void
-Adjustment <Type>::set_field ()
+X3DFieldAdjustment2 <Type>::set_field ()
 {
 	changing = true;
-
-	adjustment -> set_value (0);
 
 	// Find last »creaseAngle« field.
 
@@ -165,12 +194,22 @@ Adjustment <Type>::set_field ()
 	{
 		try
 		{
-			adjustment -> set_value (node -> getField <Type> (name));
+			const auto & field = node -> getField <Type> (name);
+		
+			adjustment1 -> set_value (field .get1Value (0));
+			adjustment2 -> set_value (field .get1Value (1));
+
 			hasField = true;
 			break;
 		}
 		catch (const X3D::X3DError &)
 		{ }
+	}
+
+	if (not hasField)
+	{
+		adjustment1 -> set_value (adjustment1 -> get_lower ());
+		adjustment2 -> set_value (adjustment2 -> get_lower ());
 	}
 
 	widget .set_sensitive (hasField);
@@ -180,10 +219,10 @@ Adjustment <Type>::set_field ()
 
 template <class Type>
 void
-Adjustment <Type>::connect (const Type & field)
+X3DFieldAdjustment2 <Type>::connect (const Type & field)
 {
-	field .removeInterest (this, &Adjustment::connect);
-	field .addInterest (this, &Adjustment::set_field);
+	field .removeInterest (this, &X3DFieldAdjustment2::connect);
+	field .addInterest (this, &X3DFieldAdjustment2::set_field);
 }
 
 } // puck

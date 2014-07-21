@@ -61,12 +61,16 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.xml"), gconf_dir ()),
 	                   preview (X3D::createBrowser (browserWindow -> getBrowser ())),
 	               appearances (),
+	            materialBuffer (),
 	                  material (),
 	          twoSidedMaterial (),
 	        isTwoSidedMaterial (false),
 	                  undoStep (),
 	                  changing (false)
 {
+	materialBuffer .addParent (getBrowser ());
+	materialBuffer .addInterest (this, &MaterialEditor::set_node);
+
 	preview -> set_antialiasing (4);
 
 	initDialog (getDiffuseDialog (),  &MaterialEditor::on_diffuseColor_changed);
@@ -121,23 +125,7 @@ MaterialEditor::set_selection ()
 
 	// Find Appearances.
 
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	appearances .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (type == X3D::X3DConstants::Appearance)
-	                     {
-	                        appearances .emplace_back (node);
-	                        return true;
-								}
-							}
-
-	                  return true;
-						});
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> material () .addInterest (this, &MaterialEditor::set_material);
@@ -404,9 +392,9 @@ MaterialEditor::on_material_changed ()
 	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
 	if (isTwoSidedMaterial)
-		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and twoSidedMaterial -> getCloneCount () > 1);
+		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and twoSidedMaterial -> isCloned () > 1);
 	else
-		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and material -> getCloneCount () > 1);
+		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and material -> isCloned () > 1);
 
 	set_preview ();
 
@@ -415,6 +403,12 @@ MaterialEditor::on_material_changed ()
 
 void
 MaterialEditor::set_material ()
+{
+	materialBuffer .addEvent ();
+}
+
+void
+MaterialEditor::set_node ()
 {
 	if (material)
 	{
@@ -497,9 +491,9 @@ MaterialEditor::set_material ()
 	getMaterialButton () .set_sensitive (hasField);
 
 	if (isTwoSidedMaterial)
-		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> getCloneCount () > 1);
+		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> isCloned () > 1);
 	else
-		getMaterialUnlinkButton () .set_sensitive (active > 0 and material -> getCloneCount () > 1);
+		getMaterialUnlinkButton () .set_sensitive (active > 0 and material -> isCloned () > 1);
 
 	changing = false;
 
