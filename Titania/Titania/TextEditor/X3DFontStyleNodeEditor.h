@@ -51,6 +51,7 @@
 #ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
 #define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
 
+#include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextEditorInterface.h"
 
 namespace titania {
@@ -87,6 +88,9 @@ private:
 
 	void
 	set_fontStyle ();
+
+	void
+	set_node ();
 
 	void
 	connectFontStyle (const X3D::SFNode &);
@@ -154,54 +158,6 @@ private:
 	void
 	connectSize (const X3D::SFFloat &);
 
-	///  @name spacing
-
-	virtual
-	void
-	on_spacing_changed () final override;
-
-	void
-	set_spacing ();
-
-	void
-	connectSpacing (const X3D::SFFloat &);
-
-	///  @name horizontal
-
-	virtual
-	void
-	on_horizontal_toggled () final override;
-
-	void
-	set_horizontal ();
-
-	void
-	connectHorizontal (const X3D::SFBool &);
-
-	///  @name leftToRight
-
-	virtual
-	void
-	on_leftToRight_toggled () final override;
-
-	void
-	set_leftToRight ();
-
-	void
-	connectLeftToRight (const X3D::SFBool &);
-
-	///  @name topToBottom
-
-	virtual
-	void
-	on_topToBottom_toggled () final override;
-
-	void
-	set_topToBottom ();
-
-	void
-	connectTopToBottom (const X3D::SFBool &);
-
 	///  @name justify
 
 	virtual
@@ -217,11 +173,17 @@ private:
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::Text>        texts;
+	X3D::SFTime                         fontStyleNodeBuffer;
 	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
 	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
 	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
 	UndoStepPtr                         undoStep;
 	bool                                changing;
+
+	X3DFieldAdjustment <X3D::SFFloat>  spacing;
+	X3DFieldToggleButton <X3D::SFBool> horizontal;
+	X3DFieldToggleButton <X3D::SFBool> leftToRight;
+	X3DFieldToggleButton <X3D::SFBool> topToBottom;
 
 };
 

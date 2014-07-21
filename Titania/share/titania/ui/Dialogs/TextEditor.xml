@@ -12,7 +12,6 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
-    <signal name="value-changed" handler="on_maxExtent_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="SizeAdjustment">
     <property name="upper">1000000000</property>
@@ -26,7 +25,6 @@
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
-    <signal name="value-changed" handler="on_spacing_changed" swapped="no"/>
   </object>
   <object class="GtkTextBuffer" id="StringTextBuffer">
     <signal name="changed" handler="on_string_changed" swapped="no"/>
@@ -534,7 +532,6 @@
                         <property name="xalign">0</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_horizontal_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -552,7 +549,6 @@
                         <property name="xalign">0</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_leftToRight_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -570,7 +566,6 @@
                         <property name="xalign">0</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_topToBottom_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>

@@ -103,13 +103,11 @@ void
 X3DTextureTransformNodeEditor::on_textureTransform_unlink_clicked ()
 {
 	unlinkClone (appearances, "textureTransform", undoStep);
-	__LOG__ << std::endl;
 }
 
 void
 X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 {
-	__LOG__ << std::endl;
 	getTextureTransformNotebook () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0);
 
 	getTextureTransformBox () .set_visible (false);
@@ -180,7 +178,6 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 void
 X3DTextureTransformNodeEditor::set_node ()
 {
-	__LOG__ << std::endl;
 	auto       pair     = getNode <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

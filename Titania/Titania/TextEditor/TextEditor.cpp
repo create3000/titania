@@ -62,10 +62,18 @@ TextEditor::TextEditor (BrowserWindow* const browserWindow) :
 	X3DTextEditorInterface (get_ui ("Dialogs/TextEditor.xml"), gconf_dir ()),
 	X3DFontStyleNodeEditor (),
 	            shapeNodes (),
+	    geometryNodeBuffer (),
 	                  text (),
 	              undoStep (),
-	              changing (false)
-{ }
+	              changing (false),
+	             maxExtent (browserWindow,
+	                        getMaxExtentAdjustment (),
+	                        getMaxExtentSpinButton (),
+	                        "maxExtent")
+{
+	geometryNodeBuffer .addParent (getBrowser ());
+	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
+}
 
 void
 TextEditor::initialize ()
@@ -81,30 +89,12 @@ TextEditor::initialize ()
 void
 TextEditor::set_selection ()
 {
+	undoStep .reset ();
+
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_text);
 
-	undoStep .reset ();
-
-	// Find Appearances.
-
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	shapeNodes .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (type == X3D::X3DConstants::X3DShapeNode)
-	                     {
-	                        shapeNodes .emplace_back (node);
-	                        return true;
-								}
-							}
-
-	                  return true;
-						});
+	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> geometry () .addInterest (this, &TextEditor::set_text);
@@ -165,11 +155,14 @@ TextEditor::on_text_toggled ()
 void
 TextEditor::set_text ()
 {
+	geometryNodeBuffer .addEvent ();
+}
+
+void
+TextEditor::set_node ()
+{
 	if (text)
-	{
-		text -> string ()    .removeInterest (this, &TextEditor::set_string);
-		text -> maxExtent () .removeInterest (this, &TextEditor::set_maxExtent);
-	}
+		text -> string () .removeInterest (this, &TextEditor::set_string);
 
 	auto       pair     = getNode <X3D::Text> (shapeNodes, "geometry");
 	const int  active   = pair .second;
@@ -195,11 +188,11 @@ TextEditor::set_text ()
 
 	changing = false;
 
-	text -> string ()    .addInterest (this, &TextEditor::set_string);
-	text -> maxExtent () .addInterest (this, &TextEditor::set_maxExtent);
+	text -> string () .addInterest (this, &TextEditor::set_string);
 
 	set_string ();
-	set_maxExtent ();
+	
+	maxExtent .setNodes ({ text });
 
 	X3DFontStyleNodeEditor::set_selection ();
 }
@@ -264,41 +257,6 @@ TextEditor::connectString (const X3D::MFString & field)
 {
 	field .removeInterest (this, &TextEditor::connectString);
 	field .addInterest (this, &TextEditor::set_string);
-}
-
-// maxExtent
-
-void
-TextEditor::on_maxExtent_changed ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (text, text -> maxExtent (), undoStep);
-
-	text -> maxExtent () .removeInterest (this, &TextEditor::set_maxExtent);
-	text -> maxExtent () .addInterest (this, &TextEditor::connectMaxExtent);
-
-	text -> maxExtent () = getMaxExtentSpinButton () .get_value ();
-
-	addRedoFunction (text -> maxExtent (), undoStep);
-}
-
-void
-TextEditor::set_maxExtent ()
-{
-	changing = true;
-
-	getMaxExtentSpinButton () .set_value (text -> maxExtent ());
-
-	changing = false;
-}
-
-void
-TextEditor::connectMaxExtent (const X3D::SFFloat & field)
-{
-	field .removeInterest (this, &TextEditor::connectMaxExtent);
-	field .addInterest (this, &TextEditor::set_maxExtent);
 }
 
 } // puck

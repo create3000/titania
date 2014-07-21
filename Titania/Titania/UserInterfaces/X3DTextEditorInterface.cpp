@@ -131,10 +131,8 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 	m_FamilyChooserDialog -> set_name ("FamilyChooserDialog");
 
-	// Connect object Gtk::Adjustment with id 'MaxExtentAdjustment'.
-	m_MaxExtentAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_maxExtent_changed));
+	// Connect object Gtk::Adjustment with id 'SizeAdjustment'.
 	m_SizeAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
-	m_SpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_spacing_changed));
 
 	// Connect object Gtk::TextBuffer with id 'StringTextBuffer'.
 	m_StringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));
@@ -150,11 +148,6 @@ X3DTextEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'FontStyleUnlinkButton'.
 	m_FontStyleUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_unlink_clicked));
-
-	// Connect object Gtk::CheckButton with id 'HorizontalCheckButton'.
-	m_HorizontalCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_horizontal_toggled));
-	m_LeftToRightCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_leftToRight_toggled));
-	m_TopToBottomCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_topToBottom_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'MajorAlignmentButton'.
 	m_MajorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));

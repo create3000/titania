@@ -51,6 +51,7 @@
 #ifndef __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
 #define __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
 
+#include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextEditorInterface.h"
 #include "../TextEditor/X3DFontStyleNodeEditor.h"
 
@@ -93,6 +94,9 @@ private:
 	set_text ();
 
 	void
+	set_node ();
+
+	void
 	connectText (const X3D::SFNode &);
 
 	///  @name string
@@ -107,24 +111,15 @@ private:
 	void
 	connectString (const X3D::MFString &);
 
-	///  @name maxExtent
-
-	virtual
-	void
-	on_maxExtent_changed () final override;
-
-	void
-	set_maxExtent ();
-
-	void
-	connectMaxExtent (const X3D::SFFloat &);
-
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
+	X3D::SFTime                          geometryNodeBuffer;
 	X3D::X3DPtr <X3D::Text>              text;
 	UndoStepPtr                          undoStep;
 	bool                                 changing;
+
+	X3DFieldAdjustment <X3D::SFFloat> maxExtent;
 
 };
 

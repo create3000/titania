@@ -90,6 +90,9 @@ private:
 	set_textureCoordinateGenerator ();
 
 	void
+	set_node ();
+
+	void
 	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
 	///  @name Members

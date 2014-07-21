@@ -64,12 +64,20 @@ enum FamilyEditorColumns
 X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	X3DTextEditorInterface ("", ""),
 	                 texts (),
+	   fontStyleNodeBuffer (),
 	         fontStyleNode (),
 	             fontStyle (),
 	       screenFontStyle (),
 	              undoStep (),
-	              changing (false)
+	              changing (false),
+	               spacing (getBrowserWindow (), getSpacingAdjustment (), getSpacingSpinButton (), "spacing"),
+	            horizontal (getBrowserWindow (), getHorizontalCheckButton (), "horizontal"),
+	           leftToRight (getBrowserWindow (), getLeftToRightCheckButton (), "leftToRight"),
+	           topToBottom (getBrowserWindow (), getTopToBottomCheckButton (), "topToBottom")
 {
+	fontStyleNodeBuffer .addParent (getBrowser ());
+	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
+
 	//  Drag & Drop
 
 	getFamilyTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
@@ -87,30 +95,14 @@ X3DFontStyleNodeEditor::initialize ()
 void
 X3DFontStyleNodeEditor::set_selection ()
 {
+	undoStep .reset ();
+
 	for (const auto & text : texts)
 		text -> fontStyle () .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
 
-	undoStep .reset ();
-
 	// Find Appearances.
 
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	texts .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (type == X3D::X3DConstants::Text)
-	                     {
-	                        texts .emplace_back (node);
-	                        return true;
-								}
-							}
-
-	                  return true;
-						});
+	texts = getSelection <X3D::Text> ({ X3D::X3DConstants::Text });
 
 	for (const auto & text : texts)
 		text -> fontStyle () .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
@@ -211,15 +203,17 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 void
 X3DFontStyleNodeEditor::set_fontStyle ()
 {
+	fontStyleNodeBuffer .addEvent ();
+}
+
+void
+X3DFontStyleNodeEditor::set_node ()
+{
 	if (fontStyleNode)
 	{
 		fontStyleNode -> family ()      .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
 		fontStyleNode -> style ()       .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 		fontStyleNode -> size ()        .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
-		fontStyleNode -> spacing ()     .removeInterest (this, &X3DFontStyleNodeEditor::set_spacing);
-		fontStyleNode -> horizontal ()  .removeInterest (this, &X3DFontStyleNodeEditor::set_horizontal);
-		fontStyleNode -> leftToRight () .removeInterest (this, &X3DFontStyleNodeEditor::set_leftToRight);
-		fontStyleNode -> topToBottom () .removeInterest (this, &X3DFontStyleNodeEditor::set_topToBottom);
 		fontStyleNode -> justify ()     .removeInterest (this, &X3DFontStyleNodeEditor::set_justify);
 	}
 
@@ -286,20 +280,17 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 	fontStyleNode -> family ()      .addInterest (this, &X3DFontStyleNodeEditor::set_family);
 	fontStyleNode -> style ()       .addInterest (this, &X3DFontStyleNodeEditor::set_style);
 	fontStyleNode -> size ()        .addInterest (this, &X3DFontStyleNodeEditor::set_size);
-	fontStyleNode -> spacing ()     .addInterest (this, &X3DFontStyleNodeEditor::set_spacing);
-	fontStyleNode -> horizontal ()  .addInterest (this, &X3DFontStyleNodeEditor::set_horizontal);
-	fontStyleNode -> leftToRight () .addInterest (this, &X3DFontStyleNodeEditor::set_leftToRight);
-	fontStyleNode -> topToBottom () .addInterest (this, &X3DFontStyleNodeEditor::set_topToBottom);
 	fontStyleNode -> justify ()     .addInterest (this, &X3DFontStyleNodeEditor::set_justify);
 
 	set_family ();
 	set_style ();
 	set_size ();
-	set_spacing ();
-	set_horizontal ();
-	set_leftToRight ();
-	set_topToBottom ();
 	set_justify ();
+
+	spacing     .setNodes ({ fontStyleNode });
+	horizontal  .setNodes ({ fontStyleNode });
+	leftToRight .setNodes ({ fontStyleNode });
+	topToBottom .setNodes ({ fontStyleNode });
 }
 
 void
@@ -677,162 +668,6 @@ X3DFontStyleNodeEditor::connectSize (const X3D::SFFloat & field)
 {
 	field .removeInterest (this, &X3DFontStyleNodeEditor::connectSize);
 	field .addInterest (this, &X3DFontStyleNodeEditor::set_size);
-}
-
-/***********************************************************************************************************************
- *
- *  spacing
- *
- **********************************************************************************************************************/
-
-void
-X3DFontStyleNodeEditor::on_spacing_changed ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (fontStyleNode, fontStyleNode -> spacing (), undoStep);
-
-	fontStyleNode -> spacing () .removeInterest (this, &X3DFontStyleNodeEditor::set_spacing);
-	fontStyleNode -> spacing () .addInterest (this, &X3DFontStyleNodeEditor::connectSpacing);
-
-	fontStyleNode -> spacing () = getSpacingSpinButton () .get_value ();
-
-	addRedoFunction (fontStyleNode -> spacing (), undoStep);
-}
-
-void
-X3DFontStyleNodeEditor::set_spacing ()
-{
-	changing = true;
-
-	getSpacingSpinButton () .set_value (fontStyleNode -> spacing ());
-
-	changing = false;
-}
-
-void
-X3DFontStyleNodeEditor::connectSpacing (const X3D::SFFloat & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectSpacing);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_spacing);
-}
-
-/***********************************************************************************************************************
- *
- *  horizontal
- *
- **********************************************************************************************************************/
-
-void
-X3DFontStyleNodeEditor::on_horizontal_toggled ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (fontStyleNode, fontStyleNode -> horizontal (), undoStep);
-
-	fontStyleNode -> horizontal () .removeInterest (this, &X3DFontStyleNodeEditor::set_horizontal);
-	fontStyleNode -> horizontal () .addInterest (this, &X3DFontStyleNodeEditor::connectHorizontal);
-
-	fontStyleNode -> horizontal () = getHorizontalCheckButton () .get_active ();
-
-	addRedoFunction (fontStyleNode -> horizontal (), undoStep);
-}
-
-void
-X3DFontStyleNodeEditor::set_horizontal ()
-{
-	changing = true;
-
-	getHorizontalCheckButton () .set_active (fontStyleNode -> horizontal ());
-
-	changing = false;
-}
-
-void
-X3DFontStyleNodeEditor::connectHorizontal (const X3D::SFBool & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectHorizontal);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_horizontal);
-}
-
-/***********************************************************************************************************************
- *
- *  leftToRight
- *
- **********************************************************************************************************************/
-
-void
-X3DFontStyleNodeEditor::on_leftToRight_toggled ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (fontStyleNode, fontStyleNode -> leftToRight (), undoStep);
-
-	fontStyleNode -> leftToRight () .removeInterest (this, &X3DFontStyleNodeEditor::set_leftToRight);
-	fontStyleNode -> leftToRight () .addInterest (this, &X3DFontStyleNodeEditor::connectLeftToRight);
-
-	fontStyleNode -> leftToRight () = getLeftToRightCheckButton () .get_active ();
-
-	addRedoFunction (fontStyleNode -> leftToRight (), undoStep);
-}
-
-void
-X3DFontStyleNodeEditor::set_leftToRight ()
-{
-	changing = true;
-
-	getLeftToRightCheckButton () .set_active (fontStyleNode -> leftToRight ());
-
-	changing = false;
-}
-
-void
-X3DFontStyleNodeEditor::connectLeftToRight (const X3D::SFBool & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectLeftToRight);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_leftToRight);
-}
-
-/***********************************************************************************************************************
- *
- *  topToBottom
- *
- **********************************************************************************************************************/
-
-void
-X3DFontStyleNodeEditor::on_topToBottom_toggled ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (fontStyleNode, fontStyleNode -> topToBottom (), undoStep);
-
-	fontStyleNode -> topToBottom () .removeInterest (this, &X3DFontStyleNodeEditor::set_topToBottom);
-	fontStyleNode -> topToBottom () .addInterest (this, &X3DFontStyleNodeEditor::connectTopToBottom);
-
-	fontStyleNode -> topToBottom () = getTopToBottomCheckButton () .get_active ();
-
-	addRedoFunction (fontStyleNode -> topToBottom (), undoStep);
-}
-
-void
-X3DFontStyleNodeEditor::set_topToBottom ()
-{
-	changing = true;
-
-	getTopToBottomCheckButton () .set_active (fontStyleNode -> topToBottom ());
-
-	changing = false;
-}
-
-void
-X3DFontStyleNodeEditor::connectTopToBottom (const X3D::SFBool & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectTopToBottom);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_topToBottom);
 }
 
 /***********************************************************************************************************************

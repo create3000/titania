@@ -1,5 +1,18 @@
 2014-07-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextEditor.h:
+	* TextEditor.cpp:
+	* TextEditor.xml:
+	* X3DFontStyleNodeEditor.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextEditorInterface.h:
+	* X3DTextEditorInterface.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* X3DTextureCoordinateGeneratorEditor.h:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
+2014-07-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Fields.h:
 	* ComposedWidgets.h:
 	* Adjustment.h:
