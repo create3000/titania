@@ -1,5 +1,20 @@
 2014-07-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SceneLoader.h:
+	* Loader.h:
+	* SceneLoader.cpp:
+	* TextureLoader.h:
+	* Loader.cpp:
+	* Texture3DLoader.h:
+	* TextureLoader.cpp:
+	* Texture3DLoader.cpp:
+	* X3DTexture.cpp:
+	* Inline.cpp:
+	* ImageTexture.cpp:
+	* ImageTexture3D.cpp: 
+
+2014-07-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* World.cpp:
 	* Shape.cpp:
 	* Layout.cpp:

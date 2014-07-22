@@ -68,14 +68,6 @@ public:
 
 	///  @name Member access
 
-	X3DBrowser*
-	getBrowser () const
-	{ return executionContext -> getBrowser (); }
-
-	X3DExecutionContext*
-	getExecutionContext () const
-	{ return executionContext; }
-
 	const basic::uri &
 	getWorldURL () const
 	{ return worldURL; }

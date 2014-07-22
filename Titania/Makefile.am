@@ -41,6 +41,7 @@ titania_SOURCES =  \
 	Titania/TextEditor/X3DFontStyleNodeEditor.cpp \
 	Titania/TextureEditor/TextureEditor.cpp \
 	Titania/TextureEditor/X3DImageTextureEditor.cpp \
+	Titania/TextureEditor/X3DPixelTextureEditor.cpp \
 	Titania/TextureEditor/X3DTexture2DNodeEditor.cpp \
 	Titania/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp \
 	Titania/TextureEditor/X3DTextureNodeEditor.cpp \

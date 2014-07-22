@@ -54,13 +54,15 @@
 #include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 #include "../TextureEditor/X3DImageTextureEditor.h"
+#include "../TextureEditor/X3DPixelTextureEditor.h"
 
 namespace titania {
 namespace puck {
 
 class X3DTexture2DNodeEditor :
 	virtual public X3DTextureEditorInterface,
-	public X3DImageTextureEditor
+	public X3DImageTextureEditor,
+	public X3DPixelTextureEditor
 {
 protected:
 
@@ -68,11 +70,18 @@ protected:
 
 	X3DTexture2DNodeEditor ();
 
+	///  @name Member access
+
 	void
 	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
+	virtual
 	const X3D::X3DPtr <X3D::ImageTexture> &
-	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+
+	virtual
+	const X3D::X3DPtr <X3D::PixelTexture> &
+	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
 
 
 private:
@@ -83,7 +92,7 @@ private:
 	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	///  @name Members
-	
+
 	X3DFieldToggleButton <X3D::SFBool> repeatS;
 	X3DFieldToggleButton <X3D::SFBool> repeatT;
 

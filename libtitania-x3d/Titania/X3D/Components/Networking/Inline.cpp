@@ -263,7 +263,7 @@ Inline::requestAsyncLoad ()
 
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
-	                                std::bind (std::mem_fn (&Inline::setSceneAsync), this, _1)));
+	                                std::bind (&Inline::setSceneAsync, this, _1)));
 }
 
 void

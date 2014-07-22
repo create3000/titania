@@ -70,8 +70,9 @@ protected:
 	void
 	setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
+	virtual
 	const X3D::X3DPtr <X3D::ImageTexture> &
-	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) const;
+	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 
 private:
@@ -79,8 +80,6 @@ private:
 	///  @name Members
 
 	X3D::X3DPtr <X3D::ImageTexture> imageTexture;
-	UndoStepPtr                     undoStep;
-	bool                            changing;
 
 };
 

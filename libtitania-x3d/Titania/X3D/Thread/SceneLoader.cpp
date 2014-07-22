@@ -63,7 +63,7 @@ namespace X3D {
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
 	        X3DInput (),
 	         browser (executionContext -> getBrowser ()),
-	executionContext (executionContext),
+	         referer (executionContext -> getWorldURL ()),
 	        callback (callback),
 	         running (true),
 	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
@@ -101,7 +101,7 @@ SceneLoader::loadAsync (const MFString & url)
 			scene = browser -> createScene ();
 
 		if (running)
-			Loader (executionContext) .parseIntoScene (scene, url);
+			Loader (nullptr, referer) .parseIntoScene (scene, url);
 
 		if (running)
 			return scene;

@@ -151,10 +151,6 @@ public:
 	getTextureExpander () const
 	{ return *m_TextureExpander; }
 
-	Gtk::Box &
-	getPreviewBox () const
-	{ return *m_PreviewBox; }
-
 	Gtk::ComboBoxText &
 	getTextureComboBoxText () const
 	{ return *m_TextureComboBoxText; }
@@ -162,6 +158,10 @@ public:
 	Gtk::Button &
 	getTextureUnlinkButton () const
 	{ return *m_TextureUnlinkButton; }
+
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
 
 	Gtk::Notebook &
 	getTextureNotebook () const
@@ -174,6 +174,10 @@ public:
 	Gtk::Box &
 	getImageTextureBox () const
 	{ return *m_ImageTextureBox; }
+
+	Gtk::Box &
+	getPixelTextureBox () const
+	{ return *m_PixelTextureBox; }
 
 	Gtk::Grid &
 	getTexture2DBox () const
@@ -402,12 +406,13 @@ private:
 	Gtk::Window*                   m_Window;
 	Gtk::ScrolledWindow*           m_Widget;
 	Gtk::Expander*                 m_TextureExpander;
-	Gtk::Box*                      m_PreviewBox;
 	Gtk::ComboBoxText*             m_TextureComboBoxText;
 	Gtk::Button*                   m_TextureUnlinkButton;
+	Gtk::Box*                      m_PreviewBox;
 	Gtk::Notebook*                 m_TextureNotebook;
 	Gtk::Label*                    m_TextureLabel;
 	Gtk::Box*                      m_ImageTextureBox;
+	Gtk::Box*                      m_PixelTextureBox;
 	Gtk::Grid*                     m_Texture2DBox;
 	Gtk::CheckButton*              m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*              m_Texture2DNodeRepeatTCheckButton;

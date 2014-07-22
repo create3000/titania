@@ -48,58 +48,98 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
-#define __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
-
-#include "../Browser/X3DBrowser.h"
-#include "../InputOutput/Loader.h"
-#include "../Miscellaneous/Texture3D.h"
-
-#include <atomic>
-#include <future>
+#include "X3DPixelTextureEditor.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class Texture3DLoader :
-	public X3DInput
+X3DPixelTextureEditor::X3DPixelTextureEditor () :
+	         X3DBaseInterface (),
+	X3DTextureEditorInterface ("", ""),
+	             pixelTexture (),
+	                   future ()
+{ }
+
+void
+X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-public:
+	if (future)
+		future -> dispose ();
 
-	typedef std::function <void (const Texture3DPtr &)> Callback;
+	if (pixelTexture)
+	{
+		//pixelTexture -> url () .removeInterest (this, &X3DPixelTextureEditor::set_url);
+	}
 
-	Texture3DLoader (X3DExecutionContext* const executionContext,
-	                 const MFString &, const size_t, const size_t,
-	                 const Callback &);
+	pixelTexture = value;
 
-	virtual
-	void
-	dispose () final override;
+	getPixelTextureBox () .set_visible (pixelTexture);
 
-	virtual
-	~Texture3DLoader ();
+	if (not pixelTexture)
+	{
+		pixelTexture = new X3D::PixelTexture (getExecutionContext ());
+		getExecutionContext () -> addUninitializedNode (pixelTexture);
+		getExecutionContext () -> realize ();
+	}
 
+	//pixelTexture -> url () .addInterest (this, &X3DPixelTextureEditor::set_url);
 
-private:
+	//set_url ();
+}
+	
+const X3D::X3DPtr <X3D::PixelTexture> &
+X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	getPixelTextureBox () .set_visible (value);
 
-	std::future <Texture3DPtr>
-	getFuture (const MFString &, const size_t, const size_t);
+	if (not value)
+		return pixelTexture;
 
-	Texture3DPtr
-	loadAsync (const MFString &, const size_t, const size_t);
+	switch (value -> getType () .back ()) 
+	{
+		case X3D::X3DConstants::ImageTexture:
+		{
+			using namespace std::placeholders;
 
-	void
-	prepareEvents ();
+			const X3D::X3DPtr <X3D::ImageTexture> last (value);
 
-	X3DBrowser* const          browser;
-	const basic::uri           referer;
-	Callback                   callback;
-	std::atomic <bool>         running;
-	std::future <Texture3DPtr> future;
+			future .reset (new X3D::TextureLoader (last -> getExecutionContext (),
+			                                       last -> url (),
+			                                       0, 0,
+			                                       std::bind (&X3DPixelTextureEditor::set_texture, this, _1)));
+			break;
+		}
+		case X3D::X3DConstants::PixelTexture:
+		{
+			const X3D::X3DPtr <X3D::PixelTexture> last (value);
 
-};
+			pixelTexture -> image () = last -> image ();
+			break;
+		}
+		default:
+			break;
+	}
 
-} // X3D
+	return pixelTexture;
+}
+
+void
+X3DPixelTextureEditor::set_texture (const X3D::TexturePtr & texture)
+{
+	if (texture)
+	{
+		__LOG__ << texture -> getWidth () << std::endl;
+		__LOG__ << texture -> getHeight () << std::endl;
+		__LOG__ << texture -> getComponents () << std::endl;
+		__LOG__ << texture -> getData () << std::endl;
+	}
+}
+
+X3DPixelTextureEditor::~X3DPixelTextureEditor ()
+{
+	if (future)
+		future -> dispose ();
+}
+
+} // puck
 } // titania
-
-#endif

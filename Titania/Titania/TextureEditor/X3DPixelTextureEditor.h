@@ -48,58 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
-#define __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
 
-#include "../Browser/X3DBrowser.h"
-#include "../InputOutput/Loader.h"
-#include "../Miscellaneous/Texture3D.h"
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
 
-#include <atomic>
-#include <future>
+#include <Titania/X3D/Thread/TextureLoader.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class Texture3DLoader :
-	public X3DInput
+class X3DPixelTextureEditor :
+	virtual public X3DTextureEditorInterface
 {
-public:
+protected:
 
-	typedef std::function <void (const Texture3DPtr &)> Callback;
+	///  @name Construction
 
-	Texture3DLoader (X3DExecutionContext* const executionContext,
-	                 const MFString &, const size_t, const size_t,
-	                 const Callback &);
+	X3DPixelTextureEditor ();
 
-	virtual
+	///  @name Construction
+
 	void
-	dispose () final override;
+	setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
-	~Texture3DLoader ();
+	const X3D::X3DPtr <X3D::PixelTexture> &
+	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	///  @name Destruction
+
+	~X3DPixelTextureEditor ();
 
 
 private:
 
-	std::future <Texture3DPtr>
-	getFuture (const MFString &, const size_t, const size_t);
-
-	Texture3DPtr
-	loadAsync (const MFString &, const size_t, const size_t);
+	///  @name Event handlers
 
 	void
-	prepareEvents ();
+	set_texture (const X3D::TexturePtr &);
 
-	X3DBrowser* const          browser;
-	const basic::uri           referer;
-	Callback                   callback;
-	std::atomic <bool>         running;
-	std::future <Texture3DPtr> future;
+	///  @name Members
+
+	X3D::X3DPtr <X3D::PixelTexture>      pixelTexture;
+	std::unique_ptr <X3D::TextureLoader> future;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

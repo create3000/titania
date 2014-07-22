@@ -57,15 +57,16 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
 	    X3DImageTextureEditor (),
-	                 repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
-	                 repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
+	    X3DPixelTextureEditor (),
+	                  repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
+	                  repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
 { }
 
 void
 X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	setImageTexture (value);
-	//setPixelTexture (value);
+	setPixelTexture (value);
 
 	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (value), value);
 }
@@ -73,11 +74,21 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode
 const X3D::X3DPtr <X3D::ImageTexture> &
 X3DTexture2DNodeEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	const auto & imageTexture = X3DImageTextureEditor::getImageTexture (value);
+	const auto & texture = X3DImageTextureEditor::getImageTexture (value);
 
-	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (imageTexture), value);
+	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (texture), value);
 
-	return imageTexture;
+	return texture;
+}
+
+const X3D::X3DPtr <X3D::PixelTexture> &
+X3DTexture2DNodeEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DPixelTextureEditor::getPixelTexture (value);
+
+	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (texture), value);
+
+	return texture;
 }
 
 void
@@ -102,17 +113,17 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 
 	for (const auto & type : value -> getType ())
 	{
-		switch (type) 
+		switch (type)
 		{
-			case X3D::X3DConstants::X3DTexture2DNode:
-			{
-				const X3D::X3DPtr <X3D::X3DTexture2DNode> last (value);
+			case X3D::X3DConstants::X3DTexture2DNode :
+				{
+					const X3D::X3DPtr <X3D::X3DTexture2DNode> last (value);
 
-				texture2DNode -> repeatS ()           = last -> repeatS ();
-				texture2DNode -> repeatT ()           = last -> repeatT ();
-				texture2DNode -> textureProperties () = last -> textureProperties ();
-				break;
-			}
+					texture2DNode -> repeatS ()           = last -> repeatS ();
+					texture2DNode -> repeatT ()           = last -> repeatT ();
+					texture2DNode -> textureProperties () = last -> textureProperties ();
+					break;
+				}
 			default:
 				break;
 		}

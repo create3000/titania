@@ -56,16 +56,12 @@ namespace puck {
 X3DImageTextureEditor::X3DImageTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	             imageTexture (),
-	                 undoStep (),
-	                 changing (false)
+	             imageTexture ()
 { }
 
 void
 X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	undoStep .reset ();
-
 	if (imageTexture)
 	{
 		//imageTexture -> url () .removeInterest (this, &X3DImageTextureEditor::set_url);
@@ -88,7 +84,7 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 }
 	
 const X3D::X3DPtr <X3D::ImageTexture> &
-X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value) const
+X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	getImageTextureBox () .set_visible (value);
 

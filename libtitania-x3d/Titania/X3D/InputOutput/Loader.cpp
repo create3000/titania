@@ -50,6 +50,7 @@
 
 #include "Loader.h"
 
+#include "../../X3D.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/Scene.h"
 #include "../Miscellaneous/GoldenGate.h"
@@ -63,7 +64,7 @@ Loader::Loader (X3DExecutionContext* const executionContext) :
 
 Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & referer) :
 	executionContext (executionContext),
-	       userAgent (getBrowser () -> getUserAgent ()),
+	       userAgent (X3D::getBrowser () -> getUserAgent ()),
 	         referer (referer),
 	        worldURL (),
 	        urlError ()
@@ -100,7 +101,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const ScenePtr scene = getBrowser () -> createScene ();
+	const ScenePtr scene = executionContext -> getBrowser () -> createScene ();
 
 	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
 
@@ -122,7 +123,7 @@ Loader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	const ScenePtr scene = getBrowser () -> createScene ();
+	const ScenePtr scene = executionContext -> getBrowser () -> createScene ();
 
 	parseIntoScene (scene, url);
 
@@ -152,10 +153,10 @@ throw (Error <INVALID_URL>,
 			const basic::uri uri = URL .str ();
 
 			if (uri .filename () .empty ())
-				getExecutionContext () -> changeViewpoint (uri .fragment ());
+				executionContext -> changeViewpoint (uri .fragment ());
 
 			else
-				getBrowser () -> loadURL ({ referer .transform (uri) .str () }, parameter);
+				executionContext -> getBrowser () -> loadURL ({ referer .transform (uri) .str () }, parameter);
 
 			return;
 		}
@@ -166,6 +167,11 @@ throw (Error <INVALID_URL>,
 	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString ());
 }
 
+/***
+ *
+ *  thread save
+ *
+ */
 void
 Loader::parseIntoScene (X3DScene* const scene, const MFString & url)
 throw (Error <INVALID_URL>,
@@ -202,6 +208,11 @@ throw (Error <INVALID_URL>,
 
 //  Stream Handling
 
+/***
+ *
+ *  thread save
+ *
+ */
 std::string
 Loader::loadDocument (const SFString & URL)
 throw (Error <INVALID_URL>,
@@ -210,6 +221,11 @@ throw (Error <INVALID_URL>,
 	return loadDocument (URL .str ());
 }
 
+/***
+ *
+ *  thread save
+ *
+ */
 std::string
 Loader::loadDocument (const basic::uri & uri)
 throw (Error <INVALID_URL>,
@@ -224,6 +240,11 @@ throw (Error <INVALID_URL>,
 	return ostringstream .str ();
 }
 
+/***
+ *
+ *  thread save
+ *
+ */
 basic::ifilestream
 Loader::loadStream (const SFString & URL)
 throw (Error <INVALID_URL>,
@@ -232,6 +253,11 @@ throw (Error <INVALID_URL>,
 	return loadStream (URL .str ());
 }
 
+/***
+ *
+ *  thread save
+ *
+ */
 basic::ifilestream
 Loader::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,

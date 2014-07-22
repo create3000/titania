@@ -129,7 +129,7 @@ ImageTexture3D::requestAsyncLoad ()
 	                                    url (),
 	                                    getBrowser () -> getMinTextureSize (),
 	                                    getBrowser () -> getMaxTextureSize (),
-	                                    std::bind (std::mem_fn (&ImageTexture3D::setTexture), this, _1)));
+	                                    std::bind (&ImageTexture3D::setTexture, this, _1)));
 }
 
 void

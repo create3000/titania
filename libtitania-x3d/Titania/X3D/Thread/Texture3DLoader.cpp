@@ -61,7 +61,7 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
                                   const Callback & callback) :
 	        X3DInput (),
 	         browser (executionContext -> getBrowser ()),
-	executionContext (executionContext),
+	         referer (executionContext -> getWorldURL ()),
 	        callback (callback),
 	         running (true),
 	          future (getFuture (url, minTextureSize, maxTextureSize))
@@ -97,7 +97,7 @@ Texture3DLoader::loadAsync (const MFString & url,
 				Texture3DPtr texture;
 
 				if (running)
-					texture .reset (new Texture3D (Loader (executionContext) .loadDocument (URL)));
+					texture .reset (new Texture3D (Loader (nullptr, referer) .loadDocument (URL)));
 
 				if (running)
 					texture -> process (minTextureSize, maxTextureSize);
@@ -115,7 +115,7 @@ Texture3DLoader::loadAsync (const MFString & url,
 		{
 			std::clog
 				<< "Bad Image: " << error .what () << ", "
-				<< "in URL '" << executionContext -> getWorldURL () .transform (URL .str ()) << "'"
+				<< "in URL '" << referer .transform (URL .str ()) << "'"
 				<< std::endl;
 		}
 	}

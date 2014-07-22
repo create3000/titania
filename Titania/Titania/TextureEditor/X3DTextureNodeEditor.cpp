@@ -169,32 +169,31 @@ X3DTextureNodeEditor::on_texture_changed ()
 {
 	getTextureNotebook () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0);
 
-	if (textureNode)
-	{
-		switch (getTextureComboBoxText () .get_active_row_number ())
-		{
-			case 1:
-				//getImageTextureBox () .set_visible (true);
-				//getTextureNotebook () .set_current_page (1);
-				break;
-			default:
-				break;
-		}
-	}
-
 	if (changing)
 		return;
 
 	if (getTextureComboBoxText () .get_active_row_number () > 0)
 	{
+		getTextureNotebook () .set_visible (true);
+
 		switch (getTextureComboBoxText () .get_active_row_number ())
 		{
 			case 1:
 				textureNode = getImageTexture (textureNode);
 				break;
+			case 2:
+				textureNode = getPixelTexture (textureNode);
+				break;
 			default:
 				break;
 		}
+
+		getTextureNotebook () .set_current_page (getTextureComboBoxText () .get_active_row_number ());
+	}
+	else
+	{
+		textureNode = textureNode;
+		getTextureNotebook () .set_visible (false);
 	}
 
 	// Set field.
@@ -250,6 +249,9 @@ X3DTextureNodeEditor::set_texture ()
 			case X3D::X3DConstants::ImageTexture:
 				getTextureComboBoxText () .set_active (1);
 				break;
+			case X3D::X3DConstants::PixelTexture:
+				getTextureComboBoxText () .set_active (2);
+				break;
 			default:
 				getTextureComboBoxText () .set_active (-1);
 				break;
@@ -262,6 +264,7 @@ X3DTextureNodeEditor::set_texture ()
 
 	getTextureComboBoxText () .set_sensitive (hasField);
 	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> isCloned () > 1);
+	getTextureNotebook ()     .set_current_page (getTextureComboBoxText () .get_active_row_number ());
 
 	changing = false;
 

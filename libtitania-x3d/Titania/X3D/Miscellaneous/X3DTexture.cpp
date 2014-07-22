@@ -183,6 +183,9 @@ X3DTexture::process (const size_type minTextureSize, const size_type maxTextureS
 void
 X3DTexture::tryScaleImages (const size_type minTextureSize, const size_type maxTextureSize)
 {
+	if (minTextureSize == 0)
+		return;
+
 	if (std::max (width, height) >= minTextureSize)
 	{
 		width  = std::min (math::next_power_of_two (width),  maxTextureSize);

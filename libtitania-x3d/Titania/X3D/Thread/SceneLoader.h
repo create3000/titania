@@ -54,6 +54,7 @@
 #include "../Fields.h"
 #include "../Types/Pointer.h"
 
+#include <Titania/Basic/URI.h>
 #include <atomic>
 #include <future>
 
@@ -95,11 +96,11 @@ private:
 	void
 	prepareEvents ();
 
-	X3DBrowser* const          browser;
-	X3DExecutionContext* const executionContext;
-	Callback                   callback;
-	std::atomic <bool>         running;
-	std::future <ScenePtr>     future;
+	X3DBrowser* const      browser;
+	const basic::uri       referer;
+	Callback               callback;
+	std::atomic <bool>     running;
+	std::future <ScenePtr> future;
 
 };
 

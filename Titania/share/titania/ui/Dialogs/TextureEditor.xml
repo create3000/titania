@@ -155,6 +155,7 @@
                                     <items>
                                       <item translatable="yes">None</item>
                                       <item translatable="yes">ImageTexture</item>
+                                      <item translatable="yes">PixelTexture</item>
                                     </items>
                                     <signal name="changed" handler="on_texture_changed" swapped="no"/>
                                   </object>
@@ -300,7 +301,25 @@
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkBox" id="PixelTextureBox">
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label36">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">PixelTextureBox</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                              </packing>
                             </child>
                             <child type="tab">
                               <object class="GtkLabel" id="label4">
