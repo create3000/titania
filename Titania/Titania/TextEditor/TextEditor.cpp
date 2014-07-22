@@ -67,8 +67,8 @@ TextEditor::TextEditor (BrowserWindow* const browserWindow) :
 	              undoStep (),
 	              changing (false),
 	             maxExtent (browserWindow,
-	                        getMaxExtentAdjustment (),
-	                        getMaxExtentSpinButton (),
+	                        getTextMaxExtentAdjustment (),
+	                        getTextMaxExtentSpinButton (),
 	                        "maxExtent")
 {
 	geometryNodeBuffer .addParent (getBrowser ());
@@ -223,7 +223,7 @@ TextEditor::on_string_changed ()
 
 	text -> string () .clear ();
 
-	const auto string = basic::split (getStringTextBuffer () -> get_text (), "\n");
+	const auto string = basic::split (getTextStringTextBuffer () -> get_text (), "\n");
 
 	for (auto & value : string)
 		text -> string () .emplace_back (std::move (value));
@@ -236,17 +236,17 @@ TextEditor::set_string ()
 {
 	changing = true;
 
-	getStringTextBuffer () -> set_text ("");
+	getTextStringTextBuffer () -> set_text ("");
 
 	if (not text -> string () .empty ())
 	{
 		for (const auto & value : text -> string ())
 		{
-			getStringTextBuffer () -> insert (getStringTextBuffer () -> end (), value);
-			getStringTextBuffer () -> insert (getStringTextBuffer () -> end (), "\n");
+			getTextStringTextBuffer () -> insert (getTextStringTextBuffer () -> end (), value);
+			getTextStringTextBuffer () -> insert (getTextStringTextBuffer () -> end (), "\n");
 		}
 
-		getStringTextBuffer () -> erase (-- getStringTextBuffer () -> end (), getStringTextBuffer () -> end ());
+		getTextStringTextBuffer () -> erase (-- getTextStringTextBuffer () -> end (), getTextStringTextBuffer () -> end ());
 	}
 
 	changing = false;

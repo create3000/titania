@@ -62,6 +62,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Get objects.
 	m_TexturePropertiesAnisotropicDegreeAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesAnisotropicDegreeAdjustment"));
+	m_TexturePropertiesBorderColorAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderColorAdjustment"));
 	m_TexturePropertiesBorderWidthAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderWidthAdjustment"));
 	m_TexturePropertiesTexturePriorityAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesTexturePriorityAdjustment"));
 	m_TextureTransformCenterXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterXAdjustment"));
@@ -79,8 +80,10 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_TextureExpander -> set_name ("TextureExpander");
-	m_builder -> get_widget ("TextureButton", m_TextureButton);
-	m_TextureButton -> set_name ("TextureButton");
+	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_PreviewBox -> set_name ("PreviewBox");
+	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
+	m_TextureComboBoxText -> set_name ("TextureComboBoxText");
 	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
 	m_TextureUnlinkButton -> set_name ("TextureUnlinkButton");
 	m_builder -> get_widget ("TextureNotebook", m_TextureNotebook);
@@ -103,12 +106,36 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TexturePropertiesUnlinkButton -> set_name ("TexturePropertiesUnlinkButton");
 	m_builder -> get_widget ("TexturePropertiesBox", m_TexturePropertiesBox);
 	m_TexturePropertiesBox -> set_name ("TexturePropertiesBox");
-	m_builder -> get_widget ("GenerateMipMapsCheckButton", m_GenerateMipMapsCheckButton);
-	m_GenerateMipMapsCheckButton -> set_name ("GenerateMipMapsCheckButton");
+	m_builder -> get_widget ("TexturePropertiesGenerateMipMapsCheckButton", m_TexturePropertiesGenerateMipMapsCheckButton);
+	m_TexturePropertiesGenerateMipMapsCheckButton -> set_name ("TexturePropertiesGenerateMipMapsCheckButton");
+	m_builder -> get_widget ("TexturePropertiesBorderWidthSpinButton", m_TexturePropertiesBorderWidthSpinButton);
+	m_TexturePropertiesBorderWidthSpinButton -> set_name ("TexturePropertiesBorderWidthSpinButton");
+	m_builder -> get_widget ("TexturePropertiesAnisotropicDegreeSpinButton", m_TexturePropertiesAnisotropicDegreeSpinButton);
+	m_TexturePropertiesAnisotropicDegreeSpinButton -> set_name ("TexturePropertiesAnisotropicDegreeSpinButton");
+	m_builder -> get_widget ("TexturePropertiesMinificationFilterComboBoxText", m_TexturePropertiesMinificationFilterComboBoxText);
+	m_TexturePropertiesMinificationFilterComboBoxText -> set_name ("TexturePropertiesMinificationFilterComboBoxText");
+	m_builder -> get_widget ("TexturePropertiesMagnificationFilterComboBoxText", m_TexturePropertiesMagnificationFilterComboBoxText);
+	m_TexturePropertiesMagnificationFilterComboBoxText -> set_name ("TexturePropertiesMagnificationFilterComboBoxText");
+	m_builder -> get_widget ("TexturePropertiesBoundaryModeSComboBoxText", m_TexturePropertiesBoundaryModeSComboBoxText);
+	m_TexturePropertiesBoundaryModeSComboBoxText -> set_name ("TexturePropertiesBoundaryModeSComboBoxText");
+	m_builder -> get_widget ("TexturePropertiesTextureCompressionComboBoxText", m_TexturePropertiesTextureCompressionComboBoxText);
+	m_TexturePropertiesTextureCompressionComboBoxText -> set_name ("TexturePropertiesTextureCompressionComboBoxText");
+	m_builder -> get_widget ("TexturePropertiesTexturePrioritySpinButton", m_TexturePropertiesTexturePrioritySpinButton);
+	m_TexturePropertiesTexturePrioritySpinButton -> set_name ("TexturePropertiesTexturePrioritySpinButton");
+	m_builder -> get_widget ("TexturePropertiesBoundaryModeTComboBoxText", m_TexturePropertiesBoundaryModeTComboBoxText);
+	m_TexturePropertiesBoundaryModeTComboBoxText -> set_name ("TexturePropertiesBoundaryModeTComboBoxText");
+	m_builder -> get_widget ("TexturePropertiesBoundaryModeRComboBoxText", m_TexturePropertiesBoundaryModeRComboBoxText);
+	m_TexturePropertiesBoundaryModeRComboBoxText -> set_name ("TexturePropertiesBoundaryModeRComboBoxText");
+	m_builder -> get_widget ("TexturePropertiesBorderColorBox", m_TexturePropertiesBorderColorBox);
+	m_TexturePropertiesBorderColorBox -> set_name ("TexturePropertiesBorderColorBox");
+	m_builder -> get_widget ("TexturePropertiesBorderColorButton", m_TexturePropertiesBorderColorButton);
+	m_TexturePropertiesBorderColorButton -> set_name ("TexturePropertiesBorderColorButton");
+	m_builder -> get_widget ("TexturePropertiesBorderColorScale", m_TexturePropertiesBorderColorScale);
+	m_TexturePropertiesBorderColorScale -> set_name ("TexturePropertiesBorderColorScale");
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
-	m_builder -> get_widget ("TextureTransformButton", m_TextureTransformButton);
-	m_TextureTransformButton -> set_name ("TextureTransformButton");
+	m_builder -> get_widget ("TextureTransformComboBoxText", m_TextureTransformComboBoxText);
+	m_TextureTransformComboBoxText -> set_name ("TextureTransformComboBoxText");
 	m_builder -> get_widget ("TextureTransformUnlinkButton", m_TextureTransformUnlinkButton);
 	m_TextureTransformUnlinkButton -> set_name ("TextureTransformUnlinkButton");
 	m_builder -> get_widget ("TextureTransformNotebook", m_TextureTransformNotebook);
@@ -147,25 +174,23 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureCoordinateGeneratorUnlinkButton -> set_name ("TextureCoordinateGeneratorUnlinkButton");
 	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);
 	m_TextureCoordinateGeneratorBox -> set_name ("TextureCoordinateGeneratorBox");
-	m_builder -> get_widget ("TextureCoordinateGeneratorModeButton", m_TextureCoordinateGeneratorModeButton);
-	m_TextureCoordinateGeneratorModeButton -> set_name ("TextureCoordinateGeneratorModeButton");
+	m_builder -> get_widget ("TextureCoordinateGeneratorModeComboBoxText", m_TextureCoordinateGeneratorModeComboBoxText);
+	m_TextureCoordinateGeneratorModeComboBoxText -> set_name ("TextureCoordinateGeneratorModeComboBoxText");
 
-	// Connect object Gtk::ComboBoxText with id 'TextureButton'.
-	m_TextureButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
+	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
+	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
 
 	// Connect object Gtk::Button with id 'TextureUnlinkButton'.
 	m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked));
 
-	// Connect object Gtk::CheckButton with id 'Texture2DNodeRepeatSCheckButton'.
-	m_Texture2DNodeRepeatSCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatS_toggled));
-	m_Texture2DNodeRepeatTCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture2DNode_repeatT_toggled));
+	// Connect object Gtk::CheckButton with id 'TexturePropertiesCheckButton'.
 	m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_toggled));
 
 	// Connect object Gtk::Button with id 'TexturePropertiesUnlinkButton'.
 	m_TexturePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_unlink_clicked));
 
-	// Connect object Gtk::ComboBoxText with id 'TextureTransformButton'.
-	m_TextureTransformButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
+	// Connect object Gtk::ComboBoxText with id 'TextureTransformComboBoxText'.
+	m_TextureTransformComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
 
 	// Connect object Gtk::Button with id 'TextureTransformUnlinkButton'.
 	m_TextureTransformUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_unlink_clicked));

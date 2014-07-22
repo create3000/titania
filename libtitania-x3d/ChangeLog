@@ -1,3 +1,16 @@
+2014-07-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* World.cpp:
+	* Shape.cpp:
+	* Layout.cpp:
+	* LayerSet.h:
+	* LayerSet.cpp:
+	* X3DLayerNode.h:
+	* X3DLayerNode.cpp:
+	* X3DViewportNode.h:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-07-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

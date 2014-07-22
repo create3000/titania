@@ -61,17 +61,17 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FamilyListStore              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FamilyListStore"));
-	m_MaxExtentAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("MaxExtentAdjustment"));
-	m_SizeAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SizeAdjustment"));
-	m_SpacingAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpacingAdjustment"));
-	m_StringTextBuffer             = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("StringTextBuffer"));
-	m_FamilySelection              = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FamilySelection"));
-	m_FamilyNameColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FamilyNameColumn"));
-	m_FamilyNameCellrendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FamilyNameCellrendererText"));
-	m_FamilyPadColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FamilyPadColumn"));
-	m_FamilyFontColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FamilyFontColumn"));
-	m_FamilyFontCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("FamilyFontCellrendererPixbuf"));
+	m_FontStyleFamilyListStore              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyListStore"));
+	m_FontStyleSizeAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
+	m_FontStyleSpacingAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
+	m_TextMaxExtentAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
+	m_TextStringTextBuffer                  = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextStringTextBuffer"));
+	m_FontStyleFamilySelection              = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
+	m_FontStyleFamilyNameColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyNameColumn"));
+	m_FontStyleFamilyNameCellrendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyNameCellrendererText"));
+	m_FontStyleFamilyPadColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyPadColumn"));
+	m_FontStyleFamilyFontColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyFontColumn"));
+	m_FontStyleFamilyFontCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyFontCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -86,56 +86,56 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_TextUnlinkButton -> set_name ("TextUnlinkButton");
 	m_builder -> get_widget ("TextBox", m_TextBox);
 	m_TextBox -> set_name ("TextBox");
-	m_builder -> get_widget ("MaxExtentSpinButton", m_MaxExtentSpinButton);
-	m_MaxExtentSpinButton -> set_name ("MaxExtentSpinButton");
-	m_builder -> get_widget ("StringTextView", m_StringTextView);
-	m_StringTextView -> set_name ("StringTextView");
+	m_builder -> get_widget ("TextMaxExtentSpinButton", m_TextMaxExtentSpinButton);
+	m_TextMaxExtentSpinButton -> set_name ("TextMaxExtentSpinButton");
+	m_builder -> get_widget ("TextStringTextView", m_TextStringTextView);
+	m_TextStringTextView -> set_name ("TextStringTextView");
 	m_builder -> get_widget ("LenghtBox", m_LenghtBox);
 	m_LenghtBox -> set_name ("LenghtBox");
 	m_builder -> get_widget ("FontStyleExpander", m_FontStyleExpander);
 	m_FontStyleExpander -> set_name ("FontStyleExpander");
 	m_builder -> get_widget ("FontStyleBox", m_FontStyleBox);
 	m_FontStyleBox -> set_name ("FontStyleBox");
-	m_builder -> get_widget ("FontStyleButton", m_FontStyleButton);
-	m_FontStyleButton -> set_name ("FontStyleButton");
+	m_builder -> get_widget ("FontStyleComboBoxText", m_FontStyleComboBoxText);
+	m_FontStyleComboBoxText -> set_name ("FontStyleComboBoxText");
 	m_builder -> get_widget ("FontStyleUnlinkButton", m_FontStyleUnlinkButton);
 	m_FontStyleUnlinkButton -> set_name ("FontStyleUnlinkButton");
 	m_builder -> get_widget ("FontStyleNodeBox", m_FontStyleNodeBox);
 	m_FontStyleNodeBox -> set_name ("FontStyleNodeBox");
 	m_builder -> get_widget ("SizeLabel", m_SizeLabel);
 	m_SizeLabel -> set_name ("SizeLabel");
-	m_builder -> get_widget ("SizeSpinButton", m_SizeSpinButton);
-	m_SizeSpinButton -> set_name ("SizeSpinButton");
-	m_builder -> get_widget ("SpacingSpinButton", m_SpacingSpinButton);
-	m_SpacingSpinButton -> set_name ("SpacingSpinButton");
-	m_builder -> get_widget ("HorizontalCheckButton", m_HorizontalCheckButton);
-	m_HorizontalCheckButton -> set_name ("HorizontalCheckButton");
-	m_builder -> get_widget ("LeftToRightCheckButton", m_LeftToRightCheckButton);
-	m_LeftToRightCheckButton -> set_name ("LeftToRightCheckButton");
-	m_builder -> get_widget ("TopToBottomCheckButton", m_TopToBottomCheckButton);
-	m_TopToBottomCheckButton -> set_name ("TopToBottomCheckButton");
-	m_builder -> get_widget ("MajorAlignmentButton", m_MajorAlignmentButton);
-	m_MajorAlignmentButton -> set_name ("MajorAlignmentButton");
-	m_builder -> get_widget ("MinorAlignmentButton", m_MinorAlignmentButton);
-	m_MinorAlignmentButton -> set_name ("MinorAlignmentButton");
-	m_builder -> get_widget ("BoldToggleButton", m_BoldToggleButton);
-	m_BoldToggleButton -> set_name ("BoldToggleButton");
-	m_builder -> get_widget ("ItalicToggleButton", m_ItalicToggleButton);
-	m_ItalicToggleButton -> set_name ("ItalicToggleButton");
-	m_builder -> get_widget ("FamilyTreeView", m_FamilyTreeView);
-	m_FamilyTreeView -> set_name ("FamilyTreeView");
-	m_builder -> get_widget ("AddFamilyButton", m_AddFamilyButton);
-	m_AddFamilyButton -> set_name ("AddFamilyButton");
-	m_builder -> get_widget ("RemoveFamilyButton", m_RemoveFamilyButton);
-	m_RemoveFamilyButton -> set_name ("RemoveFamilyButton");
+	m_builder -> get_widget ("FontStyleSizeSpinButton", m_FontStyleSizeSpinButton);
+	m_FontStyleSizeSpinButton -> set_name ("FontStyleSizeSpinButton");
+	m_builder -> get_widget ("FontStyleSpacingSpinButton", m_FontStyleSpacingSpinButton);
+	m_FontStyleSpacingSpinButton -> set_name ("FontStyleSpacingSpinButton");
+	m_builder -> get_widget ("FontStyleHorizontalCheckButton", m_FontStyleHorizontalCheckButton);
+	m_FontStyleHorizontalCheckButton -> set_name ("FontStyleHorizontalCheckButton");
+	m_builder -> get_widget ("FontStyleLeftToRightCheckButton", m_FontStyleLeftToRightCheckButton);
+	m_FontStyleLeftToRightCheckButton -> set_name ("FontStyleLeftToRightCheckButton");
+	m_builder -> get_widget ("FontStyleTopToBottomCheckButton", m_FontStyleTopToBottomCheckButton);
+	m_FontStyleTopToBottomCheckButton -> set_name ("FontStyleTopToBottomCheckButton");
+	m_builder -> get_widget ("FontStyleMajorAlignmentComboBoxText", m_FontStyleMajorAlignmentComboBoxText);
+	m_FontStyleMajorAlignmentComboBoxText -> set_name ("FontStyleMajorAlignmentComboBoxText");
+	m_builder -> get_widget ("FontStyleMinorAlignmentComboBoxText", m_FontStyleMinorAlignmentComboBoxText);
+	m_FontStyleMinorAlignmentComboBoxText -> set_name ("FontStyleMinorAlignmentComboBoxText");
+	m_builder -> get_widget ("FontStyleBoldToggleButton", m_FontStyleBoldToggleButton);
+	m_FontStyleBoldToggleButton -> set_name ("FontStyleBoldToggleButton");
+	m_builder -> get_widget ("FontStyleItalicToggleButton", m_FontStyleItalicToggleButton);
+	m_FontStyleItalicToggleButton -> set_name ("FontStyleItalicToggleButton");
+	m_builder -> get_widget ("FontStyleFamilyTreeView", m_FontStyleFamilyTreeView);
+	m_FontStyleFamilyTreeView -> set_name ("FontStyleFamilyTreeView");
+	m_builder -> get_widget ("FontStyleAddFamilyButton", m_FontStyleAddFamilyButton);
+	m_FontStyleAddFamilyButton -> set_name ("FontStyleAddFamilyButton");
+	m_builder -> get_widget ("FontStyleRemoveFamilyButton", m_FontStyleRemoveFamilyButton);
+	m_FontStyleRemoveFamilyButton -> set_name ("FontStyleRemoveFamilyButton");
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 	m_FamilyChooserDialog -> set_name ("FamilyChooserDialog");
 
-	// Connect object Gtk::Adjustment with id 'SizeAdjustment'.
-	m_SizeAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
+	// Connect object Gtk::Adjustment with id 'FontStyleSizeAdjustment'.
+	m_FontStyleSizeAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
 
-	// Connect object Gtk::TextBuffer with id 'StringTextBuffer'.
-	m_StringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));
+	// Connect object Gtk::TextBuffer with id 'TextStringTextBuffer'.
+	m_TextStringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));
 
 	// Connect object Gtk::CheckButton with id 'TextCheckButton'.
 	m_TextCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_toggled));
@@ -143,33 +143,33 @@ X3DTextEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'TextUnlinkButton'.
 	m_TextUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_unlink_clicked));
 
-	// Connect object Gtk::ComboBoxText with id 'FontStyleButton'.
-	m_FontStyleButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed));
+	// Connect object Gtk::ComboBoxText with id 'FontStyleComboBoxText'.
+	m_FontStyleComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed));
 
 	// Connect object Gtk::Button with id 'FontStyleUnlinkButton'.
 	m_FontStyleUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_unlink_clicked));
 
-	// Connect object Gtk::ComboBoxText with id 'MajorAlignmentButton'.
-	m_MajorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
-	m_MinorAlignmentButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
+	// Connect object Gtk::ComboBoxText with id 'FontStyleMajorAlignmentComboBoxText'.
+	m_FontStyleMajorAlignmentComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
+	m_FontStyleMinorAlignmentComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
 
-	// Connect object Gtk::ToggleButton with id 'BoldToggleButton'.
-	m_BoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
-	m_ItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
+	// Connect object Gtk::ToggleButton with id 'FontStyleBoldToggleButton'.
+	m_FontStyleBoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
+	m_FontStyleItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
 
-	// Connect object Gtk::TreeView with id 'FamilyTreeView'.
-	m_FamilyTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_button_release_event));
-	m_FamilyTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_drag_data_received));
+	// Connect object Gtk::TreeView with id 'FontStyleFamilyTreeView'.
+	m_FontStyleFamilyTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_button_release_event));
+	m_FontStyleFamilyTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_drag_data_received));
 
-	// Connect object Gtk::TreeSelection with id 'FamilySelection'.
-	m_FamilySelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_changed));
+	// Connect object Gtk::TreeSelection with id 'FontStyleFamilySelection'.
+	m_FontStyleFamilySelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_changed));
 
-	// Connect object Gtk::CellRendererText with id 'FamilyNameCellrendererText'.
-	m_FamilyNameCellrendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_edited));
+	// Connect object Gtk::CellRendererText with id 'FontStyleFamilyNameCellrendererText'.
+	m_FontStyleFamilyNameCellrendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_edited));
 
-	// Connect object Gtk::Button with id 'AddFamilyButton'.
-	m_AddFamilyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_add_family_clicked));
-	m_RemoveFamilyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_remove_family_clicked));
+	// Connect object Gtk::Button with id 'FontStyleAddFamilyButton'.
+	m_FontStyleAddFamilyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_add_family_clicked));
+	m_FontStyleRemoveFamilyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_remove_family_clicked));
 
 	// Call construct handler of base class.
 	construct ();

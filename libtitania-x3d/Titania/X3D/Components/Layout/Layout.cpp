@@ -430,7 +430,7 @@ Layout::transform (const TraverseType type)
 
 	// OrthoViewpoint
 
-	OrthoViewpoint* viewpoint = dynamic_cast <OrthoViewpoint*> (getCurrentViewpoint ());
+	OrthoViewpoint* const viewpoint = dynamic_cast <OrthoViewpoint*> (getCurrentViewpoint ());
 
 	if (viewpoint)
 	{

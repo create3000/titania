@@ -87,8 +87,8 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_ModelButton -> set_name ("ModelButton");
 	m_builder -> get_widget ("MaterialBox", m_MaterialBox);
 	m_MaterialBox -> set_name ("MaterialBox");
-	m_builder -> get_widget ("MaterialButton", m_MaterialButton);
-	m_MaterialButton -> set_name ("MaterialButton");
+	m_builder -> get_widget ("MaterialComboBoxText", m_MaterialComboBoxText);
+	m_MaterialComboBoxText -> set_name ("MaterialComboBoxText");
 	m_builder -> get_widget ("MaterialUnlinkButton", m_MaterialUnlinkButton);
 	m_MaterialUnlinkButton -> set_name ("MaterialUnlinkButton");
 	m_builder -> get_widget ("FrontExpander", m_FrontExpander);
@@ -166,8 +166,8 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_sphere_clicked));
 	m_ModelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_model_clicked));
 
-	// Connect object Gtk::ComboBoxText with id 'MaterialButton'.
-	m_MaterialButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_material_changed));
+	// Connect object Gtk::ComboBoxText with id 'MaterialComboBoxText'.
+	m_MaterialComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_material_changed));
 
 	// Connect object Gtk::Button with id 'MaterialUnlinkButton'.
 	m_MaterialUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_material_unlink_clicked));

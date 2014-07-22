@@ -1,3 +1,31 @@
+2014-07-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TextEditor.cpp:
+	* TextEditor.xml:
+	* MaterialEditor.cpp:
+	* TextureEditor.xml:
+	* MaterialEditor.xml:
+	* X3DFieldAdjustment.h:
+	* X3DTextureNodeEditor.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTexture2DNodeEditor.h:
+	* X3DTextEditorInterface.h:
+	* X3DTexture2DNodeEditor.cpp:
+	* NodePropertiesEditor.xml:
+	* X3DTextEditorInterface.cpp:
+	* X3DTextureEditorInterface.h:
+	* TextureEditorPreview.x3dv:
+	* X3DTexturePropertiesEditor.h:
+	* X3DMaterialEditorInterface.h:
+	* MaterialEditorPreview.x3dv:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DTextureEditorInterface.cpp:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-07-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextEditor.h:

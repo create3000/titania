@@ -163,7 +163,7 @@ Shape::pick ()
 
 	if (getGeometry ())
 	{
-		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
+		if (getBrowser () -> isPointerInRectangle (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
 			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
 

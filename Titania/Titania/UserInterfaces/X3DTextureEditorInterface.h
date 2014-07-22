@@ -100,6 +100,10 @@ public:
 	{ return m_TexturePropertiesAnisotropicDegreeAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTexturePropertiesBorderColorAdjustment () const
+	{ return m_TexturePropertiesBorderColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTexturePropertiesBorderWidthAdjustment () const
 	{ return m_TexturePropertiesBorderWidthAdjustment; }
 
@@ -139,7 +143,7 @@ public:
 	getWindow () const
 	{ return *m_Window; }
 
-	Gtk::Box &
+	Gtk::ScrolledWindow &
 	getWidget () const
 	{ return *m_Widget; }
 
@@ -147,9 +151,13 @@ public:
 	getTextureExpander () const
 	{ return *m_TextureExpander; }
 
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
+
 	Gtk::ComboBoxText &
-	getTextureButton () const
-	{ return *m_TextureButton; }
+	getTextureComboBoxText () const
+	{ return *m_TextureComboBoxText; }
 
 	Gtk::Button &
 	getTextureUnlinkButton () const
@@ -196,16 +204,64 @@ public:
 	{ return *m_TexturePropertiesBox; }
 
 	Gtk::CheckButton &
-	getGenerateMipMapsCheckButton () const
-	{ return *m_GenerateMipMapsCheckButton; }
+	getTexturePropertiesGenerateMipMapsCheckButton () const
+	{ return *m_TexturePropertiesGenerateMipMapsCheckButton; }
+
+	Gtk::SpinButton &
+	getTexturePropertiesBorderWidthSpinButton () const
+	{ return *m_TexturePropertiesBorderWidthSpinButton; }
+
+	Gtk::SpinButton &
+	getTexturePropertiesAnisotropicDegreeSpinButton () const
+	{ return *m_TexturePropertiesAnisotropicDegreeSpinButton; }
+
+	Gtk::ComboBoxText &
+	getTexturePropertiesMinificationFilterComboBoxText () const
+	{ return *m_TexturePropertiesMinificationFilterComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getTexturePropertiesMagnificationFilterComboBoxText () const
+	{ return *m_TexturePropertiesMagnificationFilterComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getTexturePropertiesBoundaryModeSComboBoxText () const
+	{ return *m_TexturePropertiesBoundaryModeSComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getTexturePropertiesTextureCompressionComboBoxText () const
+	{ return *m_TexturePropertiesTextureCompressionComboBoxText; }
+
+	Gtk::SpinButton &
+	getTexturePropertiesTexturePrioritySpinButton () const
+	{ return *m_TexturePropertiesTexturePrioritySpinButton; }
+
+	Gtk::ComboBoxText &
+	getTexturePropertiesBoundaryModeTComboBoxText () const
+	{ return *m_TexturePropertiesBoundaryModeTComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getTexturePropertiesBoundaryModeRComboBoxText () const
+	{ return *m_TexturePropertiesBoundaryModeRComboBoxText; }
+
+	Gtk::Box &
+	getTexturePropertiesBorderColorBox () const
+	{ return *m_TexturePropertiesBorderColorBox; }
+
+	Gtk::Button &
+	getTexturePropertiesBorderColorButton () const
+	{ return *m_TexturePropertiesBorderColorButton; }
+
+	Gtk::Scale &
+	getTexturePropertiesBorderColorScale () const
+	{ return *m_TexturePropertiesBorderColorScale; }
 
 	Gtk::Expander &
 	getTextureTransformExpander () const
 	{ return *m_TextureTransformExpander; }
 
 	Gtk::ComboBoxText &
-	getTextureTransformButton () const
-	{ return *m_TextureTransformButton; }
+	getTextureTransformComboBoxText () const
+	{ return *m_TextureTransformComboBoxText; }
 
 	Gtk::Button &
 	getTextureTransformUnlinkButton () const
@@ -284,8 +340,8 @@ public:
 	{ return *m_TextureCoordinateGeneratorBox; }
 
 	Gtk::ComboBoxText &
-	getTextureCoordinateGeneratorModeButton () const
-	{ return *m_TextureCoordinateGeneratorModeButton; }
+	getTextureCoordinateGeneratorModeComboBoxText () const
+	{ return *m_TextureCoordinateGeneratorModeComboBoxText; }
 
 	virtual
 	void
@@ -294,14 +350,6 @@ public:
 	virtual
 	void
 	on_texture_unlink_clicked () = 0;
-
-	virtual
-	void
-	on_texture2DNode_repeatS_toggled () = 0;
-
-	virtual
-	void
-	on_texture2DNode_repeatT_toggled () = 0;
 
 	virtual
 	void
@@ -341,6 +389,7 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesAnisotropicDegreeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderWidthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesTexturePriorityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformCenterXAdjustment;
@@ -351,9 +400,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformTranslationYAdjustment;
 	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
+	Gtk::ScrolledWindow*           m_Widget;
 	Gtk::Expander*                 m_TextureExpander;
-	Gtk::ComboBoxText*             m_TextureButton;
+	Gtk::Box*                      m_PreviewBox;
+	Gtk::ComboBoxText*             m_TextureComboBoxText;
 	Gtk::Button*                   m_TextureUnlinkButton;
 	Gtk::Notebook*                 m_TextureNotebook;
 	Gtk::Label*                    m_TextureLabel;
@@ -365,9 +415,21 @@ private:
 	Gtk::CheckButton*              m_TexturePropertiesCheckButton;
 	Gtk::Button*                   m_TexturePropertiesUnlinkButton;
 	Gtk::Grid*                     m_TexturePropertiesBox;
-	Gtk::CheckButton*              m_GenerateMipMapsCheckButton;
+	Gtk::CheckButton*              m_TexturePropertiesGenerateMipMapsCheckButton;
+	Gtk::SpinButton*               m_TexturePropertiesBorderWidthSpinButton;
+	Gtk::SpinButton*               m_TexturePropertiesAnisotropicDegreeSpinButton;
+	Gtk::ComboBoxText*             m_TexturePropertiesMinificationFilterComboBoxText;
+	Gtk::ComboBoxText*             m_TexturePropertiesMagnificationFilterComboBoxText;
+	Gtk::ComboBoxText*             m_TexturePropertiesBoundaryModeSComboBoxText;
+	Gtk::ComboBoxText*             m_TexturePropertiesTextureCompressionComboBoxText;
+	Gtk::SpinButton*               m_TexturePropertiesTexturePrioritySpinButton;
+	Gtk::ComboBoxText*             m_TexturePropertiesBoundaryModeTComboBoxText;
+	Gtk::ComboBoxText*             m_TexturePropertiesBoundaryModeRComboBoxText;
+	Gtk::Box*                      m_TexturePropertiesBorderColorBox;
+	Gtk::Button*                   m_TexturePropertiesBorderColorButton;
+	Gtk::Scale*                    m_TexturePropertiesBorderColorScale;
 	Gtk::Expander*                 m_TextureTransformExpander;
-	Gtk::ComboBoxText*             m_TextureTransformButton;
+	Gtk::ComboBoxText*             m_TextureTransformComboBoxText;
 	Gtk::Button*                   m_TextureTransformUnlinkButton;
 	Gtk::Notebook*                 m_TextureTransformNotebook;
 	Gtk::Label*                    m_TextureTransformLabel;
@@ -387,7 +449,7 @@ private:
 	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
 	Gtk::Button*                   m_TextureCoordinateGeneratorUnlinkButton;
 	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
-	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeButton;
+	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeComboBoxText;
 
 };
 

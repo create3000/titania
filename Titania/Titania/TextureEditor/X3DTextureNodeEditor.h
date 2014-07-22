@@ -79,7 +79,15 @@ private:
 	///  @name Construction
 
 	void
+	set_initialized ();
+
+	void
 	set_selection ();
+
+	///  @name Preview
+
+	void
+	set_preview ();
 
 	///  @name textureTransform
 
@@ -99,6 +107,7 @@ private:
 
 	///  @name Members
 
+	X3D::BrowserPtr                    preview;
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::X3DPtr <X3D::X3DTextureNode>  textureNode;
 	UndoStepPtr                        undoStep;

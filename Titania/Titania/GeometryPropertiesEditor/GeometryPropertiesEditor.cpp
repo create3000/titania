@@ -56,12 +56,12 @@ namespace titania {
 namespace puck {
 
 GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
-	                               solid (browserWindow, getSolidCheckButton (),  "solid"),
-	                                 ccw (browserWindow, getCCWCheckButton (),    "ccw"),
-	                              convex (browserWindow, getConvexCheckButton (), "convex"),
-	                         creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle")
+	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	 X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
+	                                solid (browserWindow, getSolidCheckButton (),  "solid"),
+	                                  ccw (browserWindow, getCCWCheckButton (),    "ccw"),
+	                               convex (browserWindow, getConvexCheckButton (), "convex"),
+	                          creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle")
 {
 	getCreaseAngleAdjustment () -> set_upper (M_PI); // getExecutionContext () .fromRadiant (M_PI);
 }

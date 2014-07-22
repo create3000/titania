@@ -495,6 +495,7 @@
                         <property name="xalign">0</property>
                         <property name="label">Transform »Cube«</property>
                         <property name="wrap">True</property>
+                        <property name="selectable">True</property>
                         <property name="max_width_chars">46</property>
                       </object>
                       <packing>

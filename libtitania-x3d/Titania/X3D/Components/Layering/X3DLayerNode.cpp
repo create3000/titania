@@ -278,6 +278,42 @@ X3DLayerNode::set_viewport ()
 }
 
 void
+X3DLayerNode::bind ()
+{
+	traverse (TraverseType::CAMERA);
+
+	if (not getNavigationInfos () -> empty ())
+	{
+		const auto navigationInfo = getNavigationInfos () -> bound ();
+		getNavigationInfoStack () -> force_push (navigationInfo);
+		navigationInfo -> addLayer (this);
+	}
+
+	if (not getBackgrounds () -> empty ())
+	{
+		const auto background = getBackgrounds () -> bound ();
+		getBackgroundStack () -> force_push (background);
+		background -> addLayer (this);
+	}
+
+	if (not getFogs () -> empty ())
+	{
+		const auto fog = getFogs () -> bound ();
+		getFogStack () -> force_push (fog);
+		fog -> addLayer (this);
+	}
+
+	// Bind first viewpoint in viewpoint stack.
+
+	if (not getViewpoints () -> empty ())
+	{
+		const auto viewpoint = getViewpoints () -> bound ();
+		getViewpointStack () -> force_push (viewpoint);
+		viewpoint -> addLayer (this);
+	}
+}
+
+void
 X3DLayerNode::traverse (const TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
@@ -331,9 +367,7 @@ X3DLayerNode::pick ()
 		}
 		else
 		{
-			// if x and y not in Viewport return.
-
-			if (not getBrowser () -> getPickedObjects () .empty ())
+			if (not getBrowser () -> isPointerInRectangle (currentViewport -> getRectangle ()))
 				return;
 		}
 

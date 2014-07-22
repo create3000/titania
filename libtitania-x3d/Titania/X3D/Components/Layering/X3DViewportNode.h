@@ -61,6 +61,8 @@ class X3DViewportNode :
 {
 public:
 
+	///  @name Operations
+
 	Vector4i
 	getRectangle () const;
 
@@ -78,6 +80,8 @@ public:
 
 
 protected:
+
+	///  @name Construction
 
 	X3DViewportNode ();
 

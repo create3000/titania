@@ -180,7 +180,7 @@ X3DFieldAdjustment <Type>::set_field ()
 {
 	changing = true;
 
-	// Find last »creaseAngle« field.
+	// Find last field.
 
 	bool hasField = false;
 

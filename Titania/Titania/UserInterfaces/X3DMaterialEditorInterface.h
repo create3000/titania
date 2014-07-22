@@ -156,8 +156,8 @@ public:
 	{ return *m_MaterialBox; }
 
 	Gtk::ComboBoxText &
-	getMaterialButton () const
-	{ return *m_MaterialButton; }
+	getMaterialComboBoxText () const
+	{ return *m_MaterialComboBoxText; }
 
 	Gtk::Button &
 	getMaterialUnlinkButton () const
@@ -407,7 +407,7 @@ private:
 	Gtk::Button*                   m_SphereButton;
 	Gtk::Button*                   m_ModelButton;
 	Gtk::Box*                      m_MaterialBox;
-	Gtk::ComboBoxText*             m_MaterialButton;
+	Gtk::ComboBoxText*             m_MaterialComboBoxText;
 	Gtk::Button*                   m_MaterialUnlinkButton;
 	Gtk::Expander*                 m_FrontExpander;
 	Gtk::Grid*                     m_FrontBox;

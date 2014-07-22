@@ -2,31 +2,31 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkListStore" id="FamilyListStore">
+  <object class="GtkListStore" id="FontStyleFamilyListStore">
     <columns>
       <!-- column-name family -->
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkAdjustment" id="MaxExtentAdjustment">
-    <property name="upper">1000000000</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="SizeAdjustment">
+  <object class="GtkAdjustment" id="FontStyleSizeAdjustment">
     <property name="upper">1000000000</property>
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
     <signal name="value-changed" handler="on_size_changed" swapped="no"/>
   </object>
-  <object class="GtkAdjustment" id="SpacingAdjustment">
+  <object class="GtkAdjustment" id="FontStyleSpacingAdjustment">
     <property name="upper">1000000000</property>
     <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkTextBuffer" id="StringTextBuffer">
+  <object class="GtkAdjustment" id="TextMaxExtentAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkTextBuffer" id="TextStringTextBuffer">
     <signal name="changed" handler="on_string_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
@@ -202,12 +202,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="MaxExtentSpinButton">
+                      <object class="GtkSpinButton" id="TextMaxExtentSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
                         <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">MaxExtentAdjustment</property>
+                        <property name="adjustment">TextMaxExtentAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
@@ -228,11 +228,11 @@
                         <property name="vexpand">True</property>
                         <property name="shadow_type">in</property>
                         <child>
-                          <object class="GtkTextView" id="StringTextView">
+                          <object class="GtkTextView" id="TextStringTextView">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hexpand">True</property>
-                            <property name="buffer">StringTextBuffer</property>
+                            <property name="buffer">TextStringTextBuffer</property>
                           </object>
                         </child>
                       </object>
@@ -329,7 +329,7 @@
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
                         <child>
-                          <object class="GtkComboBoxText" id="FontStyleButton">
+                          <object class="GtkComboBoxText" id="FontStyleComboBoxText">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <items>
@@ -446,12 +446,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="SizeSpinButton">
+                      <object class="GtkSpinButton" id="FontStyleSizeSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
                         <property name="text" translatable="yes">1,000</property>
-                        <property name="adjustment">SizeAdjustment</property>
+                        <property name="adjustment">FontStyleSizeAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
@@ -479,12 +479,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="SpacingSpinButton">
+                      <object class="GtkSpinButton" id="FontStyleSpacingSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
                         <property name="text" translatable="yes">1,000</property>
-                        <property name="adjustment">SpacingAdjustment</property>
+                        <property name="adjustment">FontStyleSpacingAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
@@ -524,7 +524,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="HorizontalCheckButton">
+                      <object class="GtkCheckButton" id="FontStyleHorizontalCheckButton">
                         <property name="label" translatable="yes">Horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -541,7 +541,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="LeftToRightCheckButton">
+                      <object class="GtkCheckButton" id="FontStyleLeftToRightCheckButton">
                         <property name="label" translatable="yes">Left To Right</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -558,7 +558,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="TopToBottomCheckButton">
+                      <object class="GtkCheckButton" id="FontStyleTopToBottomCheckButton">
                         <property name="label" translatable="yes">Top To Bottom</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -575,7 +575,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="MajorAlignmentButton">
+                      <object class="GtkComboBoxText" id="FontStyleMajorAlignmentComboBoxText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
@@ -595,7 +595,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="MinorAlignmentButton">
+                      <object class="GtkComboBoxText" id="FontStyleMinorAlignmentComboBoxText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
@@ -673,7 +673,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkToggleButton" id="BoldToggleButton">
+                          <object class="GtkToggleButton" id="FontStyleBoldToggleButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -694,7 +694,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToggleButton" id="ItalicToggleButton">
+                          <object class="GtkToggleButton" id="FontStyleItalicToggleButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -735,10 +735,10 @@
                             <property name="can_focus">True</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkTreeView" id="FamilyTreeView">
+                              <object class="GtkTreeView" id="FontStyleFamilyTreeView">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="model">FamilyListStore</property>
+                                <property name="model">FontStyleFamilyListStore</property>
                                 <property name="headers_visible">False</property>
                                 <property name="headers_clickable">False</property>
                                 <property name="reorderable">True</property>
@@ -748,17 +748,17 @@
                                 <signal name="button-release-event" handler="on_family_button_release_event" swapped="no"/>
                                 <signal name="drag-data-received" handler="on_family_drag_data_received" swapped="no"/>
                                 <child internal-child="selection">
-                                  <object class="GtkTreeSelection" id="FamilySelection">
+                                  <object class="GtkTreeSelection" id="FontStyleFamilySelection">
                                     <signal name="changed" handler="on_family_changed" swapped="no"/>
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="FamilyNameColumn">
+                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyNameColumn">
                                     <property name="sizing">autosize</property>
                                     <property name="title" translatable="yes">Family Name</property>
                                     <property name="alignment">0.019999999552965164</property>
                                     <child>
-                                      <object class="GtkCellRendererText" id="FamilyNameCellrendererText">
+                                      <object class="GtkCellRendererText" id="FontStyleFamilyNameCellrendererText">
                                         <property name="editable">True</property>
                                         <signal name="edited" handler="on_family_edited" swapped="no"/>
                                       </object>
@@ -769,16 +769,16 @@
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="FamilyPadColumn">
+                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyPadColumn">
                                     <property name="title" translatable="yes">Pad</property>
                                     <property name="expand">True</property>
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="FamilyFontColumn">
+                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyFontColumn">
                                     <property name="sizing">autosize</property>
                                     <child>
-                                      <object class="GtkCellRendererPixbuf" id="FamilyFontCellrendererPixbuf">
+                                      <object class="GtkCellRendererPixbuf" id="FontStyleFamilyFontCellrendererPixbuf">
                                         <property name="stock_id">gtk-select-font</property>
                                         <property name="stock_size">1</property>
                                       </object>
@@ -800,7 +800,7 @@
                             <property name="can_focus">False</property>
                             <property name="layout_style">start</property>
                             <child>
-                              <object class="GtkButton" id="AddFamilyButton">
+                              <object class="GtkButton" id="FontStyleAddFamilyButton">
                                 <property name="label">gtk-add</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -816,7 +816,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="RemoveFamilyButton">
+                              <object class="GtkButton" id="FontStyleRemoveFamilyButton">
                                 <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>

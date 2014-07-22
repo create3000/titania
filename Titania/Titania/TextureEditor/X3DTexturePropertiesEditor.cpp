@@ -59,7 +59,16 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	        textureProperties (),
 	                 undoStep (),
 	                 changing (false),
-	          generateMipMaps (getBrowserWindow (), getGenerateMipMapsCheckButton (), "generateMipMaps")
+	              borderWidth (getBrowserWindow (), getTexturePropertiesBorderWidthAdjustment (), getTexturePropertiesBorderWidthSpinButton (), "borderWidth"),
+	        anisotropicDegree (getBrowserWindow (), getTexturePropertiesAnisotropicDegreeAdjustment (), getTexturePropertiesAnisotropicDegreeSpinButton (), "anisotropicDegree"),
+	          generateMipMaps (getBrowserWindow (), getTexturePropertiesGenerateMipMapsCheckButton (), "generateMipMaps"),
+	       minificationFilter (getBrowserWindow (), getTexturePropertiesMinificationFilterComboBoxText (), "minificationFilter"),
+	      magnificationFilter (getBrowserWindow (), getTexturePropertiesMagnificationFilterComboBoxText (), "magnificationFilter"),
+	            boundaryModeS (getBrowserWindow (), getTexturePropertiesBoundaryModeSComboBoxText (), "boundaryModeS"),
+	            boundaryModeT (getBrowserWindow (), getTexturePropertiesBoundaryModeTComboBoxText (), "boundaryModeT"),
+	            boundaryModeR (getBrowserWindow (), getTexturePropertiesBoundaryModeRComboBoxText (), "boundaryModeR"),
+	       textureCompression (getBrowserWindow (), getTexturePropertiesTextureCompressionComboBoxText (), "textureCompression"),
+	          texturePriority (getBrowserWindow (), getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority")
 { }
 
 void
@@ -73,6 +82,8 @@ X3DTexturePropertiesEditor::initialize ()
 void
 X3DTexturePropertiesEditor::set_selection ()
 {
+	undoStep .reset ();
+
 	for (const auto & textureNode : textureNodes)
 	{
 		try
@@ -83,16 +94,14 @@ X3DTexturePropertiesEditor::set_selection ()
 		{ }
 	}
 
-	undoStep .reset ();
-
 	textureNodes = getSelection <X3D::X3DTextureNode> ({
-		X3D::X3DConstants::ImageTexture,
-		X3D::X3DConstants::MovieTexture,
-		X3D::X3DConstants::PixelTexture,
-		X3D::X3DConstants::ComposedTexture3D,
-		X3D::X3DConstants::ImageTexture3D,
-		X3D::X3DConstants::PixelTexture3D
-	});
+	                                                      X3D::X3DConstants::ImageTexture,
+	                                                      X3D::X3DConstants::MovieTexture,
+	                                                      X3D::X3DConstants::PixelTexture,
+	                                                      X3D::X3DConstants::ComposedTexture3D,
+	                                                      X3D::X3DConstants::ImageTexture3D,
+	                                                      X3D::X3DConstants::PixelTexture3D
+																		});
 
 	for (const auto & textureNode : textureNodes)
 	{
@@ -182,7 +191,16 @@ X3DTexturePropertiesEditor::set_textureProperties ()
 
 	changing = false;
 
-	generateMipMaps .setNodes ({ textureProperties });
+	borderWidth         .setNodes ({ textureProperties });
+	anisotropicDegree   .setNodes ({ textureProperties });
+	generateMipMaps     .setNodes ({ textureProperties });
+	minificationFilter  .setNodes ({ textureProperties });
+	magnificationFilter .setNodes ({ textureProperties });
+	boundaryModeS       .setNodes ({ textureProperties });
+	boundaryModeT       .setNodes ({ textureProperties });
+	boundaryModeR       .setNodes ({ textureProperties });
+	textureCompression  .setNodes ({ textureProperties });
+	texturePriority     .setNodes ({ textureProperties });
 }
 
 void
@@ -191,6 +209,84 @@ X3DTexturePropertiesEditor::connectTextureProperties (const X3D::SFNode & field)
 	field .removeInterest (this, &X3DTexturePropertiesEditor::connectTextureProperties);
 	field .addInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
 }
+
+/***********************************************************************************************************************
+ *
+ *  backSpecularColor
+ *
+ **********************************************************************************************************************/
+
+//bool
+//X3DTexturePropertiesEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
+//{
+//	const auto color = dialog .get_color_selection () -> get_current_rgba ();
+//
+//	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+//	context -> rectangle (0, 0, drawingArea .get_width (), drawingArea .get_height ());
+//	context -> fill ();
+//
+//	return true;
+//}
+//
+//void
+//X3DTexturePropertiesEditor::on_clicked ()
+//{
+//	dialog () .present ();
+//}
+//
+//void
+//X3DTexturePropertiesEditor::on_color_changed ()
+//{
+//	drawingArea .queue_draw ();
+//
+//	if (changing)
+//		return;
+//
+//	const auto color = dialog .get_color_selection () -> get_current_rgba ();
+//
+//	// Update field
+//
+//	addUndoFunction <X3D::SFColorRGBA> (nodes, name, undoStep);
+//
+//	for (const auto & node : nodes)
+//	{
+//		try
+//		{
+//			auto & field = node -> getField <X3D::SFColorRGBA> (name);
+//
+//			field .removeInterest (this, &X3DTexturePropertiesEditor::set_color);
+//			field .addInterest (this, &X3DTexturePropertiesEditor::connect);
+//
+//			field = X3D::Color4f (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+//		}
+//		catch (const X3D::X3DError &)
+//		{ }
+//	}
+//
+//	addRedoFunction <X3D::SFColorRGBA> (nodes, name, undoStep);
+//}
+//
+//void
+//X3DTexturePropertiesEditor::set_field ()
+//{
+//	changing = true;
+//
+//	const int  active   = getColorRGBA (nodes, name);
+//	const bool hasField = (active not_eq -2);
+//
+//	toggleButton .set_sensitive (hasField);
+//	toggleButton .set_active (active > 0);
+//	toggleButton .set_inconsistent (active < 0);
+//
+//	changing = false;
+//}
+//
+//void
+//X3DTexturePropertiesEditor::connect (const X3D::SFColor & field)
+//{
+//	field .removeInterest (this, &X3DTexturePropertiesEditor::connect);
+//	field .addInterest (this, &X3DTexturePropertiesEditor::set_field);
+//}
 
 } // puck
 } // titania

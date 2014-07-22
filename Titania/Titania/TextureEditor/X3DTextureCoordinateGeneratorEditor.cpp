@@ -60,7 +60,7 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	      textureCoordinateGenerator (),
 	                        undoStep (),
 	                        changing (false),
-	                            mode (getBrowserWindow (), getTextureCoordinateGeneratorModeButton (), "mode")
+	                            mode (getBrowserWindow (), getTextureCoordinateGeneratorModeComboBoxText (), "mode")
 {
 	textureCoordinateGeneratorBuffer .addParent (getBrowser ());
 	textureCoordinateGeneratorBuffer .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_node);
@@ -88,8 +88,6 @@ X3DTextureCoordinateGeneratorEditor::set_selection ()
 		catch (const X3D::X3DError &)
 		{ }
 	}
-
-	// Find X3DGeometryNodes
 
 	geometryNodes = getSelection <X3D::X3DGeometryNode> ({ X3D::X3DConstants::X3DGeometryNode });
 

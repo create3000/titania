@@ -51,6 +51,7 @@
 #ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
 #define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
 
+#include "../ComposedWidgets.h"
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 #include "../TextureEditor/X3DImageTextureEditor.h"
 
@@ -70,7 +71,7 @@ protected:
 	void
 	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
-	const X3D::X3DPtr <X3D::X3DTexture2DNode> &
+	const X3D::X3DPtr <X3D::ImageTexture> &
 	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 
@@ -78,44 +79,13 @@ private:
 
 	///  @name Construction
 
-	const X3D::X3DPtr <X3D::X3DTexture2DNode> &
-	getTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
 	void
-	disconnect ();
-
-	void
-	connect (const bool);
-
-	///  @name repeatS
-
-	virtual
-	void
-	on_texture2DNode_repeatS_toggled () final override;
-
-	void
-	set_repeatS ();
-
-	void
-	connectRepeatS (const X3D::SFBool &);
-
-	///  @name repeatT
-
-	virtual
-	void
-	on_texture2DNode_repeatT_toggled () final override;
-
-	void
-	set_repeatT ();
-
-	void
-	connectRepeatT (const X3D::SFBool &);
+	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	///  @name Members
-
-	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode;
-	UndoStepPtr                         undoStep;
-	bool                                changing;
+	
+	X3DFieldToggleButton <X3D::SFBool> repeatS;
+	X3DFieldToggleButton <X3D::SFBool> repeatT;
 
 };
 

@@ -62,6 +62,8 @@ class LayerSet :
 {
 public:
 
+	///  @name Construction
+
 	LayerSet (X3DExecutionContext* const);
 
 	virtual
@@ -112,6 +114,8 @@ public:
 	layers () const
 	{ return *fields .layers; }
 
+	///  @name Member access
+
 	void
 	setLayer0 (const X3DLayerNodePtr &);
 
@@ -121,7 +125,12 @@ public:
 
 	const X3DPtrArray <X3DLayerNode> &
 	getLayers () const
-	{ return children; }
+	{ return layerNodes; }
+
+	///  @name Operations
+
+	void
+	bind ();
 
 	virtual
 	void
@@ -134,9 +143,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_activeLayer ();
@@ -163,8 +176,8 @@ private:
 
 	Fields fields;
 
-	X3DPtrArray <X3DLayerNode> children;
-	X3DLayerNodePtr            layer0;
+	X3DPtrArray <X3DLayerNode> layerNodes;
+	X3DLayerNodePtr            layerNode0;
 	X3DLayerNodePtr            activeLayerNode;
 
 };

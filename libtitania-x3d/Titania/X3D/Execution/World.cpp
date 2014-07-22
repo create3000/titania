@@ -53,8 +53,6 @@
 #include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Layering/Layer.h"
-#include "../Execution/BindableNodeList.h"
-#include "../Execution/BindableNodeStack.h"
 
 namespace titania {
 namespace X3D {
@@ -140,40 +138,9 @@ World::set_activeLayer ()
 void
 World::bind ()
 {
-	layerSet -> traverse (TraverseType::CAMERA);
+	// Bind first X3DBindableNodes found in each layer.
 
-	for (const auto & layer : layerSet -> getLayers ())
-	{
-		if (not layer -> getNavigationInfos () -> empty ())
-		{
-			const auto navigationInfo = layer -> getNavigationInfos () -> bound ();
-			layer -> getNavigationInfoStack () -> force_push (navigationInfo);
-			navigationInfo -> addLayer (layer);
-		}
-
-		if (not layer -> getBackgrounds () -> empty ())
-		{
-			const auto background = layer -> getBackgrounds () -> bound ();
-			layer -> getBackgroundStack () -> force_push (background);
-			background -> addLayer (layer);
-		}
-
-		if (not layer -> getFogs () -> empty ())
-		{
-			const auto fog = layer -> getFogs () -> bound ();
-			layer -> getFogStack () -> force_push (fog);
-			fog -> addLayer (layer);
-		}
-
-		// Bind first viewpoint in viewpoint stack.
-
-		if (not layer -> getViewpoints () -> empty ())
-		{
-			const auto viewpoint = layer -> getViewpoints () -> bound ();
-			layer -> getViewpointStack () -> force_push (viewpoint);
-			viewpoint -> addLayer (layer);
-		}
-	}
+	layerSet -> bind ();
 
 	// Bind viewpoint from URL.
 	

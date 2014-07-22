@@ -65,8 +65,6 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 {
 	textureTransformBuffer .addParent (getBrowser ());
 	textureTransformBuffer .addInterest (this, &X3DTextureTransformNodeEditor::set_node);
-
-	getWidget () .signal_map () .connect (sigc::bind (sigc::mem_fun (getWindow (), &Gtk::Window::resize), 1, 1));
 }
 
 void
@@ -108,13 +106,13 @@ X3DTextureTransformNodeEditor::on_textureTransform_unlink_clicked ()
 void
 X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 {
-	getTextureTransformNotebook () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0);
+	getTextureTransformNotebook () .set_sensitive (getTextureTransformComboBoxText () .get_active_row_number () > 0);
 
 	getTextureTransformBox () .set_visible (false);
 
 	if (textureTransformNode)
 	{
-		switch (getTextureTransformButton () .get_active_row_number ())
+		switch (getTextureTransformComboBoxText () .get_active_row_number ())
 		{
 			case 1:
 				getTextureTransformBox () .set_visible (true);
@@ -125,14 +123,12 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 		}
 	}
 
-	getWindow () .resize (1, 1);
-
 	if (changing)
 		return;
 
-	if (getTextureTransformButton () .get_active_row_number () > 0)
+	if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
 	{
-		switch (getTextureTransformButton () .get_active_row_number ())
+		switch (getTextureTransformComboBoxText () .get_active_row_number ())
 		{
 			case 1:
 				textureTransformNode = getTextureTransform (textureTransformNode);
@@ -155,7 +151,7 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			field .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
 			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
 
-			if (getTextureTransformButton () .get_active_row_number () > 0)
+			if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (textureTransformNode), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
@@ -166,7 +162,7 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
 
-	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformButton () .get_active_row_number () > 0 and textureTransformNode -> isCloned () > 1);
+	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformComboBoxText () .get_active_row_number () > 0 and textureTransformNode -> isCloned () > 1);
 }
 
 void
@@ -196,19 +192,19 @@ X3DTextureTransformNodeEditor::set_node ()
 		switch (textureTransformNode -> getType () .back ())
 		{
 			case X3D::X3DConstants::TextureTransform:
-				getTextureTransformButton () .set_active (1);
+				getTextureTransformComboBoxText () .set_active (1);
 				break;
 			default:
-				getTextureTransformButton () .set_active (-1);
+				getTextureTransformComboBoxText () .set_active (-1);
 				break;
 		}
 	}
 	else if (active == 0)
-		getTextureTransformButton () .set_active (0);
+		getTextureTransformComboBoxText () .set_active (0);
 	else
-		getTextureTransformButton () .set_active (-1);
+		getTextureTransformComboBoxText () .set_active (-1);
 
-	getTextureTransformButton ()       .set_sensitive (hasField);
+	getTextureTransformComboBoxText () .set_sensitive (hasField);
 	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> isCloned () > 1);
 
 	changing = false;

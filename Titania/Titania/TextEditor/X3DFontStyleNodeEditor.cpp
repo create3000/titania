@@ -70,18 +70,18 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	       screenFontStyle (),
 	              undoStep (),
 	              changing (false),
-	               spacing (getBrowserWindow (), getSpacingAdjustment (), getSpacingSpinButton (), "spacing"),
-	            horizontal (getBrowserWindow (), getHorizontalCheckButton (), "horizontal"),
-	           leftToRight (getBrowserWindow (), getLeftToRightCheckButton (), "leftToRight"),
-	           topToBottom (getBrowserWindow (), getTopToBottomCheckButton (), "topToBottom")
+	               spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing"),
+	            horizontal (getBrowserWindow (), getFontStyleHorizontalCheckButton (),  "horizontal"),
+	           leftToRight (getBrowserWindow (), getFontStyleLeftToRightCheckButton (), "leftToRight"),
+	           topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom")
 {
 	fontStyleNodeBuffer .addParent (getBrowser ());
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
 
 	//  Drag & Drop
 
-	getFamilyTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	getFamilyTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+	getFontStyleFamilyTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+	getFontStyleFamilyTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
 }
 
 void
@@ -99,8 +99,6 @@ X3DFontStyleNodeEditor::set_selection ()
 
 	for (const auto & text : texts)
 		text -> fontStyle () .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
-
-	// Find Appearances.
 
 	texts = getSelection <X3D::Text> ({ X3D::X3DConstants::Text });
 
@@ -125,11 +123,11 @@ X3DFontStyleNodeEditor::on_fontStyle_unlink_clicked ()
 void
 X3DFontStyleNodeEditor::on_fontStyle_changed ()
 {
-	getFontStyleNodeBox () .set_sensitive (getFontStyleButton () .get_active_row_number () > 0);
+	getFontStyleNodeBox () .set_sensitive (getFontStyleComboBoxText () .get_active_row_number () > 0);
 
 	// Change size label.
 
-	if (getFontStyleButton () .get_active_row_number () == 2)
+	if (getFontStyleComboBoxText () .get_active_row_number () == 2)
 		getSizeLabel () .set_text (_ ("Point Size:"));
 
 	else
@@ -142,11 +140,11 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 
 	// Copy X3DFontStyleNode.
 
-	if (getFontStyleButton () .get_active_row_number () > 0)
+	if (getFontStyleComboBoxText () .get_active_row_number () > 0)
 	{
 		const auto last = fontStyleNode;
 
-		switch (getFontStyleButton () .get_active_row_number ())
+		switch (getFontStyleComboBoxText () .get_active_row_number ())
 		{
 			case 1:
 			{
@@ -186,7 +184,7 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 			field .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
 			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
 
-			if (getFontStyleButton () .get_active_row_number () > 0)
+			if (getFontStyleComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (X3D::SFNode (text), field, X3D::SFNode (fontStyleNode), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (text), field, nullptr, undoStep);
@@ -197,7 +195,7 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 
 	addRedoFunction <X3D::SFNode> (texts, "fontStyle", undoStep);
 
-	getFontStyleUnlinkButton () .set_sensitive (getFontStyleButton () .get_active () > 0 and fontStyleNode -> isCloned () > 1);
+	getFontStyleUnlinkButton () .set_sensitive (getFontStyleComboBoxText () .get_active () > 0 and fontStyleNode -> isCloned () > 1);
 }
 
 void
@@ -255,12 +253,12 @@ X3DFontStyleNodeEditor::set_node ()
 		{
 			case X3D::X3DConstants::FontStyle:
 			{
-				getFontStyleButton () .set_active (1);
+				getFontStyleComboBoxText () .set_active (1);
 				break;
 			}
 			case X3D::X3DConstants::ScreenFontStyle:
 			{
-				getFontStyleButton () .set_active (2);
+				getFontStyleComboBoxText () .set_active (2);
 				break;
 			}
 			default:
@@ -268,11 +266,11 @@ X3DFontStyleNodeEditor::set_node ()
 		}
 	}
 	else if (active == 0)
-		getFontStyleButton () .set_active (0);
+		getFontStyleComboBoxText () .set_active (0);
 	else
-		getFontStyleButton () .set_active (-1);
+		getFontStyleComboBoxText () .set_active (-1);
 
-	getFontStyleButton ()       .set_sensitive (hasField);
+	getFontStyleComboBoxText () .set_sensitive (hasField);
 	getFontStyleUnlinkButton () .set_sensitive (active > 0 and fontStyleNode -> isCloned () > 1);
 
 	changing = false;
@@ -309,7 +307,7 @@ X3DFontStyleNodeEditor::connectFontStyle (const X3D::SFNode & field)
 void
 X3DFontStyleNodeEditor::on_family_changed ()
 {
-	getRemoveFamilyButton () .set_sensitive (not getFamilySelection () -> get_selected_rows () .empty ());
+	getFontStyleRemoveFamilyButton () .set_sensitive (not getFontStyleFamilySelection () -> get_selected_rows () .empty ());
 }
 
 void
@@ -323,7 +321,7 @@ X3DFontStyleNodeEditor::on_family_edited (const Glib::ustring & path, const Glib
 
 	// Update list store.
 
-	const auto iter = getFamilyListStore () -> get_iter (Gtk::TreePath (path));
+	const auto iter = getFontStyleFamilyListStore () -> get_iter (Gtk::TreePath (path));
 	iter -> set_value (FAMILY_NAME, value);
 
 	// Change value.
@@ -348,11 +346,11 @@ X3DFontStyleNodeEditor::on_family_button_release_event (GdkEventButton* event)
 	int                  cell_x = 0;
 	int                  cell_y = 0;
 
-	getFamilyTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
+	getFontStyleFamilyTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
 
 	if (path .size ())
 	{
-		if (column == getFamilyFontColumn () .operator -> ())
+		if (column == getFontStyleFamilyFontColumn () .operator -> ())
 		{
 			openFontChooserDialog (path .front ());
 			return true;
@@ -369,8 +367,8 @@ X3DFontStyleNodeEditor::on_family_drag_data_received (const Glib::RefPtr <Gdk::D
                                                       guint info,
                                                       guint time)
 {
-	const auto   selected = getFamilySelection () -> get_selected ();
-	const size_t index    = getFamilyListStore () -> get_path (selected) .front ();
+	const auto   selected = getFontStyleFamilySelection () -> get_selected ();
+	const size_t index    = getFontStyleFamilyListStore () -> get_path (selected) .front ();
 
 	// Update list store.
 
@@ -378,29 +376,29 @@ X3DFontStyleNodeEditor::on_family_drag_data_received (const Glib::RefPtr <Gdk::D
 	Gtk::TreeViewDropPosition position;
 	size_t                    dest = 0;
 
-	if (getFamilyTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
+	if (getFontStyleFamilyTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
 	{
-		auto destination = getFamilyListStore () -> get_iter (destinationPath);
+		auto destination = getFontStyleFamilyListStore () -> get_iter (destinationPath);
 
-		dest = getFamilyListStore () -> get_path (destination) .front ();
+		dest = getFontStyleFamilyListStore () -> get_path (destination) .front ();
 
 		switch (position)
 		{
 			case Gtk::TREE_VIEW_DROP_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
-				getFamilyListStore () -> move (selected, destination);
+				getFontStyleFamilyListStore () -> move (selected, destination);
 				break;
 			case Gtk::TREE_VIEW_DROP_AFTER:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
-				getFamilyListStore () -> move (selected, ++ destination);
+				getFontStyleFamilyListStore () -> move (selected, ++ destination);
 				++ dest;
 				break;
 		}
 	}
 	else
 	{
-		const auto children = getFamilyListStore () -> children ();
-		getFamilyListStore () -> move (selected, children .end ());
+		const auto children = getFontStyleFamilyListStore () -> children ();
+		getFontStyleFamilyListStore () -> move (selected, children .end ());
 		dest = children .size ();
 	}
 
@@ -441,13 +439,13 @@ X3DFontStyleNodeEditor::on_add_family_clicked ()
 void
 X3DFontStyleNodeEditor::on_remove_family_clicked ()
 {
-	const auto   selected = getFamilySelection () -> get_selected ();
-	const size_t index    = getFamilyListStore () -> get_path (selected) .front ();
+	const auto   selected = getFontStyleFamilySelection () -> get_selected ();
+	const size_t index    = getFontStyleFamilyListStore () -> get_path (selected) .front ();
 	auto &       field    = fontStyleNode -> family ();
 
 	// Update list store.
 
-	getFamilyListStore () -> erase (selected);
+	getFontStyleFamilyListStore () -> erase (selected);
 
 	// Remove value.
 
@@ -475,7 +473,7 @@ X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
 
 	else
 	{
-		const auto iter = getFamilyListStore () -> get_iter (Gtk::TreePath (basic::to_string (index)));
+		const auto iter = getFontStyleFamilyListStore () -> get_iter (Gtk::TreePath (basic::to_string (index)));
 		iter -> get_value (FAMILY_NAME, family);
 	}
 
@@ -506,7 +504,7 @@ X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
 		{
 			// Update list store.
 
-			const auto iter = getFamilyListStore () -> append ();
+			const auto iter = getFontStyleFamilyListStore () -> append ();
 			iter -> set_value (FAMILY_NAME, value);
 
 			// Append value.
@@ -526,7 +524,7 @@ X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
 		{
 			// Update list store.
 
-			const auto iter = getFamilyListStore () -> get_iter (Gtk::TreePath (basic::to_string (index)));
+			const auto iter = getFontStyleFamilyListStore () -> get_iter (Gtk::TreePath (basic::to_string (index)));
 			iter -> set_value (FAMILY_NAME, value);
 
 			// Change value.
@@ -551,11 +549,11 @@ X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
 void
 X3DFontStyleNodeEditor::set_family ()
 {
-	getFamilyListStore () -> clear ();
+	getFontStyleFamilyListStore () -> clear ();
 
 	for (const auto & familyName : fontStyleNode -> family ())
 	{
-		const auto iter = getFamilyListStore () -> append ();
+		const auto iter = getFontStyleFamilyListStore () -> append ();
 		iter -> set_value (FAMILY_NAME, familyName .str ());
 	}
 }
@@ -584,7 +582,7 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 	fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::connectStyle);
 
-	switch ((getBoldToggleButton () .get_active () << 1) | getItalicToggleButton () .get_active ())
+	switch ((getFontStyleBoldToggleButton () .get_active () << 1) | getFontStyleItalicToggleButton () .get_active ())
 	{
 		case 0:
 		{
@@ -618,8 +616,8 @@ X3DFontStyleNodeEditor::set_style ()
 {
 	changing = true;
 
-	getBoldToggleButton ()   .set_active (fontStyleNode -> isBold ());
-	getItalicToggleButton () .set_active (fontStyleNode -> isItalic ());
+	getFontStyleBoldToggleButton ()   .set_active (fontStyleNode -> isBold ());
+	getFontStyleItalicToggleButton () .set_active (fontStyleNode -> isItalic ());
 
 	changing = false;
 }
@@ -648,7 +646,7 @@ X3DFontStyleNodeEditor::on_size_changed ()
 	fontStyleNode -> size () .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
 	fontStyleNode -> size () .addInterest (this, &X3DFontStyleNodeEditor::connectSize);
 
-	fontStyleNode -> size () = getSizeSpinButton () .get_value ();
+	fontStyleNode -> size () = getFontStyleSizeAdjustment () -> get_value ();
 
 	addRedoFunction (fontStyleNode -> size (), undoStep);
 }
@@ -658,7 +656,7 @@ X3DFontStyleNodeEditor::set_size ()
 {
 	changing = true;
 
-	getSizeSpinButton () .set_value (fontStyleNode -> size ());
+	getFontStyleSizeAdjustment () -> set_value (fontStyleNode -> size ());
 
 	changing = false;
 }
@@ -687,8 +685,8 @@ X3DFontStyleNodeEditor::on_justify_changed ()
 	fontStyleNode -> justify () .removeInterest (this, &X3DFontStyleNodeEditor::set_justify);
 	fontStyleNode -> justify () .addInterest (this, &X3DFontStyleNodeEditor::connectJustify);
 
-	fontStyleNode -> justify () .set1Value (0, getMajorAlignmentButton () .get_active_text ());
-	fontStyleNode -> justify () .set1Value (1, getMinorAlignmentButton () .get_active_text ());
+	fontStyleNode -> justify () .set1Value (0, getFontStyleMajorAlignmentComboBoxText () .get_active_text ());
+	fontStyleNode -> justify () .set1Value (1, getFontStyleMinorAlignmentComboBoxText () .get_active_text ());
 
 	addRedoFunction (fontStyleNode -> justify (), undoStep);
 }
@@ -707,20 +705,20 @@ X3DFontStyleNodeEditor::set_justify ()
 
 	try
 	{
-		getMajorAlignmentButton () .set_active (alignments .at (fontStyleNode -> justify () .at (0)));
+		getFontStyleMajorAlignmentComboBoxText () .set_active (alignments .at (fontStyleNode -> justify () .at (0)));
 	}
 	catch (const std::out_of_range &)
 	{
-		getMajorAlignmentButton () .set_active (1);
+		getFontStyleMajorAlignmentComboBoxText () .set_active (1);
 	}
 
 	try
 	{
-		getMinorAlignmentButton () .set_active (alignments .at (fontStyleNode -> justify () .at (1)));
+		getFontStyleMinorAlignmentComboBoxText () .set_active (alignments .at (fontStyleNode -> justify () .at (1)));
 	}
 	catch (const std::out_of_range &)
 	{
-		getMinorAlignmentButton () .set_active (0);
+		getFontStyleMinorAlignmentComboBoxText () .set_active (0);
 	}
 
 	changing = false;

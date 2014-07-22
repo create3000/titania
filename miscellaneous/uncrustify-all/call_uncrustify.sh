@@ -70,8 +70,10 @@ perl -e '
 	sub max { return $_[0] > $_[1] ? $_[0] : $_[1]; }
 
 	$constructor_rx  = qr/(\w+)\:\:(\w+)\s\(/so;
-	$member_value_rx = qr/\((?:[^()]*|(?0))*\)|\{(?:[^{}]*|(?0))*\}/so;
-	$member_rx       = qr/^(\t+)([\/\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
+	$member_rx       = qr/^(\t+)([\/\w:\s<>]+)\s*(.*)$/so;
+	$member_start_rx = qr/^(\t+)([\/\w:\s<>]+)\s*\(/so;
+	$member_end_rx   = qr/\),?\s*$/so;
+	$block_start_rx  = qr/^\s*(?:\)\s*\{|\{)/so;
 
 	@lines = <>;
 
@@ -102,8 +104,10 @@ perl -e '
 
 		$lm = 0;
 		$lc = 0;
-		while ($_ = shift @_) {
-
+		while ($_ = shift @_)
+		{
+			last if $_ =~ $block_start_rx;
+			next unless $_ =~ $member_start_rx;
 			last unless $_ =~ $member_rx;
 			$lm = max ($lm, length ($2));
 			$lc = max ($lc, length ($3));
@@ -137,15 +141,36 @@ perl -e '
 		MEMBERS:
 
 		print $_;
+		
+		$b = 0;
+
 
 		while ($_ = shift @lines) {
+			last if $_ =~ $block_start_rx;
+
+			$member_start = $_ =~ $member_start_rx;
+
 			last unless $_ =~ $member_rx;
-			$pad1 = $lm - length ($2);
-			$pad2 = $lc - length ($3) + 1;
-			$line = $1 . (" " x $pad1) . $2 . $3;
-			$line .= (" " x $pad2) . $5, "\n" unless $3 =~ /\n/o;
+			
+			$tab   = $1;
+			$name  = $2; # spaces + name 
+			$value = $3;
+
+			$pad1 = $b == 0
+			        ? $lm - length ($name)
+			        : $lm + 1;
+			
+			$name =~ s/^\s*//sgo if $b;
+	
+			$line = $tab . (" " x $pad1) . $name . $value;
 			$line =~ s/(.*?)\s*$/$1\n/o;
 			print $line;
+			
+			# Count parenthesises
+			my $o = () = $_ =~ /\(/sgo;
+			my $c = () = $_ =~ /\)/sgo;
+
+			$b += $o - $c;
 		}
 
 		print $_;

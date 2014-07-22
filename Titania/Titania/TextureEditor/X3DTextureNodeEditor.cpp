@@ -50,6 +50,8 @@
 
 #include "X3DTextureNodeEditor.h"
 
+#include "../Configuration/config.h"
+
 namespace titania {
 namespace puck {
 
@@ -58,12 +60,16 @@ X3DTextureNodeEditor::X3DTextureNodeEditor () :
 	 X3DTextureEditorInterface ("", ""),
 	    X3DTexture2DNodeEditor (),
 	X3DTexturePropertiesEditor (),
-	              appearances (),
+	                   preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	               appearances (),
 	               textureNode (),
 	                  undoStep (),
 	                  changing (false)
 {
-	getWidget () .signal_map () .connect (sigc::bind (sigc::mem_fun (getWindow (), &Gtk::Window::resize), 1, 1));
+	textureNode .addParent (getBrowser ());
+	textureNode .addInterest (this, &X3DTextureNodeEditor::set_preview);
+
+	preview -> set_antialiasing (4);
 }
 
 void
@@ -71,43 +77,79 @@ X3DTextureNodeEditor::initialize ()
 {
 	X3DTexturePropertiesEditor::initialize ();
 
+	getPreviewBox () .pack_start (*preview, true, true, 0);
+
+	preview -> show ();
+	preview -> initialized () .addInterest (this, &X3DTextureNodeEditor::set_initialized);
+
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureNodeEditor::set_selection);
 
 	set_selection ();
 }
 
 void
+X3DTextureNodeEditor::set_initialized ()
+{
+	preview -> initialized () .removeInterest (this, &X3DTextureNodeEditor::set_initialized);
+
+	try
+	{
+		preview -> loadURL ({ get_ui ("Dialogs/TextureEditorPreview.x3dv") });
+
+		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isInternal (true);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	set_preview ();
+}
+
+void
 X3DTextureNodeEditor::set_selection ()
 {
+	undoStep .reset ();
+
 	for (const auto & appearance : appearances)
 		appearance -> texture () .removeInterest (this, &X3DTextureNodeEditor::set_texture);
 
-	undoStep .reset ();
-
-	// Find Appearances.
-
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	appearances .clear ();
-
-	X3D::traverse (selection, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (type == X3D::X3DConstants::Appearance)
-	                     {
-	                        appearances .emplace_back (node);
-	                        return true;
-								}
-							}
-
-	                  return true;
-						});
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> texture () .addInterest (this, &X3DTextureNodeEditor::set_texture);
 
 	set_texture ();
+}
+
+/***********************************************************************************************************************
+ *
+ *  Preview
+ *
+ **********************************************************************************************************************/
+
+void
+X3DTextureNodeEditor::set_preview ()
+{
+	try
+	{
+		const X3D::AppearancePtr appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+
+		if (appearance)
+		{
+			if (appearance -> texture ())
+				appearance -> texture () -> removeInterest (*preview, &X3D::Browser::addEvent);
+
+			if (getTextureComboBoxText () .get_active_row_number () > 0)
+				appearance -> texture () = textureNode;
+			
+			else
+				appearance -> texture () = nullptr;
+
+			if (appearance -> texture ())
+				appearance -> texture () -> addInterest (*preview, &X3D::Browser::addEvent);
+		}
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 /***********************************************************************************************************************
@@ -125,11 +167,11 @@ X3DTextureNodeEditor::on_texture_unlink_clicked ()
 void
 X3DTextureNodeEditor::on_texture_changed ()
 {
-	getTextureNotebook () .set_sensitive (getTextureButton () .get_active_row_number () > 0);
+	getTextureNotebook () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0);
 
 	if (textureNode)
 	{
-		switch (getTextureButton () .get_active_row_number ())
+		switch (getTextureComboBoxText () .get_active_row_number ())
 		{
 			case 1:
 				//getImageTextureBox () .set_visible (true);
@@ -140,14 +182,12 @@ X3DTextureNodeEditor::on_texture_changed ()
 		}
 	}
 
-	getWindow () .resize (1, 1);
-
 	if (changing)
 		return;
 
-	if (getTextureButton () .get_active_row_number () > 0)
+	if (getTextureComboBoxText () .get_active_row_number () > 0)
 	{
-		switch (getTextureButton () .get_active_row_number ())
+		switch (getTextureComboBoxText () .get_active_row_number ())
 		{
 			case 1:
 				textureNode = getImageTexture (textureNode);
@@ -170,7 +210,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 			field .removeInterest (this, &X3DTextureNodeEditor::set_texture);
 			field .addInterest (this, &X3DTextureNodeEditor::connectTexture);
 
-			if (getTextureButton () .get_active_row_number () > 0)
+			if (getTextureComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (textureNode), undoStep);
 			else
 				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
@@ -181,7 +221,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 
-	getTextureUnlinkButton () .set_sensitive (getTextureButton () .get_active_row_number () > 0 and textureNode -> isCloned () > 1);
+	getTextureUnlinkButton () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0 and textureNode -> isCloned () > 1);
 
 	X3DTexturePropertiesEditor::set_selection ();
 }
@@ -208,19 +248,19 @@ X3DTextureNodeEditor::set_texture ()
 		switch (textureNode -> getType () .back ())
 		{
 			case X3D::X3DConstants::ImageTexture:
-				getTextureButton () .set_active (1);
+				getTextureComboBoxText () .set_active (1);
 				break;
 			default:
-				getTextureButton () .set_active (-1);
+				getTextureComboBoxText () .set_active (-1);
 				break;
 		}
 	}
 	else if (active == 0)
-		getTextureButton () .set_active (0);
+		getTextureComboBoxText () .set_active (0);
 	else
-		getTextureButton () .set_active (-1);
+		getTextureComboBoxText () .set_active (-1);
 
-	getTextureButton ()       .set_sensitive (hasField);
+	getTextureComboBoxText () .set_sensitive (hasField);
 	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> isCloned () > 1);
 
 	changing = false;

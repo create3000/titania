@@ -118,12 +118,10 @@ MaterialEditor::set_initialized ()
 void
 MaterialEditor::set_selection ()
 {
-	for (const auto & appearance : appearances)
-		appearance -> material () .removeInterest (this, &MaterialEditor::set_material);
-
 	undoStep .reset ();
 
-	// Find Appearances.
+	for (const auto & appearance : appearances)
+		appearance -> material () .removeInterest (this, &MaterialEditor::set_material);
 
 	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
@@ -184,7 +182,7 @@ MaterialEditor::set_preview ()
 			if (appearance -> material ())
 				appearance -> material () -> removeInterest (*preview, &X3D::Browser::addEvent);
 
-			switch (getMaterialButton () .get_active_row_number ())
+			switch (getMaterialComboBoxText () .get_active_row_number ())
 			{
 				case 0:
 				{
@@ -293,17 +291,17 @@ MaterialEditor::on_material_unlink_clicked ()
 void
 MaterialEditor::on_material_changed ()
 {
-	getFrontBox () .set_sensitive (getMaterialButton () .get_active_row_number () > 0);
-	getBackBox ()  .set_sensitive (getMaterialButton () .get_active_row_number () > 1);
+	getFrontBox () .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 0);
+	getBackBox ()  .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 1);
 
-	if (getMaterialButton () .get_active_row_number () < 1)
+	if (getMaterialComboBoxText () .get_active_row_number () < 1)
 	{
 		getDiffuseDialog ()  .hide ();
 		getSpecularDialog () .hide ();
 		getEmissiveDialog () .hide ();
 	}
 
-	if (getMaterialButton () .get_active_row_number () < 2)
+	if (getMaterialComboBoxText () .get_active_row_number () < 2)
 	{
 		getBackDiffuseDialog ()  .hide ();
 		getBackSpecularDialog () .hide ();
@@ -315,7 +313,7 @@ MaterialEditor::on_material_changed ()
 
 	// Copy material.
 
-	switch (getMaterialButton () .get_active_row_number ())
+	switch (getMaterialComboBoxText () .get_active_row_number ())
 	{
 		case 1:
 		{
@@ -349,7 +347,7 @@ MaterialEditor::on_material_changed ()
 			break;
 	}
 
-	isTwoSidedMaterial = (getMaterialButton () .get_active_row_number () == 2);
+	isTwoSidedMaterial = (getMaterialComboBoxText () .get_active_row_number () == 2);
 	
 	// Set field.
 
@@ -364,7 +362,7 @@ MaterialEditor::on_material_changed ()
 			field .removeInterest (this, &MaterialEditor::set_material);
 			field .addInterest (this, &MaterialEditor::connectMaterial);
 
-			switch (getMaterialButton () .get_active_row_number ())
+			switch (getMaterialComboBoxText () .get_active_row_number ())
 			{
 				case 0:
 				{
@@ -392,9 +390,9 @@ MaterialEditor::on_material_changed ()
 	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
 	if (isTwoSidedMaterial)
-		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and twoSidedMaterial -> isCloned () > 1);
+		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and twoSidedMaterial -> isCloned () > 1);
 	else
-		getMaterialUnlinkButton () .set_sensitive (getMaterialButton () .get_active () > 0 and material -> isCloned () > 1);
+		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and material -> isCloned () > 1);
 
 	set_preview ();
 
@@ -471,24 +469,24 @@ MaterialEditor::set_node ()
 		case 0:
 		{
 			// None
-			getMaterialButton () .set_active (0);
+			getMaterialComboBoxText () .set_active (0);
 			break;
 		}
 		case 1:
 		{
 			// Material or TwoSidedMaterial
-			getMaterialButton () .set_active (isTwoSidedMaterial + 1);
+			getMaterialComboBoxText () .set_active (isTwoSidedMaterial + 1);
 			break;
 		}
 		default:
 		{
 			// Inconsistent
-			getMaterialButton () .set_active (-1);
+			getMaterialComboBoxText () .set_active (-1);
 			break;
 		}
 	}
 
-	getMaterialButton () .set_sensitive (hasField);
+	getMaterialComboBoxText () .set_sensitive (hasField);
 
 	if (isTwoSidedMaterial)
 		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> isCloned () > 1);

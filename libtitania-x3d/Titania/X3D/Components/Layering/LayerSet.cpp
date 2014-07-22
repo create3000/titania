@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/Layer.h"
@@ -73,8 +74,8 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	        X3DNode (),
 	         fields (),
-	       children ({ new Layer (executionContext) }),
-	         layer0 (children [0]),
+	     layerNodes ({ new Layer (executionContext) }),
+	     layerNode0 (layerNodes [0]),
 	activeLayerNode ()
 {
 	addType (X3DConstants::LayerSet);
@@ -84,7 +85,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "order",       order ());
 	addField (inputOutput, "layers",      layers ());
 
-	addChildren (children, layer0, activeLayerNode);
+	addChildren (layerNodes, layerNode0, activeLayerNode);
 }
 
 X3DBaseNode*
@@ -98,8 +99,8 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
-	layer0 -> isInternal (true);
-	layer0 -> setup ();
+	layerNode0 -> isInternal (true);
+	layerNode0 -> setup ();
 
 	activeLayer () .addInterest (this, &LayerSet::set_activeLayer);
 	order ()       .addInterest (this, &LayerSet::set_layers);
@@ -111,7 +112,7 @@ LayerSet::initialize ()
 void
 LayerSet::setLayer0 (const X3DLayerNodePtr & value)
 {
-	layer0 = value;
+	layerNode0 = value;
 
 	set_layers ();
 }
@@ -121,8 +122,8 @@ LayerSet::set_activeLayer ()
 {
 	if (activeLayer () == 0)
 	{
-		if (activeLayerNode not_eq layer0)
-			activeLayerNode = layer0;
+		if (activeLayerNode not_eq layerNode0)
+			activeLayerNode = layerNode0;
 	}
 	else
 	{
@@ -144,22 +145,22 @@ LayerSet::set_activeLayer ()
 void
 LayerSet::set_layers ()
 {
-	X3DPtrArray <X3DLayerNode> unordered ({ layer0 });
+	X3DPtrArray <X3DLayerNode> unordered ({ layerNode0 });
 
 	unordered .reserve (layers () .size () + 1);
 
 	for (const auto & layer : layers ())
 		unordered .emplace_back (x3d_cast <X3DLayerNode*> (layer));
 
-	children .clear ();
-	children .reserve (layers () .size () + 1);
+	layerNodes .clear ();
+	layerNodes .reserve (layers () .size () + 1);
 
 	for (const auto & index : order ())
 	{
 		if (index >= 0 and index < (int32_t) unordered .size ())
 		{
 			if (unordered [index]);
-				children .emplace_back (unordered [index]);
+				layerNodes .emplace_back (unordered [index]);
 		}
 	}
 
@@ -167,11 +168,25 @@ LayerSet::set_layers ()
 }
 
 void
+LayerSet::bind ()
+{
+	layerNode0 -> bind ();
+
+	for (const auto & layer : layers ())
+	{
+		const auto layerNode = x3d_cast <X3DLayerNode*> (layer);
+
+		if (layerNode)
+			layerNode -> bind ();
+	}
+}
+
+void
 LayerSet::traverse (const TraverseType type)
 {
-	for (const auto & child : children)
+	for (const auto & layerNode : layerNodes)
 	{
-		child -> traverse (type);
+		layerNode -> traverse (type);
 	}
 }
 

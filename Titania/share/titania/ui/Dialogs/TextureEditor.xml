@@ -9,6 +9,11 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="TexturePropertiesBorderColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="TexturePropertiesBorderWidthAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">1</property>
@@ -74,119 +79,30 @@
     <property name="skip_pager_hint">True</property>
     <property name="has_resize_grip">False</property>
     <child>
-      <object class="GtkBox" id="Widget">
+      <object class="GtkScrolledWindow" id="Widget">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">8</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
         <child>
-          <object class="GtkLabel" id="label1">
+          <object class="GtkViewport" id="viewport1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">Edit Texture</property>
-            <style>
-              <class name="titania-header"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkExpander" id="TextureExpander">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="expanded">True</property>
-            <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkBox" id="box2">
+              <object class="GtkBox" id="box12">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="border_width">8</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">4</property>
+                <property name="spacing">8</property>
                 <child>
-                  <object class="GtkGrid" id="grid4">
+                  <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
-                    <child>
-                      <object class="GtkLabel" id="label6">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Texture:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="box9">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <child>
-                          <object class="GtkComboBoxText" id="TextureButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="hexpand">True</property>
-                            <items>
-                              <item translatable="yes">None</item>
-                              <item translatable="yes">ImageTexture</item>
-                            </items>
-                            <signal name="changed" handler="on_texture_changed" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="TextureUnlinkButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
-                            <signal name="clicked" handler="on_texture_unlink_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image3">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixel_size">12</property>
-                                <property name="icon_name">emblem-shared-symbolic</property>
-                                <property name="icon_size">0</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Edit Texture</property>
+                    <style>
+                      <class name="titania-header"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -195,35 +111,90 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkNotebook" id="TextureNotebook">
+                  <object class="GtkExpander" id="TextureExpander">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="show_tabs">False</property>
-                    <property name="show_border">False</property>
+                    <property name="expanded">True</property>
+                    <property name="spacing">8</property>
                     <child>
-                      <object class="GtkLabel" id="TextureLabel">
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label2">
+                      <object class="GtkBox" id="box2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 1</property>
-                      </object>
-                      <packing>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="ImageTextureBox">
-                        <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">4</property>
                         <child>
-                          <object class="GtkLabel" id="label18">
+                          <object class="GtkGrid" id="grid4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">ImageTextureBox</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkLabel" id="label6">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Texture:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box9">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
+                                <child>
+                                  <object class="GtkComboBoxText" id="TextureComboBoxText">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <items>
+                                      <item translatable="yes">None</item>
+                                      <item translatable="yes">ImageTexture</item>
+                                    </items>
+                                    <signal name="changed" handler="on_texture_changed" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="TextureUnlinkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                                    <signal name="clicked" handler="on_texture_unlink_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="image3">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="pixel_size">12</property>
+                                        <property name="icon_name">emblem-shared-symbolic</property>
+                                        <property name="icon_size">0</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -231,109 +202,204 @@
                             <property name="position">0</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkGrid" id="grid3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkBox" id="PreviewBox">
+                                <property name="height_request">100</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label35">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Preview:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkNotebook" id="TextureNotebook">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="show_tabs">False</property>
+                            <property name="show_border">False</property>
+                            <child>
+                              <object class="GtkLabel" id="TextureLabel">
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 1</property>
+                              </object>
+                              <packing>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="ImageTextureBox">
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label18">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">ImageTextureBox</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 2</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label4">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 3</property>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkGrid" id="Texture2DBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkLabel" id="label8">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label9">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">1</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="Texture2DNodeRepeatSCheckButton">
+                                <property name="label" translatable="yes">Repeat S</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="xalign">0</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="Texture2DNodeRepeatTCheckButton">
+                                <property name="label" translatable="yes">Repeat T</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="xalign">0</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">1</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label3">
+                    <child type="label">
+                      <object class="GtkLabel" id="label5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 2</property>
+                        <property name="label" translatable="yes">Texture</property>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 3</property>
-                      </object>
-                      <packing>
-                        <property name="position">2</property>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkGrid" id="Texture2DBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
-                    <child>
-                      <object class="GtkLabel" id="label8">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label9">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="Texture2DNodeRepeatSCheckButton">
-                        <property name="label" translatable="yes">Repeat S</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_texture2DNode_repeatS_toggled" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="Texture2DNodeRepeatTCheckButton">
-                        <property name="label" translatable="yes">Repeat T</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_texture2DNode_repeatT_toggled" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -342,69 +408,90 @@
                     <property name="position">2</property>
                   </packing>
                 </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Texture</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkExpander" id="TexturePropertiesExpander">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
-            <child>
-              <object class="GtkBox" id="box6">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">4</property>
                 <child>
-                  <object class="GtkGrid" id="grid1">
+                  <object class="GtkExpander" id="TexturePropertiesExpander">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
+                    <property name="can_focus">True</property>
+                    <property name="spacing">8</property>
                     <child>
-                      <object class="GtkLabel" id="label19">
+                      <object class="GtkBox" id="box6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="box7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="resize_mode">immediate</property>
-                        <property name="spacing">8</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">4</property>
                         <child>
-                          <object class="GtkCheckButton" id="TexturePropertiesCheckButton">
-                            <property name="label" translatable="yes">TextureProperties</property>
+                          <object class="GtkGrid" id="grid1">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="xalign">0</property>
-                            <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_textureProperties_toggled" swapped="no"/>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkLabel" id="label19">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box7">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="resize_mode">immediate</property>
+                                <property name="spacing">8</property>
+                                <child>
+                                  <object class="GtkCheckButton" id="TexturePropertiesCheckButton">
+                                    <property name="label" translatable="yes">TextureProperties</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="xalign">0</property>
+                                    <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="on_textureProperties_toggled" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="TexturePropertiesUnlinkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                                    <signal name="clicked" handler="on_textureProperties_unlink_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="image1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="pixel_size">12</property>
+                                        <property name="icon_name">emblem-shared-symbolic</property>
+                                        <property name="icon_size">0</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -413,889 +500,405 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="TexturePropertiesUnlinkButton">
+                          <object class="GtkGrid" id="TexturePropertiesBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
-                            <signal name="clicked" handler="on_textureProperties_unlink_clicked" swapped="no"/>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
                             <child>
-                              <object class="GtkImage" id="image1">
+                              <object class="GtkLabel" id="label21">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="pixel_size">12</property>
-                                <property name="icon_name">emblem-shared-symbolic</property>
-                                <property name="icon_size">0</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkGrid" id="TexturePropertiesBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
-                    <child>
-                      <object class="GtkLabel" id="label21">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="GenerateMipMapsCheckButton">
-                        <property name="label" translatable="yes">Generate MipMaps</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label20">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Border Color:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label22">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Border Width:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label23">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Anisotropic Degree:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label24">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Minification Filter</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label25">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Magnification Filter:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">5</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label26">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Boundary Mode S:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">6</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label28">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Boundary Mode T:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">7</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label29">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Boundary Mode R:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">8</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label30">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Texture Compression:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">9</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label31">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Texture Priority:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">10</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="spinbutton1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="halign">start</property>
-                        <property name="adjustment">TexturePropertiesBorderWidthAdjustment</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="hexpand">True</property>
-                        <child>
-                          <object class="GtkDrawingArea" id="drawingarea1">
-                            <property name="height_request">12</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="spinbutton2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="halign">start</property>
-                        <property name="adjustment">TexturePropertiesAnisotropicDegreeAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="comboboxtext1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <items>
-                          <item>AVG_PIXEL_AVG_MIPMAP</item>
-                          <item>AVG_PIXEL</item>
-                          <item>AVG_PIXEL_NEAREST_MIPMAP</item>
-                          <item>NEAREST_PIXEL_AVG_MIPMAP</item>
-                          <item>NEAREST_PIXEL_NEAREST_MIPMAP</item>
-                          <item>NEAREST_PIXEL</item>
-                          <item>NICEST</item>
-                          <item>FASTEST</item>
-                          <item>DEFAULT</item>
-                        </items>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="comboboxtext2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <items>
-                          <item>AVG_PIXEL</item>
-                          <item>NEAREST_PIXEL</item>
-                          <item>NICEST</item>
-                          <item>FASTEST</item>
-                          <item>DEFAULT</item>
-                        </items>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">5</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="comboboxtext3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <items>
-                          <item>CLAMP</item>
-                          <item>CLAMP_TO_EDGE</item>
-                          <item>CLAMP_TO_BOUNDARY</item>
-                          <item>MIRRORED_REPEAT</item>
-                          <item>REPEAT</item>
-                        </items>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">6</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="comboboxtext6">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <items>
-                          <item>HIGH</item>
-                          <item>MEDIUM</item>
-                          <item>LOW</item>
-                          <item>FASTEST</item>
-                          <item>NICEST</item>
-                          <item>DEFAULT</item>
-                        </items>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">9</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="spinbutton3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="halign">start</property>
-                        <property name="adjustment">TexturePropertiesTexturePriorityAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">10</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="comboboxtext4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <items>
-                          <item>CLAMP</item>
-                          <item>CLAMP_TO_EDGE</item>
-                          <item>CLAMP_TO_BOUNDARY</item>
-                          <item>MIRRORED_REPEAT</item>
-                          <item>REPEAT</item>
-                        </items>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">7</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="comboboxtext5">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <items>
-                          <item>CLAMP</item>
-                          <item>CLAMP_TO_EDGE</item>
-                          <item>CLAMP_TO_BOUNDARY</item>
-                          <item>MIRRORED_REPEAT</item>
-                          <item>REPEAT</item>
-                        </items>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">8</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label27">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Texture Properties</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkExpander" id="TextureTransformExpander">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
-            <child>
-              <object class="GtkBox" id="box1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">4</property>
-                <child>
-                  <object class="GtkGrid" id="grid2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
-                    <child>
-                      <object class="GtkLabel" id="label7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">TextureTransform:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="box8">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <child>
-                          <object class="GtkComboBoxText" id="TextureTransformButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="hexpand">True</property>
-                            <items>
-                              <item translatable="yes">None</item>
-                              <item translatable="yes">TextureTransform</item>
-                            </items>
-                            <signal name="changed" handler="on_textureTransform_changed" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="TextureTransformUnlinkButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
-                            <signal name="clicked" handler="on_textureTransform_unlink_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image2">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixel_size">12</property>
-                                <property name="icon_name">emblem-shared-symbolic</property>
-                                <property name="icon_size">0</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkNotebook" id="TextureTransformNotebook">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="show_tabs">False</property>
-                    <property name="show_border">False</property>
-                    <child>
-                      <object class="GtkLabel" id="TextureTransformLabel">
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label11">
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 1</property>
-                      </object>
-                      <packing>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkGrid" id="TextureTransformBox">
-                        <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
-                        <property name="column_spacing">16</property>
-                        <child>
-                          <object class="GtkLabel" id="label10">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Translation:</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="TextureTransformTranslationBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="hexpand">True</property>
-                            <property name="homogeneous">True</property>
-                            <child>
-                              <object class="GtkSpinButton" id="TextureTransformTranslationXSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">TextureTransformTranslationXAdjustment</property>
-                                <property name="climb_rate">0.01</property>
-                                <property name="digits">3</property>
-                                <property name="numeric">True</property>
+                                <property name="xalign">0</property>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">3</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="TextureTransformTranslationYSpinButton">
+                              <object class="GtkCheckButton" id="TexturePropertiesGenerateMipMapsCheckButton">
+                                <property name="label" translatable="yes">Generate MipMaps</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">TextureTransformTranslationYAdjustment</property>
-                                <property name="climb_rate">0.01</property>
-                                <property name="digits">3</property>
+                                <property name="receives_default">False</property>
+                                <property name="xalign">0</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">3</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label20">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Border Color:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label22">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Border Width:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">1</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label23">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Anisotropic Degree:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">2</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label24">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Minification Filter</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">4</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label25">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Magnification Filter:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">5</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label26">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Boundary Mode S:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">6</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label28">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Boundary Mode T:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">7</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label29">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Boundary Mode R:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">8</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label30">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Texture Compression:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">9</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label31">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Texture Priority:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">10</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="TexturePropertiesBorderWidthSpinButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">start</property>
+                                <property name="text" translatable="yes">0</property>
+                                <property name="adjustment">TexturePropertiesBorderWidthAdjustment</property>
                                 <property name="numeric">True</property>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">1</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label15">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Rotation:</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="TextureTransformScaleBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="hexpand">True</property>
-                            <property name="homogeneous">True</property>
                             <child>
-                              <object class="GtkSpinButton" id="TextureTransformScaleXSpinButton">
+                              <object class="GtkSpinButton" id="TexturePropertiesAnisotropicDegreeSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
-                                <property name="adjustment">TextureTransformScaleXAdjustment</property>
+                                <property name="adjustment">TexturePropertiesAnisotropicDegreeAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                                 <property name="value">1</property>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">2</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="TextureTransformScaleYSpinButton">
+                              <object class="GtkComboBoxText" id="TexturePropertiesMinificationFilterComboBoxText">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <items>
+                                  <item>AVG_PIXEL_AVG_MIPMAP</item>
+                                  <item>AVG_PIXEL</item>
+                                  <item>AVG_PIXEL_NEAREST_MIPMAP</item>
+                                  <item>NEAREST_PIXEL_AVG_MIPMAP</item>
+                                  <item>NEAREST_PIXEL_NEAREST_MIPMAP</item>
+                                  <item>NEAREST_PIXEL</item>
+                                  <item>NICEST</item>
+                                  <item>FASTEST</item>
+                                  <item>DEFAULT</item>
+                                </items>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">4</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBoxText" id="TexturePropertiesMagnificationFilterComboBoxText">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <items>
+                                  <item>AVG_PIXEL</item>
+                                  <item>NEAREST_PIXEL</item>
+                                  <item>NICEST</item>
+                                  <item>FASTEST</item>
+                                  <item>DEFAULT</item>
+                                </items>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">5</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBoxText" id="TexturePropertiesBoundaryModeSComboBoxText">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <items>
+                                  <item>CLAMP</item>
+                                  <item>CLAMP_TO_EDGE</item>
+                                  <item>CLAMP_TO_BOUNDARY</item>
+                                  <item>MIRRORED_REPEAT</item>
+                                  <item>REPEAT</item>
+                                </items>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">6</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBoxText" id="TexturePropertiesTextureCompressionComboBoxText">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <items>
+                                  <item>HIGH</item>
+                                  <item>MEDIUM</item>
+                                  <item>LOW</item>
+                                  <item>FASTEST</item>
+                                  <item>NICEST</item>
+                                  <item>DEFAULT</item>
+                                </items>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">9</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="TexturePropertiesTexturePrioritySpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="text" translatable="yes">1,000</property>
-                                <property name="adjustment">TextureTransformScaleYAdjustment</property>
+                                <property name="halign">start</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">TexturePropertiesTexturePriorityAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
-                                <property name="value">1</property>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="TextureTransformCenterBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="hexpand">True</property>
-                            <property name="homogeneous">True</property>
-                            <child>
-                              <object class="GtkSpinButton" id="TextureTransformCenterXSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">TextureTransformCenterXAdjustment</property>
-                                <property name="climb_rate">0.01</property>
-                                <property name="digits">3</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">10</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="TextureTransformCenterYSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">TextureTransformCenterYAdjustment</property>
-                                <property name="climb_rate">0.01</property>
-                                <property name="digits">3</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label16">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Scale:</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label17">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Center:</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSpinButton" id="TextureTransformRotationSpinButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">start</property>
-                            <property name="text" translatable="yes">0,000</property>
-                            <property name="adjustment">TextureTransformRotationAdjustment</property>
-                            <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
-                            <property name="numeric">True</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label13">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 2</property>
-                      </object>
-                      <packing>
-                        <property name="position">1</property>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="label14">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">page 3</property>
-                      </object>
-                      <packing>
-                        <property name="position">2</property>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label12">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Texture Transform</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">5</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkExpander" id="TextureCoordinateGeneratorExpander">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
-            <child>
-              <object class="GtkBox" id="TextureCoordinateGeneratorMainBox">
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">8</property>
-                <child>
-                  <object class="GtkGrid" id="box11">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
-                    <child>
-                      <object class="GtkLabel" id="label32">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="box10">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="spacing">8</property>
-                        <child>
-                          <object class="GtkCheckButton" id="TextureCoordinateGeneratorCheckButton">
-                            <property name="label" translatable="yes">Texture Coordinate Generator</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="xalign">0</property>
-                            <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_textureCoordinateGenerator_toggled" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="TextureCoordinateGeneratorUnlinkButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
-                            <signal name="clicked" handler="on_textureCoordinateGenerator_unlink_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image4">
+                              <object class="GtkComboBoxText" id="TexturePropertiesBoundaryModeTComboBoxText">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="pixel_size">12</property>
-                                <property name="icon_name">emblem-shared-symbolic</property>
-                                <property name="icon_size">0</property>
+                                <property name="halign">start</property>
+                                <items>
+                                  <item>CLAMP</item>
+                                  <item>CLAMP_TO_EDGE</item>
+                                  <item>CLAMP_TO_BOUNDARY</item>
+                                  <item>MIRRORED_REPEAT</item>
+                                  <item>REPEAT</item>
+                                </items>
                               </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">7</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBoxText" id="TexturePropertiesBoundaryModeRComboBoxText">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <items>
+                                  <item>CLAMP</item>
+                                  <item>CLAMP_TO_EDGE</item>
+                                  <item>CLAMP_TO_BOUNDARY</item>
+                                  <item>MIRRORED_REPEAT</item>
+                                  <item>REPEAT</item>
+                                </items>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">8</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="TexturePropertiesBorderColorBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="spacing">8</property>
+                                <property name="homogeneous">True</property>
+                                <child>
+                                  <object class="GtkButton" id="TexturePropertiesBorderColorButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkDrawingArea" id="drawingarea1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkScale" id="TexturePropertiesBorderColorScale">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="adjustment">TexturePropertiesBorderColorAdjustment</property>
+                                    <property name="round_digits">3</property>
+                                    <property name="digits">3</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -1305,88 +908,567 @@
                           </packing>
                         </child>
                       </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label27">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Texture Properties</property>
+                      </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">0</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid" id="TextureCoordinateGeneratorBox">
+                  <object class="GtkExpander" id="TextureTransformExpander">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
+                    <property name="can_focus">True</property>
+                    <property name="spacing">8</property>
                     <child>
-                      <object class="GtkLabel" id="label33">
+                      <object class="GtkBox" id="box1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Mode:</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">4</property>
+                        <child>
+                          <object class="GtkGrid" id="grid2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkLabel" id="label7">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">TextureTransform:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box8">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
+                                <child>
+                                  <object class="GtkComboBoxText" id="TextureTransformComboBoxText">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <items>
+                                      <item translatable="yes">None</item>
+                                      <item translatable="yes">TextureTransform</item>
+                                    </items>
+                                    <signal name="changed" handler="on_textureTransform_changed" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="TextureTransformUnlinkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                                    <signal name="clicked" handler="on_textureTransform_unlink_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="image2">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="pixel_size">12</property>
+                                        <property name="icon_name">emblem-shared-symbolic</property>
+                                        <property name="icon_size">0</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkNotebook" id="TextureTransformNotebook">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="show_tabs">False</property>
+                            <property name="show_border">False</property>
+                            <child>
+                              <object class="GtkLabel" id="TextureTransformLabel">
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label11">
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 1</property>
+                              </object>
+                              <packing>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkGrid" id="TextureTransformBox">
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">4</property>
+                                <property name="column_spacing">16</property>
+                                <child>
+                                  <object class="GtkLabel" id="label10">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Translation:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="TextureTransformTranslationBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="homogeneous">True</property>
+                                    <child>
+                                      <object class="GtkSpinButton" id="TextureTransformTranslationXSpinButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">0,000</property>
+                                        <property name="adjustment">TextureTransformTranslationXAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                        <property name="numeric">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSpinButton" id="TextureTransformTranslationYSpinButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">0,000</property>
+                                        <property name="adjustment">TextureTransformTranslationYAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                        <property name="numeric">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label15">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Rotation:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="TextureTransformScaleBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="homogeneous">True</property>
+                                    <child>
+                                      <object class="GtkSpinButton" id="TextureTransformScaleXSpinButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">1,000</property>
+                                        <property name="adjustment">TextureTransformScaleXAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                        <property name="numeric">True</property>
+                                        <property name="value">1</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSpinButton" id="TextureTransformScaleYSpinButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">1,000</property>
+                                        <property name="adjustment">TextureTransformScaleYAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                        <property name="numeric">True</property>
+                                        <property name="value">1</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="TextureTransformCenterBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="homogeneous">True</property>
+                                    <child>
+                                      <object class="GtkSpinButton" id="TextureTransformCenterXSpinButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">0,000</property>
+                                        <property name="adjustment">TextureTransformCenterXAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSpinButton" id="TextureTransformCenterYSpinButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">0,000</property>
+                                        <property name="adjustment">TextureTransformCenterYAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label16">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Scale:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label17">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Center:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="TextureTransformRotationSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0,000</property>
+                                    <property name="adjustment">TextureTransformRotationAdjustment</property>
+                                    <property name="climb_rate">0.01</property>
+                                    <property name="digits">3</property>
+                                    <property name="numeric">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label13">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 2</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label14">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 3</property>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
                     </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="TextureCoordinateGeneratorModeButton">
+                    <child type="label">
+                      <object class="GtkLabel" id="label12">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="hexpand">True</property>
-                        <items>
-                          <item>SPHERE</item>
-                          <item>SPHERE-LOCAL</item>
-                          <item>SPHERE-REFLECT</item>
-                          <item>SPHERE-REFLECT-LOCAL</item>
-                          <item>CAMERASPACENORMAL</item>
-                          <item>CAMERASPACEPOSITION</item>
-                          <item>CAMERASPACEREFLECTIONVECTOR</item>
-                          <item>COORD-EYE</item>
-                          <item>COORD</item>
-                          <item>NOISE-EYE</item>
-                          <item>NOISE</item>
-                        </items>
+                        <property name="label" translatable="yes">Texture Transform</property>
                       </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkExpander" id="TextureCoordinateGeneratorExpander">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="spacing">8</property>
+                    <child>
+                      <object class="GtkBox" id="TextureCoordinateGeneratorMainBox">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">8</property>
+                        <child>
+                          <object class="GtkGrid" id="box11">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkLabel" id="label32">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box10">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="spacing">8</property>
+                                <child>
+                                  <object class="GtkCheckButton" id="TextureCoordinateGeneratorCheckButton">
+                                    <property name="label" translatable="yes">Texture Coordinate Generator</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="xalign">0</property>
+                                    <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="on_textureCoordinateGenerator_toggled" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="TextureCoordinateGeneratorUnlinkButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                                    <signal name="clicked" handler="on_textureCoordinateGenerator_unlink_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="image4">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="pixel_size">12</property>
+                                        <property name="icon_name">emblem-shared-symbolic</property>
+                                        <property name="icon_size">0</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkGrid" id="TextureCoordinateGeneratorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="row_spacing">4</property>
+                            <property name="column_spacing">16</property>
+                            <child>
+                              <object class="GtkLabel" id="label33">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Mode:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBoxText" id="TextureCoordinateGeneratorModeComboBoxText">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="hexpand">True</property>
+                                <items>
+                                  <item>SPHERE</item>
+                                  <item>SPHERE-LOCAL</item>
+                                  <item>SPHERE-REFLECT</item>
+                                  <item>SPHERE-REFLECT-LOCAL</item>
+                                  <item>CAMERASPACENORMAL</item>
+                                  <item>CAMERASPACEPOSITION</item>
+                                  <item>CAMERASPACEREFLECTIONVECTOR</item>
+                                  <item>COORD-EYE</item>
+                                  <item>COORD</item>
+                                  <item>NOISE-EYE</item>
+                                  <item>NOISE</item>
+                                </items>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label34">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Texture Coordinate Generator</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
               </object>
             </child>
-            <child type="label">
-              <object class="GtkLabel" id="label34">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Texture Coordinate Generator</property>
-              </object>
-            </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">6</property>
-          </packing>
         </child>
       </object>
     </child>

@@ -57,43 +57,48 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
 	    X3DImageTextureEditor (),
-	            texture2DNode (),
-	                 undoStep (),
-	                 changing (false)
+	                 repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
+	                 repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
 { }
 
 void
 X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	undoStep .reset ();
-
-	disconnect ();
-
-	texture2DNode = value;
-
 	setImageTexture (value);
 	//setPixelTexture (value);
 
-	connect (texture2DNode);
+	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (value), value);
 }
 
-const X3D::X3DPtr <X3D::X3DTexture2DNode> &
+const X3D::X3DPtr <X3D::ImageTexture> &
 X3DTexture2DNodeEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	disconnect ();
+	const auto & imageTexture = X3DImageTextureEditor::getImageTexture (value);
 
-	texture2DNode = X3DImageTextureEditor::getImageTexture (value);
+	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (imageTexture), value);
 
-	connect (value);
-
-	return getTexture2DNode (value);
+	return imageTexture;
 }
 
-const X3D::X3DPtr <X3D::X3DTexture2DNode> &
-X3DTexture2DNodeEditor::getTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+void
+X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	if (not value)
-		return texture2DNode;
+	getTexture2DBox () .set_visible (texture2DNode and value);
+
+	if (texture2DNode and value)
+	{
+		repeatS .setNodes ({ texture2DNode });
+		repeatT .setNodes ({ texture2DNode });
+	}
+	else
+	{
+		repeatS .setNodes ({ });
+		repeatT .setNodes ({ });
+		return;
+	}
+
+	if (texture2DNode == value)
+		return;
 
 	for (const auto & type : value -> getType ())
 	{
@@ -106,119 +111,12 @@ X3DTexture2DNodeEditor::getTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode
 				texture2DNode -> repeatS ()           = last -> repeatS ();
 				texture2DNode -> repeatT ()           = last -> repeatT ();
 				texture2DNode -> textureProperties () = last -> textureProperties ();
-				return texture2DNode;
+				break;
 			}
 			default:
 				break;
 		}
 	}
-
-	return texture2DNode;
-}
-
-void
-X3DTexture2DNodeEditor::disconnect ()
-{
-	if (texture2DNode)
-	{
-		texture2DNode -> repeatS () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
-		texture2DNode -> repeatT () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
-	}
-}
-
-void
-X3DTexture2DNodeEditor::connect (const bool active)
-{
-	getTexture2DBox () .set_visible (active);
-
-	if (texture2DNode)
-	{
-		texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
-		texture2DNode -> repeatT () .addInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
-
-		set_repeatS ();
-		set_repeatT ();
-	}
-}
-
-/***********************************************************************************************************************
- *
- *  repeatS
- *
- **********************************************************************************************************************/
-
-void
-X3DTexture2DNodeEditor::on_texture2DNode_repeatS_toggled ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (texture2DNode, texture2DNode -> repeatS (), undoStep);
-
-	texture2DNode -> repeatS () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
-	texture2DNode -> repeatS () .addInterest (this, &X3DTexture2DNodeEditor::connectRepeatS);
-
-	texture2DNode -> repeatS () = getTexture2DNodeRepeatSCheckButton () .get_active ();
-
-	addRedoFunction (texture2DNode -> repeatS (), undoStep);
-
-}
-
-void
-X3DTexture2DNodeEditor::set_repeatS ()
-{
-	changing = true;
-
-	getTexture2DNodeRepeatSCheckButton () .set_active (texture2DNode -> repeatS ());
-
-	changing = false;
-}
-
-void
-X3DTexture2DNodeEditor::connectRepeatS (const X3D::SFBool & field)
-{
-	field .removeInterest (this, &X3DTexture2DNodeEditor::connectRepeatS);
-	field .addInterest (this, &X3DTexture2DNodeEditor::set_repeatS);
-}
-
-/***********************************************************************************************************************
- *
- *  repeatT
- *
- **********************************************************************************************************************/
-
-void
-X3DTexture2DNodeEditor::on_texture2DNode_repeatT_toggled ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (texture2DNode, texture2DNode -> repeatT (), undoStep);
-
-	texture2DNode -> repeatT () .removeInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
-	texture2DNode -> repeatT () .addInterest (this, &X3DTexture2DNodeEditor::connectRepeatT);
-
-	texture2DNode -> repeatT () = getTexture2DNodeRepeatTCheckButton () .get_active ();
-
-	addRedoFunction (texture2DNode -> repeatT (), undoStep);
-
-}
-
-void
-X3DTexture2DNodeEditor::set_repeatT ()
-{
-	changing = true;
-
-	getTexture2DNodeRepeatTCheckButton () .set_active (texture2DNode -> repeatT ());
-
-	changing = false;
-}
-
-void
-X3DTexture2DNodeEditor::connectRepeatT (const X3D::SFBool & field)
-{
-	field .removeInterest (this, &X3DTexture2DNodeEditor::connectRepeatT);
-	field .addInterest (this, &X3DTexture2DNodeEditor::set_repeatT);
 }
 
 } // puck

@@ -96,7 +96,7 @@ public:
 	pick (const double, const double);
 
 	bool
-	intersect (const Vector4i &) const;
+	isPointerInRectangle (const Vector4i &) const;
 
 	std::vector <NodeSet> &
 	getSensors ()

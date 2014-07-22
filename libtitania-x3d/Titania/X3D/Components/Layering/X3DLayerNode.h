@@ -198,6 +198,9 @@ public:
 	void
 	lookAt ();
 
+	void
+	bind ();
+
 	virtual
 	void
 	traverse (const TraverseType) override;

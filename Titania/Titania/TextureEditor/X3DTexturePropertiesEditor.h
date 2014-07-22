@@ -99,7 +99,16 @@ private:
 	UndoStepPtr                            undoStep;
 	bool                                   changing;
 
+	X3DFieldAdjustment <X3D::SFInt32>  borderWidth;
+	X3DFieldAdjustment <X3D::SFFloat>  anisotropicDegree;
 	X3DFieldToggleButton <X3D::SFBool> generateMipMaps;
+	SFStringComboBoxText               minificationFilter;
+	SFStringComboBoxText               magnificationFilter;
+	SFStringComboBoxText               boundaryModeS;
+	SFStringComboBoxText               boundaryModeT;
+	SFStringComboBoxText               boundaryModeR;
+	SFStringComboBoxText               textureCompression;
+	X3DFieldAdjustment <X3D::SFFloat>  texturePriority;
 
 };
 

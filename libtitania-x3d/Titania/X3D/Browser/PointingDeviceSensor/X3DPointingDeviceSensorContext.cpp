@@ -121,12 +121,12 @@ X3DPointingDeviceSensorContext::pick (const double x, const double y)
 }
 
 bool
-X3DPointingDeviceSensorContext::intersect (const Vector4i & scissor) const
+X3DPointingDeviceSensorContext::isPointerInRectangle (const Vector4i & rectangle) const
 {
-	return pointer .x () > scissor .x () and 
-	       pointer .x () < scissor .x () + scissor .z () and
-	       pointer .y () > scissor .y () and 
-	       pointer .y () < scissor .y () + scissor .w ();
+	return pointer .x () > rectangle .x () and 
+	       pointer .x () < rectangle .x () + rectangle .z () and
+	       pointer .y () > rectangle .y () and 
+	       pointer .y () < rectangle .y () + rectangle .w ();
 }
 
 Line3d
