@@ -120,6 +120,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 
 	const auto   width      = imageTexture -> getWidth ();
 	const auto   height     = imageTexture -> getHeight ();
+	const auto   height_1   = height - 1;
 	const auto   components = imageTexture -> getComponents ();
 	X3D::MFInt32 array;
 
@@ -164,7 +165,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height - 1 - h) * rowStride;
+				const auto row = (height_1 - h) * rowStride;
 
 				for (size_t w = 0; w < rowStride; w += stride)
 				{
@@ -179,17 +180,6 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 					array .emplace_back (point);
 				}
 			}
-
-//			while (first not_eq last)
-//			{
-//				int32_t point = 0;
-//
-//				point |= *first ++ << 16;
-//				point |= *first ++ << 8;
-//				point |= *first ++;
-//		
-//				array .emplace_back (point);
-//			}
 
 			break;
 		}
