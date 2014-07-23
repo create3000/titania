@@ -1,5 +1,13 @@
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp: 
+
+2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* X3DObject.h:
 	* Parser.cpp:

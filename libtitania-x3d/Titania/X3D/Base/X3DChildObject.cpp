@@ -33,7 +33,6 @@ namespace X3D {
 
 X3DChildObject::X3DChildObject () :
 	     X3DObject (),
-	referenceCount (0),
 	       parents (),
 	          root (nullptr),
 	       tainted (false)
@@ -71,7 +70,7 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 		root = parent;
 
 	if (parents .emplace (parent) .second)
-		++ referenceCount;
+		reference (parent);
 }
 
 void
@@ -82,8 +81,10 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 
 	if (parents .erase (parentToRemove))
 	{
-		if (not parents .emplace (parentToAdd) .second)
-			-- referenceCount;
+		unreference (parentToRemove);
+
+		if (parents .emplace (parentToAdd) .second)
+			reference (parentToAdd);
 	}
 	else
 		addParent (parentToAdd);
@@ -97,9 +98,9 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		-- referenceCount;
+		unreference (parent);
 
-		if (referenceCount == 0)
+		if (getReferenceCount () == 0)
 		{
 			parents .clear ();
 
@@ -116,7 +117,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 
 		for (auto & child : circle)
 		{
-			child -> referenceCount = 0;
+			//child -> referenceCount = 0;
 			child -> parents .clear ();
 		}
 

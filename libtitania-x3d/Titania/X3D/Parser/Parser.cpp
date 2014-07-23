@@ -128,8 +128,7 @@ Parser::getMessageFromError (const X3DError & error)
 
 	istream .clear ();
 
-	const size_t lineNumber = lineNumber;
-	std::string  string     = error .what ();
+	std::string string = error .what ();
 
 	filter_control_characters (string);
 	filter_bad_utf8_characters (string);

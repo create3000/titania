@@ -87,10 +87,22 @@ public:
 
 	///  @name Construction
 
+	///  Initializes this node.
+	virtual
+	void
+	setup ();
+
+	///  Returns whether this node is initialized.
+	bool
+	isInitialized () const
+	{ return initialized; }
+
+	///  Constructs a new node into @a executionContext.
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const = 0;
 
+	///  Copys this node.  The executionContext will be the same as for this node.
 	virtual
 	X3DBaseNode*
 	copy (const CopyType type) const
@@ -98,66 +110,78 @@ public:
 	       Error <NOT_SUPPORTED>)
 	{ return copy (executionContext, type); }
 
+	///  Copys this node and sets the execution context to @a executionContext.
 	virtual
 	X3DBaseNode*
 	copy (X3DExecutionContext* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
+	///  Assigns @a node. @a node must be of the same type as this node.
 	void
 	assign (const X3DBaseNode* const)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	virtual
-	void
-	setup ();
+	///  @name Reference handling
 
-	bool
-	isInitialized () const
-	{ return initialized; }
+	///  Returns the reference count of this object. Weak references are not counted.
+	virtual
+	size_t
+	getReferenceCount () const final override
+	{ return referenceCount; }
 
 	///  @name Commons members
 
+	///  Returns the current browser time for this frame.
 	time_type
 	getCurrentTime () const;
 
+	///  Returns a pointer to the browser this node belongs to.
 	virtual
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }
 
+	///  Returns a pointer to the execution context this node belongs to.
 	X3DExecutionContext*
 	getExecutionContext () const
 	{ return executionContext; }
 
+	///  Returns a pointer to the root execution context this node belongs to.
 	X3DExecutionContext*
 	getRootContext () const;
 
+	///  Returns the component name this node belongs to.
 	virtual
 	const std::string &
 	getComponentName () const = 0;
 
+	///  Returns a array of types of this node.
 	const NodeTypeArray &
 	getType () const
 	throw (Error <DISPOSED>)
 	{ return type; }
 
+	///  Returns either a node declaration or the prototype of this node.
 	virtual
 	const X3DBaseNode*
 	getDeclaration () const
 	throw (Error <DISPOSED>);
 
+	///  Returns the XML container field for this node type.
 	virtual
 	const std::string &
 	getContainerField () const = 0;
 
+	///  Returns for X3DProtoypeInstances the innermost root node.
 	virtual
 	X3DBaseNode*
 	getInnerNode ()
 	throw (Error <DISPOSED>)
 	{ return this; }
 
+	///  Returns for X3DProtoypeInstances the innermost root node.
 	virtual
 	const X3DBaseNode*
 	getInnerNode () const
@@ -166,10 +190,12 @@ public:
 
 	///  @name Field handling
 
+	///  Checks if a field with @a name exists for this node.
 	bool
 	hasField (const std::string &) const
 	throw (Error <DISPOSED>);
 
+	///  Sets the value of the field with @a name.  If the third parameter is true, an event is only generated if the old value is not the new value.
 	template <class FieldType, class ValueType>
 	void
 	setField (const std::string &, const ValueType &, const bool = false)
@@ -178,6 +204,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  Return the field with @a name.
 	template <class Type>
 	Type &
 	getField (const std::string & name)
@@ -196,6 +223,7 @@ public:
 		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
 	}
 
+	///  Return the field with @a name.
 	template <class Type>
 	const Type &
 	getField (const std::string & name) const
@@ -214,23 +242,27 @@ public:
 		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
 	}
 
+	///  Return the field with @a name.
 	X3DFieldDefinition*
 	getField (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  Return all field definition for this node, that is all predefined field and user defined fields.
 	const FieldDefinitionArray &
 	getFieldDefinitions () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return fieldDefinitions; }
 
+	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
 	MFString*
 	getCDATA ()
 	{ return nullptr; }
 
+	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
 	const MFString*
 	getCDATA () const
@@ -427,6 +459,18 @@ protected:
 
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
 
+	///  @name Reference handling
+
+	///  Increment the reference count for this node.
+	virtual
+	void
+	reference (X3DChildObject* const) final override;
+
+	///  Decrement the reference count for this node.
+	virtual
+	void
+	unreference (X3DChildObject* const) final override;
+
 	///  @name Misc
 
 	void
@@ -524,6 +568,7 @@ private:
 
 	///  @name Members
 
+	size_t                     referenceCount;   // This nodes referenceCount
 	X3DBrowser* const          browser;          // This nodes Browser
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 

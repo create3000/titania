@@ -134,6 +134,7 @@ namespace X3D {
 
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
 	       X3DChildObject (),
+	       referenceCount (0),
 	              browser (browser),
 	     executionContext (executionContext),
 	                 type ({ X3DConstants::X3DBaseNode }),
@@ -390,6 +391,22 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 		parent -> write (replacement);
 		parent -> addEvent ();
 	}
+}
+
+/**
+ *  Reference handling.
+ */
+
+void
+X3DBaseNode::reference (X3DChildObject* const parent)
+{
+	++ referenceCount;
+}
+
+void
+X3DBaseNode::unreference (X3DChildObject* const parent)
+{
+	-- referenceCount;
 }
 
 /***

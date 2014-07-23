@@ -98,10 +98,11 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet &);
 
-	///  Returns the reference count of this object. Weak references are not counted.
-	uint32_t
+	///  Returns the reference count of this object.  Weak references are not counted.
+	virtual
+	size_t
 	getReferenceCount () const
-	{ return referenceCount; }
+	{ return parents .size (); }
 
 	///  @name Event Handling
 
@@ -148,6 +149,18 @@ protected:
 
 	X3DChildObject ();
 
+	///  @name Reference handling
+	
+	virtual
+	void
+	reference (X3DChildObject* const)
+	{ }
+
+	virtual
+	void
+	unreference (X3DChildObject* const)
+	{ }
+
 	///  @name Children handling
 
 	template <typename ... Args>
@@ -186,7 +199,6 @@ private:
 
 	///  @name Members
 
-	uint32_t        referenceCount;
 	ChildObjectSet  parents;
 	X3DChildObject* root;
 	bool            tainted;
