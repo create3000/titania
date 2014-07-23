@@ -1,5 +1,13 @@
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineTreeData.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPixelTextureEditor.cpp: 
 
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>

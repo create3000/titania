@@ -50,8 +50,8 @@
 
 #include "BVH.h"
 
-#include <Titania/Utility/Adapter.h>
 #include <Titania/LOG.h>
+#include <Titania/Utility/Adapter.h>
 #include <algorithm>
 
 namespace titania {
@@ -298,8 +298,8 @@ private:
 
 // BVH
 
-BVH::BVH (std::vector <Vector3f>&& _vertices) :
-	vertices (std::move (_vertices)),
+BVH::BVH (std::vector <Vector3f> && vertices_) :
+	vertices (std::move (vertices_)),
 	    root ()
 {
 	const size_t size = vertices .size () / 3;

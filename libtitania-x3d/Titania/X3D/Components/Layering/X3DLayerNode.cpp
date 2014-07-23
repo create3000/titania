@@ -71,7 +71,7 @@ X3DLayerNode::Fields::Fields () :
 	      children (new MFNode ())
 { }
 
-X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode* _layerGroup) :
+X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode* layerGroup_) :
 	              X3DNode (),
 	          X3DRenderer (),
 	               fields (),
@@ -79,7 +79,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),
-	     defaultViewpoint (_defaultViewpoint),
+	     defaultViewpoint (defaultViewpoint_),
 	      currentViewport (),
 	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), defaultNavigationInfo)),
 	      backgroundStack (new BackgroundStack (getExecutionContext (), defaultBackground)),
@@ -90,7 +90,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	                 fogs (new FogList (getExecutionContext ())),
 	           viewpoints (new ViewpointList (getExecutionContext ())),
 	            localFogs (),
-	                group (_layerGroup)
+	                group (layerGroup_)
 {
 	addType (X3DConstants::X3DLayerNode);
 

@@ -677,9 +677,9 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 	// The node has a name
 
 	std::string name      = baseNode -> getName ();
-	const bool  hasNumber = RegEx::_LastNumber .PartialMatch (name);
+	const bool  hasNumber = RegEx::LastNumber_ .PartialMatch (name);
 
-	RegEx::_LastNumber .Replace ("", &name);
+	RegEx::LastNumber_ .Replace ("", &name);
 
 	if (name .empty ())
 	{

@@ -98,8 +98,8 @@ PositionChaser2D::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &PositionChaser2D::_set_value);
-	set_destination () .addInterest (this, &PositionChaser2D::_set_destination);
+	set_value ()       .addInterest (this, &PositionChaser2D::set_value_);
+	set_destination () .addInterest (this, &PositionChaser2D::set_destination_);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue = initialValue ();
@@ -123,7 +123,7 @@ PositionChaser2D::equals (const Vector2f & lhs, const Vector2f & rhs, const floa
 }
 
 void
-PositionChaser2D::_set_value ()
+PositionChaser2D::set_value_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
@@ -139,7 +139,7 @@ PositionChaser2D::_set_value ()
 }
 
 void
-PositionChaser2D::_set_destination ()
+PositionChaser2D::set_destination_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();

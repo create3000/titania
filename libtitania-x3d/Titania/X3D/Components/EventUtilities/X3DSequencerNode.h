@@ -127,7 +127,7 @@ private:
 	///  @name Event handlers
 
 	void
-	_set_fraction ();
+	set_fraction_ ();
 
 	void
 	set_previous ();

@@ -98,8 +98,8 @@ TexCoordChaser2D::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &TexCoordChaser2D::_set_value);
-	set_destination () .addInterest (this, &TexCoordChaser2D::_set_destination);
+	set_value ()       .addInterest (this, &TexCoordChaser2D::set_value_);
+	set_destination () .addInterest (this, &TexCoordChaser2D::set_destination_);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue .assign (initialValue () .begin (), initialValue () .end ());
@@ -124,7 +124,7 @@ TexCoordChaser2D::initialize ()
 }
 
 void
-TexCoordChaser2D::_set_value ()
+TexCoordChaser2D::set_value_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
@@ -142,7 +142,7 @@ TexCoordChaser2D::_set_value ()
 }
 
 void
-TexCoordChaser2D::_set_destination ()
+TexCoordChaser2D::set_destination_ ()
 {
 	for (auto & value : buffer)
 		value .resize (set_destination () .size ());

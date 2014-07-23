@@ -69,14 +69,14 @@ namespace X3D {
 const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & _protoObject) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & protoObject_) :
 //throw (Error <INVALID_NAME>,
 //       Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
-	        protoObject (_protoObject),
+	        protoObject (protoObject_),
 	               live (true)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
@@ -390,8 +390,6 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				{
 					case X3DConstants::MFNode:
 					{
-						static const MFNode _empty;
-
 						ostream
 							<< Generator::Indent
 							<< "<fieldValue"
@@ -400,7 +398,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							<< XMLEncode (field -> getName ())
 							<< "'";
 						
-						if (*field == _empty)
+						if (static_cast <MFNode*> (field) -> empty ())
 						{
 							ostream
 								<< "/>"
@@ -424,9 +422,9 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 					}
 					case X3DConstants::SFNode:
 					{
-						static const SFNode _null;
+						static const SFNode null_;
 
-						if (*field not_eq _null)
+						if (*field not_eq null_)
 						{
 							ostream
 								<< Generator::Indent

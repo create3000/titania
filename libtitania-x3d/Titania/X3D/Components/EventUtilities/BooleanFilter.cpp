@@ -91,11 +91,11 @@ BooleanFilter::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_boolean () .addInterest (this, &BooleanFilter::_set_boolean);
+	set_boolean () .addInterest (this, &BooleanFilter::set_boolean_);
 }
 
 void
-BooleanFilter::_set_boolean ()
+BooleanFilter::set_boolean_ ()
 {
 	if (set_boolean ())
 		inputTrue () = true;

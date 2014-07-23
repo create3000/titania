@@ -98,8 +98,8 @@ CoordinateChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &CoordinateChaser::_set_value);
-	set_destination () .addInterest (this, &CoordinateChaser::_set_destination);
+	set_value ()       .addInterest (this, &CoordinateChaser::set_value_);
+	set_destination () .addInterest (this, &CoordinateChaser::set_destination_);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue .assign (initialValue () .begin (), initialValue () .end ());
@@ -124,7 +124,7 @@ CoordinateChaser::initialize ()
 }
 
 void
-CoordinateChaser::_set_value ()
+CoordinateChaser::set_value_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
@@ -142,7 +142,7 @@ CoordinateChaser::_set_value ()
 }
 
 void
-CoordinateChaser::_set_destination ()
+CoordinateChaser::set_destination_ ()
 {
 	for (auto & value : buffer)
 		value .resize (set_destination () .size ());

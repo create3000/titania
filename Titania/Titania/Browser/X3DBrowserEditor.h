@@ -287,7 +287,7 @@ private:
 	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromMFNode (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;

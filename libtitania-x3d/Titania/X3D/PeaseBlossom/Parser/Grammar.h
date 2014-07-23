@@ -83,8 +83,8 @@ public:
 	///  @name Keywords
 
 	static const io::string _this;
-	static const io::string _false;
-	static const io::string _true;
+	static const io::string false_;
+	static const io::string true_;
 	static const io::string null;
 	static const io::string function;
 	static const io::string var;
@@ -191,8 +191,8 @@ const io::character Grammar::CloseBrace ('}');
 
 // Keywords
 const io::string Grammar::_this ("this");
-const io::string Grammar::_false ("false");
-const io::string Grammar::_true ("true");
+const io::string Grammar::false_ ("false");
+const io::string Grammar::true_ ("true");
 const io::string Grammar::null ("null");
 const io::string Grammar::function ("function");
 const io::string Grammar::var ("var");

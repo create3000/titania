@@ -87,11 +87,11 @@ BooleanTrigger::initialize ()
 {
 	X3DTriggerNode::initialize ();
 
-	set_triggerTime () .addInterest (this, &BooleanTrigger::_set_triggerTime);
+	set_triggerTime () .addInterest (this, &BooleanTrigger::set_triggerTime_);
 }
 
 void
-BooleanTrigger::_set_triggerTime ()
+BooleanTrigger::set_triggerTime_ ()
 {
 	triggerTrue () = true;
 }

@@ -63,9 +63,9 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
-	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _false, NULL },
-	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _true,  NULL },
+	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, null_,  NULL },
+	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, false_, NULL },
+	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, true_,  NULL },
 	{ 0 }
 
 };
@@ -87,21 +87,21 @@ jsGlobals::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsGlobals::_null (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::null_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_NULL;
 	return JS_TRUE;
 }
 
 JSBool
-jsGlobals::_false (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::false_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_FALSE;
 	return JS_TRUE;
 }
 
 JSBool
-jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::true_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_TRUE;
 	return JS_TRUE;

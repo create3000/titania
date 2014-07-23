@@ -1,5 +1,75 @@
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* RegEx.h:
+	* RegEx.cpp:
+	* Grammar.h:
+	* Parser.cpp:
+	* Grammar.cpp:
+	* X3DScalar.cpp:
+	* BVH.cpp:
+	* NamedNode.cpp:
+	* Generator.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* Grammar.h:
+	* Parser.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DBindableNode.h:
+	* ColorDamper.h:
+	* ColorChaser.h:
+	* X3DBindableNode.cpp:
+	* jsGlobals.h:
+	* ScalarDamper.h:
+	* ScalarChaser.h:
+	* ColorDamper.cpp:
+	* ColorChaser.cpp:
+	* X3DLayerNode.cpp:
+	* ScalarChaser.cpp:
+	* ScalarDamper.cpp:
+	* PositionChaser.h:
+	* jsGlobals.cpp:
+	* PositionDamper.h:
+	* PixelTexture.cpp:
+	* CoordinateDamper.h:
+	* PositionDamper2D.h:
+	* PositionChaser.cpp:
+	* TexCoordDamper2D.h:
+	* TimeTrigger.h:
+	* PositionChaser2D.h:
+	* TexCoordChaser2D.h:
+	* PositionDamper.cpp:
+	* CoordinateChaser.h:
+	* X3DGeometryNode.cpp:
+	* OrientationDamper.h:
+	* OrientationChaser.h:
+	* X3DPrototypeInstance.cpp:
+	* X3DViewpointNode.h:
+	* PositionDamper2D.cpp:
+	* TexCoordDamper2D.cpp:
+	* TexCoordChaser2D.cpp:
+	* BooleanToggle.h:
+	* PixelTexture3D.cpp:
+	* TimeTrigger.cpp:
+	* CoordinateChaser.cpp:
+	* BooleanFilter.h:
+	* CoordinateDamper.cpp:
+	* PositionChaser2D.cpp:
+	* IntegerTrigger.h:
+	* X3DViewpointNode.cpp:
+	* BooleanTrigger.h:
+	* OrientationDamper.cpp:
+	* OrientationChaser.cpp:
+	* BooleanToggle.cpp:
+	* BooleanFilter.cpp:
+	* BooleanTrigger.cpp:
+	* IntegerTrigger.cpp:
+	* X3DSequencerNode.h:
+	* X3DSequencerNode.cpp:
+	* X3DInterpolatorNode.h:
+	* X3DInterpolatorNode.cpp: 
+
+2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PixelTexture.cpp: 
 
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>

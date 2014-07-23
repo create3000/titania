@@ -87,11 +87,11 @@ BooleanToggle::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_boolean () .addInterest (this, &BooleanToggle::_set_boolean);
+	set_boolean () .addInterest (this, &BooleanToggle::set_boolean_);
 }
 
 void
-BooleanToggle::_set_boolean ()
+BooleanToggle::set_boolean_ ()
 {
 	if (set_boolean ())
 		toggle () = not toggle ();

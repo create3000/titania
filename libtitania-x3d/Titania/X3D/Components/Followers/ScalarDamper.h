@@ -144,10 +144,10 @@ private:
 	///  @name Event handlers
 
 	void
-	_set_destination ();
+	set_destination_ ();
 
 	void
-	_set_value ();
+	set_value_ ();
 
 	void
 	set_order ();

@@ -125,7 +125,7 @@ private:
 	///  @name Event handlers
 
 	void
-	_set_boolean ();
+	set_boolean_ ();
 
 	///  @name Static members
 

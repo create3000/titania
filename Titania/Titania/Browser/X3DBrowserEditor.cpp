@@ -1011,7 +1011,7 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 void
 X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
-	removeNodeFromMFNode (executionContext -> getRootNodes (), node, executionContext, undoStep);
+	removeNode (executionContext, executionContext -> getRootNodes (), node, undoStep);
 
 	// Remove node from scene graph
 
@@ -1041,7 +1041,7 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 										{
 										   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-										   removeNodeFromMFNode (*mfnode, node, parent, undoStep);
+										   removeNode (parent, *mfnode, node, undoStep);
 
 										   break;
 										}
@@ -1056,7 +1056,7 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 }
 
 void
-X3DBrowserEditor::removeNodeFromMFNode (X3D::MFNode & mfnode, const X3D::SFNode & node, const X3D::SFNode & parent, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
 	const auto indices = mfnode .indices_of (node);
 

@@ -98,8 +98,8 @@ ScalarChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &ScalarChaser::_set_value);
-	set_destination () .addInterest (this, &ScalarChaser::_set_destination);
+	set_value ()       .addInterest (this, &ScalarChaser::set_value_);
+	set_destination () .addInterest (this, &ScalarChaser::set_destination_);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue = initialValue ();
@@ -123,7 +123,7 @@ ScalarChaser::equals (const float & lhs, const float & rhs, const float toleranc
 }
 
 void
-ScalarChaser::_set_value ()
+ScalarChaser::set_value_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
@@ -139,7 +139,7 @@ ScalarChaser::_set_value ()
 }
 
 void
-ScalarChaser::_set_destination ()
+ScalarChaser::set_destination_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();

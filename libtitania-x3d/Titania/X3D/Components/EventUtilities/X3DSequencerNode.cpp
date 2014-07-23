@@ -73,14 +73,14 @@ X3DSequencerNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_fraction () .addInterest (this, &X3DSequencerNode::_set_fraction);
+	set_fraction () .addInterest (this, &X3DSequencerNode::set_fraction_);
 	previous ()     .addInterest (this, &X3DSequencerNode::set_previous);
 	next ()         .addInterest (this, &X3DSequencerNode::set_next);
 	key ()          .addInterest (this, &X3DSequencerNode::set_index);
 }
 
 void
-X3DSequencerNode::_set_fraction ()
+X3DSequencerNode::set_fraction_ ()
 {
 	if (key () .empty ())
 		return;

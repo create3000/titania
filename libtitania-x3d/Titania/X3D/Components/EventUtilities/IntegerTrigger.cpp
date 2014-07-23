@@ -89,11 +89,11 @@ IntegerTrigger::initialize ()
 {
 	X3DTriggerNode::initialize ();
 
-	set_boolean () .addInterest (this, &IntegerTrigger::_set_boolean);
+	set_boolean () .addInterest (this, &IntegerTrigger::set_boolean_);
 }
 
 void
-IntegerTrigger::_set_boolean ()
+IntegerTrigger::set_boolean_ ()
 {
 	triggerValue () = integerKey ();
 }

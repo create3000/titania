@@ -431,7 +431,7 @@ OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name
 		if (name .empty ())
 			name = node -> getName ();
 
-		X3D::RegEx::_LastNumber .Replace ("", &name);
+		X3D::RegEx::LastNumber_ .Replace ("", &name);
 
 		// Add typeName and name.
 

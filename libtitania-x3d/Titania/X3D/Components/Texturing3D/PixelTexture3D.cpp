@@ -99,33 +99,40 @@ PixelTexture3D::initialize ()
 void
 PixelTexture3D::update ()
 {
+	constexpr size_t OFFSET     = 4;
 	constexpr size_t COMPONENTS = 0;
 	constexpr size_t WIDTH      = 1;
 	constexpr size_t HEIGHT     = 2;
 	constexpr size_t DEPTH      = 3;
 
-	if (image () .size () < 4 or image () [COMPONENTS] < 1 or image () [COMPONENTS] > 4 or image () [WIDTH] <= 0 or image () [HEIGHT] <= 0 or image () [DEPTH] < 1)
+	if (image () .size () < OFFSET)
+	{
+		setTexture (Texture3DPtr ());
+		return;	
+	}
+
+	const size_t components  = std::max <int32_t> (0, image () [COMPONENTS]);
+	const size_t width       = std::max <int32_t> (0, image () [WIDTH]);
+	const size_t height      = std::max <int32_t> (0, image () [HEIGHT]);
+	const size_t height_1    = height - 1;
+	const size_t depth       = std::max <int32_t> (0, image () [DEPTH]);
+	const size_t size        = width * height;
+	const size_t size3D      = width * height * depth;
+
+	if (components < 1 or components > 4 or width < 1 or height < 1 or depth < 1)
 	{
 		setTexture (Texture3DPtr ());
 		return;
 	}
 
-	size_t components  = image () [COMPONENTS];
-	size_t width       = image () [WIDTH];
-	size_t height      = image () [HEIGHT];
-	size_t depth       = image () [DEPTH];
-	size_t pixels      = width * height;
-	size_t pixels3D    = width * height * depth;
-
-	if (image () .size () < 4 + pixels3D)
-		image () .resize (4 + pixels3D);
+	if (image () .size () < OFFSET + size3D)
+		image () .resize (OFFSET + size3D);
 
 	MagickImageArrayPtr mimages (new MagickImageArray ());
 
 	for (size_t d = 0; d < depth; ++ d)
 	{
-		size_t first = 4 + d * pixels;
-		size_t last  = first + pixels;
+		const size_t first = OFFSET + d * size;
 	
 		mimages -> emplace_back ();
 		mimages -> back () .depth (8);
@@ -135,81 +142,110 @@ PixelTexture3D::update ()
 		{
 			case 1:
 			{
-				std::vector <uint8_t> array;
-				array .reserve (pixels);
+				// Copy and flip image vertically.
 
-				array .assign (image () .begin () + first, image () .begin () + last);
+				std::vector <uint8_t> pixels;
+				pixels .reserve (size);
 
-				Magick::Blob blob (array .data (), pixels);
+				for (size_t h = 0; h < height; ++ h)
+				{
+					const auto row = (height_1 - h) * width;
+
+					for (size_t w = 0; w < width; ++ w)
+						pixels .emplace_back (image () [first + row + w]);
+				}
+
+				Magick::Blob blob (pixels .data (), size);
 				mimages -> back () .magick ("GRAY");
 				mimages -> back () .read (blob);
-
 				break;
 			}
 			case 2:
 			{
-				std::vector <uint8_t> array;
-				array .reserve (pixels * 4);
+				// Copy and flip image vertically.
 
-				for (const auto & pixel : basic::adapter (image () .begin () + first, image () .begin () + last))
+				constexpr auto components = 4;
+			
+				std::vector <uint8_t> pixels;
+				pixels .reserve (size * components);
+
+				for (size_t h = 0; h < height; ++ h)
 				{
-					uint8_t color = pixel >> 8;
-					array .emplace_back (color);
-					array .emplace_back (color);
-					array .emplace_back (color);
-					array .emplace_back (pixel);
+					const auto row = (height_1 - h) * width;
+
+					for (size_t w = 0; w < width; ++ w)
+					{
+						const auto & pixel = image () [first + row + w];
+
+						const uint8_t color = pixel >> 8;
+						pixels .emplace_back (color);
+						pixels .emplace_back (color);
+						pixels .emplace_back (color);
+						pixels .emplace_back (pixel);
+					}
 				}
 
-				Magick::Blob blob (array .data (), pixels * 4);
+				Magick::Blob blob (pixels .data (), size * components);
 				mimages -> back () .magick ("RGBA");
 				mimages -> back () .read (blob);
-
-				mimages -> back () .type (Magick::GrayscaleMatteType);
-
 				break;
 			}
 			case 3:
 			{
-				std::vector <uint8_t> array;
-				array .reserve (pixels * 3);
+				// Copy and flip image vertically.
 
-				for (const auto & pixel : basic::adapter (image () .begin () + first, image () .begin () + last))
+				std::vector <uint8_t> pixels;
+				pixels .reserve (size * components);
+
+				for (size_t h = 0; h < height; ++ h)
 				{
-					array .emplace_back (pixel >> 16);
-					array .emplace_back (pixel >> 8);
-					array .emplace_back (pixel);
+					const auto row = (height_1 - h) * width;
+
+					for (size_t w = 0; w < width; ++ w)
+					{
+						const auto & pixel = image () [first + row + w];
+				
+						pixels .emplace_back (pixel >> 16);
+						pixels .emplace_back (pixel >> 8);
+						pixels .emplace_back (pixel);
+					}
 				}
 
-				Magick::Blob blob (array .data (), pixels * 3);
+				Magick::Blob blob (pixels .data (), size * components);
 				mimages -> back () .magick ("RGB");
 				mimages -> back () .read (blob);
-
 				break;
 			}
 			case 4:
 			{
-				std::vector <uint8_t> array;
-				array .reserve (pixels * 4);
+				// Copy and flip image vertically.
 
-				for (const auto & pixel : basic::adapter (image () .begin () + first, image () .begin () + last))
+				std::vector <uint8_t> pixels;
+				pixels .reserve (size * components);
+
+				for (size_t h = 0; h < height; ++ h)
 				{
-					array .emplace_back (pixel >> 24);
-					array .emplace_back (pixel >> 16);
-					array .emplace_back (pixel >> 8);
-					array .emplace_back (pixel);
+					const auto row = (height_1 - h) * width;
+
+					for (size_t w = 0; w < width; ++ w)
+					{
+						const auto & pixel = image () [first + row + w];
+				
+						pixels .emplace_back (pixel >> 24);
+						pixels .emplace_back (pixel >> 16);
+						pixels .emplace_back (pixel >> 8);
+						pixels .emplace_back (pixel);
+					}
 				}
 
-				Magick::Blob blob (array .data (), pixels * 4);
+				Magick::Blob blob (pixels .data (), size * components);
 				mimages -> back () .magick ("RGBA");
 				mimages -> back () .read (blob);
-
 				break;
 			}
 			default:
 				break;
 		}
-
-		mimages -> back () .flip ();
 	}
 
 	Texture3DPtr texture (new Texture3D (std::move (mimages)));

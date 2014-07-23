@@ -69,16 +69,16 @@ const io::string Grammar::COMPONENT ("COMPONENT");
 const io::string Grammar::DEF ("DEF");
 const io::string Grammar::EXPORT ("EXPORT");
 const io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
-const io::string Grammar::_FALSE ("FALSE");
+const io::string Grammar::FALSE_ ("FALSE");
 const io::string Grammar::IMPORT ("IMPORT");
 const io::string Grammar::IS ("IS");
 const io::string Grammar::META ("META");
-const io::string Grammar::_NULL ("NULL");
+const io::string Grammar::NULL_ ("NULL");
 const io::string Grammar::PROFILE ("PROFILE");
 const io::string Grammar::PROTO ("PROTO");
 const io::string Grammar::ROUTE ("ROUTE");
 const io::string Grammar::TO ("TO");
-const io::string Grammar::_TRUE ("TRUE");
+const io::string Grammar::TRUE_ ("TRUE");
 const io::string Grammar::UNIT ("UNIT");
 const io::string Grammar::USE ("USE");
 
@@ -115,19 +115,19 @@ const io::string Grammar::HEX ("0X");
 const io::sequence Grammar::WhiteSpacesNoComma ("\r\n \t");
 
 bool
-Grammar::Int32 (std::istream & istream, int32_t & _value)
+Grammar::Int32 (std::istream & istream, int32_t & value)
 {
-	if (Hex (istream, (uint32_t &)_value))
+	if (Hex (istream, (uint32_t &) value))
 		return true;
 
-	return istream >> std::dec >> _value;
+	return istream >> std::dec >> value;
 }
 
 bool
-Grammar::Hex (std::istream & istream, uint32_t & _value)
+Grammar::Hex (std::istream & istream, uint32_t & value)
 {
 	if (hex (istream) or HEX (istream))
-		return istream >> std::hex >> _value;
+		return istream >> std::hex >> value;
 
 	return false;
 }

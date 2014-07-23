@@ -249,8 +249,8 @@ Parser::reservedWord (const std::string & string)
 
 	static const std::set <std::string> primitives = {
 		Grammar::null (),
-		Grammar::_true (),
-		Grammar::_false ()
+		Grammar::true_ (),
+		Grammar::false_ ()
 	};
 
 	if (primitives .count (string))
@@ -303,13 +303,13 @@ Parser::booleanLiteral (var & value)
 
 	comments ();
 
-	if (Grammar::_true (istream))
+	if (Grammar::true_ (istream))
 	{
 		value .reset (new True ());
 		return true;
 	}
 
-	if (Grammar::_false (istream))
+	if (Grammar::false_ (istream))
 	{
 		value .reset (new False ());
 		return true;

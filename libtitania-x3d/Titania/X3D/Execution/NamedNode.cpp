@@ -59,10 +59,10 @@ const std::string NamedNode::componentName  = "Browser";
 const std::string NamedNode::typeName       = "NamedNode";
 const std::string NamedNode::containerField = "namedNode";
 
-NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode & _node) :
+NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode & node_) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        node (_node),
-	        name (_node -> getName ())
+	        node (node_),
+	        name (node_ -> getName ())
 {
 	addType (X3DConstants::NamedNode);
 

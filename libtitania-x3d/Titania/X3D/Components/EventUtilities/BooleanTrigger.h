@@ -117,7 +117,7 @@ private:
 	///  @name Event handlers
 
 	void
-	_set_triggerTime ();
+	set_triggerTime_ ();
 
 	///  @name Static members
 

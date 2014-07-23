@@ -53,12 +53,12 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeData::OutlineTreeData (const OutlineIterType _type, X3D::X3DChildObject* const _object, const Gtk::TreeModel::Path & _path, const size_t index) :
+OutlineTreeData::OutlineTreeData (const OutlineIterType type_, X3D::X3DChildObject* const object_, const Gtk::TreeModel::Path & path_, const size_t index) :
 	   Glib::Object (),
 	         parent (),
-	         object (_object),
-	           type (_type),
-	           path (_path),
+	         object (object_),
+	           type (type_),
+	           path (path_),
 	          index (index),
 	   inputs_below (),
 	   inputs_above (),

@@ -329,7 +329,7 @@ X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 {
 	hidden = true; // XXX Remove this parameter
 
-	RegEx::_LastNumber .Replace ("", &name);
+	RegEx::LastNumber_ .Replace ("", &name);
 
 	if (not hidden)
 		RegEx::LastNumber .Replace ("", &name);
@@ -1048,7 +1048,7 @@ X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionConte
 std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
-	RegEx::_LastNumber .Replace ("", &name);
+	RegEx::LastNumber_ .Replace ("", &name);
 	RegEx::LastNumber .Replace ("", &name);
 
 	if (name .empty ())

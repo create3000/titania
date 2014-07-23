@@ -98,8 +98,8 @@ OrientationChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &OrientationChaser::_set_value);
-	set_destination () .addInterest (this, &OrientationChaser::_set_destination);
+	set_value ()       .addInterest (this, &OrientationChaser::set_value_);
+	set_destination () .addInterest (this, &OrientationChaser::set_destination_);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue = initialValue ();
@@ -125,7 +125,7 @@ OrientationChaser::equals (const Rotation4f & lhs, const Rotation4f & rhs, const
 }
 
 void
-OrientationChaser::_set_value ()
+OrientationChaser::set_value_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
@@ -141,7 +141,7 @@ OrientationChaser::_set_value ()
 }
 
 void
-OrientationChaser::_set_destination ()
+OrientationChaser::set_destination_ ()
 {
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();

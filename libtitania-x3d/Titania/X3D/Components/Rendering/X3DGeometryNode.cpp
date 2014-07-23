@@ -322,7 +322,7 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, Matrix4f modelViewMatrix, c
 }
 
 void
-X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _texCoords, std::vector <Vector3f> & _normals, std::vector <Vector3f> & _vertices) const
+X3DGeometryNode::triangulate (std::vector <Color4f> & colors_, TexCoordArray & texCoords_, std::vector <Vector3f> & normals_, std::vector <Vector3f> & vertices_) const
 {
 	size_t first = 0;
 
@@ -334,7 +334,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 3)
 					{
-						triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
+						triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
 					}
 
 					break;
@@ -343,8 +343,8 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 			{
 				for (size_t i = first, size = first + element .count; i < size; i += 4)
 				{
-					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
-					triangulate (i, i + 2, i + 3, _colors, _texCoords, _normals, _vertices);
+					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
+					triangulate (i, i + 2, i + 3, colors_, texCoords_, normals_, vertices_);
 				}
 
 				break;
@@ -353,8 +353,8 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 			{
 				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
 				{
-					triangulate (i + 0, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
-					triangulate (i + 1, i + 3, i + 2, _colors, _texCoords, _normals, _vertices);
+					triangulate (i + 0, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
+					triangulate (i + 1, i + 3, i + 2, colors_, texCoords_, normals_, vertices_);
 				}
 
 				break;
@@ -363,7 +363,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 			{
 				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
 				{
-					triangulate (first, i, i + 1, _colors, _texCoords, _normals, _vertices);
+					triangulate (first, i, i + 1, colors_, texCoords_, normals_, vertices_);
 				}
 
 				break;
@@ -377,29 +377,29 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 }
 
 void
-X3DGeometryNode::triangulate (size_t i1, size_t i2, size_t i3, std::vector <Color4f> & _colors, TexCoordArray & _texCoords, std::vector <Vector3f> & _normals, std::vector <Vector3f> & _vertices) const
+X3DGeometryNode::triangulate (size_t i1, size_t i2, size_t i3, std::vector <Color4f> & colors_, TexCoordArray & texCoords_, std::vector <Vector3f> & normals_, std::vector <Vector3f> & vertices_) const
 {
 	if (not colors .empty ())
 	{
-		_colors .emplace_back (colors [i1]);
-		_colors .emplace_back (colors [i2]);
-		_colors .emplace_back (colors [i3]);
+		colors_ .emplace_back (colors [i1]);
+		colors_ .emplace_back (colors [i2]);
+		colors_ .emplace_back (colors [i3]);
 	}
 
 	for (size_t t = 0, size = texCoords .size (); t < size; ++ t)
 	{
-		_texCoords [t] .emplace_back (texCoords [t] [i1]);
-		_texCoords [t] .emplace_back (texCoords [t] [i2]);
-		_texCoords [t] .emplace_back (texCoords [t] [i3]);
+		texCoords_ [t] .emplace_back (texCoords [t] [i1]);
+		texCoords_ [t] .emplace_back (texCoords [t] [i2]);
+		texCoords_ [t] .emplace_back (texCoords [t] [i3]);
 	}
 
-	_normals .emplace_back (normals [i1]);
-	_normals .emplace_back (normals [i2]);
-	_normals .emplace_back (normals [i3]);
+	normals_ .emplace_back (normals [i1]);
+	normals_ .emplace_back (normals [i2]);
+	normals_ .emplace_back (normals [i3]);
 
-	_vertices .emplace_back (vertices [i1]);
-	_vertices .emplace_back (vertices [i2]);
-	_vertices .emplace_back (vertices [i3]);
+	vertices_ .emplace_back (vertices [i1]);
+	vertices_ .emplace_back (vertices [i2]);
+	vertices_ .emplace_back (vertices [i3]);
 }
 
 void
@@ -515,7 +515,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 
 	const float cosCreaseAngle = std::cos (creaseAngle);
 
-	std::vector <Vector3f> _normals (normals .size ());
+	std::vector <Vector3f> normals_ (normals .size ());
 
 	for (const auto & point : normalIndex)
 	{
@@ -530,11 +530,11 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 					n += normals [index];
 			}
 
-			_normals [index] = normalize (n);
+			normals_ [index] = normalize (n);
 		}
 	}
 
-	normals .swap (_normals);
+	normals .swap (normals_);
 }
 
 /*

@@ -99,8 +99,8 @@ CoordinateDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &CoordinateDamper::_set_value);
-	set_destination () .addInterest (this, &CoordinateDamper::_set_destination);
+	set_value ()       .addInterest (this, &CoordinateDamper::set_value_);
+	set_destination () .addInterest (this, &CoordinateDamper::set_destination_);
 	order ()           .addInterest (this, &CoordinateDamper::set_order);
 
 	buffer .resize (getOrder () + 1);
@@ -121,7 +121,7 @@ CoordinateDamper::initialize ()
 }
 
 void
-CoordinateDamper::_set_value ()
+CoordinateDamper::set_value_ ()
 {
 	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
 		value .assign (set_value () .begin (), set_value () .end ());
@@ -134,7 +134,7 @@ CoordinateDamper::_set_value ()
 }
  
 void
-CoordinateDamper::_set_destination ()
+CoordinateDamper::set_destination_ ()
 {
 	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
 		value .resize (set_destination () .size ());

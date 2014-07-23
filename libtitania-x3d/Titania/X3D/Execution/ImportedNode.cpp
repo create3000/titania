@@ -62,7 +62,7 @@ const std::string ImportedNode::typeName       = "ImportedNode";
 const std::string ImportedNode::containerField = "importedNode";
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            const InlinePtr & _inlineNode,
+                            const InlinePtr & inlineNode_,
                             const std::string & exportedName,
                             const std::string & importedName)
 throw (Error <INVALID_NAME>,
@@ -70,8 +70,8 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	  inlineNode (_inlineNode),
-	exportedNode (_inlineNode -> getExportedNode (exportedName) .getValue ()),
+	  inlineNode (inlineNode_),
+	exportedNode (inlineNode_ -> getExportedNode (exportedName) .getValue ()),
 	exportedName (exportedName),
 	importedName (importedName)
 {

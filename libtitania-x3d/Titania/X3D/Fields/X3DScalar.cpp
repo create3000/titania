@@ -91,13 +91,13 @@ throw (Error <INVALID_X3D>,
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	if (Grammar::_TRUE (istream))
+	if (Grammar::TRUE_ (istream))
 	{
 		setValue (true);
 		return;
 	}
 
-	if (Grammar::_FALSE (istream))
+	if (Grammar::FALSE_ (istream))
 	{
 		setValue (false);
 		return;

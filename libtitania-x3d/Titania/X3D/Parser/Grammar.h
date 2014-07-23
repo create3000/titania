@@ -84,16 +84,16 @@ public:
 	static const io::string DEF;
 	static const io::string EXPORT;
 	static const io::string EXTERNPROTO;
-	static const io::string _FALSE;
+	static const io::string FALSE_;
 	static const io::string IMPORT;
 	static const io::string IS;
 	static const io::string META;
-	static const io::string _NULL;
+	static const io::string NULL_;
 	static const io::string PROFILE;
 	static const io::string PROTO;
 	static const io::string ROUTE;
 	static const io::string TO;
-	static const io::string _TRUE;
+	static const io::string TRUE_;
 	static const io::string UNIT;
 	static const io::string USE;
 

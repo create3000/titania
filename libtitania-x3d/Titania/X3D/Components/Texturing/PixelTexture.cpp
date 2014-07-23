@@ -168,8 +168,6 @@ PixelTexture::update ()
 			Magick::Blob blob (pixels .data (), size * components);
 			mimage .magick ("RGBA");
 			mimage .read (blob);
-
-			mimage .type (Magick::GrayscaleMatteType);
 			break;
 		}
 		case 3:

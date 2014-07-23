@@ -141,7 +141,7 @@ X3DViewpointNode::initialize ()
 	scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
-	isBound () .addInterest (this, &X3DViewpointNode::_set_bind);
+	isBound () .addInterest (this, &X3DViewpointNode::set_bind_);
 }
 
 Vector3f
@@ -444,7 +444,7 @@ X3DViewpointNode::set_isActive (const bool value)
 }
 
 void
-X3DViewpointNode::_set_bind ()
+X3DViewpointNode::set_bind_ ()
 {
 	if (set_bind ())
 		;

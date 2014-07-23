@@ -65,7 +65,7 @@ public:
 
 	// Execution
 
-	static const pcrecpp::RE _LastNumber;
+	static const pcrecpp::RE LastNumber_;
 	static const pcrecpp::RE LastNumber;
 	static const pcrecpp::RE ECMAScript;
 

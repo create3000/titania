@@ -99,8 +99,8 @@ PositionDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &PositionDamper::_set_value);
-	set_destination () .addInterest (this, &PositionDamper::_set_destination);
+	set_value ()       .addInterest (this, &PositionDamper::set_value_);
+	set_destination () .addInterest (this, &PositionDamper::set_destination_);
 	order ()           .addInterest (this, &PositionDamper::set_order);
 
 	buffer .resize (getOrder () + 1, initialValue ());
@@ -121,7 +121,7 @@ PositionDamper::equals (const Vector3f & lhs, const Vector3f & rhs, const float 
 }
 
 void
-PositionDamper::_set_value ()
+PositionDamper::set_value_ ()
 {
 	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
@@ -132,7 +132,7 @@ PositionDamper::_set_value ()
 }
 
 void
-PositionDamper::_set_destination ()
+PositionDamper::set_destination_ ()
 {
 	buffer [0] = set_destination ();
 

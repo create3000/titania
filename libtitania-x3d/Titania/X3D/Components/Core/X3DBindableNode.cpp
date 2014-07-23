@@ -111,7 +111,7 @@ X3DBindableNode::set_live ()
 
 	if (live)
 	{
-		set_bind () .addInterest (this, &X3DBindableNode::_set_bind);
+		set_bind () .addInterest (this, &X3DBindableNode::set_bind_);
 
 		if (wasBound)
 		{
@@ -121,7 +121,7 @@ X3DBindableNode::set_live ()
 	}
 	else
 	{
-		set_bind () .removeInterest (this, &X3DBindableNode::_set_bind);
+		set_bind () .removeInterest (this, &X3DBindableNode::set_bind_);
 
 		wasBound = isBound ();
 
@@ -131,7 +131,7 @@ X3DBindableNode::set_live ()
 }
 
 void
-X3DBindableNode::_set_bind ()
+X3DBindableNode::set_bind_ ()
 {
 	if (set_bind ())
 	{

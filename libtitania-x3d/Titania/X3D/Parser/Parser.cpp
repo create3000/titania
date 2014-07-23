@@ -716,7 +716,7 @@ Parser::nodeStatement (SFNode & _node)
 		throw Error <INVALID_X3D> ("No name given after USE.");
 	}
 
-	if (Grammar::_NULL (istream))
+	if (Grammar::NULL_ (istream))
 	{
 		_node = nullptr;
 
@@ -1946,13 +1946,13 @@ Parser::sfboolValue (SFBool* _field)
 
 	comments ();
 
-	if (Grammar::_TRUE (istream))
+	if (Grammar::TRUE_ (istream))
 	{
 		_field -> setValue (true);
 		return true;
 	}
 
-	if (Grammar::_FALSE (istream))
+	if (Grammar::FALSE_ (istream))
 	{
 		_field -> setValue (false);
 		return true;

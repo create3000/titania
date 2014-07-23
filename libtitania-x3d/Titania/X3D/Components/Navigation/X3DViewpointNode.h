@@ -302,7 +302,7 @@ private:
 	set_isActive (const bool);
 
 	void
-	_set_bind ();
+	set_bind_ ();
 
 	///  @name Members
 

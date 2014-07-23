@@ -99,8 +99,8 @@ ColorDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &ColorDamper::_set_value);
-	set_destination () .addInterest (this, &ColorDamper::_set_destination);
+	set_value ()       .addInterest (this, &ColorDamper::set_value_);
+	set_destination () .addInterest (this, &ColorDamper::set_destination_);
 	order ()           .addInterest (this, &ColorDamper::set_order);
 
 	buffer .resize (getOrder () + 1, initialValue ());
@@ -124,7 +124,7 @@ ColorDamper::equals (const Color3f & lhs, const Color3f & rhs, const float toler
 }
 
 void
-ColorDamper::_set_value ()
+ColorDamper::set_value_ ()
 {
 	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
@@ -135,7 +135,7 @@ ColorDamper::_set_value ()
 }
 
 void
-ColorDamper::_set_destination ()
+ColorDamper::set_destination_ ()
 {
 	buffer [0] = set_destination ();
 

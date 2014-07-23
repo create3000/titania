@@ -99,8 +99,8 @@ OrientationDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &OrientationDamper::_set_value);
-	set_destination () .addInterest (this, &OrientationDamper::_set_destination);
+	set_value ()       .addInterest (this, &OrientationDamper::set_value_);
+	set_destination () .addInterest (this, &OrientationDamper::set_destination_);
 	order ()           .addInterest (this, &OrientationDamper::set_order);
 
 	buffer .resize (getOrder () + 1, initialValue ());
@@ -123,7 +123,7 @@ OrientationDamper::equals (const Rotation4f & lhs, const Rotation4f & rhs, const
 }
 
 void
-OrientationDamper::_set_value ()
+OrientationDamper::set_value_ ()
 {
 	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
@@ -134,7 +134,7 @@ OrientationDamper::_set_value ()
 }
 
 void
-OrientationDamper::_set_destination ()
+OrientationDamper::set_destination_ ()
 {
 	buffer [0] = set_destination ();
 

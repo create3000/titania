@@ -89,38 +89,38 @@ protected:
 
 	template <class NodeType>
 	X3D::X3DPtrArray <NodeType>
-	getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const;
+	getSelection (const std::set <X3D::X3DConstants::NodeType> &) const;
 
 	template <class NodeType>
 	X3D::X3DPtrArray <NodeType>
-	getNodes (X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> & types) const;
+	getNodes (X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> &) const;
 
 	template <class FieldType, class NodeType>
 	static
 	std::pair <X3D::X3DPtr <FieldType>, int>
-	getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+	getNode (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class NodeType>
 	static
 	int
-	getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+	getBoolean (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class NodeType>
 	static
 	std::pair <X3D::String, int>
-	getString (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName);
+	getString (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class NodeType>
 	void
-	unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep);
+	unlinkClone (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
 	void
-	addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string &, UndoStepPtr & undoStep);
+	addUndoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
 	void
-	addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string &, UndoStepPtr & undoStep);
+	addRedoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
 	void

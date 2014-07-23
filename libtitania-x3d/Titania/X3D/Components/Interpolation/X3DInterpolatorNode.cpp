@@ -85,12 +85,12 @@ X3DInterpolatorNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_fraction () .addInterest (this, &X3DInterpolatorNode::_set_fraction);
+	set_fraction () .addInterest (this, &X3DInterpolatorNode::set_fraction_);
 	key ()          .addInterest (this, &X3DInterpolatorNode::set_key);
 }
 
 void
-X3DInterpolatorNode::_set_fraction ()
+X3DInterpolatorNode::set_fraction_ ()
 {
 	if (key () .empty ())
 		return;
