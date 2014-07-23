@@ -133,25 +133,25 @@ public:
 
 	void
 	setAccessType (const AccessType value)
-	{ accessType = value; }
+	{ realize (); io -> accessType = value; }
 
 	AccessType
 	getAccessType () const
-	{ return accessType; }
+	{ realize (); return io -> accessType; }
 
 	bool
 	isInitializable () const
-	{ return accessType & initializeOnly; }
+	{ return getAccessType () & initializeOnly; }
 
 	virtual
 	bool
 	isInput () const override
-	{ return accessType & inputOnly; }
+	{ return getAccessType () & inputOnly; }
 
 	virtual
 	bool
 	isOutput () const override
-	{ return accessType & outputOnly; }
+	{ return getAccessType () & outputOnly; }
 	
 	virtual
 	bool
@@ -265,14 +265,17 @@ private:
 
 	struct IO
 	{
+		IO () :
+			accessType (initializeOnly)
+		{ }
+
+		AccessType                           accessType;
 		FieldDefinitionSet                   references;
 		RouteSet                             inputRoutes;
 		RouteSet                             outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
 		FieldDefinitionSet                   outputInterests;
 	};
-
-	AccessType  accessType;
 
 	mutable std::unique_ptr <IO> io;
 

@@ -771,11 +771,6 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 
 	undoStep -> addVariables (parent);
 	
-	const auto removeNode = std::make_shared <UndoStep> ();
-	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, removeNode);
-	removeNode -> undoChanges ();
-	undoStep -> addUndoStepReverse (removeNode);
-
 	undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
 	undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (sfnode), newValue);
 
@@ -802,11 +797,6 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 	const X3D::SFNode oldValue = mfnode [index];
 
 	undoStep -> addVariables (parent);
-
-	const auto removeNode = std::make_shared <UndoStep> ();
-	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, removeNode);
-	removeNode -> undoChanges ();
-	undoStep -> addUndoStepReverse (removeNode);
 
 	using set1Value = void (X3D::MFNode::*) (const X3D::MFNode::size_type, const X3D::SFNode &);
 
@@ -851,9 +841,7 @@ X3DBrowserEditor::eraseNode (X3D::MFNode & mfnode, const size_t index, const X3D
 }
 
 /***
- *
  *  Removes @a node completely from scene if not exists in scene graph anymore.
- *
  */
 void
 X3DBrowserEditor::removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr & executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
@@ -866,9 +854,7 @@ X3DBrowserEditor::removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContext
 }
 
 /***
- *
  *  Does the same as Menu > Edit > Remove
- *
  */
 void
 X3DBrowserEditor::removeNodesFromScene (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
@@ -881,9 +867,7 @@ X3DBrowserEditor::removeNodesFromScene (const X3D::MFNode & nodes, const UndoSte
 }
 
 /***
- *
  *  Does the same as Menu > Edit > Remove
- *
  */
 void
 X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & executionContext, X3D::SFNode node, const UndoStepPtr & undoStep, const bool doRemoveFromSceneGraph) const
@@ -1393,11 +1377,11 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											      {
 											         if (not first)
 											         {
-											            const X3D::SFNode node = (*sfnode) -> copy (X3D::FLAT_COPY);
+											            const X3D::SFNode copy = (*sfnode) -> copy (X3D::FLAT_COPY);
 
-											            replaceNode (parent, *sfnode, node, undoStep);
+											            replaceNode (parent, *sfnode, copy, undoStep);
 
-											            nodes .emplace_back (node);
+											            nodes .emplace_back (copy);
 														}
 
 											         first = false;
@@ -1455,11 +1439,11 @@ X3DBrowserEditor::unlinkClone (const X3D::SFNode & parent,
 		{
 			if (not first)
 			{
-				const X3D::SFNode node = mfnode [index] -> copy (X3D::FLAT_COPY);
+				const X3D::SFNode copy = mfnode [index] -> copy (X3D::FLAT_COPY);
 
-				replaceNode (parent, mfnode, index, node, undoStep);
+				replaceNode (parent, mfnode, index, copy, undoStep);
 
-				nodes .emplace_back (node);
+				nodes .emplace_back (copy);
 			}
 
 			first = false;

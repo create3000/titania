@@ -165,6 +165,9 @@ private:
 	bool
 	comment ();
 
+	void
+	lines (const std::string &);
+
 	bool
 	headerStatement (std::string &, std::string &, std::string &, std::string &);
 
@@ -544,6 +547,7 @@ private:
 	std::istream &            istream;
 	X3DScene*                 scene;
 	ExecutionContextStack     executionContextStack;
+	size_t                    lineNumber;
 	std::string               whiteSpaces;
 	std::vector <std::string> currentComments;
 	std::string               commentCharacters;

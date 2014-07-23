@@ -264,6 +264,10 @@ main (int argc, char** argv)
 	#endif
 
 	std::clog .imbue (std::locale (""));
+	
+	
+	std::clog << sizeof (bool) << std::endl;
+	std::clog << sizeof (uint8_t) << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

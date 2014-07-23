@@ -57,7 +57,6 @@ namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),
-	    accessType (initializeOnly),
 	            io ()
 { }
 

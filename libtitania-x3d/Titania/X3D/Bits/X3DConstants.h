@@ -58,51 +58,6 @@
 namespace titania {
 namespace X3D {
 
-enum VersionType : uint8_t
-{
-	VRML_V2_0,
-	X3D_V3_0,
-	X3D_V3_1,
-	X3D_V3_2,
-	X3D_V3_3
-
-};
-
-static constexpr VersionType LATEST_VERSION = VersionType::X3D_V3_3;
-
-inline
-std::ostream &
-operator << (std::ostream & ostream, const VersionType version)
-{
-	static const std::map <VersionType, std::string> versions = {
-		std::make_pair (VRML_V2_0, "VRML V2.0"),
-		std::make_pair (X3D_V3_0,  "X3D V3.0"),
-		std::make_pair (X3D_V3_1,  "X3D V3.1"),
-		std::make_pair (X3D_V3_2,  "X3D V3.2"),
-		std::make_pair (X3D_V3_3,  "X3D V3.3"),
-	};
-
-	return ostream << versions .find (version) -> second;
-}
-
-inline
-std::string
-XMLEncode (const VersionType version)
-{
-	switch (version)
-	{
-		case X3D_V3_0:
-			return "3.0";
-		case X3D_V3_1:
-			return "3.1";
-		case X3D_V3_2:
-			return "3.2";
-		case X3D_V3_3:
-		default:
-			return "3.3";
-	}
-}
-
 // Official Constants
 
 namespace X3DConstants {
@@ -506,9 +461,9 @@ enum NodeType : uint16_t
 	X3DViewpointNode,
 	X3DViewpointObject,
 	X3DViewportNode,
-	
+
 	// Browser node types
-	
+
 	Browser,
 	BrowserApplication,
 	BrowserOptions,
@@ -540,7 +495,7 @@ enum NodeType : uint16_t
 	X3DScene,
 
 	// Tool nodes
-	
+
 	AnchorTool,
 	BillboardTool,
 	CollisionTool,
@@ -595,7 +550,52 @@ using X3DConstants::inputOnly;
 using X3DConstants::outputOnly;
 using X3DConstants::inputOutput;
 
-enum CopyType
+enum VersionType : uint8_t
+{
+	VRML_V2_0,
+	X3D_V3_0,
+	X3D_V3_1,
+	X3D_V3_2,
+	X3D_V3_3
+
+};
+
+static constexpr VersionType LATEST_VERSION = VersionType::X3D_V3_3;
+
+inline
+std::ostream &
+operator << (std::ostream & ostream, const VersionType version)
+{
+	static const std::map <VersionType, std::string> versions = {
+		std::make_pair (VRML_V2_0, "VRML V2.0"),
+		std::make_pair (X3D_V3_0,  "X3D V3.0"),
+		std::make_pair (X3D_V3_1,  "X3D V3.1"),
+		std::make_pair (X3D_V3_2,  "X3D V3.2"),
+		std::make_pair (X3D_V3_3,  "X3D V3.3"),
+	};
+
+	return ostream << versions .find (version) -> second;
+}
+
+inline
+std::string
+XMLEncode (const VersionType version)
+{
+	switch (version)
+	{
+		case X3D_V3_0:
+			return "3.0";
+		case X3D_V3_1:
+			return "3.1";
+		case X3D_V3_2:
+			return "3.2";
+		case X3D_V3_3:
+		default:
+			return "3.3";
+	}
+}
+
+enum CopyType : uint8_t
 {
 	CLONE,
 	COPY_OR_CLONE,

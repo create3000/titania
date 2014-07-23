@@ -1,5 +1,16 @@
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* X3DObject.h:
+	* Parser.cpp:
+	* X3DConstants.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.h:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp: 
+
+2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* RegEx.h:
 	* RegEx.cpp:
 	* Grammar.h:

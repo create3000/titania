@@ -88,6 +88,7 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	              istream (istream),
 	                scene (scene),
 	executionContextStack (),
+	           lineNumber (1),
 	          whiteSpaces (),
 	      currentComments (),
 	    commentCharacters ()
@@ -127,8 +128,8 @@ Parser::getMessageFromError (const X3DError & error)
 
 	istream .clear ();
 
-	size_t      lineNumber = std::count (whiteSpaces .begin (), whiteSpaces .end (), '\n') + 1;
-	std::string string     = error .what ();
+	const size_t lineNumber = lineNumber;
+	std::string  string     = error .what ();
 
 	filter_control_characters (string);
 	filter_bad_utf8_characters (string);
@@ -336,8 +337,12 @@ bool
 Parser::comment ()
 {
 	//__LOG__ << this << " " << std::endl;
-
+	
 	Grammar::WhiteSpaces (istream, whiteSpaces);
+
+	lines (whiteSpaces);
+
+	whiteSpaces .clear ();
 
 	if (Grammar::Comment (istream, commentCharacters))
 	{
@@ -346,6 +351,14 @@ Parser::comment ()
 	}
 
 	return false;
+}
+
+void
+Parser::lines (const std::string & string)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	lineNumber += std::count (string .begin (), string .end (), '\n');
 }
 
 bool
@@ -1398,7 +1411,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 	auto state = istream .rdstate ();
 	auto pos   = istream .tellg ();
-	auto ws    = whiteSpaces .size ();
+	auto ln    = lineNumber;
 	auto com   = currentComments .size ();
 
 	std::string _accessTypeId;
@@ -1503,7 +1516,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 		istream .clear (state);
 		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
-		whiteSpaces .resize (ws);
+		lineNumber = ln;
 		currentComments .resize (com);
 	}
 
@@ -1932,7 +1945,7 @@ Parser::String (std::string & _value)
 
 	if (Grammar::String (istream, _value))
 	{
-		whiteSpaces .append (_value);
+		lines (_value);
 		return true;
 	}
 

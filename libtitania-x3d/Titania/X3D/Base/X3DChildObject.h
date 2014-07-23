@@ -98,12 +98,14 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet &);
 
-	size_t
+	///  Returns the reference count of this object. Weak references are not counted.
+	uint32_t
 	getReferenceCount () const
 	{ return referenceCount; }
 
 	///  @name Event Handling
 
+	///  Sets the tainted state.  See isTainted ().
 	void
 	isTainted (const bool value)
 	{ tainted = value; }
@@ -184,7 +186,7 @@ private:
 
 	///  @name Members
 
-	size_t          referenceCount;
+	uint32_t        referenceCount;
 	ChildObjectSet  parents;
 	X3DChildObject* root;
 	bool            tainted;

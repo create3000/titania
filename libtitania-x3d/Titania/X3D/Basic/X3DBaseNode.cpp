@@ -800,15 +800,18 @@ X3DBaseNode::isCloned () const
 						continue;
 
 					if (dynamic_cast <MFNode*> (secondParent))
-						++ numClones;
+					{
+						if (++ numClones > 1)
+							return numClones;
+					}
 				}
 			}
 			else
-				++ numClones;
+			{
+				if (++ numClones > 1)
+					return numClones;
+			}
 		}
-
-		if (numClones > 1)
-			return numClones;
 	}
 
 	return numClones;

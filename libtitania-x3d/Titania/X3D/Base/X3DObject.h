@@ -85,16 +85,19 @@ public:
 	getId () const
 	{ return this; }
 
+	///  Sets the name of this object.
 	virtual
 	void
 	setName (const std::string & value)
 	{ realize (); data -> name = value; }
 
+	///  Returns the name of this object.
 	virtual
 	const std::string &
 	getName () const
 	{ realize (); return data -> name; }
 
+	///  Returns the type name of this object.
 	virtual
 	const std::string &
 	getTypeName () const
@@ -102,21 +105,25 @@ public:
 
 	///  @name Comment handling
 
+	///  Add comments to this object.
 	void
 	addComments (const std::vector <std::string> & value)
 	{ realize (); data -> comments .insert (data -> comments .end (), value .begin (), value .end ()); }
 
+	///  Returns the comments of this object.
 	const std::vector <std::string> &
 	getComments () const
 	{ realize (); return data -> comments; }
 
 	///  @name User data handling
 
+	///  Set new user data for this object.
 	virtual
 	void
 	setUserData (const UserDataPtr & value)
 	{ realize (); data -> userData = value; }
 
+	///  Returns the user data of this object. If no user data set an empty pointer is returned.
 	virtual
 	const UserDataPtr &
 	getUserData () const
@@ -124,6 +131,7 @@ public:
 
 	///  @name String creation
 
+	///  Extracts the value for this object from @a string. The string must be in VRML Classic Encoding.
 	bool
 	fromString (const std::string &)
 	throw (Error <INVALID_X3D>,
@@ -131,6 +139,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  Extracts the value for this object from @a string with locale support.
 	bool
 	fromLocaleString (const std::string &, const std::locale &)
 	throw (Error <INVALID_X3D>,
@@ -138,17 +147,21 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  Generates a string representation of this object in VRML Classic Encoding.
 	std::string
 	toString () const;
 
+	///  Generates a string representation of this object with locale support.
 	std::string
 	toLocaleString (const std::locale &) const;
 
+	///  Generates a string representation of this object in X3D XML Encoding.
 	std::string
 	toXMLString () const;
 
 	///  @name Input/Output
 
+	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding.
 	virtual
 	void
 	fromStream (std::istream &)
@@ -157,20 +170,24 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) = 0;
 
+	///  Inserts this object into @a ostream in VRML Classic Encoding.
 	virtual
 	void
 	toStream (std::ostream &) const = 0;
 
+	///  Inserts this object into @a ostream in X3D XML Encoding.
 	virtual
 	void
 	toXMLStream (std::ostream &) const = 0;
 
 	///  @name Destruction
 
+	///  Disposed this object.  It is normally not need to call this function directly.
 	virtual
 	void
 	dispose () override;
 
+	///  Destructs this object.
 	virtual
 	~X3DObject ();
 
@@ -179,6 +196,7 @@ protected:
 
 	///  @name Construction
 
+	///  Constructs this object.
 	X3DObject ();
 
 
@@ -186,6 +204,7 @@ private:
 
 	///  @name Construction
 
+	///  Realizes this object if needed.
 	void
 	realize () const;
 
