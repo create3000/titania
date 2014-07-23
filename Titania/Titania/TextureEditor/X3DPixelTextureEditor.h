@@ -53,8 +53,6 @@
 
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 
-#include <Titania/X3D/Thread/TextureLoader.h>
-
 namespace titania {
 namespace puck {
 
@@ -76,22 +74,17 @@ protected:
 	const X3D::X3DPtr <X3D::PixelTexture> &
 	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
-	///  @name Destruction
-
-	~X3DPixelTextureEditor ();
-
 
 private:
 
 	///  @name Event handlers
 
 	void
-	set_texture (const X3D::TexturePtr &);
+	assign (const X3D::X3DPtr <X3D::ImageTexture> &);
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::PixelTexture>      pixelTexture;
-	std::unique_ptr <X3D::TextureLoader> future;
+	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;
 
 };
 

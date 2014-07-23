@@ -56,16 +56,12 @@ namespace puck {
 X3DPixelTextureEditor::X3DPixelTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	             pixelTexture (),
-	                   future ()
+	             pixelTexture ()
 { }
 
 void
 X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	if (future)
-		future -> dispose ();
-
 	if (pixelTexture)
 	{
 		//pixelTexture -> url () .removeInterest (this, &X3DPixelTextureEditor::set_url);
@@ -99,14 +95,7 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	{
 		case X3D::X3DConstants::ImageTexture:
 		{
-			using namespace std::placeholders;
-
-			const X3D::X3DPtr <X3D::ImageTexture> last (value);
-
-			future .reset (new X3D::TextureLoader (last -> getExecutionContext (),
-			                                       last -> url (),
-			                                       0, 0,
-			                                       std::bind (&X3DPixelTextureEditor::set_texture, this, _1)));
+			assign (X3D::X3DPtr <X3D::ImageTexture> (value));
 			break;
 		}
 		case X3D::X3DConstants::PixelTexture:
@@ -124,21 +113,102 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 }
 
 void
-X3DPixelTextureEditor::set_texture (const X3D::TexturePtr & texture)
-{
-	if (texture)
-	{
-		__LOG__ << texture -> getWidth () << std::endl;
-		__LOG__ << texture -> getHeight () << std::endl;
-		__LOG__ << texture -> getComponents () << std::endl;
-		__LOG__ << texture -> getData () << std::endl;
-	}
-}
+X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageTexture)
+{	
+	if (not imageTexture -> getBrowser () -> makeCurrent ())
+		return;
 
-X3DPixelTextureEditor::~X3DPixelTextureEditor ()
-{
-	if (future)
-		future -> dispose ();
+	const auto   width      = imageTexture -> getWidth ();
+	const auto   height     = imageTexture -> getHeight ();
+	const auto   components = imageTexture -> getComponents ();
+	X3D::MFInt32 array;
+
+	switch (components)
+	{
+		case 1:
+		{
+//				const auto     stride = 4;
+//				const uint8_t* first  = static_cast <uint8_t*> (image .data ());
+//				const uint8_t* last   = first + imageTexture -> getWidth () * imageTexture -> getHeight () * stride;
+//
+//				while (first not_eq last)
+//					array .emplace_back (*first ++);
+//
+			break;
+		}
+		case 2:
+		{
+//				const auto      stride = 4;
+//				const uint32_t* first  = static_cast <uint32_t*> ((void*) image .data ());
+//				const uint32_t* last   = first + imageTexture -> getWidth () * imageTexture -> getHeight () * stride;
+//
+//				while (first not_eq last)
+//					array .emplace_back (*first ++ & 0x0000ffff);
+//
+			break;
+		}
+		case 3:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = components;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height - 1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					uint32_t point = 0;
+
+					point |= *p ++ << 16;
+					point |= *p ++ << 8;
+					point |= *p;
+
+					array .emplace_back (point);
+				}
+			}
+
+//			while (first not_eq last)
+//			{
+//				int32_t point = 0;
+//
+//				point |= *first ++ << 16;
+//				point |= *first ++ << 8;
+//				point |= *first ++;
+//		
+//				array .emplace_back (point);
+//			}
+
+			break;
+		}
+		case 4:
+		{
+//				const auto      stride = 4;
+//				const uint32_t* first  = static_cast <uint32_t*> ((void*) image .data ());
+//				const uint32_t* last   = first + imageTexture -> getWidth () * imageTexture -> getHeight () * stride;
+//
+//				while (first not_eq last)
+//					array .emplace_back (*first ++);
+//				
+			break;
+		}
+		default:
+			break;
+	}
+
+	pixelTexture -> image () .setValue (width, height, components, array);
 }
 
 } // puck

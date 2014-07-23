@@ -87,7 +87,6 @@ X3DTexture::refineImageFormats ()
 		{
 			if (not image .matte ())
 			{
-				image .colorSpace (Magick::GRAYColorspace);
 				image .magick ("GRAY");
 				format     = GL_LUMINANCE;
 				components = 1;
@@ -96,7 +95,6 @@ X3DTexture::refineImageFormats ()
 		}
 		case Magick::GrayscaleMatteType:
 		{
-			image .colorSpace (Magick::GRAYColorspace);
 			image .type (Magick::TrueColorMatteType);
 			image .magick ("RGBA");
 			format     = GL_RGBA;
@@ -107,7 +105,6 @@ X3DTexture::refineImageFormats ()
 		{
 			if (not image .matte ())
 			{
-				image .colorSpace (Magick::RGBColorspace);
 				image .magick ("RGB");
 				format     = GL_RGB;
 				components = 3;
@@ -116,7 +113,6 @@ X3DTexture::refineImageFormats ()
 		}
 		case Magick::TrueColorMatteType:
 		{
-			image .colorSpace (Magick::RGBColorspace);
 			image .magick ("RGBA");
 			format     = GL_RGBA;
 			components = 4;
@@ -162,7 +158,6 @@ X3DTexture::refineImageFormats ()
 
 	for (Magick::Image & next : basic::adapter (++ images -> begin (), images -> end ()))
 	{
-		next .colorSpace (image .colorSpace ());
 		next .type (image .type ());
 		next .magick (image .magick ());
 	}
