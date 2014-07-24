@@ -72,13 +72,13 @@ void
 X3DKeyDeviceSensorContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
 {
 	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> shutdown () .removeInterest (this, &X3DKeyDeviceSensorContext::setKeyDeviceSensorNode);
+		keyDeviceSensorNode -> disposed () .removeInterest (this, &X3DKeyDeviceSensorContext::setKeyDeviceSensorNode);
 
 	keyDeviceSensorNode         = value;
 	keyDeviceSensorNodeEvent () = getCurrentTime ();
 
 	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> shutdown () .addInterest (this, &X3DKeyDeviceSensorContext::setKeyDeviceSensorNode, nullptr);
+		keyDeviceSensorNode -> disposed () .addInterest (this, &X3DKeyDeviceSensorContext::setKeyDeviceSensorNode, nullptr);
 }
 
 } // X3D

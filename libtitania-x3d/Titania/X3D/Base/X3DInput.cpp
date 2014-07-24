@@ -56,15 +56,15 @@ namespace titania {
 namespace X3D {
 
 X3DInput::X3DInput () :
-	      X3DBase (),
-	deletedOutput ()
+	       X3DBase (),
+	disposedOutput ()
 { }
 
 void
 X3DInput::clear ()
 {
-	deletedOutput .processInterests ();
-	deletedOutput .dispose ();
+	disposedOutput .processInterests ();
+	disposedOutput .dispose ();
 }
 
 X3DInput::~X3DInput ()

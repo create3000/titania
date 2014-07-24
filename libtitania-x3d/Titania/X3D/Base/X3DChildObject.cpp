@@ -116,10 +116,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			return;
 
 		for (auto & child : circle)
-		{
-			//child -> referenceCount = 0;
 			child -> parents .clear ();
-		}
 
 		for (auto & child : circle)
 			child -> dispose ();

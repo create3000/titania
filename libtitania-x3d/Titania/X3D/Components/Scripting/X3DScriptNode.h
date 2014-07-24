@@ -72,7 +72,7 @@ public:
 
 	virtual
 	bool
-	hasUserDefinedFields () const final override
+	canUserDefinedFields () const final override
 	{ return true; }
 
 	///  @name Destruction

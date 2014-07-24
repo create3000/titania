@@ -183,12 +183,12 @@ public:
 		if (temp not_eq list)
 		{
 			for (auto & node : list)
-				node -> shutdown () .removeInterest (this, &X3DBindableNodeList::erase);
+				node -> disposed () .removeInterest (this, &X3DBindableNodeList::erase);
 
 			list = std::move (temp);
 
 			for (auto & node : list)
-				node -> shutdown () .addInterest (this, &X3DBindableNodeList::erase, node);
+				node -> disposed () .addInterest (this, &X3DBindableNodeList::erase, node);
 
 			*fields .bindTime = getCurrentTime ();
 		}

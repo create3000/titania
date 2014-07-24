@@ -129,7 +129,7 @@ X3DOutput::insertInput (const X3DInput* const input, const void* const memberFun
 
 	data -> inputs .emplace (input, memberFunction);
 
-	input -> deleted () .insertDeleter (this, input, memberFunction);
+	input -> X3DInput::disposed () .insertDeleter (this, input, memberFunction);
 }
 
 void
@@ -155,7 +155,7 @@ X3DOutput::eraseInterest (const void* const object, const void* const memberFunc
 void
 X3DOutput::eraseInput (const X3DInput* const input, void* const memberFunction) const
 {
-	input -> deleted () .removeDeleter (this, input, memberFunction);
+	input -> X3DInput::disposed () .removeDeleter (this, input, memberFunction);
 }
 
 void
@@ -214,7 +214,7 @@ X3DOutput::clear ()
 		std::unique_ptr <Data> temp = std::move (data);
 
 		for (const auto & input : temp -> inputs)
-			input .first -> deleted () .removeDeleter (this, input .first, input .second);
+			input .first -> X3DInput::disposed () .removeDeleter (this, input .first, input .second);
 	}
 }
 

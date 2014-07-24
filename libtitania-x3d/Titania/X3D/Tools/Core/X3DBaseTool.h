@@ -163,6 +163,11 @@ public:
 	{ return node -> shutdown (); }
 
 	virtual
+	const Output &
+	disposed () const final override
+	{ return node -> disposed (); }
+
+	virtual
 	void
 	dispose () override;
 

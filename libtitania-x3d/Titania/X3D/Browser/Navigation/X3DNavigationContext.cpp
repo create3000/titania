@@ -120,7 +120,7 @@ X3DNavigationContext::set_navigationInfo ()
 {
 	if (activeNavigationInfo)
 	{
-		activeNavigationInfo -> shutdown () .removeInterest (this, &X3DNavigationContext::remove_navigationInfo);
+		activeNavigationInfo -> disposed () .removeInterest (this, &X3DNavigationContext::remove_navigationInfo);
 		activeNavigationInfo -> type ()     .removeInterest (this, &X3DNavigationContext::set_navigationInfo_type);
 	}
 
@@ -129,7 +129,7 @@ X3DNavigationContext::set_navigationInfo ()
 
 	if (activeNavigationInfo)
 	{
-		activeNavigationInfo -> shutdown () .addInterest (this, &X3DNavigationContext::remove_navigationInfo);
+		activeNavigationInfo -> disposed () .addInterest (this, &X3DNavigationContext::remove_navigationInfo);
 		activeNavigationInfo -> type ()     .addInterest (this, &X3DNavigationContext::set_navigationInfo_type);
 	}
 

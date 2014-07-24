@@ -89,7 +89,7 @@ public:
 		if (value)
 		{
 			value -> addWeakParent (this);
-			value -> shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
+			value -> disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
 		}
 	}
 
@@ -238,7 +238,7 @@ private:
 	}
 
 	void
-	set_shutdown ();
+	set_disposed ();
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
@@ -274,7 +274,7 @@ X3DWeakPtr <ValueType>::addObject (ValueType* const value)
 		if (value)
 		{
 			value -> addWeakParent (this);
-			value -> shutdown () .addInterest (this, &X3DWeakPtr::set_shutdown);
+			value -> disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
 		}
 
 		removeObject (getValue ());
@@ -290,13 +290,13 @@ X3DWeakPtr <ValueType>::removeObject (ValueType* const value)
 		reset ();
 
 		value -> removeWeakParent (this);
-		value -> shutdown () .removeInterest (this, &X3DWeakPtr::set_shutdown);
+		value -> disposed () .removeInterest (this, &X3DWeakPtr::set_disposed);
 	}
 }
 
 template <class ValueType>
 void
-X3DWeakPtr <ValueType>::set_shutdown ()
+X3DWeakPtr <ValueType>::set_disposed ()
 {
 	reset ();
 	addEvent ();

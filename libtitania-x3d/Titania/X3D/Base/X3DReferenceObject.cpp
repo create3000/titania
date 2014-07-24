@@ -48,115 +48,58 @@
  *
  ******************************************************************************/
 
-#include "X3DBindableNode.h"
-
-#include "../../Browser/X3DBrowser.h"
-#include "../Layering/X3DLayerNode.h"
-
-#include <iostream>
+#include "X3DReferenceObject.h"
 
 namespace titania {
 namespace X3D {
 
-X3DBindableNode::Fields::Fields () :
-	set_bind (new SFBool ()),
-	 isBound (new SFBool ()),
-	bindTime (new SFTime ())
+X3DReferenceObject::X3DReferenceObject () :
+	X3DChildObject (),
+	referenceCount (0),
+	shutdownOutput ()
 { }
 
-X3DBindableNode::X3DBindableNode () :
-	X3DChildNode (),
-	      fields (),
-	      layers (),
-	        live (false),
-	    wasBound (false)
+//void
+//X3DReferenceObject::addParent (X3DChildObject* const parent)
+//{
+//	if (shutdown)
+//		return;
+//
+//	X3DChildObject::addParent (parent);
+//}
+
+//void
+//X3DReferenceObject::removeParent (X3DChildObject* const parent)
+//{
+//	if (shutdown)
+//		return;
+//
+//	X3DChildObject::removeParent (parent);
+//}
+
+void
+X3DReferenceObject::reference (X3DChildObject* const)
 {
-	addType (X3DConstants::X3DBindableNode);
+	++ referenceCount;
 }
 
 void
-X3DBindableNode::initialize ()
+X3DReferenceObject::unreference (X3DChildObject* const)
 {
-	X3DChildNode::initialize ();
+	-- referenceCount;
 
-	isLive () .addInterest (this, &X3DBindableNode::set_live);
-
-	set_live ();
-}
-
-void 
-X3DBindableNode::addLayer (X3DLayerNode* const layer)
-{
-	layers .emplace_back (layer);
-	
-	layer -> disposed () .addInterest (this, &X3DBindableNode::removeLayer, layer);
-}
-
-void 
-X3DBindableNode::removeLayer (X3DLayerNode* const layer)
-{
-	const auto iter = std::find (layers .begin (), layers .end (), layer);
-
-	if (iter not_eq layers .end ())
-		layers .erase (iter);
+	if (referenceCount == 0)
+		shutdownOutput .processInterests ();
 }
 
 void
-X3DBindableNode::set_live ()
+X3DReferenceObject::dispose ()
 {
-	if (isLive () == live)
-		return;
+	// shutdown = true;
+	// shutdownOutput .processInterests ();
+	shutdownOutput .dispose ();
 
-	live = isLive ();
-
-	if (live)
-	{
-		set_bind () .addInterest (this, &X3DBindableNode::set_bind_);
-
-		if (wasBound)
-		{
-			for (const auto & layer : layers)
-				bindToLayer (layer);
-		}
-	}
-	else
-	{
-		set_bind () .removeInterest (this, &X3DBindableNode::set_bind_);
-
-		wasBound = isBound ();
-
-		for (const auto & layer : layers)
-			removeFromLayer (layer);
-	}
-}
-
-void
-X3DBindableNode::set_bind_ ()
-{
-	if (set_bind ())
-	{
-		// Save layers
-
-		for (const auto & layer : layers)
-			layer -> disposed () .removeInterest (this, &X3DBindableNode::removeLayer);
-
-		layers = getLayers ();
-
-		for (const auto & layer : layers)
-			layer -> disposed () .addInterest (this, &X3DBindableNode::removeLayer, layer);
-
-		// Bind
-
-		for (const auto & layer : layers)
-			bindToLayer (layer);
-	}
-	else
-	{
-		// Unbind
-
-		for (const auto & layer : layers)
-			unbindFromLayer (layer);
-	}
+	X3DChildObject::dispose ();
 }
 
 } // X3D

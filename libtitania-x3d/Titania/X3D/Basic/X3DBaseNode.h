@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
 
 #include "../Base/Output.h"
-#include "../Base/X3DChildObject.h"
+#include "../Base/X3DReferenceObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
 #include "../Basic/X3DFieldDefinition.h"
@@ -77,15 +77,20 @@ typedef std::map <std::string, X3DFieldDefinition*> FieldIndex;
 class X3DBrowser;
 class X3DExecutionContext;
 
+/**
+ *  Class to represent an object that is the base for all nodes.
+ */
 class X3DBaseNode :
-	public X3DChildObject
+	public X3DReferenceObject
 {
 public:
 
-	using X3DChildObject::addInterest;
-	using X3DChildObject::removeInterest;
+	using X3DReferenceObject::addInterest;
+	using X3DReferenceObject::removeInterest;
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	///  Initializes this node.
 	virtual
@@ -123,15 +128,9 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	///  @name Reference handling
-
-	///  Returns the reference count of this object. Weak references are not counted.
-	virtual
-	size_t
-	getReferenceCount () const final override
-	{ return referenceCount; }
-
-	///  @name Commons members
+	/***
+	 *  @name Commons members
+	 */
 
 	///  Returns the current browser time for this frame.
 	time_type
@@ -188,12 +187,20 @@ public:
 	throw (Error <DISPOSED>)
 	{ return this; }
 
-	///  @name Field handling
+	/***
+	 *  @name Field handling
+	 */
 
 	///  Checks if a field with @a name exists for this node.
 	bool
 	hasField (const std::string &) const
 	throw (Error <DISPOSED>);
+
+	bool
+	isDefaultValue (const X3DFieldDefinition* const) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  Sets the value of the field with @a name.  If the third parameter is true, an event is only generated if the old value is not the new value.
 	template <class FieldType, class ValueType>
@@ -249,24 +256,11 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  Return all field definition for this node, that is all predefined field and user defined fields.
-	const FieldDefinitionArray &
-	getFieldDefinitions () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return fieldDefinitions; }
-
-	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
+	///  Returns whether this node can have user defined fields.
 	virtual
-	MFString*
-	getCDATA ()
-	{ return nullptr; }
-
-	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
-	virtual
-	const MFString*
-	getCDATA () const
-	{ return nullptr; }
+	bool
+	canUserDefinedFields () const
+	{ return false; }
 
 	virtual
 	void
@@ -293,18 +287,28 @@ public:
 	FieldDefinitionArray
 	getUserDefinedFields () const;
 
+	///  Return all field definition for this node, that is all predefined field and user defined fields.
+	const FieldDefinitionArray &
+	getFieldDefinitions () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return fieldDefinitions; }
+
+	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
-	bool
-	hasUserDefinedFields () const
-	{ return false; }
+	MFString*
+	getCDATA ()
+	{ return nullptr; }
 
-	bool
-	isDefaultValue (const X3DFieldDefinition* const) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
+	virtual
+	const MFString*
+	getCDATA () const
+	{ return nullptr; }
 
-	///  @name Special functions
+	/***
+	 *  @name Special functions
+	 */
 
 	size_t
 	isCloned () const;
@@ -314,6 +318,33 @@ public:
 
 	bool
 	hasRoutes () const;
+
+	virtual
+	bool
+	isInternal () const
+	{ return internal; }
+
+	virtual
+	void
+	isInternal (const bool);
+
+	/***
+	 *  @name Tool handling
+	 */
+
+	virtual
+	void
+	addTool ()
+	{ }
+
+	virtual
+	void
+	removeTool (const bool = false)
+	{ }
+
+	/***
+	 *  @name Event handling
+	 */
 
 	virtual
 	SFBool &
@@ -326,27 +357,35 @@ public:
 	{ return live; }
 
 	virtual
-	bool
-	isInternal () const
-	{ return internal; }
+	void
+	beginUpdate ()
+	throw (Error <DISPOSED>);
 
 	virtual
 	void
-	isInternal (const bool);
-
-	///  @name Tool handling
-
-	virtual
-	void
-	addTool ()
-	{ }
+	endUpdate ()
+	throw (Error <DISPOSED>);
 
 	virtual
 	void
-	removeTool (const bool = false)
-	{ }
+	addEvent (X3DChildObject* const) override;
 
-	///  @name Event handling
+	virtual
+	void
+	addEvent (X3DChildObject* const, const EventPtr &) override;
+
+	virtual
+	void
+	addEvent () override;
+
+	///  This function is call by the router when all events are processed.  You normally do not need to call this
+	///  function directly.
+	void
+	eventsProcessed ();
+
+	/***
+	 *  @name Interest service
+	 */
 
 	void
 	addInterest (X3DBaseNode* const object) const
@@ -376,41 +415,18 @@ public:
 	removeInterest (X3DField <ValueType> & object) const
 	{ removeInterest (&object); }
 
-	///  @name Event handling
-
-	virtual
-	void
-	beginUpdate ()
-	throw (Error <DISPOSED>);
-
-	virtual
-	void
-	endUpdate ()
-	throw (Error <DISPOSED>);
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) override;
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) override;
-
-	virtual
-	void
-	addEvent () override;
-
-	void
-	eventsProcessed ();
-
-	///  @name Traversal handling
+	/***
+	 *  @name Traversal handling
+	 */
 
 	virtual
 	void
 	traverse (const TraverseType)
 	{ }
 
-	///  @name Comment handling
+	/***
+	 *  @name Comment handling
+	 */
 
 	void
 	addInnerComments (const std::vector <std::string> & value)
@@ -420,8 +436,11 @@ public:
 	getInnerComments () const
 	{ return comments; }
 
-	///  @name Input/Output
+	/***
+	 *  @name Input/Output
+	 */
 
+	///  NOT_SUPPORTED
 	virtual
 	void
 	fromStream (std::istream &)
@@ -430,36 +449,48 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
+	///  Inserts this object into @a ostream in VRML Classic Encoding.
 	virtual
 	void
 	toStream (std::ostream &) const override;
 
+	///  Inserts this object into @a ostream in X3D XML Encoding.
 	virtual
 	void
 	toXMLStream (std::ostream &) const override;
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 */
 
-	virtual
-	const Output &
-	shutdown () const
-	{ return shutdownOutput; }
-
+	///  Disposes this node.  You normally do not need to call this function directly.
 	virtual
 	void
 	dispose () override;
 
+	///  Destructs this node.
 	virtual
 	~X3DBaseNode ();
 
 
 protected:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
+	///  Constructs new X3DBaseNode.
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
 
-	///  @name Reference handling
+	///  Initializes this node.
+	virtual
+	void
+	initialize ()
+	{ }
+
+	/***
+	 *  @name Reference handling
+	 */
 
 	///  Increment the reference count for this node.
 	virtual
@@ -471,12 +502,16 @@ protected:
 	void
 	unreference (X3DChildObject* const) final override;
 
-	///  @name Misc
+	/***
+	 *  @name Misc
+	 */
 
+	///  Adds @a value to the type of this node.
 	void
 	addType (const X3DConstants::NodeType value)
 	{ type .emplace_back (value); }
 
+	///  Adds @a field to the set of fields of this node.
 	void
 	addField (const AccessType, const std::string &, X3DFieldDefinition &)
 	throw (Error <INVALID_NAME>,
@@ -507,11 +542,6 @@ protected:
 	getExtendedEventHandling () const
 	{ return extendedEventHandling; }
 
-	virtual
-	void
-	initialize ()
-	{ }
-
 	void
 	addTool (X3DBaseNode* const);
 
@@ -525,7 +555,9 @@ private:
 
 	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>  >;
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const
@@ -537,7 +569,9 @@ private:
 	throw (Error <INVALID_NAME>,
 		    Error <NOT_SUPPORTED>);
 
-	///  @name Misc
+	/***
+	 *  @name Misc
+	 */
 
 	void
 	replace (X3DBaseNode* const);
@@ -558,7 +592,9 @@ private:
 	void
 	removeEvents ();
 
-	///  @name Input/Output
+	/***
+	 *  @name Input/Output
+	 */
 
 	void
 	toStreamUserDefinedField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
@@ -566,9 +602,10 @@ private:
 	void
 	toStreamField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
-	///  @name Members
+	/***
+	 *  @name Members
+	 */
 
-	size_t                     referenceCount;   // This nodes referenceCount
 	X3DBrowser* const          browser;          // This nodes Browser
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
@@ -588,9 +625,8 @@ private:
 
 	std::vector <std::string> comments;          // This nodes comments
 
-	SFBool live;
 	bool   initialized;
-	Output shutdownOutput;                       // Shutdown service
+	SFBool live;
 
 };
 

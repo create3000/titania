@@ -57,40 +57,70 @@
 namespace titania {
 namespace X3D {
 
+/***
+ *  @name Class to repesent a input object.  
+ */
 class X3DInput :
 	virtual public X3DBase
 {
 public:
 
+	/***
+	 *  @name Destruction
+	 */
+
+	///  Returns if this object is an input otherwise false.
 	virtual
 	bool
 	isInput () const
 	{ return true; }
 
-	const Output &
-	deleted () const
-	{ return deletedOutput; }
+	/***
+	 *  @name Destruction
+	 */
 
+	///  This service is processed when the node is disposed.  You must release all references to this node now.
+	///  Further access of this node will cause a Segmentation Fault!  X3DWeakPtr's release their reference now.
+	virtual
+	const Output &
+	disposed () const
+	{ return disposedOutput; }
+
+	///  Disposed this object.  You normally do not need to call this function directly.
 	virtual
 	void
 	dispose ()
 	{ clear (); }
 
+	///  Destructs this object.
 	virtual
 	~X3DInput ();
 
 
 protected:
 
+	/***
+	 *  @name Construction
+	 */
+
+	///  Constructs new X3DInput.
 	X3DInput ();
 
 
 private:
 
+	/***
+	 *  @name Operations
+	 */
+
 	void
 	clear ();
 
-	Output deletedOutput;
+	/***
+	 *  @name Members
+	 */
+
+	Output disposedOutput;
 
 };
 

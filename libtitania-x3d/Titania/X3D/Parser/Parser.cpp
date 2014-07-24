@@ -1364,7 +1364,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 		{
 			_baseNode -> addComments (getComments ());
 
-			if (_baseNode -> hasUserDefinedFields ())
+			if (_baseNode -> canUserDefinedFields ())
 				scriptBody (_baseNode);
 
 			else

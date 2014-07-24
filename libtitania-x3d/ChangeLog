@@ -1,3 +1,30 @@
+2014-07-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DInput.h:
+	* X3DObject.h:
+	* X3DInput.cpp:
+	* Parser.cpp:
+	* X3DOutput.cpp:
+	* X3DBaseNode.h:
+	* X3DWeakPtr.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* X3DBaseTool.h:
+	* X3DReferenceObject.h:
+	* X3DReferenceObject.cpp:
+	* BindableNodeList.h:
+	* BindableNodeStack.h:
+	* X3DExecutionContext.cpp:
+	* X3DBindableNode.cpp:
+	* X3DScriptNode.h:
+	* X3DNavigationContext.cpp:
+	* X3DProgrammableShaderObject.h:
+	* jsX3DExecutionContext.cpp:
+	* X3DKeyDeviceSensorContext.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2014-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp:

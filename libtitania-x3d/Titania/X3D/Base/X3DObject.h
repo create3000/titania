@@ -182,7 +182,7 @@ public:
 
 	///  @name Destruction
 
-	///  Disposed this object.  It is normally not need to call this function directly.
+	///  Disposed this object.  You normally do not need to call this function directly.
 	virtual
 	void
 	dispose () override;

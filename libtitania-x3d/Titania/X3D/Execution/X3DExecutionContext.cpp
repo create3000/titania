@@ -412,7 +412,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	if (not inlineNode)
-		throw Error <INVALID_NODE> ("Couldn't update imported node: inline node is NULL.");
+		throw Error <INVALID_NODE> ("Couldn't update imported node: Inline node is NULL.");
 
 	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
 
@@ -439,7 +439,7 @@ throw (Error <INVALID_NODE>,
 
 	const auto exportedNode = importedNode -> getExportedNode ();
 
-	importedNode -> shutdown () .addInterest (this,
+	importedNode -> disposed () .addInterest (this,
 	                                          &X3DExecutionContext::removeImportedName,
 	                                          importedNames .emplace (exportedNode -> getId (), importedName));
 
@@ -519,20 +519,18 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (node)
-	{
-		if (node -> getExecutionContext () == this)
-			return node -> getName ();
+	if (not node)
+		throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
+	
+	if (node -> getExecutionContext () == this)
+		return node -> getName ();
 
-		auto equalRange = importedNames .equal_range (node -> getId ());
+	auto equalRange = importedNames .equal_range (node -> getId ());
 
-		if (equalRange .first not_eq equalRange .second)
-			return (-- equalRange .second) -> second;
+	if (equalRange .first not_eq equalRange .second)
+		return (-- equalRange .second) -> second;
 
-		throw Error <INVALID_NODE> ("Couldn't get local name: node is shared.");
-	}
-
-	throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
+	throw Error <INVALID_NODE> ("Couldn't get local name: node is shared.");
 }
 
 bool
@@ -1194,16 +1192,14 @@ throw (Error <INVALID_NAME>,
 		const auto namedNode = getNamedNode (name);
 		const auto viewpoint = x3d_cast <X3DViewpointNode*> (namedNode);
 
-		if (viewpoint)
-		{
-			if (viewpoint -> isBound ())
-				viewpoint -> transitionStart (viewpoint);
-
-			else
-				viewpoint -> set_bind () = true;
-		}
-		else
+		if (not viewpoint)
 			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");
+
+		if (viewpoint -> isBound ())
+			viewpoint -> transitionStart (viewpoint);
+
+		else
+			viewpoint -> set_bind () = true;
 	}
 	catch (const X3DError & error)
 	{

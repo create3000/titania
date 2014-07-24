@@ -219,34 +219,42 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
-class I
+class A
 {
 public:
 
-	I ()
+	A ()
 	{ }
 
 	virtual
 	void
 	a ()
-	{
-		__LOG__ << "a" << std::endl;
-	}
+	{ __LOG__ << std::endl; }
 
 };
 
-class A :
-	virtual public I
+class B :
+	public A
 {
 public:
 
-	A () :
-		I ()
+	B ()
+	{ }
+
+};
+
+class C :
+	public B
+{
+public:
+
+	C ()
 	{ }
 
 	virtual
 	void
-	a () = 0;
+	a ()
+	{ __LOG__ << std::endl; }
 
 };
 
@@ -265,9 +273,7 @@ main (int argc, char** argv)
 
 	std::clog .imbue (std::locale (""));
 	
-	
-	std::clog << sizeof (bool) << std::endl;
-	std::clog << sizeof (uint8_t) << std::endl;
+	C () .B::a ();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

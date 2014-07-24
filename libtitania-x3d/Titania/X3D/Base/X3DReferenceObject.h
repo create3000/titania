@@ -48,116 +48,89 @@
  *
  ******************************************************************************/
 
-#include "X3DBindableNode.h"
+#ifndef __TITANIA_X3D_BASE_X3DREFERENCE_OBJECT_H__
+#define __TITANIA_X3D_BASE_X3DREFERENCE_OBJECT_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "../Layering/X3DLayerNode.h"
-
-#include <iostream>
+#include "../Base/X3DChildObject.h"
 
 namespace titania {
 namespace X3D {
 
-X3DBindableNode::Fields::Fields () :
-	set_bind (new SFBool ()),
-	 isBound (new SFBool ()),
-	bindTime (new SFTime ())
-{ }
-
-X3DBindableNode::X3DBindableNode () :
-	X3DChildNode (),
-	      fields (),
-	      layers (),
-	        live (false),
-	    wasBound (false)
+/***
+ *  Class to represent an object that handles reference counting.  X3DReferenceObjects can be a child of X3DWeakPtr.
+ */
+class X3DReferenceObject :
+	public X3DChildObject
 {
-	addType (X3DConstants::X3DBindableNode);
-}
+public:
 
-void
-X3DBindableNode::initialize ()
-{
-	X3DChildNode::initialize ();
+	/***
+	 *  @name Reference handling
+	 */
 
-	isLive () .addInterest (this, &X3DBindableNode::set_live);
+	///  Returns the reference count of this object.  Weak references are not counted.
+	virtual
+	size_t
+	getReferenceCount () const final override
+	{ return referenceCount; }
 
-	set_live ();
-}
+	/***
+	 *  @name Shutdown handling
+	 */
 
-void 
-X3DBindableNode::addLayer (X3DLayerNode* const layer)
-{
-	layers .emplace_back (layer);
-	
-	layer -> disposed () .addInterest (this, &X3DBindableNode::removeLayer, layer);
-}
+	///  The shutdown service is processed when the reference count becomes 0.  This can happen multiple times as you
+	///  have here the last chance to to reference the object again but you should release all references now.
+	virtual
+	const Output &
+	shutdown () const
+	{ return shutdownOutput; }
 
-void 
-X3DBindableNode::removeLayer (X3DLayerNode* const layer)
-{
-	const auto iter = std::find (layers .begin (), layers .end (), layer);
+	/***
+	 *  @name Destruction
+	 */
 
-	if (iter not_eq layers .end ())
-		layers .erase (iter);
-}
+	///  Disposes this object.  You normally do not need to call this function directly.
+	virtual
+	void
+	dispose () override;
 
-void
-X3DBindableNode::set_live ()
-{
-	if (isLive () == live)
-		return;
 
-	live = isLive ();
+protected:
 
-	if (live)
-	{
-		set_bind () .addInterest (this, &X3DBindableNode::set_bind_);
+	/***
+	 *  @name Construction
+	 */
 
-		if (wasBound)
-		{
-			for (const auto & layer : layers)
-				bindToLayer (layer);
-		}
-	}
-	else
-	{
-		set_bind () .removeInterest (this, &X3DBindableNode::set_bind_);
+	///  Constructs new X3DReferenceObject.
+	X3DReferenceObject ();
 
-		wasBound = isBound ();
+	/***
+	 *  @name Reference handling
+	 */
 
-		for (const auto & layer : layers)
-			removeFromLayer (layer);
-	}
-}
+	///  Increment the reference count for this object.
+	virtual
+	void
+	reference (X3DChildObject* const) override;
 
-void
-X3DBindableNode::set_bind_ ()
-{
-	if (set_bind ())
-	{
-		// Save layers
+	///  Decrement the reference count for this object.
+	virtual
+	void
+	unreference (X3DChildObject* const) override;
 
-		for (const auto & layer : layers)
-			layer -> disposed () .removeInterest (this, &X3DBindableNode::removeLayer);
 
-		layers = getLayers ();
+private:
 
-		for (const auto & layer : layers)
-			layer -> disposed () .addInterest (this, &X3DBindableNode::removeLayer, layer);
+	/***
+	 *  @name Members
+	 */
 
-		// Bind
+	size_t referenceCount;
+	Output shutdownOutput;
 
-		for (const auto & layer : layers)
-			bindToLayer (layer);
-	}
-	else
-	{
-		// Unbind
-
-		for (const auto & layer : layers)
-			unbindFromLayer (layer);
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

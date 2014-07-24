@@ -125,9 +125,9 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	 * User defined fields
 	 **/
 
-	getUserDefinedFieldsExpander () .set_visible (node -> hasUserDefinedFields ());
+	getUserDefinedFieldsExpander () .set_visible (node -> canUserDefinedFields ());
 
-	if (node -> hasUserDefinedFields ())
+	if (node -> canUserDefinedFields ())
 	{
 		getUserDefinedFieldsTreeView () .set_model (userDefinedFieldsListStore);
 
@@ -1080,7 +1080,7 @@ NodePropertiesEditor::on_apply ()
 
 		// Apply user defined fields change.
 
-		if (node -> hasUserDefinedFields ())
+		if (node -> canUserDefinedFields ())
 		{
 			if (node -> getUserDefinedFields () not_eq userDefinedFields)
 			{

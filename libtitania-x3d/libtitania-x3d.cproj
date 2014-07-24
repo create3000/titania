@@ -755,6 +755,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\LessExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\EqualExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ForStatement.h" />
+    <None Include="Titania\X3D\Base\X3DReferenceObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1273,6 +1274,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsString.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsValue.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\Block.cpp" />
+    <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
