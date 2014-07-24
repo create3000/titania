@@ -1,5 +1,22 @@
 2014-07-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DInput.h:
+	* X3DPtr.h:
+	* Console.h:
+	* Console.cpp:
+	* X3DBrowser.h:
+	* X3DChildObject.h:
+	* X3DChildObject.cpp:
+	* X3DReferenceObject.h:
+	* X3DReferenceObject.cpp:
+	* X3DJavaScriptContext.h:
+	* jsContext.h:
+	* X3DJavaScriptContext.cpp:
+	* jsBrowser.cpp:
+	* jsContext.cpp: 
+
+2014-07-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DInput.h:

@@ -1,0 +1,50 @@
+#X3D V3.3 utf8 Titania V0.7.1
+
+META "comment" "World of Titania"
+META "created" "Thu, 24 Jul 2014 13:30:48 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.1, http://titania.create3000.de"
+META "modified" "Thu, 24 Jul 2014 13:30:48 GMT"
+
+DEF Touch TouchSensor { }
+
+DEF Shape Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Debug Script {
+  inputOnly SFTime set_time
+  initializeOnly SFNode self USE Debug
+  initializeOnly SFNode reference NULL
+  initializeOnly SFNode node USE Shape
+  initializeOnly MFInt32 array [1 2, 3]
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	print ('+ set_time +++++++++++++++++++++++++++++++++++++++++++++');
+	
+	Browser .currentScene .rootNodes .length = 0;
+}
+
+function shutdown ()
+{
+	print ('+ shutdown +++++++++++++++++++++++++++++++++++++++++++++');	
+
+	reference = self;
+	node .appearance = self;
+
+	print (node);	
+	print (array);	
+
+	var scene = Browser .createX3DFromURL (new MFString ('http://titania.create3000.de/Library/Examples/hello_world.wrl'));
+	Browser .replaceWorld (scene);
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

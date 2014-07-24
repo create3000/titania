@@ -65,6 +65,35 @@ class X3DReferenceObject :
 public:
 
 	/***
+	 *  @name Parent handling
+	 */
+
+	///  Add a parent to this object.
+	virtual
+	void
+	addParent (X3DChildObject* const) final override;
+
+	///  Fast replaces @a parentToRemove with @a parentToAdd.
+	virtual
+	void
+	replaceParent (X3DChildObject* const, X3DChildObject* const) final override;
+
+	///  Remove a parent from this object.
+	virtual
+	void
+	removeParent (X3DChildObject* const) final override;
+
+	///  Add a parent to this object.
+	virtual
+	void
+	addWeakParent (X3DChildObject* const) final override;
+
+	///  Remove a parent from this object.
+	virtual
+	void
+	removeWeakParent (X3DChildObject* const) final override;
+
+	/***
 	 *  @name Reference handling
 	 */
 
@@ -78,8 +107,8 @@ public:
 	 *  @name Shutdown handling
 	 */
 
-	///  The shutdown service is processed when the reference count becomes 0.  This can happen multiple times as you
-	///  have here the last chance to to reference the object again but you should release all references now.
+	///  The shutdown service is processed before the object is disposed.  You must release all references to this object
+	///  now.  Further access of this object will cause a Segmentation Fault!
 	virtual
 	const Output &
 	shutdown () const
@@ -118,6 +147,16 @@ protected:
 	void
 	unreference (X3DChildObject* const) override;
 
+	///  Sets the reference count for this object to 0.
+	virtual
+	void
+	unreference () override;
+
+	///  Processes all interest of shutdown. 
+	virtual
+	void
+	processShutdown () final override;
+
 
 private:
 
@@ -126,6 +165,7 @@ private:
 	 */
 
 	size_t referenceCount;
+	bool   inShutdown;
 	Output shutdownOutput;
 
 };

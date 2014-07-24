@@ -99,10 +99,10 @@ void
 Console::set_enabled ()
 {
 	if (enabled and mapped)
-		getBrowser () -> getConsole () -> string () .addInterest (this, &Console::set_string);
+		getBrowser () -> getConsole () -> getString () .addInterest (this, &Console::set_string);
 
 	else
-		getBrowser () -> getConsole () -> string () .removeInterest (this, &Console::set_string);
+		getBrowser () -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
 }
 
 void
@@ -110,7 +110,7 @@ Console::set_string ()
 {
 	// Insert.
 
-	for (const auto & string : getBrowser () -> getConsole () -> string ())
+	for (const auto & string : getBrowser () -> getConsole () -> getString ())
 		getTextBuffer () -> insert (getTextBuffer () -> end (), string .getValue ());
 
 	// Erase.

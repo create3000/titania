@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_CONTEXT_H__
 
 #include "../Basic/X3DBaseNode.h"
+#include "../Fields.h"
 
 namespace titania {
 namespace X3D {
@@ -73,7 +74,7 @@ public:
 	const SFBool &
 	isLive () const final override;
 
-	Script*
+	const X3DPtr <Script> &
 	getScriptNode () const
 	{ return script; }
 
@@ -113,8 +114,8 @@ private:
 
 	///  @name Members
 
-	Script* const     script;
-	const std::string ecmascript;
+	const X3DPtr <Script> script;
+	const std::string     ecmascript;
 };
 
 } // X3D

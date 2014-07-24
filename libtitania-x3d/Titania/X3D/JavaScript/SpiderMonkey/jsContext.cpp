@@ -483,6 +483,9 @@ jsContext::setEventHandler ()
 	eventsProcessedFn = getFunction ("eventsProcessed");
 	shutdownFn        = getFunction ("shutdown");
 
+	if (not JSVAL_IS_VOID (shutdownFn))
+		shutdown () .addInterest (this, &jsContext::set_shutdown);
+
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
@@ -593,18 +596,15 @@ jsContext::eventsProcessed ()
 }
 
 void
-jsContext::finish ()
+jsContext::set_shutdown ()
 {
-	JS_GC (context .get ());
+	callFunction (shutdownFn);
 }
 
 void
-jsContext::shutdown ()
+jsContext::finish ()
 {
-	// It is not clear what to do here.
-
-	//if (not JSVAL_IS_VOID (shutdownFn))
-	//	callFunction (shutdownFn);
+	JS_GC (context .get ());
 }
 
 jsval
@@ -682,8 +682,6 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 void
 jsContext::dispose ()
 {
-	shutdown ();
-
 	if (future)
 		future -> dispose ();
 

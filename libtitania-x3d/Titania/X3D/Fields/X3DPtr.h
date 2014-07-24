@@ -1012,7 +1012,10 @@ private:
 	addObject (ValueType* const value)
 	{
 		if (value)
+		{
 			value -> addParent (this);
+			value -> disposed () .addInterest (this, &X3DPtr::set_disposed);
+		}
 	}
 
 	void
@@ -1023,6 +1026,7 @@ private:
 		if (getValue ())
 		{
 			field .get () -> replaceParent (&field, this);
+			field .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
 			field .setObject (nullptr);
 			field .addEvent ();
 		}
@@ -1037,6 +1041,7 @@ private:
 		if (getValue ())
 		{
 			field .get () -> replaceParent (&field, this);
+			field .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
 			field .setObject (nullptr);
 			field .addEvent ();
 		}
@@ -1052,6 +1057,7 @@ private:
 			setObject (nullptr);
 
 			value -> removeParent (this);
+			value -> disposed () .removeInterest (this, &X3DPtr::set_disposed);
 		}
 	}
 
@@ -1063,6 +1069,10 @@ private:
 	X3DChildObject*
 	getObject () const final override
 	{ return getValue (); }
+	
+	void
+	set_disposed ()
+	{ setObject (nullptr); }
 
 	///  @name Static members
 

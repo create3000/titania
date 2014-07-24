@@ -60,12 +60,14 @@
 namespace titania {
 namespace X3D {
 
-X3DJavaScriptContext::X3DJavaScriptContext (Script* const script, const std::string & ecmascript) :
+X3DJavaScriptContext::X3DJavaScriptContext (Script* const script_, const std::string & ecmascript) :
 	X3DBaseNode (),
-	     script (script),
+	     script (script_),
 	 ecmascript (ecmascript)
 {
 	addType (X3DConstants::X3DJavaScriptContext);
+
+	addChildren (const_cast <X3DPtr <Script> &> (script));
 }
 
 SFBool &
@@ -91,7 +93,7 @@ X3DJavaScriptContext::error (const std::string & message, const std::string & fi
 
 		if (not ecmascript .empty ())
 		{
-			char nl = ecmascript .find ('\n', 0) == std::string::npos ? '\r' : '\n';
+			const char nl = (ecmascript .find ('\n', 0) == std::string::npos ? '\r' : '\n');
 
 			std::string::size_type start = 0;
 			std::string::size_type end   = 0;

@@ -56,26 +56,55 @@ namespace X3D {
 X3DReferenceObject::X3DReferenceObject () :
 	X3DChildObject (),
 	referenceCount (0),
+	    inShutdown (false),
 	shutdownOutput ()
 { }
 
-//void
-//X3DReferenceObject::addParent (X3DChildObject* const parent)
-//{
-//	if (shutdown)
-//		return;
-//
-//	X3DChildObject::addParent (parent);
-//}
+void
+X3DReferenceObject::addParent (X3DChildObject* const parent)
+{
+	if (inShutdown)
+		return;
 
-//void
-//X3DReferenceObject::removeParent (X3DChildObject* const parent)
-//{
-//	if (shutdown)
-//		return;
-//
-//	X3DChildObject::removeParent (parent);
-//}
+	X3DChildObject::addParent (parent);
+}
+
+void
+X3DReferenceObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObject* const parentToAdd)
+{
+	if (inShutdown)
+		return;
+
+	X3DChildObject::replaceParent (parentToRemove, parentToAdd);
+}
+
+
+void
+X3DReferenceObject::removeParent (X3DChildObject* const parent)
+{
+	if (inShutdown)
+		return;
+
+	X3DChildObject::removeParent (parent);
+}
+
+void
+X3DReferenceObject::addWeakParent (X3DChildObject* const parent)
+{
+	if (inShutdown)
+		return;
+
+	X3DChildObject::addWeakParent (parent);
+}
+
+void
+X3DReferenceObject::removeWeakParent (X3DChildObject* const parent)
+{
+	if (inShutdown)
+		return;
+
+	X3DChildObject::removeWeakParent (parent);
+}
 
 void
 X3DReferenceObject::reference (X3DChildObject* const)
@@ -88,15 +117,28 @@ X3DReferenceObject::unreference (X3DChildObject* const)
 {
 	-- referenceCount;
 
-	if (referenceCount == 0)
-		shutdownOutput .processInterests ();
+	if (referenceCount)
+		return;
+
+	inShutdown = true;
+}
+
+void
+X3DReferenceObject::unreference ()
+{
+	referenceCount = 0;
+	inShutdown     = true;
+}
+
+void
+X3DReferenceObject::processShutdown ()
+{
+	shutdownOutput .processInterests ();
 }
 
 void
 X3DReferenceObject::dispose ()
 {
-	// shutdown = true;
-	// shutdownOutput .processInterests ();
 	shutdownOutput .dispose ();
 
 	X3DChildObject::dispose ();

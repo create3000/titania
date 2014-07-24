@@ -66,29 +66,36 @@ class X3DChildObject :
 {
 public:
 
-	///  @name Parent handling
+	/***
+	 *  @name Parent handling
+	 */
 
 	///  Add a parent to this object.
+	virtual
 	void
 	addParent (X3DChildObject* const);
 
 	///  Fast replaces @a parentToRemove with @a parentToAdd.
+	virtual
 	void
 	replaceParent (X3DChildObject* const, X3DChildObject* const);
 
 	///  Remove a parent from this object.
+	virtual
 	void
 	removeParent (X3DChildObject* const);
 
 	///  Add a parent to this object.
+	virtual
 	void
 	addWeakParent (X3DChildObject* const);
 
 	///  Remove a parent from this object.
+	virtual
 	void
 	removeWeakParent (X3DChildObject* const);
 
-	///  Get all parents of this object.
+	///  Returns a set of all parents of this object.
 	const ChildObjectSet &
 	getParents () const
 	{ return parents; }
@@ -104,7 +111,9 @@ public:
 	getReferenceCount () const
 	{ return parents .size (); }
 
-	///  @name Event Handling
+	/***
+	 *  @name Event Handling
+	 */
 
 	///  Sets the tainted state.  See isTainted ().
 	void
@@ -133,7 +142,9 @@ public:
 	processEvent (const EventPtr &)
 	{ }
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 */
 
 	virtual
 	void
@@ -145,11 +156,16 @@ public:
 
 protected:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
+	///  Constructs new X3DChildObject.
 	X3DChildObject ();
 
-	///  @name Reference handling
+	/***
+	 *  @name Reference handling
+	 */
 	
 	virtual
 	void
@@ -161,7 +177,14 @@ protected:
 	unreference (X3DChildObject* const)
 	{ }
 
-	///  @name Children handling
+	virtual
+	void
+	unreference ()
+	{ }
+
+	/***
+	 *  @name Children handling
+	 */
 
 	template <typename ... Args>
 	void
@@ -183,7 +206,9 @@ protected:
 	removeChild (X3DChildObject & child)
 	{ child .removeParent (this); }
 
-	///  @name Event handling
+	/***
+	 *  @name Event handling
+	 */
 
 	virtual
 	void
@@ -194,10 +219,21 @@ protected:
 	void
 	addEvent (X3DChildObject* const, const EventPtr &);
 
+	/***
+	 *  @name Destruction
+	 */
+
+	virtual
+	void
+	processShutdown ()
+	{ }
+
 
 private:
 
-	///  @name Members
+	/***
+	 *  @name Members
+	 */
 
 	ChildObjectSet  parents;
 	X3DChildObject* root;

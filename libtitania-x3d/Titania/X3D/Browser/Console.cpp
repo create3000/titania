@@ -60,17 +60,15 @@ const std::string Console::componentName  = "Browser";
 const std::string Console::typeName       = "Console";
 const std::string Console::containerField = "console";
 
-Console::Fields::Fields () :
-	string (new MFString ())
-{ }
-
 Console::Console (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     fields ()
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    set_string (),
+	        string (),
+	string_changed ()
 {
 	addType (X3DConstants::Console);
 
-	addField (inputOnly, "string", string ());
+	addChildren (set_string, string_changed);
 }
 
 X3DBaseNode*
@@ -84,16 +82,33 @@ Console::initialize ()
 {
 	X3DBaseNode::initialize ();
 
+	set_string .addInterest (this, &Console::set_string_);
+
 	addInterest (this, &Console::eventsProcessed);
+}
+
+void
+Console::set_string_ ()
+{
+	set_string .isTainted (true);
+
+	for (auto & value : set_string)
+		string .emplace_back (std::move (value));
+
+	set_string .clear ();
+	set_string .isTainted (false);
 }
 
 void
 Console::eventsProcessed ()
 {
-	for (const auto & value : string ())
+	for (const auto & value : string)
 		std::clog << value .str ();
 
-	string () .set ({ });
+	if (not string .empty ())
+		string_changed = std::move (string);
+		
+	
 }
 
 } // X3D

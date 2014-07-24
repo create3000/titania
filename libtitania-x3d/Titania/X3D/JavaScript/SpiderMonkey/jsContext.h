@@ -197,10 +197,10 @@ private:
 	eventsProcessed ();
 
 	void
-	finish ();
+	set_shutdown ();
 
 	void
-	shutdown ();
+	finish ();
 
 	jsval
 	getFunction (const std::string &) const;

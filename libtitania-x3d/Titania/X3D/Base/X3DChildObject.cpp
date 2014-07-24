@@ -81,10 +81,10 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 
 	if (parents .erase (parentToRemove))
 	{
-		unreference (parentToRemove);
-
 		if (parents .emplace (parentToAdd) .second)
 			reference (parentToAdd);
+		
+		unreference (parentToRemove);
 	}
 	else
 		addParent (parentToAdd);
@@ -104,6 +104,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		{
 			parents .clear ();
 
+			processShutdown ();
 			dispose ();
 
 			addDisposedObject (this);
@@ -116,7 +117,13 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			return;
 
 		for (auto & child : circle)
+		{
+			child -> unreference ();
 			child -> parents .clear ();
+		}
+
+		for (auto & child : circle)
+			child -> processShutdown ();
 
 		for (auto & child : circle)
 			child -> dispose ();

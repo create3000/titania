@@ -372,7 +372,7 @@ throw (Error <DISPOSED>)
 
 	print (ostream, std::forward <Args> (args) ...);
 
-	getConsole () -> string () .emplace_back (ostream .str ());
+	getConsole () -> addString (ostream .str ());
 }
 
 template <typename First, typename ... Args>

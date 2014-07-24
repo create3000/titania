@@ -90,13 +90,14 @@ public:
 
 	///  @name Fields
 
-	MFString &
-	string ()
-	{ return *fields .string; }
+	template <class Arg>
+	void
+	addString (Arg && value)
+	{ set_string .emplace_back (std::forward <Arg> (value)); }
 
 	const MFString &
-	string () const
-	{ return *fields .string; }
+	getString () const
+	{ return string_changed; }
 
 
 private:
@@ -110,6 +111,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_string_ ();
+
+	void
 	eventsProcessed ();
 
 	///  @name Static members
@@ -120,14 +124,9 @@ private:
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		MFString* const string;
-	};
-
-	Fields fields;
+	MFString set_string;
+	MFString string;
+	MFString string_changed;
 
 };
 

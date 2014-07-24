@@ -233,18 +233,26 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 
 		jsval* const argv = JS_ARGV (context, vp);
 
-		if (JSVAL_IS_NULL (argv [0]))
-			script -> getBrowser () -> replaceWorld (ScenePtr ());
-
-		else
+		try
 		{
-			if (not JS_ConvertArguments (context, argc, argv, "o", &scene))
-				return JS_FALSE;
+			if (JSVAL_IS_NULL (argv [0]))
+				script -> getBrowser () -> replaceWorld (ScenePtr ());
 
-			if (JS_InstanceOfError (context, scene, jsX3DScene::getClass ()))
-				return JS_FALSE;
+			else
+			{
+				if (not JS_ConvertArguments (context, argc, argv, "o", &scene))
+					return JS_FALSE;
 
-			script -> getBrowser () -> replaceWorld (ScenePtr (static_cast <Scene*> (JS_GetPrivate (context, scene))));
+				if (JS_InstanceOfError (context, scene, jsX3DScene::getClass ()))
+					return JS_FALSE;
+
+				script -> getBrowser () -> replaceWorld (ScenePtr (static_cast <Scene*> (JS_GetPrivate (context, scene))));
+			}
+		}
+		catch (const X3DError & error)
+		{
+			JS_ReportError (context, error .what ());
+			return JS_FALSE;
 		}
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);

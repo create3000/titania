@@ -2451,6 +2451,7 @@
     <None Include="Tests\Scripting\pb\pb.x3dv" />
     <None Include="Tests\Handles\QuadSphere.x3dv" />
     <None Include="Tests\Handles\Transform-URI.x3dv" />
+    <None Include="Tests\Scripting\Shutdown.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -79,8 +79,8 @@ public:
 	 *  @name Destruction
 	 */
 
-	///  This service is processed when the node is disposed.  You must release all references to this node now.
-	///  Further access of this node will cause a Segmentation Fault!  X3DWeakPtr's release their reference now.
+	///  This service is processed when the object is disposed.  You must release all references to this object now.
+	///  Further access of this object will cause a Segmentation Fault!  X3DWeakPtr's release their reference now.
 	virtual
 	const Output &
 	disposed () const
