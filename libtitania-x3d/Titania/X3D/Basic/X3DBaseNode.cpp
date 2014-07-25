@@ -391,21 +391,29 @@ X3DBaseNode::reference (X3DChildObject* const parent)
 {
 	X3DReferenceObject::reference (parent);
 
-	//	if (parent -> getCloneCount () == 0)
-	//		return;
-	//
-	//	++ cloneCount;
+//	if (parent -> getCloneCount () == 0)
+//		return;
+//
+//	++ cloneCount;
 }
 
 void
 X3DBaseNode::unreference (X3DChildObject* const parent)
 {
-	//	if (parent -> getCloneCount () == 0)
-	//		return;
-	//
-	//	-- cloneCount;
-
 	X3DReferenceObject::unreference (parent);
+
+//	if (parent -> getCloneCount () == 0)
+//		return;
+//
+//	-- cloneCount;
+}
+
+void
+X3DBaseNode::unreference ()
+{
+	X3DReferenceObject::unreference ();
+
+//	cloneCount = 0;
 }
 
 /***

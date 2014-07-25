@@ -56,7 +56,6 @@
 #include "../Base/X3DObject.h"
 
 #include <Titania/Utility/Pass.h>
-#include <vector>
 
 namespace titania {
 namespace X3D {

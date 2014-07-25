@@ -58,7 +58,7 @@ namespace X3D {
 
 class X3DChildObject;
 
-typedef std::set <X3DChildObject*> ChildObjectSet;
+using ChildObjectSet = std::set <X3DChildObject*>;
 
 } // X3D
 } // titania

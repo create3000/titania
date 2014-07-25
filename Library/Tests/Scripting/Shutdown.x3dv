@@ -37,7 +37,10 @@ function shutdown ()
 
 	reference = self;
 	node .appearance = self;
+	self .set_time = 123;
 
+	print (self);	
+	print (reference);	
 	print (node);	
 	print (array);	
 
@@ -45,6 +48,7 @@ function shutdown ()
 	Browser .replaceWorld (scene);
 }
 "
+	directOutput TRUE
 }
 
 ROUTE Touch.touchTime TO Debug.set_time

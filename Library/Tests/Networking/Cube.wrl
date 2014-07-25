@@ -30,3 +30,13 @@ Transform {
     }
   }
 }
+
+DEF Debug Script {
+  url "vrmlscript:
+function shutdown ()
+{
+	print ('+ shutdown + ', Browser .currentScene .worldURL);	
+}
+"
+	directOutput TRUE
+}

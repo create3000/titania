@@ -64,8 +64,8 @@
 #include "../Fields/X3DScalar.h"
 #include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
-#include "../Types/Time.h"
 #include "../Types/Struct.h"
+#include "../Types/Time.h"
 
 #include <map>
 
@@ -221,8 +221,8 @@ public:
 	       Error <DISPOSED>)
 	{
 		X3DFieldDefinition* const fieldDefinition = getField (name);
-		
-		Type* const field  = dynamic_cast <Type*> (fieldDefinition);
+
+		Type* const field = dynamic_cast <Type*> (fieldDefinition);
 
 		if (field)
 			return *field;
@@ -241,7 +241,7 @@ public:
 	{
 		X3DFieldDefinition* const fieldDefinition = getField (name);
 
-		Type* const field  = dynamic_cast <Type*> (fieldDefinition);
+		Type* const field = dynamic_cast <Type*> (fieldDefinition);
 
 		if (field)
 			return *field;
@@ -502,6 +502,11 @@ protected:
 	void
 	unreference (X3DChildObject* const) final override;
 
+	///  Sets the reference count for this object to 0.
+	virtual
+	void
+	unreference () final override;
+
 	/***
 	 *  @name Misc
 	 */
@@ -553,7 +558,7 @@ private:
 
 	struct FlatCopyType { };
 
-	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>  >;
+	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
 
 	/***
 	 *  @name Construction
@@ -567,7 +572,7 @@ private:
 	X3DBaseNode*
 	copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
 	throw (Error <INVALID_NAME>,
-		    Error <NOT_SUPPORTED>);
+	       Error <NOT_SUPPORTED>);
 
 	/***
 	 *  @name Misc
