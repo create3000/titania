@@ -1109,10 +1109,10 @@ NodePropertiesEditor::on_apply ()
 					{
 						newField -> write (*oldField);
 
-						for (const auto & reference : oldField -> getReferences ())
+						for (const auto & reference : oldField -> getIsReferences ())
 						{
 							if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == X3D::inputOutput)
-								newField -> addReference (reference);
+								newField -> addIsReference (reference);
 						}
 
 						if (newField -> isInput () and oldField -> isInput ())

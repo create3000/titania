@@ -73,7 +73,9 @@ class X3DObject :
 {
 public:
 
-	///  @name Type Information
+	/***
+	 *  @name Type Information
+	 */
 
 	virtual
 	X3DBase*
@@ -103,7 +105,9 @@ public:
 	getTypeName () const
 	throw (Error <DISPOSED>) = 0;
 
-	///  @name Comment handling
+	/***
+	 *  @name Comment handling
+	 */
 
 	///  Add comments to this object.
 	void
@@ -115,7 +119,9 @@ public:
 	getComments () const
 	{ realize (); return data -> comments; }
 
-	///  @name User data handling
+	/***
+	 *  @name User data handling
+	 */
 
 	///  Set new user data for this object.
 	virtual
@@ -129,7 +135,9 @@ public:
 	getUserData () const
 	{ realize (); return data -> userData; }
 
-	///  @name String creation
+	/***
+	 *  @name String creation
+	 */
 
 	///  Extracts the value for this object from @a string. The string must be in VRML Classic Encoding.
 	bool
@@ -159,7 +167,9 @@ public:
 	std::string
 	toXMLString () const;
 
-	///  @name Input/Output
+	/***
+	 *  @name Input/Output
+	 */
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding.
 	virtual
@@ -170,17 +180,19 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) = 0;
 
-	///  Inserts this object into @a ostream in VRML Classic Encoding.
+	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
 	void
 	toStream (std::ostream &) const = 0;
 
-	///  Inserts this object into @a ostream in X3D XML Encoding.
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
 	virtual
 	void
 	toXMLStream (std::ostream &) const = 0;
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 */
 
 	///  Disposed this object.  You normally do not need to call this function directly.
 	virtual
@@ -194,7 +206,9 @@ public:
 
 protected:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	///  Constructs this object.
 	X3DObject ();
@@ -202,13 +216,17 @@ protected:
 
 private:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	///  Realizes this object if needed.
 	void
 	realize () const;
 
-	///  @name Members
+	/***
+	 *  @name Members
+	 */
 
 	struct Data
 	{
@@ -221,6 +239,11 @@ private:
 
 };
 
+
+///  @relates X3DObject
+///  @name Input/Output operations
+
+///  Extraction operator for X3DObject values. The stream must be in VRML Classic Encoding.
 template <class CharT, class Traits>
 inline
 std::basic_istream <CharT, Traits> &
@@ -230,6 +253,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, X3DObject & object)
 	return istream;
 }
 
+///  Insertion operator for X3DObject values. The output will be in VRML Classic Encoding.
 template <class CharT, class Traits>
 inline
 std::basic_ostream <CharT, Traits> &
@@ -243,6 +267,7 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & obj
 
 struct XMLEncodeObjectType { const X3DObject* const object; };
 
+///  Function to insert a X3DObject into an output stream in X3D XML Encoding style.
 inline
 XMLEncodeObjectType
 XMLEncode (const X3DObject & object)
@@ -250,6 +275,7 @@ XMLEncode (const X3DObject & object)
 	return XMLEncodeObjectType { &object };
 }
 
+///  Function to insert a X3DObject into an output stream in X3D XML Encoding style.
 inline
 XMLEncodeObjectType
 XMLEncode (const X3DObject* const object)
@@ -257,6 +283,7 @@ XMLEncode (const X3DObject* const object)
 	return XMLEncodeObjectType { object };
 }
 
+///  Insertion operator for X3DObject values in X3D XML Encoding style.
 template <typename CharT, typename Traits>
 inline
 std::basic_ostream <CharT, Traits> &

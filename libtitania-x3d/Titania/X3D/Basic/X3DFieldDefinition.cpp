@@ -93,7 +93,7 @@ X3DFieldDefinition::hasRootedObjects (ChildObjectSet & seen)
 }
 
 void
-X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
+X3DFieldDefinition::addIsReference (X3DFieldDefinition* const reference)
 {
 	realize ();
 
@@ -117,12 +117,12 @@ X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 				break;
 		}
 
-		updateReference (reference);
+		updateIsReference (reference);
 	}
 }
 
 void
-X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
+X3DFieldDefinition::removeIsReference (X3DFieldDefinition* const reference)
 {
 	if (io)
 	{
@@ -150,17 +150,17 @@ X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 }
 
 void
-X3DFieldDefinition::updateReferences ()
+X3DFieldDefinition::updateIsReferences ()
 {
 	if (io)
 	{
 		for (auto & reference : io -> references)
-			updateReference (reference);
+			updateIsReference (reference);
 	}
 }
 
 void
-X3DFieldDefinition::updateReference (X3DFieldDefinition* const reference)
+X3DFieldDefinition::updateIsReference (X3DFieldDefinition* const reference)
 {
 	switch (getAccessType () & reference -> getAccessType ())
 	{

@@ -70,7 +70,7 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 		root = parent;
 
 	if (parents .emplace (parent) .second)
-		reference (parent);
+		addReference (parent);
 }
 
 void
@@ -82,9 +82,9 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 	if (parents .erase (parentToRemove))
 	{
 		if (parents .emplace (parentToAdd) .second)
-			reference (parentToAdd);
+			addReference (parentToAdd);
 		
-		unreference (parentToRemove);
+		removeReference (parentToRemove);
 	}
 	else
 		addParent (parentToAdd);
@@ -98,7 +98,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		unreference (parent);
+		removeReference (parent);
 
 		if (getReferenceCount () == 0)
 		{
@@ -118,7 +118,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 
 		for (auto & child : circle)
 		{
-			child -> unreference ();
+			child -> unReference ();
 			child -> parents .clear ();
 		}
 

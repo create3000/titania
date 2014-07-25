@@ -1490,7 +1490,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 											                                  _field);
 										}
 
-										_field -> addReference (_reference);
+										_field -> addIsReference (_reference);
 										_field -> addComments (getComments ());
 
 										return true;
@@ -1617,7 +1617,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 					{
 						if (_field -> getAccessType () == _reference -> getAccessType () or _field -> getAccessType () == inputOutput)
 						{
-							_field -> addReference (_reference);
+							_field -> addIsReference (_reference);
 							_field -> addComments (getComments ());
 							return true;
 						}

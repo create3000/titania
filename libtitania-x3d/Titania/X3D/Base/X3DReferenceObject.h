@@ -140,17 +140,17 @@ protected:
 	///  Increment the reference count for this object.
 	virtual
 	void
-	reference (X3DChildObject* const) override;
+	addReference (X3DChildObject* const) override;
 
 	///  Decrement the reference count for this object.
 	virtual
 	void
-	unreference (X3DChildObject* const) override;
+	removeReference (X3DChildObject* const) override;
 
 	///  Sets the reference count for this object to 0.
 	virtual
 	void
-	unreference () override;
+	unReference () override;
 
 	///  Processes all interest of shutdown. 
 	virtual

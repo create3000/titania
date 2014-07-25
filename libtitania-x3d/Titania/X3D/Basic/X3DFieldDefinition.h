@@ -160,16 +160,16 @@ public:
 	///  @name Reference handling
 
 	void
-	addReference (X3DFieldDefinition* const);
+	addIsReference (X3DFieldDefinition* const);
 
 	void
-	removeReference (X3DFieldDefinition* const);
+	removeIsReference (X3DFieldDefinition* const);
 
 	void
-	updateReferences ();
+	updateIsReferences ();
 
 	const FieldDefinitionSet &
-	getReferences () const
+	getIsReferences () const
 	{ realize (); return io -> references; }
 
 	///  @name Route handling
@@ -251,7 +251,7 @@ private:
 	///  @name Reference handling
 
 	void
-	updateReference (X3DFieldDefinition* const);
+	updateIsReference (X3DFieldDefinition* const);
 
 	///  @name Interest handling
 

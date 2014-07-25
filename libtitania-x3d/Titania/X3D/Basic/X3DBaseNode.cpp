@@ -140,14 +140,14 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	         fieldAliases (),
 	 numUserDefinedFields (0),
 	             children (),
+	           cloneCount (0),
+	          initialized (false),
+	                 live (true),
 	             internal (false),
-	              enabled (true),
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
 	               events (),
-	             comments (),
-	          initialized (false),
-	                 live (true)
+	             comments ()
 {
 	assert (browser);
 	assert (executionContext);
@@ -165,7 +165,7 @@ X3DBaseNode::setup ()
 
 	for (const auto & field : fieldDefinitions)
 	{
-		field -> updateReferences ();
+		field -> updateIsReferences ();
 		field -> isTainted (false);
 	}
 
@@ -242,7 +242,7 @@ throw (Error <INVALID_NAME>,
 
 			if (field -> getAccessType () == fieldDefinition -> getAccessType () and field -> getType () == fieldDefinition -> getType ())
 			{
-				if (fieldDefinition -> getReferences () .empty ())
+				if (fieldDefinition -> getIsReferences () .empty ())
 				{
 					if (fieldDefinition -> isInitializable ())
 						fieldDefinition -> copy (executionContext, field, COPY_OR_CLONE);
@@ -251,11 +251,11 @@ throw (Error <INVALID_NAME>,
 				{
 					// IS relationship
 
-					for (const auto & originalReference : fieldDefinition -> getReferences ())
+					for (const auto & originalReference : fieldDefinition -> getIsReferences ())
 					{
 						try
 						{
-							field -> addReference (executionContext -> getField (originalReference -> getName ()));
+							field -> addIsReference (executionContext -> getField (originalReference -> getName ()));
 						}
 						catch (const Error <INVALID_NAME> &)
 						{
@@ -271,7 +271,7 @@ throw (Error <INVALID_NAME>,
 		{
 			// User defined fields from Script and Shader
 
-			if (fieldDefinition -> getReferences () .empty ())
+			if (fieldDefinition -> getIsReferences () .empty ())
 			{
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
@@ -287,11 +287,11 @@ throw (Error <INVALID_NAME>,
 				                             fieldDefinition -> getName (),
 				                             field);
 
-				for (const auto & originalReference : fieldDefinition -> getReferences ())
+				for (const auto & originalReference : fieldDefinition -> getIsReferences ())
 				{
 					try
 					{
-						field -> addReference (executionContext -> getField (originalReference -> getName ()));
+						field -> addIsReference (executionContext -> getField (originalReference -> getName ()));
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
@@ -336,47 +336,67 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
- *  Assigns all fields from @a node to this node. @a Node must be of the same type.
+ *  Assigns all fields from @a node to this node.  @a node must be of the same type and
+ *  must have exacly the same field definitions.
  */
 void
-X3DBaseNode::assign (const X3DBaseNode* const node)
+X3DBaseNode::assign (const X3DBaseNode* const node /*, const bool compare */)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>)
 {
-	for (const auto & lhs : getFieldDefinitions ())
+	for (size_t i = 0, size = fieldDefinitions .size (); i < size; ++ i)
 	{
-		if (lhs -> getAccessType () & initializeOnly)
-		{
-			X3DFieldDefinition* const rhs = node -> getField (lhs -> getName ());
+		auto & lhs = *fieldDefinitions [i];
 
-			if (*lhs not_eq *rhs)
-				*lhs = *rhs;
+		if (lhs .getAccessType () & initializeOnly)
+		{
+			auto & rhs = *node -> getFieldDefinitions () [i];
+
+			if (lhs not_eq rhs)
+				lhs = rhs;
 		}
 	}
 }
 
 /***
- *  Completely replaces this node by @a node.
+ *  Completely replaces this node in all parent X3DPtr and X3DWeakPtr by @a node.
  *
- *  This function should be used with caution. It is currently only useful with with addTool/removeTool.
- *  @a node requires a special implementation as it should return from getNode the same node as this node.
+ *  This function should be used with caution.  It is currently only useful with with addTool/removeTool.
+ *  @a node requires a special implementation as it should return from getId the same id as this node as
+ *  this node could be replaced in a std::set <X3DPtr> like container.
  */
 void
 X3DBaseNode::replace (X3DBaseNode* const node)
 {
-	std::vector <X3DFieldDefinition*> parents;
+//	std::vector <X3DFieldDefinition*> parents;
+//
+//	for (auto & parent : node -> getParents ())
+//	{
+//		const auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
+//
+//		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
+//			parents .emplace_back (sfnode);
+//	}
+//
+//	SFNode replacement (this);
+//
+//	for (auto & parent : parents)
+//	{
+//		parent -> write (replacement);
+//		parent -> addEvent ();
+//	}
 
-	for (auto & parent : node -> getParents ())
+	std::vector <X3DChildObject*> parents;
+
+	for (const auto & parent : node -> getParents ())
 	{
-		const auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
-
-		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
-			parents .emplace_back (sfnode);
+		if (dynamic_cast <X3DPtrBase*> (parent))
+			parents .emplace_back (parent);
 	}
 
-	SFNode replacement (this);
+	const SFNode replacement (this);
 
-	for (auto & parent : parents)
+	for (const auto & parent : parents)
 	{
 		parent -> write (replacement);
 		parent -> addEvent ();
@@ -387,31 +407,31 @@ X3DBaseNode::replace (X3DBaseNode* const node)
  *  Reference handling.
  */
 void
-X3DBaseNode::reference (X3DChildObject* const parent)
+X3DBaseNode::addReference (X3DChildObject* const parent)
 {
-	X3DReferenceObject::reference (parent);
+	X3DReferenceObject::addReference (parent);
 
-//	if (parent -> getCloneCount () == 0)
+//	if (parent -> isPrivate ())
 //		return;
 //
 //	++ cloneCount;
 }
 
 void
-X3DBaseNode::unreference (X3DChildObject* const parent)
+X3DBaseNode::removeReference (X3DChildObject* const parent)
 {
-	X3DReferenceObject::unreference (parent);
+	X3DReferenceObject::removeReference (parent);
 
-//	if (parent -> getCloneCount () == 0)
+//	if (parent -> isPrivate ())
 //		return;
 //
 //	-- cloneCount;
 }
 
 void
-X3DBaseNode::unreference ()
+X3DBaseNode::unReference ()
 {
-	X3DReferenceObject::unreference ();
+	X3DReferenceObject::unReference ();
 
 //	cloneCount = 0;
 }
@@ -717,7 +737,7 @@ X3DBaseNode::getChangedFields () const
 
 	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (field -> getReferences () .empty ())
+		if (field -> getIsReferences () .empty ())
 		{
 			if (not field -> isInitializable ())
 				continue;
@@ -1059,7 +1079,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	Generator::PushContext ();
 
-	const std::string name = Generator::GetName (this);
+	const std::string & name = Generator::GetName (this);
 
 	if (not name .empty ())
 	{
@@ -1231,7 +1251,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::ForceBreak;
 	}
 
-	if (field -> getReferences () .empty ())
+	if (field -> getIsReferences () .empty ())
 	{
 		// Output build in field
 
@@ -1248,7 +1268,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 		size_t index                  = 0;
 		bool   initializableReference = false;
 
-		for (const auto & reference : field -> getReferences ())
+		for (const auto & reference : field -> getIsReferences ())
 		{
 			initializableReference |= reference -> isInitializable ();
 
@@ -1266,7 +1286,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 			++ index;
 
-			if (index not_eq field -> getReferences () .size ())
+			if (index not_eq field -> getIsReferences () .size ())
 				ostream << Generator::Break;
 		}
 
@@ -1313,7 +1333,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< Generator::ForceBreak;
 	}
 
-	if (field -> getReferences () .empty ())
+	if (field -> getIsReferences () .empty ())
 	{
 		// Output user defined field
 
@@ -1343,7 +1363,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 		size_t index                  = 0;
 		bool   initializableReference = false;
 
-		for (const auto & reference : field -> getReferences ())
+		for (const auto & reference : field -> getIsReferences ())
 		{
 			initializableReference |= reference -> isInitializable ();
 
@@ -1371,7 +1391,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 
 			++ index;
 
-			if (index not_eq field -> getReferences () .size ())
+			if (index not_eq field -> getIsReferences () .size ())
 				ostream << Generator::Break;
 		}
 
@@ -1426,7 +1446,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 	Generator::PushContext ();
 
-	const std::string name = Generator::GetName (this);
+	const std::string & name = Generator::GetName (this);
 
 	if (not name .empty ())
 	{
@@ -1515,11 +1535,11 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		bool mustOutputValue = false;
 
-		if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+		if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
 		{
 			bool initializableReference = false;
 
-			for (const auto & reference : field -> getReferences ())
+			for (const auto & reference : field -> getIsReferences ())
 				initializableReference |= reference -> isInitializable ();
 
 			try
@@ -1533,7 +1553,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			}
 		}
 
-		if (field -> getReferences () .empty () or mustOutputValue)
+		if (field -> getIsReferences () .empty () or mustOutputValue)
 		{
 			if (mustOutputValue)
 				references .emplace_back (field);
@@ -1609,18 +1629,18 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 				bool mustOutputValue = false;
 
-				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+				if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
 				{
 					bool initializableReference = false;
 
-					for (const auto & reference : field -> getReferences ())
+					for (const auto & reference : field -> getIsReferences ())
 						initializableReference |= reference -> isInitializable ();
 
 					if (not initializableReference)
 						mustOutputValue = not field -> isDefaultValue ();
 				}
 
-				if (field -> getReferences () .empty () or mustOutputValue)
+				if (field -> getIsReferences () .empty () or mustOutputValue)
 				{
 					if (mustOutputValue)
 						references .emplace_back (field);
@@ -1693,7 +1713,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 			for (const auto & field : references)
 			{
-				for (const auto & reference : field -> getReferences ())
+				for (const auto & reference : field -> getIsReferences ())
 				{
 					ostream
 						<< Generator::Indent

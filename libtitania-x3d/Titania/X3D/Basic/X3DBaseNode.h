@@ -495,17 +495,17 @@ protected:
 	///  Increment the reference count for this node.
 	virtual
 	void
-	reference (X3DChildObject* const) final override;
+	addReference (X3DChildObject* const) final override;
 
 	///  Decrement the reference count for this node.
 	virtual
 	void
-	unreference (X3DChildObject* const) final override;
+	removeReference (X3DChildObject* const) final override;
 
 	///  Sets the reference count for this object to 0.
 	virtual
 	void
-	unreference () final override;
+	unReference () final override;
 
 	/***
 	 *  @name Misc
@@ -622,16 +622,16 @@ private:
 	size_t               numUserDefinedFields;   // Number of user defined fields
 	ChildObjectSet       children;               // Internal used fields
 
+	size_t                cloneCount;
+	bool                  initialized;
+	SFBool                live;
 	bool                  internal;              // Is this node interally used
-	bool                  enabled;               // Is this node hidden and freezed
 	bool                  extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;
 
 	std::vector <std::string> comments;          // This nodes comments
 
-	bool   initialized;
-	SFBool live;
 
 };
 

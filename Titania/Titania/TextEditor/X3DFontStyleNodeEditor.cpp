@@ -316,7 +316,7 @@ X3DFontStyleNodeEditor::on_family_edited (const Glib::ustring & path, const Glib
 	auto &     field = fontStyleNode -> family ();
 	const auto value = familyName .empty () ? "SERIF" : familyName;
 
-	if (*field .get1Value (Gtk::TreePath (path) .front ()) == value)
+	if (field .get1Value (Gtk::TreePath (path) .front ()) == value)
 		return;
 
 	// Update list store.

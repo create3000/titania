@@ -398,11 +398,11 @@ OutlineEditor::on_create_reference_activate (const X3D::FieldPtr & fieldPtr, con
 
 		undoStep -> addVariables (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::removeReference, field, reference);
-		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::addReference,    field, reference);
+		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::removeIsReference, field, reference);
+		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::addIsReference,    field, reference);
 		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 
-		field -> addReference (reference);
+		field -> addIsReference (reference);
 		treeView -> queue_draw ();
 
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -422,11 +422,11 @@ OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, con
 
 		undoStep -> addVariables (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addReference,    field, reference);
-		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeReference, field, reference);
+		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addIsReference,    field, reference);
+		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeIsReference, field, reference);
 		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 
-		field -> removeReference (reference);
+		field -> removeIsReference (reference);
 		treeView -> queue_draw ();
 
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -725,7 +725,7 @@ OutlineEditor::selectField (const double x, const double y)
 		const Gtk::TreeIter iter  = treeView -> get_model () -> get_iter (fieldPath);
 		const auto          field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
-		hasReferences = not field -> getReferences () .empty ();
+		hasReferences = not field -> getIsReferences () .empty ();
 
 		// Create reference menu
 
@@ -739,7 +739,7 @@ OutlineEditor::selectField (const double x, const double y)
 	
 			if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
 			{
-				if (field -> getReferences () .count (reference))
+				if (field -> getIsReferences () .count (reference))
 					continue;
 
 				try
@@ -764,7 +764,7 @@ OutlineEditor::selectField (const double x, const double y)
 		for (const auto & widget : getRemoveReferenceMenu () .get_children ())
 			getRemoveReferenceMenu () .remove (*widget);
 
-		for (const auto & reference : field -> getReferences ())
+		for (const auto & reference : field -> getIsReferences ())
 		{
 			try
 			{

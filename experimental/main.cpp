@@ -219,42 +219,228 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
-class A
+class X3DObject
 {
 public:
 
-	A ()
+	X3DObject ()
 	{ }
 
 	virtual
 	void
-	a ()
-	{ __LOG__ << std::endl; }
-
-};
-
-class B :
-	public A
-{
-public:
-
-	B ()
-	{ }
-
-};
-
-class C :
-	public B
-{
-public:
-
-	C ()
+	addClone (X3DObject* const)
 	{ }
 
 	virtual
 	void
-	a ()
-	{ __LOG__ << std::endl; }
+	removeClone (X3DObject* const)
+	{ }
+
+
+protected:
+
+};
+
+class X3DChildObject :
+	public X3DObject
+{
+public:
+
+	X3DChildObject ()
+	{ }
+
+};
+
+class X3DFieldDefinition :
+	public X3DChildObject
+{
+public:
+
+	X3DFieldDefinition ()
+	{ }
+
+};
+
+class X3DBaseNode :
+	public X3DChildObject
+{
+public:
+
+	X3DBaseNode () :
+		cloneCount (0),
+		  private_ (false)
+	{ }
+
+	size_t
+	getCloneCount () const
+	{ return cloneCount; }
+
+	virtual
+	void
+	isPrivate (const bool value)
+	{
+		private_ = value;
+
+		if (private_)
+		{
+			for (const auto & field : fieldDefinition)
+				field -> removeClone (this);
+		}
+		else
+		{
+			for (const auto & field : fieldDefinition)
+				field -> addClone (this);
+		}
+	}
+
+	virtual
+	bool
+	isPrivate () const
+	{ return private_; }
+
+
+private:
+
+	void
+	addField (X3DFieldDefinition* const field)
+	{
+		if (not isPrivate ())
+			field -> addClone (this);
+	}
+
+	void
+	removeField (X3DFieldDefinition* const field)
+	{
+		if (not isPrivate ())
+			field -> removeClone (this);
+	}
+
+	virtual
+	void
+	addClone (X3DObject* const parent) final override
+	{
+		const auto node = static_cast <X3DBaseNode*> (parent);
+
+		if (node -> isPrivate ())
+			return;
+
+		++ cloneCount;
+	}
+
+	virtual
+	void
+	removeClone (X3DObject* const parent) final override
+	{
+		const auto node = static_cast <X3DBaseNode*> (parent);
+
+		if (node -> isPrivate ())
+			return;
+
+		-- cloneCount;
+	}
+
+	std::vector <X3DFieldDefinition*> fieldDefinition;
+	size_t                            cloneCount;
+	bool                              private_;
+
+};
+
+class X3DPtr;
+
+class X3DPtrArray :
+	public X3DFieldDefinition
+{
+public:
+
+	X3DPtrArray ()
+	{ }
+
+
+private:
+
+	X3DPtr*
+	createChild () const
+	{
+		const auto child = new X3DPtr ();
+
+		for (const auto & parent : parents)
+			child -> addClone (parent);
+
+		return child;
+	}
+
+	virtual
+	void
+	addClone (X3DObject* const parent) final override
+	{
+		parents .emplace (parent);
+
+		for (auto & child : children)
+			child -> addClone (parent);
+	}
+
+	virtual
+	void
+	removeClone (X3DObject* const parent) final override
+	{
+		parents .erase (parent);
+
+		for (auto & child : children)
+			child -> removeClone (parent);
+	}
+
+	std::set <X3DObject*> parents;
+	std::vector <X3DPtr*> children;
+
+};
+
+class X3DPtr :
+	public X3DFieldDefinition
+{
+public:
+
+	X3DPtr ()
+	{ }
+
+	void
+	setValue (X3DChildObject* const value)
+	{
+		if (child)
+			for (const auto & parent : parents)
+				child -> removeClone (parent);
+
+		child = value;
+
+		if (child)
+			for (const auto & parent : parents)
+				child -> addClone (parent);
+
+	}
+
+private:
+
+	virtual
+	void
+	addClone (X3DObject* const parent) final override
+	{
+		parents .emplace (parent);
+
+		if (child)
+			child -> addClone (parent);
+	}
+
+	virtual
+	void
+	removeClone (X3DObject* const parent) final override
+	{
+		parents .erase (parent);
+
+		if (child)
+			child -> removeClone (parent);
+	}
+
+	std::set <X3DObject*> parents;
+	X3DChildObject*       child;
 
 };
 
@@ -272,8 +458,6 @@ main (int argc, char** argv)
 	#endif
 
 	std::clog .imbue (std::locale (""));
-	
-	C () .B::a ();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

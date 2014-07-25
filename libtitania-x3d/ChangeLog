@@ -1,5 +1,22 @@
 2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPtr.h:
+	* X3DObject.h:
+	* Parser.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* X3DChildObject.h:
+	* X3DChildObject.cpp:
+	* X3DReferenceObject.h:
+	* X3DFieldDefinition.h:
+	* X3DReferenceObject.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DPrototypeInstance.cpp:
+	* jsX3DArrayField.h: 
+
+2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* X3DChildObject.h:

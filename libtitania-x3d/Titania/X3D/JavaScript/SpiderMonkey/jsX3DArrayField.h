@@ -284,7 +284,7 @@ jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj,
 
 	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
 
-	return value_type::create (context, field -> get1Value (index), vp);
+	return value_type::create (context, &field -> get1Value (index), vp);
 }
 
 template <class Type, class FieldType>

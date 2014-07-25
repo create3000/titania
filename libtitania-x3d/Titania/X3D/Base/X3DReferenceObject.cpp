@@ -107,13 +107,13 @@ X3DReferenceObject::removeWeakParent (X3DChildObject* const parent)
 }
 
 void
-X3DReferenceObject::reference (X3DChildObject* const)
+X3DReferenceObject::addReference (X3DChildObject* const)
 {
 	++ referenceCount;
 }
 
 void
-X3DReferenceObject::unreference (X3DChildObject* const)
+X3DReferenceObject::removeReference (X3DChildObject* const)
 {
 	-- referenceCount;
 
@@ -124,7 +124,7 @@ X3DReferenceObject::unreference (X3DChildObject* const)
 }
 
 void
-X3DReferenceObject::unreference ()
+X3DReferenceObject::unReference ()
 {
 	referenceCount = 0;
 	inShutdown     = true;

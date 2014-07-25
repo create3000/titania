@@ -272,7 +272,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 	Generator::PushContext ();
 
-	const std::string name = Generator::GetName (this);
+	const std::string & name = Generator::GetName (this);
 
 	if (not name .empty ())
 	{
@@ -363,11 +363,11 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			bool mustOutputValue = false;
 
-			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+			if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
 			{
 				bool initializableReference = false;
 
-				for (const auto & reference : field -> getReferences ())
+				for (const auto & reference : field -> getIsReferences ())
 					initializableReference |= reference -> isInitializable ();
 
 				try
@@ -381,7 +381,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				}
 			}
 
-			if (field -> getReferences () .empty () or mustOutputValue)
+			if (field -> getIsReferences () .empty () or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
@@ -484,7 +484,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			for (const auto & field : references)
 			{
-				for (const auto & reference : field -> getReferences ())
+				for (const auto & reference : field -> getIsReferences ())
 				{
 					ostream
 						<< Generator::Indent
