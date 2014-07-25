@@ -1,5 +1,9 @@
 2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* NodePropertiesEditor.cpp: 
+
+2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.cpp:
 	* X3DOutlineTreeView.cpp:
 	* X3DFontStyleNodeEditor.cpp:

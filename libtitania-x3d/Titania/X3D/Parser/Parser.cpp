@@ -1533,7 +1533,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 				{
 					if (_field -> getType () == _existingField -> getType ())
 					{
-						_existingField -> write (*_field);
+						_existingField -> set (*_field);
 
 						_field -> dispose ();
 

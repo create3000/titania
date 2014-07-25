@@ -307,7 +307,7 @@ public:
 	///  Assigns the X3DPtr without propagating an event.
 	virtual
 	void
-	write (const X3DChildObject & field) final override
+	set (const X3DChildObject & field) final override
 	{
 		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 

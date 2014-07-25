@@ -1,6 +1,22 @@
 2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DPtr.h:
+	* X3DField.h:
+	* Parser.cpp:
+	* X3DWeakPtr.h:
+	* X3DBaseNode.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* X3DBaseTool.h:
+	* X3DFieldDefinition.cpp:
+	* X3DJavaScriptContext.h:
+	* ExternProtoDeclaration.cpp:
+	* jsBrowser.cpp: 
+
+2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DPtr.h:
 	* X3DObject.h:
 	* Parser.cpp:
 	* X3DBaseNode.h:

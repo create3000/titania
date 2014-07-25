@@ -127,7 +127,7 @@ public:
 	///  Set the value of this object without adding an event.
 	virtual
 	void
-	write (const X3DChildObject &)
+	set (const X3DChildObject &)
 	{ }
 
 	///  Notify object about a change and add an event.

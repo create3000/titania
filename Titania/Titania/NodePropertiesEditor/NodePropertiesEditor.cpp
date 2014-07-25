@@ -1107,7 +1107,7 @@ NodePropertiesEditor::on_apply ()
 
 					if (newField -> getType () == oldField -> getType ())
 					{
-						newField -> write (*oldField);
+						newField -> set (*oldField);
 
 						for (const auto & reference : oldField -> getIsReferences ())
 						{

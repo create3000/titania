@@ -32,13 +32,13 @@ namespace titania {
 namespace X3D {
 
 X3DChildObject::X3DChildObject () :
-	     X3DObject (),
-	       parents (),
-	          root (nullptr),
-	       tainted (false)
+	X3DObject (),
+	  parents (),
+	     root (nullptr),
+	  tainted (false)
 { }
 
-// Object
+// Event handling
 
 void
 X3DChildObject::addEvent ()
@@ -54,20 +54,20 @@ X3DChildObject::addEvent (X3DChildObject* const, const EventPtr & event)
 		parent -> addEvent (this, event);
 }
 
-// Child
+// Child handling
 
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	if (root)
-	{
-		// Best guess for the shortest way to a rooted object.
+	// Determine the best guess for the shortest way to a rooted object.
 
-		if (parent -> getParents () .size () < root -> getParents () .size ())
-			root = parent;
-	}
-	else
+	if ((not root)
+	    or (parent -> getParents () .size () < root -> getParents () .size ()))
+	{
 		root = parent;
+	}
+
+	// Add parent
 
 	if (parents .emplace (parent) .second)
 		addReference (parent);
@@ -76,20 +76,36 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 void
 X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObject* const parentToAdd)
 {
-	if (root == parentToRemove)
+	// Determine the best guess for the shortest way to a rooted object.
+
+	if ((not root)
+	    or (root == parentToRemove)
+	    or (parentToAdd -> getParents () .size () < root -> getParents () .size ()))
+	{
 		root = parentToAdd;
+	}
+
+	// Replace parent
 
 	if (parents .erase (parentToRemove))
 	{
 		if (parents .emplace (parentToAdd) .second)
 			addReference (parentToAdd);
-		
+
 		removeReference (parentToRemove);
 	}
 	else
 		addParent (parentToAdd);
 }
 
+/***
+ *  This is the main function that resolves circular references.
+ *
+ *  If a parent is removed the function checks if the reference count is 0 and then the object will be disposed and
+ *  garbage collected.  If the reference count is not 0 after parent remove, the function looks if the object has a
+ *  rooted objects in the hierarchy.  If not, probably circular references are found and the object and the circular
+ *  references will be disposed and garbage collected.
+ */
 void
 X3DChildObject::removeParent (X3DChildObject* const parent)
 {
@@ -144,6 +160,10 @@ X3DChildObject::removeWeakParent (X3DChildObject* const parent)
 	parents .erase (parent);
 }
 
+/***
+ *  This is the main function that determines if the object has a rooted object in the hierarchy of its parents.  An
+ *  object is a root object if it has no parents.
+ */
 bool
 X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
 {
@@ -152,7 +172,7 @@ X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
 
 	if (seen .emplace (this) .second)
 	{
-		// First test the proved way.
+		// First test way with the »best guess parent«, it is named here »root«.
 
 		if (root)
 		{
@@ -185,7 +205,6 @@ void
 X3DChildObject::dispose ()
 {
 	parents .clear ();
-	root = nullptr;
 
 	X3DObject::dispose ();
 }

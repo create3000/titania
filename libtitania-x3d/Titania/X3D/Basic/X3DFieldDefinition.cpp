@@ -72,7 +72,7 @@ X3DFieldDefinition::realize () const
 X3DFieldDefinition &
 X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
 {
-	write (value);
+	set (value);
 	addEvent ();
 	return *this;
 }
@@ -169,7 +169,7 @@ X3DFieldDefinition::updateIsReference (X3DFieldDefinition* const reference)
 			break;
 		case initializeOnly:
 		case inputOutput:
-			write (*reference);
+			set (*reference);
 			break;
 	}
 }
@@ -217,7 +217,7 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 	isTainted (false);
 
 	if (event -> object not_eq this)
-		write (*event -> object);
+		set (*event -> object);
 
 	std::vector <X3DFieldDefinition*> outputInterests;
 

@@ -85,16 +85,6 @@ public:
 	addEvent () final override
 	{ }
 
-	virtual
-	void
-	addEvent (X3DChildObject* const) final override
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
-
 
 protected:
 
@@ -111,6 +101,18 @@ protected:
 
 
 private:
+
+	///  @name Event handling
+
+	virtual
+	void
+	addEvent (X3DChildObject* const) final override
+	{ }
+
+	virtual
+	void
+	addEvent (X3DChildObject* const, const EventPtr &) final override
+	{ }
 
 	///  @name Members
 

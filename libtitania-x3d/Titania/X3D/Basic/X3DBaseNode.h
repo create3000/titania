@@ -329,7 +329,7 @@ public:
 	isInternal (const bool);
 
 	/***
-	 *  @name Tool handling
+	 *  @name Tool support
 	 */
 
 	virtual
@@ -365,14 +365,6 @@ public:
 	void
 	endUpdate ()
 	throw (Error <DISPOSED>);
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) override;
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) override;
 
 	virtual
 	void
@@ -440,7 +432,7 @@ public:
 	 *  @name Input/Output
 	 */
 
-	///  NOT_SUPPORTED
+	///  NOT SUPPORTED
 	virtual
 	void
 	fromStream (std::istream &)
@@ -489,32 +481,17 @@ protected:
 	{ }
 
 	/***
-	 *  @name Reference handling
-	 */
-
-	///  Increment the reference count for this node.
-	virtual
-	void
-	addReference (X3DChildObject* const) final override;
-
-	///  Decrement the reference count for this node.
-	virtual
-	void
-	removeReference (X3DChildObject* const) final override;
-
-	///  Sets the reference count for this object to 0.
-	virtual
-	void
-	unReference () final override;
-
-	/***
-	 *  @name Misc
+	 *  @name Common members
 	 */
 
 	///  Adds @a value to the type of this node.
 	void
 	addType (const X3DConstants::NodeType value)
 	{ type .emplace_back (value); }
+
+	/***
+	 *  @name Field handling
+	 */
 
 	///  Adds @a field to the set of fields of this node.
 	void
@@ -539,6 +516,20 @@ protected:
 	void
 	removeChild (X3DChildObject &) final override;
 
+	/***
+	 *  @name Tool support
+	 */
+
+	void
+	addTool (X3DBaseNode* const);
+
+	void
+	removeTool (X3DBaseNode* const);
+
+	/***
+	 *  @name Event handling
+	 */
+
 	void
 	setExtendedEventHandling (const bool value)
 	{ extendedEventHandling = value; }
@@ -547,11 +538,13 @@ protected:
 	getExtendedEventHandling () const
 	{ return extendedEventHandling; }
 
+	virtual
 	void
-	addTool (X3DBaseNode* const);
+	addEvent (X3DChildObject* const) override;
 
+	virtual
 	void
-	removeTool (X3DBaseNode* const);
+	addEvent (X3DChildObject* const, const EventPtr &) override;
 
 
 private:
@@ -575,7 +568,7 @@ private:
 	       Error <NOT_SUPPORTED>);
 
 	/***
-	 *  @name Misc
+	 *  @name Field handling
 	 */
 
 	void
@@ -593,6 +586,10 @@ private:
 
 	const std::string &
 	getFieldName (const std::string &, const VersionType) const;
+
+	/***
+	 *  @name Event handling
+	 */
 
 	void
 	removeEvents ();

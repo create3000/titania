@@ -398,42 +398,9 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 
 	for (const auto & parent : parents)
 	{
-		parent -> write (replacement);
+		parent -> set (replacement);
 		parent -> addEvent ();
 	}
-}
-
-/***
- *  Reference handling.
- */
-void
-X3DBaseNode::addReference (X3DChildObject* const parent)
-{
-	X3DReferenceObject::addReference (parent);
-
-//	if (parent -> isPrivate ())
-//		return;
-//
-//	++ cloneCount;
-}
-
-void
-X3DBaseNode::removeReference (X3DChildObject* const parent)
-{
-	X3DReferenceObject::removeReference (parent);
-
-//	if (parent -> isPrivate ())
-//		return;
-//
-//	-- cloneCount;
-}
-
-void
-X3DBaseNode::unReference ()
-{
-	X3DReferenceObject::unReference ();
-
-//	cloneCount = 0;
 }
 
 /***

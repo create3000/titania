@@ -341,12 +341,12 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 									const ScenePtr scene = Loader (script -> getExecutionContext (),
 									                               script -> getWorldURL ()) .createX3DFromURL (*url);
 
-									field -> write (scene -> getRootNodes ());
+									field -> set (scene -> getRootNodes ());
 									field -> addEvent ();
 								}
 								catch (const X3DError & error)
 								{
-									field -> write (MFNode ());
+									field -> set (MFNode ());
 									field -> addEvent ();
 
 									script -> getBrowser () -> print (error .what ());

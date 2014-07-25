@@ -147,7 +147,7 @@ public:
 	///  Set @a field to this field without notifying this field.
 	virtual
 	void
-	write (const X3DChildObject & field) override
+	set (const X3DChildObject & field) override
 	{
 		set (static_cast <const X3DField &> (field) .getValue ());
 	}

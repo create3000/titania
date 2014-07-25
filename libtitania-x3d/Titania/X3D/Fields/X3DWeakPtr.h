@@ -218,7 +218,7 @@ private:
 
 	virtual
 	void
-	write (const X3DChildObject &) final override;
+	set (const X3DChildObject &) final override;
 
 	void
 	addObject (ValueType* const);
@@ -258,7 +258,7 @@ X3DWeakPtr <ValueType>::set (const internal_type & value)
 
 template <class ValueType>
 void
-X3DWeakPtr <ValueType>::write (const X3DChildObject & field)
+X3DWeakPtr <ValueType>::set (const X3DChildObject & field)
 {
 	X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 

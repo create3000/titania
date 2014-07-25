@@ -1,15 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="283" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="244" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="133" Column="100" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DReferenceObject.h" Line="70" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DReferenceObject.cpp" Line="122" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DChildObject.h" Line="58" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DChildObject.cpp" Line="33" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.h" Line="169" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="504" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="388" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.h" Line="175" Column="9" />
+      <File FileName="experimental/main.cpp" Line="348" Column="7" />
+      <File FileName="Titania/run.pl" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DField.h" Line="144" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="243" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="487" Column="59" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DReferenceObject.h" Line="152" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,7 +19,9 @@
           <Node name="miscellaneous" expanded="True">
             <Node name="uncrustify-all" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" />
+          <Node name="experimental" expanded="True">
+            <Node name="main.cpp" selected="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
@@ -26,27 +30,23 @@
               <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Math" expanded="True">
+                <Node name="Numbers" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True">
-                  <Node name="X3DBaseNode.h" selected="True" />
-                </Node>
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
-                <Node name="Components" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True" />
-                  <Node name="SpiderMonkey" expanded="True" />
-                </Node>
-                <Node name="Parser" expanded="True" />
-                <Node name="Thread" expanded="True" />
-                <Node name="Tools" expanded="True">
+                <Node name="Basic" expanded="True" />
+                <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                 </Node>
+                <Node name="InputOutput" expanded="True" />
+                <Node name="Parser" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -86,6 +86,7 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" line="104" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
