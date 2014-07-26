@@ -65,9 +65,13 @@
 #include <Titania/Utility/Adapter.h>
 
 #include <algorithm>
+#include <random>
 
 namespace titania {
 namespace X3D {
+
+static std::default_random_engine
+random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 const UnitIndex X3DExecutionContext::unitCategories = {
 	std::make_pair ("angle",  UnitCategory::ANGLE),
@@ -326,14 +330,9 @@ throw (Error <INVALID_NAME>,
 }
 
 std::string
-X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
+X3DExecutionContext::getUniqueName (std::string name) const
 {
-	hidden = true; // XXX Remove this parameter
-
 	RegEx::LastNumber_ .Replace ("", &name);
-
-	if (not hidden)
-		RegEx::LastNumber .Replace ("", &name);
 
 	if (name .empty ())
 		return getUniqueName ();
@@ -341,25 +340,21 @@ X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 	else
 	{
 		std::string newName = name;
-		size_t      i       = 0;
+		size_t      i       = 1;
 
-		try
+		for ( ; ;)
 		{
-			for ( ; ;)
+			if (namedNodes .count (newName))
 			{
-				getNamedNode (newName);
+				const auto min = i;
+				std::uniform_int_distribution <size_t> random (min, i *= 10);
 
 				newName = name;
-
-				if (hidden)
-					newName += '_';
-
-				newName += basic::to_string (++ i);
+				newName += '_';
+				newName += basic::to_string (random (random_engine));
 			}
-		}
-		catch (const X3DError &)
-		{
-			return newName;
+			else
+				return newName;
 		}
 	}
 }
@@ -368,21 +363,20 @@ std::string
 X3DExecutionContext::getUniqueName () const
 {
 	std::string name;
-	size_t      i = 0;
+	size_t      i = 1;
 
-	try
+	for ( ; ;)
 	{
-		for ( ; ;)
-		{
-			name = '_' + basic::to_string (++ i);
+		const auto min = i;
+		std::uniform_int_distribution <size_t> random (min, i *= 10);
 
-			getNamedNode (name);
-		}
+		name = '_' + basic::to_string (random (random_engine));
+
+		if (namedNodes .count (name))
+			continue;
+
+		return name;
 	}
-	catch (const X3DError &)
-	{ }
-
-	return name;
 }
 
 // Imported nodes handling

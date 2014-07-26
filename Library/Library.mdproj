@@ -2452,6 +2452,7 @@
     <None Include="Tests\Handles\QuadSphere.x3dv" />
     <None Include="Tests\Handles\Transform-URI.x3dv" />
     <None Include="Tests\Scripting\Shutdown.x3dv" />
+    <None Include="Tests\Geometry3D\1728.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

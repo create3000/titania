@@ -245,7 +245,7 @@ public:
 	{ return namedNodes; }
 
 	std::string
-	getUniqueName (std::string, bool = false) const;
+	getUniqueName (std::string) const;
 
 	std::string
 	getUniqueName () const;

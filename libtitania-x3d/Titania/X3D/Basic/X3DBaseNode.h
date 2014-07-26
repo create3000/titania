@@ -124,7 +124,7 @@ public:
 
 	///  Assigns @a node. @a node must be of the same type as this node.
 	void
-	assign (const X3DBaseNode* const)
+	assign (const X3DBaseNode* const, const bool = false)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
@@ -666,12 +666,7 @@ throw (Error <INVALID_FIELD>,
 {
 	Type & field = getField <Type> (name);
 
-	if (compare)
-	{
-		if (field not_eq value)
-			field = value;
-	}
-	else
+	if (not compare or field not_eq value)
 		field = value;
 }
 

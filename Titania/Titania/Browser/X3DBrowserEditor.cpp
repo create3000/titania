@@ -767,8 +767,6 @@ X3DBrowserEditor::getPasteStatus () const
 void
 X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
-	const auto t0 = chrono::now ();
-
 	const auto oldValue = sfnode;
 
 	undoStep -> addVariables (parent);
@@ -779,8 +777,6 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 	sfnode = newValue;
 	
 	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
-
-	__LOG__ << chrono::now () - t0 << std::endl;
 }
 
 void

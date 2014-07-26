@@ -752,19 +752,15 @@ Generator::getUniqueName ()
 {
 	std::string name;
 
-	try
+	for ( ; ;)
 	{
-		for ( ; ;)
-		{
-			name = '_' + basic::to_string (++ newName);
+		name = '_' + basic::to_string (++ newName);
 
-			names .at (name);
-		}
+		if (names .count (name))
+			continue;
+
+		return name;
 	}
-	catch (const std::out_of_range &)
-	{ }
-
-	return name;
 }
 
 void

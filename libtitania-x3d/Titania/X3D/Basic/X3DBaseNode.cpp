@@ -319,17 +319,12 @@ throw (Error <INVALID_NAME>,
 	const SFNode copy = create (executionContext);
 
 	if (not getName () .empty ())
-		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
+		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy); // XXX getUniqueName is extremly slow.
 
 	for (const auto & field : getUserDefinedFields ())
 		copy -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
 
-	try
-	{
-		copy -> assign (this);
-	}
-	catch (const X3DError &)
-	{ }
+	copy -> assign (this);
 
 	executionContext -> addUninitializedNode (copy);
 
@@ -337,14 +332,20 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
- *  Assigns all fields from @a node to this node.  @a node must be of the same type and
- *  must have exacly the same field definitions.
+ *  Assigns all fields from @a node to this node.  @a node must be of the same type and must have exacly the same field
+ *  definitions.  If @a compare is true the fields are only assigned if they are not equal to prevent event generation.
  */
 void
-X3DBaseNode::assign (const X3DBaseNode* const node /*, const bool compare */)
+X3DBaseNode::assign (const X3DBaseNode* const node, const bool compare)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>)
 {
+	if (not node)
+		throw Error <INVALID_NODE> ("Invalid node: Node is NULL.");
+
+	if (type .back () not_eq node -> getType () .back ())
+		throw Error <INVALID_NODE> ("Invalid node: Node has type " + node -> getTypeName () + ".");
+
 	for (size_t i = 0, size = fieldDefinitions .size (); i < size; ++ i)
 	{
 		auto & lhs = *fieldDefinitions [i];
@@ -353,7 +354,7 @@ throw (Error <INVALID_NODE>,
 		{
 			auto & rhs = *node -> getFieldDefinitions () [i];
 
-			if (lhs not_eq rhs)
+			if (not compare or lhs not_eq rhs)
 				lhs = rhs;
 		}
 	}

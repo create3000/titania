@@ -311,7 +311,7 @@ throw (Error <INVALID_SCENE>,
 			// Replace world.
 
 			setDescription ("");
-			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
+			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions (), true);
 
 			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
 

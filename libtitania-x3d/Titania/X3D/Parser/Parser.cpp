@@ -1352,7 +1352,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 			{
 				const SFNode namedNode = getExecutionContext () -> getNamedNode (_nodeNameId); // Create copy!
 
-				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (_nodeNameId, true), namedNode);
+				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (_nodeNameId), namedNode);
 			}
 			catch (const X3DError &)
 			{ }
