@@ -106,7 +106,7 @@ MaterialEditor::set_initialized ()
 	{
 		preview -> loadURL ({ get_ui ("Dialogs/MaterialEditorPreview.x3dv") });
 
-		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isInternal (true);
+		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -390,9 +390,9 @@ MaterialEditor::on_material_changed ()
 	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
 	if (isTwoSidedMaterial)
-		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and twoSidedMaterial -> isCloned () > 1);
+		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and twoSidedMaterial -> getCloneCount () > 1);
 	else
-		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and material -> isCloned () > 1);
+		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and material -> getCloneCount () > 1);
 
 	set_preview ();
 
@@ -489,9 +489,9 @@ MaterialEditor::set_node ()
 	getMaterialComboBoxText () .set_sensitive (hasField);
 
 	if (isTwoSidedMaterial)
-		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> isCloned () > 1);
+		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> getCloneCount () > 1);
 	else
-		getMaterialUnlinkButton () .set_sensitive (active > 0 and material -> isCloned () > 1);
+		getMaterialUnlinkButton () .set_sensitive (active > 0 and material -> getCloneCount () > 1);
 
 	changing = false;
 

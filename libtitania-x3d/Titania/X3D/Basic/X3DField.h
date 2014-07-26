@@ -219,9 +219,9 @@ protected:
 
 	///  Move Value constructor.
 	explicit
-	X3DField (ValueType && value) :
+	X3DField (ValueType && other) :
 		X3DFieldDefinition (),
-		             value (std::move (value))
+		             value (std::move (other))
 	{ }
 
 	/// @name Member access

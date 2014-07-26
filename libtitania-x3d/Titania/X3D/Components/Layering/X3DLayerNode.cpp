@@ -135,6 +135,7 @@ X3DLayerNode::initialize ()
 	fogs            -> setup ();
 
 	group -> isInternal (true);
+	group -> isPrivate (true);
 	group -> children () = children ();
 	group -> setup ();
 

@@ -1,5 +1,35 @@
 2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPtr.h:
+	* X3DObject.h:
+	* X3DField.h:
+	* FieldSet.cpp:
+	* World.cpp:
+	* X3DBaseNode.h:
+	* X3DPtrArray.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.h:
+	* X3DArrayField.h:
+	* X3DChildObject.cpp:
+	* X3DBaseTool.h:
+	* Generator.cpp:
+	* X3DReferenceObject.h:
+	* GeoLOD.cpp:
+	* LayerSet.cpp:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* StaticGroup.cpp:
+	* ProgramShader.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DLayerNode.cpp:
+	* ComposedShader.cpp:
+	* X3DNetworkingContext.cpp:
+	* VolumeEmitter.cpp:
+	* PolylineEmitter.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* X3DChildObject.h:
 	* X3DArrayField.h:

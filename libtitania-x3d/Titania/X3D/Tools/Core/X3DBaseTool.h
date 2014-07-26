@@ -209,7 +209,10 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	X3DToolObject (),
 	         node (node)
 {
+	isPrivate (node -> isPrivate ());
+
 	node -> addParent (this);
+	node -> isPrivate (true);
 
 	const bool internal = node -> isInternal ();
 	node -> isInternal (false);
@@ -242,6 +245,7 @@ template <class Type>
 void
 X3DBaseTool <Type>::dispose ()
 {
+	node -> isPrivate (isPrivate ());
 	node -> removeParent (this);
 
 	X3DToolObject::dispose ();

@@ -171,7 +171,7 @@ public:
 	 *  @name Input/Output
 	 */
 
-	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding.
+	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
 	virtual
 	void
 	fromStream (std::istream &)

@@ -307,17 +307,37 @@ public:
 	{ return nullptr; }
 
 	/***
+	 *  @name Clone handling
+	 */
+
+	void
+	isPrivate (const bool);
+
+	bool
+	isPrivate () const
+	{ return private_; }
+
+	virtual
+	size_t
+	getCloneCount () const final override
+	{ return cloneCount; }
+
+	virtual
+	void
+	addClones (const size_t count) final override
+	{ cloneCount += count; }
+
+	virtual
+	void
+	removeClones (const size_t count) final override
+	{ cloneCount -= count; }
+
+	/***
 	 *  @name Special functions
 	 */
 
 	size_t
-	isCloned () const;
-
-	size_t
-	getCloneCount () const;
-
-	bool
-	hasRoutes () const;
+	getCloneCountO () const;
 
 	virtual
 	bool
@@ -374,6 +394,9 @@ public:
 	///  function directly.
 	void
 	eventsProcessed ();
+
+	bool
+	hasRoutes () const;
 
 	/***
 	 *  @name Interest service
@@ -619,10 +642,11 @@ private:
 	size_t               numUserDefinedFields;   // Number of user defined fields
 	ChildObjectSet       children;               // Internal used fields
 
-	size_t                cloneCount;
 	bool                  initialized;
-	SFBool                live;
+	bool                  private_;
+	size_t                cloneCount;
 	bool                  internal;              // Is this node interally used
+	SFBool                live;
 	bool                  extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;

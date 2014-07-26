@@ -140,10 +140,11 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	         fieldAliases (),
 	 numUserDefinedFields (0),
 	             children (),
-	           cloneCount (0),
 	          initialized (false),
-	                 live (true),
+	             private_ (false),
+	           cloneCount (0),
 	             internal (false),
+	                 live (true),
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
 	               events (),
@@ -486,6 +487,9 @@ throw (Error <INVALID_NAME>,
 	else
 		field .setName (name);
 
+	if (not private_)
+		field .addClones (1);
+
 	fieldDefinitions .emplace_back (&field);
 	fields .emplace (name, &field);
 }
@@ -543,6 +547,9 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 		//  If field is a pre defined field, we defer dispose.
 		X3DReferenceObject::disposed () .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
 	}
+
+	if (not private_)
+		field -> second -> removeClones (1);
 
 	fieldDefinitions .erase (iter);
 	fields .erase (field);
@@ -766,52 +773,31 @@ X3DBaseNode::removeChild (X3DChildObject & child)
 	X3DReferenceObject::removeChild (child);
 }
 
-/***
- *  Does the same as getCloneCount but returns only 0, 1 or 2.
- */
-size_t
-X3DBaseNode::isCloned () const
+void
+X3DBaseNode::isPrivate (const bool value)
 {
-	size_t numClones = 0;
+	if (value == private_)
+		return;
 
-	for (const auto & parent : getParents ())
+	private_ = value;
+
+	if (private_)
 	{
-		if (dynamic_cast <SFNode*> (parent))
-		{
-			// Only X3DNodes, ie nodes in the scene graph, have field names
-
-			if (parent -> getName () .empty ())
-			{
-				for (const auto & secondParent : parent -> getParents ())
-				{
-					// Only X3DNodes, ie nodes in the scene graph, have field names
-
-					if (secondParent -> getName () .empty ())
-						continue;
-
-					if (dynamic_cast <MFNode*> (secondParent))
-					{
-						if (++ numClones > 1)
-							return numClones;
-					}
-				}
-			}
-			else
-			{
-				if (++ numClones > 1)
-					return numClones;
-			}
-		}
+		for (const auto & field : fieldDefinitions)
+			field -> removeClones (1);
 	}
-
-	return numClones;
+	else
+	{
+		for (const auto & field : fieldDefinitions)
+			field -> addClones (1);
+	}
 }
 
 /***
  *  Determines how often this node is used in the scene graph.
  */
 size_t
-X3DBaseNode::getCloneCount () const
+X3DBaseNode::getCloneCountO () const
 {
 	size_t numClones = 0;
 
@@ -840,23 +826,6 @@ X3DBaseNode::getCloneCount () const
 	}
 
 	return numClones;
-}
-
-/***
- *  Returns true if there are any routes from or to fields of this node otherwise false.
- */
-bool
-X3DBaseNode::hasRoutes () const
-{
-	for (const auto & field : fieldDefinitions)
-	{
-		if (field -> getInputRoutes () .empty () and field -> getOutputRoutes () .empty ())
-			continue;
-
-		return true;
-	}
-
-	return false;
 }
 
 /***
@@ -1015,6 +984,23 @@ X3DBaseNode::removeEvents ()
 		getBrowser () -> removeTaintedNode (nodeId);
 		nodeId .time = 0;
 	}
+}
+
+/***
+ *  Returns true if there are any routes from or to fields of this node otherwise false.
+ */
+bool
+X3DBaseNode::hasRoutes () const
+{
+	for (const auto & field : fieldDefinitions)
+	{
+		if (field -> getInputRoutes () .empty () and field -> getOutputRoutes () .empty ())
+			continue;
+
+		return true;
+	}
+
+	return false;
 }
 
 /***
@@ -1750,7 +1736,12 @@ X3DBaseNode::dispose ()
 	removeEvents ();
 
 	for (const auto & field : fieldDefinitions)
+	{
+		if (not private_)
+			field -> removeClones (1);
+
 		field -> removeParent (this);
+	}
 
 	for (const auto & child : children)
 		child -> dispose ();

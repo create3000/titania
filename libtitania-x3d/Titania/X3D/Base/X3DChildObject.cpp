@@ -151,12 +151,25 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 void
 X3DChildObject::addWeakParent (X3DChildObject* const parent)
 {
+	// Determine the best guess for the shortest way to a rooted object.
+
+	if ((not root)
+	    or (parent -> getParents () .size () < root -> getParents () .size ()))
+	{
+		root = parent;
+	}
+
+	// Add parent
+
 	parents .emplace (parent);
 }
 
 void
 X3DChildObject::removeWeakParent (X3DChildObject* const parent)
 {
+	if (root == parent)
+		root = nullptr;
+
 	parents .erase (parent);
 }
 

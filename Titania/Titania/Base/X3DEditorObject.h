@@ -81,9 +81,7 @@ protected:
 		    currentField (),
 		          fields (new X3D::FieldSet (getBrowser ())),
 		        undoSize (0)
-	{
-		fields -> isInternal (true);
-	}
+	{ }
 
 	///  @name Operations
 

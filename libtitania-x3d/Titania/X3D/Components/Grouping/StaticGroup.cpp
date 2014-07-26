@@ -101,6 +101,7 @@ StaticGroup::initialize ()
 	group -> children ()   = children ();
 
 	group -> isInternal (true);
+	group -> isPrivate (true);
 	group -> setup ();
 }
 

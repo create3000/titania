@@ -64,6 +64,7 @@ FieldSet::FieldSet (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::FieldSet);
 
+	isPrivate (true);
 	setup ();
 }
 
@@ -73,6 +74,7 @@ FieldSet::FieldSet (X3DExecutionContext* const executionContext, const FieldDefi
 	for (const auto & field : fields)
 		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
+	isPrivate (true);
 	setup ();
 }
 

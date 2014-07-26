@@ -66,8 +66,14 @@ class X3DChildObject :
 public:
 
 	/***
-	 *  @name Parent handling
+	 *  @name Reference handling
 	 */
+
+	///  Returns the number of strong references of this object.  Weak references are not counted.
+	virtual
+	size_t
+	getReferenceCount () const
+	{ return parents .size (); }
 
 	///  Add a parent to this object.
 	virtual
@@ -84,16 +90,6 @@ public:
 	void
 	removeParent (X3DChildObject* const);
 
-	///  Add a parent to this object.
-	virtual
-	void
-	addWeakParent (X3DChildObject* const);
-
-	///  Remove a parent from this object.
-	virtual
-	void
-	removeWeakParent (X3DChildObject* const);
-
 	///  Returns a set of all parents of this object.
 	const ChildObjectSet &
 	getParents () const
@@ -104,11 +100,24 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet &);
 
-	///  Returns the reference count of this object.  Weak references are not counted.
+	/***
+	 *  @name Clone handling
+	 */
+
 	virtual
 	size_t
-	getReferenceCount () const
-	{ return parents .size (); }
+	getCloneCount () const
+	{ return 0; }
+
+	virtual
+	void
+	addClones (const size_t)
+	{ }
+
+	virtual
+	void
+	removeClones (const size_t)
+	{ }
 
 	/***
 	 *  @name Event Handling
@@ -165,6 +174,16 @@ protected:
 	/***
 	 *  @name Reference handling
 	 */
+
+	///  Add a parent to this object.
+	virtual
+	void
+	addWeakParent (X3DChildObject* const);
+
+	///  Remove a parent from this object.
+	virtual
+	void
+	removeWeakParent (X3DChildObject* const);
 	
 	virtual
 	void

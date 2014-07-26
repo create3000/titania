@@ -119,13 +119,13 @@ public:
 	{ }
 
 	///  Move constructor.
-	X3DArrayField (X3DArrayField && field) :
-		X3DField <internal_type> (std::move (field .get ()))
+	X3DArrayField (X3DArrayField && other) :
+		X3DField <internal_type> (std::move (other .get ()))
 	{
 		for (const auto & value : getValue ())
-			value -> replaceParent (&field, this);
+			moveChild (other, value);
 
-		field .addEvent ();
+		other .addEvent ();
 	}
 
 	///  Construct new X3DArrayField from basic type @a value.
@@ -570,6 +570,22 @@ protected:
 	using X3DField <internal_type>::get;
 
 	/***
+	 *  @name Element handling
+	 */
+
+	virtual
+	void
+	addChild (ValueType*);
+	
+	virtual
+	void
+	moveChild (X3DArrayField & other, ValueType*);
+
+	virtual
+	void
+	removeChild (ValueType*);
+
+	/***
 	 *  @name Element access
 	 */
 
@@ -590,14 +606,8 @@ private:
 	             const typename iterator::iterator_type &);
 
 	void
-	addChild (ValueType*);
-
-	void
 	removeChildren (const typename iterator::iterator_type &,
 	                const typename iterator::iterator_type &);
-
-	void
-	removeChild (ValueType*);
 
 };
 
@@ -620,19 +630,19 @@ X3DArrayField <ValueType>::X3DArrayField (const InputIterator & first, const Inp
 
 template <class ValueType>
 X3DArrayField <ValueType> &
-X3DArrayField <ValueType>::operator = (X3DArrayField && field)
+X3DArrayField <ValueType>::operator = (X3DArrayField && other)
 {
-	if (&field == this)
+	if (&other == this)
 		return *this;
 
 	clear (); // addEvent ();
 
-	std::swap (get (), field .get ());
+	std::swap (get (), other .get ());
 
 	for (const auto & value : getValue ())
-		value -> replaceParent (&field, this);
+		moveChild (other, value);
 
-	field .addEvent ();
+	other .addEvent ();
 
 	return *this;
 }
@@ -884,10 +894,10 @@ void
 X3DArrayField <ValueType>::swap (X3DArrayField & other)
 {
 	for (auto & value : get ())
-		value -> replaceParent (this, &other);
+		other .moveChild (*this, value);
 
 	for (auto & value : other .get ())
-		value -> replaceParent (&other, this);
+		moveChild (other, value);
 
 	std::swap (get (), other .get ());
 
@@ -1005,16 +1015,24 @@ void
 X3DArrayField <ValueType>::addChildren (const typename iterator::iterator_type & first,
                                         const typename iterator::iterator_type & last)
 {
-	for (auto & field : basic::adapter (first, last))
-		addChild (field);
+	for (auto & value : basic::adapter (first, last))
+		addChild (value);
 }
 
 template <class ValueType>
 inline
 void
-X3DArrayField <ValueType>::addChild (ValueType* field)
+X3DArrayField <ValueType>::addChild (ValueType* value)
 {
-	field -> addParent (this);
+	value -> addParent (this);
+}
+
+template <class ValueType>
+inline
+void
+X3DArrayField <ValueType>::moveChild (X3DArrayField & other, ValueType* value)
+{
+	value -> replaceParent (&other, this);
 }
 
 template <class ValueType>
@@ -1023,19 +1041,20 @@ void
 X3DArrayField <ValueType>::removeChildren (const typename iterator::iterator_type & first,
                                            const typename iterator::iterator_type & last)
 {
-	for (auto & field : basic::adapter (first, last))
-		removeChild (field);
+	for (auto & value : basic::adapter (first, last))
+		removeChild (value);
 }
 
 template <class ValueType>
 inline
 void
-X3DArrayField <ValueType>::removeChild (ValueType* field)
+X3DArrayField <ValueType>::removeChild (ValueType* value)
 {
-	field -> removeParent (this);
+	value -> removeParent (this);
 }
 
 template <class ValueType>
+inline
 void
 X3DArrayField <ValueType>::reset ()
 {

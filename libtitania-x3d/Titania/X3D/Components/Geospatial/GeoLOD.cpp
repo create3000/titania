@@ -122,6 +122,7 @@ GeoLOD::initialize ()
 	rootNode () .addInterest (rootGroup -> children ());
 
 	rootGroup -> isInternal (true);
+	rootGroup -> isPrivate (true);
 	rootGroup -> children () = rootNode ();
 	rootGroup -> setup ();
 

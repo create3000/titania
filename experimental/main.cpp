@@ -281,7 +281,7 @@ public:
 	{
 		if (value == private_)
 			return;
-	
+
 		private_ = value;
 
 		if (private_)
@@ -348,35 +348,15 @@ public:
 private:
 
 	X3DPtr*
-	createChild () const
-	{
-		const auto child = new X3DPtr ();
-
-		for (const auto & parent : parents)
-			child -> addClones (cloneCount);
-
-		return child;
-	}
+	createChild () const;
 
 	virtual
 	void
-	addClones (const size_t count) final override
-	{
-		cloneCount += count;
-
-		for (auto & child : children)
-			child -> addClones (count);
-	}
+	addClones (const size_t count) final override;
 
 	virtual
 	void
-	removeClones (const size_t count) final override
-	{
-		cloneCount -= count;
-
-		for (auto & child : children)
-			child -> removeClones (count);
-	}
+	removeClones (const size_t count) final override;
 
 	std::vector <X3DPtr*> children;
 	size_t                cloneCount;
@@ -404,8 +384,6 @@ public:
 
 	}
 
-private:
-
 	virtual
 	void
 	addClones (const size_t count) final override
@@ -426,10 +404,40 @@ private:
 			child -> removeClones (count);
 	}
 
-	X3DChildObject*  child;
-	size_t           cloneCount;
+private:
+
+	X3DChildObject* child;
+	size_t          cloneCount;
 
 };
+
+X3DPtr*
+X3DPtrArray::createChild () const
+{
+	const auto child = new X3DPtr ();
+
+	child -> addClones (cloneCount);
+
+	return child;
+}
+
+void
+X3DPtrArray::addClones (const size_t count)
+{
+	cloneCount += count;
+
+	for (auto & child : children)
+		child -> addClones (count);
+}
+
+void
+X3DPtrArray::removeClones (const size_t count)
+{
+	cloneCount -= count;
+
+	for (auto & child : children)
+		child -> removeClones (count);
+}
 
 int
 main (int argc, char** argv)

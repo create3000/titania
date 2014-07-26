@@ -147,7 +147,7 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 
 	addRedoFunction <X3D::SFNode> (geometryNodes, "texCoord", undoStep);
 
-	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (getTextureCoordinateGeneratorCheckButton () .get_active () and textureCoordinateGenerator -> isCloned () > 1);
+	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (getTextureCoordinateGeneratorCheckButton () .get_active () and textureCoordinateGenerator -> getCloneCount () > 1);
 }
 
 void
@@ -177,7 +177,7 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 	getTextureCoordinateGeneratorCheckButton () .set_active (active > 0);
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (active < 0);
 
-	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (active > 0 and textureCoordinateGenerator -> isCloned () > 1);
+	getTextureCoordinateGeneratorUnlinkButton () .set_sensitive (active > 0 and textureCoordinateGenerator -> getCloneCount () > 1);
 	getTextureCoordinateGeneratorBox ()          .set_sensitive (active > 0);
 
 	changing = false;

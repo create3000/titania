@@ -129,7 +129,8 @@ public:
 
 	///  Constructs new X3DPtr.
 	X3DPtr () :
-		X3DField <ValueType*> (nullptr)
+		X3DField <ValueType*> (nullptr),
+		           cloneCount (0)
 	{ }
 
 	///  Constructs new X3DPtr.
@@ -145,20 +146,21 @@ public:
 
 	///  Constructs new X3DPtr.
 	X3DPtr (X3DPtr && field) :
-		X3DField <ValueType*> ()
+		X3DPtr ()
 	{ moveObject (field); }
 
 	///  Constructs new X3DPtr.
 	template <class Up>
 	explicit
 	X3DPtr (X3DPtr <Up> && field) :
-		X3DField <ValueType*> ()
+		X3DPtr ()
 	{ moveObject (field); }
 
 	///  Constructs new X3DPtr.
 	//explicit
 	X3DPtr (ValueType* const value) :
-		X3DField <ValueType*> (value)
+		X3DField <ValueType*> (value),
+		           cloneCount (0)
 	{ addObject (value); }
 
 	///  Constructs new X3DPtr.
@@ -249,13 +251,13 @@ public:
 
 	///  Assigns the X3DPtr and propagates an event.
 	X3DPtr &
-	operator = (X3DPtr && field)
+	operator = (X3DPtr && other)
 	{
-		if (&field == this)
+		if (&other == this)
 			return *this;
 
 		removeObject (getValue ());
-		moveObject (field);
+		moveObject (other);
 		addEvent ();
 
 		return *this;
@@ -264,13 +266,13 @@ public:
 	///  Assigns the X3DPtr and propagates an event.
 	template <class Up>
 	X3DPtr &
-	operator = (X3DPtr <Up> && field)
+	operator = (X3DPtr <Up> && other)
 	{
-		if (&field == this)
+		if (&other == this)
 			return *this;
 
 		removeObject (getValue ());
-		moveObject (field);
+		moveObject (other);
 		addEvent ();
 
 		return *this;
@@ -347,6 +349,30 @@ public:
 	{ return X3DConstants::SFNode; }
 
 	/**
+	 *  @name Clone handling
+	 */
+
+	virtual
+	void
+	addClones (const size_t count) final override
+	{
+		cloneCount += count;
+
+		if (getValue ())
+			getValue () -> addClones (count);
+	}
+
+	virtual
+	void
+	removeClones (const size_t count) final override
+	{
+		cloneCount -= count;
+
+		if (getValue ())
+			getValue () -> removeClones (count);
+	}
+
+	/**
 	 *  @name Interest service
 	 */
 
@@ -376,7 +402,7 @@ public:
 	       Error <DISPOSED>) final override
 	{ }
 
-	///  Inserts this object as Classic VRML into the output stream @a ostream.
+	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
@@ -388,7 +414,7 @@ public:
 			ostream << "NULL";
 	}
 
-	///  Inserts this object as XML into the output stream @a ostream.
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
 	virtual
 	void
 	toXMLStream (std::ostream & ostream) const final override
@@ -441,39 +467,44 @@ private:
 		if (value)
 		{
 			value -> addParent (this);
+			value -> addClones (cloneCount);
 			value -> disposed () .addInterest (this, &X3DPtr::set_disposed);
 		}
 	}
 
 	void
-	moveObject (X3DPtr & field)
+	moveObject (X3DPtr & other)
 	{
-		setObject (field .getValue ());
+		setObject (other .getValue ());
 
 		if (getValue ())
 		{
-			field .get () -> replaceParent (&field, this);
-			field .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
-			field .setObject (nullptr);
-			field .addEvent ();
+			other .get () -> replaceParent (&other, this);
+			other .get () -> addClones (cloneCount);
+			other .get () -> removeClones (other .cloneCount);
+			other .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
+			other .setObject (nullptr);
+			other .addEvent ();
 		}
 	}
 
 	template <class Up>
 	void
-	moveObject (X3DPtr <Up> & field)
+	moveObject (X3DPtr <Up> & other)
 	{
-		setObject (dynamic_cast <ValueType*> (field .getValue ()));
+		setObject (dynamic_cast <ValueType*> (other .getValue ()));
 
 		if (getValue ())
 		{
-			field .get () -> replaceParent (&field, this);
-			field .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
-			field .setObject (nullptr);
-			field .addEvent ();
+			other .get () -> replaceParent (&other, this);
+			other .get () -> addClones (cloneCount);
+			other .get () -> removeClones (other .cloneCount);
+			other .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
+			other .setObject (nullptr);
+			other .addEvent ();
 		}
 		else
-			field = nullptr;
+			other = nullptr;
 	}
 
 	void
@@ -484,6 +515,7 @@ private:
 			setObject (nullptr);
 
 			value -> removeParent (this);
+			value -> removeClones (cloneCount);
 			value -> disposed () .removeInterest (this, &X3DPtr::set_disposed);
 		}
 	}
@@ -506,6 +538,12 @@ private:
 	 */
 
 	static const std::string typeName;
+
+	/**
+	 *  @name Members
+	 */
+
+	size_t cloneCount;
 
 };
 

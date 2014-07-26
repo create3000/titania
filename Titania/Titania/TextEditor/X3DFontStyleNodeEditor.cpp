@@ -195,7 +195,7 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 
 	addRedoFunction <X3D::SFNode> (texts, "fontStyle", undoStep);
 
-	getFontStyleUnlinkButton () .set_sensitive (getFontStyleComboBoxText () .get_active () > 0 and fontStyleNode -> isCloned () > 1);
+	getFontStyleUnlinkButton () .set_sensitive (getFontStyleComboBoxText () .get_active () > 0 and fontStyleNode -> getCloneCount () > 1);
 }
 
 void
@@ -271,7 +271,7 @@ X3DFontStyleNodeEditor::set_node ()
 		getFontStyleComboBoxText () .set_active (-1);
 
 	getFontStyleComboBoxText () .set_sensitive (hasField);
-	getFontStyleUnlinkButton () .set_sensitive (active > 0 and fontStyleNode -> isCloned () > 1);
+	getFontStyleUnlinkButton () .set_sensitive (active > 0 and fontStyleNode -> getCloneCount () > 1);
 
 	changing = false;
 

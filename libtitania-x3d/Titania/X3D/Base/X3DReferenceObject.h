@@ -65,6 +65,21 @@ class X3DReferenceObject :
 public:
 
 	/***
+	 *  @name Reference handling
+	 */
+
+	///  Returns the number of strong references of this object.  Weak references are not counted.
+	virtual
+	size_t
+	getReferenceCount () const final override
+	{ return referenceCount; }
+
+	///  Returns number of weak references of this object.
+	size_t
+	getWeakReferenceCount () const
+	{ return getParents () .size () - getReferenceCount (); }
+
+	/***
 	 *  @name Parent handling
 	 */
 
@@ -92,16 +107,6 @@ public:
 	virtual
 	void
 	removeWeakParent (X3DChildObject* const) final override;
-
-	/***
-	 *  @name Reference handling
-	 */
-
-	///  Returns the reference count of this object.  Weak references are not counted.
-	virtual
-	size_t
-	getReferenceCount () const final override
-	{ return referenceCount; }
 
 	/***
 	 *  @name Shutdown handling

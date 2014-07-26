@@ -767,6 +767,8 @@ X3DBrowserEditor::getPasteStatus () const
 void
 X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
+	const auto t0 = chrono::now ();
+
 	const auto oldValue = sfnode;
 
 	undoStep -> addVariables (parent);
@@ -777,6 +779,8 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 	sfnode = newValue;
 	
 	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
+
+	__LOG__ << chrono::now () - t0 << std::endl;
 }
 
 void
@@ -848,7 +852,7 @@ X3DBrowserEditor::removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContext
 {
 	if (node)
 	{
-		if (not node -> isCloned ())
+		if (node -> getCloneCount () == 0)
 			removeNodeFromScene (executionContext, node, undoStep, false);
 	}
 }
@@ -926,15 +930,15 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 		{
 			// Hide node
 
-			using isInternal = void (X3D::X3DBaseNode::*) (const bool);
-
 			undoStep -> addUndoFunction (&X3D::X3DBaseNode::beginUpdate, child);
 			undoStep -> addRedoFunction (&X3D::X3DBaseNode::endUpdate,   child);
 			child -> endUpdate ();
 
-			undoStep -> addUndoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, child, false);
-			undoStep -> addRedoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, child, true);
-			child -> isInternal (true);
+			using isPrivate = void (X3D::X3DBaseNode::*) (const bool);
+
+			undoStep -> addUndoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, child, false);
+			undoStep -> addRedoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, child, true);
+			child -> isPrivate (true);
 		}
 	}
 }
@@ -981,15 +985,15 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 
 	// Hide node
 
-	using isInternal = void (X3D::X3DBaseNode::*) (const bool);
-
 	undoStep -> addUndoFunction (&X3D::X3DBaseNode::beginUpdate, node);
 	undoStep -> addRedoFunction (&X3D::X3DBaseNode::endUpdate,   node);
 	node -> endUpdate ();
 
-	undoStep -> addUndoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, node, false);
-	undoStep -> addRedoFunction ((isInternal) & X3D::X3DBaseNode::isInternal, node, true);
-	node -> isInternal (true);
+	using isPrivate = void (X3D::X3DBaseNode::*) (const bool);
+
+	undoStep -> addUndoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, node, false);
+	undoStep -> addRedoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, node, true);
+	node -> isPrivate (true);
 }
 
 void
@@ -1224,10 +1228,10 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 {
 	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
 
-	if (sourceNode -> getRootContext () -> isInternal ())
+	if (sourceNode -> getRootContext () -> isPrivate ())
 		return;
 
-	if (destinationNode -> getRootContext () -> isInternal ())
+	if (destinationNode -> getRootContext () -> isPrivate ())
 		return;
 
 	bool sourceImported      = false;
@@ -2025,7 +2029,7 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const child) const
 						{
 							if (baseNode not_eq child)
 							{
-								if (not baseNode -> isInternal ())
+								if (not baseNode -> isPrivate ())
 									parentNodes .emplace_back (baseNode);
 							}
 						}
@@ -2040,7 +2044,7 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const child) const
 				{
 					if (baseNode not_eq child)
 					{
-						if (not baseNode -> isInternal ())
+						if (not baseNode -> isPrivate ())
 							parentNodes .emplace_back (baseNode);
 					}
 

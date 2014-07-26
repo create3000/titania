@@ -96,7 +96,7 @@ X3DTextureNodeEditor::set_initialized ()
 	{
 		preview -> loadURL ({ get_ui ("Dialogs/TextureEditorPreview.x3dv") });
 
-		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isInternal (true);
+		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -220,7 +220,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 
-	getTextureUnlinkButton () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0 and textureNode -> isCloned () > 1);
+	getTextureUnlinkButton () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0 and textureNode -> getCloneCount () > 1);
 
 	X3DTexturePropertiesEditor::set_selection ();
 }
@@ -263,7 +263,7 @@ X3DTextureNodeEditor::set_texture ()
 		getTextureComboBoxText () .set_active (-1);
 
 	getTextureComboBoxText () .set_sensitive (hasField);
-	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> isCloned () > 1);
+	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> getCloneCount () > 1);
 	getTextureNotebook ()     .set_current_page (getTextureComboBoxText () .get_active_row_number ());
 
 	changing = false;

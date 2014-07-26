@@ -1,5 +1,20 @@
 2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* TextEditor.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineEditor.cpp:
+	* MaterialEditor.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* OutlineCellRenderer.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
+2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Console.h:
 	* Console.cpp:
 	* X3DBrowserWidget.h:

@@ -162,7 +162,7 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
 
-	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformComboBoxText () .get_active_row_number () > 0 and textureTransformNode -> isCloned () > 1);
+	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformComboBoxText () .get_active_row_number () > 0 and textureTransformNode -> getCloneCount () > 1);
 }
 
 void
@@ -205,7 +205,7 @@ X3DTextureTransformNodeEditor::set_node ()
 		getTextureTransformComboBoxText () .set_active (-1);
 
 	getTextureTransformComboBoxText () .set_sensitive (hasField);
-	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> isCloned () > 1);
+	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> getCloneCount () > 1);
 
 	changing = false;
 }

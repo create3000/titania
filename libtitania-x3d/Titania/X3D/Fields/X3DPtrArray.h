@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_FIELDS_X3DPTR_ARRAY_H__
 
 #include "../Basic/X3DArrayField.h"
-#include "../InputOutput/Generator.h"
 #include "../Fields/X3DPtr.h"
+#include "../InputOutput/Generator.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -71,73 +71,108 @@ private:
 
 public:
 
+	/***
+	 *  @name Member types
+	 */
+
+	typedef typename ArrayField::value_type value_type;
+
 	using X3DArrayField <X3DPtr <ValueType>> ::operator =;
-	using X3DArrayField <X3DPtr <ValueType>> ::addInterest;
-	using X3DArrayField <X3DPtr <ValueType>> ::cbegin;
+	using X3DArrayField <X3DPtr <ValueType>> ::getValue;
 	using X3DArrayField <X3DPtr <ValueType>> ::front;
 	using X3DArrayField <X3DPtr <ValueType>> ::back;
+	using X3DArrayField <X3DPtr <ValueType>> ::cbegin;
 	using X3DArrayField <X3DPtr <ValueType>> ::cend;
 	using X3DArrayField <X3DPtr <ValueType>> ::empty;
 	using X3DArrayField <X3DPtr <ValueType>> ::size;
+	using X3DArrayField <X3DPtr <ValueType>> ::addInterest;
 
+	/***
+	 *  @name Construction
+	 */
+
+	///  Constructs new X3DPtrArray.
 	X3DPtrArray () :
-		ArrayField ()
+		ArrayField (),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	X3DPtrArray (const X3DPtrArray & field) :
-		ArrayField (field)
+		ArrayField (field),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	X3DPtrArray (X3DPtrArray && field) :
-		ArrayField (std::move (field))
+		ArrayField (std::move (field)),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	template <class Up>
 	explicit
 	X3DPtrArray (const X3DPtrArray <Up> & field) :
-		ArrayField (field .begin (), field .end ())
+		ArrayField (field .begin (), field .end ()),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	template <class Up>
 	explicit
 	X3DPtrArray (X3DPtrArray <Up> &&);
 
-	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>> initializer_list) :
-		ArrayField (initializer_list)
+	///  Constructs new X3DPtrArray.
+	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>>  initializer_list) :
+		ArrayField (initializer_list),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	X3DPtrArray (std::initializer_list <const typename X3DPtr <ValueType>::internal_type> initializer_list) :
-		ArrayField (initializer_list)
+		ArrayField (initializer_list),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	template <class InputIterator>
 	X3DPtrArray (InputIterator first, InputIterator last) :
-		ArrayField (first, last)
+		ArrayField (first, last),
+		cloneCount (0)
 	{ }
 
+	///  Constructs new X3DPtrArray.
 	virtual
 	X3DPtrArray*
 	create () const final override
 	{ return new X3DPtrArray (); }
 
+	///  Constructs new X3DPtrArray.
 	virtual
 	X3DPtrArray*
 	copy (const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
+	///  Constructs new X3DPtrArray.
 	virtual
 	X3DPtrArray*
 	copy (X3DExecutionContext* const executionContext, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
+	///  Constructs new X3DPtrArray.
 	virtual
 	void
 	copy (X3DExecutionContext* const, X3DFieldDefinition* const, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
+	/***
+	 *  @name Assignment operators
+	 */
+
+	///  Assigns the X3DPtrArray and propagates an event.
 	X3DPtrArray &
 	operator = (const X3DPtrArray & field)
 	{
@@ -145,6 +180,7 @@ public:
 		return *this;
 	}
 
+	///  Assigns the X3DPtrArray and propagates an event.
 	X3DPtrArray &
 	operator = (X3DPtrArray && field)
 	{
@@ -152,35 +188,73 @@ public:
 		return *this;
 	}
 
+	///  Assigns the X3DPtrArray and propagates an event.
 	template <class Up>
 	X3DPtrArray &
-	operator = (X3DPtrArray <Up>&&);
+	operator = (X3DPtrArray <Up> &&);
 
-	virtual
-	X3DConstants::FieldType
-	getType () const final override
-	{ return X3DConstants::MFNode; }
+	/**
+	 *  @name Common members
+	 */
 
+	///  Returns the type name of the object.
 	virtual
 	const std::string &
 	getTypeName () const
 	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
-	///  6.7.7 Add field interest.
+	///  Returns the type of the object.
+	virtual
+	X3DConstants::FieldType
+	getType () const final override
+	{ return X3DConstants::MFNode; }
 
+	/**
+	 *  @name Clone handling
+	 */
+
+	virtual
+	void
+	addClones (const size_t count) final override
+	{
+		cloneCount += count;
+
+		for (const auto & value : getValue ())
+			value -> addClones (count);
+	}
+
+	virtual
+	void
+	removeClones (const size_t count) final override
+	{
+		cloneCount -= count;
+
+		for (const auto & value : getValue ())
+			value -> removeClones (count);
+	}
+
+	/**
+	 *  @name Interest service
+	 */
+
+	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
 	addInterest (Class* const object, void (Class::* memberFunction) (const X3DPtrArray &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
+	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtrArray &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Input/Output
+	/**
+	 *  @name Input/Output
+	 */
 
+	///  Not supported.
 	virtual
 	void
 	fromStream (std::istream &)
@@ -189,10 +263,12 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
+	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
 
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
 	virtual
 	void
 	toXMLStream (std::ostream &) const final override;
@@ -202,8 +278,57 @@ private:
 
 	using X3DArrayField <X3DPtr <ValueType>> ::get;
 
-	///  TypeName identifer for X3DFields.
+	/***
+	 *  @name Element handling
+	 */
+
+	virtual
+	void
+	addChild (value_type* value) final override
+	{
+		ArrayField::addChild (value);
+
+		value -> addClones (cloneCount);
+	}
+
+	virtual
+	void
+	moveChild (ArrayField & other, value_type* value) final override
+	{
+		ArrayField::moveChild (other, value);
+
+		value -> addClones (cloneCount);
+		value -> removeClones (other .getCloneCount ());
+	}
+
+	virtual
+	void
+	removeChild (value_type* value) final override
+	{
+		value -> removeClones (cloneCount);
+
+		ArrayField::removeChild (value);
+	}
+
+	virtual
+	size_t
+	getCloneCount () const final override
+	{ return cloneCount; }
+
+
+private:
+
+	/**
+	 *  @name Static members
+	 */
+
 	static const std::string typeName;
+
+	/**
+	 *  @name Members
+	 */
+
+	size_t cloneCount;
 
 };
 
@@ -212,15 +337,16 @@ const std::string X3DPtrArray <ValueType>::typeName ("MFNode");
 
 template <class ValueType>
 template <class Up>
-X3DPtrArray <ValueType>::X3DPtrArray (X3DPtrArray <Up>&& field) :
-	ArrayField ()
+X3DPtrArray <ValueType>::X3DPtrArray (X3DPtrArray <Up> && field) :
+	ArrayField (),
+	cloneCount (0)
 {
 	auto       first = field .begin ();
 	const auto last  = field .end ();
 
 	// Insert at end
 
-	for ( ; first not_eq last; ++ first)
+	for (; first not_eq last; ++ first)
 	{
 		ValueType* const field = new ValueType (std::move (*first));
 
@@ -295,7 +421,7 @@ throw (Error <INVALID_NAME>,
 template <class ValueType>
 template <class Up>
 X3DPtrArray <ValueType> &
-X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up>&& field)
+X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && field)
 {
 	auto       first = field .begin ();
 	const auto last  = field .end ();
@@ -319,7 +445,7 @@ X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up>&& field)
 	{
 		// Insert at end
 
-		for ( ; first not_eq last; ++ first)
+		for (; first not_eq last; ++ first)
 		{
 			ValueType* const field = new ValueType (std::move (*first));
 

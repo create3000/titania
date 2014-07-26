@@ -85,6 +85,7 @@ World::initialize ()
 	X3DBaseNode::initialize ();
 
 	layerSet -> isInternal (true);
+	layerSet -> isPrivate (true);
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
 	layerSet -> getActiveLayer () .addInterest (this, &World::set_activeLayer);
@@ -95,6 +96,7 @@ World::initialize ()
 
 	layer0 -> isLayer0 (true);
 	layer0 -> isInternal (true);
+	layer0 -> isPrivate (true);
 	layer0 -> setup ();
 
 	if (glXGetCurrentContext ())

@@ -133,6 +133,7 @@ Inline::initialize ()
 	}
 
 	group -> isInternal (true);
+	group -> isPrivate (true);
 	group -> setup ();
 }
 
@@ -159,6 +160,14 @@ Inline::setScene (ScenePtr && value)
 
 	// First initialize,
 
+	if (checkLoadState () == COMPLETE_STATE)
+	{
+		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
+		value -> isInternal (getRootContext () -> isInternal ());
+		value -> isPrivate (getRootContext () -> isPrivate ());
+		value -> getRootNodes () .addInterest (group -> children ());
+	}
+
 	if (isInitialized ())
 		value -> setup ();
 
@@ -168,13 +177,6 @@ Inline::setScene (ScenePtr && value)
 	// then assign.
 
 	scene = std::move (value);
-
-	if (checkLoadState () == COMPLETE_STATE)
-	{
-		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
-		scene -> isInternal (getExecutionContext () -> getRootContext () -> isInternal ());
-		scene -> getRootNodes () .addInterest (group -> children ());
-	}
 
 	group -> children () = scene -> getRootNodes ();
 }

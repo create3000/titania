@@ -183,7 +183,7 @@ OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 		if (route -> getExecutionContext () -> isProtoDeclaration ())
 			return true;
 
-		if (show_all_routes and not route -> getRootContext () -> isInternal ()) // Hide X3DToolObject routes when show all is true.
+		if (show_all_routes and not route -> getRootContext () -> isPrivate ()) // Hide X3DToolObject routes when show all is true.
 			return true;
 	}
 
