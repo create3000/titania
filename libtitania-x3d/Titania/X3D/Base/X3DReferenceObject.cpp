@@ -107,13 +107,13 @@ X3DReferenceObject::removeWeakParent (X3DChildObject* const parent)
 }
 
 void
-X3DReferenceObject::addReference (X3DChildObject* const)
+X3DReferenceObject::addReference ()
 {
 	++ referenceCount;
 }
 
 void
-X3DReferenceObject::removeReference (X3DChildObject* const)
+X3DReferenceObject::removeReference ()
 {
 	-- referenceCount;
 

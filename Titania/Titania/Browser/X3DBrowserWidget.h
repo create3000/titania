@@ -149,9 +149,6 @@ private:
 	void
 	set_scene ();
 
-	void
-	set_urlError (const X3D::MFString &);
-
 	///  @name Operations
 
 	void

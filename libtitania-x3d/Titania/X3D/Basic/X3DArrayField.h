@@ -101,7 +101,6 @@ public:
 	using X3DField <internal_type>::addInterest;
 	using X3DField <internal_type>::addEvent;
 	using X3DField <internal_type>::getType;
-	using X3DField <internal_type>::setValue;
 	using X3DField <internal_type>::getValue;
 	using X3DField <internal_type>::operator =;
 
@@ -890,7 +889,7 @@ X3DArrayField <ValueType>::swap (X3DArrayField & other)
 	for (auto & value : other .get ())
 		value -> replaceParent (&other, this);
 
-	get () .swap (other .get ());
+	std::swap (get (), other .get ());
 
 	addEvent ();
 	other .addEvent ();

@@ -98,7 +98,7 @@ private:
 	set_enabled ();
 
 	void
-	set_string ();
+	set_string (const X3D::MFString & value);
 
 	///  @name Members
 

@@ -168,12 +168,12 @@ protected:
 	
 	virtual
 	void
-	addReference (X3DChildObject* const)
+	addReference ()
 	{ }
 
 	virtual
 	void
-	removeReference (X3DChildObject* const)
+	removeReference ()
 	{ }
 
 	virtual

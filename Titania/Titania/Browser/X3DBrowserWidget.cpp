@@ -124,7 +124,6 @@ X3DBrowserWidget::initialize ()
 	getBrowser () -> getBrowserOptions () -> splashScreen () = true;
 
 	// Connect event handler.
-	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	// Insert Surface, this will initialize the Browser.
@@ -440,16 +439,16 @@ X3DBrowserWidget::set_scene ()
 		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
 }
 
-void
-X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
-{
-	getMessageDialog () .set_message (_ ("Invalid X3D"));
-	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
-	                                         + "</span>",
-	                                         true);
-	getMessageDialog () .present ();
-}
+//void
+//X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
+//{
+//	getMessageDialog () .set_message (_ ("Invalid X3D"));
+//	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
+//	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
+//	                                         + "</span>",
+//	                                         true);
+//	getMessageDialog () .present ();
+//}
 
 void
 X3DBrowserWidget::loadIcon ()

@@ -388,9 +388,6 @@ throw (Error <INVALID_URL>,
 		{
 			urlError = loader .getUrlError ();
 
-			for (const auto & string : urlError)
-				getBrowser () -> println (string .str ());
-
 			throw;
 		}
 	}

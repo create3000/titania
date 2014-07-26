@@ -1,3 +1,13 @@
+2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.cpp:
+	* X3DChildObject.h:
+	* X3DArrayField.h:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* X3DReferenceObject.h:
+	* X3DReferenceObject.cpp: 
+
 2014-07-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DPtr.h:

@@ -99,18 +99,23 @@ void
 Console::set_enabled ()
 {
 	if (enabled and mapped)
+	{
+		getBrowser () -> getUrlError () .addInterest (this, &Console::set_string);
 		getBrowser () -> getConsole () -> getString () .addInterest (this, &Console::set_string);
-
+	}
 	else
+	{
+		getBrowser () -> getUrlError () .addInterest (this, &Console::set_string);
 		getBrowser () -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
+	}
 }
 
 void
-Console::set_string ()
+Console::set_string (const X3D::MFString & value)
 {
 	// Insert.
 
-	for (const auto & string : getBrowser () -> getConsole () -> getString ())
+	for (const auto & string : value)
 		getTextBuffer () -> insert (getTextBuffer () -> end (), string .getValue ());
 
 	// Erase.

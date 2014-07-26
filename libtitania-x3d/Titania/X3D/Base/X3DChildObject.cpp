@@ -70,7 +70,7 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 	// Add parent
 
 	if (parents .emplace (parent) .second)
-		addReference (parent);
+		addReference ();
 }
 
 void
@@ -90,9 +90,9 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 	if (parents .erase (parentToRemove))
 	{
 		if (parents .emplace (parentToAdd) .second)
-			addReference (parentToAdd);
+			addReference ();
 
-		removeReference (parentToRemove);
+		removeReference ();
 	}
 	else
 		addParent (parentToAdd);
@@ -114,7 +114,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		removeReference (parent);
+		removeReference ();
 
 		if (getReferenceCount () == 0)
 		{

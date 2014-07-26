@@ -168,7 +168,8 @@ Parser::getMessageFromError (const X3DError & error)
 			<< line << std::endl
 			<< std::string (linePos, ' ') << '^' << std::endl
 			<< string << std::endl
-			<< std::string (80, '*');
+			<< std::string (80, '*')
+			<< std::endl;
 	}
 	catch (...)
 	{
@@ -178,7 +179,8 @@ Parser::getMessageFromError (const X3DError & error)
 			<< "in '" << scene -> getWorldURL () << '\'' << std::endl
 			<< std::endl
 			<< string << std::endl
-			<< std::string (80, '*');
+			<< std::string (80, '*')
+			<< std::endl;
 	}
 
 	return stringstream .str ();

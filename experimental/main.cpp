@@ -228,12 +228,12 @@ public:
 
 	virtual
 	void
-	addClone (X3DObject* const)
+	addClones (const size_t)
 	{ }
 
 	virtual
 	void
-	removeClone (X3DObject* const)
+	removeClones (const size_t)
 	{ }
 
 
@@ -279,17 +279,20 @@ public:
 	void
 	isPrivate (const bool value)
 	{
+		if (value == private_)
+			return;
+	
 		private_ = value;
 
 		if (private_)
 		{
 			for (const auto & field : fieldDefinition)
-				field -> removeClone (this);
+				field -> removeClones (1);
 		}
 		else
 		{
 			for (const auto & field : fieldDefinition)
-				field -> addClone (this);
+				field -> addClones (1);
 		}
 	}
 
@@ -305,39 +308,25 @@ private:
 	addField (X3DFieldDefinition* const field)
 	{
 		if (not isPrivate ())
-			field -> addClone (this);
+			field -> addClones (1);
 	}
 
 	void
 	removeField (X3DFieldDefinition* const field)
 	{
 		if (not isPrivate ())
-			field -> removeClone (this);
+			field -> removeClones (1);
 	}
 
 	virtual
 	void
-	addClone (X3DObject* const parent) final override
-	{
-		const auto node = static_cast <X3DBaseNode*> (parent);
-
-		if (node -> isPrivate ())
-			return;
-
-		++ cloneCount;
-	}
+	addClones (const size_t count) final override
+	{ cloneCount += count; }
 
 	virtual
 	void
-	removeClone (X3DObject* const parent) final override
-	{
-		const auto node = static_cast <X3DBaseNode*> (parent);
-
-		if (node -> isPrivate ())
-			return;
-
-		-- cloneCount;
-	}
+	removeClones (const size_t count) final override
+	{ cloneCount -= count; }
 
 	std::vector <X3DFieldDefinition*> fieldDefinition;
 	size_t                            cloneCount;
@@ -364,33 +353,33 @@ private:
 		const auto child = new X3DPtr ();
 
 		for (const auto & parent : parents)
-			child -> addClone (parent);
+			child -> addClones (cloneCount);
 
 		return child;
 	}
 
 	virtual
 	void
-	addClone (X3DObject* const parent) final override
+	addClones (const size_t count) final override
 	{
-		parents .emplace (parent);
+		cloneCount += count;
 
 		for (auto & child : children)
-			child -> addClone (parent);
+			child -> addClones (count);
 	}
 
 	virtual
 	void
-	removeClone (X3DObject* const parent) final override
+	removeClones (const size_t count) final override
 	{
-		parents .erase (parent);
+		cloneCount -= count;
 
 		for (auto & child : children)
-			child -> removeClone (parent);
+			child -> removeClones (count);
 	}
 
-	std::set <X3DObject*> parents;
 	std::vector <X3DPtr*> children;
+	size_t                cloneCount;
 
 };
 
@@ -406,14 +395,12 @@ public:
 	setValue (X3DChildObject* const value)
 	{
 		if (child)
-			for (const auto & parent : parents)
-				child -> removeClone (parent);
+			child -> removeClones (cloneCount);
 
 		child = value;
 
 		if (child)
-			for (const auto & parent : parents)
-				child -> addClone (parent);
+			child -> addClones (cloneCount);
 
 	}
 
@@ -421,26 +408,26 @@ private:
 
 	virtual
 	void
-	addClone (X3DObject* const parent) final override
+	addClones (const size_t count) final override
 	{
-		parents .emplace (parent);
+		cloneCount += count;
 
 		if (child)
-			child -> addClone (parent);
+			child -> addClones (count);
 	}
 
 	virtual
 	void
-	removeClone (X3DObject* const parent) final override
+	removeClones (const size_t count) final override
 	{
-		parents .erase (parent);
+		cloneCount -= count;
 
 		if (child)
-			child -> removeClone (parent);
+			child -> removeClones (count);
 	}
 
-	std::set <X3DObject*> parents;
-	X3DChildObject*       child;
+	X3DChildObject*  child;
+	size_t           cloneCount;
 
 };
 
