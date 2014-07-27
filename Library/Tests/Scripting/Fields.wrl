@@ -1,16 +1,10 @@
-#VRML V2.0 utf8 Titania V0.6.8
+#VRML V2.0 utf8 Titania V0.7.1
 
 DEF Timer TimeSensor {
   loop TRUE
 }
 
 DEF Debug Script {
-  exposedField SFBool   enabled TRUE
-  eventIn      SFTime   set_time
-  field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
-  eventIn      SFBool   in
-  eventOut     SFBool   out
-
   url "javascript:
 
 var utf8_string = 'abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–';

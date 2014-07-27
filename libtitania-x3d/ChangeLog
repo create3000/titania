@@ -1,5 +1,9 @@
 2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp: 
+
+2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.h:
 	* Traverse.cpp:
 	* X3DPtrArray.h:
