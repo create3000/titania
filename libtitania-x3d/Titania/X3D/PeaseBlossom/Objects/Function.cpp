@@ -92,7 +92,7 @@ Function::addClosure (const basic_ptr <vsExecutionContext> & executionContext)
 
 	pair .first -> second .addParent (this);
 
-	for (const auto & object : basic::adapter (defaultObjects .rbegin (), defaultObjects .rend () - 1))
+	for (const auto & object : std::make_pair (defaultObjects .rbegin (), defaultObjects .rend () - 1))
 	{
 		if (object == executionContext -> getLocalObject ())
 			break;

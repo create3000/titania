@@ -128,7 +128,7 @@ PositionChaser::set_value_ ()
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
 
-	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
 
 	previousValue = set_value ();

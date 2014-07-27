@@ -250,7 +250,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 					
 					const auto currentExternProtos = executionContext -> getExternProtoDeclarations ();
 
-					for (const auto & externProto : basic::reverse_adapter (currentExternProtos))
+					for (const auto & externProto : basic::make_reverse_range (currentExternProtos))
 					{
 						undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
 						undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());

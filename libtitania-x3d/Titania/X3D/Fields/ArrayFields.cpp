@@ -200,7 +200,7 @@ X3DArrayField <SFString>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
-		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
 			ostream
 				<< '"'

@@ -55,7 +55,7 @@
 #include "../Parser/Parser.h"
 #include "../Primitives.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace pb {

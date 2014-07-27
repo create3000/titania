@@ -62,7 +62,7 @@
 #include "../Prototype/ProtoDeclaration.h"
 
 #include <Titania/String/to_string.h>
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 #include <algorithm>
 #include <random>
@@ -347,7 +347,7 @@ X3DExecutionContext::getUniqueName (std::string name) const
 			if (namedNodes .count (newName))
 			{
 				const auto min = i;
-				std::uniform_int_distribution <size_t> random (min, i *= 10);
+				std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
 				newName = name;
 				newName += '_';
@@ -368,7 +368,7 @@ X3DExecutionContext::getUniqueName () const
 	for ( ; ;)
 	{
 		const auto min = i;
-		std::uniform_int_distribution <size_t> random (min, i *= 10);
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
 		name = '_' + basic::to_string (random (random_engine));
 
@@ -826,7 +826,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		bool skip = true;
 
-		for (const auto & prototype : basic::reverse_adapter (executionContext -> getProtoDeclarations ()))
+		for (const auto & prototype : basic::make_reverse_range (executionContext -> getProtoDeclarations ()))
 		{
 			if (skip and not current .empty ())
 			{
@@ -1232,7 +1232,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 
 	if (not getRootNodes () .empty ())
 	{
-		for (const auto & rootNode : basic::adapter (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
+		for (const auto & rootNode : std::make_pair (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
 		{
 			ostream
 				<< Generator::Indent

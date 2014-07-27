@@ -352,7 +352,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 
 		double space = 0;
 
-		for (auto & glyph : basic::adapter (translations .begin () + t0, translations .begin () + t))
+		for (auto & glyph : std::make_pair (translations .begin () + t0, translations .begin () + t))
 		{
 			glyph += translation;
 

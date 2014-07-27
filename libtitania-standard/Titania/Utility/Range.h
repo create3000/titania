@@ -48,60 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_UTILITY_ADAPTER_H__
-#define __TITANIA_UTILITY_ADAPTER_H__
+#ifndef __TITANIA_UTILITY_RANGE_H__
+#define __TITANIA_UTILITY_RANGE_H__
+
+#include <utility>
+#include <iterator>
+
+namespace std {
+
+template <class T>
+inline
+T
+begin (std::pair <T, T> & p)
+{
+	return p .first;
+}
+
+template <class T>
+inline
+T
+begin (const std::pair <T, T> & p)
+{
+	return p .first;
+}
+
+template <class T>
+inline
+T
+end (std::pair <T, T> & p)
+{
+	return p .second;
+}
+
+template <class T>
+inline
+T
+end (const std::pair <T, T> & p)
+{
+	return p .second;
+}
+
+} // std
 
 namespace titania {
 namespace basic {
 
 template <class Iterator>
-class container_adapter
-{
-public:
-
-	container_adapter (const Iterator & begin, const Iterator & end) :
-		m_begin (begin),
-		m_end (end)
-	{ }
-
-	Iterator
-	begin () const
-	{ return m_begin; }
-
-	Iterator
-	end () const
-	{ return m_end; }
-
-
-private:
-
-	Iterator m_begin;
-	Iterator m_end;
-
-};
-
-template <class Iterator>
 inline
-container_adapter <Iterator>
-adapter (const Iterator & begin, const Iterator & end)
+std::reverse_iterator <Iterator>
+make_reverse_iterator (const Iterator & iter)
 {
-	return container_adapter <Iterator> (begin, end);
+	return std::reverse_iterator <Iterator> (iter);
 }
 
-template <class Container>
+template <class Range>
 inline
-container_adapter <typename Container::reverse_iterator>
-reverse_adapter (Container & container)
+std::pair <std::reverse_iterator <decltype (std::end (std::declval <Range> ()))>,
+           std::reverse_iterator <decltype (std::begin (std::declval <Range> ()))>> 
+make_reverse_range (Range && range)
 {
-	return container_adapter <typename Container::reverse_iterator> (container .rbegin (), container .rend ());
-}
-
-template <class Container>
-inline
-container_adapter <typename Container::const_reverse_iterator>
-reverse_adapter (const Container & container)
-{
-	return container_adapter <typename Container::const_reverse_iterator> (container .rbegin (), container .rend ());
+	return std::make_pair (make_reverse_iterator (std::end (range)), make_reverse_iterator (std::begin (range)));
 }
 
 } // basic

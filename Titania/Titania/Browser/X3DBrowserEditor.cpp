@@ -377,7 +377,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 	const auto externProtoIndex = basic::reverse (externProtos);
 
-	for (const auto & pair : basic::reverse_adapter (externProtoIndex))
+	for (const auto & pair : basic::make_reverse_range (externProtoIndex))
 	{
 		const auto & externProto = pair .second;
 
@@ -391,7 +391,7 @@ X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
 
 	const auto prototypeIndex = basic::reverse (prototypes);
 
-	for (const auto & pair : basic::reverse_adapter (prototypeIndex))
+	for (const auto & pair : basic::make_reverse_range (prototypeIndex))
 	{
 		const auto & prototype = pair .second;
 
@@ -409,7 +409,7 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
 {
 	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
-	                  for (const auto & type : basic::reverse_adapter (node -> getType ()))
+	                  for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	                  {
 	                     switch (type)
 	                     {
@@ -1836,7 +1836,7 @@ X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 void
 X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const bool alongFrontPlane)
 {
-	for (const auto & node : basic::reverse_adapter (getBrowser () -> getSelection () -> getChildren ()))
+	for (const auto & node : basic::make_reverse_range (getBrowser () -> getSelection () -> getChildren ()))
 	{
 		X3D::X3DTransformNodePtr transform (node);
 
@@ -1962,7 +1962,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 	if (node == getExecutionContext ())
 		return true;
 
-	for (const auto & type : basic::reverse_adapter (node -> getType ()))
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
 		switch (type)
 		{
@@ -2087,7 +2087,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	// Find last MFNode
 
-	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
+	for (auto & field : basic::make_reverse_range (parent -> getFieldDefinitions ()))
 	{
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
 		{
@@ -2098,7 +2098,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	// Find last SFNode not metadata
 
-	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
+	for (auto & field : basic::make_reverse_range (parent -> getFieldDefinitions ()))
 	{
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
 		{

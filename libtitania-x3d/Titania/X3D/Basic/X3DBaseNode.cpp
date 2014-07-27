@@ -57,7 +57,7 @@
 #include "../Fields/SFNode.h"
 #include "../Parser/Filter.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 #include <cassert>
 #include <iomanip>
@@ -319,7 +319,7 @@ throw (Error <INVALID_NAME>,
 	const SFNode copy = create (executionContext);
 
 	if (not getName () .empty ())
-		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy); // XXX getUniqueName is extremly slow.
+		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
 
 	for (const auto & field : getUserDefinedFields ())
 		copy -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
@@ -676,7 +676,7 @@ X3DBaseNode::getPreDefinedFields () const
 {
 	FieldDefinitionArray predefinedFields;
 
-	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
+	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
 		try
 		{
@@ -710,7 +710,7 @@ X3DBaseNode::getChangedFields () const
 {
 	FieldDefinitionArray changedFields;
 
-	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
+	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
 		if (field -> getIsReferences () .empty ())
 		{
@@ -1057,7 +1057,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< getComments () .front ()
 			<< Generator::ForceBreak;
 
-		for (const auto & comment : basic::adapter (getComments () .begin () + 1, getComments (). end ()))
+		for (const auto & comment : std::make_pair (getComments () .begin () + 1, getComments (). end ()))
 		{
 			ostream
 				<< Generator::Indent
@@ -1120,7 +1120,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
-			for (const auto & field : basic::adapter (userDefinedFields .begin (), userDefinedFields .end () - 1))
+			for (const auto & field : std::make_pair (userDefinedFields .begin (), userDefinedFields .end () - 1))
 			{
 				toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
 				ostream << Generator::Break;
@@ -1151,7 +1151,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 		ostream << Generator::IncIndent;
 
-		for (const auto & field : basic::adapter (fields .begin (), fields .end () - 1))
+		for (const auto & field : std::make_pair (fields .begin (), fields .end () - 1))
 		{
 			toStreamField (ostream, field, fieldTypeLength, accessTypeLength);
 			ostream << Generator::Break;

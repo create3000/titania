@@ -106,7 +106,7 @@ CoordinateChaser::initialize ()
 
 	buffer .resize (getNumBuffers ());
 
-	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
 	{
 		value .assign (initialValue () .begin (), initialValue () .end ());
 		value .resize (initialDestination () .size ());
@@ -129,7 +129,7 @@ CoordinateChaser::set_value_ ()
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
 
-	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
 		value .assign (set_value () .begin (), set_value () .end ());
 
 	buffer [0] .resize (set_value () .size ());

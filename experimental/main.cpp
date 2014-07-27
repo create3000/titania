@@ -219,225 +219,10 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
-class X3DObject
-{
-public:
-
-	X3DObject ()
-	{ }
-
-	virtual
-	void
-	addClones (const size_t)
-	{ }
-
-	virtual
-	void
-	removeClones (const size_t)
-	{ }
 
 
-protected:
-
-};
-
-class X3DChildObject :
-	public X3DObject
-{
-public:
-
-	X3DChildObject ()
-	{ }
-
-};
-
-class X3DFieldDefinition :
-	public X3DChildObject
-{
-public:
-
-	X3DFieldDefinition ()
-	{ }
-
-};
-
-class X3DBaseNode :
-	public X3DChildObject
-{
-public:
-
-	X3DBaseNode () :
-		cloneCount (0),
-		  private_ (false)
-	{ }
-
-	size_t
-	getCloneCount () const
-	{ return cloneCount; }
-
-	virtual
-	void
-	isPrivate (const bool value)
-	{
-		if (value == private_)
-			return;
-
-		private_ = value;
-
-		if (private_)
-		{
-			for (const auto & field : fieldDefinition)
-				field -> removeClones (1);
-		}
-		else
-		{
-			for (const auto & field : fieldDefinition)
-				field -> addClones (1);
-		}
-	}
-
-	virtual
-	bool
-	isPrivate () const
-	{ return private_; }
 
 
-private:
-
-	void
-	addField (X3DFieldDefinition* const field)
-	{
-		if (not isPrivate ())
-			field -> addClones (1);
-	}
-
-	void
-	removeField (X3DFieldDefinition* const field)
-	{
-		if (not isPrivate ())
-			field -> removeClones (1);
-	}
-
-	virtual
-	void
-	addClones (const size_t count) final override
-	{ cloneCount += count; }
-
-	virtual
-	void
-	removeClones (const size_t count) final override
-	{ cloneCount -= count; }
-
-	std::vector <X3DFieldDefinition*> fieldDefinition;
-	size_t                            cloneCount;
-	bool                              private_;
-
-};
-
-class X3DPtr;
-
-class X3DPtrArray :
-	public X3DFieldDefinition
-{
-public:
-
-	X3DPtrArray ()
-	{ }
-
-
-private:
-
-	X3DPtr*
-	createChild () const;
-
-	virtual
-	void
-	addClones (const size_t count) final override;
-
-	virtual
-	void
-	removeClones (const size_t count) final override;
-
-	std::vector <X3DPtr*> children;
-	size_t                cloneCount;
-
-};
-
-class X3DPtr :
-	public X3DFieldDefinition
-{
-public:
-
-	X3DPtr ()
-	{ }
-
-	void
-	setValue (X3DChildObject* const value)
-	{
-		if (child)
-			child -> removeClones (cloneCount);
-
-		child = value;
-
-		if (child)
-			child -> addClones (cloneCount);
-
-	}
-
-	virtual
-	void
-	addClones (const size_t count) final override
-	{
-		cloneCount += count;
-
-		if (child)
-			child -> addClones (count);
-	}
-
-	virtual
-	void
-	removeClones (const size_t count) final override
-	{
-		cloneCount -= count;
-
-		if (child)
-			child -> removeClones (count);
-	}
-
-private:
-
-	X3DChildObject* child;
-	size_t          cloneCount;
-
-};
-
-X3DPtr*
-X3DPtrArray::createChild () const
-{
-	const auto child = new X3DPtr ();
-
-	child -> addClones (cloneCount);
-
-	return child;
-}
-
-void
-X3DPtrArray::addClones (const size_t count)
-{
-	cloneCount += count;
-
-	for (auto & child : children)
-		child -> addClones (count);
-}
-
-void
-X3DPtrArray::removeClones (const size_t count)
-{
-	cloneCount -= count;
-
-	for (auto & child : children)
-		child -> removeClones (count);
-}
 
 int
 main (int argc, char** argv)
@@ -453,6 +238,23 @@ main (int argc, char** argv)
 	#endif
 
 	std::clog .imbue (std::locale (""));
+	
+	const std::multimap <std::string, int> mm = {
+		std::make_pair ("a", 1),
+		std::make_pair ("a", 2),
+		std::make_pair ("a", 3),
+		std::make_pair ("b", 1),
+		std::make_pair ("b", 2),
+		std::make_pair ("b", 3),
+	};
+
+	const std::vector <int> v = { 1,2,3,4,5,6 };
+
+	for (const auto & pair : basic::make_reverse_range (mm .equal_range ("a")))
+		__LOG__ << pair .first << " : " << pair .second << std::endl;
+
+	for (const auto & e : basic::make_reverse_range (v))
+		__LOG__ << e << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

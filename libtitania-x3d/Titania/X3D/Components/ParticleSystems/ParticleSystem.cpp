@@ -1469,7 +1469,7 @@ ParticleSystem::drawGeometry ()
 					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 					const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
 
-					for (const auto & particle : basic::adapter (particles, particles + numParticles))
+					for (const auto & particle : std::make_pair (particles, particles + numParticles))
 						positions .emplace_back (particle .position);
 
 					glUnmapBuffer (GL_ARRAY_BUFFER);

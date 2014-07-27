@@ -57,7 +57,7 @@
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
 #include "../Utility/Types.h"
-#include "../../Utility/Adapter.h"
+#include "../../Utility/Range.h"
 #include <array>
 
 namespace titania {

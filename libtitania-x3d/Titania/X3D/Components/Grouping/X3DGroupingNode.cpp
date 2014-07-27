@@ -53,7 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace X3D {
@@ -186,7 +186,7 @@ X3DGroupingNode::add (const MFNode & children)
 			{
 				const auto innerNode = child -> getInnerNode ();
 
-				for (const auto & type : basic::reverse_adapter (innerNode -> getType ()))
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{
 					switch (type)
 					{
@@ -269,7 +269,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 			for (const auto & child : childNodes)
 				child -> traverse (type);
 
-			for (const auto & child : basic::reverse_adapter (collectables))
+			for (const auto & child : basic::make_reverse_range (collectables))
 				child -> pop (type);
 
 			if (not pointingDeviceSensors .empty ())
@@ -293,7 +293,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 			for (const auto & child : childNodes)
 				child -> traverse (type);
 
-			for (const auto & child : basic::reverse_adapter (collectables))
+			for (const auto & child : basic::make_reverse_range (collectables))
 				child -> pop (type);
 
 			break;
@@ -309,10 +309,10 @@ X3DGroupingNode::traverse (const TraverseType type)
 			for (const auto & child : childNodes)
 				child -> traverse (type);
 
-			for (const auto & child : basic::reverse_adapter (collectables))
+			for (const auto & child : basic::make_reverse_range (collectables))
 				child -> pop (type);
 
-			for (const auto & child : basic::reverse_adapter (localFogs))
+			for (const auto & child : basic::make_reverse_range (localFogs))
 				child -> pop ();
 
 			break;

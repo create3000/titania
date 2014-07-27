@@ -1,3 +1,14 @@
+2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Path.h:
+	* Range.h:
+	* libtitania-standard.cproj:
+	* Adapter.h:
+	* Remove.h:
+	* Box2.h:
+	* Box3.h:
+	* IndexedMultiMap.h: 
+
 2014-07-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* split.h: 

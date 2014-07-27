@@ -50,7 +50,7 @@
 
 #include "ShapeContainer.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace X3D {
@@ -93,7 +93,7 @@ ShapeContainer::draw ()
 
 	shape -> draw ();
 
-	for (const auto & object : basic::reverse_adapter (localObjects))
+	for (const auto & object : basic::make_reverse_range (localObjects))
 		object -> disable ();
 }
 

@@ -147,7 +147,7 @@ private:
 	getPropertyDescriptor (const basic_ptr <vsExecutionContext> & executionContext) const
 	throw (ReferenceError)
 	{
-		for (const auto & object : basic::reverse_adapter (executionContext -> getDefaultObjects ()))
+		for (const auto & object : basic::make_reverse_range (executionContext -> getDefaultObjects ()))
 		{
 			try
 			{

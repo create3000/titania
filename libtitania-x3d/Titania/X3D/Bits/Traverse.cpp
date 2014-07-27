@@ -190,7 +190,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 
 	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		for (const auto & type : basic::reverse_adapter (node -> getType ()))
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
 		{
 			switch (type)
 			{
@@ -402,7 +402,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 				if (flags & TRAVERSE_VISIBLE_NODES)
 				{
-					for (const auto & type : basic::reverse_adapter (node -> getType ()))
+					for (const auto & type : basic::make_reverse_range (node -> getType ()))
 					{
 						switch (type)
 						{
@@ -507,7 +507,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 	if (flags & ~TRAVERSE_ROOT_NODES)
 	{
-		for (const auto & type : basic::reverse_adapter (node -> getType ()))
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
 		{
 			switch (type)
 			{

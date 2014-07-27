@@ -196,7 +196,7 @@ Selection::select ()
 
 			if (selectLowest)
 			{
-				for (const auto & object : basic::reverse_adapter (hierarchy))
+				for (const auto & object : basic::make_reverse_range (hierarchy))
 				{
 					const SFNode lowest (object);
 

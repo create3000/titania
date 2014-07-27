@@ -53,7 +53,7 @@
 
 #include "../LOG.h"
 #include "../String/split.h"
-#include "../Utility/Adapter.h"
+#include "../Utility/Range.h"
 #include <algorithm>
 #include <deque>
 #include <iterator>
@@ -336,7 +336,7 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 	{
 		if (path .size () > 1)
 		{
-			for (const auto & segment : adapter (path .begin (), -- path .end ()))
+			for (const auto & segment : std::make_pair (path .begin (), -- path .end ()))
 				ostream << segment << path .separator ();
 		}
 

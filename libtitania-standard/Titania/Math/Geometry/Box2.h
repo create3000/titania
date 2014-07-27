@@ -55,7 +55,7 @@
 #include "../Numbers/Vector2.h"
 #include "../Utility/Types.h"
 #include "../Functional.h"
-#include "../../Utility/Adapter.h"
+#include "../../Utility/Range.h"
 #include <array>
 
 namespace titania {

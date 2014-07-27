@@ -52,7 +52,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace X3D {
@@ -162,13 +162,13 @@ Extrusion::createPoints (const bool hasCaps)
 
 		if (beginCap ())
 		{
-			for (const auto & point : basic::adapter (points .begin (), points .begin () + crossSection () .size ()))
+			for (const auto & point : std::make_pair (points .begin (), points .begin () + crossSection () .size ()))
 				points .emplace_back (point);
 		}
 
 		if (endCap ())
 		{
-			for (const auto & point : basic::adapter (last, last + crossSection () .size ()))
+			for (const auto & point : std::make_pair (last, last + crossSection () .size ()))
 				points .emplace_back (point);
 		}
 	}

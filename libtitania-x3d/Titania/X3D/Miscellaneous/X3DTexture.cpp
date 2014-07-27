@@ -51,7 +51,7 @@
 #include "X3DTexture.h"
 
 #include <Titania/LOG.h>
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace X3D {
@@ -156,7 +156,7 @@ X3DTexture::refineImageFormats ()
 		}
 	}
 
-	for (Magick::Image & next : basic::adapter (++ images -> begin (), images -> end ()))
+	for (Magick::Image & next : std::make_pair (++ images -> begin (), images -> end ()))
 	{
 		next .type (image .type ());
 		next .magick (image .magick ());

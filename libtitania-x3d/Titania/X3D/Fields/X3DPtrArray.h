@@ -55,7 +55,7 @@
 #include "../Fields/X3DPtr.h"
 #include "../InputOutput/Generator.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace X3D {
@@ -497,7 +497,7 @@ X3DPtrArray <ValueType>::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
-			for (const auto & field : basic::adapter (cbegin (), cend () - 1))
+			for (const auto & field : std::make_pair (cbegin (), cend () - 1))
 			{
 				ostream
 					<< Generator::Indent
@@ -528,7 +528,7 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 	{
 		Generator::PushContext ();
 
-		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
 			if (value)
 			{

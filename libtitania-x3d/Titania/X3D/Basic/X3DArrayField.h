@@ -56,7 +56,7 @@
 
 #include <Titania/Algorithm.h>
 #include <Titania/Basic/ReferenceIterator.h>
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 #include <initializer_list>
 
 namespace titania {
@@ -618,7 +618,7 @@ X3DArrayField <ValueType>::X3DArrayField (const InputIterator & first, const Inp
 {
 	// Insert at end
 
-	for (const auto & value : basic::adapter (first, last))
+	for (const auto & value : std::make_pair (first, last))
 	{
 		ValueType* const field = new ValueType (value);
 
@@ -751,7 +751,7 @@ X3DArrayField <ValueType>::insert (const iterator & location, const size_type co
 
 	const auto iter = get () .begin () + pos;
 
-	for (auto & field : basic::adapter (iter, iter + count))
+	for (auto & field : std::make_pair (iter, iter + count))
 	{
 		field = new ValueType (value);
 
@@ -774,7 +774,7 @@ X3DArrayField <ValueType>::insert (const iterator & location, InputIterator firs
 
 	const auto iter = get () .begin () + pos;
 
-	for (auto & field : basic::adapter (iter, iter + count))
+	for (auto & field : std::make_pair (iter, iter + count))
 	{
 		field = new ValueType (*first);
 
@@ -871,7 +871,7 @@ X3DArrayField <ValueType>::resize (const size_type count, const ValueType & valu
 	{
 		get () .resize (count, nullptr);
 
-		for (auto & field : basic::adapter (get () .begin () + currentSize, get () .end ()))
+		for (auto & field : std::make_pair (get () .begin () + currentSize, get () .end ()))
 		{
 			field = new ValueType (value);
 			addChild (field);
@@ -971,7 +971,7 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 		{
 			ostream << X3DGenerator::OpenBracket;
 
-			for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+			for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 			{
 				ostream
 					<< value
@@ -997,7 +997,7 @@ X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
-		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
 			ostream
 				<< XMLEncode (value)
@@ -1015,7 +1015,7 @@ void
 X3DArrayField <ValueType>::addChildren (const typename iterator::iterator_type & first,
                                         const typename iterator::iterator_type & last)
 {
-	for (auto & value : basic::adapter (first, last))
+	for (auto & value : std::make_pair (first, last))
 		addChild (value);
 }
 
@@ -1041,7 +1041,7 @@ void
 X3DArrayField <ValueType>::removeChildren (const typename iterator::iterator_type & first,
                                            const typename iterator::iterator_type & last)
 {
-	for (auto & value : basic::adapter (first, last))
+	for (auto & value : std::make_pair (first, last))
 		removeChild (value);
 }
 

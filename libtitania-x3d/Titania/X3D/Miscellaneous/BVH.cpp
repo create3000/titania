@@ -51,7 +51,7 @@
 #include "BVH.h"
 
 #include <Titania/LOG.h>
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 #include <algorithm>
 
 namespace titania {
@@ -200,7 +200,7 @@ public:
 		min = getVertex (*begin, 0);
 		max = min;
 
-		for (const auto & triangle : basic::adapter (begin, end))
+		for (const auto & triangle : std::make_pair (begin, end))
 		{
 			for (size_t i = 0; i < 3; ++ i)
 			{

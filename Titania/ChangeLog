@@ -1,3 +1,15 @@
+2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoStep.cpp:
+	* X3DEditorObject.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* OutlineDragDrop.cpp:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment2.h:
+	* OutlineFields.h: 
+
 2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.cpp:

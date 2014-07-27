@@ -198,7 +198,7 @@ X3DShapeNode::disableTextures ()
 	}
 	else
 	{
-		for (const auto & unit : basic::reverse_adapter (getBrowser () -> getTextureStages ()))
+		for (const auto & unit : basic::make_reverse_range (getBrowser () -> getTextureStages ()))
 		{
 			if (unit < 0)
 				continue;

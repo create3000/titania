@@ -360,7 +360,7 @@ indexed_multimap <Key, ValueType>::erase (const key_type & key)
 	{
 		// delete elements
 
-		for (const auto & pair : basic::adapter (equal_range .first, equal_range .second))
+		for (const auto & pair : equal_range)
 			delete pair .second;
 
 		// remove range from array

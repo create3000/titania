@@ -365,7 +365,7 @@ X3DBrowserWidget::transform (const X3D::X3DExecutionContextPtr & executionContex
 {
 	X3D::traverse (executionContext, [&] (X3D::SFNode & node)
 	               {
-	                  for (const auto & type: basic::reverse_adapter (node -> getType ()))
+	                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
 	                  {
 	                     switch (type)
 	                     {

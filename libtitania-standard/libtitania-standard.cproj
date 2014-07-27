@@ -81,7 +81,6 @@
     <None Include="Titania\Utility\Value.h" />
     <None Include="Titania\Utility\MemberValue.h" />
     <None Include="Titania\Utility\Pass.h" />
-    <None Include="Titania\Utility\Adapter.h" />
     <None Include="Titania\Algorithm.h" />
     <None Include="Titania\String.h" />
     <None Include="Titania\Utility.h" />
@@ -140,6 +139,7 @@
     <None Include="Titania\Utility\Map.h" />
     <None Include="Titania\InputOutput\SingleLineComment.h" />
     <None Include="Titania\InputOutput\MultiLineComment.h" />
+    <None Include="Titania\Utility\Range.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

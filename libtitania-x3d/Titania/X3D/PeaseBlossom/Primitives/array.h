@@ -56,7 +56,7 @@
 #include "../Primitives/var.h"
 
 #include <Titania/Basic/ReferenceIterator.h>
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 #include <vector>
 #include <initializer_list>
@@ -337,7 +337,7 @@ private:
 	add (const typename iterator::iterator_type & first,
 	     const typename iterator::iterator_type & last)
 	{
-		for (auto & element : basic::adapter (first, last))
+		for (auto & element : std::make_pair (first, last))
 			add (element);
 	}
 
@@ -349,7 +349,7 @@ private:
 	remove (const typename iterator::iterator_type & first,
 	        const typename iterator::iterator_type & last)
 	{
-		for (auto & element : basic::adapter (first, last))
+		for (auto & element : std::make_pair (first, last))
 			remove (element);
 	}
 
@@ -379,7 +379,7 @@ basic_array <Type>::basic_array (const InputIterator & first, const InputIterato
 {
 	// Insert at end
 
-	for (const auto & e : basic::adapter (first, last))
+	for (const auto & e : std::make_pair (first, last))
 	{
 		Type* const element = new Type (e);
 
@@ -493,7 +493,7 @@ basic_array <Type>::insert (const iterator & location, const size_type count, co
 
 	const auto iter = value .begin () + pos;
 
-	for (auto & element : basic::adapter (iter, iter + count))
+	for (auto & element : std::make_pair (iter, iter + count))
 	{
 		element = new Type (e);
 
@@ -515,7 +515,7 @@ basic_array <Type>::insert (const iterator & location, InputIterator first, cons
 
 	const auto iter = value .begin () + pos;
 
-	for (auto & element : basic::adapter (iter, iter + count))
+	for (auto & element : std::make_pair (iter, iter + count))
 	{
 		element = new Type (*first);
 
@@ -604,7 +604,7 @@ basic_array <Type>::resize (const size_type count, const Type & e)
 	{
 		value .resize (count, nullptr);
 
-		for (auto & element : basic::adapter (value .begin () + currentSize, value .end ()))
+		for (auto & element : std::make_pair (value .begin () + currentSize, value .end ()))
 		{
 			element = new Type (e);
 			add (element);
@@ -638,7 +638,7 @@ basic_array <Type>::toStream (std::ostream & ostream) const
 		{
 			ostream << "[ ";
 
-			for (const auto & element : basic::adapter (cbegin (), cend () - 1))
+			for (const auto & element : std::make_pair (cbegin (), cend () - 1))
 			{
 				ostream
 					<< element

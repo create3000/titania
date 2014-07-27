@@ -50,7 +50,7 @@
 
 #include "UndoStep.h"
 
-#include <Titania/Utility/Adapter.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace puck {
@@ -81,7 +81,7 @@ UndoStep::addUndoStepReverse (const UndoStepPtr & undoStep)
 void
 UndoStep::undoChanges ()
 {
-	for (const auto & undoFunction : basic::reverse_adapter (undoFunctions))
+	for (const auto & undoFunction : basic::make_reverse_range (undoFunctions))
 	{
 		try
 		{

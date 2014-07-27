@@ -100,7 +100,7 @@ CollisionShape::draw ()
 
 	shape -> drawCollision ();
 
-	for (const auto & object : basic::reverse_adapter (localObjects))
+	for (const auto & object : basic::make_reverse_range (localObjects))
 		object -> disable ();
 }
 

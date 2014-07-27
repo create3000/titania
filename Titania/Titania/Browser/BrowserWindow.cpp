@@ -1704,7 +1704,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 			if (parent -> getExecutionContext () not_eq child -> getExecutionContext ())
 				continue;
 
-			for (const auto & type : basic::reverse_adapter (parent -> getType ()))
+			for (const auto & type : basic::make_reverse_range (parent -> getType ()))
 			{
 				switch (type)
 				{
@@ -1753,7 +1753,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 		// Insert other parents.
 
-		for (const auto & object : basic::adapter (hierarchy .crbegin () + 1, hierarchy .crend ()))
+		for (const auto & object : std::make_pair (hierarchy .crbegin () + 1, hierarchy .crend ()))
 		{
 			if (tree .emplace (object, false) .first -> second)
 			{
@@ -1827,7 +1827,7 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 {
 	X3D::MFNode children;
 
-	for (const auto & type : basic::reverse_adapter (parent -> getType ()))
+	for (const auto & type : basic::make_reverse_range (parent -> getType ()))
 	{
 		switch (type)
 		{

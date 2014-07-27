@@ -108,7 +108,7 @@ findParents (X3DChildObject* const object, std::vector <Type*> & parents, const 
 
 	if (node)
 	{
-		for (const auto & type : basic::reverse_adapter (node -> getType ()))
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
 		{
 			switch (type)
 			{

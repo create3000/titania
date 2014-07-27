@@ -184,7 +184,7 @@ X3DFieldAdjustment <Type>::set_field ()
 
 	bool hasField = false;
 
-	for (const auto & node : basic::reverse_adapter (nodes))
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{

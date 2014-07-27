@@ -51,7 +51,7 @@
 #ifndef __TITANIA_ALGORITHM_REMOVE_H__
 #define __TITANIA_ALGORITHM_REMOVE_H__
 
-#include "../Utility/Adapter.h"
+#include "../Utility/Range.h"
 #include "../Utility/Value.h"
 
 #include <cstddef>
@@ -75,7 +75,7 @@ remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, Range
 {
 	std::multiset <typename ForwardIterator::value_type> range;
 
-	for (const auto & element : basic::adapter (rfirst, rlast))
+	for (const auto & element : std::make_pair (rfirst, rlast))
 		range .emplace (value (element));
 
 	if (range .empty ())

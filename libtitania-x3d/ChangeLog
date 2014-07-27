@@ -1,3 +1,45 @@
+2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Traverse.h:
+	* Traverse.cpp:
+	* X3DPtrArray.h:
+	* X3DBaseNode.cpp:
+	* BVH.cpp:
+	* X3DArrayField.h:
+	* Selection.cpp:
+	* ArrayFields.cpp:
+	* X3DRenderer.cpp:
+	* X3DTexture.cpp:
+	* ShapeContainer.cpp:
+	* CollisionShape.cpp:
+	* ProtoDeclaration.cpp:
+	* array.h:
+	* X3DShapeNode.cpp:
+	* Function.cpp:
+	* X3DExecutionContext.cpp:
+	* Extrusion.cpp:
+	* X3DFontStyleNode.cpp:
+	* ExternProtoDeclaration.cpp:
+	* ColorChaser.cpp:
+	* ColorDamper.cpp:
+	* ScalarChaser.cpp:
+	* ScalarDamper.cpp:
+	* PositionChaser.cpp:
+	* PositionDamper.cpp:
+	* X3DGroupingNode.cpp:
+	* CoordinateDamper.cpp:
+	* CoordinateChaser.cpp:
+	* TexCoordChaser2D.cpp:
+	* TexCoordDamper2D.cpp:
+	* PositionDamper2D.cpp:
+	* PositionChaser2D.cpp:
+	* OrientationChaser.cpp:
+	* OrientationDamper.cpp:
+	* VariableExpression.h:
+	* vsExecutionContext.cpp:
+	* ParticleSystem.cpp:
+	* jsFieldDefinitionArray.cpp: 
+
 2014-07-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp:

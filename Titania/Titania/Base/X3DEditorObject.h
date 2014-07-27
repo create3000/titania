@@ -191,7 +191,7 @@ X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::
 	X3D::X3DPtr <FieldType> found;
 	int                     active = -2;
 
-	for (const auto & node : basic::reverse_adapter (nodes))
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
@@ -232,7 +232,7 @@ X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const st
 {
 	int active = -2;
 
-	for (const auto & node : basic::reverse_adapter (nodes))
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
@@ -270,7 +270,7 @@ X3DEditorObject::getString (const X3D::X3DPtrArray <NodeType> & nodes, const std
 	X3D::String found;
 	int         active = -2;
 
-	for (const auto & node : basic::reverse_adapter (nodes))
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
@@ -336,7 +336,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 	{
-		for (const auto & undoFunction : basic::adapter (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
+		for (const auto & undoFunction : std::make_pair (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
 			undoFunction ();
 
 		undoStep -> getUndoFunctions () .resize (undoSize);
@@ -464,7 +464,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 	{
-		for (const auto & undoFunction : basic::adapter (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
+		for (const auto & undoFunction : std::make_pair (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
 			undoFunction ();
 
 		undoStep -> getUndoFunctions () .resize (undoSize);

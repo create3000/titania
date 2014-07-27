@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.1
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
@@ -16,8 +16,10 @@ DEF ClippedObjects Transform {
     DEF Box Transform {
       children Shape {
         appearance Appearance {
-          material Material {
+          material TwoSidedMaterial {
+            separateBackColor TRUE
             diffuseColor 0.8 0 0
+            backDiffuseColor 0 0.739946 0.76185
           }
         }
         geometry Box {
@@ -29,8 +31,10 @@ DEF ClippedObjects Transform {
       translation 3 0 0
       children Shape {
         appearance Appearance {
-          material Material {
+          material TwoSidedMaterial {
+            separateBackColor TRUE
             diffuseColor 0 0.8 0
+            backDiffuseColor 0.766216 0 0.704745
           }
         }
         geometry Cylinder {
@@ -42,8 +46,10 @@ DEF ClippedObjects Transform {
       translation 6 0 0
       children Shape {
         appearance Appearance {
-          material Material {
+          material TwoSidedMaterial {
+            separateBackColor TRUE
             diffuseColor 0 0 0.8
+            backDiffuseColor 0.80648 0.796122 0
           }
         }
         geometry Cone {
@@ -55,8 +61,10 @@ DEF ClippedObjects Transform {
       translation 9 0 0
       children Shape {
         appearance Appearance {
-          material Material {
+          material TwoSidedMaterial {
+            separateBackColor TRUE
             diffuseColor 0.8 0.8 0
+            backDiffuseColor 0 0.0531929 0.742009
           }
         }
         geometry Sphere {
@@ -65,7 +73,7 @@ DEF ClippedObjects Transform {
       }
     }
     DEF ClipPlane ClipPlane {
-      plane 0 0 -1 0.0464772
+      plane 0 0 -1 0.0532958
     }
     TouchSensor {
       description "Clipped objects"
@@ -77,11 +85,11 @@ DEF VisibleClipPlane Transform {
   children [
     DEF PlaneSensor PlaneSensor {
       axisRotation 0 1 0 1.5708
-      offset 4.50002 0 0.0464772
+      offset 4.50002 0 0.0532958
       maxPosition -1 0
     }
     DEF Rectangle2D Transform {
-      translation 4.50002 0 0.0464772
+      translation 4.50002 0 0.0532958
       scale 8 2.5 1
       children Shape {
         appearance Appearance {
@@ -99,8 +107,8 @@ DEF VisibleClipPlane Transform {
 }
 
 DEF ClipPlaneScript Script {
-  inputOnly  SFVec3f set_translation
-  outputOnly SFVec4f plane_changed
+  eventIn  SFVec3f set_translation
+  eventOut SFVec4f plane_changed
 
   url "vrmlscript:
 function set_translation (value)
