@@ -1085,9 +1085,8 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '{';
 
-	size_t fieldTypeLength      = 0;
-	size_t accessTypeLength     = 0;
-	size_t numUserDefinedFields = 0;
+	size_t fieldTypeLength  = 0;
+	size_t accessTypeLength = 0;
 
 	if (canUserDefinedFields ())
 	{
@@ -1124,7 +1123,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				ostream << Generator::Break;
 			}
 
-			toStreamUserDefinedField (ostream, *userDefinedFields .second, fieldTypeLength, accessTypeLength);
+			toStreamUserDefinedField (ostream, *(userDefinedFields .second - 1), fieldTypeLength, accessTypeLength);
 			ostream << Generator::Break;
 
 			ostream
@@ -1144,7 +1143,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 	}
 	else
 	{
-		if (not numUserDefinedFields)
+		if (numUserDefinedFields == 0)
 			ostream << Generator::TidyBreak;
 
 		ostream << Generator::IncIndent;

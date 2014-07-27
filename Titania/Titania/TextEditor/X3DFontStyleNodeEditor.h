@@ -93,6 +93,9 @@ private:
 	set_node ();
 
 	void
+	set_widgets ();
+
+	void
 	connectFontStyle (const X3D::SFNode &);
 
 	///  @name family

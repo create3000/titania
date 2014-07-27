@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -96,17 +96,17 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 {
 	getTexture2DBox () .set_visible (texture2DNode and value);
 
-	if (texture2DNode and value)
-	{
-		repeatS .setNodes ({ texture2DNode });
-		repeatT .setNodes ({ texture2DNode });
-	}
-	else
+	if (not texture2DNode or not value)
 	{
 		repeatS .setNodes ({ });
 		repeatT .setNodes ({ });
 		return;
 	}
+
+	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getWidth ()) + " × " + std::to_string (texture2DNode -> getHeight ()) + " (" + std::to_string (texture2DNode -> getComponents ()) + ")");
+
+	repeatS .setNodes ({ texture2DNode });
+	repeatT .setNodes ({ texture2DNode });
 
 	if (texture2DNode == value)
 		return;

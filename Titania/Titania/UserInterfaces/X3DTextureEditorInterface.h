@@ -163,6 +163,10 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::Label &
+	getTextureFormatLabel () const
+	{ return *m_TextureFormatLabel; }
+
 	Gtk::Notebook &
 	getTextureNotebook () const
 	{ return *m_TextureNotebook; }
@@ -409,6 +413,7 @@ private:
 	Gtk::ComboBoxText*             m_TextureComboBoxText;
 	Gtk::Button*                   m_TextureUnlinkButton;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::Label*                    m_TextureFormatLabel;
 	Gtk::Notebook*                 m_TextureNotebook;
 	Gtk::Label*                    m_TextureLabel;
 	Gtk::Box*                      m_ImageTextureBox;

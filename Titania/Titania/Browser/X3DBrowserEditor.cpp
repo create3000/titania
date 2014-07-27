@@ -2223,6 +2223,8 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 
 		addUndoStep (undoStep);
 	}
+
+	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", _ ("Script saved."));
 }
 
 void

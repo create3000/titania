@@ -128,24 +128,67 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 	{
 		case 1:
 		{
-//				const auto     stride = 4;
-//				const uint8_t* first  = static_cast <uint8_t*> (image .data ());
-//				const uint8_t* last   = first + imageTexture -> getWidth () * imageTexture -> getHeight () * stride;
-//
-//				while (first not_eq last)
-//					array .emplace_back (*first ++);
-//
+			// Copy and flip image vertically.
+
+			const auto stride    = 3;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					array .emplace_back (*p);
+				}
+			}
+
 			break;
 		}
 		case 2:
 		{
-//				const auto      stride = 4;
-//				const uint32_t* first  = static_cast <uint32_t*> ((void*) image .data ());
-//				const uint32_t* last   = first + imageTexture -> getWidth () * imageTexture -> getHeight () * stride;
-//
-//				while (first not_eq last)
-//					array .emplace_back (*first ++ & 0x0000ffff);
-//
+			// Copy and flip image vertically.
+
+			const auto stride    = 4;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					uint32_t point = 0;
+
+					point |= *p ++ << 8;
+					p += 2;
+					point |= *p;
+
+					array .emplace_back (point);
+				}
+			}
+
+			break;
 			break;
 		}
 		case 3:
@@ -185,20 +228,45 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 		}
 		case 4:
 		{
-//				const auto      stride = 4;
-//				const uint32_t* first  = static_cast <uint32_t*> ((void*) image .data ());
-//				const uint32_t* last   = first + imageTexture -> getWidth () * imageTexture -> getHeight () * stride;
-//
-//				while (first not_eq last)
-//					array .emplace_back (*first ++);
-//				
+			// Copy and flip image vertically.
+
+			const auto stride    = components;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					uint32_t point = 0;
+
+					point |= *p ++ << 24;
+					point |= *p ++ << 16;
+					point |= *p ++ << 8;
+					point |= *p;
+
+					array .emplace_back (point);
+				}
+			}
+
 			break;
 		}
 		default:
 			break;
 	}
 
-	pixelTexture -> image () .setValue (width, height, components, array);
+	pixelTexture -> image () .setValue (width, height, components, std::move (array));
 }
 
 } // puck

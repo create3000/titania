@@ -220,7 +220,7 @@ X3DBrowserWidget::updateTitle (const bool edited) const
 {
 	getWindow () .set_title (getScene () -> getTitle ()
 	                         + " · "
-	                         + getScene () -> getWorldURL ()
+	                         + getScene () -> getWorldURL () .filename ()
 	                         + (edited ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
@@ -281,8 +281,10 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 		scene            = getBrowser () -> getExecutionContext ();
 		executionContext = getBrowser () -> getExecutionContext ();
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		open (get_page ("about/url_error.wrl") + "?what=" + Glib::uri_escape_string (error .what ()));
+	}
 }
 
 void

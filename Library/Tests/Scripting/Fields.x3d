@@ -1,17 +1,23 @@
-#VRML V2.0 utf8 Titania V0.7.1
-
-DEF Timer TimeSensor {
-  loop TRUE
-}
-
-DEF Debug Script {
-  exposedField SFBool   enabled TRUE
-  eventIn      SFTime   set_time
-  field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
-  eventIn      SFBool   in
-  eventOut     SFBool   out
-
-  url "javascript:
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Sun, 27 Jul 2014 03:27:20 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V0.7.1, http://titania.create3000.de'/>
+    <meta name='modified' content='Sun, 27 Jul 2014 03:27:20 GMT'/>
+  </head>
+  <Scene>
+    <TimeSensor DEF='Timer'
+        loop='true'/>
+    <Script DEF='Debug'>
+      <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
+      <field accessType='inputOnly' type='SFTime' name='set_time'/>
+      <field accessType='initializeOnly' type='SFString' name='utf8' value='abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–'/>
+      <field accessType='inputOnly' type='SFBool' name='in'/>
+      <field accessType='outputOnly' type='SFBool' name='out'/>
+<![CDATA[javascript:
 
 var utf8_string = 'abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–';
 
@@ -82,7 +88,8 @@ function set_time (value)
 
 	utf8 = utf8;
 }
-"
-}
-
-ROUTE Timer.time TO Debug.set_time
+]]> 
+    </Script>
+    <ROUTE fromNode='Timer' fromField='time' toNode='Debug' toField='set_time'/>
+  </Scene>
+</X3D>

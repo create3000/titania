@@ -86,6 +86,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureUnlinkButton -> set_name ("TextureUnlinkButton");
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_PreviewBox -> set_name ("PreviewBox");
+	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
+	m_TextureFormatLabel -> set_name ("TextureFormatLabel");
 	m_builder -> get_widget ("TextureNotebook", m_TextureNotebook);
 	m_TextureNotebook -> set_name ("TextureNotebook");
 	m_builder -> get_widget ("TextureLabel", m_TextureLabel);

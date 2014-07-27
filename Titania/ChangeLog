@@ -1,5 +1,20 @@
 2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* url_error.wrl:
+	* HistoryEditor.cpp:
+	* TextureEditor.xml:
+	* X3DFontStyleNodeEditor.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DPixelTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextureEditorInterface.h:
+	* X3DTextureEditorInterface.cpp: 
+
+2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UndoStep.cpp:
 	* X3DEditorObject.h:
 	* BrowserWindow.cpp:

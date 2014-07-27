@@ -1720,13 +1720,13 @@ Parser::Id (std::string & _Id)
 				case '\x7d':
 				case '\x7f':
 				{
-					return true;
+					goto END;
 				}
 				default:
 				{
 					if ((c >= '\x00' and c <= '\x20'))
 					{
-						return true;
+						goto END;
 					}
 
 					_Id .push_back (istream .get ());
@@ -1734,8 +1734,11 @@ Parser::Id (std::string & _Id)
 			}
 		}
 		else
-			return true;
+			goto END;
 	}
+
+END:
+	filter_bad_utf8_characters (_Id);
 
 	return true;
 }

@@ -121,3 +121,23 @@ Transform {
     geometry Box { }
   }
 }
+
+DEF bwa Transform {
+  translation 1.22117 -2.50424 0
+  scale 0.968288 0.968288 281.147
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "../../../../../Dokumente/bwa.png",
+          "file:///home/holger/Dokumente/bwa.png"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}

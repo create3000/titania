@@ -196,6 +196,8 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 	addRedoFunction <X3D::SFNode> (texts, "fontStyle", undoStep);
 
 	getFontStyleUnlinkButton () .set_sensitive (getFontStyleComboBoxText () .get_active () > 0 and fontStyleNode -> getCloneCount () > 1);
+
+	set_widgets ();
 }
 
 void
@@ -284,7 +286,13 @@ X3DFontStyleNodeEditor::set_node ()
 	set_style ();
 	set_size ();
 	set_justify ();
+	
+	set_widgets ();
+}
 
+void
+X3DFontStyleNodeEditor::set_widgets ()
+{
 	spacing     .setNodes ({ fontStyleNode });
 	horizontal  .setNodes ({ fontStyleNode });
 	leftToRight .setNodes ({ fontStyleNode });

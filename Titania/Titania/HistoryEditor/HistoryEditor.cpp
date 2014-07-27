@@ -120,7 +120,10 @@ HistoryEditor::set_scene ()
 
 	if (worldURL .empty ())
 		return;
-		
+
+	if (worldURL .filename () == get_page ("about/url_error.wrl"))
+		return;
+
 	// Move row.
 
 	try
