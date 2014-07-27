@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,7 +71,9 @@ X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	getPixelTextureBox () .set_visible (pixelTexture);
 
-	if (not pixelTexture)
+	if (pixelTexture)
+		setWidgets ();
+	else
 	{
 		pixelTexture = new X3D::PixelTexture (getExecutionContext ());
 		getExecutionContext () -> addUninitializedNode (pixelTexture);
@@ -82,39 +84,52 @@ X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	//set_url ();
 }
-	
+
 const X3D::X3DPtr <X3D::PixelTexture> &
 X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	getPixelTextureBox () .set_visible (value);
 
-	if (not value)
-		return pixelTexture;
-
-	switch (value -> getType () .back ()) 
+	if (value)
 	{
-		case X3D::X3DConstants::ImageTexture:
+		switch (value -> getType () .back ())
 		{
-			assign (X3D::X3DPtr <X3D::ImageTexture> (value));
-			break;
-		}
-		case X3D::X3DConstants::PixelTexture:
-		{
-			const X3D::X3DPtr <X3D::PixelTexture> last (value);
+			case X3D::X3DConstants::ImageTexture:
+			{
+				assign (X3D::X3DPtr <X3D::ImageTexture> (value));
+				break;
+			}
+			case X3D::X3DConstants::PixelTexture:
+			{
+				const X3D::X3DPtr <X3D::PixelTexture> last (value);
 
-			pixelTexture -> image () = last -> image ();
-			break;
+				pixelTexture -> image () = last -> image ();
+				break;
+			}
+			default:
+				break;
 		}
-		default:
-			break;
 	}
+
+	setWidgets ();
 
 	return pixelTexture;
 }
 
 void
+X3DPixelTextureEditor::setWidgets ()
+{
+	getTextureFormatLabel () .set_text (std::to_string (pixelTexture -> image () .getWidth ()) +
+	                                    " × " +
+	                                    std::to_string (pixelTexture -> image () .getHeight ()) +
+	                                    " (" +
+	                                    std::to_string (pixelTexture -> image () .getComponents ()) +
+	                                    ")");
+}
+
+void
 X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageTexture)
-{	
+{
 	if (not imageTexture -> getBrowser () -> makeCurrent ())
 		return;
 

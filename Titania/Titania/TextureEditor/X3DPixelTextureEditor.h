@@ -77,7 +77,10 @@ protected:
 
 private:
 
-	///  @name Event handlers
+	///  @name Operations
+
+	void
+	setWidgets ();
 
 	void
 	assign (const X3D::X3DPtr <X3D::ImageTexture> &);

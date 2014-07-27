@@ -103,8 +103,6 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 		return;
 	}
 
-	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getWidth ()) + " × " + std::to_string (texture2DNode -> getHeight ()) + " (" + std::to_string (texture2DNode -> getComponents ()) + ")");
-
 	repeatS .setNodes ({ texture2DNode });
 	repeatT .setNodes ({ texture2DNode });
 

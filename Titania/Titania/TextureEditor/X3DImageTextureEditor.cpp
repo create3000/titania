@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,7 +71,10 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	getImageTextureBox () .set_visible (imageTexture);
 
-	if (not imageTexture)
+	if (imageTexture)
+		setWidgets ();
+
+	else
 	{
 		imageTexture = new X3D::ImageTexture (getExecutionContext ());
 		getExecutionContext () -> addUninitializedNode (imageTexture);
@@ -82,29 +85,48 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	//set_url ();
 }
-	
+
 const X3D::X3DPtr <X3D::ImageTexture> &
 X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	getImageTextureBox () .set_visible (value);
 
-	if (not value)
-		return imageTexture;
-
-	switch (value -> getType () .back ()) 
+	if (value)
 	{
-		case X3D::X3DConstants::ImageTexture:
+		switch (value -> getType () .back ())
 		{
-			const X3D::X3DPtr <X3D::ImageTexture> last (value);
+			case X3D::X3DConstants::ImageTexture:
+			{
+				const X3D::X3DPtr <X3D::ImageTexture> last (value);
 
-			imageTexture -> url () = last -> url ();
-			break;
+				imageTexture -> url () = last -> url ();
+				imageTexture -> checkLoadState () .addInterest (this, &X3DImageTextureEditor::setWidgets);
+				break;
+			}
+			default:
+			{
+				setWidgets ();
+				break;
+			}
 		}
-		default:
-			break;
 	}
+	else
+		setWidgets ();
 
 	return imageTexture;
+}
+
+void
+X3DImageTextureEditor::setWidgets ()
+{
+	imageTexture -> checkLoadState () .removeInterest (this, &X3DImageTextureEditor::setWidgets);
+
+	getTextureFormatLabel () .set_text (std::to_string (imageTexture -> getWidth ()) +
+	                                    " × " +
+	                                    std::to_string (imageTexture -> getHeight ()) +
+	                                    " (" +
+	                                    std::to_string (imageTexture -> getComponents ()) +
+	                                    ")");
 }
 
 } // puck

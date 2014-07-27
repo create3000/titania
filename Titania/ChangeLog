@@ -1,5 +1,13 @@
 2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPixelTextureEditor.h:
+	* X3DImageTextureEditor.h:
+	* X3DPixelTextureEditor.cpp:
+	* X3DImageTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp: 
+
+2014-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.cpp:
 	* X3DBrowserEditor.cpp:
 	* url_error.wrl:
