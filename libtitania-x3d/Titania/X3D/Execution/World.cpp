@@ -84,7 +84,6 @@ World::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	layerSet -> isInternal (true);
 	layerSet -> isPrivate (true);
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
@@ -95,7 +94,6 @@ World::initialize ()
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
 	layer0 -> isLayer0 (true);
-	layer0 -> isInternal (true);
 	layer0 -> isPrivate (true);
 	layer0 -> setup ();
 

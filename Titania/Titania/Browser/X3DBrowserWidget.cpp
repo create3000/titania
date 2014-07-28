@@ -283,7 +283,23 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	}
 	catch (const X3D::X3DError & error)
 	{
-		open (get_page ("about/url_error.wrl") + "?what=" + Glib::uri_escape_string (error .what ()));
+		try
+		{
+			std::ostringstream osstream;
+
+			osstream
+				<< get_page ("about/url_error.wrl")
+				<< "?type=" << basic::to_string (error .getType ())
+				<< ";what=" << Glib::uri_escape_string (error .what ());
+
+			getBrowser () -> loadURL ({ osstream .str () });
+			scene            = getBrowser () -> getExecutionContext ();
+			executionContext = getBrowser () -> getExecutionContext ();
+		}
+		catch (const X3D::X3DError & error)
+		{
+			blank ();
+		}
 	}
 }
 

@@ -105,16 +105,6 @@ public:
 	{ return node -> isLive (); }
 
 	virtual
-	bool
-	isInternal () const final override
-	{ return node -> isInternal (); }
-
-	virtual
-	void
-	isInternal (const bool value) final override
-	{ node -> isInternal (value); }
-
-	virtual
 	void
 	addTool () override
 	{ }
@@ -214,16 +204,11 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	node -> addParent (this);
 	node -> isPrivate (true);
 
-	const bool internal = node -> isInternal ();
-	node -> isInternal (false);
-
 	for (auto & field : node -> getPreDefinedFields ())
 		addField (field -> getAccessType (), field -> getName (), *field);
 
 	for (auto & field : node -> getUserDefinedFields ())
 		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-	node -> isInternal (internal);
 }
 
 template <class Type>

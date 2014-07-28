@@ -102,7 +102,6 @@ ProgramShader::initialize ()
 	activate () .addInterest (this, &ProgramShader::set_activate);
 	programs () .addInterest (loadSensor -> watchList ());
 
-	loadSensor -> isInternal (true);
 	loadSensor -> isPrivate (true);
 	loadSensor -> watchList () = programs ();
 	loadSensor -> isActive () .addInterest (this, &ProgramShader::requestExplicitRelink);

@@ -352,6 +352,7 @@ public:
 	 *  @name Clone handling
 	 */
 
+	///  Increments the clone count of its child by @a count.
 	virtual
 	void
 	addClones (const size_t count) final override
@@ -362,6 +363,7 @@ public:
 			getValue () -> addClones (count);
 	}
 
+	///  Decrements the clone count of its child by @a count.
 	virtual
 	void
 	removeClones (const size_t count) final override

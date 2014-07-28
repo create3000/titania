@@ -143,7 +143,6 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	          initialized (false),
 	             private_ (false),
 	           cloneCount (0),
-	             internal (false),
 	                 live (true),
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
@@ -482,11 +481,7 @@ throw (Error <INVALID_NAME>,
 
 	field .addParent (this);
 	field .setAccessType (accessType);
-
-	if (internal)
-		field .setName ("");
-	else
-		field .setName (name);
+	field .setName (name);
 
 	if (not private_)
 		field .addClones (1);
@@ -609,7 +604,7 @@ X3DBaseNode::getFieldName (const std::string & alias) const
 }
 
 /***
- *  Returns the standard field name for @a alias.
+ *  Returns the standard field name for @a alias depending on @a version.
  */
 const std::string &
 X3DBaseNode::getFieldName (const std::string & name, const VersionType version) const
@@ -645,7 +640,7 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
- *  Updates @a field in the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+ *  Replaces the field @a name by @a field. @a accessType and @a name will be assigned to @a field.
  */
 void
 X3DBaseNode::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
@@ -774,6 +769,10 @@ X3DBaseNode::removeChild (X3DChildObject & child)
 	X3DReferenceObject::removeChild (child);
 }
 
+/***
+ *  Marks this node as a node for internal use only. Such they do not increment the clone count of its child nodes and
+ *  are not fully printable.
+ */
 void
 X3DBaseNode::isPrivate (const bool value)
 {
@@ -791,62 +790,6 @@ X3DBaseNode::isPrivate (const bool value)
 	{
 		for (const auto & field : fieldDefinitions)
 			field -> addClones (1);
-	}
-}
-
-/***
- *  Determines how often this node is used in the scene graph.
- */
-size_t
-X3DBaseNode::getCloneCountO () const
-{
-	size_t numClones = 0;
-
-	for (const auto & parent : getParents ())
-	{
-		if (dynamic_cast <SFNode*> (parent))
-		{
-			// Only X3DNodes, ie nodes in the scene graph, have field names
-
-			if (parent -> getName () .empty ())
-			{
-				for (const auto & secondParent : parent -> getParents ())
-				{
-					// Only X3DNodes, ie nodes in the scene graph, have field names
-
-					if (secondParent -> getName () .empty ())
-						continue;
-
-					if (dynamic_cast <MFNode*> (secondParent))
-						++ numClones;
-				}
-			}
-			else
-				++ numClones;
-		}
-	}
-
-	return numClones;
-}
-
-/***
- *  Marks this node as a node for internal use only. Such nodes are not routeable, not scriptable, not fully printable
- *  and they do not increment the clone count of its child nodes.
- */
-void
-X3DBaseNode::isInternal (const bool value)
-{
-	internal = value;
-
-	if (internal)
-	{
-		for (const auto & field : fieldDefinitions)
-			field -> setName ("");
-	}
-	else
-	{
-		for (const auto & field : fields)
-			field .second -> setName (field .first);
 	}
 }
 

@@ -73,6 +73,11 @@ public:
 	throw ();
 
 	virtual
+	ErrorType
+	getType () const
+	throw () = 0;
+
+	virtual
 	const std::string &
 	toString () const
 	throw ();
@@ -99,6 +104,12 @@ public:
 	Error (const std::string & message) :
 		X3DError (message)
 	{ }
+
+	virtual
+	ErrorType
+	getType () const
+	throw () final override
+	{ return Type; }
 
 	virtual
 	~Error ()

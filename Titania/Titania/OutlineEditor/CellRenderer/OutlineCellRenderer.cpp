@@ -439,14 +439,10 @@ OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name
 
 		// Add clone count if any.
 
-		const auto cloneCountO = node -> getCloneCountO ();
 		const auto cloneCount  = node -> getCloneCount ();
 
-		if (cloneCountO > 1)
-			string += " [" + std::to_string (cloneCountO) + "]";
-
 		if (cloneCount > 1)
-			string += " [" + std::to_string (cloneCount) + "*]";
+			string += " [" + std::to_string (cloneCount) + "]";
 
 		return string;
 	}

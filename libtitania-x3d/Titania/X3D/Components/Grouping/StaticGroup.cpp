@@ -100,7 +100,6 @@ StaticGroup::initialize ()
 	group -> bboxCenter () = bboxCenter ();
 	group -> children ()   = children ();
 
-	group -> isInternal (true);
 	group -> isPrivate (true);
 	group -> setup ();
 }

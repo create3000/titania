@@ -99,7 +99,6 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
-	layerNode0 -> isInternal (true);
 	layerNode0 -> isPrivate (true);
 	layerNode0 -> setup ();
 

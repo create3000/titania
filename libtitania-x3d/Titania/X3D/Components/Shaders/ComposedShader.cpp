@@ -101,7 +101,6 @@ ComposedShader::initialize ()
 	activate () .addInterest (this, &ComposedShader::set_activate);
 	parts ()    .addInterest (loadSensor -> watchList ());
 
-	loadSensor -> isInternal (true);
 	loadSensor -> isPrivate (true);
 	loadSensor -> watchList () = parts ();
 	loadSensor -> isActive () .addInterest (this, &ComposedShader::requestExplicitRelink);

@@ -132,7 +132,6 @@ Inline::initialize ()
 		}
 	}
 
-	group -> isInternal (true);
 	group -> isPrivate (true);
 	group -> setup ();
 }
@@ -163,7 +162,6 @@ Inline::setScene (ScenePtr && value)
 	if (checkLoadState () == COMPLETE_STATE)
 	{
 		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
-		value -> isInternal (getRootContext () -> isInternal ());
 		value -> isPrivate (getRootContext () -> isPrivate ());
 		value -> getRootNodes () .addInterest (group -> children ());
 	}

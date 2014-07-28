@@ -68,6 +68,9 @@ namespace X3D {
 
 typedef std::shared_ptr <X3DBase> UserDataPtr;
 
+/**
+ *  Class to represent an object that is the base for all X3D objects.
+ */
 class X3DObject :
 	public X3DInput, public X3DOutput, public X3DGarbageCollector
 {
@@ -77,11 +80,13 @@ public:
 	 *  @name Type Information
 	 */
 
+	///  Returns the id of this object.  This is usefull for comparing object.
 	virtual
 	X3DBase*
 	getId ()
 	{ return this; }
 
+	///  Returns the id of this object.  This is usefull for comparing object.
 	virtual
 	const X3DBase*
 	getId () const
@@ -210,7 +215,7 @@ protected:
 	 *  @name Construction
 	 */
 
-	///  Constructs this object.
+	///  Constructs new X3DObject.
 	X3DObject ();
 
 

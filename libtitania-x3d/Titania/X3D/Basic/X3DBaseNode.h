@@ -196,13 +196,15 @@ public:
 	hasField (const std::string &) const
 	throw (Error <DISPOSED>);
 
+	///  Checks whether @a field has the default value for this node type.  The @a field must be of this node.
 	bool
 	isDefaultValue (const X3DFieldDefinition* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  Sets the value of the field with @a name.  If the third parameter is true, an event is only generated if the old value is not the new value.
+	///  Sets the value of the field with @a name.  If the third parameter is true, an event is only generated if the old
+	///  value is not the new value.
 	template <class FieldType, class ValueType>
 	void
 	setField (const std::string &, const ValueType &, const bool = false)
@@ -262,6 +264,7 @@ public:
 	canUserDefinedFields () const
 	{ return false; }
 
+	///  Adds @a field to the set of user defined fields of this node.
 	virtual
 	void
 	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
@@ -269,6 +272,7 @@ public:
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
 
+	///  Replaces the field @a name by @a field. @a accessType and @a name will be assigned to @a field.
 	virtual
 	void
 	updateUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
@@ -276,14 +280,17 @@ public:
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
 
+	///  Removes the field named @a name from the set of user defined fields of this node.
 	virtual
 	void
 	removeUserDefinedField (const std::string &)
 	throw (Error <DISPOSED>);
 
+	///  Returns an array with all pre defined fields of this node.
 	FieldDefinitionArray
 	getPreDefinedFields () const;
 
+	///  Returns an array with all user defined fields of this node.
 	FieldDefinitionArray
 	getUserDefinedFields () const;
 
@@ -310,53 +317,44 @@ public:
 	 *  @name Clone handling
 	 */
 
+	///  Marks this node as private or not.  The default is false.
 	void
 	isPrivate (const bool);
 
+	///  Returns whether this node is marked private.
 	bool
 	isPrivate () const
 	{ return private_; }
 
+	///  Returns the number of clones of this node used in the scene graph.
 	virtual
 	size_t
 	getCloneCount () const final override
 	{ return cloneCount; }
 
+	///  Increments the clone count by @a count.
 	virtual
 	void
 	addClones (const size_t count) final override
 	{ cloneCount += count; }
 
+	///  Decrements the clone count by @a count.
 	virtual
 	void
 	removeClones (const size_t count) final override
 	{ cloneCount -= count; }
 
 	/***
-	 *  @name Special functions
-	 */
-
-	size_t
-	getCloneCountO () const;
-
-	virtual
-	bool
-	isInternal () const
-	{ return internal; }
-
-	virtual
-	void
-	isInternal (const bool);
-
-	/***
 	 *  @name Tool support
 	 */
 
+	///  Replace the node by its tool if it supports any.
 	virtual
 	void
 	addTool ()
 	{ }
 
+	///  Reverses the effect of addTool.  For some tools @a really must be true.
 	virtual
 	void
 	removeTool (const bool = false)
@@ -366,35 +364,41 @@ public:
 	 *  @name Event handling
 	 */
 
+	///  See beginUpdate and endUpdate.
 	virtual
 	SFBool &
 	isLive ()
 	{ return live; }
 
+	///  See beginUpdate and endUpdate.
 	virtual
 	const SFBool &
 	isLive () const
 	{ return live; }
 
+	///  After calling beginUpdate the node is able to process events.  Effectivly sets isLive to true.
 	virtual
 	void
 	beginUpdate ()
 	throw (Error <DISPOSED>);
 
+	///  Immediately stops event processing of this node.  Effectivly sets isLive to false.
 	virtual
 	void
 	endUpdate ()
 	throw (Error <DISPOSED>);
 
+	///  Marks this node as tainted, i.e. all interests of this node will be processed later. 
 	virtual
 	void
 	addEvent () override;
 
-	///  This function is call by the router when all events are processed.  You normally do not need to call this
+	///  This function is called by the router when all events are processed.  You normally do not need to call this
 	///  function directly.
 	void
 	eventsProcessed ();
 
+	///  Returns true if any field has a input or output route otherwise false.
 	bool
 	hasRoutes () const;
 
@@ -402,38 +406,47 @@ public:
 	 *  @name Interest service
 	 */
 
+	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
+	///  of the function effectivly calls addEvent on @a requester.
 	void
-	addInterest (X3DBaseNode* const object) const
-	{ addInterest (object, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
+	addInterest (X3DBaseNode* const requester) const
+	{ addInterest (requester, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
 
+	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
+	///  of the function effectivly calls addEvent on @a requester.
 	template <class ValueType>
 	void
-	addInterest (X3DField <ValueType>* const object) const
-	{ addInterest (object, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
+	addInterest (X3DField <ValueType>* const requester) const
+	{ addInterest (requester, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
+	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.
 	template <class ValueType>
 	void
-	addInterest (X3DField <ValueType> & object) const
-	{ addInterest (&object); }
+	addInterest (X3DField <ValueType> & requester) const
+	{ addInterest (&requester, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
+	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	void
-	removeInterest (X3DBaseNode* const object) const
-	{ removeInterest (object, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
+	removeInterest (X3DBaseNode* const requester) const
+	{ removeInterest (requester, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
 
+	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	template <class ValueType>
 	void
-	removeInterest (X3DField <ValueType>* const object) const
-	{ removeInterest (object, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
+	removeInterest (X3DField <ValueType>* const requester) const
+	{ removeInterest (requester, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
+	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	template <class ValueType>
 	void
-	removeInterest (X3DField <ValueType> & object) const
-	{ removeInterest (&object); }
+	removeInterest (X3DField <ValueType> & requester) const
+	{ removeInterest (&requester, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
 	/***
 	 *  @name Traversal handling
 	 */
 
+	///  Traverses the scene graph depending on @a type.
 	virtual
 	void
 	traverse (const TraverseType)
@@ -443,10 +456,12 @@ public:
 	 *  @name Comment handling
 	 */
 
+	///  Adds comments for this node.  The comments will be printed before the '}'.
 	void
 	addInnerComments (const std::vector <std::string> & value)
 	{ comments .insert (comments .end (), value .begin (), value .end ()); }
 
+	///  Returns the comments for this node.
 	const std::vector <std::string> &
 	getInnerComments () const
 	{ return comments; }
@@ -523,18 +538,22 @@ protected:
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
 
+	///  Adds a field for X3D @a version.
 	void
 	addField (const VersionType, const std::string &, const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>);
 
+	///  Returns an array of all fields with non default value.
 	FieldDefinitionArray
 	getChangedFields () const;
 
+	///  Adds a private field to this node.
 	virtual
 	void
 	addChild (X3DChildObject &) final override;
 
+	///  Removes a private field to this node.  If the reference count of @a object becomes 0 the object will be disposed.
 	virtual
 	void
 	removeChild (X3DChildObject &) final override;
@@ -543,9 +562,11 @@ protected:
 	 *  @name Tool support
 	 */
 
+	///  Replaces this node by @a tool.
 	void
 	addTool (X3DBaseNode* const);
 
+	///  Replaces this node by @a node.
 	void
 	removeTool (X3DBaseNode* const);
 
@@ -553,24 +574,33 @@ protected:
 	 *  @name Event handling
 	 */
 
+	///  If extended event handling is set to true, initializeOnly field behave like inputOutput fields.  Otherwise
+	///  initializeOnly fields will not process any events.  The default is true.
 	void
 	setExtendedEventHandling (const bool value)
 	{ extendedEventHandling = value; }
 
+	///  Returns whether extended event handling is enabled.
 	bool
 	getExtendedEventHandling () const
 	{ return extendedEventHandling; }
 
+	///  Handler that is called when a child (field) of this node should be marked tainted.
 	virtual
 	void
 	addEvent (X3DChildObject* const) override;
 
+	///  Handler that is called when a child (field) of this node should be added to the event queue.
 	virtual
 	void
 	addEvent (X3DChildObject* const, const EventPtr &) override;
 
 
 private:
+
+	/***
+	 *  @name Member types
+	 */
 
 	struct FlatCopyType { };
 
@@ -580,11 +610,13 @@ private:
 	 *  @name Construction
 	 */
 
+	///  Copy or clone this node into @a executionContext.
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
+	///  Flat copy this node into @a executionContext.
 	X3DBaseNode*
 	copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
 	throw (Error <INVALID_NAME>,
@@ -594,19 +626,24 @@ private:
 	 *  @name Field handling
 	 */
 
+	///  Replace @a node by this node.
 	void
 	replace (X3DBaseNode* const);
 
+	///  Remove field @a name from the set of fields.
 	void
 	removeField (const std::string &)
 	throw (Error <DISPOSED>);
 
+	///  Remove field implementation.
 	void
 	removeField (const FieldIndex::iterator &, const bool, const bool);
 
+	///  Returns the standard field name for @a alias.
 	const std::string &
 	getFieldName (const std::string &) const;
 
+	///  Returns the standard field name for @a alias depending on @a version.
 	const std::string &
 	getFieldName (const std::string &, const VersionType) const;
 
@@ -614,6 +651,7 @@ private:
 	 *  @name Event handling
 	 */
 
+	///  Removes all fields from the event queue.
 	void
 	removeEvents ();
 
@@ -621,9 +659,11 @@ private:
 	 *  @name Input/Output
 	 */
 
+	///  Inserts @a userDefinedField into @a ostream.
 	void
 	toStreamUserDefinedField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
+	///  Inserts @a predefinedField into @a ostream.
 	void
 	toStreamField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
@@ -645,7 +685,6 @@ private:
 	bool                  initialized;
 	bool                  private_;
 	size_t                cloneCount;
-	bool                  internal;              // Is this node interally used
 	SFBool                live;
 	bool                  extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id

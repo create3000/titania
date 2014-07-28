@@ -60,6 +60,9 @@
 namespace titania {
 namespace X3D {
 
+/***
+ *  Class that represents an object that can have parents.  This class manages garbage collection and event bubbling.
+ */
 class X3DChildObject :
 	public X3DObject
 {
@@ -104,16 +107,19 @@ public:
 	 *  @name Clone handling
 	 */
 
+	///  Virtual function that must be implemented in a derived class or it will always return 0.
 	virtual
 	size_t
 	getCloneCount () const
 	{ return 0; }
 
+	///  Handler that should be called when the clount count should be incremented @a count.
 	virtual
 	void
 	addClones (const size_t)
 	{ }
 
+	///  Handler that should be called when the clount count should be decremented by @a count.
 	virtual
 	void
 	removeClones (const size_t)
@@ -133,7 +139,7 @@ public:
 	isTainted ()
 	{ return tainted; }
 
-	///  Set the value of this object without adding an event.
+	///  Set the value of this object without adding an event.  @a object must be of the same type as this object.
 	virtual
 	void
 	set (const X3DChildObject &)
@@ -144,7 +150,7 @@ public:
 	void
 	addEvent ();
 
-	// Only used in X3DFieldDefinition.
+	///  See X3DFieldDefinition processEvent.
 	virtual
 	void
 	processEvent (const EventPtr &)
@@ -154,10 +160,12 @@ public:
 	 *  @name Destruction
 	 */
 
+	///  Disposes this object.  You normally do not need to call this function directly.
 	virtual
 	void
 	dispose () override;
 
+	///  Destructs this object.
 	virtual
 	~X3DChildObject ();
 
@@ -175,26 +183,29 @@ protected:
 	 *  @name Reference handling
 	 */
 
-	///  Add a parent to this object.
+	///  Add a weak parent to this object.
 	virtual
 	void
 	addWeakParent (X3DChildObject* const);
 
-	///  Remove a parent from this object.
+	///  Remove a weak parent from this object.
 	virtual
 	void
 	removeWeakParent (X3DChildObject* const);
 	
+	///  Handler that is called when the reference count should be incremented.
 	virtual
 	void
 	addReference ()
 	{ }
 
+	///  Handler that is called when the reference count should be decremented.
 	virtual
 	void
 	removeReference ()
 	{ }
 
+	///  Handler that is called when the reference count should be set to 0.
 	virtual
 	void
 	unReference ()
@@ -204,21 +215,25 @@ protected:
 	 *  @name Children handling
 	 */
 
+	///  Add this node as parent to @a children.
 	template <typename ... Args>
 	void
-	addChildren (Args & ... args)
-	{ basic::pass ((addChild (args), 1) ...); }
+	addChildren (Args & ... children)
+	{ basic::pass ((addChild (children), 1) ...); }
 
+	///  Add this node as parent to @a child.
 	virtual
 	void
 	addChild (X3DChildObject & child)
 	{ child .addParent (this); }
 
+	///  Remove this node as parent from @a children.
 	template <typename ... Args>
 	void
-	removeChildren (Args & ... args)
-	{ basic::pass ((removeChild (args), 1) ...); }
+	removeChildren (Args & ... children)
+	{ basic::pass ((removeChild (children), 1) ...); }
 
+	///  Remove this node as parent from @a child.
 	virtual
 	void
 	removeChild (X3DChildObject & child)
@@ -228,11 +243,13 @@ protected:
 	 *  @name Event handling
 	 */
 
+	///  Handler that is called when a child of this object should be marked tainted.
 	virtual
 	void
 	addEvent (X3DChildObject* const)
 	{ addEvent (); }
 
+	///  Handler that is called when a child (field) of this node should be added to the event queue.
 	virtual
 	void
 	addEvent (X3DChildObject* const, const EventPtr &);
@@ -241,6 +258,7 @@ protected:
 	 *  @name Destruction
 	 */
 
+	///  Handler that is called when the shutdown service should be processed.
 	virtual
 	void
 	processShutdown ()

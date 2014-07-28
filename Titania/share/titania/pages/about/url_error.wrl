@@ -4,45 +4,39 @@ META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:url_error"
 
 DEF MessageScript Script {
-  field SFNode message DEF Message Text {
-    string [
-      "Couldn't load any URL of \"file:///home/holger/Projekte/Titania/Library/Tests/Err",
-      "ors/error.wrl\":",
-      "********************************************************************************",
-      "Parser error at line 4:12",
-      "in 'file:///home/holger/Projekte/Titania/Library/Tests/Errors/error.wrl'",
-      "",
-      "Box {",
-      "  size 8 8 asd",
-      "           ^",
-      "To less values, must be a multiple of 3.",
-      "********************************************************************************",
-      ""
-    ]
-    fontStyle ScreenFontStyle {
-      family [
-        "Ubuntu Mono",
-        "TYPEWRITER"
-      ]
-      pointSize 8
-      spacing 1.6
-      justify [
-        "BEGIN",
-        "BEGIN"
-      ]
-    }
-  }
+  eventOut MFString type_changed
+  eventOut MFString message_changed
 
   url "vrmlscript:
 
 function initialize ()
 {
-	var worldURL = Browser .getWorldURL ();
+	var worldURL = Browser .currentScene .worldURL;
 
-	var match = worldURL .match (/what=(.*)/)
+	var match = worldURL .match (/type=(.*?)(;|$)/)
+	var type  = unescape (match [1]);
+
+	var match = worldURL .match (/what=(.*?)(;|$)/)
 	var what  = unescape (match [1]) .split ('\\n');
 
-	message .string = toMFString (breakLines (what, 80));
+	type_changed    = getType (parseInt (type));
+	message_changed = getMessage (breakLines (what, 80));
+}
+
+function getType (type)
+{
+	var string = new MFString ();
+
+	switch (type)
+	{
+		case 13: string [0] = \"Invalid Operation Timing\"; break;
+		case 15: string [0] = \"Invalid URL\";              break;
+		case 21: string [0] = \"URL Unavailable\";          break;
+		case 16:
+		default: string [0] = \"Invalid X3D\";              break;
+	}
+
+	return string;
 }
 
 function breakLines (array, columns)
@@ -63,7 +57,7 @@ function breakLines (array, columns)
 	return result;
 }
 
-function toMFString (array)
+function getMessage (array)
 {
 	var string = new MFString ();
 
@@ -111,8 +105,8 @@ LayerSet {
               diffuseColor 0 0 0
             }
           }
-          geometry DEF Message1 Text {
-            string "Invalid X3D"
+          geometry DEF _1 Text {
+            string "URL Unavailable"
             fontStyle ScreenFontStyle {
               family [
                 "Ubuntu",
@@ -129,7 +123,7 @@ LayerSet {
           }
         }
       }
-      DEF Text Transform {
+      DEF Message Transform {
         translation -280 144 0
         children Shape {
           appearance Appearance {
@@ -137,7 +131,34 @@ LayerSet {
               diffuseColor 0 0 0
             }
           }
-          geometry USE Message
+          geometry DEF _2 Text {
+            string [
+              "Couldn't load any URL of \"file:///home/holger/Projekte/Titania/Library/Tests/Err",
+              "ors/error.wrl\":",
+              "********************************************************************************",
+              "Parser error at line 4:12",
+              "in 'file:///home/holger/Projekte/Titania/Library/Tests/Errors/error.wrl'",
+              "",
+              "Box {",
+              "  size 8 8 asd",
+              "           ^",
+              "To less values, must be a multiple of 3.",
+              "********************************************************************************",
+              ""
+            ]
+            fontStyle ScreenFontStyle {
+              family [
+                "Ubuntu Mono",
+                "TYPEWRITER"
+              ]
+              pointSize 8
+              spacing 1.6
+              justify [
+                "BEGIN",
+                "BEGIN"
+              ]
+            }
+          }
         }
       }
       DEF dialog-error Transform {
@@ -191,3 +212,6 @@ LayerSet {
     ]
   }
 }
+
+ROUTE MessageScript.message_changed TO _2.set_string
+ROUTE MessageScript.type_changed TO _1.set_string
