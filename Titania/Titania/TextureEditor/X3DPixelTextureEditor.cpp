@@ -56,8 +56,7 @@ namespace puck {
 X3DPixelTextureEditor::X3DPixelTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	             pixelTexture (),
-	                 undoStep ()
+	             pixelTexture ()
 { }
 
 void
@@ -94,11 +93,12 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		switch (value -> getType () .back ())
 		{
 			case X3D::X3DConstants::ImageTexture:
+			case X3D::X3DConstants::MovieTexture:
 			{
-				X3D::X3DPtr <X3D::ImageTexture> imageTexture (value);
+				X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (value);
 
-				if (imageTexture -> getWidth () and imageTexture -> getHeight () and imageTexture -> getComponents ())
-					assign (imageTexture);
+				if (texture2DNode -> getWidth () and texture2DNode -> getHeight () and texture2DNode -> getComponents ())
+					assign (texture2DNode);
 
 				break;
 			}
@@ -111,15 +111,15 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 }
 
 void
-X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageTexture)
+X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode)
 {
-	if (not imageTexture -> getBrowser () -> makeCurrent ())
+	if (not texture2DNode -> getBrowser () -> makeCurrent ())
 		return;
 
-	const auto   width      = imageTexture -> getWidth ();
-	const auto   height     = imageTexture -> getHeight ();
+	const auto   width      = texture2DNode -> getWidth ();
+	const auto   height     = texture2DNode -> getHeight ();
 	const auto   height_1   = height - 1;
-	const auto   components = imageTexture -> getComponents ();
+	const auto   components = texture2DNode -> getComponents ();
 	X3D::MFInt32 array;
 
 	switch (components)
@@ -133,7 +133,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
@@ -162,7 +162,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
@@ -198,7 +198,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
@@ -233,7 +233,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, imageTexture -> getTextureId ());
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 

@@ -185,6 +185,9 @@ X3DTextureNodeEditor::on_texture_changed ()
 			case 2:
 				textureNode = getPixelTexture (textureNode);
 				break;
+			case 3:
+				textureNode = getMovieTexture (textureNode);
+				break;
 			default:
 				break;
 		}
@@ -229,6 +232,13 @@ X3DTextureNodeEditor::on_texture_changed ()
 void
 X3DTextureNodeEditor::set_texture ()
 {
+	enum {
+		NULL_TEXTURE,
+		IMAGE_TEXTURE,
+		PIXEL_TEXTURE,
+		MOVIE_TEXTURE
+	};
+
 	auto       pair     = getNode <X3D::X3DTextureNode> (appearances, "texture");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);
@@ -248,10 +258,13 @@ X3DTextureNodeEditor::set_texture ()
 		switch (textureNode -> getType () .back ())
 		{
 			case X3D::X3DConstants::ImageTexture:
-				getTextureComboBoxText () .set_active (1);
+				getTextureComboBoxText () .set_active (IMAGE_TEXTURE);
 				break;
 			case X3D::X3DConstants::PixelTexture:
-				getTextureComboBoxText () .set_active (2);
+				getTextureComboBoxText () .set_active (PIXEL_TEXTURE);
+				break;
+			case X3D::X3DConstants::MovieTexture:
+				getTextureComboBoxText () .set_active (MOVIE_TEXTURE);
 				break;
 			default:
 				getTextureComboBoxText () .set_active (-1);
@@ -259,7 +272,7 @@ X3DTextureNodeEditor::set_texture ()
 		}
 	}
 	else if (active == 0)
-		getTextureComboBoxText () .set_active (0);
+		getTextureComboBoxText () .set_active (NULL_TEXTURE);
 	else
 		getTextureComboBoxText () .set_active (-1);
 

@@ -134,6 +134,34 @@ DEF bwa Transform {
         ]
         repeatS FALSE
         repeatT FALSE
+        textureProperties TextureProperties {
+          generateMipMaps TRUE
+          boundaryModeS "CLAMP_TO_EDGE"
+          boundaryModeT "CLAMP_TO_EDGE"
+          boundaryModeR "CLAMP_TO_EDGE"
+        }
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}
+
+DEF Loriot_-_Ödipussi Transform {
+  translation 4.39585 -0.0203361 0
+  scale 1.22582 0.919365 4.52444
+  children Shape {
+    appearance Appearance {
+      texture DEF Movie MovieTexture {
+        description "Loriot - Ödipussi"
+        url [
+          "../../../../../Videos/Kino/Loriot - Ödipussi.mpg",
+          "file:///home/holger/Videos/Kino/Loriot - Ödipussi.mpg"
+        ]
+        loop TRUE
+        repeatS FALSE
+        repeatT FALSE
       }
     }
     geometry Rectangle2D {

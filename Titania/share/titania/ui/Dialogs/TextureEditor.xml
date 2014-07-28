@@ -156,6 +156,7 @@
                                       <item translatable="yes">None</item>
                                       <item translatable="yes">ImageTexture</item>
                                       <item translatable="yes">PixelTexture</item>
+                                      <item translatable="yes">MovieTexture</item>
                                     </items>
                                     <signal name="changed" handler="on_texture_changed" swapped="no"/>
                                   </object>
@@ -250,7 +251,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">64 × 32 (3)</property>
+                                    <property name="label" translatable="yes">64 × 32 (RGB)</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -369,6 +370,38 @@
                               </object>
                               <packing>
                                 <property name="position">2</property>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="MovieTextureBox">
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label39">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">MovieTextureBox</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkLabel" id="label38">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">page 4</property>
+                              </object>
+                              <packing>
+                                <property name="position">3</property>
                                 <property name="tab_fill">False</property>
                               </packing>
                             </child>

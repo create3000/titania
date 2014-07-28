@@ -1,5 +1,22 @@
 2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* TextureEditor.xml:
+	* X3DMovieTextureEditor.h:
+	* X3DPixelTextureEditor.h:
+	* X3DImageTextureEditor.h:
+	* X3DTexture2DNodeEditor.h:
+	* X3DTextureNodeEditor.cpp:
+	* X3DImageTextureEditor.cpp:
+	* X3DPixelTextureEditor.cpp:
+	* X3DMovieTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DTextureEditorInterface.h:
+	* X3DTextureEditorInterface.cpp: 
+
+2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.cpp:
 	* TextureEditor.xml:
 	* X3DImageTextureEditor.h:

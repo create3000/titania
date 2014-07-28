@@ -80,7 +80,6 @@ private:
 	///  @name Members
 
 	X3D::X3DPtr <X3D::ImageTexture> imageTexture;
-	UndoStepPtr                     undoStep;
 
 };
 

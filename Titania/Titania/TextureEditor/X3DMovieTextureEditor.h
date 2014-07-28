@@ -48,65 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DMOVIE_TEXTURE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DMOVIE_TEXTURE_EDITOR_H__
 
-#include "../ComposedWidgets.h"
-#include "../TextureEditor/X3DImageTextureEditor.h"
-#include "../TextureEditor/X3DMovieTextureEditor.h"
-#include "../TextureEditor/X3DPixelTextureEditor.h"
 #include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DTexture2DNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DImageTextureEditor,
-	public X3DPixelTextureEditor,
-	public X3DMovieTextureEditor
+class X3DMovieTextureEditor :
+	virtual public X3DTextureEditorInterface
 {
 protected:
 
 	///  @name Construction
 
-	X3DTexture2DNodeEditor ();
-
-	///  @name Member access
-
-	void
-	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	virtual
-	const X3D::X3DPtr <X3D::ImageTexture> &
-	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-	virtual
-	const X3D::X3DPtr <X3D::PixelTexture> &
-	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-	virtual
-	const X3D::X3DPtr <X3D::MovieTexture> &
-	getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_loadState ();
+	X3DMovieTextureEditor ();
 
 	///  @name Construction
 
 	void
-	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	virtual
+	const X3D::X3DPtr <X3D::MovieTexture> &
+	getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+
+private:
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode;
-	X3DFieldToggleButton <X3D::SFBool>  repeatS;
-	X3DFieldToggleButton <X3D::SFBool>  repeatT;
+	X3D::X3DPtr <X3D::MovieTexture> movieTexture;
 
 };
 

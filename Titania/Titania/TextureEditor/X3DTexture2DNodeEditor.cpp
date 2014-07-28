@@ -58,6 +58,7 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 	X3DTextureEditorInterface ("", ""),
 	    X3DImageTextureEditor (),
 	    X3DPixelTextureEditor (),
+	    X3DMovieTextureEditor (),
 	            texture2DNode (),
 	                  repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
 	                  repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
@@ -68,6 +69,7 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode
 {
 	setImageTexture (value);
 	setPixelTexture (value);
+	setMovieTexture (value);
 
 	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (value), value);
 }
@@ -86,6 +88,16 @@ const X3D::X3DPtr <X3D::PixelTexture> &
 X3DTexture2DNodeEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	const auto & texture = X3DPixelTextureEditor::getPixelTexture (value);
+
+	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (texture), value);
+
+	return texture;
+}
+
+const X3D::X3DPtr <X3D::MovieTexture> &
+X3DTexture2DNodeEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DMovieTextureEditor::getMovieTexture (value);
 
 	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (texture), value);
 
@@ -143,11 +155,23 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 void
 X3DTexture2DNodeEditor::set_loadState ()
 {
+	std::string components;
+
+	switch (texture2DNode -> getComponents ())
+	{
+		case 1: components = _ ("GRAY");       break;
+		case 2: components = _ ("GRAY ALPHA"); break;
+		case 3: components = _ ("RGB");        break;
+		case 4: components = _ ("RGBA");       break;
+		default:
+			break;
+	}
+
 	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getWidth ()) +
 	                                    " × " +
 	                                    std::to_string (texture2DNode -> getHeight ()) +
 	                                    " (" +
-	                                    std::to_string (texture2DNode -> getComponents ()) +
+	                                    components +
 	                                    ")");
 }
 

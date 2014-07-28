@@ -331,6 +331,7 @@ X3DTimeDependentNode::real_resume ()
 	set_resume (interval);
 
 	getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+	getBrowser () -> addEvent ();
 }
 
 void

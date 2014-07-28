@@ -1,5 +1,9 @@
 2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DTimeDependentNode.cpp: 
+
+2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DExecutionContext.cpp:
 	* PixelTexture.cpp:
 	* MultiTexture.cpp:

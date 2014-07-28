@@ -56,8 +56,7 @@ namespace puck {
 X3DImageTextureEditor::X3DImageTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	             imageTexture (),
-	                 undoStep ()
+	             imageTexture ()
 { }
 
 void

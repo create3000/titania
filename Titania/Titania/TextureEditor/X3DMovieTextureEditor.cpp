@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,69 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE2DNODE_EDITOR_H__
-
-#include "../ComposedWidgets.h"
-#include "../TextureEditor/X3DImageTextureEditor.h"
-#include "../TextureEditor/X3DMovieTextureEditor.h"
-#include "../TextureEditor/X3DPixelTextureEditor.h"
-#include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "X3DMovieTextureEditor.h"
 
 namespace titania {
 namespace puck {
 
-class X3DTexture2DNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DImageTextureEditor,
-	public X3DPixelTextureEditor,
-	public X3DMovieTextureEditor
+X3DMovieTextureEditor::X3DMovieTextureEditor () :
+	         X3DBaseInterface (),
+	X3DTextureEditorInterface ("", ""),
+	             movieTexture ()
+{ }
+
+void
+X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-protected:
+	if (movieTexture)
+	{
+		//movieTexture -> url () .removeInterest (this, &X3DMovieTextureEditor::set_url);
+	}
 
-	///  @name Construction
+	movieTexture = value;
 
-	X3DTexture2DNodeEditor ();
+	getMovieTextureBox () .set_visible (movieTexture);
 
-	///  @name Member access
+	if (not movieTexture)
+	{
+		movieTexture = new X3D::MovieTexture (getExecutionContext ());
+		getExecutionContext () -> addUninitializedNode (movieTexture);
+		getExecutionContext () -> realize ();
+	}
 
-	void
-	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	//movieTexture -> url () .addInterest (this, &X3DMovieTextureEditor::set_url);
 
-	virtual
-	const X3D::X3DPtr <X3D::ImageTexture> &
-	getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+	//set_url ();
+}
 
-	virtual
-	const X3D::X3DPtr <X3D::PixelTexture> &
-	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+const X3D::X3DPtr <X3D::MovieTexture> &
+X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	getMovieTextureBox () .set_visible (value);
 
-	virtual
-	const X3D::X3DPtr <X3D::MovieTexture> &
-	getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+	if (value)
+	{
+		switch (value -> getType () .back ())
+		{
+			default:
+				break;
+		}
+	}
 
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_loadState ();
-
-	///  @name Construction
-
-	void
-	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	///  @name Members
-
-	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode;
-	X3DFieldToggleButton <X3D::SFBool>  repeatS;
-	X3DFieldToggleButton <X3D::SFBool>  repeatT;
-
-};
+	return movieTexture;
+}
 
 } // puck
 } // titania
-
-#endif

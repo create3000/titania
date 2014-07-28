@@ -96,6 +96,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_ImageTextureBox -> set_name ("ImageTextureBox");
 	m_builder -> get_widget ("PixelTextureBox", m_PixelTextureBox);
 	m_PixelTextureBox -> set_name ("PixelTextureBox");
+	m_builder -> get_widget ("MovieTextureBox", m_MovieTextureBox);
+	m_MovieTextureBox -> set_name ("MovieTextureBox");
 	m_builder -> get_widget ("Texture2DBox", m_Texture2DBox);
 	m_Texture2DBox -> set_name ("Texture2DBox");
 	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);

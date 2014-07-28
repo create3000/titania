@@ -183,6 +183,10 @@ public:
 	getPixelTextureBox () const
 	{ return *m_PixelTextureBox; }
 
+	Gtk::Box &
+	getMovieTextureBox () const
+	{ return *m_MovieTextureBox; }
+
 	Gtk::Grid &
 	getTexture2DBox () const
 	{ return *m_Texture2DBox; }
@@ -418,6 +422,7 @@ private:
 	Gtk::Label*                    m_TextureLabel;
 	Gtk::Box*                      m_ImageTextureBox;
 	Gtk::Box*                      m_PixelTextureBox;
+	Gtk::Box*                      m_MovieTextureBox;
 	Gtk::Grid*                     m_Texture2DBox;
 	Gtk::CheckButton*              m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*              m_Texture2DNodeRepeatTCheckButton;
