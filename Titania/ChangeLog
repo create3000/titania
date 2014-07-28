@@ -1,5 +1,12 @@
 2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.cpp:
 	* url_error.wrl:
 	* OutlineCellRenderer.cpp: 

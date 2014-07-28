@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -204,6 +204,11 @@ X3DBrowserEditor::isSaved ()
 	if (isModified ())
 	{
 		getBrowserWindow () -> getKeys () .clear ();
+
+		getFileSaveWarningLabel () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
+		                                                      getScene () -> getWorldURL () .empty ()
+		                                                      ? _ ("no title")
+		                                                      : getScene () -> getWorldURL () .basename () .c_str ()));
 
 		const auto response_id = getFileSaveWarningDialog () .run ();
 
@@ -770,12 +775,12 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 	const auto oldValue = sfnode;
 
 	undoStep -> addVariables (parent);
-	
+
 	undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
 	undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (sfnode), newValue);
 
 	sfnode = newValue;
-	
+
 	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
@@ -804,7 +809,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 	undoStep -> addRedoFunction ((set1Value) & X3D::MFNode::set1Value, std::ref (mfnode), index, newValue);
 
 	mfnode [index] = newValue;
-	
+
 	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
@@ -829,7 +834,7 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 	undoStep -> addRedoFunction (&X3DBrowserEditor::eraseNode, this, std::ref (mfnode), index, oldValue);
 
 	eraseNode (mfnode, index, oldValue);
-	
+
 	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
@@ -873,7 +878,7 @@ void
 X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & executionContext, X3D::SFNode node, const UndoStepPtr & undoStep, const bool doRemoveFromSceneGraph) const
 {
 	// Remove exported nodes
-	
+
 	X3D::ScenePtr scene (executionContext);
 
 	if (scene)
@@ -897,7 +902,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	               X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	// Filter out scene nodes
-	
+
 	if (not children .empty ())
 	{
 		X3D::traverse (executionContext -> getRootNodes (), [&children] (X3D::SFNode & node)
@@ -970,12 +975,12 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	// Remove node from scene graph
 
 	removeNamedNode (executionContext, node, undoStep);
-	
+
 	if (node -> getType () .back () == X3D::X3DConstants::Inline)
 		removeImportedNodes (X3D::InlinePtr (node), undoStep);
 
 	deleteRoutes (node, undoStep);
-	
+
 	if (doRemoveFromSceneGraph)
 		removeNodeFromSceneGraph (executionContext, node, undoStep);
 
@@ -1685,7 +1690,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 		removeNodeFromSceneGraph (getExecutionContext (), child, undoStep);
 
 		// Add to layers
-		
+
 		if (detachToLayer0)
 			emplaceBack (getExecutionContext () -> getRootNodes (), child, undoStep);
 
@@ -2241,6 +2246,8 @@ X3DBrowserEditor::shutdown ()
 	}
 
 	fileMonitors .clear ();
+
+	getBrowserWindow () -> getKeys () .clear ();
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

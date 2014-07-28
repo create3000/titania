@@ -348,6 +348,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SaveCompressedButton -> set_name ("SaveCompressedButton");
 	m_builder -> get_widget ("FileSaveWarningDialog", m_FileSaveWarningDialog);
 	m_FileSaveWarningDialog -> set_name ("FileSaveWarningDialog");
+	m_builder -> get_widget ("FileSaveWarningLabel", m_FileSaveWarningLabel);
+	m_FileSaveWarningLabel -> set_name ("FileSaveWarningLabel");
 	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 	m_MessageDialog -> set_name ("MessageDialog");
 	m_builder -> get_widget ("OpenLocationDialog", m_OpenLocationDialog);

@@ -679,6 +679,10 @@ public:
 	getFileSaveWarningDialog () const
 	{ return *m_FileSaveWarningDialog; }
 
+	Gtk::Label &
+	getFileSaveWarningLabel () const
+	{ return *m_FileSaveWarningLabel; }
+
 	Gtk::MessageDialog &
 	getMessageDialog () const
 	{ return *m_MessageDialog; }
@@ -1210,6 +1214,7 @@ private:
 	Gtk::FileChooserDialog*         m_FileSaveDialog;
 	Gtk::CheckButton*               m_SaveCompressedButton;
 	Gtk::Dialog*                    m_FileSaveWarningDialog;
+	Gtk::Label*                     m_FileSaveWarningLabel;
 	Gtk::MessageDialog*             m_MessageDialog;
 	Gtk::Dialog*                    m_OpenLocationDialog;
 	Gtk::Entry*                     m_OpenLocationEntry;
