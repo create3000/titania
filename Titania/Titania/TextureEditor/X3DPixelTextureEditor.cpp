@@ -56,7 +56,8 @@ namespace puck {
 X3DPixelTextureEditor::X3DPixelTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	             pixelTexture ()
+	             pixelTexture (),
+	                 undoStep ()
 { }
 
 void
@@ -64,25 +65,23 @@ X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 {
 	if (pixelTexture)
 	{
-		//pixelTexture -> url () .removeInterest (this, &X3DPixelTextureEditor::set_url);
+		//pixelTexture -> image () .removeInterest (this, &X3DPixelTextureEditor::set_image);
 	}
 
 	pixelTexture = value;
 
 	getPixelTextureBox () .set_visible (pixelTexture);
 
-	if (pixelTexture)
-		setWidgets ();
-	else
+	if (not pixelTexture)
 	{
 		pixelTexture = new X3D::PixelTexture (getExecutionContext ());
 		getExecutionContext () -> addUninitializedNode (pixelTexture);
 		getExecutionContext () -> realize ();
 	}
 
-	//pixelTexture -> url () .addInterest (this, &X3DPixelTextureEditor::set_url);
+	//pixelTexture -> image () .addInterest (this, &X3DPixelTextureEditor::set_image);
 
-	//set_url ();
+	//set_image ();
 }
 
 const X3D::X3DPtr <X3D::PixelTexture> &
@@ -96,14 +95,11 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		{
 			case X3D::X3DConstants::ImageTexture:
 			{
-				assign (X3D::X3DPtr <X3D::ImageTexture> (value));
-				break;
-			}
-			case X3D::X3DConstants::PixelTexture:
-			{
-				const X3D::X3DPtr <X3D::PixelTexture> last (value);
+				X3D::X3DPtr <X3D::ImageTexture> imageTexture (value);
 
-				pixelTexture -> image () = last -> image ();
+				if (imageTexture -> getWidth () and imageTexture -> getHeight () and imageTexture -> getComponents ())
+					assign (imageTexture);
+
 				break;
 			}
 			default:
@@ -111,20 +107,7 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		}
 	}
 
-	setWidgets ();
-
 	return pixelTexture;
-}
-
-void
-X3DPixelTextureEditor::setWidgets ()
-{
-	getTextureFormatLabel () .set_text (std::to_string (pixelTexture -> image () .getWidth ()) +
-	                                    " × " +
-	                                    std::to_string (pixelTexture -> image () .getHeight ()) +
-	                                    " (" +
-	                                    std::to_string (pixelTexture -> image () .getComponents ()) +
-	                                    ")");
 }
 
 void
@@ -196,7 +179,7 @@ X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::ImageTexture> & imageText
 					uint32_t point = 0;
 
 					point |= *p ++ << 8;
-					p += 2;
+					p     += 2;
 					point |= *p;
 
 					array .emplace_back (point);

@@ -168,13 +168,14 @@ void
 X3DTextureNodeEditor::on_texture_changed ()
 {
 	getTextureNotebook () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0);
+	getTextureNotebook () .set_visible (false); // XXX
 
 	if (changing)
 		return;
 
 	if (getTextureComboBoxText () .get_active_row_number () > 0)
 	{
-		getTextureNotebook () .set_visible (true);
+		//getTextureNotebook () .set_visible (true);
 
 		switch (getTextureComboBoxText () .get_active_row_number ())
 		{
@@ -193,7 +194,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 	else
 	{
 		textureNode = textureNode;
-		getTextureNotebook () .set_visible (false);
+		//getTextureNotebook () .set_visible (false);
 	}
 
 	// Set field.

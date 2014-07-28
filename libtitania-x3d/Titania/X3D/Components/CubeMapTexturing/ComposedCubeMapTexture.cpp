@@ -181,10 +181,11 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		// Get texture 2d data
 
-		const size_t width  = texture -> getWidth ();
-		const size_t height = texture -> getHeight ();
+		const size_t width      = texture -> getWidth ();
+		const size_t height     = texture -> getHeight ();
+		const size_t components = 4;
 
-		std::vector <char> image (width * height * 4);
+		std::vector <char> image (width * height * components);
 
 		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 		glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());

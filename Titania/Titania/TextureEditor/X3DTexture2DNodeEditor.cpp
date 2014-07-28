@@ -58,6 +58,7 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 	X3DTextureEditorInterface ("", ""),
 	    X3DImageTextureEditor (),
 	    X3DPixelTextureEditor (),
+	            texture2DNode (),
 	                  repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
 	                  repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
 { }
@@ -92,9 +93,16 @@ X3DTexture2DNodeEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode>
 }
 
 void
-X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	getTexture2DBox () .set_visible (texture2DNode and value);
+
+	if (texture2DNode)
+	{
+		texture2DNode -> checkLoadState () .removeInterest (this, &X3DTexture2DNodeEditor::set_loadState);
+	}
+
+	texture2DNode = texture;
 
 	if (not texture2DNode or not value)
 	{
@@ -103,8 +111,12 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 		return;
 	}
 
+	texture2DNode -> checkLoadState () .addInterest (this, &X3DTexture2DNodeEditor::set_loadState);
+
 	repeatS .setNodes ({ texture2DNode });
 	repeatT .setNodes ({ texture2DNode });
+
+	set_loadState ();
 
 	if (texture2DNode == value)
 		return;
@@ -126,6 +138,17 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 				break;
 		}
 	}
+}
+
+void
+X3DTexture2DNodeEditor::set_loadState ()
+{
+	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getWidth ()) +
+	                                    " × " +
+	                                    std::to_string (texture2DNode -> getHeight ()) +
+	                                    " (" +
+	                                    std::to_string (texture2DNode -> getComponents ()) +
+	                                    ")");
 }
 
 } // puck

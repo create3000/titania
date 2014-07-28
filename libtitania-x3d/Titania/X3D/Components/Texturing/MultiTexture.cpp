@@ -80,7 +80,7 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	    alphaModes (),
 	       sources (),
 	     functions (),
-	     loadState (COMPLETE_STATE)
+	     loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::MultiTexture);
 
@@ -111,6 +111,8 @@ MultiTexture::initialize ()
 	set_mode ();
 	set_source ();
 	set_function ();
+
+	loadState = COMPLETE_STATE;
 }
 
 bool

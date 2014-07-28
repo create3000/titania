@@ -68,7 +68,7 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture2DNode (),
 	          fields (),
-	       loadState (COMPLETE_STATE)
+	       loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::PixelTexture);
 
@@ -77,6 +77,8 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
+	
+	addChildren (loadState);
 }
 
 X3DBaseNode*
@@ -235,6 +237,8 @@ PixelTexture::update ()
 	texture -> setComponents (image () .getComponents ());
 
 	setTexture (texture);
+
+	loadState = COMPLETE_STATE;
 }
 
 } // X3D

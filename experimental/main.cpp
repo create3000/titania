@@ -255,6 +255,17 @@ main (int argc, char** argv)
 
 	for (const auto & e : basic::make_reverse_range (v))
 		__LOG__ << e << std::endl;
+	
+	size_t a = 1;
+	size_t b = 1;
+				
+	for (int i = 0; i < 128; ++ i)
+	{
+		a <<= 1;
+		b *= 2;
+		
+		__LOG__ << a << " : " << b << std::endl;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

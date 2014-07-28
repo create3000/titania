@@ -56,7 +56,8 @@ namespace puck {
 X3DImageTextureEditor::X3DImageTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	             imageTexture ()
+	             imageTexture (),
+	                 undoStep ()
 { }
 
 void
@@ -71,10 +72,7 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	getImageTextureBox () .set_visible (imageTexture);
 
-	if (imageTexture)
-		setWidgets ();
-
-	else
+	if (not imageTexture)
 	{
 		imageTexture = new X3D::ImageTexture (getExecutionContext ());
 		getExecutionContext () -> addUninitializedNode (imageTexture);
@@ -95,38 +93,12 @@ X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	{
 		switch (value -> getType () .back ())
 		{
-			case X3D::X3DConstants::ImageTexture:
-			{
-				const X3D::X3DPtr <X3D::ImageTexture> last (value);
-
-				imageTexture -> url () = last -> url ();
-				imageTexture -> checkLoadState () .addInterest (this, &X3DImageTextureEditor::setWidgets);
-				break;
-			}
 			default:
-			{
-				setWidgets ();
 				break;
-			}
 		}
 	}
-	else
-		setWidgets ();
 
 	return imageTexture;
-}
-
-void
-X3DImageTextureEditor::setWidgets ()
-{
-	imageTexture -> checkLoadState () .removeInterest (this, &X3DImageTextureEditor::setWidgets);
-
-	getTextureFormatLabel () .set_text (std::to_string (imageTexture -> getWidth ()) +
-	                                    " × " +
-	                                    std::to_string (imageTexture -> getHeight ()) +
-	                                    " (" +
-	                                    std::to_string (imageTexture -> getComponents ()) +
-	                                    ")");
 }
 
 } // puck

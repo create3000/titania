@@ -86,6 +86,11 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_loadState ();
+
 	///  @name Construction
 
 	void
@@ -93,8 +98,9 @@ private:
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> repeatS;
-	X3DFieldToggleButton <X3D::SFBool> repeatT;
+	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode;
+	X3DFieldToggleButton <X3D::SFBool>  repeatS;
+	X3DFieldToggleButton <X3D::SFBool>  repeatT;
 
 };
 

@@ -80,14 +80,12 @@ private:
 	///  @name Operations
 
 	void
-	setWidgets ();
-
-	void
 	assign (const X3D::X3DPtr <X3D::ImageTexture> &);
 
 	///  @name Members
 
 	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;
+	UndoStepPtr                     undoStep;
 
 };
 

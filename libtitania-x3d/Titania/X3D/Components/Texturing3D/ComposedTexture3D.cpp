@@ -69,7 +69,7 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture3DNode (),
 	          fields (),
-	       loadState (COMPLETE_STATE),
+	       loadState (NOT_STARTED_STATE),
 	    textureNodes ()
 {
 	addType (X3DConstants::ComposedTexture3D);
@@ -81,7 +81,7 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "texture",           texture ());
 	
-	addChildren (textureNodes);
+	addChildren (loadState, textureNodes);
 }
 
 X3DBaseNode*
@@ -155,6 +155,8 @@ ComposedTexture3D::update ()
 	image .resize (width * height * depth * 4, 0xFF);
 
 	setImage (getInternalFormat (components), components, width, height, depth, GL_RGBA, image .data ());
+
+	loadState = COMPLETE_STATE;
 }
 
 } // X3D

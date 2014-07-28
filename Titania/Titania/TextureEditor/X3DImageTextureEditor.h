@@ -77,14 +77,10 @@ protected:
 
 private:
 
-	///  @name Operations
-
-	void
-	setWidgets ();
-
 	///  @name Members
 
 	X3D::X3DPtr <X3D::ImageTexture> imageTexture;
+	UndoStepPtr                     undoStep;
 
 };
 

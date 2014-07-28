@@ -337,35 +337,34 @@ X3DExecutionContext::getUniqueName (std::string name) const
 	if (name .empty ())
 		return getUniqueName ();
 
-	else
+	std::string newName = name;
+	size_t      i       = 64;
+
+	for ( ; i;)
 	{
-		std::string newName = name;
-		size_t      i       = 1;
-
-		for ( ; ;)
+		if (namedNodes .count (newName))
 		{
-			if (namedNodes .count (newName))
-			{
-				const auto min = i;
-				std::uniform_int_distribution <size_t> random (min, i <<= 1);
+			const auto min = i;
+			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
-				newName = name;
-				newName += '_';
-				newName += basic::to_string (random (random_engine));
-			}
-			else
-				return newName;
+			newName = name;
+			newName += '_';
+			newName += basic::to_string (random (random_engine));
 		}
+		else
+			break;
 	}
+	
+	return newName;
 }
 
 std::string
 X3DExecutionContext::getUniqueName () const
 {
 	std::string name;
-	size_t      i = 1;
+	size_t      i = 64;
 
-	for ( ; ;)
+	for ( ; i;)
 	{
 		const auto min = i;
 		std::uniform_int_distribution <size_t> random (min, i <<= 1);
@@ -375,8 +374,10 @@ X3DExecutionContext::getUniqueName () const
 		if (namedNodes .count (name))
 			continue;
 
-		return name;
+		break;
 	}
+
+	return name;
 }
 
 // Imported nodes handling
@@ -1041,6 +1042,8 @@ X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionConte
 std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
+	//  Slow function to get an name that is unique in both execution contextes.
+
 	RegEx::LastNumber_ .Replace ("", &name);
 	RegEx::LastNumber .Replace ("", &name);
 
@@ -1054,23 +1057,12 @@ X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext,
 
 		for ( ; ;)
 		{
-			try
+			if (namedNodes .count (newName) or executionContext -> namedNodes .count (newName))
 			{
-				getNamedNode (newName);
+				newName = name + basic::to_string (++ i);
 			}
-			catch (const X3DError &)
-			{
-				try
-				{
-					executionContext -> getNamedNode (newName);
-				}
-				catch (const X3DError &)
-				{
-					break;
-				}
-			}
-
-			newName = name + basic::to_string (++ i);
+			else
+				break;
 		}
 
 		return newName;
@@ -1080,6 +1072,8 @@ X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext,
 std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext) const
 {
+	//  Slow function to get an name that is unique in both execution contextes.
+
 	std::string name;
 	size_t      i = 0;
 
@@ -1087,21 +1081,10 @@ X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext)
 	{
 		name = '_' + basic::to_string (++ i);
 
-		try
-		{
-			getNamedNode (name);
-		}
-		catch (const X3DError &)
-		{
-			try
-			{
-				executionContext -> getNamedNode (name);
-			}
-			catch (const X3DError &)
-			{
-				break;
-			}
-		}
+		if (namedNodes .count (name) or executionContext -> namedNodes .count (name))
+			continue;
+
+		break;
 	}
 
 	return name;

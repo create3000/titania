@@ -2230,6 +2230,8 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 void
 X3DBrowserEditor::shutdown ()
 {
+	getBrowser () -> makeCurrent ();
+
 	undoHistory  .clear ();
 
 	for (const auto & fileMonitor : fileMonitors)
