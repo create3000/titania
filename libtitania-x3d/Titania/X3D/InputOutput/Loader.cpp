@@ -164,6 +164,9 @@ throw (Error <INVALID_URL>,
 		{ }
 	}
 
+	if (url .size () == 1)
+		throw Error <URL_UNAVAILABLE> ("Couldn't load URL " + url .toString ());
+
 	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString ());
 }
 
@@ -202,6 +205,9 @@ throw (Error <INVALID_URL>,
 
 	for (const auto & string : urlError)
 		error << string .str ();
+
+	if (url .size () == 1)
+		throw Error <URL_UNAVAILABLE> ("Couldn't load URL " + url .toString () + ":\n" + error .str ());
 
 	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + ":\n" + error .str ());
 }
