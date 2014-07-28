@@ -57,13 +57,15 @@ namespace titania {
 namespace X3D {
 
 X3DTexture::X3DTexture (MagickImageArrayPtr && images) :
-	    images (std::move (images)),
-	    format (GL_RGB),
-	     width (this -> images -> front () .size () .width ()),
-	    height (this -> images -> front () .size () .height ()),
-	components (0),
-	     depth (this -> images -> size ()),
-	      blob ()
+	     images (std::move (images)),
+	     format (GL_RGB),
+	      width (this -> images -> front () .size () .width ()),
+	     height (this -> images -> front () .size () .height ()),
+	      depth (this -> images -> size ()),
+	 components (0),
+	 imageWidth (width),
+	imageHeight (height),
+	       blob ()
 { }
 
 MagickImageArrayPtr
@@ -201,7 +203,7 @@ X3DTexture::scaleImages ()
 	{
 		const size_type w = image .size () .width ();
 		const size_type h = image .size () .height ();
-	
+
 		if (w not_eq width or h not_eq height)
 		{
 			image .filterType (Magick::LanczosFilter);

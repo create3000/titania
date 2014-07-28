@@ -64,6 +64,8 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture2DNode (),
 	    X3DUrlObject (),
+	      imageWidth (0),
+	     imageHeight (0),
 	          future ()
 {
 	addType (X3DConstants::ImageTexture);
@@ -98,10 +100,17 @@ ImageTexture::setTexture (const TexturePtr & texture)
 	X3DTexture2DNode::setTexture (texture);
 
 	if (texture)
+	{
+		imageWidth  = texture -> getImageWidth ();
+		imageHeight = texture -> getImageHeight ();
 		setLoadState (COMPLETE_STATE);
-
+	}
 	else
+	{
+		imageWidth  = 0;
+		imageHeight = 0;
 		setLoadState (FAILED_STATE);
+	}
 }
 
 void

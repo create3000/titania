@@ -63,11 +63,16 @@ class X3DTextureNodeEditor :
 	public X3DTexture2DNodeEditor,
 	public X3DTexturePropertiesEditor
 {
+public:
+
+	~X3DTextureNodeEditor ();
+
+
 protected:
 
 	///  @name Construction
 
-	X3DTextureNodeEditor ();
+	X3DTextureNodeEditor (const X3D::BrowserPtr &);
 
 	virtual
 	void

@@ -66,11 +66,16 @@ class X3DTexture2DNodeEditor :
 	public X3DPixelTextureEditor,
 	public X3DMovieTextureEditor
 {
+public:
+
+	~X3DTexture2DNodeEditor ();
+
+
 protected:
 
 	///  @name Construction
 
-	X3DTexture2DNodeEditor ();
+	X3DTexture2DNodeEditor (const X3D::BrowserPtr &);
 
 	///  @name Member access
 
@@ -90,9 +95,18 @@ protected:
 	getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
 
 
+protected:
+
+	void
+	set_preview ();
+
+
 private:
 
 	///  @name Event handlers
+
+	bool
+	on_configure_event (GdkEventConfigure* const);
 
 	void
 	set_loadState ();
@@ -104,6 +118,7 @@ private:
 
 	///  @name Members
 
+	X3D::BrowserPtr                     preview;
 	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode;
 	X3DFieldToggleButton <X3D::SFBool>  repeatS;
 	X3DFieldToggleButton <X3D::SFBool>  repeatT;

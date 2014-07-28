@@ -107,6 +107,14 @@ public:
 	getComponents () const
 	{ return components; }
 
+	virtual
+	size_t
+	getImageWidth () const = 0;
+
+	virtual
+	size_t
+	getImageHeight () const = 0;
+
 	///  @name Operations
 
 	virtual

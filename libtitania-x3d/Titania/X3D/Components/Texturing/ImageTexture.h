@@ -98,6 +98,16 @@ public:
 	checkLoadState () const final override
 	{ return X3DUrlObject::checkLoadState (); }
 
+	virtual
+	size_t
+	getImageWidth () const final override
+	{ return imageWidth; }
+
+	virtual
+	size_t
+	getImageHeight () const final override
+	{ return imageHeight; }
+
 	///  @name Operations
 	
 	virtual
@@ -140,6 +150,8 @@ private:
 
 	///  @name Members
 	
+	size_t                          imageWidth;
+	size_t                          imageHeight;
 	std::unique_ptr <TextureLoader> future;
 
 

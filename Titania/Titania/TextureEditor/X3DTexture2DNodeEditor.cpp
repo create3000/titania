@@ -53,16 +53,19 @@
 namespace titania {
 namespace puck {
 
-X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
+X3DTexture2DNodeEditor::X3DTexture2DNodeEditor (const X3D::BrowserPtr & preview) :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
 	    X3DImageTextureEditor (),
 	    X3DPixelTextureEditor (),
 	    X3DMovieTextureEditor (),
+	                  preview (preview),
 	            texture2DNode (),
 	                  repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
 	                  repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
-{ }
+{
+	preview -> signal_configure_event () .connect (sigc::mem_fun (this, &X3DTexture2DNodeEditor::on_configure_event));
+}
 
 void
 X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
@@ -155,6 +158,8 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 void
 X3DTexture2DNodeEditor::set_loadState ()
 {
+	set_preview ();
+
 	std::string components;
 
 	switch (texture2DNode -> getComponents ())
@@ -167,12 +172,57 @@ X3DTexture2DNodeEditor::set_loadState ()
 			break;
 	}
 
-	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getWidth ()) +
+	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getImageWidth ()) +
 	                                    " × " +
-	                                    std::to_string (texture2DNode -> getHeight ()) +
+	                                    std::to_string (texture2DNode -> getImageHeight ()) +
 	                                    " (" +
 	                                    components +
 	                                    ")");
+}
+
+bool
+X3DTexture2DNodeEditor::on_configure_event (GdkEventConfigure* const)
+{
+	set_preview ();
+	return false;
+}
+
+void
+X3DTexture2DNodeEditor::set_preview ()
+{
+	if (not texture2DNode)
+		return;
+
+	try
+	{
+		const X3D::X3DPtr <X3D::Layout>    layout (preview -> getExecutionContext () -> getNamedNode ("Texture2DLayout"));
+		const X3D::X3DPtr <X3D::Transform> transform (preview -> getExecutionContext () -> getNamedNode ("Rectangle2D"));
+
+		if (layout and transform)
+		{
+			const X3D::Vector2d viewport (preview -> get_width (), preview -> get_height ());
+			const double        width  = texture2DNode -> getImageWidth ();
+			const double        height = texture2DNode -> getImageHeight ();
+
+			if (viewport [0] / viewport [1] > width / height)
+			{
+				layout    -> scaleMode () = { "STRETCH", "NONE" };
+				transform -> scale ()     = X3D::Vector3f (width / height, 1, 1);
+			}
+			else
+			{
+				layout    -> scaleMode () = { "NONE", "STRETCH" };
+				transform -> scale ()     = X3D::Vector3f (1, height / width, 1);
+			}
+		}
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+X3DTexture2DNodeEditor::~X3DTexture2DNodeEditor ()
+{
+	X3D::removeBrowser (preview);
 }
 
 } // puck

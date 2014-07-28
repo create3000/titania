@@ -55,12 +55,12 @@
 namespace titania {
 namespace puck {
 
-X3DTextureNodeEditor::X3DTextureNodeEditor () :
+X3DTextureNodeEditor::X3DTextureNodeEditor (const X3D::BrowserPtr & preview) :
 	          X3DBaseInterface (),
 	 X3DTextureEditorInterface ("", ""),
-	    X3DTexture2DNodeEditor (),
+	    X3DTexture2DNodeEditor (preview),
 	X3DTexturePropertiesEditor (),
-	                   preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                   preview (preview),
 	               appearances (),
 	               textureNode (),
 	                  undoStep (),
@@ -102,6 +102,7 @@ X3DTextureNodeEditor::set_initialized ()
 	{ }
 
 	set_preview ();
+	X3DTexture2DNodeEditor::set_preview ();
 }
 
 void
@@ -290,6 +291,11 @@ X3DTextureNodeEditor::connectTexture (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DTextureNodeEditor::connectTexture);
 	field .addInterest (this, &X3DTextureNodeEditor::set_texture);
+}
+
+X3DTextureNodeEditor::~X3DTextureNodeEditor ()
+{
+	X3D::removeBrowser (preview);
 }
 
 } // puck

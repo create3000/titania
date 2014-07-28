@@ -84,6 +84,10 @@ public:
 	getHeight () const
 	{ return height; }
 
+	size_type
+	getDepth () const
+	{ return depth; }
+
 	void
 	setComponents (size_type value)
 	{ components = value; }
@@ -93,8 +97,12 @@ public:
 	{ return components; }
 
 	size_type
-	getDepth () const
-	{ return depth; }
+	getImageWidth () const
+	{ return imageWidth; }
+
+	size_type
+	getImageHeight () const
+	{ return imageHeight; }
 
 	const void*
 	getData ()
@@ -148,8 +156,10 @@ private:
 	GLenum       format;
 	size_type    width;
 	size_type    height;
-	size_type    components;
 	size_type    depth;
+	size_type    components;
+	size_type    imageWidth;
+	size_type    imageHeight;
 	Magick::Blob blob;
 
 };

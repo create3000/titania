@@ -1,5 +1,15 @@
 2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DTexture.h:
+	* X3DTexture.cpp:
+	* PixelTexture.h:
+	* ImageTexture.h:
+	* MovieTexture.h:
+	* ImageTexture.cpp:
+	* X3DTexture2DNode.h: 
+
+2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTimeDependentNode.cpp: 
 
 2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
