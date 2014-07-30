@@ -78,7 +78,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::Selection);
 
-	X3DChildObject::addChildren (enabled, mode, selectLowest, over, active, pickedTime, children);
+	X3DParentObject::addChildren (enabled, mode, selectLowest, over, active, pickedTime, children);
 }
 
 X3DBaseNode*

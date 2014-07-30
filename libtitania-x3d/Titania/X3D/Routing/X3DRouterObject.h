@@ -53,8 +53,8 @@
 
 #include "../Basic/NodeSet.h"
 #include "../Basic/X3DBaseNode.h"
-#include "../Routing/EventList.h"
-#include "../Routing/NodeList.h"
+#include "../Routing/ChildrenList.h"
+#include "../Routing/ParentList.h"
 
 #include <mutex>
 
@@ -68,17 +68,17 @@ public:
 
 	///  @name Operations
 
-	EventId
-	addTaintedObject (X3DChildObject* const, const EventPtr &);
+	ChildId
+	addTaintedChild (X3DChildObject* const, const EventPtr &);
 
 	void
-	removeTaintedObject (const EventId &);
+	removeTaintedChild (const ChildId &);
 
-	NodeId
-	addTaintedNode (X3DBaseNode* const);
+	ParentId
+	addTaintedParent (X3DParentObject* const);
 
 	void
-	removeTaintedNode (const NodeId &);
+	removeTaintedParent (const ParentId &);
 
 	void
 	processEvents ();
@@ -112,11 +112,11 @@ private:
 
 	///  @name Operations
 
-	EventList
-	getTaintedObjects ();
+	ChildrenList
+	getTaintedChildren ();
 
-	NodeList
-	getTaintedNodes ();
+	ParentList
+	getTaintedParents ();
 
 	void
 	eventsProcessed ();
@@ -129,10 +129,10 @@ private:
 
 	///  @name Members
 
-	EventList events;
-	NodeList  nodes;
-	time_type eventTime;
-	time_type nodeTime;
+	ChildrenList children;
+	ParentList   parents;
+	time_type    childrenTime;
+	time_type    parentTime;
 
 };
 

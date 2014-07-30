@@ -52,9 +52,9 @@
 #define __TITANIA_X3D_BASIC_X3DFIELD_DEFINITION_H__
 
 #include "../Base/X3DChildObject.h"
+#include "../Base/X3DObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/FieldDefinitionSet.h"
-#include "../Bits/X3DConstants.h"
 #include "../Routing/RouteSet.h"
 #include "../Types/Struct.h"
 
@@ -152,7 +152,7 @@ public:
 	bool
 	isOutput () const override
 	{ return getAccessType () & outputOnly; }
-	
+
 	virtual
 	bool
 	isDefaultValue () const = 0;
@@ -202,7 +202,7 @@ public:
 
 	void
 	addInterest (X3DFieldDefinition* const) const;
-	
+
 	void
 	addInterest (X3DFieldDefinition & fieldDefinition) const
 	{ addInterest (&fieldDefinition); }
@@ -269,12 +269,12 @@ private:
 			accessType (initializeOnly)
 		{ }
 
-		AccessType                           accessType;
-		FieldDefinitionSet                   references;
-		RouteSet                             inputRoutes;
-		RouteSet                             outputRoutes;
+		AccessType accessType;
+		FieldDefinitionSet references;
+		RouteSet inputRoutes;
+		RouteSet outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
-		FieldDefinitionSet                   outputInterests;
+		FieldDefinitionSet outputInterests;
 	};
 
 	mutable std::unique_ptr <IO> io;

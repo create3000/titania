@@ -266,7 +266,7 @@ public:
 };
 
 class X3DParentObject :
-	virtual public X3DBase,
+	virtual public X3DChildObject,
 	public X3DInput,
 	public X3DOutput
 {
@@ -275,7 +275,7 @@ public:
 };
 
 class X3DReferenceObject :
-	public X3DChildObject
+	virtual public X3DChildObject
 {
 public:
 

@@ -77,11 +77,11 @@ X3DGroupingNode::X3DGroupingNode () :
 {
 	addType (X3DConstants::X3DGroupingNode);
 
-	addChildren (visible,
-	             pointingDeviceSensors,
-	             localFogs,
-	             collectables,
-	             childNodes);
+	X3DParentObject::addChildren (visible,
+	                              pointingDeviceSensors,
+	                              localFogs,
+	                              collectables,
+	                              childNodes);
 }
 
 void

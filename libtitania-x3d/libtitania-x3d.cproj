@@ -408,7 +408,6 @@
     <None Include="Titania\X3D\Base\X3DInput.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionArray.h" />
-    <None Include="Titania\X3D\Base\GarbageCollector.h" />
     <None Include="Titania\X3D\Types\Image.h" />
     <None Include="Titania\X3D\Types\Time.h" />
     <None Include="Titania\X3D\Configuration\ComponentInfo.h" />
@@ -506,7 +505,6 @@
     <None Include="Titania\X3D\Execution\ImportedNode.h" />
     <None Include="Titania\X3D\Execution\ExportedNode.h" />
     <None Include="Titania\X3D\Execution\World.h" />
-    <None Include="Titania\X3D\Routing\NodeList.h" />
     <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
@@ -534,7 +532,6 @@
     <None Include="Titania\X3D\Bits\Linetypes.h" />
     <None Include="Titania\X3D\Browser\Notification.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
-    <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
     <None Include="Titania\X3D\Miscellaneous\International.h" />
     <None Include="Titania\X3D\Bits\Traverse.h" />
@@ -756,6 +753,9 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\EqualExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ForStatement.h" />
     <None Include="Titania\X3D\Base\X3DReferenceObject.h" />
+    <None Include="Titania\X3D\Base\X3DParentObject.h" />
+    <None Include="Titania\X3D\Routing\ChildrenList.h" />
+    <None Include="Titania\X3D\Routing\ParentList.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -775,7 +775,6 @@
     <Compile Include="Titania\X3D\Fields\SFVec2.cpp" />
     <Compile Include="Titania\X3D\Fields\SFVec3.cpp" />
     <Compile Include="Titania\X3D\Fields\SFVec4.cpp" />
-    <Compile Include="Titania\X3D\Base\GarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\Base\X3DInput.cpp" />
     <Compile Include="Titania\X3D\Base\X3DOutput.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
@@ -1088,7 +1087,6 @@
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsfield.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DObject.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFDouble.cpp" />
@@ -1275,6 +1273,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\vsValue.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\Block.cpp" />
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
+    <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

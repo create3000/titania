@@ -58,7 +58,7 @@
 
 #include <Titania/LOG.h>
 
-#include <deque>
+#include <vector>
 #include <istream>
 #include <memory>
 #include <ostream>

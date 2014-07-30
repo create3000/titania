@@ -7,13 +7,13 @@ lib_LTLIBRARIES =  \
 libtitania_x3d_la_SOURCES =  \
 	Titania/X3D.cpp \
 	Titania/X3D/Base/ChildObjectSet.cpp \
-	Titania/X3D/Base/GarbargeCollector.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
 	Titania/X3D/Base/X3DGarbargeCollector.cpp \
 	Titania/X3D/Base/X3DInput.cpp \
 	Titania/X3D/Base/X3DObject.cpp \
 	Titania/X3D/Base/X3DOutput.cpp \
+	Titania/X3D/Base/X3DParentObject.cpp \
 	Titania/X3D/Base/X3DReferenceObject.cpp \
 	Titania/X3D/Basic/BaseNodeArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionArray.cpp \
@@ -443,7 +443,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DExternProtoDeclaration.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DFieldDefinition.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/jsX3DObject.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DProtoDeclaration.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DRoute.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \

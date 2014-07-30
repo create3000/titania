@@ -48,67 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
-#define __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
+#ifndef __TITANIA_X3D_ROUTING_CHILDREN_LIST_H__
+#define __TITANIA_X3D_ROUTING_CHILDREN_LIST_H__
 
-#include <cstddef>
+#include "../Base/X3DChildObject.h"
+#include "../Types/Time.h"
+
 #include <deque>
-#include <mutex>
 
 namespace titania {
 namespace X3D {
 
-class X3DObject;
+using ChildrenList = std::list <std::pair <X3DChildObject*, EventPtr>>;
 
-class GarbageCollector
+struct ChildId
 {
-public:
-
-	GarbageCollector ();
-
-	static
-	void
-	trimFreeMemory ();
-
-	void
-	addObject (const X3DObject* const);
-
-	template <class InputIt>
-	void
-	addObjects (const InputIt & first, const InputIt & last)
-	{
-		std::lock_guard <std::mutex> lock (mutex);
-
-		objects .insert (objects .end (), first, last);
-	}
-
-	void
-	dispose ();
-
-	bool
-	empty () const;
-
-	size_t
-	size () const;
-
-	~GarbageCollector ();
-
-
-private:
-
-	typedef std::deque <const X3DObject*> ObjectArray;
-
-	GarbageCollector (const GarbageCollector &) = delete;
-
-	GarbageCollector &
-	operator = (const GarbageCollector &) = delete;
-
-	static
-	void
-	deleteObjects (ObjectArray);
-
-	ObjectArray         objects;
-	mutable std::mutex  mutex;
+	time_type time;
+	ChildrenList::iterator iter;
 
 };
 

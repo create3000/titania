@@ -1,5 +1,35 @@
 2014-07-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DObject.h:
+	* NodeList.h:
+	* EventList.h:
+	* X3DBaseNode.h:
+	* ParentList.h:
+	* X3DBaseNode.cpp:
+	* Selection.cpp:
+	* X3DChildObject.h:
+	* X3DParentObject.h:
+	* ChildrenList.h:
+	* GarbageCollector.h:
+	* X3DParentObject.cpp:
+	* X3DRouterObject.h:
+	* X3DReferenceObject.h:
+	* GarbargeCollector.cpp:
+	* X3DFieldDefinition.h:
+	* X3DRouterObject.cpp:
+	* X3DReferenceObject.cpp:
+	* LayoutGroup.h:
+	* LayoutGroup.cpp:
+	* Collision.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* jsX3DObject.cpp:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
+2014-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFImage.h:
 	* X3DObject.h:
 	* Parser.cpp:

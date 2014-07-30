@@ -88,8 +88,8 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "children",       children ());
 
 	addField (VRML_V2_0, "collide", "enabled");
-	
-	addChildren (proxyNode);
+
+	X3DParentObject::addChildren (proxyNode);
 }
 
 X3DBaseNode*

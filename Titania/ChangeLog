@@ -3,6 +3,13 @@
 	* titania:
 	* Makefile.am:
 	* X3DParentObject.h:
+	* X3DParentObject.cpp: 
+
+2014-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* X3DParentObject.h:
 	* X3DParentObject.cpp:
 	* X3DOutlineTreeView.cpp:
 	* X3DTextureNodeEditor.cpp: 

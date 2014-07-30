@@ -57,63 +57,63 @@ namespace titania {
 namespace X3D {
 
 X3DRouterObject::X3DRouterObject () :
-	X3DBaseNode (),
-	     events (),
-	      nodes (),
-	  eventTime (chrono::now ()),
-	   nodeTime (chrono::now ())
+	 X3DBaseNode (),
+	    children (),
+	     parents (),
+	childrenTime (chrono::now ()),
+	  parentTime (chrono::now ())
 {
 	addType (X3DConstants::X3DRouterObject);
 }
 
-EventId
-X3DRouterObject::addTaintedObject (X3DChildObject* const object, const EventPtr & event)
+ChildId
+X3DRouterObject::addTaintedChild (X3DChildObject* const child, const EventPtr & event)
 {
-	events .emplace_back (object, event);
+	children .emplace_back (child, event);
 
-	return EventId { eventTime, -- events .end () };
+	return ChildId { childrenTime, -- children .end () };
 }
 
 void
-X3DRouterObject::removeTaintedObject (const EventId & event)
+X3DRouterObject::removeTaintedChild (const ChildId & childId)
 {
-	if (event .time == eventTime)
-		events .erase (event .iter);
+	if (childId .time == childrenTime)
+		children .erase (childId .iter);
 }
 
-EventList
-X3DRouterObject::getTaintedObjects ()
+ChildrenList
+X3DRouterObject::getTaintedChildren ()
 {
 	// Invalidate all iterators
 
-	eventTime = chrono::now ();
+	childrenTime = chrono::now ();
 
-	return std::move (events);
+	return std::move (children);
 }
 
-NodeId
-X3DRouterObject::addTaintedNode (X3DBaseNode* const node)
+ParentId
+X3DRouterObject::addTaintedParent (X3DParentObject* const parent)
 {
-	nodes .emplace_back (node);
+	parents .emplace_back (parent);
 
-	return NodeId { nodeTime, -- nodes .end () };
+	return ParentId { parentTime, -- parents .end () };
 }
 
 void
-X3DRouterObject::removeTaintedNode (const NodeId & node)
+X3DRouterObject::removeTaintedParent (const ParentId & parentId)
 {
-	if (node .time == nodeTime)
-		nodes .erase (node .iter);
+	if (parentId .time == parentTime)
+		parents .erase (parentId .iter);
 }
 
-NodeList
-X3DRouterObject::getTaintedNodes ()
+ParentList
+X3DRouterObject::getTaintedParents ()
 {
 	// Invalidate all iterators
 
-	nodeTime = chrono::now ();
+	parentTime = chrono::now ();
 
-	return std::move (nodes);
+	return std::move (parents);
 }
 
 void
@@ -123,7 +123,7 @@ X3DRouterObject::processEvents ()
 	{
 		do
 		{
-			for (const auto & event : getTaintedObjects ())
+			for (const auto & event : getTaintedChildren ())
 			{
 				event .first -> processEvent (event .second);
 			}
@@ -140,30 +140,33 @@ X3DRouterObject::eventsProcessed ()
 {
 	do
 	{
-		for (const auto & node : getTaintedNodes ())
-			node -> eventsProcessed ();
+		for (const auto & parent : getTaintedParents ())
+			parent -> eventsProcessed ();
 	}
-	while (not nodes .empty () and empty ());
+	while (not parents .empty () and empty ());
 }
 
 bool
 X3DRouterObject::empty () const
 {
-	return events .empty ();
+	return children .empty ();
 }
 
 size_t
 X3DRouterObject::size () const
 {
-	return events .size ();
+	return children .size ();
 }
 
 void
 X3DRouterObject::debugRouter () const
 {
-	for (auto & event : events)
+	for (auto & event : children)
 	{
-		__LOG__ << event .first -> getName () << " : " << event .first -> getTypeName () << std::endl;
+		const auto field = dynamic_cast <X3DFieldDefinition*> (event .first);
+
+		if (field)
+			__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
 
 		for (const auto & parent : event .first -> getParents ())
 		{

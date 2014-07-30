@@ -48,21 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_EVENT_LIST_H__
-#define __TITANIA_X3D_ROUTING_EVENT_LIST_H__
+#ifndef __TITANIA_X3D_ROUTING_PARENT_LIST_H__
+#define __TITANIA_X3D_ROUTING_PARENT_LIST_H__
 
-#include "../Base/X3DChildObject.h"
-#include <deque>
+#include "../Types/Time.h"
+
+#include <list>
 
 namespace titania {
 namespace X3D {
 
-typedef std::list <std::pair <X3DChildObject*, EventPtr>> EventList;
+class X3DParentObject;
 
-struct EventId
+using ParentList = std::list <X3DParentObject*>;
+
+struct ParentId
 {
 	time_type time;
-	EventList::iterator iter;
+	ParentList::iterator iter;
 
 };
 

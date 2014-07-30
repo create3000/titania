@@ -52,20 +52,15 @@
 #define __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
 
 #include "../Base/Output.h"
-#include "../Base/X3DReferenceObject.h"
+#include "../Base/X3DParentObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
 #include "../Basic/X3DFieldDefinition.h"
-#include "../Bits/Error.h"
 #include "../Bits/TraverseType.h"
-#include "../Bits/X3DConstants.h"
 #include "../Fields/ArrayFields.h"
 #include "../Fields/SFTime.h"
 #include "../Fields/X3DScalar.h"
-#include "../Routing/EventList.h"
-#include "../Routing/NodeList.h"
 #include "../Types/Struct.h"
-#include "../Types/Time.h"
 
 #include <map>
 
@@ -81,12 +76,12 @@ class X3DExecutionContext;
  *  Class to represent an object that is the base for all nodes.
  */
 class X3DBaseNode :
-	public X3DReferenceObject
+	public X3DParentObject
 {
 public:
 
-	using X3DReferenceObject::addInterest;
-	using X3DReferenceObject::removeInterest;
+	using X3DParentObject::addInterest;
+	using X3DParentObject::removeInterest;
 
 	/***
 	 *  @name Construction
@@ -135,11 +130,6 @@ public:
 	///  Returns the current browser time for this frame.
 	time_type
 	getCurrentTime () const;
-
-	///  Returns a pointer to the browser this node belongs to.
-	X3DBrowser*
-	getBrowser () const
-	{ return browser; }
 
 	///  Returns a pointer to the execution context this node belongs to.
 	X3DExecutionContext*
@@ -387,16 +377,6 @@ public:
 	endUpdate ()
 	throw (Error <DISPOSED>);
 
-	///  Marks this node as tainted, i.e. all interests of this node will be processed later. 
-	virtual
-	void
-	addEvent () override;
-
-	///  This function is called by the router when all events are processed.  You normally do not need to call this
-	///  function directly.
-	void
-	eventsProcessed ();
-
 	///  Returns true if any field has a input or output route otherwise false.
 	bool
 	hasRoutes () const;
@@ -404,12 +384,6 @@ public:
 	/***
 	 *  @name Interest service
 	 */
-
-	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
-	///  of the function effectivly calls addEvent on @a requester.
-	void
-	addInterest (X3DBaseNode* const requester) const
-	{ addInterest (requester, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
 
 	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
 	///  of the function effectivly calls addEvent on @a requester.
@@ -423,11 +397,6 @@ public:
 	void
 	addInterest (X3DField <ValueType> & requester) const
 	{ addInterest (&requester, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
-
-	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
-	void
-	removeInterest (X3DBaseNode* const requester) const
-	{ removeInterest (requester, (void (X3DBaseNode::*)()) & X3DBaseNode::addEvent); }
 
 	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	template <class ValueType>
@@ -547,16 +516,6 @@ protected:
 	FieldDefinitionArray
 	getChangedFields () const;
 
-	///  Adds a private field to this node.
-	virtual
-	void
-	addChild (X3DChildObject &) final override;
-
-	///  Removes a private field to this node.  If the reference count of @a object becomes 0 the object will be disposed.
-	virtual
-	void
-	removeChild (X3DChildObject &) final override;
-
 	/***
 	 *  @name Tool support
 	 */
@@ -568,31 +527,6 @@ protected:
 	///  Replaces this node by @a node.
 	void
 	removeTool (X3DBaseNode* const);
-
-	/***
-	 *  @name Event handling
-	 */
-
-	///  If extended event handling is set to true, initializeOnly field behave like inputOutput fields.  Otherwise
-	///  initializeOnly fields will not process any events.  The default is true.
-	void
-	setExtendedEventHandling (const bool value)
-	{ extendedEventHandling = value; }
-
-	///  Returns whether extended event handling is enabled.
-	bool
-	getExtendedEventHandling () const
-	{ return extendedEventHandling; }
-
-	///  Handler that is called when a child (field) of this node should be marked tainted.
-	virtual
-	void
-	addEvent (X3DChildObject* const) override;
-
-	///  Handler that is called when a child (field) of this node should be added to the event queue.
-	virtual
-	void
-	addEvent (X3DChildObject* const, const EventPtr &) override;
 
 
 private:
@@ -647,14 +581,6 @@ private:
 	getFieldName (const std::string &, const VersionType) const;
 
 	/***
-	 *  @name Event handling
-	 */
-
-	///  Removes all fields from the event queue.
-	void
-	removeEvents ();
-
-	/***
 	 *  @name Input/Output
 	 */
 
@@ -670,7 +596,6 @@ private:
 	 *  @name Members
 	 */
 
-	X3DBrowser* const          browser;          // This nodes Browser
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
 	NodeTypeArray type;
@@ -679,18 +604,13 @@ private:
 	FieldIndex           fields;                 // Pre-defined and user-defined fields
 	FieldAliasIndex      fieldAliases;           // VRML names
 	size_t               numUserDefinedFields;   // Number of user defined fields
-	ChildObjectSet       children;               // Internal used fields
 
-	bool                  initialized;
-	bool                  private_;
-	size_t                cloneCount;
-	SFBool                live;
-	bool                  extendedEventHandling; // Handle initializeOnlys as input events
-	NodeId                nodeId;                // Router eventsProcessed id
-	std::vector <EventId> events;
+	bool   initialized;
+	bool   private_;
+	size_t cloneCount;
+	SFBool live;
 
 	std::vector <std::string> comments;          // This nodes comments
-
 
 };
 

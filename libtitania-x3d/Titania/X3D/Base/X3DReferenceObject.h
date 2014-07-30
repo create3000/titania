@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BASE_X3DREFERENCE_OBJECT_H__
 #define __TITANIA_X3D_BASE_X3DREFERENCE_OBJECT_H__
 
+#include "../Base/Output.h"
 #include "../Base/X3DChildObject.h"
 
 namespace titania {
@@ -157,7 +158,7 @@ protected:
 	void
 	unReference () override;
 
-	///  Processes all interest of shutdown. 
+	///  Processes all interest of shutdown.
 	virtual
 	void
 	processShutdown () final override;

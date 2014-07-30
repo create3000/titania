@@ -118,7 +118,7 @@ namespace X3D {
  *    shutdown ()
  */
 
-/**
+/***
  *  Contructs a new node into @a browser and @a executionContext.
  *
  *  Important: a in this way newly created node must be setuped manually. On setup there must be a
@@ -131,25 +131,19 @@ namespace X3D {
  *      executionContext -> realize ();
  */
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
-	   X3DReferenceObject (),
-	              browser (browser),
-	     executionContext (executionContext),
-	                 type ({ X3DConstants::X3DBaseNode }),
-	     fieldDefinitions (),
-	               fields (),
-	         fieldAliases (),
-	 numUserDefinedFields (0),
-	             children (),
-	          initialized (false),
-	             private_ (false),
-	           cloneCount (0),
-	                 live (true),
-	extendedEventHandling (true),
-	               nodeId ({ 0 }),
-	               events (),
-	             comments ()
+	     X3DParentObject (browser),
+	    executionContext (executionContext),
+	                type ({ X3DConstants::X3DBaseNode }),
+	    fieldDefinitions (),
+	              fields (),
+	        fieldAliases (),
+	numUserDefinedFields (0),
+	         initialized (false),
+	            private_ (false),
+	          cloneCount (0),
+	                live (true),
+	            comments ()
 {
-	assert (browser);
 	assert (executionContext);
 
 	addChildren (live);
@@ -161,6 +155,8 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 void
 X3DBaseNode::setup ()
 {
+	X3DParentObject::setup ();
+
 	executionContext -> addParent (this);
 
 	for (const auto & field : fieldDefinitions)
@@ -168,9 +164,6 @@ X3DBaseNode::setup ()
 		field -> updateIsReferences ();
 		field -> isTainted (false);
 	}
-
-	for (const auto & child : children)
-		child -> isTainted (false);
 
 	initialized = true;
 	initialize ();
@@ -369,24 +362,6 @@ throw (Error <INVALID_NODE>,
 void
 X3DBaseNode::replace (X3DBaseNode* const node)
 {
-//	std::vector <X3DFieldDefinition*> parents;
-//
-//	for (auto & parent : node -> getParents ())
-//	{
-//		const auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
-//
-//		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
-//			parents .emplace_back (sfnode);
-//	}
-//
-//	SFNode replacement (this);
-//
-//	for (auto & parent : parents)
-//	{
-//		parent -> write (replacement);
-//		parent -> addEvent ();
-//	}
-
 	std::vector <X3DChildObject*> parents;
 
 	for (const auto & parent : node -> getParents ())
@@ -410,7 +385,7 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 time_type
 X3DBaseNode::getCurrentTime () const
 {
-	return browser -> getClock () -> cycle ();
+	return getBrowser () -> getClock () -> cycle ();
 }
 
 /***
@@ -541,7 +516,7 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 	else
 	{
 		//  If field is a pre defined field, we defer dispose.
-		X3DReferenceObject::disposed () .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
+		X3DParentObject::disposed () .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
 	}
 
 	if (not private_)
@@ -745,31 +720,6 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
- *  Adds this node as parent of @a child. After setup @a child is eventable.
- */
-void
-X3DBaseNode::addChild (X3DChildObject & child)
-{
-	child .isTainted (true);
-
-	children .emplace (&child);
-
-	X3DReferenceObject::addChild (child);
-}
-
-/***
- *  This node will now not be longer a parent of @a child. If the reference count of @a child goes
- *  to zero @a child will be disposed and garbage collected.
- */
-void
-X3DBaseNode::removeChild (X3DChildObject & child)
-{
-	children .erase (&child);
-
-	X3DReferenceObject::removeChild (child);
-}
-
-/***
  *  Marks this node as a node for internal use only. Such they do not increment the clone count of its child nodes and
  *  are not fully printable.
  */
@@ -832,102 +782,6 @@ throw (Error <DISPOSED>)
 {
 	if (live)
 		live = false;
-}
-
-/***
- *  Adds @a object to the router event queue.
- */
-void
-X3DBaseNode::addEvent (X3DChildObject* const object)
-{
-	if (object -> isTainted ())
-		return;
-
-	object -> isTainted (true);
-
-	addEvent (object, std::make_shared <Event> (object));
-}
-
-//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
-
-/***
- *  Adds @a object to the router event queue.
- */
-void
-X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
-{
-	getBrowser () -> addEvent ();
-
-	// Register for processEvent
-
-	events .emplace_back (getBrowser () -> addTaintedObject (object, event));
-
-	// Register for eventsProcessed
-
-	if (not isTainted ())
-	{
-		if (object -> isInput () or (extendedEventHandling and not object -> isOutput ()))
-		{
-			isTainted (true);
-		}
-	}
-
-	// Register always on every first event.
-
-	if (not nodeId .time)
-		nodeId = getBrowser () -> addTaintedNode (this);
-}
-
-/***
- *  Marks this node as changed. Call this function if you want to inform the requesters of this node about a change.
- */
-void
-X3DBaseNode::addEvent ()
-{
-	if (not isTainted ())
-	{
-		isTainted (true);
-
-		if (not nodeId .time)
-			nodeId = getBrowser () -> addTaintedNode (this);
-
-		getBrowser () -> addEvent ();
-	}
-}
-
-/***
- *  The eventsProcessed () function represents the service request that is called after some set of events has been received.
- *  Requester of this node are now informed about a change of this node.
- */
-void
-X3DBaseNode::eventsProcessed ()
-{
-	events .clear ();
-	nodeId .time = 0;
-
-	if (isTainted ())
-	{
-		isTainted (false);
-		processInterests ();
-	}
-}
-
-/***
- *  Removes all outstanding events from the event queue of the router.
- */
-void
-X3DBaseNode::removeEvents ()
-{
-	for (const auto & event : events)
-		getBrowser () -> removeTaintedObject (event);
-
-	events .clear ();
-
-	if (nodeId .time)
-	{
-		getBrowser () -> removeTaintedNode (nodeId);
-		nodeId .time = 0;
-	}
 }
 
 /***
@@ -1672,9 +1526,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 void
 X3DBaseNode::dispose ()
 {
-	X3DReferenceObject::dispose ();
-
-	removeEvents ();
+	X3DParentObject::dispose ();
 
 	for (const auto & field : fieldDefinitions)
 	{
@@ -1684,12 +1536,8 @@ X3DBaseNode::dispose ()
 		field -> removeParent (this);
 	}
 
-	for (const auto & child : children)
-		child -> dispose ();
-
 	fields .clear ();
 	fieldDefinitions .clear ();
-	children .clear ();
 
 	executionContext -> removeParent (this);
 }

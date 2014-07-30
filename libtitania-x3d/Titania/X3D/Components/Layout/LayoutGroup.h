@@ -153,8 +153,8 @@ private:
 
 	Fields fields;
 
-	X3DViewportNodePtr currentViewport;
-	X3DLayoutNodePtr   currentLayout;
+	X3DViewportNodePtr viewportNode;
+	X3DLayoutNodePtr   layoutNode;
 
 };
 

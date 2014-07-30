@@ -53,9 +53,8 @@
 
 #include "../Base/ChildObjectSet.h"
 #include "../Base/Event.h"
+#include "../Base/X3DGarbageCollector.h"
 #include "../Base/X3DObject.h"
-
-#include <Titania/Utility/Pass.h>
 
 namespace titania {
 namespace X3D {
@@ -193,7 +192,7 @@ protected:
 	virtual
 	void
 	removeWeakParent (X3DChildObject* const);
-	
+
 	///  Handler that is called when the reference count should be incremented.
 	virtual
 	void
@@ -211,34 +210,6 @@ protected:
 	void
 	unReference ()
 	{ }
-
-	/***
-	 *  @name Children handling
-	 */
-
-	///  Add this node as parent to @a children.
-	template <typename ... Args>
-	void
-	addChildren (Args & ... children)
-	{ basic::pass ((addChild (children), 1) ...); }
-
-	///  Add this node as parent to @a child.
-	virtual
-	void
-	addChild (X3DChildObject & child)
-	{ child .addParent (this); }
-
-	///  Remove this node as parent from @a children.
-	template <typename ... Args>
-	void
-	removeChildren (Args & ... children)
-	{ basic::pass ((removeChild (children), 1) ...); }
-
-	///  Remove this node as parent from @a child.
-	virtual
-	void
-	removeChild (X3DChildObject & child)
-	{ child .removeParent (this); }
 
 	/***
 	 *  @name Event handling

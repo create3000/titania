@@ -71,8 +71,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
 	         fields (),
-	currentViewport (),
-	  currentLayout ()
+	   viewportNode (),
+	     layoutNode ()
 {
 	addType (X3DConstants::LayoutGroup);
 
@@ -85,8 +85,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
 
-	addChildren (currentViewport,
-	             currentLayout);
+	X3DParentObject::addChildren (viewportNode,
+	                              layoutNode);
 }
 
 X3DBaseNode*
@@ -116,13 +116,13 @@ LayoutGroup::getBBox () const
 void
 LayoutGroup::set_viewport ()
 {
-	currentViewport .set (x3d_cast <X3DViewportNode*> (viewport ()));
+	viewportNode .set (x3d_cast <X3DViewportNode*> (viewport ()));
 }
 
 void
 LayoutGroup::set_layout ()
 {
-	currentLayout .set (x3d_cast <X3DLayoutNode*> (layout ()));
+	layoutNode .set (x3d_cast <X3DLayoutNode*> (layout ()));
 }
 
 void
@@ -134,16 +134,16 @@ LayoutGroup::traverse (const TraverseType type)
 		case TraverseType::PICKING:
 		case TraverseType::DISPLAY:
 		{
-			if (currentViewport)
-				currentViewport -> push (type);
+			if (viewportNode)
+				viewportNode -> push (type);
 
-			if (currentLayout)
+			if (layoutNode)
 			{
 				getModelViewMatrix () .push ();
 
-				currentLayout -> transform (type);
+				layoutNode -> transform (type);
 
-				getBrowser () -> getLayouts () .push (currentLayout);
+				getBrowser () -> getLayouts () .push (layoutNode);
 
 				X3DGroupingNode::traverse (type);
 
@@ -154,8 +154,8 @@ LayoutGroup::traverse (const TraverseType type)
 			else
 				X3DGroupingNode::traverse (type);
 
-			if (currentViewport)
-				currentViewport -> pop (type);
+			if (viewportNode)
+				viewportNode -> pop (type);
 
 			break;
 		}

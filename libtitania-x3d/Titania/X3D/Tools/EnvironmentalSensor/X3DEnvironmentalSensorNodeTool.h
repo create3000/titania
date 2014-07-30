@@ -141,7 +141,7 @@ public:
 		X3DBoundedObject::dispose ();
 		X3DSensorNodeTool <Type>::dispose ();
 		
-		X3DChildObject::removeChildren (bboxSize (), bboxCenter ());
+		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
 	}
 
 
@@ -160,7 +160,7 @@ protected:
 		X3DSensorNodeTool <Type> (),
 		                   color (color)
 	{
-		X3DChildObject::addChildren (bboxSize (), bboxCenter ());
+		X3DParentObject::addChildren (bboxSize (), bboxCenter ());
 	}
 
 	virtual

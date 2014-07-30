@@ -48,14 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DPARENT_OBJECT_H__
-#define __TITANIA_BASE_X3DPARENT_OBJECT_H__
+#ifndef __TITANIA_X3D_BASE_X3DPARENT_OBJECT_H__
+#define __TITANIA_X3D_BASE_X3DPARENT_OBJECT_H__
 
-#include <Titania/X3D/Types/Time.h>
+#include "../Base/X3DReferenceObject.h"
+#include "../Routing/ChildrenList.h"
+#include "../Routing/ParentList.h"
 
-#include <Titania/X3D/Base/X3DReferenceObject.h>
-#include <Titania/X3D/Routing/EventList.h>
-#include <Titania/X3D/Routing/NodeList.h>
+#include <Titania/Utility/Pass.h>
 
 namespace titania {
 namespace X3D {
@@ -63,7 +63,7 @@ namespace X3D {
 class X3DBrowser;
 
 /**
- *  Class to represents an object that handles the event of its children.
+ *  Class to represents an object that handles the events of its children.
  */
 class X3DParentObject :
 	public X3DReferenceObject
@@ -82,7 +82,11 @@ public:
 	void
 	setup ();
 
-	///  Returns a pointer to the browser this object belongs to.
+	/***
+	 *  @name Member access
+	 */
+
+	///  Returns a pointer to the browser this node belongs to.
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }
@@ -143,15 +147,25 @@ protected:
 	 *  @name Children handling
 	 */
 
-	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
-	virtual
+	///  Add this node as parent to all @a children.  See addChild.
+	template <typename ... Args>
 	void
-	addChild (X3DChildObject &) final override;
+	addChildren (Args & ... children)
+	{ basic::pass ((addChild (children), 1) ...); }
+
+	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
+	void
+	addChild (X3DChildObject &);
+
+	///  Remove this node as parent from all @a children.  See removeChild.
+	template <typename ... Args>
+	void
+	removeChildren (Args & ... children)
+	{ basic::pass ((removeChild (children), 1) ...); }
 
 	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
-	virtual
 	void
-	removeChild (X3DChildObject &) final override;
+	removeChild (X3DChildObject &);
 
 	/***
 	 *  @name Event handling
@@ -196,8 +210,8 @@ private:
 	X3DBrowser* const     browser;               // This objects Browser
 	bool                  extendedEventHandling; // Handle initializeOnlys like inputOutput
 	ChildObjectSet        children;              // Internal used fields
-	NodeId                objectId;              // This object within Router
-	std::vector <EventId> events;                // Children within Router
+	ParentId              parentId;              // This object within Router
+	std::vector <ChildId> events;                // Children within Router
 
 };
 

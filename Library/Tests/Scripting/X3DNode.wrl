@@ -21,8 +21,10 @@ function set_time ()
 {
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 
-	print ('Name:             ', node .getNodeName ());
-	print ('Type:             ', node .getNodeType ());
+	print ('Name:             ', node .getName ());
+	print ('TypeName:         ', node .getTypeName ());
+	print ('NodeName:         ', node .getNodeName ());
+	print ('Node ype:         ', node .getNodeType ());
 	print ('FieldDefinitions: ', node .getFieldDefinitions ());
 	print ('toVRMLString:     ', node .toVRMLString ());
 	print ('toXMLString:      ', node .toXMLString ());

@@ -78,7 +78,6 @@ X3DReferenceObject::replaceParent (X3DChildObject* const parentToRemove, X3DChil
 	X3DChildObject::replaceParent (parentToRemove, parentToAdd);
 }
 
-
 void
 X3DReferenceObject::removeParent (X3DChildObject* const parent)
 {
