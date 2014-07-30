@@ -7,6 +7,7 @@ bin_PROGRAMS =  \
 titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
+	Titania/Base/X3DParentObject.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \

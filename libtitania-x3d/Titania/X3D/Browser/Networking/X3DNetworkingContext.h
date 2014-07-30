@@ -76,7 +76,7 @@ public:
 	{ return userAgent; }
 
 	const ScenePtr &
-	getScene () const
+	getEmptyScene () const
 	{ return emptyScene; }
 
 	std::mutex &

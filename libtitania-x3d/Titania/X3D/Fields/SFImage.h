@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,6 +67,10 @@ class SFImage :
 {
 public:
 
+	/***
+	 *  @name Member types
+	 */
+
 	typedef Image::array_type::value_type value_type;
 	typedef Image::size_type              size_type;
 
@@ -75,16 +79,25 @@ public:
 	using X3DField <Image>::getValue;
 	using X3DField <Image>::operator =;
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	SFImage ();
 
 	SFImage (const SFImage &);
 
+	SFImage (SFImage &&);
+
 	explicit
 	SFImage (const Image &);
 
+	explicit
+	SFImage (Image &&);
+
 	SFImage (const size_type, const size_type, const size_type, const MFInt32 &);
+
+	SFImage (const size_type, const size_type, const size_type, MFInt32 &&);
 
 	virtual
 	SFImage*
@@ -98,19 +111,22 @@ public:
 	       Error <NOT_SUPPORTED>) final override
 	{ return new SFImage (*this); }
 
-	///  @name Interest service
+	/***
+	 *  @name Assignment operators
+	 */
 
-	template <class Class>
-	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	SFImage &
+	operator = (const SFImage &);
 
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	SFImage &
+	operator = (SFImage &&);
 
-	///  @name Member access
+	SFImage &
+	operator = (Image &&);
+
+	/***
+	 *  @name Member access
+	 */
 
 	void
 	setWidth (const size_type);
@@ -143,9 +159,28 @@ public:
 	setValue (const size_type, const size_type, const size_type, const MFInt32 &);
 
 	void
+	setValue (const size_type, const size_type, const size_type, MFInt32 &&);
+
+	void
 	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
 
-	///  @name Input/Output
+	/***
+	 *  @name Interest service
+	 */
+
+	template <class Class>
+	void
+	addInterest (Class* const object, void (Class::* memberFunction) (const SFImage &)) const
+	{ addInterest (object, memberFunction, std::cref (*this)); }
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
+	{ addInterest (object, memberFunction, std::cref (*this)); }
+
+	/***
+	 *  @name Input/Output
+	 */
 
 	virtual
 	void
@@ -163,7 +198,9 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 */
 
 	virtual
 	void

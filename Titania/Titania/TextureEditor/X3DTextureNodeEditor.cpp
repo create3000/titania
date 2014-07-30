@@ -197,8 +197,10 @@ X3DTextureNodeEditor::on_texture_changed ()
 	}
 	else
 	{
-		textureNode = textureNode;
-		//getTextureNotebook () .set_visible (false);
+		// INCONSISTENT and NONE
+		textureNode .addEvent ();
+		getTextureFormatLabel () .set_text ("");
+		getTextureNotebook ()    .set_visible (false);
 	}
 
 	// Set field.
@@ -273,9 +275,15 @@ X3DTextureNodeEditor::set_texture ()
 		}
 	}
 	else if (active == 0)
+	{
 		getTextureComboBoxText () .set_active (NULL_TEXTURE);
+		getTextureFormatLabel ()  .set_text ("");
+	}
 	else
+	{
 		getTextureComboBoxText () .set_active (-1);
+		getTextureFormatLabel ()  .set_text ("");
+	}
 
 	getTextureComboBoxText () .set_sensitive (hasField);
 	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> getCloneCount () > 1);

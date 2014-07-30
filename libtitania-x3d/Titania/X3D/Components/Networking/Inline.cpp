@@ -117,7 +117,7 @@ Inline::initialize ()
 	{
 		if (X3D_PARALLEL)
 		{
-			setScene (ScenePtr (getBrowser () -> getScene ()));
+			setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
 
 			if (load ())
 				requestAsyncLoad ();
@@ -128,7 +128,7 @@ Inline::initialize ()
 				requestImmediateLoad ();
 
 			else
-				setScene (ScenePtr (getBrowser () -> getScene ()));
+				setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
 		}
 	}
 
@@ -147,7 +147,7 @@ Inline::setSceneAsync (ScenePtr && value)
 	else
 	{
 		setLoadState (FAILED_STATE);
-		setScene (ScenePtr (getBrowser () -> getScene ()));
+		setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
 	}
 }
 
@@ -290,7 +290,7 @@ Inline::requestImmediateLoad ()
 	catch (const X3DError & error)
 	{
 		setLoadState (FAILED_STATE);
-		setScene (ScenePtr (getBrowser () -> getScene ()));
+		setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
 
 		for (const auto & string : loader .getUrlError ())
 			getBrowser () -> println (string .str ());
@@ -309,7 +309,7 @@ Inline::requestUnload ()
 		future -> dispose ();
 
 	setLoadState (NOT_STARTED_STATE);
-	setScene (ScenePtr (getBrowser () -> getScene ()));
+	setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
 }
 
 void

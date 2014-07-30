@@ -1,17 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/X3DParentObject.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="283" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="504" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="388" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.h" Line="175" Column="9" />
-      <File FileName="experimental/main.cpp" Line="348" Column="7" />
-      <File FileName="Titania/run.pl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DField.h" Line="144" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="243" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="487" Column="59" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DReferenceObject.h" Line="152" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1040" Column="2" />
+      <File FileName="Titania/Titania/TextureEditor/X3DPixelTextureEditor.cpp" Line="104" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="366" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="1680" Column="3" />
+      <File FileName="Titania/Titania/Base/X3DParentObject.h" Line="190" Column="5" />
+      <File FileName="Titania/Titania/Base/X3DParentObject.cpp" Line="206" Column="28" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,34 +15,44 @@
           <Node name="miscellaneous" expanded="True">
             <Node name="uncrustify-all" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True">
-            <Node name="main.cpp" selected="True" />
-          </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
-              <Node name="Handles" expanded="True" />
-              <Node name="Networking" expanded="True" />
+              <Node name="Errors" expanded="True" />
               <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
-              </Node>
+              <Node name="Math" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
+                <Node name="Basic" expanded="True">
+                  <Node name="X3DBaseNode.h" selected="True" />
                 </Node>
-                <Node name="InputOutput" expanded="True" />
-                <Node name="Parser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Networking" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="CubeMapTexturing" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Shaders" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Texturing3D" expanded="True" />
+                  <Node name="Time" expanded="True" />
+                </Node>
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -63,14 +69,12 @@
               <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Console" expanded="True" />
-              <Node name="GeometryPropertiesEditor" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
-              <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="CellRenderer" expanded="True" />
-              </Node>
+              <Node name="OutlineEditor" expanded="True" />
               <Node name="TextEditor" expanded="True" />
               <Node name="TextureEditor" expanded="True" />
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -86,7 +90,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" line="104" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -78,11 +78,11 @@ JSPropertySpec jsSFRotation::properties [ ] = {
 };
 
 JSFunctionSpec jsSFRotation::functions [ ] = {
-	{ "getName",     getName <X3DChildObject>,     0, 0 },
-	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType,                      0, 0 },
-	{ "isReadable",  isReadable,                   0, 0 },
-	{ "isWritable",  isWritable,                   0, 0 },
+	{ "getName",     getName <SFRotation>,     0, 0 },
+	{ "getTypeName", getTypeName <SFRotation>, 0, 0 },
+	{ "getType",     getType,                  0, 0 },
+	{ "isReadable",  isReadable,               0, 0 },
+	{ "isWritable",  isWritable,               0, 0 },
 
 	{ "getAxis",     getAxis,     0, 0 },
 	{ "setAxis",     setAxis,     0, 0 },
@@ -92,7 +92,7 @@ JSFunctionSpec jsSFRotation::functions [ ] = {
 	{ "multVec",     multVec,     1, 0 },
 	{ "slerp",       slerp,       2, 0 },
 
-	{ "toString",    toString <X3DChildObject>, 0, 0 },
+	{ "toString",    toString <SFRotation>, 0, 0 },
 
 	{ 0 }
 

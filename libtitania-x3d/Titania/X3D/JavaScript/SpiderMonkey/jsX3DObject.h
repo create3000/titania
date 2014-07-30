@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DOBJECT_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DOBJECT_H__
 
-#include "../../Base/X3DChildObject.h"
 #include "../../InputOutput/Generator.h"
 #include "jsString.h"
 
@@ -125,10 +124,6 @@ jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 
 	return JS_FALSE;
 }
-
-extern template JSBool jsX3DObject::getName <X3DChildObject>     (JSContext *, uintN, jsval*);
-extern template JSBool jsX3DObject::getTypeName <X3DChildObject> (JSContext *, uintN, jsval*);
-extern template JSBool jsX3DObject::toString <X3DChildObject>    (JSContext *, uintN, jsval*);
 
 } // MozillaSpiderMonkey
 } // X3D

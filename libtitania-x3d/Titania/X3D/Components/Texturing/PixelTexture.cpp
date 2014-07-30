@@ -104,7 +104,7 @@ PixelTexture::update ()
 	const size_t height     = image () .getHeight ();
 	const size_t height_1   = height - 1;
 	const size_t components = image () .getComponents ();
-	const auto & array      = image () .getArray ();
+	auto &       array      = image () .getArray ();
 	const size_t size       = width * height;
 
 	if (components < 1 or components > 4 or width < 1 or height < 1)
@@ -112,6 +112,9 @@ PixelTexture::update ()
 		setTexture (TexturePtr ());
 		return;
 	}
+
+	if (array .size () < size)
+		array .resize (size);
 
 	MagickImageArrayPtr mimages (new MagickImageArray ());
 	mimages -> emplace_back ();

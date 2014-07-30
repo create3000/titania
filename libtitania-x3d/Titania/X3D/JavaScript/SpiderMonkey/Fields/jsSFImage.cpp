@@ -78,13 +78,13 @@ JSPropertySpec jsSFImage::properties [ ] = {
 };
 
 JSFunctionSpec jsSFImage::functions [ ] = {
-	{ "getName",     getName <X3DChildObject>,     0, 0 },
-	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType,                      0, 0 },
-	{ "isReadable",  isReadable,                   0, 0 },
-	{ "isWritable",  isWritable,                   0, 0 },
+	{ "getName",     getName <SFImage>,     0, 0 },
+	{ "getTypeName", getTypeName <SFImage>, 0, 0 },
+	{ "getType",     getType,               0, 0 },
+	{ "isReadable",  isReadable,            0, 0 },
+	{ "isWritable",  isWritable,            0, 0 },
 
-	{ "toString",    toString <X3DChildObject>,    0, 0 },
+	{ "toString",    toString <SFImage>,    0, 0 },
 
 	{ 0 }
 

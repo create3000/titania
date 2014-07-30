@@ -1,3 +1,39 @@
+2014-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFImage.h:
+	* X3DObject.h:
+	* Parser.cpp:
+	* SFImage.cpp:
+	* X3DObject.cpp:
+	* X3DBaseNode.h:
+	* X3DBrowser.h:
+	* X3DChildObject.h:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* Notification.cpp:
+	* X3DGarbageCollector.h:
+	* X3DToolObject.cpp:
+	* X3DGarbargeCollector.cpp:
+	* RenderingProperties.cpp:
+	* Inline.cpp:
+	* ExternProtoDeclaration.cpp:
+	* jsX3DObject.h:
+	* PixelTexture.cpp:
+	* jsX3DObject.cpp:
+	* X3DNetworkingContext.h:
+	* jsX3DArrayField.h:
+	* jsSFVec4.h:
+	* jsSFVec2.h:
+	* jsSFVec3.h:
+	* X3DViewpointNode.cpp:
+	* jsSFNode.cpp:
+	* jsSFColor.cpp:
+	* jsSFImage.cpp:
+	* jsSFMatrix4.h:
+	* jsSFMatrix3.h:
+	* jsSFRotation.cpp:
+	* jsSFColorRGBA.cpp: 
+
 2014-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Loader.cpp: 

@@ -50,7 +50,7 @@
 
 #include "X3DGarbageCollector.h"
 
-#include "../Base/X3DObject.h"
+#include "../Base/X3DChildObject.h"
 
 #include <malloc.h>
 #include <thread>
@@ -70,7 +70,7 @@ X3DGarbageCollector::trimFreeMemory ()
 }
 
 void
-X3DGarbageCollector::addDisposedObject (const X3DObject* const object)
+X3DGarbageCollector::addDisposedObject (const X3DChildObject* const object)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 

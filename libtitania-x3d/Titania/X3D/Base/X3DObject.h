@@ -72,7 +72,7 @@ typedef std::shared_ptr <X3DBase> UserDataPtr;
  *  Class to represent an object that is the base for all X3D objects.
  */
 class X3DObject :
-	public X3DInput, public X3DOutput, public X3DGarbageCollector
+	public X3DInput, public X3DOutput
 {
 public:
 

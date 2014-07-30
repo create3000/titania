@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DObject;
+class X3DChildObject;
 
 class X3DGarbageCollector :
 	virtual public X3DBase
@@ -77,7 +77,7 @@ protected:
 
 	static
 	void
-	addDisposedObject (const X3DObject* const);
+	addDisposedObject (const X3DChildObject* const);
 
 	template <class InputIt>
 	static
@@ -100,7 +100,7 @@ protected:
 
 private:
 
-	using ObjectArray = std::deque <const X3DObject*>;
+	using ObjectArray = std::deque <const X3DChildObject*>;
 
 	///  @name Operations
 

@@ -59,7 +59,7 @@ namespace X3D {
 
 X3DToolObject::X3DToolObject () :
 	X3DBaseNode (),
-	 inlineNode (new Inline (getBrowser () -> getScene ())),
+	 inlineNode (new Inline (getBrowser () -> getEmptyScene ())),
 	   toolNode ()
 {
 	addType (X3DConstants::X3DToolObject);

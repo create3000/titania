@@ -74,9 +74,35 @@ public:
 		value  (img .value)
 	{ }
 
+	image (image && img) :
+		value  ({ img .width (), img .height (), img .components () })
+	{
+		value .array = std::move (img .value .array);
+		img .resize ();
+	}
+
 	image (const size_type width, const size_type height, const size_type components, const Array & array) :
 		value  ({ width, height, components, array })
 	{ resize (); }
+
+	image (const size_type width, const size_type height, const size_type components, Array && array) :
+		value  ({ width, height, components, std::move (array) })
+	{ resize (); }
+
+	image &
+	operator = (const image &);
+
+	image &
+	operator = (image &&);
+
+	void
+	set (const size_type, const size_type, const size_type, const Array &);
+
+	void
+	set (const size_type, const size_type, const size_type, Array &&);
+
+	void
+	get (size_type &, size_type &, size_type &, Array &) const;
 
 	void
 	width (const size_type);
@@ -111,15 +137,6 @@ public:
 	array () const
 	{ return value .array; }
 
-	void
-	set (const size_type, const size_type, const size_type, const Array &);
-
-	void
-	get (size_type &, size_type &, size_type &, Array &) const;
-
-	image &
-	operator = (const image &);
-
 
 private:
 
@@ -139,6 +156,70 @@ private:
 	Value value;
 
 };
+
+template <class Array>
+image <Array> &
+image <Array>::operator = (const image <Array> & img)
+{
+	value .width      = img .width  ();
+	value .height     = img .height ();
+	value .components = img .components ();
+	value .array      = img .array  ();
+
+	return *this;
+}
+
+template <class Array>
+image <Array> &
+image <Array>::operator = (image <Array> && img)
+{
+	value .width      = img .width  ();
+	value .height     = img .height ();
+	value .components = img .components ();
+	value .array      = std::move (img .array  ());
+
+	img .value .width      = 0;
+	img .value .height     = 0;
+	img .value .components = 0;
+
+	img .resize ();
+
+	return *this;
+}
+
+template <class Array>
+void
+image <Array>::set (const size_type width, const size_type height, const size_type components, const Array & array)
+{
+	value .width      = width;
+	value .height     = height;
+	value .components = components;
+	value .array      = array;
+
+	resize ();
+}
+
+template <class Array>
+void
+image <Array>::set (const size_type width, const size_type height, const size_type components, Array && array)
+{
+	value .width      = width;
+	value .height     = height;
+	value .components = components;
+	value .array      = std::move (array);
+
+	resize ();
+}
+
+template <class Array>
+void
+image <Array>::get (size_type & width, size_type & height, size_type & components, Array & array) const
+{
+	width      = value .width;
+	height     = value .height;
+	components = value .components;
+	array      = value .array;
+}
 
 template <class Array>
 void
@@ -165,40 +246,6 @@ image <Array>::array (const Array & array)
 	value .array = array;
 
 	resize ();
-}
-
-template <class Array>
-void
-image <Array>::set (const size_type width, const size_type height, const size_type components, const Array & array)
-{
-	value .width      = width;
-	value .height     = height;
-	value .components = components;
-	value .array      = array;
-
-	resize ();
-}
-
-template <class Array>
-void
-image <Array>::get (size_type & width, size_type & height, size_type & components, Array & array) const
-{
-	width      = value .width;
-	height     = value .height;
-	components = value .components;
-	array      = value .array;
-}
-
-template <class Array>
-image <Array> &
-image <Array>::operator = (const image  <Array> & img)
-{
-	value .width      = img .width  ();
-	value .height     = img .height ();
-	value .components = img .components ();
-	value .array      = img .array  ();
-
-	return *this;
 }
 
 template <class Array>

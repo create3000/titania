@@ -221,8 +221,74 @@ using Spheroid3d  = math::spheroid3 <double>;
 
 
 
+class X3DBase
+{
+public:
 
+};
 
+class X3DInput :
+	virtual public X3DBase
+{
+public:
+
+};
+
+class X3DOutput :
+	virtual public X3DBase
+{
+public:
+
+};
+
+class X3DChildObject :
+	virtual public X3DBase
+{
+public:
+
+};
+
+class X3DObject :
+	virtual public X3DBase
+{
+public:
+
+};
+
+class X3DFieldDefinition :
+	public X3DObject,
+	public X3DChildObject,
+	public X3DInput,
+	public X3DOutput
+{
+public:
+
+};
+
+class X3DParentObject :
+	virtual public X3DBase,
+	public X3DInput,
+	public X3DOutput
+{
+public:
+
+};
+
+class X3DReferenceObject :
+	public X3DChildObject
+{
+public:
+
+};
+
+class X3DBaseNode :
+	public X3DObject,
+	public X3DParentObject,
+	public X3DReferenceObject
+{
+public:
+
+};
 
 int
 main (int argc, char** argv)
@@ -238,34 +304,15 @@ main (int argc, char** argv)
 	#endif
 
 	std::clog .imbue (std::locale (""));
+
+	auto fd = new X3DFieldDefinition ();
 	
-	const std::multimap <std::string, int> mm = {
-		std::make_pair ("a", 1),
-		std::make_pair ("a", 2),
-		std::make_pair ("a", 3),
-		std::make_pair ("b", 1),
-		std::make_pair ("b", 2),
-		std::make_pair ("b", 3),
-	};
-
-	const std::vector <int> v = { 1,2,3,4,5,6 };
-
-	for (const auto & pair : basic::make_reverse_range (mm .equal_range ("a")))
-		__LOG__ << pair .first << " : " << pair .second << std::endl;
-
-	for (const auto & e : basic::make_reverse_range (v))
-		__LOG__ << e << std::endl;
+	X3DChildObject* co = fd;
 	
-	size_t a = 1;
-	size_t b = 1;
-				
-	for (int i = 0; i < 128; ++ i)
-	{
-		a <<= 1;
-		b *= 2;
-		
-		__LOG__ << a << " : " << b << std::endl;
-	}
+	X3DFieldDefinition* f = static_cast <X3DFieldDefinition*> (co);
+	
+	std::clog << co << std::endl;
+	std::clog << f << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

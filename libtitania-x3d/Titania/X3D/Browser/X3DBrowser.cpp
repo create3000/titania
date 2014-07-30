@@ -109,7 +109,7 @@ X3DBrowser::initialize ()
 		try
 		{
 			if (browserOptions -> splashScreen ())
-				executionContext .set (Loader (getScene ()) .createX3DFromURL ({ get_page ("about/splash.x3dv") .str () }));
+				executionContext .set (Loader (getEmptyScene ()) .createX3DFromURL ({ get_page ("about/splash.x3dv") .str () }));
 		}
 		catch (const X3DError & error)
 		{
@@ -155,12 +155,6 @@ X3DBrowser::set_prepareEvents ()
 		currentSpeed .setPosition (Vector3f (), 0);
 
 	currentFrameRate = 1 / getClock () -> interval ();
-}
-
-X3DBrowser*
-X3DBrowser::getBrowser () const
-{
-	return const_cast <X3DBrowser*> (this);
 }
 
 void

@@ -67,10 +67,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	X3DBrowser*
-	getBrowser () const;
-
 	const std::string &
 	getVersion () const
 	throw (Error <DISPOSED>)

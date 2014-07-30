@@ -2313,7 +2313,7 @@ Parser::sfimageValue (SFImage* _field)
 		{
 			if (Int32 (components))
 			{
-				int32_t size = height * width;
+				const int32_t size = height * width;
 
 				array .reserve (size);
 
@@ -2326,7 +2326,7 @@ Parser::sfimageValue (SFImage* _field)
 						throw Error <INVALID_X3D> ("Expected more pixel values.");
 				}
 
-				_field -> setValue (width, height, components, array);
+				_field -> setValue (width, height, components, std::move (array));
 				return true;
 			}
 		}
@@ -2346,7 +2346,7 @@ Parser::mfimageValue (MFImage* _field)
 
 	if (sfimageValue (&value))
 	{
-		_field -> emplace_back (value);
+		_field -> emplace_back (std::move (value));
 		return true;
 	}
 
@@ -2373,7 +2373,7 @@ Parser::sfimageValues (MFImage* _field)
 	SFImage value;
 
 	while (sfimageValue (&value))
-		_field -> emplace_back (value);
+		_field -> emplace_back (std::move (value));
 }
 
 bool

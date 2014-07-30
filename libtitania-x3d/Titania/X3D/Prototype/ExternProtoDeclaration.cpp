@@ -196,7 +196,7 @@ ExternProtoDeclaration::requestImmediateLoad ()
 		}
 		catch (const X3DError & error)
 		{
-			scene = getBrowser () -> getScene ();
+			scene = getBrowser () -> getEmptyScene ();
 
 			setLoadState (FAILED_STATE);
 

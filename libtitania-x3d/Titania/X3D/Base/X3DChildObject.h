@@ -64,7 +64,8 @@ namespace X3D {
  *  Class that represents an object that can have parents.  This class manages garbage collection and event bubbling.
  */
 class X3DChildObject :
-	public X3DObject
+	public X3DObject,
+	public X3DGarbageCollector
 {
 public:
 

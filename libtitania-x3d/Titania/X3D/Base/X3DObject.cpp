@@ -58,7 +58,6 @@ namespace X3D {
 X3DObject::X3DObject () :
 	           X3DInput (),
 	          X3DOutput (),
-	X3DGarbageCollector (),
 	               data ()
 { }
 

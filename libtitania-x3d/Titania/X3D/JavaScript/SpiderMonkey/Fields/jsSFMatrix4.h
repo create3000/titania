@@ -131,11 +131,11 @@ JSClass jsSFMatrix4 <Type>::static_class = {
 
 template <class Type>
 JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
-	{ "getName",       getName <X3DChildObject>,     0, 0 },
-	{ "getTypeName",   getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",       getType,                      0, 0 },
-	{ "isReadable",    isReadable,                   0, 0 },
-	{ "isWritable",    isWritable,                   0, 0 },
+	{ "getName",       getName <Type>,     0, 0 },
+	{ "getTypeName",   getTypeName <Type>, 0, 0 },
+	{ "getType",       getType,            0, 0 },
+	{ "isReadable",    isReadable,         0, 0 },
+	{ "isWritable",    isWritable,         0, 0 },
 
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
@@ -149,7 +149,7 @@ JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
 	{ "multDirMatrix", multDirMatrix, 1, 0 },
 	{ "multMatrixDir", multMatrixDir, 1, 0 },
 
-	{ "toString",      toString <X3DChildObject>, 0, 0 },
+	{ "toString",      toString <Type>, 0, 0 },
 
 	{ 0 }
 

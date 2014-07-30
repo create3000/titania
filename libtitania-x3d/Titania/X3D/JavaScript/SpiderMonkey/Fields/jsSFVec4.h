@@ -133,11 +133,11 @@ JSPropertySpec jsSFVec4 <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
-	{ "getName",     getName <X3DChildObject>,     0, 0 },
-	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",     getType,                      0, 0 },
-	{ "isReadable",  isReadable,                   0, 0 },
-	{ "isWritable",  isWritable,                   0, 0 },
+	{ "getName",     getName <Type>,     0, 0 },
+	{ "getTypeName", getTypeName <Type>, 0, 0 },
+	{ "getType",     getType,            0, 0 },
+	{ "isReadable",  isReadable,         0, 0 },
+	{ "isWritable",  isWritable,         0, 0 },
 
 	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
@@ -150,7 +150,7 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
 
-	{ "toString",    toString <X3DChildObject>, 0, 0 },
+	{ "toString",    toString <Type>, 0, 0 },
 
 	{ 0 }
 

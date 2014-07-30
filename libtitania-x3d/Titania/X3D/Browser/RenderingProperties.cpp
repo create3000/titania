@@ -168,7 +168,7 @@ RenderingProperties::set_enabled ()
 
 			try
 			{
-				scene = Loader (getBrowser () -> getScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
+				scene = Loader (getBrowser () -> getEmptyScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
 			}
 			catch (const X3DError & error)
 			{

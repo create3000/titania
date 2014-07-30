@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,10 +67,17 @@ SFImage::SFImage () :
 	get () .array () .addParent (this);
 }
 
-SFImage::SFImage (const SFImage & field) :
-	X3DField <Image> (field)
+SFImage::SFImage (const SFImage & other) :
+	X3DField <Image> (other)
 {
 	get () .array () .addParent (this);
+}
+
+SFImage::SFImage (SFImage && other) :
+	X3DField <Image> (std::move (other .get ()))
+{
+	get () .array () .addParent (this);
+	other .addEvent ();
 }
 
 SFImage::SFImage (const Image & value) :
@@ -79,10 +86,46 @@ SFImage::SFImage (const Image & value) :
 	get () .array () .addParent (this);
 }
 
-SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
-	X3DField <Image> (Image (width, height, components, array))
+SFImage::SFImage (Image && value) :
+	X3DField <Image> (std::move (value))
 {
 	get () .array () .addParent (this);
+}
+
+SFImage::SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array) :
+	X3DField <Image> (std::move (Image (width, height, components, array)))
+{
+	get () .array () .addParent (this);
+}
+
+SFImage::SFImage (const size_type width, const size_type height, const size_type components, MFInt32 && array) :
+	X3DField <Image> (std::move (Image (width, height, components, std::move (array))))
+{
+	get () .array () .addParent (this);
+}
+
+SFImage &
+SFImage::operator = (const SFImage & other)
+{
+	setValue (other);
+	return *this;
+}
+
+SFImage &
+SFImage::operator = (SFImage && other)
+{
+	get () = std::move (other .get ());
+	addEvent ();
+	other .addEvent ();
+	return *this;
+}
+
+SFImage &
+SFImage::operator = (Image && value)
+{
+	get () = std::move (value);
+	addEvent ();
+	return *this;
 }
 
 void
@@ -149,6 +192,12 @@ SFImage::setValue (const size_type width, const size_type height, const size_typ
 }
 
 void
+SFImage::setValue (const size_type width, const size_type height, const size_type components, MFInt32 && array)
+{
+	get () .set (width, height, components, std::move (array));
+}
+
+void
 SFImage::getValue (size_type & width, size_type & height, size_type & components, MFInt32 & array) const
 {
 	getValue () .get (width, height, components, array);
@@ -162,12 +211,12 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	std::string whiteSpaces;
-	
+
 	size_type width, height, components;
 	MFInt32   array;
 
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-	
+
 	if (istream >> width)
 	{
 		if (Grammar::WhiteSpacesNoComma (istream, whiteSpaces))
@@ -181,7 +230,7 @@ throw (Error <INVALID_X3D>,
 						for (size_t i = 0, size = width * height; i < size; ++ i)
 						{
 							int32_t pixel;
-							
+
 							if (Grammar::WhiteSpacesNoComma (istream, whiteSpaces) and Grammar::Int32 (istream, pixel))
 								array .emplace_back (pixel);
 
@@ -190,7 +239,7 @@ throw (Error <INVALID_X3D>,
 						}
 
 						if (istream)
-							setValue (width, height, components, array);
+							setValue (width, height, components, std::move (array));
 					}
 				}
 			}

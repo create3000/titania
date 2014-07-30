@@ -32,10 +32,11 @@ namespace titania {
 namespace X3D {
 
 X3DChildObject::X3DChildObject () :
-	X3DObject (),
-	  parents (),
-	     root (nullptr),
-	  tainted (false)
+	          X3DObject (),
+	X3DGarbageCollector (),
+	            parents (),
+	               root (nullptr),
+	            tainted (false)
 { }
 
 // Event handling
@@ -54,7 +55,7 @@ X3DChildObject::addEvent (X3DChildObject* const, const EventPtr & event)
 		parent -> addEvent (this, event);
 }
 
-// Child handling
+// Children handling
 
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
