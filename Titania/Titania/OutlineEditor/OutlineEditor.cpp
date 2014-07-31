@@ -70,8 +70,7 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	                   scenes (),
 	                 nodePath (),
 	                fieldPath (),
-	                 realized (false),
-	                   button (false)
+	                 realized (false)
 {
 	setup ();
 }
@@ -139,10 +138,7 @@ OutlineEditor::set_executionContext ()
 
 	treeView -> set_execution_context (getExecutionContext ());
 
-	if (not button)
-		restoreExpanded (getExecutionContext ());
-
-	button = false;
+	restoreExpanded (getExecutionContext ());
 }
 
 // Pointing Device
@@ -269,10 +265,7 @@ OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size
 		const auto & scene = scenes [index] .first;
 
 		if (scene not_eq getExecutionContext ())
-		{
-			button = true;
 			setExecutionContext (scene);
-		}
 	}
 }
 
@@ -892,6 +885,8 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 		const auto & expanded = database .getItem (executionContext -> getWorldURL ());
 		const auto   paths    = basic::split (expanded, ";");
 
+		__LOG__ << expanded << std::endl;
+
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
 	}
@@ -915,6 +910,8 @@ OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContex
 	OutlineEditorDatabase database;
 
 	database .setItem (executionContext -> getWorldURL (), basic::join (paths, ";"));
+	
+	__LOG__ << basic::join (paths, ";") << std::endl;
 }
 
 void
@@ -936,18 +933,7 @@ OutlineEditor::getExpanded (const Gtk::TreeModel::Children & children, std::dequ
 OutlineEditor::~OutlineEditor ()
 {
 	if (isInitialized ())
-	{
-		if (getExecutionContext () not_eq getScene ())
-		{
-			const X3D::X3DExecutionContextPtr scene (getScene ());
-
-			treeView -> set_execution_context (scene);
-
-			saveExpanded (scene);
-		}
-		else
-			saveExpanded (getExecutionContext ());
-	}
+		saveExpanded (treeView -> get_model () -> get_execution_context ());
 
 	dispose ();
 }

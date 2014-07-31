@@ -75,7 +75,7 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	           leftToRight (getBrowserWindow (), getFontStyleLeftToRightCheckButton (), "leftToRight"),
 	           topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom")
 {
-	fontStyleNodeBuffer .addParent (getBrowser ());
+	addChildren (fontStyleNodeBuffer);
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
 
 	//  Drag & Drop

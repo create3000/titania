@@ -68,7 +68,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	                  undoStep (),
 	                  changing (false)
 {
-	materialBuffer .addParent (getBrowser ());
+	addChildren (materialBuffer);
 	materialBuffer .addInterest (this, &MaterialEditor::set_node);
 
 	preview -> set_antialiasing (4);

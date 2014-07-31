@@ -220,7 +220,6 @@ private:
 	Gtk::TreePath nodePath;
 	Gtk::TreePath fieldPath;
 	bool          realized;
-	bool          button;
 
 };
 

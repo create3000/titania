@@ -71,7 +71,7 @@ TextEditor::TextEditor (BrowserWindow* const browserWindow) :
 	                        getTextMaxExtentSpinButton (),
 	                        "maxExtent")
 {
-	geometryNodeBuffer .addParent (getBrowser ());
+	addChildren (geometryNodeBuffer);
 	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
 	setup ();
 }

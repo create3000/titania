@@ -1,5 +1,14 @@
 2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* OutlineEditor.h:
+	* OutlineEditor.cpp:
+	* MaterialEditor.cpp:
+	* X3DFontStyleNodeEditor.cpp: 
+
+2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Console.cpp:
 	* X3DBaseInterface.h:
 	* TextEditor.h:
