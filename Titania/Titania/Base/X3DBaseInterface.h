@@ -60,12 +60,25 @@ namespace puck {
 class BrowserWindow;
 
 class X3DBaseInterface :
-	virtual public X3D::X3DInput,
-	virtual public sigc::trackable
+	virtual public sigc::trackable,
+	public X3D::X3DParentObject
 {
 public:
 
-	///  @name Member access
+	/***
+	 *  @name Common members
+	 */
+
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return typeName; }
+
+	/***
+	 *  @name Member access
+	 */
 
 	BrowserWindow*
 	getBrowserWindow () const
@@ -102,7 +115,35 @@ public:
 	bool
 	inPrototypeInstance () const;
 
-	///  @name Destruction
+	/***
+	 *  @name Input/Output
+	 */
+
+	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (X3D::Error <X3D::INVALID_X3D>,
+	       X3D::Error <X3D::NOT_SUPPORTED>,
+	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>) final override
+	{ }
+
+	///  Inserts this object into @a ostream in VRML Classic Encoding style.
+	virtual
+	void
+	toStream (std::ostream &) const final override
+	{ }
+
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override
+	{ }
+
+	/***
+	 *  @name Destruction
+	 */
 
 	virtual
 	~X3DBaseInterface ();
@@ -110,17 +151,28 @@ public:
 
 protected:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	X3DBaseInterface (BrowserWindow* const, const X3D::BrowserPtr &);
 
-	X3DBaseInterface ()
+	X3DBaseInterface () :
+		X3D::X3DParentObject (nullptr)
 	{ }
 
 
 private:
 
-	///  @name Members
+	/***
+	 *  @name Static members
+	 */
+
+	static const std::string typeName;
+
+	/***
+	 *  @name Members
+	 */
 
 	BrowserWindow*  browserWindow;
 	X3D::BrowserPtr browser;

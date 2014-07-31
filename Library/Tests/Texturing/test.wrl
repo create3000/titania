@@ -169,3 +169,14 @@ DEF Loriot_-_Ödipussi Transform {
     }
   }
 }
+
+DEF Sphere Transform {
+  translation -3.41381 2.74804 0
+  scale 0.397128 0.397128 0.397128
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Sphere { }
+  }
+}

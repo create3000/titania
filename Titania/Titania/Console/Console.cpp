@@ -61,7 +61,9 @@ Console::Console (BrowserWindow* const browserWindow) :
 	X3DConsoleInterface (get_ui ("Console.xml"), gconf_dir ()),
 	             mapped (false),
 	            enabled (true)
-{ }
+{
+	setup ();
+}
 
 void
 Console::on_map ()
@@ -141,7 +143,9 @@ Console::set_string (const X3D::MFString & value)
 }
 
 Console::~Console ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

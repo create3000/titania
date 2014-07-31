@@ -284,6 +284,8 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 			}
 		}
 	}
+
+	setup ();
 }
 
 /***********************************************************************************************************************
@@ -1393,7 +1395,7 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
 
 NodePropertiesEditor::~NodePropertiesEditor ()
 {
-	//__LOG__ << std::endl;
+	dispose ();
 }
 
 }  // puck

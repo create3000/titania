@@ -65,15 +65,12 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 	X3DHistoryEditorInterface (get_ui ("HistoryEditor.xml"), gconf_dir ()),
 	                  history ()
 {
-	// Fill model.
-	
+	setup ();
+
+	getScene () .addInterest (this, &HistoryEditor::set_splashScreen);
 	history .addInterest (this, &HistoryEditor::set_history);
 
 	set_history ();
-
-	// Add browser interest.
-
-	getScene () .addInterest (this, &HistoryEditor::set_splashScreen);
 }
 
 void
@@ -157,7 +154,9 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 }
 
 HistoryEditor::~HistoryEditor ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

@@ -122,6 +122,10 @@ public:
 	void
 	hasShortcuts (const bool);
 
+	/// @name Destruction
+
+	virtual
+	~BrowserWindow ();
 
 private:
 

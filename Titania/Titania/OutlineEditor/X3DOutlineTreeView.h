@@ -68,7 +68,8 @@ class OutlineTreeModel;
 class OutlineTreeObserver;
 
 class X3DOutlineTreeView :
-	virtual public X3DBaseInterface, public Gtk::TreeView
+	virtual public X3DBaseInterface,
+	public Gtk::TreeView
 {
 public:
 

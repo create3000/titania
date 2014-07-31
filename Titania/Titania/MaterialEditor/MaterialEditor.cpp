@@ -80,6 +80,8 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 	initDialog (getBackDiffuseDialog (),  &MaterialEditor::on_backDiffuseColor_changed);
 	initDialog (getBackSpecularDialog (), &MaterialEditor::on_backSpecularColor_changed);
 	initDialog (getBackEmissiveDialog (), &MaterialEditor::on_backEmissiveColor_changed);
+
+	setup ();
 }
 
 void
@@ -1209,6 +1211,8 @@ MaterialEditor::toColor (const X3D::Color3f & value)
 MaterialEditor::~MaterialEditor ()
 {
 	X3D::removeBrowser (preview);
+	
+	dispose ();
 }
 
 } // puck

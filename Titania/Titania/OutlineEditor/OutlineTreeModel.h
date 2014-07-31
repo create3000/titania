@@ -65,7 +65,6 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	virtual public X3DBaseInterface,
 	public Glib::Object,
 	public Gtk::TreeModel,
 	public Gtk::TreeDragSource,
@@ -112,7 +111,7 @@ public:
 
 	static
 	Glib::RefPtr <OutlineTreeModel>
-	create (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
+	create (const X3D::X3DExecutionContextPtr &);
 	
 	///  @name Member access
 
@@ -194,7 +193,7 @@ public:
 
 private:
 
-	OutlineTreeModel (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
+	OutlineTreeModel (const X3D::X3DExecutionContextPtr &);
 
 	void
 	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path, const size_t) const;

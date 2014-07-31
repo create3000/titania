@@ -62,7 +62,9 @@ MagicImport::MagicImport (BrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 importFunctions ({ std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3)),
 	                    std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3)) })
-{ }
+{
+	setup ();
+}
 
 bool
 MagicImport::import (X3D::MFNode & selection, const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
@@ -245,7 +247,9 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 }
 
 MagicImport::~MagicImport ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

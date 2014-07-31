@@ -67,6 +67,9 @@ public:
 
 	MotionBlurEditor (BrowserWindow* const);
 
+	virtual
+	~MotionBlurEditor ();
+
 
 private:
 

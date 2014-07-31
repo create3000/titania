@@ -57,11 +57,13 @@
 namespace titania {
 namespace puck {
 
+const std::string X3DBaseInterface::typeName = "X3DBaseInterface";
+
 X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3D::BrowserPtr & browser) :
-	   X3D::X3DInput (),
-	 sigc::trackable (),
-	   browserWindow (browserWindow),
-	         browser (browser)
+	     sigc::trackable (),
+	X3D::X3DParentObject (browser),
+	       browserWindow (browserWindow),
+	             browser (browser)
 {
 	assert (browserWindow);
 	assert (browser);
@@ -93,8 +95,6 @@ X3DBaseInterface::inPrototypeInstance () const
 
 X3DBaseInterface::~X3DBaseInterface ()
 {
-	X3D::X3DInput::dispose ();
-
 	X3D::removeBrowser (browser);
 }
 

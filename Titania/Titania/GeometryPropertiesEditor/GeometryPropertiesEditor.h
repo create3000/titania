@@ -65,6 +65,11 @@ public:
 	///  @name Construction
 
 	GeometryPropertiesEditor (BrowserWindow* const);
+	
+	///  @name Destruction
+
+	virtual
+	~GeometryPropertiesEditor ();
 
 
 private:

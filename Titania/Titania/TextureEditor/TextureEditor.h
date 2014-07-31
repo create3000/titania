@@ -73,6 +73,11 @@ public:
 
 	TextureEditor (BrowserWindow* const);
 
+	///  @name Destruction
+
+	virtual
+	~TextureEditor ();
+
 
 private:
 

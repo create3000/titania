@@ -74,6 +74,12 @@ public:
 	void
 	setNodes (const X3D::MFNode &);
 
+	///  @name Destruction
+	
+	virtual
+	~X3DFieldAdjustment ()
+	{ dispose (); }
+
 
 private:
 
@@ -114,6 +120,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (BrowserWindow* const browserWindo
 	        changing (false)
 {
 	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment::on_value_changed));
+	setup ();
 }
 
 template <class Type>

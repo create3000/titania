@@ -94,6 +94,8 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 		setTransparent (true);
 	else
 		getBrowser () -> set_antialiasing (4);
+
+	setup ();
 }
 
 void
@@ -2217,6 +2219,11 @@ void
 BrowserWindow::on_messageDialog_response (int)
 {
 	getMessageDialog () .hide ();
+}
+
+BrowserWindow::~BrowserWindow ()
+{
+	dispose ();
 }
 
 } // puck

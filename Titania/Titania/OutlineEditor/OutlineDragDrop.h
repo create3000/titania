@@ -60,12 +60,11 @@ namespace puck {
 
 class OutlineTreeViewEditor;
 
-class OutlineDragDrop :
-	public X3DBaseInterface
+class OutlineDragDrop
 {
 public:
 
-	OutlineDragDrop (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const);
+	OutlineDragDrop (OutlineTreeViewEditor* const);
 
 
 private:

@@ -59,10 +59,9 @@ namespace puck {
 
 const std::string OutlineDragDrop::dragDataType = "TITANIA_OUTLINE_TREE_ROW";
 
-OutlineDragDrop::OutlineDragDrop (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const treeView) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	        treeView (treeView),
-	      sourcePath ()
+OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
+	  treeView (treeView),
+	sourcePath ()
 {
 	// Drag & Drop
 	treeView -> set_reorderable (true);
@@ -268,7 +267,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 						executionContext -> updateExternProtoDeclaration (externProto -> getName (), externProto);
 					}
 
-					getBrowserWindow () -> addUndoStep (undoStep);
+					treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 					break;
 				}
 			}

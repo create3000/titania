@@ -90,6 +90,9 @@ public:
 	void
 	update (X3D::MFNode* const);
 
+	virtual
+	~OutlineSelection ();
+
 
 private:
 

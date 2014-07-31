@@ -66,7 +66,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
-	                dragDrop (new OutlineDragDrop (browserWindow, this)),
+	                dragDrop (new OutlineDragDrop (this)),
 	            overUserData (new OutlineUserData ()),
 	        selectedUserData (new OutlineUserData ()),
 	      matchingAccessType (0),
@@ -81,6 +81,8 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	watch_motion (true);
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
+
+	setup ();
 }
 
 void
@@ -944,7 +946,9 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 }
 
 OutlineTreeViewEditor::~OutlineTreeViewEditor ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

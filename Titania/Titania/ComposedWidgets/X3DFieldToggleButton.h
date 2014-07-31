@@ -73,6 +73,12 @@ public:
 	void
 	setNodes (const X3D::MFNode &);
 
+	///  @name Destruction
+	
+	virtual
+	~X3DFieldToggleButton ()
+	{ dispose (); }
+
 
 private:
 
@@ -110,6 +116,7 @@ X3DFieldToggleButton <Type>::X3DFieldToggleButton (BrowserWindow* const browserW
 	        changing (false)
 {
 	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &X3DFieldToggleButton::on_toggled));
+	setup ();
 }
 
 template <class Type>

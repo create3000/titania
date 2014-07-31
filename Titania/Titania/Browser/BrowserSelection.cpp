@@ -56,8 +56,10 @@ namespace titania {
 namespace puck {
 
 BrowserSelection::BrowserSelection (BrowserWindow* const browserWindow) :
-	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ())
-{ }
+	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ())
+{
+	setup ();
+}
 
 void
 BrowserSelection::addChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
@@ -146,7 +148,9 @@ BrowserSelection::clear (const UndoStepPtr & undoStep) const
 }
 
 BrowserSelection::~BrowserSelection ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

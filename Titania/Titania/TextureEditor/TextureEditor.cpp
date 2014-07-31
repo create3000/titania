@@ -62,7 +62,9 @@ TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
 	               X3DTextureNodeEditor (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
 	      X3DTextureTransformNodeEditor (),
 	X3DTextureCoordinateGeneratorEditor ()
-{ }
+{
+	setup ();
+}
 
 void
 TextureEditor::initialize ()
@@ -71,6 +73,11 @@ TextureEditor::initialize ()
 	X3DTextureNodeEditor::initialize ();
 	X3DTextureTransformNodeEditor::initialize ();
 	X3DTextureCoordinateGeneratorEditor::initialize ();
+}
+
+TextureEditor::~TextureEditor ()
+{
+	dispose ();
 }
 
 } // puck

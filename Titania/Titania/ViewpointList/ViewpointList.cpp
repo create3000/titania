@@ -75,7 +75,9 @@ ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
 	              activeLayer ()
-{ }
+{
+	setup ();
+}
 
 void
 ViewpointList::on_map ()
@@ -196,7 +198,9 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 }
 
 ViewpointList::~ViewpointList ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

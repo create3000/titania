@@ -72,6 +72,12 @@ public:
 	void
 	setNodes (const X3D::MFNode &);
 
+	///  @name Destruction
+	
+	virtual
+	~SFStringComboBoxText ()
+	{ dispose (); }
+
 
 private:
 
@@ -109,6 +115,7 @@ SFStringComboBoxText::SFStringComboBoxText (BrowserWindow* const browserWindow,
 	        changing (false)
 {
 	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &SFStringComboBoxText::on_changed));
+	setup ();
 }
 
 inline

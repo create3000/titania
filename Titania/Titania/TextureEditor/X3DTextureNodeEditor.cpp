@@ -66,7 +66,7 @@ X3DTextureNodeEditor::X3DTextureNodeEditor (const X3D::BrowserPtr & preview) :
 	                  undoStep (),
 	                  changing (false)
 {
-	textureNode .addParent (getBrowser ());
+	addChildren (textureNode);
 	textureNode .addInterest (this, &X3DTextureNodeEditor::set_preview);
 
 	preview -> set_antialiasing (4);

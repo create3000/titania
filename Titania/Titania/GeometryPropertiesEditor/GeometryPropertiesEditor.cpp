@@ -64,6 +64,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browser
 	                          creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle")
 {
 	getCreaseAngleAdjustment () -> set_upper (M_PI); // getExecutionContext () .fromRadiant (M_PI);
+	setup ();
 }
 
 void
@@ -85,6 +86,11 @@ GeometryPropertiesEditor::set_selection ()
 	ccw         .setNodes (nodes);
 	convex      .setNodes (nodes);
 	creaseAngle .setNodes (nodes);
+}
+
+GeometryPropertiesEditor::~GeometryPropertiesEditor ()
+{
+	dispose ();
 }
 
 } // puck

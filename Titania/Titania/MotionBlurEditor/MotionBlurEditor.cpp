@@ -61,6 +61,7 @@ MotionBlurEditor::MotionBlurEditor (BrowserWindow* const browserWindow) :
 	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.xml"), gconf_dir ())
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
+	setup ();
 }
 
 void
@@ -83,6 +84,11 @@ MotionBlurEditor::on_intensity_changed ()
 	float x = getIntensity () .get_value ();
 
 	getBrowser () -> getMotionBlur () -> intensity () = -x * x + 2 * x;
+}
+
+MotionBlurEditor::~MotionBlurEditor ()
+{
+	dispose ();
 }
 
 } // puck

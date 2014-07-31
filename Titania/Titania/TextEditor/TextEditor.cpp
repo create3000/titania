@@ -73,6 +73,7 @@ TextEditor::TextEditor (BrowserWindow* const browserWindow) :
 {
 	geometryNodeBuffer .addParent (getBrowser ());
 	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
+	setup ();
 }
 
 void
@@ -257,6 +258,11 @@ TextEditor::connectString (const X3D::MFString & field)
 {
 	field .removeInterest (this, &TextEditor::connectString);
 	field .addInterest (this, &TextEditor::set_string);
+}
+
+TextEditor::~TextEditor ()
+{
+	dispose ();
 }
 
 } // puck

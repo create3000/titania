@@ -63,9 +63,8 @@ OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, X3DOutli
 	  selectMultiple (false),
 	        children ()
 {
-	// Register browser interest
-
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_children);
+	setup ();
 }
 
 void
@@ -243,6 +242,11 @@ OutlineSelection::update (X3D::MFNode* const field)
 
 	for (const auto & value : *field)
 		update (value);
+}
+
+OutlineSelection::~OutlineSelection ()
+{
+	dispose ();
 }
 
 } // puck

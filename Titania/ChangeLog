@@ -1,5 +1,45 @@
 2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Console.cpp:
+	* X3DBaseInterface.h:
+	* TextEditor.h:
+	* BrowserWindow.h:
+	* MagicImport.cpp:
+	* X3DBaseInterface.cpp:
+	* BrowserWindow.cpp:
+	* TextEditor.cpp:
+	* LibraryView.cpp:
+	* BrowserSelection.cpp:
+	* TextureEditor.h:
+	* TextureEditor.cpp:
+	* HistoryEditor.cpp:
+	* ViewpointList.cpp:
+	* OutlineEditor.cpp:
+	* OutlineDragDrop.h:
+	* OutlineSelection.h:
+	* OutlineTreeModel.h:
+	* MaterialEditor.cpp:
+	* OutlineDragDrop.cpp:
+	* OutlineSelection.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeModel.cpp:
+	* MotionBlurEditor.h:
+	* X3DOutlineTreeView.cpp:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment2.h:
+	* MotionBlurEditor.cpp:
+	* SFStringComboBoxText.h:
+	* X3DTextureNodeEditor.cpp:
+	* X3DFieldToggleButton.h:
+	* OutlineTreeViewEditor.cpp:
+	* NodePropertiesEditor.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
+2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseInterface.h:
 	* X3DBrowserEditor.cpp: 
 

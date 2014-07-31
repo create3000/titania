@@ -72,7 +72,9 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	                fieldPath (),
 	                 realized (false),
 	                   button (false)
-{ }
+{
+	setup ();
+}
 
 void
 OutlineEditor::on_map ()
@@ -946,6 +948,8 @@ OutlineEditor::~OutlineEditor ()
 		else
 			saveExpanded (getExecutionContext ());
 	}
+
+	dispose ();
 }
 
 } // puck
