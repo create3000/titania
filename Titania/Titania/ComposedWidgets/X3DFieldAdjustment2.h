@@ -93,6 +93,9 @@ private:
 	set_field ();
 
 	void
+	set_buffer ();
+
+	void
 	connect (const Type &);
 
 	///  @name Members
@@ -104,6 +107,7 @@ private:
 	const std::string                    name;
 	UndoStepPtr                          undoStep;
 	bool                                 changing;
+	X3D::SFTime                          buffer;
 
 };
 
@@ -121,8 +125,12 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (BrowserWindow* const browserWin
 	           nodes (),
 	            name (name),
 	        undoStep (),
-	        changing (false)
+	        changing (false),
+	          buffer ()
 {
+	addChildren (buffer);
+	buffer .addInterest (this, &X3DFieldAdjustment2::set_buffer);
+
 	adjustment1 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed));
 	adjustment2 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed));
 	setup ();
@@ -190,6 +198,13 @@ X3DFieldAdjustment2 <Type>::on_value_changed ()
 template <class Type>
 void
 X3DFieldAdjustment2 <Type>::set_field ()
+{
+	buffer .addEvent ();
+}
+
+template <class Type>
+void
+X3DFieldAdjustment2 <Type>::set_buffer ()
 {
 	changing = true;
 

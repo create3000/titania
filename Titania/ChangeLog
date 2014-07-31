@@ -1,5 +1,14 @@
 2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineEditor.cpp:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment2.h:
+	* X3DFieldToggleButton.h:
+	* SFStringComboBoxText.h:
+	* X3DTextureCoordinateGeneratorEditor.h: 
+
+2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextEditor.cpp:
 	* X3DBrowserWidget.cpp:
 	* OutlineEditor.h:

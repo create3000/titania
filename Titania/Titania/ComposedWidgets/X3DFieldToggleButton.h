@@ -91,6 +91,9 @@ private:
 	set_field ();
 
 	void
+	set_buffer ();
+
+	void
 	connect (const Type &);
 
 	///  @name Members
@@ -100,6 +103,7 @@ private:
 	const std::string   name;
 	UndoStepPtr         undoStep;
 	bool                changing;
+	X3D::SFTime         buffer;
 
 };
 
@@ -113,9 +117,14 @@ X3DFieldToggleButton <Type>::X3DFieldToggleButton (BrowserWindow* const browserW
 	           nodes (),
 	            name (name),
 	        undoStep (),
-	        changing (false)
+	        changing (false),
+	          buffer ()
 {
+	addChildren (buffer);
+	buffer .addInterest (this, &X3DFieldToggleButton::set_buffer);
+	
 	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &X3DFieldToggleButton::on_toggled));
+
 	setup ();
 }
 
@@ -182,6 +191,13 @@ X3DFieldToggleButton <Type>::on_toggled ()
 template <class Type>
 void
 X3DFieldToggleButton <Type>::set_field ()
+{
+	buffer .addEvent ();
+}
+
+template <class Type>
+void
+X3DFieldToggleButton <Type>::set_buffer ()
 {
 	changing = true;
 

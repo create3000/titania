@@ -885,8 +885,6 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 		const auto & expanded = database .getItem (executionContext -> getWorldURL ());
 		const auto   paths    = basic::split (expanded, ";");
 
-		__LOG__ << expanded << std::endl;
-
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
 	}
@@ -910,8 +908,6 @@ OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContex
 	OutlineEditorDatabase database;
 
 	database .setItem (executionContext -> getWorldURL (), basic::join (paths, ";"));
-	
-	__LOG__ << basic::join (paths, ";") << std::endl;
 }
 
 void

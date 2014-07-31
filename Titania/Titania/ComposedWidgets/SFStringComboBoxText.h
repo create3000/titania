@@ -90,6 +90,9 @@ private:
 	set_field ();
 
 	void
+	set_buffer ();
+
+	void
 	connect (const X3D::SFString &);
 
 	///  @name Members
@@ -99,6 +102,7 @@ private:
 	const std::string   name;
 	UndoStepPtr         undoStep;
 	bool                changing;
+	X3D::SFTime         buffer;
 
 };
 
@@ -112,8 +116,12 @@ SFStringComboBoxText::SFStringComboBoxText (BrowserWindow* const browserWindow,
 	           nodes (),
 	            name (name),
 	        undoStep (),
-	        changing (false)
+	        changing (false),
+	          buffer ()
 {
+	addChildren (buffer);
+	buffer .addInterest (this, &SFStringComboBoxText::set_buffer);
+
 	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &SFStringComboBoxText::on_changed));
 	setup ();
 }
@@ -179,6 +187,13 @@ SFStringComboBoxText::on_changed ()
 inline
 void
 SFStringComboBoxText::set_field ()
+{
+	buffer .addEvent ();
+}
+
+inline
+void
+SFStringComboBoxText::set_buffer ()
 {
 	changing = true;
 

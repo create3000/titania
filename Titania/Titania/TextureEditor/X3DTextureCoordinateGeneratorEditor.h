@@ -98,7 +98,7 @@ private:
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
-	X3D::SFNode                                   textureCoordinateGeneratorBuffer;
+	X3D::SFTime                                   textureCoordinateGeneratorBuffer;
 	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
 	UndoStepPtr                                   undoStep;
 	bool                                          changing;
