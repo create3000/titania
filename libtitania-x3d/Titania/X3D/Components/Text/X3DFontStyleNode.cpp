@@ -568,10 +568,12 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 			std::make_pair ("END",    Alignment::END)
 		};
 
-		const auto alignment = alignments .find (justify () [index]);
-
-		if (alignment not_eq alignments .end ())
-			return alignment -> second;
+		try
+		{
+			return alignments .at (justify () [index]);
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 	else
 	{
@@ -584,10 +586,12 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 			std::make_pair ("END",    Alignment::BEGIN)
 		};
 
-		const auto ralignment = ralignments .find (justify () [index]);
-
-		if (ralignment not_eq ralignments .end ())
-			return ralignment -> second;
+		try
+		{
+			return ralignments .at (justify () [index]);
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 	return index ? Alignment::FIRST : Alignment::BEGIN;

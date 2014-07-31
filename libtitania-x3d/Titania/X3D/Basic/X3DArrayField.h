@@ -457,9 +457,9 @@ public:
 	erase (const iterator &, const iterator &);
 
 	///  Removes elements completely.
-	iterator
+	void
 	remove (const ValueType & value)
-	{ return erase (std::remove (begin (), end (), value), end ()); }
+	{ erase (std::remove (begin (), end (), value), end ()); }
 
 	///  Inserts elements to the beginning.
 	void

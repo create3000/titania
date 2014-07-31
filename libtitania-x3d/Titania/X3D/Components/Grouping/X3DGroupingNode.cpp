@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -131,36 +131,101 @@ X3DGroupingNode::setVisible (const MFBool & value)
 	set_children ();
 }
 
+//void
+//X3DGroupingNode::set_addChildren ()
+//{
+//	if (addChildren () .empty ())
+//		return;
+//
+//	MFNode childrenToAdd = addChildren ();
+//
+//	childrenToAdd .remove (children () .begin (), children () .end ());
+//
+//	children () .insert (children () .end (), childrenToAdd .begin (), childrenToAdd .end ());
+//
+//	addChildren () .set ({ });
+//}
+
 void
 X3DGroupingNode::set_addChildren ()
 {
-	if (not addChildren () .empty ())
+	if (addChildren () .empty ())
+		return;
+
+	addChildren () .isTainted (true);
+	addChildren () .erase (basic::remove (addChildren () .begin (), addChildren () .end (),
+	                                      children () .begin (), children () .end ()),
+	                       addChildren () .end ());
+
+	if (not children () .isTainted ())
 	{
-		MFNode childrenToAdd = addChildren ();
-
-		const auto new_end = basic::remove (childrenToAdd .begin (), childrenToAdd .end (),
-		                                    children () .begin (), children () .end ());
-
-		childrenToAdd .erase (new_end, childrenToAdd .end ());
-
-		children () .insert (children () .end (), childrenToAdd .begin (), childrenToAdd .end ());
-
-		addChildren () .set ({ });
+		children () .removeInterest (this, &X3DGroupingNode::set_children);
+		children () .addInterest (this, &X3DGroupingNode::connectChildren);
 	}
+
+	children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
+	add (addChildren ());
+
+	addChildren () .set ({ });
+	addChildren () .isTainted (false);
 }
 
 void
 X3DGroupingNode::set_removeChildren ()
 {
-	if (not removeChildren () .empty ())
+	if (removeChildren () .empty ())
+		return;
+
+	if (children () .empty ())
+		return;
+
+	std::vector <X3DBaseNode*> innerNodes;
+
+	for (const auto & node : removeChildren ())
 	{
-		const auto new_end = basic::remove (children () .begin (), children () .end (),
-		                                    removeChildren () .begin (), removeChildren () .end ());
-
-		children () .erase (new_end, children () .end ());
-
-		removeChildren () .set ({ });
+		if (node)
+			innerNodes .emplace_back (node -> getInnerNode ());
 	}
+
+	if (not localFogs .empty ())
+	{
+		localFogs .erase (basic::remove (localFogs .begin (), localFogs .end (),
+		                                 innerNodes .begin (), innerNodes .end ()),
+		                  localFogs .end ());
+	}
+
+	if (not pointingDeviceSensors .empty ())
+	{
+		pointingDeviceSensors .erase (basic::remove (pointingDeviceSensors .begin (), pointingDeviceSensors .end (),
+		                                             innerNodes .begin (), innerNodes .end ()),
+		                              pointingDeviceSensors .end ());
+	}
+
+	if (not collectables .empty ())
+	{
+		collectables .erase (basic::remove (collectables .begin (), collectables .end (),
+		                                    innerNodes .begin (), innerNodes .end ()),
+		                     collectables .end ());
+	}
+
+	if (not childNodes .empty ())
+	{
+		childNodes .erase (basic::remove (childNodes .begin (), childNodes .end (),
+		                                  innerNodes .begin (), innerNodes .end ()),
+		                   childNodes .end ());
+	}
+
+	if (not children () .isTainted ())
+	{
+		children () .removeInterest (this, &X3DGroupingNode::set_children);
+		children () .addInterest (this, &X3DGroupingNode::connectChildren);
+	}
+
+	children () .erase (basic::remove (children () .begin (), children () .end (),
+	                                   removeChildren () .begin (), removeChildren () .end ()),
+	                    children () .end ());
+
+	removeChildren () .set ({ });
 }
 
 void
@@ -168,6 +233,13 @@ X3DGroupingNode::set_children ()
 {
 	clear ();
 	add (children ());
+}
+
+void
+X3DGroupingNode::connectChildren ()
+{
+	children () .removeInterest (this, &X3DGroupingNode::connectChildren);
+	children () .addInterest (this, &X3DGroupingNode::set_children);
 }
 
 void
@@ -190,11 +262,11 @@ X3DGroupingNode::add (const MFNode & children)
 				{
 					switch (type)
 					{
-						case X3DConstants::LocalFog:
-						{
-							localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
-							break;
-						}
+						case X3DConstants::LocalFog :
+							{
+								localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
+								break;
+							}
 						case X3DConstants::X3DPointingDeviceSensorNode:
 						{
 							pointingDeviceSensors .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));

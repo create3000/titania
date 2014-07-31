@@ -305,14 +305,13 @@ main (int argc, char** argv)
 
 	std::clog .imbue (std::locale (""));
 
-	auto fd = new X3DFieldDefinition ();
+
+	std::vector <int> v = {1, 2, 3, 1};
 	
-	X3DChildObject* co = fd;
-	
-	X3DFieldDefinition* f = static_cast <X3DFieldDefinition*> (co);
-	
-	std::clog << co << std::endl;
-	std::clog << f << std::endl;
+	v .erase (basic::remove (v .begin (), v .end (), { 5 }), v .end ());
+
+	for (const auto e : v)
+		std::clog << e << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

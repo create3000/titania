@@ -117,17 +117,6 @@ protected:
 	X3DBaseInterface ()
 	{ }
 
-	//	///  @name Children handling
-	//
-	//	template <typename ... Args>
-	//	void
-	//	addChildren (Args & ... args)
-	//	{ basic::pass ((addChild (args), 1) ...); }
-	//
-	//	void
-	//	addChild (X3D::X3DChildObject & child)
-	//	{ child .addParent (browser); }
-
 
 private:
 

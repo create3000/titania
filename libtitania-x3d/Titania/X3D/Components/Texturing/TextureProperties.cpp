@@ -113,20 +113,23 @@ TextureProperties::initialize ()
 GLenum
 TextureProperties::getBoundaryMode (const std::string & boundaryMode) const
 {
-	if (boundaryMode == "CLAMP")
-		return GL_CLAMP;
+	static const std::map <std::string, GLenum> boundaryModes = {
+		std::make_pair ("CLAMP",             GL_CLAMP),
+		std::make_pair ("CLAMP_TO_EDGE",     GL_CLAMP_TO_EDGE),
+		std::make_pair ("CLAMP_TO_BOUNDARY", GL_CLAMP_TO_BORDER),
+		std::make_pair ("MIRRORED_REPEAT",   GL_MIRRORED_REPEAT),
+		std::make_pair ("REPEAT",            GL_REPEAT),
+	};
 
-	if (boundaryMode == "CLAMP_TO_EDGE")
-		return GL_CLAMP_TO_EDGE;
-
-	if (boundaryMode == "CLAMP_TO_BOUNDARY")
-		return GL_CLAMP_TO_BORDER;
-
-	if (boundaryMode == "MIRRORED_REPEAT")
-		return GL_MIRRORED_REPEAT;
-
-	//if (boundaryMode == "REPEAT")
-	return GL_REPEAT;
+	try
+	{
+		return boundaryModes .at (boundaryMode);
+	}
+	catch (const std::out_of_range &)
+	{
+		// DEFAULT
+		return GL_REPEAT;
+	}
 }
 
 GLenum
@@ -150,75 +153,72 @@ TextureProperties::getBoundaryModeR () const
 GLenum
 TextureProperties::getMinificationFilter () const
 {
-	if (minificationFilter () == "AVG_PIXEL_AVG_MIPMAP")
-		return GL_LINEAR_MIPMAP_LINEAR;
+	static const std::map <std::string, GLenum> minificationFilters = {
+		std::make_pair ("AVG_PIXEL_AVG_MIPMAP",         GL_LINEAR_MIPMAP_LINEAR),
+		std::make_pair ("AVG_PIXEL",                    GL_LINEAR),
+		std::make_pair ("AVG_PIXEL_NEAREST_MIPMAP",     GL_LINEAR_MIPMAP_NEAREST),
+		std::make_pair ("NEAREST_PIXEL_AVG_MIPMAP",     GL_NEAREST_MIPMAP_LINEAR),
+		std::make_pair ("NEAREST_PIXEL_NEAREST_MIPMAP", GL_NEAREST_MIPMAP_NEAREST),
+		std::make_pair ("NEAREST_PIXEL",                GL_NEAREST),
+		std::make_pair ("NICEST",                       GL_LINEAR_MIPMAP_LINEAR),
+		std::make_pair ("FASTEST",                      GL_NEAREST)
+	};
 
-	if (minificationFilter () == "AVG_PIXEL")
+	try
+	{
+		if (generateMipMaps ())
+			return minificationFilters .at (minificationFilter ());
+		
 		return GL_LINEAR;
-
-	if (minificationFilter () == "AVG_PIXEL_NEAREST_MIPMAP")
-		return GL_LINEAR_MIPMAP_NEAREST;
-
-	if (minificationFilter () == "NEAREST_PIXEL_AVG_MIPMAP")
-		return GL_NEAREST_MIPMAP_LINEAR;
-
-	if (minificationFilter () == "NEAREST_PIXEL_NEAREST_MIPMAP")
-		return GL_NEAREST_MIPMAP_NEAREST;
-
-	if (minificationFilter () == "NEAREST_PIXEL")
-		return GL_NEAREST;
-
-	if (minificationFilter () == "NICEST")
-		return generateMipMaps ()
-		       ? GL_LINEAR_MIPMAP_LINEAR
-				 : GL_LINEAR;
-
-	if (minificationFilter () == "FASTEST")
-		return GL_NEAREST;
-
-	// DEFAULT
-	return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getMinificationFilter ();
+	}
+	catch (const std::out_of_range &)
+	{
+		// DEFAULT
+		return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getMinificationFilter ();
+	}
 }
 
 GLenum
 TextureProperties::getMagnificationFilter () const
 {
-	if (magnificationFilter () == "AVG_PIXEL")
-		return GL_LINEAR;
+	static const std::map <std::string, GLenum> magnificationFilters = {
+		std::make_pair ("AVG_PIXEL",     GL_LINEAR),
+		std::make_pair ("NEAREST_PIXEL", GL_NEAREST),
+		std::make_pair ("NICEST",        GL_LINEAR),
+		std::make_pair ("FASTEST",       GL_NEAREST)
+	};
 
-	if (magnificationFilter () == "NEAREST_PIXEL")
-		return GL_NEAREST;
-
-	if (magnificationFilter () == "NICEST")
-		return GL_LINEAR;
-
-	if (magnificationFilter () == "FASTEST")
-		return GL_NEAREST;
-
-	// DEFAULT
-	return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getMagnificationFilter ();
+	try
+	{
+		return magnificationFilters .at (magnificationFilter ());
+	}
+	catch (const std::out_of_range &)
+	{
+		// DEFAULT
+		return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getMagnificationFilter ();
+	}
 }
 
 CompressionMode
 TextureProperties::getTextureCompression () const
 {
-	if (textureCompression () == "HIGH")
-		return CompressionMode::HIGH;
+	static const std::map <std::string, CompressionMode> textureCompressions = {
+		std::make_pair ("HIGH",    CompressionMode::HIGH),
+		std::make_pair ("MEDIUM",  CompressionMode::MEDIUM),
+		std::make_pair ("LOW",     CompressionMode::LOW),
+		std::make_pair ("FASTEST", CompressionMode::FASTEST),
+		std::make_pair ("NICEST",  CompressionMode::NICEST)
+	};
 
-	if (textureCompression () == "MEDIUM")
-		return CompressionMode::MEDIUM;
-
-	if (textureCompression () == "LOW")
-		return CompressionMode::LOW;
-
-	if (textureCompression () == "FASTEST")
-		return CompressionMode::FASTEST;
-
-	if (textureCompression () == "NICEST")
-		return CompressionMode::NICEST;
-
-	// DEFAULT
-	return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getTextureCompression ();
+	try
+	{
+		return textureCompressions .at (textureCompression ());
+	}
+	catch (const std::out_of_range &)
+	{
+		// DEFAULT
+		return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getTextureCompression ();
+	}
 }
 
 GLenum

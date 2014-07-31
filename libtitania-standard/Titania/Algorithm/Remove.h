@@ -67,45 +67,34 @@ namespace basic {
  *
  *  Return value:
  *    Iterator to the new end of the range.
- ***/
+ */
 
-template <class ForwardIterator, class RangeIterator>
+template <class ForwardIterator>
 ForwardIterator
-remove (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+remove (ForwardIterator first, ForwardIterator last, const std::set <typename ForwardIterator::value_type> & range)
 {
-	std::multiset <typename ForwardIterator::value_type> range;
-
-	for (const auto & element : std::make_pair (rfirst, rlast))
-		range .emplace (value (element));
-
 	if (range .empty ())
 		return last;
 
 	size_t count = 0;
 
-	for ( ; first not_eq last; ++ first)
+	for (; first not_eq last; ++ first)
 	{
-		auto item = range .find (*first);
-
-		if (item not_eq range .end ())
+		if (range .count (*first))
 		{
-			range .erase (item);
 			++ count;
 			break;
 		}
 	}
 
-	while (range .size ())
+	for (; ;)
 	{
 		auto second = first + count;
 
-		for ( ; second not_eq last; ++ first, ++ second)
+		for (; second not_eq last; ++ first, ++ second)
 		{
-			auto item = range .find (*second);
-
-			if (item not_eq range .end ())
+			if (range .count (*second))
 			{
-				range .erase (item);
 				++ count;
 				goto LOOP;
 			}
@@ -126,52 +115,64 @@ LOOP:;
 	return first;
 }
 
-/***
- *  Removes all elements in the range [@a rfirst, @a rlast) from the list [@a first, @a last).
- *  The Elements in the range must be ordered as they can be found in the list.
- *
- *  Return value:
- *    Iterator to the new end of the range.
- ***/
-
 template <class ForwardIterator, class RangeIterator>
 ForwardIterator
-remove_ordered (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+remove (ForwardIterator first, ForwardIterator last, const RangeIterator & rfirst, const RangeIterator & rlast)
 {
-	if (rfirst == rlast)
-		return last;
+	std::set <typename ForwardIterator::value_type> range;
 
-	size_t count = 0;
+	for (const auto & element : std::make_pair (rfirst, rlast))
+		range .emplace (value (element));
 
-	for ( ; first not_eq last; ++ first)
-	{
-		if (*first == value (*rfirst))
-		{
-			++ count;
-			break;
-		}
-	}
-
-	while (++ rfirst not_eq rlast)
-	{
-		for (auto second = first + count; second not_eq last; ++ first, ++ second)
-		{
-			if (*second == value (*rfirst))
-				break;
-
-			*first = std::move (*second);
-		}
-
-		++ count;
-	}
-
-	for (auto second = first + count; second not_eq last; ++ first, ++ second)
-	{
-		*first = std::move (*second);
-	}
-
-	return first;
+	return remove (first, last, range);
 }
+
+///***
+// *  Removes all elements in the range [@a rfirst, @a rlast) from the list [@a first, @a last).
+// *  The Elements in the range must be ordered as they can be found in the list.
+// *
+// *  Return value:
+// *    Iterator to the new end of the range.
+// ***/
+//
+//template <class ForwardIterator, class RangeIterator>
+//ForwardIterator
+//remove_ordered (ForwardIterator first, ForwardIterator last, RangeIterator rfirst, RangeIterator rlast)
+//{
+//	if (rfirst == rlast)
+//		return last;
+//
+//	size_t count = 0;
+//
+//	for (; first not_eq last; ++ first)
+//	{
+//		if (*first == value (*rfirst))
+//		{
+//			++ count;
+//			break;
+//		}
+//	}
+//
+//	while (++ rfirst not_eq rlast)
+//	{
+//		for (auto second = first + count; second not_eq last; ++ first, ++ second)
+//		{
+//			if (*second == value (*rfirst))
+//				break;
+//
+//			*first = std::move (*second);
+//		}
+//
+//		++ count;
+//	}
+//
+//	for (auto second = first + count; second not_eq last; ++ first, ++ second)
+//	{
+//		*first = std::move (*second);
+//	}
+//
+//	return first;
+//}
 
 } // basic
 } // titania

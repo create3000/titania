@@ -128,12 +128,14 @@ ProgramShader::getProgramStageBit (const String & type)
 		#endif
 	};
 
-	const auto programStageBit = programStageBits .find (type);
-
-	if (programStageBit not_eq programStageBits .end ())
-		return programStageBit -> second;
-
-	return GL_VERTEX_SHADER_BIT;
+	try
+	{
+		return programStageBits .at (type);
+	}
+	catch (const std::out_of_range &)
+	{
+		return GL_VERTEX_SHADER_BIT;
+	}
 }
 
 void

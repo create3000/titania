@@ -159,6 +159,9 @@ private:
 	set_children ();
 
 	void
+	connectChildren ();
+
+	void
 	add (const MFNode &);
 
 	void

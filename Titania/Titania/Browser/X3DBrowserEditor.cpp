@@ -1059,7 +1059,9 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 	                             node,
 	                             indices);
 
-	undoStep -> addRedoFunction (&X3D::MFNode::remove, std::ref (mfnode), node);
+	using removeNode = void (X3D::MFNode::*) (const X3D::SFNode &);
+
+	undoStep -> addRedoFunction ((removeNode) &X3D::MFNode::remove, std::ref (mfnode), node);
 
 	mfnode .remove (node);
 }

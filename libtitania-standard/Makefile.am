@@ -6,7 +6,6 @@ lib_LTLIBRARIES =  \
 
 libtitania_standard_la_SOURCES =  \
 	Titania/Backtrace.cpp \
-	Titania/Basic/IndexedMultiMap.cpp \
 	Titania/Basic/Path.cpp \
 	Titania/Basic/URI.cpp \
 	Titania/Chrono/ClockBase.cpp \

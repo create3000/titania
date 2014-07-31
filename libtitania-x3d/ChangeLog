@@ -1,3 +1,22 @@
+2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Output.h:
+	* X3DOutput.h:
+	* Geospatial.cpp:
+	* X3DConstants.h:
+	* X3DArrayField.h:
+	* X3DReferenceObject.h:
+	* ShaderPart.cpp:
+	* X3DExecutionContext.cpp:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* X3DFontStyleNode.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* TextureProperties.cpp:
+	* X3DNavigationContext.cpp:
+	* ParticleSystem.cpp: 
+
 2014-07-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -159,12 +159,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		std::make_pair ("3.3",  X3D_V3_3),
 	};
 
-	const auto version = versions .find (getSpecificationVersion ());
-
-	if (version not_eq versions .end ())
-		return version -> second;
-
-	return LATEST_VERSION;
+	try
+	{
+		return versions .at (getSpecificationVersion ());
+	}
+	catch (const std::out_of_range &)
+	{
+		return LATEST_VERSION;
+	}
 }
 
 void

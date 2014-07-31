@@ -179,23 +179,27 @@ X3DNavigationContext::set_navigationInfo_type ()
 
 		for (const auto & string : activeNavigationInfo -> type ())
 		{
-			const auto viewerType = viewerTypes .find (string);
-
-			if (viewerType == viewerTypes .end ())
-				continue;
-
-			switch (viewerType -> second)
+			try
 			{
-				case ViewerType::LOOKAT:
-					// Continue with next type.
-					continue;
-				default:
-					viewer = viewerType -> second;
-					break;
-			}
+				const auto viewerType = viewerTypes .at (string);
 
-			// Leave for loop.
-			break;
+				switch (viewerType)
+				{
+					case ViewerType::LOOKAT:
+						// Continue with next type.
+						continue;
+					default:
+						viewer = viewerType;
+						break;
+				}
+
+				// Leave for loop.
+				break;
+			}
+			catch (const std::out_of_range &)
+			{
+				continue;
+			}
 		}
 
 		// Determine available viewers.

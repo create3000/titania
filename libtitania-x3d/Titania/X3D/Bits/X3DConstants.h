@@ -574,7 +574,7 @@ operator << (std::ostream & ostream, const VersionType version)
 		std::make_pair (X3D_V3_3,  "X3D V3.3"),
 	};
 
-	return ostream << versions .find (version) -> second;
+	return ostream << versions .at (version);
 }
 
 inline

@@ -1,3 +1,10 @@
+2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-standard.cproj:
+	* Remove.h:
+	* IndexedMultiMap.cpp: 
+
 2014-07-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Image.h: 

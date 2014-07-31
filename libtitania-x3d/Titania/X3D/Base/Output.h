@@ -61,8 +61,14 @@ class Output :
 {
 public:
 
+	/***
+	 *  @name Construction
+	 */
+
+	///  Constructs new Output.
 	Output ();
 
+	///  Destructs this object.
 	virtual
 	~Output ();
 

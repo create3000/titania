@@ -124,12 +124,14 @@ ShaderPart::getShaderType () const
 		#endif
 	};
 
-	const auto shaderType = shaderTypes .find (type ());
-
-	if (shaderType not_eq shaderTypes .end ())
-		return shaderType -> second;
-
-	return GL_VERTEX_SHADER;
+	try
+	{
+		return shaderTypes .at (type ());
+	}
+	catch (const std::out_of_range &)
+	{
+		return GL_VERTEX_SHADER;
+	}
 }
 
 void

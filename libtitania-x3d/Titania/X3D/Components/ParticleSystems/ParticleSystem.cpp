@@ -551,13 +551,14 @@ ParticleSystem::set_geometryType ()
 			std::make_pair ("SPRITE",   GeometryType::SPRITE)
 		};
 
-		auto iter = geometryTypes .find (geometryType ());
-
-		if (iter not_eq geometryTypes .end ())
-			geometryTypeId = iter -> second;
-
-		else
+		try
+		{
+			geometryTypeId = geometryTypes .at (geometryType ());
+		}
+		catch (const std::out_of_range &)
+		{
 			geometryTypeId = GeometryType::QUAD;
+		}
 
 		//
 

@@ -159,10 +159,12 @@ Geospatial::getCoordinateSystem (const MFString & geoSystem)
 {
 	for (const auto & string : geoSystem)
 	{
-		const auto coordinateSystem = coordinateSystems .find (string);
-
-		if (coordinateSystem not_eq coordinateSystems .end ())
-			return coordinateSystem -> second;
+		try
+		{
+			return coordinateSystems .at (string);
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 	return CoordinateSystemType::GD;
@@ -173,10 +175,12 @@ Geospatial::getEllipsoid (const MFString & geoSystem)
 {
 	for (const auto & string : geoSystem)
 	{
-		const auto ellipsoid = ellipsoids .find (string);
-
-		if (ellipsoid not_eq ellipsoids .end ())
-			return ellipsoid -> second;
+		try
+		{
+			return ellipsoids .at (string);
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 	return geospatial::WE;

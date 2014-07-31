@@ -158,7 +158,7 @@ protected:
 	void
 	unReference () override;
 
-	///  Processes all interest of shutdown.
+	///  Processes all interests of shutdown.
 	virtual
 	void
 	processShutdown () final override;
