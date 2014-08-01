@@ -1,5 +1,10 @@
 2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MaterialEditor.h:
+	* MaterialEditor.cpp: 
+
+2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* X3DEditorObject.h:

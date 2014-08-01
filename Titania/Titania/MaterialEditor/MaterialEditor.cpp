@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -151,17 +151,17 @@ MaterialEditor::on_copy ()
 	std::string text = "#X3D V3.3 utf8 Titania\n"
 	                   "\n"
 	                   "# " + getExecutionContext () -> getWorldURL () + "\n"
-	                   "\n"
-	                   "META \"titania magic\" \"Material\"\n"
-	                   "\n"
-	                   "Transform {\n"
-	                   "  children Shape {\n"
-	                   "    appearance Appearance {\n"
-	                   "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n"
-	                   "    }\n"
-	                   "    geometry Sphere { }\n"
-	                   "  }\n"
-	                   "}";
+	                                                                     "\n"
+	                                                                     "META \"titania magic\" \"Material\"\n"
+	                                                                     "\n"
+	                                                                     "Transform {\n"
+	                                                                     "  children Shape {\n"
+	                                                                     "    appearance Appearance {\n"
+	                                                                     "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n"
+	                                                                                                                                                                            "    }\n"
+	                                                                                                                                                                            "    geometry Sphere { }\n"
+	                                                                                                                                                                            "  }\n"
+	                                                                                                                                                                            "}";
 
 	Gtk::Clipboard::get () -> set_text (text);
 }
@@ -360,7 +360,7 @@ MaterialEditor::on_material_changed ()
 	}
 
 	isTwoSidedMaterial = (getMaterialComboBoxText () .get_active_row_number () == 2);
-	
+
 	// Set field.
 
 	addUndoFunction <X3D::SFNode> (appearances, "material", undoStep);
@@ -515,7 +515,7 @@ MaterialEditor::connectMaterial (const X3D::SFNode & field)
 MaterialEditor::~MaterialEditor ()
 {
 	X3D::removeBrowser (preview);
-	
+
 	dispose ();
 }
 

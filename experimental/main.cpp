@@ -297,21 +297,24 @@ main (int argc, char** argv)
 	std::clog << std::boolalpha;
 	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
 	//std::clog << std::setprecision (std::numeric_limits <double>::digits10);
-	std::clog << std::boolalpha;
+	std::clog .imbue (std::locale (""));
+
+	std::locale::global (std::locale (""));
 
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::clog .imbue (std::locale (""));
 
-
-	std::vector <int> v = {1, 2, 3, 1};
+	std::istringstream isstream ("0.5");
 	
-	v .erase (basic::remove (v .begin (), v .end (), { 5 }), v .end ());
+	float f = 0;
 
-	for (const auto e : v)
-		std::clog << e << std::endl;
+	isstream .imbue (std::locale (""));
+	isstream >> f;
+	
+	__LOG__ << bool (isstream) << std::endl;
+	__LOG__ << f << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

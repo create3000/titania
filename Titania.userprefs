@@ -1,15 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/SFColorRGBAButton.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldToggleButton.h" Line="59" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFColorRGBAButton.h" Line="21" Column="25" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="1155" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexturePropertiesEditor.h" Line="56" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexturePropertiesEditor.cpp" Line="64" Column="175" />
-      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment.h" Line="213" Column="61" />
-      <File FileName="Titania/Titania/ComposedWidgets.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="161" Column="1" />
+      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="487" Column="31" />
+      <File FileName="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.h" Line="188" Column="1" />
+      <File FileName="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.cpp" Line="74" Column="98" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTexturePropertiesEditor.cpp" Line="46" Column="3" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.cpp" Line="127" Column="3" />
+      <File FileName="Titania/Titania/TextureEditor/X3DTextureNodeEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/SFColorButton.h" Line="173" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/SFColorRGBAButton.h" Line="173" Column="1" />
+      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="103" Column="40" />
+      <File FileName="Titania/Titania/Base/X3DEditorObject.cpp" Line="55" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -62,12 +65,17 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="ComposedWidgets" expanded="True">
-                <Node name="X3DFieldToggleButton.h" selected="True" />
+              <Node name="Base" expanded="True">
+                <Node name="X3DEditorObject.cpp" selected="True" />
               </Node>
+              <Node name="ComposedWidgets" expanded="True" />
               <Node name="GeometryPropertiesEditor" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True">
+                <Node name="CellRenderer" expanded="True" />
+              </Node>
+              <Node name="TextEditor" expanded="True" />
               <Node name="TextureEditor" expanded="True" />
             </Node>
           </Node>

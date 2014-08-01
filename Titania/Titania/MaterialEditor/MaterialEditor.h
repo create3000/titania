@@ -109,7 +109,7 @@ private:
 	virtual
 	void
 	on_sphere_clicked () final override;
-	
+
 	virtual
 	void
 	on_model_clicked () final override;
@@ -155,9 +155,9 @@ private:
 	SFColorButton specularColor;
 	SFColorButton emissiveColor;
 
-	X3DFieldAdjustment <X3D::SFFloat>  ambientIntensity;
-	X3DFieldAdjustment <X3D::SFFloat>  shininess;
-	X3DFieldAdjustment <X3D::SFFloat>  transparency;
+	X3DFieldAdjustment <X3D::SFFloat> ambientIntensity;
+	X3DFieldAdjustment <X3D::SFFloat> shininess;
+	X3DFieldAdjustment <X3D::SFFloat> transparency;
 
 	X3DFieldToggleButton <X3D::SFBool> separateBackColor;
 
@@ -165,9 +165,9 @@ private:
 	SFColorButton backSpecularColor;
 	SFColorButton backEmissiveColor;
 
-	X3DFieldAdjustment <X3D::SFFloat>  backAmbientIntensity;
-	X3DFieldAdjustment <X3D::SFFloat>  backShininess;
-	X3DFieldAdjustment <X3D::SFFloat>  backTransparency;
+	X3DFieldAdjustment <X3D::SFFloat> backAmbientIntensity;
+	X3DFieldAdjustment <X3D::SFFloat> backShininess;
+	X3DFieldAdjustment <X3D::SFFloat> backTransparency;
 
 };
 

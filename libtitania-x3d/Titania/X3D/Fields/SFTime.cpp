@@ -107,8 +107,10 @@ throw (Error <INVALID_X3D>,
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	if (istream >> get ())
-		addEvent ();
+	time_type value = 0;
+
+	if (istream >> value)
+		setValue (value);
 }
 
 void

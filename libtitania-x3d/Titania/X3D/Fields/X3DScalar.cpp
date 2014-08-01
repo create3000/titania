@@ -118,10 +118,10 @@ throw (Error <INVALID_X3D>,
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	istream >> get ();
+	double value = 0;
 
-	if (istream)
-		addEvent ();
+	if (istream >> value)
+		setValue (value);
 }
 
 template <>
@@ -136,10 +136,10 @@ throw (Error <INVALID_X3D>,
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	istream >> get ();
+	float value = 0;
 
-	if (istream)
-		addEvent ();
+	if (istream >> value)
+		setValue (value);
 }
 
 template <>
@@ -154,10 +154,10 @@ throw (Error <INVALID_X3D>,
 
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	Grammar::Int32 (istream, get ());
+	int32_t value = 0;
 
-	if (istream)
-		addEvent ();
+	if (Grammar::Int32 (istream, value))
+		setValue (value);
 }
 
 template <>
