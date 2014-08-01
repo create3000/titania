@@ -48,128 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
-#define __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
+#define __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
 
-#include "../ComposedWidgets.h"
-#include "../Undo/UndoStep.h"
-#include "../UserInterfaces/X3DMaterialEditorInterface.h"
-
-#include "../ComposedWidgets/SFColorButton.h"
+#include "../Base/X3DEditorObject.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class MaterialEditor :
-	public X3DMaterialEditorInterface
+inline
+void
+draw_checker_board (const Cairo::RefPtr <Cairo::Context> & context,
+                    const double x, const double y,
+                    const double width, const double height,
+                    const double w, const double h,
+                    const X3D::Color4f & color1,
+                    const X3D::Color4f & color2)
 {
-public:
+	const size_t columns = std::ceil (width / w);
+	const size_t rows    = std::ceil (height / h);
 
-	///  @name Construction
+	for (size_t r = 0; r < rows; ++ r)
+	{
+		for (size_t c = 0; c < columns; ++ c)
+		{
+			if (r % 2 - c % 2)
+				context -> set_source_rgba (color2 .r (), color2 .g (), color2 .b (), color2 .a ());
+			else
+				context -> set_source_rgba (color1 .r (), color1 .g (), color1 .b (), color1 .a ());
 
-	MaterialEditor (BrowserWindow* const);
+			const auto sx = x + c * w;
+			const auto sy = y + r * h;
 
-	///  @name Destruction
-
-	virtual
-	~MaterialEditor ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_initialized ();
-
-	void
-	set_selection ();
-
-	///  @name Copy & Paste
-
-	virtual
-	void
-	on_copy () final override;
-
-	virtual
-	void
-	on_paste () final override;
-
-	///  @name preview
-
-	void
-	set_preview ();
-
-	virtual
-	void
-	on_sphere_clicked () final override;
-	
-	virtual
-	void
-	on_model_clicked () final override;
-
-	void
-	set_whichChoice (const int32_t);
-
-	///  @name material
-
-	virtual
-	void
-	on_material_unlink_clicked () final override;
-
-	virtual
-	void
-	on_material_changed () final override;
-
-	void
-	set_material ();
-
-	void
-	set_node ();
-
-	void
-	set_widgets ();
-
-	void
-	connectMaterial (const X3D::SFNode &);
-
-	///  @name Members
-
-	X3D::BrowserPtr                    preview;
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
-	X3D::SFTime                        materialNodeBuffer;
-	X3D::MaterialPtr                   material;
-	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
-	bool                               isTwoSidedMaterial;
-	UndoStepPtr                        undoStep;
-	bool                               changing;
-
-	SFColorButton diffuseColor;
-	SFColorButton specularColor;
-	SFColorButton emissiveColor;
-
-	X3DFieldAdjustment <X3D::SFFloat>  ambientIntensity;
-	X3DFieldAdjustment <X3D::SFFloat>  shininess;
-	X3DFieldAdjustment <X3D::SFFloat>  transparency;
-
-	X3DFieldToggleButton <X3D::SFBool> separateBackColor;
-
-	SFColorButton backDiffuseColor;
-	SFColorButton backSpecularColor;
-	SFColorButton backEmissiveColor;
-
-	X3DFieldAdjustment <X3D::SFFloat>  backAmbientIntensity;
-	X3DFieldAdjustment <X3D::SFFloat>  backShininess;
-	X3DFieldAdjustment <X3D::SFFloat>  backTransparency;
-
-};
+			context -> rectangle (sx, sy, w, h);
+			context -> fill ();
+		}
+	}
+}
 
 } // puck
 } // titania

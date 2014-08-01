@@ -96,24 +96,48 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAmbientAdjustment () const
-	{ return m_AmbientAdjustment; }
+	getAmbientIntensityAdjustment () const
+	{ return m_AmbientIntensityAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackAmbientAdjustment () const
-	{ return m_BackAmbientAdjustment; }
+	getBackAmbientIntensityAdjustment () const
+	{ return m_BackAmbientIntensityAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBackDiffuseColorAdjustment () const
+	{ return m_BackDiffuseColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBackEmissiveColorAdjustment () const
+	{ return m_BackEmissiveColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getBackShininessAdjustment () const
 	{ return m_BackShininessAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getBackSpecularColorAdjustment () const
+	{ return m_BackSpecularColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getBackTransparencyAdjustment () const
 	{ return m_BackTransparencyAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getDiffuseColorAdjustment () const
+	{ return m_DiffuseColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEmissiveColorAdjustment () const
+	{ return m_EmissiveColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getShininessAdjustment () const
 	{ return m_ShininessAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSpecularColorAdjustment () const
+	{ return m_SpecularColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransparencyAdjustment () const
@@ -171,41 +195,53 @@ public:
 	getFrontBox () const
 	{ return *m_FrontBox; }
 
-	Gtk::Button &
-	getEmissiveButton () const
-	{ return *m_EmissiveButton; }
-
-	Gtk::DrawingArea &
-	getEmissiveArea () const
-	{ return *m_EmissiveArea; }
-
-	Gtk::Button &
-	getSpecularButton () const
-	{ return *m_SpecularButton; }
-
-	Gtk::DrawingArea &
-	getSpecularArea () const
-	{ return *m_SpecularArea; }
-
-	Gtk::Button &
-	getDiffuseButton () const
-	{ return *m_DiffuseButton; }
-
-	Gtk::DrawingArea &
-	getDiffuseArea () const
-	{ return *m_DiffuseArea; }
+	Gtk::Box &
+	getAmbientIntensityBox () const
+	{ return *m_AmbientIntensityBox; }
 
 	Gtk::Scale &
-	getAmbientScale () const
-	{ return *m_AmbientScale; }
+	getAmbientIntensityScale () const
+	{ return *m_AmbientIntensityScale; }
+
+	Gtk::Box &
+	getShininessBox () const
+	{ return *m_ShininessBox; }
 
 	Gtk::Scale &
 	getShininessScale () const
 	{ return *m_ShininessScale; }
 
+	Gtk::Box &
+	getTransparencyBox () const
+	{ return *m_TransparencyBox; }
+
 	Gtk::Scale &
 	getTransparencyScale () const
 	{ return *m_TransparencyScale; }
+
+	Gtk::Box &
+	getDiffuseColorBox () const
+	{ return *m_DiffuseColorBox; }
+
+	Gtk::Button &
+	getDiffuseColorButton () const
+	{ return *m_DiffuseColorButton; }
+
+	Gtk::Box &
+	getSpecularColorBox () const
+	{ return *m_SpecularColorBox; }
+
+	Gtk::Button &
+	getSpecularColorButton () const
+	{ return *m_SpecularColorButton; }
+
+	Gtk::Box &
+	getEmissiveColorBox () const
+	{ return *m_EmissiveColorBox; }
+
+	Gtk::Button &
+	getEmissiveColorButton () const
+	{ return *m_EmissiveColorButton; }
 
 	Gtk::Expander &
 	getBackExpander () const
@@ -215,45 +251,57 @@ public:
 	getBackBox () const
 	{ return *m_BackBox; }
 
-	Gtk::Button &
-	getBackEmissiveButton () const
-	{ return *m_BackEmissiveButton; }
-
-	Gtk::DrawingArea &
-	getBackEmissiveArea () const
-	{ return *m_BackEmissiveArea; }
-
-	Gtk::Button &
-	getBackSpecularButton () const
-	{ return *m_BackSpecularButton; }
-
-	Gtk::DrawingArea &
-	getBackSpecularArea () const
-	{ return *m_BackSpecularArea; }
-
-	Gtk::Button &
-	getBackDiffuseButton () const
-	{ return *m_BackDiffuseButton; }
-
-	Gtk::DrawingArea &
-	getBackDiffuseArea () const
-	{ return *m_BackDiffuseArea; }
-
 	Gtk::CheckButton &
 	getSeparateBackColorCheckButton () const
 	{ return *m_SeparateBackColorCheckButton; }
 
+	Gtk::Box &
+	getBackAmbientIntensityBox () const
+	{ return *m_BackAmbientIntensityBox; }
+
 	Gtk::Scale &
-	getBackAmbientScale () const
-	{ return *m_BackAmbientScale; }
+	getBackAmbientIntensityScale () const
+	{ return *m_BackAmbientIntensityScale; }
+
+	Gtk::Box &
+	getBackShininessBox () const
+	{ return *m_BackShininessBox; }
 
 	Gtk::Scale &
 	getBackShininessScale () const
 	{ return *m_BackShininessScale; }
 
+	Gtk::Box &
+	getBackTransparencyBox () const
+	{ return *m_BackTransparencyBox; }
+
 	Gtk::Scale &
 	getBackTransparencyScale () const
 	{ return *m_BackTransparencyScale; }
+
+	Gtk::Box &
+	getBackDiffuseColorBox () const
+	{ return *m_BackDiffuseColorBox; }
+
+	Gtk::Button &
+	getBackDiffuseColorButton () const
+	{ return *m_BackDiffuseColorButton; }
+
+	Gtk::Box &
+	getBackSpecularColorBox () const
+	{ return *m_BackSpecularColorBox; }
+
+	Gtk::Button &
+	getBackSpecularColorButton () const
+	{ return *m_BackSpecularColorButton; }
+
+	Gtk::Box &
+	getBackEmissiveColorBox () const
+	{ return *m_BackEmissiveColorBox; }
+
+	Gtk::Button &
+	getBackEmissiveColorButton () const
+	{ return *m_BackEmissiveColorButton; }
 
 	Gtk::ColorSelectionDialog &
 	getBackDiffuseDialog () const
@@ -281,30 +329,6 @@ public:
 
 	virtual
 	void
-	on_ambient_changed () = 0;
-
-	virtual
-	void
-	on_backAmbient_changed () = 0;
-
-	virtual
-	void
-	on_backShininess_changed () = 0;
-
-	virtual
-	void
-	on_backTransparency_changed () = 0;
-
-	virtual
-	void
-	on_shininess_changed () = 0;
-
-	virtual
-	void
-	on_transparency_changed () = 0;
-
-	virtual
-	void
 	on_copy () = 0;
 
 	virtual
@@ -328,58 +352,6 @@ public:
 	on_material_unlink_clicked () = 0;
 
 	virtual
-	void
-	on_emissive_clicked () = 0;
-
-	virtual
-	bool
-	on_emissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	void
-	on_specular_clicked () = 0;
-
-	virtual
-	bool
-	on_specular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	void
-	on_diffuse_clicked () = 0;
-
-	virtual
-	bool
-	on_diffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	void
-	on_backEmissive_clicked () = 0;
-
-	virtual
-	bool
-	on_backEmissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	void
-	on_backSpecular_clicked () = 0;
-
-	virtual
-	bool
-	on_backSpecular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	void
-	on_backDiffuse_clicked () = 0;
-
-	virtual
-	bool
-	on_backDiffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	void
-	on_separateBackColor_toggled () = 0;
-
-	virtual
 	~X3DMaterialEditorInterface ();
 
 
@@ -392,11 +364,17 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_AmbientAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackAmbientAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AmbientIntensityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BackAmbientIntensityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BackDiffuseColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BackEmissiveColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackShininessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BackSpecularColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackTransparencyAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_DiffuseColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EmissiveColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShininessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_SpecularColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
@@ -411,27 +389,33 @@ private:
 	Gtk::Button*                   m_MaterialUnlinkButton;
 	Gtk::Expander*                 m_FrontExpander;
 	Gtk::Grid*                     m_FrontBox;
-	Gtk::Button*                   m_EmissiveButton;
-	Gtk::DrawingArea*              m_EmissiveArea;
-	Gtk::Button*                   m_SpecularButton;
-	Gtk::DrawingArea*              m_SpecularArea;
-	Gtk::Button*                   m_DiffuseButton;
-	Gtk::DrawingArea*              m_DiffuseArea;
-	Gtk::Scale*                    m_AmbientScale;
+	Gtk::Box*                      m_AmbientIntensityBox;
+	Gtk::Scale*                    m_AmbientIntensityScale;
+	Gtk::Box*                      m_ShininessBox;
 	Gtk::Scale*                    m_ShininessScale;
+	Gtk::Box*                      m_TransparencyBox;
 	Gtk::Scale*                    m_TransparencyScale;
+	Gtk::Box*                      m_DiffuseColorBox;
+	Gtk::Button*                   m_DiffuseColorButton;
+	Gtk::Box*                      m_SpecularColorBox;
+	Gtk::Button*                   m_SpecularColorButton;
+	Gtk::Box*                      m_EmissiveColorBox;
+	Gtk::Button*                   m_EmissiveColorButton;
 	Gtk::Expander*                 m_BackExpander;
 	Gtk::Grid*                     m_BackBox;
-	Gtk::Button*                   m_BackEmissiveButton;
-	Gtk::DrawingArea*              m_BackEmissiveArea;
-	Gtk::Button*                   m_BackSpecularButton;
-	Gtk::DrawingArea*              m_BackSpecularArea;
-	Gtk::Button*                   m_BackDiffuseButton;
-	Gtk::DrawingArea*              m_BackDiffuseArea;
 	Gtk::CheckButton*              m_SeparateBackColorCheckButton;
-	Gtk::Scale*                    m_BackAmbientScale;
+	Gtk::Box*                      m_BackAmbientIntensityBox;
+	Gtk::Scale*                    m_BackAmbientIntensityScale;
+	Gtk::Box*                      m_BackShininessBox;
 	Gtk::Scale*                    m_BackShininessScale;
+	Gtk::Box*                      m_BackTransparencyBox;
 	Gtk::Scale*                    m_BackTransparencyScale;
+	Gtk::Box*                      m_BackDiffuseColorBox;
+	Gtk::Button*                   m_BackDiffuseColorButton;
+	Gtk::Box*                      m_BackSpecularColorBox;
+	Gtk::Button*                   m_BackSpecularColorButton;
+	Gtk::Box*                      m_BackEmissiveColorBox;
+	Gtk::Button*                   m_BackEmissiveColorButton;
 	Gtk::ColorSelectionDialog*     m_BackDiffuseDialog;
 	Gtk::ColorSelectionDialog*     m_BackEmissiveDialog;
 	Gtk::ColorSelectionDialog*     m_BackSpecularDialog;

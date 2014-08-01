@@ -8,41 +8,65 @@
       <source stock-id="Dragon" filename="../icons/Dragon.svg"/>
     </sources>
   </object>
-  <object class="GtkAdjustment" id="AmbientAdjustment">
+  <object class="GtkAdjustment" id="AmbientIntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_ambient_changed" swapped="no"/>
   </object>
-  <object class="GtkAdjustment" id="BackAmbientAdjustment">
+  <object class="GtkAdjustment" id="BackAmbientIntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_backAmbient_changed" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="BackDiffuseColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="BackEmissiveColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="BackShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_backShininess_changed" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="BackSpecularColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="BackTransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_backTransparency_changed" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="DiffuseColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="EmissiveColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ShininessAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_shininess_changed" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="SpecularColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="TransparencyAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
-    <signal name="value-changed" handler="on_transparency_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">320</property>
@@ -313,7 +337,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Ambient:</property>
+                            <property name="label" translatable="yes">Ambient Intensity:</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -349,50 +373,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="EmissiveButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="on_emissive_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="EmissiveArea">
-                                <property name="height_request">12</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_emissive_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="SpecularButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="on_specular_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="SpecularArea">
-                                <property name="height_request">12</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_specular_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="label3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -421,30 +401,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="DiffuseButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="receives_default">True</property>
-                            <property name="hexpand">True</property>
-                            <signal name="clicked" handler="on_diffuse_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="DiffuseArea">
-                                <property name="height_request">12</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_diffuse_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="box1">
+                          <object class="GtkBox" id="AmbientIntensityBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
@@ -452,7 +409,7 @@
                               <object class="GtkSpinButton" id="spinbutton1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">AmbientAdjustment</property>
+                                <property name="adjustment">AmbientIntensityAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
@@ -464,10 +421,10 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkScale" id="AmbientScale">
+                              <object class="GtkScale" id="AmbientIntensityScale">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">AmbientAdjustment</property>
+                                <property name="adjustment">AmbientIntensityAdjustment</property>
                                 <property name="upper_stepper_sensitivity">off</property>
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
@@ -488,7 +445,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box2">
+                          <object class="GtkBox" id="ShininessBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
@@ -532,7 +489,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box3">
+                          <object class="GtkBox" id="TransparencyBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
@@ -571,6 +528,136 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">6</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="DiffuseColorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkButton" id="DiffuseColorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="hexpand">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScale" id="scale1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">DiffuseColorAdjustment</property>
+                                <property name="round_digits">3</property>
+                                <property name="digits">3</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="SpecularColorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkButton" id="SpecularColorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScale" id="scale2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">SpecularColorAdjustment</property>
+                                <property name="round_digits">3</property>
+                                <property name="digits">3</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="EmissiveColorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkButton" id="EmissiveColorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScale" id="scale3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">EmissiveColorAdjustment</property>
+                                <property name="round_digits">3</property>
+                                <property name="digits">3</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -622,7 +709,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Ambient:</property>
+                            <property name="label" translatable="yes">Ambient Intensity:</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -686,73 +773,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="BackEmissiveButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="on_backEmissive_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="BackEmissiveArea">
-                                <property name="height_request">12</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_backEmissive_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="BackSpecularButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="on_backSpecular_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="BackSpecularArea">
-                                <property name="height_request">12</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_backSpecular_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="BackDiffuseButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="receives_default">True</property>
-                            <property name="hexpand">True</property>
-                            <signal name="clicked" handler="on_backDiffuse_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="BackDiffuseArea">
-                                <property name="height_request">12</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_backDiffuse_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkCheckButton" id="SeparateBackColorCheckButton">
                             <property name="label" translatable="yes">Separate Back Color</property>
                             <property name="visible">True</property>
@@ -760,7 +780,6 @@
                             <property name="receives_default">False</property>
                             <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_separateBackColor_toggled" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -782,7 +801,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box4">
+                          <object class="GtkBox" id="BackAmbientIntensityBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
@@ -790,7 +809,7 @@
                               <object class="GtkSpinButton" id="spinbutton4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">BackAmbientAdjustment</property>
+                                <property name="adjustment">BackAmbientIntensityAdjustment</property>
                                 <property name="climb_rate">0.01</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
@@ -802,10 +821,10 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkScale" id="BackAmbientScale">
+                              <object class="GtkScale" id="BackAmbientIntensityScale">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">BackAmbientAdjustment</property>
+                                <property name="adjustment">BackAmbientIntensityAdjustment</property>
                                 <property name="upper_stepper_sensitivity">off</property>
                                 <property name="digits">3</property>
                                 <property name="draw_value">False</property>
@@ -826,7 +845,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box5">
+                          <object class="GtkBox" id="BackShininessBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
@@ -870,7 +889,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box6">
+                          <object class="GtkBox" id="BackTransparencyBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">8</property>
@@ -923,6 +942,136 @@
                           <packing>
                             <property name="left_attach">0</property>
                             <property name="top_attach">6</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="BackDiffuseColorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkButton" id="BackDiffuseColorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="hexpand">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScale" id="scale4">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">BackDiffuseColorAdjustment</property>
+                                <property name="round_digits">3</property>
+                                <property name="digits">3</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="BackSpecularColorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkButton" id="BackSpecularColorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScale" id="scale5">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">BackSpecularColorAdjustment</property>
+                                <property name="round_digits">3</property>
+                                <property name="digits">3</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="BackEmissiveColorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkButton" id="BackEmissiveColorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScale" id="scale6">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">BackEmissiveColorAdjustment</property>
+                                <property name="round_digits">3</property>
+                                <property name="digits">3</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">3</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>

@@ -1,5 +1,20 @@
 2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Cairo.h:
+	* SFColorButton.h:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* SFColorRGBAButton.h:
+	* MaterialEditor.xml:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DMaterialEditorInterface.h:
+	* MaterialEditorPreview.x3dv:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DMaterialEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
+2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ComposedWidgets.h:
 	* TextureEditor.xml:
 	* SFColorRGBAButton.h:

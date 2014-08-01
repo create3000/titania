@@ -223,13 +223,6 @@ X3DFontStyleNodeEditor::set_node ()
 
 	fontStyleNode = std::move (pair .first);
 
-	if (not fontStyleNode)
-	{
-		fontStyleNode = new X3D::FontStyle (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (fontStyleNode);
-		getExecutionContext () -> realize ();
-	}
-
 	fontStyle       = fontStyleNode;
 	screenFontStyle = fontStyleNode;
 
@@ -246,6 +239,9 @@ X3DFontStyleNodeEditor::set_node ()
 		getExecutionContext () -> addUninitializedNode (screenFontStyle);
 		getExecutionContext () -> realize ();
 	}
+
+	if (not fontStyleNode)
+		fontStyleNode = fontStyle;
 
 	changing = true;
 
