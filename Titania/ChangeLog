@@ -1,5 +1,19 @@
 2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* X3DEditorObject.h:
+	* Cairo.h:
+	* X3DEditorObject.cpp:
+	* Cairo.cpp:
+	* SFColorButton.h:
+	* SFColorRGBAButton.h:
+	* X3DTexture2DNodeEditor.cpp:
+	* TextureEditorPreview.x3dv:
+	* MaterialEditorPreview.x3dv: 
+
+2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Cairo.h:
 	* SFColorButton.h:
 	* MaterialEditor.h:

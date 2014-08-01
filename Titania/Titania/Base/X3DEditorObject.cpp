@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,23 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
-#define __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
-
-#include "../Base/X3DEditorObject.h"
+#include "X3DEditorObject.h"
 
 namespace titania {
 namespace puck {
 
-void
-draw_checker_board (const Cairo::RefPtr <Cairo::Context> & context,
-                    const double width, const double height,
-                    const X3D::Color4f & color1,
-                    const X3D::Color4f & color2,
-                    const double rectangle_x, const double rectangle_y,
-                    const double rectangle_width, const double rectangle_height);
+Glib::ustring
+X3DEditorObject::refineName (const Glib::ustring & name)
+{
+	Glib::ustring result;
+
+	if (not name .empty ())
+	{
+		result += name .substr (0, 1) .uppercase ();
+
+		for (const auto c : std::make_pair (++ name .begin (), name .end ()))
+		{
+			const Glib::ustring s (1, c);
+
+			if (s .uppercase () == s)
+				result += " ";
+
+			result += s;
+		}
+	}
+
+	return result;
+}
 
 } // puck
 } // titania
-
-#endif

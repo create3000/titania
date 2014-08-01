@@ -90,29 +90,25 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 		glTexParameteri (target, GL_GENERATE_MIPMAP, false);
 		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glTexParameteri (target, GL_TEXTURE_WRAP_S, wrapTypes [false]);
-		glTexParameteri (target, GL_TEXTURE_WRAP_T, wrapTypes [false]);
-		glTexParameteri (target, GL_TEXTURE_WRAP_R, wrapTypes [false]);
 	}
 	else
 	{
 		glTexParameteri (target, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
 		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
 		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+	}
 
-		if (haveTextureProperties)
-		{
-			glTexParameteri (target, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-			glTexParameteri (target, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
-			glTexParameteri (target, GL_TEXTURE_WRAP_R, textureProperties -> getBoundaryModeR ());
-		}
-		else
-		{
-			glTexParameteri (target, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
-			glTexParameteri (target, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
-			glTexParameteri (target, GL_TEXTURE_WRAP_R, wrapTypes [repeatR]);
-		}
+	if (haveTextureProperties)
+	{
+		glTexParameteri (target, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+		glTexParameteri (target, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+		glTexParameteri (target, GL_TEXTURE_WRAP_R, textureProperties -> getBoundaryModeR ());
+	}
+	else
+	{
+		glTexParameteri (target, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
+		glTexParameteri (target, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
+		glTexParameteri (target, GL_TEXTURE_WRAP_R, wrapTypes [repeatR]);
 	}
 
 	glTexParameterfv (target, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());

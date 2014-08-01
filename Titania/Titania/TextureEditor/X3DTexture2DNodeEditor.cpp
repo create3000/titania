@@ -110,7 +110,7 @@ X3DTexture2DNodeEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode>
 void
 X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getTexture2DBox () .set_visible (texture2DNode and value);
+	getTexture2DBox () .set_visible (texture);
 
 	if (texture2DNode)
 	{

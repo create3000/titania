@@ -7,12 +7,14 @@ bin_PROGRAMS =  \
 titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
+	Titania/Base/X3DEditorObject.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
+	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Console/Console.cpp \

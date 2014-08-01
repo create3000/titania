@@ -48,10 +48,7 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
-#define __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
-
-#include "../Base/X3DEditorObject.h"
+#include "Cairo.h"
 
 namespace titania {
 namespace puck {
@@ -62,9 +59,31 @@ draw_checker_board (const Cairo::RefPtr <Cairo::Context> & context,
                     const X3D::Color4f & color1,
                     const X3D::Color4f & color2,
                     const double rectangle_x, const double rectangle_y,
-                    const double rectangle_width, const double rectangle_height);
+                    const double rectangle_width, const double rectangle_height)
+{
+	const size_t columns = std::ceil (rectangle_width / width);
+	const size_t rows    = std::ceil (rectangle_height / height);
+
+	const double offset_x = rectangle_x - std::floor (((columns * width) - rectangle_width) / 2);
+	const double offset_y = rectangle_y - std::floor (((rows * height) - rectangle_height) / 2);
+
+	for (size_t r = 0; r < rows; ++ r)
+	{
+		for (size_t c = 0; c < columns; ++ c)
+		{
+			if (r % 2 - c % 2)
+				context -> set_source_rgba (color2 .r (), color2 .g (), color2 .b (), color2 .a ());
+			else
+				context -> set_source_rgba (color1 .r (), color1 .g (), color1 .b (), color1 .a ());
+
+			const auto x = offset_x + c * width;
+			const auto y = offset_y + r * height;
+
+			context -> rectangle (x, y, width, height);
+			context -> fill ();
+		}
+	}
+}
 
 } // puck
 } // titania
-
-#endif

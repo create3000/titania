@@ -169,6 +169,7 @@ SFColorRGBAButton::SFColorRGBAButton (BrowserWindow* const browserWindow,
 
 	// Dialog
 
+	dialog .set_title (refineName (name));
 	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, &SFColorRGBAButton::on_color_changed));
 	dialog .get_color_selection () -> set_has_opacity_control (true);
 	dialog .get_color_selection () -> set_has_palette (true);
@@ -319,7 +320,10 @@ SFColorRGBAButton::set_buffer ()
 	}
 
 	if (not hasField)
+	{
 		dialog .get_color_selection () -> set_current_rgba (Gdk::RGBA ());
+		valueAdjustment -> set_value (0);
+	}
 
 	widget .set_sensitive (hasField);
 
@@ -339,10 +343,11 @@ bool
 SFColorRGBAButton::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
 	draw_checker_board (context,
-	                    0, 0, drawingArea .get_width (), drawingArea .get_height (),
-	                    10, 10,
-	                    X3D::Color4f (0.8, 0.8, 0.8, 1),
-	                    X3D::Color4f (0.2, 0.2, 0.2, 1));
+	                    8, 8,
+	                    X3D::Color4f (0.6, 0.6, 0.6, 1),
+	                    X3D::Color4f (0.4, 0.4, 0.4, 1),
+	                    0, 0,
+	                    drawingArea .get_width (), drawingArea .get_height ());
 
 	const auto color = dialog .get_color_selection () -> get_current_rgba ();
 
@@ -353,10 +358,11 @@ SFColorRGBAButton::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	if (colorButton .get_style_context () -> get_state () & Gtk::STATE_FLAG_INSENSITIVE)
 	{
 		draw_checker_board (context,
-		                    0, 0, drawingArea .get_width (), drawingArea .get_height (),
 		                    1, 1,
 		                    X3D::Color4f (0.8, 0.8, 0.8, 0.5),
-		                    X3D::Color4f (0.2, 0.2, 0.2, 0.5));
+		                    X3D::Color4f (0.2, 0.2, 0.2, 0.5),
+		                    0, 0,
+		                    drawingArea .get_width (), drawingArea .get_height ());
 	}
 
 	return true;

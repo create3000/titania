@@ -85,6 +85,10 @@ protected:
 
 	///  @name Operations
 
+	static
+	Glib::ustring
+	refineName (const Glib::ustring &);
+
 	template <class NodeType>
 	X3D::X3DPtrArray <NodeType>
 	getSelection (const std::set <X3D::X3DConstants::NodeType> &) const;
