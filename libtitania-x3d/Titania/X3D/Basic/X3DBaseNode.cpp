@@ -332,12 +332,6 @@ X3DBaseNode::assign (const X3DBaseNode* const node, const bool compare)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>)
 {
-	if (not node)
-		throw Error <INVALID_NODE> ("Invalid node: Node is NULL.");
-
-	if (type .back () not_eq node -> getType () .back ())
-		throw Error <INVALID_NODE> ("Invalid node: Node has type " + node -> getTypeName () + ".");
-
 	for (size_t i = 0, size = fieldDefinitions .size (); i < size; ++ i)
 	{
 		auto & lhs = *fieldDefinitions [i];
