@@ -21,7 +21,7 @@ DEF PixelTexture Transform {
           0 0xff
           0x88 0
         textureProperties TextureProperties {
-          borderColor 1 0 0 0.5
+          borderColor 1 0 0 0.517647
           generateMipMaps TRUE
           boundaryModeS "CLAMP_TO_BOUNDARY"
           boundaryModeT "CLAMP_TO_BOUNDARY"
@@ -54,6 +54,7 @@ DEF ImageTexture Transform {
         repeatS FALSE
         repeatT FALSE
         textureProperties TextureProperties {
+          borderColor 0.434663 0.306845 0.212858 1
           generateMipMaps TRUE
           boundaryModeS "CLAMP_TO_BOUNDARY"
           boundaryModeT "CLAMP_TO_BOUNDARY"
@@ -63,7 +64,7 @@ DEF ImageTexture Transform {
       }
       textureTransform TextureTransform {
         translation 0 1.14492e-16
-        rotation 0.7
+        rotation 0.785
         scale 2 2
         center -0.5 -0.5
       }

@@ -201,8 +201,14 @@ X3DTexture2DNodeEditor::set_preview ()
 		if (layout and transform)
 		{
 			const X3D::Vector2d viewport (preview -> get_width (), preview -> get_height ());
-			const double        width  = texture2DNode -> getImageWidth ();
-			const double        height = texture2DNode -> getImageHeight ();
+			double              width  = texture2DNode -> getImageWidth ();
+			double              height = texture2DNode -> getImageHeight ();
+
+			if (not width)
+				width = 1;
+
+			if (not height)
+				height = 1;
 
 			if (viewport [0] / viewport [1] > width / height)
 			{

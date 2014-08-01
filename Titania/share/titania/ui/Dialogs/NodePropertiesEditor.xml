@@ -359,7 +359,7 @@
     </columns>
   </object>
   <object class="GtkDialog" id="Window">
-    <property name="width_request">389</property>
+    <property name="width_request">400</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">NodePropertiesEditor</property>

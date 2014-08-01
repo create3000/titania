@@ -1,3 +1,13 @@
+2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ComposedWidgets.h:
+	* TextureEditor.xml:
+	* SFColorRGBAButton.h:
+	* X3DTexture2DNodeEditor.cpp:
+	* NodePropertiesEditor.xml:
+	* X3DTexturePropertiesEditor.h:
+	* X3DTexturePropertiesEditor.cpp: 
+
 2014-07-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineEditor.cpp:

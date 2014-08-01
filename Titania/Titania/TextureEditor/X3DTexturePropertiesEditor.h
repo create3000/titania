@@ -99,6 +99,7 @@ private:
 	UndoStepPtr                            undoStep;
 	bool                                   changing;
 
+	SFColorRGBAButton                  borderColor;
 	X3DFieldAdjustment <X3D::SFInt32>  borderWidth;
 	X3DFieldAdjustment <X3D::SFFloat>  anisotropicDegree;
 	X3DFieldToggleButton <X3D::SFBool> generateMipMaps;

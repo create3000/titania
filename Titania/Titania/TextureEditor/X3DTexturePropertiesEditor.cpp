@@ -59,6 +59,7 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	        textureProperties (),
 	                 undoStep (),
 	                 changing (false),
+	              borderColor (getBrowserWindow (), getTexturePropertiesBorderColorButton (), getTexturePropertiesBorderColorAdjustment (), getTexturePropertiesBorderColorBox (), "borderColor"),
 	              borderWidth (getBrowserWindow (), getTexturePropertiesBorderWidthAdjustment (), getTexturePropertiesBorderWidthSpinButton (), "borderWidth"),
 	        anisotropicDegree (getBrowserWindow (), getTexturePropertiesAnisotropicDegreeAdjustment (), getTexturePropertiesAnisotropicDegreeSpinButton (), "anisotropicDegree"),
 	          generateMipMaps (getBrowserWindow (), getTexturePropertiesGenerateMipMapsCheckButton (), "generateMipMaps"),
@@ -191,6 +192,7 @@ X3DTexturePropertiesEditor::set_textureProperties ()
 
 	changing = false;
 
+	borderColor         .setNodes ({ textureProperties });
 	borderWidth         .setNodes ({ textureProperties });
 	anisotropicDegree   .setNodes ({ textureProperties });
 	generateMipMaps     .setNodes ({ textureProperties });

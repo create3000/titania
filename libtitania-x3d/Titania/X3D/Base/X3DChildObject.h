@@ -107,11 +107,11 @@ public:
 	 *  @name Clone handling
 	 */
 
-	///  Virtual function that must be implemented in a derived class or it will always return 0.
+	///  Virtual function that must be implemented in a derived class or it returns the number of parents.
 	virtual
 	size_t
 	getCloneCount () const
-	{ return 0; }
+	{ return parents .size (); }
 
 	///  Handler that should be called when the clount count should be incremented @a count.
 	virtual

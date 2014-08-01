@@ -4,7 +4,13 @@ META "comment" "World of Titania"
 META "created" "Mon, 21 Jul 2014 07:20:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Mon, 28 Jul 2014 13:30:13 GMT"
+META "modified" "Thu, 31 Jul 2014 13:44:37 GMT"
+
+Viewpoint {
+  description "Home"
+  position -0.583545 0.47172 10.2979
+  centerOfRotation -0.583545 0.47172 -2.95598
+}
 
 Collision {
   enabled FALSE
@@ -21536,10 +21542,4 @@ Collision {
       }
     }
   ]
-}
-
-Viewpoint {
-  description "Home"
-  position -0.583545 0.47172 10.2979
-  centerOfRotation -0.583545 0.47172 -2.95598
 }
