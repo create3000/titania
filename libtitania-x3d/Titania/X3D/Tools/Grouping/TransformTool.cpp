@@ -56,7 +56,6 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Rendering/PolygonModeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -185,8 +184,6 @@ TransformTool::traverse (const TraverseType type)
 
 	// Tool
 
-	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
-
 	getModelViewMatrix () .push ();
 	getModelViewMatrix () .mult_left (getMatrix ());
 
@@ -196,8 +193,6 @@ TransformTool::traverse (const TraverseType type)
 	X3DToolObject::traverse (type);
 
 	getModelViewMatrix () .pop ();
-
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }
 
 } // X3D

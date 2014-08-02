@@ -265,20 +265,26 @@ X3DGroupingNode::add (const MFNode & children)
 						case X3DConstants::LocalFog :
 							{
 								localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
-								break;
+								goto NEXT;
 							}
 						case X3DConstants::X3DPointingDeviceSensorNode:
 						{
 							pointingDeviceSensors .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));
-							break;
+							goto NEXT;
 						}
 						case X3DConstants::ClipPlane:
 						case X3DConstants::X3DLightNode:
 						{
 							collectables .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
-							break;
+							goto NEXT;
 						}
 						case X3DConstants::X3DChildNode:
+						{
+							childNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
+							goto NEXT;
+						}
+						case X3DConstants::X3DEnvironmentalSensorNodeTool:
+						case X3DConstants::X3DLightNodeTool:
 						{
 							childNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
 							break;

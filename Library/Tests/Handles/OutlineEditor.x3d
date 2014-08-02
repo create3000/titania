@@ -5,8 +5,8 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V0.7.0, http://titania.create3000.de'/>
-    <meta name='modified' content='Sun, 01 Jun 2014 02:28:12 GMT'/>
+    <meta name='generator' content='Titania V0.7.1, http://titania.create3000.de'/>
+    <meta name='modified' content='Sat, 02 Aug 2014 02:16:15 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -118,8 +118,8 @@
         groundColor='0 0 0'/>
     <Viewpoint DEF='Viewpoint1'
         description='OutlineEditor'
-        position='0.303737 1.79783 8.43447'
-        orientation='0.519624 0.822241 0.232186 5.95359'
+        position='-18.5708 9.05869 14.8554'
+        orientation='0.326861 0.93161 0.158951 5.40011'
         centerOfRotation='4.29495 -0.945555 -6.15488'/>
     <ProtoInstance name='Grid'>
       <fieldValue name='xDimension' value='40'/>
@@ -286,7 +286,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 29 Mai 2014 15:33:58 CEST"'>
+            string='"modified...", "Sa 02 Aug 2014 03:55:46 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -452,7 +452,7 @@ function initialize ()
       <ProximitySensor USE='_9'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.0391'
+          rotation='0 0 1 5.24378'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -476,6 +476,12 @@ function initialize ()
         <Box
             size='1 1 1'/>
       </Shape>
+    </Transform>
+    <Transform DEF='_10'
+        translation='-4.11327 2.22753 6.6934'>
+      <PointLight DEF='_11'
+          color='0 1 1'
+          location='0 2 -10'/>
     </Transform>
     <IMPORT inlineDEF='_5' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_6' exportedDEF='ExportedInline'/>

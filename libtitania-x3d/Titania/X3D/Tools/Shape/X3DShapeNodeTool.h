@@ -53,13 +53,15 @@
 
 #include "../Core/X3DChildNodeTool.h"
 #include "../Grouping/X3DBoundedObjectTool.h"
+#include "../../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
 
 template <class Type>
 class X3DShapeNodeTool :
-	virtual public X3DChildNodeTool <Type>, public X3DBoundedObjectTool <Type>
+	virtual public X3DChildNodeTool <Type>,
+	public X3DBoundedObjectTool <Type>
 {
 public:
 
@@ -139,6 +141,7 @@ public:
 
 protected:
 
+	using X3DChildNodeTool <Type>::addType;
 	using X3DChildNodeTool <Type>::getNode;
 
 	///  @name Construction
@@ -146,7 +149,9 @@ protected:
 	X3DShapeNodeTool (const Color3f & color) :
 		    X3DChildNodeTool <Type> (),
 		X3DBoundedObjectTool <Type> (color, true)
-	{ }
+	{
+		addType (X3DConstants::X3DShapeNodeTool);
+	}
 
 	virtual
 	void

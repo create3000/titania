@@ -756,6 +756,9 @@
     <None Include="Titania\X3D\Base\X3DParentObject.h" />
     <None Include="Titania\X3D\Routing\ChildrenList.h" />
     <None Include="Titania\X3D\Routing\ParentList.h" />
+    <None Include="share\titania\tools\LightTool.x3dv" />
+    <None Include="Titania\X3D\Tools\Lighting\X3DLightNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Lighting\PointLightTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1338,6 +1341,7 @@
     <Folder Include="Titania\X3D\PeaseBlossom\Expressions\" />
     <Folder Include="Titania\X3D\PeaseBlossom\Bits\" />
     <Folder Include="Titania\X3D\PeaseBlossom\Objects\" />
+    <Folder Include="Titania\X3D\Tools\Lighting\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

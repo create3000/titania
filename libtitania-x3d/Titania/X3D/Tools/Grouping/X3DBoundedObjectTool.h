@@ -55,8 +55,6 @@
 
 #include "../../Bits/config.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Rendering/PolygonModeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -112,7 +110,7 @@ public:
 
 protected:
 
-	using X3DBaseTool <Type>::getCurrentLayer;
+	using X3DBaseTool <Type>::addType;
 	using X3DBaseTool <Type>::getModelViewMatrix;
 	using X3DBaseTool <Type>::getNode;
 	using X3DToolObject::getToolNode;
@@ -158,7 +156,9 @@ X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color, const 
 	X3DBaseTool <Type> (),
 	     displayCenter (displayCenter),
 	             color (color)
-{ }
+{
+	addType (X3DConstants::X3DBoundedObjectTool);
+}
 
 template <class Type>
 void
@@ -209,8 +209,6 @@ X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
 
 	// Tool
 
-	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
-
 	getModelViewMatrix () .push ();
 	getModelViewMatrix () .mult_left (getMatrix ());
 
@@ -220,8 +218,6 @@ X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
 	X3DToolObject::traverse (type);
 
 	getModelViewMatrix () .pop ();
-
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }
 
 } // X3D

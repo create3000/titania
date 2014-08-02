@@ -1,18 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Lighting/X3DLightNodeTool.h">
     <Files>
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="161" Column="1" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="487" Column="31" />
-      <File FileName="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.h" Line="188" Column="1" />
-      <File FileName="Titania/Titania/TextEditor/X3DFontStyleNodeEditor.cpp" Line="74" Column="98" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexturePropertiesEditor.cpp" Line="46" Column="3" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTexture2DNodeEditor.cpp" Line="127" Column="3" />
-      <File FileName="Titania/Titania/TextureEditor/X3DTextureNodeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFColorButton.h" Line="173" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFColorRGBAButton.h" Line="173" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="103" Column="40" />
-      <File FileName="Titania/Titania/Base/X3DEditorObject.cpp" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/X3DLightNode.h" Line="129" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.h" Line="121" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Lighting/X3DLightNodeTool.h" Line="60" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layout/PointLight.h" Line="102" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,36 +16,34 @@
               <Node name="Basic" expanded="True" />
               <Node name="Errors" expanded="True" />
               <Node name="Grouping" expanded="True" />
+              <Node name="Handles" expanded="True" />
               <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="tools" expanded="True">
+                  <Node name="library" expanded="True" />
+                </Node>
               </Node>
             </Node>
-          </Node>
-          <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Shaders" expanded="True" />
-                  <Node name="Text" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
+                  <Node name="Lighting" expanded="True">
+                    <Node name="PointLight.h" selected="True" />
+                  </Node>
                 </Node>
-                <Node name="Fields" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -63,20 +54,6 @@
                   <Node name="Dialogs" expanded="True" />
                 </Node>
               </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True">
-                <Node name="X3DEditorObject.cpp" selected="True" />
-              </Node>
-              <Node name="ComposedWidgets" expanded="True" />
-              <Node name="GeometryPropertiesEditor" expanded="True" />
-              <Node name="MaterialEditor" expanded="True" />
-              <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="CellRenderer" expanded="True" />
-              </Node>
-              <Node name="TextEditor" expanded="True" />
-              <Node name="TextureEditor" expanded="True" />
             </Node>
           </Node>
         </State>

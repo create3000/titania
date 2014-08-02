@@ -87,13 +87,16 @@ public:
 
 protected:
 
+	using X3DChildNodeTool <Type>::addType;
 	using X3DChildNodeTool <Type>::getNode;
 
 	///  @name Construction
 
 	X3DSensorNodeTool () :
 		X3DChildNodeTool <Type> ()
-	{ }
+	{
+		addType (X3DConstants::X3DSensorNodeTool);
+	}
 
 };
 

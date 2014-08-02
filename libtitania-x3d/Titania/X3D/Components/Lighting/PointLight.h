@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -89,26 +89,32 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	attenuation ()
 	{ return *fields .attenuation; }
 
+	virtual
 	const SFVec3f &
 	attenuation () const
 	{ return *fields .attenuation; }
 
+	virtual
 	SFVec3f &
 	location ()
 	{ return *fields .location; }
 
+	virtual
 	const SFVec3f &
 	location () const
 	{ return *fields .location; }
 
+	virtual
 	SFFloat &
 	radius ()
 	{ return *fields .radius; }
 
+	virtual
 	const SFFloat &
 	radius () const
 	{ return *fields .radius; }
@@ -117,16 +123,23 @@ public:
 
 	virtual
 	void
-	draw (const GLenum) final override;
+	draw (const GLenum) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 

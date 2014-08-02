@@ -117,6 +117,7 @@ public:
 
 protected:
 
+	using X3DChildNodeTool <Type>::addType;
 	using X3DChildNodeTool <Type>::getNode;
 
 	///  @name Construction
@@ -124,7 +125,9 @@ protected:
 	X3DGroupingNodeTool (const Color3f & color, const bool displayCenter = false) :
 		    X3DChildNodeTool <Type> (),
 		X3DBoundedObjectTool <Type> (color, displayCenter)
-	{ }
+	{
+		addType (X3DConstants::X3DGroupingNodeTool);
+	}
 
 	virtual
 	void

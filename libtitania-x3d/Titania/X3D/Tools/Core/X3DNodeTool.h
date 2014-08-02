@@ -77,13 +77,16 @@ public:
 
 protected:
 
+	using X3DBaseTool <Type>::addType;
 	using X3DBaseTool <Type>::getNode;
 
 	///  @name Construction
 
 	X3DNodeTool () :
 		X3DBaseTool <Type> ()
-	{ }
+	{
+		addType (X3DConstants::X3DNodeTool);
+	}
 
 };
 

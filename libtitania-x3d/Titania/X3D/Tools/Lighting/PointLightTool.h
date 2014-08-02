@@ -48,86 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DTOOL_OBJECT_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DTOOL_OBJECT_H__
+#ifndef __TITANIA_X3D_TOOLS_LIGHTING_POINT_LIGHT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_LIGHTING_POINT_LIGHT_TOOL_H__
 
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Components/Networking/Inline.h"
-#include "../../Execution/Scene.h"
-#include "../../Fields.h"
+#include "../Lighting/X3DLightNodeTool.h"
+
+#include "../../Components/Lighting/PointLight.h"
 
 namespace titania {
 namespace X3D {
 
-class SceneLoader;
-
-class X3DToolObject :
-	virtual public X3DNode
+class PointLightTool :
+	public X3DLightNodeTool <PointLight>
 {
 public:
 
-	///  @name Member access
-
-	InlinePtr &
-	getInlineNode ()
-	{ return inlineNode; }
-
-	const InlinePtr &
-	getInlineNode () const
-	{ return inlineNode; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-
-protected:
-
 	///  @name Construction
 
-	X3DToolObject ();
+	PointLightTool (PointLight* const node) :
+		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		     X3DBaseTool <PointLight> (node),
+		X3DLightNodeTool <PointLight> ()
+	{
+		addType (X3DConstants::PointLightTool);
+	}
+
+	///  @name Fields
 
 	virtual
-	void
-	initialize () override;
-
-	///  @name Member acces
-
-	const SFNode &
-	getToolNode () const
-	throw (Error <DISPOSED>);
-
-	///  @name Operations
-
-	void
-	requestAsyncLoad (const MFString &);
+	SFVec3f &
+	attenuation () final override
+	{ return getNode () -> attenuation (); }
 
 	virtual
-	void
-	realize ()
-	{ }
+	const SFVec3f &
+	attenuation () const final override
+	{ return getNode () -> attenuation (); }
 
+	virtual
+	SFVec3f &
+	location () final override
+	{ return getNode () -> location (); }
 
-private:
+	virtual
+	const SFVec3f &
+	location () const final override
+	{ return getNode () -> location (); }
 
-	///  @name Event handlers
+	virtual
+	SFFloat &
+	radius () final override
+	{ return getNode () -> radius (); }
 
-	void
-	set_loadState (const LoadState);
-
-	///  @name Members
-
-	InlinePtr inlineNode;
-	SFNode    toolNode;
+	virtual
+	const SFFloat &
+	radius () const final override
+	{ return getNode () -> radius (); }
 
 };
 

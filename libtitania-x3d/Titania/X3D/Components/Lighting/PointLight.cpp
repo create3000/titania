@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Lighting/PointLightTool.h"
 
 namespace titania {
 namespace X3D {
@@ -137,6 +138,12 @@ PointLight::draw (GLenum lightId)
 	glLightf  (lightId, GL_QUADRATIC_ATTENUATION, attenuation () .getZ ());
 
 	glLightfv (lightId, GL_POSITION, glPosition);
+}
+
+void
+PointLight::addTool ()
+{
+	X3DLightNode::addTool (new PointLightTool (this));
 }
 
 } // X3D

@@ -63,42 +63,52 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	global ()
 	{ return *fields .global; }
 
+	virtual
 	const SFBool &
 	global () const
 	{ return *fields .global; }
 
+	virtual
 	SFBool &
 	on ()
 	{ return *fields .on; }
 
+	virtual
 	const SFBool &
 	on () const
 	{ return *fields .on; }
 
+	virtual
 	SFColor &
 	color ()
 	{ return *fields .color; }
 
+	virtual
 	const SFColor &
 	color () const
 	{ return *fields .color; }
 
+	virtual
 	SFFloat &
 	intensity ()
 	{ return *fields .intensity; }
 
+	virtual
 	const SFFloat &
 	intensity () const
 	{ return *fields .intensity; }
 
+	virtual
 	SFFloat &
 	ambientIntensity ()
 	{ return *fields .ambientIntensity; }
 
+	virtual
 	const SFFloat &
 	ambientIntensity () const
 	{ return *fields .ambientIntensity; }
@@ -107,11 +117,11 @@ public:
 
 	virtual
 	void
-	push (const TraverseType) final override;
+	push (const TraverseType) override;
 
 	virtual
 	void
-	pop (const TraverseType) final override;
+	pop (const TraverseType) override;
 
 	virtual
 	void

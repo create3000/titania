@@ -1,3 +1,27 @@
+2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DConstants.h:
+	* LightTool.x3dv:
+	* X3DNodeTool.h:
+	* X3DToolObject.h:
+	* X3DToolObject.cpp:
+	* X3DChildNodeTool.h:
+	* X3DSensorNodeTool.h:
+	* X3DShapeNodeTool.h:
+	* PointLightTool.h:
+	* InlineTool.cpp:
+	* TransformTool.cpp:
+	* PointLight.h:
+	* X3DLightNodeTool.h:
+	* X3DExecutionContext.cpp:
+	* X3DLightNode.h:
+	* PointLight.cpp:
+	* X3DGroupingNodeTool.h:
+	* X3DBoundedObjectTool.h:
+	* X3DGroupingNode.cpp:
+	* X3DEnvironmentalSensorNodeTool.h: 
+
 2014-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp: 

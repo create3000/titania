@@ -62,11 +62,15 @@ class X3DChildNodeTool :
 {
 protected:
 
+	using X3DNodeTool <Type>::addType;
+
 	///  @name Construction
 
 	X3DChildNodeTool () :
 		X3DNodeTool <Type> ()
-	{ }
+	{
+		addType (X3DConstants::X3DChildNodeTool);
+	}
 
 };
 
