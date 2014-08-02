@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.7.1, http://titania.create3000.de'/>
-    <meta name='modified' content='Sat, 02 Aug 2014 03:25:22 GMT'/>
+    <meta name='modified' content='Sat, 02 Aug 2014 12:29:56 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -287,7 +287,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Sa 02 Aug 2014 05:08:19 CEST"'>
+            string='"modified...", "Sa 02 Aug 2014 14:28:53 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -453,7 +453,7 @@ function initialize ()
       <ProximitySensor USE='_9'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 4.53684'
+          rotation='0 0 1 4.8138'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -480,18 +480,22 @@ function initialize ()
     </Transform>
     <Transform
         translation='3.49909 3.57949 6.88583'>
-      <PointLight DEF='_10'
+      <PointLight
           color='0 1 1'
           location='0 2 -10'
           intensity='0.5'/>
     </Transform>
     <Transform
         translation='0.0928667 5.09104 19.9731'>
-      <PointLight DEF='_11'
+      <PointLight
           color='1 0 1'
           location='0 2 -10'
           intensity='0.5'/>
     </Transform>
+    <SpotLight DEF='_10'
+        color='1 0 0'
+        location='0 0 10'
+        direction='0 1 -1'/>
     <IMPORT inlineDEF='_5' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_6' exportedDEF='ExportedInline'/>
     <IMPORT inlineDEF='_2' exportedDEF='Text' AS='ImportedInline'/>

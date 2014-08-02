@@ -1,5 +1,13 @@
 2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* LightTool.x3dv:
+	* SpotLightTool.h:
+	* SpotLight.h:
+	* SpotLight.cpp: 
+
+2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DParentObject.cpp:
 	* Sound.cpp:
 	* LOD.cpp:

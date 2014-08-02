@@ -48,7 +48,12 @@ function set_light (value)
 		{
 			case X3DConstants .PointLight:
 			{
-				set_pointLight ()
+				set_pointLight ();
+				break;
+			}
+			case X3DConstants .SpotLight:
+			{
+				set_spotLight ();
 				break;
 			}
 			default:
@@ -63,6 +68,17 @@ function set_pointLight ()
 
 	translation = light .location;
 	whichChoice = 0;
+}
+
+function set_spotLight ()
+{
+	Browser .addRoute (light, 'location',  self, 'translation');
+	Browser .addRoute (light, 'direction', self, 'set_lightDirection');
+
+	translation = light .location;
+	set_lightDirection (light .direction);
+
+	whichChoice = 1;
 }
 
 function set_lightOn ()
@@ -80,13 +96,18 @@ function set_lightIntensity ()
 	color = getColor ();
 }
 
+function set_lightDirection (value)
+{
+	rotation = new SFRotation (new SFVec3f (0, 0, 1), value);
+}
+
 function getColor ()
 {
 	if (light .on)
 	{
-		return new SFColor (light .color .r * light .intensity,
-		                    light .color .g * light .intensity,
-		                    light .color .b * light .intensity);
+		return new SFColor (light .color .r * light .intensity * 0.88,
+		                    light .color .g * light .intensity * 0.88,
+		                    light .color .b * light .intensity * 0.88);
 	}
 
 	return new SFColor ();

@@ -148,8 +148,16 @@ X3DOutlineTreeView::get_path_at_position (const double x, const double y, Gtk::T
 void
 X3DOutlineTreeView::update (X3D::X3DChildObject* const object)
 {
-	for (const auto & iter : get_iters (object))
-		update_row (iter, get_model () -> get_path (iter));
+	const auto iters = get_iters (object);
+
+	if (iters .empty ())
+		return;
+
+	const auto open_path = get_open_path (iters .front ());
+	const auto iter      = get_model () -> get_iter (open_path);
+
+	if (get_model () -> iter_is_valid (iter))
+		update_row (iter, open_path);
 }
 
 void

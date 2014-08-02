@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,162 +48,92 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LIGHTING_SPOT_LIGHT_H__
-#define __TITANIA_X3D_COMPONENTS_LIGHTING_SPOT_LIGHT_H__
+#ifndef __TITANIA_X3D_TOOLS_LIGHTING_SPOT_LIGHT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_LIGHTING_SPOT_LIGHT_TOOL_H__
 
-#include "../Lighting/X3DLightNode.h"
+#include "../Lighting/X3DLightNodeTool.h"
+
+#include "../../Components/Lighting/SpotLight.h"
 
 namespace titania {
 namespace X3D {
 
-class SpotLight :
-	public X3DLightNode
+class SpotLightTool :
+	public X3DLightNodeTool <SpotLight>
 {
 public:
 
 	///  @name Construction
 
-	SpotLight (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	SpotLightTool (SpotLight* const node) :
+		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		     X3DBaseTool <SpotLight> (node),
+		X3DLightNodeTool <SpotLight> ()
+	{
+		addType (X3DConstants::SpotLightTool);
+	}
 
 	///  @name Fields
 
 	virtual
 	SFVec3f &
-	attenuation ()
-	{ return *fields .attenuation; }
+	attenuation () final override
+	{ return getNode () -> attenuation (); }
 
 	virtual
 	const SFVec3f &
-	attenuation () const
-	{ return *fields .attenuation; }
+	attenuation () const final override
+	{ return getNode () -> attenuation (); }
 
 	virtual
 	SFFloat &
-	beamWidth ()
-	{ return *fields .beamWidth; }
+	beamWidth () final override
+	{ return getNode () -> beamWidth (); }
 
 	virtual
 	const SFFloat &
-	beamWidth () const
-	{ return *fields .beamWidth; }
+	beamWidth () const final override
+	{ return getNode () -> beamWidth (); }
 
 	virtual
 	SFFloat &
-	cutOffAngle ()
-	{ return *fields .cutOffAngle; }
+	cutOffAngle () final override
+	{ return getNode () -> cutOffAngle (); }
 
 	virtual
 	const SFFloat &
-	cutOffAngle () const
-	{ return *fields .cutOffAngle; }
+	cutOffAngle () const final override
+	{ return getNode () -> cutOffAngle (); }
 
 	virtual
 	SFVec3f &
-	direction ()
-	{ return *fields .direction; }
+	direction () final override
+	{ return getNode () -> direction (); }
 
 	virtual
 	const SFVec3f &
-	direction () const
-	{ return *fields .direction; }
+	direction () const final override
+	{ return getNode () -> direction (); }
 
 	virtual
 	SFVec3f &
-	location ()
-	{ return *fields .location; }
+	location () final override
+	{ return getNode () -> location (); }
 
 	virtual
 	const SFVec3f &
-	location () const
-	{ return *fields .location; }
+	location () const final override
+	{ return getNode () -> location (); }
 
 	virtual
 	SFFloat &
-	radius ()
-	{ return *fields .radius; }
+	radius () final override
+	{ return getNode () -> radius (); }
 
 	virtual
 	const SFFloat &
-	radius () const
-	{ return *fields .radius; }
-
-	///  @name Operations
-
-	virtual
-	void
-	draw (const GLenum) override;
-
-	virtual
-	void
-	addTool () override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFVec3f* const attenuation;
-		SFFloat* const beamWidth;
-		SFFloat* const cutOffAngle;
-		SFVec3f* const direction;
-		SFVec3f* const location;
-		SFFloat* const radius;
-	};
-
-	Fields fields;
-
-	GLfloat glAmbient [4];
-	GLfloat glDiffuseSpecular [4];
-	GLfloat glSpotExponent;
-	GLfloat glSpotCutOff;
-	GLfloat glPosition [4];
-	GLfloat glSpotDirection [3];
+	radius () const final override
+	{ return getNode () -> radius (); }
 
 };
 

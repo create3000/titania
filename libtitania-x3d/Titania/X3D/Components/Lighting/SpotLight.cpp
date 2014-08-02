@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Lighting/SpotLightTool.h"
 
 namespace titania {
 namespace X3D {
@@ -151,6 +152,12 @@ SpotLight::draw (GLenum lightId)
 
 	glLightfv (lightId, GL_POSITION,       glPosition);
 	glLightfv (lightId, GL_SPOT_DIRECTION, glSpotDirection);
+}
+
+void
+SpotLight::addTool ()
+{
+	X3DLightNode::addTool (new SpotLightTool (this));
 }
 
 } // X3D
