@@ -176,13 +176,16 @@ OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 {
 	if (route -> isConnected ())
 	{
+		if (route -> getRootContext () -> isPrivate ())
+			return false;
+
 		if (route -> getExecutionContext () -> isRootContext ())
 			return true;
 
 		if (route -> getExecutionContext () -> isProtoDeclaration ())
 			return true;
 
-		if (show_all_routes and not route -> getRootContext () -> isPrivate ()) // Hide X3DToolObject routes when show all is true.
+		if (show_all_routes) // show_all_routes == expandPrototypes
 			return true;
 	}
 

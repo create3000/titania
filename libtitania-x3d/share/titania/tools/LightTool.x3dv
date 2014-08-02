@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sat, 02 Aug 2014 02:23:41 GMT"
+META "modified" "Sat, 02 Aug 2014 03:04:33 GMT"
 
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
@@ -28,14 +28,19 @@ DEF Tool Script {
   inputOutput SFInt32    whichChoice 0
   inputOutput SFNode     light NULL
   inputOutput SFNode     self USE Tool
-  inputOnly   SFVec3f    set_direction
+  inputOnly   SFBool     set_lightOn
+  inputOnly   SFColor    set_lightColor
+  inputOnly   SFFloat    set_lightIntensity
+  inputOnly   SFVec3f    set_lightDirection
 
   url "javascript:
 function set_light (value)
 {
-	Browser .addRoute (light, 'color', self, 'color');
+	Browser .addRoute (light, 'on',        self, 'set_lightOn');
+	Browser .addRoute (light, 'color',     self, 'set_lightColor');
+	Browser .addRoute (light, 'intensity', self, 'set_lightIntensity');
 
-	color = light .color;
+	color = getColor ();
 	
 	for each (var type in light .getNodeType ())
 	{
@@ -59,6 +64,33 @@ function set_pointLight ()
 	translation = light .location;
 	whichChoice = 0;
 }
+
+function set_lightOn ()
+{
+	color = getColor ();
+}
+
+function set_lightColor ()
+{
+	color = getColor ();
+}
+
+function set_lightIntensity ()
+{
+	color = getColor ();
+}
+
+function getColor ()
+{
+	if (light .on)
+	{
+		return new SFColor (light .color .r * light .intensity,
+		                    light .color .g * light .intensity,
+		                    light .color .b * light .intensity);
+	}
+
+	return new SFColor ();
+}
 "
 }
 
@@ -79,8 +111,9 @@ DEF _1 Transform {
                     children DEF _3 Shape {
                       appearance DEF _4 Appearance {
                         material DEF _5 Material {
-                          diffuseColor 0 0 0
-                          emissiveColor 1 1 1
+                          ambientIntensity 0.1
+                          specularColor 0.303 0.303 0.303
+                          shininess 1
                         }
                       }
                       geometry IndexedLineSet {
@@ -121,9 +154,7 @@ DEF _1 Transform {
                     children USE _3
                   }
                   DEF Sphere Shape {
-                    appearance DEF _6 Appearance {
-                      material DEF _7 Material { }
-                    }
+                    appearance USE _4
                     geometry Sphere { }
                   }
                 ]
@@ -134,7 +165,7 @@ DEF _1 Transform {
                     rotation 1 3.62549e-06 -9.93165e-10 4.71239
                     scaleOrientation 0.999527 0.0122136 -0.0282112 0.785458
                     children Shape {
-                      appearance USE _6
+                      appearance USE _4
                       geometry Cone {
                         bottom FALSE
                         solid FALSE
@@ -146,7 +177,7 @@ DEF _1 Transform {
                     scale 0.61803 0.61803 0.61803
                     children [
                       DEF Sphere_1 Shape {
-                        appearance USE _6
+                        appearance USE _4
                         geometry Sphere { }
                       }
                       DEF Ray1_1 Transform {
@@ -307,7 +338,7 @@ DEF _1 Transform {
                   DEF Box Transform {
                     scale 1 0.61803 0.1
                     children Shape {
-                      appearance USE _6
+                      appearance USE _4
                       geometry Box { }
                     }
                   }
@@ -328,10 +359,10 @@ DEF _1 Transform {
             ]
           }
         }
-        DEF _8 BooleanSwitch {
+        DEF _6 BooleanSwitch {
           whichChoice TRUE
           children [
-            DEF _9 Transform { }
+            DEF _7 Transform { }
             DEF Axes_1 Transform {
               children [
                 DEF Axes Shape {
@@ -417,10 +448,10 @@ DEF _1 Transform {
 }
 
 ROUTE Tool.whichChoice_changed TO _2.set_whichChoice
-ROUTE Tool.color_changed TO _5.set_emissiveColor
-ROUTE Tool.selected_changed TO _8.set_whichChoice
-ROUTE Tool.color_changed TO _7.set_diffuseColor
+ROUTE Tool.selected_changed TO _6.set_whichChoice
+ROUTE Tool.color_changed TO _5.set_diffuseColor
 ROUTE Tool.rotation_changed TO _1.set_rotation
 ROUTE Tool.translation_changed TO _1.set_translation
+ROUTE Tool.color_changed TO _5.set_emissiveColor
 
 EXPORT Tool
