@@ -221,6 +221,7 @@ private:
 	Glib::RefPtr <Gdk::Pixbuf> executionContextImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeUImage;
+	Glib::RefPtr <Gdk::Pixbuf> NULLImage;
 	Glib::RefPtr <Gdk::Pixbuf> prototypeImage;
 	Glib::RefPtr <Gdk::Pixbuf> externProtoImage;
 	Glib::RefPtr <Gdk::Pixbuf> importedNodeImage;

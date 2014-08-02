@@ -144,6 +144,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 {
 	switch (treeView -> get_data_type (iter))
 	{
+		case OutlineIterType::Separator:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DExecutionContext:
@@ -152,7 +153,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
-		case OutlineIterType::Separator:
+		case OutlineIterType::NULL_:
 			break;
 
 		case OutlineIterType::X3DFieldValue:
@@ -202,9 +203,10 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 {
 	switch (treeView -> get_data_type (iter))
 	{
+		case OutlineIterType::Separator:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
-		case OutlineIterType::Separator:
+		case OutlineIterType::NULL_:
 			break;
 
 		case OutlineIterType::X3DFieldValue:

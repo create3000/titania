@@ -462,16 +462,6 @@ ExternProtoDeclaration::toStreamField (std::ostream & ostream, X3DFieldDefinitio
 }
 
 void
-ExternProtoDeclaration::dispose ()
-{
-	X3DUrlObject::dispose ();
-	X3DProtoObject::dispose ();
-	X3DNode::dispose ();
-
-	removeChildren (url ());
-}
-
-void
 ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
@@ -518,6 +508,16 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</ExternProtoDeclare>";
+}
+
+void
+ExternProtoDeclaration::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DProtoObject::dispose ();
+	X3DNode::dispose ();
+
+	removeChildren (url ());
 }
 
 ExternProtoDeclaration::~ExternProtoDeclaration ()

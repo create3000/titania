@@ -61,17 +61,18 @@ namespace puck {
 
 enum class OutlineIterType
 {
+	Separator,
 	X3DInputRoute,
 	X3DOutputRoute,
 	X3DFieldValue,
 	X3DField,
 	X3DExecutionContext,
 	X3DBaseNode,
+	NULL_,
 	ExternProtoDeclaration,
 	ProtoDeclaration,
 	ImportedNode,
-	ExportedNode,
-	Separator
+	ExportedNode
 
 };
 

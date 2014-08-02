@@ -79,7 +79,8 @@ X3DBrowser::X3DBrowser () :
 	             browserProperties,
 	             renderingProperties,
 	             executionContext,
-	             urlError);
+	             urlError,
+	             getRootNodes ());
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -594,6 +595,8 @@ X3DBrowser::dispose ()
 
 	X3DBrowserContext::dispose ();
 	X3DBaseNode::dispose ();
+
+	removeChildren (getRootNodes ());
 
 	unlock ();
 

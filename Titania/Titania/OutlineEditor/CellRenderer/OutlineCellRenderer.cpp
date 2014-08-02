@@ -99,6 +99,7 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	        executionContextImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DExecutionContext.svg"))),
 	                baseNodeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"))),
 	               baseNodeUImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.u.svg"))),
+	                    NULLImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/NULL.svg"))),
 	               prototypeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/Prototype.svg"))),
 	             externProtoImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ExternProto.svg"))),
 	            importedNodeImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/ImportedNode.svg"))),
@@ -240,6 +241,11 @@ OutlineCellRenderer::on_data ()
 
 			break;
 		}
+		case OutlineIterType::NULL_:
+		{
+			property_markup () = "<b>NULL</b>";
+			break;
+		}
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::ProtoDeclaration:
@@ -343,13 +349,16 @@ OutlineCellRenderer::get_icon () const
 		case OutlineIterType::X3DExecutionContext:
 			return executionContextImage;
 
+		case OutlineIterType::NULL_:
+			return NULLImage;
+
 		case OutlineIterType::X3DBaseNode:
 		{
 			const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
 			const auto node   = sfnode -> getValue ();
 
 			if (not node)
-				return baseNodeImage;
+				return NULLImage;
 
 			if (node -> getExecutionContext () == treeView -> get_model () -> get_execution_context ())
 			{

@@ -80,15 +80,11 @@ public:
 
 	static
 	void
-	update (const X3D::SFNode &);
+	update (X3D::X3DFieldDefinition* const field, const X3D::SFNode &);
 
 	static
 	void
-	update (X3D::X3DFieldDefinition* const);
-
-	static
-	void
-	update (X3D::MFNode* const);
+	update (const X3D::SFNode &, X3D::X3DFieldDefinition* const);
 
 	virtual
 	~OutlineSelection ();

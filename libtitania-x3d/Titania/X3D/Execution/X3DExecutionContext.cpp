@@ -107,7 +107,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	        externProtos (),
 	  externProtosOutput (),
 	              routes (),
-	           rootNodes (),
+	           rootNodes (new MFNode ()),
 	  uninitializedNodes ()
 {
 	addType (X3DConstants::X3DExecutionContext);
@@ -115,11 +115,11 @@ X3DExecutionContext::X3DExecutionContext () :
 	addChildren (importedNodesOutput,
 	             prototypesOutput,
 	             externProtosOutput,
-	             rootNodes,
 	             uninitializedNodes);
 
-	rootNodes .setName ("rootNodes");
-	rootNodes .addClones (1);
+	// Root nodes must be added and removed as/from child in the node that derives from X3DExecutionContext.
+	getRootNodes () .setName ("rootNodes");
+	getRootNodes () .addClones (1);
 }
 
 void

@@ -461,6 +461,10 @@ DEF EXPORT Transform {
 
 NULL
 
+DEF NULL Transform {
+	children [NULL NULL]
+}
+
 DEF InlineClone Transform {
   translation 0 0 -11.4797
   children Inline {

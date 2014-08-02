@@ -185,33 +185,31 @@ OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value)
 		userData -> selected &= ~OUTLINE_SELECTED;
 }
 
+/***
+ *  Updates the selection status of a @a node depending on its parent @a field.
+ */
 void
-OutlineSelection::update (const X3D::SFNode & node)
+OutlineSelection::update (X3D::X3DFieldDefinition* const field, const X3D::SFNode & node)
 {
 	if (node)
 	{
 		const auto & selection = node -> getBrowser () -> getSelection ();
 
-		if (selection -> isSelected (node))
-			return;
-
-		bool selected = false;
-
-		for (const auto & parent : node -> getParents ())
-			selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
+		const bool selected = (X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED)
+		                      or selection -> isSelected (node);
 
 		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) not_eq selected)
 			select (node, selected);
 	}
 }
 
+/***
+ *  Updates the selection status of @a field depending on its parent @a node.
+ */
 void
-OutlineSelection::update (X3D::X3DFieldDefinition* const field)
+OutlineSelection::update (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field)
 {
-	bool selected = false;
-
-	for (const auto & parent : field -> getParents ())
-		selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
+	const bool selected = X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED;
 
 	if ((X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED) not_eq selected)
 	{
@@ -219,29 +217,6 @@ OutlineSelection::update (X3D::X3DFieldDefinition* const field)
 
 		select (field, selected, seen);
 	}
-}
-
-void
-OutlineSelection::update (X3D::MFNode* const field) 
-{
-	bool selected = false;
-
-	for (const auto & parent : field -> getParents ())
-		selected |= X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED;
-
-	if (selected)
-	{
-		for (auto & value : *field)
-			X3DOutlineTreeView::get_user_data (&value) -> selected |= OUTLINE_SELECTED;
-	}
-	else
-	{
-		for (auto & value : *field)
-			X3DOutlineTreeView::get_user_data (&value) -> selected &= ~OUTLINE_SELECTED;
-	}
-
-	for (const auto & value : *field)
-		update (value);
 }
 
 OutlineSelection::~OutlineSelection ()

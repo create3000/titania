@@ -356,20 +356,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 
 			const auto userData = get_user_data (iter);
 
-			if (userData and userData -> selected & OUTLINE_SELECTED)
-				val .set (true);
-
-			else
-			{
-				if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-				{
-					// Handle NULL.
-					const auto parentUserData = get_user_data (iter -> parent ());
-					val .set (parentUserData and parentUserData -> selected & OUTLINE_SELECTED);
-				}
-				else
-					val .set (false);
-			}
+			val .set (userData and userData -> selected & OUTLINE_SELECTED);
 
 			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;
@@ -447,6 +434,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
+		case OutlineIterType::NULL_:
 		{
 			return false;
 		}

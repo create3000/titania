@@ -83,7 +83,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	addField (inputOutput, "metadata", metadata ());
 
-	addChildren (protoObject, live);
+	addChildren (getRootNodes (), protoObject, live);
 
 	// Interface
 
@@ -523,6 +523,8 @@ X3DPrototypeInstance::dispose ()
 {
 	X3DExecutionContext::dispose ();
 	X3DNode::dispose ();
+	
+	removeChildren (getRootNodes ());
 }
 
 } // X3D

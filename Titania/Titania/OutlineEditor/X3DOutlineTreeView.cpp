@@ -518,7 +518,12 @@ X3DOutlineTreeView::set_rootNodes ()
 		size_t i = 0;
 
 		for (auto & rootNode : executionContext -> getRootNodes ())
-			get_model () -> append (OutlineIterType::X3DBaseNode, rootNode, i ++);
+		{
+			if (rootNode)
+				get_model () -> append (OutlineIterType::X3DBaseNode, rootNode, i ++);
+			else
+				get_model () -> append (OutlineIterType::NULL_, &executionContext -> getRootNodes (), i ++);
+		}
 	}
 
 	// Imported nodes
@@ -700,10 +705,11 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 {
 	switch (get_data_type (iter))
 	{
+		case OutlineIterType::Separator:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
-		case OutlineIterType::Separator:
+		case OutlineIterType::NULL_:
 			break;
 
 		case OutlineIterType::X3DField:
@@ -724,8 +730,14 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 				{
 					const auto & sfnode = *static_cast <X3D::SFNode*> (field);
 
-					get_model () -> append (iter, OutlineIterType::X3DBaseNode, sfnode .getValue ());
-					selection -> update (sfnode);
+					if (sfnode)
+					{
+						get_model () -> append (iter, OutlineIterType::X3DBaseNode, sfnode);
+						selection -> update (field, sfnode);
+					}
+					else
+						get_model () -> append (iter, OutlineIterType::NULL_, field);
+					
 					break;
 				}
 				case X3D::X3DConstants::MFNode:
@@ -741,9 +753,16 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					size_t i = 0;
 
 					for (auto & value : *mfnode)
-						get_model () -> append (iter, OutlineIterType::X3DBaseNode, value, i ++);
+					{
+						if (value)
+						{
+							get_model () -> append (iter, OutlineIterType::X3DBaseNode, value, i ++);
+							selection -> update (field, value);
+						}
+						else
+							get_model () -> append (iter, OutlineIterType::NULL_, field, i ++);
+					}
 
-					selection -> update (mfnode);
 					break;
 				}
 				default:
@@ -797,7 +816,12 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 				size_t i = 0;
 
 				for (auto & rootNode : executionContext -> getRootNodes ())
-					get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode, i ++);
+				{
+					if (rootNode)
+						get_model () -> append (iter, OutlineIterType::X3DBaseNode, rootNode, i ++);
+					else
+						get_model () -> append (iter, OutlineIterType::NULL_, &executionContext -> getRootNodes (), i ++);
+				}
 			}
 
 			// Imported nodes
@@ -952,7 +976,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 				for (const auto & field : fields)
 				{
 					get_model () -> append (iter, OutlineIterType::X3DField, field);
-					selection -> update (field);
+					selection -> update (sfnode, field);
 				}
 
 				is_full_expanded (iter, true);
@@ -981,7 +1005,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 					}
 
 					get_model () -> append (iter, OutlineIterType::X3DField, field);
-					selection -> update (field);
+					selection -> update (sfnode, field);
 					visibleFields = true;
 				}
 
@@ -990,7 +1014,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 					for (const auto & field : fields)
 					{
 						get_model () -> append (iter, OutlineIterType::X3DField, field);
-						selection -> update (field);
+						selection -> update (sfnode, field);
 					}
 				}
 
@@ -1061,10 +1085,11 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 
 	switch (get_data_type (parent))
 	{
+		case OutlineIterType::Separator:
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
-		case OutlineIterType::Separator:
+		case OutlineIterType::NULL_:
 		{
 			break;
 		}

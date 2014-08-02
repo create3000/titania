@@ -429,13 +429,13 @@ public:
 	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
-	{ return rootNodes; }
+	{ return *rootNodes; }
 
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
-	{ return rootNodes; }
+	{ return *rootNodes; }
 
 	///  @name Dynamic route node handling
 
@@ -618,7 +618,7 @@ private:
 	ExternProtoArray   externProtos;
 	SFTime             externProtosOutput;
 	RouteArray         routes;
-	MFNode             rootNodes;
+	MFNode* const      rootNodes;
 
 	MFNode uninitializedNodes;
 

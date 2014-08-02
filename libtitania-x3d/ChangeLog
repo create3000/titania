@@ -1,5 +1,15 @@
 2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* ProtoDeclaration.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LightTool.x3dv: 
 
 2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>

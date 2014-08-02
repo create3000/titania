@@ -72,6 +72,7 @@ ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext)
 	addType (X3DConstants::ProtoDeclaration);
 
 	addField (inputOutput, "metadata", metadata ());
+	addChildren (getRootNodes ());
 
 	setEncoding             (executionContext -> getEncoding ());
 	setSpecificationVersion (executionContext -> getSpecificationVersion ());
@@ -461,6 +462,8 @@ ProtoDeclaration::dispose ()
 	X3DProtoObject::dispose ();
 	X3DExecutionContext::dispose ();
 	X3DNode::dispose ();
+	
+	removeChildren (getRootNodes ());
 }
 
 } // X3D

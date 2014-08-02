@@ -69,6 +69,7 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType type_, X3D::X3DChildObje
 {
 	switch (type)
 	{
+		case OutlineIterType::NULL_:
 		case OutlineIterType::X3DField:
 		case OutlineIterType::X3DFieldValue:
 		case OutlineIterType::X3DInputRoute:
@@ -211,6 +212,7 @@ OutlineTreeData::~OutlineTreeData ()
 
 	switch (type)
 	{
+		case OutlineIterType::NULL_:
 		case OutlineIterType::X3DField:
 		case OutlineIterType::X3DFieldValue:
 		case OutlineIterType::X3DInputRoute:
