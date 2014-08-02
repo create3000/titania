@@ -199,7 +199,7 @@ function set_freeze(value, time)
 function set_startTime(value, time)
 {
 	isActive = TRUE;
-	timeSensor.enabled = FALSE;
+	timeSensor.enabled = TRUE;
 	if(data.startPosition.length()) {
 		position = data.startPosition.x + data.startPosition.y * data.matrix.size.x;
 	} else {
