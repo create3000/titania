@@ -377,6 +377,10 @@ private:
 
 	virtual
 	void
+	on_lights_toggled () final override;
+
+	virtual
+	void
 	on_proximity_sensors_toggled () final override;
 
 	virtual

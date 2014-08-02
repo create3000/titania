@@ -204,6 +204,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FogsMenuItem -> set_name ("FogsMenuItem");
 	m_builder -> get_widget ("ObjectIconsMenuItem", m_ObjectIconsMenuItem);
 	m_ObjectIconsMenuItem -> set_name ("ObjectIconsMenuItem");
+	m_builder -> get_widget ("LightsMenuItem", m_LightsMenuItem);
+	m_LightsMenuItem -> set_name ("LightsMenuItem");
 	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
 	m_ProximitySensorsMenuItem -> set_name ("ProximitySensorsMenuItem");
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
@@ -435,6 +437,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckMenuItem with id 'BackgroundsMenuItem'.
 	m_BackgroundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
 	m_FogsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
+	m_LightsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
 	m_ProximitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
 	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
 

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sat, 02 Aug 2014 03:04:33 GMT"
+META "modified" "Sat, 02 Aug 2014 03:55:04 GMT"
 
 EXTERNPROTO HandleShader [ ]
 "library/HandleShader.x3dv"
@@ -21,7 +21,7 @@ EXTERNPROTO BooleanSwitch [
 
 DEF Tool Script {
   inputOutput SFBool     enabled FALSE
-  inputOutput SFBool     selected TRUE
+  inputOutput SFBool     selected FALSE
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
   inputOutput SFColor    color 0 0 0
@@ -360,7 +360,6 @@ DEF _1 Transform {
           }
         }
         DEF _6 BooleanSwitch {
-          whichChoice TRUE
           children [
             DEF _7 Transform { }
             DEF Axes_1 Transform {

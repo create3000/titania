@@ -392,6 +392,10 @@ public:
 	{ return *m_ObjectIconsMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getLightsMenuItem () const
+	{ return *m_LightsMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getProximitySensorsMenuItem () const
 	{ return *m_ProximitySensorsMenuItem; }
 
@@ -901,6 +905,10 @@ public:
 
 	virtual
 	void
+	on_lights_toggled () = 0;
+
+	virtual
+	void
 	on_proximity_sensors_toggled () = 0;
 
 	virtual
@@ -1142,6 +1150,7 @@ private:
 	Gtk::CheckMenuItem*             m_BackgroundsMenuItem;
 	Gtk::CheckMenuItem*             m_FogsMenuItem;
 	Gtk::MenuItem*                  m_ObjectIconsMenuItem;
+	Gtk::CheckMenuItem*             m_LightsMenuItem;
 	Gtk::CheckMenuItem*             m_ProximitySensorsMenuItem;
 	Gtk::CheckMenuItem*             m_VisibilitySensorsMenuItem;
 	Gtk::MenuItem*                  m_HideAllObjectIconsMenuItem;

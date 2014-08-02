@@ -66,10 +66,11 @@
 #include "../TextEditor/TextEditor.h"
 #include "../ViewpointList/ViewpointList.h"
 
-#include <Titania/OS.h>
-#include <Titania/String.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
+
+#include <Titania/OS.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -244,6 +245,9 @@ BrowserWindow::set_scene ()
 	getFogsMenuItem () .set_active (true);
 
 	toggle = false;
+	getLightsMenuItem () .set_active (false);
+
+	toggle = false;
 	getProximitySensorsMenuItem () .set_active (false);
 
 	toggle = false;
@@ -306,6 +310,16 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getSelectChildrenButton () .set_sensitive (haveSelection);
 
 	// Show/Hide Object Icons
+
+	for (const auto & node : children)
+	{
+		if (X3D::x3d_cast <X3D::X3DLightNode*> (node))
+		{
+			toggle = false;
+			getLightsMenuItem () .set_active (true);
+			break;
+		}
+	}
 
 	for (const auto & node : children)
 	{
@@ -1004,6 +1018,9 @@ BrowserWindow::on_browser_toggled ()
 		if (not getFogsMenuItem () .get_active ())
 			getFogsMenuItem () .set_active (true);
 
+		if (getLightsMenuItem () .get_active ())
+			getLightsMenuItem () .set_active (false);
+
 		if (getProximitySensorsMenuItem () .get_active ())
 			getProximitySensorsMenuItem () .set_active (false);
 
@@ -1228,7 +1245,8 @@ BrowserWindow::on_backgrounds_toggled ()
 
 		                  return true;
 							},
-		               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 
 	toggle = true;
@@ -1250,13 +1268,61 @@ BrowserWindow::on_fogs_toggled ()
 
 		                  return true;
 							},
-		               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 
 	toggle = true;
 }
 
 // Object Icons
+
+void
+BrowserWindow::on_lights_toggled ()
+{
+	if (toggle)
+	{
+		if (getLightsMenuItem () .get_active ())
+		{
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+			               {
+			                  const auto tool = dynamic_cast <X3D::X3DLightNode*> (node .getValue ());
+
+			                  if (tool)
+										tool -> addTool ();
+
+			                  return true;
+								},
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		}
+		else
+		{
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+			               {
+			                  if (not node)
+			                     return true;
+			               
+			                  for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			                  {
+			                     if (type == X3D::X3DConstants::X3DLightNodeTool)
+			                     {
+					                  if (not getBrowser () -> getSelection () -> isSelected (node))
+												node -> removeTool (true);
+
+			                        break;
+			                     }
+			                  }
+
+			                  return true;
+								},
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		}
+	}
+
+	toggle = true;
+}
 
 void
 BrowserWindow::on_proximity_sensors_toggled ()
@@ -1274,7 +1340,8 @@ BrowserWindow::on_proximity_sensors_toggled ()
 
 			                  return true;
 								},
-			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 		else
 		{
@@ -1287,7 +1354,8 @@ BrowserWindow::on_proximity_sensors_toggled ()
 
 			                  return true;
 								},
-			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 	}
 
@@ -1310,7 +1378,8 @@ BrowserWindow::on_visibility_sensors_toggled ()
 
 			                  return true;
 								},
-			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 		else
 		{
@@ -1323,7 +1392,8 @@ BrowserWindow::on_visibility_sensors_toggled ()
 
 			                  return true;
 								},
-			               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 		}
 	}
 
@@ -1333,6 +1403,9 @@ BrowserWindow::on_visibility_sensors_toggled ()
 void
 BrowserWindow::on_hide_all_object_icons_activate ()
 {
+	if (getLightsMenuItem () .get_active ())
+		getLightsMenuItem () .set_active (false);
+
 	if (getProximitySensorsMenuItem () .get_active ())
 		getProximitySensorsMenuItem () .set_active (false);
 
