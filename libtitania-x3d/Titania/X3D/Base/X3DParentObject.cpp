@@ -117,14 +117,14 @@ X3DParentObject::addEvent (X3DChildObject* const object)
 	addEvent (object, std::make_shared <Event> (object));
 }
 
-//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
-
 /***
  *  Adds @a object to the router event queue.
  */
 void
 X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
+	//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+
 	getBrowser () -> addEvent ();
 
 	// Register for processEvent

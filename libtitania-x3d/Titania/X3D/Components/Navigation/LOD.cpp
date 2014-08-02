@@ -144,7 +144,7 @@ LOD::traverse (const TraverseType type)
 
 	if (type == TraverseType::CAMERA)
 	{
-		if (level_changed () not_eq (int32_t) level)
+		if ((int32_t) level not_eq level_changed ())
 			level_changed () = level;
 	}
 

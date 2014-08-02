@@ -1,5 +1,13 @@
 2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DParentObject.cpp:
+	* Sound.cpp:
+	* LOD.cpp:
+	* MediaStream.cpp:
+	* GeoLOD.cpp: 
+
+2014-08-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.cpp:
 	* X3DBrowser.cpp:
 	* ProtoDeclaration.cpp:

@@ -122,37 +122,40 @@ Sound::set_source ()
 void
 Sound::traverse (const TraverseType type)
 {
-	if (type == TraverseType::DISPLAY)
+	if (type not_eq TraverseType::DISPLAY)
+		return;
+
+	if (not sourceNode)
+		return;
+
+	if (not sourceNode -> isActive () or sourceNode -> isPaused ())
+		return;
+
+	try
 	{
-		if (sourceNode)
+		float minRadius, maxRadius, minDistance, maxDistance;
+
+		getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
+		getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
+
+		if (maxDistance < maxRadius)
 		{
-			try
+			if (minDistance < minRadius)
+				sourceNode -> setVolume (intensity ());
+
+			else
 			{
-				float minRadius, maxRadius, minDistance, maxDistance;
+				const float d1 = maxRadius - maxDistance;
+				const float d2 = maxRadius - minRadius;
 
-				getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
-				getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
-
-				if (maxDistance < maxRadius)
-				{
-					if (minDistance < minRadius)
-						sourceNode -> setVolume (intensity ());
-
-					else
-					{
-						const float d1 = maxRadius - maxDistance;
-						const float d2 = maxRadius - minRadius;
-
-						sourceNode -> setVolume (intensity () * (d1 / d2));
-					}
-				}
-				else
-					sourceNode -> setVolume (0);
+				sourceNode -> setVolume (intensity () * (d1 / d2));
 			}
-			catch (const std::domain_error &)
-			{ }
 		}
+		else
+			sourceNode -> setVolume (0);
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 /*

@@ -129,7 +129,7 @@ MediaStream::setVolume (double value)
 {
 	value = math::clamp (value, 0.0, 1.0);
 
-	if (value not_eq volume)
+	if (std::abs (value - volume) > 0.05)
 	{
 		volume = value;
 		player -> set_property ("volume", volume);
