@@ -761,6 +761,7 @@
     <None Include="Titania\X3D\Tools\Lighting\PointLightTool.h" />
     <None Include="Titania\X3D\Tools\Lighting\SpotLightTool.h" />
     <None Include="Titania\X3D\Tools\Lighting\DirectionalLightTool.h" />
+    <None Include="share\titania\tools\ViewpointTool.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

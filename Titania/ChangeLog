@@ -1,5 +1,10 @@
 2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeometryPropertiesEditor.xml:
+	* Pyramid.x3dv: 
+
+2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineSelection.cpp:
 	* ProximitySensor.x3dv:
 	* TransformSensor.x3dv:
