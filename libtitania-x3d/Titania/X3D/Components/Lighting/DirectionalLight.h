@@ -89,10 +89,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	direction ()
 	{ return *fields .direction; }
 
+	virtual
 	const SFVec3f &
 	direction () const
 	{ return *fields .direction; }
@@ -101,16 +103,23 @@ public:
 
 	virtual
 	void
-	draw (const GLenum) final override;
+	draw (const GLenum) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 

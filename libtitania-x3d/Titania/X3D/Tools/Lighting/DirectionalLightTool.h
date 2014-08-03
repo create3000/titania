@@ -48,92 +48,46 @@
  *
  ******************************************************************************/
 
-#include "X3DToolObject.h"
+#ifndef __TITANIA_X3D_TOOLS_LIGHTING_DIRECTIONAL_LIGHT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_LIGHTING_DIRECTIONAL_LIGHT_TOOL_H__
 
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Components/Core/X3DPrototypeInstance.h"
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Networking/Inline.h"
-#include "../../Rendering/PolygonModeContainer.h"
+#include "../Lighting/X3DLightNodeTool.h"
+
+#include "../../Components/Lighting/DirectionalLight.h"
 
 namespace titania {
 namespace X3D {
 
-X3DToolObject::X3DToolObject () :
-	    X3DNode (),
-	 inlineNode (new Inline (getBrowser () -> getEmptyScene ())),
-	   toolNode ()
+class DirectionalLightTool :
+	public X3DLightNodeTool <DirectionalLight>
 {
-	addType (X3DConstants::X3DToolObject);
+public:
 
-	addChildren (inlineNode, toolNode);
-}
+	///  @name Construction
 
-void
-X3DToolObject::initialize ()
-{
-	inlineNode -> checkLoadState () .addInterest (this, &X3DToolObject::set_loadState);
-	inlineNode -> load () = false;
-	inlineNode -> setup ();
-}
-
-const SFNode &
-X3DToolObject::getToolNode () const
-throw (Error <DISPOSED>)
-{
-	if (toolNode)
-		return toolNode;
-
-	throw Error <DISPOSED> ("X3DToolObject: The toolNode is disposed.");
-}
-
-void
-X3DToolObject::requestAsyncLoad (const MFString & url)
-{
-	inlineNode -> url ()  = url;
-	inlineNode -> load () = true;
-}
-
-void
-X3DToolObject::set_loadState (const LoadState loadState)
-{
-	try
+	DirectionalLightTool (DirectionalLight* const node) :
+		                        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		     X3DBaseTool <DirectionalLight> (node),
+		X3DLightNodeTool <DirectionalLight> ()
 	{
-		if (loadState == COMPLETE_STATE)
-		{
-			toolNode = inlineNode -> getExportedNode ("Tool");
-
-			try
-			{
-				toolNode -> setField <SFBool> ("set_enabled", not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ()));
-			}
-			catch (const X3DError &)
-			{ }
-
-			try
-			{
-				toolNode -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (this));
-			}
-			catch (const X3DError &)
-			{ }
-
-			realize ();
-		}
+		addType (X3DConstants::DirectionalLightTool);
 	}
-	catch (const X3DError &)
-	{ }
-}
 
-void
-X3DToolObject::traverse (const TraverseType type)
-{
-	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
+	///  @name Fields
 
-	inlineNode -> traverse (type);
+	virtual
+	SFVec3f &
+	direction () final override
+	{ return getNode () -> direction (); }
 
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
-}
+	virtual
+	const SFVec3f &
+	direction () const final override
+	{ return getNode () -> direction (); }
+
+};
 
 } // X3D
 } // titania
+
+#endif

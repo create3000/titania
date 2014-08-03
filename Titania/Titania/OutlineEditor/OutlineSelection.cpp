@@ -155,6 +155,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, const bool value
 		case X3D::X3DConstants::SFNode:
 		{
 			const auto sfnode = static_cast <X3D::SFNode*> (field);
+
 			select (sfnode -> getValue (), value, seen);
 			break;
 		}
@@ -191,15 +192,41 @@ OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value)
 void
 OutlineSelection::update (X3D::X3DFieldDefinition* const field, const X3D::SFNode & node)
 {
-	if (node)
-	{
-		const auto & selection = node -> getBrowser () -> getSelection ();
+	if (not node)
+		return;
 
+	const auto & selection = node -> getBrowser () -> getSelection ();
+
+	if (node -> getCloneCount () > 1)
+	{
+		if (selection -> isSelected (node))
+			return;
+
+		bool selected = false;
+
+		for (const auto & parent : node -> getParents ())
+		{
+			if (X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED)
+			{
+				selected = true;
+				break;
+			}
+		}
+
+		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) == selected)
+			return;
+
+		select (node, selected);
+	}
+	else
+	{
 		const bool selected = (X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED)
 		                      or selection -> isSelected (node);
 
-		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) not_eq selected)
-			select (node, selected);
+		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) == selected)
+			return;
+
+		select (node, selected);
 	}
 }
 
@@ -211,12 +238,12 @@ OutlineSelection::update (const X3D::SFNode & node, X3D::X3DFieldDefinition* con
 {
 	const bool selected = X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED;
 
-	if ((X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED) not_eq selected)
-	{
-		X3D::ChildObjectSet seen;
+	if ((X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED) == selected)
+		return;
+	
+	X3D::ChildObjectSet seen;
 
-		select (field, selected, seen);
-	}
+	select (field, selected, seen);
 }
 
 OutlineSelection::~OutlineSelection ()

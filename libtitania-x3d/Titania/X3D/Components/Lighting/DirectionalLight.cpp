@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Lighting/DirectionalLightTool.h"
 
 namespace titania {
 namespace X3D {
@@ -129,6 +130,12 @@ DirectionalLight::draw (GLenum lightId)
 	glLightf  (lightId, GL_SPOT_CUTOFF, 180);
 
 	glLightfv (lightId, GL_POSITION, glPosition);
+}
+
+void
+DirectionalLight::addTool ()
+{
+	X3DLightNode::addTool (new DirectionalLightTool (this));
 }
 
 } // X3D
