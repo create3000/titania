@@ -36,7 +36,7 @@ DEF Tool Script {
   inputOnly   SFVec3f    set_lightDirection
 
   url "javascript:
-function set_light (value)
+function set_light ()
 {
 	Browser .addRoute (light, 'on',        self, 'set_lightOn');
 	Browser .addRoute (light, 'color',     self, 'set_lightColor');

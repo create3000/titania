@@ -1,22 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Lighting/X3DLightNodeTool.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/X3DLightNode.h" Line="129" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.h" Line="121" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Lighting/X3DLightNodeTool.h" Line="60" Column="23" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layout/PointLight.h" Line="102" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="257" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h" Line="202" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/ViewpointTool.h" Line="57" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/tools/ViewpointTool.x3dv" Line="63" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
               <Node name="Errors" expanded="True" />
               <Node name="Grouping" expanded="True" />
               <Node name="Handles" expanded="True" />
+              <Node name="PROTO" expanded="True" />
               <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
@@ -24,25 +26,28 @@
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="tools" expanded="True">
-                  <Node name="library" expanded="True" />
+                  <Node name="ViewpointTool.x3dv" selected="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Navigation" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Lighting" expanded="True">
-                    <Node name="PointLight.h" selected="True" />
-                  </Node>
+                  <Node name="Core" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
                   <Node name="Lighting" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -50,10 +55,23 @@
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True">
+                  <Node name="Primitives" expanded="True">
+                    <Node name="Geometry3D" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
+                  <Node name="icons" expanded="True">
+                    <Node name="Node" expanded="True" />
+                  </Node>
                 </Node>
               </Node>
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
             </Node>
           </Node>
         </State>

@@ -63,26 +63,32 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	set_bind ()
 	{ return *fields .set_bind; }
 
+	virtual
 	const SFBool &
 	set_bind () const
 	{ return *fields .set_bind; }
 
+	virtual
 	SFBool &
 	isBound ()
 	{ return *fields .isBound; }
 
+	virtual
 	const SFBool &
 	isBound () const
 	{ return *fields .isBound; }
 
+	virtual
 	SFTime &
 	bindTime ()
 	{ return *fields .bindTime; }
 
+	virtual
 	const SFTime &
 	bindTime () const
 	{ return *fields .bindTime; }

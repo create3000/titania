@@ -71,50 +71,62 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFRotation &
 	orientation ()
 	{ return *fields .orientation; }
 
+	virtual
 	const SFRotation &
 	orientation () const
 	{ return *fields .orientation; }
 
+	virtual
 	SFBool &
 	jump ()
 	{ return *fields .jump; }
 
+	virtual
 	const SFBool &
 	jump () const
 	{ return *fields .jump; }
 
+	virtual
 	SFVec3f &
 	positionOffset ()
 	{ return fields .positionOffset; }
 
+	virtual
 	const SFVec3f &
 	positionOffset () const
 	{ return fields .positionOffset; }
 
+	virtual
 	SFRotation &
 	orientationOffset ()
 	{ return fields .orientationOffset; }
 
+	virtual
 	const SFRotation &
 	orientationOffset () const
 	{ return fields .orientationOffset; }
 
+	virtual
 	SFVec3f &
 	centerOfRotationOffset ()
 	{ return fields .centerOfRotationOffset; }
 
+	virtual
 	const SFVec3f &
 	centerOfRotationOffset () const
 	{ return fields .centerOfRotationOffset; }
 
+	virtual
 	SFFloat &
 	fieldOfViewScale ()
 	{ return fields .fieldOfViewScale; }
 
+	virtual
 	const SFFloat &
 	fieldOfViewScale () const
 	{ return fields .fieldOfViewScale; }
@@ -210,23 +222,27 @@ public:
 	void
 	transitionStop ();
 
+	///  Setup projection matrix for X3DBackgroundNode.
 	virtual
 	void
 	background (const double, const double);
 
+	///  Setup projection matrix.
 	virtual
 	void
 	reshape (const double, const double) = 0;
 
+	///  Setup projection matrix.
 	void
 	reshape ();
 
+	///  Setup modelview matrix.
 	void
 	transform ();
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
 
 	///  @name Destruction
 

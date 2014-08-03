@@ -48,95 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EXECUTION_WORLD_H__
-#define __TITANIA_X3D_EXECUTION_WORLD_H__
+#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_VIEWPOINT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NAVIGATION_VIEWPOINT_TOOL_H__
 
-#include "../Components/Layering/LayerSet.h"
-#include "../Execution/Scene.h"
+#include "../Navigation/X3DViewpointNodeTool.h"
+
+#include "../../Components/Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {
 
-class World :
-	public X3DBaseNode
+class ViewpointTool :
+	public X3DViewpointNodeTool <Viewpoint>
 {
 public:
 
 	///  @name Construction
 
-	World (X3DExecutionContext* const);
+	ViewpointTool (Viewpoint* const node) :
+		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		         X3DBaseTool <Viewpoint> (node),
+		X3DViewpointNodeTool <Viewpoint> ()
+	{
+		addType (X3DConstants::ViewpointTool);
+	}
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+	///  @name Fields
 
 	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Scene handling
-
-	const LayerSetPtr &
-	getDefaultLayerSet () const
-	{ return defaultLayerSet; }
-
-	const LayerSetPtr &
-	getLayerSet () const
-	{ return layerSet; }
-
-	const X3DLayerNodePtr &
-	getActiveLayer () const
-	{ return activeLayer; }
-
-	///  @name Display
+	SFVec3f &
+	position () final override
+	{ return getNode () -> position (); }
 
 	virtual
-	void
-	traverse (const TraverseType type) final override
-	{ layerSet -> traverse (type); }
-
-
-private:
+	const SFVec3f &
+	position () const final override
+	{ return getNode () -> position (); }
 
 	virtual
-	World*
-	create (X3DExecutionContext* const) const final override;
+	SFVec3f &
+	centerOfRotation () final override
+	{ return getNode () -> centerOfRotation (); }
 
 	virtual
-	void
-	initialize () final override;
+	const SFVec3f &
+	centerOfRotation () const final override
+	{ return getNode () -> centerOfRotation (); }
 
-	void
-	set_activeLayer ();
+	virtual
+	SFFloat &
+	fieldOfView () final override
+	{ return getNode () -> fieldOfView (); }
 
-	void
-	set_rootNodes ();
-
-	void
-	bind ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	LayerSetPtr            layerSet;
-	LayerSetPtr            defaultLayerSet;
-	X3DLayerNodePtr        layer0;
-	X3DLayerNodePtr        activeLayer;
+	virtual
+	const SFFloat &
+	fieldOfView () const final override
+	{ return getNode () -> fieldOfView (); }
 
 };
 

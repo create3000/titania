@@ -1,5 +1,20 @@
 2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* World.h:
+	* X3DConstants.h:
+	* LightTool.x3dv:
+	* ViewpointTool.x3dv:
+	* X3DBindableNodeTool.h:
+	* ViewpointTool.h:
+	* Viewpoint.h:
+	* X3DBindableNode.h:
+	* Viewpoint.cpp:
+	* X3DViewpointNodeTool.h:
+	* X3DViewpointNode.h: 
+
+2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewpointTool.x3dv:
 	* ProtoDeclaration.cpp:
 	* ExternProtoDeclaration.cpp:

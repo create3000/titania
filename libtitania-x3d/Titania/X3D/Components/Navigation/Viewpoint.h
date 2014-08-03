@@ -89,26 +89,32 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	position ()
 	{ return *fields .position; }
 
+	virtual
 	const SFVec3f &
 	position () const
 	{ return *fields .position; }
 
+	virtual
 	SFVec3f &
 	centerOfRotation ()
 	{ return *fields .centerOfRotation; }
 
+	virtual
 	const SFVec3f &
 	centerOfRotation () const
 	{ return *fields .centerOfRotation; }
 
+	virtual
 	SFFloat &
 	fieldOfView ()
 	{ return *fields .fieldOfView; }
 
+	virtual
 	const SFFloat &
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
@@ -144,6 +150,10 @@ public:
 	virtual
 	void
 	reshape (const double, const double);
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

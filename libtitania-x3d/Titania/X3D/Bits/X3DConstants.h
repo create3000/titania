@@ -500,9 +500,11 @@ enum NodeType : uint16_t
 	BillboardTool,
 	CollisionTool,
 	DirectionalLightTool,
+	GeoViewpointTool,
 	GroupTool,
 	InlineTool,
 	LODTool,
+	OrthoViewpointTool,
 	PointLightTool,
 	ProximitySensorTool,
 	ScreenGroupTool,
@@ -510,7 +512,9 @@ enum NodeType : uint16_t
 	SpotLightTool,
 	SwitchTool,
 	TransformTool,
+	ViewpointTool,
 	VisibilitySensorTool,
+	X3DBindableNodeTool,
 	X3DBoundedObjectTool,
 	X3DChildNodeTool,
 	X3DEnvironmentalSensorNodeTool,
@@ -519,7 +523,8 @@ enum NodeType : uint16_t
 	X3DNodeTool,
 	X3DSensorNodeTool,
 	X3DShapeNodeTool,
-	X3DToolObject
+	X3DToolObject,
+	X3DViewpointNodeTool
 
 };
 

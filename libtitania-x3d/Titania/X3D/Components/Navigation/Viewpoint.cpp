@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Navigation/ViewpointTool.h"
 #include "../Layering/X3DLayerNode.h"
 
 #include <Titania/Math/Geometry/Camera.h>
@@ -143,6 +144,12 @@ Viewpoint::reshape (const double zNear, const double zFar)
 	glLoadMatrixd (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()) .data ());
 
 	glMatrixMode (GL_MODELVIEW);
+}
+
+void
+Viewpoint::addTool ()
+{
+	X3DViewpointNode::addTool (new ViewpointTool (this));
 }
 
 } // X3D

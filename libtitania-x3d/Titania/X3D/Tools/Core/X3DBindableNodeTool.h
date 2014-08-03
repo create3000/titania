@@ -48,95 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EXECUTION_WORLD_H__
-#define __TITANIA_X3D_EXECUTION_WORLD_H__
+#ifndef __TITANIA_X3D_TOOLS_CORE_X3DBINDABLE_NODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CORE_X3DBINDABLE_NODE_TOOL_H__
 
-#include "../Components/Layering/LayerSet.h"
-#include "../Execution/Scene.h"
+#include "../Core/X3DChildNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class World :
-	public X3DBaseNode
+template <class Type>
+class X3DBindableNodeTool :
+	virtual public X3DChildNodeTool <Type>
 {
 public:
 
+	///  @name Fields
+
+	virtual
+	SFBool &
+	set_bind () final override
+	{ return getNode () -> set_bind (); }
+
+	virtual
+	const SFBool &
+	set_bind () const final override
+	{ return getNode () -> set_bind (); }
+
+	virtual
+	SFBool &
+	isBound () final override
+	{ return getNode () -> isBound (); }
+
+	virtual
+	const SFBool &
+	isBound () const final override
+	{ return getNode () -> isBound (); }
+
+	virtual
+	SFTime &
+	bindTime () final override
+	{ return getNode () -> bindTime (); }
+
+	virtual
+	const SFTime &
+	bindTime () const final override
+	{ return getNode () -> bindTime (); }
+
+
+protected:
+
+	using X3DChildNodeTool <Type>::addType;
+	using X3DChildNodeTool <Type>::getNode;
+
 	///  @name Construction
 
-	World (X3DExecutionContext* const);
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Scene handling
-
-	const LayerSetPtr &
-	getDefaultLayerSet () const
-	{ return defaultLayerSet; }
-
-	const LayerSetPtr &
-	getLayerSet () const
-	{ return layerSet; }
-
-	const X3DLayerNodePtr &
-	getActiveLayer () const
-	{ return activeLayer; }
-
-	///  @name Display
-
-	virtual
-	void
-	traverse (const TraverseType type) final override
-	{ layerSet -> traverse (type); }
-
-
-private:
-
-	virtual
-	World*
-	create (X3DExecutionContext* const) const final override;
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_activeLayer ();
-
-	void
-	set_rootNodes ();
-
-	void
-	bind ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	LayerSetPtr            layerSet;
-	LayerSetPtr            defaultLayerSet;
-	X3DLayerNodePtr        layer0;
-	X3DLayerNodePtr        activeLayer;
+	X3DBindableNodeTool () :
+		X3DChildNodeTool <Type> ()
+	{
+		addType (X3DConstants::X3DBindableNodeTool);
+	}
 
 };
 

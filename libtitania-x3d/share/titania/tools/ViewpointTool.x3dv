@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sun, 03 Aug 2014 08:20:38 GMT"
+META "modified" "Sun, 03 Aug 2014 12:35:37 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -16,170 +16,262 @@ EXTERNPROTO BooleanSwitch [
 ]
 "library/BooleanSwitch.x3dv"
 
-ScreenGroup {
-  children Transform {
-    scale 12 12 12
-    children [
-      DEF Cylinder Transform {
-        translation 0 0.51224 0.129679
-        rotation 6.52105e-10 -3.61947e-06 1 4.71239
-        scaleOrientation -0.0108844 -0.0254524 -0.999617 0.785487
-        children DEF _1 Shape {
-          appearance DEF _2 Appearance {
-            material Material {
-              diffuseColor 0.2 0.2 0.2
-              specularColor 1 1 1
-            }
-          }
-          geometry Cylinder { }
-        }
-      }
-      DEF Cylinder_1 Transform {
-        translation -4.9011e-06 0.512245 -1.22191
-        rotation 8.0343e-10 -3.61898e-06 1 4.71239
-        scale 0.999983 0.999983 1
-        scaleOrientation 2.18251e-06 -2.04759e-06 -1 0.784907
-        children USE _1
-      }
-      DEF Box Transform {
-        translation -2.8327e-21 -0.13107 -0.550901
-        scale 1 1.22448 1.25897
-        children Shape {
-          appearance USE _2
-          geometry Box { }
-        }
-      }
-      DEF Lenses Switch {
-        whichChoice 0
+DEF Tool Script {
+  inputOutput SFBool     enabled FALSE
+  inputOutput SFBool     selected FALSE
+  inputOutput SFVec3f    translation 0 0 0
+  inputOutput SFRotation rotation 0 0 1 0
+  inputOutput SFInt32    whichChoice 0
+  inputOutput SFNode     viewpointNode NULL
+  inputOutput SFNode     self USE Tool
+
+  url "javascript:
+function set_viewpointNode ()
+{
+	for each (var type in viewpointNode .getNodeType () .reverse ())
+	{
+		switch (type)
+		{
+			case X3DConstants .Viewpoint:
+			{
+				set_viewpoint ();
+				break;
+			}
+			case X3DConstants .OrthoViewpoint:
+			{
+				set_orthoViewpoint ();
+				break;
+			}
+			case X3DConstants .GeoViewpoint:
+			{
+				set_geoViewpoint ();
+				break;
+			}
+			default:
+				continue;
+		}
+
+		break;
+	}
+}
+
+function set_viewpoint ()
+{
+	Browser .addRoute (viewpointNode, 'position',    self, 'translation');
+	Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
+
+	translation = viewpointNode .position;
+	rotation    = viewpointNode .orientation;
+
+	whichChoice = 0;
+}
+
+function set_orthoViewpoint ()
+{
+	Browser .addRoute (viewpointNode, 'position',    self, 'translation');
+	Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
+
+	translation = viewpointNode .position;
+	rotation    = viewpointNode .orientation;
+
+	whichChoice = 1;
+}
+
+function set_geoViewpoint ()
+{
+	//Browser .addRoute (viewpointNode, 'position',    self, 'translationd');
+	Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
+
+	whichChoice = 0;
+}
+"
+}
+
+DEF _1 Transform {
+  children Collision {
+    enabled FALSE
+    children ScreenGroup {
+      children Transform {
+        rotation 0 1 0 3.14159
+        scale 12 12 12
         children [
-          DEF Viewpoint Transform {
-            children [
-              DEF Pyramid Transform {
-                translation 1.1422e-21 -0.0999999 0.945998
-                rotation 1 3.68566e-06 1.20212e-07 4.71239
-                scale 1.22447 1.22447 1.22447
-                scaleOrientation 0.997969 0.00164244 0.0636854 0.198092
-                children Shape {
-                  appearance USE _2
-                  geometry DEF Cube IndexedFaceSet {
-                    solid FALSE
-                    coordIndex [
-                      0,
-                      1,
-                      4,
-                      -1,
-                      1,
-                      2,
-                      4,
-                      -1,
-                      2,
-                      3,
-                      4,
-                      -1,
-                      3,
-                      0,
-                      4,
-                      -1
-                    ]
-                    coord Coordinate {
-                      point [
-                        -1 -1 1,
-                        1 -1 1,
-                        1 -1 -1,
-                        -1 -1 -1,
-                        0 1 0
-                      ]
-                    }
-                  }
+          DEF Cylinder Transform {
+            translation 0 0.51224 0.129679
+            rotation 6.52105e-10 -3.61947e-06 1 4.71239
+            scaleOrientation -0.0108844 -0.0254524 -0.999617 0.785487
+            children DEF _2 Shape {
+              appearance DEF _3 Appearance {
+                material Material {
+                  diffuseColor 0.2 0.2 0.2
+                  specularColor 1 1 1
                 }
               }
-              DEF Rectangle2D Transform {
-                translation 1.1422e-21 -0.0999999 1.18352
-                scale 0.709888 0.709874 0.709874
-                scaleOrientation -1 2.68941e-08 -2.65378e-07 1.5708
-                children DEF _3 Shape {
-                  appearance USE _2
-                  geometry Rectangle2D { }
-                }
+              geometry Cylinder { }
+            }
+          }
+          DEF Cylinder_1 Transform {
+            translation -4.9011e-06 0.512245 -1.22191
+            rotation 8.0343e-10 -3.61898e-06 1 4.71239
+            scale 0.999983 0.999983 1
+            scaleOrientation 2.18251e-06 -2.04759e-06 -1 0.784907
+            children USE _2
+          }
+          DEF Box Transform {
+            translation -2.8327e-21 -0.13107 -0.550901
+            scale 1 1.22448 1.25897
+            children Shape {
+              appearance USE _3
+              geometry Box { }
+            }
+          }
+          DEF Lenses Switch {
+            whichChoice 0
+            children [
+              DEF Viewpoint Transform {
+                children [
+                  DEF Pyramid Transform {
+                    translation 1.1422e-21 -0.0999999 0.945998
+                    rotation 1 3.68566e-06 1.20212e-07 4.71239
+                    scale 1.22447 1.22447 1.22447
+                    scaleOrientation 0.997969 0.00164244 0.0636854 0.198092
+                    children Shape {
+                      appearance USE _3
+                      geometry DEF Cube IndexedFaceSet {
+                        solid FALSE
+                        coordIndex [
+                          0,
+                          1,
+                          4,
+                          -1,
+                          1,
+                          2,
+                          4,
+                          -1,
+                          2,
+                          3,
+                          4,
+                          -1,
+                          3,
+                          0,
+                          4,
+                          -1
+                        ]
+                        coord Coordinate {
+                          point [
+                            -1 -1 1,
+                            1 -1 1,
+                            1 -1 -1,
+                            -1 -1 -1,
+                            0 1 0
+                          ]
+                        }
+                      }
+                    }
+                  }
+                  DEF Rectangle2D Transform {
+                    translation 1.1422e-21 -0.0999999 1.18352
+                    scale 0.709888 0.709874 0.709874
+                    scaleOrientation -1 2.68941e-08 -2.65378e-07 1.5708
+                    children DEF _4 Shape {
+                      appearance USE _3
+                      geometry Rectangle2D { }
+                    }
+                  }
+                ]
+              }
+              DEF OrthoViewpoint Transform {
+                children [
+                  DEF Box_1 Transform {
+                    translation 1.37064e-20 -1.2 11.5653
+                    scaleOrientation -1 4.8128e-07 9.49231e-07 1.5708
+                    children Shape {
+                      appearance USE _3
+                      geometry DEF Cube_1 IndexedFaceSet {
+                        solid FALSE
+                        coordIndex [
+                          4,
+                          5,
+                          7,
+                          6,
+                          -1,
+                          6,
+                          7,
+                          1,
+                          0,
+                          -1,
+                          2,
+                          3,
+                          5,
+                          4,
+                          -1,
+                          6,
+                          0,
+                          2,
+                          4,
+                          -1,
+                          1,
+                          7,
+                          5,
+                          3,
+                          -1
+                        ]
+                        coord Coordinate {
+                          point [
+                            -1 1 1,
+                            -1 -1 1,
+                            1 1 1,
+                            1 -1 1,
+                            1 1 -1,
+                            1 -1 -1,
+                            -1 1 -1,
+                            -1 -1 -1
+                          ]
+                        }
+                      }
+                    }
+                  }
+                  DEF Rectangle2D_1 Transform {
+                    translation 1.37064e-20 -1.2 11.5895
+                    scaleOrientation -1 4.8128e-07 9.49231e-07 1.5708
+                    children USE _4
+                  }
+                ]
               }
             ]
           }
-          DEF OrthoViewpoint Transform {
+          DEF _5 BooleanSwitch {
+            whichChoice TRUE
             children [
-              DEF Box_1 Transform {
-                translation 1.37064e-20 -1.2 11.5653
-                scaleOrientation -1 4.8128e-07 9.49231e-07 1.5708
+              DEF _6 Transform {
+                scale 0.0833333 0.0833333 0.0833333
+              }
+              DEF Cylinder_2 Transform {
+                translation -4.9011e-06 0.512245 -1.22191
+                rotation 1.01211e-08 -3.61e-06 1 4.71239
+                scale 0.182131 1.15274 0.182131
                 children Shape {
-                  appearance USE _2
-                  geometry DEF Cube_1 IndexedFaceSet {
-                    solid FALSE
-                    coordIndex [
-                      4,
-                      5,
-                      7,
-                      6,
-                      -1,
-                      6,
-                      7,
-                      1,
-                      0,
-                      -1,
-                      2,
-                      3,
-                      5,
-                      4,
-                      -1,
-                      6,
-                      0,
-                      2,
-                      4,
-                      -1,
-                      1,
-                      7,
-                      5,
-                      3,
-                      -1
-                    ]
-                    coord Coordinate {
-                      point [
-                        -1 1 1,
-                        -1 -1 1,
-                        1 1 1,
-                        1 -1 1,
-                        1 1 -1,
-                        1 -1 -1,
-                        -1 1 -1,
-                        -1 -1 -1
-                      ]
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                      specularColor 1 1 1
+                      emissiveColor 1 0 0
+                      shininess 0.15
                     }
                   }
+                  geometry Cylinder { }
                 }
-              }
-              DEF Rectangle2D_1 Transform {
-                translation 1.37064e-20 -1.2 11.5895
-                scaleOrientation -1 4.8128e-07 9.49231e-07 1.5708
-                children USE _3
               }
             ]
           }
         ]
       }
-      DEF Cylinder_2 Transform {
-        translation -4.9011e-06 0.512245 -1.22191
-        rotation -6.52168e-10 3.61947e-06 -1 1.5708
-        scale 0.182131 1.15274 0.182131
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 1 0 0
-              specularColor 1 1 1
-            }
-          }
-          geometry Cylinder { }
-        }
-      }
-    ]
+    }
   }
 }
 
-BooleanSwitch { }
+ROUTE Tool.translation_changed TO _1.set_translation
+ROUTE Tool.rotation_changed TO _1.set_rotation
+ROUTE Tool.whichChoice_changed TO Lenses.set_whichChoice
+ROUTE Tool.selected_changed TO _5.set_whichChoice
+
+EXPORT Tool

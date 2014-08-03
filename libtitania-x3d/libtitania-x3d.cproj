@@ -762,6 +762,9 @@
     <None Include="Titania\X3D\Tools\Lighting\SpotLightTool.h" />
     <None Include="Titania\X3D\Tools\Lighting\DirectionalLightTool.h" />
     <None Include="share\titania\tools\ViewpointTool.x3dv" />
+    <None Include="Titania\X3D\Tools\Navigation\X3DViewpointNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Core\X3DBindableNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Navigation\ViewpointTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1345,6 +1348,7 @@
     <Folder Include="Titania\X3D\PeaseBlossom\Bits\" />
     <Folder Include="Titania\X3D\PeaseBlossom\Objects\" />
     <Folder Include="Titania\X3D\Tools\Lighting\" />
+    <Folder Include="Titania\X3D\Tools\Geospatial\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
