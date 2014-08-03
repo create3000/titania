@@ -51,6 +51,7 @@
 #include "OrthoViewpoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Navigation/OrthoViewpointTool.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -197,6 +198,12 @@ OrthoViewpoint::reshape (const double zNear, const double zFar)
 	}
 
 	glMatrixMode (GL_MODELVIEW);
+}
+
+void
+OrthoViewpoint::addTool ()
+{
+	X3DViewpointNode::addTool (new OrthoViewpointTool (this));
 }
 
 } // X3D

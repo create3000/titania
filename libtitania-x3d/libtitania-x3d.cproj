@@ -765,6 +765,7 @@
     <None Include="Titania\X3D\Tools\Core\X3DBindableNodeTool.h" />
     <None Include="Titania\X3D\Tools\Navigation\ViewpointTool.h" />
     <None Include="share\titania\tools\library\ToolShader.x3dv" />
+    <None Include="Titania\X3D\Tools\Navigation\OrthoViewpointTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

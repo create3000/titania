@@ -1,12 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h">
-    <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="257" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h" Line="202" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/ViewpointTool.h" Line="57" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/tools/ViewpointTool.x3dv" Line="63" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
@@ -26,12 +20,14 @@
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="tools" expanded="True">
-                  <Node name="ViewpointTool.x3dv" selected="True" />
+                  <Node name="library" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Navigation" expanded="True" />
@@ -40,14 +36,12 @@
                   <Node name="Core" expanded="True" />
                   <Node name="Lighting" expanded="True" />
                   <Node name="Navigation" expanded="True" />
+                  <Node name="Shape" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Prototype" expanded="True" />
                 <Node name="Tools" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Lighting" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Navigation" expanded="True">
+                    <Node name="OrthoViewpointTool.h" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>
@@ -71,7 +65,7 @@
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True" />
+              <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>
         </State>

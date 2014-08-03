@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,161 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NAVIGATION_ORTHO_VIEWPOINT_H__
-#define __TITANIA_X3D_COMPONENTS_NAVIGATION_ORTHO_VIEWPOINT_H__
+#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_ORTHO_VIEWPOINT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NAVIGATION_ORTHO_VIEWPOINT_TOOL_H__
 
-#include "../Navigation/X3DViewpointNode.h"
+#include "../Navigation/X3DViewpointNodeTool.h"
+
+#include "../../Components/Navigation/OrthoViewpoint.h"
 
 namespace titania {
 namespace X3D {
 
-class OrthoViewpoint :
-	public X3DViewpointNode
+class OrthoViewpointTool :
+	public X3DViewpointNodeTool <OrthoViewpoint>
 {
 public:
 
 	///  @name Construction
 
-	OrthoViewpoint (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	OrthoViewpointTool (OrthoViewpoint* const node) :
+		                          X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		         X3DBaseTool <OrthoViewpoint> (node),
+		X3DViewpointNodeTool <OrthoViewpoint> ()
+	{
+		addType (X3DConstants::OrthoViewpointTool);
+	}
 
 	///  @name Fields
 
 	virtual
 	SFVec3f &
-	position ()
-	{ return *fields .position; }
+	position () final override
+	{ return getNode () -> position (); }
 
 	virtual
 	const SFVec3f &
-	position () const
-	{ return *fields .position; }
+	position () const final override
+	{ return getNode () -> position (); }
 
 	virtual
 	SFVec3f &
-	centerOfRotation ()
-	{ return *fields .centerOfRotation; }
+	centerOfRotation () final override
+	{ return getNode () -> centerOfRotation (); }
 
 	virtual
 	const SFVec3f &
-	centerOfRotation () const
-	{ return *fields .centerOfRotation; }
+	centerOfRotation () const final override
+	{ return getNode () -> centerOfRotation (); }
 
 	virtual
 	MFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
+	fieldOfView () final override
+	{ return getNode () -> fieldOfView (); }
 
 	virtual
 	const MFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Member access
-
-	virtual
-	void
-	setPosition (const Vector3f & value) final override
-	{ position () = value; }
-
-	virtual
-	Vector3f
-	getPosition () const final override
-	{ return position (); }
-
-	virtual
-	void
-	setCenterOfRotation (const Vector3f & value) final override
-	{ centerOfRotation () = value; }
-
-	virtual
-	Vector3f
-	getCenterOfRotation () const final override
-	{ return centerOfRotation (); }
-
-	virtual
-	Vector3d
-	getScreenScale (const double, const Vector4i &) const final override;
-
-	Vector2d
-	getViewportSize (const Vector4i &) const;
-
-	///  @name Operations
-
-	virtual
-	void
-	reshape (const double, const double) final override;
-
-	virtual
-	void
-	addTool () override;
-
-
-private:
-
-	///  @name Member access
-
-	double
-	getMinimumX () const;
-
-	double
-	getMinimumY () const;
-
-	double
-	getMaximumX () const;
-
-	double
-	getMaximumY () const;
-
-	double
-	getSizeX () const;
-
-	double
-	getSizeY () const;
-
-	virtual
-	Vector3f
-	getLookAtPositionOffset (const Box3f &) const final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFVec3f* const position;
-		SFVec3f* const centerOfRotation;
-		MFFloat* const fieldOfView;
-	};
-
-	Fields fields;
+	fieldOfView () const final override
+	{ return getNode () -> fieldOfView (); }
 
 };
 

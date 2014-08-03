@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sun, 03 Aug 2014 13:37:08 GMT"
+META "modified" "Sun, 03 Aug 2014 23:08:40 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -32,7 +32,7 @@ DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
   inputOutput SFBool     isBound FALSE
-  inputOutput SFInt32    whichChoice 0
+  inputOutput SFInt32    whichChoice 1
   inputOutput SFNode     viewpointNode NULL
   inputOutput SFNode     self USE Tool
 
@@ -94,10 +94,16 @@ function set_orthoViewpoint ()
 
 function set_geoViewpoint ()
 {
-	//Browser .addRoute (viewpointNode, 'position',    self, 'translationd');
-	Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
+	//Browser .addRoute (viewpointNode, 'position',    self, 'geoTranslation');
+	//Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
+	//Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
 
-	whichChoice = 0;
+	//geoTranslation = viewpointNode .position;
+	//rotation       = viewpointNode .orientation;
+	//geoOrigin      = viewpointNode .geoOrigin; // XXX
+
+	//whichChoice  = 0;
+	//geoViewpoint = true;
 }
 "
 }
@@ -107,7 +113,87 @@ DEF _1 Transform {
     enabled FALSE
     children ScreenGroup {
       children [
-        Transform {
+        DEF _2 BooleanSwitch {
+          whichChoice TRUE
+          children [
+            DEF _3 Transform { }
+            DEF Axes_1 Transform {
+              children [
+                DEF Axes Shape {
+                  geometry IndexedLineSet {
+                    colorPerVertex FALSE
+                    coordIndex [
+                      0,
+                      1,
+                      -1,
+                      0,
+                      2,
+                      -1,
+                      0,
+                      3,
+                      -1
+                    ]
+                    color Color {
+                      color [
+                        1 0 0,
+                        0 1 0,
+                        0 0 1
+                      ]
+                    }
+                    coord DEF AxesCoord Coordinate {
+                      point [
+                        0 0 0,
+                        36 0 0,
+                        0 36 0,
+                        0 0 36,
+                        0 0 0
+                      ]
+                    }
+                  }
+                }
+                DEF XHandle Transform {
+                  translation 36.5 0 0
+                  rotation 0 0 1 4.71239
+                  children Shape {
+                    appearance DEF Red Appearance {
+                      shaders ToolShader {
+                        diffuseColor 1 0 0
+                      }
+                    }
+                    geometry DEF Arrow Cone {
+                      height 12
+                      bottomRadius 4
+                    }
+                  }
+                }
+                DEF YHandle Transform {
+                  translation 0 36.5 0
+                  children Shape {
+                    appearance DEF Green Appearance {
+                      shaders ToolShader {
+                        diffuseColor 0 1 0
+                      }
+                    }
+                    geometry USE Arrow
+                  }
+                }
+                DEF ZHandle Transform {
+                  translation 0 0 36.5
+                  rotation 1 0 0 1.5708
+                  children Shape {
+                    appearance DEF Blue Appearance {
+                      shaders ToolShader {
+                        diffuseColor 0 0 1
+                      }
+                    }
+                    geometry USE Arrow
+                  }
+                }
+              ]
+            }
+          ]
+        }
+        DEF _4 Transform {
           rotation 0 1 0 3.14159
           scale 8 8 8
           children [
@@ -115,8 +201,8 @@ DEF _1 Transform {
               translation 0 0.51224 0.129679
               rotation 6.52105e-10 -3.61947e-06 1 4.71239
               scaleOrientation -0.0108844 -0.0254524 -0.999617 0.785487
-              children DEF _2 Shape {
-                appearance DEF _3 Appearance {
+              children DEF _5 Shape {
+                appearance DEF _6 Appearance {
                   material Material {
                     diffuseColor 0.2 0.2 0.2
                     specularColor 1 1 1
@@ -130,18 +216,18 @@ DEF _1 Transform {
               rotation 8.0343e-10 -3.61898e-06 1 4.71239
               scale 0.999983 0.999983 1
               scaleOrientation 2.18251e-06 -2.04759e-06 -1 0.784907
-              children USE _2
+              children USE _5
             }
             DEF Box Transform {
               translation -2.8327e-21 -0.13107 -0.550901
               scale 1 1.22448 1.25897
               children Shape {
-                appearance USE _3
+                appearance USE _6
                 geometry Box { }
               }
             }
             DEF Lenses Switch {
-              whichChoice 0
+              whichChoice 1
               children [
                 DEF Viewpoint Transform {
                   children [
@@ -151,7 +237,7 @@ DEF _1 Transform {
                       scale 1.22447 1.22447 1.22447
                       scaleOrientation 0.997969 0.00164244 0.0636854 0.198092
                       children Shape {
-                        appearance USE _3
+                        appearance USE _6
                         geometry DEF Cube IndexedFaceSet {
                           solid FALSE
                           coordIndex [
@@ -188,8 +274,8 @@ DEF _1 Transform {
                       translation 1.1422e-21 -0.0999999 1.18352
                       scale 0.709888 0.709874 0.709874
                       scaleOrientation -1 2.68941e-08 -2.65378e-07 1.5708
-                      children DEF _4 Shape {
-                        appearance USE _3
+                      children DEF _7 Shape {
+                        appearance USE _6
                         geometry Rectangle2D { }
                       }
                     }
@@ -198,10 +284,9 @@ DEF _1 Transform {
                 DEF OrthoViewpoint Transform {
                   children [
                     DEF Box_1 Transform {
-                      translation 1.37064e-20 -1.2 11.5653
-                      scaleOrientation -1 4.8128e-07 9.49231e-07 1.5708
+                      translation 5.50571e-21 -0.0862152 1.44525
                       children Shape {
-                        appearance USE _3
+                        appearance USE _6
                         geometry DEF Cube_1 IndexedFaceSet {
                           solid FALSE
                           coordIndex [
@@ -247,18 +332,17 @@ DEF _1 Transform {
                       }
                     }
                     DEF Rectangle2D_1 Transform {
-                      translation 1.37064e-20 -1.2 11.5895
-                      scaleOrientation -1 4.8128e-07 9.49231e-07 1.5708
-                      children USE _4
+                      translation -6.98802e-20 -0.0862152 1.46945
+                      children USE _7
                     }
                   ]
                 }
               ]
             }
-            DEF _5 BooleanSwitch {
+            DEF _8 BooleanSwitch {
               whichChoice TRUE
               children [
-                DEF _6 Transform {
+                DEF _9 Transform {
                   scale 0.0833333 0.0833333 0.0833333
                 }
                 DEF Cylinder_2 Transform {
@@ -281,80 +365,6 @@ DEF _1 Transform {
             }
           ]
         }
-        DEF _7 BooleanSwitch {
-          whichChoice TRUE
-          children [
-            DEF _8 Transform { }
-            DEF Axes_1 Transform {
-              children [
-                DEF Axes Shape {
-                  geometry IndexedLineSet {
-                    colorPerVertex FALSE
-                    coordIndex [
-                      0,
-                      1,
-                      -1,
-                      0,
-                      2,
-                      -1,
-                      0,
-                      3,
-                      -1
-                    ]
-                    color Color {
-                      color [
-                        1 0 0,
-                        0 1 0,
-                        0 0 1
-                      ]
-                    }
-                    coord DEF AxesCoord Coordinate {
-                      point [
-                        0 0 0,
-                        36 0 0,
-                        0 36 0,
-                        0 0 36,
-                        0 0 0
-                      ]
-                    }
-                  }
-                }
-                DEF XHandle Transform {
-                  translation 36.5 0 0
-                  rotation 0 0 1 4.71239
-                  children Shape {
-                    appearance DEF Red Appearance {
-                      shaders ToolShader { diffuseColor 1 0 0 }
-                    }
-                    geometry DEF Arrow Cone {
-                      height 12
-                      bottomRadius 4
-                    }
-                  }
-                }
-                DEF YHandle Transform {
-                  translation 0 36.5 0
-                  children Shape {
-                    appearance DEF Green Appearance {
-                      shaders ToolShader { diffuseColor 0 1 0 }
-                    }
-                    geometry USE Arrow
-                  }
-                }
-                DEF ZHandle Transform {
-                  translation 0 0 36.5
-                  rotation 1 0 0 1.5708
-                  children Shape {
-                    appearance DEF Blue Appearance {
-                      shaders ToolShader { diffuseColor 0 0 1 }
-                    }
-                    geometry USE Arrow
-                  }
-                }
-              ]
-            }
-          ]
-        }
       ]
     }
   }
@@ -363,7 +373,7 @@ DEF _1 Transform {
 ROUTE Tool.translation_changed TO _1.set_translation
 ROUTE Tool.rotation_changed TO _1.set_rotation
 ROUTE Tool.whichChoice_changed TO Lenses.set_whichChoice
-ROUTE Tool.isBound_changed TO _5.set_whichChoice
-ROUTE Tool.selected_changed TO _7.set_whichChoice
+ROUTE Tool.isBound_changed TO _8.set_whichChoice
+ROUTE Tool.selected_changed TO _2.set_whichChoice
 
 EXPORT Tool
