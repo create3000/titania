@@ -98,16 +98,16 @@ X3DNavigationContext::set_activeLayer ()
 	{
 		if (activeLayer)
 		{
-			activeLayer -> getNavigationInfoStack () -> bindTime () .removeInterest (this, &X3DNavigationContext::set_navigationInfo);
-			activeLayer -> getViewpointStack ()      -> bindTime () .removeInterest (this, &X3DNavigationContext::set_viewpoint);
+			activeLayer -> getNavigationInfoStack () -> removeInterest (this, &X3DNavigationContext::set_navigationInfo);
+			activeLayer -> getViewpointStack ()      -> removeInterest (this, &X3DNavigationContext::set_viewpoint);
 		}
 
 		activeLayer = getWorld () -> getActiveLayer ();
 
 		if (activeLayer)
 		{
-			activeLayer -> getNavigationInfoStack () -> bindTime () .addInterest (this, &X3DNavigationContext::set_navigationInfo);
-			activeLayer -> getViewpointStack ()      -> bindTime () .addInterest (this, &X3DNavigationContext::set_viewpoint);
+			activeLayer -> getNavigationInfoStack () -> addInterest (this, &X3DNavigationContext::set_navigationInfo);
+			activeLayer -> getViewpointStack ()      -> addInterest (this, &X3DNavigationContext::set_viewpoint);
 		}
 
 		set_navigationInfo ();

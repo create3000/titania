@@ -1,5 +1,9 @@
 2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewpointList.cpp: 
+
+2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:

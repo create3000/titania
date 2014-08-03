@@ -1,5 +1,14 @@
 2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* BindableNodeList.h:
+	* BindableNodeStack.h:
+	* BindableNodeList.cpp:
+	* X3DNavigationContext.cpp: 
+
+2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* LightTool.x3dv:
 	* BoundingBox.x3dv:

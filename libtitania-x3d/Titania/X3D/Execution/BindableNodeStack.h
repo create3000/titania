@@ -73,11 +73,8 @@ public:
 
 	X3DBindableNodeStack (X3DExecutionContext* const executionContext, const pointer_type & node) :
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
-		fields (),
 		stack ({ node })
 	{
-		addField (outputOnly, "bindTime", *fields .bindTime);
-
 		node -> disposed () .addInterest (this, &X3DBindableNodeStack::erase, node);
 	}
 
@@ -103,12 +100,6 @@ public:
 	const std::string &
 	getContainerField () const final override
 	{ return containerField; }
-
-	/// @name Fields
-
-	const SFTime &
-	bindTime () const
-	{ return *fields .bindTime; }
 
 	///  @name Member access
 
@@ -156,7 +147,7 @@ public:
 			if (stack .push (node))
 				node -> disposed () .addInterest (this, &X3DBindableNodeStack::erase, node);
 
-			*fields .bindTime = getCurrentTime ();
+			addEvent ();
 		}
 	}
 
@@ -186,7 +177,7 @@ public:
 				stack .top () -> transitionStart (node);
 			}
 
-			*fields .bindTime = getCurrentTime ();
+			addEvent ();
 
 			return true;
 		}
@@ -212,16 +203,6 @@ private:
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFTime* const bindTime;
-
-	};
-
-	Fields fields;
-
 	stack_type stack;
 
 };
@@ -234,11 +215,6 @@ const std::string X3DBindableNodeStack <Type>::typeName = "X3DBindableNodeList";
 
 template <class Type>
 const std::string X3DBindableNodeStack <Type>::containerField = "bindableNodeList";
-
-template <class Type>
-X3DBindableNodeStack <Type>::Fields::Fields () :
-	bindTime (new SFTime ())
-{ }
 
 } // X3D
 

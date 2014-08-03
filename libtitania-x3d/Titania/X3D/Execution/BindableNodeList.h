@@ -74,11 +74,8 @@ public:
 	///  Default constructor.
 	X3DBindableNodeList (X3DExecutionContext* const executionContext) :
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
-		     fields (),
 		       list ()
-	{
-		addField (outputOnly, "bindTime", *fields .bindTime);
-	}
+	{ }
 
 	virtual
 	X3DBaseNode*
@@ -102,12 +99,6 @@ public:
 	const std::string &
 	getContainerField () const final override
 	{ return containerField; }
-
-	/// @name Fields
-
-	const SFTime &
-	bindTime () const
-	{ return *fields .bindTime; }
 
 	/// @name Iterators
 
@@ -185,12 +176,14 @@ public:
 			for (auto & node : list)
 				node -> disposed () .removeInterest (this, &X3DBindableNodeList::erase);
 
+			replace (temp);
+
 			list = std::move (temp);
 
 			for (auto & node : list)
 				node -> disposed () .addInterest (this, &X3DBindableNodeList::erase, node);
 
-			*fields .bindTime = getCurrentTime ();
+			addEvent ();
 		}
 		else
 			temp .clear ();
@@ -204,12 +197,18 @@ public:
 		if (end not_eq list .end ())
 		{
 			list .erase (end, list .end ());
-			*fields .bindTime = getCurrentTime ();
+			addEvent ();
 		}
 	}
 
 
 private:
+
+	///  @name Operations
+	
+	void
+	replace (const list_type &)
+	{ }
 
 	///  @name Static members
 
@@ -218,16 +217,6 @@ private:
 	static const std::string containerField;
 
 	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFTime* const bindTime;
-
-	};
-
-	Fields fields;
 
 	list_type temp;
 	list_type list;
@@ -243,10 +232,11 @@ const std::string X3DBindableNodeList <Type>::typeName = "X3DBindableNodeList";
 template <class Type>
 const std::string X3DBindableNodeList <Type>::containerField = "bindableNodeList";
 
-template <class Type>
-X3DBindableNodeList <Type>::Fields::Fields () :
-	bindTime (new SFTime ())
-{ }
+class X3DViewpointNode;
+
+template <>
+void
+X3DBindableNodeList <X3DViewpointNode>::replace (const list_type &);
 
 } // X3D
 } // titania

@@ -373,6 +373,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
+	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
 	Titania/X3D/Execution/ExportedNodeIndex.cpp \
 	Titania/X3D/Execution/ImportedNode.cpp \

@@ -120,16 +120,16 @@ ViewpointList::set_activeLayer ()
 {
 	if (activeLayer)
 	{
-		getViewpoints ()     -> bindTime () .removeInterest (this, &ViewpointList::set_viewpoints);
-		getViewpointStack () -> bindTime () .removeInterest (this, &ViewpointList::set_currentViewpoint);
+		getViewpoints ()     -> removeInterest (this, &ViewpointList::set_viewpoints);
+		getViewpointStack () -> removeInterest (this, &ViewpointList::set_currentViewpoint);
 	}
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
 	{
-		getViewpoints ()     -> bindTime () .addInterest (this, &ViewpointList::set_viewpoints);
-		getViewpointStack () -> bindTime () .addInterest (this, &ViewpointList::set_currentViewpoint);
+		getViewpoints ()     -> addInterest (this, &ViewpointList::set_viewpoints);
+		getViewpointStack () -> addInterest (this, &ViewpointList::set_currentViewpoint);
 
 		set_viewpoints ();
 		set_currentViewpoint ();

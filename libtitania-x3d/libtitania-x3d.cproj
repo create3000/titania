@@ -1283,6 +1283,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\Block.cpp" />
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
+    <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
