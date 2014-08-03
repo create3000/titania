@@ -1,6 +1,17 @@
 2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:
+	* LightTool.x3dv:
+	* BoundingBox.x3dv:
+	* ViewpointTool.x3dv:
+	* TransformTool.x3dv:
+	* Vector.x3dv:
+	* ToolShader.x3dv:
+	* HandleShader.x3dv: 
+
+2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
 	* World.h:
 	* X3DConstants.h:
 	* LightTool.x3dv:

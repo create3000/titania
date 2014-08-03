@@ -389,6 +389,10 @@ private:
 
 	virtual
 	void
+	on_viewpoints_toggled () final override;
+
+	virtual
+	void
 	on_hide_all_object_icons_activate () final override;
 
 	///  @name Rendering properties

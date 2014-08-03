@@ -1,0 +1,88 @@
+#X3D V3.3 utf8 Titania V0.7.1
+
+META "comment" "World of Titania"
+META "created" "Sun, 03 Aug 2014 14:00:40 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.1, http://titania.create3000.de"
+META "modified" "Sun, 03 Aug 2014 14:00:40 GMT"
+
+PROTO ToolShader [
+  inputOutput SFFloat ambientIntensity 0
+  inputOutput SFColor diffuseColor 0.8 0.8 0.8
+  inputOutput SFColor specularColor 0 0 0
+  inputOutput SFColor emissiveColor 0 0 0
+  inputOutput SFFloat shininess 0.2
+  inputOutput SFFloat transparency 0
+]
+{
+  # This is a phong shader where the light position is in the center of the object
+  ComposedShader {
+    inputOutput SFFloat ambientIntensity IS ambientIntensity
+    inputOutput SFColor diffuseColor IS diffuseColor
+    inputOutput SFColor specularColor IS specularColor
+    inputOutput SFFloat shininess IS shininess
+    inputOutput SFFloat transparency IS transparency
+
+    language "GLSL"
+    parts [
+      ShaderPart {
+        url "data:text/plain,
+#version 120
+
+varying vec3 N;
+varying vec3 v;
+
+void main(void)
+{
+	v = vec3 (gl_ModelViewMatrix * gl_Vertex);
+	N = normalize (gl_NormalMatrix * gl_Normal);
+
+	gl_Position = ftransform ();
+}
+"
+      }
+      ShaderPart {
+        type "FRAGMENT"
+        url "data:text/plain,
+#version 120
+
+uniform float ambientIntensity;
+uniform vec3  diffuseColor;
+uniform vec3  specularColor;
+uniform float shininess;
+uniform float transparency;
+
+varying vec3 N;
+varying vec3 v;
+
+void main (void)
+{
+	float alpha     = 1 - transparency;
+	vec4 finalColor = vec4 (0, 0, 0, 0);
+
+	vec3 L = normalize (-v);
+	vec3 E = normalize (-v);                                      /* we are in Eye Coordinates, so EyePos is (0, 0, 0) */
+	vec3 R = normalize (-reflect (L, N));
+
+	/* Calculate Ambient Term: */
+	vec4 Iamb = vec4 (diffuseColor * ambientIntensity, alpha);
+
+	/* Calculate Diffuse Term: */
+	vec4 Idiff = vec4 (diffuseColor, alpha) * max (dot (N, L), 0);
+	Idiff = clamp (Idiff, 0, 1);
+
+	/* Calculate Specular Term: */
+	vec4 Ispec = vec4 (specularColor, alpha) * pow (max (dot (R, E), 0), 0.3 * shininess);
+	Ispec = clamp (Ispec, 0, 1);
+
+	/* Write Total Color: */
+	finalColor += Iamb + Idiff + Ispec;
+
+	gl_FragColor = finalColor;
+}
+"
+      }
+    ]
+  }
+}
+

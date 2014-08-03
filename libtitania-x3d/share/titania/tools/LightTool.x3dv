@@ -6,8 +6,15 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
 META "modified" "Sun, 03 Aug 2014 02:06:45 GMT"
 
-EXTERNPROTO HandleShader [ ]
-"library/HandleShader.x3dv"
+EXTERNPROTO ToolShader [
+  inputOutput SFFloat ambientIntensity
+  inputOutput SFColor diffuseColor
+  inputOutput SFColor specularColor
+  inputOutput SFColor emissiveColor
+  inputOutput SFFloat shininess
+  inputOutput SFFloat transparency
+]
+"library/ToolShader.x3dv"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -447,10 +454,9 @@ DEF _1 Transform {
                   rotation 0 0 1 4.71239
                   children Shape {
                     appearance DEF Red Appearance {
-                      material Material {
+                      shaders ToolShader {
                         diffuseColor 1 0 0
                       }
-                      shaders DEF HandleShader HandleShader { }
                     }
                     geometry DEF Arrow Cone {
                       height 12
@@ -462,10 +468,9 @@ DEF _1 Transform {
                   translation 0 36.5 0
                   children Shape {
                     appearance DEF Green Appearance {
-                      material Material {
+                      shaders ToolShader {
                         diffuseColor 0 1 0
                       }
-                      shaders USE HandleShader
                     }
                     geometry USE Arrow
                   }
@@ -475,10 +480,9 @@ DEF _1 Transform {
                   rotation 1 0 0 1.5708
                   children Shape {
                     appearance DEF Blue Appearance {
-                      material Material {
+                      shaders ToolShader {
                         diffuseColor 0 0 1
                       }
-                      shaders USE HandleShader
                     }
                     geometry USE Arrow
                   }

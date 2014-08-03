@@ -6,8 +6,15 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V0.6.8, http://titania.create3000.de"
 META "modified" "Thu, 29 May 2014 01:08:38 GMT"
 
-EXTERNPROTO HandleShader [ ]
-"library/HandleShader.x3dv"
+EXTERNPROTO ToolShader [
+  inputOutput SFFloat ambientIntensity
+  inputOutput SFColor diffuseColor
+  inputOutput SFColor specularColor
+  inputOutput SFColor emissiveColor
+  inputOutput SFFloat shininess
+  inputOutput SFFloat transparency
+]
+"library/ToolShader.x3dv"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -269,10 +276,7 @@ PROTO TransformTool [
                         rotation 0 0 -1 1.5708
                         children Shape {
                           appearance DEF Red Appearance {
-                            material Material {
-                              diffuseColor 1 0 0
-                            }
-                            shaders DEF HandleShader HandleShader { }
+                            shaders ToolShader { diffuseColor 1 0 0 }
                           }
                           geometry DEF Arrow Cone {
                             height 21
@@ -328,10 +332,9 @@ PROTO TransformTool [
                         translation 0 10.5 0
                         children Shape {
                           appearance DEF Green Appearance {
-                            material Material {
+                            shaders ToolShader {
                               diffuseColor 0 1 0
                             }
-                            shaders USE HandleShader
                           }
                           geometry USE Arrow
                         }
@@ -383,10 +386,9 @@ PROTO TransformTool [
                         rotation 1 0 0 1.5708
                         children Shape {
                           appearance DEF Blue Appearance {
-                            material Material {
+                            shaders ToolShader {
                               diffuseColor 0 0 1
                             }
-                            shaders USE HandleShader
                           }
                           geometry USE Arrow
                         }
@@ -428,10 +430,9 @@ PROTO TransformTool [
                         children Transform {
                           children Shape {
                             appearance DEF White Appearance {
-                              material Material {
+                              shaders ToolShader {
                                 diffuseColor 1 1 1
                               }
-                              shaders USE HandleShader
                             }
                             geometry USE Box
                           }
@@ -549,8 +550,9 @@ PROTO TransformTool [
               children [
                 DEF _3 Shape {
                   appearance Appearance {
-                    material USE Yellow
-                    shaders USE HandleShader
+                    shaders ToolShader {
+                      diffuseColor 1 1 0
+                    }
                   }
                   geometry DEF _4 Sphere {
                     radius 5

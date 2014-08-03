@@ -2,8 +2,15 @@
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
-EXTERNPROTO HandleShader [ ]
-"library/HandleShader.x3dv"
+EXTERNPROTO ToolShader [
+  inputOutput SFFloat ambientIntensity
+  inputOutput SFColor diffuseColor
+  inputOutput SFColor specularColor
+  inputOutput SFColor emissiveColor
+  inputOutput SFFloat shininess
+  inputOutput SFFloat transparency
+]
+"library/ToolShader.x3dv"
 
 PROTO Interface [
   # required fields
@@ -122,10 +129,9 @@ Collision {
               rotation 0 0 -1 1.5708
               children Shape {
                 appearance DEF Red Appearance {
-                  material Material {
+                  shaders ToolShader {
                     diffuseColor 1 0 0
                   }
-                  shaders DEF HandleShader HandleShader { }
                 }
                 geometry DEF Arrow Cone {
                   height 12
@@ -142,10 +148,9 @@ Collision {
               translation 0 6 0
               children Shape {
                 appearance DEF Green Appearance {
-                  material Material {
+                  shaders ToolShader {
                     diffuseColor 0 1 0
                   }
-                  shaders USE HandleShader
                 }
                 geometry USE Arrow
               }
@@ -160,10 +165,9 @@ Collision {
               rotation 1 0 0 1.5708
               children Shape {
                 appearance DEF Blue Appearance {
-                  material Material {
+                  shaders ToolShader {
                     diffuseColor 0 0 1
                   }
-                  shaders USE HandleShader
                 }
                 geometry USE Arrow
               }
@@ -211,8 +215,9 @@ Collision {
                 DEF CenterPoint ScreenGroup {
                 children Shape {
                   appearance Appearance {
-                    material USE Yellow
-                    shaders USE HandleShader
+                    shaders ToolShader {
+                      diffuseColor 1 1 0
+                    }
                   }
                   geometry Sphere {
                     radius 5

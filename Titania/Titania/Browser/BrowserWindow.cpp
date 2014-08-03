@@ -253,6 +253,9 @@ BrowserWindow::set_scene ()
 	toggle = false;
 	getVisibilitySensorsMenuItem () .set_active (false);
 
+	toggle = false;
+	getViewpointsMenuItem () .set_active (false);
+
 	toggle = true;
 }
 
@@ -337,6 +340,16 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 		{
 			toggle = false;
 			getVisibilitySensorsMenuItem () .set_active (true);
+			break;
+		}
+	}
+
+	for (const auto & node : children)
+	{
+		if (X3D::x3d_cast <X3D::X3DViewpointNode*> (node))
+		{
+			toggle = false;
+			getViewpointsMenuItem () .set_active (true);
 			break;
 		}
 	}
@@ -1027,6 +1040,9 @@ BrowserWindow::on_browser_toggled ()
 		if (getVisibilitySensorsMenuItem () .get_active ())
 			getVisibilitySensorsMenuItem () .set_active (false);
 
+		if (getViewpointsMenuItem () .get_active ())
+			getViewpointsMenuItem () .set_active (false);
+
 		on_show_all_objects_activate ();
 	}
 }
@@ -1401,6 +1417,53 @@ BrowserWindow::on_visibility_sensors_toggled ()
 }
 
 void
+BrowserWindow::on_viewpoints_toggled ()
+{
+	if (toggle)
+	{
+		if (getViewpointsMenuItem () .get_active ())
+		{
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+			               {
+			                  const auto tool = dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ());
+
+			                  if (tool)
+										tool -> addTool ();
+
+			                  return true;
+								},
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		}
+		else
+		{
+			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+			               {
+			                  if (not node)
+			                     return true;
+			               
+			                  for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			                  {
+			                     if (type == X3D::X3DConstants::X3DViewpointNodeTool)
+			                     {
+					                  if (not getBrowser () -> getSelection () -> isSelected (node))
+												node -> removeTool (true);
+
+			                        break;
+			                     }
+			                  }
+
+			                  return true;
+								},
+			               true,
+			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		}
+	}
+
+	toggle = true;
+}
+
+void
 BrowserWindow::on_hide_all_object_icons_activate ()
 {
 	if (getLightsMenuItem () .get_active ())
@@ -1411,6 +1474,9 @@ BrowserWindow::on_hide_all_object_icons_activate ()
 
 	if (getVisibilitySensorsMenuItem () .get_active ())
 		getVisibilitySensorsMenuItem () .set_active (false);
+
+	if (getViewpointsMenuItem () .get_active ())
+		getViewpointsMenuItem () .set_active (false);
 }
 
 // RenderingProperties

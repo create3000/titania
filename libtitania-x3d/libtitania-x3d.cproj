@@ -613,7 +613,6 @@
     <None Include="Titania\X3D\Tools\Shape\ShapeTool.h" />
     <None Include="Titania\X3D\Tools\Networking\InlineTool.h" />
     <None Include="Titania\X3D\Tools\Networking\AnchorTool.h" />
-    <None Include="share\titania\tools\library\HandleShader.x3dv" />
     <None Include="share\titania\tools\BoundingBox.x3dv" />
     <None Include="share\titania\tools\TransformTool.x3dv" />
     <None Include="share\titania\tools\Notification.x3dv" />
@@ -765,6 +764,7 @@
     <None Include="Titania\X3D\Tools\Navigation\X3DViewpointNodeTool.h" />
     <None Include="Titania\X3D\Tools\Core\X3DBindableNodeTool.h" />
     <None Include="Titania\X3D\Tools\Navigation\ViewpointTool.h" />
+    <None Include="share\titania\tools\library\ToolShader.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

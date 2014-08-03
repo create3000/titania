@@ -403,6 +403,10 @@ public:
 	getVisibilitySensorsMenuItem () const
 	{ return *m_VisibilitySensorsMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getViewpointsMenuItem () const
+	{ return *m_ViewpointsMenuItem; }
+
 	Gtk::MenuItem &
 	getHideAllObjectIconsMenuItem () const
 	{ return *m_HideAllObjectIconsMenuItem; }
@@ -917,6 +921,10 @@ public:
 
 	virtual
 	void
+	on_viewpoints_toggled () = 0;
+
+	virtual
+	void
 	on_hide_all_object_icons_activate () = 0;
 
 	virtual
@@ -1153,6 +1161,7 @@ private:
 	Gtk::CheckMenuItem*             m_LightsMenuItem;
 	Gtk::CheckMenuItem*             m_ProximitySensorsMenuItem;
 	Gtk::CheckMenuItem*             m_VisibilitySensorsMenuItem;
+	Gtk::CheckMenuItem*             m_ViewpointsMenuItem;
 	Gtk::MenuItem*                  m_HideAllObjectIconsMenuItem;
 	Gtk::CheckMenuItem*             m_RenderingPropertiesMenuItem;
 	Gtk::ImageMenuItem*             m_FullScreenMenuItem;

@@ -210,6 +210,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ProximitySensorsMenuItem -> set_name ("ProximitySensorsMenuItem");
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_VisibilitySensorsMenuItem -> set_name ("VisibilitySensorsMenuItem");
+	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
+	m_ViewpointsMenuItem -> set_name ("ViewpointsMenuItem");
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
 	m_HideAllObjectIconsMenuItem -> set_name ("HideAllObjectIconsMenuItem");
 	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_RenderingPropertiesMenuItem);
@@ -440,6 +442,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LightsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
 	m_ProximitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
 	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
+	m_ViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
 
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activate));

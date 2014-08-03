@@ -833,10 +833,20 @@
                               <object class="GtkCheckMenuItem" id="VisibilitySensorsMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">_VisibilitySensors</property>
+                                <property name="label" translatable="yes">V_isibilitySensors</property>
                                 <property name="use_underline">True</property>
                                 <signal name="toggled" handler="on_visibility_sensors_toggled" swapped="no"/>
                                 <accelerator key="i" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="ViewpointsMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">_Viewpoints</property>
+                                <property name="use_underline">True</property>
+                                <signal name="toggled" handler="on_viewpoints_toggled" swapped="no"/>
+                                <accelerator key="k" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
