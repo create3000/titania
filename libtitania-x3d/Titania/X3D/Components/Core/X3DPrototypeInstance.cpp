@@ -131,7 +131,14 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	return new X3DPrototypeInstance (executionContext, protoObject);
+	try
+	{
+		return executionContext -> findProtoObject (getTypeName (), AvailableType { }) -> createInstance (executionContext);
+	}
+	catch (const X3DError & error)
+	{
+		throw Error <INVALID_NAME> (error .what ());
+	}
 }
 
 void

@@ -116,7 +116,14 @@ throw (Error <INVALID_NAME>,
 			FieldDefinitionArray userDefinedFields;
 			
 			for (const auto & fieldDefinition : getUserDefinedFields ())
-				userDefinedFields .emplace_back (fieldDefinition -> create ());
+			{
+				const auto field = fieldDefinition -> create ();
+
+				field -> setName (fieldDefinition -> getName ());
+				field -> setAccessType (fieldDefinition -> getAccessType ());
+
+				userDefinedFields .emplace_back (field);
+			}
 
 			const auto copy = executionContext -> createExternProtoDeclaration (getName (), userDefinedFields, url ());
 

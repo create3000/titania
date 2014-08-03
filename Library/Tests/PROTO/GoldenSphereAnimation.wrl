@@ -16,7 +16,7 @@ PROTO GoldenSphereAnimation [
     exposedField SFBool     loop
     eventOut     SFRotation value_changed
   ]
-  "Rotor.wrl"
+  "Rotor.wrl#Rotor"
 
   DEF SphereA Transform {
     translation IS translation

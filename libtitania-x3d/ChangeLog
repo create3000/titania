@@ -1,5 +1,12 @@
 2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewpointTool.x3dv:
+	* ProtoDeclaration.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* ViewpointTool.x3dv: 
 

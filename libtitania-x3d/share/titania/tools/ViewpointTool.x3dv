@@ -4,7 +4,17 @@ META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sun, 03 Aug 2014 07:13:38 GMT"
+META "modified" "Sun, 03 Aug 2014 08:20:38 GMT"
+
+EXTERNPROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+"library/BooleanSwitch.x3dv"
 
 ScreenGroup {
   children Transform {
@@ -171,3 +181,5 @@ ScreenGroup {
     ]
   }
 }
+
+BooleanSwitch { }
