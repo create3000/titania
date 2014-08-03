@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.1
 
 META "title" "ScreenGroup"
 
@@ -11,6 +11,7 @@ OrthoViewpoint { }
 Viewpoint { }
 
 Transform {
+  rotation 0 0 1 0
   scale 2 1 1
   scaleOrientation 0 0 1 0.785398
   children ScreenGroup {
@@ -23,12 +24,20 @@ Transform {
             }
           }
           geometry Text {
-            string [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789", "äöüß.?!,;:" ]
+            string [
+              "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+              "abcdefghijklmnopqrstuvwxyz",
+              "0123456789",
+              "äöüß.?!,;:"
+            ]
             fontStyle FontStyle {
               family "Ubuntu Mono"
               style "-NORMAL"
               size 12
-              justify [ "BEGIN", "BEGIN" ]
+              justify [
+                "BEGIN",
+                "BEGIN"
+              ]
             }
           }
         }
@@ -49,5 +58,20 @@ Transform {
         }
       }
     ]
+  }
+}
+
+DEF _1 Transform {
+  translation -0.767947 0.507512 0
+  children ScreenGroup {
+    children DEF Box Transform {
+      scale 20 20 20
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
   }
 }

@@ -878,12 +878,14 @@ function eventsProcessed ()
     inputOutput    SFNode  transform IS transform
     initializeOnly SFVec3f translation 0 0 0
     inputOutput    SFVec3f center 0 0 0
+    initializeOnly SFVec3f size 0 0 0
 
     url "vrmlscript:
 function set_active (value)
 {
 	translation = transform .translation;
 	center      = transform .center;
+	size        = bboxSize;
 }
 
 function constrainValue (value)
@@ -950,7 +952,7 @@ function set_zTranslation (value)
 
 function translate_with_bbox (value)
 {
-	translate (value .multVec (bboxSize));
+	translate (value .multVec (size));
 }
 
 function translate (value)
@@ -1406,15 +1408,15 @@ function set_scale (value, sgn, centerOffset)
 	{
 		centerOffset = centerOffset .multVec (bboxSize .divide (2));
 
-		var size = 1 + sgn * value .length () / bboxSize .length ();
+		var s = 1 + sgn * value .length () / bboxSize .length ();
 
-		scale (new SFVec3f (size, size, size), centerOffset);
+		scale (new SFVec3f (s, s, s), centerOffset);
 	}
 	else
 	{
-		var size = 1 + 2 * sgn * value .length () / bboxSize .length ();
+		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
 
-		scale (new SFVec3f (size, size, size), new SFVec3f ());
+		scale (new SFVec3f (s, s, s), new SFVec3f ());
 	}
 }
 
