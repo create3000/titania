@@ -90,10 +90,8 @@ public:
 
 	///  @name Fields
 
-	template <class Arg>
 	void
-	addString (Arg && value)
-	{ set_string .emplace_back (std::forward <Arg> (value)); }
+	addString (std::string &&);
 
 	const MFString &
 	getString () const
@@ -102,19 +100,11 @@ public:
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
 
 	///  @name Event handlers
 
 	void
-	set_string_ ();
-
-	void
-	eventsProcessed ();
+	prepareEvents ();
 
 	///  @name Static members
 
@@ -124,9 +114,8 @@ private:
 
 	///  @name Members
 
-	MFString set_string;
-	MFString string;
-	MFString string_changed;
+	std::vector <std::string> string;
+	MFString                  string_changed;
 
 };
 

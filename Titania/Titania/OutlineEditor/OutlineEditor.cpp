@@ -79,6 +79,8 @@ void
 OutlineEditor::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Outline Editor"));
+
+	treeView -> queue_draw ();
 }
 
 void
