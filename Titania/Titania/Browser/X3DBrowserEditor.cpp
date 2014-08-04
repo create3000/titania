@@ -211,12 +211,14 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 		if (not switchNode)
 			continue;
 
-		const auto indices = switchNode -> children () .indices_of (selection .back ());
+		const auto iter = std::find (switchNode -> children () .begin (),
+		                             switchNode -> children () .end (),
+		                             selection .back ());
 
-		if (indices .empty ())
+		if (iter == switchNode -> children () .end ())
 			continue;
 
-		switchNode -> whichChoice () = indices .front ();
+		switchNode -> whichChoice () = iter - switchNode -> children () .begin ();
 	}
 }
 
