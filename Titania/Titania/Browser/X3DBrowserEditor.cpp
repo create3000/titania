@@ -1715,7 +1715,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 }
 
 X3D::MFNode
-X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::createParentGroup (const std::string & typeName, const X3D::MFNode & children, const UndoStepPtr & undoStep) const
 {
 	X3D::MFNode groups;
 
@@ -1738,7 +1738,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 											   {
 											      // Add node to group
 
-											      const X3D::X3DGroupingNodePtr group (getExecutionContext () -> createNode ("Transform"));
+											      const X3D::X3DGroupingNodePtr group (getExecutionContext () -> createNode (typeName));
 
 											      undoStep -> addVariables (group);
 
@@ -1764,7 +1764,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 											{
 											   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-											   createParentGroup (*mfnode, child, parent, groups, undoStep);
+											   createParentGroup (typeName, *mfnode, child, parent, groups, undoStep);
 
 											   break;
 											}
@@ -1776,14 +1776,19 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 		                  return true;
 							});
 
-		createParentGroup (getExecutionContext () -> getRootNodes (), child, getExecutionContext () .getValue (), groups, undoStep);
+		createParentGroup (typeName, getExecutionContext () -> getRootNodes (), child, getExecutionContext () .getValue (), groups, undoStep);
 	}
 
 	return groups;
 }
 
 void
-X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & child, const X3D::SFNode & parent, X3D::MFNode & groups, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::createParentGroup (const std::string & typeName,
+                                     X3D::MFNode & mfnode,
+                                     const X3D::SFNode & child,
+                                     const X3D::SFNode & parent,
+                                     X3D::MFNode & groups,
+                                     const UndoStepPtr & undoStep) const
 {
 	const auto indices = mfnode .indices_of (child);
 
@@ -1796,7 +1801,7 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 	{
 		// Add node to group
 
-		const X3D::X3DGroupingNodePtr group (getExecutionContext () -> createNode ("Transform"));
+		const X3D::X3DGroupingNodePtr group (getExecutionContext () -> createNode (typeName));
 
 		undoStep -> addVariables (group);
 

@@ -158,8 +158,26 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_AddToGroupMenuItem -> set_name ("AddToGroupMenuItem");
 	m_builder -> get_widget ("DetachFromGroupMenuItem", m_DetachFromGroupMenuItem);
 	m_DetachFromGroupMenuItem -> set_name ("DetachFromGroupMenuItem");
+	m_builder -> get_widget ("CreateParentMenuItem", m_CreateParentMenuItem);
+	m_CreateParentMenuItem -> set_name ("CreateParentMenuItem");
+	m_builder -> get_widget ("CreateParentTransformMenuItem", m_CreateParentTransformMenuItem);
+	m_CreateParentTransformMenuItem -> set_name ("CreateParentTransformMenuItem");
 	m_builder -> get_widget ("CreateParentGroupMenuItem", m_CreateParentGroupMenuItem);
 	m_CreateParentGroupMenuItem -> set_name ("CreateParentGroupMenuItem");
+	m_builder -> get_widget ("CreateParentSwitchMenuItem", m_CreateParentSwitchMenuItem);
+	m_CreateParentSwitchMenuItem -> set_name ("CreateParentSwitchMenuItem");
+	m_builder -> get_widget ("CreateParentBillboardMenuItem", m_CreateParentBillboardMenuItem);
+	m_CreateParentBillboardMenuItem -> set_name ("CreateParentBillboardMenuItem");
+	m_builder -> get_widget ("CreateParentCollisionMenuItem", m_CreateParentCollisionMenuItem);
+	m_CreateParentCollisionMenuItem -> set_name ("CreateParentCollisionMenuItem");
+	m_builder -> get_widget ("CreateParentLODMenuItem", m_CreateParentLODMenuItem);
+	m_CreateParentLODMenuItem -> set_name ("CreateParentLODMenuItem");
+	m_builder -> get_widget ("CreateParentAnchorMenuItem", m_CreateParentAnchorMenuItem);
+	m_CreateParentAnchorMenuItem -> set_name ("CreateParentAnchorMenuItem");
+	m_builder -> get_widget ("CreateParentScreenGroupMenuItem", m_CreateParentScreenGroupMenuItem);
+	m_CreateParentScreenGroupMenuItem -> set_name ("CreateParentScreenGroupMenuItem");
+	m_builder -> get_widget ("CreateParentLayoutGroupMenuItem", m_CreateParentLayoutGroupMenuItem);
+	m_CreateParentLayoutGroupMenuItem -> set_name ("CreateParentLayoutGroupMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
 	m_ViewMenuItem -> set_name ("ViewMenuItem");
 	m_builder -> get_widget ("ToolBarMenuItem", m_ToolBarMenuItem);
@@ -316,12 +334,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_StraightenButton -> set_name ("StraightenButton");
 	m_builder -> get_widget ("LookAtSeparator", m_LookAtSeparator);
 	m_LookAtSeparator -> set_name ("LookAtSeparator");
+	m_builder -> get_widget ("LookAtSelectionButton", m_LookAtSelectionButton);
+	m_LookAtSelectionButton -> set_name ("LookAtSelectionButton");
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_LookAtAllButton -> set_name ("LookAtAllButton");
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_LookAtButton -> set_name ("LookAtButton");
-	m_builder -> get_widget ("LookAtSelectionButton", m_LookAtSelectionButton);
-	m_LookAtSelectionButton -> set_name ("LookAtSelectionButton");
 	m_builder -> get_widget ("Footer", m_Footer);
 	m_Footer -> set_name ("Footer");
 	m_builder -> get_widget ("FooterLabel", m_FooterLabel);
@@ -419,7 +437,15 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuItem with id 'AddToGroupMenuItem'.
 	m_AddToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activate));
 	m_DetachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_detach_from_group_activate));
+	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_transform_activate));
 	m_CreateParentGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_group_activate));
+	m_CreateParentSwitchMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_switch_activate));
+	m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_billboard_activate));
+	m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_collision_activate));
+	m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_lod_activate));
+	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activate));
+	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activate));
+	m_CreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_group_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
 	m_ToolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled));
@@ -516,13 +542,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'StraightenButton'.
 	m_StraightenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_straighten_clicked));
+	m_LookAtSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_selection_clicked));
 	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled));
-
-	// Connect object Gtk::ToolButton with id 'LookAtSelectionButton'.
-	m_LookAtSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_selection_clicked));
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	m_MessageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response));

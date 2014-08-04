@@ -300,7 +300,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getUngroupMenuItem ()            .set_sensitive (haveSelection);
 	getAddToGroupMenuItem ()         .set_sensitive (haveSelections);
 	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
-	getCreateParentGroupMenuItem ()  .set_sensitive (haveSelection);
+	getCreateParentMenuItem ()       .set_sensitive (haveSelection);
 
 	getDeselectAllMenuItem ()           .set_sensitive (children .size ());
 	getHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
@@ -963,7 +963,61 @@ BrowserWindow::on_detach_from_group_activate ()
 }
 
 void
+BrowserWindow::on_create_parent_transform_activate ()
+{
+	on_create_parent ("Transform");
+}
+
+void
 BrowserWindow::on_create_parent_group_activate ()
+{
+	on_create_parent ("Group");
+}
+
+void
+BrowserWindow::on_create_parent_switch_activate ()
+{
+	on_create_parent ("Switch");
+}
+
+void
+BrowserWindow::on_create_parent_billboard_activate ()
+{
+	on_create_parent ("Billboard");
+}
+
+void
+BrowserWindow::on_create_parent_collision_activate ()
+{
+	on_create_parent ("Collision");
+}
+
+void
+BrowserWindow::on_create_parent_lod_activate ()
+{
+	on_create_parent ("LOD");
+}
+
+void
+BrowserWindow::on_create_parent_anchor_activate ()
+{
+	on_create_parent ("Anchor");
+}
+
+void
+BrowserWindow::on_create_parent_screen_group_activate ()
+{
+	on_create_parent ("ScreenGroup");
+}
+
+void
+BrowserWindow::on_create_parent_layout_group_activate ()
+{
+	on_create_parent ("LayoutGroup");
+}
+
+void
+BrowserWindow::on_create_parent (const std::string & typeName)
 {
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
@@ -974,7 +1028,7 @@ BrowserWindow::on_create_parent_group_activate ()
 
 	getSelection () -> clear (undoStep);
 
-	X3D::MFNode groups = createParentGroup (selection, undoStep);
+	X3D::MFNode groups = createParentGroup (typeName, selection, undoStep);
 
 	getSelection () -> setChildren (groups, undoStep);
 

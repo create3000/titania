@@ -300,8 +300,44 @@ public:
 	{ return *m_DetachFromGroupMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentMenuItem () const
+	{ return *m_CreateParentMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentTransformMenuItem () const
+	{ return *m_CreateParentTransformMenuItem; }
+
+	Gtk::MenuItem &
 	getCreateParentGroupMenuItem () const
 	{ return *m_CreateParentGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentSwitchMenuItem () const
+	{ return *m_CreateParentSwitchMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentBillboardMenuItem () const
+	{ return *m_CreateParentBillboardMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCollisionMenuItem () const
+	{ return *m_CreateParentCollisionMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLODMenuItem () const
+	{ return *m_CreateParentLODMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentAnchorMenuItem () const
+	{ return *m_CreateParentAnchorMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentScreenGroupMenuItem () const
+	{ return *m_CreateParentScreenGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLayoutGroupMenuItem () const
+	{ return *m_CreateParentLayoutGroupMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
@@ -616,16 +652,16 @@ public:
 	{ return *m_LookAtSeparator; }
 
 	Gtk::ToolButton &
+	getLookAtSelectionButton () const
+	{ return *m_LookAtSelectionButton; }
+
+	Gtk::ToolButton &
 	getLookAtAllButton () const
 	{ return *m_LookAtAllButton; }
 
 	Gtk::ToggleToolButton &
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
-
-	Gtk::ToolButton &
-	getLookAtSelectionButton () const
-	{ return *m_LookAtSelectionButton; }
 
 	Gtk::Box &
 	getFooter () const
@@ -849,7 +885,39 @@ public:
 
 	virtual
 	void
+	on_create_parent_transform_activate () = 0;
+
+	virtual
+	void
 	on_create_parent_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_switch_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_billboard_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_collision_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_lod_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_anchor_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_screen_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_layout_group_activate () = 0;
 
 	virtual
 	void
@@ -1057,15 +1125,15 @@ public:
 
 	virtual
 	void
+	on_look_at_selection_clicked () = 0;
+
+	virtual
+	void
 	on_look_at_all_clicked () = 0;
 
 	virtual
 	void
 	on_look_at_toggled () = 0;
-
-	virtual
-	void
-	on_look_at_selection_clicked () = 0;
 
 	virtual
 	void
@@ -1143,7 +1211,16 @@ private:
 	Gtk::ImageMenuItem*             m_UngroupMenuItem;
 	Gtk::MenuItem*                  m_AddToGroupMenuItem;
 	Gtk::MenuItem*                  m_DetachFromGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentMenuItem;
+	Gtk::MenuItem*                  m_CreateParentTransformMenuItem;
 	Gtk::MenuItem*                  m_CreateParentGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentSwitchMenuItem;
+	Gtk::MenuItem*                  m_CreateParentBillboardMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCollisionMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLODMenuItem;
+	Gtk::MenuItem*                  m_CreateParentAnchorMenuItem;
+	Gtk::MenuItem*                  m_CreateParentScreenGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLayoutGroupMenuItem;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ToolBarMenuItem;
 	Gtk::CheckMenuItem*             m_SideBarMenuItem;
@@ -1222,9 +1299,9 @@ private:
 	Gtk::MenuToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                m_StraightenButton;
 	Gtk::SeparatorToolItem*         m_LookAtSeparator;
+	Gtk::ToolButton*                m_LookAtSelectionButton;
 	Gtk::ToolButton*                m_LookAtAllButton;
 	Gtk::ToggleToolButton*          m_LookAtButton;
-	Gtk::ToolButton*                m_LookAtSelectionButton;
 	Gtk::Box*                       m_Footer;
 	Gtk::Label*                     m_FooterLabel;
 	Gtk::Notebook*                  m_FooterNotebook;

@@ -169,7 +169,7 @@ public:
 	detachFromGroup (X3D::MFNode, const bool, const UndoStepPtr &) const;
 
 	X3D::MFNode
-	createParentGroup (const X3D::MFNode &, const UndoStepPtr &) const;
+	createParentGroup (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
 	addPrototypeInstance (const std::string &);
@@ -302,7 +302,7 @@ private:
 	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
-	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
+	createParentGroup (const std::string &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
 
 	///  @name Undo functions
 

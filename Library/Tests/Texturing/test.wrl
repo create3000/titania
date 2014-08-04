@@ -4,8 +4,18 @@ Background {
   skyColor 0.2 0.2 0.2
 }
 
-Viewpoint {
-  description "Home"
+DEF Viewpoints Group {
+  children [
+    DEF _1 Viewpoint {
+      description "Home"
+    }
+    DEF _2 Viewpoint {
+      description "Back"
+      position -2.34984 -0.155984 -9.80673
+      orientation -1.20003e-07 -1 -1.22826e-06 2.85162
+      centerOfRotation 0.509444 -0.156008 -0.224222
+    }
+  ]
 }
 
 DEF None Transform {

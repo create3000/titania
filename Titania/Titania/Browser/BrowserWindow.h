@@ -284,7 +284,42 @@ private:
 
 	virtual
 	void
+	on_create_parent_transform_activate () final override;
+
+	virtual
+	void
 	on_create_parent_group_activate () final override;
+
+	virtual
+	void
+	on_create_parent_switch_activate () final override;
+
+	virtual
+	void
+	on_create_parent_billboard_activate () final override;
+
+	virtual
+	void
+	on_create_parent_collision_activate () final override;
+
+	virtual
+	void
+	on_create_parent_lod_activate () final override;
+
+	virtual
+	void
+	on_create_parent_anchor_activate () final override;
+
+	virtual
+	void
+	on_create_parent_screen_group_activate () final override;
+
+	virtual
+	void
+	on_create_parent_layout_group_activate () final override;
+
+	void
+	on_create_parent (const std::string &);
 
 	/// @name Bar view handling
 
