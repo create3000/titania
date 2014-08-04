@@ -1559,7 +1559,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="LookAtSelectionButton">
                                     <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Look at selected object.</property>
+                                    <property name="tooltip_text" translatable="yes">Look at selected objects.</property>
                                     <property name="label" translatable="yes">Look At Selection</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">gtk-jump-to</property>

@@ -2330,7 +2330,9 @@ BrowserWindow::on_straighten_clicked ()
 		getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
 }
 
-// Look at
+/*
+ *  Look at
+ */
 
 void
 BrowserWindow::on_look_at_selection_clicked ()
@@ -2342,14 +2344,21 @@ BrowserWindow::on_look_at_selection_clicked ()
 
 	if (selection .empty ())
 		return;
-
-	const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (selection .back ());
-
-	if (not boundedObject)
-		return;
-
+		
 	const auto activeViewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
-	const auto bbox            = boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (boundedObject));
+
+	X3D::Box3f bbox;
+
+	for (const auto & node : selection)
+	{
+		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
+
+		if (boundedObject)
+			bbox += boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (boundedObject));
+	}
+
+	if (bbox .empty ())
+		return;
 
 	activeViewpoint -> lookAt (bbox);
 }
