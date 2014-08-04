@@ -241,6 +241,9 @@ protected:
 
 	///  @name Grouping
 
+	X3D::Matrix4d
+	findModelViewMatrix (X3D::X3DBaseNode* const) const;
+
 	std::vector <X3D::X3DBaseNode*>
 	getParentNodes (X3D::X3DBaseNode* const) const;
 
@@ -313,9 +316,6 @@ private:
 	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &) const;
 
 	///  @name Misc
-
-	X3D::Matrix4d
-	findModelViewMatrix (X3D::X3DBaseNode* const) const;
 
 	bool
 	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4d &, std::set <X3D::X3DBaseNode*> &) const;

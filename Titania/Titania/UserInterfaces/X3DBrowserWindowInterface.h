@@ -623,6 +623,10 @@ public:
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
 
+	Gtk::ToolButton &
+	getLookAtSelectionButton () const
+	{ return *m_LookAtSelectionButton; }
+
 	Gtk::Box &
 	getFooter () const
 	{ return *m_Footer; }
@@ -1061,6 +1065,10 @@ public:
 
 	virtual
 	void
+	on_look_at_selection_clicked () = 0;
+
+	virtual
+	void
 	on_messageDialog_response (int response_id) = 0;
 
 	virtual
@@ -1216,6 +1224,7 @@ private:
 	Gtk::SeparatorToolItem*         m_LookAtSeparator;
 	Gtk::ToolButton*                m_LookAtAllButton;
 	Gtk::ToggleToolButton*          m_LookAtButton;
+	Gtk::ToolButton*                m_LookAtSelectionButton;
 	Gtk::Box*                       m_Footer;
 	Gtk::Label*                     m_FooterLabel;
 	Gtk::Notebook*                  m_FooterNotebook;

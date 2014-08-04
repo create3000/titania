@@ -1947,21 +1947,21 @@ X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value,
 X3D::Matrix4d
 X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
 {
-	X3D::Matrix4d modelViewMatix;
+	X3D::Matrix4d modelViewMatrix;
 
 	std::set <X3D::X3DBaseNode*> seen;
 
 	for (const auto & parentNode : getParentNodes (node))
 	{
-		if (findModelViewMatrix (parentNode, modelViewMatix, seen))
+		if (findModelViewMatrix (parentNode, modelViewMatrix, seen))
 			break;
 	}
 
-	return modelViewMatix;
+	return modelViewMatrix;
 }
 
 bool
-X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4d & modelViewMatix, std::set <X3D::X3DBaseNode*> & seen) const
+X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4d & modelViewMatrix, std::set <X3D::X3DBaseNode*> & seen) const
 {
 	if (not seen .emplace (node) .second)
 		return false;
@@ -1993,12 +1993,12 @@ NEXT:
 
 	for (const auto & parentNode : getParentNodes (node))
 	{
-		if (findModelViewMatrix (parentNode, modelViewMatix, seen))
+		if (findModelViewMatrix (parentNode, modelViewMatrix, seen))
 		{
 			const auto transform = dynamic_cast <X3D::X3DTransformMatrix4DNode*> (node);
 
 			if (transform)
-				modelViewMatix .mult_left (transform -> getMatrix ());
+				modelViewMatrix .mult_left (transform -> getMatrix ());
 
 			return true;
 		}

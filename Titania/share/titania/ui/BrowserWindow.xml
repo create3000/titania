@@ -1557,6 +1557,20 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <object class="GtkToolButton" id="LookAtSelectionButton">
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Look at selected object.</property>
+                                    <property name="label" translatable="yes">Look At Selection</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="stock_id">gtk-jump-to</property>
+                                    <signal name="clicked" handler="on_look_at_selection_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="homogeneous">True</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <object class="GtkToolButton" id="LookAtAllButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>

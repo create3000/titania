@@ -58,12 +58,12 @@
 #include "../LibraryView/LibraryView.h"
 #include "../MaterialEditor/MaterialEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
-#include "../TextureEditor/TextureEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
 #include "../TextEditor/TextEditor.h"
+#include "../TextureEditor/TextureEditor.h"
 #include "../ViewpointList/ViewpointList.h"
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
@@ -309,8 +309,9 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 
-	getSelectParentButton ()   .set_sensitive (haveSelection);
-	getSelectChildrenButton () .set_sensitive (haveSelection);
+	getSelectParentButton ()    .set_sensitive (haveSelection);
+	getSelectChildrenButton ()  .set_sensitive (haveSelection);
+	getLookAtSelectionButton () .set_sensitive (haveSelection);
 
 	// Show/Hide Object Icons
 
@@ -715,7 +716,7 @@ BrowserWindow::on_save_as ()
 	if (response_id == Gtk::RESPONSE_OK)
 	{
 		save (Glib::uri_unescape_string (fileSaveDialog -> get_uri ()), saveCompressedButton -> get_active ());
-		
+
 		saveAsOutput .processInterests ();
 	}
 
@@ -867,7 +868,7 @@ BrowserWindow::on_create_clone_activate ()
 	createClone (clone, selection, undoStep);
 
 	getSelection () -> setChildren ({ clone }, undoStep);
-	
+
 	addUndoStep (undoStep);
 }
 
@@ -1088,13 +1089,14 @@ BrowserWindow::enableEditor (const bool enabled)
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-	getHandButton ()           .set_visible (enabled);
-	getArrowButton ()          .set_visible (enabled);
-	getPlayPauseButton ()      .set_visible (enabled);
-	getSelectSeparator ()      .set_visible (enabled);
-	getSelectParentButton ()   .set_visible (enabled);
-	getSelectChildrenButton () .set_visible (enabled);
-	getViewerSeparator ()      .set_visible (enabled);
+	getHandButton ()            .set_visible (enabled);
+	getArrowButton ()           .set_visible (enabled);
+	getPlayPauseButton ()       .set_visible (enabled);
+	getSelectSeparator ()       .set_visible (enabled);
+	getSelectParentButton ()    .set_visible (enabled);
+	getSelectChildrenButton ()  .set_visible (enabled);
+	getViewerSeparator ()       .set_visible (enabled);
+	getLookAtSelectionButton () .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
@@ -1317,18 +1319,18 @@ BrowserWindow::on_lights_toggled ()
 			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 			               {
 			                  if (not node)
-			                     return true;
-			               
-			                  for (const auto & type : basic::make_reverse_range (node -> getType ()))
+										return true;
+
+			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
 			                  {
 			                     if (type == X3D::X3DConstants::X3DLightNodeTool)
 			                     {
-					                  if (not getBrowser () -> getSelection () -> isSelected (node))
+			                        if (not getBrowser () -> getSelection () -> isSelected (node))
 												node -> removeTool (true);
 
 			                        break;
-			                     }
-			                  }
+										}
+									}
 
 			                  return true;
 								},
@@ -1440,18 +1442,18 @@ BrowserWindow::on_viewpoints_toggled ()
 			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 			               {
 			                  if (not node)
-			                     return true;
-			               
-			                  for (const auto & type : basic::make_reverse_range (node -> getType ()))
+										return true;
+
+			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
 			                  {
 			                     if (type == X3D::X3DConstants::X3DViewpointNodeTool)
 			                     {
-					                  if (not getBrowser () -> getSelection () -> isSelected (node))
+			                        if (not getBrowser () -> getSelection () -> isSelected (node))
 												node -> removeTool (true);
 
 			                        break;
-			                     }
-			                  }
+										}
+									}
 
 			                  return true;
 								},
@@ -2329,6 +2331,28 @@ BrowserWindow::on_straighten_clicked ()
 }
 
 // Look at
+
+void
+BrowserWindow::on_look_at_selection_clicked ()
+{
+	if (not getBrowser () -> getActiveLayer ())
+		return;
+
+	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return;
+
+	const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (selection .back ());
+
+	if (not boundedObject)
+		return;
+
+	const auto activeViewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
+	const auto bbox            = boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (boundedObject));
+
+	activeViewpoint -> lookAt (bbox);
+}
 
 void
 BrowserWindow::on_look_at_all_clicked ()

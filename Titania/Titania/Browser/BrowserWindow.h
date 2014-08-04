@@ -567,6 +567,10 @@ private:
 
 	virtual
 	void
+	on_look_at_selection_clicked () final override;
+
+	virtual
+	void
 	on_look_at_all_clicked () final override;
 
 	virtual

@@ -111,7 +111,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 			const auto modelViewMatrix = Matrix4f (pickedObject -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
 			const auto bbox            = pickedObject -> shape -> getBBox () * modelViewMatrix;
 
-			getActiveViewpoint () -> lookAt (bbox, 1.0 / 3.0);
+			getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
 		}
 	}
 

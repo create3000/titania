@@ -320,6 +320,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LookAtAllButton -> set_name ("LookAtAllButton");
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_LookAtButton -> set_name ("LookAtButton");
+	m_builder -> get_widget ("LookAtSelectionButton", m_LookAtSelectionButton);
+	m_LookAtSelectionButton -> set_name ("LookAtSelectionButton");
 	m_builder -> get_widget ("Footer", m_Footer);
 	m_Footer -> set_name ("Footer");
 	m_builder -> get_widget ("FooterLabel", m_FooterLabel);
@@ -518,6 +520,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled));
+
+	// Connect object Gtk::ToolButton with id 'LookAtSelectionButton'.
+	m_LookAtSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_selection_clicked));
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	m_MessageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response));
