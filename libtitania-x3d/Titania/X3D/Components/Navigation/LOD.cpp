@@ -51,12 +51,17 @@
 #include "LOD.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Navigation/LODTool.h"
 
 namespace titania {
 namespace X3D {
+
+static constexpr size_t FRAMES         = 180; // Number of frames after wich a level change takes in affect.
+static constexpr float  FRAME_RATE_MIN = 20;  // Lowest level of detail.
+static constexpr float  FRAME_RATE_MAX = 55;  // Highest level of detail.
 
 const std::string LOD::componentName  = "Navigation";
 const std::string LOD::typeName       = "LOD";
@@ -72,7 +77,8 @@ LOD::Fields::Fields () :
 LOD::LOD (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
-	         fields ()
+	         fields (),
+	      frameRate (60)
 {
 	addType (X3DConstants::LOD);
 
@@ -120,9 +126,18 @@ LOD::getBBox () const
 size_t
 LOD::getLevel (const TraverseType type) const
 {
-	const float distance = getDistance (type);
+	if (range () .empty ())
+	{
+		frameRate = ((FRAMES - 1) * frameRate + getBrowser () -> getCurrentFrameRate ()) / FRAMES;
 
-	const auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
+		const auto  n        = children () .size () - 1;
+		const float fraction = std::max ((frameRate - FRAME_RATE_MIN) / (FRAME_RATE_MAX - FRAME_RATE_MIN), 0.0f);
+
+		return std::min <size_t> (std::ceil (fraction * (n - 1)), n);
+	}
+
+	const float distance = getDistance (type);
+	const auto  iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();
 }

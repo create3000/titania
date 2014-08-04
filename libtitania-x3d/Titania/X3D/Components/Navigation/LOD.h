@@ -176,6 +176,8 @@ private:
 
 	Fields fields;
 
+	mutable float frameRate;
+
 };
 
 } // X3D
