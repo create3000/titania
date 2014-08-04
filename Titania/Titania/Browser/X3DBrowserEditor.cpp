@@ -83,6 +83,7 @@ X3DBrowserEditor::initialize ()
 	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
 
 	getBrowser () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
 
 	undoHistory .addInterest (this, &X3DBrowserEditor::set_undoHistory);
 
@@ -192,6 +193,30 @@ X3DBrowserEditor::set_selection_active (const bool value)
 
 		if (changed)
 			addUndoStep (undoStep);
+	}
+}
+
+void
+X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
+{
+	if (selection .empty ())
+		return;
+
+	// If the parent node of the selection leader is a Switch, set whichChoice to the index of the leader.
+
+	for (const auto & node : getParentNodes (selection .back ()))
+	{
+		const auto switchNode = dynamic_cast <X3D::Switch*> (node);
+
+		if (not switchNode)
+			continue;
+
+		const auto indices = switchNode -> children () .indices_of (selection .back ());
+
+		if (indices .empty ())
+			continue;
+
+		switchNode -> whichChoice () = indices .front ();
 	}
 }
 

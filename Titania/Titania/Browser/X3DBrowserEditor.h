@@ -259,6 +259,9 @@ private:
 	void
 	set_selection_active (const bool);
 
+	void
+	set_selection (const X3D::MFNode &);
+
 	// File
 
 	void
