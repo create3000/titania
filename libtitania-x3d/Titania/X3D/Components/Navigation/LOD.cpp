@@ -130,7 +130,15 @@ LOD::getLevel (const TraverseType type) const
 	{
 		frameRate = ((FRAMES - 1) * frameRate + getBrowser () -> getCurrentFrameRate ()) / FRAMES;
 
-		const auto  n        = children () .size () - 1;
+		const auto size = children () .size ();
+
+		if (size < 2)
+			return 0;
+
+		if (size == 2)
+			return frameRate > FRAME_RATE_MAX;
+
+		const auto  n        = size - 1;
 		const float fraction = std::max ((frameRate - FRAME_RATE_MIN) / (FRAME_RATE_MAX - FRAME_RATE_MIN), 0.0f);
 
 		return std::min <size_t> (std::ceil (fraction * (n - 1)), n);
