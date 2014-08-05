@@ -120,8 +120,6 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_NextSceneButton -> set_name ("NextSceneButton");
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_ScrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("Viewport", m_Viewport);
-	m_Viewport -> set_name ("Viewport");
 
 	// Connect object Gtk::MenuItem with id 'SetAsCurrentSceneMenuItem'.
 	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));

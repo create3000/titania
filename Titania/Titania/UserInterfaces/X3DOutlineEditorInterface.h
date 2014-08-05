@@ -211,10 +211,6 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	Gtk::Viewport &
-	getViewport () const
-	{ return *m_Viewport; }
-
 	virtual
 	void
 	on_set_as_current_scene_activate () = 0;
@@ -317,7 +313,6 @@ private:
 	Gtk::Button*                    m_PreviousSceneButton;
 	Gtk::Button*                    m_NextSceneButton;
 	Gtk::ScrolledWindow*            m_ScrolledWindow;
-	Gtk::Viewport*                  m_Viewport;
 
 };
 
