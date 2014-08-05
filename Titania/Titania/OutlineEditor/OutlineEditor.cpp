@@ -88,7 +88,7 @@ OutlineEditor::initialize ()
 {
 	X3DOutlineEditorInterface::initialize ();
 
-	getViewport () .add (*treeView);
+	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
 
 	getShowExternProtosMenuItem ()         .set_active (getConfig () .getBoolean ("showExternProtos"));

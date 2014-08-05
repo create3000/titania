@@ -1,3 +1,9 @@
+titania (0.7.2ubuntu1) trusty; urgency=medium
+
+  * First Ubuntu Software Center Release
+
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 05 Aug 2014 11:51:23 +0200
+
 titania (0.7.2) quantal; urgency=low
 
   * 0.7 series
