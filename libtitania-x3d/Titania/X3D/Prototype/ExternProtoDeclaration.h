@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_H__
 #define __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_H__
 
-#include "../Components/Core/X3DNode.h"
 #include "../Components/Networking/X3DUrlObject.h"
 #include "../Execution/Scene.h"
 #include "../Fields.h"
@@ -63,11 +62,11 @@ namespace X3D {
 class Loader;
 
 class ExternProtoDeclaration :
-	public X3DNode, public X3DProtoObject, public X3DUrlObject
+	public X3DProtoDeclarationNode, public X3DUrlObject
 {
 public:
 
-	using X3DProtoObject::createInstance;
+	using X3DProtoDeclarationNode::createInstance;
 
 	///  @name Construction
 

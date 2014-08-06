@@ -1,5 +1,22 @@
 2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Pointer.h:
+	* Traverse.h:
+	* X3DConstants.h:
+	* X3DProtoObject.h:
+	* ProtoDeclaration.h:
+	* ProtoDeclaration.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.h:
+	* X3DProtoDeclarationNode.h:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp: 
+
+2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* VisibilitySensor.cpp: 
 
 2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>

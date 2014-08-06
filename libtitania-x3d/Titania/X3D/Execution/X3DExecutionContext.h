@@ -70,7 +70,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DProtoObject;
+class X3DProtoDeclarationNode;
 class X3DPrototypeInstance;
 
 class X3DExecutionContext :
@@ -406,20 +406,20 @@ public:
 
 	///  @name ProtoObject handling
 
-	X3DProtoObject*
-	findProtoObject (const std::string &, const AvailableType &) const
+	X3DProtoDeclarationNode*
+	findProtoDeclaration (const std::string &, const AvailableType &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DProtoObject*
-	findProtoObject (const std::string &) const
+	X3DProtoDeclarationNode*
+	findProtoDeclaration (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	std::map <std::string, X3DProtoObject*>
-	findProtoObjects () const
+	std::map <std::string, X3DProtoDeclarationNode*>
+	findProtoDeclarations () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 

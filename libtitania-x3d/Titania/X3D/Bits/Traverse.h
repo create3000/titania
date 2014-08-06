@@ -112,7 +112,7 @@ findParents (X3DChildObject* const object, std::vector <Type*> & parents, const 
 		{
 			switch (type)
 			{
-				case X3DConstants::X3DProtoObject:
+				case X3DConstants::X3DProtoDeclarationNode:
 				case X3DConstants::X3DScriptNode:
 				case X3DConstants::X3DProgrammableShaderObject:
 				{

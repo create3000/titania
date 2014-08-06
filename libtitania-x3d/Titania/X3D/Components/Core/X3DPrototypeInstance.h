@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DProtoObject;
+class X3DProtoDeclarationNode;
 
 class X3DPrototypeInstance :
 	public X3DNode, public X3DExecutionContext
@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoObjectPtr &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoDeclarationNodePtr &);
 
 	virtual
 	X3DPrototypeInstance*
@@ -104,25 +104,25 @@ public:
 
 	virtual
 	const SFBool &
-	isLive () const  final override
+	isLive () const final override
 	{ return live; }
 
 	virtual
 	std::string
 	getTitle () const final override
-	{ return protoObject -> getProtoDeclaration () -> getTitle (); }
+	{ return protoNode -> getProtoDeclaration () -> getTitle (); }
 
 	virtual
 	void
 	setWorldURL (const basic::uri & value) final override
-	{ return protoObject -> getProtoDeclaration () -> setWorldURL (value); }
+	{ return protoNode -> getProtoDeclaration () -> setWorldURL (value); }
 
 	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return protoObject -> getProtoDeclaration () -> getWorldURL (); }
+	{ return protoNode -> getProtoDeclaration () -> getWorldURL (); }
 
 	virtual
 	X3DBaseNode*
@@ -138,9 +138,9 @@ public:
 	getRootNode () const
 	throw (Error <DISPOSED>);
 
-	const X3DProtoObjectPtr &
+	const X3DProtoDeclarationNodePtr &
 	getProtoObject () const
-	{ return protoObject; }
+	{ return protoNode; }
 
 	///  @name Operations
 
@@ -161,12 +161,12 @@ public:
 	virtual
 	void
 	isCompressed (const bool value) final override
-	{ protoObject -> getProtoDeclaration () -> isCompressed (value); }
+	{ protoNode -> getProtoDeclaration () -> isCompressed (value); }
 
 	virtual
 	bool
 	isCompressed () const final override
-	{ return protoObject -> getProtoDeclaration () -> isCompressed (); }
+	{ return protoNode -> getProtoDeclaration () -> isCompressed (); }
 
 	virtual
 	void
@@ -175,9 +175,9 @@ public:
 	virtual
 	void
 	toXMLStream (std::ostream &) const final override;
-	
+
 	///  @name Destruction
-	
+
 	virtual
 	void
 	dispose () final override;
@@ -203,8 +203,9 @@ private:
 
 	///  @name Members
 
-	X3DProtoObjectPtr protoObject;
-	SFBool            live;
+	X3DProtoDeclarationNodePtr protoNode;
+	SFBool                     live;
+
 };
 
 } // X3D

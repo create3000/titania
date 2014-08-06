@@ -233,7 +233,7 @@ OutlineCellRenderer::on_data ()
 			if (scene)
 				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getWorldURL () .basename ()) + "«</i>";
 
-			else if (dynamic_cast <X3D::X3DProtoObject*> (sfnode .getValue ()))
+			else if (dynamic_cast <X3D::X3DProtoDeclarationNode*> (sfnode .getValue ()))
 				property_markup () = "<i><b>Body</b></i>";
 
 			else // X3DPrototypeInstance

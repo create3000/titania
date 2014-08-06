@@ -489,7 +489,7 @@ enum NodeType : uint16_t
 	X3DJavaScriptContext,
 	X3DJavaScriptEngine,
 	X3DParser,
-	X3DProtoObject,
+	X3DProtoDeclarationNode,
 	X3DRenderObject,
 	X3DRouterObject,
 	X3DScene,

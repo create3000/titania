@@ -622,7 +622,6 @@
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.h" />
     <None Include="share\titania\tools\EnvironmentalSensor.x3dv" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.h" />
-    <None Include="Titania\X3D\Prototype\X3DProtoObject.h" />
     <None Include="Titania\X3D\Browser\Navigation\X3DNavigationContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Intersection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DPointingDeviceSensorContext.h" />
@@ -766,6 +765,7 @@
     <None Include="Titania\X3D\Tools\Navigation\ViewpointTool.h" />
     <None Include="share\titania\tools\library\ToolShader.x3dv" />
     <None Include="Titania\X3D\Tools\Navigation\OrthoViewpointTool.h" />
+    <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

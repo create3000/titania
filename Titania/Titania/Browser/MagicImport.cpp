@@ -227,21 +227,21 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			}
 		}
 
-		const auto protoObject = prototypeInstance -> getProtoObject () -> copy (getExecutionContext (), X3D::COPY_OR_CLONE);
+		const auto protoNode = prototypeInstance -> getProtoObject () -> copy (getExecutionContext (), X3D::COPY_OR_CLONE);
 		
 		if (isExternProto)
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
-			                             X3D::ExternProtoDeclarationPtr (protoObject));
+			                             X3D::ExternProtoDeclarationPtr (protoNode));
 		}
 		else
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
-			                             X3D::ProtoDeclarationPtr (protoObject));
+			                             X3D::ProtoDeclarationPtr (protoNode));
 		}	
 	}
 }

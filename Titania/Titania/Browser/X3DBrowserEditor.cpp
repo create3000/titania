@@ -600,7 +600,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 {
 	// Find proto declarations
 
-	std::map <X3D::X3DProtoObjectPtr, size_t> protoObjects;
+	std::map <X3D::X3DProtoDeclarationNodePtr, size_t> protoNodes;
 
 	X3D::traverse (nodes, [&] (X3D::SFNode & node)
 	               {
@@ -619,8 +619,8 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                                       {
 	                                          try
 	                                          {
-	                                             if (child -> getProtoObject () == getExecutionContext () -> findProtoObject (child -> getTypeName (), X3D::AvailableType { }))
-																	protoObjects .emplace (child -> getProtoObject (), protoObjects .size ());
+	                                             if (child -> getProtoObject () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName (), X3D::AvailableType { }))
+																	protoNodes .emplace (child -> getProtoObject (), protoNodes .size ());
 															}
 	                                          catch (const X3D::X3DError &)
 	                                          { }
@@ -630,7 +630,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 													},
 	                                    true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-	                     protoObjects .emplace (protoInstance -> getProtoObject (), protoObjects .size ());
+	                     protoNodes .emplace (protoInstance -> getProtoObject (), protoNodes .size ());
 							}
 
 	                  return true;
@@ -689,10 +689,10 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	X3D::Generator::CompactStyle ();
 	X3D::Generator::PushContext ();
 
-	if (not protoObjects .empty ())
+	if (not protoNodes .empty ())
 	{
-		for (const auto & protoObject : basic::reverse (protoObjects))
-			text << protoObject .second << std::endl;
+		for (const auto & protoNode : basic::reverse (protoNodes))
+			text << protoNode .second << std::endl;
 
 		text << std::endl;
 	}
@@ -2005,7 +2005,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 		{
 			case X3D::X3DConstants::X3DLayerNode:
 				return true;
-			case X3D::X3DConstants::X3DProtoObject:
+			case X3D::X3DConstants::X3DProtoDeclarationNode:
 			case X3D::X3DConstants::X3DScriptNode:
 			case X3D::X3DConstants::X3DProgrammableShaderObject:
 			case X3D::X3DConstants::X3DBaseNode:

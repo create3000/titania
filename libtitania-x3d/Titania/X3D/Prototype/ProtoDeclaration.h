@@ -51,20 +51,19 @@
 #ifndef __TITANIA_X3D_PROTOTYPE_PROTO_H__
 #define __TITANIA_X3D_PROTOTYPE_PROTO_H__
 
-#include "../Components/Core/X3DNode.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Prototype/X3DProtoObject.h"
+#include "../Prototype/X3DProtoDeclarationNode.h"
 
 namespace titania {
 namespace X3D {
 
 class ProtoDeclaration :
-	public X3DNode, public X3DExecutionContext, public X3DProtoObject
+	public X3DProtoDeclarationNode, public X3DExecutionContext
 {
 public:
 
 	using X3DExecutionContext::getProtoDeclaration;
-	using X3DProtoObject::createInstance;
+	using X3DProtoDeclarationNode::createInstance;
 
 	///  @name Construction
 

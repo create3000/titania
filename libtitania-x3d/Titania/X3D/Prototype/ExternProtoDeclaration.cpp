@@ -68,8 +68,7 @@ const std::string ExternProtoDeclaration::containerField = "externProto";
 
 ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     X3DNode (),
- X3DProtoObject (),
+   X3DProtoDeclarationNode (),
 	X3DUrlObject (),
 	       scene (),
 	   prototype ()
@@ -105,7 +104,7 @@ throw (Error <INVALID_NAME>,
 		{
 			try
 			{
-				const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+				const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
 
 				if (externProto)
 					return externProto;
@@ -155,8 +154,7 @@ ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionCont
 void
 ExternProtoDeclaration::initialize ()
 {
-	X3DNode::initialize ();
-	X3DProtoObject::initialize ();
+	X3DProtoDeclarationNode::initialize ();
 	X3DUrlObject::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
@@ -521,8 +519,7 @@ void
 ExternProtoDeclaration::dispose ()
 {
 	X3DUrlObject::dispose ();
-	X3DProtoObject::dispose ();
-	X3DNode::dispose ();
+	X3DProtoDeclarationNode::dispose ();
 
 	removeChildren (url ());
 }

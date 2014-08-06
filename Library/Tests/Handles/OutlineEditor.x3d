@@ -521,7 +521,6 @@ function initialize ()
     <IMPORT inlineDEF='_2' exportedDEF='Text' AS='ImportedInline'/>
     <ROUTE fromNode='ModifiedScript' fromField='string_changed' toNode='Text2' toField='set_string'/>
     <ROUTE fromNode='Rotor2' fromField='rotation_changed' toNode='ImportedInline' toField='set_rotation'/>
-    <ROUTE fromNode='Rotor2' fromField='pauseTime_changed' toNode='Rotor2' toField='set_resumeTime'/>
     <ROUTE fromNode='Rotor' fromField='rotation_changed' toNode='Box' toField='set_rotation'/>
     <EXPORT localDEF='Rotor'/>
   </Scene>

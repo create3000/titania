@@ -1,5 +1,13 @@
 2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.cpp:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:
 	* X3DBrowserWindowInterface.h:

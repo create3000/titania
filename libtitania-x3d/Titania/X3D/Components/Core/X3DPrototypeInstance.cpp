@@ -69,25 +69,26 @@ namespace X3D {
 const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoObjectPtr & protoObject_) :
-//throw (Error <INVALID_NAME>,
-//       Error <INVALID_OPERATION_TIMING>,
-//       Error <DISPOSED>) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoDeclarationNodePtr & protoNode_) :
+	            //throw (Error <INVALID_NAME>,
+	                     //       Error <INVALID_OPERATION_TIMING>,
+	                     //       Error <DISPOSED>) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
-	        protoObject (protoObject_),
+	          protoNode (protoNode_),
 	               live (true)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
 
-	addChildren (getRootNodes (), protoObject, live);
+	addChildren (getRootNodes (), protoNode, live);
 
 	// Interface
 
-	ProtoDeclaration* const prototype = protoObject -> getProtoDeclaration ();
+	// When the root nodes are copied, all proto fields must be available to create IS-references.
+	ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
 
 	metadata () = prototype -> metadata ();
 
@@ -120,8 +121,10 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		importProtos (prototype, CloneType { });
 		importRootNodes (prototype);
 	}
-	catch (const X3DError &)
-	{ }
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 
 	setExtendedEventHandling (false);
 
@@ -133,7 +136,7 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
 	try
 	{
-		return executionContext -> findProtoObject (getTypeName (), AvailableType { }) -> createInstance (executionContext);
+		return executionContext -> findProtoDeclaration (getTypeName (), AvailableType { }) -> createInstance (executionContext);
 	}
 	catch (const X3DError & error)
 	{
@@ -153,7 +156,7 @@ X3DPrototypeInstance::initialize ()
 	{
 		// Defer assigning imports and routes until now
 
-		ProtoDeclaration* const prototype = protoObject -> getProtoDeclaration ();
+		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
 
 		importImportedNodes (prototype);
 		importRoutes (prototype);
@@ -169,8 +172,8 @@ const std::string &
 X3DPrototypeInstance::getTypeName () const
 throw (Error <DISPOSED>)
 {
-	if (protoObject)
-		return protoObject -> getName ();
+	if (protoNode)
+		return protoNode -> getName ();
 
 	backtrace_fn ();
 
@@ -181,8 +184,8 @@ const X3DBaseNode*
 X3DPrototypeInstance::getDeclaration () const
 throw (Error <DISPOSED>)
 {
-	if (protoObject)
-		return protoObject .getValue ();
+	if (protoNode)
+		return protoNode .getValue ();
 
 	backtrace_fn ();
 
@@ -404,7 +407,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							<< "name='"
 							<< XMLEncode (field -> getName ())
 							<< "'";
-						
+
 						if (static_cast <MFNode*> (field) -> empty ())
 						{
 							ostream
@@ -530,7 +533,7 @@ X3DPrototypeInstance::dispose ()
 {
 	X3DExecutionContext::dispose ();
 	X3DNode::dispose ();
-	
+
 	removeChildren (getRootNodes ());
 }
 

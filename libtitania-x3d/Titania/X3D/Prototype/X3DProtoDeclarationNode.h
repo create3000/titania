@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PROTOTYPE_X3DPROTO_H__
-#define __TITANIA_X3D_PROTOTYPE_X3DPROTO_H__
+#ifndef __TITANIA_X3D_PROTOTYPE_X3DPROTO_DECLARATION_NODE_H__
+#define __TITANIA_X3D_PROTOTYPE_X3DPROTO_DECLARATION_NODE_H__
 
-#include "../Basic/X3DBaseNode.h"
+#include "../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -59,8 +59,8 @@ namespace X3D {
 class ProtoDeclaration;
 class X3DPrototypeInstance;
 
-class X3DProtoObject :
-	virtual public X3DBaseNode
+class X3DProtoDeclarationNode :
+	virtual public X3DNode
 {
 public:
 
@@ -71,6 +71,11 @@ public:
 	isExternproto () const = 0;
 
 	///  @name Member access
+
+	virtual
+	bool
+	canUserDefinedFields () const final override
+	{ return true; }
 
 	virtual
 	ProtoDeclaration*
@@ -100,31 +105,17 @@ public:
 	getInterfaceComments () const
 	{ return comments; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
 
 protected:
 
 	///  @name Construction
 
-
-	X3DProtoObject () :
-		X3DBaseNode (),
-		   comments ()
+	X3DProtoDeclarationNode () :
+		 X3DNode (),
+		comments ()
 	{
-		addType (X3DConstants::X3DProtoObject);
+		addType (X3DConstants::X3DProtoDeclarationNode);
 	}
-
-	virtual
-	void
-	initialize () override
-	{ }
-
 
 private:
 

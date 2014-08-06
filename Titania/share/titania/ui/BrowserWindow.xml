@@ -2763,7 +2763,7 @@
                   <object class="GtkLabel" id="PrototypeLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">X3DProtoObject</property>
+                    <property name="label" translatable="yes">X3DProtoDeclarationNode</property>
                   </object>
                 </child>
               </object>

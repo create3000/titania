@@ -233,7 +233,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return findProtoObject (name, AvailableType { }) -> createInstance (this);
+	return findProtoDeclaration (name, AvailableType { }) -> createInstance (this);
 }
 
 // Named node handling
@@ -836,8 +836,8 @@ throw (Error <INVALID_NAME>,
 
 // ProtoObject handling
 
-X3DProtoObject*
-X3DExecutionContext::findProtoObject (const std::string & name, const AvailableType & available) const
+X3DProtoDeclarationNode*
+X3DExecutionContext::findProtoDeclaration (const std::string & name, const AvailableType & available) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -855,30 +855,30 @@ throw (Error <INVALID_NAME>,
 		catch (const std::out_of_range &)
 		{
 			if (not isRootContext ())
-				return getExecutionContext () -> findProtoObject (name, available);
+				return getExecutionContext () -> findProtoDeclaration (name, available);
 
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
 		}
 	}
 }
 
-X3DProtoObject*
-X3DExecutionContext::findProtoObject (const std::string & name) const
+X3DProtoDeclarationNode*
+X3DExecutionContext::findProtoDeclaration (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto protoObjects = findProtoObjects ();
-	const auto iter         = protoObjects .find (name);
+	const auto protoNodes = findProtoDeclarations ();
+	const auto iter         = protoNodes .find (name);
 	
-	if (iter not_eq protoObjects .end ())
+	if (iter not_eq protoNodes .end ())
 		return iter -> second;
 
 	throw Error <INVALID_NAME> ("Unknown proto object '" + name + "'.");
 }
 
-std::map <std::string, X3DProtoObject*>
-X3DExecutionContext::findProtoObjects () const
+std::map <std::string, X3DProtoDeclarationNode*>
+X3DExecutionContext::findProtoDeclarations () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -886,7 +886,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	// Find all available prototypes
 
-	std::map <std::string, X3DProtoObject*> prototypes;
+	std::map <std::string, X3DProtoDeclarationNode*> prototypes;
 	std::string                             current;
 
 	for (;;)

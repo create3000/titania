@@ -482,7 +482,6 @@ IMPORT _3.Text AS ImportedInline
 
 ROUTE Rotor.rotation_changed TO Box.set_rotation
 ROUTE Sensors.translation_changed TO Inline.set_translation
-ROUTE Rotor2.pauseTime_changed TO Rotor2.set_resumeTime
 ROUTE ModifiedScript.string_changed TO Text2.set_string
 ROUTE Rotor2.rotation_changed TO ImportedInline.set_rotation
 

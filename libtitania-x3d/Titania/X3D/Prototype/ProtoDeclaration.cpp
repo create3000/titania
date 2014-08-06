@@ -65,9 +65,8 @@ const std::string ProtoDeclaration::containerField = "proto";
 
 ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	            X3DNode (),
-	X3DExecutionContext (),
-	     X3DProtoObject ()
+	       X3DProtoDeclarationNode (),
+	X3DExecutionContext ()
 {
 	addType (X3DConstants::ProtoDeclaration);
 
@@ -110,7 +109,7 @@ throw (Error <INVALID_NAME>,
 		{
 			try
 			{
-				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoObject (getName ()));
+				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
 
 				if (proto)
 					return proto;
@@ -164,9 +163,8 @@ ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
 void
 ProtoDeclaration::initialize ()
 {
-	X3DNode::initialize ();
+	X3DProtoDeclarationNode::initialize ();
 	X3DExecutionContext::initialize ();
-	X3DProtoObject::initialize ();
 
 	// Prototypes shouldn't be live as they are not realized.
 }
@@ -466,10 +464,9 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ProtoDeclaration::dispose ()
 {
-	X3DProtoObject::dispose ();
 	X3DExecutionContext::dispose ();
-	X3DNode::dispose ();
-	
+	X3DProtoDeclarationNode::dispose ();
+
 	removeChildren (getRootNodes ());
 }
 

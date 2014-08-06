@@ -1794,14 +1794,14 @@ BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
 	// Find all available proto objects
 
-	const auto protoObjects = getExecutionContext () -> findProtoObjects ();
+	const auto protoNodes = getExecutionContext () -> findProtoDeclarations ();
 
 	// Remove all menu items
 
 	for (const auto & widget : getPrototypeMenu () .get_children ())
 		getPrototypeMenu () .remove (*widget);
 
-	for (const auto & pair : protoObjects)
+	for (const auto & pair : protoNodes)
 	{
 		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (pair .second -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
 		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, pair .first));
