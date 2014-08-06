@@ -101,6 +101,9 @@ ProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (this, &ProximitySensor::set_enabled);
+	isLive () .addInterest (this, &ProximitySensor::set_enabled);
+
 	enabled () .addInterest (this, &ProximitySensor::set_enabled);
 
 	set_enabled ();
@@ -109,7 +112,7 @@ ProximitySensor::initialize ()
 void
 ProximitySensor::set_enabled ()
 {
-	if (enabled ())
+	if (enabled () and isLive () and getExecutionContext () -> isLive ())
 		getBrowser () -> sensors () .addInterest (this, &ProximitySensor::update);
 
 	else

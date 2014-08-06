@@ -1,5 +1,10 @@
 2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp: 
+
+2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Browser.h:
 	* Browser.cpp:
 	* TransformTool.x3dv:
