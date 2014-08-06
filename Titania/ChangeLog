@@ -1,5 +1,11 @@
 2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* run.pl:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml: 
+
+2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MagicImport.cpp:
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:

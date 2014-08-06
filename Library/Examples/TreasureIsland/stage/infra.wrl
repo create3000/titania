@@ -4,7 +4,7 @@ Group {
   children	  Transform {
     children	[
       DEF _0 WorldInfo {
-	info	[ "Created in CosmoWorlds",
+	info	[ "Created in Titania",
 		  "Packaged by CosmoPackage",
 		  "Packaged by CosmoPackage" ]
       }

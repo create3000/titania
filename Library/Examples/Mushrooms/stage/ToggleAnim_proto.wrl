@@ -110,7 +110,7 @@ function set_offset(value, time)
   ROUTE _1.offset_changed TO _toggleAnim_0.set_offset
 }
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage",
 	    "Packaged by CosmoPackage" ]
 }

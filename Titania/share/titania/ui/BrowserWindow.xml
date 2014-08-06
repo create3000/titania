@@ -1198,6 +1198,7 @@
                     <child>
                       <object class="GtkImageMenuItem" id="StandardSizeMenuItem">
                         <property name="label">gtk-zoom-100</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>

@@ -72,7 +72,7 @@ EXTERNPROTO CountDown [
 "CountDown_proto.wrl"
 
 WorldInfo {
-  info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+  info [ "Created in Titania", "Packaged by CosmoPackage" ]
 }
 Transform {
   children [

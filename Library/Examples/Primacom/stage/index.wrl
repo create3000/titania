@@ -3,7 +3,7 @@
 META "title" "Primacom"
 
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }
 DEF Light1 DirectionalLight {

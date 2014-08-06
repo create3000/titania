@@ -8,7 +8,7 @@ Group {
       DEF _0 WorldInfo {
         title "BIC Terminal"
         info [
-          "Created in CosmoWorlds",
+          "Created in Titania",
           "Packaged by CosmoPackage"
         ]
       }

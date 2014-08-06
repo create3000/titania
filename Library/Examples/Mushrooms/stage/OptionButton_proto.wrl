@@ -45,7 +45,7 @@ function touchTime(value, time)
   }
 }
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage",
 	    "Packaged by CosmoPackage" ]
 }

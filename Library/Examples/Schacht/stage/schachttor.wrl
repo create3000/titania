@@ -67,7 +67,7 @@ EXTERNPROTO Scene [
 	[ "http://vr.create3000.tv/vrml/protos1.1/Scene/Scene_proto.wrl",
 	  "Scene_proto.wrl" ]
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }
 DEF rahmen Transform {

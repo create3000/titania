@@ -35,7 +35,7 @@ EXTERNPROTO Import [
 	  ]
 	"Import_proto.wrl"
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }
 DEF VP2 Viewpoint {

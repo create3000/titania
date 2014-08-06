@@ -24,6 +24,6 @@ function set_time(value, time)
   }
 }
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }

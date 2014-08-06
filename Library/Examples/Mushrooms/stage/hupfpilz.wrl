@@ -20,7 +20,7 @@ Group {
   children [
     WorldInfo {
       info [
-        "Created in CosmoWorlds",
+        "Created in Titania",
         "Packaged by CosmoPackage",
         "Packaged by CosmoPackage"
       ]

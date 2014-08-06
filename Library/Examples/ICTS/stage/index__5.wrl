@@ -13,7 +13,7 @@ EXTERNPROTO Float [
 	  ]
 	"Float_proto.wrl"
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }
 DEF Copyright Transform {

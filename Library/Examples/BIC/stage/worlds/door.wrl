@@ -3,7 +3,7 @@
 Group {
   children [
     WorldInfo {
-      info [ "Created in CosmoWorlds", "Packaged by CosmoPackage", "Packaged by CosmoPackage" ]
+      info [ "Created in Titania", "Packaged by CosmoPackage", "Packaged by CosmoPackage" ]
     }
     DEF Schwelle Transform {
       translation -30.5547 4.33352 -18.8377

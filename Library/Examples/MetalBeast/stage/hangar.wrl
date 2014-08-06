@@ -16,7 +16,7 @@ EXTERNPROTO Gate [
 "Gate_proto.wrl"
 
 WorldInfo {
-  info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+  info [ "Created in Titania", "Packaged by CosmoPackage" ]
 }
 
 DEF hangar Transform {

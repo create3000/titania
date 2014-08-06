@@ -1,7 +1,7 @@
 #VRML V2.0 utf8
 
 WorldInfo {
-  info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+  info [ "Created in Titania", "Packaged by CosmoPackage" ]
 }
 DEF Train Transform {
   center -0.0390764 1.16207 81.2901

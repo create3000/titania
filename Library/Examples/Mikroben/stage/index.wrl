@@ -107,7 +107,7 @@ EXTERNPROTO LoadURL [
 	  ]
 	"LoadURL_proto.wrl"
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }
 DEF _WorldNavInfo1 NavigationInfo {

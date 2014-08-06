@@ -3,7 +3,7 @@
 Group {
   children [
     WorldInfo {
-      info [ "Created in CosmoWorlds", "Packaged by CosmoPackage", "Packaged by CosmoPackage" ]
+      info [ "Created in Titania", "Packaged by CosmoPackage", "Packaged by CosmoPackage" ]
     }
     DEF Fire Transform {
       children [

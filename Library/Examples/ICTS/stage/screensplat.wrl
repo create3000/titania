@@ -17,7 +17,7 @@ EXTERNPROTO RandomSwitcher [
 	  ]
 	"RandomSwitcher_proto.wrl"
 WorldInfo {
-  info	[ "Created in CosmoWorlds",
+  info	[ "Created in Titania",
 	    "Packaged by CosmoPackage" ]
 }
 DEF screensplat Transform {

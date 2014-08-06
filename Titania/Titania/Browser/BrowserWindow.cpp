@@ -1702,7 +1702,7 @@ BrowserWindow::on_info ()
 void
 BrowserWindow::on_standard_size ()
 {
-	getWindow () .resize (960, 600);
+	getWindow () .resize (1024, 1024.0 * 9.0 / 16.0);
 }
 
 /// Toolbar

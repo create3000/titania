@@ -1111,7 +1111,7 @@ Transform {
     scale 0.602234 0.602234 0.602234
     children [
       WorldInfo {
-        info [ "Created in CosmoWorlds", "Packaged by CosmoPackage", "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+        info [ "Created in Titania", "Packaged by CosmoPackage", "Created in Titania", "Packaged by CosmoPackage" ]
       }
       Group {
         children DEF palme Transform {

@@ -39,7 +39,7 @@ EXTERNPROTO Switcher [
 "Switcher_proto.wrl"
 
 WorldInfo {
-  info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+  info [ "Created in Titania", "Packaged by CosmoPackage" ]
 }
 NavigationInfo {
   headlight FALSE

@@ -3,7 +3,7 @@
 META "title" "Leipziger Rathaus"
 
 WorldInfo {
-  info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+  info [ "Created in Titania", "Packaged by CosmoPackage" ]
 }
 DEF innen Transform {
   children Shape {
