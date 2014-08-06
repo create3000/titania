@@ -688,3 +688,5 @@ font_activated
   virtual void on_font_activated(const Glib::ustring& fontname);
 close
   virtual void on_close();
+focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* event);
