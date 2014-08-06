@@ -1,3 +1,19 @@
+2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.h:
+	* Browser.cpp:
+	* TransformTool.x3dv:
+	* X3DFlyViewer.h:
+	* KeyDevice.h:
+	* X3DFlyViewer.cpp:
+	* KeyDevice.cpp:
+	* KeySensor.h:
+	* KeySensor.cpp:
+	* StringSensor.h:
+	* StringSensor.cpp:
+	* X3DKeyDeviceSensorNode.h:
+	* X3DKeyDeviceSensorNode.cpp: 
+
 2014-08-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp: 

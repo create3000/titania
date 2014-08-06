@@ -230,8 +230,6 @@ X3DBrowserEditor::isSaved ()
 
 	if (isModified ())
 	{
-		getBrowserWindow () -> getKeys () .clear ();
-
 		getFileSaveWarningLabel () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
 		                                                      getScene () -> getWorldURL () .empty ()
 		                                                      ? _ ("no title")
@@ -2280,8 +2278,6 @@ X3DBrowserEditor::shutdown ()
 	}
 
 	fileMonitors .clear ();
-
-	getBrowserWindow () -> getKeys () .clear ();
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

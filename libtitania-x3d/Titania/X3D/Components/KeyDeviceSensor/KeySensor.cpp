@@ -126,7 +126,7 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-KeySensor::set_actionKeyPressEvent (const int keyval)
+KeySensor::setActionKeyPressEvent (const int keyval)
 {
 	switch (keyval)
 	{
@@ -273,7 +273,7 @@ KeySensor::set_actionKeyPressEvent (const int keyval)
 
 		default:
 		{
-			auto character = gdk_keyval_to_unicode (keyval);
+			const auto character = gdk_keyval_to_unicode (keyval);
 
 			if (character)
 				keyPress () = String (1, character);
@@ -284,7 +284,7 @@ KeySensor::set_actionKeyPressEvent (const int keyval)
 }
 
 void
-KeySensor::set_actionKeyReleaseEvent (const int keyval)
+KeySensor::setActionKeyReleaseEvent (const int keyval)
 {
 	switch (keyval)
 	{
@@ -431,7 +431,7 @@ KeySensor::set_actionKeyReleaseEvent (const int keyval)
 
 		default:
 		{
-			auto character = gdk_keyval_to_unicode (keyval);
+			const auto character = gdk_keyval_to_unicode (keyval);
 
 			if (character)
 				keyRelease () = String (1, character);
@@ -442,15 +442,31 @@ KeySensor::set_actionKeyReleaseEvent (const int keyval)
 }
 
 void
-KeySensor::set_keyPressEvent (const String & key)
+KeySensor::setKeyPressEvent (const String & key)
 {
 	keyPress () = key;
 }
 
 void
-KeySensor::set_keyReleaseEvent (const String & key)
+KeySensor::setKeyReleaseEvent (const String & key)
 {
 	keyRelease () = key;
+}
+
+void
+KeySensor::setKeyReleaseEvent ()
+{
+	shiftKeys   = 0;
+	controlKeys = 0;
+
+	if (shiftKey ())
+		shiftKey () = false;
+
+	if (controlKey ())
+		controlKey () = false;
+
+	if (altKey ())
+		altKey () = false;
 }
 
 } // X3D

@@ -53,13 +53,14 @@
 
 #include <Titania/OpenGL/Surface.h>
 
-#include "../Browser/KeyDeviceSensor/KeyDevice.h"
-#include "../Browser/PointingDeviceSensor/PointingDevice.h"
-#include "../Browser/Navigation/X3DViewer.h"
 #include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
+
+class KeyDevice;
+class PointingDevice;
+class X3DViewer;
 
 class Browser :
 	public X3DBrowser, public opengl::Surface
@@ -142,9 +143,9 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <X3DViewer> viewer;
-	KeyDevice                   keyDevice;
-	PointingDevice              pointingDevice;
+	std::unique_ptr <X3DViewer>      viewer;
+	std::unique_ptr <KeyDevice>      keyDevice;
+	std::unique_ptr <PointingDevice> pointingDevice;
 
 };
 

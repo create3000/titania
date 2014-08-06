@@ -232,6 +232,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ViewpointsMenuItem -> set_name ("ViewpointsMenuItem");
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
 	m_HideAllObjectIconsMenuItem -> set_name ("HideAllObjectIconsMenuItem");
+	m_builder -> get_widget ("RubberbandMenuItem", m_RubberbandMenuItem);
+	m_RubberbandMenuItem -> set_name ("RubberbandMenuItem");
 	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_RenderingPropertiesMenuItem);
 	m_RenderingPropertiesMenuItem -> set_name ("RenderingPropertiesMenuItem");
 	m_builder -> get_widget ("FullScreenMenuItem", m_FullScreenMenuItem);
@@ -256,10 +258,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SelectLowestMenuItem -> set_name ("SelectLowestMenuItem");
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
 	m_FollowPrimarySelectionMenuItem -> set_name ("FollowPrimarySelectionMenuItem");
-	m_builder -> get_widget ("NavigationMenuItem", m_NavigationMenuItem);
-	m_NavigationMenuItem -> set_name ("NavigationMenuItem");
-	m_builder -> get_widget ("RubberbandMenuItem", m_RubberbandMenuItem);
-	m_RubberbandMenuItem -> set_name ("RubberbandMenuItem");
+	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
+	m_LayoutMenuItem -> set_name ("LayoutMenuItem");
+	m_builder -> get_widget ("GridToolMenuItem", m_GridToolMenuItem);
+	m_GridToolMenuItem -> set_name ("GridToolMenuItem");
 	m_builder -> get_widget ("ToolsMenuItem", m_ToolsMenuItem);
 	m_ToolsMenuItem -> set_name ("ToolsMenuItem");
 	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
@@ -401,6 +403,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate));
 
 	// Connect object Gtk::Window with id 'Window'.
+	m_Window -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_focus_out_event));
 	m_Window -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_press_event), false);
 	m_Window -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_release_event), false);
 
@@ -475,7 +478,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activate));
 
-	// Connect object Gtk::CheckMenuItem with id 'RenderingPropertiesMenuItem'.
+	// Connect object Gtk::CheckMenuItem with id 'RubberbandMenuItem'.
+	m_RubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 	m_RenderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.
@@ -493,9 +497,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckMenuItem with id 'SelectLowestMenuItem'.
 	m_SelectLowestMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
 	m_FollowPrimarySelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
-	m_RubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 
-	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
+	// Connect object Gtk::MenuItem with id 'GridToolMenuItem'.
+	m_GridToolMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_tool_activate));
 	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_editor_activate));
 
 	// Connect object Gtk::ImageMenuItem with id 'StandardSizeMenuItem'.

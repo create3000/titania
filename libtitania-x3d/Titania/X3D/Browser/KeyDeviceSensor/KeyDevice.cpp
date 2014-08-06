@@ -73,6 +73,7 @@ KeyDevice::initialize ()
 {
 	X3DBrowserObject::initialize ();
 
+	getBrowser () -> signal_focus_out_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_focus_out_event));
 	getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_action_key_press_event));
 	getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_action_key_release_event));
 
@@ -96,6 +97,26 @@ KeyDevice::set_keyDeviceSensorNodeEvent ()
 		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_press_event));
 		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_release_event));
 	}
+}
+
+bool
+KeyDevice::on_focus_out_event (GdkEventFocus*)
+{
+	keys .clear ();
+
+	if (getBrowser () -> hasControlKey ())
+		getBrowser () -> hasControlKey (false);
+
+	if (getBrowser () -> hasShiftKey ())
+		getBrowser () -> hasShiftKey (false);
+
+	if (getBrowser () -> hasAltKey ())
+		getBrowser () -> hasAltKey (false);
+
+	if (getBrowser () -> getKeyDeviceSensorNode ())
+		getBrowser () -> getKeyDeviceSensorNode () -> setKeyReleaseEvent ();
+
+	return false;
 }
 
 bool
@@ -139,14 +160,14 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 	{
 		if (not keyPress .empty ())
 		{
-			getBrowser () -> getKeyDeviceSensorNode () -> set_keyPressEvent (keyPress);
+			getBrowser () -> getKeyDeviceSensorNode () -> setKeyPressEvent (keyPress);
 
 			keyPress .clear ();
 			return false;
 		}
 	}
 
-	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyPressEvent (event -> keyval);
+	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyPressEvent (event -> keyval);
 	return false;
 }
 
@@ -159,14 +180,14 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 	{
 		if (not keyRelease .empty ())
 		{
-			getBrowser () -> getKeyDeviceSensorNode () -> set_keyReleaseEvent (keyRelease);
+			getBrowser () -> getKeyDeviceSensorNode () -> setKeyReleaseEvent (keyRelease);
 
 			keyRelease .clear ();
 			return false;
 		}
 	}
 
-	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyReleaseEvent (event -> keyval);
+	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyReleaseEvent (event -> keyval);
 	return false;
 }
 

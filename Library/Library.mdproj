@@ -2455,6 +2455,7 @@
     <None Include="Tests\Geometry3D\1728.x3dv" />
     <None Include="Tests\Scripting\Fields.x3d" />
     <None Include="Tests\Handles\PointLight.x3dv" />
+    <None Include="Tests\Handles\GridTool.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -149,19 +149,23 @@ public:
 
 	virtual
 	void
-	set_actionKeyPressEvent (const int) final override;
+	setActionKeyPressEvent (const int) final override;
 
 	virtual
 	void
-	set_actionKeyReleaseEvent (const int) final override;
+	setActionKeyReleaseEvent (const int) final override;
 
 	virtual
 	void
-	set_keyPressEvent (const String &) final override;
+	setKeyPressEvent (const String &) final override;
 
 	virtual
 	void
-	set_keyReleaseEvent (const String &) final override;
+	setKeyReleaseEvent (const String &) final override;
+
+	virtual
+	void
+	setKeyReleaseEvent () final override;
 
 
 private:

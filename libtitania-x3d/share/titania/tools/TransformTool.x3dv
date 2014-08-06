@@ -881,6 +881,7 @@ function eventsProcessed ()
     initializeOnly SFVec3f translation 0 0 0
     inputOutput    SFVec3f center 0 0 0
     initializeOnly SFVec3f size 0 0 0
+    inputOutput    SFNode  transform IS transform
 
     url "vrmlscript:
 function set_active (value)
@@ -890,11 +891,11 @@ function set_active (value)
 	size        = bboxSize;
 }
 
-function constrainValue (value)
+function constrainValue (value, xScale, yScale)
 {
 	if (constrainMotion)
 	{
-		if (Math .abs (value .x) > Math .abs (value .y))
+		if (Math .abs (value .x * xScale) > Math .abs (value .y * yScale))
 			value .y = 0;
 		else
 			value .x = 0;
@@ -903,37 +904,37 @@ function constrainValue (value)
 
 function set_frontTranslation (value)
 {
-	constrainValue (value);
+	constrainValue (value, transform .scale .x, transform .scale .y);
 	translate_with_bbox (new SFVec3f (value .x, value .y, 0));
 }
 
 function set_rightTranslation (value)
 {
-	constrainValue (value);
+	constrainValue (value, transform .scale .z, transform .scale .y);
 	translate_with_bbox (new SFVec3f (0, value .y, -value .x));
 }
 
 function set_backTranslation (value)
 {
-	constrainValue (value);
+	constrainValue (value, transform .scale .x, transform .scale .y);
 	translate_with_bbox (new SFVec3f (-value .x, value .y, 0));
 }
 
 function set_leftTranslation (value)
 {
-	constrainValue (value);
+	constrainValue (value, transform .scale .z, transform .scale .y);
 	translate_with_bbox (new SFVec3f (0, value .y, value .x));
 }
 
 function set_topTranslation (value)
 {
-	constrainValue (value);
+	constrainValue (value, transform .scale .x, transform .scale .z);
 	translate_with_bbox (new SFVec3f (value .x, 0, -value .y));
 }
 
 function set_bottomTranslation (value)
 {
-	constrainValue (value);
+	constrainValue (value, transform .scale .x, transform .scale .y);
 	translate_with_bbox (new SFVec3f (value .x, 0, value .y));
 }
 
@@ -1165,8 +1166,6 @@ function set_zRotation (value)
 
 function rotate (value)
 {
-	value = value .multiply (rotation);
-
 	if (constrainRotation)
 	{
 		var snapAngle = 11.25 / 180 * Math .PI;
@@ -1174,7 +1173,7 @@ function rotate (value)
 		value = new SFRotation (value .getAxis (), angle);
 	}
 
-	transform .rotation = value;
+	transform .rotation = value .multiply (rotation);
 }
 "
     directOutput TRUE

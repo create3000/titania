@@ -374,6 +374,14 @@ BrowserWindow::set_active_viewpoint ()
 // Keys
 
 bool
+BrowserWindow::on_focus_out_event (GdkEventFocus*)
+{
+	getKeys () .clear ();
+
+	return false;
+}
+
+bool
 BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
 	if (shortcuts)
@@ -483,8 +491,6 @@ BrowserWindow::on_open ()
 {
 	if (isSaved ())
 	{
-		getKeys () .clear ();
-
 		updateWidget ("FileOpenDialog");
 		const auto fileOpenDialog = getWidget <Gtk::FileChooserDialog> ("FileOpenDialog");
 
@@ -518,8 +524,6 @@ BrowserWindow::on_open_location ()
 {
 	if (isSaved ())
 	{
-		getKeys () .clear ();
-
 		const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
 		if (clipboard -> wait_is_text_available ())
@@ -558,8 +562,6 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import ()
 {
-	getKeys () .clear ();
-
 	updateWidget ("FileImportDialog");
 	const auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
 
@@ -669,8 +671,6 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 void
 BrowserWindow::on_save ()
 {
-	getKeys () .clear ();
-
 	const basic::uri worldURL = getRootContext () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
@@ -683,8 +683,6 @@ BrowserWindow::on_save ()
 void
 BrowserWindow::on_save_as ()
 {
-	getKeys () .clear ();
-
 	updateWidget ("FileSaveDialog");
 
 	const auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
@@ -1126,6 +1124,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
 	getObjectIconsMenuItem ()                  .set_visible (enabled);
 	getSelectionMenuItem ()                    .set_visible (enabled);
+	getLayoutMenuItem ()                       .set_visible (enabled);
 
 	getImportButton ()                   .set_visible (enabled);
 	getSeparatorToolItem1 ()             .set_visible (enabled);
@@ -1535,6 +1534,13 @@ BrowserWindow::on_hide_all_object_icons_activate ()
 		getViewpointsMenuItem () .set_active (false);
 }
 
+void
+BrowserWindow::on_rubberband_toggled ()
+{
+	getConfig () .setItem ("rubberBand", getRubberbandMenuItem () .get_active ());
+	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
+}
+
 // RenderingProperties
 
 void
@@ -1689,13 +1695,12 @@ BrowserWindow::set_pickedTime ()
 		getOutlineTreeView () -> expand_to (getBrowser () -> getSelection () -> getChildren () .back ());
 }
 
-// Navigation menu
+// Layout
 
 void
-BrowserWindow::on_rubberband_toggled ()
+BrowserWindow::on_grid_tool_activate ()
 {
-	getConfig () .setItem ("rubberBand", getRubberbandMenuItem () .get_active ());
-	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
+	__LOG__ << std::endl;
 }
 
 // Editor handling

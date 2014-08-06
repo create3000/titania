@@ -87,7 +87,6 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* const naviga
 	destinationRotation (),
 	          startTime (),
 	             button (0),
-	               keys (),
 	             fly_id (),
 	             pan_id (),
 	            roll_id ()
@@ -96,54 +95,14 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* const naviga
 void
 X3DFlyViewer::initialize ()
 {
-	getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
-	getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event));
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event), false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
 
+	getBrowser () -> hasControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
+
 	//getActiveViewpoint () -> straighten (true);
-}
-
-bool
-X3DFlyViewer::on_key_press_event (GdkEventKey* event)
-{
-	keys .press (event);
-
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Control_L:
-		case GDK_KEY_Control_R:
-		{
-			disconnect ();
-			break;
-		}
-		default:
-			break;
-	}
-
-	return false;
-}
-
-bool
-X3DFlyViewer::on_key_release_event (GdkEventKey* event)
-{
-	keys .release (event);
-
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Control_L:
-		case GDK_KEY_Control_R:
-		{
-			disconnect ();
-			break;
-		}
-		default:
-			break;
-	}
-
-	return false;
 }
 
 bool
@@ -159,7 +118,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 	{
 		getActiveViewpoint () -> transitionStop ();
 
-		if (keys .control ())
+		if (getBrowser () -> hasControlKey ())
 		{
 			orientation = getActiveViewpoint () -> getUserOrientation ();
 
@@ -199,7 +158,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		if (keys .control ())
+		if (getBrowser () -> hasControlKey ())
 		{
 			// Look around
 
@@ -287,7 +246,7 @@ X3DFlyViewer::fly ()
 
 	speedFactor *= navigationInfo -> speed ();
 	speedFactor *= viewpoint -> getSpeedFactor ();
-	speedFactor *= keys .shift () ? SHIFT_SPEED_FACTOR : SPEED_FACTOR;
+	speedFactor *= getBrowser () -> hasShiftKey () ? SHIFT_SPEED_FACTOR : SPEED_FACTOR;
 	speedFactor *= dt;
 
 	const Vector3f translation = getTranslationOffset (speedFactor * direction);
@@ -324,7 +283,7 @@ X3DFlyViewer::pan ()
 
 	speedFactor *= navigationInfo -> speed ();
 	speedFactor *= viewpoint -> getSpeedFactor ();
-	speedFactor *= keys .shift () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
+	speedFactor *= getBrowser () -> hasShiftKey () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
 	speedFactor *= dt;
 
 	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (yAxis * viewpoint -> getUserOrientation (), upVector);

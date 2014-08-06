@@ -60,6 +60,9 @@
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
+#include "../Browser/KeyDeviceSensor/KeyDevice.h"
+#include "../Browser/PointingDeviceSensor/PointingDevice.h"
+#include "../Browser/Navigation/X3DViewer.h"
 
 #include <glibmm/main.h>
 
@@ -76,8 +79,8 @@ Browser::Browser () :
 	     X3DBrowser (),
 	opengl::Surface (),
 	        viewer  (new NoneViewer (this)),
-	      keyDevice (this),
-	pointingDevice  (this)
+	      keyDevice (new KeyDevice (this)),
+	pointingDevice  (new PointingDevice (this))
 {
 	addType (X3DConstants::Browser);
 }
@@ -88,8 +91,8 @@ Browser::Browser (const Browser & sharingSurface) :
 	     X3DBrowser (),
 	opengl::Surface (sharingSurface),
 	        viewer  (new NoneViewer (this)),
-	      keyDevice (this),
-	pointingDevice  (this)
+	      keyDevice (new KeyDevice (this)),
+	pointingDevice  (new PointingDevice (this))
 {
 	addType (X3DConstants::Browser);
 }
@@ -107,8 +110,8 @@ Browser::initialize ()
 
 	//swapInterval (0);
 
-	keyDevice      .setup ();
-	pointingDevice .setup ();
+	keyDevice      -> setup ();
+	pointingDevice -> setup ();
 
 	getViewer () .addInterest (this, &Browser::set_viewer);
 	changed ()   .addInterest (this, &Gtk::Widget::queue_draw);
@@ -120,6 +123,7 @@ Browser::initialize ()
 	            Gdk::POINTER_MOTION_MASK |
 	            Gdk::POINTER_MOTION_HINT_MASK |
 	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::FOCUS_CHANGE_MASK |
 	            Gdk::LEAVE_NOTIFY_MASK |
 	            Gdk::SCROLL_MASK |
 	            Gdk::KEY_PRESS_MASK |
@@ -189,8 +193,9 @@ Browser::set_viewer (ViewerType type)
 void
 Browser::dispose ()
 {
-	viewer .reset ();
-	pointingDevice .dispose ();
+	viewer         .reset ();
+	keyDevice      .reset ();
+	pointingDevice .reset ();
 
 	X3DBrowser::dispose ();
 	opengl::Surface::dispose (); /// XXX

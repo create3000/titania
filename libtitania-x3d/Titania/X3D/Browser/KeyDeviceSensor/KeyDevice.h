@@ -80,14 +80,17 @@ private:
 	void
 	initialize () final override;
 
+	void
+	set_keyDeviceSensorNodeEvent ();
+
+	bool
+	on_focus_out_event (GdkEventFocus*);
+
 	bool
 	on_action_key_press_event (GdkEventKey*);
 
 	bool
 	on_action_key_release_event (GdkEventKey*);
-
-	void
-	set_keyDeviceSensorNodeEvent ();
 
 	bool
 	on_key_press_event (GdkEventKey*);

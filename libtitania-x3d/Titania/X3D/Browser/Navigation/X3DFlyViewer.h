@@ -56,7 +56,6 @@
 #include "../../Components/Navigation/Viewpoint.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Fields/SFNode.h"
-#include "../../Miscellaneous/Keys.h"
 #include "../Navigation/X3DViewer.h"
 
 namespace titania {
@@ -90,12 +89,6 @@ private:
 
 	void
 	set_collisionNormal ();
-
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
 
 	bool
 	on_button_press_event (GdkEventButton*);
@@ -146,7 +139,6 @@ private:
 	Rotation4f       destinationRotation;
 	time_type        startTime;
 	guint            button;
-	Keys             keys;
 	sigc::connection fly_id;
 	sigc::connection pan_id;
 	sigc::connection roll_id;

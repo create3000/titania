@@ -99,6 +99,7 @@ X3DKeyDeviceSensorNode::disable ()
 
 	getBrowser () -> setKeyDeviceSensorNode (nullptr);
 
+	setKeyReleaseEvent ();
 	isActive () = false;
 }
 

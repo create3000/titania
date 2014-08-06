@@ -448,6 +448,10 @@ public:
 	{ return *m_HideAllObjectIconsMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getRubberbandMenuItem () const
+	{ return *m_RubberbandMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getRenderingPropertiesMenuItem () const
 	{ return *m_RenderingPropertiesMenuItem; }
 
@@ -496,12 +500,12 @@ public:
 	{ return *m_FollowPrimarySelectionMenuItem; }
 
 	Gtk::MenuItem &
-	getNavigationMenuItem () const
-	{ return *m_NavigationMenuItem; }
+	getLayoutMenuItem () const
+	{ return *m_LayoutMenuItem; }
 
-	Gtk::CheckMenuItem &
-	getRubberbandMenuItem () const
-	{ return *m_RubberbandMenuItem; }
+	Gtk::MenuItem &
+	getGridToolMenuItem () const
+	{ return *m_GridToolMenuItem; }
 
 	Gtk::MenuItem &
 	getToolsMenuItem () const
@@ -789,6 +793,10 @@ public:
 
 	virtual
 	bool
+	on_focus_out_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
 	on_key_press_event (GdkEventKey* event) = 0;
 
 	virtual
@@ -1001,6 +1009,10 @@ public:
 
 	virtual
 	void
+	on_rubberband_toggled () = 0;
+
+	virtual
+	void
 	on_rendering_properties_toggled () = 0;
 
 	virtual
@@ -1045,7 +1057,7 @@ public:
 
 	virtual
 	void
-	on_rubberband_toggled () = 0;
+	on_grid_tool_activate () = 0;
 
 	virtual
 	void
@@ -1248,6 +1260,7 @@ private:
 	Gtk::CheckMenuItem*             m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem*             m_ViewpointsMenuItem;
 	Gtk::MenuItem*                  m_HideAllObjectIconsMenuItem;
+	Gtk::CheckMenuItem*             m_RubberbandMenuItem;
 	Gtk::CheckMenuItem*             m_RenderingPropertiesMenuItem;
 	Gtk::ImageMenuItem*             m_FullScreenMenuItem;
 	Gtk::ImageMenuItem*             m_UnFullScreenMenuItem;
@@ -1260,8 +1273,8 @@ private:
 	Gtk::MenuItem*                  m_ShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*             m_SelectLowestMenuItem;
 	Gtk::CheckMenuItem*             m_FollowPrimarySelectionMenuItem;
-	Gtk::MenuItem*                  m_NavigationMenuItem;
-	Gtk::CheckMenuItem*             m_RubberbandMenuItem;
+	Gtk::MenuItem*                  m_LayoutMenuItem;
+	Gtk::MenuItem*                  m_GridToolMenuItem;
 	Gtk::MenuItem*                  m_ToolsMenuItem;
 	Gtk::MenuItem*                  m_MotionBlurMenuItem;
 	Gtk::MenuItem*                  m_HelpMenuItem;

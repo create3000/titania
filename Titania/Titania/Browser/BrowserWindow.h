@@ -158,6 +158,10 @@ private:
 
 	virtual
 	bool
+	on_focus_out_event (GdkEventFocus* event) final override;
+
+	virtual
+	bool
 	on_key_press_event (GdkEventKey*) final override;
 
 	virtual
@@ -430,6 +434,10 @@ private:
 	void
 	on_hide_all_object_icons_activate () final override;
 
+	virtual
+	void
+	on_rubberband_toggled () final override;
+
 	///  @name Rendering properties
 
 	virtual
@@ -483,11 +491,11 @@ private:
 	void
 	set_pickedTime ();
 
-	///  @name Navigation
+	///  @name Layout
 
 	virtual
 	void
-	on_rubberband_toggled () final override;
+	on_grid_tool_activate () final override;
 
 	///  @name Editor handling
 

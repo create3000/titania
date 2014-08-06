@@ -1,0 +1,410 @@
+#X3D V3.3 utf8 Titania V0.7.2
+
+META "comment" "World of Titania"
+META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.2, http://titania.create3000.de"
+META "modified" "Wed, 06 Aug 2014 08:04:45 GMT"
+
+PROTO Grid [
+  inputOutput    SFInt32 xDimension 10
+  inputOutput    SFFloat xSpacing 1
+  inputOutput    SFInt32 zDimension 10
+  inputOutput    SFFloat zSpacing 1
+  inputOutput    SFColor color 1 0.5 0
+  inputOutput    SFFloat transparency 0.61803
+  initializeOnly SFBool  solid TRUE
+]
+{
+  PROTO Fields [
+    inputOutput SFInt32 xDimension 10
+    inputOutput SFFloat xSpacing 1
+    inputOutput SFInt32 zDimension 10
+    inputOutput SFFloat zSpacing 1
+    inputOutput SFFloat transparency 0.61803
+  ]
+  {
+    Group { }
+  }
+
+  Transform {
+    children [
+      DEF Plane Transform {
+        rotation -3.09087e-08 0.707105 0.707108 3.14159
+        scale 10 10 1
+        children Shape {
+          appearance Appearance {
+            material DEF Material2 Material {
+              diffuseColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+            solid IS solid
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material DEF Material3 Material {
+              emissiveColor IS color
+              transparency 0.697039
+            }
+          }
+          geometry DEF Axis IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                -5.25 0 0,
+                5.25 0 0,
+                0 0 -5.25,
+                0 0 5.25
+              ]
+            }
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material DEF Material1 Material {
+              emissiveColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry DEF Grid IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1,
+              4,
+              5,
+              -1,
+              6,
+              7,
+              -1,
+              8,
+              9,
+              -1,
+              10,
+              11,
+              -1,
+              12,
+              13,
+              -1,
+              14,
+              15,
+              -1,
+              16,
+              17,
+              -1,
+              18,
+              19,
+              -1,
+              20,
+              21,
+              -1,
+              22,
+              23,
+              -1,
+              24,
+              25,
+              -1,
+              26,
+              27,
+              -1,
+              28,
+              29,
+              -1,
+              30,
+              31,
+              -1,
+              32,
+              33,
+              -1,
+              34,
+              35,
+              -1,
+              36,
+              37,
+              -1,
+              38,
+              39,
+              -1,
+              40,
+              41,
+              -1,
+              42,
+              43,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                -5 0 -5,
+                -5 0 5,
+                -4 0 -5,
+                -4 0 5,
+                -3 0 -5,
+                -3 0 5,
+                -2 0 -5,
+                -2 0 5,
+                -1 0 -5,
+                -1 0 5,
+                0 0 -5,
+                0 0 5,
+                1 0 -5,
+                1 0 5,
+                2 0 -5,
+                2 0 5,
+                3 0 -5,
+                3 0 5,
+                4 0 -5,
+                4 0 5,
+                5 0 -5,
+                5 0 5,
+                -5 0 -5,
+                5 0 -5,
+                -5 0 -4,
+                5 0 -4,
+                -5 0 -3,
+                5 0 -3,
+                -5 0 -2,
+                5 0 -2,
+                -5 0 -1,
+                5 0 -1,
+                -5 0 0,
+                5 0 0,
+                -5 0 1,
+                5 0 1,
+                -5 0 2,
+                5 0 2,
+                -5 0 3,
+                5 0 3,
+                -5 0 4,
+                5 0 4,
+                -5 0 5,
+                5 0 5
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+
+  DEF GridScript Script {
+    inputOutput    SFInt32 xDimension IS xDimension
+    inputOutput    SFFloat xSpacing IS xSpacing
+    inputOutput    SFInt32 zDimension IS zDimension
+    inputOutput    SFFloat zSpacing IS zSpacing
+    inputOutput    SFFloat transparency IS transparency
+    initializeOnly SFNode  plane USE Plane
+    initializeOnly SFNode  axis USE Axis
+    initializeOnly SFNode  grid USE Grid
+    initializeOnly SFNode  axisMaterial USE Material3
+
+    url "vrmlscript:
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	// Plane
+
+	plane .scale = new SFVec3f (xDimension * xSpacing, zDimension * zSpacing, 1);
+
+	// Axis
+
+	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - xSpacing / 4, 0, 0),
+	                                  new SFVec3f ( plane .scale .x / 2 + xSpacing / 4, 0, 0),
+	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - zSpacing / 4),
+	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + zSpacing / 4));
+
+	axisMaterial .transparency = Math .pow (transparency, 3 / 4);
+
+	// Grid
+
+	var coordIndex     = new MFInt32 ();
+	coordIndex .length = 3 * (xDimension + zDimension);
+
+	var point     = grid .coord .point;
+	point .length = 2 * (xDimension + zDimension);
+
+	var i = 0;
+
+	for (; i < xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + xSpacing * i, 0, -plane .scale .y / 2);
+		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + xSpacing * i, 0,  plane .scale .y / 2);
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+
+	for (; i < zDimension + 1 + xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + zSpacing * (i - xDimension - 1));
+		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + zSpacing * (i - xDimension - 1));
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+
+	grid .set_coordIndex = coordIndex;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
+}
+
+Viewpoint {
+  position 5.44263 17.9858 10.111
+  orientation -0.960029 0.279328 -0.0179136 1.07735
+}
+
+DEF Grid_1 Transform {
+  children DEF _1 Grid {
+    xDimension 12
+    zDimension 12
+  }
+}
+
+DEF Edge_1 Transform {
+  children [
+    DEF _2 PlaneSensor {
+      axisRotation 1 0 0 1.5708
+      autoOffset FALSE
+      offset 6 0 6
+    }
+    DEF Edge Transform {
+      translation 6 0 6
+      children [
+        DEF Box Transform {
+          translation -0.475 0 0
+          scale 0.525 0.05 0.05
+          children DEF _3 Shape {
+            appearance DEF _4 Appearance {
+              material Material {
+                diffuseColor 1 0.50076 0
+              }
+            }
+            geometry Box { }
+          }
+        }
+        DEF Box_1 Transform {
+          translation 0 0 -0.475
+          rotation 0 1 0 4.71239
+          scale 0.525 0.05 0.05
+          children USE _3
+        }
+      ]
+    }
+  ]
+}
+
+DEF Center Transform {
+  children [
+    DEF _5 PlaneSensor {
+      axisRotation 1 0 0 1.5708
+      offset 0.16405 -9.48725e-07 0.261744
+    }
+    DEF _6 Transform {
+      children ScreenGroup {
+        children DEF Sphere Transform {
+          scale 6 6 6
+          children Shape {
+            appearance USE _4
+            geometry Sphere { }
+          }
+        }
+      }
+    }
+  ]
+}
+
+DEF ScaleScript Script {
+  inputOutput SFInt32 xDimension 12
+  inputOutput SFFloat xSpacing 1
+  inputOutput SFInt32 zDimension 12
+  inputOutput SFFloat zSpacing 1
+  inputOnly   SFVec3f set_translation
+  outputOnly  SFVec3f translation_changed
+
+  url "javascript:
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	xDimension = Math .round (value .x / xSpacing);
+	zDimension = Math .round (value .z / zSpacing);
+	
+	xDimension = Math .max (xDimension, 1);
+	zDimension = Math .max (zDimension, 1);
+
+	xDimension *= 2;
+	zDimension *= 2;
+}
+
+function eventsProcessed ()
+{
+	translation_changed = new SFVec3f (xDimension / 2 * xSpacing,
+	                                   0,
+	                                   zDimension / 2 * zSpacing);
+}
+"
+}
+
+DEF MoveScript Script {
+  inputOutput SFInt32 xDimension 10
+  inputOutput SFFloat xSpacing 1
+  inputOutput SFInt32 zDimension 10
+  inputOutput SFFloat zSpacing 1
+  inputOnly   SFVec3f set_translation
+  outputOnly  SFVec3f translation_changed
+
+  url "javascript:
+function initialize ()
+{
+}
+
+function set_translation (value)
+{
+	x = (Math .round (value .x / xSpacing) * xSpacing);
+	z = (Math .round (value .z / zSpacing) * zSpacing);
+
+	translation_changed = new SFVec3f (x, 0, z);
+}
+"
+}
+
+ROUTE ScaleScript.translation_changed TO Edge.set_translation
+ROUTE _2.translation_changed TO ScaleScript.set_translation
+ROUTE ScaleScript.xDimension_changed TO _1.set_xDimension
+ROUTE ScaleScript.xSpacing_changed TO _1.set_xSpacing
+ROUTE ScaleScript.zDimension_changed TO _1.set_zDimension
+ROUTE ScaleScript.zSpacing_changed TO _1.set_zSpacing
+ROUTE ScaleScript.translation_changed TO _2.set_offset
+ROUTE _5.translation_changed TO MoveScript.set_translation
+ROUTE MoveScript.translation_changed TO _6.set_translation
+ROUTE MoveScript.translation_changed TO Edge_1.set_translation
+ROUTE MoveScript.translation_changed TO Grid_1.set_translation
