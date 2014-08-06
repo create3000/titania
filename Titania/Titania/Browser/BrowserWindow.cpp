@@ -104,17 +104,6 @@ BrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	// User interface
-
-	// Not rea?ly working anymore.
-	Gtk::Settings::get_default () -> property_gtk_menu_images ()       = true;
-	Gtk::Settings::get_default () -> property_gtk_button_images ()     = true;
-	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
-	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
-
-	getToolBar () .set_toolbar_style (Gtk::TOOLBAR_ICONS);
-	getDashboardToolBar () .set_toolbar_style (Gtk::TOOLBAR_ICONS);
-
 	// FileFilter
 	getFileFilterX3D   () -> set_name (_ ("X3D"));
 	getFileFilterImage () -> set_name (_ ("Images"));
@@ -1126,18 +1115,8 @@ BrowserWindow::enableEditor (const bool enabled)
 	getSelectionMenuItem ()                    .set_visible (enabled);
 	getLayoutMenuItem ()                       .set_visible (enabled);
 
-	getImportButton ()                   .set_visible (enabled);
-	getSeparatorToolItem1 ()             .set_visible (enabled);
-	getUndoButton ()                     .set_visible (enabled);
-	getRedoButton ()                     .set_visible (enabled);
-	getSeparatorToolItem2 ()             .set_visible (enabled);
-	getNodePropertiesEditorButton ()     .set_visible (enabled);
-	getMaterialEditorButton ()           .set_visible (enabled);
-	getTextureEditorButton ()            .set_visible (enabled);
-	getTextEditorButton ()               .set_visible (enabled);
-	getGeometryPropertiesEditorButton () .set_visible (enabled);
-	getUpdateViewpointButton ()          .set_visible (enabled);
-	getCreatePrototypeInstanceButton ()  .set_visible (enabled);
+	getImportButton () .set_visible (enabled);
+	getEditToolBar ()  .set_visible (enabled);
 
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());

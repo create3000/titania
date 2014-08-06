@@ -527,9 +527,13 @@ public:
 	getInfoMenuItem () const
 	{ return *m_InfoMenuItem; }
 
-	Gtk::Toolbar &
+	Gtk::Box &
 	getToolBar () const
 	{ return *m_ToolBar; }
+
+	Gtk::Toolbar &
+	getFileToolBar () const
+	{ return *m_FileToolBar; }
 
 	Gtk::ToolButton &
 	getNewButton () const
@@ -550,6 +554,10 @@ public:
 	Gtk::ToolButton &
 	getRefreshButton () const
 	{ return *m_RefreshButton; }
+
+	Gtk::Toolbar &
+	getEditToolBar () const
+	{ return *m_EditToolBar; }
 
 	Gtk::SeparatorToolItem &
 	getSeparatorToolItem1 () const
@@ -1280,12 +1288,14 @@ private:
 	Gtk::MenuItem*                  m_HelpMenuItem;
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;
-	Gtk::Toolbar*                   m_ToolBar;
+	Gtk::Box*                       m_ToolBar;
+	Gtk::Toolbar*                   m_FileToolBar;
 	Gtk::ToolButton*                m_NewButton;
 	Gtk::MenuToolButton*            m_OpenButton;
 	Gtk::ToolButton*                m_ImportButton;
 	Gtk::ToolButton*                m_SaveButton;
 	Gtk::ToolButton*                m_RefreshButton;
+	Gtk::Toolbar*                   m_EditToolBar;
 	Gtk::SeparatorToolItem*         m_SeparatorToolItem1;
 	Gtk::ToolButton*                m_UndoButton;
 	Gtk::ToolButton*                m_RedoButton;

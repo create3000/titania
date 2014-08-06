@@ -389,8 +389,8 @@ function initialize ()
 
 function set_translation (value)
 {
-	x = (Math .round (value .x / xSpacing) * xSpacing);
-	z = (Math .round (value .z / zSpacing) * zSpacing);
+	x = Math .round (value .x / xSpacing) * xSpacing;
+	z = Math .round (value .z / zSpacing) * zSpacing;
 
 	translation_changed = new SFVec3f (x, 0, z);
 }
