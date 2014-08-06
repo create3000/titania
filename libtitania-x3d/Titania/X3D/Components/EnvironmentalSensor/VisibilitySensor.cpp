@@ -101,7 +101,7 @@ VisibilitySensor::initialize ()
 void
 VisibilitySensor::set_enabled ()
 {
-	if (enabled ())
+	if (enabled () and isLive () and getExecutionContext () -> isLive ())
 		getBrowser () -> sensors () .addInterest (this, &VisibilitySensor::update);
 
 	else
