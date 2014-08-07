@@ -100,26 +100,6 @@ public:
 	{ return *fields .attenuation; }
 
 	virtual
-	SFFloat &
-	beamWidth ()
-	{ return *fields .beamWidth; }
-
-	virtual
-	const SFFloat &
-	beamWidth () const
-	{ return *fields .beamWidth; }
-
-	virtual
-	SFFloat &
-	cutOffAngle ()
-	{ return *fields .cutOffAngle; }
-
-	virtual
-	const SFFloat &
-	cutOffAngle () const
-	{ return *fields .cutOffAngle; }
-
-	virtual
 	SFVec3f &
 	direction ()
 	{ return *fields .direction; }
@@ -148,6 +128,26 @@ public:
 	const SFFloat &
 	radius () const
 	{ return *fields .radius; }
+
+	virtual
+	SFFloat &
+	beamWidth ()
+	{ return *fields .beamWidth; }
+
+	virtual
+	const SFFloat &
+	beamWidth () const
+	{ return *fields .beamWidth; }
+
+	virtual
+	SFFloat &
+	cutOffAngle ()
+	{ return *fields .cutOffAngle; }
+
+	virtual
+	const SFFloat &
+	cutOffAngle () const
+	{ return *fields .cutOffAngle; }
 
 	///  @name Operations
 
@@ -189,11 +189,11 @@ private:
 		Fields ();
 
 		SFVec3f* const attenuation;
-		SFFloat* const beamWidth;
-		SFFloat* const cutOffAngle;
 		SFVec3f* const direction;
 		SFVec3f* const location;
 		SFFloat* const radius;
+		SFFloat* const beamWidth;
+		SFFloat* const cutOffAngle;
 	};
 
 	Fields fields;

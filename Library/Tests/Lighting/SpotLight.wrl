@@ -1,19 +1,29 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.3
 
-DEF _0 NavigationInfo {
+NavigationInfo {
   headlight FALSE
 }
 
-DEF _1 SpotLight {
-  color 1 0 0
-  location 0 0 12
-  radius 10
-  ambientIntensity 1
-  beamWidth 3
-  attenuation 1 0.1 0
+Viewpoint {
+  description "Home"
+  position 13.0884 11.76 13.2047
+  orientation -0.623223 0.75278 0.21193 0.947552
+  centerOfRotation 0.645169 -1.04583 -0.269945
 }
 
-DEF _2 Transform {
+Transform {
+  translation 10.4651 -0.264861 2.21611
+  rotation 0 1 0 1.2184
+  children DEF _1 SpotLight {
+    color 1 0 0
+    ambientIntensity 1
+    attenuation 1 0.1 0
+    radius 10
+    beamWidth 3
+  }
+}
+
+Transform {
   children Shape {
     appearance Appearance {
       material Material { }

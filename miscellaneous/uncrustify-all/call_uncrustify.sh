@@ -102,6 +102,7 @@ perl -e '
 
 		LENGTH: # find length of indent for each member
 
+		$p  = 0;
 		$lm = 0;
 		$lc = 0;
 		while ($_ = shift @_)
@@ -109,8 +110,18 @@ perl -e '
 			last if $_ =~ $block_start_rx;
 			next unless $_ =~ $member_start_rx;
 			last unless $_ =~ $member_rx;
-			$lm = max ($lm, length ($2));
-			$lc = max ($lc, length ($3));
+
+			if ($p == 0)
+			{
+				$lm = max ($lm, length ($2));
+				$lc = max ($lc, length ($3));
+			}
+	
+			# Count parenthesises
+			my $o = () = $_ =~ /\(/sgo; # opened
+			my $c = () = $_ =~ /\)/sgo; # closed
+
+			$p += $o - $c;
 		}
 
 		# print file
@@ -142,8 +153,7 @@ perl -e '
 
 		print $_;
 		
-		$b = 0;
-
+		$p = 0;
 
 		while ($_ = shift @lines) {
 			last if $_ =~ $block_start_rx;
@@ -156,21 +166,21 @@ perl -e '
 			$name  = $2; # spaces + name 
 			$value = $3;
 
-			$pad1 = $b == 0
+			$pad1 = $p == 0
 			        ? $lm - length ($name)
 			        : $lm + 1;
 			
-			$name =~ s/^\s*//sgo if $b;
+			$name =~ s/^\s*//sgo if $p;
 	
 			$line = $tab . (" " x $pad1) . $name . $value;
 			$line =~ s/(.*?)\s*$/$1\n/o;
 			print $line;
 			
 			# Count parenthesises
-			my $o = () = $_ =~ /\(/sgo;
-			my $c = () = $_ =~ /\)/sgo;
+			my $o = () = $_ =~ /\(/sgo; # opened
+			my $c = () = $_ =~ /\)/sgo; # closed
 
-			$b += $o - $c;
+			$p += $o - $c;
 		}
 
 		print $_;

@@ -1,5 +1,11 @@
 2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SpotLight.h:
+	* SpotLight.cpp:
+	* PointLight.cpp: 
+
+2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp: 
 
 2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>

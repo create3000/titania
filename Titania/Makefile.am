@@ -25,6 +25,7 @@ titania_SOURCES =  \
 	Titania/LightEditor/LightEditor.cpp \
 	Titania/LightEditor/X3DDirectionalLightEditor.cpp \
 	Titania/LightEditor/X3DPointLightEditor.cpp \
+	Titania/LightEditor/X3DSpotLightEditor.cpp \
 	Titania/main.cpp \
 	Titania/MaterialEditor/MaterialEditor.cpp \
 	Titania/MotionBlurEditor/MotionBlurEditor.cpp \

@@ -48,30 +48,51 @@
  *
  ******************************************************************************/
 
-#include "X3DDirectionalLightEditor.h"
+#ifndef __TITANIA_LIGHT_EDITOR_X3DSPOT_LIGHT_EDITOR_H__
+#define __TITANIA_LIGHT_EDITOR_X3DSPOT_LIGHT_EDITOR_H__
+
+#include "../ComposedWidgets.h"
+#include "../UserInterfaces/X3DLightEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
-	X3DLightEditorInterface ("", ""),
-	              direction (getBrowserWindow (),
-	                         getDirectionalLightDirectionXAdjustment (),
-	                         getDirectionalLightDirectionYAdjustment (),
-	                         getDirectionalLightDirectionZAdjustment (),
-	                         getDirectionalLightDirectionBox (),
-	                         "direction")
-{ }
-
-void
-X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
+class X3DSpotLightEditor :
+	virtual public X3DLightEditorInterface
 {
-	X3D::X3DPtr <X3D::DirectionalLight> directionalLight (lightNode);
+public:
 
-	getDirectionalLightExpander () .set_visible (directionalLight);
+	///  @name Destruction
 
-	direction .setNodes (directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ());
-}
+	virtual
+	~X3DSpotLightEditor ()
+	{ }
+
+
+protected:
+
+	///  @name Construction
+
+	X3DSpotLightEditor ();
+
+	void
+	setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
+
+
+private:
+
+	///  @name Members
+
+	X3DFieldAdjustment3 <X3D::SFVec3f> attenuation;
+	X3DFieldAdjustment3 <X3D::SFVec3f> location;
+	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
+	X3DFieldAdjustment <X3D::SFFloat>  radius;
+	X3DFieldAdjustment <X3D::SFFloat>  beamWidth;
+	X3DFieldAdjustment <X3D::SFFloat>  cutOffAngle;
+
+};
 
 } // puck
 } // titania
+
+#endif

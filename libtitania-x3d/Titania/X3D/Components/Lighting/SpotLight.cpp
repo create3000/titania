@@ -63,11 +63,11 @@ const std::string SpotLight::containerField = "children";
 
 SpotLight::Fields::Fields () :
 	attenuation (new SFVec3f (1, 0, 0)),
-	  beamWidth (new SFFloat ()),
-	cutOffAngle (new SFFloat (0.785398)),
 	  direction (new SFVec3f (0, 0, -1)),
 	   location (new SFVec3f ()),
-	     radius (new SFFloat (100))
+	     radius (new SFFloat (100)),
+	  beamWidth (new SFFloat ()),
+	cutOffAngle (new SFFloat (0.785398))
 { }
 
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
@@ -84,11 +84,11 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "intensity",        intensity ());
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());
 	addField (inputOutput, "attenuation",      attenuation ());
-	addField (inputOutput, "beamWidth",        beamWidth ());
-	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "direction",        direction ());
 	addField (inputOutput, "radius",           radius ());
+	addField (inputOutput, "beamWidth",        beamWidth ());
+	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
 }
 
 X3DBaseNode*
@@ -146,9 +146,9 @@ SpotLight::draw (GLenum lightId)
 	glLightf (lightId, GL_SPOT_EXPONENT, glSpotExponent);
 	glLightf (lightId, GL_SPOT_CUTOFF,   glSpotCutOff);
 
-	glLightf (lightId, GL_CONSTANT_ATTENUATION,  attenuation () .getX ());
-	glLightf (lightId, GL_LINEAR_ATTENUATION,    attenuation () .getY ());
-	glLightf (lightId, GL_QUADRATIC_ATTENUATION, attenuation () .getZ ());
+	glLightf (lightId, GL_CONSTANT_ATTENUATION,  std::max (0.0f, attenuation () .getX ()));
+	glLightf (lightId, GL_LINEAR_ATTENUATION,    std::max (0.0f, attenuation () .getY ()));
+	glLightf (lightId, GL_QUADRATIC_ATTENUATION, std::max (0.0f, attenuation () .getZ ()));
 
 	glLightfv (lightId, GL_POSITION,       glPosition);
 	glLightfv (lightId, GL_SPOT_DIRECTION, glSpotDirection);

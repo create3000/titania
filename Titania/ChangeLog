@@ -2,6 +2,21 @@
 
 	* titania:
 	* Makefile.am:
+	* LightEditor.h:
+	* BrowserWindow.xml:
+	* LightEditor.cpp:
+	* X3DSpotLightEditor.h:
+	* LightEditor.xml:
+	* X3DSpotLightEditor.cpp:
+	* X3DPointLightEditor.cpp:
+	* X3DLightEditorInterface.h:
+	* X3DDirectionalLightEditor.cpp:
+	* X3DLightEditorInterface.cpp: 
+
+2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* ComposedWidgets.h:
 	* LightEditor.h:
 	* BrowserWindow.xml:

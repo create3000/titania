@@ -1488,6 +1488,7 @@
                 </child>
                 <child>
                   <object class="GtkToolButton" id="LightEditorButton">
+                    <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Open Light Editor.</property>
                     <property name="label" translatable="yes">Light Editor</property>

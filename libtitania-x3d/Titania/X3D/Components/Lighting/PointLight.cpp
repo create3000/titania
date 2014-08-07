@@ -133,9 +133,9 @@ PointLight::draw (GLenum lightId)
 	glLightf  (lightId, GL_SPOT_EXPONENT, 0);
 	glLightf  (lightId, GL_SPOT_CUTOFF, 180); // point light
 
-	glLightf  (lightId, GL_CONSTANT_ATTENUATION,  attenuation () .getX ());
-	glLightf  (lightId, GL_LINEAR_ATTENUATION,    attenuation () .getY ());
-	glLightf  (lightId, GL_QUADRATIC_ATTENUATION, attenuation () .getZ ());
+	glLightf  (lightId, GL_CONSTANT_ATTENUATION,  std::max (0.0f, attenuation () .getX ()));
+	glLightf  (lightId, GL_LINEAR_ATTENUATION,    std::max (0.0f, attenuation () .getY ()));
+	glLightf  (lightId, GL_QUADRATIC_ATTENUATION, std::max (0.0f, attenuation () .getZ ()));
 
 	glLightfv (lightId, GL_POSITION, glPosition);
 }

@@ -54,20 +54,20 @@ namespace titania {
 namespace puck {
 
 X3DPointLightEditor::X3DPointLightEditor () :
-	                         X3DLightEditorInterface ("", ""),
-	                                     attenuation (getBrowserWindow (),
-	                                                  getPointLightAttenuationXAdjustment (),
-	                                                  getPointLightAttenuationYAdjustment (),
-	                                                  getPointLightAttenuationZAdjustment (),
-	                                                  getPointLightAttenuationBox (),
-	                                                  "attenuation"),
-	                                        location (getBrowserWindow (),
-	                                                  getPointLightLocationXAdjustment (),
-	                                                  getPointLightLocationYAdjustment (),
-	                                                  getPointLightLocationZAdjustment (),
-	                                                  getPointLightLocationBox (),
-	                                                  "location"),
-	                                          radius (getBrowserWindow (), getPointLightRadiusAdjustment (), getPointLightRadiusSpinButton (), "radius")
+	X3DLightEditorInterface ("", ""),
+	            attenuation (getBrowserWindow (),
+	                         getPointLightAttenuationXAdjustment (),
+	                         getPointLightAttenuationYAdjustment (),
+	                         getPointLightAttenuationZAdjustment (),
+	                         getPointLightAttenuationBox (),
+	                         "attenuation"),
+	               location (getBrowserWindow (),
+	                         getPointLightLocationXAdjustment (),
+	                         getPointLightLocationYAdjustment (),
+	                         getPointLightLocationZAdjustment (),
+	                         getPointLightLocationBox (),
+	                         "location"),
+	                 radius (getBrowserWindow (), getPointLightRadiusAdjustment (), getPointLightRadiusSpinButton (), "radius")
 { }
 
 void
@@ -76,7 +76,7 @@ X3DPointLightEditor::setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> & ligh
 	X3D::X3DPtr <X3D::PointLight> pointLight (lightNode);
 
 	getPointLightExpander () .set_visible (pointLight);
-	
+
 	const auto pointLights = pointLight ? X3D::MFNode ({ pointLight }) : X3D::MFNode ();
 
 	attenuation .setNodes (pointLights);

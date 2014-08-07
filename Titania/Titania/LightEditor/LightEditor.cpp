@@ -61,7 +61,7 @@ LightEditor::LightEditor (BrowserWindow* const browserWindow) :
 	  X3DLightEditorInterface (get_ui ("Dialogs/LightEditor.xml"), gconf_dir ()),
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),
-	     //X3DSpotLightEditor (),
+	       X3DSpotLightEditor (),
 	                   global (getBrowserWindow (), getGlobalCheckButton (), "global"),
 	                       on (getBrowserWindow (), getOnCheckButton (), "on"),
 	                    color (getBrowserWindow (), getColorButton (), getColorAdjustment (), getColorBox (), "color"),
@@ -76,7 +76,7 @@ LightEditor::initialize ()
 {
 	X3DDirectionalLightEditor::initialize ();
 	X3DPointLightEditor::initialize ();
-	//X3DSpotLightEditor::initialize ();
+	X3DSpotLightEditor::initialize ();
 
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &LightEditor::set_selection);
 
@@ -90,7 +90,7 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 
 	setDirectionalLight (lightNode);
 	setPointLight (lightNode);
-	//setSpotLight (lightNode);
+	setSpotLight (lightNode);
 
 	const auto lightNodes = lightNode ? X3D::MFNode ({ lightNode }) : X3D::MFNode ();
 

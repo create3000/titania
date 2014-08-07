@@ -55,6 +55,7 @@
 #include "../UserInterfaces/X3DLightEditorInterface.h"
 #include "../LightEditor/X3DDirectionalLightEditor.h"
 #include "../LightEditor/X3DPointLightEditor.h"
+#include "../LightEditor/X3DSpotLightEditor.h"
 
 namespace titania {
 namespace puck {
@@ -63,7 +64,8 @@ class BrowserWindow;
 
 class LightEditor :
 	public X3DDirectionalLightEditor,
-	public X3DPointLightEditor
+	public X3DPointLightEditor,
+	public X3DSpotLightEditor
 {
 public:
 

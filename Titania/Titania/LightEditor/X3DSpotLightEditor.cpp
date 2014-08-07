@@ -48,29 +48,54 @@
  *
  ******************************************************************************/
 
-#include "X3DDirectionalLightEditor.h"
+#include "X3DSpotLightEditor.h"
 
 namespace titania {
 namespace puck {
 
-X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
+X3DSpotLightEditor::X3DSpotLightEditor () :
 	X3DLightEditorInterface ("", ""),
+	            attenuation (getBrowserWindow (),
+	                         getSpotLightAttenuationXAdjustment (),
+	                         getSpotLightAttenuationYAdjustment (),
+	                         getSpotLightAttenuationZAdjustment (),
+	                         getSpotLightAttenuationBox (),
+	                         "attenuation"),
+	               location (getBrowserWindow (),
+	                         getSpotLightLocationXAdjustment (),
+	                         getSpotLightLocationYAdjustment (),
+	                         getSpotLightLocationZAdjustment (),
+	                         getSpotLightLocationBox (),
+	                         "location"),
 	              direction (getBrowserWindow (),
-	                         getDirectionalLightDirectionXAdjustment (),
-	                         getDirectionalLightDirectionYAdjustment (),
-	                         getDirectionalLightDirectionZAdjustment (),
-	                         getDirectionalLightDirectionBox (),
-	                         "direction")
-{ }
+	                         getSpotLightDirectionXAdjustment (),
+	                         getSpotLightDirectionYAdjustment (),
+	                         getSpotLightDirectionZAdjustment (),
+	                         getSpotLightDirectionBox (),
+	                         "direction"),
+	                 radius (getBrowserWindow (), getSpotLightRadiusAdjustment (), getSpotLightRadiusSpinButton (), "radius"),
+	              beamWidth (getBrowserWindow (), getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
+	            cutOffAngle (getBrowserWindow (), getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")
+{
+	getSpotLightBeamWidthAdjustment ()   -> set_upper (M_PI / 2); // getExecutionContext () .fromRadiant (M_PI);
+	getSpotLightCutOffAngleAdjustment () -> set_upper (M_PI / 2); // getExecutionContext () .fromRadiant (M_PI);
+}
 
 void
-X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
+X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	X3D::X3DPtr <X3D::DirectionalLight> directionalLight (lightNode);
+	X3D::X3DPtr <X3D::SpotLight> directionalLight (lightNode);
 
-	getDirectionalLightExpander () .set_visible (directionalLight);
+	getSpotLightExpander () .set_visible (directionalLight);
 
-	direction .setNodes (directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ());
+	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
+
+	attenuation .setNodes (directionalLights);
+	location    .setNodes (directionalLights);
+	direction   .setNodes (directionalLights);
+	radius      .setNodes (directionalLights);
+	beamWidth   .setNodes (directionalLights);
+	cutOffAngle .setNodes (directionalLights);
 }
 
 } // puck
