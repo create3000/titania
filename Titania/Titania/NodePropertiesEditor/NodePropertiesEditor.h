@@ -169,6 +169,10 @@ private:
 	void
 	on_add_field_cancel_clicked () final override;
 
+	virtual
+	void
+	on_add_field_hide () final override;
+
 	bool
 	hasField (const std::string &) const;
 
@@ -240,6 +244,10 @@ private:
 	virtual
 	void
 	on_exported_node_cancel_clicked () final override;
+
+	virtual
+	void
+	on_exported_node_hide () final override;
 
 	bool
 	validateExportedName (const std::string &);

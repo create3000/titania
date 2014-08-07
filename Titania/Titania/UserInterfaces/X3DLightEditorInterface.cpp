@@ -88,16 +88,6 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightRadiusAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightRadiusAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("DirectionBox", m_DirectionBox);
-	m_DirectionBox -> set_name ("DirectionBox");
-	m_builder -> get_widget ("DirectionXSpinButton", m_DirectionXSpinButton);
-	m_DirectionXSpinButton -> set_name ("DirectionXSpinButton");
-	m_builder -> get_widget ("DirectionYSpinButton", m_DirectionYSpinButton);
-	m_DirectionYSpinButton -> set_name ("DirectionYSpinButton");
-	m_builder -> get_widget ("DirectionZSpinButton1", m_DirectionZSpinButton1);
-	m_DirectionZSpinButton1 -> set_name ("DirectionZSpinButton1");
-	m_builder -> get_widget ("PointLightRadiusScale", m_PointLightRadiusScale);
-	m_PointLightRadiusScale -> set_name ("PointLightRadiusScale");
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -130,6 +120,8 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_DirectionalLightDirectionYSpinButton -> set_name ("DirectionalLightDirectionYSpinButton");
 	m_builder -> get_widget ("DirectionalLightDirectionZSpinButton", m_DirectionalLightDirectionZSpinButton);
 	m_DirectionalLightDirectionZSpinButton -> set_name ("DirectionalLightDirectionZSpinButton");
+	m_builder -> get_widget ("DirectionalLightDirectionToolBox", m_DirectionalLightDirectionToolBox);
+	m_DirectionalLightDirectionToolBox -> set_name ("DirectionalLightDirectionToolBox");
 	m_builder -> get_widget ("PointLightExpander", m_PointLightExpander);
 	m_PointLightExpander -> set_name ("PointLightExpander");
 	m_builder -> get_widget ("PointLightLocationBox", m_PointLightLocationBox);
@@ -168,6 +160,12 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightLocationYSpinButton -> set_name ("SpotLightLocationYSpinButton");
 	m_builder -> get_widget ("SpotLightLocationZSpinButton", m_SpotLightLocationZSpinButton);
 	m_SpotLightLocationZSpinButton -> set_name ("SpotLightLocationZSpinButton");
+	m_builder -> get_widget ("SpotLightRadiusSpinButton", m_SpotLightRadiusSpinButton);
+	m_SpotLightRadiusSpinButton -> set_name ("SpotLightRadiusSpinButton");
+	m_builder -> get_widget ("SpotLightBeamWidthSpinButton", m_SpotLightBeamWidthSpinButton);
+	m_SpotLightBeamWidthSpinButton -> set_name ("SpotLightBeamWidthSpinButton");
+	m_builder -> get_widget ("SpotLightCutOffAngleSpinButton", m_SpotLightCutOffAngleSpinButton);
+	m_SpotLightCutOffAngleSpinButton -> set_name ("SpotLightCutOffAngleSpinButton");
 	m_builder -> get_widget ("SpotLightDirectionBox", m_SpotLightDirectionBox);
 	m_SpotLightDirectionBox -> set_name ("SpotLightDirectionBox");
 	m_builder -> get_widget ("SpotLightDirectionXSpinButton", m_SpotLightDirectionXSpinButton);
@@ -176,12 +174,8 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightDirectionYSpinButton -> set_name ("SpotLightDirectionYSpinButton");
 	m_builder -> get_widget ("SpotLightDirectionZSpinButton", m_SpotLightDirectionZSpinButton);
 	m_SpotLightDirectionZSpinButton -> set_name ("SpotLightDirectionZSpinButton");
-	m_builder -> get_widget ("SpotLightRadiusSpinButton", m_SpotLightRadiusSpinButton);
-	m_SpotLightRadiusSpinButton -> set_name ("SpotLightRadiusSpinButton");
-	m_builder -> get_widget ("SpotLightBeamWidthSpinButton", m_SpotLightBeamWidthSpinButton);
-	m_SpotLightBeamWidthSpinButton -> set_name ("SpotLightBeamWidthSpinButton");
-	m_builder -> get_widget ("SpotLightCutOffAngleSpinButton", m_SpotLightCutOffAngleSpinButton);
-	m_SpotLightCutOffAngleSpinButton -> set_name ("SpotLightCutOffAngleSpinButton");
+	m_builder -> get_widget ("SpotLightDirectionToolBox", m_SpotLightDirectionToolBox);
+	m_SpotLightDirectionToolBox -> set_name ("SpotLightDirectionToolBox");
 
 	// Call construct handler of base class.
 	construct ();

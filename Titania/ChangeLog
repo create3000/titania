@@ -1,5 +1,22 @@
 2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* DirectionTool.h:
+	* LightEditor.xml:
+	* X3DSpotLightEditor.h:
+	* X3DSpotLightEditor.cpp:
+	* DirectionTool.x3dv:
+	* X3DDirectionalLightEditor.h:
+	* X3DLightEditorInterface.h:
+	* NodePropertiesEditor.xml:
+	* X3DDirectionalLightEditor.cpp:
+	* X3DLightEditorInterface.cpp:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
+2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* LightEditor.h:

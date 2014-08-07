@@ -286,6 +286,11 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'AddExportedNodeButton'.
 	m_AddExportedNodeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_exported_node));
 	m_RemoveExportedNodeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_exported_node));
+
+	// Connect object Gtk::Dialog with id 'ExportedNodeDialog'.
+	m_ExportedNodeDialog -> signal_hide () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_hide));
+
+	// Connect object Gtk::Button with id 'ExportedNodeCancelButton'.
 	m_ExportedNodeCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_cancel_clicked));
 	m_ExportedNodeOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_ok_clicked));
 
@@ -293,6 +298,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_ExportedNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_name_changed));
 	m_ExportedNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_name_delete_text), false);
 	m_ExportedNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_name_insert_text), false);
+
+	// Connect object Gtk::Dialog with id 'UserDefinedFieldDialog'.
+	m_UserDefinedFieldDialog -> signal_hide () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_hide));
 
 	// Connect object Gtk::Button with id 'AddFieldCancelButton'.
 	m_AddFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));

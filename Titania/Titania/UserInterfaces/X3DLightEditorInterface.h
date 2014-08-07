@@ -195,26 +195,6 @@ public:
 	getSpotLightRadiusAdjustment () const
 	{ return m_SpotLightRadiusAdjustment; }
 
-	Gtk::Box &
-	getDirectionBox () const
-	{ return *m_DirectionBox; }
-
-	Gtk::SpinButton &
-	getDirectionXSpinButton () const
-	{ return *m_DirectionXSpinButton; }
-
-	Gtk::SpinButton &
-	getDirectionYSpinButton () const
-	{ return *m_DirectionYSpinButton; }
-
-	Gtk::SpinButton &
-	getDirectionZSpinButton1 () const
-	{ return *m_DirectionZSpinButton1; }
-
-	Gtk::Scale &
-	getPointLightRadiusScale () const
-	{ return *m_PointLightRadiusScale; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -278,6 +258,10 @@ public:
 	Gtk::SpinButton &
 	getDirectionalLightDirectionZSpinButton () const
 	{ return *m_DirectionalLightDirectionZSpinButton; }
+
+	Gtk::Box &
+	getDirectionalLightDirectionToolBox () const
+	{ return *m_DirectionalLightDirectionToolBox; }
 
 	Gtk::Expander &
 	getPointLightExpander () const
@@ -355,6 +339,18 @@ public:
 	getSpotLightLocationZSpinButton () const
 	{ return *m_SpotLightLocationZSpinButton; }
 
+	Gtk::SpinButton &
+	getSpotLightRadiusSpinButton () const
+	{ return *m_SpotLightRadiusSpinButton; }
+
+	Gtk::SpinButton &
+	getSpotLightBeamWidthSpinButton () const
+	{ return *m_SpotLightBeamWidthSpinButton; }
+
+	Gtk::SpinButton &
+	getSpotLightCutOffAngleSpinButton () const
+	{ return *m_SpotLightCutOffAngleSpinButton; }
+
 	Gtk::Box &
 	getSpotLightDirectionBox () const
 	{ return *m_SpotLightDirectionBox; }
@@ -371,17 +367,9 @@ public:
 	getSpotLightDirectionZSpinButton () const
 	{ return *m_SpotLightDirectionZSpinButton; }
 
-	Gtk::SpinButton &
-	getSpotLightRadiusSpinButton () const
-	{ return *m_SpotLightRadiusSpinButton; }
-
-	Gtk::SpinButton &
-	getSpotLightBeamWidthSpinButton () const
-	{ return *m_SpotLightBeamWidthSpinButton; }
-
-	Gtk::SpinButton &
-	getSpotLightCutOffAngleSpinButton () const
-	{ return *m_SpotLightCutOffAngleSpinButton; }
+	Gtk::Box &
+	getSpotLightDirectionToolBox () const
+	{ return *m_SpotLightDirectionToolBox; }
 
 	virtual
 	~X3DLightEditorInterface ();
@@ -421,11 +409,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightLocationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightLocationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightRadiusAdjustment;
-	Gtk::Box*                      m_DirectionBox;
-	Gtk::SpinButton*               m_DirectionXSpinButton;
-	Gtk::SpinButton*               m_DirectionYSpinButton;
-	Gtk::SpinButton*               m_DirectionZSpinButton1;
-	Gtk::Scale*                    m_PointLightRadiusScale;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_LightExpander;
@@ -442,6 +425,7 @@ private:
 	Gtk::SpinButton*               m_DirectionalLightDirectionXSpinButton;
 	Gtk::SpinButton*               m_DirectionalLightDirectionYSpinButton;
 	Gtk::SpinButton*               m_DirectionalLightDirectionZSpinButton;
+	Gtk::Box*                      m_DirectionalLightDirectionToolBox;
 	Gtk::Expander*                 m_PointLightExpander;
 	Gtk::Box*                      m_PointLightLocationBox;
 	Gtk::SpinButton*               m_PointLightLocationXSpinButton;
@@ -461,13 +445,14 @@ private:
 	Gtk::SpinButton*               m_SpotLightLocationXSpinButton;
 	Gtk::SpinButton*               m_SpotLightLocationYSpinButton;
 	Gtk::SpinButton*               m_SpotLightLocationZSpinButton;
+	Gtk::SpinButton*               m_SpotLightRadiusSpinButton;
+	Gtk::SpinButton*               m_SpotLightBeamWidthSpinButton;
+	Gtk::SpinButton*               m_SpotLightCutOffAngleSpinButton;
 	Gtk::Box*                      m_SpotLightDirectionBox;
 	Gtk::SpinButton*               m_SpotLightDirectionXSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionYSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionZSpinButton;
-	Gtk::SpinButton*               m_SpotLightRadiusSpinButton;
-	Gtk::SpinButton*               m_SpotLightBeamWidthSpinButton;
-	Gtk::SpinButton*               m_SpotLightCutOffAngleSpinButton;
+	Gtk::Box*                      m_SpotLightDirectionToolBox;
 
 };
 

@@ -57,6 +57,8 @@
 namespace titania {
 namespace puck {
 
+class DirectionTool;
+
 class X3DSpotLightEditor :
 	virtual public X3DLightEditorInterface
 {
@@ -65,8 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSpotLightEditor ()
-	{ }
+	~X3DSpotLightEditor ();
 
 
 protected:
@@ -74,6 +75,10 @@ protected:
 	///  @name Construction
 
 	X3DSpotLightEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 	void
 	setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
@@ -86,6 +91,7 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> attenuation;
 	X3DFieldAdjustment3 <X3D::SFVec3f> location;
 	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
+	std::unique_ptr <DirectionTool>    directionTool;	
 	X3DFieldAdjustment <X3D::SFFloat>  radius;
 	X3DFieldAdjustment <X3D::SFFloat>  beamWidth;
 	X3DFieldAdjustment <X3D::SFFloat>  cutOffAngle;

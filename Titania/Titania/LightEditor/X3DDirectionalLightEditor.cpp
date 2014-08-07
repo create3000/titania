@@ -50,6 +50,8 @@
 
 #include "X3DDirectionalLightEditor.h"
 
+#include "../ComposedWidgets/DirectionTool.h"
+
 namespace titania {
 namespace puck {
 
@@ -60,8 +62,15 @@ X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
 	                         getDirectionalLightDirectionYAdjustment (),
 	                         getDirectionalLightDirectionZAdjustment (),
 	                         getDirectionalLightDirectionBox (),
-	                         "direction")
+	                         "direction"),
+	          directionTool (new DirectionTool (getBrowserWindow (), getDirectionalLightDirectionToolBox (), "direction"))
 { }
+
+void
+X3DDirectionalLightEditor::initialize ()
+{
+	directionTool -> initialize ();
+}
 
 void
 X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
@@ -71,7 +80,11 @@ X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLight
 	getDirectionalLightExpander () .set_visible (directionalLight);
 
 	direction .setNodes (directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ());
+	directionTool -> setNode (X3D::SFNode (directionalLight));
 }
+
+X3DDirectionalLightEditor::~X3DDirectionalLightEditor ()
+{ }
 
 } // puck
 } // titania

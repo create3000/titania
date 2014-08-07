@@ -50,6 +50,8 @@
 
 #include "X3DSpotLightEditor.h"
 
+#include "../ComposedWidgets/DirectionTool.h"
+
 namespace titania {
 namespace puck {
 
@@ -73,6 +75,7 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 	                         getSpotLightDirectionZAdjustment (),
 	                         getSpotLightDirectionBox (),
 	                         "direction"),
+	          directionTool (new DirectionTool (getBrowserWindow (), getSpotLightDirectionToolBox (), "direction")),
 	                 radius (getBrowserWindow (), getSpotLightRadiusAdjustment (), getSpotLightRadiusSpinButton (), "radius"),
 	              beamWidth (getBrowserWindow (), getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
 	            cutOffAngle (getBrowserWindow (), getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")
@@ -82,21 +85,32 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 }
 
 void
+X3DSpotLightEditor::initialize ()
+{
+	directionTool -> initialize ();
+}
+
+void
 X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	X3D::X3DPtr <X3D::SpotLight> directionalLight (lightNode);
+	X3D::X3DPtr <X3D::SpotLight> spotLight (lightNode);
 
-	getSpotLightExpander () .set_visible (directionalLight);
+	getSpotLightExpander () .set_visible (spotLight);
 
-	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
+	const auto spotLights = spotLight ? X3D::MFNode ({ spotLight }) : X3D::MFNode ();
 
-	attenuation .setNodes (directionalLights);
-	location    .setNodes (directionalLights);
-	direction   .setNodes (directionalLights);
-	radius      .setNodes (directionalLights);
-	beamWidth   .setNodes (directionalLights);
-	cutOffAngle .setNodes (directionalLights);
+	attenuation .setNodes (spotLights);
+	location    .setNodes (spotLights);
+	direction   .setNodes (spotLights);
+	radius      .setNodes (spotLights);
+	beamWidth   .setNodes (spotLights);
+	cutOffAngle .setNodes (spotLights);
+
+	directionTool -> setNode (X3D::SFNode (spotLight));
 }
+
+X3DSpotLightEditor::~X3DSpotLightEditor ()
+{ }
 
 } // puck
 } // titania

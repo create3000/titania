@@ -573,6 +573,10 @@ public:
 
 	virtual
 	void
+	on_exported_node_hide () = 0;
+
+	virtual
+	void
 	on_exported_node_cancel_clicked () = 0;
 
 	virtual
@@ -590,6 +594,10 @@ public:
 	virtual
 	void
 	on_exported_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_field_hide () = 0;
 
 	virtual
 	void

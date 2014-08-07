@@ -30,61 +30,6 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkBox" id="DirectionBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="halign">start</property>
-    <property name="hexpand">True</property>
-    <property name="homogeneous">True</property>
-    <child>
-      <object class="GtkSpinButton" id="DirectionXSpinButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="text" translatable="yes">0,000</property>
-        <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
-        <property name="climb_rate">0.01</property>
-        <property name="digits">3</property>
-        <property name="numeric">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkSpinButton" id="DirectionYSpinButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="text" translatable="yes">0,000</property>
-        <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
-        <property name="climb_rate">0.01</property>
-        <property name="digits">3</property>
-        <property name="numeric">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkSpinButton" id="DirectionZSpinButton1">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="text" translatable="yes">0,000</property>
-        <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
-        <property name="climb_rate">0.01</property>
-        <property name="digits">3</property>
-        <property name="numeric">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-  </object>
   <object class="GtkAdjustment" id="IntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -127,24 +72,6 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
-  </object>
-  <object class="GtkScale" id="PointLightRadiusScale">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="adjustment">PointLightRadiusAdjustment</property>
-    <property name="upper_stepper_sensitivity">off</property>
-    <property name="digits">3</property>
-    <property name="draw_value">False</property>
-    <property name="value_pos">right</property>
-  </object>
-  <object class="GtkSpinButton" id="spinbutton3">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="text" translatable="yes">0,000</property>
-    <property name="adjustment">PointLightRadiusAdjustment</property>
-    <property name="climb_rate">0.01</property>
-    <property name="digits">3</property>
-    <property name="numeric">True</property>
   </object>
   <object class="GtkAdjustment" id="SpotLightAttenuationXAdjustment">
     <property name="upper">1000000000</property>
@@ -500,7 +427,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
@@ -533,21 +460,66 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="DirectionalLightDirectionBox">
+                  <object class="GtkBox" id="box1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
-                    <property name="homogeneous">True</property>
+                    <property name="spacing">8</property>
                     <child>
-                      <object class="GtkSpinButton" id="DirectionalLightDirectionXSpinButton">
+                      <object class="GtkBox" id="DirectionalLightDirectionBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkSpinButton" id="DirectionalLightDirectionXSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="DirectionalLightDirectionYSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="DirectionalLightDirectionZSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -556,35 +528,22 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="DirectionalLightDirectionYSpinButton">
+                      <object class="GtkBox" id="DirectionalLightDirectionToolBox">
+                        <property name="width_request">100</property>
+                        <property name="height_request">50</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="resize_mode">immediate</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="DirectionalLightDirectionZSpinButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -606,7 +565,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
@@ -823,7 +782,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">3</property>
           </packing>
@@ -1013,69 +972,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="SpotLightDirectionBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="hexpand">True</property>
-                    <property name="homogeneous">True</property>
-                    <child>
-                      <object class="GtkSpinButton" id="SpotLightDirectionXSpinButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">SpotLightDirectionXAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="SpotLightDirectionYSpinButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">SpotLightDirectionYAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="SpotLightDirectionZSpinButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">SpotLightDirectionZAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkLabel" id="label18">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -1171,6 +1067,101 @@
                     <property name="height">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkBox" id="box2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="spacing">8</property>
+                    <child>
+                      <object class="GtkBox" id="SpotLightDirectionBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="orientation">vertical</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkSpinButton" id="SpotLightDirectionXSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">SpotLightDirectionXAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="SpotLightDirectionYSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">SpotLightDirectionYAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="SpotLightDirectionZSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">SpotLightDirectionZAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="SpotLightDirectionToolBox">
+                        <property name="width_request">100</property>
+                        <property name="height_request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="resize_mode">immediate</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
               </object>
             </child>
             <child type="label">
@@ -1182,7 +1173,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">4</property>
           </packing>

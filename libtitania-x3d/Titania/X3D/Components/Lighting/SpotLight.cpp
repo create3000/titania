@@ -66,8 +66,8 @@ SpotLight::Fields::Fields () :
 	  direction (new SFVec3f (0, 0, -1)),
 	   location (new SFVec3f ()),
 	     radius (new SFFloat (100)),
-	  beamWidth (new SFFloat ()),
-	cutOffAngle (new SFFloat (0.785398))
+	  beamWidth (new SFFloat (0.785398)),
+	cutOffAngle (new SFFloat (1.5708))
 { }
 
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :

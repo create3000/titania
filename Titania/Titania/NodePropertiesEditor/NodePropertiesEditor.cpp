@@ -562,7 +562,6 @@ NodePropertiesEditor::on_add_field_ok_clicked ()
 	try
 	{
 		getUserDefinedFieldDialog () .hide ();
-		getWindow () .set_sensitive (true);
 
 		if (editUserDefinedField)
 		{
@@ -599,6 +598,11 @@ void
 NodePropertiesEditor::on_add_field_cancel_clicked ()
 {
 	getUserDefinedFieldDialog () .hide ();
+}
+
+void
+NodePropertiesEditor::on_add_field_hide ()
+{
 	getWindow () .set_sensitive (true);
 }
 
@@ -975,7 +979,6 @@ void
 NodePropertiesEditor::on_exported_node_ok_clicked ()
 {
 	getExportedNodeDialog () .hide ();
-	getWindow () .set_sensitive (true);
 
 	const std::string exportedName = getExportedNameEntry () .get_text ();
 
@@ -1012,6 +1015,11 @@ void
 NodePropertiesEditor::on_exported_node_cancel_clicked ()
 {
 	getExportedNodeDialog () .hide ();
+}
+
+void
+NodePropertiesEditor::on_exported_node_hide ()
+{
 	getWindow () .set_sensitive (true);
 }
 
@@ -1384,11 +1392,11 @@ NodePropertiesEditor::setUserDefinedFields (BrowserWindow* const browserWindow,
                                             const X3D::FieldDefinitionArray & userDefinedFields,
                                             const X3D::FieldDefinitionArray & fieldsToRemove)
 {
-	for (const auto & field : userDefinedFields)
-		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
 	for (const auto & field : fieldsToRemove)
 		node -> removeUserDefinedField (field -> getName ());
+
+	for (const auto & field : userDefinedFields)
+		node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 
 	browserWindow -> getOutlineTreeView () -> update (node);
 }
