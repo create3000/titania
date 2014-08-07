@@ -5,8 +5,8 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V0.7.1, http://titania.create3000.de'/>
-    <meta name='modified' content='Sun, 03 Aug 2014 23:53:51 GMT'/>
+    <meta name='generator' content='Titania V0.7.3, http://titania.create3000.de'/>
+    <meta name='modified' content='Thu, 07 Aug 2014 18:17:45 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -287,7 +287,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mo 04 Aug 2014 01:50:36 CEST"'>
+            string='"modified...", "Mo 04 Aug 2014 01:53:51 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -457,7 +457,7 @@ function initialize ()
       <ProximitySensor USE='_9'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 5.35572'
+          rotation='-0 -0 -1 5.82452'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -484,19 +484,19 @@ function initialize ()
     </Transform>
     <Transform
         translation='3.49909 3.57949 6.88583'>
-      <PointLight
+      <PointLight DEF='_10'
           color='0 1 1'
-          location='0 2 -10'
-          intensity='0.5'/>
+          intensity='0.5'
+          location='0 2 -10'/>
     </Transform>
     <Transform
         translation='0.0928667 5.09104 19.9731'>
-      <PointLight
+      <PointLight DEF='_11'
           color='1 0 1'
-          location='0 2 -10'
-          intensity='0.5'/>
+          intensity='0.5'
+          location='0 2 -10'/>
     </Transform>
-    <SpotLight
+    <SpotLight DEF='_12'
         color='1 0 0'
         location='0 0 10'
         direction='0 1 -1'/>
@@ -504,7 +504,8 @@ function initialize ()
         translation='-10.4152 7.87882 1.0723'
         rotation='-0.269008 -0.910563 -0.313863 1.51293'
         scaleOrientation='0.277285 0.249638 0.92779 4.51751'>
-      <DirectionalLight
+      <DirectionalLight DEF='_13'
+          color='0 0.976322 1'
           intensity='0.3'/>
     </Transform>
     <Switch DEF='Viewpoint'

@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.1
+#X3D V3.3 utf8 Titania V0.7.3
 
 META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Mon, 04 Aug 2014 18:53:38 GMT"
+META "generator" "Titania V0.7.3, http://titania.create3000.de"
+META "modified" "Thu, 07 Aug 2014 18:32:44 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -150,272 +150,353 @@ DEF _1 Transform {
     enabled FALSE
     children DEF Lights ScreenGroup {
       children [
-        Transform {
+        DEF Lights_1 Transform {
           scale 12 12 12
-          children DEF _2 Switch {
-            whichChoice 0
-            children [
-              DEF DirectionalLight Transform {
-                scale 1.33333 1.33333 1.33333
-                children [
-                  DEF Rays Transform {
-                    children Shape {
-                      appearance DEF _3 Appearance {
-                        material DEF _4 Material {
-                          ambientIntensity 0.1
-                          specularColor 0.8 0.8 0.8
-                          emissiveColor 1 1 1
-                          shininess 1
-                        }
-                      }
-                      geometry IndexedLineSet {
-                        coordIndex [
-                          0,
-                          1,
-                          -1,
-                          2,
-                          3,
-                          -1,
-                          4,
-                          5,
-                          -1,
-                          6,
-                          7,
-                          -1,
-                          8,
-                          9,
-                          -1,
-                          10,
-                          11,
-                          -1,
-                          12,
-                          13,
-                          -1,
-                          14,
-                          15,
-                          -1,
-                          16,
-                          17,
-                          -1
-                        ]
-                        coord Coordinate {
-                          point [
-                            -1 0.61803 0,
-                            -1 0.61803 1,
-                            0 0.61803 0,
-                            0 0.61803 1,
-                            1 0.61803 0,
-                            1 0.61803 1,
-                            -1 0 0,
-                            -1 0 1,
-                            0 0 0,
-                            0 0 1,
-                            1 0 0,
-                            1 0 1,
-                            -1 -0.61803 0,
-                            -1 -0.61803 1,
-                            0 -0.61803 0,
-                            0 -0.61803 1,
-                            1 -0.61803 0,
-                            1 -0.61803 1
-                          ]
-                        }
-                      }
-                    }
-                  }
-                  DEF Box Transform {
-                    scale 1 0.61803 0.1
-                    children Shape {
-                      appearance USE _3
-                      geometry Box { }
-                    }
-                  }
-                  DEF TouchBox Transform {
-                    translation 0 0 0.5
-                    scale 1 1 0.55
-                    children Shape {
-                      appearance Appearance {
-                        material Material {
-                          transparency 1
-                        }
-                      }
-                      geometry Box { }
-                    }
-                  }
-                ]
-              }
-              DEF PointLight Transform {
-                children [
-                  DEF Ray1 Transform {
-                    scale 2 2 2
-                    children DEF _5 Shape {
-                      appearance USE _3
-                      geometry IndexedLineSet {
-                        coordIndex [
-                          0,
-                          1,
-                          -1,
-                          2,
-                          3,
-                          -1,
-                          4,
-                          5,
-                          -1
-                        ]
-                        coord Coordinate {
-                          point [
-                            -1 0 0,
-                            1 0 0,
-                            0 -1 0,
-                            0 1 0,
-                            0 0 -1,
-                            0 0 1
-                          ]
-                        }
-                      }
-                    }
-                  }
-                  DEF Ray2 Transform {
-                    rotation 0.281085 -0.678597 -0.678599 1.09606
-                    scale 2 2 2
-                    scaleOrientation -0.174907 -0.321006 -0.930786 0.279269
-                    children USE _5
-                  }
-                  DEF Ray3 Transform {
-                    rotation -0.281084 0.6786 -0.678597 1.09606
-                    scale 2 2 2
-                    scaleOrientation -0.985768 0.161219 -0.0476505 0.470038
-                    children USE _5
-                  }
-                  DEF Sphere Shape {
-                    appearance USE _3
-                    geometry Sphere { }
-                  }
-                ]
-              }
-              DEF SpotLight Transform {
-                children [
-                  DEF Cone Transform {
-                    rotation 1 3.62549e-06 -9.93165e-10 4.71239
-                    scaleOrientation 0.999527 0.0122136 -0.0282112 0.785458
-                    children Shape {
-                      appearance USE _3
-                      geometry Cone {
-                        bottom FALSE
-                        solid FALSE
-                      }
-                    }
-                  }
-                  DEF Bulb Transform {
-                    translation 0 0 1
-                    scale 0.61803 0.61803 0.61803
-                    children [
-                      DEF Sphere_1 Shape {
-                        appearance USE _3
-                        geometry Sphere { }
-                      }
-                      DEF Ray1_1 Transform {
-                        scale 2 2 2
-                        children Shape {
-                          appearance USE _3
-                          geometry IndexedLineSet {
-                            coordIndex [
-                              0,
-                              1,
-                              -1,
-                              2,
-                              3,
-                              -1,
-                              4,
-                              5,
-                              -1
-                            ]
-                            coord Coordinate {
-                              point [
-                                -1 0 0,
-                                1 0 0,
-                                0 -1 0,
-                                0 1 0,
-                                0 0 -1,
-                                0 0 1
-                              ]
-                            }
-                          }
-                        }
-                      }
-                      DEF Ray2_1 Transform {
-                        rotation 0.281085 -0.678597 -0.678599 1.09606
-                        scale 2 2 2
-                        scaleOrientation 0.747419 -0.663393 0.0357048 1.19385
-                        children Shape {
-                          appearance USE _3
-                          geometry IndexedLineSet {
-                            coordIndex [
-                              0,
-                              1,
-                              -1,
-                              2,
-                              3,
-                              -1,
-                              4,
-                              5,
-                              -1
-                            ]
-                            coord Coordinate {
-                              point [
-                                0 0 0,
-                                1 0 0,
-                                0 0 0,
-                                0 1 0,
-                                0 0 0,
-                                0 0 1
-                              ]
-                            }
-                          }
-                        }
-                      }
-                      DEF Ray3_1 Transform {
-                        rotation -0.281084 0.6786 -0.678597 1.09606
-                        scale 2 2 2
-                        scaleOrientation -0.805953 -0.138029 0.575662 0.849512
-                        children Shape {
-                          appearance USE _3
-                          geometry IndexedLineSet {
-                            coordIndex [
-                              0,
-                              1,
-                              -1,
-                              2,
-                              3,
-                              -1,
-                              4,
-                              5,
-                              -1
-                            ]
-                            coord Coordinate {
-                              point [
-                                -1 0 0,
-                                0 0 0,
-                                0 -1 0,
-                                0 0 0,
-                                0 0 0,
-                                0 0 1
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        }
-        DEF _6 BooleanSwitch {
           children [
-            DEF _7 Transform { }
-            DEF Axes_1 Transform {
+            DEF _2 Switch {
+              whichChoice 0
+              children [
+                DEF DirectionalLight Transform {
+                  translation 0 0 -0.16262
+                  scale 2 2 2
+                  children [
+                    DEF Rays Transform {
+                      children Shape {
+                        appearance DEF _3 Appearance {
+                          lineProperties LineProperties {
+                            linewidthScaleFactor 2
+                          }
+                          material DEF _4 Material {
+                            ambientIntensity 0.1
+                            specularColor 0.8 0.8 0.8
+                            emissiveColor 1 1 1
+                            shininess 1
+                          }
+                        }
+                        geometry IndexedLineSet {
+                          coordIndex [
+                            0,
+                            1,
+                            -1,
+                            2,
+                            3,
+                            -1,
+                            4,
+                            5,
+                            -1,
+                            6,
+                            7,
+                            -1,
+                            8,
+                            9,
+                            -1,
+                            10,
+                            11,
+                            -1,
+                            12,
+                            13,
+                            -1,
+                            14,
+                            15,
+                            -1,
+                            16,
+                            17,
+                            -1
+                          ]
+                          coord Coordinate {
+                            point [
+                              -1 0.61803 0,
+                              -1 0.61803 1,
+                              0 0.61803 0,
+                              0 0.61803 1,
+                              1 0.61803 0,
+                              1 0.61803 1,
+                              -1 0 0,
+                              -1 0 1,
+                              0 0 0,
+                              0 0 1,
+                              1 0 0,
+                              1 0 1,
+                              -1 -0.61803 0,
+                              -1 -0.61803 1,
+                              0 -0.61803 0,
+                              0 -0.61803 1,
+                              1 -0.61803 0,
+                              1 -0.61803 1
+                            ]
+                          }
+                        }
+                      }
+                    }
+                    DEF Box Transform {
+                      scale 1 0.61803 0.1
+                      children Shape {
+                        appearance DEF _5 Appearance {
+                          material USE _4
+                        }
+                        geometry Box { }
+                      }
+                    }
+                    DEF Cones Transform {
+                      children [
+                        DEF Cone_1 Transform {
+                          translation 0 0 1.225
+                          rotation 1 3.62585e-06 -1.62383e-10 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation 1 2.43263e-06 4.63357e-06 0.785354
+                          children DEF _6 Shape {
+                            appearance USE _5
+                            geometry Cone {
+                              height 3
+                            }
+                          }
+                        }
+                        DEF Cone_2 Transform {
+                          translation 1 -4.44089e-16 1.225
+                          rotation 1 3.62462e-06 -9.72236e-11 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation 0.98444 -0.0466438 0.16942 0.398651
+                          children USE _6
+                        }
+                        DEF Cone_3 Transform {
+                          translation -1 -8.88178e-16 1.225
+                          rotation 1 3.62109e-06 -4.75892e-09 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation -0.132251 -0.367121 -0.920723 1.57758
+                          children USE _6
+                        }
+                        DEF Cone_4 Transform {
+                          translation -3.55271e-14 -0.61803 1.225
+                          rotation 1 3.62696e-06 -1.86051e-09 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation -0.999452 -0.0259091 -0.0205822 0.784698
+                          children USE _6
+                        }
+                        DEF Cone_5 Transform {
+                          translation 1 -0.61803 1.225
+                          rotation 1 3.6271e-06 1.10499e-08 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation 0.0538397 -0.995173 -0.0820528 0.797265
+                          children USE _6
+                        }
+                        DEF Cone_6 Transform {
+                          translation -1 -0.61803 1.225
+                          rotation 1 3.60802e-06 7.93032e-09 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation -0.852007 -0.180681 0.491364 0.720824
+                          children USE _6
+                        }
+                        DEF Cone_7 Transform {
+                          translation -2.84217e-14 0.618029 1.225
+                          rotation 1 3.62696e-06 -1.86051e-09 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation -0.999452 -0.0259091 -0.0205822 0.784698
+                          children USE _6
+                        }
+                        DEF Cone_8 Transform {
+                          translation 1 0.618029 1.225
+                          rotation 1 3.6271e-06 1.10499e-08 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation 0.0538397 -0.995173 -0.0820528 0.797265
+                          children USE _6
+                        }
+                        DEF Cone_9 Transform {
+                          translation -1 0.618029 1.225
+                          rotation 1 3.60802e-06 7.93032e-09 1.5708
+                          scale 0.15 0.15 0.15
+                          scaleOrientation -0.852007 -0.180681 0.491364 0.720824
+                          children USE _6
+                        }
+                      ]
+                    }
+                  ]
+                }
+                DEF PointLight Transform {
+                  children [
+                    DEF Ray1 Transform {
+                      scale 2 2 2
+                      children DEF _7 Shape {
+                        appearance USE _3
+                        geometry IndexedLineSet {
+                          coordIndex [
+                            0,
+                            1,
+                            -1,
+                            2,
+                            3,
+                            -1,
+                            4,
+                            5,
+                            -1
+                          ]
+                          coord Coordinate {
+                            point [
+                              -1 0 0,
+                              1 0 0,
+                              0 -1 0,
+                              0 1 0,
+                              0 0 -1,
+                              0 0 1
+                            ]
+                          }
+                        }
+                      }
+                    }
+                    DEF Ray2 Transform {
+                      rotation 0.281085 -0.678597 -0.678599 1.09606
+                      scale 2 2 2
+                      scaleOrientation -0.174907 -0.321006 -0.930786 0.279269
+                      children USE _7
+                    }
+                    DEF Ray3 Transform {
+                      rotation -0.281084 0.6786 -0.678597 1.09606
+                      scale 2 2 2
+                      scaleOrientation -0.985768 0.161219 -0.0476505 0.470038
+                      children USE _7
+                    }
+                    DEF Sphere Shape {
+                      appearance USE _5
+                      geometry Sphere { }
+                    }
+                  ]
+                }
+                DEF SpotLight Transform {
+                  children [
+                    DEF Cone Transform {
+                      translation 5.68434e-14 1.20792e-13 -0.373349
+                      rotation 1 3.6325e-06 -7.44203e-09 4.71239
+                      scale 1.70236 1.70236 1.70236
+                      scaleOrientation 0.347583 0.0964911 -0.932671 1.23464
+                      children Shape {
+                        appearance USE _5
+                        geometry Cone {
+                          bottom FALSE
+                          bottomRadius 1.2
+                          solid FALSE
+                        }
+                      }
+                    }
+                    DEF Bulb Transform {
+                      translation 0 0 1.46147
+                      children [
+                        DEF Sphere_1 Shape {
+                          appearance USE _5
+                          geometry Sphere { }
+                        }
+                        DEF Ray1_1 Transform {
+                          scale 2 2 2
+                          children Shape {
+                            appearance USE _3
+                            geometry IndexedLineSet {
+                              coordIndex [
+                                0,
+                                1,
+                                -1,
+                                2,
+                                3,
+                                -1,
+                                4,
+                                5,
+                                -1
+                              ]
+                              coord Coordinate {
+                                point [
+                                  -1 0 0,
+                                  1 0 0,
+                                  0 -1 0,
+                                  0 1 0,
+                                  0 0 -1,
+                                  0 0 1
+                                ]
+                              }
+                            }
+                          }
+                        }
+                        DEF Ray2_1 Transform {
+                          rotation 0.281085 -0.678597 -0.678599 1.09606
+                          scale 2 2 2
+                          scaleOrientation 0.747419 -0.663393 0.0357048 1.19385
+                          children Shape {
+                            appearance USE _3
+                            geometry IndexedLineSet {
+                              coordIndex [
+                                0,
+                                1,
+                                -1,
+                                2,
+                                3,
+                                -1,
+                                4,
+                                5,
+                                -1
+                              ]
+                              coord Coordinate {
+                                point [
+                                  0 0 0,
+                                  1 0 0,
+                                  0 0 0,
+                                  0 1 0,
+                                  0 0 0,
+                                  0 0 1
+                                ]
+                              }
+                            }
+                          }
+                        }
+                        DEF Ray3_1 Transform {
+                          rotation -0.281084 0.6786 -0.678597 1.09606
+                          scale 2 2 2
+                          scaleOrientation -0.805953 -0.138029 0.575662 0.849512
+                          children Shape {
+                            appearance USE _3
+                            geometry IndexedLineSet {
+                              coordIndex [
+                                0,
+                                1,
+                                -1,
+                                2,
+                                3,
+                                -1,
+                                4,
+                                5,
+                                -1
+                              ]
+                              coord Coordinate {
+                                point [
+                                  -1 0 0,
+                                  0 0 0,
+                                  0 -1 0,
+                                  0 0 0,
+                                  0 0 0,
+                                  0 0 1
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF TouchBox_1 Transform {
+              scale 3.5 3.5 3.5
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    transparency 1
+                  }
+                }
+                geometry Box { }
+              }
+            }
+          ]
+        }
+        DEF Axes_1 BooleanSwitch {
+          children [
+            DEF _8 Transform { }
+            DEF Axes_2 Transform {
               children [
                 DEF Axes Shape {
                   geometry IndexedLineSet {
@@ -497,10 +578,10 @@ DEF _1 Transform {
 }
 
 ROUTE Tool.whichChoice_changed TO _2.set_whichChoice
-ROUTE Tool.selected_changed TO _6.set_whichChoice
-ROUTE Tool.rotation_changed TO _1.set_rotation
+ROUTE Tool.selected_changed TO Axes_1.set_whichChoice
 ROUTE Tool.translation_changed TO _1.set_translation
 ROUTE Tool.diffuseColor_changed TO _4.set_diffuseColor
 ROUTE Tool.emissiveColor_changed TO _4.set_emissiveColor
+ROUTE Tool.rotation_changed TO Lights_1.set_rotation
 
 EXPORT Tool
