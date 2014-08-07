@@ -48,56 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
-
-#include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "X3DDirectionalLightEditor.h"
 
 namespace titania {
 namespace puck {
 
-class X3DPixelTextureEditor :
-	virtual public X3DTextureEditorInterface
-{
-public:
-
-	///  @name Destruction
-
-	virtual
-	~X3DPixelTextureEditor ()
-	{ }
-
-
-protected:
-
-	///  @name Construction
-
-	X3DPixelTextureEditor ();
-
-	///  @name Construction
-
-	void
-	setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	virtual
-	const X3D::X3DPtr <X3D::PixelTexture> &
-	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-
-private:
-
-	///  @name Operations
-
-	void
-	assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> &);
-
-	///  @name Members
-
-	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;
-
-};
+X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
+	X3DLightEditorInterface ("", "")
+	           //topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom")
+	               //spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing")
+{ }
 
 } // puck
 } // titania
-
-#endif

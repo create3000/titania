@@ -278,10 +278,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FileToolBar -> set_name ("FileToolBar");
 	m_builder -> get_widget ("NewButton", m_NewButton);
 	m_NewButton -> set_name ("NewButton");
-	m_builder -> get_widget ("OpenButton", m_OpenButton);
-	m_OpenButton -> set_name ("OpenButton");
 	m_builder -> get_widget ("ImportButton", m_ImportButton);
 	m_ImportButton -> set_name ("ImportButton");
+	m_builder -> get_widget ("OpenButton", m_OpenButton);
+	m_OpenButton -> set_name ("OpenButton");
 	m_builder -> get_widget ("SaveButton", m_SaveButton);
 	m_SaveButton -> set_name ("SaveButton");
 	m_builder -> get_widget ("RefreshButton", m_RefreshButton);
@@ -308,6 +308,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_GeometryPropertiesEditorButton -> set_name ("GeometryPropertiesEditorButton");
 	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
 	m_UpdateViewpointButton -> set_name ("UpdateViewpointButton");
+	m_builder -> get_widget ("LightEditorButton", m_LightEditorButton);
+	m_LightEditorButton -> set_name ("LightEditorButton");
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
 	m_CreatePrototypeInstanceButton -> set_name ("CreatePrototypeInstanceButton");
 	m_builder -> get_widget ("VPaned", m_VPaned);
@@ -515,12 +517,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
+	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 
 	// Connect object Gtk::MenuToolButton with id 'OpenButton'.
 	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
 
-	// Connect object Gtk::ToolButton with id 'ImportButton'.
-	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
+	// Connect object Gtk::ToolButton with id 'SaveButton'.
 	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
 	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 
@@ -536,6 +538,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_text_editor_clicked));
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_update_viewpoint_clicked));
+	m_LightEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_light_editor_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
 
 	// Connect object Gtk::Box with id 'SurfaceBox'.

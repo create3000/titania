@@ -60,6 +60,15 @@ namespace puck {
 class X3DTextureCoordinateGeneratorEditor :
 	virtual public X3DTextureEditorInterface
 {
+public:
+
+	///  @name Destruction
+
+	virtual
+	~X3DTextureCoordinateGeneratorEditor ()
+	{ }
+
+
 protected:
 
 	///  @name Construction

@@ -61,6 +61,15 @@ class X3DTextureTransformNodeEditor :
 	virtual public X3DTextureEditorInterface,
 	public X3DTextureTransformEditor
 {
+public:
+
+	///  @name Destruction
+
+	virtual
+	~X3DTextureTransformNodeEditor ()
+	{ }
+
+
 protected:
 
 	///  @name Construction

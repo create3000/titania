@@ -1198,7 +1198,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="StandardSizeMenuItem">
                         <property name="label">gtk-zoom-100</property>
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -1482,6 +1481,20 @@
                     <property name="use_underline">True</property>
                     <property name="stock_id">Viewpoint</property>
                     <signal name="clicked" handler="on_update_viewpoint_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="LightEditorButton">
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Open Light Editor.</property>
+                    <property name="label" translatable="yes">Light Editor</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-media-record</property>
+                    <signal name="clicked" handler="on_light_editor_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

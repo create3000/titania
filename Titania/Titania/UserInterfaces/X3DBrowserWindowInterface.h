@@ -539,13 +539,13 @@ public:
 	getNewButton () const
 	{ return *m_NewButton; }
 
-	Gtk::MenuToolButton &
-	getOpenButton () const
-	{ return *m_OpenButton; }
-
 	Gtk::ToolButton &
 	getImportButton () const
 	{ return *m_ImportButton; }
+
+	Gtk::MenuToolButton &
+	getOpenButton () const
+	{ return *m_OpenButton; }
 
 	Gtk::ToolButton &
 	getSaveButton () const
@@ -598,6 +598,10 @@ public:
 	Gtk::ToolButton &
 	getUpdateViewpointButton () const
 	{ return *m_UpdateViewpointButton; }
+
+	Gtk::ToolButton &
+	getLightEditorButton () const
+	{ return *m_LightEditorButton; }
 
 	Gtk::ToolButton &
 	getCreatePrototypeInstanceButton () const
@@ -1109,6 +1113,10 @@ public:
 
 	virtual
 	void
+	on_light_editor_clicked () = 0;
+
+	virtual
+	void
 	on_prototype_instance_dialog_clicked () = 0;
 
 	virtual
@@ -1291,8 +1299,8 @@ private:
 	Gtk::Box*                       m_ToolBar;
 	Gtk::Toolbar*                   m_FileToolBar;
 	Gtk::ToolButton*                m_NewButton;
-	Gtk::MenuToolButton*            m_OpenButton;
 	Gtk::ToolButton*                m_ImportButton;
+	Gtk::MenuToolButton*            m_OpenButton;
 	Gtk::ToolButton*                m_SaveButton;
 	Gtk::ToolButton*                m_RefreshButton;
 	Gtk::Toolbar*                   m_EditToolBar;
@@ -1306,6 +1314,7 @@ private:
 	Gtk::ToolButton*                m_TextEditorButton;
 	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton*                m_UpdateViewpointButton;
+	Gtk::ToolButton*                m_LightEditorButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;

@@ -59,6 +59,15 @@ namespace puck {
 class X3DImageTextureEditor :
 	virtual public X3DTextureEditorInterface
 {
+public:
+
+	///  @name Destruction
+
+	virtual
+	~X3DImageTextureEditor ()
+	{ }
+
+
 protected:
 
 	///  @name Construction

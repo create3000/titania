@@ -1,3 +1,29 @@
+2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* titania:
+	* Makefile.am:
+	* BrowserWindow.h:
+	* LightEditor.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* LightEditor.cpp:
+	* LightEditor.xml:
+	* X3DFontStyleNodeEditor.h:
+	* X3DImageTextureEditor.h:
+	* X3DPixelTextureEditor.h:
+	* X3DMovieTextureEditor.h:
+	* X3DDirectionalLightEditor.h:
+	* X3DLightEditorInterface.h:
+	* X3DDirectionalLightEditor.cpp:
+	* X3DTextureTransformEditor.h:
+	* X3DTexturePropertiesEditor.h:
+	* X3DLightEditorInterface.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DTextureTransformNodeEditor.h:
+	* X3DTextureCoordinateGeneratorEditor.h: 
+
 2014-08-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* run.pl:

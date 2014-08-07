@@ -541,6 +541,10 @@ private:
 
 	virtual
 	void
+	on_light_editor_clicked () final override;
+
+	virtual
+	void
 	on_prototype_instance_dialog_clicked () final override;
 
 	///  @name Browser dashboard handling

@@ -48,56 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
+#include "LightEditor.h"
 
-#include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../Browser/BrowserWindow.h"
+#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class X3DPixelTextureEditor :
-	virtual public X3DTextureEditorInterface
+LightEditor::LightEditor (BrowserWindow* const browserWindow) :
+	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	  X3DLightEditorInterface (get_ui ("LightEditor.xml"), gconf_dir ()),
+	X3DDirectionalLightEditor ()
 {
-public:
+	setup ();
+}
 
-	///  @name Destruction
-
-	virtual
-	~X3DPixelTextureEditor ()
-	{ }
-
-
-protected:
-
-	///  @name Construction
-
-	X3DPixelTextureEditor ();
-
-	///  @name Construction
-
-	void
-	setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	virtual
-	const X3D::X3DPtr <X3D::PixelTexture> &
-	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-
-private:
-
-	///  @name Operations
-
-	void
-	assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> &);
-
-	///  @name Members
-
-	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;
-
-};
+LightEditor::~LightEditor ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

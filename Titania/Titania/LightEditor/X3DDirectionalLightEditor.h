@@ -48,23 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DPIXEL_TEXTURE_EDITOR_H__
+#ifndef __TITANIA_LIGHT_EDITOR_X3DDIRECTIONAL_LIGHT_EDITOR_H__
+#define __TITANIA_LIGHT_EDITOR_X3DDIRECTIONAL_LIGHT_EDITOR_H__
 
-#include "../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../ComposedWidgets.h"
+#include "../UserInterfaces/X3DLightEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DPixelTextureEditor :
-	virtual public X3DTextureEditorInterface
+class X3DDirectionalLightEditor :
+	virtual public X3DLightEditorInterface
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DPixelTextureEditor ()
+	~X3DDirectionalLightEditor ()
 	{ }
 
 
@@ -72,28 +73,15 @@ protected:
 
 	///  @name Construction
 
-	X3DPixelTextureEditor ();
-
-	///  @name Construction
-
-	void
-	setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	virtual
-	const X3D::X3DPtr <X3D::PixelTexture> &
-	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	X3DDirectionalLightEditor ();
 
 
 private:
 
-	///  @name Operations
-
-	void
-	assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> &);
-
 	///  @name Members
 
-	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;
+	//X3DFieldToggleButton <X3D::SFBool> horizontal;
+	//X3DFieldAdjustment <X3D::SFFloat>  spacing;
 
 };
 

@@ -60,6 +60,15 @@ namespace puck {
 class X3DFontStyleNodeEditor :
 	virtual public X3DTextEditorInterface
 {
+public:
+
+	///  @name Destruction
+
+	virtual
+	~X3DFontStyleNodeEditor ()
+	{ }
+
+
 protected:
 
 	///  @name Construction

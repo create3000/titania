@@ -56,6 +56,7 @@
 #include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../LibraryView/LibraryView.h"
+#include "../LightEditor/LightEditor.h"
 #include "../MaterialEditor/MaterialEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
@@ -1790,6 +1791,15 @@ BrowserWindow::on_update_viewpoint_clicked ()
 }
 
 void
+BrowserWindow::on_light_editor_clicked ()
+{
+	if (isDialogOpen ("LightEditor"))
+		return;
+
+	addDialog ("LightEditor", std::make_shared <LightEditor> (getBrowserWindow ()));
+}
+
+void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
 	// Find all available proto objects
@@ -2382,7 +2392,7 @@ BrowserWindow::on_look_at_selection_clicked ()
 
 	if (selection .empty ())
 		return;
-		
+
 	const auto activeViewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
 
 	X3D::Box3f bbox;
