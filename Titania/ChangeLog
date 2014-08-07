@@ -1,5 +1,9 @@
 2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* DirectionTool.h: 
+
+2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* DirectionTool.h:
 	* LightEditor.xml:
 	* X3DSpotLightEditor.h:

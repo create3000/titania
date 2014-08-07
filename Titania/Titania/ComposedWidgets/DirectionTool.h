@@ -106,6 +106,7 @@ private:
 	X3D::BrowserPtr   browser;
 	X3D::SFNode       node;
 	const std::string name;
+	UndoStepPtr       undoStep;
 
 };
 
@@ -118,7 +119,8 @@ DirectionTool::DirectionTool (BrowserWindow* const browserWindow,
 	             box (box),
 	         browser (X3D::createBrowser (browserWindow -> getBrowser ())),
 	            node (),
-	            name (name)
+	            name (name),
+	        undoStep ()
 {
 	browser -> set_antialiasing (4);
 
@@ -212,7 +214,11 @@ DirectionTool::set_direction (const X3D::SFVec3f & value)
 			field .removeInterest (this, &DirectionTool::set_field);
 			field .addInterest (this, &DirectionTool::connect);
 
+			addUndoFunction (node, field, undoStep);
+
 			field = value;
+
+			addRedoFunction (field, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
