@@ -1,5 +1,23 @@
 2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* ComposedWidgets.h:
+	* LightEditor.h:
+	* BrowserWindow.xml:
+	* LightEditor.cpp:
+	* MaterialEditor.h:
+	* LightEditor.xml:
+	* X3DPointLightEditor.h:
+	* X3DPointLightEditor.cpp:
+	* X3DFieldAdjustment3.h:
+	* X3DDirectionalLightEditor.h:
+	* X3DLightEditorInterface.h:
+	* X3DDirectionalLightEditor.cpp:
+	* X3DLightEditorInterface.cpp: 
+
+2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* run.pl:
 	* titania:
 	* Makefile.am:

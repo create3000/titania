@@ -104,20 +104,64 @@ public:
 	{ return m_ColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getDirectionXAdjustment () const
-	{ return m_DirectionXAdjustment; }
+	getDirectionalLightDirectionXAdjustment () const
+	{ return m_DirectionalLightDirectionXAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getDirectionYAdjustment () const
-	{ return m_DirectionYAdjustment; }
+	getDirectionalLightDirectionYAdjustment () const
+	{ return m_DirectionalLightDirectionYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getDirectionZAdjustment () const
-	{ return m_DirectionZAdjustment; }
+	getDirectionalLightDirectionZAdjustment () const
+	{ return m_DirectionalLightDirectionZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getIntensityAdjustment () const
 	{ return m_IntensityAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightAttenuationXAdjustment () const
+	{ return m_PointLightAttenuationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightAttenuationYAdjustment () const
+	{ return m_PointLightAttenuationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightAttenuationZAdjustment () const
+	{ return m_PointLightAttenuationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightLocationXAdjustment () const
+	{ return m_PointLightLocationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightLocationYAdjustment () const
+	{ return m_PointLightLocationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightLocationZAdjustment () const
+	{ return m_PointLightLocationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointLightRadiusAdjustment () const
+	{ return m_PointLightRadiusAdjustment; }
+
+	Gtk::Box &
+	getDirectionBox () const
+	{ return *m_DirectionBox; }
+
+	Gtk::SpinButton &
+	getDirectionXSpinButton () const
+	{ return *m_DirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getDirectionYSpinButton () const
+	{ return *m_DirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getDirectionZSpinButton1 () const
+	{ return *m_DirectionZSpinButton1; }
 
 	Gtk::Window &
 	getWindow () const
@@ -128,8 +172,8 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Expander &
-	getGeometryExpander () const
-	{ return *m_GeometryExpander; }
+	getLightExpander () const
+	{ return *m_LightExpander; }
 
 	Gtk::CheckButton &
 	getGlobalCheckButton () const
@@ -163,21 +207,73 @@ public:
 	getAmbientIntensityScale () const
 	{ return *m_AmbientIntensityScale; }
 
+	Gtk::Expander &
+	getDirectionalLightExpander () const
+	{ return *m_DirectionalLightExpander; }
+
 	Gtk::Box &
-	getDirectionBox () const
-	{ return *m_DirectionBox; }
+	getDirectionalLightDirectionBox () const
+	{ return *m_DirectionalLightDirectionBox; }
 
 	Gtk::SpinButton &
-	getDirectionXSpinButton () const
-	{ return *m_DirectionXSpinButton; }
+	getDirectionalLightDirectionXSpinButton () const
+	{ return *m_DirectionalLightDirectionXSpinButton; }
 
 	Gtk::SpinButton &
-	getDirectionYSpinButton () const
-	{ return *m_DirectionYSpinButton; }
+	getDirectionalLightDirectionYSpinButton () const
+	{ return *m_DirectionalLightDirectionYSpinButton; }
 
 	Gtk::SpinButton &
-	getDirectionZSpinButton1 () const
-	{ return *m_DirectionZSpinButton1; }
+	getDirectionalLightDirectionZSpinButton () const
+	{ return *m_DirectionalLightDirectionZSpinButton; }
+
+	Gtk::Expander &
+	getPointLightExpander () const
+	{ return *m_PointLightExpander; }
+
+	Gtk::Box &
+	getPointLightLocationBox () const
+	{ return *m_PointLightLocationBox; }
+
+	Gtk::SpinButton &
+	getPointLightLocationXSpinButton () const
+	{ return *m_PointLightLocationXSpinButton; }
+
+	Gtk::SpinButton &
+	getPointLightLocationYSpinButton () const
+	{ return *m_PointLightLocationYSpinButton; }
+
+	Gtk::SpinButton &
+	getPointLightLocationZSpinButton () const
+	{ return *m_PointLightLocationZSpinButton; }
+
+	Gtk::Box &
+	getPointLightAttenuationBox () const
+	{ return *m_PointLightAttenuationBox; }
+
+	Gtk::SpinButton &
+	getPointLightAttenuationSpinButtonX () const
+	{ return *m_PointLightAttenuationSpinButtonX; }
+
+	Gtk::SpinButton &
+	getPointLightAttenuationSpinButtonY () const
+	{ return *m_PointLightAttenuationSpinButtonY; }
+
+	Gtk::SpinButton &
+	getPointLightAttenuationSpinButtonZ () const
+	{ return *m_PointLightAttenuationSpinButtonZ; }
+
+	Gtk::SpinButton &
+	getPointLightRadiusSpinButton () const
+	{ return *m_PointLightRadiusSpinButton; }
+
+	Gtk::Expander &
+	getSpotLightExpander () const
+	{ return *m_SpotLightExpander; }
+
+	Gtk::Scale &
+	getPointLightRadiusScale () const
+	{ return *m_PointLightRadiusScale; }
 
 	virtual
 	~X3DLightEditorInterface ();
@@ -194,13 +290,24 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_AmbientIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_DirectionXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_DirectionYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_DirectionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_DirectionalLightDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_DirectionalLightDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_DirectionalLightDirectionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_IntensityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightAttenuationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightAttenuationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightAttenuationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointLightRadiusAdjustment;
+	Gtk::Box*                      m_DirectionBox;
+	Gtk::SpinButton*               m_DirectionXSpinButton;
+	Gtk::SpinButton*               m_DirectionYSpinButton;
+	Gtk::SpinButton*               m_DirectionZSpinButton1;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::Expander*                 m_GeometryExpander;
+	Gtk::Expander*                 m_LightExpander;
 	Gtk::CheckButton*              m_GlobalCheckButton;
 	Gtk::CheckButton*              m_OnCheckButton;
 	Gtk::Box*                      m_ColorBox;
@@ -209,10 +316,23 @@ private:
 	Gtk::Scale*                    m_IntensityScale;
 	Gtk::Box*                      m_AmbientIntensityBox;
 	Gtk::Scale*                    m_AmbientIntensityScale;
-	Gtk::Box*                      m_DirectionBox;
-	Gtk::SpinButton*               m_DirectionXSpinButton;
-	Gtk::SpinButton*               m_DirectionYSpinButton;
-	Gtk::SpinButton*               m_DirectionZSpinButton1;
+	Gtk::Expander*                 m_DirectionalLightExpander;
+	Gtk::Box*                      m_DirectionalLightDirectionBox;
+	Gtk::SpinButton*               m_DirectionalLightDirectionXSpinButton;
+	Gtk::SpinButton*               m_DirectionalLightDirectionYSpinButton;
+	Gtk::SpinButton*               m_DirectionalLightDirectionZSpinButton;
+	Gtk::Expander*                 m_PointLightExpander;
+	Gtk::Box*                      m_PointLightLocationBox;
+	Gtk::SpinButton*               m_PointLightLocationXSpinButton;
+	Gtk::SpinButton*               m_PointLightLocationYSpinButton;
+	Gtk::SpinButton*               m_PointLightLocationZSpinButton;
+	Gtk::Box*                      m_PointLightAttenuationBox;
+	Gtk::SpinButton*               m_PointLightAttenuationSpinButtonX;
+	Gtk::SpinButton*               m_PointLightAttenuationSpinButtonY;
+	Gtk::SpinButton*               m_PointLightAttenuationSpinButtonZ;
+	Gtk::SpinButton*               m_PointLightRadiusSpinButton;
+	Gtk::Expander*                 m_SpotLightExpander;
+	Gtk::Scale*                    m_PointLightRadiusScale;
 
 };
 

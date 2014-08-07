@@ -12,28 +12,116 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="DirectionXAdjustment">
+  <object class="GtkAdjustment" id="DirectionalLightDirectionXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="DirectionYAdjustment">
+  <object class="GtkAdjustment" id="DirectionalLightDirectionYAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="DirectionZAdjustment">
+  <object class="GtkAdjustment" id="DirectionalLightDirectionZAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkBox" id="DirectionBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="halign">start</property>
+    <property name="hexpand">True</property>
+    <property name="homogeneous">True</property>
+    <child>
+      <object class="GtkSpinButton" id="DirectionXSpinButton">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="text" translatable="yes">0,000</property>
+        <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
+        <property name="climb_rate">0.01</property>
+        <property name="digits">3</property>
+        <property name="numeric">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkSpinButton" id="DirectionYSpinButton">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="text" translatable="yes">0,000</property>
+        <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
+        <property name="climb_rate">0.01</property>
+        <property name="digits">3</property>
+        <property name="numeric">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkSpinButton" id="DirectionZSpinButton1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="text" translatable="yes">0,000</property>
+        <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
+        <property name="climb_rate">0.01</property>
+        <property name="digits">3</property>
+        <property name="numeric">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
   </object>
   <object class="GtkAdjustment" id="IntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="PointLightAttenuationXAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PointLightAttenuationYAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PointLightAttenuationZAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PointLightLocationXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PointLightLocationYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PointLightLocationZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -56,7 +144,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Edit DirectionalLight</property>
+            <property name="label" translatable="yes">Edit Light</property>
             <style>
               <class name="titania-header"/>
             </style>
@@ -68,7 +156,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkExpander" id="GeometryExpander">
+          <object class="GtkExpander" id="LightExpander">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -312,33 +400,62 @@
                     <property name="height">1</property>
                   </packing>
                 </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Light</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="DirectionalLightExpander">
+            <property name="can_focus">True</property>
+            <property name="expanded">True</property>
+            <property name="spacing">8</property>
+            <property name="resize_toplevel">True</property>
+            <child>
+              <object class="GtkGrid" id="grid2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">16</property>
                 <child>
-                  <object class="GtkLabel" id="label7">
+                  <object class="GtkLabel" id="label10">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Direction</property>
+                    <property name="label" translatable="yes">Direction:</property>
+                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">0</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="DirectionBox">
+                  <object class="GtkBox" id="DirectionalLightDirectionBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="homogeneous">True</property>
                     <child>
-                      <object class="GtkSpinButton" id="DirectionXSpinButton">
+                      <object class="GtkSpinButton" id="DirectionalLightDirectionXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">DirectionXAdjustment</property>
+                        <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
@@ -350,11 +467,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="DirectionYSpinButton">
+                      <object class="GtkSpinButton" id="DirectionalLightDirectionYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">DirectionYAdjustment</property>
+                        <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
@@ -366,11 +483,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="DirectionZSpinButton1">
+                      <object class="GtkSpinButton" id="DirectionalLightDirectionZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">DirectionZAdjustment</property>
+                        <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
                         <property name="climb_rate">0.01</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
@@ -384,7 +501,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">0</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
@@ -392,20 +509,306 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label4">
+              <object class="GtkLabel" id="label9">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">DirectionalLight</property>
+                <property name="label" translatable="yes">Directional Light</property>
               </object>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="PointLightExpander">
+            <property name="can_focus">True</property>
+            <property name="expanded">True</property>
+            <property name="spacing">8</property>
+            <property name="resize_toplevel">True</property>
+            <child>
+              <object class="GtkGrid" id="grid3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">16</property>
+                <child>
+                  <object class="GtkLabel" id="label11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Location:</property>
+                    <property name="ellipsize">end</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="PointLightLocationBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="hexpand">True</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkSpinButton" id="PointLightLocationXSpinButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PointLightLocationXAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="PointLightLocationYSpinButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PointLightLocationYAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="PointLightLocationZSpinButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PointLightLocationZAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Radius:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label15">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Attenuation:</property>
+                    <property name="ellipsize">end</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="PointLightAttenuationBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkSpinButton" id="PointLightAttenuationSpinButtonX">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PointLightAttenuationXAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="PointLightAttenuationSpinButtonY">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PointLightAttenuationYAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="PointLightAttenuationSpinButtonZ">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PointLightAttenuationZAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="PointLightRadiusSpinButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                    <property name="text" translatable="yes">0,000</property>
+                    <property name="adjustment">PointLightRadiusAdjustment</property>
+                    <property name="climb_rate">0.01</property>
+                    <property name="digits">3</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label12">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Point Light</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="SpotLightExpander">
+            <property name="can_focus">True</property>
+            <property name="expanded">True</property>
+            <property name="spacing">8</property>
+            <property name="resize_toplevel">True</property>
+            <child>
+              <object class="GtkGrid" id="grid4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">16</property>
+                <child>
+                  <object class="GtkLabel" id="label13">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Direction:</property>
+                    <property name="ellipsize">end</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label14">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Spot Light</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAdjustment" id="PointLightRadiusAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkScale" id="PointLightRadiusScale">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="adjustment">PointLightRadiusAdjustment</property>
+    <property name="upper_stepper_sensitivity">off</property>
+    <property name="digits">3</property>
+    <property name="draw_value">False</property>
+    <property name="value_pos">right</property>
+  </object>
+  <object class="GtkSpinButton" id="spinbutton3">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="text" translatable="yes">0,000</property>
+    <property name="adjustment">PointLightRadiusAdjustment</property>
+    <property name="climb_rate">0.01</property>
+    <property name="digits">3</property>
+    <property name="numeric">True</property>
   </object>
 </interface>

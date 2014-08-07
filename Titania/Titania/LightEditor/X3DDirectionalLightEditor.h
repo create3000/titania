@@ -75,13 +75,15 @@ protected:
 
 	X3DDirectionalLightEditor ();
 
+	void
+	setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
+
 
 private:
 
 	///  @name Members
 
-	//X3DFieldToggleButton <X3D::SFBool> horizontal;
-	//X3DFieldAdjustment <X3D::SFFloat>  spacing;
+	X3DFieldAdjustment3 <X3D::SFVec3f> direction;	
 
 };
 

@@ -1,14 +1,26 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.2
 
 NavigationInfo {
   headlight FALSE
 }
-PointLight {
-  attenuation 1 1 0
-  location 12 0 0
-  radius 1
+
+Viewpoint {
+  position 3.95435 5.05682 4.97651
+  orientation -0.824555 0.537698 0.176038 0.869913
+  centerOfRotation 2.82532 2.97158 2.91608
 }
-Transform {
+
+DEF Light Transform {
+  translation 3.16587 2.9239 2.70609
+  children DEF _1 PointLight {
+    color 0.812043 1 0.620203
+    radius 1
+    ambientIntensity 1
+    attenuation 1 1 0
+  }
+}
+
+DEF Box Transform {
   children Shape {
     appearance Appearance {
       material Material { }

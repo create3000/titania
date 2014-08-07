@@ -54,10 +54,24 @@ namespace titania {
 namespace puck {
 
 X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
-	X3DLightEditorInterface ("", "")
-	           //topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom")
-	               //spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing")
+	                           X3DLightEditorInterface ("", ""),
+	                                         direction (getBrowserWindow (),
+	                                                    getDirectionalLightDirectionXAdjustment (),
+	                                                    getDirectionalLightDirectionYAdjustment (),
+	                                                    getDirectionalLightDirectionZAdjustment (),
+	                                                    getDirectionalLightDirectionBox (),
+	                                                    "direction")
 { }
+
+void
+X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
+{
+	X3D::X3DPtr <X3D::DirectionalLight> directionalLight (lightNode);
+
+	getDirectionalLightExpander () .set_visible (directionalLight);
+
+	direction .setNodes (directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ());
+}
 
 } // puck
 } // titania

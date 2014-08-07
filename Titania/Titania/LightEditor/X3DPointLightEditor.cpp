@@ -48,128 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
-#define __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
-
-#include "../ComposedWidgets.h"
-#include "../Undo/UndoStep.h"
-#include "../UserInterfaces/X3DMaterialEditorInterface.h"
+#include "X3DPointLightEditor.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+X3DPointLightEditor::X3DPointLightEditor () :
+	                         X3DLightEditorInterface ("", ""),
+	                                     attenuation (getBrowserWindow (),
+	                                                  getPointLightAttenuationXAdjustment (),
+	                                                  getPointLightAttenuationYAdjustment (),
+	                                                  getPointLightAttenuationZAdjustment (),
+	                                                  getPointLightAttenuationBox (),
+	                                                  "attenuation"),
+	                                        location (getBrowserWindow (),
+	                                                  getPointLightLocationXAdjustment (),
+	                                                  getPointLightLocationYAdjustment (),
+	                                                  getPointLightLocationZAdjustment (),
+	                                                  getPointLightLocationBox (),
+	                                                  "location"),
+	                                          radius (getBrowserWindow (), getPointLightRadiusAdjustment (), getPointLightRadiusSpinButton (), "radius")
+{ }
 
-class MaterialEditor :
-	public X3DMaterialEditorInterface
+void
+X3DPointLightEditor::setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-public:
+	X3D::X3DPtr <X3D::PointLight> pointLight (lightNode);
 
-	///  @name Construction
+	getPointLightExpander () .set_visible (pointLight);
+	
+	const auto pointLights = pointLight ? X3D::MFNode ({ pointLight }) : X3D::MFNode ();
 
-	MaterialEditor (BrowserWindow* const);
-
-	///  @name Destruction
-
-	virtual
-	~MaterialEditor ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_initialized ();
-
-	void
-	set_selection ();
-
-	///  @name Copy & Paste
-
-	virtual
-	void
-	on_copy () final override;
-
-	virtual
-	void
-	on_paste () final override;
-
-	///  @name preview
-
-	void
-	set_preview ();
-
-	virtual
-	void
-	on_sphere_clicked () final override;
-
-	virtual
-	void
-	on_model_clicked () final override;
-
-	void
-	set_whichChoice (const int32_t);
-
-	///  @name material
-
-	virtual
-	void
-	on_material_unlink_clicked () final override;
-
-	virtual
-	void
-	on_material_changed () final override;
-
-	void
-	set_material ();
-
-	void
-	set_node ();
-
-	void
-	set_widgets ();
-
-	void
-	connectMaterial (const X3D::SFNode &);
-
-	///  @name Members
-
-	X3D::BrowserPtr                    preview;
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
-	X3D::SFTime                        materialNodeBuffer;
-	X3D::MaterialPtr                   material;
-	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
-	bool                               isTwoSidedMaterial;
-	UndoStepPtr                        undoStep;
-	bool                               changing;
-
-	SFColorButton diffuseColor;
-	SFColorButton specularColor;
-	SFColorButton emissiveColor;
-
-	X3DFieldAdjustment <X3D::SFFloat> ambientIntensity;
-	X3DFieldAdjustment <X3D::SFFloat> shininess;
-	X3DFieldAdjustment <X3D::SFFloat> transparency;
-
-	X3DFieldToggleButton <X3D::SFBool> separateBackColor;
-
-	SFColorButton backDiffuseColor;
-	SFColorButton backSpecularColor;
-	SFColorButton backEmissiveColor;
-
-	X3DFieldAdjustment <X3D::SFFloat> backAmbientIntensity;
-	X3DFieldAdjustment <X3D::SFFloat> backShininess;
-	X3DFieldAdjustment <X3D::SFFloat> backTransparency;
-
-};
+	attenuation .setNodes (pointLights);
+	location    .setNodes (pointLights);
+	radius      .setNodes (pointLights);
+}
 
 } // puck
 } // titania
-
-#endif

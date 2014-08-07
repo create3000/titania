@@ -81,14 +81,14 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "global",           global ());
 	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "color",            color ());
+	addField (inputOutput, "intensity",        intensity ());
+	addField (inputOutput, "ambientIntensity", ambientIntensity ());
+	addField (inputOutput, "attenuation",      attenuation ());
+	addField (inputOutput, "beamWidth",        beamWidth ());
+	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "direction",        direction ());
 	addField (inputOutput, "radius",           radius ());
-	addField (inputOutput, "intensity",        intensity ());
-	addField (inputOutput, "ambientIntensity", ambientIntensity ());
-	addField (inputOutput, "beamWidth",        beamWidth ());
-	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
-	addField (inputOutput, "attenuation",      attenuation ());
 }
 
 X3DBaseNode*

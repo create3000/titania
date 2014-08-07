@@ -1,19 +1,29 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.2
 
 META "title" "DirectionalLight"
 
-DEF _0 NavigationInfo {
+NavigationInfo {
   headlight FALSE
 
   #type [ "ANY", "WALK" ]
 }
 
-DEF Light1 DirectionalLight {
-  ambientIntensity 1
-  direction -0.342887 -0.849953 0.400012
+Viewpoint {
+  position 6.56516 5.28702 5.38016
+  orientation -0.509586 0.83022 0.225956 1.03193
 }
 
-DEF _1 Transform {
+DEF Light Transform {
+  translation 3 0 0
+  children DEF _1 DirectionalLight {
+    color 1 0.701946 0
+    intensity 0.918103
+    ambientIntensity 0.833333
+    direction -0.342887 -0.849953 0.400012
+  }
+}
+
+DEF Box Transform {
   children Transform {
     children [
       Transform {

@@ -78,11 +78,11 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "global",           global ());
 	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "color",            color ());
-	addField (inputOutput, "location",         location ());
-	addField (inputOutput, "radius",           radius ());
 	addField (inputOutput, "intensity",        intensity ());
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());
 	addField (inputOutput, "attenuation",      attenuation ());
+	addField (inputOutput, "location",         location ());
+	addField (inputOutput, "radius",           radius ());
 }
 
 X3DBaseNode*

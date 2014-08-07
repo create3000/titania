@@ -1231,7 +1231,6 @@
         </child>
         <child>
           <object class="GtkBox" id="ToolBar">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkToolbar" id="FileToolBar">

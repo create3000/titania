@@ -58,10 +58,49 @@ namespace puck {
 
 LightEditor::LightEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	  X3DLightEditorInterface (get_ui ("LightEditor.xml"), gconf_dir ()),
-	X3DDirectionalLightEditor ()
+	  X3DLightEditorInterface (get_ui ("Dialogs/LightEditor.xml"), gconf_dir ()),
+	X3DDirectionalLightEditor (),
+	      X3DPointLightEditor (),
+	     //X3DSpotLightEditor (),
+	                   global (getBrowserWindow (), getGlobalCheckButton (), "global"),
+	                       on (getBrowserWindow (), getOnCheckButton (), "on"),
+	                    color (getBrowserWindow (), getColorButton (), getColorAdjustment (), getColorBox (), "color"),
+	                intensity (getBrowserWindow (), getIntensityAdjustment (), getIntensityBox (), "intensity"),
+	         ambientIntensity (getBrowserWindow (), getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity")
 {
 	setup ();
+}
+
+void
+LightEditor::initialize ()
+{
+	X3DDirectionalLightEditor::initialize ();
+	X3DPointLightEditor::initialize ();
+	//X3DSpotLightEditor::initialize ();
+
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &LightEditor::set_selection);
+
+	set_selection (getBrowser () -> getSelection () -> getChildren ());
+}
+
+void
+LightEditor::set_selection (const X3D::MFNode & selection)
+{
+	X3D::X3DPtr <X3D::X3DLightNode> lightNode (selection .empty () ? nullptr : selection .back ());
+
+	setDirectionalLight (lightNode);
+	setPointLight (lightNode);
+	//setSpotLight (lightNode);
+
+	const auto lightNodes = lightNode ? X3D::MFNode ({ lightNode }) : X3D::MFNode ();
+
+	global           .setNodes (lightNodes);
+	on               .setNodes (lightNodes);
+	color            .setNodes (lightNodes);
+	intensity        .setNodes (lightNodes);
+	ambientIntensity .setNodes (lightNodes);
+
+	getWindow () .resize (getWindow () .get_width (), 1);
 }
 
 LightEditor::~LightEditor ()
