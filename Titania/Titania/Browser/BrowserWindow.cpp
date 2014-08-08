@@ -52,23 +52,19 @@
 
 #include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
+
 #include "../Console/Console.h"
-#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../LibraryView/LibraryView.h"
-#include "../LightEditor/LightEditor.h"
-#include "../MaterialEditor/MaterialEditor.h"
-#include "../MotionBlurEditor/MotionBlurEditor.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
-#include "../TextEditor/TextEditor.h"
-#include "../TextureEditor/TextureEditor.h"
 #include "../ViewpointList/ViewpointList.h"
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
+
+#include "../MotionBlurEditor/MotionBlurEditor.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -1711,47 +1707,32 @@ BrowserWindow::on_standard_size ()
 void
 BrowserWindow::on_node_properties_editor_clicked ()
 {
-	if (isDialogOpen ("NodePropertiesEditor"))
-		return;
-
 	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-		addDialog ("NodePropertiesEditor", std::make_shared <NodePropertiesEditor> (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren () .back ()));
+		addDialog ("NodePropertiesEditor");
 }
 
 void
 BrowserWindow::on_material_editor_clicked ()
 {
-	if (isDialogOpen ("MaterialEditor"))
-		return;
-
-	addDialog ("MaterialEditor", std::make_shared <MaterialEditor> (getBrowserWindow ()));
+	addDialog ("MaterialEditor");
 }
 
 void
 BrowserWindow::on_texture_editor_clicked ()
 {
-	if (isDialogOpen ("TextureEditor"))
-		return;
-
-	addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
+	addDialog ("TextureEditor");
 }
 
 void
 BrowserWindow::on_text_editor_clicked ()
 {
-	if (isDialogOpen ("TextEditor"))
-		return;
-
-	addDialog ("TextEditor", std::make_shared <TextEditor> (getBrowserWindow ()));
+	addDialog ("TextEditor");
 }
 
 void
 BrowserWindow::on_geometry_properties_editor_clicked ()
 {
-	if (isDialogOpen ("GeometryPropertiesEditor"))
-		return;
-
-	addDialog ("GeometryPropertiesEditor", std::make_shared <GeometryPropertiesEditor> (getBrowserWindow ()));
+	addDialog ("GeometryPropertiesEditor");
 }
 
 void
@@ -1793,10 +1774,7 @@ BrowserWindow::on_update_viewpoint_clicked ()
 void
 BrowserWindow::on_light_editor_clicked ()
 {
-	if (isDialogOpen ("LightEditor"))
-		return;
-
-	addDialog ("LightEditor", std::make_shared <LightEditor> (getBrowserWindow ()));
+	addDialog ("LightEditor");
 }
 
 void

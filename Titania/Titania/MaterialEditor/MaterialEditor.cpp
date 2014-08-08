@@ -181,6 +181,9 @@ MaterialEditor::on_paste ()
 void
 MaterialEditor::set_preview ()
 {
+	if (not material or not twoSidedMaterial)
+		return;
+
 	try
 	{
 		const X3D::AppearancePtr appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));

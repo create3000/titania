@@ -52,8 +52,60 @@
 
 #include "../Configuration/config.h"
 
+#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
+#include "../LightEditor/LightEditor.h"
+#include "../MaterialEditor/MaterialEditor.h"
+#include "../MotionBlurEditor/MotionBlurEditor.h"
+#include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../TextEditor/TextEditor.h"
+#include "../TextureEditor/TextureEditor.h"
+
+#include <Titania/String.h>
+
 namespace titania {
 namespace puck {
+
+class DialogFactory
+{
+public:
+
+	///  @name Construction
+
+	DialogFactory () :
+		dialogs ({ std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
+		           std::make_pair ("LightEditor",              constructDialog <LightEditor>),
+		           std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
+		           std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
+		           std::make_pair ("TextEditor",               constructDialog <TextEditor>),
+		           std::make_pair ("TextureEditor",            constructDialog <TextureEditor>) })
+	{ }
+
+	std::shared_ptr <X3DUserInterface>
+	createDialog (const std::string & name, BrowserWindow* const browserWindow) const
+	throw (std::out_of_range)
+	{
+		return std::shared_ptr <X3DUserInterface> (dialogs .at (name) (browserWindow));
+	}
+
+private:
+
+	///  @name Construction
+
+	template <class Dialog>
+	static
+	X3DUserInterface*
+	constructDialog (BrowserWindow* const browserWindow)
+	{ return new Dialog (browserWindow); }
+
+	///  @name Members
+
+	std::map <std::string, std::function <X3DUserInterface* (BrowserWindow* const)>>  dialogs;
+
+};
+
+namespace {
+	const DialogFactory dialogFactory;
+}
 
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
@@ -71,22 +123,23 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::s
 void
 X3DUserInterface::construct ()
 {
-	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_constructed));
+	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_constructed));
 
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
-	restoreInterface ();
+	restoreWindow ();
 }
 
 void
-X3DUserInterface::set_constructed ()
+X3DUserInterface::on_constructed ()
 {
 	constructed_connection .disconnect ();
 
 	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 
-	restoreInterface ();
+	on_map ();
+
 	initialize ();
 
 	restoreSession ();
@@ -95,7 +148,6 @@ X3DUserInterface::set_constructed ()
 void
 X3DUserInterface::on_map ()
 {
-	// Restore position before window becomes visible.
 	restoreInterface ();
 }
 
@@ -115,23 +167,33 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 }
 
 bool
-X3DUserInterface::isDialogOpen (const std::string & key) const
+X3DUserInterface::hasDialog (const std::string & name) const
 {
-	return dialogs .count (key);
+	return dialogs .count (name);
 }
 
 void
-X3DUserInterface::addDialog (const std::string & key, const std::shared_ptr <X3DUserInterface> & dialog)
+X3DUserInterface::addDialog (const std::string & name)
 {
-	dialogs .emplace (key, dialog);
-	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), key), false);
-	dialog -> getWindow () .present ();
+	try
+	{
+		if (hasDialog (name))
+			return;
+
+		const auto dialog = dialogFactory .createDialog (name, getBrowserWindow ());
+
+		dialogs .emplace (name, dialog);
+		dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
+		dialog -> getWindow () .present ();
+	}
+	catch (...)
+	{ }
 }
 
 void
-X3DUserInterface::removeDialog (const std::string & key)
+X3DUserInterface::removeDialog (const std::string & name)
 {
-	dialogs .erase (key);
+	dialogs .erase (name);
 }
 
 void
@@ -154,8 +216,10 @@ X3DUserInterface::toggleWidget (Gtk::Widget & widget, bool active)
 }
 
 void
-X3DUserInterface::restoreInterface ()
+X3DUserInterface::restoreWindow ()
 {
+	// Restore window size and position
+
 	if (getConfig () .hasItem ("x") and getConfig () .hasItem ("y"))
 	{
 		getWindow () .move (getConfig () .getInteger ("x"),
@@ -170,6 +234,22 @@ X3DUserInterface::restoreInterface ()
 
 	if (isMaximized ())
 		getWindow () .maximize ();
+}
+
+void
+X3DUserInterface::restoreInterface ()
+{
+	restoreWindow ();
+
+	// Restore dialogs
+
+	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
+	{
+		if (dialogName == "NodePropertiesEditor")
+			continue;
+
+		addDialog (dialogName);
+	}
 }
 
 void
@@ -199,10 +279,29 @@ X3DUserInterface::saveInterface ()
 bool
 X3DUserInterface::close ()
 {
+	// Save dialogs
+
+	std::string dialogNames;
+
+	for (const auto & pair : dialogs)
+	{
+		dialogNames += pair .first;
+		dialogNames += ";";
+	}
+
+	if (not dialogNames .empty ())
+		dialogNames .resize (dialogNames .size () - 1);
+
+	getConfig () .setItem ("dialogs", dialogNames);
+
+	// Close dialogs
+
 	for (const auto & pair : dialogs)
 		pair .second -> close ();
 
 	dialogs .clear ();
+
+	// Save sessions
 
 	if (this == userInterfaces .front ())
 		saveInterfaces ();

@@ -94,10 +94,10 @@ enum ExportedNodesEditorColumns
 
 };
 
-NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
+NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodePropertiesEditorInterface (get_ui ("Dialogs/NodePropertiesEditor.xml"), gconf_dir ()),
-	                            node (node),
+	                            node (browserWindow -> getBrowser () -> getSelection () -> getChildren () .back ()),
 	        userDefinedFieldsColumns (),
 	      userDefinedFieldsListStore (Gtk::ListStore::create (userDefinedFieldsColumns)),
 	                userDefinedField (nullptr),

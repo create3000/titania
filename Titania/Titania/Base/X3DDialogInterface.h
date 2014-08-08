@@ -80,14 +80,6 @@ protected:
 
 	virtual
 	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
 	saveSession () override;
 
 

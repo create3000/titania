@@ -1,5 +1,16 @@
 2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* X3DDialogInterface.h:
+	* X3DDialogInterface.cpp:
+	* MaterialEditor.cpp:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp: 
+
+2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DUserInterface.cpp: 
 
 2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
