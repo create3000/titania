@@ -1,6 +1,11 @@
 2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* LightTool.x3dv:
+	* OrthoViewpoint.cpp: 
+
+2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* LightTool.x3dv:
 	* X3DExecutionContext.h:
 	* X3DExecutionContext.cpp:
 	* X3DPrototypeInstance.h:

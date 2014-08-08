@@ -195,31 +195,22 @@ X3DTexture2DNodeEditor::set_preview ()
 
 	try
 	{
-		const X3D::X3DPtr <X3D::Layout>    layout (preview -> getExecutionContext () -> getNamedNode ("Texture2DLayout"));
-		const X3D::X3DPtr <X3D::Transform> transform (preview -> getExecutionContext () -> getNamedNode ("Rectangle2D"));
+		const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("OrthoViewpoint"));
+		const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
 
-		if (layout and transform)
+		if (viewpoint and transform)
 		{
-			const X3D::Vector2d viewport (preview -> get_width (), preview -> get_height ());
-			double              width  = texture2DNode -> getImageWidth ();
-			double              height = texture2DNode -> getImageHeight ();
+			double width  = texture2DNode -> getImageWidth ();
+			double height = texture2DNode -> getImageHeight ();
 
-			if (not width)
-				width = 1;
-
-			if (not height)
+			if (not width or not height)
+			{
+				width  = 1;
 				height = 1;
+			}
 
-			if (viewport [0] / viewport [1] > width / height)
-			{
-				layout    -> scaleMode () = { "STRETCH", "NONE" };
-				transform -> scale ()     = X3D::Vector3f (width / height, 1, 1);
-			}
-			else
-			{
-				layout    -> scaleMode () = { "NONE", "STRETCH" };
-				transform -> scale ()     = X3D::Vector3f (1, height / width, 1);
-			}
+			viewpoint -> fieldOfView () = { -width, -height, width, height };
+			transform -> scale ()       = X3D::Vector3f (width, height, 1);
 		}
 	}
 	catch (const X3D::X3DError &)

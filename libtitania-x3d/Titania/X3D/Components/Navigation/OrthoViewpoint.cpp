@@ -178,23 +178,17 @@ OrthoViewpoint::reshape (const double zNear, const double zFar)
 	glMatrixMode (GL_PROJECTION);
 
 	const Vector4i viewport = Viewport4i ();
+	const double   width    = viewport [2];
+	const double   height   = viewport [3];
+	const double   aspect   = width / height;
 
-	const int width  = viewport [2];
-	const int height = viewport [3];
-
-	const Vector2d size = getViewportSize (viewport);
-
-	if (width > height)
+	if (aspect > getSizeX () / getSizeY ())
 	{
-		const double left = getMinimumX () + (getSizeX () - size .x ()) / 2;
-
-		glLoadMatrixd (ortho (left, left + size .x (), getMinimumY (), getMaximumY (), zNear, zFar) .data ());
+		glLoadMatrixd (ortho (getMinimumY () * aspect, getMaximumY () * aspect, getMinimumY (), getMaximumY (), zNear, zFar) .data ());
 	}
 	else
 	{
-		const double bottom = getMinimumY () + (getSizeY () - size .y ()) / 2;
-
-		glLoadMatrixd (ortho (getMinimumX (), getMaximumX (), bottom, bottom + size .y (), zNear, zFar) .data ());
+		glLoadMatrixd (ortho (getMinimumX (), getMaximumX (), getMinimumX () / aspect, getMaximumX () / aspect, zNear, zFar) .data ());
 	}
 
 	glMatrixMode (GL_MODELVIEW);
