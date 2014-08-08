@@ -735,7 +735,7 @@ public:
 	getFileSaveDialog () const
 	{ return *m_FileSaveDialog; }
 
-	Gtk::CheckButton &
+	Gtk::Switch &
 	getSaveCompressedButton () const
 	{ return *m_SaveCompressedButton; }
 
@@ -1348,7 +1348,7 @@ private:
 	Gtk::FileChooserDialog*         m_FileImportDialog;
 	Gtk::FileChooserDialog*         m_FileOpenDialog;
 	Gtk::FileChooserDialog*         m_FileSaveDialog;
-	Gtk::CheckButton*               m_SaveCompressedButton;
+	Gtk::Switch*                    m_SaveCompressedButton;
 	Gtk::Dialog*                    m_FileSaveWarningDialog;
 	Gtk::Label*                     m_FileSaveWarningLabel;
 	Gtk::MessageDialog*             m_MessageDialog;

@@ -47,130 +47,40 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include <gtkmm.h>
-#include <memory>
+#include "X3DFileOpenDialogInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+const std::string X3DFileOpenDialogInterface::m_widgetName = "FileOpenDialog";
+
+void
+X3DFileOpenDialogInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Member access
+	// Get objects.
+	m_FileFilterAll   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
+	m_FileFilterAudio = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_FileFilterImage = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
+	m_FileFilterVideo = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
+	m_FileFilterX3D   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
 
-	virtual
-	const X3D::ScenePtr &
-	getScene () const final override
-	{ return scene; }
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
 
-	virtual
-	void
-	setExecutionContext (const X3D::X3DExecutionContextPtr &) final override;
+	// Call construct handler of base class.
+	construct ();
+}
 
-	virtual
-	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const final override
-	{ return executionContext; }
-
-	///  @name Operations
-
-	void
-	blank ();
-
-	void
-	open (const basic::uri &);
-
-	virtual
-	void
-	save (const basic::uri &, const bool);
-
-	void
-	reload ();
-
-	virtual
-	bool
-	close () override;
-
-	///  @name Destruction
-
-	virtual
-	~X3DBrowserWidget ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DBrowserWidget (int, char**);
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	///  @name Operations
-
-	void
-	updateTitle (const bool) const;
-
-	void
-	isLive (const bool);
-
-	void
-	setTransparent (const bool);
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	parseOptions (int, char**);
-
-	void
-	set_splashScreen ();
-
-	void
-	set_initialized ();
-
-	void
-	set_scene ();
-
-	///  @name Operations
-
-	void
-	transform (const X3D::X3DExecutionContextPtr &, const basic::uri &) const;
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
-	///  @name Members
-	
-	X3D::ScenePtr               scene;
-	X3D::X3DExecutionContextPtr executionContext;
-	double                      loadTime;
-	sigc::connection            timeout;
-
-};
+X3DFileOpenDialogInterface::~X3DFileOpenDialogInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

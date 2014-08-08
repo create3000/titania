@@ -48,125 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#ifndef __TITANIA_FILE_OPEN_DIALOG_FILE_OPEN_DIALOG_H__
+#define __TITANIA_FILE_OPEN_DIALOG_FILE_OPEN_DIALOG_H__
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include <gtkmm.h>
-#include <memory>
+#include "../../UserInterfaces/X3DFileOpenDialogInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+class FileOpenDialog :
+	virtual public X3DFileOpenDialogInterface
 {
 public:
 
-	///  @name Member access
+	///  @name Construction
 
-	virtual
-	const X3D::ScenePtr &
-	getScene () const final override
-	{ return scene; }
-
-	virtual
+	FileOpenDialog (BrowserWindow* const);
+	
 	void
-	setExecutionContext (const X3D::X3DExecutionContextPtr &) final override;
-
-	virtual
-	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const final override
-	{ return executionContext; }
-
-	///  @name Operations
-
-	void
-	blank ();
-
-	void
-	open (const basic::uri &);
-
-	virtual
-	void
-	save (const basic::uri &, const bool);
-
-	void
-	reload ();
-
-	virtual
-	bool
-	close () override;
+	run ();
 
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserWidget ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DBrowserWidget (int, char**);
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	///  @name Operations
-
-	void
-	updateTitle (const bool) const;
-
-	void
-	isLive (const bool);
-
-	void
-	setTransparent (const bool);
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	parseOptions (int, char**);
-
-	void
-	set_splashScreen ();
-
-	void
-	set_initialized ();
-
-	void
-	set_scene ();
-
-	///  @name Operations
-
-	void
-	transform (const X3D::X3DExecutionContextPtr &, const basic::uri &) const;
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
-	///  @name Members
-	
-	X3D::ScenePtr               scene;
-	X3D::X3DExecutionContextPtr executionContext;
-	double                      loadTime;
-	sigc::connection            timeout;
+	~FileOpenDialog ();
 
 };
 

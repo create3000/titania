@@ -48,129 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#include "FileSaveDialog.h"
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include <gtkmm.h>
-#include <memory>
+#include "../../Configuration/config.h"
+
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+FileSaveDialog::FileSaveDialog (BrowserWindow* const browserWindow) :
+	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.xml"), gconf_dir ())
 {
-public:
+	getFileFilterX3D   () -> set_name (_ ("X3D"));
+	getFileFilterImage () -> set_name (_ ("Images"));
+	getFileFilterAudio () -> set_name (_ ("Audio"));
+	getFileFilterVideo () -> set_name (_ ("Videos"));
+	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	///  @name Member access
+	getWindow () .add_filter (getFileFilterX3D ());
+	getWindow () .set_filter (getFileFilterX3D ());
 
-	virtual
-	const X3D::ScenePtr &
-	getScene () const final override
-	{ return scene; }
+	const auto worldURL = getRootContext () -> getWorldURL ();
 
-	virtual
-	void
-	setExecutionContext (const X3D::X3DExecutionContextPtr &) final override;
+	if (not worldURL .empty () and worldURL .is_local ())
+		getWindow () .set_uri (worldURL .filename () .str ());
 
-	virtual
-	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const final override
-	{ return executionContext; }
+	else
+	{
+		if (worldURL .basename () .empty ())
+			getWindow () .set_filename (os::home () + _ ("scene.x3dv"));
+		
+		else
+			getWindow () .set_current_name (worldURL .basename ());
+	}
 
-	///  @name Operations
+	setup ();
+}
 
-	void
-	blank ();
+void
+FileSaveDialog::run ()
+{
+	const auto saveCompressedButton = getWidget <Gtk::Switch> ("SaveCompressedButton");
 
-	void
-	open (const basic::uri &);
+	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
 
-	virtual
-	void
-	save (const basic::uri &, const bool);
+	const auto responseId = getWindow () .run ();
 
-	void
-	reload ();
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), saveCompressedButton -> get_active ());
+		getBrowserWindow () -> saveAs () .processInterests ();
+	}
 
-	virtual
-	bool
-	close () override;
+	getWindow () .hide ();
+}
 
-	///  @name Destruction
-
-	virtual
-	~X3DBrowserWidget ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DBrowserWidget (int, char**);
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	///  @name Operations
-
-	void
-	updateTitle (const bool) const;
-
-	void
-	isLive (const bool);
-
-	void
-	setTransparent (const bool);
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	parseOptions (int, char**);
-
-	void
-	set_splashScreen ();
-
-	void
-	set_initialized ();
-
-	void
-	set_scene ();
-
-	///  @name Operations
-
-	void
-	transform (const X3D::X3DExecutionContextPtr &, const basic::uri &) const;
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
-	///  @name Members
-	
-	X3D::ScenePtr               scene;
-	X3D::X3DExecutionContextPtr executionContext;
-	double                      loadTime;
-	sigc::connection            timeout;
-
-};
+FileSaveDialog::~FileSaveDialog ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

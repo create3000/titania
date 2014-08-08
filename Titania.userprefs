@@ -1,11 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/DirectionTool.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/FileOpenDialog/FileOpenDialog.cpp">
     <Files>
-      <File FileName="Titania/Titania/LightEditor/X3DDirectionalLightEditor.h" Line="82" Column="1" />
-      <File FileName="Titania/Titania/LightEditor/X3DDirectionalLightEditor.cpp" Line="85" Column="42" />
-      <File FileName="Titania/Titania/ComposedWidgets/DirectionTool.h" Line="199" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFColorButton.h" Line="329" Column="1" />
+      <File FileName="Titania/Titania/Base/X3DUserInterface.h" Line="147" Column="52" />
+      <File FileName="Titania/Titania/Base/X3DUserInterface.cpp" Line="110" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="111" Column="1" />
+      <File FileName="Titania/Titania/FileOpenDialog/FileOpenDialog.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/FileOpenDialog/FileOpenDialog.cpp" Line="69" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="426" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,7 +19,10 @@
             <Node name="debian" expanded="True" />
           </Node>
           <Node name="Library" expanded="True">
-            <Node name="Tests" expanded="True" />
+            <Node name="Tests" expanded="True">
+              <Node name="Navigation" expanded="True" />
+              <Node name="PROTO" expanded="True" />
+            </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
@@ -28,12 +33,19 @@
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="shaders" expanded="True">
+                  <Node name="ParticleSystems" expanded="True">
+                    <Node name="Bits" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="tools" expanded="True">
                   <Node name="library" expanded="True" />
                 </Node>
@@ -42,13 +54,15 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Lighting" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Text" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Navigation" expanded="True" />
                 </Node>
@@ -68,15 +82,13 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="ComposedWidgets" expanded="True">
-                <Node name="DirectionTool.h" selected="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.cpp" selected="True" />
               </Node>
-              <Node name="Console" expanded="True" />
+              <Node name="FileOpenDialog" expanded="True" />
               <Node name="GeometryPropertiesEditor" expanded="True" />
-              <Node name="LightEditor" expanded="True" />
-              <Node name="MaterialEditor" expanded="True" />
-              <Node name="ViewpointList" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

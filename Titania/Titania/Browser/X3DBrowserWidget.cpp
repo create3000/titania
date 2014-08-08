@@ -416,13 +416,19 @@ X3DBrowserWidget::transform (const X3D::X3DExecutionContextPtr & executionContex
 						X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 						X3D::TRAVERSE_PROTO_DECLARATIONS |
 						X3D::TRAVERSE_ROOT_NODES);
-
 }
 
 void
 X3DBrowserWidget::reload ()
 {
 	open (getScene () -> getWorldURL ());
+}
+
+bool
+X3DBrowserWidget::close ()
+{
+	X3DBrowserWindowInterface::close ();
+	return false;
 }
 
 void

@@ -18,6 +18,9 @@ titania_SOURCES =  \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Console/Console.cpp \
+	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
+	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
 	Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/HistoryEditor/History.cpp \
 	Titania/HistoryEditor/HistoryEditor.cpp \
@@ -60,6 +63,9 @@ titania_SOURCES =  \
 	Titania/Undo/UndoStep.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
+	Titania/UserInterfaces/X3DFileImportDialogInterface.cpp \
+	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
+	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \

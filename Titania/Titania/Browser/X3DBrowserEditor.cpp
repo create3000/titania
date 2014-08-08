@@ -490,7 +490,6 @@ X3DBrowserEditor::close ()
 	if (isSaved ())
 	{
 		shutdown ();
-
 		return X3DBrowserWidget::close ();
 	}
 

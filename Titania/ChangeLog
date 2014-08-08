@@ -1,5 +1,31 @@
 2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* X3DUserInterface.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* FileOpenDialog.xml:
+	* FileOpenDialog.h:
+	* FileSaveDialog.h:
+	* FileSaveDialog.cpp:
+	* FileOpenDialog.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DFileSaveDialogInterface.h:
+	* FileImportDialog.h:
+	* X3DFileOpenDialogInterface.h:
+	* X3DFileImportDialogInterface.h:
+	* X3DFileOpenDialogInterface.cpp:
+	* X3DFileSaveDialogInterface.cpp:
+	* FileImportDialog.cpp:
+	* X3DFileImportDialogInterface.cpp: 
+
+2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DUserInterface.h:
 	* X3DUserInterface.cpp:
 	* BrowserWindow.cpp:

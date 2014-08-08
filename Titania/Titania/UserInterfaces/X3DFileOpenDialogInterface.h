@@ -47,126 +47,102 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_FILE_OPEN_DIALOG_H__
+#define __TMP_GLAD2CPP_FILE_OPEN_DIALOG_H__
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
-#include <memory>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+using namespace Gtk;
+
+class X3DFileOpenDialogInterface :
+	public X3DEditorInterface
 {
 public:
 
-	///  @name Member access
+	template <class ... Arguments>
+	X3DFileOpenDialogInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
+	{ create (filename); }
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
+
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
+
+	void
+	updateWidget (const Glib::ustring & name) const
+	{ getBuilder () -> add_from_file (filename, name); }
+
+	void
+	updateWidgets (const std::vector <Glib::ustring> & names) const
+	{ getBuilder () -> add_from_file (filename, names); }
+
+	template <class Type>
+	Type*
+	getWidget (const std::string & name) const
+	{
+		Type* widget = nullptr;
+
+		m_builder -> get_widget (name, widget);
+		widget -> set_name (name);
+		return widget;
+	}
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAll () const
+	{ return m_FileFilterAll; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAudio () const
+	{ return m_FileFilterAudio; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImage () const
+	{ return m_FileFilterImage; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterVideo () const
+	{ return m_FileFilterVideo; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3D () const
+	{ return m_FileFilterX3D; }
+
+	Gtk::FileChooserDialog &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
 
 	virtual
-	const X3D::ScenePtr &
-	getScene () const final override
-	{ return scene; }
-
-	virtual
-	void
-	setExecutionContext (const X3D::X3DExecutionContextPtr &) final override;
-
-	virtual
-	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const final override
-	{ return executionContext; }
-
-	///  @name Operations
-
-	void
-	blank ();
-
-	void
-	open (const basic::uri &);
-
-	virtual
-	void
-	save (const basic::uri &, const bool);
-
-	void
-	reload ();
-
-	virtual
-	bool
-	close () override;
-
-	///  @name Destruction
-
-	virtual
-	~X3DBrowserWidget ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DBrowserWidget (int, char**);
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	///  @name Operations
-
-	void
-	updateTitle (const bool) const;
-
-	void
-	isLive (const bool);
-
-	void
-	setTransparent (const bool);
+	~X3DFileOpenDialogInterface ();
 
 
 private:
 
-	///  @name Event handlers
-
 	void
-	parseOptions (int, char**);
+	create (const std::string &);
 
-	void
-	set_splashScreen ();
+	static const std::string m_widgetName;
 
-	void
-	set_initialized ();
-
-	void
-	set_scene ();
-
-	///  @name Operations
-
-	void
-	transform (const X3D::X3DExecutionContextPtr &, const basic::uri &) const;
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
-	///  @name Members
-	
-	X3D::ScenePtr               scene;
-	X3D::X3DExecutionContextPtr executionContext;
-	double                      loadTime;
-	sigc::connection            timeout;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
+	Gtk::FileChooserDialog*        m_Window;
+	Gtk::Box*                      m_Widget;
 
 };
 

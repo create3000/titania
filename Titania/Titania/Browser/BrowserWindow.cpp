@@ -50,8 +50,9 @@
 
 #include "BrowserWindow.h"
 
-#include "../Browser/BrowserSelection.h"
-#include "../Configuration/config.h"
+#include "../Dialogs/FileImportDialog/FileImportDialog.h"
+#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
+#include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 
 #include "../Console/Console.h"
 #include "../HistoryEditor/HistoryEditor.h"
@@ -60,6 +61,9 @@
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/OutlineTreeViewEditor.h"
 #include "../ViewpointList/ViewpointList.h"
+
+#include "../Browser/BrowserSelection.h"
+#include "../Configuration/config.h"
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
@@ -476,33 +480,7 @@ void
 BrowserWindow::on_open ()
 {
 	if (isSaved ())
-	{
-		updateWidget ("FileOpenDialog");
-		const auto fileOpenDialog = getWidget <Gtk::FileChooserDialog> ("FileOpenDialog");
-
-		fileOpenDialog -> add_filter (getFileFilterX3D ());
-		fileOpenDialog -> add_filter (getFileFilterImage ());
-		fileOpenDialog -> add_filter (getFileFilterAudio ());
-		fileOpenDialog -> add_filter (getFileFilterVideo ());
-		fileOpenDialog -> set_filter (getFileFilterX3D ());
-
-		const auto worldURL = getRootContext () -> getWorldURL ();
-
-		if (not worldURL .empty () and worldURL .is_local ())
-			fileOpenDialog -> set_uri (worldURL .filename () .str ());
-
-		else
-			fileOpenDialog -> set_uri (getFileOpenDialog () .get_uri ());
-
-		const auto response_id = fileOpenDialog -> run ();
-
-		if (response_id == Gtk::RESPONSE_OK)
-		{
-			open (Glib::uri_unescape_string (fileOpenDialog -> get_uri ()));
-		}
-
-		delete fileOpenDialog;
-	}
+		std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog")) -> run ();
 }
 
 void
@@ -548,36 +526,7 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import ()
 {
-	updateWidget ("FileImportDialog");
-	const auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
-
-	fileImportDialog -> add_filter (getFileFilterX3D ());
-	fileImportDialog -> add_filter (getFileFilterImage ());
-	fileImportDialog -> add_filter (getFileFilterAudio ());
-	fileImportDialog -> add_filter (getFileFilterVideo ());
-	fileImportDialog -> set_filter (getFileFilterX3D ());
-
-	const auto worldURL = getRootContext () -> getWorldURL ();
-
-	if (not worldURL .empty () and worldURL .is_local ())
-		fileImportDialog -> set_uri (worldURL .filename () .str ());
-
-	else
-		fileImportDialog -> set_uri (getFileOpenDialog () .get_uri ());
-
-	const auto response_id = fileImportDialog -> run ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-	{
-		const auto uri = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
-
-		import ({ uri }, getImportAsInlineMenuItem () .get_active ());
-	}
-
-	if (not fileImportDialog -> get_uri () .empty ())
-		getFileImportDialog () .set_uri (fileImportDialog -> get_uri ());
-
-	delete fileImportDialog;
+	std::dynamic_pointer_cast <FileImportDialog> (addDialog ("FileImportDialog")) -> run ();
 }
 
 void
@@ -669,45 +618,7 @@ BrowserWindow::on_save ()
 void
 BrowserWindow::on_save_as ()
 {
-	updateWidget ("FileSaveDialog");
-
-	const auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
-
-	fileSaveDialog -> add_filter (getFileFilterX3D ());
-	fileSaveDialog -> set_filter (getFileFilterX3D ());
-
-	const auto worldURL = getRootContext () -> getWorldURL ();
-
-	if (not worldURL .empty () and worldURL .is_local ())
-		fileSaveDialog -> set_uri (worldURL .filename () .str ());
-
-	else
-	{
-		fileSaveDialog -> set_uri (getFileOpenDialog () .get_uri ());
-
-		if (worldURL .basename () .empty ())
-			fileSaveDialog -> set_current_name (_ ("scene.x3dv"));
-		else
-			fileSaveDialog -> set_current_name (worldURL .basename ());
-	}
-
-	const auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
-
-	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
-
-	const auto response_id = fileSaveDialog -> run ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-	{
-		save (Glib::uri_unescape_string (fileSaveDialog -> get_uri ()), saveCompressedButton -> get_active ());
-
-		saveAsOutput .processInterests ();
-	}
-
-	if (not fileSaveDialog -> get_uri () .empty ())
-		getFileSaveDialog () .set_uri (fileSaveDialog -> get_uri ());
-
-	delete fileSaveDialog;
+	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog")) -> run ();
 }
 
 void
@@ -1708,31 +1619,31 @@ void
 BrowserWindow::on_node_properties_editor_clicked ()
 {
 	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-		addDialog ("NodePropertiesEditor");
+		addDialog ("NodePropertiesEditor", true);
 }
 
 void
 BrowserWindow::on_material_editor_clicked ()
 {
-	addDialog ("MaterialEditor");
+	addDialog ("MaterialEditor", true);
 }
 
 void
 BrowserWindow::on_texture_editor_clicked ()
 {
-	addDialog ("TextureEditor");
+	addDialog ("TextureEditor", true);
 }
 
 void
 BrowserWindow::on_text_editor_clicked ()
 {
-	addDialog ("TextEditor");
+	addDialog ("TextEditor", true);
 }
 
 void
 BrowserWindow::on_geometry_properties_editor_clicked ()
 {
-	addDialog ("GeometryPropertiesEditor");
+	addDialog ("GeometryPropertiesEditor", true);
 }
 
 void
@@ -1774,7 +1685,7 @@ BrowserWindow::on_update_viewpoint_clicked ()
 void
 BrowserWindow::on_light_editor_clicked ()
 {
-	addDialog ("LightEditor");
+	addDialog ("LightEditor", true);
 }
 
 void

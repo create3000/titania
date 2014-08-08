@@ -139,9 +139,16 @@ protected:
 	{ return gconf; }
 
 	/// @name Dialog handling
+	
+	bool
+	hasDialog (const std::string &) const;
+
+	std::shared_ptr <X3DUserInterface>
+	addDialog (const std::string &, const bool = false)
+	throw (std::out_of_range);
 
 	void
-	addDialog (const std::string &);
+	removeDialog (const std::string &);
 
 	/// @name Destruction
 
@@ -173,12 +180,6 @@ private:
 	on_delete_event (GdkEventAny*);
 
 	///  @name Operations
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	void
-	removeDialog (const std::string &);
 
 	void
 	restoreWindow ();

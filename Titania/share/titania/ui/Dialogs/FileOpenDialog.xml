@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkFileFilter" id="FileFilterAll">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAudio">
+    <mime-types>
+      <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterImage">
+    <mime-types>
+      <mime-type>image/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVideo">
+    <mime-types>
+      <mime-type>video/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3D">
+    <mime-types>
+      <mime-type>x-world/x-vrml</mime-type>
+      <mime-type>model/vrml</mime-type>
+      <mime-type>model/x3d+vrml</mime-type>
+      <mime-type>model/x3d+xml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3d</pattern>
+      <pattern>*.x3d.gz</pattern>
+      <pattern>*.x3dv</pattern>
+      <pattern>*.x3dvz</pattern>
+      <pattern>*.x3dv.gz</pattern>
+      <pattern>*.wrl</pattern>
+      <pattern>*.wrz</pattern>
+      <pattern>*.wrl.gz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileChooserDialog" id="Window">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Open File ...</property>
+    <property name="role">GtkFileChooserDialog</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="hide_titlebar_when_maximized">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="has_resize_grip">False</property>
+    <property name="action">save</property>
+    <property name="local_only">False</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="filechooserdialog-vbox6">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="filechooserdialog-action_area6">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button6">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button7">
+                <property name="label">gtk-open</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="Widget">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-6">button6</action-widget>
+      <action-widget response="-5">button7</action-widget>
+    </action-widgets>
+  </object>
+</interface>

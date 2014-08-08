@@ -1,4 +1,4 @@
-#X3D V3.0 utf8 CosmoWorlds V1.0
+#VRML V2.0 utf8 Titania V0.7.3
 
 META "title" "Interpolators"
 
@@ -39,41 +39,76 @@ Group {
 DEF TimeSensor TimeSensor {
   cycleInterval 20
   loop TRUE
-#  stopTime 1
+
+  #  stopTime 1
 }
 
 DEF ScalarInterpolator ScalarInterpolator {
-  key [ 0, 0.5, 1 ]
-  keyValue [ 0, 1, 0 ]
+  key [
+    0,
+    0.5,
+    1
+  ]
+  keyValue [
+    0,
+    1,
+    0
+  ]
 }
 
 DEF PositionInterpolator PositionInterpolator {
-  key [ 0, 1 ]
-  keyValue [ -2 -2 0, 2 -2 0 ]
+  key [
+    0,
+    1
+  ]
+  keyValue [
+    -2 -2 0,
+    2 -2 0
+  ]
 }
 
 DEF OrientationInterpolator OrientationInterpolator {
-  key [ 0, 0.25, 0.26, 0.5, 0.75, 1 ]
-  keyValue [ 0 0 1 0, 0 1 0 1.5708, 0 1 0 1.5708, 0 1 0 3.14159, 0 1 0 4.71239, 0 0 1 0 ]
+  key [
+    0,
+    0.25,
+    0.26,
+    0.5,
+    0.75,
+    1
+  ]
+  keyValue [
+    0 0 1 0,
+    0 1 0 1.5708,
+    0 1 0 1.5708,
+    0 1 0 3.14159,
+    0 1 0 4.71239,
+    0 0 1 0
+  ]
 }
 
 DEF ColorInterpolator ColorInterpolator {
-  key [ 0, 1 ]
-  keyValue [ 1 0 0, 0 1 0 ]
+  key [
+    0,
+    1
+  ]
+  keyValue [
+    0.1 0 0,
+    0 1 0
+  ]
 }
 
 DEF Box Transform {
-  translation -2 -2 0
+  translation 0.944245 -2 0
+  rotation 0 1 0 4.62481
   children Shape {
     appearance Appearance {
       material DEF Material Material {
-        diffuseColor 1 0 0
+        diffuseColor 0.402483 0.762455 0
       }
     }
     geometry Box { }
   }
 }
-
 
 ROUTE StartTouchSensor.touchTime TO TimeSensor.set_startTime
 ROUTE StopTouchSensor.touchTime TO TimeSensor.set_stopTime

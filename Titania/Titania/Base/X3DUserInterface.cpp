@@ -52,6 +52,10 @@
 
 #include "../Configuration/config.h"
 
+#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
+#include "../Dialogs/FileImportDialog/FileImportDialog.h"
+#include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
+
 #include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../LightEditor/LightEditor.h"
 #include "../MaterialEditor/MaterialEditor.h"
@@ -72,12 +76,15 @@ public:
 	///  @name Construction
 
 	DialogFactory () :
-		dialogs ({ std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
-		           std::make_pair ("LightEditor",              constructDialog <LightEditor>),
-		           std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
+		dialogs ({ std::make_pair ("FileOpenDialog",           constructDialog <FileOpenDialog>),
+		           std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
+		           std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		           std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
+		           std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
+		           std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
 		           std::make_pair ("TextEditor",               constructDialog <TextEditor>),
-		           std::make_pair ("TextureEditor",            constructDialog <TextureEditor>) })
+		           std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
+		           std::make_pair ("LightEditor",              constructDialog <LightEditor>) })
 	{ }
 
 	std::shared_ptr <X3DUserInterface>
@@ -105,6 +112,14 @@ private:
 
 namespace {
 	const DialogFactory dialogFactory;
+
+	const std::set <std::string> restorableDialogs = {
+		"MaterialEditor",
+		"TextureEditor",
+		"TextEditor",
+		"GeometryPropertiesEditor",
+		"LightEditor"
+	};
 }
 
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
@@ -172,22 +187,26 @@ X3DUserInterface::hasDialog (const std::string & name) const
 	return dialogs .count (name);
 }
 
-void
-X3DUserInterface::addDialog (const std::string & name)
+std::shared_ptr <X3DUserInterface>
+X3DUserInterface::addDialog (const std::string & name, const bool present)
+throw (std::out_of_range)
 {
 	try
 	{
-		if (hasDialog (name))
-			return;
-
+		return dialogs .at (name);
+	}
+	catch (const std::out_of_range &)
+	{
 		const auto dialog = dialogFactory .createDialog (name, getBrowserWindow ());
 
 		dialogs .emplace (name, dialog);
 		dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
-		dialog -> getWindow () .present ();
+
+		if (present)
+			dialog -> getWindow () .present ();
+
+		return dialog;
 	}
-	catch (...)
-	{ }
 }
 
 void
@@ -245,10 +264,13 @@ X3DUserInterface::restoreInterface ()
 
 	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
 	{
-		if (dialogName == "NodePropertiesEditor")
-			continue;
-
-		addDialog (dialogName);
+		try
+		{
+			if (restorableDialogs .count (dialogName))
+				addDialog (dialogName);
+		}
+		catch (...)
+		{ }
 	}
 }
 
