@@ -133,35 +133,36 @@ OrthoViewpoint::getSizeY () const
 Vector3d
 OrthoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
 {
-	const int width  = viewport [2];
-	const int height = viewport [3];
+	const double width  = viewport [2];
+	const double height = viewport [3];
+	const double sizeX  = getSizeX ();
+	const double sizeY  = getSizeY ();
 
-	if (width > height)
-		return Vector3d (getSizeX () / height,
-		                 getSizeY () / height,
-		                 getSizeY () / height);
+	if (width / height > sizeX / sizeY)
+	{
+		const double s = getSizeY () / height;
 
-	return Vector3d (getSizeX () / width,
-	                 getSizeY () / width,
-	                 getSizeX () / width);
+		return Vector3d (s, s, s);
+	}
+
+	const double s = getSizeX () / width;
+
+	return Vector3d (s, s, s);
 }
 
 Vector2d
 OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 {
-	const int width  = viewport [2];
-	const int height = viewport [3];
+	const double width  = viewport [2];
+	const double height = viewport [3];
+	const double sizeX  = getSizeX ();
+	const double sizeY  = getSizeY ();
+	const double aspect = width / height;
 
-	if (width > height)
-	{
-		return Vector2d (width * getSizeX () / height,
-		                 getSizeY ());
-	}
-	else
-	{
-		return Vector2d (getSizeX (),
-		                 height * getSizeY () / width);
-	}
+	if (width / height > sizeX / sizeY)
+		return Vector2d (getSizeY () * aspect, getSizeY ());
+
+	return Vector2d (getSizeX (), getSizeX () / aspect);
 }
 
 Vector3f
@@ -184,11 +185,17 @@ OrthoViewpoint::reshape (const double zNear, const double zFar)
 
 	if (aspect > getSizeX () / getSizeY ())
 	{
-		glLoadMatrixd (ortho (getMinimumY () * aspect, getMaximumY () * aspect, getMinimumY (), getMaximumY (), zNear, zFar) .data ());
+		const double center  = (getMinimumX () + getMaximumX ()) / 2;
+		const double size1_2 = (getSizeY () * aspect) / 2;
+
+		glLoadMatrixd (ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), zNear, zFar) .data ());
 	}
 	else
 	{
-		glLoadMatrixd (ortho (getMinimumX (), getMaximumX (), getMinimumX () / aspect, getMaximumX () / aspect, zNear, zFar) .data ());
+		const double center  = (getMinimumY () + getMaximumY ()) / 2;
+		const double size1_2 = (getSizeX () / aspect) / 2;
+
+		glLoadMatrixd (ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, zNear, zFar) .data ());
 	}
 
 	glMatrixMode (GL_MODELVIEW);

@@ -2457,6 +2457,7 @@
     <None Include="Tests\Handles\PointLight.x3dv" />
     <None Include="Tests\Handles\GridTool.x3dv" />
     <None Include="Tests\Handles\x3d.jpeg" />
+    <None Include="Tests\Navigation\OrthoImage.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

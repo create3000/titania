@@ -1,0 +1,55 @@
+#VRML V2.0 utf8 Titania V0.7.3
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF _1 OrthoViewpoint {
+  description "Landscape"
+  fieldOfView [
+    0,
+    0,
+    4,
+    2
+  ]
+}
+
+DEF Lena Transform {
+  translation 2 1 0
+  scale 2 1 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "http://en.chessbase.com/portals/4/files/images2/2003/x3d/x3d-logo1.jpg"
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}
+
+DEF _2 OrthoViewpoint {
+  description "Portrait"
+  fieldOfView [
+    10,
+    10,
+    12,
+    14
+  ]
+}
+
+DEF Lena_1 Transform {
+  translation 11 12 0
+  scale 1 2 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url "http://en.chessbase.com/portals/4/files/images2/2003/x3d/x3d-logo1.jpg"
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}

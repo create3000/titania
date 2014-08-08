@@ -73,7 +73,6 @@ X3DUserInterface::construct ()
 {
 	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_constructed));
 
-	getWidget () .signal_map ()                .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
@@ -85,13 +84,12 @@ X3DUserInterface::set_constructed ()
 {
 	constructed_connection .disconnect ();
 
-	std::clog << "Initializing " << getWidgetName () << "." << std::endl;
+	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 
+	restoreInterface ();
 	initialize ();
 
 	restoreSession ();
-
-	std::clog << "Done initializing " << getWidgetName () << "." << std::endl;
 }
 
 void

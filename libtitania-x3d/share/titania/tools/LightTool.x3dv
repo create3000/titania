@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.3, http://titania.create3000.de"
-META "modified" "Fri, 08 Aug 2014 05:07:48 GMT"
+META "modified" "Fri, 08 Aug 2014 08:59:13 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -146,13 +146,11 @@ function set_color (on, color, intensity)
 }
 
 DEF _1 Transform {
-  translation -1.33458 0 0.0611255
   children Collision {
     enabled FALSE
     children DEF Lights ScreenGroup {
       children [
         DEF Lights_1 Transform {
-          rotation 0 1 0 0.0457694
           scale 12 12 12
           children [
             DEF _2 Switch {

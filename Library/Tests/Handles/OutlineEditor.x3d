@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.7.3, http://titania.create3000.de'/>
-    <meta name='modified' content='Fri, 08 Aug 2014 06:42:35 GMT'/>
+    <meta name='modified' content='Fri, 08 Aug 2014 09:13:14 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -287,7 +287,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Do 07 Aug 2014 20:17:45 CEST"'>
+            string='"modified...", "Fr 08 Aug 2014 08:42:35 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -457,7 +457,7 @@ function initialize ()
       <ProximitySensor USE='_9'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='0 0 1 1.74291'
+          rotation='0 0 1 3.91658'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -498,8 +498,11 @@ function initialize ()
     </Transform>
     <SpotLight DEF='_12'
         color='1 0 0'
+        attenuation='0.35 0.1 0'
         location='0 0 10'
-        direction='0 1 -1'/>
+        direction='0 1 -1'
+        beamWidth='0.05'
+        cutOffAngle='0.431'/>
     <Transform
         translation='-10.4152 7.87882 1.0723'
         rotation='-0.269008 -0.910563 -0.313863 1.51293'
