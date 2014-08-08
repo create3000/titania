@@ -131,7 +131,7 @@ LayerSet::set_activeLayer ()
 
 		if (index >= 0 and index < (int32_t) layers () .size ())
 		{
-			if (activeLayerNode .getValue () not_eq layers () [index] .getValue ())
+			if (activeLayerNode not_eq layers () [index])
 				activeLayerNode = layers () [index];
 		}
 		else
@@ -145,22 +145,25 @@ LayerSet::set_activeLayer ()
 void
 LayerSet::set_layers ()
 {
-	X3DPtrArray <X3DLayerNode> unordered ({ layerNode0 });
-
-	unordered .reserve (layers () .size () + 1);
-
-	for (const auto & layer : layers ())
-		unordered .emplace_back (x3d_cast <X3DLayerNode*> (layer));
-
 	layerNodes .clear ();
 	layerNodes .reserve (layers () .size () + 1);
 
-	for (const auto & index : order ())
+	for (int32_t index : order ())
 	{
-		if (index >= 0 and index < (int32_t) unordered .size ())
+		if (index == 0)
+			layerNodes .emplace_back (layerNode0);
+			
+		else
 		{
-			if (unordered [index]);
-				layerNodes .emplace_back (unordered [index]);
+			-- index;
+
+			if (index >= 0 and index < (int32_t) layers () .size ())
+			{
+				const auto layerNode = x3d_cast <X3DLayerNode*> (layers () [index]);
+
+				if (layerNode)
+					layerNodes .emplace_back (layerNode);
+			}
 		}
 	}
 

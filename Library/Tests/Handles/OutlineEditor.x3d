@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 06 Apr 2014 10:12:16 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V0.7.3, http://titania.create3000.de'/>
-    <meta name='modified' content='Thu, 07 Aug 2014 18:17:45 GMT'/>
+    <meta name='modified' content='Fri, 08 Aug 2014 06:42:35 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Rotor' url='"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"'>
@@ -287,7 +287,7 @@
           <Material/>
         </Appearance>
         <Text DEF='Text2'
-            string='"modified...", "Mo 04 Aug 2014 01:53:51 CEST"'>
+            string='"modified...", "Do 07 Aug 2014 20:17:45 CEST"'>
           <ScreenFontStyle
               family='"SANS"'
               style='BOLD'/>
@@ -457,7 +457,7 @@ function initialize ()
       <ProximitySensor USE='_9'/>
       <Transform DEF='Box'
           translation='1.40843 1.10727 0.193803'
-          rotation='-0 -0 -1 5.82452'
+          rotation='0 0 1 1.74291'
           scale='0.2 0.2 0.2'>
         <Transform>
           <Shape>
@@ -517,6 +517,20 @@ function initialize ()
         description='OrthoViewpoint'
         position='2.06889 0.664904 10.404'
         centerOfRotation='2.06889 0.664904 0'/>
+    <Transform DEF='x3d'
+        translation='-8.18004 1.77101 0'
+        scale='1.04723 0.37401 9.63804'>
+      <Shape>
+        <Appearance>
+          <ImageTexture
+              url='"x3d.jpeg", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/x3d.jpeg"'
+              repeatS='false'
+              repeatT='false'/>
+        </Appearance>
+        <Rectangle2D
+            solid='false'/>
+      </Shape>
+    </Transform>
     <IMPORT inlineDEF='_5' exportedDEF='CubeExport'/>
     <IMPORT inlineDEF='_6' exportedDEF='ExportedInline'/>
     <IMPORT inlineDEF='_2' exportedDEF='Text' AS='ImportedInline'/>
