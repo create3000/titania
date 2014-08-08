@@ -6,17 +6,18 @@
     <sources>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
       <source stock-id="Geometry" filename="icons/Geometry.svg"/>
+      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
-      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
-      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
+      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="Light" filename="icons/Light.svg"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.16.svg"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
@@ -1493,7 +1494,7 @@
                     <property name="tooltip_text" translatable="yes">Open Light Editor.</property>
                     <property name="label" translatable="yes">Light Editor</property>
                     <property name="use_underline">True</property>
-                    <property name="stock_id">gtk-media-record</property>
+                    <property name="stock_id">Light</property>
                     <signal name="clicked" handler="on_light_editor_clicked" swapped="no"/>
                   </object>
                   <packing>
