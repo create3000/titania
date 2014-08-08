@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.3, http://titania.create3000.de"
-META "modified" "Thu, 07 Aug 2014 18:32:44 GMT"
+META "modified" "Fri, 08 Aug 2014 04:22:52 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -163,6 +163,10 @@ DEF _1 Transform {
                     DEF Rays Transform {
                       children Shape {
                         appearance DEF _3 Appearance {
+                          fillProperties FillProperties {
+                            filled FALSE
+                            hatched FALSE
+                          }
                           lineProperties LineProperties {
                             linewidthScaleFactor 2
                           }
@@ -368,7 +372,7 @@ DEF _1 Transform {
                       scale 1.70236 1.70236 1.70236
                       scaleOrientation 0.347583 0.0964911 -0.932671 1.23464
                       children Shape {
-                        appearance USE _5
+                        appearance USE _3
                         geometry Cone {
                           bottom FALSE
                           bottomRadius 1.2

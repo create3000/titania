@@ -406,6 +406,7 @@ public:
 
 	///  @name ProtoObject handling
 
+	virtual
 	X3DProtoDeclarationNode*
 	findProtoDeclaration (const std::string &, const AvailableType &) const
 	throw (Error <INVALID_NAME>,

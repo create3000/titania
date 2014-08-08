@@ -99,7 +99,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> copy (FLAT_COPY));
 	}
 
-	// X3DExecutionContext
+	// X3DExecutionContext // XXX: deleteable if all get/set virtual
 
 	setEncoding             (prototype -> getEncoding ());
 	setSpecificationVersion (prototype -> getSpecificationVersion ());
@@ -117,8 +117,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	try
 	{
-		importExternProtos (prototype, CloneType { });
-		importProtos (prototype, CloneType { });
+		importExternProtos (prototype, CloneType { }); // XXX: deleteable if all get/set virtual
+		importProtos (prototype, CloneType { });       // XXX: deleteable if all get/set virtual
 		importRootNodes (prototype);
 	}
 	catch (const X3DError & error)
@@ -204,6 +204,18 @@ X3DPrototypeInstance::getInnerNode () const
 throw (Error <DISPOSED>)
 {
 	return getRootNode () -> getInnerNode ();
+}
+
+X3DProtoDeclarationNode*
+X3DPrototypeInstance::findProtoDeclaration (const std::string & name, const AvailableType & available) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (protoNode)
+		return protoNode -> getProtoDeclaration () -> findProtoDeclaration (name, available);
+
+	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
 }
 
 X3DBaseNode*

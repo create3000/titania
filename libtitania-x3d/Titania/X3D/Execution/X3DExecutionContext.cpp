@@ -869,7 +869,7 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto protoNodes = findProtoDeclarations ();
-	const auto iter         = protoNodes .find (name);
+	const auto iter       = protoNodes .find (name);
 	
 	if (iter not_eq protoNodes .end ())
 		return iter -> second;
@@ -887,7 +887,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	// Find all available prototypes
 
 	std::map <std::string, X3DProtoDeclarationNode*> prototypes;
-	std::string                             current;
+	std::string                                      current;
 
 	for (;;)
 	{

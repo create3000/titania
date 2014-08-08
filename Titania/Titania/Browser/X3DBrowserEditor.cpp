@@ -447,18 +447,18 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
 	                        {
 				                  const X3D::X3DPrototypeInstancePtr instance (node);
 
-			                     switch (instance -> getProtoObject () -> getType () .back ())
+			                     switch (instance -> getProtoNode () -> getType () .back ())
 			                     {
 			                        case  X3D::X3DConstants::ExternProtoDeclaration:
 			                        {
-					                     const X3D::ExternProtoDeclarationPtr externProto (instance -> getProtoObject ());
+					                     const X3D::ExternProtoDeclarationPtr externProto (instance -> getProtoNode ());
 
 					                     externProtos .erase (externProto);
 			                           break;
 			                        }
 			                        case  X3D::X3DConstants::ProtoDeclaration:
 			                        {
-			                           const X3D::ProtoDeclarationPtr prototype (instance -> getProtoObject ());
+			                           const X3D::ProtoDeclarationPtr prototype (instance -> getProtoNode ());
 
 			                           prototypes .erase (prototype);
 
@@ -619,8 +619,8 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                                       {
 	                                          try
 	                                          {
-	                                             if (child -> getProtoObject () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName (), X3D::AvailableType { }))
-																	protoNodes .emplace (child -> getProtoObject (), protoNodes .size ());
+	                                             if (child -> getProtoNode () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName (), X3D::AvailableType { }))
+																	protoNodes .emplace (child -> getProtoNode (), protoNodes .size ());
 															}
 	                                          catch (const X3D::X3DError &)
 	                                          { }
@@ -630,7 +630,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 													},
 	                                    true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-	                     protoNodes .emplace (protoInstance -> getProtoObject (), protoNodes .size ());
+	                     protoNodes .emplace (protoInstance -> getProtoNode (), protoNodes .size ());
 							}
 
 	                  return true;

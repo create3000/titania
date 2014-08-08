@@ -1,5 +1,10 @@
 2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.cpp:
+	* X3DBrowserEditor.cpp: 
+
+2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* DirectionTool.h:
 	* SFColorButton.h:
 	* X3DSpotLightEditor.h:

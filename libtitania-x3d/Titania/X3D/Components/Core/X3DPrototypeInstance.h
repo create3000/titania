@@ -139,8 +139,15 @@ public:
 	throw (Error <DISPOSED>);
 
 	const X3DProtoDeclarationNodePtr &
-	getProtoObject () const
+	getProtoNode () const
 	{ return protoNode; }
+
+	virtual
+	X3DProtoDeclarationNode*
+	findProtoDeclaration (const std::string &, const AvailableType &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
 
 	///  @name Operations
 

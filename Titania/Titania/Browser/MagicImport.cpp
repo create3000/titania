@@ -187,8 +187,8 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 
 	if (prototypeInstance)
 	{
-		const auto name          = prototypeInstance -> getProtoObject () -> getName ();
-		const bool isExternProto = prototypeInstance -> getProtoObject () -> isExternproto ();
+		const auto name          = prototypeInstance -> getProtoNode () -> getName ();
+		const bool isExternProto = prototypeInstance -> getProtoNode () -> isExternproto ();
 
 		try
 		{
@@ -227,7 +227,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			}
 		}
 
-		const auto protoNode = prototypeInstance -> getProtoObject () -> copy (getExecutionContext (), X3D::COPY_OR_CLONE);
+		const auto protoNode = prototypeInstance -> getProtoNode () -> copy (getExecutionContext (), X3D::COPY_OR_CLONE);
 		
 		if (isExternProto)
 		{
