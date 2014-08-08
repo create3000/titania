@@ -76,10 +76,6 @@ protected:
 
 	X3DSpotLightEditor ();
 
-	virtual
-	void
-	initialize () override;
-
 	void
 	setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
 

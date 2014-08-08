@@ -73,7 +73,19 @@ public:
 	///  @name Member access
 
 	void
+	setNormalize (const bool value)
+	{ normalize = value; }
+	
+	bool
+	getNormalize () const
+	{ return normalize; }
+
+	void
 	setNodes (const X3D::MFNode &);
+
+	const X3D::MFNode &
+	getNodes ()
+	{ return nodes; }
 
 	///  @name Destruction
 	
@@ -108,6 +120,7 @@ private:
 	UndoStepPtr                          undoStep;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
+	bool                                 normalize;
 
 };
 
@@ -126,7 +139,8 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (BrowserWindow* const browserWin
 	            name (name),
 	        undoStep (),
 	        changing (false),
-	          buffer ()
+	          buffer (),
+	       normalize (false)
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &X3DFieldAdjustment2::set_buffer);
@@ -185,8 +199,14 @@ X3DFieldAdjustment2 <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment2::set_field);
 			field .addInterest (this, &X3DFieldAdjustment2::connect);
 
-			field .set1Value (0, adjustment1 -> get_value ());
-			field .set1Value (1, adjustment2 -> get_value ());
+			typename Type::internal_type vector (adjustment1 -> get_value (),
+			                                     adjustment2 -> get_value ());
+
+			if (normalize)
+				vector .normalize ();
+
+			field .set1Value (0, vector .x ());
+			field .set1Value (1, vector .y ());
 		}
 		catch (const X3D::X3DError &)
 		{ }

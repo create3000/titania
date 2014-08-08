@@ -1,3 +1,18 @@
+2014-08-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DirectionTool.h:
+	* SFColorButton.h:
+	* X3DSpotLightEditor.h:
+	* X3DSpotLightEditor.cpp:
+	* SFColorRGBAButton.h:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment2.h:
+	* X3DFieldAdjustment3.h:
+	* SFStringComboBoxText.h:
+	* X3DFieldToggleButton.h:
+	* X3DDirectionalLightEditor.h:
+	* X3DDirectionalLightEditor.cpp: 
+
 2014-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* DirectionTool.h: 

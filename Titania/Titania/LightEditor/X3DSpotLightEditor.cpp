@@ -80,14 +80,10 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 	              beamWidth (getBrowserWindow (), getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
 	            cutOffAngle (getBrowserWindow (), getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")
 {
-	getSpotLightBeamWidthAdjustment ()   -> set_upper (M_PI / 2); // getExecutionContext () .fromRadiant (M_PI);
-	getSpotLightCutOffAngleAdjustment () -> set_upper (M_PI / 2); // getExecutionContext () .fromRadiant (M_PI);
-}
+	direction .setNormalize (true);
 
-void
-X3DSpotLightEditor::initialize ()
-{
-	directionTool -> initialize ();
+	getSpotLightBeamWidthAdjustment ()   -> set_upper (M_PI / 2); // getExecutionContext () -> fromRadiant (M_PI);
+	getSpotLightCutOffAngleAdjustment () -> set_upper (M_PI / 2); // getExecutionContext () -> fromRadiant (M_PI);
 }
 
 void
@@ -106,7 +102,7 @@ X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightN
 	beamWidth   .setNodes (spotLights);
 	cutOffAngle .setNodes (spotLights);
 
-	directionTool -> setNode (X3D::SFNode (spotLight));
+	directionTool -> setNodes (spotLights);
 }
 
 X3DSpotLightEditor::~X3DSpotLightEditor ()

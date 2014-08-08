@@ -75,6 +75,10 @@ public:
 	void
 	setNodes (const X3D::MFNode &);
 
+	const X3D::MFNode &
+	getNodes ()
+	{ return nodes; }
+
 	///  @name Destruction
 
 	virtual

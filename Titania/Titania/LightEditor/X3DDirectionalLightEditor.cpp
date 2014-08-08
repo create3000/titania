@@ -64,12 +64,8 @@ X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
 	                         getDirectionalLightDirectionBox (),
 	                         "direction"),
 	          directionTool (new DirectionTool (getBrowserWindow (), getDirectionalLightDirectionToolBox (), "direction"))
-{ }
-
-void
-X3DDirectionalLightEditor::initialize ()
 {
-	directionTool -> initialize ();
+	direction .setNormalize (true);
 }
 
 void
@@ -79,8 +75,10 @@ X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLight
 
 	getDirectionalLightExpander () .set_visible (directionalLight);
 
-	direction .setNodes (directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ());
-	directionTool -> setNode (X3D::SFNode (directionalLight));
+	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
+
+	direction .setNodes (directionalLights);
+	directionTool -> setNodes (directionalLights);
 }
 
 X3DDirectionalLightEditor::~X3DDirectionalLightEditor ()

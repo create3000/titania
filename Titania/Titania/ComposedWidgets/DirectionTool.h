@@ -68,13 +68,18 @@ public:
 	               Gtk::Box &,
                   const std::string &);
 
+	virtual
 	void
-	initialize ();
+	setup () final override;
 
 	///  @name Member access
 
 	void
-	setNode (const X3D::SFNode &);
+	setNodes (const X3D::MFNode &);
+
+	const X3D::MFNode &
+	getNodes ()
+	{ return nodes; }
 
 	///  @name Destruction
 
@@ -95,7 +100,13 @@ private:
 	set_direction (const X3D::SFVec3f &);
 
 	void
-	set_field (const X3D::SFVec3f &);
+	set_field ();
+
+	void
+	set_buffer ();
+
+	void
+	set_value (const X3D::SFVec3f &);
 
 	void
 	connect (const X3D::SFVec3f &);
@@ -104,9 +115,10 @@ private:
 
 	Gtk::Box &        box;
 	X3D::BrowserPtr   browser;
-	X3D::SFNode       node;
+	X3D::MFNode       nodes;
 	const std::string name;
 	UndoStepPtr       undoStep;
+	X3D::SFVec3f      buffer;
 
 };
 
@@ -118,11 +130,17 @@ DirectionTool::DirectionTool (BrowserWindow* const browserWindow,
 	 X3DEditorObject (),
 	             box (box),
 	         browser (X3D::createBrowser (browserWindow -> getBrowser ())),
-	            node (),
+	           nodes (),
 	            name (name),
-	        undoStep ()
+	        undoStep (),
+	          buffer ()
 {
 	browser -> set_antialiasing (4);
+
+	// Buffer
+
+	addChildren (buffer);
+	buffer .addInterest (this, &DirectionTool::set_buffer);
 
 	// Setup
 
@@ -131,8 +149,10 @@ DirectionTool::DirectionTool (BrowserWindow* const browserWindow,
 
 inline
 void
-DirectionTool::initialize ()
+DirectionTool::setup ()
 {
+	X3DEditorObject::setup ();
+
 	box .pack_start (*browser, true, true, 0);
 
 	browser -> show ();
@@ -156,16 +176,16 @@ DirectionTool::set_initialized ()
 	catch (const X3D::X3DError &)
 	{ }
 
-	setNode (node);
+	setNodes (nodes);
 }
 
 inline
 void
-DirectionTool::setNode (const X3D::SFNode & value)
+DirectionTool::setNodes (const X3D::MFNode & value)
 {
 	//undoStep .reset ();
 
-	if (node)
+	for (const auto & node : nodes)
 	{
 		try
 		{
@@ -175,37 +195,28 @@ DirectionTool::setNode (const X3D::SFNode & value)
 		{ }
 	}
 
-	node = value;
-	
-	bool hasField = false;
+	nodes = value;
 
-	if (node)
+	for (const auto & node : nodes)
 	{
 		try
 		{
-			const auto & field = node -> getField <X3D::SFVec3f> (name);
-		
-			field .addInterest (this, &DirectionTool::set_field);
-
-			hasField = true;
-
-			set_field (field);
+			node -> getField <X3D::SFVec3f> (name) .addInterest (this, &DirectionTool::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	if (not hasField)
-		set_field (X3D::SFVec3f (0, 0, -1));
-
-	browser -> set_sensitive (hasField);
+	set_field ();
 }
 
 inline
 void
 DirectionTool::set_direction (const X3D::SFVec3f & value)
 {
-	if (node)
+	addUndoFunction <X3D::SFVec3f> (nodes, name, undoStep);
+
+	for (const auto & node : nodes)
 	{
 		try
 		{
@@ -214,20 +225,52 @@ DirectionTool::set_direction (const X3D::SFVec3f & value)
 			field .removeInterest (this, &DirectionTool::set_field);
 			field .addInterest (this, &DirectionTool::connect);
 
-			addUndoFunction (node, field, undoStep);
-
 			field = value;
-
-			addRedoFunction (field, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
+
+	addRedoFunction <X3D::SFVec3f> (nodes, name, undoStep);
 }
 
 inline
 void
-DirectionTool::set_field (const X3D::SFVec3f & value)
+DirectionTool::set_field ()
+{
+	buffer .addEvent ();
+}
+
+inline
+void
+DirectionTool::set_buffer ()
+{
+	bool hasField = false;
+
+	for (const auto & node : basic::make_reverse_range (nodes))
+	{
+		try
+		{
+			const auto & field = node -> getField <X3D::SFVec3f> (name);
+
+			hasField = true;
+
+			set_value (field);
+			break;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	if (not hasField)
+		set_value (X3D::SFVec3f (0, 0, -1));
+
+	browser -> set_sensitive (hasField);
+}
+
+inline
+void
+DirectionTool::set_value (const X3D::SFVec3f & value)
 {
 	try
 	{
