@@ -167,7 +167,7 @@ BrowserWindow::getStyles () const
 {
 	std::string string;
 
-	const auto styleContext = getWidget () .get_style_context ();
+	const auto styleContext = getWindow () .get_style_context ();
 
 	const auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
 	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);

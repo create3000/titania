@@ -14,7 +14,7 @@
    height="96"
    id="svg2408"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Light.svg"
+   sodipodi:docname="Geometry.svg"
    inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/ui/icon14x14.png"
    inkscape:export-xdpi="13.125"
    inkscape:export-ydpi="13.125">
@@ -32,7 +32,7 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="3.6203867"
-     inkscape:cx="12.38499"
+     inkscape:cx="45.530621"
      inkscape:cy="40.701822"
      inkscape:window-x="65"
      inkscape:window-y="24"
@@ -46,7 +46,8 @@
      inkscape:snap-object-midpoints="false"
      inkscape:snap-intersection-paths="false"
      inkscape:object-nodes="true"
-     inkscape:snap-page="true">
+     inkscape:snap-page="true"
+     inkscape:snap-nodes="false">
     <sodipodi:guide
        orientation="0,1"
        position="-190.05815,48"
@@ -62,8 +63,8 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       spacingy="4px"
-       spacingx="4px" />
+       spacingy="3px"
+       spacingx="3px" />
   </sodipodi:namedview>
   <defs
      id="defs2410">
@@ -110,135 +111,6 @@
          result="result2"
          operator="in" />
     </filter>
-    <filter
-       id="filter4926-8-3-3"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4928-2-9-8"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4930-8-9-4"
-         dx="6"
-         dy="6"
-         result="result11" />
-      <feComposite
-         id="feComposite4932-3-6-1"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4934-0-5-0"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(0,0,0)" />
-      <feBlend
-         id="feBlend4936-6-6-5"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4938-0-3-4"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter3815"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur3817"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset3819"
-         dx="6"
-         dy="6"
-         result="result11" />
-      <feComposite
-         id="feComposite3821"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood3823"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(0,0,0)" />
-      <feBlend
-         id="feBlend3825"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite3827"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter3829"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur3831"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset3833"
-         dx="6"
-         dy="6"
-         result="result11" />
-      <feComposite
-         id="feComposite3835"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood3837"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(0,0,0)" />
-      <feBlend
-         id="feBlend3839"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite3841"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
   </defs>
   <metadata
      id="metadata2413">
@@ -248,7 +120,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -273,18 +145,32 @@
      style="display:inline">
     <path
        inkscape:connector-curvature="0"
-       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 8,44 0,48 48,0 0,-9 C 46.124594,80.459171 38.113773,73.318576 34.34375,64 L 12,64 24,44 8,44 z"
-       id="rect2997-2" />
+       style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
+       d="m 66,30 c -0.648122,0 -1.302341,0.04333 -1.9375,0.09375 L 84,60 42.75,60 C 45.413552,70.352391 54.816234,78 66,78 79.254834,78 90,67.254834 90,54 90,40.745166 79.254834,30 66,30 z"
+       id="path3896-2" />
+    <path
+       style="fill:#505050;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       d="M 66 24 C 65.351878 24 64.697659 24.043331 64.0625 24.09375 L 84 54 L 42.75 54 C 45.413552 64.352391 54.816234 72 66 72 C 79.254834 72 90 61.254834 90 48 C 90 34.745166 79.254834 24 66 24 z "
+       id="path3896" />
     <path
        inkscape:connector-curvature="0"
-       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 64,28 c -0.52061,0 -1.050133,0.02985 -1.5625,0.0625 L 84,64 43.21875,64 C 47.369494,71.169617 55.119605,76 64,76 77.254834,76 88,65.254834 88,52 88,38.745166 77.254834,28 64,28 z"
-       id="path3767-1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
+       d="m 5.78125,48 0,48 48,0 0,-20.5 C 46.86044,72.476228 41.305022,66.92081 38.28125,60 l -26.5,0 8,-12 -14,0 z"
+       id="rect3794-8" />
     <path
-       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none"
-       d="M 48,12 20,60 76,60 z"
-       id="path3769-7"
+       style="fill:#505050;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       d="M 6 42 L 6 90 L 54 90 L 54 75.5 C 45.179097 71.646058 38.591545 63.660844 36.625 54 L 12 54 L 20 42 L 6 42 z "
+       id="rect3794" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
+       d="m 47.78125,12 -27,42 54,0 z"
+       id="path3798-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#505050;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;filter:url(#filter4926-8-3)"
+       d="M 48,6 21,48 75,48 z"
+       id="path3798"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
   </g>
@@ -292,20 +178,5 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Viewpoint"
-     style="display:inline">
-    <path
-       style="fill:#505050;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
-       d="M 8 40 L 8 88 L 56 88 L 56 79 C 46.124594 76.459171 38.113773 69.318576 34.34375 60 L 12 60 L 24 40 L 8 40 z "
-       id="rect2997" />
-    <path
-       style="fill:#505050;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
-       d="M 64 24 C 63.47939 24 62.949867 24.029846 62.4375 24.0625 L 84 60 L 43.21875 60 C 47.369494 67.169617 55.119605 72 64 72 C 77.254834 72 88 61.254834 88 48 C 88 34.745166 77.254834 24 64 24 z "
-       id="path3767" />
-    <path
-       style="fill:#505050;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
-       d="M 48,8 20,56 76,56 z"
-       id="path3769"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccc" />
-  </g>
+     style="display:inline" />
 </svg>

@@ -7,7 +7,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.0"
@@ -28,17 +27,17 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1861"
+     inkscape:window-width="1855"
      inkscape:window-height="1056"
      id="namedview3312"
-     showgrid="false"
-     inkscape:zoom="20.48"
-     inkscape:cx="35.146756"
-     inkscape:cy="73.869125"
-     inkscape:window-x="59"
+     showgrid="true"
+     inkscape:zoom="5.12"
+     inkscape:cx="34.594208"
+     inkscape:cy="45.679164"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer11"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="false"
@@ -63,536 +62,11 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       spacingy="4px"
-       spacingx="4px" />
+       spacingy="3px"
+       spacingx="3px" />
   </sodipodi:namedview>
   <defs
      id="defs2410">
-    <clipPath
-       id="clipPath4074">
-      <path
-         style="opacity:0.8;fill:#ff00ff;fill-opacity:1;stroke:none;display:inline"
-         id="path4076"
-         inkscape:connector-curvature="0"
-         d="m 40.9375,19.15625 c -5.024844,0 -10.043902,2.012651 -13.875,5.84375 -7.662194,7.662195 -7.662195,20.056558 0,27.71875 6.065905,6.065904 15.062155,7.288446 22.375,3.75 0.192443,-0.09311 0.435065,-0.181495 0.625,-0.28125 1.187096,-0.468823 4.141857,-1.389392 5.71875,0.1875 1.169626,1.169626 0.773272,2.710771 2.5625,4.5 l 10.4375,10.34375 c 0.01242,-0.01244 2.254863,2.338884 4.59375,0 2.347919,-2.34792 0.03413,-4.675755 0,-4.71875 L 63.03125,56.1875 c -1.789229,-1.789229 -3.205376,-1.392879 -4.375,-2.5625 -1.928265,-1.928268 -0.115198,-6.004099 0,-6.25 C 62.194695,40.062154 60.909654,31.065904 54.84375,25 51.012652,21.168901 45.962345,19.15625 40.9375,19.15625 z m 0,5 c 8.126981,0 14.75,6.591766 14.75,14.71875 0,8.126985 -6.623016,14.75 -14.75,14.75 -8.126985,0 -14.71875,-6.623015 -14.71875,-14.75 0,-8.126984 6.591766,-14.71875 14.71875,-14.71875 z M 38,30 c -1,2 -2,3 -4,3 l 0,5 4,0 0,10 6,0 0,-18 z" />
-    </clipPath>
-    <linearGradient
-       gradientTransform="matrix(3.272827,0,0,3.2706392,11.508544,9.351683)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#standardGradient"
-       id="linearGradient3100-2"
-       y2="19.285688"
-       x2="10.558969"
-       y1="3.0148761"
-       x1="10.558969" />
-    <linearGradient
-       id="standardGradient">
-      <stop
-         offset="0"
-         style="stop-color:#1e1e1e;stop-opacity:1"
-         id="stop4283-9" />
-      <stop
-         offset="1"
-         style="stop-color:#505050;stop-opacity:1"
-         id="stop4285-8" />
-    </linearGradient>
-    <clipPath
-       id="clipPath4311">
-      <rect
-         style="fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-         id="rect4313"
-         y="8"
-         x="6"
-         ry="6"
-         rx="6"
-         height="80"
-         width="84" />
-    </clipPath>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4163-3"
-       y2="57.664627"
-       x2="127.41583"
-       y1="48.028801"
-       x1="47.998264" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4161-2"
-       y2="60.289635"
-       x2="127.05216"
-       y1="48.028728"
-       x1="47.997311" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4159-8"
-       y2="62.838566"
-       x2="126.67282"
-       y1="48.031521"
-       x1="48.055069" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4157-8"
-       y2="66.232674"
-       x2="126.13924"
-       y1="48.04702"
-       x1="48.233643" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4113-5"
-       y2="57.664623"
-       x2="127.41583"
-       y1="48.028797"
-       x1="47.99826" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4111-3"
-       y2="60.289631"
-       x2="127.05216"
-       y1="48.028725"
-       x1="47.997307" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4109-3"
-       y2="62.838562"
-       x2="126.67282"
-       y1="48.031517"
-       x1="48.055065" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4071-3"
-       id="linearGradient4107-8"
-       y2="66.232674"
-       x2="126.13924"
-       y1="48.047016"
-       x1="48.233639" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4095-8"
-       y2="57.664623"
-       x2="127.41583"
-       y1="48.028797"
-       x1="47.99826" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4093-5"
-       y2="60.289631"
-       x2="127.05216"
-       y1="48.028725"
-       x1="47.997307" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4091-0"
-       y2="62.838562"
-       x2="126.67282"
-       y1="48.031517"
-       x1="48.055065" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4071-3"
-       id="linearGradient4089-7"
-       y2="66.232674"
-       x2="126.13924"
-       y1="48.047016"
-       x1="48.233639" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4121-6"
-       y2="57.664627"
-       x2="127.41583"
-       y1="48.028801"
-       x1="47.998264" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4129-8"
-       y2="60.289635"
-       x2="127.05216"
-       y1="48.028728"
-       x1="47.997311" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4137-7"
-       y2="62.838566"
-       x2="126.67282"
-       y1="48.031521"
-       x1="48.055069" />
-    <linearGradient
-       id="linearGradient4115-2">
-      <stop
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1"
-         id="stop4117-3" />
-      <stop
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0"
-         id="stop4119-6" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4115-2"
-       id="linearGradient4145-0"
-       y2="66.232674"
-       x2="126.13924"
-       y1="48.04702"
-       x1="48.233643" />
-    <linearGradient
-       id="linearGradient3780-6-5">
-      <stop
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0"
-         id="stop3782-4" />
-      <stop
-         offset="1"
-         style="stop-color:#000000;stop-opacity:1"
-         id="stop3784-9" />
-    </linearGradient>
-    <radialGradient
-       gradientTransform="matrix(1,0,0,1.013812,-30,-0.66140908)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient3780-6-5"
-       id="radialGradient5008"
-       fy="47.886696"
-       fx="48.265148"
-       r="28.878813"
-       cy="47.886696"
-       cx="48.265148" />
-    <linearGradient
-       id="linearGradient3796-9">
-      <stop
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0"
-         id="stop3798-4" />
-      <stop
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:1"
-         id="stop3800-9" />
-    </linearGradient>
-    <radialGradient
-       gradientTransform="matrix(1,0,0,0.98495914,-30,0.71591078)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient3796-9"
-       id="radialGradient3814-9"
-       fy="47.59774"
-       fx="48.410488"
-       r="30.640047"
-       cy="47.59774"
-       cx="48.410488" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4053-2"
-       y2="57.664623"
-       x2="127.41583"
-       y1="48.028797"
-       x1="47.99826" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4061-6"
-       y2="60.289631"
-       x2="127.05216"
-       y1="48.028725"
-       x1="47.997307" />
-    <linearGradient
-       id="linearGradient4047-2">
-      <stop
-         offset="0"
-         style="stop-color:#000000;stop-opacity:1"
-         id="stop4049-0" />
-      <stop
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0"
-         id="stop4051-5" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4047-2"
-       id="linearGradient4069-9"
-       y2="62.838562"
-       x2="126.67282"
-       y1="48.031517"
-       x1="48.055065" />
-    <linearGradient
-       id="linearGradient4071-3">
-      <stop
-         offset="0"
-         style="stop-color:#000000;stop-opacity:1"
-         id="stop4073-8" />
-      <stop
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0"
-         id="stop4075-4" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4071-3"
-       id="linearGradient4077-0"
-       y2="66.232674"
-       x2="126.13924"
-       y1="48.047016"
-       x1="48.233639" />
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4081"
-       id="linearGradient3161"
-       y2="5.9877172"
-       x2="48"
-       y1="90"
-       x1="48" />
-    <linearGradient
-       id="linearGradient4081">
-      <stop
-         offset="0"
-         style="stop-color:#8c8c8c;stop-opacity:1"
-         id="stop4083" />
-      <stop
-         offset="1"
-         style="stop-color:#dcdcdc;stop-opacity:1"
-         id="stop4085" />
-    </linearGradient>
-    <linearGradient
-       spreadMethod="reflect"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient3892"
-       id="linearGradient3228"
-       y2="88"
-       x2="48"
-       y1="88"
-       x1="90" />
-    <linearGradient
-       id="linearGradient3892">
-      <stop
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0.58823532"
-         id="stop3894" />
-      <stop
-         offset="0.11780351"
-         style="stop-color:#000000;stop-opacity:0.47058824"
-         id="stop3896" />
-      <stop
-         offset="0.23809524"
-         style="stop-color:#000000;stop-opacity:0.39215687"
-         id="stop3898" />
-      <stop
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0.3137255"
-         id="stop3900" />
-    </linearGradient>
-    <linearGradient
-       spreadMethod="reflect"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4384"
-       id="linearGradient4429"
-       y2="82.454597"
-       x2="112.12357"
-       y1="82"
-       x1="48" />
-    <linearGradient
-       gradientTransform="matrix(1,0,0,-1,0,92)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4384"
-       id="linearGradient4390"
-       y2="-40"
-       x2="48"
-       y1="88"
-       x1="48" />
-    <radialGradient
-       gradientTransform="matrix(1,-6.7114942e-8,8.4282233e-8,1.2557894,109.99999,-24.505592)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4367"
-       id="radialGradient4375"
-       fy="87.792389"
-       fx="48"
-       r="42"
-       cy="87.792389"
-       cx="48" />
-    <clipPath
-       id="clipPath4355">
-      <rect
-         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-         id="rect4357"
-         y="6"
-         x="6"
-         ry="6"
-         rx="6"
-         height="80"
-         width="84" />
-    </clipPath>
-    <linearGradient
-       gradientTransform="matrix(1.0238095,0,0,1.0119048,-1.1428571,-98.071429)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#ButtonShadow-0"
-       id="linearGradient3026"
-       y2="90.238609"
-       x2="32.251034"
-       y1="6.1317081"
-       x1="32.251034" />
-    <linearGradient
-       gradientTransform="translate(0,-97)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#ButtonShadow-0"
-       id="linearGradient3721"
-       y2="90.238609"
-       x2="32.251034"
-       y1="6.1317081"
-       x1="32.251034" />
-    <linearGradient
-       gradientTransform="matrix(1.0238095,0,0,1.0119048,-1.1428571,-98.071429)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#ButtonShadow-0"
-       id="linearGradient3725"
-       y2="90.238609"
-       x2="32.251034"
-       y1="6.1317081"
-       x1="32.251034" />
-    <linearGradient
-       gradientTransform="matrix(1.0238095,0,0,1.0119048,-1.1428571,-98.071429)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#ButtonShadow-0"
-       id="linearGradient3772"
-       y2="90.238609"
-       x2="32.251034"
-       y1="6.1317081"
-       x1="32.251034" />
-    <linearGradient
-       gradientTransform="matrix(1.0238095,0,0,1.0119048,-1.1428571,-98.071429)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#ButtonShadow-0"
-       id="linearGradient3780"
-       y2="90.238609"
-       x2="32.251034"
-       y1="6.1317081"
-       x1="32.251034" />
-    <linearGradient
-       gradientTransform="matrix(1.0058652,0,0,0.994169,100,0)"
-       gradientUnits="userSpaceOnUse"
-       id="ButtonShadow-0"
-       y2="7.0165396"
-       x2="45.447727"
-       y1="92.539597"
-       x1="45.447727">
-      <stop
-         offset="0"
-         style="stop-color:#000000;stop-opacity:1"
-         id="stop3750-8" />
-      <stop
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0.58823532"
-         id="stop3752-5" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient3737-2"
-       id="linearGradient3613-7"
-       y2="138.66119"
-       x2="48"
-       y1="20.220806"
-       x1="48" />
-    <linearGradient
-       id="linearGradient3737-2">
-      <stop
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1"
-         id="stop3739-2" />
-      <stop
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0"
-         id="stop3741-2" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="scale(1.0058652,0.994169)"
-       gradientUnits="userSpaceOnUse"
-       id="ButtonShadow-44"
-       y2="7.0165396"
-       x2="45.447727"
-       y1="92.539597"
-       x1="45.447727">
-      <stop
-         offset="0"
-         style="stop-color:#000000;stop-opacity:1"
-         id="stop3750-4" />
-      <stop
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0.58823532"
-         id="stop3752-9" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4367">
-      <stop
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.71755725"
-         id="stop4369" />
-      <stop
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:1"
-         id="stop4371" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4384">
-      <stop
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1"
-         id="stop4386" />
-      <stop
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0"
-         id="stop4388" />
-    </linearGradient>
-    <filter
-       id="filter4926-8"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23000000000000009"
-       y="-0.29000000000000015"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4928-2"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4930-8"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4932-3"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4934-0"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4936-6"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4938-0"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
     <filter
        id="filter4926-8-3"
        inkscape:label="Inner Shadow"
@@ -609,8 +83,8 @@
          result="result8" />
       <feOffset
          id="feOffset4930-8-9"
-         dx="4"
-         dy="4"
+         dx="6"
+         dy="6"
          result="result11" />
       <feComposite
          id="feComposite4932-3-6"
@@ -623,7 +97,7 @@
          result="result10"
          in="result6"
          flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
+         flood-color="rgb(0,0,0)" />
       <feBlend
          id="feBlend4936-6-6"
          in2="result10"
@@ -632,522 +106,6 @@
          result="result12" />
       <feComposite
          id="feComposite4938-0-3"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4217"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4219"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4221"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4223"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4225"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4227"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4229"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4231"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4233"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4235"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4237"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4239"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4241"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4243"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4245"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4247"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4249"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4251"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4253"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4255"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4257"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4259"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4261"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4263"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4265"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4267"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4269"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4271"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4273"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4275"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4277"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4279"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4281"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4283"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4285"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4926-8-3-0"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4928-2-9-2"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4930-8-9-7"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4932-3-6-4"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4934-0-5-7"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4936-6-6-3"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4938-0-3-5"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4420"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4422"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4424"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4426"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4428"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4430"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4432"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4434"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4436"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4438"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4440"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4442"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4444"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4446"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4448"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4450"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4452"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4454"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4456"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4458"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4460"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4462"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4464"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4466"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4468"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4470"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4472"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4474"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4476"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4478"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4480"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4482"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4484"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4486"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4488"
-         in2="SourceGraphic"
-         result="result2"
-         operator="in" />
-    </filter>
-    <filter
-       id="filter4926-8-3-1"
-       inkscape:label="Inner Shadow"
-       inkscape:menu="Shadows and Glows"
-       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
-       color-interpolation-filters="sRGB"
-       x="-0.23"
-       y="-0.28999999"
-       width="1.24"
-       height="1.3">
-      <feGaussianBlur
-         id="feGaussianBlur4928-2-9-1"
-         stdDeviation="4"
-         result="result8" />
-      <feOffset
-         id="feOffset4930-8-9-8"
-         dx="4"
-         dy="4"
-         result="result11" />
-      <feComposite
-         id="feComposite4932-3-6-2"
-         in2="result11"
-         result="result6"
-         in="SourceGraphic"
-         operator="in" />
-      <feFlood
-         id="feFlood4934-0-5-5"
-         result="result10"
-         in="result6"
-         flood-opacity="1"
-         flood-color="rgb(41,41,41)" />
-      <feBlend
-         id="feBlend4936-6-6-6"
-         in2="result10"
-         mode="normal"
-         in="result6"
-         result="result12" />
-      <feComposite
-         id="feComposite4938-0-3-4"
          in2="SourceGraphic"
          result="result2"
          operator="in" />
@@ -1167,27 +125,6 @@
   </metadata>
   <g
      inkscape:groupmode="layer"
-     id="layer1"
-     inkscape:label="Ebene"
-     style="display:none"
-     sodipodi:insensitive="true">
-    <image
-       y="0"
-       x="0"
-       id="image4108"
-       xlink:href="data:image/png;base64,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 AUmbq6Ta0Gt7AAAAAElFTkSuQmCC "
-       height="96"
-       width="96" />
-    <rect
-       style="fill:#ffffff;fill-opacity:0.74889867;stroke:none"
-       id="rect3260"
-       width="96"
-       height="96"
-       x="0"
-       y="-8.437695e-15" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
      id="layer12"
      inkscape:label="Background"
      style="display:none"
@@ -1204,8 +141,7 @@
      inkscape:groupmode="layer"
      id="layer11"
      inkscape:label="Shadow white"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <path
        sodipodi:type="arc"
        style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -1215,34 +151,34 @@
        sodipodi:rx="10"
        sodipodi:ry="10"
        d="m 44,58 a 10,10 0 1 1 -20,0 10,10 0 1 1 20,0 z"
-       transform="matrix(0.88403321,0,0,0.88403321,-6.1455083,-1.3593751)" />
+       transform="matrix(0.88403321,0,0,0.88403321,-6.1455083,2.6406249)" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="M 30.934648,32.22664 35.561225,34.850669 51.857827,13.823909 41.672451,7.7472105 z"
+       d="m 30.934648,36.22664 4.626577,2.624029 16.296602,-21.02676 -10.185376,-6.076698 z"
        id="path4133-9"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="M 39.082948,38.234285 65.150606,19.279128 71.158251,29.637137 41.67245,42.757283 z"
+       d="M 39.082948,42.234285 65.150606,23.279128 71.158251,33.637137 41.67245,46.757283 z"
        id="path4135-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 42.742778,46.96954 40.637924,-2.900243 -0.03453,11.670024 -40.568871,-3.14193 z"
+       d="m 42.742778,50.96954 40.637924,-2.900243 -0.03453,11.670024 -40.568871,-3.14193 z"
        id="path4137-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="M 41.465291,57.43113 71.089198,70.447695 65.047025,80.805704 38.495995,62.230342 z"
+       d="M 41.465291,61.43113 71.089198,74.447695 65.047025,84.805704 38.495995,66.230342 z"
        id="path4139-7"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 30.727488,67.685559 4.522997,-2.520449 16.710922,21.095813 -10.35801,6.111225 z"
+       d="m 30.727488,71.685559 4.522997,-2.520449 16.710922,21.095813 -10.35801,6.111225 z"
        id="path4141-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
@@ -1250,10 +186,12 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Viewpoint">
+     inkscape:label="Viewpoint"
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        sodipodi:type="arc"
-       style="fill:#6f6f6f;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#646464;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        id="path4131"
        sodipodi:cx="34"
        sodipodi:cy="58"
@@ -1262,31 +200,31 @@
        d="m 44,58 a 10,10 0 1 1 -20,0 10,10 0 1 1 20,0 z"
        transform="matrix(0.88403321,0,0,0.88403321,-6.1455079,-3.3593751)" />
     <path
-       style="fill:#6f6f6f;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#646464;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        d="M 30.382221,29.674213 35.561225,32.850669 51.857827,11.823909 41.232998,5.5030699 z"
        id="path4133"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#6f6f6f;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#646464;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        d="M 39.082948,36.234285 65.150606,17.279128 71.158251,27.637137 41.67245,40.757283 z"
        id="path4135"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#6f6f6f;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#646464;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        d="m 42.742778,44.96954 40.637924,-2.900243 -0.03453,11.670024 -40.568871,-3.14193 z"
        id="path4137"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#6f6f6f;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#646464;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        d="M 41.465291,55.43113 72.124999,68.792962 66.35904,79.220024 38.495995,60.230342 z"
        id="path4139"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#6f6f6f;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
+       style="fill:#646464;fill-opacity:1;stroke:none;filter:url(#filter4926-8-3)"
        d="M 30.727488,65.685559 35.250485,63.16511 52.621481,83.654733 41.05097,91.269842 z"
        id="path4141"
        inkscape:connector-curvature="0"

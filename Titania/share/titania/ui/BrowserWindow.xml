@@ -6,16 +6,16 @@
     <sources>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
       <source stock-id="Geometry" filename="icons/Geometry.svg"/>
-      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
+      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
+      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="Light" filename="icons/Light.svg"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
@@ -28,6 +28,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">ExamineViewer</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="FileImportImage">
     <property name="visible">True</property>
@@ -38,12 +39,14 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">FlyViewer</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkImage" id="NoneViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-cancel</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="OpenLocationImage">
     <property name="visible">True</property>
@@ -54,11 +57,13 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">PlaneViewer</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="WalkViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">WalkViewer</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
@@ -70,6 +75,7 @@
         <property name="can_focus">False</property>
         <property name="image">ExamineViewerImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
       </object>
     </child>
@@ -80,6 +86,7 @@
         <property name="can_focus">False</property>
         <property name="image">WalkViewerImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
       </object>
     </child>
@@ -90,6 +97,7 @@
         <property name="can_focus">False</property>
         <property name="image">FlyViewerImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
       </object>
     </child>
@@ -100,6 +108,7 @@
         <property name="can_focus">False</property>
         <property name="image">PlaneViewerImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_plane_viewer_activate" swapped="no"/>
       </object>
     </child>
@@ -110,6 +119,7 @@
         <property name="can_focus">False</property>
         <property name="image">NoneViewerImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>

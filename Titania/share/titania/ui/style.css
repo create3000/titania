@@ -53,13 +53,20 @@ GtkExpander > GtkLabel {
 	padding: 0px 4px 0px 2px;
 }
 
+#OutlineTreeViewEditor {
+	-GtkWidget-focus-line-width: 0;
+	-GtkWidget-focus-padding: 0;
+	-GtkTreeView-horizontal-separator: 0;
+}
+
 #OutlineTreeViewEditor column-header .button {
 	border-left-width: 0px;
 	border-right-width: 0px;
 }
 
 #OutlineTreeViewEditor .textview-editable,
-#OutlineTreeViewEditor .textview-editable GtkTextView
+#OutlineTreeViewEditor .textview-editable GtkTextView,
+#OutlineTreeViewEditor .cell
 {
 	margin: 0px;
 	border: 0px;
