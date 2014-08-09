@@ -53,6 +53,7 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
+#include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -230,16 +231,9 @@ X3DBrowserEditor::isSaved ()
 
 	if (isModified ())
 	{
-		getFileSaveWarningLabel () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
-		                                                      getScene () -> getWorldURL () .empty ()
-		                                                      ? _ ("no title")
-		                                                      : getScene () -> getWorldURL () .basename () .c_str ()));
+		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (addDialog ("FileSaveWarningDialog")) -> run ();
 
-		const auto response_id = getFileSaveWarningDialog () .run ();
-
-		getFileSaveWarningDialog () .hide ();
-
-		switch (response_id)
+		switch (responseId)
 		{
 			case Gtk::RESPONSE_OK:
 			{

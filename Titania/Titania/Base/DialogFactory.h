@@ -54,6 +54,8 @@
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
+#include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
+#include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/LightEditor/LightEditor.h"
@@ -62,6 +64,7 @@
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
+#include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
 
 namespace titania {
 namespace puck {
@@ -73,15 +76,21 @@ public:
 	///  @name Construction
 
 	DialogFactory () :
-		dialogs ({ std::make_pair ("FileOpenDialog",           constructDialog <FileOpenDialog>),
-		         std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
-		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
-		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
-		         std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
-		         std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
-		         std::make_pair ("TextEditor",               constructDialog <TextEditor>),
-		         std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
-		         std::make_pair ("LightEditor",              constructDialog <LightEditor>) })
+		dialogs ({
+		            std::make_pair ("FileOpenDialog",           constructDialog <FileOpenDialog>),
+		            std::make_pair ("OpenLocationDialog",       constructDialog <OpenLocationDialog>),
+		            std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
+		            std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
+		            std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
+		            std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
+		            std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
+		            std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
+		            std::make_pair ("TextEditor",               constructDialog <TextEditor>),
+		            std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
+		            std::make_pair ("LightEditor",              constructDialog <LightEditor>),
+		            std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>)
+		            //std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)
+				   })
 	{ }
 
 	std::shared_ptr <X3DUserInterface>

@@ -20,6 +20,8 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
+	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
+	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/LightEditor/LightEditor.cpp \
 	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
@@ -28,6 +30,7 @@ titania_SOURCES =  \
 	Titania/Editors/MaterialEditor/MaterialEditor.cpp \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
+	Titania/Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \
 	Titania/Editors/TextureEditor/TextureEditor.cpp \
@@ -49,6 +52,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileImportDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
+	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
@@ -56,7 +60,9 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
+	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
+	Titania/UserInterfaces/X3DPrototypeInstanceDialogInterface.cpp \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \

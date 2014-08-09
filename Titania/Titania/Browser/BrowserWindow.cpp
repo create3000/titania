@@ -53,6 +53,8 @@
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
+#include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
+#include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
 
 #include "../Widgets/Console/Console.h"
 #include "../Widgets/HistoryView/HistoryView.h"
@@ -68,8 +70,6 @@
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
 
-#include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
-
 #include <Titania/OS.h>
 #include <Titania/String.h>
 
@@ -79,7 +79,6 @@ namespace puck {
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, char** argv) :
 	X3DBaseInterface (this, browserSurface),
 	X3DBrowserEditor (argc, argv),
-	motionBlurEditor (new MotionBlurEditor (this)),
 	     libraryView (new LibraryView (this)),
 	   viewpointList (new ViewpointList (this)),
 	   historyEditor (new HistoryView (this)),
@@ -469,30 +468,7 @@ void
 BrowserWindow::on_open_location ()
 {
 	if (isSaved ())
-	{
-		const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
-
-		if (clipboard -> wait_is_text_available ())
-		{
-			static const pcrecpp::RE scheme ("\\A(file|http|https|ftp|smb)$");
-
-			const basic::uri uri (clipboard -> wait_for_text ());
-
-			if (scheme .FullMatch (uri .scheme ()))
-				getOpenLocationEntry () .set_text (uri .str ());
-		}
-
-		getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
-
-		const auto response_id = getOpenLocationDialog () .run ();
-
-		getOpenLocationDialog () .hide ();
-
-		if (response_id == Gtk::RESPONSE_OK)
-		{
-			open (Glib::uri_unescape_string (getOpenLocationEntry () .get_text ()));
-		}
-	}
+		std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog")) -> run ();
 }
 
 void
@@ -624,26 +600,6 @@ BrowserWindow::on_revert_to_saved ()
 {
 	if (isSaved ())
 		reload ();
-}
-
-// Dialog response handling
-
-void
-BrowserWindow::on_open_location_entry_changed ()
-{
-	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
-}
-
-bool
-BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
-{
-	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
-	{
-		getOpenLocationDialog () .response (Gtk::RESPONSE_OK);
-		return true;
-	}
-
-	return false;
 }
 
 // Undo/Redo
@@ -1572,14 +1528,6 @@ BrowserWindow::on_grid_tool_activate ()
 	__LOG__ << std::endl;
 }
 
-// Editor handling
-
-void
-BrowserWindow::on_motion_blur_editor_activate ()
-{
-	getMotionBlurEditor () -> getWindow () .present ();
-}
-
 // Help menu
 
 void
@@ -1673,38 +1621,14 @@ BrowserWindow::on_light_editor_clicked ()
 void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
-	// Find all available proto objects
-
-	const auto protoNodes = getExecutionContext () -> findProtoDeclarations ();
-
-	// Remove all menu items
-
-	for (const auto & widget : getPrototypeMenu () .get_children ())
-		getPrototypeMenu () .remove (*widget);
-
-	for (const auto & pair : protoNodes)
-	{
-		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (pair .second -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
-		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, pair .first));
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getPrototypeLabel (), &Gtk::Label::set_text), pair .first));
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getPrototypeOkButton (), &Gtk::Button::set_sensitive), true));
-		menuItem -> show ();
-
-		getPrototypeMenu () .append (*menuItem);
-	}
-
-	getPrototypeLabel () .set_text ("");
-	getPrototypeOkButton () .set_sensitive (false);
-
-	// Run dialog
-
-	const auto response_id = getPrototypeInstanceDialog () .run ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-		addPrototypeInstance (getPrototypeLabel () .get_text ());
-
-	getPrototypeInstanceDialog () .hide ();
+	std::dynamic_pointer_cast <PrototypeInstanceDialog> (addDialog ("PrototypeInstanceDialog")) -> run ();
 }
+
+//void
+//BrowserWindow::on_motion_blur_editor_clicked ()
+//{
+//	addDialog ("MotionBlurEditor", true);
+//}
 
 // Browser dashboard handling
 
@@ -2302,14 +2226,6 @@ BrowserWindow::on_look_at_toggled ()
 		if (getBrowser () -> getViewer () not_eq viewer)
 			getBrowser () -> setViewer (viewer);
 	}
-}
-
-// Dialog response handling
-
-void
-BrowserWindow::on_messageDialog_response (int)
-{
-	getMessageDialog () .hide ();
 }
 
 BrowserWindow::~BrowserWindow ()

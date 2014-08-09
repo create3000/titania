@@ -127,10 +127,6 @@ public:
 	getPlaneViewerImage () const
 	{ return *m_PlaneViewerImage; }
 
-	Gtk::Menu &
-	getPrototypeMenu () const
-	{ return *m_PrototypeMenu; }
-
 	Gtk::Image &
 	getWalkViewerImage () const
 	{ return *m_WalkViewerImage; }
@@ -484,14 +480,6 @@ public:
 	{ return *m_GridToolMenuItem; }
 
 	Gtk::MenuItem &
-	getToolsMenuItem () const
-	{ return *m_ToolsMenuItem; }
-
-	Gtk::MenuItem &
-	getMotionBlurMenuItem () const
-	{ return *m_MotionBlurMenuItem; }
-
-	Gtk::MenuItem &
 	getHelpMenuItem () const
 	{ return *m_HelpMenuItem; }
 
@@ -698,66 +686,6 @@ public:
 	Gtk::Box &
 	getOutlineEditorBox () const
 	{ return *m_OutlineEditorBox; }
-
-	Gtk::FileChooserDialog &
-	getFileImportDialog () const
-	{ return *m_FileImportDialog; }
-
-	Gtk::FileChooserDialog &
-	getFileOpenDialog () const
-	{ return *m_FileOpenDialog; }
-
-	Gtk::FileChooserDialog &
-	getFileSaveDialog () const
-	{ return *m_FileSaveDialog; }
-
-	Gtk::Switch &
-	getSaveCompressedButton () const
-	{ return *m_SaveCompressedButton; }
-
-	Gtk::Dialog &
-	getFileSaveWarningDialog () const
-	{ return *m_FileSaveWarningDialog; }
-
-	Gtk::Label &
-	getFileSaveWarningLabel () const
-	{ return *m_FileSaveWarningLabel; }
-
-	Gtk::MessageDialog &
-	getMessageDialog () const
-	{ return *m_MessageDialog; }
-
-	Gtk::Dialog &
-	getOpenLocationDialog () const
-	{ return *m_OpenLocationDialog; }
-
-	Gtk::Entry &
-	getOpenLocationEntry () const
-	{ return *m_OpenLocationEntry; }
-
-	Gtk::Dialog &
-	getPrototypeInstanceDialog () const
-	{ return *m_PrototypeInstanceDialog; }
-
-	Gtk::Button &
-	getPrototypeOkButton () const
-	{ return *m_PrototypeOkButton; }
-
-	Gtk::Box &
-	getWidget1 () const
-	{ return *m_Widget1; }
-
-	Gtk::Label &
-	getHeaderLabel () const
-	{ return *m_HeaderLabel; }
-
-	Gtk::MenuButton &
-	getMenuButton () const
-	{ return *m_MenuButton; }
-
-	Gtk::Label &
-	getPrototypeLabel () const
-	{ return *m_PrototypeLabel; }
 
 	virtual
 	void
@@ -1049,10 +977,6 @@ public:
 
 	virtual
 	void
-	on_motion_blur_editor_activate () = 0;
-
-	virtual
-	void
 	on_standard_size () = 0;
 
 	virtual
@@ -1140,18 +1064,6 @@ public:
 	on_look_at_toggled () = 0;
 
 	virtual
-	void
-	on_messageDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_open_location_entry_changed () = 0;
-
-	virtual
-	bool
-	on_open_location_entry_key_release_event (GdkEventKey* event) = 0;
-
-	virtual
 	~X3DBrowserWindowInterface ();
 
 
@@ -1172,7 +1084,6 @@ private:
 	Gtk::Image*                     m_NoneViewerImage;
 	Gtk::Image*                     m_OpenLocationImage;
 	Gtk::Image*                     m_PlaneViewerImage;
-	Gtk::Menu*                      m_PrototypeMenu;
 	Gtk::Image*                     m_WalkViewerImage;
 	Gtk::Menu*                      m_ViewerTypeMenu;
 	Gtk::ImageMenuItem*             m_ExamineViewerMenuItem;
@@ -1261,8 +1172,6 @@ private:
 	Gtk::CheckMenuItem*             m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                  m_LayoutMenuItem;
 	Gtk::MenuItem*                  m_GridToolMenuItem;
-	Gtk::MenuItem*                  m_ToolsMenuItem;
-	Gtk::MenuItem*                  m_MotionBlurMenuItem;
 	Gtk::MenuItem*                  m_HelpMenuItem;
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;
@@ -1315,21 +1224,6 @@ private:
 	Gtk::Box*                       m_HistoryViewBox;
 	Gtk::Box*                       m_LibraryViewBox;
 	Gtk::Box*                       m_OutlineEditorBox;
-	Gtk::FileChooserDialog*         m_FileImportDialog;
-	Gtk::FileChooserDialog*         m_FileOpenDialog;
-	Gtk::FileChooserDialog*         m_FileSaveDialog;
-	Gtk::Switch*                    m_SaveCompressedButton;
-	Gtk::Dialog*                    m_FileSaveWarningDialog;
-	Gtk::Label*                     m_FileSaveWarningLabel;
-	Gtk::MessageDialog*             m_MessageDialog;
-	Gtk::Dialog*                    m_OpenLocationDialog;
-	Gtk::Entry*                     m_OpenLocationEntry;
-	Gtk::Dialog*                    m_PrototypeInstanceDialog;
-	Gtk::Button*                    m_PrototypeOkButton;
-	Gtk::Box*                       m_Widget1;
-	Gtk::Label*                     m_HeaderLabel;
-	Gtk::MenuButton*                m_MenuButton;
-	Gtk::Label*                     m_PrototypeLabel;
 
 };
 

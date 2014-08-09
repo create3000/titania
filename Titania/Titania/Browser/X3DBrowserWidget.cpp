@@ -455,17 +455,6 @@ X3DBrowserWidget::set_scene ()
 	updateTitle (false);
 }
 
-//void
-//X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
-//{
-//	getMessageDialog () .set_message (_ ("Invalid X3D"));
-//	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-//	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
-//	                                         + "</span>",
-//	                                         true);
-//	getMessageDialog () .present ();
-//}
-
 void
 X3DBrowserWidget::loadIcon ()
 {

@@ -77,8 +77,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_OpenLocationImage -> set_name ("OpenLocationImage");
 	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
 	m_PlaneViewerImage -> set_name ("PlaneViewerImage");
-	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
-	m_PrototypeMenu -> set_name ("PrototypeMenu");
 	m_builder -> get_widget ("WalkViewerImage", m_WalkViewerImage);
 	m_WalkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_ViewerTypeMenu);
@@ -255,10 +253,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LayoutMenuItem -> set_name ("LayoutMenuItem");
 	m_builder -> get_widget ("GridToolMenuItem", m_GridToolMenuItem);
 	m_GridToolMenuItem -> set_name ("GridToolMenuItem");
-	m_builder -> get_widget ("ToolsMenuItem", m_ToolsMenuItem);
-	m_ToolsMenuItem -> set_name ("ToolsMenuItem");
-	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
-	m_MotionBlurMenuItem -> set_name ("MotionBlurMenuItem");
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
 	m_HelpMenuItem -> set_name ("HelpMenuItem");
 	m_builder -> get_widget ("StandardSizeMenuItem", m_StandardSizeMenuItem);
@@ -363,36 +357,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LibraryViewBox -> set_name ("LibraryViewBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
 	m_OutlineEditorBox -> set_name ("OutlineEditorBox");
-	m_builder -> get_widget ("FileImportDialog", m_FileImportDialog);
-	m_FileImportDialog -> set_name ("FileImportDialog");
-	m_builder -> get_widget ("FileOpenDialog", m_FileOpenDialog);
-	m_FileOpenDialog -> set_name ("FileOpenDialog");
-	m_builder -> get_widget ("FileSaveDialog", m_FileSaveDialog);
-	m_FileSaveDialog -> set_name ("FileSaveDialog");
-	m_builder -> get_widget ("SaveCompressedButton", m_SaveCompressedButton);
-	m_SaveCompressedButton -> set_name ("SaveCompressedButton");
-	m_builder -> get_widget ("FileSaveWarningDialog", m_FileSaveWarningDialog);
-	m_FileSaveWarningDialog -> set_name ("FileSaveWarningDialog");
-	m_builder -> get_widget ("FileSaveWarningLabel", m_FileSaveWarningLabel);
-	m_FileSaveWarningLabel -> set_name ("FileSaveWarningLabel");
-	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
-	m_MessageDialog -> set_name ("MessageDialog");
-	m_builder -> get_widget ("OpenLocationDialog", m_OpenLocationDialog);
-	m_OpenLocationDialog -> set_name ("OpenLocationDialog");
-	m_builder -> get_widget ("OpenLocationEntry", m_OpenLocationEntry);
-	m_OpenLocationEntry -> set_name ("OpenLocationEntry");
-	m_builder -> get_widget ("PrototypeInstanceDialog", m_PrototypeInstanceDialog);
-	m_PrototypeInstanceDialog -> set_name ("PrototypeInstanceDialog");
-	m_builder -> get_widget ("PrototypeOkButton", m_PrototypeOkButton);
-	m_PrototypeOkButton -> set_name ("PrototypeOkButton");
-	m_builder -> get_widget ("Widget1", m_Widget1);
-	m_Widget1 -> set_name ("Widget1");
-	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
-	m_HeaderLabel -> set_name ("HeaderLabel");
-	m_builder -> get_widget ("MenuButton", m_MenuButton);
-	m_MenuButton -> set_name ("MenuButton");
-	m_builder -> get_widget ("PrototypeLabel", m_PrototypeLabel);
-	m_PrototypeLabel -> set_name ("PrototypeLabel");
 
 	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
 	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
@@ -499,7 +463,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::MenuItem with id 'GridToolMenuItem'.
 	m_GridToolMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_tool_activate));
-	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_editor_activate));
 
 	// Connect object Gtk::ImageMenuItem with id 'StandardSizeMenuItem'.
 	m_StandardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size));
@@ -557,13 +520,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled));
 
-	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
-	m_MessageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response));
-
-	// Connect object Gtk::Entry with id 'OpenLocationEntry'.
-	m_OpenLocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_entry_changed));
-	m_OpenLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_entry_key_release_event));
-
 	// Call construct handler of base class.
 	construct ();
 }
@@ -571,13 +527,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 {
 	delete m_Window;
-	delete m_FileImportDialog;
-	delete m_FileOpenDialog;
-	delete m_FileSaveDialog;
-	delete m_FileSaveWarningDialog;
-	delete m_MessageDialog;
-	delete m_OpenLocationDialog;
-	delete m_PrototypeInstanceDialog;
 }
 
 } // puck

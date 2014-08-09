@@ -221,15 +221,7 @@ private:
 	void
 	on_close () final override;
 
-	/// @name Dialog response
-
-	virtual
-	void
-	on_open_location_entry_changed () final override;
-
-	virtual
-	bool
-	on_open_location_entry_key_release_event (GdkEventKey*) final override;
+	/// @name Undo/Redo
 
 	virtual
 	void
@@ -497,12 +489,6 @@ private:
 	void
 	on_grid_tool_activate () final override;
 
-	///  @name Editor handling
-
-	virtual
-	void
-	on_motion_blur_editor_activate () final override;
-
 	///  @name Help menu
 
 	virtual
@@ -546,6 +532,10 @@ private:
 	virtual
 	void
 	on_prototype_instance_dialog_clicked () final override;
+
+	//virtual
+	//void
+	//on_motion_blur_editor_clicked () final override;
 
 	///  @name Browser dashboard handling
 
@@ -623,11 +613,6 @@ private:
 	virtual
 	void
 	on_look_at_toggled () final override;
-
-	///  @name Dialog response handling
-
-	void
-	on_messageDialog_response (int);
 
 	///  @name Members
 

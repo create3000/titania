@@ -2,6 +2,37 @@
 
 	* titania:
 	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* FileSaveDialog.xml:
+	* FileImportDialog.xml:
+	* OpenLocationDialog.xml:
+	* FileSaveWarningDialog.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* PrototypeInstanceDialog.xml:
+	* X3DOpenLocationDialogInterface.h:
+	* OpenLocationDialog.h:
+	* X3DOpenLocationDialogInterface.cpp:
+	* OpenLocationDialog.cpp:
+	* X3DFileSaveWarningDialogInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp:
+	* X3DPrototypeInstanceDialogInterface.h:
+	* X3DFileSaveWarningDialogInterface.cpp:
+	* FileSaveWarningDialog.h:
+	* X3DPrototypeInstanceDialogInterface.cpp:
+	* FileSaveWarningDialog.cpp:
+	* PrototypeInstanceDialog.h:
+	* PrototypeInstanceDialog.cpp: 
+
+2014-08-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* Console.h:
 	* Console.cpp:
 	* DialogFactory.h:
