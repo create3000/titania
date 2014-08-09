@@ -33,12 +33,12 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="5.12"
-     inkscape:cx="9.103543"
+     inkscape:cx="-26.638644"
      inkscape:cy="46.591662"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer8"
+     inkscape:current-layer="layer1"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="false"
@@ -592,6 +592,13 @@
          result="result2"
          operator="in" />
     </filter>
+    <filter
+       id="filter8824"
+       inkscape:label="Blur">
+      <feGaussianBlur
+         stdDeviation="2"
+         id="feGaussianBlur8826" />
+    </filter>
   </defs>
   <metadata
      id="metadata2413">
@@ -611,7 +618,7 @@
      inkscape:label="Background"
      style="display:none">
     <rect
-       style="fill:#7c7c7c;fill-opacity:1;stroke:none"
+       style="fill:#444444;fill-opacity:1;stroke:none"
        id="rect4390"
        width="96"
        height="96"
@@ -620,16 +627,22 @@
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer8"
-     inkscape:label="Walk"
-     style="display:inline">
+     id="layer1"
+     inkscape:label="Ebene">
     <path
-       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
-       d="m 12,18.000001 0,3 L 12,81 l 0,3 3,0 60,0 3,0 0,-3 0,-59.999999 0,-3 -3,0 -60,0 -3,0 z M 18,24 l 24,0 0,24 -24,0 0,-24 z m 30,0 24,0 0,24 -24,0 0,-24 z m -30,30 24,0 0,24 -24,0 0,-24 z m 30,0 24,0 0,24 -24,0 0,-24 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter8824);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="m 13,13.000001 0,3 L 13,76 l 0,3 3,0 60,0 3,0 0,-3 0,-59.999999 0,-3 -3,0 -60,0 -3,0 z M 19,19 l 24,0 0,24 -24,0 0,-24 z m 30,0 24,0 0,24 -24,0 0,-24 z m -30,30 24,0 0,24 -24,0 0,-24 z m 30,0 24,0 0,24 -24,0 0,-24 z"
        id="path3925-2"
        inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="Walk"
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
-       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#a0a0a0;fill-opacity:1;stroke:none;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans;filter:url(#filter4926-8-3-3)"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#232323;fill-opacity:1;stroke:none;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter4926-8-3-3);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        d="m 11.914062,11.929688 0,3 0,59.999999 0,3 3,0 60,0 3,0 0,-3 0,-59.999999 0,-3 -3,0 -60,0 -3,0 z m 6,5.999999 24,0 0,24 -24,0 0,-24 z m 30,0 24,0 0,24 -24,0 0,-24 z m -30,30 24,0 0,24 -24,0 0,-24 z m 30,0 24,0 0,24 -24,0 0,-24 z"
        id="path3925"
        inkscape:connector-curvature="0" />

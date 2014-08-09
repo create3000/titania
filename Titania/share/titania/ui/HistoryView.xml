@@ -36,6 +36,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="model">ListStore</property>
+                <property name="headers_visible">False</property>
                 <property name="rules_hint">True</property>
                 <property name="search_column">1</property>
                 <signal name="row-activated" handler="on_row_activated" swapped="no"/>

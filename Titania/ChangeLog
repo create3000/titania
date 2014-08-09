@@ -1,5 +1,27 @@
 2014-08-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* HistoryView.xml:
+	* Light.svg:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* ViewpointList.xml:
+	* Geometry.svg:
+	* FlyViewer.svg:
+	* Viewpoint.svg:
+	* Straighten.svg:
+	* WalkViewer.svg:
+	* PlaneViewer.svg:
+	* ExamineViewer.svg:
+	* OutlineEditor.svg:
+	* Prototype.svg:
+	* ExternProto.svg:
+	* Prototype.16.svg:
+	* Prototype.96.svg:
+	* ExternProto.16.svg:
+	* X3DTextViewEditable.cpp: 
+
+2014-08-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* style.css:
 	* Console.xml:
 	* BrowserWindow.cpp:

@@ -33,8 +33,8 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="5.12"
-     inkscape:cx="36.056668"
-     inkscape:cy="46.396349"
+     inkscape:cx="33.908231"
+     inkscape:cy="46.689318"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -592,6 +592,13 @@
          result="result2"
          operator="in" />
     </filter>
+    <filter
+       id="filter8871"
+       inkscape:label="Blur">
+      <feGaussianBlur
+         stdDeviation="3"
+         id="feGaussianBlur8873" />
+    </filter>
   </defs>
   <metadata
      id="metadata2413">
@@ -609,10 +616,9 @@
      inkscape:groupmode="layer"
      id="layer12"
      inkscape:label="Background"
-     style="display:none"
-     sodipodi:insensitive="true">
+     style="display:none">
     <rect
-       style="fill:#7c7c7c;fill-opacity:1;stroke:none"
+       style="fill:#444444;fill-opacity:1;stroke:none"
        id="rect4390"
        width="96"
        height="96"
@@ -621,13 +627,13 @@
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer8"
-     inkscape:label="Walk"
-     style="display:inline">
+     id="layer5"
+     inkscape:label="Ebene"
+     sodipodi:insensitive="true">
     <g
-       style="display:inline"
+       style="display:inline;filter:url(#filter8871)"
        id="g3953-9"
-       transform="translate(0,6)">
+       transform="translate(1,1)">
       <rect
          y="6"
          x="6"
@@ -699,79 +705,85 @@
          id="rect3183-3"
          style="fill:#ffffff;fill-opacity:1;stroke:none" />
     </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="Walk"
+     style="display:inline">
     <g
        id="g3953"
-       style="fill:#6e6e6e;fill-opacity:1;filter:url(#filter4926-8-3-3)">
+       style="fill:#1e1e1e;fill-opacity:1;filter:url(#filter4926-8-3-3)">
       <rect
          y="6"
          x="6"
          height="12"
          width="12"
          id="rect3161"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="12"
          x="24"
          height="6"
          width="48"
          id="rect3163"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="24"
          x="24"
          height="12"
          width="12"
          id="rect3165"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="30"
          x="42"
          height="6"
          width="48"
          id="rect3167"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="42"
          x="24"
          height="12"
          width="12"
          id="rect3169"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="48"
          x="42"
          height="6"
          width="48"
          id="rect3171"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="60"
          x="6"
          height="12"
          width="12"
          id="rect3177"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="66"
          x="24"
          height="6"
          width="48"
          id="rect3179"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="78"
          x="24"
          height="12"
          width="12"
          id="rect3181"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
       <rect
          y="84"
          x="42"
          height="6"
          width="48"
          id="rect3183"
-         style="fill:#6e6e6e;fill-opacity:1;stroke:none" />
+         style="fill:#1e1e1e;fill-opacity:1;stroke:none" />
     </g>
   </g>
 </svg>

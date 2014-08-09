@@ -167,17 +167,17 @@ BrowserWindow::getStyles () const
 {
 	std::string string;
 
-	const auto styleContext = getWindow () .get_style_context ();
+	const auto styleContext = getWidget () .get_style_context ();
 
 	const auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
 	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
 	const auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
-	string += "#OutlineTreeViewEditor .textview-editable GtkTextView {";
+	string += "#OutlineTreeViewEditor .textview GtkTextView {";
 	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
 	string += "}";
 	string += "";
-	string += "#OutlineTreeViewEditor .textview-editable GtkTextView:selected {";
+	string += "#OutlineTreeViewEditor .textview GtkTextView:selected {";
 	string += "  color: " + fg_selected .to_string () + ";";
 	string += "  background-color: " + bg_selected .to_string () + ";";
 	string += "}";
