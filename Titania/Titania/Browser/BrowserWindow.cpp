@@ -54,13 +54,13 @@
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 
-#include "../Console/Console.h"
-#include "../HistoryEditor/HistoryEditor.h"
-#include "../LibraryView/LibraryView.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../OutlineEditor/OutlineTreeModel.h"
-#include "../OutlineEditor/OutlineTreeViewEditor.h"
-#include "../ViewpointList/ViewpointList.h"
+#include "../Widgets/Console/Console.h"
+#include "../Widgets/HistoryView/HistoryView.h"
+#include "../Widgets/LibraryView/LibraryView.h"
+#include "../Widgets/OutlineEditor/OutlineEditor.h"
+#include "../Widgets/OutlineEditor/OutlineTreeModel.h"
+#include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
+#include "../Widgets/ViewpointList/ViewpointList.h"
 
 #include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
@@ -68,7 +68,7 @@
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
 
-#include "../MotionBlurEditor/MotionBlurEditor.h"
+#include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -82,7 +82,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	motionBlurEditor (new MotionBlurEditor (this)),
 	     libraryView (new LibraryView (this)),
 	   viewpointList (new ViewpointList (this)),
-	   historyEditor (new HistoryEditor (this)),
+	   historyEditor (new HistoryView (this)),
 	   outlineEditor (new OutlineEditor (this)),
 	         console (new Console (this)),
 	            keys (),
@@ -105,27 +105,9 @@ BrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	// FileFilter
-	getFileFilterX3D   () -> set_name (_ ("X3D"));
-	getFileFilterImage () -> set_name (_ ("Images"));
-	getFileFilterAudio () -> set_name (_ ("Audio"));
-	getFileFilterVideo () -> set_name (_ ("Videos"));
-
-	// Dialogs
-	getFileOpenDialog ()          .set_transient_for (getWindow ());
-	getOpenLocationDialog ()      .set_transient_for (getWindow ());
-	getFileImportDialog ()        .set_transient_for (getWindow ());
-	getFileSaveWarningDialog ()   .set_transient_for (getWindow ());
-	getFileSaveDialog ()          .set_transient_for (getWindow ());
-	getMessageDialog ()           .set_transient_for (getWindow ());
-
-	getFileOpenDialog ()   .set_filename (os::home () + _ ("scene.x3dv"));
-	getFileImportDialog () .set_filename (os::home () + _ ("scene.x3dv"));
-	getFileSaveDialog ()   .set_filename (os::home () + _ ("scene.x3dv"));
-
 	// Sidebar
 	getViewpointList () -> reparent (getViewpointListBox (), getWindow ());
-	getHistoryEditor () -> reparent (getHistoryEditorBox (), getWindow ());
+	getHistoryView ()   -> reparent (getHistoryViewBox (), getWindow ());
 	getLibraryView ()   -> reparent (getLibraryViewBox (),   getWindow ());
 	getOutlineEditor () -> reparent (getOutlineEditorBox (), getWindow ());
 	getConsole ()       -> reparent (getConsoleBox (), getWindow ());

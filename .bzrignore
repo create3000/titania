@@ -7,9 +7,11 @@
 *.la
 *.lai
 *.so
+*.dirstamp
 *.so.*
 .git
 .libs
+.deps
 
 ./Titania/titania
 ./experimental/experimental

@@ -61,13 +61,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_IconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
-	m_FileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
-	m_FileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
-	m_FileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
-	m_FileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
-	m_FileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
-	m_MenuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
+	m_IconFactory    = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
+	m_MenuAccelGroup = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
 	m_builder -> get_widget ("ExamineViewerImage", m_ExamineViewerImage);
@@ -76,8 +71,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FileImportImage -> set_name ("FileImportImage");
 	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
 	m_FlyViewerImage -> set_name ("FlyViewerImage");
-	m_builder -> get_widget ("ImportImage", m_ImportImage);
-	m_ImportImage -> set_name ("ImportImage");
 	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
 	m_NoneViewerImage -> set_name ("NoneViewerImage");
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
@@ -278,10 +271,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FileToolBar -> set_name ("FileToolBar");
 	m_builder -> get_widget ("NewButton", m_NewButton);
 	m_NewButton -> set_name ("NewButton");
-	m_builder -> get_widget ("ImportButton", m_ImportButton);
-	m_ImportButton -> set_name ("ImportButton");
 	m_builder -> get_widget ("OpenButton", m_OpenButton);
 	m_OpenButton -> set_name ("OpenButton");
+	m_builder -> get_widget ("ImportButton", m_ImportButton);
+	m_ImportButton -> set_name ("ImportButton");
 	m_builder -> get_widget ("SaveButton", m_SaveButton);
 	m_SaveButton -> set_name ("SaveButton");
 	m_builder -> get_widget ("RefreshButton", m_RefreshButton);
@@ -364,8 +357,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SideBarNotebook -> set_name ("SideBarNotebook");
 	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
 	m_ViewpointListBox -> set_name ("ViewpointListBox");
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_HistoryEditorBox -> set_name ("HistoryEditorBox");
+	m_builder -> get_widget ("HistoryViewBox", m_HistoryViewBox);
+	m_HistoryViewBox -> set_name ("HistoryViewBox");
 	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 	m_LibraryViewBox -> set_name ("LibraryViewBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
@@ -517,12 +510,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
-	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 
 	// Connect object Gtk::MenuToolButton with id 'OpenButton'.
 	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
 
-	// Connect object Gtk::ToolButton with id 'SaveButton'.
+	// Connect object Gtk::ToolButton with id 'ImportButton'.
+	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
 	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 

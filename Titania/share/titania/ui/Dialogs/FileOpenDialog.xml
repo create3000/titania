@@ -45,7 +45,6 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Open File ...</property>
     <property name="role">GtkFileChooserDialog</property>
-    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>

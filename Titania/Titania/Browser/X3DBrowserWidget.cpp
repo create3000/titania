@@ -453,13 +453,6 @@ X3DBrowserWidget::set_scene ()
 
 	loadIcon ();
 	updateTitle (false);
-
-	// Remember last local file
-
-	const auto worldURL = getScene () -> getWorldURL ();
-
-	if (not worldURL .empty () and worldURL .is_local ())
-		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
 }
 
 //void

@@ -17,47 +17,30 @@ titania_SOURCES =  \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
-	Titania/Console/Console.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
-	Titania/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
-	Titania/HistoryEditor/History.cpp \
-	Titania/HistoryEditor/HistoryEditor.cpp \
-	Titania/LibraryView/LibraryView.cpp \
-	Titania/LightEditor/LightEditor.cpp \
-	Titania/LightEditor/X3DDirectionalLightEditor.cpp \
-	Titania/LightEditor/X3DPointLightEditor.cpp \
-	Titania/LightEditor/X3DSpotLightEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
+	Titania/Editors/LightEditor/LightEditor.cpp \
+	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
+	Titania/Editors/LightEditor/X3DPointLightEditor.cpp \
+	Titania/Editors/LightEditor/X3DSpotLightEditor.cpp \
+	Titania/Editors/MaterialEditor/MaterialEditor.cpp \
+	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
+	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
+	Titania/Editors/TextEditor/TextEditor.cpp \
+	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \
+	Titania/Editors/TextureEditor/TextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DPixelTextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTextureNodeEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTexturePropertiesEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTextureTransformEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/main.cpp \
-	Titania/MaterialEditor/MaterialEditor.cpp \
-	Titania/MotionBlurEditor/MotionBlurEditor.cpp \
-	Titania/NodePropertiesEditor/NodePropertiesEditor.cpp \
-	Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
-	Titania/OutlineEditor/CellRenderer/OutlineSeparator.cpp \
-	Titania/OutlineEditor/CellRenderer/TextViewEditable.cpp \
-	Titania/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \
-	Titania/OutlineEditor/OutlineDragDrop.cpp \
-	Titania/OutlineEditor/OutlineEditor.cpp \
-	Titania/OutlineEditor/OutlineRouteGraph.cpp \
-	Titania/OutlineEditor/OutlineSelection.cpp \
-	Titania/OutlineEditor/OutlineTreeData.cpp \
-	Titania/OutlineEditor/OutlineTreeModel.cpp \
-	Titania/OutlineEditor/OutlineTreeObserver.cpp \
-	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
-	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
-	Titania/TextEditor/TextEditor.cpp \
-	Titania/TextEditor/X3DFontStyleNodeEditor.cpp \
-	Titania/TextureEditor/TextureEditor.cpp \
-	Titania/TextureEditor/X3DImageTextureEditor.cpp \
-	Titania/TextureEditor/X3DMovieTextureEditor.cpp \
-	Titania/TextureEditor/X3DPixelTextureEditor.cpp \
-	Titania/TextureEditor/X3DTexture2DNodeEditor.cpp \
-	Titania/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp \
-	Titania/TextureEditor/X3DTextureNodeEditor.cpp \
-	Titania/TextureEditor/X3DTexturePropertiesEditor.cpp \
-	Titania/TextureEditor/X3DTextureTransformEditor.cpp \
-	Titania/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
 	Titania/Undo/UndoStep.cpp \
@@ -67,7 +50,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
-	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \
+	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \
@@ -77,7 +60,24 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
-	Titania/ViewpointList/ViewpointList.cpp
+	Titania/Widgets/Console/Console.cpp \
+	Titania/Widgets/HistoryView/History.cpp \
+	Titania/Widgets/HistoryView/HistoryView.cpp \
+	Titania/Widgets/LibraryView/LibraryView.cpp \
+	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
+	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \
+	Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp \
+	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \
+	Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp \
+	Titania/Widgets/OutlineEditor/OutlineEditor.cpp \
+	Titania/Widgets/OutlineEditor/OutlineRouteGraph.cpp \
+	Titania/Widgets/OutlineEditor/OutlineSelection.cpp \
+	Titania/Widgets/OutlineEditor/OutlineTreeData.cpp \
+	Titania/Widgets/OutlineEditor/OutlineTreeModel.cpp \
+	Titania/Widgets/OutlineEditor/OutlineTreeObserver.cpp \
+	Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp \
+	Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp \
+	Titania/Widgets/ViewpointList/ViewpointList.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \
 	$(TITANIA_GZSTREAM_LIBS) \

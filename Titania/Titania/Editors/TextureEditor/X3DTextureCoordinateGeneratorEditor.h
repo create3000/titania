@@ -48,167 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_COORDINATE_GENERATOR_EDITOR_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class DialogFactory;
-
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+class X3DTextureCoordinateGeneratorEditor :
+	virtual public X3DTextureEditorInterface
 {
 public:
-
-	///  @name Member access
-
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
-
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
-
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
-
-	///  @name Operations
-
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
-
-	void
-	toggleWidget (Gtk::Widget &, bool);
 
 	///  @name Destruction
 
 	virtual
-	~X3DUserInterface ();
+	~X3DTextureCoordinateGeneratorEditor ()
+	{ }
 
 
 protected:
 
-	/// @name Construction
+	///  @name Construction
 
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
+	X3DTextureCoordinateGeneratorEditor ();
 
 	virtual
 	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
-	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
+	initialize () override;
 
 	void
-	removeDialog (const std::string &);
-
-	/// @name Destruction
-
-	virtual
-	bool
-	close ();
+	set_selection ();
 
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
+	///  @name textureCoordinateGenerator
 
-	///  @name Construction
+	virtual
+	void
+	on_textureCoordinateGenerator_unlink_clicked () final override;
 
-	X3DUserInterface (const X3DUserInterface &) = delete;
-
-	///  @name Event handlers
+	virtual
+	void
+	on_textureCoordinateGenerator_toggled () final override;
 
 	void
-	on_constructed ();
+	set_textureCoordinateGenerator ();
 
 	void
-	on_map ();
-	
-	bool
-	on_window_state_event (GdkEventWindowState*);
-
-	bool
-	on_delete_event (GdkEventAny*);
-
-	///  @name Operations
+	set_node ();
 
 	void
-	restoreWindow ();
-
-	void
-	restoreInterface ();
-
-	void
-	saveInterfaces ();
-
-	void
-	saveInterface ();
-
-	///  @name Static members
-
-	static const std::unique_ptr <DialogFactory> dialogFactory;
-	static const std::set <std::string>          restorableDialogs;
-	static UserInterfaceArray                    userInterfaces;
+	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
+	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
+	X3D::SFTime                                   textureCoordinateGeneratorBuffer;
+	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
+	UndoStepPtr                                   undoStep;
+	bool                                          changing;
 
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
-
+	SFStringComboBoxText mode;
 
 };
 

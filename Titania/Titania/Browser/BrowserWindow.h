@@ -56,7 +56,7 @@
 namespace titania {
 namespace puck {
 
-class HistoryEditor;
+class HistoryView;
 class LibraryView;
 class MotionBlurEditor;
 class OutlineEditor;
@@ -88,8 +88,8 @@ public:
 	getViewpointList () const
 	{ return viewpointList; }
 
-	const std::shared_ptr <HistoryEditor> &
-	getHistoryEditor () const
+	const std::shared_ptr <HistoryView> &
+	getHistoryView () const
 	{ return historyEditor; }
 
 	const std::shared_ptr <OutlineEditor> &
@@ -634,7 +634,7 @@ private:
 	std::shared_ptr <MotionBlurEditor> motionBlurEditor;
 	std::shared_ptr <LibraryView>      libraryView;
 	std::shared_ptr <ViewpointList>    viewpointList;
-	std::shared_ptr <HistoryEditor>    historyEditor;
+	std::shared_ptr <HistoryView>    historyEditor;
 	std::shared_ptr <OutlineEditor>    outlineEditor;
 	std::shared_ptr <Console>          console;
 

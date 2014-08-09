@@ -48,167 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#ifndef __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
+#define __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DTextEditorInterface.h"
+#include "X3DFontStyleNodeEditor.h"
 
 namespace titania {
 namespace puck {
 
-class DialogFactory;
-
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+class TextEditor :
+	virtual public X3DTextEditorInterface,
+	public X3DFontStyleNodeEditor
 {
 public:
 
-	///  @name Member access
+	///  @name Construction
 
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
-
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
-
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
-
-	///  @name Operations
-
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
-
-	void
-	toggleWidget (Gtk::Widget &, bool);
-
-	///  @name Destruction
-
-	virtual
-	~X3DUserInterface ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
+	TextEditor (BrowserWindow* const);
 	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
-
-	void
-	removeDialog (const std::string &);
-
-	/// @name Destruction
-
 	virtual
-	bool
-	close ();
+	~TextEditor ();
 
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
-
 	///  @name Construction
 
-	X3DUserInterface (const X3DUserInterface &) = delete;
-
-	///  @name Event handlers
+	virtual
+	void
+	initialize () final override;
 
 	void
-	on_constructed ();
+	set_selection ();
+
+	///  @name text
+
+	virtual
+	void
+	on_text_unlink_clicked () final override;
+
+	virtual
+	void
+	on_text_toggled () final override;
 
 	void
-	on_map ();
-	
-	bool
-	on_window_state_event (GdkEventWindowState*);
-
-	bool
-	on_delete_event (GdkEventAny*);
-
-	///  @name Operations
+	set_text ();
 
 	void
-	restoreWindow ();
+	set_node ();
 
 	void
-	restoreInterface ();
+	connectText (const X3D::SFNode &);
+
+	///  @name string
+
+	virtual
+	void
+	on_string_changed () final override;
 
 	void
-	saveInterfaces ();
+	set_string ();
 
 	void
-	saveInterface ();
-
-	///  @name Static members
-
-	static const std::unique_ptr <DialogFactory> dialogFactory;
-	static const std::set <std::string>          restorableDialogs;
-	static UserInterfaceArray                    userInterfaces;
+	connectString (const X3D::MFString &);
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
+	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
+	X3D::SFTime                          geometryNodeBuffer;
+	X3D::X3DPtr <X3D::Text>              text;
+	UndoStepPtr                          undoStep;
+	bool                                 changing;
 
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
-
+	X3DFieldAdjustment <X3D::SFFloat> maxExtent;
 
 };
 

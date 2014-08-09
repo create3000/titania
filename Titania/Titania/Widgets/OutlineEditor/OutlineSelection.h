@@ -48,167 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
+#include "../../Base/X3DBaseInterface.h"
+#include "OutlineUserData.h"
+
 #include <gtkmm.h>
-#include <string>
+
+#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
 
-class DialogFactory;
+class X3DOutlineTreeView;
 
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+class OutlineSelection :
+	public X3DBaseInterface
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
-
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
-
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
+	OutlineSelection (BrowserWindow* const browserWindow, X3DOutlineTreeView* const);
 
 	///  @name Operations
 
 	void
-	reparent (Gtk::Box &, Gtk::Window &);
+	set_select_multiple (const bool);
 
 	void
-	toggleWidget (Gtk::Widget &, bool);
+	select (const X3D::SFNode &) const;
 
-	///  @name Destruction
+	static
+	void
+	update (X3D::X3DFieldDefinition* const field, const X3D::SFNode &);
+
+	static
+	void
+	update (const X3D::SFNode &, X3D::X3DFieldDefinition* const);
 
 	virtual
-	~X3DUserInterface ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
-	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
-
-	void
-	removeDialog (const std::string &);
-
-	/// @name Destruction
-
-	virtual
-	bool
-	close ();
+	~OutlineSelection ();
 
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
-
-	///  @name Construction
-
-	X3DUserInterface (const X3DUserInterface &) = delete;
-
-	///  @name Event handlers
-
-	void
-	on_constructed ();
-
-	void
-	on_map ();
-	
-	bool
-	on_window_state_event (GdkEventWindowState*);
-
-	bool
-	on_delete_event (GdkEventAny*);
-
 	///  @name Operations
 
 	void
-	restoreWindow ();
+	set_children (const X3D::MFNode &);
 
+	static
 	void
-	restoreInterface ();
+	select (X3D::X3DBaseNode* const, const bool);
 
+	static
 	void
-	saveInterfaces ();
+	select (X3D::X3DBaseNode* const, const bool, X3D::ChildObjectSet &);
 
+	static
 	void
-	saveInterface ();
+	select (X3D::X3DFieldDefinition* const, const bool, X3D::ChildObjectSet &);
 
-	///  @name Static members
-
-	static const std::unique_ptr <DialogFactory> dialogFactory;
-	static const std::set <std::string>          restorableDialogs;
-	static UserInterfaceArray                    userInterfaces;
+	static
+	void
+	select (const OutlineUserDataPtr &, const bool);
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
-
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
-
+	X3DOutlineTreeView* const treeView;
+	bool                      selectMultiple;
+	X3D::MFNode               children;
 
 };
 

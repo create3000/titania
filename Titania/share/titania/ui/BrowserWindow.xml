@@ -29,44 +29,6 @@
     <property name="can_focus">False</property>
     <property name="stock">ExamineViewer</property>
   </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAudio">
-    <mime-types>
-      <mime-type>audio/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterImage">
-    <mime-types>
-      <mime-type>image/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterVideo">
-    <mime-types>
-      <mime-type>video/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterX3D">
-    <mime-types>
-      <mime-type>x-world/x-vrml</mime-type>
-      <mime-type>model/vrml</mime-type>
-      <mime-type>model/x3d+vrml</mime-type>
-      <mime-type>model/x3d+xml</mime-type>
-    </mime-types>
-    <patterns>
-      <pattern>*.x3d</pattern>
-      <pattern>*.x3d.gz</pattern>
-      <pattern>*.x3dv</pattern>
-      <pattern>*.x3dvz</pattern>
-      <pattern>*.x3dv.gz</pattern>
-      <pattern>*.wrl</pattern>
-      <pattern>*.wrz</pattern>
-      <pattern>*.wrl.gz</pattern>
-    </patterns>
-  </object>
   <object class="GtkImage" id="FileImportImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -76,11 +38,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">FlyViewer</property>
-  </object>
-  <object class="GtkImage" id="ImportImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">document-import</property>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkImage" id="NoneViewerImage">
@@ -1144,6 +1101,7 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="LayoutMenuItem">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Layout</property>
                 <property name="use_underline">True</property>
@@ -1259,22 +1217,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="ImportButton">
-                    <property name="can_focus">False</property>
-                    <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">Import file or media.</property>
-                    <property name="tooltip_text" translatable="yes">Import file or media.</property>
-                    <property name="label" translatable="yes">Import file.</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">document-import</property>
-                    <signal name="clicked" handler="on_import" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkMenuToolButton" id="OpenButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -1289,6 +1231,22 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="homogeneous">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="ImportButton">
+                    <property name="can_focus">False</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="tooltip_markup" translatable="yes">Import file or media.</property>
+                    <property name="tooltip_text" translatable="yes">Import file or media.</property>
+                    <property name="label" translatable="yes">Import file.</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">document-import</property>
+                    <signal name="clicked" handler="on_import" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>
@@ -1955,7 +1913,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="HistoryEditorBox">
+                          <object class="GtkBox" id="HistoryViewBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -2137,7 +2095,6 @@
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="type">popup</property>
     <property name="title" translatable="yes">Open ...</property>
     <property name="role">GtkFileChooserDialog</property>
     <property name="window_position">center-on-parent</property>

@@ -48,167 +48,124 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#ifndef __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
+#define __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+#include "../../ComposedWidgets.h"
+#include "../../Undo/UndoStep.h"
+#include "../../UserInterfaces/X3DMaterialEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class DialogFactory;
+class BrowserWindow;
 
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+class MaterialEditor :
+	public X3DMaterialEditorInterface
 {
 public:
 
-	///  @name Member access
+	///  @name Construction
 
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
-
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
-
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
-
-	///  @name Operations
-
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
-
-	void
-	toggleWidget (Gtk::Widget &, bool);
+	MaterialEditor (BrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~X3DUserInterface ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
-	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
-
-	void
-	removeDialog (const std::string &);
-
-	/// @name Destruction
-
-	virtual
-	bool
-	close ();
+	~MaterialEditor ();
 
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
-
 	///  @name Construction
 
-	X3DUserInterface (const X3DUserInterface &) = delete;
-
-	///  @name Event handlers
+	virtual
+	void
+	initialize () final override;
 
 	void
-	on_constructed ();
+	set_initialized ();
 
 	void
-	on_map ();
-	
-	bool
-	on_window_state_event (GdkEventWindowState*);
+	set_selection ();
 
-	bool
-	on_delete_event (GdkEventAny*);
+	///  @name Copy & Paste
 
-	///  @name Operations
+	virtual
+	void
+	on_copy () final override;
+
+	virtual
+	void
+	on_paste () final override;
+
+	///  @name preview
 
 	void
-	restoreWindow ();
+	set_preview ();
+
+	virtual
+	void
+	on_sphere_clicked () final override;
+
+	virtual
+	void
+	on_model_clicked () final override;
 
 	void
-	restoreInterface ();
+	set_whichChoice (const int32_t);
+
+	///  @name material
+
+	virtual
+	void
+	on_material_unlink_clicked () final override;
+
+	virtual
+	void
+	on_material_changed () final override;
 
 	void
-	saveInterfaces ();
+	set_material ();
 
 	void
-	saveInterface ();
+	set_node ();
 
-	///  @name Static members
+	void
+	set_widgets ();
 
-	static const std::unique_ptr <DialogFactory> dialogFactory;
-	static const std::set <std::string>          restorableDialogs;
-	static UserInterfaceArray                    userInterfaces;
+	void
+	connectMaterial (const X3D::SFNode &);
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
+	X3D::BrowserPtr                    preview;
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
+	X3D::SFTime                        materialNodeBuffer;
+	X3D::MaterialPtr                   material;
+	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
+	bool                               isTwoSidedMaterial;
+	UndoStepPtr                        undoStep;
+	bool                               changing;
 
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
+	SFColorButton diffuseColor;
+	SFColorButton specularColor;
+	SFColorButton emissiveColor;
 
+	X3DFieldAdjustment <X3D::SFFloat> ambientIntensity;
+	X3DFieldAdjustment <X3D::SFFloat> shininess;
+	X3DFieldAdjustment <X3D::SFFloat> transparency;
+
+	X3DFieldToggleButton <X3D::SFBool> separateBackColor;
+
+	SFColorButton backDiffuseColor;
+	SFColorButton backSpecularColor;
+	SFColorButton backEmissiveColor;
+
+	X3DFieldAdjustment <X3D::SFFloat> backAmbientIntensity;
+	X3DFieldAdjustment <X3D::SFFloat> backShininess;
+	X3DFieldAdjustment <X3D::SFFloat> backTransparency;
 
 };
 

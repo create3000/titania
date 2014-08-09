@@ -48,167 +48,154 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
+#define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DTextEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class DialogFactory;
-
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+class X3DFontStyleNodeEditor :
+	virtual public X3DTextEditorInterface
 {
 public:
-
-	///  @name Member access
-
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
-
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
-
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
-
-	///  @name Operations
-
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
-
-	void
-	toggleWidget (Gtk::Widget &, bool);
 
 	///  @name Destruction
 
 	virtual
-	~X3DUserInterface ();
+	~X3DFontStyleNodeEditor ()
+	{ }
 
 
 protected:
 
-	/// @name Construction
+	///  @name Construction
 
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
+	X3DFontStyleNodeEditor ();
 
 	virtual
 	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
-	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
+	initialize () override;
 
 	void
-	removeDialog (const std::string &);
-
-	/// @name Destruction
-
-	virtual
-	bool
-	close ();
+	set_selection ();
 
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
-
-	///  @name Construction
-
-	X3DUserInterface (const X3DUserInterface &) = delete;
-
-	///  @name Event handlers
-
-	void
-	on_constructed ();
-
-	void
-	on_map ();
+	///  @name fontStyle
 	
+	virtual
+	void
+	on_fontStyle_unlink_clicked () final override;
+
+	virtual
+	void
+	on_fontStyle_changed () final override;
+
+	void
+	set_fontStyle ();
+
+	void
+	set_node ();
+
+	void
+	set_widgets ();
+
+	void
+	connectFontStyle (const X3D::SFNode &);
+
+	///  @name family
+
+	virtual
+	void
+	on_family_changed () final override;
+
+	virtual
+	void
+	on_family_edited (const Glib::ustring &, const Glib::ustring &) final override;
+
+	virtual
 	bool
-	on_window_state_event (GdkEventWindowState*);
+	on_family_button_release_event (GdkEventButton*) final override;
 
-	bool
-	on_delete_event (GdkEventAny*);
+	virtual
+	void
+	on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
+	                              int, int,
+	                              const Gtk::SelectionData &,
+	                              guint,
+	                              guint) final override;
 
-	///  @name Operations
+	virtual
+	void
+	on_add_family_clicked () final override;
+
+	virtual
+	void
+	on_remove_family_clicked () final override;
 
 	void
-	restoreWindow ();
+	openFontChooserDialog (const int);
 
 	void
-	restoreInterface ();
+	set_family ();
 
 	void
-	saveInterfaces ();
+	connectFamily (const X3D::MFString &);
+
+	///  @name style
+
+	virtual
+	void
+	on_style_toggled () final override;
 
 	void
-	saveInterface ();
+	set_style ();
 
-	///  @name Static members
+	void
+	connectStyle (const X3D::SFString & field);
 
-	static const std::unique_ptr <DialogFactory> dialogFactory;
-	static const std::set <std::string>          restorableDialogs;
-	static UserInterfaceArray                    userInterfaces;
+	///  @name size
+
+	virtual
+	void
+	on_size_changed () final override;
+
+	void
+	set_size ();
+
+	void
+	connectSize (const X3D::SFFloat &);
+
+	///  @name justify
+
+	virtual
+	void
+	on_justify_changed () final override;
+
+	void
+	set_justify ();
+
+	void
+	connectJustify (const X3D::MFString &);
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
+	X3D::X3DPtrArray <X3D::Text>        texts;
+	X3D::SFTime                         fontStyleNodeBuffer;
+	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
+	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
+	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
+	UndoStepPtr                         undoStep;
+	bool                                changing;
 
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
-
+	X3DFieldAdjustment <X3D::SFFloat>  spacing;
+	X3DFieldToggleButton <X3D::SFBool> horizontal;
+	X3DFieldToggleButton <X3D::SFBool> leftToRight;
+	X3DFieldToggleButton <X3D::SFBool> topToBottom;
 
 };
 

@@ -48,167 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DUSER_INTERFACE_H__
-#define __TITANIA_BASE_X3DUSER_INTERFACE_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_DRAG_DROP_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_DRAG_DROP_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Configuration/Configuration.h"
+#include "../../Base/X3DBaseInterface.h"
+
 #include <gtkmm.h>
-#include <string>
 
 namespace titania {
 namespace puck {
 
-class DialogFactory;
+class OutlineTreeViewEditor;
 
-class X3DUserInterface :
-	virtual public X3DBaseInterface
+class OutlineDragDrop
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
-
-	virtual
-	Gtk::Window &
-	getWindow () const = 0;
-
-	virtual
-	Gtk::Widget &
-	getWidget () const = 0;
-
-	///  @name Operations
-
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
-
-	void
-	toggleWidget (Gtk::Widget &, bool);
-
-	///  @name Destruction
-
-	virtual
-	~X3DUserInterface ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DUserInterface (const std::string &, const std::string &);
-
-	void
-	construct ();
-
-	virtual
-	void
-	initialize ()
-	{ }
-
-	virtual
-	void
-	restoreSession ()
-	{ }
-
-	virtual
-	void
-	saveSession ()
-	{ }
-
-	bool
-	isInitialized () const
-	{ return not constructed_connection .connected (); }
-
-	/// @name Member access
-	
-	bool
-	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
-
-	bool
-	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
-
-	void
-	removeDialog (const std::string &);
-
-	/// @name Destruction
-
-	virtual
-	bool
-	close ();
+	OutlineDragDrop (OutlineTreeViewEditor* const);
 
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
+	///  @name Static members
 
-	///  @name Construction
-
-	X3DUserInterface (const X3DUserInterface &) = delete;
+	static const std::string dragDataType;
 
 	///  @name Event handlers
 
-	void
-	on_constructed ();
+	bool
+	on_button_press_event (GdkEventButton*);
 
-	void
-	on_map ();
+	bool
+	on_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
 	
 	bool
-	on_window_state_event (GdkEventWindowState*);
-
-	bool
-	on_delete_event (GdkEventAny*);
-
-	///  @name Operations
+	on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
 
 	void
-	restoreWindow ();
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	restoreInterface ();
-
-	void
-	saveInterfaces ();
-
-	void
-	saveInterface ();
-
-	///  @name Static members
-
-	static const std::unique_ptr <DialogFactory> dialogFactory;
-	static const std::set <std::string>          restorableDialogs;
-	static UserInterfaceArray                    userInterfaces;
+	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
-
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
-
+	OutlineTreeViewEditor* const treeView;
+	Gtk::TreePath                sourcePath;
 
 };
 

@@ -99,26 +99,6 @@ public:
 	getIconFactory () const
 	{ return m_IconFactory; }
 
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAllFiles () const
-	{ return m_FileFilterAllFiles; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAudio () const
-	{ return m_FileFilterAudio; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterImage () const
-	{ return m_FileFilterImage; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterVideo () const
-	{ return m_FileFilterVideo; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterX3D () const
-	{ return m_FileFilterX3D; }
-
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const
 	{ return m_MenuAccelGroup; }
@@ -134,10 +114,6 @@ public:
 	Gtk::Image &
 	getFlyViewerImage () const
 	{ return *m_FlyViewerImage; }
-
-	Gtk::Image &
-	getImportImage () const
-	{ return *m_ImportImage; }
 
 	Gtk::Image &
 	getNoneViewerImage () const
@@ -539,13 +515,13 @@ public:
 	getNewButton () const
 	{ return *m_NewButton; }
 
-	Gtk::ToolButton &
-	getImportButton () const
-	{ return *m_ImportButton; }
-
 	Gtk::MenuToolButton &
 	getOpenButton () const
 	{ return *m_OpenButton; }
+
+	Gtk::ToolButton &
+	getImportButton () const
+	{ return *m_ImportButton; }
 
 	Gtk::ToolButton &
 	getSaveButton () const
@@ -712,8 +688,8 @@ public:
 	{ return *m_ViewpointListBox; }
 
 	Gtk::Box &
-	getHistoryEditorBox () const
-	{ return *m_HistoryEditorBox; }
+	getHistoryViewBox () const
+	{ return *m_HistoryViewBox; }
 
 	Gtk::Box &
 	getLibraryViewBox () const
@@ -1189,16 +1165,10 @@ private:
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
-	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterAllFiles;
-	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterAudio;
-	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterImage;
-	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterVideo;
-	Glib::RefPtr <Gtk::FileFilter>  m_FileFilterX3D;
 	Glib::RefPtr <Gtk::AccelGroup>  m_MenuAccelGroup;
 	Gtk::Image*                     m_ExamineViewerImage;
 	Gtk::Image*                     m_FileImportImage;
 	Gtk::Image*                     m_FlyViewerImage;
-	Gtk::Image*                     m_ImportImage;
 	Gtk::Image*                     m_NoneViewerImage;
 	Gtk::Image*                     m_OpenLocationImage;
 	Gtk::Image*                     m_PlaneViewerImage;
@@ -1299,8 +1269,8 @@ private:
 	Gtk::Box*                       m_ToolBar;
 	Gtk::Toolbar*                   m_FileToolBar;
 	Gtk::ToolButton*                m_NewButton;
-	Gtk::ToolButton*                m_ImportButton;
 	Gtk::MenuToolButton*            m_OpenButton;
+	Gtk::ToolButton*                m_ImportButton;
 	Gtk::ToolButton*                m_SaveButton;
 	Gtk::ToolButton*                m_RefreshButton;
 	Gtk::Toolbar*                   m_EditToolBar;
@@ -1342,7 +1312,7 @@ private:
 	Gtk::Label*                     m_SideBarLabel;
 	Gtk::Notebook*                  m_SideBarNotebook;
 	Gtk::Box*                       m_ViewpointListBox;
-	Gtk::Box*                       m_HistoryEditorBox;
+	Gtk::Box*                       m_HistoryViewBox;
 	Gtk::Box*                       m_LibraryViewBox;
 	Gtk::Box*                       m_OutlineEditorBox;
 	Gtk::FileChooserDialog*         m_FileImportDialog;

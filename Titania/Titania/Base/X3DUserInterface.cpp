@@ -51,76 +51,23 @@
 #include "X3DUserInterface.h"
 
 #include "../Configuration/config.h"
-
-#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
-#include "../Dialogs/FileImportDialog/FileImportDialog.h"
-#include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
-
-#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
-#include "../LightEditor/LightEditor.h"
-#include "../MaterialEditor/MaterialEditor.h"
-#include "../MotionBlurEditor/MotionBlurEditor.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
-#include "../TextEditor/TextEditor.h"
-#include "../TextureEditor/TextureEditor.h"
+#include "DialogFactory.h"
 
 #include <Titania/String.h>
 
 namespace titania {
 namespace puck {
 
-class DialogFactory
-{
-public:
+const std::unique_ptr <DialogFactory> X3DUserInterface::dialogFactory (new DialogFactory ());
 
-	///  @name Construction
-
-	DialogFactory () :
-		dialogs ({ std::make_pair ("FileOpenDialog",           constructDialog <FileOpenDialog>),
-		           std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
-		           std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
-		           std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
-		           std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
-		           std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
-		           std::make_pair ("TextEditor",               constructDialog <TextEditor>),
-		           std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
-		           std::make_pair ("LightEditor",              constructDialog <LightEditor>) })
-	{ }
-
-	std::shared_ptr <X3DUserInterface>
-	createDialog (const std::string & name, BrowserWindow* const browserWindow) const
-	throw (std::out_of_range)
-	{
-		return std::shared_ptr <X3DUserInterface> (dialogs .at (name) (browserWindow));
-	}
-
-private:
-
-	///  @name Construction
-
-	template <class Dialog>
-	static
-	X3DUserInterface*
-	constructDialog (BrowserWindow* const browserWindow)
-	{ return new Dialog (browserWindow); }
-
-	///  @name Members
-
-	std::map <std::string, std::function <X3DUserInterface* (BrowserWindow* const)>>  dialogs;
+const std::set <std::string> X3DUserInterface::restorableDialogs = {
+	"MaterialEditor",
+	"TextureEditor",
+	"TextEditor",
+	"GeometryPropertiesEditor",
+	"LightEditor"
 
 };
-
-namespace {
-	const DialogFactory dialogFactory;
-
-	const std::set <std::string> restorableDialogs = {
-		"MaterialEditor",
-		"TextureEditor",
-		"TextEditor",
-		"GeometryPropertiesEditor",
-		"LightEditor"
-	};
-}
 
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
@@ -197,7 +144,7 @@ throw (std::out_of_range)
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto dialog = dialogFactory .createDialog (name, getBrowserWindow ());
+		const auto dialog = dialogFactory -> createDialog (name, getBrowserWindow ());
 
 		dialogs .emplace (name, dialog);
 		dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);

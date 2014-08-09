@@ -52,7 +52,7 @@
 
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
-#include "../OutlineEditor/OutlineTreeViewEditor.h"
+#include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
