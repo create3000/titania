@@ -60,6 +60,7 @@ namespace puck {
 
 const std::unique_ptr <DialogFactory> X3DUserInterface::dialogFactory (new DialogFactory ());
 
+// Only add presentable dialogs here.
 const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"MaterialEditor",
 	"TextureEditor",
@@ -211,13 +212,8 @@ X3DUserInterface::restoreInterface ()
 
 	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
 	{
-		try
-		{
-			if (restorableDialogs .count (dialogName))
-				addDialog (dialogName);
-		}
-		catch (...)
-		{ }
+		if (restorableDialogs .count (dialogName))
+			addDialog (dialogName, true);
 	}
 }
 
