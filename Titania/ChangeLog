@@ -1,5 +1,10 @@
 2014-08-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewpointList.xml:
+	* ViewpointList.cpp: 
+
+2014-08-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* run.pl:
 	* titania:
 	* Makefile.am:

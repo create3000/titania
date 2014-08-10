@@ -54,6 +54,7 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="NameColumn">
+                    <property name="visible">False</property>
                     <property name="sizing">autosize</property>
                     <property name="title" translatable="yes">Name</property>
                     <child>
@@ -82,6 +83,7 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="TypeNameColumn">
+                    <property name="visible">False</property>
                     <property name="sizing">autosize</property>
                     <property name="title" translatable="yes">TypeName</property>
                     <child>

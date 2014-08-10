@@ -114,8 +114,8 @@ ViewpointList::setUserViewpoints (const bool value)
 {
 	userViewpoints = value;
 
-	//getNameColumn ()     -> set_visible (userViewpoints);
-	//getTypeNameColumn () -> set_visible (userViewpoints);
+	getNameColumn ()     -> set_visible (not userViewpoints);
+	getTypeNameColumn () -> set_visible (not userViewpoints);
 }
 
 const X3D::ViewpointStackPtr &
