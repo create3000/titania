@@ -6,10 +6,16 @@
     <columns>
       <!-- column-name Index -->
       <column type="guint"/>
+      <!-- column-name Name -->
+      <column type="gchararray"/>
       <!-- column-name Description -->
+      <column type="gchararray"/>
+      <!-- column-name TypeName -->
       <column type="gchararray"/>
       <!-- column-name Weight -->
       <column type="gint"/>
+      <!-- column-name Style -->
+      <column type="guint"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -37,6 +43,7 @@
                 <property name="can_focus">True</property>
                 <property name="model">ListStore</property>
                 <property name="headers_visible">False</property>
+                <property name="headers_clickable">False</property>
                 <property name="rules_hint">True</property>
                 <property name="search_column">1</property>
                 <signal name="row-activated" handler="on_row_activated" swapped="no"/>
@@ -46,13 +53,43 @@
                   </object>
                 </child>
                 <child>
+                  <object class="GtkTreeViewColumn" id="NameColumn">
+                    <property name="sizing">autosize</property>
+                    <property name="title" translatable="yes">Name</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="NameCellRenderer"/>
+                      <attributes>
+                        <attribute name="style">5</attribute>
+                        <attribute name="text">1</attribute>
+                        <attribute name="weight">4</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
                   <object class="GtkTreeViewColumn" id="DescriptionColumn">
+                    <property name="sizing">autosize</property>
                     <property name="title" translatable="yes">Description</property>
                     <child>
-                      <object class="GtkCellRendererText" id="CellRendererDescription"/>
+                      <object class="GtkCellRendererText" id="DescriptionCellRenderer"/>
                       <attributes>
-                        <attribute name="markup">1</attribute>
-                        <attribute name="weight">2</attribute>
+                        <attribute name="style">5</attribute>
+                        <attribute name="text">2</attribute>
+                        <attribute name="weight">4</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="TypeNameColumn">
+                    <property name="sizing">autosize</property>
+                    <property name="title" translatable="yes">TypeName</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="TypeNameCellRenderer"/>
+                      <attributes>
+                        <attribute name="style">5</attribute>
+                        <attribute name="text">3</attribute>
+                        <attribute name="weight">4</attribute>
                       </attributes>
                     </child>
                   </object>

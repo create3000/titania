@@ -151,6 +151,10 @@ public:
 	getTextureExpander () const
 	{ return *m_TextureExpander; }
 
+	Gtk::Box &
+	getTextureBox () const
+	{ return *m_TextureBox; }
+
 	Gtk::ComboBoxText &
 	getTextureComboBoxText () const
 	{ return *m_TextureComboBoxText; }
@@ -270,6 +274,10 @@ public:
 	Gtk::Expander &
 	getTextureTransformExpander () const
 	{ return *m_TextureTransformExpander; }
+
+	Gtk::Box &
+	getTextureTransformNodeBox () const
+	{ return *m_TextureTransformNodeBox; }
 
 	Gtk::ComboBoxText &
 	getTextureTransformComboBoxText () const
@@ -414,6 +422,7 @@ private:
 	Gtk::Window*                   m_Window;
 	Gtk::ScrolledWindow*           m_Widget;
 	Gtk::Expander*                 m_TextureExpander;
+	Gtk::Box*                      m_TextureBox;
 	Gtk::ComboBoxText*             m_TextureComboBoxText;
 	Gtk::Button*                   m_TextureUnlinkButton;
 	Gtk::Box*                      m_PreviewBox;
@@ -444,6 +453,7 @@ private:
 	Gtk::Button*                   m_TexturePropertiesBorderColorButton;
 	Gtk::Scale*                    m_TexturePropertiesBorderColorScale;
 	Gtk::Expander*                 m_TextureTransformExpander;
+	Gtk::Box*                      m_TextureTransformNodeBox;
 	Gtk::ComboBoxText*             m_TextureTransformComboBoxText;
 	Gtk::Button*                   m_TextureTransformUnlinkButton;
 	Gtk::Notebook*                 m_TextureTransformNotebook;

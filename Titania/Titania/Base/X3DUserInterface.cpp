@@ -66,6 +66,7 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"TextureEditor",
 	"TextEditor",
 	"GeometryPropertiesEditor",
+	"ViewpointEditor",
 	"LightEditor"
 
 };
@@ -91,7 +92,7 @@ X3DUserInterface::construct ()
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
-	restoreWindow ();
+	restoreInterface ();
 }
 
 void
@@ -183,7 +184,7 @@ X3DUserInterface::toggleWidget (Gtk::Widget & widget, bool active)
 }
 
 void
-X3DUserInterface::restoreWindow ()
+X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position
 
@@ -201,20 +202,6 @@ X3DUserInterface::restoreWindow ()
 
 	if (isMaximized ())
 		getWindow () .maximize ();
-}
-
-void
-X3DUserInterface::restoreInterface ()
-{
-	restoreWindow ();
-
-	// Restore dialogs
-
-	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
-	{
-		if (restorableDialogs .count (dialogName))
-			addDialog (dialogName, true);
-	}
 }
 
 void
@@ -241,8 +228,20 @@ X3DUserInterface::saveInterface ()
 	}
 }
 
-bool
-X3DUserInterface::close ()
+void
+X3DUserInterface::restoreSession ()
+{
+	// Restore dialogs
+
+	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
+	{
+		if (restorableDialogs .count (dialogName))
+			addDialog (dialogName, true);
+	}
+}
+
+void
+X3DUserInterface::saveSession ()
 {
 	// Save dialogs
 
@@ -265,7 +264,11 @@ X3DUserInterface::close ()
 		pair .second -> close ();
 
 	dialogs .clear ();
+}
 
+bool
+X3DUserInterface::close ()
+{
 	// Save sessions
 
 	if (this == userInterfaces .front ())

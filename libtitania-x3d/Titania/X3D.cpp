@@ -63,13 +63,9 @@ throw (Error <BROWSER_UNAVAILABLE>)
 
 	if (not browserApplication)
 	{
-		std::clog << "Creating BrowserApplication ..." << std::endl;
-
 		browserApplication = new BrowserApplication ();
 
 		browserApplication -> setup ();
-
-		std::clog << "Done creating BrowserApplication." << std::endl;
 	}
 
 	return browserApplication;
@@ -80,11 +76,7 @@ BrowserPtr
 createBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
-	std::clog << "Creating Browser ..." << std::endl;
-	BrowserPtr browser = new Browser ();
-
-	std::clog << "Done creating Browser." << std::endl;
-	return browser;
+	return new Browser ();
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
@@ -96,11 +88,7 @@ throw (Error <INVALID_NODE>,
 	if (not sharingBrowser)
 		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
 
-	std::clog << "Creating Browser ..." << std::endl;
-	BrowserPtr browser = new Browser (*sharingBrowser);
-
-	std::clog << "Done creating Browser." << std::endl;
-	return browser;
+	return new Browser (*sharingBrowser);
 }
 
 void

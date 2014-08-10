@@ -143,7 +143,7 @@
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
-    <property name="title" translatable="yes">Geometry Properties Editor</property>
+    <property name="title" translatable="yes">Light Editor</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
@@ -179,7 +179,7 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="grid1">
+              <object class="GtkGrid" id="LightBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">4</property>
@@ -435,7 +435,6 @@
         <child>
           <object class="GtkExpander" id="DirectionalLightExpander">
             <property name="can_focus">True</property>
-            <property name="expanded">True</property>
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
@@ -573,7 +572,6 @@
         <child>
           <object class="GtkExpander" id="PointLightExpander">
             <property name="can_focus">True</property>
-            <property name="expanded">True</property>
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
@@ -790,7 +788,6 @@
         <child>
           <object class="GtkExpander" id="SpotLightExpander">
             <property name="can_focus">True</property>
-            <property name="expanded">True</property>
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>

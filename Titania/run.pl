@@ -13,11 +13,11 @@ my $min = `date +'%M'`; chomp $min;
 
 if ($min > 16 and $min < 20)
 {
-	say `gconftool-2 --dump /apps/titania > /home/holger/.gconf-titania-backup.xml`;
-	system "gconftool-2", "--recursive-unset", "/apps/titania";
-
 	unless (-e "/home/holger/.config/Titania.O")
 	{
+		say `gconftool-2 --dump /apps/titania > /home/holger/.gconf-titania-backup.xml`;
+		system "gconftool-2", "--recursive-unset", "/apps/titania";
+
 		system "mv", "/home/holger/.config/Titania", "/home/holger/.config/Titania.O";
 	}
 }

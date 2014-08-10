@@ -43,6 +43,7 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DTexturePropertiesEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
+	Titania/Editors/ViewpointEditor/ViewpointEditor.cpp \
 	Titania/main.cpp \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
@@ -65,6 +66,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DPrototypeInstanceDialogInterface.cpp \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
+	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/HistoryView/History.cpp \

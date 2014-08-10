@@ -285,7 +285,7 @@ X3DTextureNodeEditor::set_texture ()
 		getTextureFormatLabel ()  .set_text ("");
 	}
 
-	getTextureComboBoxText () .set_sensitive (hasField);
+	getTextureBox ()          .set_sensitive (hasField);
 	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> getCloneCount () > 1);
 	getTextureNotebook ()     .set_current_page (getTextureComboBoxText () .get_active_row_number ());
 

@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/DialogFactory.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/UserInterfaces/X3DViewpointEditorInterface.cpp">
     <Files>
-      <File FileName="Titania/Titania/Base/X3DUserInterface.h" Line="200" Column="46" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="511" Column="90" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h" Line="68" Column="5" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp" Line="60" Column="45" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="49" Column="37" />
-      <File FileName="Titania/Titania/Base/DialogFactory.h" Line="54" Column="28" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1583" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.h" Line="99" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp" Line="61" Column="84" />
+      <File FileName="Titania/Titania/Base/DialogFactory.h" Line="91" Column="47" />
+      <File FileName="Titania/Titania/Base/X3DUserInterface.cpp" Line="69" Column="20" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DViewpointEditorInterface.cpp" Line="89" Column="39" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,34 +26,16 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-standard" expanded="True">
+          <Node name="libtitania-sqlite" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
-              </Node>
+              <Node name="SQL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="shaders" expanded="True">
-                  <Node name="ParticleSystems" expanded="True">
-                    <Node name="Bits" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="tools" expanded="True">
-                  <Node name="library" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Text" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Prototype" expanded="True" />
@@ -64,32 +46,25 @@
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="CosmoWorlds" expanded="True" />
-          </Node>
           <Node name="Titania" expanded="True">
+            <Node name="config" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
+                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True">
-                <Node name="DialogFactory.h" selected="True" />
-              </Node>
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="Configuration" expanded="True" />
-              <Node name="Dialogs" expanded="True">
-                <Node name="FileImportDialog" expanded="True" />
-                <Node name="FileSaveWarningDialog" expanded="True" />
+              <Node name="Editors" expanded="True">
+                <Node name="LightEditor" expanded="True" />
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="HistoryView" expanded="True" />
-                <Node name="OutlineEditor" expanded="True">
-                  <Node name="CellRenderer" expanded="True" />
-                </Node>
+              <Node name="UserInterfaces" expanded="True">
+                <Node name="X3DViewpointEditorInterface.cpp" selected="True" />
               </Node>
             </Node>
           </Node>

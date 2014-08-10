@@ -7,11 +7,71 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointCenterOfRotationXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointCenterOfRotationYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointCenterOfRotationZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointOrientationAAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointOrientationXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointOrientationYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointOrientationZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointPositionXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointPositionYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="PerspectiveViewpointPositionZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
-    <property name="title" translatable="yes">Geometry Properties Editor</property>
+    <property name="title" translatable="yes">Viewpoint Editor</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
@@ -24,6 +84,50 @@
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
+          <object class="GtkBox" id="box2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="label14">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Viewpoint List</property>
+                <style>
+                  <class name="titania-small"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="ViewpointListBox">
+                <property name="height_request">100</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -32,19 +136,6 @@
             <style>
               <class name="titania-header"/>
             </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button1">
-            <property name="label" translatable="yes">Update Active Viewpoint</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -60,19 +151,89 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="grid1">
+              <object class="GtkGrid" id="ViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">4</property>
                 <property name="column_spacing">16</property>
                 <child>
-                  <object class="GtkLabel" id="label2">
+                  <object class="GtkEntry" id="ViewpointDescriptionEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label9">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ViewpointJumpCheckButton">
+                    <property name="label" translatable="yes">Jump</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ViewpointRetainUserOffsetsCheckButton">
+                    <property name="label" translatable="yes">Retain User Offsets</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">4</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label15">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">2</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
@@ -92,31 +253,100 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label5">
+                  <object class="GtkButton" id="UpdateViewpointButton">
+                    <property name="label" translatable="yes">Update</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">FieldOfView:</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="hexpand">True</property>
+                    <signal name="clicked" handler="on_update_viewpoint_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label8">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
+                    <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkLabel" id="label16">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Name:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="ViewpointNameBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="spacing">4</property>
+                    <child>
+                      <object class="GtkEntry" id="ViewpointNameEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="ViewpointRenameButton">
+                        <property name="label" translatable="yes">Rename</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Viewpoint</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="PerspectiveViewpointExpander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="spacing">8</property>
+            <child>
+              <object class="GtkGrid" id="grid3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkBox" id="FieldOfViewBox">
                     <property name="visible">True</property>
@@ -126,6 +356,7 @@
                       <object class="GtkSpinButton" id="spinbutton1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
                         <property name="input_purpose">number</property>
                         <property name="adjustment">FieldOfViewAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -211,13 +442,88 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button2">
-                    <property name="label" translatable="yes">Bind</property>
+                  <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">FieldOfView:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label8">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Position:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="PerspectiveViewpointPositionBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointPositionXAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointPositionYAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointPositionZAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -227,9 +533,103 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry1">
+                  <object class="GtkLabel" id="label12">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Orientation:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="PerspectiveViewpointOrientationBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkBox" id="box10">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkSpinButton" id="spinbutton5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">PerspectiveViewpointOrientationXAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="spinbutton6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">PerspectiveViewpointOrientationYAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="spinbutton7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">PerspectiveViewpointOrientationZAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointOrientationAAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -239,81 +639,115 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label9">
+                  <object class="GtkLabel" id="label13">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Center Of Rotation:</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">2</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label10">
+                  <object class="GtkBox" id="PerspectiveViewpointCenterOfRotationBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="checkbutton1">
-                    <property name="label" translatable="yes">Jump</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="halign">start</property>
+                    <property name="hexpand">True</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton9">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointCenterOfRotationXAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton10">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointCenterOfRotationYAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">0,000</property>
+                        <property name="adjustment">PerspectiveViewpointCenterOfRotationZAdjustment</property>
+                        <property name="climb_rate">0.01</property>
+                        <property name="digits">3</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">2</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="checkbutton2">
-                    <property name="label" translatable="yes">Retain User Offsets</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label4">
+              <object class="GtkLabel" id="label11">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Viewpoint</property>
+                <property name="label" translatable="yes">Perspective Viewpoint</property>
               </object>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">4</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="ViewpointListStore"/>
+  <object class="GtkScrolledWindow" id="scrolledwindow1">
+    <property name="height_request">100</property>
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="shadow_type">in</property>
+    <child>
+      <object class="GtkTreeView" id="ViewpointTreeView">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="model">ViewpointListStore</property>
+        <property name="rules_hint">True</property>
+        <child internal-child="selection">
+          <object class="GtkTreeSelection" id="ViewpointSelection"/>
         </child>
       </object>
     </child>

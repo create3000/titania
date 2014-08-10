@@ -94,6 +94,8 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("LightExpander", m_LightExpander);
 	m_LightExpander -> set_name ("LightExpander");
+	m_builder -> get_widget ("LightBox", m_LightBox);
+	m_LightBox -> set_name ("LightBox");
 	m_builder -> get_widget ("GlobalCheckButton", m_GlobalCheckButton);
 	m_GlobalCheckButton -> set_name ("GlobalCheckButton");
 	m_builder -> get_widget ("OnCheckButton", m_OnCheckButton);

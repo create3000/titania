@@ -67,8 +67,6 @@ X3DBrowser::X3DBrowser () :
 	           urlError (),
 	         inShutdown ()
 {
-	std::clog << "Constructing Browser:" << std::endl;
-
 	enable_backtrace ();
 
 	setName ("Titania");
@@ -81,15 +79,11 @@ X3DBrowser::X3DBrowser () :
 	             executionContext,
 	             urlError,
 	             getRootNodes ());
-
-	std::clog << "\tDone constructing Browser." << std::endl;
 }
 
 void
 X3DBrowser::initialize ()
 {
-	std::clog << "Initializing Browser ..." << std::endl;
-
 	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();
 

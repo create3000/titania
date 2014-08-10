@@ -80,6 +80,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_TextureExpander -> set_name ("TextureExpander");
+	m_builder -> get_widget ("TextureBox", m_TextureBox);
+	m_TextureBox -> set_name ("TextureBox");
 	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
 	m_TextureComboBoxText -> set_name ("TextureComboBoxText");
 	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
@@ -140,6 +142,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TexturePropertiesBorderColorScale -> set_name ("TexturePropertiesBorderColorScale");
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_TextureTransformExpander -> set_name ("TextureTransformExpander");
+	m_builder -> get_widget ("TextureTransformNodeBox", m_TextureTransformNodeBox);
+	m_TextureTransformNodeBox -> set_name ("TextureTransformNodeBox");
 	m_builder -> get_widget ("TextureTransformComboBoxText", m_TextureTransformComboBoxText);
 	m_TextureTransformComboBoxText -> set_name ("TextureTransformComboBoxText");
 	m_builder -> get_widget ("TextureTransformUnlinkButton", m_TextureTransformUnlinkButton);

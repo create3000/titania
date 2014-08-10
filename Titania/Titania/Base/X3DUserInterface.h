@@ -110,13 +110,11 @@ protected:
 
 	virtual
 	void
-	restoreSession ()
-	{ }
+	restoreSession ();
 
 	virtual
 	void
-	saveSession ()
-	{ }
+	saveSession ();
 
 	bool
 	isInitialized () const
@@ -182,9 +180,6 @@ private:
 	on_delete_event (GdkEventAny*);
 
 	///  @name Operations
-
-	void
-	restoreWindow ();
 
 	void
 	restoreInterface ();

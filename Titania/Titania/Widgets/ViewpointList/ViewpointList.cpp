@@ -58,22 +58,27 @@ namespace puck {
 
 namespace Columns {
 
-static constexpr int Index       = 0;
-static constexpr int Description = 1;
-static constexpr int Weight      = 2;
+static constexpr int INDEX       = 0;
+static constexpr int NAME        = 1;
+static constexpr int DESCRIPTION = 2;
+static constexpr int TYPE_NAME   = 3;
+static constexpr int WEIGHT      = 4;
+static constexpr int STYLE       = 5;
 
 };
 
 namespace Weight {
 
-static constexpr int Normal = 400;
-static constexpr int Bold   = 700;
+static constexpr int NORMAL = 400;
+static constexpr int BOLD   = 700;
 
 };
 
-ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
+ViewpointList::ViewpointList (BrowserWindow* const browserWindow, const bool label) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
+	                    label (label),
+	           userViewpoints (true),
 	              activeLayer ()
 {
 	setup ();
@@ -82,7 +87,8 @@ ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
 void
 ViewpointList::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Viewpoint List"));
+	if (label)
+		getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Viewpoint List"));
 }
 
 void
@@ -90,11 +96,26 @@ ViewpointList::initialize ()
 {
 	X3DViewpointListInterface::initialize ();
 
-	getCellRendererDescription () -> property_weight_set () = true;
+	getNameCellRenderer ()        -> property_weight_set () = true;
+	getDescriptionCellRenderer () -> property_weight_set () = true;
+	getTypeNameCellRenderer ()    -> property_weight_set () = true;
+
+	getNameCellRenderer ()        -> property_style_set () = true;
+	getDescriptionCellRenderer () -> property_style_set () = true;
+	getTypeNameCellRenderer ()    -> property_style_set () = true;
 
 	getBrowser () -> getActiveLayer () .addInterest (this, &ViewpointList::set_activeLayer);
 
 	set_activeLayer ();
+}
+
+void
+ViewpointList::setUserViewpoints (const bool value)
+{
+	userViewpoints = value;
+
+	//getNameColumn ()     -> set_visible (userViewpoints);
+	//getTypeNameColumn () -> set_visible (userViewpoints);
 }
 
 const X3D::ViewpointStackPtr &
@@ -147,18 +168,32 @@ ViewpointList::set_viewpoints ()
 
 	// Fill the TreeView's model
 
-	guint index = 0;
+	guint index = 1;
 
-	for (const auto & viewpoint : *getViewpoints ())
+	for (const auto & viewpoint : std::make_pair (getViewpoints () -> begin () + 1, getViewpoints () -> end ()))
 	{
-		if (viewpoint -> description () .length ())
-		{
-			const auto row = getListStore () -> append ();
-			row -> set_value (Columns::Index,       index);
-			row -> set_value (Columns::Description, Glib::Markup::escape_text (viewpoint -> description ()));
-			row -> set_value (Columns::Weight,      viewpoint -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
+		if (userViewpoints and not viewpoint -> description () .length ())
+			continue;
 
-			getListStore () -> row_changed (getListStore () -> get_path (row), row);
+		auto name = viewpoint -> getName ();
+
+		X3D::RegEx::LastNumber_ .Replace ("", &name);
+
+		const auto row = getListStore () -> append ();
+		row -> set_value (Columns::INDEX,       index);
+		row -> set_value (Columns::NAME       , name);
+		row -> set_value (Columns::DESCRIPTION, viewpoint -> description () .str ());
+		row -> set_value (Columns::TYPE_NAME,   viewpoint -> getTypeName ());
+
+		if (viewpoint -> isBound ())
+		{
+			row -> set_value (Columns::WEIGHT, Weight::BOLD);
+			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+		}
+		else
+		{
+			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 		}
 
 		++ index;
@@ -170,14 +205,47 @@ ViewpointList::set_currentViewpoint ()
 {
 	// Update list store
 
-	const auto userViewpoints = getUserViewpoints ();
-	const auto rows           = getListStore () -> children ();
-
-	for (size_t i = 0, size = rows .size (); i < size; ++ i)
+	if (userViewpoints)
 	{
-		rows [i] -> set_value (Columns::Weight, userViewpoints [i] -> isBound () ? Weight::Bold : Weight::Normal);
+		const auto viewpoints = getUserViewpoints ();
+		const auto rows       = getListStore () -> children ();
 
-		getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
+		for (size_t i = 0, size = rows .size (); i < size; ++ i)
+		{
+			if (viewpoints [i] -> isBound ())
+			{
+				rows [i] -> set_value (Columns::WEIGHT, Weight::BOLD);
+				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			}
+			else
+			{
+				rows [i] -> set_value (Columns::WEIGHT, Weight::NORMAL);
+				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+			}
+
+			getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
+		}
+	}
+	else
+	{
+		const auto & viewpoints = *getViewpoints ();
+		const auto   rows       = getListStore () -> children ();
+
+		for (size_t i = 0, size = rows .size (); i < size; ++ i)
+		{
+			if (viewpoints [i + 1] -> isBound ())
+			{
+				rows [i] -> set_value (Columns::WEIGHT, Weight::BOLD);
+				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			}
+			else
+			{
+				rows [i] -> set_value (Columns::WEIGHT, Weight::NORMAL);
+				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+			}
+
+			getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
+		}
 	}
 }
 
@@ -186,7 +254,7 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	guint index;
 
-	getListStore () -> get_iter (path) -> get_value (Columns::Index, index);
+	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
 
 	const auto viewpoint = getViewpoints () -> at (index);
 

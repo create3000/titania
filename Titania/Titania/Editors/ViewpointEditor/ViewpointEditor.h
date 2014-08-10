@@ -48,66 +48,66 @@
  *
  ******************************************************************************/
 
-#include "LightEditor.h"
+#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
+#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
 
-#include "../../Browser/BrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
+//#include "X3DViewpointEditor.h"
+//#include "X3DOrthoViewpointEditor.h"
+//#include "X3DGeoViewpointEditor.h"
 
 namespace titania {
 namespace puck {
 
-LightEditor::LightEditor (BrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	  X3DLightEditorInterface (get_ui ("Dialogs/LightEditor.xml"), gconf_dir ()),
-	X3DDirectionalLightEditor (),
-	      X3DPointLightEditor (),
-	       X3DSpotLightEditor (),
-	                   global (getBrowserWindow (), getGlobalCheckButton (), "global"),
-	                       on (getBrowserWindow (), getOnCheckButton (), "on"),
-	                    color (getBrowserWindow (), getColorButton (), getColorAdjustment (), getColorBox (), "color"),
-	                intensity (getBrowserWindow (), getIntensityAdjustment (), getIntensityBox (), "intensity"),
-	         ambientIntensity (getBrowserWindow (), getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity")
+class BrowserWindow;
+class ViewpointList;
+
+class ViewpointEditor :
+	virtual public X3DViewpointEditorInterface
+	//public X3DViewpointEditor,
+	//public X3DOrthoViewpointEditor,
+	//public X3DGeoViewpointEditor
 {
-	setup ();
-}
+public:
 
-void
-LightEditor::initialize ()
-{
-	X3DDirectionalLightEditor::initialize ();
-	X3DPointLightEditor::initialize ();
-	X3DSpotLightEditor::initialize ();
+	///  @name Construction
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &LightEditor::set_selection);
+	ViewpointEditor (BrowserWindow* const);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
-}
+	///  @name Destruction
 
-void
-LightEditor::set_selection (const X3D::MFNode & selection)
-{
-	X3D::X3DPtr <X3D::X3DLightNode> lightNode (selection .empty () ? nullptr : selection .back ());
+	virtual
+	~ViewpointEditor ();
 
-	setDirectionalLight (lightNode);
-	setPointLight (lightNode);
-	setSpotLight (lightNode);
 
-	const auto lightNodes = lightNode ? X3D::MFNode ({ lightNode }) : X3D::MFNode ();
+private:
 
-	global           .setNodes (lightNodes);
-	on               .setNodes (lightNodes);
-	color            .setNodes (lightNodes);
-	intensity        .setNodes (lightNodes);
-	ambientIntensity .setNodes (lightNodes);
+	///  @name Construction
 
-	getLightBox () .set_sensitive (lightNode);
-	getWindow () .resize (getWindow () .get_width (), 1);
-}
+	virtual
+	void
+	initialize () final override;
 
-LightEditor::~LightEditor ()
-{
-	dispose ();
-}
+	void
+	set_active_viewpoint ();
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_update_viewpoint_clicked () final override;
+
+	///  @name Members
+
+	std::unique_ptr <ViewpointList> viewpointList;
+
+	X3DFieldToggleButton <X3D::SFBool> jump;
+	X3DFieldToggleButton <X3D::SFBool> retainUserOffsets;
+
+};
 
 } // puck
 } // titania
+
+#endif

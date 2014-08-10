@@ -204,7 +204,7 @@ X3DTextureTransformNodeEditor::set_node ()
 	else
 		getTextureTransformComboBoxText () .set_active (-1);
 
-	getTextureTransformComboBoxText () .set_sensitive (hasField);
+	getTextureTransformNodeBox ()      .set_sensitive (hasField);
 	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> getCloneCount () > 1);
 
 	changing = false;

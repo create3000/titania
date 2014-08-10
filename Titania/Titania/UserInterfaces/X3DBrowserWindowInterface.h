@@ -560,8 +560,8 @@ public:
 	{ return *m_GeometryPropertiesEditorButton; }
 
 	Gtk::ToolButton &
-	getUpdateViewpointButton () const
-	{ return *m_UpdateViewpointButton; }
+	getViewpointEditorButton () const
+	{ return *m_ViewpointEditorButton; }
 
 	Gtk::ToolButton &
 	getLightEditorButton () const
@@ -1009,7 +1009,7 @@ public:
 
 	virtual
 	void
-	on_update_viewpoint_clicked () = 0;
+	on_viewpoint_editor_clicked () = 0;
 
 	virtual
 	void
@@ -1192,7 +1192,7 @@ private:
 	Gtk::ToolButton*                m_TextureEditorButton;
 	Gtk::ToolButton*                m_TextEditorButton;
 	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
-	Gtk::ToolButton*                m_UpdateViewpointButton;
+	Gtk::ToolButton*                m_ViewpointEditorButton;
 	Gtk::ToolButton*                m_LightEditorButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
 	Gtk::Paned*                     m_VPaned;

@@ -63,12 +63,28 @@ class ViewpointList :
 {
 public:
 
-	ViewpointList (BrowserWindow* const);
+	///  @name Construction
 
+	ViewpointList (BrowserWindow* const, const bool = false);
+
+	///  @name Member acccess
+
+	void
+	setUserViewpoints (const bool);
+
+	bool
+	getUserViewpoints () const
+	{ return userViewpoints; }
+
+	///  @name Destruction
+
+	virtual
 	~ViewpointList ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -78,6 +94,8 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Member acccess
+
 	const X3D::ViewpointStackPtr &
 	getViewpointStack ();
 
@@ -86,6 +104,8 @@ private:
 
 	X3D::UserViewpointList
 	getUserViewpoints ();
+
+	///  @name Event handlers
 
 	void
 	set_activeLayer ();
@@ -100,6 +120,10 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
+	///  @name Members
+
+	bool                 label;
+	bool                 userViewpoints;
 	X3D::X3DLayerNodePtr activeLayer;
 
 };

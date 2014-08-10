@@ -1413,7 +1413,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="UpdateViewpointButton">
+                  <object class="GtkToolButton" id="ViewpointEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="has_tooltip">True</property>
@@ -1422,7 +1422,7 @@
                     <property name="label" translatable="yes">Update Active Viewpoint</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Viewpoint</property>
-                    <signal name="clicked" handler="on_update_viewpoint_clicked" swapped="no"/>
+                    <signal name="clicked" handler="on_viewpoint_editor_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1849,10 +1849,9 @@
                             <property name="xalign">0</property>
                             <property name="ypad">2</property>
                             <property name="label" translatable="yes">SideBar</property>
-                            <attributes>
-                              <attribute name="weight" value="bold"/>
-                              <attribute name="scale" value="0.80000000000000004"/>
-                            </attributes>
+                            <style>
+                              <class name="titania-small"/>
+                            </style>
                           </object>
                           <packing>
                             <property name="expand">True</property>

@@ -62,8 +62,12 @@ X3DViewpointListInterface::create (const std::string & filename)
 
 	// Get objects.
 	m_ListStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_NameColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_NameCellRenderer        = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameCellRenderer"));
 	m_DescriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
-	m_CellRendererDescription = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererDescription"));
+	m_DescriptionCellRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("DescriptionCellRenderer"));
+	m_TypeNameColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
+	m_TypeNameCellRenderer    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TypeNameCellRenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);

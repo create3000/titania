@@ -1,5 +1,39 @@
 2014-08-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* run.pl:
+	* titania:
+	* Makefile.am:
+	* style.css:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* X3DUserInterface.h:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* ViewpointList.xml:
+	* BrowserWindow.xml:
+	* LightEditor.xml:
+	* TextureEditor.xml:
+	* LightEditor.cpp:
+	* ViewpointEditor.xml:
+	* ViewpointList.h:
+	* ViewpointList.cpp:
+	* X3DLightEditorInterface.h:
+	* ViewpointEditor.h:
+	* X3DViewpointListInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DLightEditorInterface.cpp:
+	* X3DTextureEditorInterface.h:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DTextureEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DViewpointListInterface.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DTextureTransformNodeEditor.cpp: 
+
+2014-08-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineEditor.h:
 	* OutlineEditor.cpp:
 	* X3DOutlineTreeView.cpp:

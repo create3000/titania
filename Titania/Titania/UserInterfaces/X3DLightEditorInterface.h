@@ -207,6 +207,10 @@ public:
 	getLightExpander () const
 	{ return *m_LightExpander; }
 
+	Gtk::Grid &
+	getLightBox () const
+	{ return *m_LightBox; }
+
 	Gtk::CheckButton &
 	getGlobalCheckButton () const
 	{ return *m_GlobalCheckButton; }
@@ -412,6 +416,7 @@ private:
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_LightExpander;
+	Gtk::Grid*                     m_LightBox;
 	Gtk::CheckButton*              m_GlobalCheckButton;
 	Gtk::CheckButton*              m_OnCheckButton;
 	Gtk::Box*                      m_ColorBox;

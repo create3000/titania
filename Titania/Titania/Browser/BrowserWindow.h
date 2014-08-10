@@ -151,9 +151,6 @@ private:
 	void
 	set_selection (const X3D::MFNode & children);
 
-	void
-	set_active_viewpoint ();
-
 	///  @name Key events
 
 	virtual
@@ -523,7 +520,7 @@ private:
 	
 	virtual
 	void
-	on_update_viewpoint_clicked () final override;
+	on_viewpoint_editor_clicked () final override;
 
 	virtual
 	void

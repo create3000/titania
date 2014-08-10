@@ -100,12 +100,28 @@ public:
 	{ return m_ListStore; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getNameColumn () const
+	{ return m_NameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getNameCellRenderer () const
+	{ return m_NameCellRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getDescriptionColumn () const
 	{ return m_DescriptionColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getCellRendererDescription () const
-	{ return m_CellRendererDescription; }
+	getDescriptionCellRenderer () const
+	{ return m_DescriptionCellRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTypeNameColumn () const
+	{ return m_TypeNameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getTypeNameCellRenderer () const
+	{ return m_TypeNameCellRenderer; }
 
 	Gtk::Window &
 	getWindow () const
@@ -145,8 +161,12 @@ private:
 	std::string                          filename;
 	Glib::RefPtr <Gtk::Builder>          m_builder;
 	Glib::RefPtr <Gtk::ListStore>        m_ListStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_NameColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_NameCellRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>   m_DescriptionColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererDescription;
+	Glib::RefPtr <Gtk::CellRendererText> m_DescriptionCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_TypeNameColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_TypeNameCellRenderer;
 	Gtk::Window*                         m_Window;
 	Gtk::Box*                            m_Widget;
 	Gtk::ScrolledWindow*                 m_ScrolledWindow;
