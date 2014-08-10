@@ -324,12 +324,24 @@ OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path
 		treeView -> expand_row (path, false);
 }
 
+namespace {
+
+void
+on_row_changed_impl (const Glib::RefPtr <Gtk::TreeModel> & model, const Gtk::TreeModel::Path & path)
+{
+	model -> row_changed (path, model -> get_iter (path));
+}
+
+} // namespace
+
 void
 OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
-	treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
+	//treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
+
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&on_row_changed_impl), treeView -> get_model (), path));
 }
 
 void

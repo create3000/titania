@@ -85,7 +85,7 @@
                   <object class="GtkTreeViewColumn" id="TypeNameColumn">
                     <property name="visible">False</property>
                     <property name="sizing">autosize</property>
-                    <property name="title" translatable="yes">TypeName</property>
+                    <property name="title" translatable="yes">Type Name</property>
                     <child>
                       <object class="GtkCellRendererText" id="TypeNameCellRenderer"/>
                       <attributes>

@@ -1372,6 +1372,7 @@
                   <object class="GtkToolButton" id="TextureEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Open Texture Editor.</property>
                     <property name="label" translatable="yes">Texture Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-orientation-landscape</property>
@@ -1416,9 +1417,7 @@
                   <object class="GtkToolButton" id="ViewpointEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">Update active viewpoint from current view.</property>
-                    <property name="tooltip_text" translatable="yes">Update active viewpoint from current view.</property>
+                    <property name="tooltip_text" translatable="yes">Open Viewpoint Editor.</property>
                     <property name="label" translatable="yes">Update Active Viewpoint</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Viewpoint</property>
@@ -1887,7 +1886,7 @@
                           <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
+                            <property name="tooltip_text" translatable="yes">Viewpoint List</property>
                             <property name="stock">Viewpoint</property>
                             <property name="icon_size">1</property>
                           </object>
@@ -1912,7 +1911,7 @@
                           <object class="GtkImage" id="image12">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">History Editor</property>
+                            <property name="tooltip_text" translatable="yes">History</property>
                             <property name="stock">gtk-file</property>
                             <property name="icon_size">1</property>
                           </object>
