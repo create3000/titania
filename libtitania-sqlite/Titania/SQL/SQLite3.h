@@ -93,6 +93,9 @@ public:
 	query (const std::string &)
 	throw (std::invalid_argument);
 
+	bool
+	try_query (const std::string &);
+
 	const array_type &
 	query_array (const std::string &) const
 	throw (std::invalid_argument);

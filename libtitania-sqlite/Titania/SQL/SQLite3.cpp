@@ -83,6 +83,20 @@ throw (std::invalid_argument)
 	exec (statement, nullptr);
 }
 
+bool
+sqlite3::try_query (const std::string & statement)
+{
+	try
+	{
+		exec (statement, nullptr);
+		return true;
+	}
+	catch (...)
+	{
+		return false;
+	}
+}
+
 const sqlite3::array_type &
 sqlite3::query_array (const std::string & statement) const
 throw (std::invalid_argument)

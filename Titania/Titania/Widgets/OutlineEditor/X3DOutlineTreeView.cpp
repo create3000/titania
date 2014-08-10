@@ -435,6 +435,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 {
 	//__LOG__ << std::endl;
 	
+	get_hadjustment () -> set_value (0);
 	get_vadjustment () -> set_value (0);
 
 	// Remove model.
@@ -486,8 +487,11 @@ X3DOutlineTreeView::set_rootNodes ()
 	hAdjustmentConnection .disconnect ();
 	vAdjustmentConnection .disconnect ();
 
-	hAdjustmentConnection = get_hadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_hAdjustment_value_changed), get_hadjustment () -> get_value ()));
-	vAdjustmentConnection = get_vadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_vAdjustment_value_changed), get_vadjustment () -> get_value ()));
+	if (get_hadjustment () -> get_value ())
+		hAdjustmentConnection = get_hadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_hAdjustment_value_changed), get_hadjustment () -> get_value ()));
+	
+	if (get_vadjustment () -> get_value ())
+		vAdjustmentConnection = get_vadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_vAdjustment_value_changed), get_vadjustment () -> get_value ()));
 
 	// Unwatch model.
 

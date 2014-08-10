@@ -48,13 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
 
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
 #include <Titania/SQL/SQLite3.h>
+#include <Titania/String.h>
+
+#include <cstdlib>
 
 namespace titania {
 namespace puck {
@@ -75,51 +78,60 @@ public:
 		                 "worldURL     TEXT, "
 		                 "expanded     TEXT,"
 		                 "PRIMARY KEY (id ASC))");
+
+		database .try_query ("ALTER TABLE Paths ADD hAdjustment REAL DEFAULT 0");
+		database .try_query ("ALTER TABLE Paths ADD vAdjustment REAL DEFAULT 0");
 	}
 
 	void
-	setItem (const std::string & worldURL, const std::string & expanded)
+	setItem (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment)
 	{
 		try
 		{
-			update (getId (worldURL), expanded);
+			update (getId (worldURL), expanded, hAdjustment, vAdjustment);
 		}
 		catch (const std::out_of_range &)
 		{
-			insert (worldURL, expanded);
+			insert (worldURL, expanded, hAdjustment, vAdjustment);
 		}
 	}
 
-	const std::string &
+	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL) const
 	throw (std::out_of_range)
 	{
-		const auto & result = database .query_array ("SELECT expanded FROM Paths "
+		const auto & result = database .query_array ("SELECT expanded, hAdjustment, vAdjustment FROM Paths "
 		                                             "WHERE worldURL = " + database .quote (worldURL));
 
-		return result .at (0) .at (0);
+		const auto & item = result .at (0);
+
+		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
 	}
 
 private:
 
 	void
-	insert (const std::string & worldURL, const std::string & expanded)
+	insert (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment)
 	{
 		database .query ("INSERT INTO Paths "
-		                 "(worldURL, expanded)"
+		                 "(worldURL, expanded, hAdjustment, vAdjustment)"
 		                 "VALUES ("
 		                 + database .quote (worldURL) + ","
-		                 + database .quote (expanded)
+		                 + database .quote (expanded) + ","
+		                 + database .quote (basic::to_string (hAdjustment)) + ","
+		                 + database .quote (basic::to_string (vAdjustment))
 		                 + ")");
 	}
 
 	void
-	update (const std::string & id, const std::string & expanded)
+	update (const std::string & id, const std::string & expanded, const double hAdjustment, const double vAdjustment)
 	{
 		database .query ("UPDATE Paths "
 		                 "SET "
-		                 "expanded = " + database .quote (expanded) + " "
-		                                                              "WHERE id = " + id);
+		                 "expanded    = " + database .quote (expanded) + ", "
+		                                                                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment)) + ", "
+		                                                                                                                                       "vAdjustment = " + database .quote (basic::to_string (vAdjustment)) + " "
+		                                                                                                                                                                                                             "WHERE id = " + id);
 	}
 
 	const std::string &

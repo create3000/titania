@@ -884,11 +884,13 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 	{
 		OutlineEditorDatabase database;
 
-		const auto & expanded = database .getItem (executionContext -> getWorldURL ());
-		const auto   paths    = basic::split (expanded, ";");
+		const auto item  = database .getItem (executionContext -> getWorldURL ());
+		const auto paths = basic::split (std::get <0> (item), ";");
 
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
+
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)), 1000);
 	}
 	catch (...)
 	{ }
@@ -909,7 +911,10 @@ OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContex
 
 	OutlineEditorDatabase database;
 
-	database .setItem (executionContext -> getWorldURL (), basic::join (paths, ";"));
+	database .setItem (executionContext -> getWorldURL (),
+	                   basic::join (paths, ";"),
+	                   getScrolledWindow () .get_hadjustment () -> get_value (),
+	                   getScrolledWindow () .get_vadjustment () -> get_value ());
 }
 
 void
@@ -926,6 +931,13 @@ OutlineEditor::getExpanded (const Gtk::TreeModel::Children & children, std::dequ
 			getExpanded (child -> children (), paths);
 		}
 	}
+}
+
+void
+OutlineEditor::setAdjustments (const double h, const double v)
+{
+	getScrolledWindow () .get_hadjustment () -> set_value (h);
+	getScrolledWindow () .get_vadjustment () -> set_value (v);
 }
 
 OutlineEditor::~OutlineEditor ()
