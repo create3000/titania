@@ -77,7 +77,9 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	           exportedNodes (false),
 	      expandExternProtos (false),
 	expandPrototypeInstances (false),
-	       expandInlineNodes (false)
+	       expandInlineNodes (false),
+	   hAdjustmentConnection (),
+	   vAdjustmentConnection ()
 {
 	// Options
 
@@ -432,6 +434,8 @@ void
 X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & executionContext)
 {
 	//__LOG__ << std::endl;
+	
+	get_vadjustment () -> set_value (0);
 
 	// Remove model.
 
@@ -477,7 +481,13 @@ X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
 
-	const X3D::X3DExecutionContextPtr & executionContext = get_model () -> get_execution_context ();
+	// Restore scroll positions after a root nodes change.
+
+	hAdjustmentConnection .disconnect ();
+	vAdjustmentConnection .disconnect ();
+
+	hAdjustmentConnection = get_hadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_hAdjustment_value_changed), get_hadjustment () -> get_value ()));
+	vAdjustmentConnection = get_vadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_vAdjustment_value_changed), get_vadjustment () -> get_value ()));
 
 	// Unwatch model.
 
@@ -488,6 +498,8 @@ X3DOutlineTreeView::set_rootNodes ()
 	}
 
 	// Fill model.
+
+	const X3D::X3DExecutionContextPtr & executionContext = get_model () -> get_execution_context ();
 
 	unset_model ();
 	get_model () -> clear ();
@@ -587,6 +599,22 @@ X3DOutlineTreeView::set_rootNodes ()
 	}
 
 	enable_shift_key ();
+}
+
+void
+X3DOutlineTreeView::on_hAdjustment_value_changed (const double value)
+{
+	hAdjustmentConnection .disconnect ();
+
+	get_hadjustment () -> set_value (value);
+}
+
+void
+X3DOutlineTreeView::on_vAdjustment_value_changed (const double value)
+{
+	vAdjustmentConnection .disconnect ();
+
+	get_vadjustment () -> set_value (value);
 }
 
 void
