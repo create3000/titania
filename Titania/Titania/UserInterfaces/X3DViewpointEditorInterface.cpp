@@ -61,6 +61,20 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_OrthoViewpointCenterOfRotationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationXAdjustment"));
+	m_OrthoViewpointCenterOfRotationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationYAdjustment"));
+	m_OrthoViewpointCenterOfRotationZAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationZAdjustment"));
+	m_OrthoViewpointFieldOfViewMaxXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointFieldOfViewMaxXAdjustment"));
+	m_OrthoViewpointFieldOfViewMaxYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointFieldOfViewMaxYAdjustment"));
+	m_OrthoViewpointFieldOfViewMinXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointFieldOfViewMinXAdjustment"));
+	m_OrthoViewpointFieldOfViewMinYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointFieldOfViewMinYAdjustment"));
+	m_OrthoViewpointOrientationAAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationAAdjustment"));
+	m_OrthoViewpointOrientationXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationXAdjustment"));
+	m_OrthoViewpointOrientationYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationYAdjustment"));
+	m_OrthoViewpointOrientationZAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationZAdjustment"));
+	m_OrthoViewpointPositionXAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointPositionXAdjustment"));
+	m_OrthoViewpointPositionYAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointPositionYAdjustment"));
+	m_OrthoViewpointPositionZAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointPositionZAdjustment"));
 	m_PerspectiveViewpointCenterOfRotationXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointCenterOfRotationXAdjustment"));
 	m_PerspectiveViewpointCenterOfRotationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointCenterOfRotationYAdjustment"));
 	m_PerspectiveViewpointCenterOfRotationZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointCenterOfRotationZAdjustment"));
@@ -106,10 +120,20 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_PerspectiveViewpointFieldOfViewBox -> set_name ("PerspectiveViewpointFieldOfViewBox");
 	m_builder -> get_widget ("PerspectiveViewpointPositionBox", m_PerspectiveViewpointPositionBox);
 	m_PerspectiveViewpointPositionBox -> set_name ("PerspectiveViewpointPositionBox");
-	m_builder -> get_widget ("PerspectiveViewpointOrientationBox", m_PerspectiveViewpointOrientationBox);
-	m_PerspectiveViewpointOrientationBox -> set_name ("PerspectiveViewpointOrientationBox");
 	m_builder -> get_widget ("PerspectiveViewpointCenterOfRotationBox", m_PerspectiveViewpointCenterOfRotationBox);
 	m_PerspectiveViewpointCenterOfRotationBox -> set_name ("PerspectiveViewpointCenterOfRotationBox");
+	m_builder -> get_widget ("PerspectiveViewpointOrientationBox", m_PerspectiveViewpointOrientationBox);
+	m_PerspectiveViewpointOrientationBox -> set_name ("PerspectiveViewpointOrientationBox");
+	m_builder -> get_widget ("OrthoViewpointExpander", m_OrthoViewpointExpander);
+	m_OrthoViewpointExpander -> set_name ("OrthoViewpointExpander");
+	m_builder -> get_widget ("OrthoViewpointPositionBox", m_OrthoViewpointPositionBox);
+	m_OrthoViewpointPositionBox -> set_name ("OrthoViewpointPositionBox");
+	m_builder -> get_widget ("OrthoViewpointCenterOfRotationBox", m_OrthoViewpointCenterOfRotationBox);
+	m_OrthoViewpointCenterOfRotationBox -> set_name ("OrthoViewpointCenterOfRotationBox");
+	m_builder -> get_widget ("OrthoViewpointOrientationBox", m_OrthoViewpointOrientationBox);
+	m_OrthoViewpointOrientationBox -> set_name ("OrthoViewpointOrientationBox");
+	m_builder -> get_widget ("OrthoViewpointFieldOfViewBox", m_OrthoViewpointFieldOfViewBox);
+	m_OrthoViewpointFieldOfViewBox -> set_name ("OrthoViewpointFieldOfViewBox");
 
 	// Connect object Gtk::Button with id 'UpdateViewpointButton'.
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));

@@ -141,6 +141,18 @@ public:
 	getCenterOfRotation () const final override
 	{ return centerOfRotation (); }
 
+	double
+	getMinimumX () const;
+
+	double
+	getMinimumY () const;
+
+	double
+	getMaximumX () const;
+
+	double
+	getMaximumY () const;
+
 	virtual
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const final override;
@@ -162,18 +174,6 @@ public:
 private:
 
 	///  @name Member access
-
-	double
-	getMinimumX () const;
-
-	double
-	getMinimumY () const;
-
-	double
-	getMaximumX () const;
-
-	double
-	getMaximumY () const;
 
 	double
 	getSizeX () const;

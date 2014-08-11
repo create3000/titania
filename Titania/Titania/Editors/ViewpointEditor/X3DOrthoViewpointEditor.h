@@ -48,63 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
-#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
+#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
+#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DViewpointEditorInterface.h"
-#include "X3DViewpointEditor.h"
-#include "X3DOrthoViewpointEditor.h"
-//#include "X3DGeoViewpointEditor.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-class ViewpointList;
-
-class ViewpointEditor :
-	public X3DViewpointEditor,
-	public X3DOrthoViewpointEditor
-	//public X3DGeoViewpointEditor
+class X3DOrthoViewpointEditor :
+	virtual public X3DViewpointEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	ViewpointEditor (BrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~ViewpointEditor ();
+	~X3DOrthoViewpointEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DOrthoViewpointEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	void
+	setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_active_viewpoint ();
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_update_viewpoint_clicked () final override;
-
 	///  @name Members
 
-	std::unique_ptr <ViewpointList> viewpointList;
-
-	NameEntry                          nodeName;
-	SFStringTextView                   description;
-	X3DFieldToggleButton <X3D::SFBool> jump;
-	X3DFieldToggleButton <X3D::SFBool> retainUserOffsets;
+	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
+	X3DFieldAdjustment4 <X3D::SFRotation> orientation;
+	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
+	X3DFieldAdjustment4 <X3D::MFFloat>    fieldOfView;
 
 };
 

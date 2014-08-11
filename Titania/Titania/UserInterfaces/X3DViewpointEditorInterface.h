@@ -96,6 +96,62 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointCenterOfRotationXAdjustment () const
+	{ return m_OrthoViewpointCenterOfRotationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointCenterOfRotationYAdjustment () const
+	{ return m_OrthoViewpointCenterOfRotationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointCenterOfRotationZAdjustment () const
+	{ return m_OrthoViewpointCenterOfRotationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointFieldOfViewMaxXAdjustment () const
+	{ return m_OrthoViewpointFieldOfViewMaxXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointFieldOfViewMaxYAdjustment () const
+	{ return m_OrthoViewpointFieldOfViewMaxYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointFieldOfViewMinXAdjustment () const
+	{ return m_OrthoViewpointFieldOfViewMinXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointFieldOfViewMinYAdjustment () const
+	{ return m_OrthoViewpointFieldOfViewMinYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointOrientationAAdjustment () const
+	{ return m_OrthoViewpointOrientationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointOrientationXAdjustment () const
+	{ return m_OrthoViewpointOrientationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointOrientationYAdjustment () const
+	{ return m_OrthoViewpointOrientationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointOrientationZAdjustment () const
+	{ return m_OrthoViewpointOrientationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointPositionXAdjustment () const
+	{ return m_OrthoViewpointPositionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointPositionYAdjustment () const
+	{ return m_OrthoViewpointPositionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOrthoViewpointPositionZAdjustment () const
+	{ return m_OrthoViewpointPositionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getPerspectiveViewpointCenterOfRotationXAdjustment () const
 	{ return m_PerspectiveViewpointCenterOfRotationXAdjustment; }
 
@@ -208,12 +264,32 @@ public:
 	{ return *m_PerspectiveViewpointPositionBox; }
 
 	Gtk::Box &
+	getPerspectiveViewpointCenterOfRotationBox () const
+	{ return *m_PerspectiveViewpointCenterOfRotationBox; }
+
+	Gtk::Box &
 	getPerspectiveViewpointOrientationBox () const
 	{ return *m_PerspectiveViewpointOrientationBox; }
 
+	Gtk::Expander &
+	getOrthoViewpointExpander () const
+	{ return *m_OrthoViewpointExpander; }
+
 	Gtk::Box &
-	getPerspectiveViewpointCenterOfRotationBox () const
-	{ return *m_PerspectiveViewpointCenterOfRotationBox; }
+	getOrthoViewpointPositionBox () const
+	{ return *m_OrthoViewpointPositionBox; }
+
+	Gtk::Box &
+	getOrthoViewpointCenterOfRotationBox () const
+	{ return *m_OrthoViewpointCenterOfRotationBox; }
+
+	Gtk::Box &
+	getOrthoViewpointOrientationBox () const
+	{ return *m_OrthoViewpointOrientationBox; }
+
+	Gtk::Grid &
+	getOrthoViewpointFieldOfViewBox () const
+	{ return *m_OrthoViewpointFieldOfViewBox; }
 
 	virtual
 	void
@@ -232,6 +308,20 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointCenterOfRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointCenterOfRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointCenterOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointFieldOfViewMaxXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointFieldOfViewMaxYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointFieldOfViewMinXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointFieldOfViewMinYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointOrientationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointOrientationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointOrientationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointPositionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointPositionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointPositionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationZAdjustment;
@@ -260,8 +350,13 @@ private:
 	Gtk::Expander*                 m_PerspectiveViewpointExpander;
 	Gtk::Box*                      m_PerspectiveViewpointFieldOfViewBox;
 	Gtk::Box*                      m_PerspectiveViewpointPositionBox;
-	Gtk::Box*                      m_PerspectiveViewpointOrientationBox;
 	Gtk::Box*                      m_PerspectiveViewpointCenterOfRotationBox;
+	Gtk::Box*                      m_PerspectiveViewpointOrientationBox;
+	Gtk::Expander*                 m_OrthoViewpointExpander;
+	Gtk::Box*                      m_OrthoViewpointPositionBox;
+	Gtk::Box*                      m_OrthoViewpointCenterOfRotationBox;
+	Gtk::Box*                      m_OrthoViewpointOrientationBox;
+	Gtk::Grid*                     m_OrthoViewpointFieldOfViewBox;
 
 };
 

@@ -236,7 +236,7 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 	{
 		try
 		{
-			const auto & field = node -> getField <Type> (name);
+			auto & field = node -> getField <Type> (name);
 		
 			adjustment1 -> set_value (field .get1Value (0));
 			adjustment2 -> set_value (field .get1Value (1));

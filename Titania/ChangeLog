@@ -2,6 +2,23 @@
 
 	* titania:
 	* Makefile.am:
+	* ViewpointEditor.xml:
+	* X3DFieldAdjustment4.h:
+	* X3DFieldAdjustment3.h:
+	* X3DFieldAdjustment2.h:
+	* X3DLightEditorInterface.h:
+	* ViewpointEditor.h:
+	* X3DLightEditorInterface.cpp:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DOrthoViewpointEditor.h:
+	* X3DOrthoViewpointEditor.cpp: 
+
+2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* ComposedWidgets.h:
 	* LightEditor.xml:
 	* ViewpointEditor.xml:

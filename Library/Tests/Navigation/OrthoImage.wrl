@@ -4,8 +4,9 @@ DEF Gray Background {
   skyColor 0.2 0.2 0.2
 }
 
-DEF _1 OrthoViewpoint {
+OrthoViewpoint {
   description "Landscape"
+  position 4.88845e-15 0 10
   fieldOfView [
     0,
     0,
@@ -29,7 +30,7 @@ DEF Lena Transform {
   }
 }
 
-DEF _2 OrthoViewpoint {
+OrthoViewpoint {
   description "Portrait"
   fieldOfView [
     10,
@@ -52,4 +53,8 @@ DEF Lena_1 Transform {
       solid FALSE
     }
   }
+}
+
+DEF _1 Viewpoint {
+  position 0 0 42.4436
 }

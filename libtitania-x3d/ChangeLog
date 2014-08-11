@@ -1,5 +1,9 @@
 2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OrthoViewpoint.h: 
+
+2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* X3DBaseTool.h:
