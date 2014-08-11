@@ -85,6 +85,11 @@ public:
 	{ return node -> getName (); }
 
 	virtual
+	const Output &
+	name_changed () const final override
+	{ return node -> name_changed (); }
+
+	virtual
 	void
 	setUserData (const UserDataPtr & value) final override
 	{ node -> setUserData (value); }

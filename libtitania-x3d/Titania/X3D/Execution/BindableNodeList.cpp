@@ -64,10 +64,16 @@ X3DBindableNodeList <X3DViewpointNode>::replace (const list_type & other)
 	using addEvent = void (X3DBaseNode::*) ();
 
 	for (const auto & viewpointNode : list)
-		viewpointNode -> description () .removeInterest (this, (addEvent) &X3DBaseNode::addEvent);
+	{
+		viewpointNode -> name_changed () .removeInterest (this, (addEvent) &X3DBaseNode::addEvent);
+		viewpointNode -> description ()  .removeInterest (this, (addEvent) &X3DBaseNode::addEvent);
+	}
 
 	for (const auto & viewpointNode : other)
-		viewpointNode -> description () .addInterest (this, (addEvent) &X3DBaseNode::addEvent);
+	{
+		viewpointNode -> name_changed () .addInterest (this, (addEvent) &X3DBaseNode::addEvent);
+		viewpointNode -> description ()  .addInterest (this, (addEvent) &X3DBaseNode::addEvent);
+	}
 }
 
 } // X3D

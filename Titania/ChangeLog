@@ -1,3 +1,32 @@
+2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DEditorObject.h:
+	* X3DEditorObject.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* NameEntry.h:
+	* NormalTool.h:
+	* TextEditor.xml:
+	* DirectionTool.h:
+	* SFStringEntry.h:
+	* LightEditor.xml:
+	* RotationTool.x3dv:
+	* TextureEditor.xml:
+	* SFStringTextView.h:
+	* MaterialEditor.xml:
+	* DirectionTool.x3dv:
+	* ViewpointEditor.xml:
+	* X3DSpotLightEditor.h:
+	* X3DLightEditorInterface.h:
+	* ViewpointEditor.h:
+	* X3DLightEditorInterface.cpp:
+	* X3DSpotLightEditor.cpp:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DDirectionalLightEditor.h:
+	* X3DDirectionalLightEditor.cpp: 
+
 2014-08-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.xml:

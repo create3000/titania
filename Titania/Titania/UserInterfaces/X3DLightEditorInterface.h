@@ -264,8 +264,8 @@ public:
 	{ return *m_DirectionalLightDirectionZSpinButton; }
 
 	Gtk::Box &
-	getDirectionalLightDirectionToolBox () const
-	{ return *m_DirectionalLightDirectionToolBox; }
+	getDirectionalLightNormalToolBox () const
+	{ return *m_DirectionalLightNormalToolBox; }
 
 	Gtk::Expander &
 	getPointLightExpander () const
@@ -372,8 +372,8 @@ public:
 	{ return *m_SpotLightDirectionZSpinButton; }
 
 	Gtk::Box &
-	getSpotLightDirectionToolBox () const
-	{ return *m_SpotLightDirectionToolBox; }
+	getSpotLightNormalToolBox () const
+	{ return *m_SpotLightNormalToolBox; }
 
 	virtual
 	~X3DLightEditorInterface ();
@@ -430,7 +430,7 @@ private:
 	Gtk::SpinButton*               m_DirectionalLightDirectionXSpinButton;
 	Gtk::SpinButton*               m_DirectionalLightDirectionYSpinButton;
 	Gtk::SpinButton*               m_DirectionalLightDirectionZSpinButton;
-	Gtk::Box*                      m_DirectionalLightDirectionToolBox;
+	Gtk::Box*                      m_DirectionalLightNormalToolBox;
 	Gtk::Expander*                 m_PointLightExpander;
 	Gtk::Box*                      m_PointLightLocationBox;
 	Gtk::SpinButton*               m_PointLightLocationXSpinButton;
@@ -457,7 +457,7 @@ private:
 	Gtk::SpinButton*               m_SpotLightDirectionXSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionYSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionZSpinButton;
-	Gtk::Box*                      m_SpotLightDirectionToolBox;
+	Gtk::Box*                      m_SpotLightNormalToolBox;
 
 };
 

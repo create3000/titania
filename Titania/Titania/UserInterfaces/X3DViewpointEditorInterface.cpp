@@ -72,8 +72,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_PerspectiveViewpointPositionXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointPositionXAdjustment"));
 	m_PerspectiveViewpointPositionYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointPositionYAdjustment"));
 	m_PerspectiveViewpointPositionZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointPositionZAdjustment"));
+	m_ViewpointDescriptionTextBuffer                  = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("ViewpointDescriptionTextBuffer"));
 	m_ViewpointListStore                              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ViewpointListStore"));
-	m_ViewpointSelection                              = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ViewpointSelection"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -86,8 +86,6 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_ViewpointExpander -> set_name ("ViewpointExpander");
 	m_builder -> get_widget ("ViewpointBox", m_ViewpointBox);
 	m_ViewpointBox -> set_name ("ViewpointBox");
-	m_builder -> get_widget ("ViewpointDescriptionEntry", m_ViewpointDescriptionEntry);
-	m_ViewpointDescriptionEntry -> set_name ("ViewpointDescriptionEntry");
 	m_builder -> get_widget ("ViewpointJumpCheckButton", m_ViewpointJumpCheckButton);
 	m_ViewpointJumpCheckButton -> set_name ("ViewpointJumpCheckButton");
 	m_builder -> get_widget ("ViewpointRetainUserOffsetsCheckButton", m_ViewpointRetainUserOffsetsCheckButton);
@@ -100,6 +98,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_ViewpointNameEntry -> set_name ("ViewpointNameEntry");
 	m_builder -> get_widget ("ViewpointRenameButton", m_ViewpointRenameButton);
 	m_ViewpointRenameButton -> set_name ("ViewpointRenameButton");
+	m_builder -> get_widget ("ViewpointDescriptionTextView", m_ViewpointDescriptionTextView);
+	m_ViewpointDescriptionTextView -> set_name ("ViewpointDescriptionTextView");
 	m_builder -> get_widget ("PerspectiveViewpointExpander", m_PerspectiveViewpointExpander);
 	m_PerspectiveViewpointExpander -> set_name ("PerspectiveViewpointExpander");
 	m_builder -> get_widget ("FieldOfViewBox", m_FieldOfViewBox);
@@ -110,8 +110,6 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_PerspectiveViewpointOrientationBox -> set_name ("PerspectiveViewpointOrientationBox");
 	m_builder -> get_widget ("PerspectiveViewpointCenterOfRotationBox", m_PerspectiveViewpointCenterOfRotationBox);
 	m_PerspectiveViewpointCenterOfRotationBox -> set_name ("PerspectiveViewpointCenterOfRotationBox");
-	m_builder -> get_widget ("ViewpointTreeView", m_ViewpointTreeView);
-	m_ViewpointTreeView -> set_name ("ViewpointTreeView");
 
 	// Connect object Gtk::Button with id 'UpdateViewpointButton'.
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));

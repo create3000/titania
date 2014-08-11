@@ -127,6 +127,16 @@ public:
 	 *  @name Commons members
 	 */
 
+	///  Sets the name of this object.
+	virtual
+	void
+	setName (const std::string &) override;
+
+	virtual
+	const Output &
+	name_changed () const
+	{ return nameOutput; }
+
 	///  Returns the current browser time for this frame.
 	time_type
 	getCurrentTime () const;
@@ -598,6 +608,7 @@ private:
 
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
+	Output        nameOutput;
 	NodeTypeArray type;
 
 	FieldDefinitionArray fieldDefinitions;       // Pre-defined and user-defined field definitions

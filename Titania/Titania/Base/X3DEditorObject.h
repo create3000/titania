@@ -85,6 +85,12 @@ protected:
 
 	///  @name Operations
 
+	void
+	validateIdOnInsert (Gtk::Entry &, const Glib::ustring &, int);
+
+	void
+	validateIdOnDelete (Gtk::Entry &, int, int);
+
 	static
 	Glib::ustring
 	refineName (const Glib::ustring &);
@@ -134,6 +140,11 @@ protected:
 
 
 private:
+
+	///  @name Operations
+
+	bool
+	validateId (const std::string &) const;
 
 	///  @name Members
 

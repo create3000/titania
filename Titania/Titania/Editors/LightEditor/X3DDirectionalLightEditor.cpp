@@ -50,7 +50,7 @@
 
 #include "X3DDirectionalLightEditor.h"
 
-#include "../../ComposedWidgets/DirectionTool.h"
+#include "../../ComposedWidgets/NormalTool.h"
 
 namespace titania {
 namespace puck {
@@ -63,7 +63,7 @@ X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
 	                         getDirectionalLightDirectionZAdjustment (),
 	                         getDirectionalLightDirectionBox (),
 	                         "direction"),
-	          directionTool (new DirectionTool (getBrowserWindow (), getDirectionalLightDirectionToolBox (), "direction"))
+	          directionTool (new NormalTool (getBrowserWindow (), getDirectionalLightNormalToolBox (), "direction"))
 {
 	direction .setNormalize (true);
 }

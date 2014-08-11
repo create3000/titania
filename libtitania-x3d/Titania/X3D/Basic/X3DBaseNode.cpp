@@ -133,6 +133,7 @@ namespace X3D {
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
 	     X3DParentObject (browser),
 	    executionContext (executionContext),
+	          nameOutput (),
 	                type ({ X3DConstants::X3DBaseNode }),
 	    fieldDefinitions (),
 	              fields (),
@@ -371,6 +372,17 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 		parent -> set (replacement);
 		parent -> addEvent ();
 	}
+}
+
+/***
+ *  Sets the name of this object and processes the name_changed interests.
+ */
+void
+X3DBaseNode::setName (const std::string & value)
+{
+	X3DParentObject::setName (value);
+
+	name_changed () .processInterests ();
 }
 
 /***

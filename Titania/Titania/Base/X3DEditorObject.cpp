@@ -53,6 +53,42 @@
 namespace titania {
 namespace puck {
 
+/***********************************************************************************************************************
+ *
+ *  Validate Id
+ *
+ **********************************************************************************************************************/
+
+void
+X3DEditorObject::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
+{
+	const std::string text = entry .get_text () .insert (position, insert);
+
+	if (not validateId (text))
+		entry .signal_insert_text () .emission_stop ();
+}
+
+void
+X3DEditorObject::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int end_pos)
+{
+	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+
+	if (text .length () and not validateId (text))
+		entry .signal_delete_text () .emission_stop ();
+}
+
+bool
+X3DEditorObject::validateId (const std::string & text) const
+{
+	return X3D::RegEx::Id .FullMatch (text) and text not_eq "NULL";
+}
+
+/***********************************************************************************************************************
+ *
+ *  Refine name
+ *
+ **********************************************************************************************************************/
+
 Glib::ustring
 X3DEditorObject::refineName (const Glib::ustring & name)
 {

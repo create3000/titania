@@ -48,29 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_DIRECTION_TOOL_H__
-#define __TITANIA_COMPOSED_WIDGETS_DIRECTION_TOOL_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_SFSTRING_ENTRY_H__
+#define __TITANIA_COMPOSED_WIDGETS_SFSTRING_ENTRY_H__
 
 #include "../Base/X3DEditorObject.h"
-#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class DirectionTool :
+class SFStringTextView :
 	public X3DEditorObject
 {
 public:
 
 	///  @name Construction
 
-	DirectionTool (BrowserWindow* const,
-	               Gtk::Box &,
-                  const std::string &);
-
-	virtual
-	void
-	setup () final override;
+	SFStringTextView (BrowserWindow* const,
+	               Gtk::TextView &,
+	               const std::string &);
 
 	///  @name Member access
 
@@ -84,20 +79,16 @@ public:
 	///  @name Destruction
 
 	virtual
-	~DirectionTool ();
+	~SFStringTextView ()
+	{ dispose (); }
 
 
 private:
 
-	///  @name Construction
-
-	void
-	set_initialized ();
-
 	///  @name Event handler
 
 	void
-	set_direction (const X3D::SFVec3f &);
+	on_changed ();
 
 	void
 	set_field ();
@@ -106,90 +97,50 @@ private:
 	set_buffer ();
 
 	void
-	set_value (const X3D::SFVec3f &);
-
-	void
-	connect (const X3D::SFVec3f &);
+	connect (const X3D::SFString &);
 
 	///  @name Members
 
-	Gtk::Box &        box;
-	X3D::BrowserPtr   browser;
+	Gtk::TextView &   textView;
 	X3D::MFNode       nodes;
 	const std::string name;
 	UndoStepPtr       undoStep;
-	X3D::SFVec3f      buffer;
+	bool              changing;
+	X3D::SFTime       buffer;
 
 };
 
 inline
-DirectionTool::DirectionTool (BrowserWindow* const browserWindow,
-                              Gtk::Box & box,
+SFStringTextView::SFStringTextView (BrowserWindow* const browserWindow,
+                              Gtk::TextView & textView,
                               const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DEditorObject (),
-	             box (box),
-	         browser (X3D::createBrowser (browserWindow -> getBrowser ())),
+	        textView (textView),
 	           nodes (),
 	            name (name),
 	        undoStep (),
+	        changing (false),
 	          buffer ()
 {
-	browser -> set_antialiasing (4);
-
-	// Buffer
-
 	addChildren (buffer);
-	buffer .addInterest (this, &DirectionTool::set_buffer);
+	buffer .addInterest (this, &SFStringTextView::set_buffer);
 
-	// Setup
-
+	textView .get_buffer () -> signal_changed () .connect (sigc::mem_fun (*this, &SFStringTextView::on_changed));
 	setup ();
 }
 
 inline
 void
-DirectionTool::setup ()
+SFStringTextView::setNodes (const X3D::MFNode & value)
 {
-	X3DEditorObject::setup ();
-
-	box .pack_start (*browser, true, true, 0);
-
-	browser -> show ();
-	browser -> initialized () .addInterest (this, &DirectionTool::set_initialized);
-}
-
-inline
-void
-DirectionTool::set_initialized ()
-{
-	browser -> initialized () .removeInterest (this, &DirectionTool::set_initialized);
-
-	try
-	{
-		browser -> loadURL ({ get_ui ("Dialogs/DirectionTool.x3dv") });
-
-		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
-
-		tool -> getField <X3D::SFVec3f> ("direction_changed") .addInterest (this, &DirectionTool::set_direction);
-	}
-	catch (const X3D::X3DError &)
-	{ }
-
-	setNodes (nodes);
-}
-
-inline
-void
-DirectionTool::setNodes (const X3D::MFNode & value)
-{
-	//undoStep .reset ();
+	undoStep .reset ();
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <X3D::SFVec3f> (name) .removeInterest (this, &DirectionTool::set_field);
+			node -> getField <X3D::SFString> (name) .removeInterest (this, &SFStringTextView::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -201,7 +152,7 @@ DirectionTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFVec3f> (name) .addInterest (this, &DirectionTool::set_field);
+			node -> getField <X3D::SFString> (name) .addInterest (this, &SFStringTextView::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -212,50 +163,54 @@ DirectionTool::setNodes (const X3D::MFNode & value)
 
 inline
 void
-DirectionTool::set_direction (const X3D::SFVec3f & value)
+SFStringTextView::on_changed ()
 {
-	addUndoFunction <X3D::SFVec3f> (nodes, name, undoStep);
+	if (changing)
+		return;
+
+	addUndoFunction <X3D::SFString> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			auto & field = node -> getField <X3D::SFVec3f> (name);
+			auto & field = node -> getField <X3D::SFString> (name);
 
-			field .removeInterest (this, &DirectionTool::set_field);
-			field .addInterest (this, &DirectionTool::connect);
+			field .removeInterest (this, &SFStringTextView::set_field);
+			field .addInterest (this, &SFStringTextView::connect);
 
-			field = value;
+			field = textView .get_buffer () -> get_text ();
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	addRedoFunction <X3D::SFVec3f> (nodes, name, undoStep);
+	addRedoFunction <X3D::SFString> (nodes, name, undoStep);
 }
 
 inline
 void
-DirectionTool::set_field ()
+SFStringTextView::set_field ()
 {
 	buffer .addEvent ();
 }
 
 inline
 void
-DirectionTool::set_buffer ()
+SFStringTextView::set_buffer ()
 {
+	changing = true;
+
+	// Find last field.
+
 	bool hasField = false;
 
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
-			const auto & field = node -> getField <X3D::SFVec3f> (name);
-
+			textView .get_buffer () -> set_text (node -> getField <X3D::SFString> (name));
 			hasField = true;
-
-			set_value (field);
 			break;
 		}
 		catch (const X3D::X3DError &)
@@ -263,39 +218,19 @@ DirectionTool::set_buffer ()
 	}
 
 	if (not hasField)
-		set_value (X3D::SFVec3f (0, 0, -1));
+		textView .get_buffer () -> set_text ("");
 
-	browser -> set_sensitive (hasField);
+	textView .set_sensitive (hasField);
+
+	changing = false;
 }
 
 inline
 void
-DirectionTool::set_value (const X3D::SFVec3f & value)
+SFStringTextView::connect (const X3D::SFString & field)
 {
-	try
-	{
-		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
-
-		tool -> setField <X3D::SFVec3f> ("set_direction", value);
-	}
-	catch (const X3D::X3DError & error)
-	{ }
-}
-
-inline
-void
-DirectionTool::connect (const X3D::SFVec3f & field)
-{
-	field .removeInterest (this, &DirectionTool::connect);
-	field .addInterest (this, &DirectionTool::set_field);
-}
-
-inline
-DirectionTool::~DirectionTool ()
-{
-	X3D::removeBrowser (browser);
-
-	dispose ();
+	field .removeInterest (this, &SFStringTextView::connect);
+	field .addInterest (this, &SFStringTextView::set_field);
 }
 
 } // puck

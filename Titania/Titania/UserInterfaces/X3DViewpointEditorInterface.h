@@ -139,13 +139,13 @@ public:
 	getPerspectiveViewpointPositionZAdjustment () const
 	{ return m_PerspectiveViewpointPositionZAdjustment; }
 
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getViewpointDescriptionTextBuffer () const
+	{ return m_ViewpointDescriptionTextBuffer; }
+
 	const Glib::RefPtr <Gtk::ListStore> &
 	getViewpointListStore () const
 	{ return m_ViewpointListStore; }
-
-	const Glib::RefPtr <Gtk::TreeSelection> &
-	getViewpointSelection () const
-	{ return m_ViewpointSelection; }
 
 	Gtk::Window &
 	getWindow () const
@@ -166,10 +166,6 @@ public:
 	Gtk::Grid &
 	getViewpointBox () const
 	{ return *m_ViewpointBox; }
-
-	Gtk::Entry &
-	getViewpointDescriptionEntry () const
-	{ return *m_ViewpointDescriptionEntry; }
 
 	Gtk::CheckButton &
 	getViewpointJumpCheckButton () const
@@ -195,6 +191,10 @@ public:
 	getViewpointRenameButton () const
 	{ return *m_ViewpointRenameButton; }
 
+	Gtk::TextView &
+	getViewpointDescriptionTextView () const
+	{ return *m_ViewpointDescriptionTextView; }
+
 	Gtk::Expander &
 	getPerspectiveViewpointExpander () const
 	{ return *m_PerspectiveViewpointExpander; }
@@ -215,10 +215,6 @@ public:
 	getPerspectiveViewpointCenterOfRotationBox () const
 	{ return *m_PerspectiveViewpointCenterOfRotationBox; }
 
-	Gtk::TreeView &
-	getViewpointTreeView () const
-	{ return *m_ViewpointTreeView; }
-
 	virtual
 	void
 	on_update_viewpoint_clicked () = 0;
@@ -234,39 +230,38 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                       filename;
-	Glib::RefPtr <Gtk::Builder>       m_builder;
-	Glib::RefPtr <Gtk::Adjustment>    m_FieldOfViewAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointCenterOfRotationXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointCenterOfRotationYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointCenterOfRotationZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointOrientationAAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointOrientationXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointOrientationYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointOrientationZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointPositionXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointPositionYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>    m_PerspectiveViewpointPositionZAdjustment;
-	Glib::RefPtr <Gtk::ListStore>     m_ViewpointListStore;
-	Glib::RefPtr <Gtk::TreeSelection> m_ViewpointSelection;
-	Gtk::Window*                      m_Window;
-	Gtk::Box*                         m_Widget;
-	Gtk::Box*                         m_ViewpointListBox;
-	Gtk::Expander*                    m_ViewpointExpander;
-	Gtk::Grid*                        m_ViewpointBox;
-	Gtk::Entry*                       m_ViewpointDescriptionEntry;
-	Gtk::CheckButton*                 m_ViewpointJumpCheckButton;
-	Gtk::CheckButton*                 m_ViewpointRetainUserOffsetsCheckButton;
-	Gtk::Button*                      m_UpdateViewpointButton;
-	Gtk::Box*                         m_ViewpointNameBox;
-	Gtk::Entry*                       m_ViewpointNameEntry;
-	Gtk::Button*                      m_ViewpointRenameButton;
-	Gtk::Expander*                    m_PerspectiveViewpointExpander;
-	Gtk::Box*                         m_FieldOfViewBox;
-	Gtk::Box*                         m_PerspectiveViewpointPositionBox;
-	Gtk::Box*                         m_PerspectiveViewpointOrientationBox;
-	Gtk::Box*                         m_PerspectiveViewpointCenterOfRotationBox;
-	Gtk::TreeView*                    m_ViewpointTreeView;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_FieldOfViewAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointPositionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointPositionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointPositionZAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer> m_ViewpointDescriptionTextBuffer;
+	Glib::RefPtr <Gtk::ListStore>  m_ViewpointListStore;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_ViewpointListBox;
+	Gtk::Expander*                 m_ViewpointExpander;
+	Gtk::Grid*                     m_ViewpointBox;
+	Gtk::CheckButton*              m_ViewpointJumpCheckButton;
+	Gtk::CheckButton*              m_ViewpointRetainUserOffsetsCheckButton;
+	Gtk::Button*                   m_UpdateViewpointButton;
+	Gtk::Box*                      m_ViewpointNameBox;
+	Gtk::Entry*                    m_ViewpointNameEntry;
+	Gtk::Button*                   m_ViewpointRenameButton;
+	Gtk::TextView*                 m_ViewpointDescriptionTextView;
+	Gtk::Expander*                 m_PerspectiveViewpointExpander;
+	Gtk::Box*                      m_FieldOfViewBox;
+	Gtk::Box*                      m_PerspectiveViewpointPositionBox;
+	Gtk::Box*                      m_PerspectiveViewpointOrientationBox;
+	Gtk::Box*                      m_PerspectiveViewpointCenterOfRotationBox;
 
 };
 

@@ -221,7 +221,7 @@
                     </child>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow1">
-                        <property name="height_request">100</property>
+                        <property name="height_request">96</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="hexpand">True</property>
@@ -730,7 +730,7 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow2">
-                            <property name="height_request">100</property>
+                            <property name="height_request">96</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="shadow_type">in</property>

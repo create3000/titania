@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.3, http://titania.create3000.de"
-META "modified" "Thu, 07 Aug 2014 14:15:13 GMT"
+META "modified" "Mon, 11 Aug 2014 02:12:43 GMT"
 
 DEF Gray Background {
   skyColor 0.381966 0.381966 0.381966
@@ -84,33 +84,13 @@ function initialize ()
 }
 
 DEF Tool Script {
-  inputOnly  SFVec3f    set_direction
-  inputOnly  SFRotation set_rotation
-  outputOnly SFVec3f    direction_changed
-  outputOnly SFRotation rotation_changed
+  inputOutput SFRotation inputRotation 0 0 1 0
+  inputOutput SFRotation outputRotation 0 0 1 0
 
-  url "vrmlscript:
-var zAxis = new SFVec3f (0, 0, 1);
-
-function initialize ()
-{
-	set_direction (zAxis .negate ());
-}
-
-function set_direction (value)
-{
-	rotation_changed = new SFRotation (zAxis, value .negate ());
-}
-
-function set_rotation (value)
-{
-	direction_changed = value .multVec (zAxis) .negate ();
-}
-"
   directOutput TRUE
 }
 
-ROUTE Tool.rotation_changed TO _1.set_offset
-ROUTE Tool.rotation_changed TO _2.set_rotation
-ROUTE _1.rotation_changed TO Tool.set_rotation
 ROUTE _1.rotation_changed TO _2.set_rotation
+ROUTE Tool.inputRotation_changed TO _1.set_offset
+ROUTE Tool.inputRotation_changed TO _2.set_rotation
+ROUTE _1.rotation_changed TO Tool.set_outputRotation

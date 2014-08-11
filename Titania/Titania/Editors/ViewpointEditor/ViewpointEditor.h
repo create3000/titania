@@ -57,6 +57,9 @@
 //#include "X3DOrthoViewpointEditor.h"
 //#include "X3DGeoViewpointEditor.h"
 
+#include "../../ComposedWidgets/SFStringTextView.h"
+#include "../../ComposedWidgets/NameEntry.h"
+
 namespace titania {
 namespace puck {
 
@@ -102,6 +105,8 @@ private:
 
 	std::unique_ptr <ViewpointList> viewpointList;
 
+	NameEntry                          nodeName;
+	SFStringTextView                   description;
 	X3DFieldToggleButton <X3D::SFBool> jump;
 	X3DFieldToggleButton <X3D::SFBool> retainUserOffsets;
 

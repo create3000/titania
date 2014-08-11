@@ -213,7 +213,7 @@
                             <property name="column_spacing">16</property>
                             <child>
                               <object class="GtkBox" id="PreviewBox">
-                                <property name="height_request">100</property>
+                                <property name="height_request">96</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="hexpand">True</property>

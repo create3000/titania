@@ -2155,9 +2155,6 @@ BrowserWindow::on_look_at_selection_clicked ()
 			bbox += boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (boundedObject));
 	}
 
-	if (bbox .empty ())
-		return;
-
 	activeViewpoint -> lookAt (bbox);
 }
 

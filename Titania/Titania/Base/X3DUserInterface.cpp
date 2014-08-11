@@ -142,7 +142,12 @@ throw (std::out_of_range)
 {
 	try
 	{
-		return dialogs .at (name);
+		const auto dialog = dialogs .at (name);
+
+		if (present)
+			dialog -> getWindow () .present ();
+
+		return dialog;
 	}
 	catch (const std::out_of_range &)
 	{

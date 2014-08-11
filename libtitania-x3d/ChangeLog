@@ -1,3 +1,10 @@
+2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DBaseTool.h:
+	* BindableNodeList.cpp: 
+
 2014-08-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3D.cpp:

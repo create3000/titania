@@ -50,7 +50,7 @@
 
 #include "X3DSpotLightEditor.h"
 
-#include "../../ComposedWidgets/DirectionTool.h"
+#include "../../ComposedWidgets/NormalTool.h"
 
 namespace titania {
 namespace puck {
@@ -75,7 +75,7 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 	                         getSpotLightDirectionZAdjustment (),
 	                         getSpotLightDirectionBox (),
 	                         "direction"),
-	          directionTool (new DirectionTool (getBrowserWindow (), getSpotLightDirectionToolBox (), "direction")),
+	          directionTool (new NormalTool (getBrowserWindow (), getSpotLightNormalToolBox (), "direction")),
 	                 radius (getBrowserWindow (), getSpotLightRadiusAdjustment (), getSpotLightRadiusSpinButton (), "radius"),
 	              beamWidth (getBrowserWindow (), getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
 	            cutOffAngle (getBrowserWindow (), getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")

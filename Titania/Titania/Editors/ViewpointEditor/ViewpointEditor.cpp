@@ -64,6 +64,8 @@ ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
 	    //X3DOrthoViewpointEditor (),
 	      //X3DGeoViewpointEditor ()
 	              viewpointList (new ViewpointList (browserWindow)),
+	                   nodeName (getBrowserWindow (), getViewpointNameEntry (), getViewpointRenameButton ()),
+	                description (getBrowserWindow (), getViewpointDescriptionTextView (), "description"),
 	                       jump (getBrowserWindow (), getViewpointJumpCheckButton (), "jump"),
 	          retainUserOffsets (getBrowserWindow (), getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets")
 {
@@ -95,16 +97,22 @@ ViewpointEditor::set_active_viewpoint ()
 	const auto activeLayer = getBrowser () -> getActiveLayer ();
 
 	bool haveViewpoint = false;
+	bool inScene       = false;
 
 	if (activeLayer)
+	{
 		haveViewpoint = (activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ());
+		inScene       = (activeLayer -> getViewpointStack () -> top () -> getExecutionContext () == getScene ());
+	}
 
-	const auto viewpointNodes = haveViewpoint ? X3D::MFNode ({ activeLayer -> getViewpointStack () -> bottom () }) : X3D::MFNode ();
+	const auto viewpointNodes = haveViewpoint ? X3D::MFNode ({ activeLayer -> getViewpointStack () -> top () }) : X3D::MFNode ();
 
-	getViewpointBox () .set_sensitive (haveViewpoint);
+	getViewpointBox () .set_sensitive (haveViewpoint and inScene);
 
-	jump              .setNodes (viewpointNodes);
+	nodeName          .setNode  (haveViewpoint ? activeLayer -> getViewpointStack () -> top () : nullptr);
+	description       .setNodes (viewpointNodes);
 	retainUserOffsets .setNodes (viewpointNodes);
+	jump              .setNodes (viewpointNodes);
 }
 
 void

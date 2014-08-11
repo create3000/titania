@@ -143,7 +143,7 @@
                 <property name="spacing">4</property>
                 <child>
                   <object class="GtkBox" id="PreviewBox">
-                    <property name="height_request">50</property>
+                    <property name="height_request">48</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
