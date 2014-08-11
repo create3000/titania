@@ -96,6 +96,54 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointCenterOfRotationXAdjustment () const
+	{ return m_GeoViewpointCenterOfRotationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointCenterOfRotationYAdjustment () const
+	{ return m_GeoViewpointCenterOfRotationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointCenterOfRotationZAdjustment () const
+	{ return m_GeoViewpointCenterOfRotationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointFieldOfViewAdjustment () const
+	{ return m_GeoViewpointFieldOfViewAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationAAdjustment () const
+	{ return m_GeoViewpointOrientationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationXAdjustment () const
+	{ return m_GeoViewpointOrientationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationYAdjustment () const
+	{ return m_GeoViewpointOrientationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationZAdjustment () const
+	{ return m_GeoViewpointOrientationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointPositionXAdjustment () const
+	{ return m_GeoViewpointPositionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointPositionYAdjustment () const
+	{ return m_GeoViewpointPositionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointPositionZAdjustment () const
+	{ return m_GeoViewpointPositionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointSpeedFactorAdjustment () const
+	{ return m_GeoViewpointSpeedFactorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getOrthoViewpointCenterOfRotationXAdjustment () const
 	{ return m_OrthoViewpointCenterOfRotationXAdjustment; }
 
@@ -291,6 +339,30 @@ public:
 	getOrthoViewpointFieldOfViewBox () const
 	{ return *m_OrthoViewpointFieldOfViewBox; }
 
+	Gtk::Expander &
+	getGeoViewpointExpander () const
+	{ return *m_GeoViewpointExpander; }
+
+	Gtk::Box &
+	getGeoViewpointFieldOfViewBox () const
+	{ return *m_GeoViewpointFieldOfViewBox; }
+
+	Gtk::Box &
+	getGeoViewpointPositionBox () const
+	{ return *m_GeoViewpointPositionBox; }
+
+	Gtk::Box &
+	getGeoViewpointCenterOfRotationBox () const
+	{ return *m_GeoViewpointCenterOfRotationBox; }
+
+	Gtk::Box &
+	getGeoViewpointOrientationBox () const
+	{ return *m_GeoViewpointOrientationBox; }
+
+	Gtk::SpinButton &
+	getGeoViewpointSpeedFactorSpinButton () const
+	{ return *m_GeoViewpointSpeedFactorSpinButton; }
+
 	virtual
 	void
 	on_update_viewpoint_clicked () = 0;
@@ -308,6 +380,18 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointFieldOfViewAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointPositionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointPositionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointPositionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointSpeedFactorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointCenterOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointCenterOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_OrthoViewpointCenterOfRotationZAdjustment;
@@ -357,6 +441,12 @@ private:
 	Gtk::Box*                      m_OrthoViewpointCenterOfRotationBox;
 	Gtk::Box*                      m_OrthoViewpointOrientationBox;
 	Gtk::Grid*                     m_OrthoViewpointFieldOfViewBox;
+	Gtk::Expander*                 m_GeoViewpointExpander;
+	Gtk::Box*                      m_GeoViewpointFieldOfViewBox;
+	Gtk::Box*                      m_GeoViewpointPositionBox;
+	Gtk::Box*                      m_GeoViewpointCenterOfRotationBox;
+	Gtk::Box*                      m_GeoViewpointOrientationBox;
+	Gtk::SpinButton*               m_GeoViewpointSpeedFactorSpinButton;
 
 };
 

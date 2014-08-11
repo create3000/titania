@@ -1,13 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.h" Line="68" Column="2" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp" Line="113" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.h" Line="65" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp" Line="52" Column="1" />
       <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp" Line="82" Column="34" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp" Line="52" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.h" Line="96" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp" Line="52" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -52,6 +54,7 @@
             <Node name="config" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True" />
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
                 </Node>
@@ -59,11 +62,12 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
+              <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="LightEditor" expanded="True" />
                 <Node name="ViewpointEditor" expanded="True">
-                  <Node name="ViewpointEditor.cpp" selected="True" />
+                  <Node name="X3DViewpointEditor.cpp" selected="True" />
                 </Node>
               </Node>
               <Node name="Widgets" expanded="True">

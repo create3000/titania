@@ -48,55 +48,54 @@
  *
  ******************************************************************************/
 
-#include "X3DViewpointEditor.h"
+#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DGEO_VIEWPOINT_EDITOR_H__
+#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DGEO_VIEWPOINT_EDITOR_H__
+
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DViewpointEditor::X3DViewpointEditor () :
-	X3DViewpointEditorInterface ("", ""),
-	                   position (getBrowserWindow (),
-	                             getPerspectiveViewpointPositionXAdjustment (),
-	                             getPerspectiveViewpointPositionYAdjustment (),
-	                             getPerspectiveViewpointPositionZAdjustment (),
-	                             getPerspectiveViewpointPositionBox (),
-	                             "position"),
-	                orientation (getBrowserWindow (),
-	                             getPerspectiveViewpointOrientationXAdjustment (),
-	                             getPerspectiveViewpointOrientationYAdjustment (),
-	                             getPerspectiveViewpointOrientationZAdjustment (),
-	                             getPerspectiveViewpointOrientationAAdjustment (),
-	                             getPerspectiveViewpointOrientationBox (),
-	                             "orientation"),
-	           centerOfRotation (getBrowserWindow (),
-	                             getPerspectiveViewpointCenterOfRotationXAdjustment (),
-	                             getPerspectiveViewpointCenterOfRotationYAdjustment (),
-	                             getPerspectiveViewpointCenterOfRotationZAdjustment (),
-	                             getPerspectiveViewpointCenterOfRotationBox (),
-	                             "centerOfRotation"),
-	                fieldOfView (getBrowserWindow (),
-	                             getPerspectiveViewpointFieldOfViewAdjustment (),
-	                             getPerspectiveViewpointFieldOfViewBox (),
-	                             "fieldOfView")
-{ }
-
-void
-X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+class X3DGeoViewpointEditor :
+	virtual public X3DViewpointEditorInterface
 {
-	X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
+public:
 
-	getPerspectiveViewpointExpander () .set_visible (viewpoint);
+	///  @name Destruction
 
-	const auto viewpoints = viewpoint ? X3D::MFNode ({ viewpoint }) : X3D::MFNode ();
+	virtual
+	~X3DGeoViewpointEditor ();
 
-	position         .setNodes (viewpoints);
-	orientation      .setNodes (viewpoints);
-	centerOfRotation .setNodes (viewpoints);
-	fieldOfView      .setNodes (viewpoints);
-}
 
-X3DViewpointEditor::~X3DViewpointEditor ()
-{ }
+protected:
+
+	///  @name Construction
+
+	X3DGeoViewpointEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	void
+	setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);
+
+
+private:
+
+	///  @name Members
+
+	X3DFieldAdjustment3 <X3D::SFVec3d>    position;
+	X3DFieldAdjustment4 <X3D::SFRotation> orientation;
+	X3DFieldAdjustment3 <X3D::SFVec3d>    centerOfRotation;
+	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;
+	X3DFieldAdjustment <X3D::SFFloat>     speedFactor;
+
+};
 
 } // puck
 } // titania
+
+#endif

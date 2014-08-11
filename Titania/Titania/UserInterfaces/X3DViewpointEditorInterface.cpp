@@ -61,6 +61,18 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_GeoViewpointCenterOfRotationXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointCenterOfRotationXAdjustment"));
+	m_GeoViewpointCenterOfRotationYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointCenterOfRotationYAdjustment"));
+	m_GeoViewpointCenterOfRotationZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointCenterOfRotationZAdjustment"));
+	m_GeoViewpointFieldOfViewAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointFieldOfViewAdjustment"));
+	m_GeoViewpointOrientationAAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationAAdjustment"));
+	m_GeoViewpointOrientationXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationXAdjustment"));
+	m_GeoViewpointOrientationYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationYAdjustment"));
+	m_GeoViewpointOrientationZAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationZAdjustment"));
+	m_GeoViewpointPositionXAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointPositionXAdjustment"));
+	m_GeoViewpointPositionYAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointPositionYAdjustment"));
+	m_GeoViewpointPositionZAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointPositionZAdjustment"));
+	m_GeoViewpointSpeedFactorAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointSpeedFactorAdjustment"));
 	m_OrthoViewpointCenterOfRotationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationXAdjustment"));
 	m_OrthoViewpointCenterOfRotationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationYAdjustment"));
 	m_OrthoViewpointCenterOfRotationZAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationZAdjustment"));
@@ -134,6 +146,18 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_OrthoViewpointOrientationBox -> set_name ("OrthoViewpointOrientationBox");
 	m_builder -> get_widget ("OrthoViewpointFieldOfViewBox", m_OrthoViewpointFieldOfViewBox);
 	m_OrthoViewpointFieldOfViewBox -> set_name ("OrthoViewpointFieldOfViewBox");
+	m_builder -> get_widget ("GeoViewpointExpander", m_GeoViewpointExpander);
+	m_GeoViewpointExpander -> set_name ("GeoViewpointExpander");
+	m_builder -> get_widget ("GeoViewpointFieldOfViewBox", m_GeoViewpointFieldOfViewBox);
+	m_GeoViewpointFieldOfViewBox -> set_name ("GeoViewpointFieldOfViewBox");
+	m_builder -> get_widget ("GeoViewpointPositionBox", m_GeoViewpointPositionBox);
+	m_GeoViewpointPositionBox -> set_name ("GeoViewpointPositionBox");
+	m_builder -> get_widget ("GeoViewpointCenterOfRotationBox", m_GeoViewpointCenterOfRotationBox);
+	m_GeoViewpointCenterOfRotationBox -> set_name ("GeoViewpointCenterOfRotationBox");
+	m_builder -> get_widget ("GeoViewpointOrientationBox", m_GeoViewpointOrientationBox);
+	m_GeoViewpointOrientationBox -> set_name ("GeoViewpointOrientationBox");
+	m_builder -> get_widget ("GeoViewpointSpeedFactorSpinButton", m_GeoViewpointSpeedFactorSpinButton);
+	m_GeoViewpointSpeedFactorSpinButton -> set_name ("GeoViewpointSpeedFactorSpinButton");
 
 	// Connect object Gtk::Button with id 'UpdateViewpointButton'.
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));

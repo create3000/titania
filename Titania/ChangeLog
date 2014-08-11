@@ -2,6 +2,25 @@
 
 	* titania:
 	* Makefile.am:
+	* X3DBrowserEditor.cpp:
+	* ViewpointEditor.xml:
+	* FadeOut.wrl:
+	* ViewpointEditor.h:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* EaseInEaseOut.wrl:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DViewpointEditor.cpp:
+	* X3DGeoViewpointEditor.h:
+	* X3DGeoViewpointEditor.cpp:
+	* FadeOut.wrl:
+	* X3DOrthoViewpointEditor.cpp:
+	* EaseInEaseOut.wrl: 
+
+2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* ViewpointEditor.xml:
 	* X3DFieldAdjustment4.h:
 	* X3DFieldAdjustment3.h:

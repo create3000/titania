@@ -48,54 +48,59 @@
  *
  ******************************************************************************/
 
-#include "X3DViewpointEditor.h"
+#include "X3DGeoViewpointEditor.h"
 
 namespace titania {
 namespace puck {
 
-X3DViewpointEditor::X3DViewpointEditor () :
+X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	X3DViewpointEditorInterface ("", ""),
 	                   position (getBrowserWindow (),
-	                             getPerspectiveViewpointPositionXAdjustment (),
-	                             getPerspectiveViewpointPositionYAdjustment (),
-	                             getPerspectiveViewpointPositionZAdjustment (),
-	                             getPerspectiveViewpointPositionBox (),
+	                             getGeoViewpointPositionXAdjustment (),
+	                             getGeoViewpointPositionYAdjustment (),
+	                             getGeoViewpointPositionZAdjustment (),
+	                             getGeoViewpointPositionBox (),
 	                             "position"),
 	                orientation (getBrowserWindow (),
-	                             getPerspectiveViewpointOrientationXAdjustment (),
-	                             getPerspectiveViewpointOrientationYAdjustment (),
-	                             getPerspectiveViewpointOrientationZAdjustment (),
-	                             getPerspectiveViewpointOrientationAAdjustment (),
-	                             getPerspectiveViewpointOrientationBox (),
+	                             getGeoViewpointOrientationXAdjustment (),
+	                             getGeoViewpointOrientationYAdjustment (),
+	                             getGeoViewpointOrientationZAdjustment (),
+	                             getGeoViewpointOrientationAAdjustment (),
+	                             getGeoViewpointOrientationBox (),
 	                             "orientation"),
 	           centerOfRotation (getBrowserWindow (),
-	                             getPerspectiveViewpointCenterOfRotationXAdjustment (),
-	                             getPerspectiveViewpointCenterOfRotationYAdjustment (),
-	                             getPerspectiveViewpointCenterOfRotationZAdjustment (),
-	                             getPerspectiveViewpointCenterOfRotationBox (),
+	                             getGeoViewpointCenterOfRotationXAdjustment (),
+	                             getGeoViewpointCenterOfRotationYAdjustment (),
+	                             getGeoViewpointCenterOfRotationZAdjustment (),
+	                             getGeoViewpointCenterOfRotationBox (),
 	                             "centerOfRotation"),
 	                fieldOfView (getBrowserWindow (),
-	                             getPerspectiveViewpointFieldOfViewAdjustment (),
-	                             getPerspectiveViewpointFieldOfViewBox (),
-	                             "fieldOfView")
+	                             getGeoViewpointFieldOfViewAdjustment (),
+	                             getGeoViewpointFieldOfViewBox (),
+	                             "fieldOfView"),
+	                speedFactor (getBrowserWindow (),
+	                             getGeoViewpointSpeedFactorAdjustment (),
+	                             getGeoViewpointSpeedFactorSpinButton (),
+	                             "speedFactor")
 { }
 
 void
-X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
 {
-	X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
+	X3D::X3DPtr <X3D::GeoViewpoint> geoViewpoint (viewpointNode);
 
-	getPerspectiveViewpointExpander () .set_visible (viewpoint);
+	getGeoViewpointExpander () .set_visible (geoViewpoint);
 
-	const auto viewpoints = viewpoint ? X3D::MFNode ({ viewpoint }) : X3D::MFNode ();
+	const auto geoViewpoints = geoViewpoint ? X3D::MFNode ({ geoViewpoint }) : X3D::MFNode ();
 
-	position         .setNodes (viewpoints);
-	orientation      .setNodes (viewpoints);
-	centerOfRotation .setNodes (viewpoints);
-	fieldOfView      .setNodes (viewpoints);
+	position         .setNodes (geoViewpoints);
+	orientation      .setNodes (geoViewpoints);
+	centerOfRotation .setNodes (geoViewpoints);
+	fieldOfView      .setNodes (geoViewpoints);
+	speedFactor      .setNodes (geoViewpoints);
 }
 
-X3DViewpointEditor::~X3DViewpointEditor ()
+X3DGeoViewpointEditor::~X3DGeoViewpointEditor ()
 { }
 
 } // puck

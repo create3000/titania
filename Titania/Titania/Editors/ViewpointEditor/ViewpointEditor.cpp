@@ -62,7 +62,7 @@ ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
 	X3DViewpointEditorInterface (get_ui ("Dialogs/ViewpointEditor.xml"), gconf_dir ()),
 	         X3DViewpointEditor (),
 	    X3DOrthoViewpointEditor (),
-	      //X3DGeoViewpointEditor ()
+	      X3DGeoViewpointEditor (),
 	              viewpointList (new ViewpointList (browserWindow)),
 	                   nodeName (getBrowserWindow (), getViewpointNameEntry (), getViewpointRenameButton ()),
 	                description (getBrowserWindow (), getViewpointDescriptionTextView (), "description"),
@@ -84,7 +84,7 @@ ViewpointEditor::initialize ()
 	X3DViewpointEditorInterface::initialize ();
 	X3DViewpointEditor::initialize ();
 	X3DOrthoViewpointEditor::initialize ();
-	//	X3DGeoViewpointEditor::initialize ();
+	X3DGeoViewpointEditor::initialize ();
 
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ViewpointEditor::set_active_viewpoint);
 
@@ -109,7 +109,7 @@ ViewpointEditor::set_active_viewpoint ()
 
 	setViewpoint (viewpointNode);
 	setOrthoViewpoint (viewpointNode);
-	//setGeoViewpoint (viewpointNode);
+	setGeoViewpoint (viewpointNode);
 
 	const auto viewpointNodes = haveViewpoint ? X3D::MFNode ({ activeLayer -> getViewpointStack () -> top () }) : X3D::MFNode ();
 

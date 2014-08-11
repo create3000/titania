@@ -50,8 +50,6 @@
 
 #include "X3DOrthoViewpointEditor.h"
 
-#include "../../ComposedWidgets/NormalTool.h"
-
 namespace titania {
 namespace puck {
 

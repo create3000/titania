@@ -55,7 +55,7 @@
 #include "../../UserInterfaces/X3DViewpointEditorInterface.h"
 #include "X3DViewpointEditor.h"
 #include "X3DOrthoViewpointEditor.h"
-//#include "X3DGeoViewpointEditor.h"
+#include "X3DGeoViewpointEditor.h"
 
 namespace titania {
 namespace puck {
@@ -65,8 +65,8 @@ class ViewpointList;
 
 class ViewpointEditor :
 	public X3DViewpointEditor,
-	public X3DOrthoViewpointEditor
-	//public X3DGeoViewpointEditor
+	public X3DOrthoViewpointEditor,
+	public X3DGeoViewpointEditor
 {
 public:
 

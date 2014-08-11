@@ -44,6 +44,7 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DTextureTransformEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Editors/ViewpointEditor/ViewpointEditor.cpp \
+	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp \
 	Titania/main.cpp \
