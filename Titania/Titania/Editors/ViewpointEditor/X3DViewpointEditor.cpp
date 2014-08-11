@@ -48,58 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIGHT_EDITOR_X3DSPOT_LIGHT_EDITOR_H__
-#define __TITANIA_LIGHT_EDITOR_X3DSPOT_LIGHT_EDITOR_H__
+#include "X3DViewpointEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DLightEditorInterface.h"
+#include "../../ComposedWidgets/NormalTool.h"
 
 namespace titania {
 namespace puck {
 
-class NormalTool;
+X3DViewpointEditor::X3DViewpointEditor () :
+	X3DViewpointEditorInterface ("", ""),
+	                   position (getBrowserWindow (),
+	                             getPerspectiveViewpointPositionXAdjustment (),
+	                             getPerspectiveViewpointPositionYAdjustment (),
+	                             getPerspectiveViewpointPositionZAdjustment (),
+	                             getPerspectiveViewpointPositionBox (),
+	                             "position"),
+	                orientation (getBrowserWindow (),
+	                             getPerspectiveViewpointOrientationXAdjustment (),
+	                             getPerspectiveViewpointOrientationYAdjustment (),
+	                             getPerspectiveViewpointOrientationZAdjustment (),
+	                             getPerspectiveViewpointOrientationAAdjustment (),
+	                             getPerspectiveViewpointOrientationBox (),
+	                             "orientation"),
+	           centerOfRotation (getBrowserWindow (),
+	                             getPerspectiveViewpointCenterOfRotationXAdjustment (),
+	                             getPerspectiveViewpointCenterOfRotationYAdjustment (),
+	                             getPerspectiveViewpointCenterOfRotationZAdjustment (),
+	                             getPerspectiveViewpointCenterOfRotationBox (),
+	                             "centerOfRotation"),
+	                fieldOfView (getBrowserWindow (),
+	                             getPerspectiveViewpointFieldOfViewAdjustment (),
+	                             getPerspectiveViewpointFieldOfViewBox (),
+	                             "fieldOfView")
+{ }
 
-class X3DSpotLightEditor :
-	virtual public X3DLightEditorInterface
+void
+X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
 {
-public:
+	X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
 
-	///  @name Destruction
+	getPerspectiveViewpointExpander () .set_visible (viewpoint);
 
-	virtual
-	~X3DSpotLightEditor ();
+	const auto viewpoints = viewpoint ? X3D::MFNode ({ viewpoint }) : X3D::MFNode ();
 
+	position         .setNodes (viewpoints);
+	orientation      .setNodes (viewpoints);
+	centerOfRotation .setNodes (viewpoints);
+	fieldOfView      .setNodes (viewpoints);
+}
 
-protected:
-
-	///  @name Construction
-
-	X3DSpotLightEditor ();
-	
-	virtual
-	void
-	initialize () override
-	{ }
-
-	void
-	setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
-
-
-private:
-
-	///  @name Members
-
-	X3DFieldAdjustment3 <X3D::SFVec3f> attenuation;
-	X3DFieldAdjustment3 <X3D::SFVec3f> location;
-	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	std::unique_ptr <NormalTool>    directionTool;	
-	X3DFieldAdjustment <X3D::SFFloat>  radius;
-	X3DFieldAdjustment <X3D::SFFloat>  beamWidth;
-	X3DFieldAdjustment <X3D::SFFloat>  cutOffAngle;
-
-};
+X3DViewpointEditor::~X3DViewpointEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif

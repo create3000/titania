@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT2_H__
-#define __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT2_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT4_H__
+#define __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT4_H__
 
 #include "../Base/X3DEditorObject.h"
 
@@ -57,14 +57,16 @@ namespace titania {
 namespace puck {
 
 template <class Type>
-class X3DFieldAdjustment2 :
+class X3DFieldAdjustment4 :
 	public X3DEditorObject
 {
 public:
 
 	///  @name Construction
 
-	X3DFieldAdjustment2 (BrowserWindow* const,
+	X3DFieldAdjustment4 (BrowserWindow* const,
+	                     const Glib::RefPtr <Gtk::Adjustment> &,
+	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     Gtk::Widget &,
@@ -75,7 +77,7 @@ public:
 	void
 	setNormalize (const bool value)
 	{ normalize = value; }
-	
+
 	bool
 	getNormalize () const
 	{ return normalize; }
@@ -88,9 +90,9 @@ public:
 	{ return nodes; }
 
 	///  @name Destruction
-	
+
 	virtual
-	~X3DFieldAdjustment2 ()
+	~X3DFieldAdjustment4 ()
 	{ dispose (); }
 
 
@@ -114,6 +116,8 @@ private:
 
 	const Glib::RefPtr <Gtk::Adjustment> adjustment1;
 	const Glib::RefPtr <Gtk::Adjustment> adjustment2;
+	const Glib::RefPtr <Gtk::Adjustment> adjustment3;
+	const Glib::RefPtr <Gtk::Adjustment> adjustment4;
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
@@ -125,15 +129,19 @@ private:
 };
 
 template <class Type>
-X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (BrowserWindow* const browserWindow,
+X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (BrowserWindow* const browserWindow,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment1,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
+                                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment3,
+                                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment4,
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DEditorObject (),
 	     adjustment1 (adjustment1),
 	     adjustment2 (adjustment2),
+	     adjustment3 (adjustment3),
+	     adjustment4 (adjustment4),
 	          widget (widget),
 	           nodes (),
 	            name (name),
@@ -143,16 +151,18 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (BrowserWindow* const browserWin
 	       normalize (false)
 {
 	addChildren (buffer);
-	buffer .addInterest (this, &X3DFieldAdjustment2::set_buffer);
+	buffer .addInterest (this, &X3DFieldAdjustment4::set_buffer);
 
-	adjustment1 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed));
-	adjustment2 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed));
+	adjustment1 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
+	adjustment2 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
+	adjustment3 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
+	adjustment4 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
 	setup ();
 }
 
 template <class Type>
 void
-X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
+X3DFieldAdjustment4 <Type>::setNodes (const X3D::MFNode & value)
 {
 	undoStep .reset ();
 
@@ -160,7 +170,7 @@ X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment2::set_field);
+			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment4::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -172,7 +182,7 @@ X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment2::set_field);
+			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment4::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -183,7 +193,7 @@ X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 
 template <class Type>
 void
-X3DFieldAdjustment2 <Type>::on_value_changed ()
+X3DFieldAdjustment4 <Type>::on_value_changed ()
 {
 	if (changing)
 		return;
@@ -196,17 +206,21 @@ X3DFieldAdjustment2 <Type>::on_value_changed ()
 		{
 			auto & field = node -> getField <Type> (name);
 
-			field .removeInterest (this, &X3DFieldAdjustment2::set_field);
-			field .addInterest (this, &X3DFieldAdjustment2::connect);
+			field .removeInterest (this, &X3DFieldAdjustment4::set_field);
+			field .addInterest (this, &X3DFieldAdjustment4::connect);
 
-			X3D::Vector2d vector (adjustment1 -> get_value (),
-			                      adjustment2 -> get_value ());
+			X3D::Vector4d vector (adjustment1 -> get_value (),
+			                      adjustment2 -> get_value (),
+			                      adjustment3 -> get_value (),
+			                      adjustment4 -> get_value ());
 
 			if (normalize)
 				vector .normalize ();
 
 			field .set1Value (0, vector .x ());
 			field .set1Value (1, vector .y ());
+			field .set1Value (2, vector .z ());
+			field .set1Value (3, vector .w ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -217,14 +231,14 @@ X3DFieldAdjustment2 <Type>::on_value_changed ()
 
 template <class Type>
 void
-X3DFieldAdjustment2 <Type>::set_field ()
+X3DFieldAdjustment4 <Type>::set_field ()
 {
 	buffer .addEvent ();
 }
 
 template <class Type>
 void
-X3DFieldAdjustment2 <Type>::set_buffer ()
+X3DFieldAdjustment4 <Type>::set_buffer ()
 {
 	changing = true;
 
@@ -237,9 +251,11 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 		try
 		{
 			const auto & field = node -> getField <Type> (name);
-		
+
 			adjustment1 -> set_value (field .get1Value (0));
 			adjustment2 -> set_value (field .get1Value (1));
+			adjustment3 -> set_value (field .get1Value (2));
+			adjustment4 -> set_value (field .get1Value (3));
 
 			hasField = true;
 			break;
@@ -252,6 +268,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 	{
 		adjustment1 -> set_value (adjustment1 -> get_lower ());
 		adjustment2 -> set_value (adjustment2 -> get_lower ());
+		adjustment3 -> set_value (adjustment3 -> get_lower ());
+		adjustment4 -> set_value (adjustment4 -> get_lower ());
 	}
 
 	widget .set_sensitive (hasField);
@@ -261,10 +279,10 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 template <class Type>
 void
-X3DFieldAdjustment2 <Type>::connect (const Type & field)
+X3DFieldAdjustment4 <Type>::connect (const Type & field)
 {
-	field .removeInterest (this, &X3DFieldAdjustment2::connect);
-	field .addInterest (this, &X3DFieldAdjustment2::set_field);
+	field .removeInterest (this, &X3DFieldAdjustment4::connect);
+	field .addInterest (this, &X3DFieldAdjustment4::set_field);
 }
 
 } // puck

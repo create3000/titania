@@ -61,10 +61,10 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FieldOfViewAdjustment                           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FieldOfViewAdjustment"));
 	m_PerspectiveViewpointCenterOfRotationXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointCenterOfRotationXAdjustment"));
 	m_PerspectiveViewpointCenterOfRotationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointCenterOfRotationYAdjustment"));
 	m_PerspectiveViewpointCenterOfRotationZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointCenterOfRotationZAdjustment"));
+	m_PerspectiveViewpointFieldOfViewAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointFieldOfViewAdjustment"));
 	m_PerspectiveViewpointOrientationAAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointOrientationAAdjustment"));
 	m_PerspectiveViewpointOrientationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointOrientationXAdjustment"));
 	m_PerspectiveViewpointOrientationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PerspectiveViewpointOrientationYAdjustment"));
@@ -90,8 +90,6 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_ViewpointJumpCheckButton -> set_name ("ViewpointJumpCheckButton");
 	m_builder -> get_widget ("ViewpointRetainUserOffsetsCheckButton", m_ViewpointRetainUserOffsetsCheckButton);
 	m_ViewpointRetainUserOffsetsCheckButton -> set_name ("ViewpointRetainUserOffsetsCheckButton");
-	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
-	m_UpdateViewpointButton -> set_name ("UpdateViewpointButton");
 	m_builder -> get_widget ("ViewpointNameBox", m_ViewpointNameBox);
 	m_ViewpointNameBox -> set_name ("ViewpointNameBox");
 	m_builder -> get_widget ("ViewpointNameEntry", m_ViewpointNameEntry);
@@ -100,10 +98,12 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_ViewpointRenameButton -> set_name ("ViewpointRenameButton");
 	m_builder -> get_widget ("ViewpointDescriptionTextView", m_ViewpointDescriptionTextView);
 	m_ViewpointDescriptionTextView -> set_name ("ViewpointDescriptionTextView");
+	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
+	m_UpdateViewpointButton -> set_name ("UpdateViewpointButton");
 	m_builder -> get_widget ("PerspectiveViewpointExpander", m_PerspectiveViewpointExpander);
 	m_PerspectiveViewpointExpander -> set_name ("PerspectiveViewpointExpander");
-	m_builder -> get_widget ("FieldOfViewBox", m_FieldOfViewBox);
-	m_FieldOfViewBox -> set_name ("FieldOfViewBox");
+	m_builder -> get_widget ("PerspectiveViewpointFieldOfViewBox", m_PerspectiveViewpointFieldOfViewBox);
+	m_PerspectiveViewpointFieldOfViewBox -> set_name ("PerspectiveViewpointFieldOfViewBox");
 	m_builder -> get_widget ("PerspectiveViewpointPositionBox", m_PerspectiveViewpointPositionBox);
 	m_PerspectiveViewpointPositionBox -> set_name ("PerspectiveViewpointPositionBox");
 	m_builder -> get_widget ("PerspectiveViewpointOrientationBox", m_PerspectiveViewpointOrientationBox);

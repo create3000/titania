@@ -48,54 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIGHT_EDITOR_X3DSPOT_LIGHT_EDITOR_H__
-#define __TITANIA_LIGHT_EDITOR_X3DSPOT_LIGHT_EDITOR_H__
+#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DVIEWPOINT_EDITOR_H__
+#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DVIEWPOINT_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DLightEditorInterface.h"
+#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class NormalTool;
-
-class X3DSpotLightEditor :
-	virtual public X3DLightEditorInterface
+class X3DViewpointEditor :
+	virtual public X3DViewpointEditorInterface
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DSpotLightEditor ();
+	~X3DViewpointEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DSpotLightEditor ();
-	
+	X3DViewpointEditor ();
+
 	virtual
 	void
 	initialize () override
 	{ }
 
 	void
-	setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
+	setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);
 
 
 private:
 
 	///  @name Members
 
-	X3DFieldAdjustment3 <X3D::SFVec3f> attenuation;
-	X3DFieldAdjustment3 <X3D::SFVec3f> location;
-	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	std::unique_ptr <NormalTool>    directionTool;	
-	X3DFieldAdjustment <X3D::SFFloat>  radius;
-	X3DFieldAdjustment <X3D::SFFloat>  beamWidth;
-	X3DFieldAdjustment <X3D::SFFloat>  cutOffAngle;
+	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
+	X3DFieldAdjustment4 <X3D::SFRotation> orientation;
+	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
+	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;
 
 };
 

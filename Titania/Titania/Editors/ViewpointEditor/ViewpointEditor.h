@@ -53,12 +53,9 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DViewpointEditorInterface.h"
-//#include "X3DViewpointEditor.h"
+#include "X3DViewpointEditor.h"
 //#include "X3DOrthoViewpointEditor.h"
 //#include "X3DGeoViewpointEditor.h"
-
-#include "../../ComposedWidgets/SFStringTextView.h"
-#include "../../ComposedWidgets/NameEntry.h"
 
 namespace titania {
 namespace puck {
@@ -67,8 +64,7 @@ class BrowserWindow;
 class ViewpointList;
 
 class ViewpointEditor :
-	virtual public X3DViewpointEditorInterface
-	//public X3DViewpointEditor,
+	public X3DViewpointEditor
 	//public X3DOrthoViewpointEditor,
 	//public X3DGeoViewpointEditor
 {

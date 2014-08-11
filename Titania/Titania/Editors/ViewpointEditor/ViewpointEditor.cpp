@@ -60,7 +60,7 @@ namespace puck {
 ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DViewpointEditorInterface (get_ui ("Dialogs/ViewpointEditor.xml"), gconf_dir ()),
-	         //X3DViewpointEditor (),
+	         X3DViewpointEditor (),
 	    //X3DOrthoViewpointEditor (),
 	      //X3DGeoViewpointEditor ()
 	              viewpointList (new ViewpointList (browserWindow)),
@@ -82,7 +82,7 @@ void
 ViewpointEditor::initialize ()
 {
 	X3DViewpointEditorInterface::initialize ();
-	//	X3DViewpointEditor::initialize ();
+	X3DViewpointEditor::initialize ();
 	//	X3DOrthoViewpointEditor::initialize ();
 	//	X3DGeoViewpointEditor::initialize ();
 
@@ -102,14 +102,20 @@ ViewpointEditor::set_active_viewpoint ()
 	if (activeLayer)
 	{
 		haveViewpoint = (activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ());
-		inScene       = (activeLayer -> getViewpointStack () -> top () -> getExecutionContext () == getScene ());
+		inScene       = (activeLayer -> getViewpointStack () -> top () -> getExecutionContext () == getExecutionContext () and not inPrototypeInstance ());
 	}
+
+	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (haveViewpoint ? activeLayer -> getViewpointStack () -> top () : nullptr);
+
+	setViewpoint (viewpointNode);
+	//setOrthoViewpoint (viewpointNode);
+	//setGeoViewpoint (viewpointNode);
 
 	const auto viewpointNodes = haveViewpoint ? X3D::MFNode ({ activeLayer -> getViewpointStack () -> top () }) : X3D::MFNode ();
 
 	getViewpointBox () .set_sensitive (haveViewpoint and inScene);
 
-	nodeName          .setNode  (haveViewpoint ? activeLayer -> getViewpointStack () -> top () : nullptr);
+	nodeName          .setNode  (X3D::SFNode (viewpointNode));
 	description       .setNodes (viewpointNodes);
 	retainUserOffsets .setNodes (viewpointNodes);
 	jump              .setNodes (viewpointNodes);

@@ -51,12 +51,15 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_H__
 #define __TITANIA_COMPOSED_WIDGETS_H__
 
+#include "ComposedWidgets/NameEntry.h"
 #include "ComposedWidgets/SFColorButton.h"
 #include "ComposedWidgets/SFColorRGBAButton.h"
 #include "ComposedWidgets/SFStringComboBoxText.h"
+#include "ComposedWidgets/SFStringTextView.h"
 #include "ComposedWidgets/X3DFieldAdjustment.h"
 #include "ComposedWidgets/X3DFieldAdjustment2.h"
 #include "ComposedWidgets/X3DFieldAdjustment3.h"
+#include "ComposedWidgets/X3DFieldAdjustment4.h"
 #include "ComposedWidgets/X3DFieldToggleButton.h"
 
 #endif

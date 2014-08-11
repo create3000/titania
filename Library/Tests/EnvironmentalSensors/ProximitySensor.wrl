@@ -16,42 +16,42 @@ DEF Test Transform {
   rotation -0.981245 -0.0143457 -0.192232 5.67512
   scale 20 10 5
   children [
-    Viewpoint {
+    DEF Front Viewpoint {
       description "Front"
       position 0 0 5
       centerOfRotation 0 0 1
       retainUserOffsets TRUE
     }
-    Viewpoint {
+    DEF Right Viewpoint {
       description "Right"
       position 4 0 1
       orientation 0 1 0 1.5708
       centerOfRotation 0 0 1
     }
-    Viewpoint {
+    DEF Side Viewpoint {
       description "Side"
       position 4 0 5
       orientation 0 1 0 0.785398
       centerOfRotation 0 0 1
     }
-    Viewpoint {
+    DEF Back Viewpoint {
       description "Back"
       position 0 0 -3
       orientation 0 1 0 3.14159
       centerOfRotation 0 0 1
     }
-    Viewpoint {
+    DEF Top Viewpoint {
       description "Top"
       position 0 4 1
       orientation -1 -0 -0 1.5708
       centerOfRotation 0 0 1
     }
-    Viewpoint {
+    DEF Center Viewpoint {
       description "Center"
       position 2 0 5
       centerOfRotation 0 0 1
     }
-    Viewpoint {
+    DEF Jump Viewpoint {
       description "Jump"
       jump FALSE
     }
@@ -224,7 +224,7 @@ function set_exitTime (value, time)
   "
 }
 
-Viewpoint {
+DEF Outside Viewpoint {
   description "Outside"
   position 0 0 500
   centerOfRotation 0 0 1

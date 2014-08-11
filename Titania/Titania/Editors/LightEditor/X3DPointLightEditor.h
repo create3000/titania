@@ -74,6 +74,11 @@ protected:
 	///  @name Construction
 
 	X3DPointLightEditor ();
+	
+	virtual
+	void
+	initialize () override
+	{ }
 
 	void
 	setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> &);

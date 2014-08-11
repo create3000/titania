@@ -1,5 +1,25 @@
 2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* ComposedWidgets.h:
+	* LightEditor.xml:
+	* ViewpointEditor.xml:
+	* X3DFieldAdjustment4.h:
+	* X3DFieldAdjustment3.h:
+	* X3DFieldAdjustment2.h:
+	* X3DSpotLightEditor.h:
+	* ViewpointEditor.h:
+	* X3DPointLightEditor.h:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditor.h:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DViewpointEditor.cpp:
+	* X3DDirectionalLightEditor.h: 
+
+2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DEditorObject.h:
 	* X3DEditorObject.cpp:
 	* X3DUserInterface.cpp:

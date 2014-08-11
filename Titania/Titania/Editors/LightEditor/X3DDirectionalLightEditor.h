@@ -75,6 +75,11 @@ protected:
 	///  @name Construction
 
 	X3DDirectionalLightEditor ();
+	
+	virtual
+	void
+	initialize () override
+	{ }
 
 	void
 	setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> &);

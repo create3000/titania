@@ -204,9 +204,9 @@ X3DFieldAdjustment3 <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment3::set_field);
 			field .addInterest (this, &X3DFieldAdjustment3::connect);
 
-			typename Type::internal_type vector (adjustment1 -> get_value (),
-			                                     adjustment2 -> get_value (),
-			                                     adjustment3 -> get_value ());
+			X3D::Vector3d vector (adjustment1 -> get_value (),
+			                      adjustment2 -> get_value (),
+			                      adjustment3 -> get_value ());
 
 			if (normalize)
 				vector .normalize ();
