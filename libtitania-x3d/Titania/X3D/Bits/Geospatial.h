@@ -76,10 +76,6 @@ public:
 	};
 
 	static
-	CoordinateSystemType
-	getCoordinateSystem (const MFString &);
-
-	static
 	ReferenceFramePtr
 	getReferenceFrame (const MFString &, const bool);
 
@@ -88,8 +84,36 @@ public:
 	getElevationFrame (const MFString &, const bool);
 
 	static
+	CoordinateSystemType
+	getCoordinateSystem (const MFString &);
+
+	static
+	Spheroid3d
+	getEllipsoid (const MFString &);
+
+	static
+	std::string
+	getEllipsoidString (const MFString &);
+
+	static
 	bool
 	isStandardOrder (const MFString & geoSystem);
+
+	static
+	bool
+	getLatitudeFirst (const MFString &);
+
+	static
+	bool
+	getNorthingFirst (const MFString &);
+
+	static
+	int
+	getZone (const MFString &);
+
+	static
+	bool
+	getNorthernHemisphere (const MFString &);
 
 
 private:
@@ -111,28 +135,6 @@ private:
 		{ return geocentric; }
 
 	};
-
-	//  @name Types
-
-	static
-	Spheroid3d
-	getEllipsoid (const MFString &);
-
-	static
-	bool
-	getLatitudeFirst (const MFString &);
-
-	static
-	bool
-	getNorthingFirst (const MFString &);
-
-	static
-	int
-	getZone (const MFString &);
-
-	static
-	bool
-	getNorthernHemisphere (const MFString &);
 
 	//  @name Static members
 

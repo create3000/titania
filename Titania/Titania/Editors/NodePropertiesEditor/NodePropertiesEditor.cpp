@@ -1382,8 +1382,6 @@ NodePropertiesEditor::updateNamedNode (BrowserWindow* const browserWindow, const
 
 	if (not name .empty ())
 		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
-
-	browserWindow -> getOutlineTreeView () -> queue_draw ();
 }
 
 void

@@ -73,6 +73,7 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_GeoViewpointPositionYAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointPositionYAdjustment"));
 	m_GeoViewpointPositionZAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointPositionZAdjustment"));
 	m_GeoViewpointSpeedFactorAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointSpeedFactorAdjustment"));
+	m_GeoViewpointZoneAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointZoneAdjustment"));
 	m_OrthoViewpointCenterOfRotationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationXAdjustment"));
 	m_OrthoViewpointCenterOfRotationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationYAdjustment"));
 	m_OrthoViewpointCenterOfRotationZAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointCenterOfRotationZAdjustment"));
@@ -158,6 +159,20 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_GeoViewpointOrientationBox -> set_name ("GeoViewpointOrientationBox");
 	m_builder -> get_widget ("GeoViewpointSpeedFactorSpinButton", m_GeoViewpointSpeedFactorSpinButton);
 	m_GeoViewpointSpeedFactorSpinButton -> set_name ("GeoViewpointSpeedFactorSpinButton");
+	m_builder -> get_widget ("GeoViewpointCoordinateSystemComboBoxText", m_GeoViewpointCoordinateSystemComboBoxText);
+	m_GeoViewpointCoordinateSystemComboBoxText -> set_name ("GeoViewpointCoordinateSystemComboBoxText");
+	m_builder -> get_widget ("GeoViewpointEllipsoidBox", m_GeoViewpointEllipsoidBox);
+	m_GeoViewpointEllipsoidBox -> set_name ("GeoViewpointEllipsoidBox");
+	m_builder -> get_widget ("GeoViewpointEllipsoidComboBoxText", m_GeoViewpointEllipsoidComboBoxText);
+	m_GeoViewpointEllipsoidComboBoxText -> set_name ("GeoViewpointEllipsoidComboBoxText");
+	m_builder -> get_widget ("GeoViewpointGDOrderComboBoxText", m_GeoViewpointGDOrderComboBoxText);
+	m_GeoViewpointGDOrderComboBoxText -> set_name ("GeoViewpointGDOrderComboBoxText");
+	m_builder -> get_widget ("GeoViewpointGeoSystemUTMBox", m_GeoViewpointGeoSystemUTMBox);
+	m_GeoViewpointGeoSystemUTMBox -> set_name ("GeoViewpointGeoSystemUTMBox");
+	m_builder -> get_widget ("GeoViewpointHemisphereComboBoxText", m_GeoViewpointHemisphereComboBoxText);
+	m_GeoViewpointHemisphereComboBoxText -> set_name ("GeoViewpointHemisphereComboBoxText");
+	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
+	m_GeoViewpointUTMOrderComboBoxText -> set_name ("GeoViewpointUTMOrderComboBoxText");
 
 	// Connect object Gtk::Button with id 'UpdateViewpointButton'.
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));

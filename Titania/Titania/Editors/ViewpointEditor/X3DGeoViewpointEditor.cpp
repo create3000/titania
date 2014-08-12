@@ -50,11 +50,259 @@
 
 #include "X3DGeoViewpointEditor.h"
 
+#include <Titania/String.h>
+
 namespace titania {
 namespace puck {
 
+class MFStringGeoSystem :
+	public X3DEditorObject
+{
+public:
+
+	///  @name Construction
+
+	MFStringGeoSystem (BrowserWindow* const,
+	                   Gtk::ComboBoxText &,
+	                   Gtk::ComboBoxText &,
+	                   Gtk::ComboBoxText &,
+	                   const Glib::RefPtr <Gtk::Adjustment> &,
+	                   Gtk::ComboBoxText &,
+	                   Gtk::ComboBoxText &,
+	                   Gtk::Widget &,
+	                   Gtk::Widget &,
+	                   Gtk::Widget &);
+
+	void
+	setNode (const X3D::SFNode &);
+
+	///  @name Destruction
+
+	virtual
+	~MFStringGeoSystem ()
+	{ dispose (); }
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	on_changed ();
+
+	void
+	set_field ();
+
+	void
+	connect (const X3D::MFString &);
+
+	///  @name Members
+
+	Gtk::ComboBoxText &                    coordinateSystem;
+	Gtk::ComboBoxText &                    ellipsoid;
+	Gtk::ComboBoxText &                    gdOrder;
+	const Glib::RefPtr <Gtk::Adjustment>   zone;
+	Gtk::ComboBoxText &                    hemisphere;
+	Gtk::ComboBoxText &                    utmOrder;
+	Gtk::Widget &                          ellipsoidBox;
+	Gtk::Widget &                          gdBox;
+	Gtk::Widget &                          utmBox;
+	X3D::X3DPtr <X3D::X3DGeospatialObject> node;
+	UndoStepPtr                            undoStep;
+	bool                                   changing;
+
+};
+
+inline
+MFStringGeoSystem::MFStringGeoSystem (BrowserWindow* const browserWindow,
+                                      Gtk::ComboBoxText & coordinateSystem,
+                                      Gtk::ComboBoxText & ellipsoid,
+                                      Gtk::ComboBoxText & gdOrder,
+                                      const Glib::RefPtr <Gtk::Adjustment> & zone,
+                                      Gtk::ComboBoxText & hemisphere,
+                                      Gtk::ComboBoxText & utmOrder,
+                                      Gtk::Widget & ellipsoidBox,
+                                      Gtk::Widget & gdBox,
+                                      Gtk::Widget & utmBox) :
+	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	 X3DEditorObject (),
+	coordinateSystem (coordinateSystem),
+	       ellipsoid (ellipsoid),
+	         gdOrder (gdOrder),
+	            zone (zone),
+	      hemisphere (hemisphere),
+	        utmOrder (utmOrder),
+	    ellipsoidBox (ellipsoidBox),
+	           gdBox (gdBox),
+	          utmBox (utmBox),
+	            node (),
+	        undoStep (),
+	        changing (false)
+{
+	coordinateSystem .signal_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+	ellipsoid        .signal_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+	gdOrder          .signal_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+
+	zone -> signal_value_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+	hemisphere .signal_changed ()   .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+	utmOrder   .signal_changed ()   .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+
+	setup ();
+}
+
+inline
+void
+MFStringGeoSystem::setNode (const X3D::SFNode & value)
+{
+	undoStep .reset ();
+
+	if (node)
+		node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
+
+	node = value;
+
+	if (node)
+	{
+		node -> geoSystem () .addInterest (this, &MFStringGeoSystem::set_field);
+		set_field ();
+	}
+	else
+	{
+		changing = true;
+
+		coordinateSystem .set_active (0);
+		ellipsoid        .set_active_text ("WE");
+
+		coordinateSystem .set_sensitive (false);
+		ellipsoidBox     .set_sensitive (false);
+
+		ellipsoidBox .set_visible (true);
+		gdBox        .set_visible (false);
+		utmBox       .set_visible (false);
+
+		changing = false;
+	}
+}
+
+inline
+void
+MFStringGeoSystem::on_changed ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction (node, node -> geoSystem (), undoStep);
+
+	node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
+	node -> geoSystem () .addInterest (this, &MFStringGeoSystem::connect);
+
+	node -> geoSystem () .clear ();
+
+	switch (coordinateSystem .get_active_row_number ())
+	{
+		case 0:
+		{
+			node -> geoSystem () .emplace_back ("GD");
+			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
+
+			if (gdOrder .get_active_row_number () > 0)
+				node -> geoSystem () .emplace_back ("longitude_first");
+			break;
+		}
+		case 1:
+		{
+			node -> geoSystem () .emplace_back ("UTM");
+			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
+			node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value ()));
+
+			if (hemisphere .get_active_row_number () > 0)
+				node -> geoSystem () .emplace_back ("S");
+
+			if (utmOrder .get_active_row_number () > 0)
+				node -> geoSystem () .emplace_back ("easting_first");
+			break;
+		}
+		case 2:
+		{
+			node -> geoSystem () = { "GC" };
+			break;
+		}
+		default:
+			break;
+	}
+
+	addRedoFunction (node -> geoSystem (), undoStep);
+	
+}
+
+inline
+void
+MFStringGeoSystem::set_field ()
+{
+	changing = true;
+
+	coordinateSystem .set_sensitive (true);
+	ellipsoidBox     .set_sensitive (true);
+
+	gdBox  .set_visible (false);
+	utmBox .set_visible (false);
+
+	switch (X3D::Geospatial::getCoordinateSystem (node -> geoSystem ()))
+	{
+		case X3D::Geospatial::CoordinateSystemType::GD:
+		{
+			coordinateSystem .set_active (0);
+			ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
+			gdOrder          .set_active (not X3D::Geospatial::getLatitudeFirst (node -> geoSystem ()));
+			
+			ellipsoidBox .set_visible (true);
+			gdBox        .set_visible (true);
+			break;
+		}
+		case X3D::Geospatial::CoordinateSystemType::UTM:
+		{
+			coordinateSystem .set_active (1);
+			ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
+
+			zone -> set_value (X3D::Geospatial::getZone (node -> geoSystem ()));
+			hemisphere .set_active (not X3D::Geospatial::getNorthernHemisphere (node -> geoSystem ()));
+			utmOrder   .set_active (not X3D::Geospatial::getNorthingFirst (node -> geoSystem ()));
+	
+			ellipsoidBox .set_visible (true);
+			utmBox       .set_visible (true);
+			break;
+		}
+		case X3D::Geospatial::CoordinateSystemType::GC:
+		{
+			coordinateSystem .set_active (2);
+			ellipsoidBox     .set_visible (false);
+			break;
+		}
+	}
+
+	changing = false;
+}
+
+inline
+void
+MFStringGeoSystem::connect (const X3D::MFString & field)
+{
+	field .removeInterest (this, &MFStringGeoSystem::connect);
+	field .addInterest (this, &MFStringGeoSystem::set_field);
+}
+
 X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	X3DViewpointEditorInterface ("", ""),
+	                  geoSystem (new MFStringGeoSystem (getBrowserWindow (),
+	                             getGeoViewpointCoordinateSystemComboBoxText (),
+	                             getGeoViewpointEllipsoidComboBoxText (),
+	                             getGeoViewpointGDOrderComboBoxText (),
+	                             getGeoViewpointZoneAdjustment (),
+	                             getGeoViewpointHemisphereComboBoxText (),
+	                             getGeoViewpointUTMOrderComboBoxText (),
+	                             getGeoViewpointEllipsoidBox (),
+	                             getGeoViewpointGDOrderComboBoxText (),
+	                             getGeoViewpointGeoSystemUTMBox ())),
 	                   position (getBrowserWindow (),
 	                             getGeoViewpointPositionXAdjustment (),
 	                             getGeoViewpointPositionYAdjustment (),
@@ -92,6 +340,8 @@ X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode
 	getGeoViewpointExpander () .set_visible (geoViewpoint);
 
 	const auto geoViewpoints = geoViewpoint ? X3D::MFNode ({ geoViewpoint }) : X3D::MFNode ();
+
+	geoSystem -> setNode (X3D::SFNode (geoViewpoint));
 
 	position         .setNodes (geoViewpoints);
 	orientation      .setNodes (geoViewpoints);

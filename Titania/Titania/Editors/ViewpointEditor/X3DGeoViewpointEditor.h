@@ -57,6 +57,8 @@
 namespace titania {
 namespace puck {
 
+class MFStringGeoSystem;
+
 class X3DGeoViewpointEditor :
 	virtual public X3DViewpointEditorInterface
 {
@@ -87,6 +89,7 @@ private:
 
 	///  @name Members
 
+	std::unique_ptr <MFStringGeoSystem>   geoSystem;
 	X3DFieldAdjustment3 <X3D::SFVec3d>    position;
 	X3DFieldAdjustment4 <X3D::SFRotation> orientation;
 	X3DFieldAdjustment3 <X3D::SFVec3d>    centerOfRotation;

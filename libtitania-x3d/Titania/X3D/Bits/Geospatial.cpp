@@ -99,28 +99,6 @@ const std::map <std::string, Spheroid3d> Geospatial::ellipsoids = {
 
 };
 
-bool
-Geospatial::isStandardOrder (const MFString & geoSystem)
-{
-	switch (getCoordinateSystem (geoSystem))
-	{
-		case CoordinateSystemType::GD:
-		{
-			return getLatitudeFirst (geoSystem);
-		}
-		case CoordinateSystemType::UTM:
-		{
-			return getNorthingFirst (geoSystem);
-		}
-		case CoordinateSystemType::GC:
-		{
-			return true;
-		}
-	}
-
-	return getLatitudeFirst (geoSystem);
-}
-
 Geospatial::ReferenceFramePtr
 Geospatial::getReferenceFrame (const MFString & geoSystem, const bool radians)
 {
@@ -184,6 +162,40 @@ Geospatial::getEllipsoid (const MFString & geoSystem)
 	}
 
 	return geospatial::WE;
+}
+
+std::string
+Geospatial::getEllipsoidString (const MFString & geoSystem)
+{
+	for (const auto & string : geoSystem)
+	{
+		if (ellipsoids .count (string))
+			return string;
+	}
+
+	return "WE";
+}
+
+bool
+Geospatial::isStandardOrder (const MFString & geoSystem)
+{
+	switch (getCoordinateSystem (geoSystem))
+	{
+		case CoordinateSystemType::GD:
+		{
+			return getLatitudeFirst (geoSystem);
+		}
+		case CoordinateSystemType::UTM:
+		{
+			return getNorthingFirst (geoSystem);
+		}
+		case CoordinateSystemType::GC:
+		{
+			return true;
+		}
+	}
+
+	return getLatitudeFirst (geoSystem);
 }
 
 bool

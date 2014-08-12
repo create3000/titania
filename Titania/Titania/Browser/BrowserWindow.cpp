@@ -172,11 +172,11 @@ BrowserWindow::getStyles () const
 	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
 	const auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
-	string += "#OutlineTreeViewEditor .textview GtkTextView {";
+	string += "#OutlineTreeViewEditor .textview-editable GtkTextView {";
 	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
 	string += "}";
 	string += "";
-	string += "#OutlineTreeViewEditor .textview GtkTextView:selected {";
+	string += "#OutlineTreeViewEditor .textview-editable GtkTextView:selected {";
 	string += "  color: " + fg_selected .to_string () + ";";
 	string += "  background-color: " + bg_selected .to_string () + ";";
 	string += "}";

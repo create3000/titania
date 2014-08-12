@@ -1,3 +1,16 @@
+2014-08-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* ViewpointEditor.xml:
+	* MFStringComboBoxText.h:
+	* X3DViewpointEditorInterface.h:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DGeoViewpointEditor.h:
+	* X3DGeoViewpointEditor.cpp:
+	* NodePropertiesEditor.cpp: 
+
 2014-08-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* titania:

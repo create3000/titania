@@ -92,8 +92,8 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		}
 		case OutlineIterType::X3DExecutionContext:
 		{
-			const auto sfnode           = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode -> getValue ());
+			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode .getValue ());
 
 			executionContext -> getRootNodes ()          .addInterest (this, &OutlineTreeObserver::toggle_field, path);
 			executionContext -> importedNodes_changed () .addInterest (this, &OutlineTreeObserver::toggle_field, path);
@@ -109,8 +109,8 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto sfnode     = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode -> getValue ());
+			const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
 			if (inlineNode)
 				inlineNode -> getInternalScene () .addInterest (this, &OutlineTreeObserver::update_path, path);
@@ -119,8 +119,8 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		}
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode -> getValue ());
+			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 
 			externProto -> getInternalScene () .addInterest (this, &OutlineTreeObserver::update_path, path);
 			break;
@@ -148,9 +148,6 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DExecutionContext:
-		case OutlineIterType::X3DBaseNode:
-		case OutlineIterType::ExternProtoDeclaration:
-		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		case OutlineIterType::NULL_:
@@ -183,6 +180,17 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 				default:
 					break;
 			}
+
+			break;
+		}
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
+		case OutlineIterType::X3DBaseNode:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+
+			if (sfnode)
+				sfnode -> name_changed () .addInterest (this, &OutlineTreeObserver::on_row_changed, path);
 
 			break;
 		}
@@ -258,8 +266,8 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		}
 		case OutlineIterType::X3DExecutionContext:
 		{
-			const auto sfnode           = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode -> getValue ());
+			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode .getValue ());
 
 			executionContext -> getRootNodes ()          .removeInterest (this, &OutlineTreeObserver::toggle_field);
 			executionContext -> importedNodes_changed () .removeInterest (this, &OutlineTreeObserver::toggle_field);
@@ -273,10 +281,32 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 
 			break;
 		}
+		case OutlineIterType::ExternProtoDeclaration:
+		{
+			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
+
+			externProto -> name_changed ()     .removeInterest (this, &OutlineTreeObserver::update_path);
+			externProto -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::update_path);
+
+			clear_open_path (iter);
+			break;
+		}
+		case OutlineIterType::ProtoDeclaration:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+
+			sfnode -> name_changed () .removeInterest (this, &OutlineTreeObserver::on_row_changed);
+			clear_open_path (iter);
+			break;
+		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto sfnode     = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode -> getValue ());
+			const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+
+			if (sfnode)
+				sfnode -> name_changed () .removeInterest (this, &OutlineTreeObserver::on_row_changed);
 
 			if (inlineNode)
 				inlineNode -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::update_path);
@@ -284,17 +314,6 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			clear_open_path (iter);
 			break;
 		}
-		case OutlineIterType::ExternProtoDeclaration:
-		{
-			const auto sfnode      = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode -> getValue ());
-
-			externProto -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::update_path);
-
-			clear_open_path (iter);
-			break;
-		}
-		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		{

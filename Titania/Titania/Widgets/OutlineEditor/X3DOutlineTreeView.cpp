@@ -543,10 +543,14 @@ X3DOutlineTreeView::set_rootNodes ()
 
 		for (auto & rootNode : executionContext -> getRootNodes ())
 		{
+			Gtk::TreeModel::iterator iter;
+		
 			if (rootNode)
-				get_model () -> append (OutlineIterType::X3DBaseNode, rootNode, i ++);
+				iter = get_model () -> append (OutlineIterType::X3DBaseNode, rootNode, i ++);
 			else
-				get_model () -> append (OutlineIterType::NULL_, &executionContext -> getRootNodes (), i ++);
+				iter = get_model () -> append (OutlineIterType::NULL_, &executionContext -> getRootNodes (), i ++);
+
+			treeObserver -> watch_child (iter, get_model () -> get_path (iter));
 		}
 	}
 

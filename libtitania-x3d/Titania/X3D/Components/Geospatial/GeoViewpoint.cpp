@@ -85,9 +85,9 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GeoViewpoint);
 
 	addField (inputOutput,    "metadata",          metadata ());
-	addField (initializeOnly, "geoSystem",         geoSystem ());
 	addField (inputOnly,      "set_bind",          set_bind ());
 	addField (inputOutput,    "description",       description ());
+	addField (initializeOnly, "geoSystem",         geoSystem ());
 	addField (inputOutput,    "position",          position ());
 	addField (inputOutput,    "orientation",       orientation ());
 	addField (inputOutput,    "centerOfRotation",  centerOfRotation ());
