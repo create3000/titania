@@ -76,6 +76,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	          fields (),
 	           scene (),
 	           group (new Group (executionContext)),
+	     preventLoad (false),
 	          future ()
 {
 	addType (X3DConstants::Inline);
@@ -328,15 +329,8 @@ void
 Inline::set_load ()
 {
 	if (load ())
-	{
-		setLoadState (NOT_STARTED_STATE);
+		set_url ();
 
-		if (X3D_PARALLEL)
-			requestAsyncLoad ();
-
-		else
-			requestImmediateLoad ();
-	}
 	else
 		requestUnload ();
 }
@@ -344,16 +338,22 @@ Inline::set_load ()
 void
 Inline::set_url ()
 {
-	if (load ())
+	if (not load ())
+		return;
+
+	if (preventLoad and (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE))
 	{
-		setLoadState (NOT_STARTED_STATE);
-
-		if (X3D_PARALLEL)
-			requestAsyncLoad ();
-
-		else
-			requestImmediateLoad ();
+		preventLoad = false;
+		return;
 	}
+
+	setLoadState (NOT_STARTED_STATE);
+
+	if (X3D_PARALLEL)
+		requestAsyncLoad ();
+
+	else
+		requestImmediateLoad ();
 }
 
 void

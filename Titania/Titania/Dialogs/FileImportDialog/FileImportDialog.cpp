@@ -50,6 +50,7 @@
 
 #include "FileImportDialog.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -95,10 +96,11 @@ FileImportDialog::run ()
 		                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
 		                      : std::make_shared <UndoStep> (_ ("Import"));
 
-		getBrowserWindow () -> import ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
-		                               getBrowserWindow () -> getImportAsInlineMenuItem () .get_active (),
-		                               undoStep);
+		const auto nodes = getBrowserWindow () -> importURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
+		                                                     getBrowserWindow () -> getImportAsInlineMenuItem () .get_active (),
+		                                                     undoStep);
 
+		getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 

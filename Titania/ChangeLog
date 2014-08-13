@@ -1,6 +1,20 @@
 2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* LibraryView.cpp:
+	* InlineEditor.cpp:
+	* ViewpointList.h:
+	* ViewpointList.cpp:
+	* OutlineSelection.cpp:
+	* FileImportDialog.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
 	* MagicImport.cpp:
 	* BrowserWindow.cpp:
 	* X3DUserInterface.cpp:

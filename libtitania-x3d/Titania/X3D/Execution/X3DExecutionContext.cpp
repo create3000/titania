@@ -1078,8 +1078,6 @@ throw (Error <INVALID_NAME>,
 				setProfile (getBrowser () -> getProfile ("Full"));
 		}
 
-		//importMetaData (executionContext);
-
 		importExternProtos (executionContext);
 		importProtos (executionContext);
 
@@ -1090,7 +1088,6 @@ throw (Error <INVALID_NAME>,
 		importRoutes (executionContext);
 
 		realize ();
-
 		return;
 	}
 

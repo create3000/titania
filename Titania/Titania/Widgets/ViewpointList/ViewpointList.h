@@ -120,6 +120,10 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
+	static
+	void
+	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> &, const double);
+
 	///  @name Members
 
 	bool                 label;

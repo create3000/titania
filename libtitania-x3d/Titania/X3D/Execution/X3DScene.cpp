@@ -222,6 +222,8 @@ throw (Error <INVALID_NAME>,
 {
 	if (getBrowser () -> makeCurrent ())
 	{
+		//importMetaData (executionContext);
+
 		X3DExecutionContext::import (executionContext);
 
 		//const auto scene = dynamic_cast <X3DScene*> (executionContext);

@@ -72,7 +72,7 @@ InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
 	                          getBBoxCenterZAdjustment (),
 	                          getBBoxCenterBox (),
 	                          "bboxCenter"),
-	               inlineNode ()
+	              inlineNode ()
 {
 	setup ();
 }
@@ -121,35 +121,29 @@ void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
 	__LOG__ << std::endl;
-	__LOG__ << inlineNode << std::endl;
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
+	const auto nodes    = getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), undoStep);
 
-	getBrowserWindow () -> getSelection () -> clear (undoStep);
-	getBrowserWindow () -> removeNodesFromScene ({ inlineNode }, undoStep);
-	getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), undoStep);
+	if (nodes .empty ())
+		return;
 
-//	X3D::SFNode group = new X3D::Group (getExecutionContext ());
-//
-//	getBrowserWindow () -> addToGroup (group, getBrowser () -> getSelection () -> getChildren (), undoStep));
-//	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
+	const auto group = getBrowserWindow () -> groupNodes ("Group", nodes, undoStep);
+	const auto name  = inlineNode -> getName ();
 
-	// Replace Inline
+	getBrowserWindow () -> replaceNodes (X3D::SFNode (inlineNode), group, undoStep);
 
-	__LOG__ << std::endl;
-	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-	               {
-							if (node == inlineNode)
-							{
-								__LOG__ << node -> getTypeName () << std::endl;
-							}
+	if (not name .empty ())
+	{
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, getExecutionContext (), name);
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, getExecutionContext (), name, group);
+		getExecutionContext () -> updateNamedNode (name, group);
+	}
 
-	                  return true;
-						});
-
-	__LOG__ << std::endl;
+	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
-	__LOG__ << std::endl;
+
+	getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 }
 
 InlineEditor::~InlineEditor ()

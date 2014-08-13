@@ -115,6 +115,10 @@ public:
 	void
 	requestImmediateLoad () override;
 
+	void
+	preventNextLoad ()
+	{ preventLoad = true; }
+
 	///  @name Exported node handling
 
 	virtual
@@ -238,6 +242,7 @@ private:
 
 	ScenePtr scene;
 	GroupPtr group;
+	bool     preventLoad;
 
 	std::unique_ptr <SceneLoader> future;
 

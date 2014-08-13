@@ -51,6 +51,7 @@
 #include "LibraryView.h"
 
 #include "../../Browser/BrowserWindow.h"
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/String.h>
@@ -223,8 +224,9 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 			case Gio::FILE_TYPE_SYMBOLIC_LINK:
 			{
 				const auto undoStep = std::make_shared <UndoStep> (_ ("Import From Library"));
+				const auto nodes    = getBrowserWindow () -> importURL ({ file -> get_uri () }, false, undoStep);
 
-				getBrowserWindow () -> import ({ file -> get_uri () }, false, undoStep);
+				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
 				break;
 			}

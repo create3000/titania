@@ -110,7 +110,7 @@ OutlineSelection::select (const X3D::SFNode & node) const
 				selection -> setChildren ({ node });	
 		}
 
-		//getBrowser () -> update ();
+		getBrowser () -> update ();
 	}
 }
 

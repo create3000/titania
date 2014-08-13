@@ -64,7 +64,6 @@ class OutlineTreeViewEditor;
 class ViewpointList;
 class Console;
 
-
 class BrowserWindow :
 	public X3DBrowserEditor
 {
@@ -76,32 +75,12 @@ public:
 
 	/// @name Widgets
 
-	const std::shared_ptr <MotionBlurEditor> &
-	getMotionBlurEditor () const
-	{ return motionBlurEditor; }
-
-	const std::shared_ptr <LibraryView> &
-	getLibraryView () const
-	{ return libraryView; }
-
-	const std::shared_ptr <ViewpointList> &
-	getViewpointList () const
-	{ return viewpointList; }
-
-	const std::shared_ptr <HistoryView> &
-	getHistoryView () const
-	{ return historyEditor; }
-
 	const std::shared_ptr <OutlineEditor> &
 	getOutlineEditor () const
 	{ return outlineEditor; }
 
 	const std::shared_ptr <OutlineTreeViewEditor> &
 	getOutlineTreeView () const;
-
-	const std::shared_ptr <Console> &
-	getConsole () const
-	{ return console; }
 
 	/// @name Member access
 
@@ -122,10 +101,14 @@ public:
 	void
 	hasShortcuts (const bool);
 
+	void
+	expandNodes (const X3D::MFNode &);
+
 	/// @name Destruction
 
 	virtual
 	~BrowserWindow ();
+
 
 private:
 
@@ -135,8 +118,11 @@ private:
 	void
 	initialize ();
 
-	std::string
-	getStyles () const;
+	void
+	loadStyles () const;
+
+	void
+	expandNodesImpl (const X3D::MFNode &);
 
 	///  @name Scene handling
 
@@ -181,7 +167,7 @@ private:
 
 	virtual
 	void
-	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
+	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	virtual
 	void
@@ -193,7 +179,7 @@ private:
 
 	virtual
 	void
-	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
+	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	void
 	dragDataHandling (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, const guint, const bool);
@@ -333,9 +319,6 @@ private:
 
 	void
 	on_create_parent (const std::string &);
-
-	void
-	expandNodes (const X3D::MFNode &);
 
 	/// @name Bar view handling
 
@@ -540,7 +523,7 @@ private:
 	virtual
 	void
 	on_geometry_properties_editor_clicked () final override;
-	
+
 	virtual
 	void
 	on_viewpoint_editor_clicked () final override;
@@ -588,7 +571,7 @@ private:
 
 	X3D::MFNode
 	getChildren (const X3D::SFNode &, const bool = false) const;
-	
+
 	X3D::MFNode
 	getChildrenInProtoinstance (const X3D::SFNode &, const std::set <X3D::SFNode> &, std::set <X3D::SFNode> &) const;
 
@@ -640,12 +623,11 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <MotionBlurEditor> motionBlurEditor;
-	std::shared_ptr <LibraryView>      libraryView;
-	std::shared_ptr <ViewpointList>    viewpointList;
-	std::shared_ptr <HistoryView>    historyEditor;
-	std::shared_ptr <OutlineEditor>    outlineEditor;
-	std::shared_ptr <Console>          console;
+	std::shared_ptr <ViewpointList> viewpointList;
+	std::shared_ptr <HistoryView>   historyEditor;
+	std::shared_ptr <LibraryView>   libraryView;
+	std::shared_ptr <OutlineEditor> outlineEditor;
+	std::shared_ptr <Console>       console;
 
 	X3D::Keys keys;
 	bool      shortcuts;
@@ -653,7 +635,7 @@ private:
 	bool      changing;
 
 	X3D::ViewerType viewer;
-	
+
 	X3D::Output saveAsOutput;
 
 };

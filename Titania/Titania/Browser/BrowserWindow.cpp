@@ -79,9 +79,9 @@ namespace puck {
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, char** argv) :
 	X3DBaseInterface (this, browserSurface),
 	X3DBrowserEditor (argc, argv),
-	     libraryView (new LibraryView (this)),
 	   viewpointList (new ViewpointList (this, true)),
 	   historyEditor (new HistoryView (this)),
+	     libraryView (new LibraryView (this)),
 	   outlineEditor (new OutlineEditor (this)),
 	         console (new Console (this)),
 	            keys (),
@@ -105,20 +105,13 @@ BrowserWindow::initialize ()
 	X3DBrowserEditor::initialize ();
 
 	// Sidebar
-	getViewpointList () -> reparent (getViewpointListBox (), getWindow ());
-	getHistoryView ()   -> reparent (getHistoryViewBox (),   getWindow ());
-	getLibraryView ()   -> reparent (getLibraryViewBox (),   getWindow ());
-	getOutlineEditor () -> reparent (getOutlineEditorBox (), getWindow ());
-	getConsole ()       -> reparent (getConsoleBox (),       getWindow ());
+	viewpointList -> reparent (getViewpointListBox (), getWindow ());
+	historyEditor -> reparent (getHistoryViewBox (),   getWindow ());
+	libraryView   -> reparent (getLibraryViewBox (),   getWindow ());
+	outlineEditor -> reparent (getOutlineEditorBox (), getWindow ());
+	console       -> reparent (getConsoleBox (),       getWindow ());
 
-	// CSS
-	Glib::RefPtr <Gtk::CssProvider> cssProvider1 = Gtk::CssProvider::create ();
-	cssProvider1 -> load_from_path (get_ui ("style.css"));
-	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider1, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-	Glib::RefPtr <Gtk::CssProvider> cssProvider2 = Gtk::CssProvider::create ();
-	cssProvider2 -> load_from_data (getStyles ());
-	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider2, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	loadStyles ();
 
 	// Drag & drop targets
 	std::vector <Gtk::TargetEntry> targets = {
@@ -161,9 +154,13 @@ BrowserWindow::getOutlineTreeView () const
 	return outlineEditor -> getTreeView ();
 }
 
-std::string
-BrowserWindow::getStyles () const
+void
+BrowserWindow::loadStyles () const
 {
+	Glib::RefPtr <Gtk::CssProvider> cssProvider1 = Gtk::CssProvider::create ();
+	cssProvider1 -> load_from_path (get_ui ("style.css"));
+	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider1, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
 	std::string string;
 
 	const auto styleContext = getWidget () .get_style_context ();
@@ -181,7 +178,9 @@ BrowserWindow::getStyles () const
 	string += "  background-color: " + bg_selected .to_string () + ";";
 	string += "}";
 
-	return string;
+	Glib::RefPtr <Gtk::CssProvider> cssProvider2 = Gtk::CssProvider::create ();
+	cssProvider2 -> load_from_data (string);
+	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider2, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 // Menu
@@ -202,6 +201,25 @@ BrowserWindow::hasShortcuts (bool value)
 			if (menu)
 				menu -> set_sensitive (shortcuts);
 		}
+	}
+}
+
+void
+BrowserWindow::expandNodes (const X3D::MFNode & nodes)
+{
+	if (getConfig () .getBoolean ("followPrimarySelection"))
+		getBrowser () -> finished () .addInterest (this, &BrowserWindow::expandNodes, nodes);
+}
+
+void
+BrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
+{
+	getBrowser () -> finished () .removeInterest (this, &BrowserWindow::expandNodes);
+
+	for (const auto & node : nodes)
+	{
+		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
+			getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
 	}
 }
 
@@ -527,7 +545,9 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 				                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
 				                      : std::make_shared <UndoStep> (_ ("Import"));
 
-				import (uris, getConfig () .getBoolean ("importAsInline"), undoStep);
+				const auto nodes = importURL (uris, getConfig () .getBoolean ("importAsInline"), undoStep);
+
+				getSelection () -> setChildren (nodes, undoStep);
 				addUndoStep (undoStep);
 			}
 
@@ -709,11 +729,14 @@ BrowserWindow::on_group_selected_nodes_activate ()
 		return;
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
+	const auto group    = groupNodes ("Transform", selection, undoStep);
 
-	getSelection () -> clear (undoStep);
-	getSelection () -> setChildren ({ groupNodes (selection, undoStep) }, undoStep);
+	emplaceBack (getExecutionContext () -> getRootNodes (), group, undoStep);
 
+	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
+
+	expandNodes (X3D::MFNode ({ group }));
 }
 
 void
@@ -884,20 +907,7 @@ BrowserWindow::on_create_parent (const std::string & typeName)
 
 	addUndoStep (undoStep);
 
-	if (getConfig () .getBoolean ("followPrimarySelection"))
-		getBrowser () -> finished () .addInterest (this, &BrowserWindow::expandNodes, X3D::MFNode ({ group }));
-}
-
-void
-BrowserWindow::expandNodes (const X3D::MFNode & nodes)
-{
-	getBrowser () -> finished () .removeInterest (this, &BrowserWindow::expandNodes);
-
-	for (const auto & node : nodes)
-	{
-		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
-			getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
-	}
+	expandNodes (X3D::MFNode ({ group }));
 }
 
 // View menu

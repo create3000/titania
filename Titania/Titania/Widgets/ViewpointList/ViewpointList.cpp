@@ -164,6 +164,9 @@ ViewpointList::set_viewpoints ()
 {
 	// Clear
 
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&ViewpointList::set_adjustment), getTreeView () .get_hadjustment (), getTreeView () .get_hadjustment () -> get_value ()));
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&ViewpointList::set_adjustment), getTreeView () .get_vadjustment (), getTreeView () .get_vadjustment () -> get_value ()));
+
 	getListStore () -> clear ();
 
 	// Fill the TreeView's model
@@ -263,6 +266,12 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	else
 		viewpoint -> set_bind () = true;
+}
+
+void
+ViewpointList::set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+{
+	adjustment -> set_value (value);
 }
 
 ViewpointList::~ViewpointList ()

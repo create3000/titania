@@ -80,10 +80,10 @@ public:
 
 	/// @name File operations
 
-	void
-	import (const std::vector <basic::uri> &, const bool, const UndoStepPtr & undoStep);
+	X3D::MFNode
+	importURL (const std::vector <basic::uri> &, const bool, const UndoStepPtr & undoStep);
 
-	void
+	X3D::MFNode
 	importScene (const X3D::ScenePtr &, const UndoStepPtr &);
 
 	virtual
@@ -130,10 +130,13 @@ public:
 	/// @name Edit operations
 
 	void
+	replaceNodes (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
 	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	replaceNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	replaceNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const X3D::SFNode &, const UndoStepPtr &) const;
@@ -160,7 +163,7 @@ public:
 	unlinkClone (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	X3D::SFNode
-	groupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
+	groupNodes (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	X3D::MFNode
 	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
@@ -195,6 +198,9 @@ public:
 
 	void
 	setMatrix (const X3D::X3DTransformNodePtr &, const X3D::Matrix4d &, const UndoStepPtr &) const;
+
+	void
+	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	/// @name CDATA field operations
 
@@ -308,9 +314,6 @@ private:
 	createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	///  @name Undo functions
-
-	void
-	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &) const;
