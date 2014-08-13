@@ -97,7 +97,7 @@ private:
 	on_value_changed ();
 
 	void
-	set_color (const X3D::Color3f &);
+	set_color (const int, const X3D::Color3f &);
 
 	void
 	set_field ();
@@ -127,6 +127,7 @@ private:
 	X3D::MFNode                          nodes;
 	const std::string                    name;
 	UndoStepPtr                          undoStep;
+	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
 	float                                hsv [3];
@@ -149,6 +150,7 @@ SFColorButton::SFColorButton (BrowserWindow* const browserWindow,
 	           nodes (),
 	            name (name),
 	        undoStep (),
+	           input (-1),
 	        changing (false),
 	          buffer ()
 {
@@ -231,7 +233,7 @@ SFColorButton::on_color_changed ()
 
 	color .get_hsv (hsv [0], hsv [1], hsv [2]);
 
-	set_color (color);
+	set_color (0, color);
 
 	changing = true;
 	valueAdjustment -> set_value (hsv [2]);
@@ -252,7 +254,7 @@ SFColorButton::on_value_changed ()
 	X3D::Color3f color;
 	color .set_hsv (hsv [0], hsv [1], hsv [2]);
 
-	set_color (color);
+	set_color (1, color);
 
 	changing = true;
 	dialog .get_color_selection () -> set_current_rgba (to_rgba (color));
@@ -261,8 +263,13 @@ SFColorButton::on_value_changed ()
 
 inline
 void
-SFColorButton::set_color (const X3D::Color3f & color)
+SFColorButton::set_color (const int id, const X3D::Color3f & color)
 {
+	if (id not_eq input)
+		undoStep .reset ();
+
+	input = id;
+
 	addUndoFunction <X3D::SFColor> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)

@@ -129,30 +129,29 @@ ViewpointEditor::on_update_viewpoint_clicked ()
 
 	const X3D::X3DViewpointNodePtr viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Update Active Viewpoint"));
+	const auto undoStep        = std::make_shared <UndoStep> (_ ("Update Active Viewpoint"));
+	const auto orientation     = viewpoint -> getOrientation ();
+	const auto userOrientation = viewpoint -> getUserOrientation ();
 
 	undoStep -> addVariables (viewpoint);
-	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
-
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getPosition ());
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getUserPosition ());
-	viewpoint -> setPosition (viewpoint -> getUserPosition ());
-
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, viewpoint -> getOrientation ());
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, viewpoint -> getUserOrientation ());
-	viewpoint -> setOrientation (viewpoint -> getUserOrientation ());
-
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getCenterOfRotation ());
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getUserCenterOfRotation ());
-	viewpoint -> setCenterOfRotation (viewpoint -> getUserCenterOfRotation ());
-
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
-	viewpoint -> resetUserOffsets ();
-
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getCenterOfRotation ());
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, orientation);
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getPosition ());
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
+
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getUserPosition ());
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, userOrientation);
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getUserCenterOfRotation ());
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
+
+	viewpoint -> setPosition (viewpoint -> getUserPosition ());
+	viewpoint -> setOrientation (userOrientation);
+	viewpoint -> setCenterOfRotation (viewpoint -> getUserCenterOfRotation ());
+	viewpoint -> resetUserOffsets ();
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }

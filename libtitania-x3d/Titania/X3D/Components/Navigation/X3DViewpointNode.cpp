@@ -169,15 +169,12 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
                                              Vector3f & relativeScale,
                                              Rotation4f & relativeScaleOrientation) const
 {
-	Matrix4f differenceMatrix = getParentMatrix () * fromViewpoint -> getInverseTransformationMatrix ();
+	const Matrix4f differenceMatrix = ~(getParentMatrix () * fromViewpoint -> getInverseTransformationMatrix ());
 
-	differenceMatrix .translate (getPosition ());
-	differenceMatrix .inverse ();
-
-	// Get relative transformations from viewpoint.
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
-	relativeOrientation = ~getOrientation () * relativeOrientation;
+	relativePosition   -= getPosition ();
+	relativeOrientation = ~getOrientation () * relativeOrientation; // mit gepuffereter location matrix
 }
 
 void
@@ -240,7 +237,7 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	const Rotation4f rotation = orientationOffset () * (horizon
 	                                                    ? straightenHorizon (getUserOrientation ())
-																       : straightenView (getUserOrientation ()));
+																		 : straightenView (getUserOrientation ()));
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -447,7 +444,7 @@ void
 X3DViewpointNode::set_bind_ ()
 {
 	if (set_bind ())
-		;
+;
 	else
 		timeSensor -> stopTime () = getCurrentTime ();
 }

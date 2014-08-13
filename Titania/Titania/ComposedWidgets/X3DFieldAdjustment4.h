@@ -101,7 +101,7 @@ private:
 	///  @name Event handler
 
 	void
-	on_value_changed ();
+	on_value_changed (const int);
 
 	void
 	set_field ();
@@ -122,6 +122,7 @@ private:
 	X3D::MFNode                          nodes;
 	const std::string                    name;
 	UndoStepPtr                          undoStep;
+	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
 	bool                                 normalize;
@@ -146,6 +147,7 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (BrowserWindow* const browserWin
 	           nodes (),
 	            name (name),
 	        undoStep (),
+	           input (-1),
 	        changing (false),
 	          buffer (),
 	       normalize (false)
@@ -153,10 +155,10 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (BrowserWindow* const browserWin
 	addChildren (buffer);
 	buffer .addInterest (this, &X3DFieldAdjustment4::set_buffer);
 
-	adjustment1 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
-	adjustment2 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
-	adjustment3 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
-	adjustment4 -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed));
+	adjustment1 -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 0));
+	adjustment2 -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 1));
+	adjustment3 -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 2));
+	adjustment4 -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 3));
 	setup ();
 }
 
@@ -193,10 +195,15 @@ X3DFieldAdjustment4 <Type>::setNodes (const X3D::MFNode & value)
 
 template <class Type>
 void
-X3DFieldAdjustment4 <Type>::on_value_changed ()
+X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 {
 	if (changing)
 		return;
+
+	if (id not_eq input)
+		undoStep .reset ();
+
+	input = id;
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 

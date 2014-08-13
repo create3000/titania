@@ -131,8 +131,7 @@ public:
 
 	virtual
 	Vector3f
-	getPosition () const final override
-	{ return coord; }
+	getPosition () const final override;
 
 	virtual
 	void

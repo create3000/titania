@@ -150,6 +150,18 @@ GeoViewpoint::initialize ()
 }
 
 void
+GeoViewpoint::setPosition (const Vector3f & value)
+{
+	position () = getGeoCoord (value);
+}
+
+Vector3f
+GeoViewpoint::getPosition () const
+{
+	return getCoord (position ());
+}
+
+void
 GeoViewpoint::set_position ()
 {
 	coord     = getCoord (position ());
@@ -157,27 +169,23 @@ GeoViewpoint::set_position ()
 }
 
 void
-GeoViewpoint::setPosition (const Vector3f & value)
-{
-
-}
-
-void
 GeoViewpoint::setOrientation (const Rotation4f & value)
 {
+	const Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
 
+	orientation () = Rotation4d (value) * ~localOrientation;
 }
 
 ///  Returns the resulting orientation for this viewpoint.
 Rotation4f
 GeoViewpoint::getOrientation () const
 {
-	Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
+	const Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
 
 	return Rotation4d (orientation () .getValue ()) * localOrientation;
 }
 
-///  Same as in Viewpoint
+//  Same as in Viewpoint
 double
 GeoViewpoint::getFieldOfView () const
 {

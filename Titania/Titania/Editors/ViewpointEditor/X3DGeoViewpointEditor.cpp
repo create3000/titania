@@ -88,7 +88,7 @@ private:
 	///  @name Event handler
 
 	void
-	on_changed ();
+	on_changed (const int);
 
 	void
 	set_field ();
@@ -109,6 +109,7 @@ private:
 	Gtk::Widget &                          utmBox;
 	X3D::X3DPtr <X3D::X3DGeospatialObject> node;
 	UndoStepPtr                            undoStep;
+	int                                    input;
 	bool                                   changing;
 
 };
@@ -137,15 +138,16 @@ MFStringGeoSystem::MFStringGeoSystem (BrowserWindow* const browserWindow,
 	          utmBox (utmBox),
 	            node (),
 	        undoStep (),
+	           input (-1),
 	        changing (false)
 {
-	coordinateSystem .signal_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
-	ellipsoid        .signal_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
-	gdOrder          .signal_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 0));
+	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 1));
+	gdOrder          .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 2));
 
-	zone -> signal_value_changed () .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
-	hemisphere .signal_changed ()   .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
-	utmOrder   .signal_changed ()   .connect (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed));
+	zone -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 3));
+	hemisphere .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 4));
+	utmOrder   .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 5));
 
 	setup ();
 }
@@ -186,10 +188,15 @@ MFStringGeoSystem::setNode (const X3D::SFNode & value)
 
 inline
 void
-MFStringGeoSystem::on_changed ()
+MFStringGeoSystem::on_changed (const int id)
 {
 	if (changing)
 		return;
+	
+	if (id not_eq input)
+		undoStep .reset ();
+
+	input = id;
 
 	addUndoFunction (node, node -> geoSystem (), undoStep);
 
