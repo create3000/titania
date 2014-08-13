@@ -134,6 +134,16 @@ public:
 	virtual
 	Box3f
 	getBBox () const override;
+	
+	virtual
+	void
+	setKeepCurrentLevel (const bool value)
+	{ keepCurrentLevel = value; }
+	
+	virtual
+	bool
+	getKeepCurrentLevel () const
+	{ return keepCurrentLevel; }
 
 	///  @name Operations
 
@@ -177,6 +187,7 @@ private:
 	Fields fields;
 
 	mutable float frameRate;
+	bool          keepCurrentLevel;
 
 };
 

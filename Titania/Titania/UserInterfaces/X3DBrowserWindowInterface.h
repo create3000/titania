@@ -568,6 +568,10 @@ public:
 	{ return *m_LightEditorButton; }
 
 	Gtk::ToolButton &
+	getInlineEditorButton () const
+	{ return *m_InlineEditorButton; }
+
+	Gtk::ToolButton &
 	getCreatePrototypeInstanceButton () const
 	{ return *m_CreatePrototypeInstanceButton; }
 
@@ -1017,6 +1021,10 @@ public:
 
 	virtual
 	void
+	on_inline_editor_clicked () = 0;
+
+	virtual
+	void
 	on_prototype_instance_dialog_clicked () = 0;
 
 	virtual
@@ -1194,6 +1202,7 @@ private:
 	Gtk::ToolButton*                m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton*                m_ViewpointEditorButton;
 	Gtk::ToolButton*                m_LightEditorButton;
+	Gtk::ToolButton*                m_InlineEditorButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;

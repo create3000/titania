@@ -48,89 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_LODTOOL_H__
-#define __TITANIA_X3D_TOOLS_NAVIGATION_LODTOOL_H__
+#include "InlineEditor.h"
 
-#include "../Grouping/X3DGroupingNodeTool.h"
-
-#include "../../Components/Navigation/LOD.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class LODTool :
-	public X3DGroupingNodeTool <LOD>
+InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
+	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DInlineEditorInterface (get_ui ("Dialogs/InlineEditor.xml"), gconf_dir ()),
+	                    load (browserWindow, getLoadCheckButton (),  "load"),
+	                bboxSize (getBrowserWindow (),
+	                          getBBoxSizeXAdjustment (),
+	                          getBBoxSizeYAdjustment (),
+	                          getBBoxSizeZAdjustment (),
+	                          getBBoxSizeBox (),
+	                          "bboxSize"),
+	              bboxCenter (getBrowserWindow (),
+	                          getBBoxCenterXAdjustment (),
+	                          getBBoxCenterYAdjustment (),
+	                          getBBoxCenterZAdjustment (),
+	                          getBBoxCenterBox (),
+	                          "bboxCenter")
 {
-public:
+	setup ();
+}
 
-	///  @name Construction
+void
+InlineEditor::initialize ()
+{
+	X3DInlineEditorInterface::initialize ();
 
-	LODTool (LOD* const);
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &InlineEditor::set_selection);
 
-	///  @name Fields
+	set_selection ();
+}
 
-	virtual
-	SFBool &
-	forceTransitions () final override
-	{ return getNode () -> forceTransitions (); }
+void
+InlineEditor::set_selection ()
+{
+	const X3D::X3DPtr <X3D::Inline> inlineNode (getBrowser () -> getSelection () -> getChildren () .empty ()
+	                                            ? nullptr
+															  : getBrowser () -> getSelection () -> getChildren () .back ());
 
-	virtual
-	const SFBool &
-	forceTransitions () const final override
-	{ return getNode () -> forceTransitions (); }
+	const auto nodes = inlineNode ? X3D::MFNode ({ inlineNode }) : X3D::MFNode ();
 
-	virtual
-	SFVec3f &
-	center () final override
-	{ return getNode () -> center (); }
+	load       .setNodes (nodes);
+	bboxSize   .setNodes (nodes);
+	bboxCenter .setNodes (nodes);
+}
 
-	virtual
-	const SFVec3f &
-	center () const final override
-	{ return getNode () -> center (); }
+void
+InlineEditor::on_convert_master_selection_clicked ()
+{
+	__LOG__ << std::endl;
+}
 
-	virtual
-	MFFloat &
-	range () final override
-	{ return getNode () -> range (); }
+void
+InlineEditor::on_update_bounding_box_fields_activate ()
+{
+	__LOG__ << std::endl;
+}
 
-	virtual
-	const MFFloat &
-	range () const final override
-	{ return getNode () -> range (); }
+void
+InlineEditor::on_fold_back_into_scene_clicked ()
+{
+	__LOG__ << std::endl;
+}
 
-	virtual
-	SFInt32 &
-	level_changed () final override
-	{ return getNode () -> level_changed (); }
+InlineEditor::~InlineEditor ()
+{
+	dispose ();
+}
 
-	virtual
-	const SFInt32 &
-	level_changed () const final override
-	{ return getNode () -> level_changed (); }
-	
-	///  @name Member access
-	
-	virtual
-	void
-	setKeepCurrentLevel (const bool value) final override
-	{ getNode () -> setKeepCurrentLevel (value); }
-
-	virtual
-	bool
-	getKeepCurrentLevel () const final override
-	{ return getNode () -> getKeepCurrentLevel (); }
-
-
-private:
-
-	virtual
-	void
-	realize () final override;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

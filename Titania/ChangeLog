@@ -1,5 +1,24 @@
 2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* InlineEditor.xml:
+	* InlineEditor.h:
+	* InlineEditor.cpp:
+	* X3DInlineEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DInlineEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DViewpointEditor.cpp:
+	* GeometryPropertiesEditor.h:
+	* X3DGeoViewpointEditor.cpp: 
+
+2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFColorButton.h:
 	* SFColorRGBAButton.h:
 	* ViewpointEditor.xml:

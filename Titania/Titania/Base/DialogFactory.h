@@ -58,6 +58,7 @@
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
+#include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LightEditor/LightEditor.h"
 #include "../Editors/MaterialEditor/MaterialEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
@@ -90,6 +91,7 @@ public:
 		            std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
 		            std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
 		            std::make_pair ("LightEditor",              constructDialog <LightEditor>),
+		            std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
 		            std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>)
 		            //std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)
 				   })

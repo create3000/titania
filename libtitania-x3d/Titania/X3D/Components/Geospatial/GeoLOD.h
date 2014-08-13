@@ -178,6 +178,16 @@ public:
 	virtual
 	Box3f
 	getBBox () const final override;
+	
+	virtual
+	void
+	setKeepCurrentLevel (const bool value)
+	{ keepCurrentLevel = value; }
+	
+	virtual
+	bool
+	getKeepCurrentLevel () const
+	{ return keepCurrentLevel; }
 
 	///  @name Operations
 
@@ -248,6 +258,7 @@ private:
 	InlinePtr child2Inline;
 	InlinePtr child3Inline;
 	InlinePtr child4Inline;
+	bool      keepCurrentLevel;
 
 };
 

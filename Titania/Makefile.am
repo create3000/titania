@@ -23,6 +23,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
+	Titania/Editors/InlineEditor/InlineEditor.cpp \
 	Titania/Editors/LightEditor/LightEditor.cpp \
 	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DPointLightEditor.cpp \
@@ -59,6 +60,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
+	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \

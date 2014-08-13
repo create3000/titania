@@ -528,6 +528,10 @@ private:
 
 	virtual
 	void
+	on_inline_editor_clicked () final override;
+
+	virtual
+	void
 	on_prototype_instance_dialog_clicked () final override;
 
 	//virtual

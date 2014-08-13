@@ -1,5 +1,13 @@
 2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* LODTool.h:
+	* LOD.h:
+	* LOD.cpp:
+	* GeoLOD.h:
+	* GeoLOD.cpp: 
+
+2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GeoViewpoint.h:
 	* GeoViewpoint.cpp:
 	* X3DViewpointNode.cpp: 

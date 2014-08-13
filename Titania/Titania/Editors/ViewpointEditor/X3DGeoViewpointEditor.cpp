@@ -337,7 +337,9 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	                             getGeoViewpointSpeedFactorAdjustment (),
 	                             getGeoViewpointSpeedFactorSpinButton (),
 	                             "speedFactor")
-{ }
+{
+	getGeoViewpointFieldOfViewAdjustment () -> set_upper (M_PI); // getExecutionContext () -> fromRadiant (M_PI);
+}
 
 void
 X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)

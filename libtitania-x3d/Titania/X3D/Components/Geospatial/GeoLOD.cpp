@@ -83,7 +83,8 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	       child1Inline (new Inline (executionContext)),
 	       child2Inline (new Inline (executionContext)),
 	       child3Inline (new Inline (executionContext)),
-	       child4Inline (new Inline (executionContext))
+	       child4Inline (new Inline (executionContext)),
+	   keepCurrentLevel (false)
 {
 	addType (X3DConstants::GeoLOD);
 

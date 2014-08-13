@@ -48,89 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_LODTOOL_H__
-#define __TITANIA_X3D_TOOLS_NAVIGATION_LODTOOL_H__
+#ifndef __TITANIA_EDITORS_INLINE_EDITOR_INLINE_EDITOR_H__
+#define __TITANIA_EDITORS_INLINE_EDITOR_INLINE_EDITOR_H__
 
-#include "../Grouping/X3DGroupingNodeTool.h"
-
-#include "../../Components/Navigation/LOD.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DInlineEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class LODTool :
-	public X3DGroupingNodeTool <LOD>
+class InlineEditor :
+	virtual public X3DInlineEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	LODTool (LOD* const);
+	InlineEditor (BrowserWindow* const);
 
-	///  @name Fields
-
-	virtual
-	SFBool &
-	forceTransitions () final override
-	{ return getNode () -> forceTransitions (); }
+	///  @name Destruction
 
 	virtual
-	const SFBool &
-	forceTransitions () const final override
-	{ return getNode () -> forceTransitions (); }
-
-	virtual
-	SFVec3f &
-	center () final override
-	{ return getNode () -> center (); }
-
-	virtual
-	const SFVec3f &
-	center () const final override
-	{ return getNode () -> center (); }
-
-	virtual
-	MFFloat &
-	range () final override
-	{ return getNode () -> range (); }
-
-	virtual
-	const MFFloat &
-	range () const final override
-	{ return getNode () -> range (); }
-
-	virtual
-	SFInt32 &
-	level_changed () final override
-	{ return getNode () -> level_changed (); }
-
-	virtual
-	const SFInt32 &
-	level_changed () const final override
-	{ return getNode () -> level_changed (); }
-	
-	///  @name Member access
-	
-	virtual
-	void
-	setKeepCurrentLevel (const bool value) final override
-	{ getNode () -> setKeepCurrentLevel (value); }
-
-	virtual
-	bool
-	getKeepCurrentLevel () const final override
-	{ return getNode () -> getKeepCurrentLevel (); }
+	~InlineEditor ();
 
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
-	realize () final override;
+	initialize () final override;
+
+	void
+	set_selection ();
+	
+	///  @name Event handlers
+
+	virtual
+	void
+	on_convert_master_selection_clicked () final override;
+
+	//virtual
+	void
+	on_update_bounding_box_fields_activate () /*final override*/;
+
+	virtual
+	void
+	on_fold_back_into_scene_clicked () final override;
+
+	///  @name Members
+
+	X3DFieldToggleButton <X3D::SFBool> load;
+	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
+	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

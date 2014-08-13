@@ -1574,6 +1574,12 @@ BrowserWindow::on_light_editor_clicked ()
 }
 
 void
+BrowserWindow::on_inline_editor_clicked ()
+{
+	addDialog ("InlineEditor", true);
+}
+
+void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
 	std::dynamic_pointer_cast <PrototypeInstanceDialog> (addDialog ("PrototypeInstanceDialog")) -> run ();

@@ -75,10 +75,11 @@ LOD::Fields::Fields () :
 { }
 
 LOD::LOD (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields (),
-	      frameRate (60)
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DGroupingNode (),
+	          fields (),
+	       frameRate (60),
+	keepCurrentLevel (false)
 {
 	addType (X3DConstants::LOD);
 

@@ -1,15 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.h" Line="65" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp" Line="52" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp" Line="52" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.h" Line="96" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp" Line="52" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="532" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1579" Column="20" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.h" Line="99" Column="1" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="93" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,34 +17,31 @@
               <Node name="PROTO" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
+          <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True">
-                <Node name="Context" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-sqlite" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="SQL" expanded="True" />
+              <Node name="Geospatial" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Components" expanded="True">
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
                   <Node name="Navigation" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True" />
-                <Node name="Routing" expanded="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Text" expanded="True" />
+                </Node>
                 <Node name="Tools" expanded="True">
-                  <Node name="Core" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                 </Node>
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="config" expanded="True" />
@@ -62,13 +55,14 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.h" selected="True" />
+              </Node>
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
-                <Node name="LightEditor" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True">
-                  <Node name="X3DViewpointEditor.cpp" selected="True" />
-                </Node>
+                <Node name="InlineEditor" expanded="True" />
+                <Node name="TextEditor" expanded="True" />
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="ViewpointList" expanded="True" />
