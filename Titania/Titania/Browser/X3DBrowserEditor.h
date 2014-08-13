@@ -81,7 +81,10 @@ public:
 	/// @name File operations
 
 	void
-	import (const std::vector <basic::uri> &, const bool);
+	import (const std::vector <basic::uri> &, const bool, const UndoStepPtr & undoStep);
+
+	void
+	importScene (const X3D::ScenePtr &, const UndoStepPtr &);
 
 	virtual
 	void
@@ -168,7 +171,7 @@ public:
 	void
 	detachFromGroup (X3D::MFNode, const bool, const UndoStepPtr &) const;
 
-	X3D::MFNode
+	X3D::SFNode
 	createParentGroup (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
@@ -265,9 +268,6 @@ private:
 	// File
 
 	void
-	importScene (const X3D::ScenePtr &, const UndoStepPtr &);
-
-	void
 	removeUsedPrototypes (X3D::X3DExecutionContext* const, std::map <X3D::ExternProtoDeclarationPtr, size_t> &, std::map <X3D::ProtoDeclarationPtr, size_t> &) const;
 
 	// Clipboard
@@ -305,7 +305,7 @@ private:
 	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
-	createParentGroup (const std::string &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
+	createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	///  @name Undo functions
 

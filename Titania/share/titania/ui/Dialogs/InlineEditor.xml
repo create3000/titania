@@ -125,7 +125,7 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="grid1">
+              <object class="GtkGrid" id="InlineBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">4</property>

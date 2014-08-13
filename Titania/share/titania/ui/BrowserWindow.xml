@@ -616,6 +616,63 @@
                                 <signal name="activate" handler="on_create_parent_layout_group_activate" swapped="no"/>
                               </object>
                             </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="separatormenuitem16">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="CreateParentGeoTransformMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">GeoTransform</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_create_parent_geo_transform_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="CreateParentGeoLocationMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">GeoLocation</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_create_parent_geo_location_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="separatormenuitem17">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="CreateParentCADPartMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">CADPart</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_create_parent_cad_part_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="CreateParentCADAssemblyMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">CADAssembly</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_create_parent_cad_assembly_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="CreateParentCADLayerMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">CADLayer</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_create_parent_cad_layer_activate" swapped="no"/>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>

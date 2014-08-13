@@ -312,6 +312,26 @@ public:
 	{ return *m_CreateParentLayoutGroupMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentGeoTransformMenuItem () const
+	{ return *m_CreateParentGeoTransformMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentGeoLocationMenuItem () const
+	{ return *m_CreateParentGeoLocationMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCADPartMenuItem () const
+	{ return *m_CreateParentCADPartMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCADAssemblyMenuItem () const
+	{ return *m_CreateParentCADAssemblyMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCADLayerMenuItem () const
+	{ return *m_CreateParentCADLayerMenuItem; }
+
+	Gtk::MenuItem &
 	getViewMenuItem () const
 	{ return *m_ViewMenuItem; }
 
@@ -849,6 +869,26 @@ public:
 
 	virtual
 	void
+	on_create_parent_geo_transform_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_geo_location_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_part_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_assembly_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_layer_activate () = 0;
+
+	virtual
+	void
 	on_toolBar_toggled () = 0;
 
 	virtual
@@ -1138,6 +1178,11 @@ private:
 	Gtk::MenuItem*                  m_CreateParentAnchorMenuItem;
 	Gtk::MenuItem*                  m_CreateParentScreenGroupMenuItem;
 	Gtk::MenuItem*                  m_CreateParentLayoutGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGeoTransformMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGeoLocationMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCADPartMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCADAssemblyMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCADLayerMenuItem;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ToolBarMenuItem;
 	Gtk::CheckMenuItem*             m_SideBarMenuItem;

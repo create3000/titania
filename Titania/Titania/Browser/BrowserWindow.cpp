@@ -496,50 +496,43 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 {
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
+		std::vector <basic::uri> uris;
+
 		if (selection_data .get_data_type () == "text/uri-list")
 		{
-			std::vector <basic::uri> uris;
-			const auto               strings = selection_data .get_uris ();
+			const auto strings = selection_data .get_uris ();
 
 			for (const auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));         // ???
-
-			if (uris .size ())
-			{
-				if (do_open)
-				{
-					if (isSaved ())
-						open (uris [0]);
-				}
-				else
-					import (uris, getConfig () .getBoolean ("importAsInline"));
-
-				context -> drag_finish (true, false, time);
-				return;
-			}
 		}
 
 		if (selection_data .get_data_type () == "STRING")
 		{
-			std::vector <basic::uri> uris;
-			const auto               strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
+			const auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
 			for (const auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));
+		}
 
-			if (uris .size ())
+		if (not uris .empty ())
+		{
+			if (do_open)
 			{
-				if (do_open)
-				{
-					if (isSaved ())
-						open (uris [0]);
-				}
-				else
-					import (uris, getConfig () .getBoolean ("importAsInline"));
-
-				context -> drag_finish (true, false, time);
-				return;
+				if (isSaved ())
+					open (uris [0]);
 			}
+			else
+			{
+				const auto undoStep = getConfig () .getBoolean ("importAsInline")
+				                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
+				                      : std::make_shared <UndoStep> (_ ("Import"));
+
+				import (uris, getConfig () .getBoolean ("importAsInline"), undoStep);
+				addUndoStep (undoStep);
+			}
+
+			context -> drag_finish (true, false, time);
+			return;
 		}
 	}
 
@@ -835,32 +828,75 @@ BrowserWindow::on_create_parent_layout_group_activate ()
 }
 
 void
+BrowserWindow::on_create_parent_geo_transform_activate ()
+{
+	on_create_parent ("GeoTransform");
+}
+
+void
+BrowserWindow::on_create_parent_geo_location_activate ()
+{
+	on_create_parent ("GeoLocation");
+}
+
+void
+BrowserWindow::on_create_parent_cad_part_activate ()
+{
+	on_create_parent ("CADPart");
+}
+
+void
+BrowserWindow::on_create_parent_cad_assembly_activate ()
+{
+	on_create_parent ("CADAssembly");
+}
+
+void
+BrowserWindow::on_create_parent_cad_layer_activate ()
+{
+	on_create_parent ("CADLayer");
+}
+
+void
 BrowserWindow::on_create_parent (const std::string & typeName)
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create Parent Group"));
+	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
 
 	getSelection () -> clear (undoStep);
 
-	X3D::MFNode groups = createParentGroup (typeName, selection, undoStep);
+	const auto leader = selection .back ();
+	selection .pop_back ();
 
-	getSelection () -> setChildren (groups, undoStep);
+	const auto group = createParentGroup (typeName, { leader }, undoStep);
+
+	if (not selection .empty ())
+	{
+		addToGroup (group, selection, undoStep);
+		addToGroup (group, { leader }, undoStep);
+	}
+
+	getSelection () -> setChildren ({ group }, undoStep);
 
 	addUndoStep (undoStep);
 
-	// Expand groups
-
 	if (getConfig () .getBoolean ("followPrimarySelection"))
+		getBrowser () -> finished () .addInterest (this, &BrowserWindow::expandNodes, X3D::MFNode ({ group }));
+}
+
+void
+BrowserWindow::expandNodes (const X3D::MFNode & nodes)
+{
+	getBrowser () -> finished () .removeInterest (this, &BrowserWindow::expandNodes);
+
+	for (const auto & node : nodes)
 	{
-		for (const auto & group : groups)
-		{
-			for (const auto & iter : getOutlineTreeView () -> get_iters (group))
-				getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
-		}
+		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
+			getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
 	}
 }
 

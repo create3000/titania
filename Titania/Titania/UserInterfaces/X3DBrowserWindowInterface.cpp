@@ -169,6 +169,16 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_CreateParentScreenGroupMenuItem -> set_name ("CreateParentScreenGroupMenuItem");
 	m_builder -> get_widget ("CreateParentLayoutGroupMenuItem", m_CreateParentLayoutGroupMenuItem);
 	m_CreateParentLayoutGroupMenuItem -> set_name ("CreateParentLayoutGroupMenuItem");
+	m_builder -> get_widget ("CreateParentGeoTransformMenuItem", m_CreateParentGeoTransformMenuItem);
+	m_CreateParentGeoTransformMenuItem -> set_name ("CreateParentGeoTransformMenuItem");
+	m_builder -> get_widget ("CreateParentGeoLocationMenuItem", m_CreateParentGeoLocationMenuItem);
+	m_CreateParentGeoLocationMenuItem -> set_name ("CreateParentGeoLocationMenuItem");
+	m_builder -> get_widget ("CreateParentCADPartMenuItem", m_CreateParentCADPartMenuItem);
+	m_CreateParentCADPartMenuItem -> set_name ("CreateParentCADPartMenuItem");
+	m_builder -> get_widget ("CreateParentCADAssemblyMenuItem", m_CreateParentCADAssemblyMenuItem);
+	m_CreateParentCADAssemblyMenuItem -> set_name ("CreateParentCADAssemblyMenuItem");
+	m_builder -> get_widget ("CreateParentCADLayerMenuItem", m_CreateParentCADLayerMenuItem);
+	m_CreateParentCADLayerMenuItem -> set_name ("CreateParentCADLayerMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
 	m_ViewMenuItem -> set_name ("ViewMenuItem");
 	m_builder -> get_widget ("ToolBarMenuItem", m_ToolBarMenuItem);
@@ -414,6 +424,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activate));
 	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activate));
 	m_CreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_group_activate));
+	m_CreateParentGeoTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_transform_activate));
+	m_CreateParentGeoLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_location_activate));
+	m_CreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_part_activate));
+	m_CreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_assembly_activate));
+	m_CreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_layer_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
 	m_ToolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled));

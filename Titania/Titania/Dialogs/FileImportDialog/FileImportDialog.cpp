@@ -91,8 +91,15 @@ FileImportDialog::run ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
+		const auto undoStep = getBrowserWindow () -> getImportAsInlineMenuItem () .get_active ()
+		                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
+		                      : std::make_shared <UndoStep> (_ ("Import"));
+
 		getBrowserWindow () -> import ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
-		                               getBrowserWindow () -> getImportAsInlineMenuItem () .get_active ());
+		                               getBrowserWindow () -> getImportAsInlineMenuItem () .get_active (),
+		                               undoStep);
+
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 
 	getWindow () .hide ();

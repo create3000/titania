@@ -114,7 +114,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 
 	// Assign material to all appearances in selection
 
-	undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
+	//undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	X3D::traverse (selection, [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
@@ -126,11 +126,10 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 	                  return true;
 						});
 
-	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
+	//undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	getExecutionContext () -> realize ();
-	getBrowser () -> update ();
-
+	//getBrowser () -> update ();
 	return true;
 }
 
@@ -160,7 +159,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 
 	// Assign material to all appearances in selection
 
-	undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
+	//undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	X3D::traverse (selection, [this, &texture, &undoStep] (X3D::SFNode & node)
 	               {
@@ -172,11 +171,10 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, cons
 	                  return true;
 						});
 
-	undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
+	//undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
 	getExecutionContext () -> realize ();
-	getBrowser () -> update ();
-
+	//getBrowser () -> update ();
 	return true;
 }
 

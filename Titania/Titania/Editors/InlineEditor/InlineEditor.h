@@ -103,6 +103,8 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
+	X3D::X3DPtr <X3D::Inline> inlineNode;
+
 };
 
 } // puck

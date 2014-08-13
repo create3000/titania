@@ -1,5 +1,27 @@
 2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* MagicImport.cpp:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.h:
+	* BrowserSelection.cpp:
+	* X3DBrowserEditor.cpp:
+	* InlineEditor.xml:
+	* LibraryView.cpp:
+	* InlineEditor.h:
+	* InlineEditor.cpp:
+	* X3DInlineEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* OutlineSelection.cpp:
+	* X3DInlineEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* FileImportDialog.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* DialogFactory.h:

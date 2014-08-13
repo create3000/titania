@@ -311,8 +311,31 @@ private:
 	void
 	on_create_parent_layout_group_activate () final override;
 
+	virtual
+	void
+	on_create_parent_geo_transform_activate () final override;
+
+	virtual
+	void
+	on_create_parent_geo_location_activate () final override;
+
+	virtual
+	void
+	on_create_parent_cad_part_activate () final override;
+
+	virtual
+	void
+	on_create_parent_cad_assembly_activate () final override;
+
+	virtual
+	void
+	on_create_parent_cad_layer_activate () final override;
+
 	void
 	on_create_parent (const std::string &);
+
+	void
+	expandNodes (const X3D::MFNode &);
 
 	/// @name Bar view handling
 

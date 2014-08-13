@@ -79,6 +79,8 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_UpdateBoundingBoxFieldsSwitch -> set_name ("UpdateBoundingBoxFieldsSwitch");
 	m_builder -> get_widget ("InlineExpander", m_InlineExpander);
 	m_InlineExpander -> set_name ("InlineExpander");
+	m_builder -> get_widget ("InlineBox", m_InlineBox);
+	m_InlineBox -> set_name ("InlineBox");
 	m_builder -> get_widget ("LoadCheckButton", m_LoadCheckButton);
 	m_LoadCheckButton -> set_name ("LoadCheckButton");
 	m_builder -> get_widget ("FoldBackIntoSceneButton", m_FoldBackIntoSceneButton);

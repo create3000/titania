@@ -222,7 +222,10 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 			case Gio::FILE_TYPE_REGULAR:
 			case Gio::FILE_TYPE_SYMBOLIC_LINK:
 			{
-				getBrowserWindow () -> import ({ file -> get_uri () }, false);
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Import From Library"));
+
+				getBrowserWindow () -> import ({ file -> get_uri () }, false, undoStep);
+				getBrowserWindow () -> addUndoStep (undoStep);
 				break;
 			}
 			default:

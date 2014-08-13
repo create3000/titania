@@ -139,6 +139,10 @@ public:
 	getInlineExpander () const
 	{ return *m_InlineExpander; }
 
+	Gtk::Grid &
+	getInlineBox () const
+	{ return *m_InlineBox; }
+
 	Gtk::CheckButton &
 	getLoadCheckButton () const
 	{ return *m_LoadCheckButton; }
@@ -211,6 +215,7 @@ private:
 	Gtk::Button*                   m_ConvertMasterSelectionButton;
 	Gtk::Switch*                   m_UpdateBoundingBoxFieldsSwitch;
 	Gtk::Expander*                 m_InlineExpander;
+	Gtk::Grid*                     m_InlineBox;
 	Gtk::CheckButton*              m_LoadCheckButton;
 	Gtk::Button*                   m_FoldBackIntoSceneButton;
 	Gtk::Box*                      m_BBoxSizeBox;

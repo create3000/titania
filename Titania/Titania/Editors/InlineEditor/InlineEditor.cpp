@@ -50,6 +50,7 @@
 
 #include "InlineEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -70,7 +71,8 @@ InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
 	                          getBBoxCenterYAdjustment (),
 	                          getBBoxCenterZAdjustment (),
 	                          getBBoxCenterBox (),
-	                          "bboxCenter")
+	                          "bboxCenter"),
+	               inlineNode ()
 {
 	setup ();
 }
@@ -88,11 +90,15 @@ InlineEditor::initialize ()
 void
 InlineEditor::set_selection ()
 {
-	const X3D::X3DPtr <X3D::Inline> inlineNode (getBrowser () -> getSelection () -> getChildren () .empty ()
-	                                            ? nullptr
-															  : getBrowser () -> getSelection () -> getChildren () .back ());
+	getConvertMasterSelectionButton () .set_sensitive (not getBrowser () -> getSelection () -> getChildren () .empty ());
+
+	inlineNode = getBrowser () -> getSelection () -> getChildren () .empty ()
+	             ? nullptr
+					 : getBrowser () -> getSelection () -> getChildren () .back ();
 
 	const auto nodes = inlineNode ? X3D::MFNode ({ inlineNode }) : X3D::MFNode ();
+
+	getInlineBox () .set_sensitive (inlineNode);
 
 	load       .setNodes (nodes);
 	bboxSize   .setNodes (nodes);
@@ -114,6 +120,35 @@ InlineEditor::on_update_bounding_box_fields_activate ()
 void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
+	__LOG__ << std::endl;
+	__LOG__ << inlineNode << std::endl;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
+
+	getBrowserWindow () -> getSelection () -> clear (undoStep);
+	getBrowserWindow () -> removeNodesFromScene ({ inlineNode }, undoStep);
+	getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), undoStep);
+
+//	X3D::SFNode group = new X3D::Group (getExecutionContext ());
+//
+//	getBrowserWindow () -> addToGroup (group, getBrowser () -> getSelection () -> getChildren (), undoStep));
+//	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
+
+	// Replace Inline
+
+	__LOG__ << std::endl;
+	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+	               {
+							if (node == inlineNode)
+							{
+								__LOG__ << node -> getTypeName () << std::endl;
+							}
+
+	                  return true;
+						});
+
+	__LOG__ << std::endl;
+	getBrowserWindow () -> addUndoStep (undoStep);
 	__LOG__ << std::endl;
 }
 
