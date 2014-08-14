@@ -87,6 +87,7 @@ ViewpointEditor::initialize ()
 	X3DGeoViewpointEditor::initialize ();
 
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ViewpointEditor::set_active_viewpoint);
+	viewpointList -> addInterest (*this, &ViewpointEditor::set_viewpoint, nullptr);
 
 	set_active_viewpoint ();
 }
@@ -96,24 +97,25 @@ ViewpointEditor::set_active_viewpoint ()
 {
 	const auto activeLayer = getBrowser () -> getActiveLayer ();
 
-	bool haveViewpoint = false;
-	bool inScene       = false;
+	if (activeLayer and activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ())
+		set_viewpoint (activeLayer -> getViewpointStack () -> top ());
 
-	if (activeLayer)
-	{
-		haveViewpoint = (activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ());
-		inScene       = (activeLayer -> getViewpointStack () -> top () -> getExecutionContext () == getExecutionContext () and not inPrototypeInstance ());
-	}
+	else
+		set_viewpoint (nullptr);
+}
 
-	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (haveViewpoint ? activeLayer -> getViewpointStack () -> top () : nullptr);
+void
+ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+{
+	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getExecutionContext () and not inPrototypeInstance ());
 
 	setViewpoint (viewpointNode);
 	setOrthoViewpoint (viewpointNode);
 	setGeoViewpoint (viewpointNode);
 
-	const auto viewpointNodes = haveViewpoint ? X3D::MFNode ({ activeLayer -> getViewpointStack () -> top () }) : X3D::MFNode ();
+	const auto viewpointNodes = viewpointNode ? X3D::MFNode ({ viewpointNode }) : X3D::MFNode ();
 
-	getViewpointBox () .set_sensitive (haveViewpoint and inScene);
+	getViewpointBox () .set_sensitive (inScene);
 
 	nodeName          .setNode  (X3D::SFNode (viewpointNode));
 	description       .setNodes (viewpointNodes);

@@ -201,6 +201,8 @@ ViewpointList::set_viewpoints ()
 
 		++ index;
 	}
+	
+	processInterests ();
 }
 
 void

@@ -91,6 +91,9 @@ private:
 	void
 	set_active_viewpoint ();
 
+	void
+	set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);
+
 	///  @name Event handlers
 
 	virtual
