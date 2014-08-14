@@ -154,7 +154,7 @@ public:
 	removeNodeFromScene (const X3D::X3DExecutionContextPtr &, X3D::SFNode, const UndoStepPtr &, const bool = true) const;
 
 	void
-	removeImportedNodes (const X3D::InlinePtr &, const UndoStepPtr &) const;
+	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::InlinePtr &, const UndoStepPtr &) const;
 
 	void
 	createClone (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
@@ -288,12 +288,9 @@ private:
 
 	void
 	removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &) const;
-	
-	void
-	removeExportedNodes (const X3D::ScenePtr &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &, const bool) const;
+	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &, const bool) const;
 
 	void
 	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
@@ -303,9 +300,12 @@ private:
 
 	void
 	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
+	
+	void
+	removeExportedNodes (X3D::X3DScene* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	deleteRoutes (const X3D::SFNode &, const UndoStepPtr &) const;
+	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;

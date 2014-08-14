@@ -796,7 +796,9 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			    (field -> getName () == "load" and value -> toString () == "FALSE") or 
 			     field -> getName () == "url"))
 			{
-				treeView -> getBrowserWindow () -> removeImportedNodes (inlineNode, undoStep);
+				treeView -> getBrowserWindow () -> removeImportedNodes (treeView -> get_model () -> get_execution_context (),
+				                                                        inlineNode,
+				                                                        undoStep);
 
 				if (not undoStep -> isEmpty ())
 				{
