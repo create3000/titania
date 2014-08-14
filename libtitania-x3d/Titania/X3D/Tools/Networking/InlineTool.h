@@ -81,6 +81,13 @@ public:
 	load () const
 	{ return getNode () -> load (); }
 
+	///  @name Operations
+
+	virtual
+	void
+	preventNextLoad () final override
+	{ getNode () -> preventNextLoad (); }
+
 	///  @name Exported node handling
 
 	virtual

@@ -781,34 +781,36 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		return true;
 	}
 
-	const auto currentValue = field -> toString ();
-	const auto locale       = std::locale ();
+	const auto value  = field -> create ();
+	const auto locale = std::locale ();
 
-	if (field -> fromLocaleString (string, locale))
+	if (value -> fromLocaleString (string, locale))
 	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
-
-		const X3D::X3DPtr <X3D::Inline> inlineNode (node);
-		
-		if (inlineNode and (
-		    (field -> getName () == "load" and field -> toString () == "FALSE") or 
-		     field -> getName () == "url"))
+		if (*value not_eq *field)
 		{
-			treeView -> getBrowserWindow () -> removeImportedNodes (inlineNode, undoStep);
+			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
-			if (not undoStep -> isEmpty ())
+			const X3D::X3DPtr <X3D::Inline> inlineNode (node);
+			
+			if (inlineNode and (
+			    (field -> getName () == "load" and value -> toString () == "FALSE") or 
+			     field -> getName () == "url"))
 			{
-				undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
-				undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from url or load field event.
-			}
-		}
+				treeView -> getBrowserWindow () -> removeImportedNodes (inlineNode, undoStep);
 
-		if (field -> toString () not_eq currentValue or not undoStep -> isEmpty ())
-		{
+				if (not undoStep -> isEmpty ())
+				{
+					undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
+					undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from url or load field event.
+				}
+			}
+
 			undoStep -> addVariables (node);
 
-			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, currentValue);
-			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromLocaleString, field, string, locale);
+			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, field -> toString ());
+			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, value -> toString ());
+			*field = *value;
+			delete value;
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}

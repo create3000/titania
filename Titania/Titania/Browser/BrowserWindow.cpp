@@ -208,13 +208,13 @@ void
 BrowserWindow::expandNodes (const X3D::MFNode & nodes)
 {
 	if (getConfig () .getBoolean ("followPrimarySelection"))
-		getBrowser () -> finished () .addInterest (this, &BrowserWindow::expandNodes, nodes);
+		getBrowser () -> finished () .addInterest (this, &BrowserWindow::expandNodesImpl, nodes);
 }
 
 void
 BrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
-	getBrowser () -> finished () .removeInterest (this, &BrowserWindow::expandNodes);
+	getBrowser () -> finished () .removeInterest (this, &BrowserWindow::expandNodesImpl);
 
 	for (const auto & node : nodes)
 	{

@@ -245,10 +245,7 @@ public:
 	{ return namedNodes; }
 
 	std::string
-	getUniqueName (std::string) const;
-
-	std::string
-	getUniqueName () const;
+	getUniqueName (std::string = "") const;
 
 	///  @name Imported nodes handling
 
@@ -577,6 +574,9 @@ private:
 	void
 	removeImportedName (const ImportedNamesIndex::iterator &);
 
+	std::string
+	getUniqueImportedName (const X3DExecutionContext* const, std::string = "") const;
+
 	RouteId
 	getRouteId (const SFNode &, const std::string &,
 	            const SFNode &, const std::string &)
@@ -589,10 +589,7 @@ private:
 	updateNamedNodes (X3DExecutionContext* const);
 
 	std::string
-	getUniqueName (X3DExecutionContext* const, std::string) const;
-
-	std::string
-	getUniqueName (X3DExecutionContext* const) const;
+	getUniqueName (X3DExecutionContext* const, std::string = "") const;
 
 	///  @name Static members
 

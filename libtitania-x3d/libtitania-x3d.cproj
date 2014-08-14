@@ -766,6 +766,7 @@
     <None Include="share\titania\tools\library\ToolShader.x3dv" />
     <None Include="Titania\X3D\Tools\Navigation\OrthoViewpointTool.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
+    <None Include="Titania\X3D\Tools\Networking\X3DUrlObjectTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -115,6 +115,7 @@ public:
 	void
 	requestImmediateLoad () override;
 
+	virtual
 	void
 	preventNextLoad ()
 	{ preventLoad = true; }
@@ -223,6 +224,9 @@ private:
 	void
 	set_url ();
 
+	void
+	set_buffer ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -242,6 +246,7 @@ private:
 
 	ScenePtr scene;
 	GroupPtr group;
+	SFTime   buffer;
 	bool     preventLoad;
 
 	std::unique_ptr <SceneLoader> future;

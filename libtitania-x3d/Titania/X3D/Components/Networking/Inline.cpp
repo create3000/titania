@@ -76,6 +76,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	          fields (),
 	           scene (),
 	           group (new Group (executionContext)),
+	          buffer (),
 	     preventLoad (false),
 	          future ()
 {
@@ -87,7 +88,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 
-	addChildren (scene, group);
+	addChildren (scene, group, buffer);
 }
 
 X3DBaseNode*
@@ -108,6 +109,7 @@ Inline::initialize ()
 
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
+	buffer  .addInterest (this, &Inline::set_buffer);
 
 	if (scene)
 	{
@@ -329,7 +331,7 @@ void
 Inline::set_load ()
 {
 	if (load ())
-		set_url ();
+		buffer .addEvent ();
 
 	else
 		requestUnload ();
@@ -338,10 +340,16 @@ Inline::set_load ()
 void
 Inline::set_url ()
 {
+	buffer .addEvent ();
+}
+
+void
+Inline::set_buffer ()
+{
 	if (not load ())
 		return;
 
-	if (preventLoad and (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE))
+	if (preventLoad)
 	{
 		preventLoad = false;
 		return;

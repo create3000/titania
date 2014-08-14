@@ -792,7 +792,7 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & node, const X3D::SFNode & ne
 										   const auto sfnode = static_cast <X3D::SFNode*> (field);
 
 											if (*sfnode == node)
-											   getBrowserWindow () -> replaceNode (parent, *sfnode, newValue, undoStep);
+											   replaceNode (parent, *sfnode, newValue, undoStep);
 
 										   break;
 										}
@@ -800,7 +800,7 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & node, const X3D::SFNode & ne
 										{
 										   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-										   getBrowserWindow () -> replaceNode (parent, *mfnode, node, newValue, undoStep);
+										   replaceNodes (parent, *mfnode, node, newValue, undoStep);
 										   break;
 										}
 									default:
@@ -940,24 +940,24 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 
 	// Delete children of node if not in scene
 
-	std::set <X3D::SFNode> children;
-
 	// Collect children
 
-	X3D::traverse (node, [&node, &children] (X3D::SFNode & child)
-	               {
-	                  if (child not_eq node)
-								children .emplace (child);
+	std::set <X3D::SFNode> children;
 
+	X3D::traverse (node, [&children] (X3D::SFNode & child)
+	               {
+	                  children .emplace (child);
 	                  return true;
 						},
 	               true,
 	               X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-	// Filter out scene nodes
+	children .erase (node);
 
 	if (not children .empty ())
 	{
+		// Filter out scene nodes
+
 		X3D::traverse (executionContext -> getRootNodes (), [&children] (X3D::SFNode & node)
 		               {
 		                  // If executionContext node is in children, remove from children.
@@ -976,7 +976,20 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 			if (scene)
 				removeExportedNodes (scene, child, undoStep);
 
-			removeImportedNodes (X3D::InlinePtr (child), undoStep);
+			X3D::InlinePtr inlineNode (child);
+
+			if (inlineNode and inlineNode -> load ())
+			{
+				removeImportedNodes (inlineNode, undoStep);
+
+				undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
+				undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
+
+				undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), true);
+				undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), false);
+				inlineNode -> load () = false;
+			}
+
 			deleteRoutes (child, undoStep);
 		}
 
@@ -1029,8 +1042,19 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 
 	removeNamedNode (executionContext, node, undoStep);
 
-	if (node -> getType () .back () == X3D::X3DConstants::Inline)
-		removeImportedNodes (X3D::InlinePtr (node), undoStep);
+	X3D::InlinePtr inlineNode (node);
+
+	if (inlineNode and inlineNode -> load ())
+	{
+		removeImportedNodes (inlineNode, undoStep);				
+
+		undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
+		undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
+
+		undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), true);
+		undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), false);
+		inlineNode -> load () = false;
+	}
 
 	deleteRoutes (node, undoStep);
 
@@ -1143,7 +1167,7 @@ X3DBrowserEditor::removeImportedNodes (const X3D::InlinePtr & inlineNode, const 
 {
 	// Remove nodes imported from node
 
-	if (inlineNode)
+	if (inlineNode and inlineNode -> load ())
 	{
 		const auto executionContext = inlineNode -> getExecutionContext ();
 
@@ -1397,7 +1421,7 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 											{
 											   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-											   replaceNode (parent, *mfnode, node, clone, undoStep);
+											   replaceNodes (parent, *mfnode, node, clone, undoStep);
 											   break;
 											}
 										default:
@@ -1409,7 +1433,7 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 							},
 		               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-		replaceNode (getExecutionContext () .getValue (), getExecutionContext () -> getRootNodes (), node, clone, undoStep);
+		replaceNodes (getExecutionContext () .getValue (), getExecutionContext () -> getRootNodes (), node, clone, undoStep);
 	}
 }
 

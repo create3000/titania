@@ -1,3 +1,12 @@
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* InlineTool.h:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp: 
+
 2014-08-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DScene.cpp:

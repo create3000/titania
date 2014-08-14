@@ -339,15 +339,12 @@ X3DExecutionContext::getUniqueName (std::string name) const
 {
 	RegEx::LastNumber_ .Replace ("", &name);
 
-	if (name .empty ())
-		return getUniqueName ();
-
 	std::string newName = name;
 	size_t      i       = 64;
 
 	for ( ; i;)
 	{
-		if (namedNodes .count (newName))
+		if (namedNodes .count (newName) or newName .empty ())
 		{
 			const auto min = i;
 			std::uniform_int_distribution <size_t> random (min, i <<= 1);
@@ -364,88 +361,32 @@ X3DExecutionContext::getUniqueName (std::string name) const
 }
 
 /***
- *  Returns a name that is unique in this execution contentext.
- */
-std::string
-X3DExecutionContext::getUniqueName () const
-{
-	std::string name;
-	size_t      i = 64;
-
-	for ( ; i;)
-	{
-		const auto min = i;
-		std::uniform_int_distribution <size_t> random (min, i <<= 1);
-
-		name = '_' + basic::to_string (random (random_engine));
-
-		if (namedNodes .count (name))
-			continue;
-
-		break;
-	}
-
-	return name;
-}
-
-/***
  *  Returns a name that is unique in this execution contentext and in @a executionContext.
  */
 std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
 	RegEx::LastNumber_ .Replace ("", &name);
-
-	if (name .empty ())
-		return getUniqueName (executionContext);
-
-	else
-	{
-		std::string newName = name;
-		size_t      i       = 64;
-
-		for ( ; i;)
-		{
-			if (namedNodes .count (newName) or executionContext -> namedNodes .count (newName))
-			{
-				const auto min = i;
-				std::uniform_int_distribution <size_t> random (min, i <<= 1);
-
-				newName = name;
-				newName += '_';
-				newName += basic::to_string (random (random_engine));
-			}
-			else
-				break;
-		}
-
-		return newName;
-	}
-}
-
-/***
- *  Returns a name that is unique in this execution contentext and in @a executionContext.
- */
-std::string
-X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext) const
-{
-	std::string name;
-	size_t      i = 64;
+	
+	std::string newName = name;
+	size_t      i       = 64;
 
 	for ( ; i;)
 	{
-		const auto min = i;
-		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		if (namedNodes .count (newName) or executionContext -> namedNodes .count (newName) or newName .empty ())
+		{
+			const auto min = i;
+			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
-		name = '_' + basic::to_string (random (random_engine));
-
-		if (namedNodes .count (name) or executionContext -> namedNodes .count (name))
-			continue;
-
-		break;
+			newName = name;
+			newName += '_';
+			newName += basic::to_string (random (random_engine));
+		}
+		else
+			break;
 	}
 
-	return name;
+	return newName;
 }
 
 // Imported nodes handling
@@ -552,6 +493,35 @@ throw (Error <INVALID_NODE>,
 		throw Error <INVALID_NODE> ("Node is NULL.");
 
 	return importedNames .count (node -> getId ());
+}
+
+/***
+ *  Returns a name that is unique in this execution contentext.
+ */
+std::string
+X3DExecutionContext::getUniqueImportedName (const X3DExecutionContext* const executionContext, std::string importedName) const
+{
+	RegEx::LastNumber_ .Replace ("", &importedName);
+
+	std::string newName = importedName;
+	size_t      i       = 64;
+
+	for ( ; i;)
+	{
+		if (importedNodes .count (newName) or executionContext -> importedNodes .count (newName) or newName .empty ())
+		{
+			const auto min = i;
+			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+			newName = importedName;
+			newName += '_';
+			newName += basic::to_string (random (random_engine));
+		}
+		else
+			break;
+	}
+	
+	return newName;
 }
 
 SFNode
@@ -1084,7 +1054,7 @@ throw (Error <INVALID_NAME>,
 		updateNamedNodes (executionContext);
 		importRootNodes (executionContext);
 
-		//importImportedNodes (executionContext);
+		importImportedNodes (executionContext);
 		importRoutes (executionContext);
 
 		realize ();
@@ -1160,6 +1130,15 @@ X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const execu
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
+	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
+	{
+		const auto & importedNode       = pair .second;
+		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ());
+
+		const_cast <X3DExecutionContext*> (executionContext) -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
+		const_cast <X3DExecutionContext*> (executionContext) -> removeImportedNode (importedNode -> getImportedName ());
+	}
+
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode .second -> copy (this, COPY_OR_CLONE);
 }
