@@ -77,6 +77,10 @@ public:
 	getNodes ()
 	{ return nodes; }
 
+	const UndoStepPtr &
+	getUndoStep () const
+	{ return undoStep; }
+
 	///  @name Destruction
 	
 	virtual

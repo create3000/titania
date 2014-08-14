@@ -183,6 +183,10 @@ public:
 	getBBoxCenterZSpinButton () const
 	{ return *m_BBoxCenterZSpinButton; }
 
+	Gtk::Label &
+	getLoadStateLabel () const
+	{ return *m_LoadStateLabel; }
+
 	virtual
 	void
 	on_convert_master_selection_clicked () = 0;
@@ -226,6 +230,7 @@ private:
 	Gtk::SpinButton*               m_BBoxCenterXSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
+	Gtk::Label*                    m_LoadStateLabel;
 
 };
 

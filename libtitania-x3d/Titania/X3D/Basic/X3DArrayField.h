@@ -276,6 +276,11 @@ public:
 	bool
 	operator == (const X3DFieldDefinition &) const override;
 
+	///  Returns true if the contents of the arrays are not equal, false otherwise.
+	virtual
+	bool
+	operator not_eq (const X3DFieldDefinition &) const override;
+
 	/**
 	 *  @name Element access
 	 */
@@ -659,6 +664,14 @@ X3DArrayField <ValueType>::operator == (const X3DFieldDefinition & field) const
 	}
 
 	return false;
+}
+
+template <class ValueType>
+inline
+bool
+X3DArrayField <ValueType>::operator not_eq (const X3DFieldDefinition & field) const
+{
+	return not (*this == field);
 }
 
 template <class ValueType>

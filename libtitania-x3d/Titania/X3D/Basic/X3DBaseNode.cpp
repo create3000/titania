@@ -382,7 +382,7 @@ X3DBaseNode::setName (const std::string & value)
 {
 	X3DParentObject::setName (value);
 
-	name_changed () .processInterests ();
+	nameOutput = chrono::now ();
 }
 
 /***

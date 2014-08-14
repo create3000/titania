@@ -352,7 +352,17 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 	{
 		for (const auto & undoFunction : std::make_pair (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
-			undoFunction ();
+		{
+			try
+			{
+				undoFunction ();
+			}
+			catch (const std::exception & error)
+			{
+				std::clog << "Undo step not possible:" << std::endl;
+				std::clog << error .what () << std::endl;
+			}
+		}
 
 		undoStep -> getUndoFunctions () .resize (undoSize);
 		undoStep -> getRedoFunctions () .clear ();

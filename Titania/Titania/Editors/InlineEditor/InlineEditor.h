@@ -81,7 +81,7 @@ private:
 	initialize () final override;
 
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode &);
 	
 	///  @name Event handlers
 
@@ -97,6 +97,12 @@ private:
 	void
 	on_fold_back_into_scene_clicked () final override;
 
+	void
+	on_load_clicked ();
+
+	void
+	set_loadState (const X3D::LoadState);
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> load;
@@ -104,6 +110,7 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
 	X3D::X3DPtr <X3D::Inline> inlineNode;
+	bool                      loadState;
 
 };
 

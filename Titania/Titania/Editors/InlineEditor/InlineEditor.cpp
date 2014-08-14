@@ -72,8 +72,10 @@ InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
 	                          getBBoxCenterZAdjustment (),
 	                          getBBoxCenterBox (),
 	                          "bboxCenter"),
-	              inlineNode ()
+	              inlineNode (),
+	               loadState (false)
 {
+	getLoadCheckButton () .signal_clicked () .connect (sigc::mem_fun (this, &InlineEditor::on_load_clicked));
 	setup ();
 }
 
@@ -84,17 +86,35 @@ InlineEditor::initialize ()
 
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &InlineEditor::set_selection);
 
-	set_selection ();
+	set_selection (getBrowser () -> getSelection () -> getChildren ());
 }
 
 void
-InlineEditor::set_selection ()
+InlineEditor::set_selection (const X3D::MFNode & selection)
 {
-	getConvertMasterSelectionButton () .set_sensitive (not getBrowser () -> getSelection () -> getChildren () .empty ());
+	getConvertMasterSelectionButton () .set_sensitive (not selection .empty ());
 
-	inlineNode = getBrowser () -> getSelection () -> getChildren () .empty ()
-	             ? nullptr
-					 : getBrowser () -> getSelection () -> getChildren () .back ();
+	if (inlineNode)
+		inlineNode -> checkLoadState () .removeInterest (this, &InlineEditor::set_loadState);
+
+	if (selection .empty ())
+		inlineNode = nullptr;
+	else
+		inlineNode = selection .back ();
+
+	if (inlineNode)
+	{
+		inlineNode -> checkLoadState () .addInterest (this, &InlineEditor::set_loadState);
+	
+		loadState = inlineNode -> load ();
+
+		set_loadState (inlineNode -> checkLoadState ());
+	}
+	else
+	{
+		loadState = false;
+		set_loadState (X3D::NOT_STARTED_STATE);
+	}
 
 	const auto nodes = inlineNode ? X3D::MFNode ({ inlineNode }) : X3D::MFNode ();
 
@@ -120,8 +140,6 @@ InlineEditor::on_update_bounding_box_fields_activate ()
 void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
-	__LOG__ << std::endl;
-
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
 	const auto nodes    = getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), undoStep);
 
@@ -135,15 +153,69 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 
 	if (not name .empty ())
 	{
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, getExecutionContext (), name);
-		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, getExecutionContext (), name, group);
-		getExecutionContext () -> updateNamedNode (name, group);
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, inlineNode -> getExecutionContext (), name);
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, inlineNode -> getExecutionContext (), name, group);
+		inlineNode -> getExecutionContext () -> updateNamedNode (name, group);
 	}
 
 	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
+}
+
+void
+InlineEditor::on_load_clicked ()
+{
+	if (not inlineNode)
+		return;
+
+	if (inlineNode -> load () == loadState)
+		return;
+
+	if (loadState and load .getUndoStep ())
+	{
+		// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
+
+		getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), inlineNode, load .getUndoStep ());				
+
+		load .getUndoStep () -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
+		load .getUndoStep () -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
+		load .getUndoStep () -> addUndoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), true);
+	}
+
+	loadState = inlineNode -> load ();
+}
+
+void
+InlineEditor::set_loadState (const X3D::LoadState loadState)
+{
+	getFoldBackIntoSceneButton () .set_sensitive (false);
+
+	switch (loadState)
+	{
+		case X3D::NOT_STARTED_STATE:
+		{
+			getLoadStateLabel () .set_text (_ ("NOT STARTED"));
+			break;
+		}
+		case X3D::IN_PROGRESS_STATE:
+		{
+			getLoadStateLabel () .set_text (_ ("IN PROGRESS"));
+			break;
+		}
+		case X3D::COMPLETE_STATE:
+		{
+			getFoldBackIntoSceneButton () .set_sensitive (true);
+			getLoadStateLabel () .set_text (_ ("COMPLETE"));
+			break;
+		}
+		case X3D::FAILED_STATE:
+		{
+			getLoadStateLabel () .set_text (_ ("FAILED"));
+			break;
+		}
+	}
 }
 
 InlineEditor::~InlineEditor ()

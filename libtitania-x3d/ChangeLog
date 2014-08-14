@@ -1,5 +1,13 @@
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPtr.h:
+	* X3DBaseNode.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* X3DBaseTool.h: 
+
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* InlineTool.h:
 	* Inline.h:

@@ -133,7 +133,7 @@ public:
 	setName (const std::string &) override;
 
 	virtual
-	const Output &
+	const SFTime &
 	name_changed () const
 	{ return nameOutput; }
 
@@ -608,7 +608,7 @@ private:
 
 	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
-	Output        nameOutput;
+	SFTime        nameOutput;
 	NodeTypeArray type;
 
 	FieldDefinitionArray fieldDefinitions;       // Pre-defined and user-defined field definitions

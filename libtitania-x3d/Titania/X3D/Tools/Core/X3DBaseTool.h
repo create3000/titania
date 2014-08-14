@@ -85,7 +85,7 @@ public:
 	{ return node -> getName (); }
 
 	virtual
-	const Output &
+	const SFTime &
 	name_changed () const final override
 	{ return node -> name_changed (); }
 

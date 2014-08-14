@@ -1131,7 +1131,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 {
 	// Remove nodes imported from node
 
-	if (inlineNode and inlineNode -> load ())
+	if (inlineNode)
 	{
 		for (const auto & pair : X3D::ImportedNodeIndex (executionContext -> getImportedNodes ()))
 		{
@@ -1895,7 +1895,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const b
 
 			getSelection () -> redoRestoreSelection (undoStep);
 
-			//undoStep -> addVariables (node);
+			undoStep -> addVariables (node);
 			undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation ());
 			undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation () + translation);
 

@@ -1,5 +1,17 @@
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* X3DBrowserEditor.cpp:
+	* InlineEditor.xml:
+	* InlineEditor.h:
+	* InlineEditor.cpp:
+	* X3DFieldToggleButton.h:
+	* X3DInlineEditorInterface.h:
+	* X3DInlineEditorInterface.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewpointList.cpp:
 	* ViewpointEditor.h:
 	* ViewpointEditor.cpp: 

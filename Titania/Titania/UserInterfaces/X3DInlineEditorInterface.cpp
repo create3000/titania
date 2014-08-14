@@ -101,6 +101,8 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_BBoxCenterYSpinButton -> set_name ("BBoxCenterYSpinButton");
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_BBoxCenterZSpinButton -> set_name ("BBoxCenterZSpinButton");
+	m_builder -> get_widget ("LoadStateLabel", m_LoadStateLabel);
+	m_LoadStateLabel -> set_name ("LoadStateLabel");
 	m_ConvertMasterSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_convert_master_selection_clicked));
 	m_FoldBackIntoSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_fold_back_into_scene_clicked));
 
