@@ -290,7 +290,7 @@ private:
 	removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &, const bool) const;
+	removeNodesFromExecutionContext (X3D::X3DExecutionContext* const, const X3D::MFNode &, const UndoStepPtr &, const bool) const;
 
 	void
 	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;

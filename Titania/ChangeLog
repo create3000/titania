@@ -1,5 +1,11 @@
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* ViewpointEditor.cpp: 
+
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UndoStep.h:
 	* UndoStep.cpp: 
 

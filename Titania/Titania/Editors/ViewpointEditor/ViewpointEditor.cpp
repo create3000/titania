@@ -87,7 +87,8 @@ ViewpointEditor::initialize ()
 	X3DGeoViewpointEditor::initialize ();
 
 	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ViewpointEditor::set_active_viewpoint);
-	viewpointList -> addInterest (*this, &ViewpointEditor::set_viewpoint, nullptr);
+
+	// We shouldn't store the viewpoint in X3DPtr better would be a X3DWeakPtr inbeteen we use:
 
 	set_active_viewpoint ();
 }

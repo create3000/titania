@@ -953,7 +953,8 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 {
 	// Remove exported nodes
 
-	removeNodeFromExecutionContext (executionContext, node, undoStep, doRemoveFromSceneGraph);
+	if (doRemoveFromSceneGraph)
+		removeNodeFromSceneGraph (executionContext, node, undoStep);
 
 	// Delete children of node if not in scene graph
 
@@ -969,9 +970,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 	               true,
 	               X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-	children .erase (node);
-
-	if (not children .empty ())
+	if (children .size () > 1)
 	{
 		// Filter out nodes still in the scene graph.
 
@@ -982,58 +981,70 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DExecutionContextPtr & execu
 							},
 		               true,
 		               X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-
-		// Remove rest, these are only nodes that are not in the scene graph anymore.
-
-		for (const auto & child : children)
-			removeNodeFromExecutionContext (executionContext, child, undoStep, false);
 	}
+
+	// Remove rest, these are only nodes that are not in the scene graph anymore.
+	removeNodesFromExecutionContext (executionContext, X3D::MFNode (children .begin (), children .end ()), undoStep, false);
 }
 
 void
-X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep, const bool doRemoveFromSceneGraph) const
+X3DBrowserEditor::removeNodesFromExecutionContext (X3D::X3DExecutionContext* const executionContext, const X3D::MFNode & nodes, const UndoStepPtr & undoStep, const bool doRemoveFromSceneGraph) const
 {
 	// Remove node from scene graph
 
 	const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext);
 
 	if (scene)
-		removeExportedNodes (scene, node, undoStep);
-
-	removeNamedNode (executionContext, node, undoStep);
-
-	X3D::InlinePtr inlineNode (node);
-
-	if (inlineNode and inlineNode -> load ())
 	{
-		removeImportedNodes (executionContext, inlineNode, undoStep);				
-
-		undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
-		undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
-
-		undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), true);
-		undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), false);
-		inlineNode -> load () = false;
+		for (const auto & node : nodes)
+			removeExportedNodes (scene, node, undoStep);
 	}
 
-	deleteRoutes (executionContext, node, undoStep);
+	for (const auto & node : nodes)
+		deleteRoutes (executionContext, node, undoStep);
+
+	for (const auto & node : nodes)
+	{
+		X3D::InlinePtr inlineNode (node);
+
+		if (inlineNode and inlineNode -> load ())
+		{
+			removeImportedNodes (executionContext, inlineNode, undoStep);				
+
+			undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
+			undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
+
+			undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), true);
+			undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), false);
+			inlineNode -> load () = false;
+		}
+	}
+
+	for (const auto & node : nodes)
+		removeNamedNode (executionContext, node, undoStep);
 
 	// If it is previously known that the node isn't in the scene graph anymore, it must not removed.
 
 	if (doRemoveFromSceneGraph)
-		removeNodeFromSceneGraph (executionContext, node, undoStep);
+	{
+		for (const auto & node : nodes)
+			removeNodeFromSceneGraph (executionContext, node, undoStep);
+	}
 
 	// Hide node
 
-	undoStep -> addUndoFunction (&X3D::X3DBaseNode::beginUpdate, node);
-	undoStep -> addRedoFunction (&X3D::X3DBaseNode::endUpdate,   node);
-	node -> endUpdate ();
+	for (const auto & node : nodes)
+	{
+		undoStep -> addUndoFunction (&X3D::X3DBaseNode::beginUpdate, node);
+		undoStep -> addRedoFunction (&X3D::X3DBaseNode::endUpdate,   node);
+		node -> endUpdate ();
 
-	using isPrivate = void (X3D::X3DBaseNode::*) (const bool);
+		using isPrivate = void (X3D::X3DBaseNode::*) (const bool);
 
-	undoStep -> addUndoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, node, false);
-	undoStep -> addRedoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, node, true);
-	node -> isPrivate (true);
+		undoStep -> addUndoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, node, false);
+		undoStep -> addRedoFunction ((isPrivate) & X3D::X3DBaseNode::isPrivate, node, true);
+		node -> isPrivate (true);
+	}
 }
 
 void
