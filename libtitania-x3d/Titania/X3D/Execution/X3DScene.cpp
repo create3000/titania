@@ -59,9 +59,15 @@
 #include "../Parser/RegEx.h"
 
 #include <Titania/OS.h>
+#include <Titania/String/to_string.h>
+
+#include <random>
 
 namespace titania {
 namespace X3D {
+
+static std::default_random_engine
+random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 X3DScene::X3DScene () :
 	        X3DBaseNode (),
@@ -211,6 +217,35 @@ throw (Error <INVALID_NAME>,
 	throw Error <INVALID_NAME> ("Exported node '" + exportedName + "' not found.");
 }
 
+/***
+ *  Returns a name that is unique in this execution contentext.
+ */
+std::string
+X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string exportedName) const
+{
+	RegEx::LastNumber_ .Replace ("", &exportedName);
+
+	std::string newName = exportedName;
+	size_t      i       = 64;
+
+	for ( ; i;)
+	{
+		if (exportedNodes .count (newName) or scene -> exportedNodes .count (newName) or newName .empty ())
+		{
+			const auto min = i;
+			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+			newName = exportedName;
+			newName += '_';
+			newName += basic::to_string (random (random_engine));
+		}
+		else
+			break;
+	}
+	
+	return newName;
+}
+
 // Import handling
 
 void
@@ -226,10 +261,13 @@ throw (Error <INVALID_NAME>,
 
 		X3DExecutionContext::import (executionContext);
 
-		//const auto scene = dynamic_cast <X3DScene*> (executionContext);
+		const auto scene = dynamic_cast <X3DScene*> (executionContext);
 
-		//if (scene)
-		//	importExportedNodes (scene);
+		if (scene)
+		{
+			updateExportedNodes (scene);
+			importExportedNodes (scene);
+		}
 
 		return;
 	}
@@ -244,6 +282,21 @@ throw (Error <INVALID_NAME>,
 {
 	for (const auto & metaData : scene -> getMetaDatas ())
 		addMetaData (metaData .first, metaData .second);
+}
+
+void
+X3DScene::updateExportedNodes (X3DScene* const scene) const
+{
+	for (const auto & pair : ExportedNodeIndex (scene -> getExportedNodes ()))
+	{
+		const auto & exportedNode       = pair .second;
+		const auto   uniqueExportedName = getUniqueExportedName (scene, exportedNode -> getExportedName ());
+
+		scene -> updateExportedNode (uniqueExportedName, exportedNode -> getLocalNode ());
+
+		if (uniqueExportedName not_eq exportedNode -> getExportedName ())
+			scene -> removeExportedNode (exportedNode -> getExportedName ());
+	}
 }
 
 void

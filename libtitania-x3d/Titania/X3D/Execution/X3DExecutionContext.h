@@ -570,12 +570,14 @@ private:
 	using ImportedNamesIndex = std::multimap <X3DBase*, std::string>;
 
 	///  @name Operations
-
-	void
-	removeImportedName (const ImportedNamesIndex::iterator &);
+	std::string
+	getUniqueName (X3DExecutionContext* const, std::string = "") const;
 
 	std::string
 	getUniqueImportedName (const X3DExecutionContext* const, std::string = "") const;
+
+	void
+	removeImportedName (const ImportedNamesIndex::iterator &);
 
 	RouteId
 	getRouteId (const SFNode &, const std::string &,
@@ -586,10 +588,10 @@ private:
 	///  @name Import handling
 
 	void
-	updateNamedNodes (X3DExecutionContext* const);
+	updateNamedNodes (X3DExecutionContext* const) const;
 
-	std::string
-	getUniqueName (X3DExecutionContext* const, std::string = "") const;
+	void
+	updateImportedNodes (X3DExecutionContext* const) const;
 
 	///  @name Static members
 

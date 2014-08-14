@@ -1,5 +1,12 @@
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.h:
+	* X3DScene.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp: 
+
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPtr.h:
 	* X3DBaseNode.h:
 	* X3DArrayField.h:

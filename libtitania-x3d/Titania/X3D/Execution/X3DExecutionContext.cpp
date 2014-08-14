@@ -1053,7 +1053,11 @@ throw (Error <INVALID_NAME>,
 
 		updateNamedNodes (executionContext);
 		importRootNodes (executionContext);
+		//		getRootNodes () .insert (getRootNodes () .end (),
+		//		                         executionContext -> getRootNodes () .begin (),
+		//		                         executionContext -> getRootNodes () .end ());
 
+		updateImportedNodes (executionContext);
 		importImportedNodes (executionContext);
 		importRoutes (executionContext);
 
@@ -1065,12 +1069,27 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionContext)
+X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionContext) const
 {
 	for (const auto & node : NamedNodeIndex (executionContext -> getNamedNodes ()))
 	{
 		executionContext -> removeNamedNode (node .first);
 		executionContext -> updateNamedNode (getUniqueName (executionContext, node .first), node .second -> getLocalNode ());
+	}
+}
+
+void
+X3DExecutionContext::updateImportedNodes (X3DExecutionContext* const executionContext) const
+{
+	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
+	{
+		const auto & importedNode       = pair .second;
+		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ());
+
+		executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
+
+		if (uniqueImportedName not_eq importedNode -> getImportedName ())
+			executionContext -> removeImportedNode (importedNode -> getImportedName ());
 	}
 }
 
@@ -1130,15 +1149,6 @@ X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const execu
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
-	{
-		const auto & importedNode       = pair .second;
-		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ());
-
-		const_cast <X3DExecutionContext*> (executionContext) -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
-		const_cast <X3DExecutionContext*> (executionContext) -> removeImportedNode (importedNode -> getImportedName ());
-	}
-
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode .second -> copy (this, COPY_OR_CLONE);
 }
