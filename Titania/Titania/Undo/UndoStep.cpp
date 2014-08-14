@@ -55,6 +55,15 @@
 namespace titania {
 namespace puck {
 
+/***
+ *  Class to represent an undo/redo step.
+ *
+ *  To add another UndoStep to this UndoStep you can use:
+ *
+ *      undoStep -> addUndoFunction (&UndoStep::redoChanges, otherUndoStep);
+ *      undoStep -> addRedoFunction (&UndoStep::undoChanges, otherUndoStep);
+ *      otherUndoStep -> undoChanges ();
+ */
 UndoStep::UndoStep () :
 	UndoStep ("")
 { }
@@ -65,18 +74,6 @@ UndoStep::UndoStep (const std::string & description) :
 	undoFunctions (),
 	redoFunctions ()
 { }
-
-void
-UndoStep::addUndoStepReverse (const UndoStepPtr & undoStep)
-{
-	redoFunctions .insert (redoFunctions .end (),
-	                       undoStep -> getUndoFunctions () .rbegin (),
-	                       undoStep -> getUndoFunctions () .rend ());
-
-	undoFunctions .insert (undoFunctions .end (),
-	                       undoStep -> getRedoFunctions () .rbegin (),
-	                       undoStep -> getRedoFunctions () .rend ());
-}
 
 void
 UndoStep::undoChanges ()

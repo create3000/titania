@@ -259,15 +259,15 @@ throw (Error <INVALID_NAME>,
 	{
 		//importMetaData (executionContext);
 
-		X3DExecutionContext::import (executionContext);
-
 		const auto scene = dynamic_cast <X3DScene*> (executionContext);
 
 		if (scene)
-		{
 			updateExportedNodes (scene);
+
+		X3DExecutionContext::import (executionContext);
+
+		if (scene)
 			importExportedNodes (scene);
-		}
 
 		return;
 	}

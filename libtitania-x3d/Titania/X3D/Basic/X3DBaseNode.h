@@ -141,6 +141,11 @@ public:
 	time_type
 	getCurrentTime () const;
 
+	///  Sets the current excecution context to @a executionContext.
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const);
+
 	///  Returns a pointer to the execution context this node belongs to.
 	X3DExecutionContext*
 	getExecutionContext () const
@@ -606,7 +611,7 @@ private:
 	 *  @name Members
 	 */
 
-	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
+	X3DExecutionContext* executionContext; // This nodes ExecutionContext
 
 	SFTime        nameOutput;
 	NodeTypeArray type;

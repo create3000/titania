@@ -1,5 +1,14 @@
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DParentObject.h:
+	* X3DScene.cpp:
+	* X3DBaseTool.h:
+	* X3DExecutionContext.cpp: 
+
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.h:
 	* X3DScene.cpp:
 	* X3DExecutionContext.h:

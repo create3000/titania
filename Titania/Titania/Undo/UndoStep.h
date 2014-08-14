@@ -118,9 +118,6 @@ public:
 	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
 
 	void
-	addUndoStepReverse (const UndoStepPtr &);
-
-	void
 	undoChanges ();
 
 	void

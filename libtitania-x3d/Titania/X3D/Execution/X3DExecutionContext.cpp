@@ -1051,11 +1051,30 @@ throw (Error <INVALID_NAME>,
 		importExternProtos (executionContext);
 		importProtos (executionContext);
 
+		// Import rootNodes
+
 		updateNamedNodes (executionContext);
-		importRootNodes (executionContext);
-		//		getRootNodes () .insert (getRootNodes () .end (),
-		//		                         executionContext -> getRootNodes () .begin (),
-		//		                         executionContext -> getRootNodes () .end ());
+
+		for (auto & parent : ChildObjectSet (executionContext -> getParents ()))
+		{
+			const auto node = dynamic_cast <X3DBaseNode*> (parent);
+			
+			if (not node)
+				continue;
+
+			if (node == node -> getExecutionContext ())
+				continue;
+
+			node -> setExecutionContext (this);
+		}
+
+		for (const auto & node : executionContext -> getNamedNodes ())
+			updateNamedNode (node .first, node .second -> getLocalNode ());
+
+		getRootNodes () .insert (getRootNodes () .end (),
+		                         executionContext -> getRootNodes () .begin (),
+		                         executionContext -> getRootNodes () .end ());
+		// End rootNodes
 
 		updateImportedNodes (executionContext);
 		importImportedNodes (executionContext);

@@ -91,6 +91,10 @@ public:
 
 	virtual
 	void
+	setExecutionContext (X3DExecutionContext* const) final override;
+
+	virtual
+	void
 	setUserData (const UserDataPtr & value) final override
 	{ node -> setUserData (value); }
 
@@ -222,6 +226,14 @@ X3DBaseTool <Type>::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DToolObject::initialize ();
+}
+
+template <class Type>
+void
+X3DBaseTool <Type>::setExecutionContext (X3DExecutionContext* const value)
+{
+	getNode () -> setExecutionContext (value);
+	X3DBaseNode::setExecutionContext (value);
 }
 
 template <class Type>

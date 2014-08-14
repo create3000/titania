@@ -143,6 +143,10 @@ protected:
 	///  Constructs new X3DParentObject.
 	X3DParentObject (X3DBrowser* const);
 
+	void
+	setBrowser (X3DBrowser* const value)
+	{ browser = value; }
+
 	/***
 	 *  @name Children handling
 	 */
@@ -207,7 +211,7 @@ private:
 	 *  @name Members
 	 */
 
-	X3DBrowser* const     browser;               // This objects Browser
+	X3DBrowser*           browser;               // This objects Browser
 	bool                  extendedEventHandling; // Handle initializeOnlys like inputOutput
 	ChildObjectSet        children;              // Internal used fields
 	ParentId              parentId;              // This object within Router

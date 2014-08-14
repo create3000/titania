@@ -395,6 +395,20 @@ X3DBaseNode::getCurrentTime () const
 }
 
 /***
+ *  Sets the current excecution context to @a executionContext.
+ */
+void
+X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
+{
+	value -> addParent (this); 
+	executionContext -> removeParent (this);
+
+	executionContext = value;
+
+	setBrowser (executionContext -> getBrowser ());
+}
+
+/***
  *  Returns the root execution context for this node.
  */
 X3DExecutionContext*

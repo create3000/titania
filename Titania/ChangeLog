@@ -1,5 +1,10 @@
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* UndoStep.h:
+	* UndoStep.cpp: 
+
+2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DEditorObject.h:
 	* X3DBrowserEditor.cpp:
 	* InlineEditor.xml:

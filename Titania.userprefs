@@ -1,11 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Undo/UndoStep.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="532" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1579" Column="20" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.h" Line="99" Column="1" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="93" Column="1" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.h" Line="104" Column="23" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="189" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="351" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1579" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1064" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="261" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="485" Column="1" />
+      <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="66" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="132" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,17 +30,23 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Navigation" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                   <Node name="Text" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
+                <Node name="Parser" expanded="True" />
                 <Node name="Tools" expanded="True">
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Core" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -55,16 +66,20 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True">
-                <Node name="BrowserWindow.h" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="InlineEditor" expanded="True" />
                 <Node name="TextEditor" expanded="True" />
                 <Node name="ViewpointEditor" expanded="True" />
               </Node>
+              <Node name="Undo" expanded="True">
+                <Node name="UndoStep.cpp" selected="True" />
+              </Node>
               <Node name="Widgets" expanded="True">
+                <Node name="OutlineEditor" expanded="True">
+                  <Node name="CellRenderer" expanded="True" />
+                </Node>
                 <Node name="ViewpointList" expanded="True" />
               </Node>
             </Node>
