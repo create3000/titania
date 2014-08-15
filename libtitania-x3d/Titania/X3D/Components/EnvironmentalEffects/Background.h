@@ -84,6 +84,13 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
+	///  Sets the current excecution context to @a executionContext.
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Common members
 
 	virtual

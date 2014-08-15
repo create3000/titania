@@ -119,7 +119,7 @@ Background::copy (X3DExecutionContext* const executionContext, const CopyType ty
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	Background* const copy = dynamic_cast <Background*> (X3DBaseNode::copy (executionContext, type));
+	Background* const copy = dynamic_cast <Background*> (X3DBackgroundNode::copy (executionContext, type));
 
 	X3DUrlObject::transform (copy -> frontUrl (),  getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 	X3DUrlObject::transform (copy -> backUrl (),   getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
@@ -129,6 +129,21 @@ throw (Error <INVALID_NAME>,
 	X3DUrlObject::transform (copy -> bottomUrl (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 
 	return copy;
+}
+
+void
+Background::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DUrlObject::transform (frontUrl (),  getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (backUrl (),   getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (leftUrl (),   getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (rightUrl (),  getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (topUrl (),    getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+	X3DUrlObject::transform (bottomUrl (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+
+	X3DBackgroundNode::setExecutionContext (executionContext);
 }
 
 void

@@ -82,6 +82,16 @@ throw (Error <INVALID_NAME>,
 }
 
 void
+X3DUrlObject::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	transform (url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+
+	X3DBaseNode::setExecutionContext (executionContext);
+}
+
+void
 X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
 {
 	for (auto & value : url)
