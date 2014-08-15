@@ -109,6 +109,19 @@ MovieTexture::initialize ()
 }
 
 void
+MovieTexture::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DExecutionContext* const executionContext = getExecutionContext ();
+
+	X3DUrlObject::setExecutionContext (value);
+	X3DBaseNode::setExecutionContext (executionContext);
+
+	X3DSoundSourceNode::setExecutionContext (value);
+}
+
+void
 MovieTexture::requestImmediateLoad ()
 {
 	if (not glXGetCurrentContext ())

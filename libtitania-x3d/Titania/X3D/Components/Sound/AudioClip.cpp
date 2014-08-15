@@ -109,6 +109,19 @@ AudioClip::initialize ()
 }
 
 void
+AudioClip::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DExecutionContext* const executionContext = getExecutionContext ();
+
+	X3DUrlObject::setExecutionContext (value);
+	X3DBaseNode::setExecutionContext (executionContext);
+
+	X3DSoundSourceNode::setExecutionContext (value);
+}
+
+void
 AudioClip::requestImmediateLoad ()
 {
 	if (not glXGetCurrentContext ())

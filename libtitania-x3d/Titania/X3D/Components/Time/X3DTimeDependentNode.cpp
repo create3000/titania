@@ -115,6 +115,19 @@ X3DTimeDependentNode::initialize ()
 	initialized = getCurrentTime ();
 }
 
+void
+X3DTimeDependentNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &X3DTimeDependentNode::set_live);
+	executionContext -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
+
+	X3DChildNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
 time_type
 X3DTimeDependentNode::getElapsedTime () const
 {

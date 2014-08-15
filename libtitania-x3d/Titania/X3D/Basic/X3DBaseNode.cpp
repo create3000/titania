@@ -402,10 +402,10 @@ X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	value -> addParent (this); 
 	executionContext -> removeParent (this);
 
 	executionContext = value;
+	executionContext -> addParent (this);
 
 	setBrowser (executionContext -> getBrowser ());
 }

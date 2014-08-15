@@ -107,7 +107,7 @@ throw (Error <INVALID_X3D>,
 
 	if (executionContext not_eq executionContext -> getBrowser ())
 	{
-		executionContext -> isLive () .addInterest (scene -> isLive ());
+		scene -> setExecutionContext (executionContext);
 		scene -> isLive () = executionContext -> isLive ();
 	}
 
@@ -129,7 +129,7 @@ throw (Error <INVALID_URL>,
 
 	if (executionContext not_eq executionContext -> getBrowser ())
 	{
-		executionContext -> isLive () .addInterest (scene -> isLive ());
+		scene -> setExecutionContext (executionContext);
 		scene -> isLive () = executionContext -> isLive ();
 	}
 

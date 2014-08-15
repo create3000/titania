@@ -73,6 +73,12 @@ public:
 	X3DPrototypeInstance*
 	create (X3DExecutionContext* const) const final override;
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Common members
 
 	virtual
@@ -114,7 +120,9 @@ public:
 
 	virtual
 	void
-	setWorldURL (const basic::uri & value) final override
+	setWorldURL (const basic::uri & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
 	{ return protoNode -> getProtoDeclaration () -> setWorldURL (value); }
 
 	virtual

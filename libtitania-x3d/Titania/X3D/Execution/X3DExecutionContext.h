@@ -86,9 +86,11 @@ public:
 
 	///  @name Scene handling
 
+	virtual
 	bool
 	isRootContext () const
-	{ return getExecutionContext () == this; }
+	throw (Error <DISPOSED>)
+	{ return false; }
 
 	///  @name Member access
 
@@ -98,7 +100,9 @@ public:
 
 	virtual
 	void
-	setWorldURL (const basic::uri & value) = 0;
+	setWorldURL (const basic::uri & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
 
 	virtual
 	const basic::uri &
@@ -110,6 +114,8 @@ public:
 
 	void
 	setEncoding (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ encoding = value; }
 
 	const std::string &
@@ -120,6 +126,8 @@ public:
 
 	void
 	setSpecificationVersion (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ specificationVersion = value; }
 
 	const std::string &
@@ -135,6 +143,8 @@ public:
 
 	void
 	setCharacterEncoding (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ characterEncoding = value; }
 
 	const std::string &
@@ -145,6 +155,8 @@ public:
 
 	void
 	setComment (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ comment = value; }
 
 	const std::string &
@@ -155,6 +167,8 @@ public:
 
 	void
 	setProfile (const ProfileInfoPtr & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ profile = value; }
 
 	const ProfileInfoPtr &
@@ -165,6 +179,8 @@ public:
 
 	void
 	addComponent (const ComponentInfoPtr & component)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ components .add (component); }
 
 	const ComponentInfoArray &
@@ -204,9 +220,10 @@ public:
 	       Error <DISPOSED>);
 
 	/// Add uninitialized node
-	virtual
 	void
 	addUninitializedNode (X3DBaseNode* const uninitializedNode)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ uninitializedNodes .emplace_back (uninitializedNode); }
 
 	///  @name Named node handling
@@ -246,7 +263,9 @@ public:
 	{ return namedNodes; }
 
 	std::string
-	getUniqueName (std::string = "") const;
+	getUniqueName (std::string = "") const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Imported nodes handling
 
@@ -294,6 +313,8 @@ public:
 
 	const SFTime &
 	importedNodes_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ return importedNodesOutput; }
 
 	///  @name Named/Imported node handling
@@ -359,6 +380,8 @@ public:
 
 	const SFTime &
 	prototypes_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ return prototypesOutput; }
 
 	///  @name Exterproto declaration handling
@@ -400,6 +423,8 @@ public:
 
 	const SFTime &
 	externProtos_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ return externProtosOutput; }
 
 	///  @name ProtoObject handling

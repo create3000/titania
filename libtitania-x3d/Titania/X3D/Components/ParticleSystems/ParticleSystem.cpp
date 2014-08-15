@@ -442,6 +442,19 @@ ParticleSystem::initialize ()
 	set_physics ();
 }
 
+void
+ParticleSystem::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &ParticleSystem::set_live);
+	executionContext -> isLive () .addInterest (this, &ParticleSystem::set_live);
+
+	X3DShapeNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
 bool
 ParticleSystem::isTransparent () const
 {

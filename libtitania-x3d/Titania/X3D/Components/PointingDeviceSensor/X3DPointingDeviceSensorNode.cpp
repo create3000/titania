@@ -86,6 +86,19 @@ X3DPointingDeviceSensorNode::initialize ()
 }
 
 void
+X3DPointingDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &X3DPointingDeviceSensorNode::set_live);
+	executionContext -> isLive () .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+
+	X3DSensorNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
 X3DPointingDeviceSensorNode::set_live ()
 {
 	if (enabled () and getExecutionContext () -> isLive () and isLive ())

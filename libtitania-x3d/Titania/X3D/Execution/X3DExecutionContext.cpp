@@ -336,6 +336,8 @@ throw (Error <INVALID_NAME>,
  */
 std::string
 X3DExecutionContext::getUniqueName (std::string name) const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	RegEx::LastNumber_ .Replace ("", &name);
 

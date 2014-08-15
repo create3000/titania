@@ -68,6 +68,8 @@ public:
 
 	const basic::uri &
 	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ return worldURL; }
 
 	virtual

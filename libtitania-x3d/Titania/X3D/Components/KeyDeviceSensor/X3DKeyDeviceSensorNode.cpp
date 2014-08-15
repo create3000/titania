@@ -73,6 +73,19 @@ X3DKeyDeviceSensorNode::initialize ()
 }
 
 void
+X3DKeyDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &X3DKeyDeviceSensorNode::set_live);
+	executionContext -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
+
+	X3DSensorNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
 X3DKeyDeviceSensorNode::enable ()
 {
 	if (isActive ())

@@ -137,14 +137,18 @@ public:
 	changed () const
 	{ return changedOutput; }
 	
-	/// Metadata access
+	///  @name Member access
+
+	virtual
+	bool
+	isRootContext () const
+	throw (Error <DISPOSED>) final override
+	{ return true; }
 
 	virtual
 	std::string
 	getTitle () const final override
 	{ return getName (); }
-
-	///  @name Member access
 
 	const WorldPtr &
 	getWorld () const

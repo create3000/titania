@@ -73,11 +73,20 @@ public:
 	///  @name Member access
 
 	virtual
+	bool
+	isRootContext () const
+	throw (Error <DISPOSED>) final override
+	{ return true; }
+
+	virtual
 	std::string
 	getTitle () const final override;
 
+	virtual
 	void
-	setWorldURL (const basic::uri & value) final override
+	setWorldURL (const basic::uri & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
 	{ worldURL = value; }
 
 	virtual

@@ -97,7 +97,9 @@ public:
 
 	virtual
 	void
-	setWorldURL (const basic::uri & value) final override
+	setWorldURL (const basic::uri & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
 	{ return getExecutionContext () -> setWorldURL (value); }
 
 	virtual

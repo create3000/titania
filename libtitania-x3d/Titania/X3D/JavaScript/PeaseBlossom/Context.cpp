@@ -158,6 +158,19 @@ Context::initialize ()
 }
 
 void
+Context::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &Context::set_live);
+	executionContext -> isLive () .addInterest (this, &Context::set_live);
+
+	X3DJavaScriptContext::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
 Context::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())

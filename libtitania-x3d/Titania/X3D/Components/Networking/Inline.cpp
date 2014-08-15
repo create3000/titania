@@ -140,6 +140,19 @@ Inline::initialize ()
 }
 
 void
+Inline::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &Inline::set_live);
+	executionContext -> isLive () .addInterest (this, &Inline::set_live);
+
+	X3DUrlObject::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
 Inline::setSceneAsync (ScenePtr && value)
 {
 	if (value)

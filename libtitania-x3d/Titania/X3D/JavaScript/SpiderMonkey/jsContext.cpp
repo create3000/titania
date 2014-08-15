@@ -476,6 +476,19 @@ jsContext::initialize ()
 }
 
 void
+jsContext::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &jsContext::set_live);
+	executionContext -> isLive () .addInterest (this, &jsContext::set_live);
+
+	X3DJavaScriptContext::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
 jsContext::setEventHandler ()
 {
 	initializeFn      = getFunction ("initialize");

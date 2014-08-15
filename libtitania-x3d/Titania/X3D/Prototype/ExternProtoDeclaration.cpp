@@ -170,6 +170,19 @@ ExternProtoDeclaration::initialize ()
 }
 
 void
+ExternProtoDeclaration::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &ExternProtoDeclaration::set_live);
+	executionContext -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
+
+	X3DProtoDeclarationNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
 ExternProtoDeclaration::requestImmediateLoad ()
 // Spec says
 //throw (<Error <INVALID_OPERATION_TIMING>,

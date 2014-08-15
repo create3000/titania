@@ -168,6 +168,19 @@ X3DPrototypeInstance::initialize ()
 	X3DExecutionContext::initialize ();
 }
 
+void
+X3DPrototypeInstance::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getExecutionContext () -> isLive () .removeInterest (this, &X3DPrototypeInstance::set_live);
+	executionContext -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+
+	X3DNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
 const std::string &
 X3DPrototypeInstance::getTypeName () const
 throw (Error <DISPOSED>)
