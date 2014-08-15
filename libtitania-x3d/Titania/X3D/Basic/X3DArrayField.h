@@ -453,6 +453,14 @@ public:
 	iterator
 	insert (const iterator &, InputIterator, const InputIterator &);
 
+	///  Appends X3DArrayField @a field.
+	X3DArrayField &
+	append (const X3DArrayField & field);
+
+	///  Appends X3DArrayField @a field.
+	X3DArrayField &
+	append (X3DArrayField && field);
+
 	///  Erases elements.
 	iterator
 	erase (const iterator &);
@@ -798,6 +806,27 @@ X3DArrayField <ValueType>::insert (const iterator & location, InputIterator firs
 
 	addEvent ();
 	return iterator (iter);
+}
+
+template <class ValueType>
+inline
+X3DArrayField <ValueType> &
+X3DArrayField <ValueType>::append (const X3DArrayField & field)
+{
+	insert (end (), field .begin (), field .end ());
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DArrayField <ValueType> &
+X3DArrayField <ValueType>::append (X3DArrayField && field)
+{
+	for (auto & value : field)
+		emplace_back (std::move (value));
+
+	field .clear ();
+	return *this;
 }
 
 template <class ValueType>

@@ -678,7 +678,7 @@ BrowserWindow::on_delete_nodes_activate ()
 
 	getSelection () -> clear (undoStep);
 
-	removeNodesFromScene (selection, undoStep);
+	removeNodesFromScene (getExecutionContext (), selection, undoStep);
 
 	addUndoStep (undoStep);
 }

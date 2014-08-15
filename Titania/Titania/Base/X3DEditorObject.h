@@ -409,7 +409,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
 
-	undoStep -> addVariables (nodes);
+	undoStep -> addObjects (nodes);
 
 	// Undo field change
 
@@ -505,7 +505,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), field .getName () .c_str ()));
 
-	undoStep -> addVariables (node);
+	undoStep -> addObjects (node);
 
 	// Undo field change
 

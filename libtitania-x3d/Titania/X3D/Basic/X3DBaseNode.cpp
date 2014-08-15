@@ -399,6 +399,8 @@ X3DBaseNode::getCurrentTime () const
  */
 void
 X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	value -> addParent (this); 
 	executionContext -> removeParent (this);

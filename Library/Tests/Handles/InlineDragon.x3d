@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Wed, 13 Aug 2014 02:22:22 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V0.7.3, http://titania.create3000.de'/>
+    <meta name='modified' content='Fri, 15 Aug 2014 11:01:16 GMT'/>
+  </head>
+  <Scene>
+    <Viewpoint
+        position='0.245616 0.104061 0.850317'
+        centerOfRotation='0.245616 0.104061 5.96046e-08'/>
+    <Transform DEF='dragon'>
+      <Inline DEF='Dragon'
+          url='"file:///home/holger/Schreibtisch/dragon.wrl", "file:///home/holger/Schreibtisch/dragon.wrl"'/>
+    </Transform>
+    <Transform DEF='OutlineEditor-IMPORT'
+        translation='0.555881 0.116458 0'
+        scale='0.0311407 0.0311407 0.0311407'>
+      <Inline DEF='_1'
+          url='"OutlineEditor-IMPORT.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Handles/OutlineEditor-IMPORT.x3dv"'/>
+    </Transform>
+    <IMPORT inlineDEF='_1' exportedDEF='ExportedInline'/>
+    <IMPORT inlineDEF='Dragon' exportedDEF='Dragon' AS='ImportedDragon'/>
+  </Scene>
+</X3D>

@@ -60,7 +60,6 @@
 #include "../Fields/ArrayFields.h"
 #include "../Fields/SFTime.h"
 #include "../Fields/X3DScalar.h"
-#include "../Types/Struct.h"
 
 #include <map>
 
@@ -144,11 +143,15 @@ public:
 	///  Sets the current excecution context to @a executionContext.
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const);
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  Returns a pointer to the execution context this node belongs to.
 	X3DExecutionContext*
 	getExecutionContext () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ return executionContext; }
 
 	///  Returns a pointer to the root execution context this node belongs to.

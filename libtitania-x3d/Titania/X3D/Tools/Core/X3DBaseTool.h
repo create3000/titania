@@ -91,7 +91,9 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const) final override;
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
 
 	virtual
 	void
@@ -231,6 +233,8 @@ X3DBaseTool <Type>::initialize ()
 template <class Type>
 void
 X3DBaseTool <Type>::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	getNode () -> setExecutionContext (value);
 	X3DBaseNode::setExecutionContext (value);

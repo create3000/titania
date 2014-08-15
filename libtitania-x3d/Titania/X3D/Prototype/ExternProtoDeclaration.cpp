@@ -102,35 +102,35 @@ throw (Error <INVALID_NAME>,
 		}
 		case COPY_OR_CLONE:
 		{
-			try
-			{
-				const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
-
-				if (externProto)
-					return externProto;
-			}
-			catch (const X3D::X3DError &)
-			{ }
-
-			FieldDefinitionArray userDefinedFields;
-			
-			for (const auto & fieldDefinition : getUserDefinedFields ())
-			{
-				const auto field = fieldDefinition -> create ();
-
-				field -> setName (fieldDefinition -> getName ());
-				field -> setAccessType (fieldDefinition -> getAccessType ());
-
-				userDefinedFields .emplace_back (field);
-			}
-
-			const auto copy = executionContext -> createExternProtoDeclaration (getName (), userDefinedFields, url ());
-
-			executionContext -> addExternProtoDeclaration (getName (), copy);
-
-			transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
-
-			return copy;
+//			try
+//			{
+//				const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
+//
+//				if (externProto)
+//					return externProto;
+//			}
+//			catch (const X3D::X3DError &)
+//			{ }
+//
+//			FieldDefinitionArray userDefinedFields;
+//			
+//			for (const auto & fieldDefinition : getUserDefinedFields ())
+//			{
+//				const auto field = fieldDefinition -> create ();
+//
+//				field -> setName (fieldDefinition -> getName ());
+//				field -> setAccessType (fieldDefinition -> getAccessType ());
+//
+//				userDefinedFields .emplace_back (field);
+//			}
+//
+//			const auto copy = executionContext -> createExternProtoDeclaration (getName (), userDefinedFields, url ());
+//
+//			executionContext -> addExternProtoDeclaration (getName (), copy);
+//
+//			transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+//
+//			return copy;
 		}
 		case FLAT_COPY:
 			break;

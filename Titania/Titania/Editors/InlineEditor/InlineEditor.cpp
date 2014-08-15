@@ -140,14 +140,9 @@ InlineEditor::on_update_bounding_box_fields_activate ()
 void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
-	const auto nodes    = getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), undoStep);
-
-	if (nodes .empty ())
-		return;
-
-	const auto group = getBrowserWindow () -> groupNodes ("Group", nodes, undoStep);
-	const auto name  = inlineNode -> getName ();
+	const auto        undoStep = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
+	const X3D::SFNode group    = new X3D::Group (inlineNode -> getExecutionContext ());
+	const auto        name     = inlineNode -> getName ();
 
 	getBrowserWindow () -> replaceNodes (X3D::SFNode (inlineNode), group, undoStep);
 
@@ -158,9 +153,13 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 		inlineNode -> getExecutionContext () -> updateNamedNode (name, group);
 	}
 
+	const X3D::GroupPtr groupNode (group);
+
+	getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), groupNode -> children (), undoStep);
+	group -> setup ();
+
 	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
-
 	getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 }
 
@@ -173,16 +172,9 @@ InlineEditor::on_load_clicked ()
 	if (inlineNode -> load () == loadState)
 		return;
 
+	// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
 	if (loadState and load .getUndoStep ())
-	{
-		// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
-
-		getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), inlineNode, load .getUndoStep ());				
-
-		load .getUndoStep () -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
-		load .getUndoStep () -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
-		load .getUndoStep () -> addUndoFunction (&X3D::SFBool::setValue, std::ref (inlineNode -> load ()), true);
-	}
+		getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), { inlineNode }, load .getUndoStep ());				
 
 	loadState = inlineNode -> load ();
 }

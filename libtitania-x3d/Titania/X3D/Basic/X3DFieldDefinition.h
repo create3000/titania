@@ -56,7 +56,6 @@
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/FieldDefinitionSet.h"
 #include "../Routing/RouteSet.h"
-#include "../Types/Struct.h"
 
 #include <vector>
 

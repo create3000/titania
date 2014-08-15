@@ -1,3 +1,20 @@
+2014-08-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Struct.h:
+	* X3DBaseNode.h:
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* X3DScene.cpp:
+	* X3DBaseTool.h:
+	* X3DFieldDefinition.h:
+	* ProtoDeclaration.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.cpp: 
+
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

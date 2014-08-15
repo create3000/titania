@@ -62,13 +62,14 @@
 #include "../Prototype/ProtoArray.h"
 #include "../Routing/Route.h"
 #include "../Routing/RouteArray.h"
-#include "../Types/Struct.h"
 
 #include <Titania/Basic/URI.h>
 #include <map>
 
 namespace titania {
 namespace X3D {
+
+struct AvailableType { };
 
 class X3DProtoDeclarationNode;
 class X3DPrototypeInstance;
@@ -445,6 +446,12 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	const RoutePtr &
+	addRoute (Route* const)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	void
 	deleteRoute (const SFNode &, const std::string &,
 	             const SFNode &, const std::string &)
@@ -454,7 +461,7 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	deleteRoute (Route*)
+	deleteRoute (Route* const)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -477,7 +484,7 @@ public:
 
 	virtual
 	void
-	import (X3DExecutionContext* const)
+	import (X3DExecutionContext* const, MFNode &)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -530,17 +537,7 @@ protected:
 	///  @name Import handling
 
 	void
-	importExternProtos (const X3DExecutionContext* const, const CloneType &)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
-
-	void
 	importExternProtos (const X3DExecutionContext* const)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
-
-	void
-	importProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
@@ -550,17 +547,17 @@ protected:
 	       Error <NOT_SUPPORTED>);
 
 	void
-	importRootNodes (const X3DExecutionContext* const)
+	copyRootNodes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	importImportedNodes (const X3DExecutionContext* const)
+	copyImportedNodes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	importRoutes (const X3DExecutionContext* const)
+	copyRoutes (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
@@ -588,10 +585,37 @@ private:
 	///  @name Import handling
 
 	void
-	updateNamedNodes (X3DExecutionContext* const) const;
+	updateNamedNodes (X3DExecutionContext* const) const
+	throw (Error <IMPORTED_NODE>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	void
-	updateImportedNodes (X3DExecutionContext* const) const;
+	updateImportedNodes (X3DExecutionContext* const) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	importNodes (const X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	importNamedNodes (const X3DExecutionContext* const)
+	throw (Error <IMPORTED_NODE>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	importRoutes (X3DExecutionContext* const);
 
 	///  @name Static members
 

@@ -104,7 +104,7 @@ public:
 
 	template <class ... Args>
 	void
-	addVariables (const Args & ... args)
+	addObjects (const Args & ... args)
 	{ variables .emplace_back (std::bind ([ ] (const Args & ... args) {  }, std::forward <const Args> (args) ...)); }
 
 	template <class ... Args>

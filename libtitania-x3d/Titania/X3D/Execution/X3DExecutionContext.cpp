@@ -907,24 +907,19 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+	const auto routeKey = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 
 	try
 	{
 		// Silently return if route already exists.
 
-		return routes .rfind (routeId);
+		return routes .rfind (routeKey);
 	}
 	catch (const std::out_of_range &)
 	{
 		// Add route.
 
-		routes .push_back (routeId, new Route (this, sourceNode, routeId .first, destinationNode, routeId .second));
-
-		auto & route = routes .back ();
-
-		route .isTainted (true);
-		route .addParent (this);
+		auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
 
 		if (isInitialized ())
 			route -> setup ();
@@ -933,6 +928,28 @@ throw (Error <INVALID_NODE>,
 
 		return route;
 	}
+}
+
+const RoutePtr &
+X3DExecutionContext::addRoute (Route* const value)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not value)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
+
+	if (value -> getExecutionContext () not_eq this)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
+
+	routes .push_back (value -> getKey (), value);
+
+	auto & route = routes .back ();
+
+	route .isTainted (true);
+	route .addParent (this);
+
+	return route;
 }
 
 void
@@ -945,10 +962,10 @@ throw (Error <INVALID_NODE>,
 {
 	try
 	{
-		const auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+		const auto routeKey = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 
-		routes .rfind (routeId) -> disconnect ();
-		routes .erase (routeId);
+		routes .rfind (routeKey) -> disconnect ();
+		routes .erase (routeKey);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -957,7 +974,7 @@ throw (Error <INVALID_NODE>,
 }
 
 void
-X3DExecutionContext::deleteRoute (Route* route)
+X3DExecutionContext::deleteRoute (Route* const route)
 throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -1020,167 +1037,6 @@ throw (Error <INVALID_NODE>,
 	return std::make_pair (sourceField, destinationField);
 }
 
-// Import handling
-
-void
-X3DExecutionContext::import (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (getBrowser () -> makeCurrent ())
-	{
-		if (executionContext -> getProfile () or not executionContext -> getComponents () .empty ())
-		{
-			if (getProfile ())
-			{
-				if (executionContext -> getProfile ())
-				{
-					for (const auto & component : executionContext -> getProfile () -> getComponents ())
-						addComponent (component);
-				}
-
-				for (const auto & component : executionContext -> getComponents ())
-					addComponent (component);
-			}
-			else
-				setProfile (getBrowser () -> getProfile ("Full"));
-		}
-
-		importExternProtos (executionContext);
-		importProtos (executionContext);
-
-		// Import rootNodes
-
-		updateNamedNodes (executionContext);
-
-		for (auto & parent : ChildObjectSet (executionContext -> getParents ()))
-		{
-			const auto node = dynamic_cast <X3DBaseNode*> (parent);
-			
-			if (not node)
-				continue;
-
-			if (node == node -> getExecutionContext ())
-				continue;
-
-			node -> setExecutionContext (this);
-		}
-
-		for (const auto & node : executionContext -> getNamedNodes ())
-			updateNamedNode (node .first, node .second -> getLocalNode ());
-
-		getRootNodes () .insert (getRootNodes () .end (),
-		                         executionContext -> getRootNodes () .begin (),
-		                         executionContext -> getRootNodes () .end ());
-		// End rootNodes
-
-		updateImportedNodes (executionContext);
-		importImportedNodes (executionContext);
-		importRoutes (executionContext);
-
-		realize ();
-		return;
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-}
-
-void
-X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionContext) const
-{
-	for (const auto & node : NamedNodeIndex (executionContext -> getNamedNodes ()))
-	{
-		executionContext -> removeNamedNode (node .first);
-		executionContext -> updateNamedNode (getUniqueName (executionContext, node .first), node .second -> getLocalNode ());
-	}
-}
-
-void
-X3DExecutionContext::updateImportedNodes (X3DExecutionContext* const executionContext) const
-{
-	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
-	{
-		const auto & importedNode       = pair .second;
-		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ());
-
-		executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
-
-		if (uniqueImportedName not_eq importedNode -> getImportedName ())
-			executionContext -> removeImportedNode (importedNode -> getImportedName ());
-	}
-}
-
-void
-X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CloneType &)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProto -> copy (this, CLONE);
-}
-
-void
-X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProto -> copy (this, COPY_OR_CLONE);
-}
-
-void
-X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CloneType &)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		proto -> copy (this, CLONE);
-}
-
-void
-X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		proto -> copy (this, COPY_OR_CLONE);
-}
-
-void
-X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & rootNode : executionContext -> getRootNodes ())
-	{
-		if (rootNode)
-			getRootNodes () .emplace_back (rootNode -> copy (this, COPY_OR_CLONE));
-
-		else
-			getRootNodes () .emplace_back ();
-	}
-}
-
-void
-X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode .second -> copy (this, COPY_OR_CLONE);
-}
-
-void
-X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	for (const auto & route : executionContext -> getRoutes ())
-		route -> copy (this, COPY_OR_CLONE);
-}
-
 void
 X3DExecutionContext::changeViewpoint (const std::string & name)
 throw (Error <INVALID_NAME>,
@@ -1208,6 +1064,183 @@ throw (Error <INVALID_NAME>,
 		else
 			throw;
 	}
+}
+
+// Import handling
+
+void
+X3DExecutionContext::import (X3DExecutionContext* const executionContext, MFNode & field)
+throw (Error <INVALID_NAME>,
+	    Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getBrowser () -> makeCurrent ())
+	{
+		if (executionContext -> getProfile () or not executionContext -> getComponents () .empty ())
+		{
+			if (getProfile ())
+			{
+				if (executionContext -> getProfile ())
+				{
+					for (const auto & component : executionContext -> getProfile () -> getComponents ())
+						addComponent (component);
+				}
+
+				for (const auto & component : executionContext -> getComponents ())
+					addComponent (component);
+			}
+			else
+				setProfile (getBrowser () -> getProfile ("Full"));
+		}
+
+		updateNamedNodes (executionContext);
+
+		importNodes (executionContext);
+		field .append (std::move (executionContext -> getRootNodes ()));
+
+		importNamedNodes (executionContext);
+		importExternProtos (executionContext);
+		importProtos (executionContext);
+
+		updateImportedNodes (executionContext);
+		copyImportedNodes (executionContext);
+		importRoutes (executionContext);
+
+		realize ();
+		return;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+void
+X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionContext) const
+throw (Error <IMPORTED_NODE>,
+       Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	for (const auto & node : NamedNodeIndex (executionContext -> getNamedNodes ()))
+	{
+		executionContext -> removeNamedNode (node .first);
+		executionContext -> updateNamedNode (getUniqueName (executionContext, node .first), node .second -> getLocalNode ());
+	}
+}
+
+void
+X3DExecutionContext::updateImportedNodes (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <URL_UNAVAILABLE>,
+       Error <NODE_NOT_AVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
+	{
+		const auto & importedNode       = pair .second;
+		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ());
+
+		executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
+
+		if (uniqueImportedName not_eq importedNode -> getImportedName ())
+			executionContext -> removeImportedNode (importedNode -> getImportedName ());
+	}
+}
+
+void
+X3DExecutionContext::importNodes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	for (auto & parent : ChildObjectSet (executionContext -> getParents ()))
+	{
+		const auto node = dynamic_cast <X3DBaseNode*> (parent);
+		
+		if (not node)
+			continue;
+
+		if (node == node -> getExecutionContext ())
+			continue;
+
+		node -> setExecutionContext (this);
+	}
+}
+
+void
+X3DExecutionContext::importNamedNodes (const X3DExecutionContext* const executionContext)
+throw (Error <IMPORTED_NODE>,
+       Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	for (const auto & node : executionContext -> getNamedNodes ())
+		updateNamedNode (node .first, node .second -> getLocalNode ());
+}
+
+void
+X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
+{
+	for (const auto & route : executionContext -> routes)
+	  addRoute (route);
+
+	executionContext -> routes .clear ();
+}
+
+// X3DProtoInstance import handling
+
+void
+X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		externProto -> copy (this, CLONE);
+}
+
+void
+X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	for (const auto & proto : executionContext -> getProtoDeclarations ())
+		proto -> copy (this, CLONE);
+}
+
+void
+X3DExecutionContext::copyRootNodes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	for (const auto & rootNode : executionContext -> getRootNodes ())
+	{
+		if (rootNode)
+			getRootNodes () .emplace_back (rootNode -> copy (this, COPY_OR_CLONE));
+
+		else
+			getRootNodes () .emplace_back ();
+	}
+}
+
+void
+X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	for (const auto & importedNode : executionContext -> getImportedNodes ())
+		importedNode .second -> copy (this, COPY_OR_CLONE);
+}
+
+void
+X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	for (const auto & route : executionContext -> getRoutes ())
+		route -> copy (this, COPY_OR_CLONE);
 }
 
 void

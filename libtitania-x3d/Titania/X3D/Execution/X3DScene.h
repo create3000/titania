@@ -152,7 +152,7 @@ public:
 
 	virtual
 	void
-	import (X3DExecutionContext* const)
+	import (X3DExecutionContext* const, MFNode &)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,

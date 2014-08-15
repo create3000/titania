@@ -117,9 +117,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	try
 	{
-		importExternProtos (prototype, CloneType { }); // XXX: deleteable if all get/set virtual
-		importProtos (prototype, CloneType { });       // XXX: deleteable if all get/set virtual
-		importRootNodes (prototype);
+		importExternProtos (prototype); // XXX: deleteable if all get/set virtual
+		importProtos (prototype);       // XXX: deleteable if all get/set virtual
+		copyRootNodes (prototype);
 	}
 	catch (const X3DError & error)
 	{
@@ -158,8 +158,8 @@ X3DPrototypeInstance::initialize ()
 
 		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
 
-		importImportedNodes (prototype);
-		importRoutes (prototype);
+		copyImportedNodes (prototype);
+		copyRoutes (prototype);
 	}
 	catch (const X3DError &)
 	{ }

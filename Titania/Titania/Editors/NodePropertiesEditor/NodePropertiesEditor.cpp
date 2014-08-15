@@ -1102,7 +1102,7 @@ NodePropertiesEditor::on_apply ()
 				const auto undoRoot = X3D::FieldArray (undoFieldsToRemove .begin (), undoFieldsToRemove .end ());
 				const auto redoRoot = X3D::FieldArray (fieldsToRemove .begin (), fieldsToRemove .end ());
 
-				undoStep -> addVariables (undoRoot, redoRoot);
+				undoStep -> addObjects (undoRoot, redoRoot);
 
 				// Prepare add routes and assign oldField to newField if possible
 

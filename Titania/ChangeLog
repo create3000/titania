@@ -1,3 +1,16 @@
+2014-08-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoStep.h:
+	* X3DEditorObject.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* InlineEditor.cpp:
+	* OutlineEditor.cpp:
+	* ViewpointEditor.cpp:
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
 2014-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.h:

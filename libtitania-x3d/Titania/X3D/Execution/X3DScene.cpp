@@ -249,7 +249,7 @@ X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string export
 // Import handling
 
 void
-X3DScene::import (X3DExecutionContext* const executionContext)
+X3DScene::import (X3DExecutionContext* const executionContext, MFNode & field)
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -264,7 +264,7 @@ throw (Error <INVALID_NAME>,
 		if (scene)
 			updateExportedNodes (scene);
 
-		X3DExecutionContext::import (executionContext);
+		X3DExecutionContext::import (executionContext, field);
 
 		if (scene)
 			importExportedNodes (scene);

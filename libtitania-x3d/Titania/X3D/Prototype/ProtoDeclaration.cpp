@@ -107,41 +107,41 @@ throw (Error <INVALID_NAME>,
 		}
 		case COPY_OR_CLONE:
 		{
-			try
-			{
-				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
-
-				if (proto)
-					return proto;
-			}
-			catch (const X3D::X3DError &)
-			{ }
-
-			FieldDefinitionArray userDefinedFields;
-			
-			for (const auto & fieldDefinition : getUserDefinedFields ())
-			{
-				const auto field = fieldDefinition -> copy (executionContext, COPY_OR_CLONE);
-
-				field -> setName (fieldDefinition -> getName ());
-				field -> setAccessType (fieldDefinition -> getAccessType ());
-
-				userDefinedFields .emplace_back (field);
-			}
-
-			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
-	
-			metadata () .copy (executionContext, &copy -> metadata (), COPY_OR_CLONE);
-
-			executionContext -> addProtoDeclaration (getName (), copy);
-
-			copy -> importExternProtos (this);
-			copy -> importProtos (this);
-			copy -> importRootNodes (this);
-			copy -> importImportedNodes (this);
-			copy -> importRoutes (this);
-
-			return copy;
+//			try
+//			{
+//				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
+//
+//				if (proto)
+//					return proto;
+//			}
+//			catch (const X3D::X3DError &)
+//			{ }
+//
+//			FieldDefinitionArray userDefinedFields;
+//			
+//			for (const auto & fieldDefinition : getUserDefinedFields ())
+//			{
+//				const auto field = fieldDefinition -> copy (executionContext, COPY_OR_CLONE);
+//
+//				field -> setName (fieldDefinition -> getName ());
+//				field -> setAccessType (fieldDefinition -> getAccessType ());
+//
+//				userDefinedFields .emplace_back (field);
+//			}
+//
+//			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
+//	
+//			metadata () .copy (executionContext, &copy -> metadata (), COPY_OR_CLONE);
+//
+//			executionContext -> addProtoDeclaration (getName (), copy);
+//
+//			copy -> importExternProtos (this);
+//			copy -> importProtos (this);
+//			copy -> copyRootNodes (this);
+//			copy -> copyImportedNodes (this);
+//			copy -> copyRoutes (this);
+//
+//			return copy;
 		}
 		case FLAT_COPY:
 			break;

@@ -770,7 +770,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		{
 			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
-			undoStep -> addVariables (node);
+			undoStep -> addObjects (node);
 
 			undoStep -> addUndoFunction (&X3D::SFString::setValue, sfstring, currentValue);
 			undoStep -> addRedoFunction (&X3D::SFString::setValue, sfstring, string);
@@ -797,17 +797,11 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			     field -> getName () == "url"))
 			{
 				treeView -> getBrowserWindow () -> removeImportedNodes (treeView -> get_model () -> get_execution_context (),
-				                                                        inlineNode,
+				                                                        { inlineNode },
 				                                                        undoStep);
-
-				if (not undoStep -> isEmpty ())
-				{
-					undoStep -> addUndoFunction (&X3D::Inline::requestImmediateLoad, inlineNode);
-					undoStep -> addUndoFunction (&X3D::Inline::preventNextLoad, inlineNode); // Prevent next load from url or load field event.
-				}
 			}
 
-			undoStep -> addVariables (node);
+			undoStep -> addObjects (node);
 
 			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, field -> toString ());
 			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, value -> toString ());

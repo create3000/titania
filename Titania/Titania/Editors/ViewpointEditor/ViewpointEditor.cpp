@@ -136,7 +136,7 @@ ViewpointEditor::on_update_viewpoint_clicked ()
 	const auto orientation     = viewpoint -> getOrientation ();
 	const auto userOrientation = viewpoint -> getUserOrientation ();
 
-	undoStep -> addVariables (viewpoint);
+	undoStep -> addObjects (viewpoint);
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getCenterOfRotation ());

@@ -393,7 +393,7 @@ OutlineEditor::on_create_reference_activate (const X3D::FieldPtr & fieldPtr, con
 		const auto reference = referencePtr .getValue ();
 		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
-		undoStep -> addVariables (fieldPtr, referencePtr);
+		undoStep -> addObjects (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::removeIsReference, field, reference);
 		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::addIsReference,    field, reference);
@@ -417,7 +417,7 @@ OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, con
 		const auto reference = referencePtr .getValue ();
 		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
-		undoStep -> addVariables (fieldPtr, referencePtr);
+		undoStep -> addObjects (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addIsReference,    field, reference);
 		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeIsReference, field, reference);
