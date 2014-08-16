@@ -86,9 +86,18 @@ public:
 	X3D::MFNode
 	importScene (const X3D::ScenePtr &, X3D::MFNode &, const UndoStepPtr &);
 
+	std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>>
+	getImportedRoutes (const X3D::X3DExecutionContextPtr &, const X3D::ScenePtr &) const;
+
 	virtual
 	void
 	save (const basic::uri &, const bool) final override;
+
+	std::string
+	exportNodes (X3D::MFNode &) const;
+
+	void
+	exportNodes (std::ostream &, X3D::MFNode &) const;
 
 	void
 	removeUnusedPrototypes (const UndoStepPtr &);
@@ -272,11 +281,6 @@ private:
 
 	void
 	removeUsedPrototypes (X3D::X3DExecutionContext* const, std::map <X3D::ExternProtoDeclarationPtr, size_t> &, std::map <X3D::ProtoDeclarationPtr, size_t> &) const;
-
-	// Clipboard
-
-	std::string
-	toString (X3D::MFNode &) const;
 
 	// Edit
 

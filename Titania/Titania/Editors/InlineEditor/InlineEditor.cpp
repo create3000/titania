@@ -52,6 +52,7 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/FileSaveDialog/FileSaveDialog.h"
 
 namespace titania {
 namespace puck {
@@ -128,7 +129,21 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 void
 InlineEditor::on_convert_master_selection_clicked ()
 {
-	__LOG__ << std::endl;
+	if (getBrowser () -> getSelection () -> getChildren () .empty ())
+		return;
+
+	getWindow () .set_sensitive (false);
+
+	const auto & masterSelection = getBrowser () -> getSelection () -> getChildren () .back ();
+	X3D::MFNode  nodes           = { masterSelection };
+
+	const auto fileSaveDialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog"));
+	const auto undoStep       = std::make_shared <UndoStep> (_ ("Convert Master Selection Into Inline File"));
+
+	if (fileSaveDialog -> exportNodes (masterSelection -> getExecutionContext (), nodes, undoStep))
+		getBrowserWindow () -> addUndoStep (undoStep);
+
+	getWindow () .set_sensitive (true);
 }
 
 void
@@ -140,23 +155,29 @@ InlineEditor::on_update_bounding_box_fields_activate ()
 void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
-	const auto        undoStep = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
-	const X3D::SFNode group    = new X3D::Group (inlineNode -> getExecutionContext ());
-	const auto        name     = inlineNode -> getName ();
+	const auto        undoStep         = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
+	const auto        executionContext = inlineNode -> getExecutionContext ();
+	const auto        scene            = inlineNode -> getInternalScene ();
+	const X3D::SFNode group            = new X3D::Group (executionContext);
+	const auto        name             = X3D::get_name_from_uri (scene -> getWorldURL ());
+	const auto        uniqueName       = executionContext -> getUniqueName (name);
+	const auto        importedRoutes   = getBrowserWindow () -> getImportedRoutes (executionContext, scene);
 
-	getBrowserWindow () -> replaceNodes (X3D::SFNode (inlineNode), group, undoStep);
-
-	if (not name .empty ())
+	if (not uniqueName .empty ())
 	{
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, inlineNode -> getExecutionContext (), name);
-		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, inlineNode -> getExecutionContext (), name, group);
-		inlineNode -> getExecutionContext () -> updateNamedNode (name, group);
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, executionContext, uniqueName);
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, executionContext, uniqueName, group);
+		executionContext -> updateNamedNode (uniqueName, group);
 	}
 
 	const X3D::GroupPtr groupNode (group);
 
-	getBrowserWindow () -> importScene (inlineNode -> getInternalScene (), groupNode -> children (), undoStep);
+	getBrowserWindow () -> replaceNodes (X3D::SFNode (inlineNode), group, undoStep);
+	getBrowserWindow () -> importScene (scene, groupNode -> children (), undoStep);
 	group -> setup ();
+
+	for (const auto & route : importedRoutes)
+		getBrowserWindow () -> addRoute (executionContext, std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
 
 	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);

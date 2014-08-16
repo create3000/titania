@@ -305,19 +305,19 @@ MaterialEditor::on_material_changed ()
 	getFrontBox () .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 0);
 	getBackBox ()  .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 1);
 
-	if (getMaterialComboBoxText () .get_active_row_number () < 1)
-	{
-		getDiffuseDialog ()  .hide ();
-		getSpecularDialog () .hide ();
-		getEmissiveDialog () .hide ();
-	}
+//	if (getMaterialComboBoxText () .get_active_row_number () < 1)
+//	{
+//		getDiffuseDialog ()  .hide ();
+//		getSpecularDialog () .hide ();
+//		getEmissiveDialog () .hide ();
+//	}
 
-	if (getMaterialComboBoxText () .get_active_row_number () < 2)
-	{
-		getBackDiffuseDialog ()  .hide ();
-		getBackSpecularDialog () .hide ();
-		getBackEmissiveDialog () .hide ();
-	}
+//	if (getMaterialComboBoxText () .get_active_row_number () < 2)
+//	{
+//		getBackDiffuseDialog ()  .hide ();
+//		getBackSpecularDialog () .hide ();
+//		getBackEmissiveDialog () .hide ();
+//	}
 
 	if (changing)
 		return;

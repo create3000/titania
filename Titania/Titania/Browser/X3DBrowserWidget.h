@@ -91,6 +91,10 @@ public:
 	void
 	save (const basic::uri &, const bool);
 
+	static
+	bool
+	transform (const basic::uri &, const basic::uri &, X3D::SFNode &);
+
 	void
 	reload ();
 
@@ -151,9 +155,6 @@ private:
 	set_scene ();
 
 	///  @name Operations
-
-	void
-	transform (const X3D::X3DExecutionContextPtr &, const basic::uri &) const;
 
 	void
 	loadIcon ();

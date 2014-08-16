@@ -329,6 +329,8 @@ X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool i
 X3D::MFNode
 X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field, const UndoStepPtr & undoStep)
 {
+	const auto & executionContext = getExecutionContext ();
+
 	try
 	{
 		const size_t size = field .size ();
@@ -341,11 +343,11 @@ X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field,
 
 		X3D::MFNode importedNodes;
 
-		getExecutionContext () -> import (scene, importedNodes);
+		executionContext -> import (scene, importedNodes);
 
 		const auto undoRemoveNodes = std::make_shared <UndoStep> ();
 
-		removeNodesFromScene (getExecutionContext (), importedNodes, undoRemoveNodes, false);
+		removeNodesFromScene (executionContext, importedNodes, undoRemoveNodes, false);
 
 		undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNodes);
 		undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNodes);
@@ -365,12 +367,194 @@ X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field,
 	}
 }
 
+std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>>
+X3DBrowserEditor::getImportedRoutes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::ScenePtr & scene) const
+{
+	std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>> routes;
+
+	for (const auto & pair : executionContext -> getImportedNodes ())
+	{
+		try
+		{
+			const auto & inlineNode = pair .second -> getInlineNode ();
+
+			if (inlineNode -> getInternalScene () not_eq scene)
+				continue;
+
+			const auto exportedNode = pair .second -> getExportedNode ();
+
+			for (const auto & field : exportedNode -> getFieldDefinitions ())
+			{
+				for (const auto & route : field -> getInputRoutes ())
+				{
+					if (route -> getExecutionContext () not_eq executionContext)
+						continue;
+
+					try
+					{
+						routes .emplace_back (route -> getSourceNode (), route -> getSourceField (),
+						                      route -> getDestinationNode (), route -> getDestinationField ());
+					}
+					catch (const X3D::X3DError &)
+					{ }
+				}
+
+				for (const auto & route: field -> getOutputRoutes ())
+				{
+					if (route -> getExecutionContext () not_eq executionContext)
+						continue;
+
+					try
+					{
+						routes .emplace_back (route -> getSourceNode (), route -> getSourceField (),
+						                      route -> getDestinationNode (), route -> getDestinationField ());
+					}
+					catch (const X3D::X3DError &)
+					{ }
+				}
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	__LOG__ << routes .size () << std::endl;
+
+	return routes;
+}
+
 void
 X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed)
 {
 	X3DBrowserWidget::save (worldURL, compressed);
 
 	isModified (false);
+}
+
+std::string
+X3DBrowserEditor::exportNodes (X3D::MFNode & nodes) const
+{
+	std::ostringstream osstream;
+
+	exportNodes (osstream, nodes);
+
+	return osstream .str ();
+
+}
+
+void
+X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) const
+{
+	// Find proto declarations
+
+	std::map <X3D::X3DProtoDeclarationNodePtr, size_t> protoNodes;
+
+	X3D::traverse (nodes, [&] (X3D::SFNode & node)
+	               {
+	                  const X3D::X3DPrototypeInstancePtr protoInstance (node);
+
+	                  if (protoInstance)
+	                  {
+	                     X3D::traverse (node, [&] (X3D::SFNode & node)
+	                                    {
+	                                       if (node == protoInstance)
+															return true;
+
+	                                       const X3D::X3DPrototypeInstancePtr child (node);
+
+	                                       if (child)
+	                                       {
+	                                          try
+	                                          {
+	                                             if (child -> getProtoNode () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName (), X3D::AvailableType { }))
+																	protoNodes .emplace (child -> getProtoNode (), protoNodes .size ());
+															}
+	                                          catch (const X3D::X3DError &)
+	                                          { }
+														}
+
+	                                       return true;
+													},
+	                                    true,
+	                                    X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+
+	                     protoNodes .emplace (protoInstance -> getProtoNode (), protoNodes .size ());
+							}
+
+	                  return true;
+						});
+
+	// Create node index
+
+	std::set <X3D::SFNode> nodeIndex;
+
+	X3D::traverse (nodes, [&nodeIndex] (X3D::SFNode & node)
+	               {
+	                  nodeIndex .emplace (node);
+	                  return true;
+						});
+
+	// Find connected routes
+
+	std::vector <X3D::Route*> routes;
+
+	X3D::traverse (nodes, [this, &nodeIndex, &routes] (X3D::SFNode & node)
+	               {
+	                  for (const auto & field: node -> getFieldDefinitions ())
+	                  {
+	                     for (const auto & route: field -> getOutputRoutes ())
+	                     {
+	                        if (route -> getExecutionContext () not_eq getExecutionContext ())
+	                           continue;
+
+                           try
+                           {
+                              if (nodeIndex .count (route -> getDestinationNode ()))
+											routes .emplace_back (route);
+									}
+                           catch (const X3D::X3DError &)
+                           { }
+								}
+							}
+
+	                  return true;
+						});
+
+	// Generate text
+
+	ostream .imbue (std::locale::classic ());
+
+	ostream
+		<< "#X3D V3.3 utf8 " << getBrowser () -> getName ()
+		<< std::endl
+		<< std::endl
+		<< '#' << getExecutionContext () -> getWorldURL ()
+		<< std::endl
+		<< std::endl;
+
+	X3D::Generator::CompactStyle ();
+	X3D::Generator::PushContext ();
+
+	if (not protoNodes .empty ())
+	{
+		for (const auto & protoNode : basic::reverse (protoNodes))
+			ostream << protoNode .second << std::endl;
+
+		ostream << std::endl;
+	}
+
+	for (const auto & node : nodes)
+		ostream << node << std::endl;
+
+	if (not routes .empty ())
+	{
+		ostream << std::endl;
+
+		for (const auto & route : routes)
+			ostream << *route << std::endl;
+	}
+
+	X3D::Generator::PopContext ();
 }
 
 void
@@ -558,7 +742,7 @@ X3DBrowserEditor::cutNodes (X3D::MFNode nodes, const UndoStepPtr & undoStep) con
 
 	// Set clipboard text
 
-	Gtk::Clipboard::get () -> set_text (toString (nodes));
+	Gtk::Clipboard::get () -> set_text (exportNodes (nodes));
 
 	// Remove nodes
 
@@ -576,129 +760,11 @@ X3DBrowserEditor::copyNodes (X3D::MFNode nodes) const
 
 	// Set clipboard text
 
-	Gtk::Clipboard::get () -> set_text (toString (nodes));
+	Gtk::Clipboard::get () -> set_text (exportNodes (nodes));
 
 	// Undo detach from group
 
 	undoDetachFromGroup -> undoChanges ();
-}
-
-std::string
-X3DBrowserEditor::toString (X3D::MFNode & nodes) const
-{
-	// Find proto declarations
-
-	std::map <X3D::X3DProtoDeclarationNodePtr, size_t> protoNodes;
-
-	X3D::traverse (nodes, [&] (X3D::SFNode & node)
-	               {
-	                  const X3D::X3DPrototypeInstancePtr protoInstance (node);
-
-	                  if (protoInstance)
-	                  {
-	                     X3D::traverse (node, [&] (X3D::SFNode & node)
-	                                    {
-	                                       if (node == protoInstance)
-															return true;
-
-	                                       const X3D::X3DPrototypeInstancePtr child (node);
-
-	                                       if (child)
-	                                       {
-	                                          try
-	                                          {
-	                                             if (child -> getProtoNode () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName (), X3D::AvailableType { }))
-																	protoNodes .emplace (child -> getProtoNode (), protoNodes .size ());
-															}
-	                                          catch (const X3D::X3DError &)
-	                                          { }
-														}
-
-	                                       return true;
-													},
-	                                    true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-
-	                     protoNodes .emplace (protoInstance -> getProtoNode (), protoNodes .size ());
-							}
-
-	                  return true;
-						});
-
-	// Create node index
-
-	std::set <X3D::SFNode> nodeIndex;
-
-	X3D::traverse (nodes, [&nodeIndex] (X3D::SFNode & node)
-	               {
-	                  nodeIndex .emplace (node);
-	                  return true;
-						});
-
-	// Find connected routes
-
-	std::vector <X3D::Route*> routes;
-
-	X3D::traverse (nodes, [this, &nodeIndex, &routes] (X3D::SFNode & node)
-	               {
-	                  for (const auto & field: node -> getFieldDefinitions ())
-	                  {
-	                     for (const auto & route: field -> getOutputRoutes ())
-	                     {
-	                        if (route -> getExecutionContext () == getExecutionContext ())
-	                        {
-	                           try
-	                           {
-	                              if (nodeIndex .count (route -> getDestinationNode ()))
-												routes .emplace_back (route);
-										}
-	                           catch (const X3D::X3DError &)
-	                           { }
-									}
-								}
-							}
-
-	                  return true;
-						});
-
-	// Generate text
-
-	std::ostringstream text;
-
-	text .imbue (std::locale::classic ());
-
-	text
-		<< "#X3D V3.3 utf8 " << getBrowser () -> getName ()
-		<< std::endl
-		<< std::endl
-		<< '#' << getExecutionContext () -> getWorldURL ()
-		<< std::endl
-		<< std::endl;
-
-	X3D::Generator::CompactStyle ();
-	X3D::Generator::PushContext ();
-
-	if (not protoNodes .empty ())
-	{
-		for (const auto & protoNode : basic::reverse (protoNodes))
-			text << protoNode .second << std::endl;
-
-		text << std::endl;
-	}
-
-	for (const auto & node : nodes)
-		text << node << std::endl;
-
-	if (not routes .empty ())
-	{
-		text << std::endl;
-
-		for (const auto & route : routes)
-			text << *route << std::endl;
-	}
-
-	X3D::Generator::PopContext ();
-
-	return text .str ();
 }
 
 void

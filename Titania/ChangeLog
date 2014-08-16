@@ -1,5 +1,26 @@
 2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* TextEditor.xml:
+	* LightEditor.xml:
+	* InlineEditor.xml:
+	* TextureEditor.xml:
+	* MaterialEditor.xml:
+	* ViewpointEditor.xml:
+	* InlineEditor.cpp:
+	* FileSaveDialog.h:
+	* FileSaveDialog.cpp:
+	* MaterialEditor.cpp:
+	* X3DMaterialEditorInterface.h:
+	* GeometryPropertiesEditor.xml:
+	* X3DMaterialEditorInterface.cpp: 
+
+2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UndoStep.cpp: 
 
 2014-08-15  Holger Seelig  <holger.seelig@yahoo.de>

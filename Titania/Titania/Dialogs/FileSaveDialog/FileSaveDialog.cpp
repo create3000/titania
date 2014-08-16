@@ -88,7 +88,7 @@ FileSaveDialog::FileSaveDialog (BrowserWindow* const browserWindow) :
 }
 
 void
-FileSaveDialog::run ()
+FileSaveDialog::saveScene ()
 {
 	const auto saveCompressedButton = getWidget <Gtk::Switch> ("SaveCompressedButton");
 
@@ -103,6 +103,46 @@ FileSaveDialog::run ()
 	}
 
 	getWindow () .hide ();
+}
+
+bool
+FileSaveDialog::exportNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+{
+	const auto scene = exportNodes (executionContext, nodes, "/home/holger/Schreibtisch/export.x3dv", undoStep);
+
+	std::clog << scene << std::endl;
+
+	return true;
+
+	//
+
+	const auto saveCompressedButton = getWidget <Gtk::Switch> ("SaveCompressedButton");
+
+	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
+
+	const auto responseId = getWindow () .run ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		basic::uri worldURL = Glib::uri_unescape_string (getWindow () .get_uri ());
+	
+		// ...
+	}
+
+	getWindow () .hide ();
+
+	return responseId == Gtk::RESPONSE_OK;
+}
+
+X3D::ScenePtr
+FileSaveDialog::exportNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const basic::uri & worldURL, const UndoStepPtr & undoStep) const
+{
+	const auto scene = getBrowser () -> createScene ();
+
+	scene -> setWorldURL (worldURL);
+	scene -> setup ();
+
+	return scene;
 }
 
 FileSaveDialog::~FileSaveDialog ()

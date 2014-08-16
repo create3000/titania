@@ -308,7 +308,15 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	const auto suffix           = worldURL .suffix ();
 	const auto executionContext = X3D::X3DExecutionContextPtr (getRootContext ());
 
-	transform (executionContext, worldURL);
+	using namespace std::placeholders;
+
+	X3D::traverse (executionContext,
+	               std::bind (&X3DBrowserWidget::transform, executionContext -> getWorldURL (), worldURL, _1),
+	               true,
+	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATIONS |
+	               X3D::TRAVERSE_ROOT_NODES);
+
 	executionContext -> setWorldURL (worldURL);
 	executionContext -> isCompressed (compressed);
 
@@ -377,45 +385,38 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	}
 }
 
-void
-X3DBrowserWidget::transform (const X3D::X3DExecutionContextPtr & executionContext, const basic::uri & worldURL) const
+bool
+X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & newWorldURL, X3D::SFNode & node)
 {
-	X3D::traverse (executionContext, [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-	                  {
-	                     switch (type)
-	                     {
-									case X3D::X3DConstants::Background:
-										{
-										   X3D::X3DPtr <X3D::Background> background (node);
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
+	{
+		switch (type)
+		{
+			case X3D::X3DConstants::Background :
+				{
+					X3D::X3DPtr <X3D::Background> background (node);
 
-										   X3D::X3DUrlObject::transform (background -> frontUrl (),  executionContext -> getWorldURL (), worldURL);
-										   X3D::X3DUrlObject::transform (background -> backUrl (),   executionContext -> getWorldURL (), worldURL);
-										   X3D::X3DUrlObject::transform (background -> leftUrl (),   executionContext -> getWorldURL (), worldURL);
-										   X3D::X3DUrlObject::transform (background -> rightUrl (),  executionContext -> getWorldURL (), worldURL);
-										   X3D::X3DUrlObject::transform (background -> topUrl (),    executionContext -> getWorldURL (), worldURL);
-										   X3D::X3DUrlObject::transform (background -> bottomUrl (), executionContext -> getWorldURL (), worldURL);
-										   break;
-										}
-									case X3D::X3DConstants::X3DUrlObject:
-										{
-										   X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
+					X3D::X3DUrlObject::transform (background -> frontUrl (),  oldWorldURL, newWorldURL);
+					X3D::X3DUrlObject::transform (background -> backUrl (),   oldWorldURL, newWorldURL);
+					X3D::X3DUrlObject::transform (background -> leftUrl (),   oldWorldURL, newWorldURL);
+					X3D::X3DUrlObject::transform (background -> rightUrl (),  oldWorldURL, newWorldURL);
+					X3D::X3DUrlObject::transform (background -> topUrl (),    oldWorldURL, newWorldURL);
+					X3D::X3DUrlObject::transform (background -> bottomUrl (), oldWorldURL, newWorldURL);
+					break;
+				}
+			case X3D::X3DConstants::X3DUrlObject:
+			{
+				X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
 
-										   X3D::X3DUrlObject::transform (urlObject -> url (), executionContext -> getWorldURL (), worldURL);
-										   break;
-										}
-									default:
-										break;
-								}
-							}
+				X3D::X3DUrlObject::transform (urlObject -> url (), oldWorldURL, newWorldURL);
+				break;
+			}
+			default:
+				break;
+		}
+	}
 
-	                  return true;
-						},
-						true,
-						X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-						X3D::TRAVERSE_PROTO_DECLARATIONS |
-						X3D::TRAVERSE_ROOT_NODES);
+	return true;
 }
 
 void

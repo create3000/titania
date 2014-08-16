@@ -574,7 +574,7 @@ BrowserWindow::on_save ()
 void
 BrowserWindow::on_save_as ()
 {
-	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog")) -> run ();
+	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog")) -> saveScene ();
 }
 
 void

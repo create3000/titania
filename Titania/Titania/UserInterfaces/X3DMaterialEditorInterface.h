@@ -303,30 +303,6 @@ public:
 	getBackEmissiveColorButton () const
 	{ return *m_BackEmissiveColorButton; }
 
-	Gtk::ColorSelectionDialog &
-	getBackDiffuseDialog () const
-	{ return *m_BackDiffuseDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getBackEmissiveDialog () const
-	{ return *m_BackEmissiveDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getBackSpecularDialog () const
-	{ return *m_BackSpecularDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getDiffuseDialog () const
-	{ return *m_DiffuseDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getEmissiveDialog () const
-	{ return *m_EmissiveDialog; }
-
-	Gtk::ColorSelectionDialog &
-	getSpecularDialog () const
-	{ return *m_SpecularDialog; }
-
 	virtual
 	void
 	on_copy () = 0;
@@ -416,12 +392,6 @@ private:
 	Gtk::Button*                   m_BackSpecularColorButton;
 	Gtk::Box*                      m_BackEmissiveColorBox;
 	Gtk::Button*                   m_BackEmissiveColorButton;
-	Gtk::ColorSelectionDialog*     m_BackDiffuseDialog;
-	Gtk::ColorSelectionDialog*     m_BackEmissiveDialog;
-	Gtk::ColorSelectionDialog*     m_BackSpecularDialog;
-	Gtk::ColorSelectionDialog*     m_DiffuseDialog;
-	Gtk::ColorSelectionDialog*     m_EmissiveDialog;
-	Gtk::ColorSelectionDialog*     m_SpecularDialog;
 
 };
 

@@ -155,18 +155,6 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_BackEmissiveColorBox -> set_name ("BackEmissiveColorBox");
 	m_builder -> get_widget ("BackEmissiveColorButton", m_BackEmissiveColorButton);
 	m_BackEmissiveColorButton -> set_name ("BackEmissiveColorButton");
-	m_builder -> get_widget ("BackDiffuseDialog", m_BackDiffuseDialog);
-	m_BackDiffuseDialog -> set_name ("BackDiffuseDialog");
-	m_builder -> get_widget ("BackEmissiveDialog", m_BackEmissiveDialog);
-	m_BackEmissiveDialog -> set_name ("BackEmissiveDialog");
-	m_builder -> get_widget ("BackSpecularDialog", m_BackSpecularDialog);
-	m_BackSpecularDialog -> set_name ("BackSpecularDialog");
-	m_builder -> get_widget ("DiffuseDialog", m_DiffuseDialog);
-	m_DiffuseDialog -> set_name ("DiffuseDialog");
-	m_builder -> get_widget ("EmissiveDialog", m_EmissiveDialog);
-	m_EmissiveDialog -> set_name ("EmissiveDialog");
-	m_builder -> get_widget ("SpecularDialog", m_SpecularDialog);
-	m_SpecularDialog -> set_name ("SpecularDialog");
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_copy));
@@ -189,12 +177,6 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 X3DMaterialEditorInterface::~X3DMaterialEditorInterface ()
 {
 	delete m_Window;
-	delete m_BackDiffuseDialog;
-	delete m_BackEmissiveDialog;
-	delete m_BackSpecularDialog;
-	delete m_DiffuseDialog;
-	delete m_EmissiveDialog;
-	delete m_SpecularDialog;
 }
 
 } // puck
