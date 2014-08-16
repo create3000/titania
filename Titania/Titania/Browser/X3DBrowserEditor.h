@@ -99,6 +99,12 @@ public:
 	void
 	exportNodes (std::ostream &, X3D::MFNode &) const;
 
+	std::vector <X3D::X3DProtoDeclarationNodePtr>
+	getUsedPrototypes (X3D::MFNode &) const;
+
+	std::vector <X3D::Route*>
+	getConnectedRouted (X3D::MFNode &) const;
+
 	void
 	removeUnusedPrototypes (const UndoStepPtr &);
 
@@ -160,7 +166,7 @@ public:
 	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, X3D::MFNode, const UndoStepPtr &, const bool = true) const;
 
 	void
-	removeImportedNodes (X3D::X3DExecutionContext* const, const std::set <X3D::InlinePtr> &, const UndoStepPtr &) const;
+	removeImportedNodes (const X3D::X3DExecutionContextPtr &, const std::set <X3D::InlinePtr> &, const UndoStepPtr &) const;
 
 	void
 	createClone (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
@@ -187,14 +193,17 @@ public:
 	addPrototypeInstance (const std::string &);
 
 	void
-	addRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const
+	updateNamedNode (const X3D::X3DExecutionContextPtr &, const std::string &, const X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
+	addRoute (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const
 	throw (X3D::Error <X3D::INVALID_NODE>,
 	       X3D::Error <X3D::INVALID_FIELD>,
 	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	       X3D::Error <X3D::DISPOSED>);
 
 	void
-	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
+	deleteRoute (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
 
 	void
 	translateSelection (const X3D::Vector3f &, const bool);
@@ -280,7 +289,9 @@ private:
 	// File
 
 	void
-	removeUsedPrototypes (X3D::X3DExecutionContext* const, std::map <X3D::ExternProtoDeclarationPtr, size_t> &, std::map <X3D::ProtoDeclarationPtr, size_t> &) const;
+	removeUsedPrototypes (X3D::X3DExecutionContext* const,
+	                      std::map <X3D::ExternProtoDeclarationPtr, size_t> &,
+	                      std::map <X3D::ProtoDeclarationPtr, size_t> &) const;
 
 	// Edit
 
@@ -294,19 +305,19 @@ private:
 	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodesFromScene (X3D::X3DExecutionContext* const, const std::set <X3D::SFNode> &, const UndoStepPtr &, const bool) const;
+	removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &, const bool) const;
 
 	void
-	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const std::set <X3D::SFNode> &, const UndoStepPtr &) const;
+	removeNodeFromSceneGraph (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &) const;
 	
 	void
-	removeExportedNodes (X3D::X3DScene* const, const std::set <X3D::SFNode> &, const UndoStepPtr &) const;
+	removeExportedNodes (const X3D::X3DPtr <X3D::X3DScene> &, const std::set <X3D::SFNode> &, const UndoStepPtr &) const;
 
 	void
-	removeNamedNodes (X3D::X3DExecutionContext* const, const std::set <X3D::SFNode> &, const UndoStepPtr &) const;
+	removeNamedNodes (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &) const;
 
 	void
-	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
+	deleteRoutes (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;

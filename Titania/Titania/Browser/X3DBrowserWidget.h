@@ -52,6 +52,8 @@
 #define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
+#include "../Undo/UndoStep.h"
+
 #include <gtkmm.h>
 #include <memory>
 
@@ -93,7 +95,7 @@ public:
 
 	static
 	bool
-	transform (const basic::uri &, const basic::uri &, X3D::SFNode &);
+	transform (const basic::uri &, const basic::uri &, const UndoStepPtr &, X3D::SFNode &);
 
 	void
 	reload ();

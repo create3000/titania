@@ -106,16 +106,8 @@ FileSaveDialog::saveScene ()
 }
 
 bool
-FileSaveDialog::exportNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const UndoStepPtr & undoStep)
 {
-	const auto scene = exportNodes (executionContext, nodes, "/home/holger/Schreibtisch/export.x3dv", undoStep);
-
-	std::clog << scene << std::endl;
-
-	return true;
-
-	//
-
 	const auto saveCompressedButton = getWidget <Gtk::Switch> ("SaveCompressedButton");
 
 	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
@@ -124,9 +116,9 @@ FileSaveDialog::exportNodes (const X3D::X3DExecutionContextPtr & executionContex
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		basic::uri worldURL = Glib::uri_unescape_string (getWindow () .get_uri ());
+		worldURL = Glib::uri_unescape_string (getWindow () .get_uri ());
 	
-		// ...
+		exportNodes (nodes, worldURL, saveCompressedButton -> get_active (), undoStep);
 	}
 
 	getWindow () .hide ();
@@ -134,15 +126,21 @@ FileSaveDialog::exportNodes (const X3D::X3DExecutionContextPtr & executionContex
 	return responseId == Gtk::RESPONSE_OK;
 }
 
-X3D::ScenePtr
-FileSaveDialog::exportNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const basic::uri & worldURL, const UndoStepPtr & undoStep) const
+void
+FileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const bool compressed, const UndoStepPtr & undoStep)
 {
-	const auto scene = getBrowser () -> createScene ();
+	using namespace std::placeholders;
 
-	scene -> setWorldURL (worldURL);
-	scene -> setup ();
+	X3D::traverse (getExecutionContext (),
+	               std::bind (&X3DBrowserWidget::transform, getExecutionContext () -> getWorldURL (), worldURL, undoStep, _1),
+	               true,
+	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATIONS |
+	               X3D::TRAVERSE_ROOT_NODES);
 
-	return scene;
+	std::ofstream ofstream (worldURL .path ());
+
+	getBrowserWindow () -> exportNodes (ofstream, nodes);
 }
 
 FileSaveDialog::~FileSaveDialog ()

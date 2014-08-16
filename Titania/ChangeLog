@@ -1,5 +1,15 @@
 2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* InlineEditor.cpp:
+	* FileSaveDialog.h:
+	* FileSaveDialog.cpp: 
+
+2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* UndoStep.cpp:
 	* X3DEditorObject.h:

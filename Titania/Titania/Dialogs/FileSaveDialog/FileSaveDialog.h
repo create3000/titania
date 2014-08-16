@@ -69,7 +69,7 @@ public:
 	saveScene ();
 
 	bool
-	exportNodes (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const UndoStepPtr &);
+	exportNodes (X3D::MFNode &, basic::uri &, const UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -79,8 +79,8 @@ public:
 
 private:
 
-	X3D::ScenePtr
-	exportNodes (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const basic::uri &, const UndoStepPtr &) const;
+	void
+	exportNodes (X3D::MFNode &, const basic::uri &, const bool, const UndoStepPtr &);
 
 };
 

@@ -445,7 +445,50 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 {
 	// Find proto declarations
 
-	std::map <X3D::X3DProtoDeclarationNodePtr, size_t> protoNodes;
+	const auto protoNodes = getUsedPrototypes (nodes);
+	const auto routes     = getConnectedRouted (nodes);
+
+	// Generate text
+
+	ostream .imbue (std::locale::classic ());
+
+	ostream
+		<< "#X3D V3.3 utf8 " << getBrowser () -> getName ()
+		<< std::endl
+		<< std::endl
+		<< '#' << getExecutionContext () -> getWorldURL ()
+		<< std::endl
+		<< std::endl;
+
+	X3D::Generator::CompactStyle ();
+	X3D::Generator::PushContext ();
+
+	if (not protoNodes .empty ())
+	{
+		for (const auto & protoNode : protoNodes)
+			ostream << protoNode << std::endl;
+
+		ostream << std::endl;
+	}
+
+	for (const auto & node : nodes)
+		ostream << node << std::endl;
+
+	if (not routes .empty ())
+	{
+		ostream << std::endl;
+
+		for (const auto & route : routes)
+			ostream << *route << std::endl;
+	}
+
+	X3D::Generator::PopContext ();
+}
+
+std::vector <X3D::X3DProtoDeclarationNodePtr>
+X3DBrowserEditor::getUsedPrototypes (X3D::MFNode & nodes) const
+{
+	std::map <X3D::X3DProtoDeclarationNodePtr, size_t> protoIndex;
 
 	X3D::traverse (nodes, [&] (X3D::SFNode & node)
 	               {
@@ -465,7 +508,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 	                                          try
 	                                          {
 	                                             if (child -> getProtoNode () == getExecutionContext () -> findProtoDeclaration (child -> getTypeName (), X3D::AvailableType { }))
-																	protoNodes .emplace (child -> getProtoNode (), protoNodes .size ());
+																	protoIndex .emplace (child -> getProtoNode (), protoIndex .size ());
 															}
 	                                          catch (const X3D::X3DError &)
 	                                          { }
@@ -476,12 +519,23 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 	                                    true,
 	                                    X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-	                     protoNodes .emplace (protoInstance -> getProtoNode (), protoNodes .size ());
+	                     protoIndex .emplace (protoInstance -> getProtoNode (), protoIndex .size ());
 							}
 
 	                  return true;
 						});
 
+	std::vector <X3D::X3DProtoDeclarationNodePtr> protoNodes;
+
+	for (const auto & protoNode : basic::reverse (protoIndex))
+		protoNodes .emplace_back (std::move (protoNode .second));
+
+	return protoNodes;
+}
+
+std::vector <X3D::Route*>
+X3DBrowserEditor::getConnectedRouted (X3D::MFNode & nodes) const
+{
 	// Create node index
 
 	std::set <X3D::SFNode> nodeIndex;
@@ -496,7 +550,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 
 	std::vector <X3D::Route*> routes;
 
-	X3D::traverse (nodes, [this, &nodeIndex, &routes] (X3D::SFNode & node)
+	X3D::traverse (nodes, [&] (X3D::SFNode & node)
 	               {
 	                  for (const auto & field: node -> getFieldDefinitions ())
 	                  {
@@ -518,41 +572,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 	                  return true;
 						});
 
-	// Generate text
-
-	ostream .imbue (std::locale::classic ());
-
-	ostream
-		<< "#X3D V3.3 utf8 " << getBrowser () -> getName ()
-		<< std::endl
-		<< std::endl
-		<< '#' << getExecutionContext () -> getWorldURL ()
-		<< std::endl
-		<< std::endl;
-
-	X3D::Generator::CompactStyle ();
-	X3D::Generator::PushContext ();
-
-	if (not protoNodes .empty ())
-	{
-		for (const auto & protoNode : basic::reverse (protoNodes))
-			ostream << protoNode .second << std::endl;
-
-		ostream << std::endl;
-	}
-
-	for (const auto & node : nodes)
-		ostream << node << std::endl;
-
-	if (not routes .empty ())
-	{
-		ostream << std::endl;
-
-		for (const auto & route : routes)
-			ostream << *route << std::endl;
-	}
-
-	X3D::Generator::PopContext ();
+	return routes;
 }
 
 void
@@ -1043,18 +1063,18 @@ X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & exec
 	}
 
 	// Remove rest, these are only nodes that are not in the scene graph anymore.
-	removeNodesFromScene (executionContext, children, undoStep, false);
+	removeNodesFromExecutionContext (executionContext, children, undoStep, false);
 }
 
 void
-X3DBrowserEditor::removeNodesFromScene (X3D::X3DExecutionContext* const executionContext,
-                                        const std::set <X3D::SFNode> & nodes,
-                                        const UndoStepPtr & undoStep,
-                                        const bool doRemoveFromSceneGraph) const
+X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr & executionContext,
+                                                   const std::set <X3D::SFNode> & nodes,
+                                                   const UndoStepPtr & undoStep,
+                                                   const bool doRemoveFromSceneGraph) const
 {
 	// Remove node from scene graph
 
-	const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext);
+	const X3D::X3DPtr <X3D::X3DScene> scene (executionContext);
 
 	if (scene)
 		removeExportedNodes (scene, nodes, undoStep);
@@ -1097,10 +1117,12 @@ X3DBrowserEditor::removeNodesFromScene (X3D::X3DExecutionContext* const executio
 }
 
 void
-X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeNodeFromSceneGraph (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep) const
 {
+	const X3D::SFNode executionContextNode (executionContext);
+
 	for (const auto & node : nodes)
-		removeNode (executionContext, executionContext -> getRootNodes (), node, undoStep);
+		removeNode (executionContextNode, executionContext -> getRootNodes (), node, undoStep);
 
 	// Remove node from scene graph
 
@@ -1145,7 +1167,7 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 }
 
 void
-X3DBrowserEditor::removeExportedNodes (X3D::X3DScene* const scene, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeExportedNodes (const X3D::X3DPtr <X3D::X3DScene> & scene, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep) const
 {
 	// Remove exported nodes
 
@@ -1170,7 +1192,23 @@ X3DBrowserEditor::removeExportedNodes (X3D::X3DScene* const scene, const std::se
 }
 
 void
-X3DBrowserEditor::removeNamedNodes (X3D::X3DExecutionContext* const executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::updateNamedNode (const X3D::X3DExecutionContextPtr & executionContext, const std::string & name, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+{
+	try
+	{
+		if (name .empty ())
+			return;
+
+		executionContext -> updateNamedNode (name, node);
+		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, executionContext, name);
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, executionContext, name, node);
+	}
+	catch (...)
+	{ }
+}
+
+void
+X3DBrowserEditor::removeNamedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep) const
 {
 	// Remove named node
 
@@ -1195,7 +1233,7 @@ X3DBrowserEditor::removeNamedNodes (X3D::X3DExecutionContext* const executionCon
  *  Only pass inline nodes that are loaded and should be unloaded.
  */
 void
-X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const executionContext, const std::set <X3D::InlinePtr> & inlineNodes, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeImportedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::InlinePtr> & inlineNodes, const UndoStepPtr & undoStep) const
 {
 	// Remove nodes imported from node
 	
@@ -1253,7 +1291,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 }
 
 void
-X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::deleteRoutes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
 	// Delete routes from and to node
 
@@ -1304,7 +1342,7 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 }
 
 void
-X3DBrowserEditor::addRoute (X3D::X3DExecutionContext* const executionContext,
+X3DBrowserEditor::addRoute (const X3D::X3DExecutionContextPtr & executionContext,
                             const X3D::SFNode & sourceNode,
                             const std::string & sourceField,
                             const X3D::SFNode & destinationNode,
@@ -1351,7 +1389,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 }
 
 void
-X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
+X3DBrowserEditor::deleteRoute (const X3D::X3DExecutionContextPtr & executionContext,
                                const X3D::SFNode & sourceNode,
                                const std::string & sourceField,
                                const X3D::SFNode & destinationNode,
