@@ -1,5 +1,14 @@
 2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DWeakPtr.h:
+	* X3DScene.cpp:
+	* NamedNode.cpp:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.cpp:
 	* NamedNode.cpp:
 	* ImportedNode.cpp:

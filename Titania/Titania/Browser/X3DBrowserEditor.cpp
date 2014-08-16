@@ -319,7 +319,7 @@ X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool i
 		}
 		catch (const X3D::X3DError & error)
 		{
-			std::clog << error .what () << std::endl;
+			__LOG__ << error .what () << std::endl;
 		}
 	}
 
@@ -362,7 +362,7 @@ X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field,
 	}
 	catch (const X3D::X3DError & error)
 	{
-		std::clog << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 		return X3D::MFNode ();
 	}
 }
@@ -808,7 +808,7 @@ X3DBrowserEditor::pasteNodes (X3D::MFNode & nodes, const UndoStepPtr & undoStep)
 	}
 	catch (const X3D::X3DError & error)
 	{
-		std::clog << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -851,6 +851,8 @@ X3DBrowserEditor::getPasteStatus () const
 void
 X3DBrowserEditor::replaceNodes (const X3D::SFNode & node, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
+   replaceNodes (X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), node, newValue, undoStep);
+
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & parent)
 	               {
 	                  for (auto & field: parent -> getFieldDefinitions ())

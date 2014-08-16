@@ -299,9 +299,6 @@ X3DExecutionContext::removeNamedNode (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (name .empty ())
-		return;
-
 	const auto iter = namedNodes .find (name);
 
 	if (iter == namedNodes .end ())
@@ -316,7 +313,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	catch (const X3DError &)
 	{ }
 
-	const_cast <Output &> (namedNode -> disposed ()) .dispose ();
+	auto & shutdown = const_cast <Output &> (namedNode -> shutdown ());
+	shutdown .processInterests ();
+	shutdown .dispose ();
 
 	namedNodes .erase (iter);
 }
@@ -454,7 +453,7 @@ throw (Error <INVALID_NODE>,
 
 	const auto exportedNode = importedNode -> getExportedNode ();
 
-	importedNode -> disposed () .addInterest (this,
+	importedNode -> shutdown () .addInterest (this,
 	                                          &X3DExecutionContext::removeImportedName,
 	                                          importedNames .emplace (exportedNode -> getId (), importedName));
 
@@ -473,7 +472,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (iter == importedNodes .end ())
 		return;
 
-	const_cast <Output &> (iter -> second -> disposed ()) .dispose ();
+	auto & shutdown = const_cast <Output &> (iter -> second -> shutdown ());
+	shutdown .processInterests ();
+	shutdown .dispose ();
 
 	importedNodes .erase (iter);
 
@@ -1139,10 +1140,15 @@ throw (Error <IMPORTED_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	for (const auto & node : NamedNodeIndex (executionContext -> getNamedNodes ()))
+	for (const auto & pair : NamedNodeIndex (executionContext -> getNamedNodes ()))
 	{
-		executionContext -> removeNamedNode (node .first);
-		executionContext -> updateNamedNode (getUniqueName (executionContext, node .first), node .second -> getLocalNode ());
+		const auto & namedNode  = pair .second;
+		const auto   uniqueName = getUniqueName (executionContext, pair .first);
+
+		executionContext -> updateNamedNode (uniqueName, namedNode -> getLocalNode ());
+
+		if (uniqueName not_eq pair .first)
+			executionContext -> removeNamedNode (pair .first);
 	}
 }
 

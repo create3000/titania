@@ -209,8 +209,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		
 	const auto & exportedNode = iter -> second;
 
-	const_cast <Output &> (exportedNode -> disposed ()) .dispose ();
-	
+	auto & shutdown = const_cast <Output &> (exportedNode -> shutdown ());
+	shutdown .processInterests ();
+	shutdown .dispose ();
+
 	exportedNodes .erase (iter);
 
 	exportedNodesOutput = getCurrentTime ();

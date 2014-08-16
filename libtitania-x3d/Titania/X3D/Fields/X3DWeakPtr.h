@@ -228,13 +228,12 @@ private:
 
 	virtual
 	X3DChildObject*
-	getObject () const
-	throw (Error <DISPOSED>) final override
+	getObject () const final override
 	{
 		if (*this)
 			return getValue ();
 
-		throw Error <DISPOSED> ("X3DWeakPtr::getObject: value is already disposed!");
+		return nullptr;
 	}
 
 	void

@@ -90,7 +90,7 @@ NamedNode::initialize ()
 
 	node .addInterest (this, &NamedNode::set_node);
 
-	disposed () .addInterest (node, &X3DField <X3DBaseNode*>::setValue, nullptr);
+	shutdown () .addInterest (node, &X3DWeakPtr <X3DBaseNode>::dispose);
 
 	set_node ();
 }

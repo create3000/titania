@@ -76,11 +76,11 @@ main (int argc, char** argv)
 	}
 	catch (const std::exception & error)
 	{
-		std::clog << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 	catch (const Glib::Error & error)
 	{
-		std::clog << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 
 	std::clog

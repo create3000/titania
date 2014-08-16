@@ -359,8 +359,11 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 			}
 			catch (const std::exception & error)
 			{
-				std::clog << "Undo step not possible:" << std::endl;
-				std::clog << error .what () << std::endl;
+				std::clog
+					<< std::string (80, '*') << std::endl
+					<< "*  Warning:  Undo step not possible:" << std::endl
+					<< "*  " << error .what () << std::endl
+					<< std::string (80, '*') << std::endl;
 			}
 		}
 

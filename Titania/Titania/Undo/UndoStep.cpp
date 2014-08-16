@@ -106,8 +106,11 @@ UndoStep::redoChanges ()
 		}
 		catch (const std::exception & error)
 		{
-			std::clog << "Redo step not possible:" << std::endl;
-			std::clog << error .what () << std::endl;
+			std::clog
+				<< std::string (80, '*') << std::endl
+				<< "*  Warning:  Redo step not possible:" << std::endl
+				<< "*  " << error .what () << std::endl
+				<< std::string (80, '*') << std::endl;
 		}
 	}
 }
