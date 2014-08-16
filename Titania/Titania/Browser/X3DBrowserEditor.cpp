@@ -418,8 +418,6 @@ X3DBrowserEditor::getImportedRoutes (const X3D::X3DExecutionContextPtr & executi
 		{ }
 	}
 
-	__LOG__ << routes .size () << std::endl;
-
 	return routes;
 }
 
@@ -1234,7 +1232,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 				executionContext -> removeImportedNode (importedNode -> getImportedName ());
 			}
 		}
-		catch (const X3D::X3DError &)
+		catch (const X3D::X3DError & error)
 		{ }
 	}
 

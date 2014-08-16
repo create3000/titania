@@ -304,17 +304,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	const auto namedNode = namedNodes .find (name);
 
-	if (namedNode not_eq namedNodes .end ())
-	{
-		try
-		{
-			namedNode -> second -> getLocalNode () -> setName ("");
-		}
-		catch (const X3DError &)
-		{ }
+	if (namedNode == namedNodes .end ())
+		return;
 
-		namedNodes .erase (namedNode);
+	try
+	{
+		namedNode -> second -> getLocalNode () -> setName ("");
 	}
+	catch (const X3DError &)
+	{ }
+
+	namedNodes .erase (namedNode);
 }
 
 SFNode
@@ -460,7 +460,32 @@ X3DExecutionContext::removeImportedNode (const std::string & importedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	importedNodes .erase (importedName);
+	const auto iter = importedNodes .find (importedName);
+	
+	if (iter == importedNodes .end ())
+		return;
+
+	try
+	{
+		const auto & importedNode = iter -> second;
+		const auto   exportedNode = importedNode -> getExportedNode ();
+		const auto   range        = importedNames .equal_range (exportedNode -> getId ());
+
+		importedNode -> disposed () .removeInterest (this, &X3DExecutionContext::removeImportedName);
+
+		for (auto first = range .first; first not_eq range .second; ++ first)
+		{
+			if (first -> second == importedName)
+			{
+				importedNames .erase (first);
+				break;
+			}
+		}
+	}
+	catch (const X3DError &)
+	{ }
+
+	importedNodes .erase (iter);
 
 	importedNodesOutput = getCurrentTime ();
 }

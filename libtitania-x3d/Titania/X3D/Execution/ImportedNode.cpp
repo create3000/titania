@@ -71,7 +71,7 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  inlineNode (inlineNode_),
-	exportedNode (inlineNode_ -> getExportedNode (exportedName) .getValue ()),
+	exportedNode (inlineNode_ -> getExportedNode (exportedName)),
 	exportedName (exportedName),
 	importedName (importedName)
 {
@@ -122,28 +122,20 @@ InlinePtr
 ImportedNode::getInlineNode () const
 throw (Error <DISPOSED>)
 {
-	try
-	{
+	if (inlineNode)
 		return InlinePtr (inlineNode);
-	}
-	catch (const X3D::Error <DISPOSED> &)
-	{
-		throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
-	}
+
+	throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
 }
 
 SFNode
 ImportedNode::getExportedNode () const
 throw (Error <DISPOSED>)
 {
-	try
-	{
+	if (exportedNode)
 		return SFNode (exportedNode);
-	}
-	catch (const X3D::Error <DISPOSED> &)
-	{
-		throw Error <DISPOSED> ("ImportedNode: Exported node '" + exportedName + "' is already disposed.");
-	}
+
+	throw Error <DISPOSED> ("ImportedNode: Exported node '" + exportedName + "' is already disposed.");
 }
 
 void

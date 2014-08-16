@@ -97,14 +97,10 @@ SFNode
 NamedNode::getLocalNode () const
 throw (Error <DISPOSED>)
 {
-	try
-	{
+	if (node)
 		return SFNode (node);
-	}
-	catch (const X3D::Error <DISPOSED> &)
-	{
-		throw Error <DISPOSED> ("NamedNode: Node named '" + name + "' is already disposed.");
-	}
+
+	throw Error <DISPOSED> ("NamedNode: Node named '" + name + "' is already disposed.");
 }
 
 void
