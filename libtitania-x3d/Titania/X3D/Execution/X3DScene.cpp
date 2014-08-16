@@ -174,6 +174,10 @@ throw (Error <INVALID_NAME>,
 		throw Error <INVALID_NODE> ("Couldn't update exported node: node is NULL.");
 
 	// We do not throw Error <IMPORTED_NODE> as imported nodes can be exported too.
+	
+	// Remove exported node.
+
+	removeExportedNode (exportedName);
 
 	// Add exported node.
 
@@ -198,8 +202,18 @@ X3DScene::removeExportedNode (const std::string & exportedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (exportedNodes .erase (exportedName))
-		exportedNodesOutput = getCurrentTime ();
+	const auto iter = exportedNodes .find (exportedName);
+	
+	if (iter == exportedNodes .end ())
+		return;
+		
+	const auto & exportedNode = iter -> second;
+
+	const_cast <Output &> (exportedNode -> disposed ()) .dispose ();
+	
+	exportedNodes .erase (iter);
+
+	exportedNodesOutput = getCurrentTime ();
 }
 
 SFNode

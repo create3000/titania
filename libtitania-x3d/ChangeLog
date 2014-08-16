@@ -8,6 +8,14 @@
 
 2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.cpp:
+	* NamedNode.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.h:
 	* X3DScene.h:
 	* X3DBaseNode.cpp:

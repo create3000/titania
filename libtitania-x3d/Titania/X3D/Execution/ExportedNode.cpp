@@ -111,6 +111,8 @@ ExportedNode::initialize ()
 
 	node .addInterest (this, &ExportedNode::set_node);
 
+	disposed () .addInterest (node, &X3DField <X3DBaseNode*>::setValue, nullptr);
+
 	set_node ();
 }
 

@@ -302,19 +302,23 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (name .empty ())
 		return;
 
-	const auto namedNode = namedNodes .find (name);
+	const auto iter = namedNodes .find (name);
 
-	if (namedNode == namedNodes .end ())
+	if (iter == namedNodes .end ())
 		return;
+
+	const auto & namedNode = iter -> second;
 
 	try
 	{
-		namedNode -> second -> getLocalNode () -> setName ("");
+		namedNode -> getLocalNode () -> setName ("");
 	}
 	catch (const X3DError &)
 	{ }
 
-	namedNodes .erase (namedNode);
+	const_cast <Output &> (namedNode -> disposed ()) .dispose ();
+
+	namedNodes .erase (iter);
 }
 
 SFNode
@@ -429,6 +433,10 @@ throw (Error <INVALID_NODE>,
 	if (importedName .empty ())
 		importedName = exportedName;
 
+	// Remove imported node!!!
+
+	removeImportedNode (importedName);
+
 	// Update imported node.
 
 	auto & importedNode = importedNodes [importedName];
@@ -465,25 +473,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (iter == importedNodes .end ())
 		return;
 
-	try
-	{
-		const auto & importedNode = iter -> second;
-		const auto   exportedNode = importedNode -> getExportedNode ();
-		const auto   range        = importedNames .equal_range (exportedNode -> getId ());
-
-		importedNode -> disposed () .removeInterest (this, &X3DExecutionContext::removeImportedName);
-
-		for (auto first = range .first; first not_eq range .second; ++ first)
-		{
-			if (first -> second == importedName)
-			{
-				importedNames .erase (first);
-				break;
-			}
-		}
-	}
-	catch (const X3DError &)
-	{ }
+	const_cast <Output &> (iter -> second -> disposed ()) .dispose ();
 
 	importedNodes .erase (iter);
 
