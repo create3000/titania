@@ -68,6 +68,7 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"GeometryPropertiesEditor",
 	"ViewpointEditor",
 	"LightEditor",
+	"LODEditor",
 	"InlineEditor"
 
 };

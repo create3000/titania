@@ -48,58 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIGHT_EDITOR_LIGHT_EDITOR_H__
-#define __TITANIA_LIGHT_EDITOR_LIGHT_EDITOR_H__
+#include "LODEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "X3DDirectionalLightEditor.h"
-#include "X3DPointLightEditor.h"
-#include "X3DSpotLightEditor.h"
+#include "../../Browser/BrowserWindow.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class LightEditor :
-	public X3DDirectionalLightEditor,
-	public X3DPointLightEditor,
-	public X3DSpotLightEditor
+LODEditor::LODEditor (BrowserWindow* const browserWindow) :
+	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DLODEditorInterface (get_ui ("Dialogs/LODEditor.xml"), gconf_dir ()),
+	         X3DLODEditor ()//,
+	    //X3DGeoLODEditor ()
 {
-public:
+	setup ();
+}
 
-	///  @name Construction
+void
+LODEditor::initialize ()
+{
+	X3DLODEditor::initialize ();
+	//X3DGeoLODEditor::initialize ();
+}
 
-	LightEditor (BrowserWindow* const);
-
-	///  @name Destruction
-
-	virtual
-	~LightEditor ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_selection (const X3D::MFNode &);
-
-	///  @name Members
-
-	X3DFieldToggleButton <X3D::SFBool> global;
-	X3DFieldToggleButton <X3D::SFBool> on;
-	SFColorButton                      color;
-	X3DFieldAdjustment <X3D::SFFloat>  intensity;
-	X3DFieldAdjustment <X3D::SFFloat>  ambientIntensity;
-
-};
+LODEditor::~LODEditor ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

@@ -164,18 +164,18 @@ LOD::getDistance (const TraverseType type) const
 void
 LOD::traverse (const TraverseType type)
 {
-	const size_t level = getLevel (type);
-
-	if (type == TraverseType::CAMERA)
+	if (type == TraverseType::CAMERA and not keepCurrentLevel)
 	{
-		if ((int32_t) level not_eq level_changed ())
+		const int32_t level = getLevel (type);
+
+		if (level not_eq level_changed ())
 			level_changed () = level;
 	}
 
-	if (level < children () .size ())
+	if ((size_t) level_changed () < children () .size ())
 	{
-		if (children () [level])
-			children () [level] -> traverse (type);
+		if (children () [level_changed ()])
+			children () [level_changed ()] -> traverse (type);
 	}
 }
 

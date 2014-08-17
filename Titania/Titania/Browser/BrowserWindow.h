@@ -534,6 +534,10 @@ private:
 
 	virtual
 	void
+	on_lod_editor_clicked () final override;
+
+	virtual
+	void
 	on_inline_editor_clicked () final override;
 
 	virtual

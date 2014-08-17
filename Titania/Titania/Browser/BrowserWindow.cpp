@@ -1620,6 +1620,12 @@ BrowserWindow::on_light_editor_clicked ()
 }
 
 void
+BrowserWindow::on_lod_editor_clicked ()
+{
+	addDialog ("LODEditor", true);
+}
+
+void
 BrowserWindow::on_inline_editor_clicked ()
 {
 	addDialog ("InlineEditor", true);

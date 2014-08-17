@@ -63,6 +63,7 @@
 #include "../Editors/MaterialEditor/MaterialEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../Editors/LODEditor/LODEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
 #include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
@@ -90,6 +91,7 @@ public:
 		            std::make_pair ("TextEditor",               constructDialog <TextEditor>),
 		            std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
 		            std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
+		            std::make_pair ("LODEditor",                constructDialog <LODEditor>),
 		            std::make_pair ("LightEditor",              constructDialog <LightEditor>),
 		            std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
 		            std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>)

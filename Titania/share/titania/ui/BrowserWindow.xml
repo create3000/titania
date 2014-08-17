@@ -1475,7 +1475,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Open Viewpoint Editor.</property>
-                    <property name="label" translatable="yes">Update Active Viewpoint</property>
+                    <property name="label" translatable="yes">Viewpoint Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Viewpoint</property>
                     <signal name="clicked" handler="on_viewpoint_editor_clicked" swapped="no"/>
@@ -1494,6 +1494,21 @@
                     <property name="use_underline">True</property>
                     <property name="stock_id">Light</property>
                     <signal name="clicked" handler="on_light_editor_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="LODEditorButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Open LOD Editor</property>
+                    <property name="label" translatable="yes">LOD Editor</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-copy</property>
+                    <signal name="clicked" handler="on_lod_editor_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

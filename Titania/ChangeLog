@@ -1,3 +1,25 @@
+2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* LODEditor.h:
+	* LODEditor.xml:
+	* LODEditor.cpp:
+	* X3DLODEditor.h:
+	* LightEditor.h:
+	* X3DLODEditor.cpp:
+	* .dirstamp:
+	* X3DLODEditorInterface.h:
+	* X3DLODEditorInterface.cpp:
+	* .dirstamp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2014-08-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.h:

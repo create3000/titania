@@ -28,6 +28,8 @@ titania_SOURCES =  \
 	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DPointLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DSpotLightEditor.cpp \
+	Titania/Editors/LODEditor/LODEditor.cpp \
+	Titania/Editors/LODEditor/X3DLODEditor.cpp \
 	Titania/Editors/MaterialEditor/MaterialEditor.cpp \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
@@ -63,6 +65,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
+	Titania/UserInterfaces/X3DLODEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
