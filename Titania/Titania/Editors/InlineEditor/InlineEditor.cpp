@@ -53,6 +53,7 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileSaveDialog/FileSaveDialog.h"
+#include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 namespace titania {
 namespace puck {
@@ -60,6 +61,7 @@ namespace puck {
 InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DInlineEditorInterface (get_ui ("Dialogs/InlineEditor.xml"), gconf_dir ()),
+	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    load (browserWindow, getLoadCheckButton (),  "load"),
 	                bboxSize (getBrowserWindow (),
 	                          getBBoxSizeXAdjustment (),
@@ -121,9 +123,18 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 
 	getInlineBox () .set_sensitive (inlineNode);
 
+	nodeName   .setNode  (X3D::SFNode (inlineNode));
 	load       .setNodes (nodes);
 	bboxSize   .setNodes (nodes);
 	bboxCenter .setNodes (nodes);
+}
+
+void
+InlineEditor::on_index_clicked ()
+{
+	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (addDialog ("NodeIndex"));
+	nodeIndex -> setTypeNames ({ "Inline" });
+	nodeIndex -> refresh ();
 }
 
 void

@@ -79,6 +79,8 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("IndexButton", m_IndexButton);
+	m_IndexButton -> set_name ("IndexButton");
 	m_builder -> get_widget ("LODExpander", m_LODExpander);
 	m_LODExpander -> set_name ("LODExpander");
 	m_builder -> get_widget ("LODBox", m_LODBox);
@@ -121,6 +123,15 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_LODRangeMaxSpinButton -> set_name ("LODRangeMaxSpinButton");
 	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
 	m_LODMaxCheckButton -> set_name ("LODMaxCheckButton");
+	m_builder -> get_widget ("LODNameBox", m_LODNameBox);
+	m_LODNameBox -> set_name ("LODNameBox");
+	m_builder -> get_widget ("LODNameEntry", m_LODNameEntry);
+	m_LODNameEntry -> set_name ("LODNameEntry");
+	m_builder -> get_widget ("LODRenameButton", m_LODRenameButton);
+	m_LODRenameButton -> set_name ("LODRenameButton");
+
+	// Connect object Gtk::Button with id 'IndexButton'.
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
 	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_keep_current_level_activate));

@@ -48,43 +48,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
-#define __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
+#ifndef __TITANIA_DIALOGS_NODE_INDEX_NODE_INDEX_H__
+#define __TITANIA_DIALOGS_NODE_INDEX_NODE_INDEX_H__
 
-#include "../../ComposedWidgets.h"
-#include "X3DLODEditor.h"
-//#include "X3DGeoLODEditor.h"
+#include "../../UserInterfaces/X3DNodeIndexInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class LODEditor :
-	public X3DLODEditor //,
-	//public X3DGeoLODEditor
+class NodeIndex :
+	virtual public X3DNodeIndexInterface
 {
 public:
 
 	///  @name Construction
 
-	LODEditor (BrowserWindow* const);
+	NodeIndex (BrowserWindow* const);
+
+	///  @name Member access
+
+	void
+	setTypeNames (const std::set <std::string> & value)
+	{ typeNames = value; }
+
+	const std::set <std::string> &
+	getTypeNames () const
+	{ return typeNames; }
+
+	void
+	setNames (const std::set <std::string> & value)
+	{ names = value; }
+
+	const std::set <std::string>  &
+	getNames () const
+	{ return names; }
+
+	///  @name Operations
+
+	void
+	refresh ();
 
 	///  @name Destruction
 
 	virtual
-	~LODEditor ();
+	~NodeIndex ();
 
 
 private:
 
-	virtual
-	void
-	initialize () final override;
+	///  @name Operations
+
+	X3D::MFNode
+	getNodes ();
+
+	///  @name Event handlers
 
 	virtual
 	void
-	on_index_clicked () final override;
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	///  @name Members
+
+	std::set <std::string> typeNames;
+	std::set <std::string> names;
+	X3D::MFNode            nodes;
 
 };
 

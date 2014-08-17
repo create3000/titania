@@ -151,6 +151,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Button &
+	getIndexButton () const
+	{ return *m_IndexButton; }
+
 	Gtk::Expander &
 	getLODExpander () const
 	{ return *m_LODExpander; }
@@ -235,6 +239,22 @@ public:
 	getLODMaxCheckButton () const
 	{ return *m_LODMaxCheckButton; }
 
+	Gtk::Box &
+	getLODNameBox () const
+	{ return *m_LODNameBox; }
+
+	Gtk::Entry &
+	getLODNameEntry () const
+	{ return *m_LODNameEntry; }
+
+	Gtk::Button &
+	getLODRenameButton () const
+	{ return *m_LODRenameButton; }
+
+	virtual
+	void
+	on_index_clicked () = 0;
+
 	virtual
 	void
 	on_lod_keep_current_level_activate () = 0;
@@ -266,6 +286,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMinAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Button*                   m_IndexButton;
 	Gtk::Expander*                 m_LODExpander;
 	Gtk::Grid*                     m_LODBox;
 	Gtk::Box*                      m_LODBBoxCenterBox;
@@ -287,6 +308,9 @@ private:
 	Gtk::SpinButton*               m_LODRangeMinSpinButton;
 	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
 	Gtk::CheckButton*              m_LODMaxCheckButton;
+	Gtk::Box*                      m_LODNameBox;
+	Gtk::Entry*                    m_LODNameEntry;
+	Gtk::Button*                   m_LODRenameButton;
 
 };
 

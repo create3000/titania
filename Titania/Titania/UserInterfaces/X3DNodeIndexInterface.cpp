@@ -47,48 +47,41 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
-#define __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "X3DLODEditor.h"
-//#include "X3DGeoLODEditor.h"
+#include "X3DNodeIndexInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+const std::string X3DNodeIndexInterface::m_widgetName = "NodeIndex";
 
-class LODEditor :
-	public X3DLODEditor //,
-	//public X3DGeoLODEditor
+void
+X3DNodeIndexInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Construction
+	// Get objects.
+	m_ListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
 
-	LODEditor (BrowserWindow* const);
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_Window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_TreeView -> set_name ("TreeView");
 
-	///  @name Destruction
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
 
-	virtual
-	~LODEditor ();
+	// Call construct handler of base class.
+	construct ();
+}
 
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	on_index_clicked () final override;
-
-};
+X3DNodeIndexInterface::~X3DNodeIndexInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

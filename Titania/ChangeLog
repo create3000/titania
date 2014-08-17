@@ -1,6 +1,35 @@
 2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* run.pl:
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* NodeIndex.h:
+	* LODEditor.h:
+	* LODEditor.xml:
+	* NodeIndex.xml:
+	* LODEditor.cpp:
+	* NodeIndex.cpp:
+	* LightEditor.xml:
+	* X3DLODEditor.h:
+	* LightEditor.h:
+	* InlineEditor.xml:
+	* X3DLODEditor.cpp:
+	* LightEditor.cpp:
+	* InlineEditor.h:
+	* InlineEditor.cpp:
+	* X3DLODEditorInterface.h:
+	* X3DNodeIndexInterface.h:
+	* X3DNodeIndexInterface.cpp:
+	* X3DLODEditorInterface.cpp:
+	* X3DLightEditorInterface.h:
+	* X3DInlineEditorInterface.h:
+	* X3DLightEditorInterface.cpp:
+	* X3DInlineEditorInterface.cpp: 
+
+2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
 	* LODEditor.xml:
 	* X3DLODEditor.h:
 	* LODRangeWidget.h:

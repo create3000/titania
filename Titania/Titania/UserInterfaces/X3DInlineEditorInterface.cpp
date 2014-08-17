@@ -73,6 +73,8 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("IndexButton", m_IndexButton);
+	m_IndexButton -> set_name ("IndexButton");
 	m_builder -> get_widget ("ConvertMasterSelectionButton", m_ConvertMasterSelectionButton);
 	m_ConvertMasterSelectionButton -> set_name ("ConvertMasterSelectionButton");
 	m_builder -> get_widget ("UpdateBoundingBoxFieldsSwitch", m_UpdateBoundingBoxFieldsSwitch);
@@ -103,6 +105,13 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_BBoxCenterZSpinButton -> set_name ("BBoxCenterZSpinButton");
 	m_builder -> get_widget ("LoadStateLabel", m_LoadStateLabel);
 	m_LoadStateLabel -> set_name ("LoadStateLabel");
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_NameBox -> set_name ("NameBox");
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_NameEntry -> set_name ("NameEntry");
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_RenameButton -> set_name ("RenameButton");
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_index_clicked));
 	m_ConvertMasterSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_convert_master_selection_clicked));
 	m_FoldBackIntoSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_fold_back_into_scene_clicked));
 

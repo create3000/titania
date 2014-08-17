@@ -92,6 +92,8 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("IndexButton", m_IndexButton);
+	m_IndexButton -> set_name ("IndexButton");
 	m_builder -> get_widget ("LightExpander", m_LightExpander);
 	m_LightExpander -> set_name ("LightExpander");
 	m_builder -> get_widget ("LightBox", m_LightBox);
@@ -112,6 +114,12 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_AmbientIntensityBox -> set_name ("AmbientIntensityBox");
 	m_builder -> get_widget ("AmbientIntensityScale", m_AmbientIntensityScale);
 	m_AmbientIntensityScale -> set_name ("AmbientIntensityScale");
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_NameBox -> set_name ("NameBox");
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_NameEntry -> set_name ("NameEntry");
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_RenameButton -> set_name ("RenameButton");
 	m_builder -> get_widget ("DirectionalLightExpander", m_DirectionalLightExpander);
 	m_DirectionalLightExpander -> set_name ("DirectionalLightExpander");
 	m_builder -> get_widget ("DirectionalLightNormalToolBox", m_DirectionalLightNormalToolBox);
@@ -178,6 +186,9 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightDirectionYSpinButton -> set_name ("SpotLightDirectionYSpinButton");
 	m_builder -> get_widget ("SpotLightDirectionZSpinButton", m_SpotLightDirectionZSpinButton);
 	m_SpotLightDirectionZSpinButton -> set_name ("SpotLightDirectionZSpinButton");
+
+	// Connect object Gtk::Button with id 'IndexButton'.
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.
 	construct ();

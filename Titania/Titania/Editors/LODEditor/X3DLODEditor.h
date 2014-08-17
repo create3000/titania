@@ -97,6 +97,7 @@ private:
 
 	///  @name Members
 
+	NameEntry                          nodeName;
 	X3DFieldToggleButton <X3D::SFBool> forceTransitions;
 	X3DFieldAdjustment3 <X3D::SFVec3f> center;
 	std::unique_ptr <LODRangeWidget>   range;

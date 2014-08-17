@@ -56,6 +56,7 @@
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
+#include "../Dialogs/NodeIndex/NodeIndex.h"
 
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
@@ -85,6 +86,7 @@ public:
 		            std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
 		            std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		            std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
+		            std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
 		            std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
 		            std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
 		            std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),

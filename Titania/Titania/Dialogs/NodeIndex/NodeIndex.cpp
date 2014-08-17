@@ -48,47 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
-#define __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
+#include "NodeIndex.h"
 
-#include "../../ComposedWidgets.h"
-#include "X3DLODEditor.h"
-//#include "X3DGeoLODEditor.h"
+#include "../../Configuration/config.h"
+
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+namespace Columns {
 
-class LODEditor :
-	public X3DLODEditor //,
-	//public X3DGeoLODEditor
-{
-public:
-
-	///  @name Construction
-
-	LODEditor (BrowserWindow* const);
-
-	///  @name Destruction
-
-	virtual
-	~LODEditor ();
-
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	on_index_clicked () final override;
+static constexpr int TYPE_NAME = 0;
+static constexpr int NAME      = 1;
 
 };
 
+NodeIndex::NodeIndex (BrowserWindow* const browserWindow) :
+	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ())
+{
+	setup ();
+}
+
+void
+NodeIndex::refresh ()
+{
+	// Fill model
+	nodes = getNodes ();
+
+	getListStore () -> clear ();
+
+	for (const auto & node : nodes)
+	{
+		const auto row = getListStore () -> append ();
+		row -> set_value (Columns::TYPE_NAME, node -> getTypeName ());
+		row -> set_value (Columns::NAME,      node -> getName ());
+	}
+}
+
+X3D::MFNode
+NodeIndex::getNodes ()
+{
+	// Find nodes
+
+	X3D::MFNode nodes;
+
+	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+	               {
+	                  if (node -> getExecutionContext () not_eq getExecutionContext ())
+	                     return true;
+
+	                  if (typeNames .count (node -> getTypeName ()))
+								nodes .emplace_back (node);
+
+	                  return true;
+						});
+
+	return nodes;
+}
+
+void
+NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
+{
+	getBrowser () -> getSelection () -> setChildren ({ nodes [path .front ()] });
+}
+
+NodeIndex::~NodeIndex ()
+{
+	dispose ();
+}
+
 } // puck
 } // titania
-
-#endif

@@ -203,6 +203,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Button &
+	getIndexButton () const
+	{ return *m_IndexButton; }
+
 	Gtk::Expander &
 	getLightExpander () const
 	{ return *m_LightExpander; }
@@ -242,6 +246,18 @@ public:
 	Gtk::Scale &
 	getAmbientIntensityScale () const
 	{ return *m_AmbientIntensityScale; }
+
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
 
 	Gtk::Expander &
 	getDirectionalLightExpander () const
@@ -376,6 +392,10 @@ public:
 	{ return *m_SpotLightDirectionZSpinButton; }
 
 	virtual
+	void
+	on_index_clicked () = 0;
+
+	virtual
 	~X3DLightEditorInterface ();
 
 
@@ -415,6 +435,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightRadiusAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Button*                   m_IndexButton;
 	Gtk::Expander*                 m_LightExpander;
 	Gtk::Grid*                     m_LightBox;
 	Gtk::CheckButton*              m_GlobalCheckButton;
@@ -425,6 +446,9 @@ private:
 	Gtk::Scale*                    m_IntensityScale;
 	Gtk::Box*                      m_AmbientIntensityBox;
 	Gtk::Scale*                    m_AmbientIntensityScale;
+	Gtk::Box*                      m_NameBox;
+	Gtk::Entry*                    m_NameEntry;
+	Gtk::Button*                   m_RenameButton;
 	Gtk::Expander*                 m_DirectionalLightExpander;
 	Gtk::Box*                      m_DirectionalLightNormalToolBox;
 	Gtk::Box*                      m_DirectionalLightDirectionBox;

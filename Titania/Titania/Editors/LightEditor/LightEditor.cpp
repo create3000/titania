@@ -52,6 +52,7 @@
 
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 namespace titania {
 namespace puck {
@@ -62,6 +63,7 @@ LightEditor::LightEditor (BrowserWindow* const browserWindow) :
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),
 	       X3DSpotLightEditor (),
+	                 nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                   global (getBrowserWindow (), getGlobalCheckButton (), "global"),
 	                       on (getBrowserWindow (), getOnCheckButton (), "on"),
 	                    color (getBrowserWindow (), getColorButton (), getColorAdjustment (), getColorBox (), "color"),
@@ -94,6 +96,7 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 
 	const auto lightNodes = lightNode ? X3D::MFNode ({ lightNode }) : X3D::MFNode ();
 
+	nodeName         .setNode  (X3D::SFNode (lightNode));
 	global           .setNodes (lightNodes);
 	on               .setNodes (lightNodes);
 	color            .setNodes (lightNodes);
@@ -102,6 +105,14 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 
 	getLightBox () .set_sensitive (lightNode);
 	getWindow () .resize (getWindow () .get_width (), 1);
+}
+
+void
+LightEditor::on_index_clicked ()
+{
+	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (addDialog ("NodeIndex"));
+	nodeIndex -> setTypeNames ({ "DirectionalLight", "PointLight", "SpotLight" });
+	nodeIndex -> refresh ();
 }
 
 LightEditor::~LightEditor ()

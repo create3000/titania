@@ -47,44 +47,91 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_NODE_INDEX_H__
+#define __TMP_GLAD2CPP_NODE_INDEX_H__
 
-#ifndef __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
-#define __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "X3DLODEditor.h"
-//#include "X3DGeoLODEditor.h"
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+using namespace Gtk;
 
-class LODEditor :
-	public X3DLODEditor //,
-	//public X3DGeoLODEditor
+class X3DNodeIndexInterface :
+	public X3DEditorInterface
 {
 public:
 
-	///  @name Construction
+	template <class ... Arguments>
+	X3DNodeIndexInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
+	{ create (filename); }
 
-	LODEditor (BrowserWindow* const);
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
-	///  @name Destruction
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
+
+	void
+	updateWidget (const Glib::ustring & name) const
+	{ getBuilder () -> add_from_file (filename, name); }
+
+	void
+	updateWidgets (const std::vector <Glib::ustring> & names) const
+	{ getBuilder () -> add_from_file (filename, names); }
+
+	template <class Type>
+	Type*
+	getWidget (const std::string & name) const
+	{
+		Type* widget = nullptr;
+
+		m_builder -> get_widget (name, widget);
+		widget -> set_name (name);
+		return widget;
+	}
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getListStore () const
+	{ return m_ListStore; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_TreeView; }
 
 	virtual
-	~LODEditor ();
+	void
+	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+
+	virtual
+	~X3DNodeIndexInterface ();
 
 
 private:
 
-	virtual
 	void
-	initialize () final override;
+	create (const std::string &);
 
-	virtual
-	void
-	on_index_clicked () final override;
+	static const std::string m_widgetName;
+
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Gtk::Window*                  m_Window;
+	Gtk::Box*                     m_Widget;
+	Gtk::TreeView*                m_TreeView;
 
 };
 

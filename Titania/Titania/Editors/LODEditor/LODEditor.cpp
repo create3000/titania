@@ -52,6 +52,7 @@
 
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 namespace titania {
 namespace puck {
@@ -70,6 +71,14 @@ LODEditor::initialize ()
 {
 	X3DLODEditor::initialize ();
 	//X3DGeoLODEditor::initialize ();
+}
+
+void
+LODEditor::on_index_clicked ()
+{
+	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (addDialog ("NodeIndex"));
+	nodeIndex -> setTypeNames ({ "LOD", "GeoLOD" });
+	nodeIndex -> refresh ();
 }
 
 LODEditor::~LODEditor ()

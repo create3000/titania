@@ -87,6 +87,10 @@ private:
 
 	virtual
 	void
+	on_index_clicked () final override;
+
+	virtual
+	void
 	on_convert_master_selection_clicked () final override;
 
 	//virtual
@@ -105,6 +109,7 @@ private:
 
 	///  @name Members
 
+	NameEntry                          nodeName;
 	X3DFieldToggleButton <X3D::SFBool> load;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;

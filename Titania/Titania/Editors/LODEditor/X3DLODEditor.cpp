@@ -60,6 +60,7 @@ namespace puck {
 
 X3DLODEditor::X3DLODEditor () :
 	X3DLODEditorInterface ("", ""),
+	             nodeName (getBrowserWindow (), getLODNameEntry (), getLODRenameButton ()),
 	     forceTransitions (getBrowserWindow (), getLODForceTransitionsCheckButton (),  "forceTransitions"),
 	               center (getBrowserWindow (),
 	                       getLODCenterXAdjustment (),
@@ -110,6 +111,7 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 
 	const auto nodes = lod ? X3D::MFNode ({ lod }) : X3D::MFNode ();
 
+	nodeName         .setNode  (X3D::SFNode (lod));
 	forceTransitions .setNodes (nodes);
 	center           .setNodes (nodes);
 	range ->          setNodes (nodes);

@@ -128,6 +128,10 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Button &
+	getIndexButton () const
+	{ return *m_IndexButton; }
+
+	Gtk::Button &
 	getConvertMasterSelectionButton () const
 	{ return *m_ConvertMasterSelectionButton; }
 
@@ -187,6 +191,22 @@ public:
 	getLoadStateLabel () const
 	{ return *m_LoadStateLabel; }
 
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
+
+	virtual
+	void
+	on_index_clicked () = 0;
+
 	virtual
 	void
 	on_convert_master_selection_clicked () = 0;
@@ -216,6 +236,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeZAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Button*                   m_IndexButton;
 	Gtk::Button*                   m_ConvertMasterSelectionButton;
 	Gtk::Switch*                   m_UpdateBoundingBoxFieldsSwitch;
 	Gtk::Expander*                 m_InlineExpander;
@@ -231,6 +252,9 @@ private:
 	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
 	Gtk::Label*                    m_LoadStateLabel;
+	Gtk::Box*                      m_NameBox;
+	Gtk::Entry*                    m_NameEntry;
+	Gtk::Button*                   m_RenameButton;
 
 };
 

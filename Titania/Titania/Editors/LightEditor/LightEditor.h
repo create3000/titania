@@ -89,8 +89,13 @@ private:
 	void
 	set_selection (const X3D::MFNode &);
 
+	virtual
+	void
+	on_index_clicked () final override;
+
 	///  @name Members
 
+	NameEntry                          nodeName;
 	X3DFieldToggleButton <X3D::SFBool> global;
 	X3DFieldToggleButton <X3D::SFBool> on;
 	SFColorButton                      color;
