@@ -11,7 +11,7 @@ chdir dirname $0;
 
 my $min = `date +'%M'`; chomp $min;
 
-if ($min > 16 and $min < 20)
+if ($min > 160 and $min < 20)
 {
 	unless (-e "/home/holger/.config/Titania.O")
 	{

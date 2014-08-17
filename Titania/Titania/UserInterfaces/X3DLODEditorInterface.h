@@ -135,6 +135,14 @@ public:
 	getLODLevelAdjustment () const
 	{ return m_LODLevelAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODRangeMaxAdjustment () const
+	{ return m_LODRangeMaxAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODRangeMinAdjustment () const
+	{ return m_LODRangeMinAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -211,6 +219,22 @@ public:
 	getLODCenterZSpinButton () const
 	{ return *m_LODCenterZSpinButton; }
 
+	Gtk::Box &
+	getLODRangeBox () const
+	{ return *m_LODRangeBox; }
+
+	Gtk::SpinButton &
+	getLODRangeMinSpinButton () const
+	{ return *m_LODRangeMinSpinButton; }
+
+	Gtk::SpinButton &
+	getLODRangeMaxSpinButton () const
+	{ return *m_LODRangeMaxSpinButton; }
+
+	Gtk::CheckButton &
+	getLODMaxCheckButton () const
+	{ return *m_LODMaxCheckButton; }
+
 	virtual
 	void
 	on_lod_keep_current_level_activate () = 0;
@@ -238,6 +262,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LODCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODCenterZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODLevelAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMaxAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMinAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_LODExpander;
@@ -257,6 +283,10 @@ private:
 	Gtk::SpinButton*               m_LODCenterXSpinButton;
 	Gtk::SpinButton*               m_LODCenterYSpinButton;
 	Gtk::SpinButton*               m_LODCenterZSpinButton;
+	Gtk::Box*                      m_LODRangeBox;
+	Gtk::SpinButton*               m_LODRangeMinSpinButton;
+	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
+	Gtk::CheckButton*              m_LODMaxCheckButton;
 
 };
 

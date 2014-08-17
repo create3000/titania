@@ -1,9 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/LODEditor/X3DLODEditor.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/LODEditor/LODRangeWidget.h">
     <Files>
-      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.h" Line="55" Column="32" />
-      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.cpp" Line="82" Column="1" />
+      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.h" Line="102" Column="2" />
+      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.cpp" Line="55" Column="1" />
+      <File FileName="Titania/Titania/Editors/LODEditor/LODRangeWidget.h" Line="69" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,7 +20,7 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Networking" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
@@ -39,12 +40,14 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True">
-                <Node name="BrowserWindow.h" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
+              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
-                <Node name="LightEditor" expanded="True" />
-                <Node name="LODEditor" expanded="True" />
+                <Node name="InlineEditor" expanded="True" />
+                <Node name="LODEditor" expanded="True">
+                  <Node name="X3DLODEditor.cpp" selected="True" />
+                </Node>
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True" />
             </Node>

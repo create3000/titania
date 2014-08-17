@@ -58,6 +58,7 @@ namespace titania {
 namespace puck {
 
 class BrowserWindow;
+class LODRangeWidget;
 
 class X3DLODEditor :
 	virtual public X3DLODEditorInterface
@@ -98,6 +99,7 @@ private:
 
 	X3DFieldToggleButton <X3D::SFBool> forceTransitions;
 	X3DFieldAdjustment3 <X3D::SFVec3f> center;
+	std::unique_ptr <LODRangeWidget>   range;
 	X3DFieldAdjustment <X3D::SFInt32>  level_changed;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;

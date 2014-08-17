@@ -71,6 +71,8 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_LODCenterYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterYAdjustment"));
 	m_LODCenterZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterZAdjustment"));
 	m_LODLevelAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODLevelAdjustment"));
+	m_LODRangeMaxAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMaxAdjustment"));
+	m_LODRangeMinAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMinAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -111,6 +113,14 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_LODCenterYSpinButton -> set_name ("LODCenterYSpinButton");
 	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
 	m_LODCenterZSpinButton -> set_name ("LODCenterZSpinButton");
+	m_builder -> get_widget ("LODRangeBox", m_LODRangeBox);
+	m_LODRangeBox -> set_name ("LODRangeBox");
+	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
+	m_LODRangeMinSpinButton -> set_name ("LODRangeMinSpinButton");
+	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
+	m_LODRangeMaxSpinButton -> set_name ("LODRangeMaxSpinButton");
+	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
+	m_LODMaxCheckButton -> set_name ("LODMaxCheckButton");
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
 	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_keep_current_level_activate));

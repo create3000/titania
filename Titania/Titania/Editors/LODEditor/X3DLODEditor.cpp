@@ -53,6 +53,8 @@
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include "LODRangeWidget.h"
+
 namespace titania {
 namespace puck {
 
@@ -65,6 +67,13 @@ X3DLODEditor::X3DLODEditor () :
 	                       getLODCenterZAdjustment (),
 	                       getLODCenterBox (),
 	                       "center"),
+	                 range (new LODRangeWidget (getBrowserWindow (),
+	                       getLODRangeMinAdjustment (),
+	                       getLODRangeMaxAdjustment (),
+	                       getLODRangeMinSpinButton (),
+	                       getLODRangeMaxSpinButton (),
+	                       getLODMaxCheckButton (),
+	                       getLODRangeBox ())),
 	        level_changed (getBrowserWindow (),
 	                       getLODLevelAdjustment (),
 	                       getLODLevelSpinButton (),
@@ -103,6 +112,7 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 
 	forceTransitions .setNodes (nodes);
 	center           .setNodes (nodes);
+	range ->          setNodes (nodes);
 	level_changed    .setNodes (nodes);
 	bboxSize         .setNodes (nodes);
 	bboxCenter       .setNodes (nodes);

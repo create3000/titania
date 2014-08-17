@@ -1,5 +1,15 @@
 2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* run.pl:
+	* LODEditor.xml:
+	* X3DLODEditor.h:
+	* LODRangeWidget.h:
+	* X3DLODEditor.cpp:
+	* X3DLODEditorInterface.h:
+	* X3DLODEditorInterface.cpp: 
+
+2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* DialogFactory.h:
