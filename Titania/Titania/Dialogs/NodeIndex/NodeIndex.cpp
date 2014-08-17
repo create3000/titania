@@ -66,16 +66,58 @@ static constexpr int NAME      = 1;
 
 NodeIndex::NodeIndex (BrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ())
+	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ()),
+	                index (NAMED_NODES_INDEX),
+	                types ()
 {
 	setup ();
 }
 
 void
+NodeIndex::initialize ()
+{
+	X3DNodeIndexInterface::initialize ();
+
+	getExecutionContext () .addInterest (this, &NodeIndex::refresh);
+}
+
+void
+NodeIndex::setNamedNodes ()
+{
+	index = NAMED_NODES_INDEX;
+	setNodes (getNodes ());
+}
+
+void
+NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
+{
+	index = TYPE_INDEX;
+	types = value;
+	setNodes (getNodes (types));
+}
+
+void
 NodeIndex::refresh ()
 {
-	// Fill model
-	nodes = getNodes ();
+	switch (index)
+	{
+		case NAMED_NODES_INDEX:
+		{
+			setNodes (getNodes ());
+			break;
+		}
+		case TYPE_INDEX:
+		{
+			setNodes (getNodes (types));
+			break;
+		}
+	}
+}
+
+void
+NodeIndex::setNodes (X3D::MFNode && value)
+{
+	nodes = std::move (value);
 
 	getListStore () -> clear ();
 
@@ -87,8 +129,11 @@ NodeIndex::refresh ()
 	}
 }
 
+/***
+ *  Returns a list of all nodes where type is @a types.
+ */
 X3D::MFNode
-NodeIndex::getNodes ()
+NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 {
 	// Find nodes
 
@@ -97,13 +142,35 @@ NodeIndex::getNodes ()
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
 	                  if (node -> getExecutionContext () not_eq getExecutionContext ())
-	                     return true;
+								return true;
 
-	                  if (typeNames .count (node -> getTypeName ()))
-								nodes .emplace_back (node);
+	                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
+	                  {
+	                     if (types .count (type))
+	                     {
+	                        nodes .emplace_back (node);
+	                        break;
+								}
+							}
 
 	                  return true;
 						});
+
+	return nodes;
+}
+
+/***
+ *  Returns a list of all named nodes.
+ */
+X3D::MFNode
+NodeIndex::getNodes ()
+{
+	// Find nodes
+
+	X3D::MFNode nodes;
+
+	for (const auto pair : getExecutionContext () -> getNamedNodes ())
+		nodes .emplace_back (pair .second -> getLocalNode ());
 
 	return nodes;
 }

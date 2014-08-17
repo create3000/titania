@@ -76,9 +76,8 @@ LODEditor::initialize ()
 void
 LODEditor::on_index_clicked ()
 {
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (addDialog ("NodeIndex"));
-	nodeIndex -> setTypeNames ({ "LOD", "GeoLOD" });
-	nodeIndex -> refresh ();
+	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+	nodeIndex -> setTypes ({ X3D::X3DConstants::LOD, X3D::X3DConstants::GeoLOD });
 }
 
 LODEditor::~LODEditor ()

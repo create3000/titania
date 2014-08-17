@@ -313,6 +313,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_InlineEditorButton -> set_name ("InlineEditorButton");
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
 	m_CreatePrototypeInstanceButton -> set_name ("CreatePrototypeInstanceButton");
+	m_builder -> get_widget ("NodeIndexButton", m_NodeIndexButton);
+	m_NodeIndexButton -> set_name ("NodeIndexButton");
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_VPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_HPaned);
@@ -517,6 +519,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LODEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lod_editor_clicked));
 	m_InlineEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_inline_editor_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
+	m_NodeIndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_index_clicked));
 
 	// Connect object Gtk::Box with id 'SurfaceBox'.
 	m_SurfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));

@@ -231,7 +231,7 @@ X3DBrowserEditor::isSaved ()
 
 	if (isModified ())
 	{
-		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (addDialog ("FileSaveWarningDialog")) -> run ();
+		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (addDialog ("FileSaveWarningDialog", false)) -> run ();
 
 		switch (responseId)
 		{

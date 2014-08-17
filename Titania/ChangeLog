@@ -1,5 +1,25 @@
 2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* BrowserWindow.h:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* ViewpointList.xml:
+	* X3DBrowserEditor.cpp:
+	* NodeIndex.h:
+	* NodeIndex.xml:
+	* LODEditor.cpp:
+	* NodeIndex.cpp:
+	* LightEditor.cpp:
+	* InlineEditor.cpp:
+	* X3DViewpointListInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DViewpointListInterface.cpp: 
+
+2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* run.pl:
 	* titania:
 	* Makefile.am:

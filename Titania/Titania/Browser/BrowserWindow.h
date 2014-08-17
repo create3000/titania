@@ -544,6 +544,10 @@ private:
 	void
 	on_prototype_instance_dialog_clicked () final override;
 
+	virtual
+	void
+	on_node_index_clicked () final override;
+
 	//virtual
 	//void
 	//on_motion_blur_editor_clicked () final override;

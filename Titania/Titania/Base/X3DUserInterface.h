@@ -80,6 +80,18 @@ public:
 	Gtk::Widget &
 	getWidget () const = 0;
 
+	/// @name Dialog handling
+	
+	bool
+	hasDialog (const std::string &) const;
+
+	std::shared_ptr <X3DUserInterface>
+	addDialog (const std::string &, const bool = true)
+	throw (std::out_of_range);
+
+	void
+	removeDialog (const std::string &);
+
 	///  @name Operations
 
 	void
@@ -137,18 +149,6 @@ protected:
 	const Configuration &
 	getConfig () const
 	{ return gconf; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = false)
-	throw (std::out_of_range);
-
-	void
-	removeDialog (const std::string &);
 
 	/// @name Destruction
 

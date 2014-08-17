@@ -110,9 +110,8 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 void
 LightEditor::on_index_clicked ()
 {
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (addDialog ("NodeIndex"));
-	nodeIndex -> setTypeNames ({ "DirectionalLight", "PointLight", "SpotLight" });
-	nodeIndex -> refresh ();
+	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DLightNode });
 }
 
 LightEditor::~LightEditor ()

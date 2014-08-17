@@ -69,7 +69,8 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"ViewpointEditor",
 	"LightEditor",
 	"LODEditor",
-	"InlineEditor"
+	"InlineEditor",
+	"NodeIndex"
 
 };
 
@@ -243,7 +244,7 @@ X3DUserInterface::restoreSession ()
 	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
 	{
 		if (restorableDialogs .count (dialogName))
-			addDialog (dialogName, true);
+			addDialog (dialogName);
 	}
 }
 

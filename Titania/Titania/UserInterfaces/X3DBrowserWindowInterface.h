@@ -599,6 +599,10 @@ public:
 	getCreatePrototypeInstanceButton () const
 	{ return *m_CreatePrototypeInstanceButton; }
 
+	Gtk::ToolButton &
+	getNodeIndexButton () const
+	{ return *m_NodeIndexButton; }
+
 	Gtk::Paned &
 	getVPaned () const
 	{ return *m_VPaned; }
@@ -1077,6 +1081,10 @@ public:
 
 	virtual
 	void
+	on_node_index_clicked () = 0;
+
+	virtual
+	void
 	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
@@ -1258,6 +1266,7 @@ private:
 	Gtk::ToolButton*                m_LODEditorButton;
 	Gtk::ToolButton*                m_InlineEditorButton;
 	Gtk::ToolButton*                m_CreatePrototypeInstanceButton;
+	Gtk::ToolButton*                m_NodeIndexButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;
 	Gtk::Box*                       m_SurfaceBox;

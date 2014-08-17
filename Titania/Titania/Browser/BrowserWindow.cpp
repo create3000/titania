@@ -54,6 +54,7 @@
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
+#include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
 
 #include "../Widgets/Console/Console.h"
@@ -464,14 +465,14 @@ void
 BrowserWindow::on_open ()
 {
 	if (isSaved ())
-		std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog")) -> run ();
+		std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> run ();
 }
 
 void
 BrowserWindow::on_open_location ()
 {
 	if (isSaved ())
-		std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog")) -> run ();
+		std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog", false)) -> run ();
 }
 
 void
@@ -487,7 +488,7 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import ()
 {
-	std::dynamic_pointer_cast <FileImportDialog> (addDialog ("FileImportDialog")) -> run ();
+	std::dynamic_pointer_cast <FileImportDialog> (addDialog ("FileImportDialog", false)) -> run ();
 }
 
 void
@@ -574,7 +575,7 @@ BrowserWindow::on_save ()
 void
 BrowserWindow::on_save_as ()
 {
-	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog")) -> saveScene ();
+	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene ();
 }
 
 void
@@ -1580,68 +1581,68 @@ void
 BrowserWindow::on_node_properties_editor_clicked ()
 {
 	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-		addDialog ("NodePropertiesEditor", true);
+		addDialog ("NodePropertiesEditor");
 }
 
 void
 BrowserWindow::on_material_editor_clicked ()
 {
-	addDialog ("MaterialEditor", true);
+	addDialog ("MaterialEditor");
 }
 
 void
 BrowserWindow::on_texture_editor_clicked ()
 {
-	addDialog ("TextureEditor", true);
+	addDialog ("TextureEditor");
 }
 
 void
 BrowserWindow::on_text_editor_clicked ()
 {
-	addDialog ("TextEditor", true);
+	addDialog ("TextEditor");
 }
 
 void
 BrowserWindow::on_geometry_properties_editor_clicked ()
 {
-	addDialog ("GeometryPropertiesEditor", true);
+	addDialog ("GeometryPropertiesEditor");
 }
 
 void
 BrowserWindow::on_viewpoint_editor_clicked ()
 {
-	addDialog ("ViewpointEditor", true);
+	addDialog ("ViewpointEditor");
 }
 
 void
 BrowserWindow::on_light_editor_clicked ()
 {
-	addDialog ("LightEditor", true);
+	addDialog ("LightEditor");
 }
 
 void
 BrowserWindow::on_lod_editor_clicked ()
 {
-	addDialog ("LODEditor", true);
+	addDialog ("LODEditor");
 }
 
 void
 BrowserWindow::on_inline_editor_clicked ()
 {
-	addDialog ("InlineEditor", true);
+	addDialog ("InlineEditor");
 }
 
 void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
-	std::dynamic_pointer_cast <PrototypeInstanceDialog> (addDialog ("PrototypeInstanceDialog")) -> run ();
+	std::dynamic_pointer_cast <PrototypeInstanceDialog> (addDialog ("PrototypeInstanceDialog", false)) -> run ();
 }
 
-//void
-//BrowserWindow::on_motion_blur_editor_clicked ()
-//{
-//	addDialog ("MotionBlurEditor", true);
-//}
+void
+BrowserWindow::on_node_index_clicked ()
+{
+	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
+}
 
 // Browser dashboard handling
 

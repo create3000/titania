@@ -65,28 +65,13 @@ public:
 
 	NodeIndex (BrowserWindow* const);
 
-	///  @name Member access
-
-	void
-	setTypeNames (const std::set <std::string> & value)
-	{ typeNames = value; }
-
-	const std::set <std::string> &
-	getTypeNames () const
-	{ return typeNames; }
-
-	void
-	setNames (const std::set <std::string> & value)
-	{ names = value; }
-
-	const std::set <std::string>  &
-	getNames () const
-	{ return names; }
-
 	///  @name Operations
 
 	void
-	refresh ();
+	setNamedNodes ();
+
+	void
+	setTypes (const std::set <X3D::X3DConstants::NodeType> & value);
 
 	///  @name Destruction
 
@@ -96,7 +81,29 @@ public:
 
 private:
 
+	enum IndexType
+	{
+		NAMED_NODES_INDEX,
+		TYPE_INDEX
+
+	};
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	refresh ();
+
 	///  @name Operations
+
+	void
+	setNodes (X3D::MFNode &&);
+
+	X3D::MFNode
+	getNodes (const std::set <X3D::X3DConstants::NodeType> &);
 
 	X3D::MFNode
 	getNodes ();
@@ -109,9 +116,9 @@ private:
 
 	///  @name Members
 
-	std::set <std::string> typeNames;
-	std::set <std::string> names;
-	X3D::MFNode            nodes;
+	IndexType                              index;
+	std::set <X3D::X3DConstants::NodeType> types;
+	X3D::MFNode                            nodes;
 
 };
 
