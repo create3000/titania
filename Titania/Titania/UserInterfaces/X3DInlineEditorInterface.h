@@ -219,6 +219,10 @@ public:
 	getRenameButton () const
 	{ return *m_RenameButton; }
 
+	Gtk::Box &
+	getURLBox () const
+	{ return *m_URLBox; }
+
 	Gtk::TreeView &
 	getURLTreeView () const
 	{ return *m_URLTreeView; }
@@ -287,6 +291,7 @@ private:
 	Gtk::Box*                              m_NameBox;
 	Gtk::Entry*                            m_NameEntry;
 	Gtk::Button*                           m_RenameButton;
+	Gtk::Box*                              m_URLBox;
 	Gtk::TreeView*                         m_URLTreeView;
 	Gtk::Button*                           m_URLAddButton;
 	Gtk::Button*                           m_URLRemoveButton;

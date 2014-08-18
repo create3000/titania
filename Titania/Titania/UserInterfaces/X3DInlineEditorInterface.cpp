@@ -115,6 +115,8 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_NameEntry -> set_name ("NameEntry");
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_RenameButton -> set_name ("RenameButton");
+	m_builder -> get_widget ("URLBox", m_URLBox);
+	m_URLBox -> set_name ("URLBox");
 	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
 	m_URLTreeView -> set_name ("URLTreeView");
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);

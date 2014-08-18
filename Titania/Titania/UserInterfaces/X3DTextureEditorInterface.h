@@ -139,6 +139,38 @@ public:
 	getTextureTransformTranslationYAdjustment () const
 	{ return m_TextureTransformTranslationYAdjustment; }
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getImageTextureURLCellRendererText () const
+	{ return m_ImageTextureURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImageTextureURLPadColumn () const
+	{ return m_ImageTextureURLPadColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImageTextureURLChooserColumn () const
+	{ return m_ImageTextureURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getImageTextureURLCellrendererPixbuf () const
+	{ return m_ImageTextureURLCellrendererPixbuf; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getMovieTextureURLCellRendererText () const
+	{ return m_MovieTextureURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getMovieTextureURLPadColumn () const
+	{ return m_MovieTextureURLPadColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getMovieTextureURLChooserColumn () const
+	{ return m_MovieTextureURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getMovieTextureURLCellrendererPixbuf () const
+	{ return m_MovieTextureURLCellrendererPixbuf; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -184,12 +216,44 @@ public:
 	{ return *m_ImageTextureBox; }
 
 	Gtk::Box &
+	getImageTextureURLBox () const
+	{ return *m_ImageTextureURLBox; }
+
+	Gtk::TreeView &
+	getImageTextureURLTreeView () const
+	{ return *m_ImageTextureURLTreeView; }
+
+	Gtk::Button &
+	getImageTextureURLAddButton () const
+	{ return *m_ImageTextureURLAddButton; }
+
+	Gtk::Button &
+	getImageTextureURLRemoveButton () const
+	{ return *m_ImageTextureURLRemoveButton; }
+
+	Gtk::Box &
 	getPixelTextureBox () const
 	{ return *m_PixelTextureBox; }
 
 	Gtk::Box &
 	getMovieTextureBox () const
 	{ return *m_MovieTextureBox; }
+
+	Gtk::Box &
+	getMovieTextureURLBox () const
+	{ return *m_MovieTextureURLBox; }
+
+	Gtk::TreeView &
+	getMovieTextureURLTreeView () const
+	{ return *m_MovieTextureURLTreeView; }
+
+	Gtk::Button &
+	getMovieTextureURLAddButton () const
+	{ return *m_MovieTextureURLAddButton; }
+
+	Gtk::Button &
+	getMovieTextureURLRemoveButton () const
+	{ return *m_MovieTextureURLRemoveButton; }
 
 	Gtk::Grid &
 	getTexture2DBox () const
@@ -406,75 +470,91 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesAnisotropicDegreeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderWidthAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesTexturePriorityAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformCenterXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformCenterYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformRotationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformScaleXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformScaleYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformTranslationXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TextureTransformTranslationYAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::ScrolledWindow*           m_Widget;
-	Gtk::Expander*                 m_TextureExpander;
-	Gtk::Box*                      m_TextureBox;
-	Gtk::ComboBoxText*             m_TextureComboBoxText;
-	Gtk::Button*                   m_TextureUnlinkButton;
-	Gtk::Box*                      m_PreviewBox;
-	Gtk::Label*                    m_TextureFormatLabel;
-	Gtk::Notebook*                 m_TextureNotebook;
-	Gtk::Label*                    m_TextureLabel;
-	Gtk::Box*                      m_ImageTextureBox;
-	Gtk::Box*                      m_PixelTextureBox;
-	Gtk::Box*                      m_MovieTextureBox;
-	Gtk::Grid*                     m_Texture2DBox;
-	Gtk::CheckButton*              m_Texture2DNodeRepeatSCheckButton;
-	Gtk::CheckButton*              m_Texture2DNodeRepeatTCheckButton;
-	Gtk::Expander*                 m_TexturePropertiesExpander;
-	Gtk::CheckButton*              m_TexturePropertiesCheckButton;
-	Gtk::Button*                   m_TexturePropertiesUnlinkButton;
-	Gtk::Grid*                     m_TexturePropertiesBox;
-	Gtk::CheckButton*              m_TexturePropertiesGenerateMipMapsCheckButton;
-	Gtk::SpinButton*               m_TexturePropertiesBorderWidthSpinButton;
-	Gtk::SpinButton*               m_TexturePropertiesAnisotropicDegreeSpinButton;
-	Gtk::ComboBoxText*             m_TexturePropertiesMinificationFilterComboBoxText;
-	Gtk::ComboBoxText*             m_TexturePropertiesMagnificationFilterComboBoxText;
-	Gtk::ComboBoxText*             m_TexturePropertiesBoundaryModeSComboBoxText;
-	Gtk::ComboBoxText*             m_TexturePropertiesTextureCompressionComboBoxText;
-	Gtk::SpinButton*               m_TexturePropertiesTexturePrioritySpinButton;
-	Gtk::ComboBoxText*             m_TexturePropertiesBoundaryModeTComboBoxText;
-	Gtk::ComboBoxText*             m_TexturePropertiesBoundaryModeRComboBoxText;
-	Gtk::Box*                      m_TexturePropertiesBorderColorBox;
-	Gtk::Button*                   m_TexturePropertiesBorderColorButton;
-	Gtk::Scale*                    m_TexturePropertiesBorderColorScale;
-	Gtk::Expander*                 m_TextureTransformExpander;
-	Gtk::Box*                      m_TextureTransformNodeBox;
-	Gtk::ComboBoxText*             m_TextureTransformComboBoxText;
-	Gtk::Button*                   m_TextureTransformUnlinkButton;
-	Gtk::Notebook*                 m_TextureTransformNotebook;
-	Gtk::Label*                    m_TextureTransformLabel;
-	Gtk::Grid*                     m_TextureTransformBox;
-	Gtk::Box*                      m_TextureTransformTranslationBox;
-	Gtk::SpinButton*               m_TextureTransformTranslationXSpinButton;
-	Gtk::SpinButton*               m_TextureTransformTranslationYSpinButton;
-	Gtk::Box*                      m_TextureTransformScaleBox;
-	Gtk::SpinButton*               m_TextureTransformScaleXSpinButton;
-	Gtk::SpinButton*               m_TextureTransformScaleYSpinButton;
-	Gtk::Box*                      m_TextureTransformCenterBox;
-	Gtk::SpinButton*               m_TextureTransformCenterXSpinButton;
-	Gtk::SpinButton*               m_TextureTransformCenterYSpinButton;
-	Gtk::SpinButton*               m_TextureTransformRotationSpinButton;
-	Gtk::Expander*                 m_TextureCoordinateGeneratorExpander;
-	Gtk::Box*                      m_TextureCoordinateGeneratorMainBox;
-	Gtk::CheckButton*              m_TextureCoordinateGeneratorCheckButton;
-	Gtk::Button*                   m_TextureCoordinateGeneratorUnlinkButton;
-	Gtk::Grid*                     m_TextureCoordinateGeneratorBox;
-	Gtk::ComboBoxText*             m_TextureCoordinateGeneratorModeComboBoxText;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesAnisotropicDegreeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesBorderColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesBorderWidthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesTexturePriorityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformRotationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformTranslationYAdjustment;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImageTextureURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTextureURLPadColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTextureURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_MovieTextureURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_MovieTextureURLPadColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_MovieTextureURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_MovieTextureURLCellrendererPixbuf;
+	Gtk::Window*                           m_Window;
+	Gtk::ScrolledWindow*                   m_Widget;
+	Gtk::Expander*                         m_TextureExpander;
+	Gtk::Box*                              m_TextureBox;
+	Gtk::ComboBoxText*                     m_TextureComboBoxText;
+	Gtk::Button*                           m_TextureUnlinkButton;
+	Gtk::Box*                              m_PreviewBox;
+	Gtk::Label*                            m_TextureFormatLabel;
+	Gtk::Notebook*                         m_TextureNotebook;
+	Gtk::Label*                            m_TextureLabel;
+	Gtk::Box*                              m_ImageTextureBox;
+	Gtk::Box*                              m_ImageTextureURLBox;
+	Gtk::TreeView*                         m_ImageTextureURLTreeView;
+	Gtk::Button*                           m_ImageTextureURLAddButton;
+	Gtk::Button*                           m_ImageTextureURLRemoveButton;
+	Gtk::Box*                              m_PixelTextureBox;
+	Gtk::Box*                              m_MovieTextureBox;
+	Gtk::Box*                              m_MovieTextureURLBox;
+	Gtk::TreeView*                         m_MovieTextureURLTreeView;
+	Gtk::Button*                           m_MovieTextureURLAddButton;
+	Gtk::Button*                           m_MovieTextureURLRemoveButton;
+	Gtk::Grid*                             m_Texture2DBox;
+	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
+	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;
+	Gtk::Expander*                         m_TexturePropertiesExpander;
+	Gtk::CheckButton*                      m_TexturePropertiesCheckButton;
+	Gtk::Button*                           m_TexturePropertiesUnlinkButton;
+	Gtk::Grid*                             m_TexturePropertiesBox;
+	Gtk::CheckButton*                      m_TexturePropertiesGenerateMipMapsCheckButton;
+	Gtk::SpinButton*                       m_TexturePropertiesBorderWidthSpinButton;
+	Gtk::SpinButton*                       m_TexturePropertiesAnisotropicDegreeSpinButton;
+	Gtk::ComboBoxText*                     m_TexturePropertiesMinificationFilterComboBoxText;
+	Gtk::ComboBoxText*                     m_TexturePropertiesMagnificationFilterComboBoxText;
+	Gtk::ComboBoxText*                     m_TexturePropertiesBoundaryModeSComboBoxText;
+	Gtk::ComboBoxText*                     m_TexturePropertiesTextureCompressionComboBoxText;
+	Gtk::SpinButton*                       m_TexturePropertiesTexturePrioritySpinButton;
+	Gtk::ComboBoxText*                     m_TexturePropertiesBoundaryModeTComboBoxText;
+	Gtk::ComboBoxText*                     m_TexturePropertiesBoundaryModeRComboBoxText;
+	Gtk::Box*                              m_TexturePropertiesBorderColorBox;
+	Gtk::Button*                           m_TexturePropertiesBorderColorButton;
+	Gtk::Scale*                            m_TexturePropertiesBorderColorScale;
+	Gtk::Expander*                         m_TextureTransformExpander;
+	Gtk::Box*                              m_TextureTransformNodeBox;
+	Gtk::ComboBoxText*                     m_TextureTransformComboBoxText;
+	Gtk::Button*                           m_TextureTransformUnlinkButton;
+	Gtk::Notebook*                         m_TextureTransformNotebook;
+	Gtk::Label*                            m_TextureTransformLabel;
+	Gtk::Grid*                             m_TextureTransformBox;
+	Gtk::Box*                              m_TextureTransformTranslationBox;
+	Gtk::SpinButton*                       m_TextureTransformTranslationXSpinButton;
+	Gtk::SpinButton*                       m_TextureTransformTranslationYSpinButton;
+	Gtk::Box*                              m_TextureTransformScaleBox;
+	Gtk::SpinButton*                       m_TextureTransformScaleXSpinButton;
+	Gtk::SpinButton*                       m_TextureTransformScaleYSpinButton;
+	Gtk::Box*                              m_TextureTransformCenterBox;
+	Gtk::SpinButton*                       m_TextureTransformCenterXSpinButton;
+	Gtk::SpinButton*                       m_TextureTransformCenterYSpinButton;
+	Gtk::SpinButton*                       m_TextureTransformRotationSpinButton;
+	Gtk::Expander*                         m_TextureCoordinateGeneratorExpander;
+	Gtk::Box*                              m_TextureCoordinateGeneratorMainBox;
+	Gtk::CheckButton*                      m_TextureCoordinateGeneratorCheckButton;
+	Gtk::Button*                           m_TextureCoordinateGeneratorUnlinkButton;
+	Gtk::Grid*                             m_TextureCoordinateGeneratorBox;
+	Gtk::ComboBoxText*                     m_TextureCoordinateGeneratorModeComboBoxText;
 
 };
 

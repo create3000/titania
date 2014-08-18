@@ -72,6 +72,14 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformScaleYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleYAdjustment"));
 	m_TextureTransformTranslationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationXAdjustment"));
 	m_TextureTransformTranslationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationYAdjustment"));
+	m_ImageTextureURLCellRendererText              = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellRendererText"));
+	m_ImageTextureURLPadColumn                     = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTextureURLPadColumn"));
+	m_ImageTextureURLChooserColumn                 = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTextureURLChooserColumn"));
+	m_ImageTextureURLCellrendererPixbuf            = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf"));
+	m_MovieTextureURLCellRendererText              = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("MovieTextureURLCellRendererText"));
+	m_MovieTextureURLPadColumn                     = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MovieTextureURLPadColumn"));
+	m_MovieTextureURLChooserColumn                 = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MovieTextureURLChooserColumn"));
+	m_MovieTextureURLCellrendererPixbuf            = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("MovieTextureURLCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -96,10 +104,26 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureLabel -> set_name ("TextureLabel");
 	m_builder -> get_widget ("ImageTextureBox", m_ImageTextureBox);
 	m_ImageTextureBox -> set_name ("ImageTextureBox");
+	m_builder -> get_widget ("ImageTextureURLBox", m_ImageTextureURLBox);
+	m_ImageTextureURLBox -> set_name ("ImageTextureURLBox");
+	m_builder -> get_widget ("ImageTextureURLTreeView", m_ImageTextureURLTreeView);
+	m_ImageTextureURLTreeView -> set_name ("ImageTextureURLTreeView");
+	m_builder -> get_widget ("ImageTextureURLAddButton", m_ImageTextureURLAddButton);
+	m_ImageTextureURLAddButton -> set_name ("ImageTextureURLAddButton");
+	m_builder -> get_widget ("ImageTextureURLRemoveButton", m_ImageTextureURLRemoveButton);
+	m_ImageTextureURLRemoveButton -> set_name ("ImageTextureURLRemoveButton");
 	m_builder -> get_widget ("PixelTextureBox", m_PixelTextureBox);
 	m_PixelTextureBox -> set_name ("PixelTextureBox");
 	m_builder -> get_widget ("MovieTextureBox", m_MovieTextureBox);
 	m_MovieTextureBox -> set_name ("MovieTextureBox");
+	m_builder -> get_widget ("MovieTextureURLBox", m_MovieTextureURLBox);
+	m_MovieTextureURLBox -> set_name ("MovieTextureURLBox");
+	m_builder -> get_widget ("MovieTextureURLTreeView", m_MovieTextureURLTreeView);
+	m_MovieTextureURLTreeView -> set_name ("MovieTextureURLTreeView");
+	m_builder -> get_widget ("MovieTextureURLAddButton", m_MovieTextureURLAddButton);
+	m_MovieTextureURLAddButton -> set_name ("MovieTextureURLAddButton");
+	m_builder -> get_widget ("MovieTextureURLRemoveButton", m_MovieTextureURLRemoveButton);
+	m_MovieTextureURLRemoveButton -> set_name ("MovieTextureURLRemoveButton");
 	m_builder -> get_widget ("Texture2DBox", m_Texture2DBox);
 	m_Texture2DBox -> set_name ("Texture2DBox");
 	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);
