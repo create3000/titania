@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.3
 
 META "title" "MovieTexture"
 
@@ -16,10 +16,10 @@ DEF MovieTexture Transform {
       material Material { }
       texture DEF Movie MovieTexture {
         url [
-          "../../Examples/Vattenfall/stage/film6.mpv",
           "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4",
-          "https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8",
-          "http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/flames.mpg"
+          "../../Examples/Vattenfall/stage/film6.mpv",
+          "http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/flames.mpg",
+          "https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"
         ]
         loop TRUE
         startTime 1394361843.25533

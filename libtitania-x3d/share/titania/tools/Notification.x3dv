@@ -137,6 +137,8 @@ DEF NotificationScript Script {
 
 function set_string (value, time)
 {
+	print (value);
+
 	text .string = new MFString (value);
 
 	if (!isActive || endTimer .isActive)

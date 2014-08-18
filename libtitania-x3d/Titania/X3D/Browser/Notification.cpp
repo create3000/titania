@@ -95,7 +95,7 @@ Notification::initialize ()
 void
 Notification::set_string ()
 {
-	string () .removeInterest (this, &Notification::set_string);
+	//string () .removeInterest (this, &Notification::set_string);
 
 	if (not world)
 	{
@@ -129,7 +129,7 @@ Notification::set_string ()
 			scene -> setup ();
 		}
 
-		world = new World (scene -> getExecutionContext ());
+		world = new World (scene);
 		world -> setup ();
 	}
 }
