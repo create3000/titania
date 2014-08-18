@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/MFStringURLWidget.h">
     <Files>
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="89" Column="4" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="76" Column="5" />
-      <File FileName="Titania/Titania/Widgets/ViewpointList/ViewpointList.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DUserInterface.cpp" Line="76" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/MFStringURLWidget.h" Line="98" Column="43" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.h" Line="54" Column="32" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="129" Column="23" />
+      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.h" Line="91" Column="1" />
+      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp" Line="651" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,9 +23,10 @@
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Navigation" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True" />
+                <Node name="Prototype" expanded="True" />
                 <Node name="Routing" expanded="True" />
               </Node>
             </Node>
@@ -40,22 +42,15 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True">
-                <Node name="X3DBaseInterface.cpp" selected="True" />
-              </Node>
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="Dialogs" expanded="True">
-                <Node name="NodeIndex" expanded="True" />
-              </Node>
+              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
-                <Node name="InlineEditor" expanded="True" />
-                <Node name="LightEditor" expanded="True" />
-                <Node name="LODEditor" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="OutlineEditor" expanded="True" />
-                <Node name="ViewpointList" expanded="True" />
+                <Node name="InlineEditor" expanded="True">
+                  <Node name="InlineEditor.cpp" selected="True" />
+                </Node>
+                <Node name="NodePropertiesEditor" expanded="True" />
+                <Node name="TextEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

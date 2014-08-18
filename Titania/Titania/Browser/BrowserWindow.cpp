@@ -472,7 +472,7 @@ void
 BrowserWindow::on_open ()
 {
 	if (isSaved ())
-		std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> run ();
+		std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> loadURL ();
 }
 
 void

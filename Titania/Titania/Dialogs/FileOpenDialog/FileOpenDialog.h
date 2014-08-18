@@ -64,8 +64,17 @@ public:
 	///  @name Construction
 
 	FileOpenDialog (BrowserWindow* const);
-	
+
 	void
+	setURL (const basic::uri &);
+
+	basic::uri
+	getURL () const;
+
+	void
+	loadURL ();
+	
+	bool
 	run ();
 
 	///  @name Destruction

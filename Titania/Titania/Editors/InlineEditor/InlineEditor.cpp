@@ -55,6 +55,8 @@
 #include "../../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 
+#include "../../ComposedWidgets/MFStringURLWidget.h"
+
 namespace titania {
 namespace puck {
 
@@ -63,6 +65,13 @@ InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
 	X3DInlineEditorInterface (get_ui ("Dialogs/InlineEditor.xml"), gconf_dir ()),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    load (browserWindow, getLoadCheckButton (),  "load"),
+	                     url (new MFStringURLWidget (getBrowserWindow (),
+	                          getURLTreeView (),
+	                          getURLCellRendererText (),
+	                          getURLAddButton (),
+	                          getURLRemoveButton (),
+	                          getURLChooserColumn (),
+	                          "url")),
 	                bboxSize (getBrowserWindow (),
 	                          getBBoxSizeXAdjustment (),
 	                          getBBoxSizeYAdjustment (),
@@ -125,6 +134,7 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 
 	nodeName   .setNode  (X3D::SFNode (inlineNode));
 	load       .setNodes (nodes);
+	url ->      setNodes (nodes);
 	bboxSize   .setNodes (nodes);
 	bboxCenter .setNodes (nodes);
 }

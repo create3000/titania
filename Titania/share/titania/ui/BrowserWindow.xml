@@ -1164,7 +1164,6 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="LayoutMenuItem">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Layout</property>
                 <property name="use_underline">True</property>

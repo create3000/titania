@@ -1,5 +1,24 @@
 2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* SFStringEntry.h:
+	* InlineEditor.xml:
+	* InlineEditor.h:
+	* FileOpenDialog.xml:
+	* MFStringURLWidget.h:
+	* InlineEditor.cpp:
+	* SFStringComboBoxText.h:
+	* FileOpenDialog.h:
+	* X3DInlineEditorInterface.h:
+	* FileOpenDialog.cpp:
+	* X3DFileOpenDialogInterface.h:
+	* X3DInlineEditorInterface.cpp:
+	* X3DFileOpenDialogInterface.cpp: 
+
+2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* NodeIndex.h:
 	* NodeIndex.cpp: 

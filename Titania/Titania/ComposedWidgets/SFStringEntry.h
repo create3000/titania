@@ -203,7 +203,7 @@ SFStringEntry::set_buffer ()
 
 	// Find last field.
 
-	const auto pair = getString (nodes, name);
+	const auto pair = getArray <X3D::SFString> (nodes, name);
 
 	if (pair .second >= 0)
 		entry .set_text (pair .first);

@@ -201,7 +201,7 @@ SFStringComboBoxText::set_buffer ()
 {
 	changing = true;
 
-	const auto pair = getString (nodes, name);
+	const auto pair = getArray <X3D::SFString> (nodes, name);
 
 	if (pair .second > 0)
 		comboBoxText .set_active_text (pair .first);

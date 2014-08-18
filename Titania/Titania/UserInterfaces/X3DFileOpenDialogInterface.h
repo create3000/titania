@@ -123,6 +123,14 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getRelativePathBox () const
+	{ return *m_RelativePathBox; }
+
+	Gtk::Switch &
+	getRelativePathSwitch () const
+	{ return *m_RelativePathSwitch; }
+
 	virtual
 	~X3DFileOpenDialogInterface ();
 
@@ -143,6 +151,8 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_RelativePathBox;
+	Gtk::Switch*                   m_RelativePathSwitch;
 
 };
 

@@ -81,18 +81,40 @@ FileOpenDialog::FileOpenDialog (BrowserWindow* const browserWindow) :
 	else
 		getWindow () .set_filename (os::home () + _ ("scene.x3dv"));
 
+	getRelativePathSwitch () .set_active (getConfig () .getBoolean ("relativePath"));
+
 	setup ();
 }
 
 void
+FileOpenDialog::setURL (const basic::uri & URL)
+{
+	if (URL .is_local ())
+		getWindow () .set_uri (URL .str ());
+}
+
+basic::uri
+FileOpenDialog::getURL () const
+{
+	return Glib::uri_unescape_string (getWindow () .get_uri ());
+}
+
+void
+FileOpenDialog::loadURL ()
+{
+	if (run ())
+		getBrowserWindow () -> open (getURL ());
+}
+
+bool
 FileOpenDialog::run ()
 {
 	const auto responseId = getWindow () .run ();
 
-	if (responseId == Gtk::RESPONSE_OK)
-		getBrowserWindow () -> open (Glib::uri_unescape_string (getWindow () .get_uri ()));
-
+	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
 	getWindow () .hide ();
+
+	return responseId == Gtk::RESPONSE_OK;
 }
 
 FileOpenDialog::~FileOpenDialog ()

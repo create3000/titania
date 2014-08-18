@@ -57,6 +57,8 @@
 namespace titania {
 namespace puck {
 
+class MFStringURLWidget;
+
 class InlineEditor :
 	virtual public X3DInlineEditorInterface
 {
@@ -109,10 +111,11 @@ private:
 
 	///  @name Members
 
-	NameEntry                          nodeName;
+	NameEntry                           nodeName;
 	X3DFieldToggleButton <X3D::SFBool> load;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
+	std::unique_ptr <MFStringURLWidget> url;
+	X3DFieldAdjustment3 <X3D::SFVec3f>  bboxSize;
+	X3DFieldAdjustment3 <X3D::SFVec3f>  bboxCenter;
 
 	X3D::X3DPtr <X3D::Inline> inlineNode;
 	bool                      loadState;

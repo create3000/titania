@@ -67,6 +67,10 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_BBoxSizeXAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeXAdjustment"));
 	m_BBoxSizeYAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeYAdjustment"));
 	m_BBoxSizeZAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeZAdjustment"));
+	m_URLCellRendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("URLCellRendererText"));
+	m_URLPadColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("URLPadColumn"));
+	m_URLChooserColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("URLChooserColumn"));
+	m_URLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("URLCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -111,6 +115,12 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_NameEntry -> set_name ("NameEntry");
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_RenameButton -> set_name ("RenameButton");
+	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
+	m_URLTreeView -> set_name ("URLTreeView");
+	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
+	m_URLAddButton -> set_name ("URLAddButton");
+	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
+	m_URLRemoveButton -> set_name ("URLRemoveButton");
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_index_clicked));
 	m_ConvertMasterSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_convert_master_selection_clicked));
 	m_FoldBackIntoSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_fold_back_into_scene_clicked));

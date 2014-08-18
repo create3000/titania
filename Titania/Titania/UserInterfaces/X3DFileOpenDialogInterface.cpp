@@ -72,6 +72,10 @@ X3DFileOpenDialogInterface::create (const std::string & filename)
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
+	m_builder -> get_widget ("RelativePathBox", m_RelativePathBox);
+	m_RelativePathBox -> set_name ("RelativePathBox");
+	m_builder -> get_widget ("RelativePathSwitch", m_RelativePathSwitch);
+	m_RelativePathSwitch -> set_name ("RelativePathSwitch");
 
 	// Call construct handler of base class.
 	construct ();

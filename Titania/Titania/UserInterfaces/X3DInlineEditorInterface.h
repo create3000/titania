@@ -119,6 +119,22 @@ public:
 	getBBoxSizeZAdjustment () const
 	{ return m_BBoxSizeZAdjustment; }
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getURLCellRendererText () const
+	{ return m_URLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getURLPadColumn () const
+	{ return m_URLPadColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getURLChooserColumn () const
+	{ return m_URLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getURLCellrendererPixbuf () const
+	{ return m_URLCellrendererPixbuf; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -203,6 +219,18 @@ public:
 	getRenameButton () const
 	{ return *m_RenameButton; }
 
+	Gtk::TreeView &
+	getURLTreeView () const
+	{ return *m_URLTreeView; }
+
+	Gtk::Button &
+	getURLAddButton () const
+	{ return *m_URLAddButton; }
+
+	Gtk::Button &
+	getURLRemoveButton () const
+	{ return *m_URLRemoveButton; }
+
 	virtual
 	void
 	on_index_clicked () = 0;
@@ -226,35 +254,42 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_BBoxCenterXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BBoxCenterYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BBoxCenterZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeZAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Button*                   m_IndexButton;
-	Gtk::Button*                   m_ConvertMasterSelectionButton;
-	Gtk::Switch*                   m_UpdateBoundingBoxFieldsSwitch;
-	Gtk::Expander*                 m_InlineExpander;
-	Gtk::Grid*                     m_InlineBox;
-	Gtk::CheckButton*              m_LoadCheckButton;
-	Gtk::Button*                   m_FoldBackIntoSceneButton;
-	Gtk::Box*                      m_BBoxSizeBox;
-	Gtk::SpinButton*               m_BBoxSizeXSpinButton;
-	Gtk::SpinButton*               m_BBoxSizeYSpinButton;
-	Gtk::SpinButton*               m_BBoxSizeZSpinButton;
-	Gtk::Box*                      m_BBoxCenterBox;
-	Gtk::SpinButton*               m_BBoxCenterXSpinButton;
-	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
-	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
-	Gtk::Label*                    m_LoadStateLabel;
-	Gtk::Box*                      m_NameBox;
-	Gtk::Entry*                    m_NameEntry;
-	Gtk::Button*                   m_RenameButton;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::Adjustment>         m_BBoxCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_BBoxCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_BBoxCenterZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_BBoxSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_BBoxSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_BBoxSizeZAdjustment;
+	Glib::RefPtr <Gtk::CellRendererText>   m_URLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLPadColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::Button*                           m_IndexButton;
+	Gtk::Button*                           m_ConvertMasterSelectionButton;
+	Gtk::Switch*                           m_UpdateBoundingBoxFieldsSwitch;
+	Gtk::Expander*                         m_InlineExpander;
+	Gtk::Grid*                             m_InlineBox;
+	Gtk::CheckButton*                      m_LoadCheckButton;
+	Gtk::Button*                           m_FoldBackIntoSceneButton;
+	Gtk::Box*                              m_BBoxSizeBox;
+	Gtk::SpinButton*                       m_BBoxSizeXSpinButton;
+	Gtk::SpinButton*                       m_BBoxSizeYSpinButton;
+	Gtk::SpinButton*                       m_BBoxSizeZSpinButton;
+	Gtk::Box*                              m_BBoxCenterBox;
+	Gtk::SpinButton*                       m_BBoxCenterXSpinButton;
+	Gtk::SpinButton*                       m_BBoxCenterYSpinButton;
+	Gtk::SpinButton*                       m_BBoxCenterZSpinButton;
+	Gtk::Label*                            m_LoadStateLabel;
+	Gtk::Box*                              m_NameBox;
+	Gtk::Entry*                            m_NameEntry;
+	Gtk::Button*                           m_RenameButton;
+	Gtk::TreeView*                         m_URLTreeView;
+	Gtk::Button*                           m_URLAddButton;
+	Gtk::Button*                           m_URLRemoveButton;
 
 };
 

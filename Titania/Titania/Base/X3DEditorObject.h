@@ -113,10 +113,10 @@ protected:
 	int
 	getBoolean (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
-	template <class NodeType>
+	template <class FieldType, class NodeType>
 	static
-	std::pair <X3D::String, int>
-	getString (const X3D::X3DPtrArray <NodeType> &, const std::string &);
+	std::pair <FieldType, int>
+	getArray (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class NodeType>
 	void
@@ -278,28 +278,28 @@ X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const st
  *   0 means all values are empty
  *   1 means all values are equal
  */
-template <class NodeType>
-std::pair <X3D::String, int>
-X3DEditorObject::getString (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+template <class FieldType, class NodeType>
+std::pair <FieldType, int>
+X3DEditorObject::getArray (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
 {
-	X3D::String found;
-	int         active = -2;
+	FieldType found;
+	int       active = -2;
 
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
-			const auto & field = node -> template getField <X3D::SFString> (fieldName);
+			const auto & field = node -> template getField <FieldType> (fieldName);
 
 			if (active < 0)
 			{
-				found  = field .getValue ();
+				found  = field;
 				active = not found .empty ();
 			}
 			else if (field not_eq found)
 			{
 				if (found .empty ())
-					found = field .getValue ();
+					found = field;
 
 				active = -1;
 				break;
