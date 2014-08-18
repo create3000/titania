@@ -339,10 +339,145 @@
                                 <property name="can_focus">False</property>
                                 <property name="orientation">vertical</property>
                                 <child>
-                                  <object class="GtkLabel" id="label18">
+                                  <object class="GtkGrid" id="grid5">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">ImageTextureBox</property>
+                                    <property name="row_spacing">4</property>
+                                    <property name="column_spacing">16</property>
+                                    <child>
+                                      <object class="GtkLabel" id="label18">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">URL:</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">0</property>
+                                        <property name="width">1</property>
+                                        <property name="height">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="ImageTextureURLBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkScrolledWindow" id="scrolledwindow1">
+                                            <property name="height_request">96</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="shadow_type">in</property>
+                                            <child>
+                                              <object class="GtkTreeView" id="ImageTextureURLTreeView">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="headers_visible">False</property>
+                                                <property name="headers_clickable">False</property>
+                                                <property name="rules_hint">True</property>
+                                                <child internal-child="selection">
+                                                  <object class="GtkTreeSelection" id="treeview-selection3"/>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                                                    <property name="sizing">autosize</property>
+                                                    <property name="title" translatable="yes">URL</property>
+                                                    <child>
+                                                      <object class="GtkCellRendererText" id="ImageTextureURLCellRendererText">
+                                                        <property name="editable">True</property>
+                                                      </object>
+                                                      <attributes>
+                                                        <attribute name="text">0</attribute>
+                                                      </attributes>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkTreeViewColumn" id="ImageTextureURLPadColumn">
+                                                    <property name="expand">True</property>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkTreeViewColumn" id="ImageTextureURLChooserColumn">
+                                                    <property name="sizing">autosize</property>
+                                                    <child>
+                                                      <object class="GtkCellRendererPixbuf" id="ImageTextureURLCellrendererPixbuf">
+                                                        <property name="stock_id">gtk-open</property>
+                                                        <property name="stock_size">1</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox" id="box2">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <object class="GtkButton" id="ImageTextureURLAddButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <child>
+                                                  <object class="GtkImage" id="image6">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-add</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="ImageTextureURLRemoveButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <child>
+                                                  <object class="GtkImage" id="image7">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-remove</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">0</property>
+                                        <property name="width">1</property>
+                                        <property name="height">1</property>
+                                      </packing>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -403,10 +538,145 @@
                                 <property name="can_focus">False</property>
                                 <property name="orientation">vertical</property>
                                 <child>
-                                  <object class="GtkLabel" id="label39">
+                                  <object class="GtkGrid" id="grid6">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">MovieTextureBox</property>
+                                    <property name="row_spacing">4</property>
+                                    <property name="column_spacing">16</property>
+                                    <child>
+                                      <object class="GtkBox" id="MovieTextureURLBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkScrolledWindow" id="scrolledwindow2">
+                                            <property name="height_request">96</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="shadow_type">in</property>
+                                            <child>
+                                              <object class="GtkTreeView" id="MovieTextureURLTreeView">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="headers_visible">False</property>
+                                                <property name="headers_clickable">False</property>
+                                                <property name="rules_hint">True</property>
+                                                <child internal-child="selection">
+                                                  <object class="GtkTreeSelection" id="treeview-selection5"/>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                                                    <property name="sizing">autosize</property>
+                                                    <property name="title" translatable="yes">URL</property>
+                                                    <child>
+                                                      <object class="GtkCellRendererText" id="MovieTextureURLCellRendererText">
+                                                        <property name="editable">True</property>
+                                                      </object>
+                                                      <attributes>
+                                                        <attribute name="text">0</attribute>
+                                                      </attributes>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkTreeViewColumn" id="MovieTextureURLPadColumn">
+                                                    <property name="expand">True</property>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkTreeViewColumn" id="MovieTextureURLChooserColumn">
+                                                    <property name="sizing">autosize</property>
+                                                    <child>
+                                                      <object class="GtkCellRendererPixbuf" id="MovieTextureURLCellrendererPixbuf">
+                                                        <property name="stock_id">gtk-open</property>
+                                                        <property name="stock_size">1</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox" id="box3">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <object class="GtkButton" id="MovieTextureURLAddButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <child>
+                                                  <object class="GtkImage" id="image8">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-add</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="MovieTextureURLRemoveButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <child>
+                                                  <object class="GtkImage" id="image9">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-remove</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">0</property>
+                                        <property name="width">1</property>
+                                        <property name="height">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label39">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">URL:</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">0</property>
+                                        <property name="width">1</property>
+                                        <property name="height">1</property>
+                                      </packing>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>

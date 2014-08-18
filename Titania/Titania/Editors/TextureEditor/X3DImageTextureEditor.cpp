@@ -50,23 +50,27 @@
 
 #include "X3DImageTextureEditor.h"
 
+#include "../../ComposedWidgets/MFStringURLWidget.h"
+
 namespace titania {
 namespace puck {
 
 X3DImageTextureEditor::X3DImageTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
+	                     url (new MFStringURLWidget (getBrowserWindow (),
+	                          getImageTextureURLTreeView (),
+	                          getImageTextureURLCellRendererText (),
+	                          getImageTextureURLAddButton (),
+	                          getImageTextureURLRemoveButton (),
+	                          getImageTextureURLChooserColumn (),
+	                          "url")),
 	             imageTexture ()
 { }
 
 void
 X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	if (imageTexture)
-	{
-		//imageTexture -> url () .removeInterest (this, &X3DImageTextureEditor::set_url);
-	}
-
 	imageTexture = value;
 
 	getImageTextureBox () .set_visible (imageTexture);
@@ -78,9 +82,7 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		getExecutionContext () -> realize ();
 	}
 
-	//imageTexture -> url () .addInterest (this, &X3DImageTextureEditor::set_url);
-
-	//set_url ();
+	url -> setNodes ({ imageTexture });
 }
 
 const X3D::X3DPtr <X3D::ImageTexture> &
@@ -99,6 +101,9 @@ X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	return imageTexture;
 }
+
+X3DImageTextureEditor::~X3DImageTextureEditor ()
+{ }
 
 } // puck
 } // titania

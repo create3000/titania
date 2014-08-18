@@ -135,6 +135,9 @@ private:
 	///  @name Event handler
 
 	void
+	on_selection_changed ();
+
+	void
 	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
 	                       int, int,
 	                       const Gtk::SelectionData &,
@@ -201,10 +204,11 @@ MFStringWidget::MFStringWidget (BrowserWindow* const browserWindow,
 	addChildren (buffer);
 	buffer .addInterest (this, &MFStringWidget::set_buffer);
 
-	treeView .signal_drag_data_received () .connect (sigc::mem_fun (*this, &MFStringWidget::on_drag_data_received));
-	cellRenderer -> signal_edited ()       .connect (sigc::mem_fun (*this, &MFStringWidget::on_edited));
-	addButton .signal_clicked ()           .connect (sigc::mem_fun (*this, &MFStringWidget::on_add_clicked));
-	removeButton .signal_clicked ()        .connect (sigc::mem_fun (*this, &MFStringWidget::on_remove_clicked));
+	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (*this, &MFStringWidget::on_drag_data_received));
+	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (*this, &MFStringWidget::on_selection_changed));
+	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (*this, &MFStringWidget::on_edited));
+	addButton .signal_clicked ()                    .connect (sigc::mem_fun (*this, &MFStringWidget::on_add_clicked));
+	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (*this, &MFStringWidget::on_remove_clicked));
 
 	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
 	treeView .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
@@ -244,6 +248,7 @@ MFStringWidget::setNodes (const X3D::MFNode & value)
 	set_field ();
 }
 
+inline
 void
 MFStringWidget::set1Value (const size_t index, const Glib::ustring & text)
 {
@@ -254,6 +259,7 @@ MFStringWidget::set1Value (const size_t index, const Glib::ustring & text)
 	set1Value (path, text);
 }
 
+inline
 void
 MFStringWidget::set1Value (const Gtk::TreePath & path, const Glib::ustring & text)
 {
@@ -272,6 +278,7 @@ MFStringWidget::set1Value (const Gtk::TreePath & path, const Glib::ustring & tex
 	on_string_changed ();
 }
 
+inline
 void
 MFStringWidget::append (const Glib::ustring & value)
 {
@@ -284,6 +291,14 @@ MFStringWidget::append (const Glib::ustring & value)
 	on_string_changed ();
 }
 
+inline
+void
+MFStringWidget::on_selection_changed ()
+{
+	removeButton .set_sensitive (not treeView .get_selection () -> get_selected_rows () .empty ());
+}
+
+inline
 void
 MFStringWidget::on_edited (const Glib::ustring & pathString, const Glib::ustring & text)
 {
@@ -355,12 +370,14 @@ MFStringWidget::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 	context -> drag_finish (false, false, time);
 }
 
+inline
 void
 MFStringWidget::on_add_clicked ()
 {
 	append (defaultValue);
 }
 
+inline
 void
 MFStringWidget::on_remove_clicked ()
 {
@@ -378,6 +395,7 @@ MFStringWidget::on_remove_clicked ()
 	on_string_changed ();
 }
 
+inline
 void
 MFStringWidget::on_string_changed ()
 {
@@ -421,6 +439,7 @@ MFStringWidget::set_buffer ()
 	string = pair .first;
 
 	listStore -> clear ();
+	treeView .get_selection () -> unselect_all ();
 
 	if (pair .second > -2)
 	{
@@ -431,7 +450,9 @@ MFStringWidget::set_buffer ()
 		}
 	}
 
-	treeView .set_sensitive (pair .second not_eq -2);
+	treeView     .set_sensitive (pair .second not_eq -2);
+	addButton    .set_sensitive (pair .second not_eq -2);
+	removeButton .set_sensitive (false);
 }
 
 inline
@@ -485,6 +506,7 @@ MFStringURLWidget::MFStringURLWidget (BrowserWindow* const browserWindow,
 	treeView .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
 }
 
+inline
 void
 MFStringURLWidget::on_add_clicked ()
 {
@@ -503,6 +525,7 @@ MFStringURLWidget::on_add_clicked ()
 	append (URL .str ());
 }
 
+inline
 bool
 MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 {

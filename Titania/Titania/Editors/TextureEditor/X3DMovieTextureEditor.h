@@ -56,6 +56,8 @@
 namespace titania {
 namespace puck {
 
+class MFStringURLWidget;
+
 class X3DMovieTextureEditor :
 	virtual public X3DTextureEditorInterface
 {
@@ -64,8 +66,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMovieTextureEditor ()
-	{ }
+	~X3DMovieTextureEditor ();
 
 
 protected:
@@ -88,7 +89,8 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::MovieTexture> movieTexture;
+	std::unique_ptr <MFStringURLWidget> url;
+	X3D::X3DPtr <X3D::MovieTexture>     movieTexture;
 
 };
 

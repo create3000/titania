@@ -1,5 +1,17 @@
 2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* InlineEditor.xml:
+	* TextureEditor.xml:
+	* InlineEditor.h:
+	* MFStringURLWidget.h:
+	* X3DImageTextureEditor.h:
+	* X3DMovieTextureEditor.h:
+	* X3DTextureNodeEditor.cpp:
+	* X3DImageTextureEditor.cpp:
+	* X3DMovieTextureEditor.cpp: 
+
+2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DEditorObject.h:
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:

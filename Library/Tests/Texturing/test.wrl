@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V0.7.3
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -26,7 +26,10 @@ DEF None Transform {
         diffuseColor 0.8 0 0
       }
       texture ImageTexture {
-        url "../images/image.png"
+        url [
+          "../images/image.png",
+          "file:///home/holger/Projekte/Titania/Library/Tests/images/image.png"
+        ]
       }
     }
     geometry IndexedFaceSet {
@@ -74,7 +77,10 @@ DEF TextureTransform Transform {
         backDiffuseColor 0.992187 0 1
       }
       texture ImageTexture {
-        url "../images/image.png"
+        url [
+          "file:///home/holger/Schreibtisch/SpaceInvaders.svg",
+          "../images/image.png"
+        ]
         textureProperties TextureProperties { }
       }
       textureTransform TextureTransform {
@@ -166,6 +172,7 @@ DEF Loriot_-_Ödipussi Transform {
       texture DEF Movie MovieTexture {
         description "Loriot - Ödipussi"
         url [
+          "../../Examples/Vattenfall/stage/film1.mpv",
           "../../../../../Videos/Kino/Loriot - Ödipussi.mpg",
           "file:///home/holger/Videos/Kino/Loriot - Ödipussi.mpg"
         ]

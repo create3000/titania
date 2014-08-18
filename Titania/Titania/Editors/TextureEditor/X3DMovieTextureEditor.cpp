@@ -50,23 +50,27 @@
 
 #include "X3DMovieTextureEditor.h"
 
+#include "../../ComposedWidgets/MFStringURLWidget.h"
+
 namespace titania {
 namespace puck {
 
 X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
+	                     url (new MFStringURLWidget (getBrowserWindow (),
+	                          getMovieTextureURLTreeView (),
+	                          getMovieTextureURLCellRendererText (),
+	                          getMovieTextureURLAddButton (),
+	                          getMovieTextureURLRemoveButton (),
+	                          getMovieTextureURLChooserColumn (),
+	                          "url")),
 	             movieTexture ()
 { }
 
 void
 X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	if (movieTexture)
-	{
-		//movieTexture -> url () .removeInterest (this, &X3DMovieTextureEditor::set_url);
-	}
-
 	movieTexture = value;
 
 	getMovieTextureBox () .set_visible (movieTexture);
@@ -78,9 +82,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		getExecutionContext () -> realize ();
 	}
 
-	//movieTexture -> url () .addInterest (this, &X3DMovieTextureEditor::set_url);
-
-	//set_url ();
+	url -> setNodes ({ movieTexture });
 }
 
 const X3D::X3DPtr <X3D::MovieTexture> &
@@ -99,6 +101,9 @@ X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	return movieTexture;
 }
+
+X3DMovieTextureEditor::~X3DMovieTextureEditor ()
+{ }
 
 } // puck
 } // titania

@@ -169,7 +169,8 @@ void
 X3DTextureNodeEditor::on_texture_changed ()
 {
 	getTextureNotebook () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0);
-	getTextureNotebook () .set_visible (false); // XXX
+	getTextureNotebook () .set_visible (getTextureComboBoxText () .get_active_row_number () > 0 and
+	                                    getTextureComboBoxText () .get_active_row_number () not_eq 2);
 
 	if (changing)
 		return;
@@ -200,7 +201,6 @@ X3DTextureNodeEditor::on_texture_changed ()
 		// INCONSISTENT and NONE
 		textureNode .addEvent ();
 		getTextureFormatLabel () .set_text ("");
-		getTextureNotebook ()    .set_visible (false);
 	}
 
 	// Set field.
