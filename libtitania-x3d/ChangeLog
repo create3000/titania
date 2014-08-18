@@ -1,3 +1,10 @@
+2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DUrlObject.cpp: 
+
 2014-08-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp: 

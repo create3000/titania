@@ -110,12 +110,20 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_executionContext ();
+
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
+	static
+	void
+	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> &, const double);
+
 	///  @name Members
 
+	X3D::X3DExecutionContextPtr            executionContext;
 	IndexType                              index;
 	std::set <X3D::X3DConstants::NodeType> types;
 	X3D::MFNode                            nodes;

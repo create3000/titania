@@ -112,7 +112,8 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	addType (X3DConstants::X3DExecutionContext);
 
-	addChildren (importedNodesOutput,
+	addChildren (namedNodesOutput,
+	             importedNodesOutput,
 	             prototypesOutput,
 	             externProtosOutput,
 	             uninitializedNodes);
@@ -292,6 +293,8 @@ throw (Error <IMPORTED_NODE>,
 		namedNode -> setup ();
 	else
 		addUninitializedNode (namedNode);
+
+	namedNodesOutput = getCurrentTime ();
 }
 
 void
@@ -318,6 +321,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	shutdown .dispose ();
 
 	namedNodes .erase (iter);
+
+	namedNodesOutput = getCurrentTime ();
 }
 
 SFNode
@@ -733,7 +738,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 
 	externProto -> url () = URLList;
-	externProto -> setup ();
+
+	if (isInitialized ())
+		externProto -> setup ();
+	else
+		addUninitializedNode (externProto);
 
 	return externProto;
 }

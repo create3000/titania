@@ -107,6 +107,9 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 	}
 }
 
+/***
+ *  Depreciated
+ */
 void
 X3DUrlObject::disableEvents ()
 {

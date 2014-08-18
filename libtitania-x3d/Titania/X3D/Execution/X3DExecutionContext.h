@@ -267,6 +267,12 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	const SFTime &
+	namedNodes_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return namedNodesOutput; }
+
 	///  @name Imported nodes handling
 
 	const ImportedNodePtr &
@@ -659,6 +665,7 @@ private:
 	UnitArray           units;
 
 	NamedNodeIndex     namedNodes;
+	SFTime             namedNodesOutput;
 	ImportedNodeIndex  importedNodes;
 	ImportedNamesIndex importedNames;
 	SFTime             importedNodesOutput;

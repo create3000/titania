@@ -219,8 +219,15 @@ BrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 
 	for (const auto & node : nodes)
 	{
+		getOutlineTreeView () -> expand_to (node);
+
 		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
-			getOutlineTreeView () -> expand_row (getOutlineTreeView () -> get_model () -> get_path (iter), false);
+		{
+			const auto path = getOutlineTreeView () -> get_model () -> get_path (iter);
+			
+			getOutlineTreeView () -> expand_row (path, false);
+			getOutlineTreeView () -> scroll_to_row (path);
+		}
 	}
 }
 
@@ -1784,12 +1791,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 	// Select and expand.
 
 	getBrowser () -> getSelection () -> setChildren (parents);
-
-	if (getConfig () .getBoolean ("followPrimarySelection"))
-	{
-		for (const auto parent : parents)
-			getOutlineTreeView () -> expand_to (parent);
-	}
+	expandNodes (parents);
 }
 
 void
@@ -1814,12 +1816,7 @@ BrowserWindow::on_select_children_button_clicked ()
 	}
 
 	getBrowser () -> getSelection () -> setChildren (children);
-
-	if (getConfig () .getBoolean ("followPrimarySelection"))
-	{
-		for (const auto child : children)
-			getOutlineTreeView () -> expand_to (child);
-	}
+	expandNodes (children);
 }
 
 X3D::MFNode

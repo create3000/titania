@@ -67,6 +67,7 @@ static constexpr int NAME      = 1;
 NodeIndex::NodeIndex (BrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ()),
+	     executionContext (),
 	                index (NAMED_NODES_INDEX),
 	                types ()
 {
@@ -78,7 +79,7 @@ NodeIndex::initialize ()
 {
 	X3DNodeIndexInterface::initialize ();
 
-	getExecutionContext () .addInterest (this, &NodeIndex::refresh);
+	getExecutionContext () .addInterest (this, &NodeIndex::set_executionContext);
 }
 
 void
@@ -118,6 +119,9 @@ void
 NodeIndex::setNodes (X3D::MFNode && value)
 {
 	nodes = std::move (value);
+
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&NodeIndex::set_adjustment), getTreeView () .get_hadjustment (), getTreeView () .get_hadjustment () -> get_value ()));
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&NodeIndex::set_adjustment), getTreeView () .get_vadjustment (), getTreeView () .get_vadjustment () -> get_value ()));
 
 	getListStore () -> clear ();
 
@@ -176,9 +180,30 @@ NodeIndex::getNodes ()
 }
 
 void
+NodeIndex::set_executionContext ()
+{
+	if (executionContext)
+		executionContext -> namedNodes_changed () .removeInterest (this, &NodeIndex::refresh);	
+
+	executionContext = getExecutionContext ();
+	executionContext -> namedNodes_changed () .addInterest (this, &NodeIndex::refresh);
+
+	refresh ();
+}
+
+void
 NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	getBrowser () -> getSelection () -> setChildren ({ nodes [path .front ()] });
+	const X3D::MFNode selection = { nodes [path .front ()] };
+
+	getBrowser () -> getSelection () -> setChildren (selection);
+	getBrowserWindow () -> expandNodes (selection);
+}
+
+void
+NodeIndex::set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+{
+	adjustment -> set_value (value);
 }
 
 NodeIndex::~NodeIndex ()

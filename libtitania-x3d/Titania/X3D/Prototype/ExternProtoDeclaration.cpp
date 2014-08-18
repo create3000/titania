@@ -159,14 +159,6 @@ ExternProtoDeclaration::initialize ()
 
 	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
-
-	for (const auto & field : getFieldDefinitions ())
-		field -> isTainted (true);
-
-	disableEvents ();
-
-	scene .isTainted (true);
-	prototype .isTainted (true);
 }
 
 void
