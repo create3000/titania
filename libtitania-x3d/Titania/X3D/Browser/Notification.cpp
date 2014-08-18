@@ -95,7 +95,7 @@ Notification::initialize ()
 void
 Notification::set_string ()
 {
-	//string () .removeInterest (this, &Notification::set_string);
+	string () .removeInterest (this, &Notification::set_string);
 
 	if (not world)
 	{

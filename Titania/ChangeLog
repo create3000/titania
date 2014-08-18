@@ -1,5 +1,11 @@
 2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextEditor.xml:
+	* InlineEditor.xml:
+	* TextureEditor.xml: 
+
+2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DInlineEditorInterface.h:
 	* X3DTextureEditorInterface.h:
 	* X3DInlineEditorInterface.cpp:

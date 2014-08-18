@@ -5,6 +5,11 @@
 
 2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Notification.cpp:
+	* Notification.x3dv: 
+
+2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DExecutionContext.h:
 	* X3DExecutionContext.cpp:
 	* ExternProtoDeclaration.cpp:
