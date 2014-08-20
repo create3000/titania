@@ -89,6 +89,9 @@ private:
 
 	///  @name CDATA field
 
+	void
+	set_name ();
+
 	virtual
 	void
 	on_edit_cdata_clicked () final override;

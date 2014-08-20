@@ -1,4 +1,4 @@
-#X3D V3.0 utf8
+#VRML V2.0 utf8 Titania V0.7.3
 
 META "title" "ComposedShader"
 
@@ -7,15 +7,17 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders [
-      
-      ComposedShader {
-        field SFFloat isValid 0
-        initializeOnly MFColorRGBA color [ 1 1 0 1, 1 0 0 1 ]
+        DEF NotValid ComposedShader {
+          field SFFloat     isValid 0
+          field MFColorRGBA color [
+            1 1 0 1,
+            1 0 0 1
+          ]
 
-        language "GLSL"
-        parts ShaderPart {
-          type "FRAGMENT"
-          url "data:text/plain,
+          language "GLSL"
+          parts ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
 #version 120
 
 AN PARSER ERROR IS GENERATED HERE AND SECOND SHADER IS SELECTED
@@ -27,16 +29,18 @@ void main (void)
    gl_FragColor = color [0];  
 }
 "
+          }
         }
-      }
-     
-      ComposedShader {
-        initializeOnly MFColorRGBA color [ 1 1 0 1, 1 0 0 1 ]
+        DEF Valid ComposedShader {
+          field MFColorRGBA color [
+            1 1 0 1,
+            1 0 0 1
+          ]
 
-        language "GLSL"
-        parts ShaderPart {
-          type "FRAGMENT"
-          url "data:text/plain,
+          language "GLSL"
+          parts ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
 #version 120
 
 uniform vec4 color [2];
@@ -46,8 +50,8 @@ void main (void)
    gl_FragColor = color [1];  
 }
 "
+          }
         }
-      }
       ]
     }
     geometry Sphere { }
@@ -59,7 +63,7 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders ComposedShader {
-        inputOutput SFNode myTexture ImageTexture {
+        exposedField SFNode myTexture ImageTexture {
           url "../images/image.png"
         }
 

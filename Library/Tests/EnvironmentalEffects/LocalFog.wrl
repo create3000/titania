@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.3
 
 Background {
   skyColor 1 1 1
@@ -11,14 +11,14 @@ Fog {
 
 Viewpoint { }
 
-Transform {
+DEF LeftWithLocalFog Transform {
   translation -3 0 0
   children [
     LocalFog {
       visibilityRange 30
     }
     Transform {
-      children DEF S Shape {
+      children DEF S_1 Shape {
         appearance Appearance {
           material Material {
             diffuseColor 1 0 0
@@ -29,48 +29,48 @@ Transform {
     }
     Transform {
       translation 0 0 -3
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -6
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -9
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -12
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -15
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -18
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -21
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -24
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -27
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -30
-      children USE S
+      children USE S_1
     }
   ]
 }
 
-Transform {
+DEF RightWithLocalFog Transform {
   translation 3 0 0
   children [
     LocalFog {
@@ -78,7 +78,7 @@ Transform {
       visibilityRange 30
     }
     Transform {
-      children DEF S Shape {
+      children DEF S_2 Shape {
         appearance Appearance {
           material Material {
             diffuseColor 1 0 0
@@ -89,48 +89,48 @@ Transform {
     }
     Transform {
       translation 0 0 -3
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -6
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -9
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -12
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -15
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -18
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -21
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -24
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -27
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -30
-      children USE S
+      children USE S_2
     }
   ]
 }
 
-Transform {
+DEF Top Transform {
   translation 0 3 0
   children [
     Transform {

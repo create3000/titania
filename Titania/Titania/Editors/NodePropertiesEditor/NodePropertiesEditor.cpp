@@ -103,11 +103,16 @@ NodePropertiesEditor::initialize ()
 void
 NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
+	if (node)
+		node -> name_changed () .removeInterest (this, &NodePropertiesEditor::set_name);
+
 	node = selection .empty () ? nullptr : selection .back ();
 
 	if (node)
 	{
-		getHeaderLabel ()         .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
+		node -> name_changed () .addInterest (this, &NodePropertiesEditor::set_name);
+
+		set_name ();
 		getTypeNameEntry ()       .set_text (node -> getTypeName ());
 		getComponentEntry ()      .set_text (node -> getComponentName ());
 		getContainerFieldEntry () .set_text (node -> getContainerField ());
@@ -129,6 +134,12 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DUserDefinedFieldsEditor::setNode (node);
 	X3DImportedNodesEditor::setNode (node);
 	X3DExportedNodesEditor::setNode (node);
+}
+
+void
+NodePropertiesEditor::set_name ()
+{
+	getHeaderLabel () .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
 }
 
 void

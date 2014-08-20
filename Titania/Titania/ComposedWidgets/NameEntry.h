@@ -92,6 +92,9 @@ private:
 
 	void
 	on_delete_text (int, int);
+	
+	bool
+	on_key_press_event (GdkEventKey*);
 
 	void
 	on_clicked ();
@@ -121,9 +124,10 @@ NameEntry::NameEntry (BrowserWindow* const browserWindow,
 	          button (button),
 	            node ()
 {
-	entry  .signal_insert_text () .connect (sigc::mem_fun (*this, &NameEntry::on_insert_text), false);
-	entry  .signal_delete_text () .connect (sigc::mem_fun (*this, &NameEntry::on_delete_text), false);
-	button .signal_clicked ()     .connect (sigc::mem_fun (*this, &NameEntry::on_clicked));
+	entry  .signal_insert_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_insert_text), false);
+	entry  .signal_delete_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_delete_text), false);
+	entry  .signal_key_press_event () .connect (sigc::mem_fun (*this, &NameEntry::on_key_press_event), false);
+	button .signal_clicked ()         .connect (sigc::mem_fun (*this, &NameEntry::on_clicked));
 
 	entry  .set_sensitive (false);
 	button .set_sensitive (false);
@@ -164,6 +168,19 @@ void
 NameEntry::on_delete_text (int start_pos, int end_pos)
 {
 	validateIdOnDelete (entry, start_pos, end_pos);
+}
+
+inline
+bool
+NameEntry::on_key_press_event (GdkEventKey* event)
+{
+	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
+	{
+		on_clicked ();
+		return true;
+	}
+
+	return false;
 }
 
 inline

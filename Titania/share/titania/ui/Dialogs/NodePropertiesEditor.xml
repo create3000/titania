@@ -617,7 +617,7 @@
               <object class="GtkImage" id="image4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">gtk-properties</property>
+                <property name="stock">gtk-edit</property>
                 <property name="icon_size">6</property>
               </object>
               <packing>
@@ -962,7 +962,7 @@
                                     <child>
                                       <object class="GtkTreeViewColumn" id="treeviewcolumn3">
                                         <property name="sizing">autosize</property>
-                                        <property name="title" translatable="yes">Access type</property>
+                                        <property name="title" translatable="yes">Access Type</property>
                                         <child>
                                           <object class="GtkCellRendererPixbuf" id="CellRendererAccessType">
                                             <property name="xpad">4</property>

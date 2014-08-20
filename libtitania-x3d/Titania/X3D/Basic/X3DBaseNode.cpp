@@ -632,6 +632,8 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_FIELD>,
        Error <DISPOSED>)
 {
+	// Unfortunately this has to be done field by field as long as derived classes do not override this function.
+
 	for (const auto & field : getUserDefinedFields ())
 		removeUserDefinedField (field -> getName ());
 
