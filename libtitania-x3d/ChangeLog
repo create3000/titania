@@ -1,3 +1,11 @@
+2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Linetypes.h:
+	* BoundingBox.x3dv:
+	* TransformTool.x3dv:
+	* EnvironmentalSensor.x3dv:
+	* LineProperties.cpp: 
+
 2014-08-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp: 

@@ -23,6 +23,10 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
 	Titania/Dialogs/NodeIndex/NodeIndex.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
+	Titania/Editors/AppearanceEditor/AppearanceEditor.cpp \
+	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
+	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
+	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/InlineEditor/InlineEditor.cpp \
 	Titania/Editors/LightEditor/LightEditor.cpp \
@@ -31,7 +35,6 @@ titania_SOURCES =  \
 	Titania/Editors/LightEditor/X3DSpotLightEditor.cpp \
 	Titania/Editors/LODEditor/LODEditor.cpp \
 	Titania/Editors/LODEditor/X3DLODEditor.cpp \
-	Titania/Editors/MaterialEditor/MaterialEditor.cpp \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DExportedNodesEditor.cpp \
@@ -58,6 +61,7 @@ titania_SOURCES =  \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
 	Titania/Undo/UndoStep.cpp \
+	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DFileImportDialogInterface.cpp \
@@ -70,7 +74,6 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLODEditorInterface.cpp \
-	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodeIndexInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \

@@ -186,8 +186,6 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightDirectionYSpinButton -> set_name ("SpotLightDirectionYSpinButton");
 	m_builder -> get_widget ("SpotLightDirectionZSpinButton", m_SpotLightDirectionZSpinButton);
 	m_SpotLightDirectionZSpinButton -> set_name ("SpotLightDirectionZSpinButton");
-
-	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.

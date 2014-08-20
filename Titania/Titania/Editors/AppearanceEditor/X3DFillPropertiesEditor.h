@@ -48,66 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_LINETYPES_H__
-#define __TITANIA_X3D_BITS_LINETYPES_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DFILL_PROPERTIES_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DFILL_PROPERTIES_EDITOR_H__
 
-#include "../Rendering/OpenGL.h"
-
-#include <Titania/Math/Utility/strtol.h>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-enum class LineType :
-	uint8_t
+class X3DFillPropertiesEditor :
+	virtual public X3DAppearanceEditorInterface
 {
-	NONE,
-	SOLID,
-	DASHED,
-	DOTTED,
-	DASHED_DOTTED,
-	DASH_DOT_DOT,
+public:
 
-	SINGLE_ARROW,
-	SINGLE_DOT,
-	DOUBLE_ARROW,
+	///  @name Destruction
 
-	STITCH_LINE,
-	CHAIN_LINE,
-	CENTER_LINE,
-	HIDDEN_LINE,
-	PHANTOM_LINE,
+	virtual
+	~X3DFillPropertiesEditor ();
 
-	BREAK_LINE_1,
-	BREAK_LINE_2
+
+protected:
+
+	///  @name Construction
+
+	X3DFillPropertiesEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_selection ();
+	
+	///  @name Event handlers
+
+	virtual
+	void
+	on_fillProperties_unlink_clicked () final override;
+
+	virtual
+	void
+	on_fillProperties_toggled () final override;
+
+	void
+	set_fillProperties ();
+
+	void
+	set_node ();
+
+	void
+	connectFillProperties (const X3D::SFNode &);
+
+	///  @name Members
+
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::X3DPtr <X3D::FillProperties>  fillProperties;
+	X3D::SFTime                        fillPropertiesBuffer;
+	UndoStepPtr                        undoStep;
+	bool                               changing;
+
+	X3DFieldToggleButton <X3D::SFBool> filled;
+	X3DFieldToggleButton <X3D::SFBool> hatched;
+	X3DFieldAdjustment <X3D::SFInt32>  hatchStyle;
+	SFColorButton                      hatchColor;
 
 };
 
-static const std::vector <GLushort> linetypes = {
-	math::strtol ("0000000000000000", 2), // 0 None
-	math::strtol ("1111111111111111", 2), // 1 Solid
-	math::strtol ("1111111110000000", 2), // 2 Dashed
-	math::strtol ("1100110011001100", 2), // 3 Dotted
-	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
-	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
-
-	math::strtol ("1111111111111111", 2), // 6 (single arrow)
-	math::strtol ("1111111111111111", 2), // 7 (single dot)
-	math::strtol ("1111111111111111", 2), // 8 (double arrow)
-
-	math::strtol ("1111111100000000", 2), // 9 (stitch line)
-	math::strtol ("1111111000111000", 2), // 10 (chain line)
-	math::strtol ("1111111110011100", 2), // 11 (center line)
-	math::strtol ("1111111111100000", 2), // 12 (hidden line)
-	math::strtol ("1111111011101110", 2), // 13 (phantom line)
-
-	math::strtol ("1111111111111111", 2), // 14 (break line - style 1)
-	math::strtol ("1111111111111111", 2), // 15 (break line - style 2)
-	math::strtol ("1111111111111111", 2)  // 16 User - specified dash pattern
-
-};
-
-} // X3D
+} // puck
 } // titania
 
 #endif

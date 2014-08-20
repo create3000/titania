@@ -61,7 +61,7 @@
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LightEditor/LightEditor.h"
-#include "../Editors/MaterialEditor/MaterialEditor.h"
+#include "../Editors/AppearanceEditor/AppearanceEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../Editors/LODEditor/LODEditor.h"
@@ -88,7 +88,7 @@ public:
 		            std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
 		            std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
 		            std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
-		            std::make_pair ("MaterialEditor",           constructDialog <MaterialEditor>),
+		            std::make_pair ("AppearanceEditor",         constructDialog <AppearanceEditor>),
 		            std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
 		            std::make_pair ("TextEditor",               constructDialog <TextEditor>),
 		            std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),

@@ -48,66 +48,131 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_LINETYPES_H__
-#define __TITANIA_X3D_BITS_LINETYPES_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_EDITOR_H__
 
-#include "../Rendering/OpenGL.h"
-
-#include <Titania/Math/Utility/strtol.h>
+#include "../../ComposedWidgets.h"
+#include "../../Undo/UndoStep.h"
+#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-enum class LineType :
-	uint8_t
+class BrowserWindow;
+
+class X3DMaterialEditor :
+	virtual public X3DAppearanceEditorInterface
 {
-	NONE,
-	SOLID,
-	DASHED,
-	DOTTED,
-	DASHED_DOTTED,
-	DASH_DOT_DOT,
+public:
 
-	SINGLE_ARROW,
-	SINGLE_DOT,
-	DOUBLE_ARROW,
+	///  @name Destruction
 
-	STITCH_LINE,
-	CHAIN_LINE,
-	CENTER_LINE,
-	HIDDEN_LINE,
-	PHANTOM_LINE,
+	virtual
+	~X3DMaterialEditor ();
 
-	BREAK_LINE_1,
-	BREAK_LINE_2
+
+protected:
+
+	///  @name Construction
+
+	X3DMaterialEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_initialized ();
+
+	void
+	set_selection ();
+
+	///  @name Copy & Paste
+
+	virtual
+	void
+	on_copy () final override;
+
+	virtual
+	void
+	on_paste () final override;
+
+	///  @name preview
+
+	void
+	set_preview ();
+
+	virtual
+	void
+	on_sphere_clicked () final override;
+
+	virtual
+	void
+	on_model_clicked () final override;
+
+	void
+	set_whichChoice (const int32_t);
+
+	///  @name material
+
+	virtual
+	void
+	on_material_unlink_clicked () final override;
+
+	virtual
+	void
+	on_material_changed () final override;
+
+	void
+	set_material ();
+
+	void
+	set_node ();
+
+	void
+	set_widgets ();
+
+	void
+	connectMaterial (const X3D::SFNode &);
+
+	///  @name Members
+
+	X3D::BrowserPtr                    preview;
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
+	X3D::SFTime                        materialNodeBuffer;
+	X3D::MaterialPtr                   material;
+	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
+	bool                               isTwoSidedMaterial;
+	UndoStepPtr                        undoStep;
+	bool                               changing;
+
+	SFColorButton diffuseColor;
+	SFColorButton specularColor;
+	SFColorButton emissiveColor;
+
+	X3DFieldAdjustment <X3D::SFFloat> ambientIntensity;
+	X3DFieldAdjustment <X3D::SFFloat> shininess;
+	X3DFieldAdjustment <X3D::SFFloat> transparency;
+
+	X3DFieldToggleButton <X3D::SFBool> separateBackColor;
+
+	SFColorButton backDiffuseColor;
+	SFColorButton backSpecularColor;
+	SFColorButton backEmissiveColor;
+
+	X3DFieldAdjustment <X3D::SFFloat> backAmbientIntensity;
+	X3DFieldAdjustment <X3D::SFFloat> backShininess;
+	X3DFieldAdjustment <X3D::SFFloat> backTransparency;
 
 };
 
-static const std::vector <GLushort> linetypes = {
-	math::strtol ("0000000000000000", 2), // 0 None
-	math::strtol ("1111111111111111", 2), // 1 Solid
-	math::strtol ("1111111110000000", 2), // 2 Dashed
-	math::strtol ("1100110011001100", 2), // 3 Dotted
-	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
-	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
-
-	math::strtol ("1111111111111111", 2), // 6 (single arrow)
-	math::strtol ("1111111111111111", 2), // 7 (single dot)
-	math::strtol ("1111111111111111", 2), // 8 (double arrow)
-
-	math::strtol ("1111111100000000", 2), // 9 (stitch line)
-	math::strtol ("1111111000111000", 2), // 10 (chain line)
-	math::strtol ("1111111110011100", 2), // 11 (center line)
-	math::strtol ("1111111111100000", 2), // 12 (hidden line)
-	math::strtol ("1111111011101110", 2), // 13 (phantom line)
-
-	math::strtol ("1111111111111111", 2), // 14 (break line - style 1)
-	math::strtol ("1111111111111111", 2), // 15 (break line - style 2)
-	math::strtol ("1111111111111111", 2)  // 16 User - specified dash pattern
-
-};
-
-} // X3D
+} // puck
 } // titania
 
 #endif

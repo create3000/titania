@@ -40,7 +40,7 @@ PROTO EnvironmentalSensor [
             Group { }
             DEF Lines Shape {
               appearance Appearance {
-                lineProperties DEF LineProperties LineProperties { }
+                lineProperties DEF LineProperties LineProperties { linewidthScaleFactor 1 }
                 material Material {
                   emissiveColor 1 1 1
                   transparency 0.2

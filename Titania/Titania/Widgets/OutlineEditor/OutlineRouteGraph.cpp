@@ -196,30 +196,14 @@ OutlineRouteGraph::forward_connections (const Gtk::TreeModel::iterator & parent,
 void
 OutlineRouteGraph::add_routes_for_path (const Gtk::TreeModel::Path & path)
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&OutlineRouteGraph::add_routes_for_path_impl), this, path));
-
-//	const auto iter = treeView -> get_model () -> get_iter (path);
-//	const auto data = treeView -> get_model () -> get_data (iter);
-//
-//	if (data -> get_type () == OutlineIterType::X3DField)
-//	{
-//		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
-//
-//		add_routes (path, data, field);
-//	}
-}
-
-void
-OutlineRouteGraph::add_routes_for_path_impl (OutlineRouteGraph* const self, const Gtk::TreeModel::Path & path)
-{
-	const auto iter = self -> treeView -> get_model () -> get_iter (path);
-	const auto data = self -> treeView -> get_model () -> get_data (iter);
+	const auto iter = treeView -> get_model () -> get_iter (path);
+	const auto data = treeView -> get_model () -> get_data (iter);
 
 	if (data -> get_type () == OutlineIterType::X3DField)
 	{
 		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
-		self -> add_routes (path, data, field);
+		add_routes (path, data, field);
 	}
 }
 

@@ -80,7 +80,7 @@ PROTO TransformTool [
         children [
           DEF BoundingBox Shape {
             appearance Appearance {
-              lineProperties DEF LineProperties LineProperties { }
+              lineProperties DEF LineProperties LineProperties { linewidthScaleFactor 1 }
               material Material {
                 emissiveColor 0.35 1 0.7
               }
@@ -520,6 +520,7 @@ PROTO TransformTool [
         appearance Appearance {
           lineProperties LineProperties {
             linetype 3
+            linewidthScaleFactor 1
           }
           material DEF Yellow Material {
             diffuseColor 1 1 0

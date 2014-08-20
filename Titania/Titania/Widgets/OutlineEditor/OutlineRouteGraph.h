@@ -97,10 +97,6 @@ private:
 
 	void
 	add_routes_for_path (const Gtk::TreeModel::Path &);
-	
-	static
-	void
-	add_routes_for_path_impl (OutlineRouteGraph* const, const Gtk::TreeModel::Path &);
 
 	void
 	add_routes (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::X3DFieldDefinition* const);

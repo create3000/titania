@@ -510,7 +510,7 @@ private:
 
 	virtual
 	void
-	on_material_editor_clicked () final override;
+	on_appearance_editor_clicked () final override;
 
 	virtual
 	void

@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_MATERIAL_EDITOR_H__
-#define __TMP_GLAD2CPP_MATERIAL_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_APPEARANCE_EDITOR_H__
+#define __TMP_GLAD2CPP_APPEARANCE_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DMaterialEditorInterface :
+class X3DAppearanceEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DMaterialEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DAppearanceEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -132,6 +132,22 @@ public:
 	{ return m_EmissiveColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getFillPropertiesHatchColorAdjustment () const
+	{ return m_FillPropertiesHatchColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFillPropertiesHatchStyleAdjustment () const
+	{ return m_FillPropertiesHatchStyleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLinePropertiesLinetypeAdjustment () const
+	{ return m_LinePropertiesLinetypeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLinePropertiesLinewidthScaleFactorAdjustment () const
+	{ return m_LinePropertiesLinewidthScaleFactorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getShininessAdjustment () const
 	{ return m_ShininessAdjustment; }
 
@@ -174,6 +190,10 @@ public:
 	Gtk::Button &
 	getModelButton () const
 	{ return *m_ModelButton; }
+
+	Gtk::Notebook &
+	getAppearanceChildNotebook () const
+	{ return *m_AppearanceChildNotebook; }
 
 	Gtk::Box &
 	getMaterialBox () const
@@ -303,6 +323,78 @@ public:
 	getBackEmissiveColorButton () const
 	{ return *m_BackEmissiveColorButton; }
 
+	Gtk::Expander &
+	getFillPropertiesExpander () const
+	{ return *m_FillPropertiesExpander; }
+
+	Gtk::Box &
+	getFillPropertiesMainBox () const
+	{ return *m_FillPropertiesMainBox; }
+
+	Gtk::CheckButton &
+	getFillPropertiesCheckButton () const
+	{ return *m_FillPropertiesCheckButton; }
+
+	Gtk::Button &
+	getFillPropertiesUnlinkButton () const
+	{ return *m_FillPropertiesUnlinkButton; }
+
+	Gtk::Grid &
+	getFillPropertiesBox () const
+	{ return *m_FillPropertiesBox; }
+
+	Gtk::CheckButton &
+	getFillPropertiesFilledCheckButton () const
+	{ return *m_FillPropertiesFilledCheckButton; }
+
+	Gtk::CheckButton &
+	getFillPropertiesHatchedCheckButton () const
+	{ return *m_FillPropertiesHatchedCheckButton; }
+
+	Gtk::Box &
+	getFillPropertiesHatchColorBox () const
+	{ return *m_FillPropertiesHatchColorBox; }
+
+	Gtk::Button &
+	getFillPropertiesHatchColorButton () const
+	{ return *m_FillPropertiesHatchColorButton; }
+
+	Gtk::SpinButton &
+	getFillPropertiesHatchStyleSpinButton () const
+	{ return *m_FillPropertiesHatchStyleSpinButton; }
+
+	Gtk::Expander &
+	getLinePropertiesExpander () const
+	{ return *m_LinePropertiesExpander; }
+
+	Gtk::Box &
+	getLinePropertiesMainBox () const
+	{ return *m_LinePropertiesMainBox; }
+
+	Gtk::CheckButton &
+	getLinePropertiesCheckButton () const
+	{ return *m_LinePropertiesCheckButton; }
+
+	Gtk::Button &
+	getLinePropertiesUnlinkButton () const
+	{ return *m_LinePropertiesUnlinkButton; }
+
+	Gtk::Grid &
+	getLinePropertiesBox () const
+	{ return *m_LinePropertiesBox; }
+
+	Gtk::CheckButton &
+	getLinePropertiesFilledCheckButton () const
+	{ return *m_LinePropertiesFilledCheckButton; }
+
+	Gtk::SpinButton &
+	getLinePropertiesLinetypeSpinButton () const
+	{ return *m_LinePropertiesLinetypeSpinButton; }
+
+	Gtk::SpinButton &
+	getLinePropertiesLinewidthScaleFactorSpinButton () const
+	{ return *m_LinePropertiesLinewidthScaleFactorSpinButton; }
+
 	virtual
 	void
 	on_copy () = 0;
@@ -328,7 +420,23 @@ public:
 	on_material_unlink_clicked () = 0;
 
 	virtual
-	~X3DMaterialEditorInterface ();
+	void
+	on_fillProperties_toggled () = 0;
+
+	virtual
+	void
+	on_fillProperties_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_lineProperties_toggled () = 0;
+
+	virtual
+	void
+	on_lineProperties_unlink_clicked () = 0;
+
+	virtual
+	~X3DAppearanceEditorInterface ();
 
 
 private:
@@ -349,6 +457,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BackTransparencyAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_DiffuseColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EmissiveColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchStyleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LinePropertiesLinetypeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LinePropertiesLinewidthScaleFactorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShininessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpecularColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
@@ -360,6 +472,7 @@ private:
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::Button*                   m_SphereButton;
 	Gtk::Button*                   m_ModelButton;
+	Gtk::Notebook*                 m_AppearanceChildNotebook;
 	Gtk::Box*                      m_MaterialBox;
 	Gtk::ComboBoxText*             m_MaterialComboBoxText;
 	Gtk::Button*                   m_MaterialUnlinkButton;
@@ -392,6 +505,24 @@ private:
 	Gtk::Button*                   m_BackSpecularColorButton;
 	Gtk::Box*                      m_BackEmissiveColorBox;
 	Gtk::Button*                   m_BackEmissiveColorButton;
+	Gtk::Expander*                 m_FillPropertiesExpander;
+	Gtk::Box*                      m_FillPropertiesMainBox;
+	Gtk::CheckButton*              m_FillPropertiesCheckButton;
+	Gtk::Button*                   m_FillPropertiesUnlinkButton;
+	Gtk::Grid*                     m_FillPropertiesBox;
+	Gtk::CheckButton*              m_FillPropertiesFilledCheckButton;
+	Gtk::CheckButton*              m_FillPropertiesHatchedCheckButton;
+	Gtk::Box*                      m_FillPropertiesHatchColorBox;
+	Gtk::Button*                   m_FillPropertiesHatchColorButton;
+	Gtk::SpinButton*               m_FillPropertiesHatchStyleSpinButton;
+	Gtk::Expander*                 m_LinePropertiesExpander;
+	Gtk::Box*                      m_LinePropertiesMainBox;
+	Gtk::CheckButton*              m_LinePropertiesCheckButton;
+	Gtk::Button*                   m_LinePropertiesUnlinkButton;
+	Gtk::Grid*                     m_LinePropertiesBox;
+	Gtk::CheckButton*              m_LinePropertiesFilledCheckButton;
+	Gtk::SpinButton*               m_LinePropertiesLinetypeSpinButton;
+	Gtk::SpinButton*               m_LinePropertiesLinewidthScaleFactorSpinButton;
 
 };
 

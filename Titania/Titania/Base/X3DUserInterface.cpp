@@ -63,7 +63,7 @@ const std::unique_ptr <DialogFactory> X3DUserInterface::dialogFactory (new Dialo
 // Only add presentable dialogs here.
 const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"NodePropertiesEditor",
-	"MaterialEditor",
+	"AppearanceEditor",
 	"TextureEditor",
 	"TextEditor",
 	"GeometryPropertiesEditor",

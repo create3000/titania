@@ -510,12 +510,14 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
 	if (iter == userDefinedFields .end ())
 		return;
 
+	// Remove user data from old field.
+
+   oldField -> setUserData (nullptr);
+
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
    // functions we will execute later.
    
 	std::deque <std::function <void ()>>  addRoutes;
-
-   newField -> setUserData (oldField -> getUserData ());
 
    if (newField -> getType () == oldField -> getType ())
    {
@@ -608,6 +610,10 @@ X3DUserDefinedFieldsEditor::removeUserDefinedField (const X3D::SFNode & node, X3
 
 	undoStep -> addObjects (X3D::FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), X3D::FieldPtr (field));
 
+	// Remove user data from old field.
+
+   field -> setUserData (nullptr);
+
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
    
    removeRoutes (field, undoStep);
@@ -623,6 +629,8 @@ X3DUserDefinedFieldsEditor::setUserDefinedFields (const X3D::SFNode & node, cons
 {
 	// This function does not remove any routes, but:
 	// create two sets, do set_difference, and remove with undo the difference.
+
+	// Remove from difference the user data.
 
 	undoStep -> addUndoFunction (&X3D::X3DBaseNode::setUserDefinedFields, node, node -> getUserDefinedFields ());
 	undoStep -> addRedoFunction (&X3D::X3DBaseNode::setUserDefinedFields, node, userDefinedFields);

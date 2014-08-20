@@ -1408,16 +1408,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="MaterialEditorButton">
+                  <object class="GtkToolButton" id="AppearanceEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">Open Material Editor.</property>
-                    <property name="tooltip_text" translatable="yes">Open Material Editor.</property>
-                    <property name="label" translatable="yes">Material Editor</property>
+                    <property name="tooltip_text" translatable="yes">Open Appearance Editor.</property>
+                    <property name="label" translatable="yes">Appearance Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-select-color</property>
-                    <signal name="clicked" handler="on_material_editor_clicked" swapped="no"/>
+                    <signal name="clicked" handler="on_appearance_editor_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

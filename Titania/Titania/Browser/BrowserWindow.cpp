@@ -1589,9 +1589,9 @@ BrowserWindow::on_node_properties_editor_clicked ()
 }
 
 void
-BrowserWindow::on_material_editor_clicked ()
+BrowserWindow::on_appearance_editor_clicked ()
 {
-	addDialog ("MaterialEditor");
+	addDialog ("AppearanceEditor");
 }
 
 void

@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "MaterialEditor.h"
+#include "X3DMaterialEditor.h"
 
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -56,34 +56,33 @@
 namespace titania {
 namespace puck {
 
-MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.xml"), gconf_dir ()),
-	                   preview (X3D::createBrowser (browserWindow -> getBrowser ())),
-	               appearances (),
-	              materialNode (),
-	        materialNodeBuffer (),
-	                  material (),
-	          twoSidedMaterial (),
-	        isTwoSidedMaterial (false),
-	                  undoStep (),
-	                  changing (false),
-	              diffuseColor (getBrowserWindow (), getDiffuseColorButton (), getDiffuseColorAdjustment (), getDiffuseColorBox (), "diffuseColor"),
-	             specularColor (getBrowserWindow (), getSpecularColorButton (), getSpecularColorAdjustment (), getSpecularColorBox (), "specularColor"),
-	             emissiveColor (getBrowserWindow (), getEmissiveColorButton (), getEmissiveColorAdjustment (), getEmissiveColorBox (), "emissiveColor"),
-	          ambientIntensity (getBrowserWindow (), getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity"),
-	                 shininess (getBrowserWindow (), getShininessAdjustment (), getShininessBox (), "shininess"),
-	              transparency (getBrowserWindow (), getTransparencyAdjustment (), getTransparencyBox (), "transparency"),
-	         separateBackColor (getBrowserWindow (), getSeparateBackColorCheckButton (),  "separateBackColor"),
-	          backDiffuseColor (getBrowserWindow (), getBackDiffuseColorButton (), getBackDiffuseColorAdjustment (), getBackDiffuseColorBox (), "backDiffuseColor"),
-	         backSpecularColor (getBrowserWindow (), getBackSpecularColorButton (), getBackSpecularColorAdjustment (), getBackSpecularColorBox (), "backSpecularColor"),
-	         backEmissiveColor (getBrowserWindow (), getBackEmissiveColorButton (), getBackEmissiveColorAdjustment (), getBackEmissiveColorBox (), "backEmissiveColor"),
-	      backAmbientIntensity (getBrowserWindow (), getBackAmbientIntensityAdjustment (), getBackAmbientIntensityBox (), "backAmbientIntensity"),
-	             backShininess (getBrowserWindow (), getBackShininessAdjustment (), getBackShininessBox (), "backShininess"),
-	          backTransparency (getBrowserWindow (), getBackTransparencyAdjustment (), getBackTransparencyBox (), "backTransparency")
+X3DMaterialEditor::X3DMaterialEditor () :
+	X3DAppearanceEditorInterface ("", ""),
+	                     preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                 appearances (),
+	                materialNode (),
+	          materialNodeBuffer (),
+	                    material (),
+	            twoSidedMaterial (),
+	          isTwoSidedMaterial (false),
+	                    undoStep (),
+	                    changing (false),
+	                diffuseColor (getBrowserWindow (), getDiffuseColorButton (), getDiffuseColorAdjustment (), getDiffuseColorBox (), "diffuseColor"),
+	               specularColor (getBrowserWindow (), getSpecularColorButton (), getSpecularColorAdjustment (), getSpecularColorBox (), "specularColor"),
+	               emissiveColor (getBrowserWindow (), getEmissiveColorButton (), getEmissiveColorAdjustment (), getEmissiveColorBox (), "emissiveColor"),
+	            ambientIntensity (getBrowserWindow (), getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity"),
+	                   shininess (getBrowserWindow (), getShininessAdjustment (), getShininessBox (), "shininess"),
+	                transparency (getBrowserWindow (), getTransparencyAdjustment (), getTransparencyBox (), "transparency"),
+	           separateBackColor (getBrowserWindow (), getSeparateBackColorCheckButton (),  "separateBackColor"),
+	            backDiffuseColor (getBrowserWindow (), getBackDiffuseColorButton (), getBackDiffuseColorAdjustment (), getBackDiffuseColorBox (), "backDiffuseColor"),
+	           backSpecularColor (getBrowserWindow (), getBackSpecularColorButton (), getBackSpecularColorAdjustment (), getBackSpecularColorBox (), "backSpecularColor"),
+	           backEmissiveColor (getBrowserWindow (), getBackEmissiveColorButton (), getBackEmissiveColorAdjustment (), getBackEmissiveColorBox (), "backEmissiveColor"),
+	        backAmbientIntensity (getBrowserWindow (), getBackAmbientIntensityAdjustment (), getBackAmbientIntensityBox (), "backAmbientIntensity"),
+	               backShininess (getBrowserWindow (), getBackShininessAdjustment (), getBackShininessBox (), "backShininess"),
+	            backTransparency (getBrowserWindow (), getBackTransparencyAdjustment (), getBackTransparencyBox (), "backTransparency")
 {
 	addChildren (materialNodeBuffer);
-	materialNodeBuffer .addInterest (this, &MaterialEditor::set_node);
+	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
 
 	preview -> set_antialiasing (4);
 
@@ -91,24 +90,22 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow) :
 }
 
 void
-MaterialEditor::initialize ()
+X3DMaterialEditor::initialize ()
 {
-	X3DMaterialEditorInterface::initialize ();
-
 	getPreviewBox () .pack_start (*preview, true, true, 0);
 
 	preview -> show ();
-	preview -> initialized () .addInterest (this, &MaterialEditor::set_initialized);
+	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_initialized);
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &MaterialEditor::set_selection);
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DMaterialEditor::set_selection);
 
 	set_selection ();
 }
 
 void
-MaterialEditor::set_initialized ()
+X3DMaterialEditor::set_initialized ()
 {
-	preview -> initialized () .removeInterest (this, &MaterialEditor::set_initialized);
+	preview -> initialized () .removeInterest (this, &X3DMaterialEditor::set_initialized);
 
 	try
 	{
@@ -124,17 +121,17 @@ MaterialEditor::set_initialized ()
 }
 
 void
-MaterialEditor::set_selection ()
+X3DMaterialEditor::set_selection ()
 {
 	undoStep .reset ();
 
 	for (const auto & appearance : appearances)
-		appearance -> material () .removeInterest (this, &MaterialEditor::set_material);
+		appearance -> material () .removeInterest (this, &X3DMaterialEditor::set_material);
 
 	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
-		appearance -> material () .addInterest (this, &MaterialEditor::set_material);
+		appearance -> material () .addInterest (this, &X3DMaterialEditor::set_material);
 
 	set_material ();
 }
@@ -146,7 +143,7 @@ MaterialEditor::set_selection ()
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_copy ()
+X3DMaterialEditor::on_copy ()
 {
 	std::string text = "#X3D V3.3 utf8 Titania\n"
 	                   "\n"
@@ -167,7 +164,7 @@ MaterialEditor::on_copy ()
 }
 
 void
-MaterialEditor::on_paste ()
+X3DMaterialEditor::on_paste ()
 {
 	getBrowserWindow () -> getPasteMenuItem () .activate ();
 }
@@ -179,7 +176,7 @@ MaterialEditor::on_paste ()
  **********************************************************************************************************************/
 
 void
-MaterialEditor::set_preview ()
+X3DMaterialEditor::set_preview ()
 {
 	if (not material or not twoSidedMaterial)
 		return;
@@ -260,19 +257,19 @@ MaterialEditor::set_preview ()
 }
 
 void
-MaterialEditor::on_sphere_clicked ()
+X3DMaterialEditor::on_sphere_clicked ()
 {
 	set_whichChoice (0);
 }
 
 void
-MaterialEditor::on_model_clicked ()
+X3DMaterialEditor::on_model_clicked ()
 {
 	set_whichChoice (1);
 }
 
 void
-MaterialEditor::set_whichChoice (const int32_t value)
+X3DMaterialEditor::set_whichChoice (const int32_t value)
 {
 	getConfig () .setItem ("whichChoice", value);
 
@@ -294,30 +291,30 @@ MaterialEditor::set_whichChoice (const int32_t value)
  **********************************************************************************************************************/
 
 void
-MaterialEditor::on_material_unlink_clicked ()
+X3DMaterialEditor::on_material_unlink_clicked ()
 {
 	unlinkClone (appearances, "material", undoStep);
 }
 
 void
-MaterialEditor::on_material_changed ()
+X3DMaterialEditor::on_material_changed ()
 {
 	getFrontBox () .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 0);
 	getBackBox ()  .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 1);
 
-//	if (getMaterialComboBoxText () .get_active_row_number () < 1)
-//	{
-//		getDiffuseDialog ()  .hide ();
-//		getSpecularDialog () .hide ();
-//		getEmissiveDialog () .hide ();
-//	}
+	//	if (getMaterialComboBoxText () .get_active_row_number () < 1)
+	//	{
+	//		getDiffuseDialog ()  .hide ();
+	//		getSpecularDialog () .hide ();
+	//		getEmissiveDialog () .hide ();
+	//	}
 
-//	if (getMaterialComboBoxText () .get_active_row_number () < 2)
-//	{
-//		getBackDiffuseDialog ()  .hide ();
-//		getBackSpecularDialog () .hide ();
-//		getBackEmissiveDialog () .hide ();
-//	}
+	//	if (getMaterialComboBoxText () .get_active_row_number () < 2)
+	//	{
+	//		getBackDiffuseDialog ()  .hide ();
+	//		getBackSpecularDialog () .hide ();
+	//		getBackEmissiveDialog () .hide ();
+	//	}
 
 	if (changing)
 		return;
@@ -374,8 +371,8 @@ MaterialEditor::on_material_changed ()
 		{
 			auto & field = appearance -> material ();
 
-			field .removeInterest (this, &MaterialEditor::set_material);
-			field .addInterest (this, &MaterialEditor::connectMaterial);
+			field .removeInterest (this, &X3DMaterialEditor::set_material);
+			field .addInterest (this, &X3DMaterialEditor::connectMaterial);
 
 			switch (getMaterialComboBoxText () .get_active_row_number ())
 			{
@@ -416,13 +413,13 @@ MaterialEditor::on_material_changed ()
 }
 
 void
-MaterialEditor::set_material ()
+X3DMaterialEditor::set_material ()
 {
 	materialNodeBuffer .addEvent ();
 }
 
 void
-MaterialEditor::set_node ()
+X3DMaterialEditor::set_node ()
 {
 	auto       pair     = getNode <X3D::X3DMaterialNode> (appearances, "material");
 	const int  active   = pair .second;
@@ -487,7 +484,7 @@ MaterialEditor::set_node ()
 }
 
 void
-MaterialEditor::set_widgets ()
+X3DMaterialEditor::set_widgets ()
 {
 	diffuseColor . setNodes ({ materialNode });
 	specularColor .setNodes ({ materialNode });
@@ -509,13 +506,13 @@ MaterialEditor::set_widgets ()
 }
 
 void
-MaterialEditor::connectMaterial (const X3D::SFNode & field)
+X3DMaterialEditor::connectMaterial (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &MaterialEditor::connectMaterial);
-	field .addInterest (this, &MaterialEditor::set_material);
+	field .removeInterest (this, &X3DMaterialEditor::connectMaterial);
+	field .addInterest (this, &X3DMaterialEditor::set_material);
 }
 
-MaterialEditor::~MaterialEditor ()
+X3DMaterialEditor::~X3DMaterialEditor ()
 {
 	X3D::removeBrowser (preview);
 

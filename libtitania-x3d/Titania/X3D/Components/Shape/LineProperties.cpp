@@ -92,19 +92,20 @@ LineProperties::enable ()
 	{
 		glEnable (GL_LINE_STIPPLE);
 
-		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
-			glLineStipple (1, linetypes [linetype ()]);
-
-		else
-			glLineStipple (1, int (LineType::SOLID));
-
 		if (linewidthScaleFactor () > 0)
 		{
+			if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
+				glLineStipple (1, linetypes [linetype ()]);
+
+			else
+				glLineStipple (1, int (LineType::SOLID));
+
 			glLineWidth (linewidthScaleFactor ());
 			glPointSize (linewidthScaleFactor ());
 		}
 		else
 		{
+			glLineStipple (1, int (LineType::NONE));
 			glLineWidth (1);
 			glPointSize (1);
 		}
