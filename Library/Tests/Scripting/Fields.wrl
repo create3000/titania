@@ -7,13 +7,13 @@ DEF Timer TimeSensor {
 DEF Debug Script {
   exposedField SFBool   enabled TRUE
   eventIn      SFTime   set_time
+  eventIn      SFBool   in
+  eventOut     SFBool   out
   field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
-  field        SFNode   self USE Debug
   field        SFNode   transform Transform {
     translation 1 1 1
   }
-  eventIn      SFBool   in
-  eventOut     SFBool   out
+  field        SFNode   self USE Debug
 
   url "javascript:
 
@@ -89,5 +89,5 @@ function set_time (value)
 "
 }
 
-ROUTE Debug.enabled_changed TO Debug.set_enabled
 ROUTE Timer.time TO Debug.set_time
+ROUTE Debug.enabled_changed TO Debug.set_enabled

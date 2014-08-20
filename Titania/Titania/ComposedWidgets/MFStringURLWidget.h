@@ -122,6 +122,10 @@ protected:
 	void
 	on_add_clicked ();
 
+	virtual
+	void
+	set_buffer ();
+
 
 private:
 
@@ -162,9 +166,6 @@ private:
 
 	void
 	set_field ();
-
-	void
-	set_buffer ();
 
 	void
 	connect (const X3D::MFString &);
@@ -495,10 +496,15 @@ private:
 	bool
 	on_button_release_event (GdkEventButton*);
 	
+	virtual
+	void
+	set_buffer () final override;
+
 	///  @name Members
 
 	X3DUserInterface* const                  userInterface;
 	const Glib::RefPtr <Gtk::TreeViewColumn> URLChooserColumn;
+	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
 };
 
 inline
@@ -512,7 +518,8 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
 	X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
 	  MFStringWidget (treeView, cellRenderer, addButton, removeButton, name, ""),
 	   userInterface (userInterface),
-	URLChooserColumn (URLChooserColumn)
+	URLChooserColumn (URLChooserColumn),
+	  fileOpenDialog ()
 {
 	treeView .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
 }
@@ -561,33 +568,42 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 	
 	userInterface -> getWindow () .set_sensitive (false);
 
-	FileOpenDialog fileOpenDialog (getBrowserWindow ());
+	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
-	fileOpenDialog .getRelativePathBox () .set_visible (true);
+	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 
 	// Set URL
 
 	basic::uri URL = getExecutionContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
 	
-	fileOpenDialog .setURL (URL);
+	fileOpenDialog -> setURL (URL);
 
 	// Run
 
-	if (fileOpenDialog .run ())
+	if (fileOpenDialog -> run ())
 	{
-		URL = fileOpenDialog .getURL ();
+		URL = fileOpenDialog -> getURL ();
 
-		if (fileOpenDialog .getRelativePathSwitch () .get_active ())
+		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
 
 		set1Value (path .front (), URL .str ());
 	}
 
 	userInterface -> getWindow () .set_sensitive (true);
-
+	fileOpenDialog .reset ();
 	return true;
 }
 
+inline
+void
+MFStringURLWidget::set_buffer ()
+{
+	if (fileOpenDialog)
+		fileOpenDialog -> getWindow () .hide ();
+
+	MFStringWidget::set_buffer ();
+}
 
 } // puck
 } // titania

@@ -233,6 +233,7 @@ X3DExportedNodesEditor::validateExportedName (const std::string & exportedName)
 void
 X3DExportedNodesEditor::set_exportedNodes ()
 {
+	getExportedNodeDialog () .hide ();
 	getExportedNodesListStore () -> clear ();
 
 	for (const auto & exportedNode : scene -> getExportedNodes ())

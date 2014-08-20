@@ -1,5 +1,12 @@
 2014-08-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MFStringURLWidget.h:
+	* NodePropertiesEditor.xml:
+	* X3DExportedNodesEditor.cpp:
+	* X3DUserDefinedFieldsEditor.cpp: 
+
+2014-08-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* X3DEditorObject.h:

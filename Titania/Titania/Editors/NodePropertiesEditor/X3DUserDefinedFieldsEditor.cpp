@@ -468,6 +468,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* co
 void
 X3DUserDefinedFieldsEditor::set_fields ()
 {
+	getUserDefinedFieldDialog () .hide ();
 	getUserDefinedFieldsListStore () -> clear ();
 
 	for (const auto & field : node -> getUserDefinedFields ())
