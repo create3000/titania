@@ -74,10 +74,10 @@ public:
 
 	virtual
 	void
-	updateUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	virtual
 	void

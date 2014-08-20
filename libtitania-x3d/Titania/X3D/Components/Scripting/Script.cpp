@@ -115,18 +115,6 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-Script::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
-{
-	X3DScriptNode::updateUserDefinedField (accessType, name, field);
-	
-	if (isInitialized ())
-		url () .addEvent ();
-}
-
-void
 Script::removeUserDefinedField (const std::string & name)
 throw (Error <DISPOSED>)
 {

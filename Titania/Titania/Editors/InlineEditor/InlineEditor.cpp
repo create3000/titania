@@ -65,7 +65,7 @@ InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
 	X3DInlineEditorInterface (get_ui ("Dialogs/InlineEditor.xml"), gconf_dir ()),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    load (browserWindow, getLoadCheckButton (),  "load"),
-	                     url (new MFStringURLWidget (getBrowserWindow (),
+	                     url (new MFStringURLWidget (this,
 	                          getURLTreeView (),
 	                          getURLCellRendererText (),
 	                          getURLAddButton (),

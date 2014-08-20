@@ -34,6 +34,9 @@ titania_SOURCES =  \
 	Titania/Editors/MaterialEditor/MaterialEditor.cpp \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
+	Titania/Editors/NodePropertiesEditor/X3DExportedNodesEditor.cpp \
+	Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.cpp \
+	Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.cpp \
 	Titania/Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \

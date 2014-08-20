@@ -405,7 +405,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		if (inconsistent)
 			fields -> removeUserDefinedField (fieldName);
 		else
-			fields -> updateUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (std::move (value)));
+			fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (std::move (value)));
 	}
 
 	// Undo
@@ -502,7 +502,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	currentField = fieldName;
 
-	fields -> updateUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (field));
+	fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (field));
 
 	// Undo
 

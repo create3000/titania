@@ -196,15 +196,16 @@ Route::disconnect ()
 		disconnectedOutput .processInterests ();
 		disconnectedOutput .dispose ();
 
-		if (sourceNode or destinationNode)
-		{
+		//// Remove commented lines.
+		//if (sourceNode or destinationNode)
+		//{
 			sourceNode      .dispose ();
 			destinationNode .dispose ();
 
 			sourceField -> removeInterest (destinationField);
 			sourceField -> removeOutputRoute (this);
-			destinationField -> removeInputRoute  (this);
-		}
+			destinationField -> removeInputRoute (this);
+		//}
 	}
 }
 

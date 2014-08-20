@@ -94,7 +94,6 @@ HistoryView::set_history ()
 	// Fill model.
 
 	//getTreeView () .unset_model (); // This will unset the sort column.
-
 	getListStore () -> clear ();
 
 	for (const auto & item : history .getItems ())
@@ -105,7 +104,6 @@ HistoryView::set_history ()
 		iter -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
 	}
 
-	//getTreeView () .set_model (getListStore ());
 	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
 }
 

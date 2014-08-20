@@ -131,6 +131,7 @@ public:
 	void
 	setName (const std::string &) override;
 
+	///  Field that processes its interests when the name has changed.
 	virtual
 	const SFTime &
 	name_changed () const
@@ -271,18 +272,17 @@ public:
 	canUserDefinedFields () const
 	{ return false; }
 
-	///  Adds @a field to the set of user defined fields of this node.
-	virtual
+	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
 	void
-	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	setUserDefinedFields (const X3D::FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
 
-	///  Replaces the field @a name by @a field. @a accessType and @a name will be assigned to @a field.
+	///  Adds @a field to the set of user defined fields of this node.
 	virtual
 	void
-	updateUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
@@ -307,6 +307,12 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return fieldDefinitions; }
+
+	///  Field that processes its interests when the set of fields has changed.
+	virtual
+	const SFTime &
+	fields_changed () const
+	{ return fieldsOutput; }
 
 	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
@@ -623,6 +629,7 @@ private:
 	FieldIndex           fields;                 // Pre-defined and user-defined fields
 	FieldAliasIndex      fieldAliases;           // VRML names
 	size_t               numUserDefinedFields;   // Number of user defined fields
+	SFTime               fieldsOutput;
 
 	bool   initialized;
 	bool   private_;

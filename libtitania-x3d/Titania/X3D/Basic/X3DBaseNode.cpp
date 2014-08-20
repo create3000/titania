@@ -139,6 +139,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	              fields (),
 	        fieldAliases (),
 	numUserDefinedFields (0),
+	        fieldsOutput (),
 	         initialized (false),
 	            private_ (false),
 	          cloneCount (0),
@@ -147,7 +148,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 {
 	assert (executionContext);
 
-	addChildren (nameOutput, live);
+	addChildren (nameOutput, fieldsOutput, live);
 }
 
 /***
@@ -623,6 +624,22 @@ X3DBaseNode::getFieldName (const std::string & name, const VersionType version) 
 }
 
 /***
+ *  Replaces the set of user defined fields of this node with @a userDefinedFields.
+ */
+void
+X3DBaseNode::setUserDefinedFields (const X3D::FieldDefinitionArray & userDefinedFields)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
+{
+	for (const auto & field : getUserDefinedFields ())
+		removeUserDefinedField (field -> getName ());
+
+	for (const auto & field : userDefinedFields)
+		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+}
+
+/***
  *  Adds @a field to the set of user defined fields. @a accessType and @a name will be assigned to @a field.
  */
 void
@@ -634,30 +651,21 @@ throw (Error <INVALID_NAME>,
 	addField (accessType, name, *field);
 
 	++ numUserDefinedFields;
+
+	fieldsOutput = chrono::now ();
 }
 
 /***
- *  Replaces the field @a name by @a field. @a accessType and @a name will be assigned to @a field.
- */
-void
-X3DBaseNode::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
-{
-	addField (accessType, name, *field);
-
-	++ numUserDefinedFields;
-}
-
-/***
- *  Removes @a field from the set of user defined fields.
+ *  Removes @a field from the set of user defined fields.  You are self responsible to remove all routes of this field
+ *  from and to this node before you remove the field.
  */
 void
 X3DBaseNode::removeUserDefinedField (const std::string & name)
 throw (Error <DISPOSED>)
 {
 	removeField (fields .find (name), true, true);
+
+	fieldsOutput = chrono::now ();
 }
 
 /***

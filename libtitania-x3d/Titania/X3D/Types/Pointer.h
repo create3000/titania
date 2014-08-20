@@ -72,6 +72,7 @@ class Console;
 //
 class World;
 class Scene;
+class X3DScene;
 class X3DExecutionContext;
 class ProtoDeclaration;
 class X3DProtoDeclarationNode;
@@ -135,17 +136,18 @@ using SelectionPtr           = X3DPtr <Selection>;
 using NotificationPtr        = X3DPtr <Notification>;
 using ConsolePtr             = X3DPtr <Console>;
 
-using WorldPtr                  = X3DPtr <World>;
-using ScenePtr                  = X3DPtr <Scene>;
-using X3DExecutionContextPtr    = X3DPtr <X3DExecutionContext>;
-using ProtoDeclarationPtr       = X3DPtr <ProtoDeclaration>;
-using X3DProtoDeclarationNodePtr         = X3DPtr <X3DProtoDeclarationNode>;
-using X3DPrototypeInstancePtr   = X3DPtr <X3DPrototypeInstance>;
-using ExternProtoDeclarationPtr = X3DPtr <ExternProtoDeclaration>;
-using NamedNodePtr              = X3DPtr <NamedNode>;
-using ImportedNodePtr           = X3DPtr <ImportedNode>;
-using RoutePtr                  = X3DPtr <Route>;
-using ExportedNodePtr           = X3DPtr <ExportedNode>;
+using WorldPtr                   = X3DPtr <World>;
+using ScenePtr                   = X3DPtr <Scene>;
+using X3DScenePtr                = X3DPtr <X3DScene>;
+using X3DExecutionContextPtr     = X3DPtr <X3DExecutionContext>;
+using ProtoDeclarationPtr        = X3DPtr <ProtoDeclaration>;
+using X3DProtoDeclarationNodePtr = X3DPtr <X3DProtoDeclarationNode>;
+using X3DPrototypeInstancePtr    = X3DPtr <X3DPrototypeInstance>;
+using ExternProtoDeclarationPtr  = X3DPtr <ExternProtoDeclaration>;
+using NamedNodePtr               = X3DPtr <NamedNode>;
+using ImportedNodePtr            = X3DPtr <ImportedNode>;
+using RoutePtr                   = X3DPtr <Route>;
+using ExportedNodePtr            = X3DPtr <ExportedNode>;
 
 using LayerSetPtr            = X3DPtr <LayerSet>;
 using X3DLayerNodePtr        = X3DPtr <X3DLayerNode>;

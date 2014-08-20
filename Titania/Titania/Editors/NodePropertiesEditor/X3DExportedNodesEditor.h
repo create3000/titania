@@ -48,73 +48,109 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_OBSERVER_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_OBSERVER_H__
+#ifndef __TITANIA_EDITORS_NODE_PROPERTIES_EDITOR_X3DEXPORTED_NODES_EDITOR_H__
+#define __TITANIA_EDITORS_NODE_PROPERTIES_EDITOR_X3DEXPORTED_NODES_EDITOR_H__
 
-#include <gtkmm.h>
-
-#include <Titania/X3D.h>
+#include "../../UserInterfaces/X3DNodePropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DOutlineTreeView;
-
-class OutlineTreeObserver :
-	public X3D::X3DInput
+class X3DExportedNodesEditor :
+	virtual public X3DNodePropertiesEditorInterface
 {
 public:
 
-	///  @name Construction
-
-	OutlineTreeObserver (X3DOutlineTreeView* const);
-
-	///  @name Operations
-
-	void
-	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	watch_child (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	unwatch_tree (const Gtk::TreeModel::iterator &, const bool = true);
+	///  @name Destruction
 
 	virtual
-	~OutlineTreeObserver ();
+	~X3DExportedNodesEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DExportedNodesEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	void
+	setNode (const X3D::SFNode &);
+
 
 private:
 
-	///  @name Operations
+	///  @name Event handlers
+
+	virtual
+	void
+	on_exported_node_changed () final override;
+
+	virtual
+	void
+	on_exported_node_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+
+	virtual
+	void
+	on_add_exported_node () final override;
+
+	virtual
+	void
+	on_remove_exported_node () final override;
+
+	virtual
+	void
+	on_exported_name_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_exported_name_delete_text (int, int) final override;
+
+	virtual
+	void
+	on_exported_name_changed () final override;
+
+	virtual
+	void
+	on_exported_node_ok_clicked () final override;
+
+	virtual
+	void
+	on_exported_node_cancel_clicked () final override;
+
+	virtual
+	void
+	on_exported_node_hide () final override;
+
+	bool
+	validateExportedName (const std::string &);
 
 	void
-	watch_children (const Gtk::TreeModel::iterator &);
+	set_exportedNodes ();
 
 	void
-	unwatch_child (const Gtk::TreeModel::iterator &, const bool);
-	
-	void
-	clear_open_path (const Gtk::TreeModel::iterator &);
+	connectExportedNodes (const X3D::SFTime &);
 
-	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const bool);
-
-	void
-	on_row_changed (const Gtk::TreeModel::Path &);
+	///  @name X3DApplicationContext
 
 	static
 	void
-	on_row_changed_impl (const Glib::RefPtr <Gtk::TreeModel> &, const Gtk::TreeModel::Path &);
+	updateExportedNode (const X3D::X3DPtr <X3D::X3DScene> &, const std::string &, const X3D::SFNode &, const UndoStepPtr &);
 
+	static
 	void
-	update_path (const Gtk::TreeModel::Path &);
-
-	void
-	toggle_path (const Gtk::TreeModel::Path &, bool);
+	removeExportedNode (const X3D::X3DPtr <X3D::X3DScene> &, const std::string &, const UndoStepPtr &);
 
 	///  @name Members
 
-	X3DOutlineTreeView* const treeView;
+	X3D::X3DPtr <X3D::X3DScene> scene;
+	X3D::SFNode                 node;
+	Gtk::TreeModel::Path        selectedPath;
+	bool                        editing;
 
 };
 

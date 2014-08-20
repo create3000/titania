@@ -196,14 +196,30 @@ OutlineRouteGraph::forward_connections (const Gtk::TreeModel::iterator & parent,
 void
 OutlineRouteGraph::add_routes_for_path (const Gtk::TreeModel::Path & path)
 {
-	const auto iter = treeView -> get_model () -> get_iter (path);
-	const auto data = treeView -> get_model () -> get_data (iter);
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&OutlineRouteGraph::add_routes_for_path_impl), this, path));
+
+//	const auto iter = treeView -> get_model () -> get_iter (path);
+//	const auto data = treeView -> get_model () -> get_data (iter);
+//
+//	if (data -> get_type () == OutlineIterType::X3DField)
+//	{
+//		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+//
+//		add_routes (path, data, field);
+//	}
+}
+
+void
+OutlineRouteGraph::add_routes_for_path_impl (OutlineRouteGraph* const self, const Gtk::TreeModel::Path & path)
+{
+	const auto iter = self -> treeView -> get_model () -> get_iter (path);
+	const auto data = self -> treeView -> get_model () -> get_data (iter);
 
 	if (data -> get_type () == OutlineIterType::X3DField)
 	{
 		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
-		add_routes (path, data, field);
+		self -> add_routes (path, data, field);
 	}
 }
 
@@ -508,171 +524,6 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & iter, const 
 		}
 	}
 }
-
-//void
-//OutlineRouteGraph::collapse (const Gtk::TreeModel::iterator & iter)
-//{
-//	//__LOG__ << std::endl;
-//
-//	switch (treeView -> get_data_type (iter))
-//	{
-//		case OutlineIterType::X3DBaseNode:
-//		case OutlineIterType::ImportedNode:
-//		case OutlineIterType::ExportedNode:
-//		{
-//			collapse_node (iter);
-//			break;
-//		}
-//		case OutlineIterType::X3DField:
-//		{
-//			collapse_field (iter);
-//			break;
-//		}
-//		default:
-//			break;
-//	}
-//}
-//
-//void
-//OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
-//{
-//	for (const auto & child : parent -> children ())
-//	{
-//		const auto path     = treeView -> get_model () -> get_path (child);
-//		const auto data     = treeView -> get_model () -> get_data (child);
-//		const auto userData = data -> get_user_data ();
-//		const auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
-//
-//		field -> getInputRoutes ()  .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
-//		field -> getOutputRoutes () .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
-//
-//		if (userData -> full_expanded)
-//		{
-//			for (const auto & iter : child -> children ())
-//			{
-//				const auto path = treeView -> get_model () -> get_path (iter);
-//				const auto data = treeView -> get_model () -> get_data (iter);
-//
-//				switch (data -> get_type ())
-//				{
-//					case OutlineIterType::X3DInputRoute:
-//					{
-//						const auto route = static_cast <X3D::Route*> (data -> get_object ());
-//
-//						remove_input_route (path, data, route);
-//
-//						break;
-//					}
-//					case OutlineIterType::X3DOutputRoute:
-//					{
-//						const auto route = static_cast <X3D::Route*> (data -> get_object ());
-//
-//						remove_output_route (path, data, route);
-//
-//						break;
-//					}
-//					default:
-//						break;
-//				}
-//			}
-//		}
-//		else
-//		{
-//			for (const auto & route : field -> getInputRoutes ())
-//			{
-//				remove_input_route (path, data, route);
-//			}
-//
-//			for (const auto & route : field -> getOutputRoutes ())
-//			{
-//				remove_output_route (path, data, route);
-//			}
-//		}
-//
-//		switch (field -> getType ())
-//		{
-//			case X3D::X3DConstants::SFNode:
-//			case X3D::X3DConstants::MFNode:
-//			{
-//				for (const auto & iter : child -> children ())
-//				{
-//					const auto data = treeView -> get_model () -> get_data (iter);
-//
-//					if (data -> get_type () == OutlineIterType::X3DBaseNode)
-//					{
-//						collapse_node (iter);
-//					}
-//				}
-//
-//				break;
-//			}
-//			default:
-//				break;
-//		}
-//	}
-//}
-//
-//void
-//OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & parent)
-//{
-//	//__LOG__ << std::endl;
-//
-//	const auto parentPath     = treeView -> get_model () -> get_path (parent);
-//	const auto parentData     = treeView -> get_model () -> get_data (parent);
-//	const auto parentUserData = parentData -> get_user_data ();
-//	const auto field          = static_cast <X3D::X3DFieldDefinition*> (parentData -> get_object ());
-//
-//	for (const auto & iter : parent -> children ())
-//	{
-//		const auto path = treeView -> get_model () -> get_path (iter);
-//		const auto data = treeView -> get_model () -> get_data (iter);
-//
-//		switch (data -> get_type ())
-//		{
-//			case OutlineIterType::X3DInputRoute:
-//			{
-//				const auto route = static_cast <X3D::Route*> (data -> get_object ());
-//
-//				remove_input_route (path, data, route);
-//
-//				break;
-//			}
-//			case OutlineIterType::X3DOutputRoute:
-//			{
-//				const auto route = static_cast <X3D::Route*> (data -> get_object ());
-//
-//				remove_output_route (path, data, route);
-//
-//				break;
-//			}
-//			default:
-//				break;
-//		}
-//	}
-//
-//	switch (field -> getType ())
-//	{
-//		case X3D::X3DConstants::SFNode:
-//		case X3D::X3DConstants::MFNode:
-//		{
-//			for (const auto & iter : parent -> children ())
-//			{
-//				const auto data = treeView -> get_model () -> get_data (iter);
-//
-//				if (data -> get_type () == OutlineIterType::X3DBaseNode)
-//				{
-//					collapse_node (iter);
-//				}
-//			}
-//
-//			break;
-//		}
-//		default:
-//			break;
-//	}
-//
-//	add_routes (parentPath, parentData, field);
-//}
 
 void
 OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationPath, OutlineTreeData* const destinationData, X3D::Route* const route)

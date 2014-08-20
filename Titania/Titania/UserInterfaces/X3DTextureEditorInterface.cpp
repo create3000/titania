@@ -73,11 +73,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformTranslationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationXAdjustment"));
 	m_TextureTransformTranslationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationYAdjustment"));
 	m_ImageTextureURLCellRendererText              = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellRendererText"));
-	m_ImageTextureURLPadColumn                     = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTextureURLPadColumn"));
 	m_ImageTextureURLChooserColumn                 = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTextureURLChooserColumn"));
 	m_ImageTextureURLCellrendererPixbuf            = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf"));
 	m_MovieTextureURLCellRendererText              = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("MovieTextureURLCellRendererText"));
-	m_MovieTextureURLPadColumn                     = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MovieTextureURLPadColumn"));
 	m_MovieTextureURLChooserColumn                 = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MovieTextureURLChooserColumn"));
 	m_MovieTextureURLCellrendererPixbuf            = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("MovieTextureURLCellrendererPixbuf"));
 

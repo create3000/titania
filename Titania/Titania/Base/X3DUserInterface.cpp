@@ -62,6 +62,7 @@ const std::unique_ptr <DialogFactory> X3DUserInterface::dialogFactory (new Dialo
 
 // Only add presentable dialogs here.
 const std::set <std::string> X3DUserInterface::restorableDialogs = {
+	"NodePropertiesEditor",
 	"MaterialEditor",
 	"TextureEditor",
 	"TextEditor",
@@ -106,6 +107,8 @@ X3DUserInterface::on_constructed ()
 	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 
 	on_map ();
+
+	std::clog << "Initializing widget: " << getWidgetName () << std::endl;
 
 	initialize ();
 

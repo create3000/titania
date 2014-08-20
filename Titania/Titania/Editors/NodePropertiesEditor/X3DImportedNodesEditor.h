@@ -48,73 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_OBSERVER_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_OBSERVER_H__
+#ifndef __TITANIA_EDITORS_NODE_PROPERTIES_EDITOR_X3DIMPORTED_NODES_EDITOR_H__
+#define __TITANIA_EDITORS_NODE_PROPERTIES_EDITOR_X3DIMPORTED_NODES_EDITOR_H__
 
-#include <gtkmm.h>
-
-#include <Titania/X3D.h>
+#include "../../UserInterfaces/X3DNodePropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DOutlineTreeView;
-
-class OutlineTreeObserver :
-	public X3D::X3DInput
+class X3DImportedNodesEditor :
+	virtual public X3DNodePropertiesEditorInterface
 {
 public:
 
-	///  @name Construction
-
-	OutlineTreeObserver (X3DOutlineTreeView* const);
-
-	///  @name Operations
-
-	void
-	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	watch_child (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	unwatch_tree (const Gtk::TreeModel::iterator &, const bool = true);
+	///  @name Destruction
 
 	virtual
-	~OutlineTreeObserver ();
+	~X3DImportedNodesEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DImportedNodesEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	void
+	setNode (const X3D::SFNode &);
+
 
 private:
-
-	///  @name Operations
-
-	void
-	watch_children (const Gtk::TreeModel::iterator &);
-
-	void
-	unwatch_child (const Gtk::TreeModel::iterator &, const bool);
 	
+	///  @name Event handlers
+
+	virtual
 	void
-	clear_open_path (const Gtk::TreeModel::iterator &);
+	on_imported_toggled (const Glib::ustring &) final override;
+
+	virtual
+	void
+	on_imported_name_edited (const Glib::ustring &, const Glib::ustring &) final override;
 
 	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const bool);
+	validateImportedNames (const Gtk::TreeIter &) const;
+
+	bool
+	validateImportedName (const std::string &, const std::string &) const;
 
 	void
-	on_row_changed (const Gtk::TreeModel::Path &);
+	set_importedNodes ();
+
+	void
+	connectImportedNodes (const X3D::SFTime &);
+
+	///  @name X3DApplicationContext
 
 	static
 	void
-	on_row_changed_impl (const Glib::RefPtr <Gtk::TreeModel> &, const Gtk::TreeModel::Path &);
+	updateImportedNode (const X3D::X3DExecutionContextPtr &,
+                       const X3D::InlinePtr &,
+                       const std::string &,
+                       const std::string &,
+                       const UndoStepPtr &);
 
+	static
 	void
-	update_path (const Gtk::TreeModel::Path &);
-
-	void
-	toggle_path (const Gtk::TreeModel::Path &, bool);
+	removeImportedNode (const X3D::X3DExecutionContextPtr &,
+                       const std::string &,
+                       const UndoStepPtr &);
 
 	///  @name Members
 
-	X3DOutlineTreeView* const treeView;
+	X3D::InlinePtr inlineNode;
 
 };
 

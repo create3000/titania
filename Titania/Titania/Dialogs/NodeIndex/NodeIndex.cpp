@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,14 +53,17 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
 
 namespace Columns {
 
-static constexpr int TYPE_NAME = 0;
-static constexpr int NAME      = 1;
+static constexpr int TYPE_NAME      = 0;
+static constexpr int NAME           = 1;
+static constexpr int IMPORTED_NODES = 2;
+static constexpr int EXPORTED_NODES = 3;
 
 };
 
@@ -80,6 +83,8 @@ NodeIndex::initialize ()
 	X3DNodeIndexInterface::initialize ();
 
 	getExecutionContext () .addInterest (this, &NodeIndex::set_executionContext);
+
+	set_executionContext ();
 }
 
 void
@@ -118,6 +123,10 @@ NodeIndex::refresh ()
 void
 NodeIndex::setNodes (X3D::MFNode && value)
 {
+	static const std::string empty_string;
+	static const std::string document_import ("document-import");
+	static const std::string document_export ("document-export");
+
 	nodes = std::move (value);
 
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&NodeIndex::set_adjustment), getTreeView () .get_hadjustment (), getTreeView () .get_hadjustment () -> get_value ()));
@@ -125,11 +134,16 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	getListStore () -> clear ();
 
+	const auto importingInlines = getImportingInlines ();
+	const auto exportedNodes    = getExportedNodes ();
+
 	for (const auto & node : nodes)
 	{
 		const auto row = getListStore () -> append ();
-		row -> set_value (Columns::TYPE_NAME, node -> getTypeName ());
-		row -> set_value (Columns::NAME,      node -> getName ());
+		row -> set_value (Columns::TYPE_NAME,      node -> getTypeName ());
+		row -> set_value (Columns::NAME,           node -> getName ());
+		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
+		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
 	}
 }
 
@@ -160,6 +174,11 @@ NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 	                  return true;
 						});
 
+	std::sort (nodes .begin (), nodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
+	           {
+	              return basic::naturally_compare (lhs -> getName (), rhs -> getName ());
+				  });
+
 	return nodes;
 }
 
@@ -176,17 +195,77 @@ NodeIndex::getNodes ()
 	for (const auto pair : getExecutionContext () -> getNamedNodes ())
 		nodes .emplace_back (pair .second -> getLocalNode ());
 
+	std::sort (nodes .begin (), nodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
+	           {
+	              return basic::naturally_compare (lhs -> getName (), rhs -> getName ());
+				  });
+
 	return nodes;
+}
+
+std::set <X3D::SFNode>
+NodeIndex::getImportingInlines () const
+{
+	std::set <X3D::SFNode> importingInlines;
+
+	for (const auto & pair : getExecutionContext () -> getImportedNodes ())
+	{
+		try
+		{
+			importingInlines .emplace (pair .second -> getInlineNode ());
+		}
+		catch (...)
+		{ }
+	}
+
+	return importingInlines;
+}
+
+std::set <X3D::SFNode>
+NodeIndex::getExportedNodes () const
+{
+	std::set <X3D::SFNode> exportedNodes;
+
+	X3D::X3DPtr <X3D::X3DScene> scene (getExecutionContext ());
+
+	if (not scene)
+		return exportedNodes;
+
+	for (const auto & pair : scene -> getExportedNodes ())
+	{
+		try
+		{
+			exportedNodes .emplace (pair .second -> getLocalNode ());
+		}
+		catch (...)
+		{ }
+	}
+
+	return exportedNodes;
 }
 
 void
 NodeIndex::set_executionContext ()
 {
 	if (executionContext)
-		executionContext -> namedNodes_changed () .removeInterest (this, &NodeIndex::refresh);	
+	{
+		executionContext -> namedNodes_changed () .removeInterest (this, &NodeIndex::refresh);
+		executionContext -> importedNodes_changed () .removeInterest (this, &NodeIndex::refresh);
+	}
+
+	X3D::X3DPtr <X3D::X3DScene> scene (executionContext);
+
+	if (scene)
+		scene -> exportedNodes_changed () .removeInterest (this, &NodeIndex::refresh);
 
 	executionContext = getExecutionContext ();
-	executionContext -> namedNodes_changed () .addInterest (this, &NodeIndex::refresh);
+	executionContext -> namedNodes_changed ()    .addInterest (this, &NodeIndex::refresh);
+	executionContext -> importedNodes_changed () .addInterest (this, &NodeIndex::refresh);
+
+	scene = executionContext;
+
+	if (scene)
+		scene -> exportedNodes_changed () .addInterest (this, &NodeIndex::refresh);
 
 	refresh ();
 }

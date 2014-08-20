@@ -108,6 +108,12 @@ private:
 	X3D::MFNode
 	getNodes ();
 
+	std::set <X3D::SFNode>
+	getImportingInlines () const;
+
+	std::set <X3D::SFNode>
+	getExportedNodes () const;
+
 	///  @name Event handlers
 
 	void

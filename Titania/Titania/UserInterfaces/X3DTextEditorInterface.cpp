@@ -69,7 +69,6 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_FontStyleFamilySelection              = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
 	m_FontStyleFamilyNameColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyNameColumn"));
 	m_FontStyleFamilyNameCellrendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyNameCellrendererText"));
-	m_FontStyleFamilyPadColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyPadColumn"));
 	m_FontStyleFamilyFontColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyFontColumn"));
 	m_FontStyleFamilyFontCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyFontCellrendererPixbuf"));
 

@@ -1,3 +1,49 @@
+2014-08-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* X3DEditorObject.h:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* NodeIndex.h:
+	* LODEditor.xml:
+	* NodeIndex.xml:
+	* TextEditor.xml:
+	* NodeIndex.cpp:
+	* InlineEditor.xml:
+	* TextureEditor.xml:
+	* HistoryView.cpp:
+	* MFStringURLWidget.h:
+	* LibraryView.cpp:
+	* InlineEditor.cpp:
+	* ViewpointList.cpp:
+	* X3DTextEditorInterface.h:
+	* X3DInlineEditorInterface.h:
+	* OutlineRouteGraph.h:
+	* NodePropertiesEditor.xml:
+	* X3DTextEditorInterface.cpp:
+	* X3DTextureEditorInterface.h:
+	* OutlineRouteGraph.cpp:
+	* X3DInlineEditorInterface.cpp:
+	* OutlineTreeObserver.h:
+	* X3DTextureEditorInterface.cpp:
+	* OutlineTreeObserver.cpp:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DMovieTextureEditor.cpp:
+	* X3DImageTextureEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp:
+	* X3DExportedNodesEditor.h:
+	* X3DImportedNodesEditor.h:
+	* X3DImportedNodesEditor.cpp:
+	* X3DExportedNodesEditor.cpp:
+	* X3DUserDefinedFieldsEditor.h:
+	* X3DUserDefinedFieldsEditor.cpp: 
+
 2014-08-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextEditor.xml:

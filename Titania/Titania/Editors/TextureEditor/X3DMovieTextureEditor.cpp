@@ -58,7 +58,7 @@ namespace puck {
 X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	                     url (new MFStringURLWidget (getBrowserWindow (),
+	                     url (new MFStringURLWidget (this,
 	                          getMovieTextureURLTreeView (),
 	                          getMovieTextureURLCellRendererText (),
 	                          getMovieTextureURLAddButton (),

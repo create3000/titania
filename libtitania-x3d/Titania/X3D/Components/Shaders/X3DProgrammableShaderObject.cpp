@@ -97,12 +97,14 @@ X3DProgrammableShaderObject::setFields ()
 }
 
 void
-X3DProgrammableShaderObject::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+X3DProgrammableShaderObject::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 throw (Error <INVALID_NAME>,
        Error <INVALID_FIELD>,
        Error <DISPOSED>)
 {
-	X3DBaseNode::updateUserDefinedField (accessType, name, field);
+	X3DBaseNode::addUserDefinedField (accessType, name, field);
+
+	field -> addInterest (this, &X3DProgrammableShaderObject::set_field, field);
 
 	set_field (field);
 }

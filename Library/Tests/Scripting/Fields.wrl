@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V0.7.3
 
 DEF Timer TimeSensor {
   loop TRUE
@@ -8,6 +8,10 @@ DEF Debug Script {
   exposedField SFBool   enabled TRUE
   eventIn      SFTime   set_time
   field        SFString utf8 "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
+  field        SFNode   self USE Debug
+  field        SFNode   transform Transform {
+    translation 1 1 1
+  }
   eventIn      SFBool   in
   eventOut     SFBool   out
 
@@ -85,4 +89,5 @@ function set_time (value)
 "
 }
 
+ROUTE Debug.enabled_changed TO Debug.set_enabled
 ROUTE Timer.time TO Debug.set_time

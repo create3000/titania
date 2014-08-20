@@ -128,10 +128,6 @@ public:
 	{ return m_FontStyleFamilyNameCellrendererText; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getFontStyleFamilyPadColumn () const
-	{ return m_FontStyleFamilyPadColumn; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getFontStyleFamilyFontColumn () const
 	{ return m_FontStyleFamilyFontColumn; }
 
@@ -328,7 +324,6 @@ private:
 	Glib::RefPtr <Gtk::TreeSelection>      m_FontStyleFamilySelection;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_FontStyleFamilyNameColumn;
 	Glib::RefPtr <Gtk::CellRendererText>   m_FontStyleFamilyNameCellrendererText;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_FontStyleFamilyPadColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_FontStyleFamilyFontColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_FontStyleFamilyFontCellrendererPixbuf;
 	Gtk::Window*                           m_Window;

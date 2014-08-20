@@ -173,8 +173,6 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_GeoViewpointHemisphereComboBoxText -> set_name ("GeoViewpointHemisphereComboBoxText");
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
 	m_GeoViewpointUTMOrderComboBoxText -> set_name ("GeoViewpointUTMOrderComboBoxText");
-
-	// Connect object Gtk::Button with id 'UpdateViewpointButton'.
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));
 
 	// Call construct handler of base class.

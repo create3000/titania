@@ -63,18 +63,18 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	// Get objects.
 	m_ExportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ExportedNodesListStore"));
 	m_ImportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ImportedNodesListStore"));
-	m_UserDefinedFieldsTreeviewSelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("UserDefinedFieldsTreeviewSelection"));
+	m_UserDefinedFieldsTreeSelection            = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("UserDefinedFieldsTreeSelection"));
 	m_CellRendererType                          = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererType"));
 	m_CellRendererName                          = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererName"));
 	m_CellRendererAccessType                    = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererAccessType"));
-	m_ImportedNodesTreeViewSelection            = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ImportedNodesTreeViewSelection"));
+	m_ImportedNodesTreeSelection                = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ImportedNodesTreeSelection"));
 	m_ImportedNodesImportedTreeviewColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedTreeviewColumn"));
 	m_ImportedNodesImportedCellRendererToggle   = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedCellRendererToggle"));
 	m_ImportedNodesTypeNameCellRendererText     = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesTypeNameCellRendererText"));
 	m_ImportedNodesExportedNameCellRendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesExportedNameCellRendererText"));
 	m_ImportedNodesImportedNameTreeviewColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedNameTreeviewColumn"));
 	m_ImportedNodesImportedNameCellRendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImportedNodesImportedNameCellRendererText"));
-	m_ExportedNodesTreeViewSelection            = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ExportedNodesTreeViewSelection"));
+	m_ExportedNodesTreeSelection                = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ExportedNodesTreeSelection"));
 
 	// Get widgets.
 	m_builder -> get_widget ("AccessTypeMenu", m_AccessTypeMenu);
@@ -87,6 +87,14 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_OutputOnlyMenuItem -> set_name ("OutputOnlyMenuItem");
 	m_builder -> get_widget ("InputOutputMenuItem", m_InputOutputMenuItem);
 	m_InputOutputMenuItem -> set_name ("InputOutputMenuItem");
+	m_builder -> get_widget ("ExportedNodeDialog", m_ExportedNodeDialog);
+	m_ExportedNodeDialog -> set_name ("ExportedNodeDialog");
+	m_builder -> get_widget ("ExportedNodeCancelButton", m_ExportedNodeCancelButton);
+	m_ExportedNodeCancelButton -> set_name ("ExportedNodeCancelButton");
+	m_builder -> get_widget ("ExportedNodeOkButton", m_ExportedNodeOkButton);
+	m_ExportedNodeOkButton -> set_name ("ExportedNodeOkButton");
+	m_builder -> get_widget ("ExportedNameEntry", m_ExportedNameEntry);
+	m_ExportedNameEntry -> set_name ("ExportedNameEntry");
 	m_builder -> get_widget ("FieldTypeMenu", m_FieldTypeMenu);
 	m_FieldTypeMenu -> set_name ("FieldTypeMenu");
 	m_builder -> get_widget ("SFBoolMenuItem", m_SFBoolMenuItem);
@@ -173,14 +181,24 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_MFVec4dMenuItem -> set_name ("MFVec4dMenuItem");
 	m_builder -> get_widget ("MFVec4fMenuItem", m_MFVec4fMenuItem);
 	m_MFVec4fMenuItem -> set_name ("MFVec4fMenuItem");
+	m_builder -> get_widget ("UserDefinedFieldDialog", m_UserDefinedFieldDialog);
+	m_UserDefinedFieldDialog -> set_name ("UserDefinedFieldDialog");
+	m_builder -> get_widget ("UserDefinedFieldCancelButton", m_UserDefinedFieldCancelButton);
+	m_UserDefinedFieldCancelButton -> set_name ("UserDefinedFieldCancelButton");
+	m_builder -> get_widget ("AddUserDefinedFieldOkButton", m_AddUserDefinedFieldOkButton);
+	m_AddUserDefinedFieldOkButton -> set_name ("AddUserDefinedFieldOkButton");
+	m_builder -> get_widget ("AccessTypeMenuButton", m_AccessTypeMenuButton);
+	m_AccessTypeMenuButton -> set_name ("AccessTypeMenuButton");
+	m_builder -> get_widget ("AccessTypeLabel", m_AccessTypeLabel);
+	m_AccessTypeLabel -> set_name ("AccessTypeLabel");
+	m_builder -> get_widget ("FieldTypeMenuButton", m_FieldTypeMenuButton);
+	m_FieldTypeMenuButton -> set_name ("FieldTypeMenuButton");
+	m_builder -> get_widget ("FieldTypeLabel", m_FieldTypeLabel);
+	m_FieldTypeLabel -> set_name ("FieldTypeLabel");
+	m_builder -> get_widget ("FieldNameEntry", m_FieldNameEntry);
+	m_FieldNameEntry -> set_name ("FieldNameEntry");
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
-	m_builder -> get_widget ("CancelButton", m_CancelButton);
-	m_CancelButton -> set_name ("CancelButton");
-	m_builder -> get_widget ("CancelButton1", m_CancelButton1);
-	m_CancelButton1 -> set_name ("CancelButton1");
-	m_builder -> get_widget ("OkButton", m_OkButton);
-	m_OkButton -> set_name ("OkButton");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
@@ -193,8 +211,12 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_NameLabel -> set_name ("NameLabel");
 	m_builder -> get_widget ("TypeNameEntry", m_TypeNameEntry);
 	m_TypeNameEntry -> set_name ("TypeNameEntry");
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_NameBox -> set_name ("NameBox");
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_NameEntry -> set_name ("NameEntry");
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_RenameButton -> set_name ("RenameButton");
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_CommonPropertiesExpander -> set_name ("CommonPropertiesExpander");
 	m_builder -> get_widget ("ComponentEntry", m_ComponentEntry);
@@ -205,10 +227,10 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_UserDefinedFieldsExpander -> set_name ("UserDefinedFieldsExpander");
 	m_builder -> get_widget ("UserDefinedFieldsTreeView", m_UserDefinedFieldsTreeView);
 	m_UserDefinedFieldsTreeView -> set_name ("UserDefinedFieldsTreeView");
-	m_builder -> get_widget ("AddFieldButton", m_AddFieldButton);
-	m_AddFieldButton -> set_name ("AddFieldButton");
-	m_builder -> get_widget ("RemoveFieldButton", m_RemoveFieldButton);
-	m_RemoveFieldButton -> set_name ("RemoveFieldButton");
+	m_builder -> get_widget ("AddUserDefinedFieldButton", m_AddUserDefinedFieldButton);
+	m_AddUserDefinedFieldButton -> set_name ("AddUserDefinedFieldButton");
+	m_builder -> get_widget ("RemoveUserDefinedFieldButton", m_RemoveUserDefinedFieldButton);
+	m_RemoveUserDefinedFieldButton -> set_name ("RemoveUserDefinedFieldButton");
 	m_builder -> get_widget ("CDATAFieldExpander", m_CDATAFieldExpander);
 	m_CDATAFieldExpander -> set_name ("CDATAFieldExpander");
 	m_builder -> get_widget ("EditCDataButton", m_EditCDataButton);
@@ -225,69 +247,6 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_AddExportedNodeButton -> set_name ("AddExportedNodeButton");
 	m_builder -> get_widget ("RemoveExportedNodeButton", m_RemoveExportedNodeButton);
 	m_RemoveExportedNodeButton -> set_name ("RemoveExportedNodeButton");
-	m_builder -> get_widget ("ExportedNodeDialog", m_ExportedNodeDialog);
-	m_ExportedNodeDialog -> set_name ("ExportedNodeDialog");
-	m_builder -> get_widget ("ExportedNodeCancelButton", m_ExportedNodeCancelButton);
-	m_ExportedNodeCancelButton -> set_name ("ExportedNodeCancelButton");
-	m_builder -> get_widget ("ExportedNodeOkButton", m_ExportedNodeOkButton);
-	m_ExportedNodeOkButton -> set_name ("ExportedNodeOkButton");
-	m_builder -> get_widget ("ExportedNameEntry", m_ExportedNameEntry);
-	m_ExportedNameEntry -> set_name ("ExportedNameEntry");
-	m_builder -> get_widget ("UserDefinedFieldDialog", m_UserDefinedFieldDialog);
-	m_UserDefinedFieldDialog -> set_name ("UserDefinedFieldDialog");
-	m_builder -> get_widget ("AddFieldCancelButton", m_AddFieldCancelButton);
-	m_AddFieldCancelButton -> set_name ("AddFieldCancelButton");
-	m_builder -> get_widget ("AddFieldOkButton", m_AddFieldOkButton);
-	m_AddFieldOkButton -> set_name ("AddFieldOkButton");
-	m_builder -> get_widget ("AccessTypeMenuButton", m_AccessTypeMenuButton);
-	m_AccessTypeMenuButton -> set_name ("AccessTypeMenuButton");
-	m_builder -> get_widget ("AccessTypeLabel", m_AccessTypeLabel);
-	m_AccessTypeLabel -> set_name ("AccessTypeLabel");
-	m_builder -> get_widget ("FieldTypeMenuButton", m_FieldTypeMenuButton);
-	m_FieldTypeMenuButton -> set_name ("FieldTypeMenuButton");
-	m_builder -> get_widget ("FieldTypeLabel", m_FieldTypeLabel);
-	m_FieldTypeLabel -> set_name ("FieldTypeLabel");
-	m_builder -> get_widget ("FieldNameEntry", m_FieldNameEntry);
-	m_FieldNameEntry -> set_name ("FieldNameEntry");
-
-	// Connect object Gtk::Button with id 'CancelButton'.
-	m_CancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_cancel));
-	m_CancelButton1 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_apply));
-	m_OkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_ok));
-
-	// Connect object Gtk::Entry with id 'TypeNameEntry'.
-	m_TypeNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_delete_text), false);
-	m_TypeNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_insert_text), false);
-	m_NameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false);
-	m_NameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false);
-
-	// Connect object Gtk::TreeView with id 'UserDefinedFieldsTreeView'.
-	m_UserDefinedFieldsTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_drag_data_received));
-	m_UserDefinedFieldsTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_activated));
-
-	// Connect object Gtk::TreeSelection with id 'UserDefinedFieldsTreeviewSelection'.
-	m_UserDefinedFieldsTreeviewSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_changed));
-
-	// Connect object Gtk::Button with id 'AddFieldButton'.
-	m_AddFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_user_defined_field_clicked));
-	m_RemoveFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_user_defined_field_clicked));
-	m_EditCDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_edit_cdata_clicked));
-
-	// Connect object Gtk::CellRendererToggle with id 'ImportedNodesImportedCellRendererToggle'.
-	m_ImportedNodesImportedCellRendererToggle -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_toggled));
-
-	// Connect object Gtk::CellRendererText with id 'ImportedNodesImportedNameCellRendererText'.
-	m_ImportedNodesImportedNameCellRendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_edited));
-
-	// Connect object Gtk::TreeView with id 'ExportedNodesTreeView'.
-	m_ExportedNodesTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_activated));
-
-	// Connect object Gtk::TreeSelection with id 'ExportedNodesTreeViewSelection'.
-	m_ExportedNodesTreeViewSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_changed));
-
-	// Connect object Gtk::Button with id 'AddExportedNodeButton'.
-	m_AddExportedNodeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_exported_node));
-	m_RemoveExportedNodeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_exported_node));
 
 	// Connect object Gtk::Dialog with id 'ExportedNodeDialog'.
 	m_ExportedNodeDialog -> signal_hide () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_hide));
@@ -304,14 +263,42 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Dialog with id 'UserDefinedFieldDialog'.
 	m_UserDefinedFieldDialog -> signal_hide () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_hide));
 
-	// Connect object Gtk::Button with id 'AddFieldCancelButton'.
-	m_AddFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));
-	m_AddFieldOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_ok_clicked));
+	// Connect object Gtk::Button with id 'UserDefinedFieldCancelButton'.
+	m_UserDefinedFieldCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_cancel_clicked));
+	m_AddUserDefinedFieldOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_field_ok_clicked));
 
 	// Connect object Gtk::Entry with id 'FieldNameEntry'.
 	m_FieldNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_field_name_changed));
 	m_FieldNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_field_name_delete_text), false);
 	m_FieldNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_field_name_insert_text), false);
+
+	// Connect object Gtk::TreeView with id 'UserDefinedFieldsTreeView'.
+	m_UserDefinedFieldsTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_drag_data_received));
+	m_UserDefinedFieldsTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_activated));
+
+	// Connect object Gtk::TreeSelection with id 'UserDefinedFieldsTreeSelection'.
+	m_UserDefinedFieldsTreeSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_changed));
+
+	// Connect object Gtk::Button with id 'AddUserDefinedFieldButton'.
+	m_AddUserDefinedFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_user_defined_field_clicked));
+	m_RemoveUserDefinedFieldButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_user_defined_field_clicked));
+	m_EditCDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_edit_cdata_clicked));
+
+	// Connect object Gtk::CellRendererToggle with id 'ImportedNodesImportedCellRendererToggle'.
+	m_ImportedNodesImportedCellRendererToggle -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_toggled));
+
+	// Connect object Gtk::CellRendererText with id 'ImportedNodesImportedNameCellRendererText'.
+	m_ImportedNodesImportedNameCellRendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_imported_name_edited));
+
+	// Connect object Gtk::TreeView with id 'ExportedNodesTreeView'.
+	m_ExportedNodesTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_activated));
+
+	// Connect object Gtk::TreeSelection with id 'ExportedNodesTreeSelection'.
+	m_ExportedNodesTreeSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_exported_node_changed));
+
+	// Connect object Gtk::Button with id 'AddExportedNodeButton'.
+	m_AddExportedNodeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_add_exported_node));
+	m_RemoveExportedNodeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_remove_exported_node));
 
 	// Call construct handler of base class.
 	construct ();
@@ -319,9 +306,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 
 X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()
 {
-	delete m_Window;
 	delete m_ExportedNodeDialog;
 	delete m_UserDefinedFieldDialog;
+	delete m_Window;
 }
 
 } // puck

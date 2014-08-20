@@ -52,6 +52,8 @@
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 
 #include "../Base/X3DEditorObject.h"
+
+#include "../Base/X3DUserInterface.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 
 namespace titania {
@@ -61,16 +63,6 @@ class MFStringWidget :
 	public X3DEditorObject
 {
 public:
-
-	///  @name Construction
-
-	MFStringWidget (BrowserWindow* const,
-	                Gtk::TreeView &,
-	                const Glib::RefPtr <Gtk::CellRendererText> &,
-	                Gtk::Button &,
-	                Gtk::Button &,
-	                const std::string &,
-	                const Glib::ustring &);
 
 	///  @name Member access
 
@@ -90,6 +82,17 @@ public:
 
 protected:
 
+	///  @name Construction
+
+	MFStringWidget (Gtk::TreeView &,
+	                const Glib::RefPtr <Gtk::CellRendererText> &,
+	                Gtk::Button &,
+	                Gtk::Button &,
+	                const std::string &,
+	                const Glib::ustring &);
+
+	///  @name Member access
+
 	Gtk::TreeView &
 	getTreeView ()
 	{ return treeView; }
@@ -108,8 +111,12 @@ protected:
 	get1Value (const size_t index)
 	{ return string .get1Value (index); }
 
+	///  @name Operations
+
 	void
 	append (const Glib::ustring &);
+
+	///  @name Event handler
 
 	virtual
 	void
@@ -180,8 +187,7 @@ private:
 };
 
 inline
-MFStringWidget::MFStringWidget (BrowserWindow* const browserWindow,
-                                Gtk::TreeView & treeView,
+MFStringWidget::MFStringWidget (Gtk::TreeView & treeView,
                                 const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
                                 Gtk::Button & addButton,
                                 Gtk::Button & removeButton,
@@ -439,7 +445,6 @@ MFStringWidget::set_buffer ()
 	string = pair .first;
 
 	listStore -> clear ();
-	treeView .get_selection () -> unselect_all ();
 
 	if (pair .second > -2)
 	{
@@ -470,7 +475,7 @@ public:
 
 	///  @name Construction
 
-	MFStringURLWidget (BrowserWindow* const,
+	MFStringURLWidget (X3DUserInterface* const,
 	                   Gtk::TreeView &,
 	                   const Glib::RefPtr <Gtk::CellRendererText> &,
 	                   Gtk::Button &,
@@ -481,26 +486,32 @@ public:
 
 private:
 
+	///  @name Event handlers
+
 	virtual
 	void
 	on_add_clicked () final override;
 
 	bool
 	on_button_release_event (GdkEventButton*);
+	
+	///  @name Members
 
+	X3DUserInterface* const                  userInterface;
 	const Glib::RefPtr <Gtk::TreeViewColumn> URLChooserColumn;
 };
 
 inline
-MFStringURLWidget::MFStringURLWidget (BrowserWindow* const browserWindow,
+MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
                                       Gtk::TreeView & treeView,
                                       const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
                                       Gtk::Button & addButton,
                                       Gtk::Button & removeButton,
                                       const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
                                       const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	  MFStringWidget (browserWindow, treeView, cellRenderer, addButton, removeButton, name, ""),
+	X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
+	  MFStringWidget (treeView, cellRenderer, addButton, removeButton, name, ""),
+	   userInterface (userInterface),
 	URLChooserColumn (URLChooserColumn)
 {
 	treeView .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
@@ -510,19 +521,23 @@ inline
 void
 MFStringURLWidget::on_add_clicked ()
 {
-	const std::unique_ptr <FileOpenDialog> fileOpenDialog (new FileOpenDialog (getBrowserWindow ()));
+	userInterface -> getWindow () .set_sensitive (false);
 
-	fileOpenDialog -> getRelativePathBox () .set_visible (true);
+	FileOpenDialog fileOpenDialog (getBrowserWindow ());
 
-	if (not fileOpenDialog -> run ())
-		return;
+	fileOpenDialog .getRelativePathBox () .set_visible (true);
 
-	auto URL = fileOpenDialog -> getURL ();
+	if (fileOpenDialog .run ())
+	{
+		auto URL = fileOpenDialog .getURL ();
 
-	if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
-		URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
+		if (fileOpenDialog .getRelativePathSwitch () .get_active ())
+			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
 
-	append (URL .str ());
+		append (URL .str ());
+	}
+
+	userInterface -> getWindow () .set_sensitive (true);
 }
 
 inline
@@ -544,27 +559,31 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 	// Choose new URL
 	
-	const std::unique_ptr <FileOpenDialog> fileOpenDialog (new FileOpenDialog (getBrowserWindow ()));
+	userInterface -> getWindow () .set_sensitive (false);
 
-	fileOpenDialog -> getRelativePathBox () .set_visible (true);
+	FileOpenDialog fileOpenDialog (getBrowserWindow ());
+
+	fileOpenDialog .getRelativePathBox () .set_visible (true);
 
 	// Set URL
 
 	basic::uri URL = getExecutionContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
 	
-	fileOpenDialog -> setURL (URL);
+	fileOpenDialog .setURL (URL);
 
 	// Run
 
-	if (not fileOpenDialog -> run ())
-		return false;
+	if (fileOpenDialog .run ())
+	{
+		URL = fileOpenDialog .getURL ();
 
-	URL = fileOpenDialog -> getURL ();
+		if (fileOpenDialog .getRelativePathSwitch () .get_active ())
+			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
 
-	if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
-		URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
+		set1Value (path .front (), URL .str ());
+	}
 
-	set1Value (path .front (), URL .str ());
+	userInterface -> getWindow () .set_sensitive (true);
 
 	return true;
 }

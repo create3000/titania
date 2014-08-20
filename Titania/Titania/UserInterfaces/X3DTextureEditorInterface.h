@@ -144,10 +144,6 @@ public:
 	{ return m_ImageTextureURLCellRendererText; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getImageTextureURLPadColumn () const
-	{ return m_ImageTextureURLPadColumn; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getImageTextureURLChooserColumn () const
 	{ return m_ImageTextureURLChooserColumn; }
 
@@ -158,10 +154,6 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getMovieTextureURLCellRendererText () const
 	{ return m_MovieTextureURLCellRendererText; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getMovieTextureURLPadColumn () const
-	{ return m_MovieTextureURLPadColumn; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getMovieTextureURLChooserColumn () const
@@ -484,11 +476,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformTranslationYAdjustment;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImageTextureURLCellRendererText;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTextureURLPadColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf;
 	Glib::RefPtr <Gtk::CellRendererText>   m_MovieTextureURLCellRendererText;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_MovieTextureURLPadColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_MovieTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_MovieTextureURLCellrendererPixbuf;
 	Gtk::Window*                           m_Window;

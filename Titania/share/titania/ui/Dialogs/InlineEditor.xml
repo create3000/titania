@@ -522,6 +522,7 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                                 <property name="sizing">autosize</property>
                                 <property name="title" translatable="yes">URL</property>
+                                <property name="expand">True</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="URLCellRendererText">
                                     <property name="editable">True</property>
@@ -530,11 +531,6 @@
                                     <attribute name="text">0</attribute>
                                   </attributes>
                                 </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkTreeViewColumn" id="URLPadColumn">
-                                <property name="expand">True</property>
                               </object>
                             </child>
                             <child>

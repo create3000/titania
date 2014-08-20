@@ -124,10 +124,6 @@ public:
 	{ return m_URLCellRendererText; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getURLPadColumn () const
-	{ return m_URLPadColumn; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getURLChooserColumn () const
 	{ return m_URLChooserColumn; }
 
@@ -267,7 +263,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_BBoxSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_BBoxSizeZAdjustment;
 	Glib::RefPtr <Gtk::CellRendererText>   m_URLCellRendererText;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLPadColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
 	Gtk::Window*                           m_Window;
