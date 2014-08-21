@@ -2,6 +2,12 @@
 
 	* BrowserWindow.cpp:
 	* NodeIndex.cpp:
+	* InlineEditor.cpp: 
+
+2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* NodeIndex.cpp:
 	* InlineEditor.cpp:
 	* X3DOutlineTreeView.cpp:
 	* OutlineCellRenderer.cpp: 

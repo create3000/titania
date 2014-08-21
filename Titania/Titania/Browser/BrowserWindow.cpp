@@ -349,11 +349,6 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	}
 
 	toggle = true;
-
-	// Expand primary selection.
-
-	if (not selection .empty ())
-		expandNodes ({ selection .back () });
 }
 
 // Keys
@@ -746,6 +741,8 @@ BrowserWindow::on_group_selected_nodes_activate ()
 
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
+
+	expandNodes (X3D::MFNode ({ group }));
 }
 
 void
@@ -915,6 +912,8 @@ BrowserWindow::on_create_parent (const std::string & typeName)
 	getSelection () -> setChildren ({ group }, undoStep);
 
 	addUndoStep (undoStep);
+
+	expandNodes (X3D::MFNode ({ group }));
 }
 
 // View menu
