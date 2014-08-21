@@ -116,7 +116,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	treeviewcolumn_pad -> set_expand (true);
 
 	const auto padCellrenderer = Gtk::manage (new Gtk::CellRendererText ());
-	treeviewcolumn_pad -> pack_start (*padCellrenderer, false);
+	treeviewcolumn_pad -> pack_start (*padCellrenderer, true);
 	treeviewcolumn_pad -> add_attribute (*padCellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
 	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
@@ -695,9 +695,9 @@ X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, cons
 	routeGraph -> expand (iter);
 	treeObserver -> watch (iter, path);
 
-	columns_autosize (); // HACK: tell the tree view that the size has changed.
-
 	auto_expand (iter);
+
+	columns_autosize (); // Resizes all columns to their optimal width.
 }
 
 bool

@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.6.8
+#VRML V2.0 utf8 Titania V0.7.3
 
 META "title" "Clone"
 
@@ -6,8 +6,16 @@ DEF Cube Transform {
   translation 4 0 0
   children Shape {
     appearance Appearance {
+      fillProperties FillProperties {
+        filled FALSE
+        hatched FALSE
+      }
+      lineProperties LineProperties {
+        linewidthScaleFactor 3
+      }
       material Material {
         diffuseColor 1 0 0
+        emissiveColor 1 0 0
       }
     }
     geometry Box { }

@@ -277,11 +277,11 @@ BrowserWindow::set_executionContext ()
 // Selection
 
 void
-BrowserWindow::set_selection (const X3D::MFNode & children)
+BrowserWindow::set_selection (const X3D::MFNode & selection)
 {
 	const bool inScene        = not inPrototypeInstance ();
-	const bool haveSelection  = inScene and children .size ();
-	const bool haveSelections = inScene and children .size () > 1;
+	const bool haveSelection  = inScene and selection .size ();
+	const bool haveSelections = inScene and selection .size () > 1;
 
 	getCutMenuItem ()    .set_sensitive (haveSelection);
 	getCopyMenuItem ()   .set_sensitive (haveSelection);
@@ -297,7 +297,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
 	getCreateParentMenuItem ()       .set_sensitive (haveSelection);
 
-	getDeselectAllMenuItem ()           .set_sensitive (children .size ());
+	getDeselectAllMenuItem ()           .set_sensitive (selection .size ());
 	getHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 	getHideUnselectedObjectsMenuItem () .set_sensitive (haveSelection);
 	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
@@ -306,9 +306,9 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getSelectChildrenButton ()  .set_sensitive (haveSelection);
 	getLookAtSelectionButton () .set_sensitive (haveSelection);
 
-	// Show/Hide Object Icons
+	// Show/Hide Object Icons.
 
-	for (const auto & node : children)
+	for (const auto & node : selection)
 	{
 		if (X3D::x3d_cast <X3D::X3DLightNode*> (node))
 		{
@@ -318,7 +318,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 		}
 	}
 
-	for (const auto & node : children)
+	for (const auto & node : selection)
 	{
 		if (X3D::x3d_cast <X3D::ProximitySensor*> (node))
 		{
@@ -328,7 +328,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 		}
 	}
 
-	for (const auto & node : children)
+	for (const auto & node : selection)
 	{
 		if (X3D::x3d_cast <X3D::VisibilitySensor*> (node))
 		{
@@ -338,7 +338,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 		}
 	}
 
-	for (const auto & node : children)
+	for (const auto & node : selection)
 	{
 		if (X3D::x3d_cast <X3D::X3DViewpointNode*> (node))
 		{
@@ -349,6 +349,11 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	}
 
 	toggle = true;
+
+	// Expand primary selection.
+
+	if (not selection .empty ())
+		expandNodes ({ selection .back () });
 }
 
 // Keys
@@ -741,8 +746,6 @@ BrowserWindow::on_group_selected_nodes_activate ()
 
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
-
-	expandNodes (X3D::MFNode ({ group }));
 }
 
 void
@@ -912,8 +915,6 @@ BrowserWindow::on_create_parent (const std::string & typeName)
 	getSelection () -> setChildren ({ group }, undoStep);
 
 	addUndoStep (undoStep);
-
-	expandNodes (X3D::MFNode ({ group }));
 }
 
 // View menu
