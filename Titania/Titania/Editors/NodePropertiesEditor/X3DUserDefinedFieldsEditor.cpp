@@ -510,10 +510,6 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
 	if (iter == userDefinedFields .end ())
 		return;
 
-	// Remove user data from old field.
-
-   oldField -> setUserData (nullptr);
-
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
    // functions we will execute later.
    
@@ -572,6 +568,12 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
 
 	undoStep -> addObjects (X3D::FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), X3D::FieldPtr (newField));
  
+	// Remove user data from old field.
+
+	undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::setUserData, oldField, nullptr);
+	undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::setUserData, newField, nullptr);
+	newField -> setUserData (nullptr);
+
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
    
    removeRoutes (oldField, undoStep);
@@ -612,8 +614,8 @@ X3DUserDefinedFieldsEditor::removeUserDefinedField (const X3D::SFNode & node, X3
 
 	// Remove user data from old field.
 
-   field -> setUserData (nullptr);
-
+	undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::setUserData, field, nullptr);
+ 
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
    
    removeRoutes (field, undoStep);
@@ -627,12 +629,25 @@ X3DUserDefinedFieldsEditor::removeUserDefinedField (const X3D::SFNode & node, X3
 void
 X3DUserDefinedFieldsEditor::setUserDefinedFields (const X3D::SFNode & node, const X3D::FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
 {
-	// This function does not remove any routes, but:
-	// create two sets, do set_difference, and remove with undo the difference.
+	// Remove any routes and user data.
 
-	// Remove from difference the user data.
+	const auto currentUserDefinedFields = node -> getUserDefinedFields ();
+	
+	std::set <X3D::X3DFieldDefinition*>    lhs (currentUserDefinedFields .begin (), currentUserDefinedFields .end ()); 
+	std::set <X3D::X3DFieldDefinition*>    rhs (userDefinedFields .begin (), userDefinedFields .end ()); 
+	std::vector <X3D::X3DFieldDefinition*> difference;
 
-	undoStep -> addUndoFunction (&X3D::X3DBaseNode::setUserDefinedFields, node, node -> getUserDefinedFields ());
+	std::set_difference (lhs .begin (), lhs .end (), rhs .begin (), rhs .end (), std::back_inserter (difference));
+
+	for (const auto field : difference)
+	{
+		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::setUserData, field, nullptr);
+		removeRoutes (field, undoStep);
+	}
+
+	// Replace the user defined fields.
+
+	undoStep -> addUndoFunction (&X3D::X3DBaseNode::setUserDefinedFields, node, currentUserDefinedFields);
 	undoStep -> addRedoFunction (&X3D::X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
 
 	node -> setUserDefinedFields (userDefinedFields);	
