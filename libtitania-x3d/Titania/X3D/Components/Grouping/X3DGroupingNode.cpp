@@ -273,21 +273,19 @@ X3DGroupingNode::add (const MFNode & children)
 							goto NEXT;
 						}
 						case X3DConstants::ClipPlane:
-						case X3DConstants::X3DLightNode:
 						{
 							collectables .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
 							goto NEXT;
+						}
+						case X3DConstants::X3DLightNode:
+						{
+							collectables .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
+							// Proceed with next step.
 						}
 						case X3DConstants::X3DChildNode:
 						{
 							childNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
 							goto NEXT;
-						}
-						case X3DConstants::X3DEnvironmentalSensorNodeTool:
-						case X3DConstants::X3DLightNodeTool:
-						{
-							childNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
-							break;
 						}
 						case X3DConstants::BooleanFilter:
 						case X3DConstants::BooleanToggle:

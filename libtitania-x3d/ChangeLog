@@ -1,5 +1,13 @@
 2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Selection.h:
+	* Browser.cpp:
+	* Selection.cpp:
+	* X3DBaseNode.cpp:
+	* X3DGroupingNode.cpp: 
+
+2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Linetypes.h:
 	* BoundingBox.x3dv:
 	* TransformTool.x3dv:

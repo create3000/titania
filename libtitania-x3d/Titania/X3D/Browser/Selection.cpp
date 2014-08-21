@@ -73,12 +73,12 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	selectLowest (false),
 	        over (),
 	      active (),
-	  pickedTime (),
+	   touchTime (),
 	    children ()
 {
 	addType (X3DConstants::Selection);
 
-	X3DParentObject::addChildren (enabled, mode, selectLowest, over, active, pickedTime, children);
+	X3DParentObject::addChildren (enabled, mode, selectLowest, over, active, touchTime, children);
 }
 
 X3DBaseNode*
@@ -279,7 +279,7 @@ Selection::select ()
 					else
 						setChildren ({ node });
 
-					pickedTime = getCurrentTime ();
+					touchTime = getCurrentTime ();
 					return true;
 				}
 			}

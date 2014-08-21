@@ -145,20 +145,22 @@ X3DMaterialEditor::set_selection ()
 void
 X3DMaterialEditor::on_copy ()
 {
-	std::string text = "#X3D V3.3 utf8 Titania\n"
-	                   "\n"
-	                   "# " + getExecutionContext () -> getWorldURL () + "\n"
-	                                                                     "\n"
-	                                                                     "META \"titania magic\" \"Material\"\n"
-	                                                                     "\n"
-	                                                                     "Transform {\n"
-	                                                                     "  children Shape {\n"
-	                                                                     "    appearance Appearance {\n"
-	                                                                     "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n"
-	                                                                                                                                                                            "    }\n"
-	                                                                                                                                                                            "    geometry Sphere { }\n"
-	                                                                                                                                                                            "  }\n"
-	                                                                                                                                                                            "}";
+	std::string text;
+
+	text += "#X3D V3.3 utf8 Titania\n";
+	text += "\n";
+	text += "# " + getExecutionContext () -> getWorldURL () + "\n";
+	text += "\n";
+	text += "META \"titania magic\" \"Material\"\n";
+	text += "\n";
+	text += "Transform {\n";
+	text += "  children Shape {\n";
+	text += "    appearance Appearance {\n";
+	text += "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n";
+	text += "    }\n";
+	text += "    geometry Sphere { }\n";
+	text += "  }\n";
+	text += "}";
 
 	Gtk::Clipboard::get () -> set_text (text);
 }

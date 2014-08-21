@@ -135,6 +135,9 @@ private:
 	///  @name Selection handling
 
 	void
+	set_touchTime ();
+
+	void
 	set_selection (const X3D::MFNode & children);
 
 	///  @name Key events
@@ -482,9 +485,6 @@ private:
 	virtual
 	void
 	on_follow_primary_selection_toggled () final override;
-
-	void
-	set_pickedTime ();
 
 	///  @name Layout
 

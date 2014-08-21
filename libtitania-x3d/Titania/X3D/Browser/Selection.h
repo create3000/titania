@@ -139,7 +139,7 @@ public:
 
 	const SFBool &
 	getPickedTime () const
-	{ return pickedTime; }
+	{ return touchTime; }
 
 	///  @name Member access
 
@@ -189,7 +189,7 @@ private:
 	SFBool                 selectLowest;
 	SFBool                 over;
 	SFBool                 active;
-	SFBool                 pickedTime;
+	SFBool                 touchTime;
 	MFNode                 children;
 
 };

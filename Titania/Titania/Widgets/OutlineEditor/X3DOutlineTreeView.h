@@ -258,12 +258,6 @@ private:
 	void
 	set_rootNodes ();
 
-	void
-	on_hAdjustment_value_changed (const double);
-
-	void
-	on_vAdjustment_value_changed (const double);
-
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
@@ -324,9 +318,6 @@ private:
 	bool expandExternProtos;
 	bool expandPrototypeInstances;
 	bool expandInlineNodes;
-
-	sigc::connection hAdjustmentConnection;
-	sigc::connection vAdjustmentConnection;
 
 };
 

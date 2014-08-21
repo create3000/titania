@@ -77,9 +77,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	           exportedNodes (false),
 	      expandExternProtos (false),
 	expandPrototypeInstances (false),
-	       expandInlineNodes (false),
-	   hAdjustmentConnection (),
-	   vAdjustmentConnection ()
+	       expandInlineNodes (false)
 {
 	// Options
 
@@ -434,9 +432,6 @@ void
 X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & executionContext)
 {
 	//__LOG__ << std::endl;
-	
-	get_hadjustment () -> set_value (0);
-	get_vadjustment () -> set_value (0);
 
 	// Remove model.
 
@@ -481,17 +476,6 @@ void
 X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
-
-	// Restore scroll positions after a root nodes change.
-
-	hAdjustmentConnection .disconnect ();
-	vAdjustmentConnection .disconnect ();
-
-	if (get_hadjustment () -> get_value ())
-		hAdjustmentConnection = get_hadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_hAdjustment_value_changed), get_hadjustment () -> get_value ()));
-	
-	if (get_vadjustment () -> get_value ())
-		vAdjustmentConnection = get_vadjustment () -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DOutlineTreeView::on_vAdjustment_value_changed), get_vadjustment () -> get_value ()));
 
 	// Unwatch model.
 
@@ -610,22 +594,6 @@ X3DOutlineTreeView::set_rootNodes ()
 }
 
 void
-X3DOutlineTreeView::on_hAdjustment_value_changed (const double value)
-{
-	hAdjustmentConnection .disconnect ();
-
-	get_hadjustment () -> set_value (value);
-}
-
-void
-X3DOutlineTreeView::on_vAdjustment_value_changed (const double value)
-{
-	vAdjustmentConnection .disconnect ();
-
-	get_vadjustment () -> set_value (value);
-}
-
-void
 X3DOutlineTreeView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
 	select_node (get_model () -> get_iter (path), path);
@@ -695,9 +663,9 @@ X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, cons
 	routeGraph -> expand (iter);
 	treeObserver -> watch (iter, path);
 
-	auto_expand (iter);
-
 	columns_autosize (); // Resizes all columns to their optimal width.
+
+	auto_expand (iter);
 }
 
 bool

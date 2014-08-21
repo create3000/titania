@@ -277,6 +277,15 @@ BrowserWindow::set_executionContext ()
 // Selection
 
 void
+BrowserWindow::set_touchTime ()
+{
+	if (getBrowser () -> getSelection () -> getChildren () .empty ())
+		return;
+
+	expandNodes ({ getBrowser () -> getSelection () -> getChildren () .back () });
+}
+
+void
 BrowserWindow::set_selection (const X3D::MFNode & selection)
 {
 	const bool inScene        = not inPrototypeInstance ();
@@ -1544,17 +1553,10 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
 
 	if (getFollowPrimarySelectionMenuItem () .get_active ())
-		getBrowser () -> getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_pickedTime);
+		getBrowser () -> getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
 
 	else
-		getBrowser () -> getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_pickedTime);
-}
-
-void
-BrowserWindow::set_pickedTime ()
-{
-	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
-		getOutlineTreeView () -> expand_to (getBrowser () -> getSelection () -> getChildren () .back ());
+		getBrowser () -> getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_touchTime);
 }
 
 // Layout

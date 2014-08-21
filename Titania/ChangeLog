@@ -1,5 +1,15 @@
 2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* OutlineEditor.cpp:
+	* OutlineSelection.cpp:
+	* X3DOutlineTreeView.h:
+	* X3DOutlineTreeView.cpp:
+	* X3DMaterialEditor.cpp: 
+
+2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* NodeIndex.cpp:
 	* InlineEditor.cpp: 
