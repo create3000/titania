@@ -1,5 +1,15 @@
 2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* X3DUserInterface.cpp:
+	* SFColorButton.h:
+	* SFColorRGBAButton.h:
+	* NodePropertiesEditor.xml:
+	* LineProperties.x3dv:
+	* X3DLinePropertiesEditor.cpp: 
+
+2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* OutlineEditor.cpp:

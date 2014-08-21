@@ -154,6 +154,7 @@ X3DLinePropertiesEditor::set_node ()
 	if (not lineProperties)
 	{
 		lineProperties = new X3D::LineProperties (getExecutionContext ());
+		lineProperties -> linewidthScaleFactor () = 1;
 		lineProperties -> setup ();
 	}
 

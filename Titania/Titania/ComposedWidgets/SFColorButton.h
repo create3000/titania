@@ -82,8 +82,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFColorButton ()
-	{ dispose (); }
+	~SFColorButton ();
 
 
 private:
@@ -391,6 +390,13 @@ SFColorButton::to_rgba (const X3D::Color3f & value)
 
 	color .set_rgba (value .r (), value .g (), value .b (), 1);
 	return color;
+}
+
+inline
+SFColorButton::~SFColorButton ()
+{
+	colorButton .remove ();
+	dispose ();
 }
 
 } // puck

@@ -82,7 +82,7 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::s
 	                 gconf (configKey, widgetName),
 	constructed_connection (),
 	         userInterface (),
-	               dialogs ()
+	               dialogs (new DialogIndex ())
 {
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
@@ -139,7 +139,7 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 bool
 X3DUserInterface::hasDialog (const std::string & name) const
 {
-	return dialogs .count (name);
+	return dialogs -> count (name);
 }
 
 std::shared_ptr <X3DUserInterface>
@@ -148,7 +148,7 @@ throw (std::out_of_range)
 {
 	try
 	{
-		const auto dialog = dialogs .at (name);
+		const auto dialog = dialogs -> at (name);
 
 		if (present)
 			dialog -> getWindow () .present ();
@@ -159,7 +159,7 @@ throw (std::out_of_range)
 	{
 		const auto dialog = dialogFactory -> createDialog (name, getBrowserWindow ());
 
-		dialogs .emplace (name, dialog);
+		dialogs -> emplace (name, dialog);
 		dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
 
 		if (present)
@@ -172,7 +172,13 @@ throw (std::out_of_range)
 void
 X3DUserInterface::removeDialog (const std::string & name)
 {
-	dialogs .erase (name);
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DUserInterface::removeDialogImpl), dialogs, name));
+}
+
+void
+X3DUserInterface::removeDialogImpl (const std::shared_ptr <DialogIndex> & dialogs, const std::string & name)
+{
+	dialogs -> erase (name);
 }
 
 void
@@ -258,7 +264,7 @@ X3DUserInterface::saveSession ()
 
 	std::string dialogNames;
 
-	for (const auto & pair : dialogs)
+	for (const auto & pair : *dialogs)
 	{
 		dialogNames += pair .first;
 		dialogNames += ";";
@@ -271,10 +277,10 @@ X3DUserInterface::saveSession ()
 
 	// Close dialogs
 
-	for (const auto & pair : dialogs)
+	for (const auto & pair : *dialogs)
 		pair .second -> close ();
 
-	dialogs .clear ();
+	dialogs -> clear ();
 }
 
 bool

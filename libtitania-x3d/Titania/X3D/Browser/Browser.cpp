@@ -199,7 +199,6 @@ Browser::dispose ()
 
 	X3DBrowser::dispose ();
 	opengl::Surface::dispose (); /// XXX
-	unparent ();
 }
 
 } // X3D

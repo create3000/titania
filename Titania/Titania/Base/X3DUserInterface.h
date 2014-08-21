@@ -89,9 +89,6 @@ public:
 	addDialog (const std::string &, const bool = true)
 	throw (std::out_of_range);
 
-	void
-	removeDialog (const std::string &);
-
 	///  @name Operations
 
 	void
@@ -159,7 +156,8 @@ protected:
 
 private:
 
-	typedef std::list <X3DUserInterface*> UserInterfaceArray;
+	using UserInterfaceArray = std::list <X3DUserInterface*>;
+	using DialogIndex        = std::map <std::string, std::shared_ptr <X3DUserInterface>>;
 
 	///  @name Construction
 
@@ -182,6 +180,13 @@ private:
 	///  @name Operations
 
 	void
+	removeDialog (const std::string &);
+
+	static
+	void
+	removeDialogImpl (const std::shared_ptr <DialogIndex> &, const std::string &);
+
+	void
 	restoreInterface ();
 
 	void
@@ -201,8 +206,7 @@ private:
 	Configuration                 gconf;
 	sigc::connection              constructed_connection;
 	UserInterfaceArray::iterator  userInterface;
-
-	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
+	std::shared_ptr <DialogIndex> dialogs;
 
 
 };
