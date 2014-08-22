@@ -467,6 +467,12 @@ public:
 	       Error <DISPOSED>)
 	{ return *rootNodes; }
 
+	const SFTime &
+	sceneGraph_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return sceneGraphOutput; }
+
 	///  @name Dynamic route node handling
 
 	const RoutePtr &
@@ -675,6 +681,7 @@ private:
 	SFTime             externProtosOutput;
 	RouteArray         routes;
 	MFNode* const      rootNodes;
+	SFTime             sceneGraphOutput;
 
 	MFNode uninitializedNodes;
 

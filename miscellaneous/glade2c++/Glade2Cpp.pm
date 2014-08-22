@@ -692,3 +692,5 @@ focus_out_event
   virtual bool on_focus_out_event(GdkEventFocus* event);
 hide
   virtual void on_hide();
+show_menu
+  virtual void on_show_menu();

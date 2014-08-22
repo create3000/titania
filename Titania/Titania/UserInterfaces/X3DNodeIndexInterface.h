@@ -107,9 +107,21 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getHeaderBox () const
+	{ return *m_HeaderBox; }
+
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
+
 	Gtk::TreeView &
 	getTreeView () const
 	{ return *m_TreeView; }
+
+	Gtk::Box &
+	getFooterBox () const
+	{ return *m_FooterBox; }
 
 	virtual
 	void
@@ -131,7 +143,10 @@ private:
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
 	Gtk::Window*                  m_Window;
 	Gtk::Box*                     m_Widget;
+	Gtk::Box*                     m_HeaderBox;
+	Gtk::ScrolledWindow*          m_ScrolledWindow;
 	Gtk::TreeView*                m_TreeView;
+	Gtk::Box*                     m_FooterBox;
 
 };
 

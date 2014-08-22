@@ -108,6 +108,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	  externProtosOutput (),
 	              routes (),
 	           rootNodes (new MFNode ()),
+	    sceneGraphOutput (),
 	  uninitializedNodes ()
 {
 	addType (X3DConstants::X3DExecutionContext);
@@ -116,6 +117,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	             importedNodesOutput,
 	             prototypesOutput,
 	             externProtosOutput,
+	             sceneGraphOutput,
 	             uninitializedNodes);
 
 	// Root nodes must be added and removed as/from child in the node that derives from X3DExecutionContext.

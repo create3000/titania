@@ -64,6 +64,7 @@
 #include "../Widgets/OutlineEditor/OutlineTreeModel.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 #include "../Widgets/ViewpointList/ViewpointList.h"
+#include "../Widgets/ScriptEditor/ScriptEditor.h"
 
 #include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
@@ -85,6 +86,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 	     libraryView (new LibraryView (this)),
 	   outlineEditor (new OutlineEditor (this)),
 	         console (new Console (this)),
+	    scriptEditor (new ScriptEditor (this)),
 	            keys (),
 	       shortcuts (true),
 	          toggle (true),
@@ -111,6 +113,7 @@ BrowserWindow::initialize ()
 	libraryView   -> reparent (getLibraryViewBox (),   getWindow ());
 	outlineEditor -> reparent (getOutlineEditorBox (), getWindow ());
 	console       -> reparent (getConsoleBox (),       getWindow ());
+	scriptEditor  -> reparent (getScriptEditorBox (),  getWindow ());
 
 	loadStyles ();
 
@@ -1024,6 +1027,7 @@ BrowserWindow::enableEditor (const bool enabled)
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
+	getScriptEditorBox ()  .set_visible (enabled);
 
 	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);

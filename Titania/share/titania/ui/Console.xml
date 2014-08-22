@@ -11,8 +11,6 @@
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <signal name="map" handler="on_map" swapped="no"/>
-        <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
           <object class="GtkScrolledWindow" id="Console">
             <property name="visible">True</property>
@@ -22,6 +20,7 @@
               <object class="GtkTextView" id="TextView">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="editable">False</property>
                 <property name="buffer">TextBuffer</property>
               </object>
             </child>
@@ -33,52 +32,40 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box1">
+          <object class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
+            <property name="toolbar_style">icons</property>
+            <property name="icon_size">1</property>
             <child>
-              <object class="GtkToolbar" id="toolbar1">
+              <object class="GtkToggleToolButton" id="SuspendButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <property name="toolbar_style">icons</property>
-                <property name="icon_size">1</property>
-                <child>
-                  <object class="GtkToggleToolButton" id="SuspendButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Suspend output.</property>
-                    <property name="label" translatable="yes">Suspend</property>
-                    <property name="use_underline">True</property>
-                    <property name="stock_id">gtk-stop</property>
-                    <signal name="toggled" handler="on_suspend_button_toggled" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToolButton" id="ClearButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Clear Console.</property>
-                    <property name="label" translatable="yes">Clear</property>
-                    <property name="use_underline">True</property>
-                    <property name="stock_id">gtk-clear</property>
-                    <signal name="clicked" handler="on_clear_button_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
+                <property name="tooltip_text" translatable="yes">Suspend output.</property>
+                <property name="label" translatable="yes">Suspend</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-stop</property>
+                <signal name="toggled" handler="on_suspend_button_toggled" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ClearButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Clear Console.</property>
+                <property name="label" translatable="yes">Clear</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-clear</property>
+                <signal name="clicked" handler="on_clear_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
           </object>

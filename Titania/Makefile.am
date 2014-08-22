@@ -80,6 +80,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrototypeInstanceDialogInterface.cpp \
+	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
@@ -101,6 +102,7 @@ titania_SOURCES =  \
 	Titania/Widgets/OutlineEditor/OutlineTreeObserver.cpp \
 	Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp \
+	Titania/Widgets/ScriptEditor/ScriptEditor.cpp \
 	Titania/Widgets/ViewpointList/ViewpointList.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \

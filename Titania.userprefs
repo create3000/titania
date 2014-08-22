@@ -1,11 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.h" Line="57" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="79" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp" Line="20" Column="3" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="95" Column="10" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="66" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,6 +19,11 @@
               <Node name="Basic" expanded="True" />
             </Node>
           </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
@@ -31,8 +34,12 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="Scripting" expanded="True" />
@@ -41,6 +48,7 @@
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
                 <Node name="Prototype" expanded="True" />
                 <Node name="Routing" expanded="True" />
               </Node>
@@ -50,27 +58,30 @@
             <Node name="config" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True" />
+                <Node name="Library" expanded="True">
+                  <Node name="Components" expanded="True">
+                    <Node name="Shape" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
+                </Node>
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="ComposedWidgets" expanded="True" />
-              <Node name="Dialogs" expanded="True">
-                <Node name="NodeIndex" expanded="True" />
-              </Node>
               <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True">
-                  <Node name="X3DLinePropertiesEditor.cpp" selected="True" />
+                <Node name="AppearanceEditor" expanded="True" />
+                <Node name="InlineEditor" expanded="True">
+                  <Node name="InlineEditor.cpp" selected="True" />
                 </Node>
-                <Node name="InlineEditor" expanded="True" />
-                <Node name="LightEditor" expanded="True" />
-                <Node name="NodePropertiesEditor" expanded="True" />
-                <Node name="TextureEditor" expanded="True" />
+              </Node>
+              <Node name="Widgets" expanded="True">
+                <Node name="Console" expanded="True" />
+                <Node name="ScriptEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

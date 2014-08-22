@@ -310,8 +310,29 @@ throw (Error <INVALID_URL>,
 	
 	osstream
 		<< "Couldn't load URL '" << transformedURL << "'." << std::endl
-		<< "Reason: " << istream .reason () << std::endl
-		<< "Status: " << basic::to_string (istream .status ()) << std::endl;
+		<< "Status: " << basic::to_string (istream .status ()) << ", " << istream .reason () << std::endl;
+
+	switch (istream .status ())
+	{
+		case 300: // Multiple Choices
+		case 301: // Moved Permanently
+		case 302: // Found
+		case 303: // See Other
+		//case 304: // Not Modified
+		case 305: // Use Proxy
+		//case 306: // (reserviert)
+		case 307: // Temporary Redirect
+		case 308: // Permanent Redirect
+		{
+			try
+			{
+				std::string location = "Location: '" + istream .response_headers () .at ("Location") + "'\n";
+				osstream << location;
+			}
+			catch (...)
+			{ }
+		}
+	}
 
 	std::clog << osstream .str ();
 

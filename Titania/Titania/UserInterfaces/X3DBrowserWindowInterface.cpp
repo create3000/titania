@@ -359,6 +359,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FooterNotebook -> set_name ("FooterNotebook");
 	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
 	m_ConsoleBox -> set_name ("ConsoleBox");
+	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
+	m_ScriptEditorBox -> set_name ("ScriptEditorBox");
 	m_builder -> get_widget ("SideBar", m_SideBar);
 	m_SideBar -> set_name ("SideBar");
 	m_builder -> get_widget ("SideBarLabel", m_SideBarLabel);

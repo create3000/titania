@@ -60,8 +60,11 @@ Console::Console (BrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DConsoleInterface (get_ui ("Console.xml"), gconf_dir ()),
 	             mapped (false),
-	            enabled (true)
+	             follow (true)
 {
+	getBrowserWindow () -> getFooterNotebook () .signal_map ()   .connect (sigc::mem_fun (*this, &Console::on_map));
+	getBrowserWindow () -> getFooterNotebook () .signal_unmap () .connect (sigc::mem_fun (*this, &Console::on_unmap));
+
 	setup ();
 }
 
@@ -86,7 +89,7 @@ Console::on_unmap ()
 void
 Console::on_suspend_button_toggled ()
 {
-	enabled = not getSuspendButton () .get_active ();
+	follow = not getSuspendButton () .get_active ();
 
 	set_enabled ();
 }
@@ -100,7 +103,7 @@ Console::on_clear_button_clicked ()
 void
 Console::set_enabled ()
 {
-	if (enabled and mapped)
+	if (follow and mapped)
 	{
 		getBrowser () -> getUrlError () .addInterest (this, &Console::set_string);
 		getBrowser () -> getConsole () -> getString () .addInterest (this, &Console::set_string);

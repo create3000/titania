@@ -63,6 +63,7 @@ class OutlineEditor;
 class OutlineTreeViewEditor;
 class ViewpointList;
 class Console;
+class ScriptEditor;
 
 class BrowserWindow :
 	public X3DBrowserEditor
@@ -74,10 +75,6 @@ public:
 	BrowserWindow (const X3D::BrowserPtr &, int, char**);
 
 	/// @name Widgets
-
-	const std::shared_ptr <OutlineEditor> &
-	getOutlineEditor () const
-	{ return outlineEditor; }
 
 	const std::shared_ptr <OutlineTreeViewEditor> &
 	getOutlineTreeView () const;
@@ -631,11 +628,12 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <ViewpointList> viewpointList;
-	std::shared_ptr <HistoryView>   historyEditor;
-	std::shared_ptr <LibraryView>   libraryView;
-	std::shared_ptr <OutlineEditor> outlineEditor;
-	std::shared_ptr <Console>       console;
+	std::unique_ptr <ViewpointList> viewpointList;
+	std::unique_ptr <HistoryView>   historyEditor;
+	std::unique_ptr <LibraryView>   libraryView;
+	std::unique_ptr <OutlineEditor> outlineEditor;
+	std::unique_ptr <Console>       console;
+	std::unique_ptr <ScriptEditor>  scriptEditor;
 
 	X3D::Keys keys;
 	bool      shortcuts;

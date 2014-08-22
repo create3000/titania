@@ -348,14 +348,12 @@ public:
 	///  Increments the clone count by @a count.
 	virtual
 	void
-	addClones (const size_t count) final override
-	{ cloneCount += count; }
+	addClones (const size_t count) final override;
 
 	///  Decrements the clone count by @a count.
 	virtual
 	void
-	removeClones (const size_t count) final override
-	{ cloneCount -= count; }
+	removeClones (const size_t count) final override;
 
 	/***
 	 *  @name Tool support

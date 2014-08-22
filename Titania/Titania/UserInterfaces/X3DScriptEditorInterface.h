@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_CONSOLE_H__
-#define __TMP_GLAD2CPP_CONSOLE_H__
+#ifndef __TMP_GLAD2CPP_SCRIPT_EDITOR_H__
+#define __TMP_GLAD2CPP_SCRIPT_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DConsoleInterface :
+class X3DScriptEditorInterface :
 	public X3DUserInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DConsoleInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DScriptEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
@@ -107,32 +107,56 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::ScrolledWindow &
-	getConsole () const
-	{ return *m_Console; }
+	Gtk::Paned &
+	getScriptEditor () const
+	{ return *m_ScriptEditor; }
+
+	Gtk::Box &
+	getNodeIndexBox () const
+	{ return *m_NodeIndexBox; }
+
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
+
+	Gtk::Box &
+	getScriptEditorBox () const
+	{ return *m_ScriptEditorBox; }
 
 	Gtk::TextView &
 	getTextView () const
 	{ return *m_TextView; }
 
-	Gtk::ToggleToolButton &
-	getSuspendButton () const
-	{ return *m_SuspendButton; }
+	Gtk::ToolButton &
+	getSaveButton () const
+	{ return *m_SaveButton; }
 
 	Gtk::ToolButton &
-	getClearButton () const
-	{ return *m_ClearButton; }
+	getLoadStateButton () const
+	{ return *m_LoadStateButton; }
 
 	virtual
 	void
-	on_suspend_button_toggled () = 0;
+	on_map () = 0;
 
 	virtual
 	void
-	on_clear_button_clicked () = 0;
+	on_save_clicked () = 0;
 
 	virtual
-	~X3DConsoleInterface ();
+	void
+	on_loadState_clicked () = 0;
+
+	virtual
+	~X3DScriptEditorInterface ();
 
 
 private:
@@ -147,10 +171,15 @@ private:
 	Glib::RefPtr <Gtk::TextBuffer> m_TextBuffer;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::ScrolledWindow*           m_Console;
+	Gtk::Paned*                    m_ScriptEditor;
+	Gtk::Box*                      m_NodeIndexBox;
+	Gtk::Box*                      m_NameBox;
+	Gtk::Entry*                    m_NameEntry;
+	Gtk::Button*                   m_RenameButton;
+	Gtk::Box*                      m_ScriptEditorBox;
 	Gtk::TextView*                 m_TextView;
-	Gtk::ToggleToolButton*         m_SuspendButton;
-	Gtk::ToolButton*               m_ClearButton;
+	Gtk::ToolButton*               m_SaveButton;
+	Gtk::ToolButton*               m_LoadStateButton;
 
 };
 

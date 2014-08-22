@@ -47,47 +47,77 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DNodeIndexInterface.h"
+
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_H__
+
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DScriptEditorInterface.h"
+#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
 
-const std::string X3DNodeIndexInterface::m_widgetName = "NodeIndex";
+class BrowserWindow;
+class NodeIndex;
 
-void
-X3DNodeIndexInterface::create (const std::string & filename)
+class ScriptEditor :
+	public X3DScriptEditorInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
-	m_ListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	///  @name Construction
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
-	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
-	m_HeaderBox -> set_name ("HeaderBox");
-	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_ScrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_TreeView -> set_name ("TreeView");
-	m_builder -> get_widget ("FooterBox", m_FooterBox);
-	m_FooterBox -> set_name ("FooterBox");
+	ScriptEditor (BrowserWindow* const);
 
-	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
+	///  @name Destruction
 
-	// Call construct handler of base class.
-	construct ();
-}
+	virtual
+	~ScriptEditor ();
 
-X3DNodeIndexInterface::~X3DNodeIndexInterface ()
-{
-	delete m_Window;
-}
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	on_map () final override;
+
+	///  @name Event handlers
+
+	void
+	set_node (const X3D::SFNode &);
+
+	virtual
+	void
+	on_save_clicked () final override;
+
+	void
+	set_cdata ();
+
+	void
+	connectCDATA (const X3D::MFString &);
+
+	void
+	on_loadState_clicked ();
+
+	void
+	set_loadState (const X3D::LoadState);
+
+	///  @name Members
+
+	std::unique_ptr <NodeIndex> nodeIndex;
+	NameEntry                   nodeName;
+	X3D::SFNode                 node;
+
+};
 
 } // puck
 } // titania
+
+#endif

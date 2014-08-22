@@ -1,5 +1,14 @@
 2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Loader.cpp:
+	* X3DExecutionContext.h:
+	* Script.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Loader.cpp: 
 
 2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>

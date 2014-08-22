@@ -73,6 +73,10 @@ public:
 	void
 	setTypes (const std::set <X3D::X3DConstants::NodeType> & value);
 
+	const X3D::SFNode &
+	getNode () const
+	{ return node; }
+
 	///  @name Destruction
 
 	virtual
@@ -133,6 +137,7 @@ private:
 	IndexType                              index;
 	std::set <X3D::X3DConstants::NodeType> types;
 	X3D::MFNode                            nodes;
+	X3D::SFNode                            node;
 
 };
 

@@ -1,3 +1,34 @@
+2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* style.css:
+	* Console.xml:
+	* BrowserWindow.h:
+	* Console.h:
+	* BrowserWindow.cpp:
+	* ScriptEditor.xml:
+	* BrowserWindow.xml:
+	* Console.cpp:
+	* X3DBrowserEditor.cpp:
+	* NodeIndex.h:
+	* LODEditor.xml:
+	* NodeIndex.xml:
+	* NodeIndex.cpp:
+	* url_error.wrl:
+	* LightEditor.xml:
+	* InlineEditor.xml:
+	* ScriptEditor.h:
+	* X3DConsoleInterface.h:
+	* ScriptEditor.cpp:
+	* X3DConsoleInterface.cpp:
+	* X3DNodeIndexInterface.h:
+	* X3DNodeIndexInterface.cpp:
+	* X3DScriptEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DScriptEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp: 
+
 2014-08-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DUserInterface.h:

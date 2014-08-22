@@ -1,73 +1,7 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V0.7.3
 
 META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:url_error"
-
-DEF MessageScript Script {
-  eventOut MFString type_changed
-  eventOut MFString message_changed
-
-  url "vrmlscript:
-
-function initialize ()
-{
-	var worldURL = Browser .currentScene .worldURL;
-
-	var match = worldURL .match (/type=(.*?)(;|$)/)
-	var type  = unescape (match [1]);
-
-	var match = worldURL .match (/what=(.*?)(;|$)/)
-	var what  = unescape (match [1]) .split ('\\n');
-
-	type_changed    = getType (parseInt (type));
-	message_changed = getMessage (breakLines (what, 80));
-}
-
-function getType (type)
-{
-	var string = new MFString ();
-
-	switch (type)
-	{
-		case 13: string [0] = \"Invalid Operation Timing\"; break;
-		case 15: string [0] = \"Invalid URL\";              break;
-		case 21: string [0] = \"URL Unavailable\";          break;
-		case 16:
-		default: string [0] = \"Invalid X3D\";              break;
-	}
-
-	return string;
-}
-
-function breakLines (array, columns)
-{
-	var result = [ ];
-
-	for each (var string in array)
-	{
-		if (string .length)
-		{
-			for (var i = 0; i < string .length; i += columns)
-				result .push (string .substr (i, columns));
-		}
-		else
-			result .push (string);
-	}
-
-	return result;
-}
-
-function getMessage (array)
-{
-	var string = new MFString ();
-
-	for each (var s in array)
-		string [string .length] = s;
-
-	return string;
-}
-"
-}
 
 LayerSet {
   activeLayer 1
@@ -97,71 +31,7 @@ LayerSet {
       DEF White Background {
         skyColor 1 1 1
       }
-      DEF Type Transform {
-        translation -237 167 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
-            }
-          }
-          geometry DEF _1 Text {
-            string "URL Unavailable"
-            fontStyle ScreenFontStyle {
-              family [
-                "Ubuntu",
-                "SANS"
-              ]
-              style "BOLD"
-              pointSize 22.43
-              spacing 1.6
-              justify [
-                "BEGIN",
-                "END"
-              ]
-            }
-          }
-        }
-      }
-      DEF Message Transform {
-        translation -280 144 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
-            }
-          }
-          geometry DEF _2 Text {
-            string [
-              "Couldn't load any URL of \"file:///home/holger/Projekte/Titania/Library/Tests/Err",
-              "ors/error.wrl\":",
-              "********************************************************************************",
-              "Parser error at line 4:12",
-              "in 'file:///home/holger/Projekte/Titania/Library/Tests/Errors/error.wrl'",
-              "",
-              "Box {",
-              "  size 8 8 asd",
-              "           ^",
-              "To less values, must be a multiple of 3.",
-              "********************************************************************************",
-              ""
-            ]
-            fontStyle ScreenFontStyle {
-              family [
-                "Ubuntu Mono",
-                "TYPEWRITER"
-              ]
-              pointSize 8
-              spacing 1.6
-              justify [
-                "BEGIN",
-                "BEGIN"
-              ]
-            }
-          }
-        }
-      }
-      DEF dialog-error Transform {
+      DEF DialogErrorImage Transform {
         translation -265 181 0
         scale 16 16 1
         children Shape {
@@ -209,9 +79,213 @@ LayerSet {
           }
         }
       }
+      DEF Type Transform {
+        translation -237 167 0
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry DEF _1 Text {
+            string "URL Unavailable"
+            fontStyle ScreenFontStyle {
+              family [
+                "Ubuntu",
+                "SANS"
+              ]
+              style "BOLD"
+              pointSize 22.43
+              spacing 1.6
+              justify [
+                "BEGIN",
+                "END"
+              ]
+            }
+          }
+        }
+      }
+      DEF Message Transform {
+        translation -280 144 0
+        children [
+          DEF Error Transform {
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry DEF _2 Text {
+                string [
+                  "Couldn't load URL 'http://www.web3d.org/x3d/content/examples/ConformanceNist/App",
+                  "earance/FontStyle/serif_family.x3dv'.",
+                  "Status: 301, Moved Permanently",
+                  "Location: 'http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/A",
+                  "ppearance/FontStyle/serif_family.x3dv'",
+                  ""
+                ]
+                fontStyle DEF _3 ScreenFontStyle {
+                  family [
+                    "Ubuntu Mono",
+                    "TYPEWRITER"
+                  ]
+                  pointSize 8
+                  spacing 1.6
+                  justify [
+                    "BEGIN",
+                    "BEGIN"
+                  ]
+                }
+              }
+            }
+          }
+          DEF Location_1 Anchor {
+            description "New Location"
+            url "http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/Appearance/FontStyle/serif_family.x3dv'"
+            children DEF Location Transform {
+              translation 0 -94 0
+              children [
+                Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                    }
+                  }
+                  geometry DEF _4 Text {
+                    string [
+                      "Try: 'http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/Appear",
+                      "ance/FontStyle/serif_family.x3dv'"
+                    ]
+                    fontStyle ScreenFontStyle {
+                      family [
+                        "Ubuntu Mono",
+                        "TYPEWRITER"
+                      ]
+                      pointSize 8
+                      spacing 1.6
+                      justify [
+                        "BEGIN",
+                        "BEGIN"
+                      ]
+                    }
+                  }
+                }
+                DEF _5 Script {
+                  eventIn  SFVec2f set_textBounds
+                  eventOut SFVec3f translation_changed
+
+                  url "javascript:
+
+function set_textBounds (value)
+{
+	translation_changed = new SFVec3f (0, -value .y, 0);
+}
+
+"
+                }
+              ]
+            }
+          }
+        ]
+      }
+      DEF MessageScript Script {
+        eventOut MFString type_changed
+        eventOut MFString error_changed
+        eventOut MFString locationURL_changed
+        eventOut MFString location_changed
+        field    SFNode   screenFontStyle USE _3
+
+        url "vrmlscript:
+
+function initialize ()
+{
+	var worldURL = Browser .currentScene .worldURL;
+
+	var match = worldURL .match (/type=(.*?)(;|$)/)
+	var type  = unescape (match [1]);
+
+	var match     = worldURL .match (/what=(.*?)(;|$)/)
+	var what      = unescape (match [1]) .split ('\\n');
+	var url       = [ ];
+	var locations = getLocations (what, url);
+
+	type_changed        = getType (parseInt (type));
+	error_changed       = toMFString (breakLines (what, 80));
+	locationURL_changed = toMFString (url);
+	location_changed    = toMFString (breakLines (locations, 80))
+}
+
+function getType (type)
+{
+	var string = new MFString ();
+
+	switch (type)
+	{
+		case 13: string [0] = \"Invalid Operation Timing\"; break;
+		case 15: string [0] = \"Invalid URL\";              break;
+		case 21: string [0] = \"URL Unavailable\";          break;
+		case 16:
+		default: string [0] = \"Invalid X3D\";              break;
+	}
+
+	return string;
+}
+
+function getLocations (array, url)
+{
+	var locations = [ ];
+
+	for each (var s in array)
+	{
+		var match = s .match (/^Location:\\s*'(.*?')/);
+
+		if (match)
+		{
+			locations .push (s .replace (/Location:/, \"Try:\"));
+			url .push (match [1]);
+		}
+	}
+
+	return locations;
+
+}
+
+function breakLines (array, columns)
+{
+	var result = [ ];
+
+	for each (var string in array)
+	{
+		if (string .length)
+		{
+			for (var i = 0; i < string .length; i += columns)
+				result .push (string .substr (i, columns));
+		}
+		else
+			result .push (string);
+	}
+
+	return result;
+}
+
+function toMFString (array)
+{
+	var string = new MFString ();
+
+	for each (var s in array)
+		string [string .length] = s;
+
+	return string;
+}
+"
+      }
     ]
   }
 }
 
-ROUTE MessageScript.message_changed TO _2.set_string
 ROUTE MessageScript.type_changed TO _1.set_string
+ROUTE _2.textBounds TO _5.set_textBounds
+ROUTE _5.translation_changed TO Location.set_translation
+ROUTE MessageScript.error_changed TO _2.set_string
+ROUTE MessageScript.location_changed TO _4.set_string
+ROUTE MessageScript.locationURL_changed TO Location_1.set_url

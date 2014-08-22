@@ -72,8 +72,11 @@ NodeIndex::NodeIndex (BrowserWindow* const browserWindow) :
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ()),
 	     executionContext (),
 	                index (NAMED_NODES_INDEX),
-	                types ()
+	                types (),
+	                nodes (),
+	                 node ()
 {
+	addChildren (node);
 	setup ();
 }
 
@@ -90,6 +93,8 @@ NodeIndex::initialize ()
 void
 NodeIndex::setNamedNodes ()
 {
+	executionContext -> sceneGraph_changed () .removeInterest (this, &NodeIndex::refresh);
+
 	index = NAMED_NODES_INDEX;
 	setNodes (getNodes ());
 }
@@ -97,6 +102,8 @@ NodeIndex::setNamedNodes ()
 void
 NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 {
+	executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
+
 	index = TYPE_INDEX;
 	types = value;
 	setNodes (getNodes (types));
@@ -249,8 +256,9 @@ NodeIndex::set_executionContext ()
 {
 	if (executionContext)
 	{
-		executionContext -> namedNodes_changed () .removeInterest (this, &NodeIndex::refresh);
+		executionContext -> namedNodes_changed ()    .removeInterest (this, &NodeIndex::refresh);
 		executionContext -> importedNodes_changed () .removeInterest (this, &NodeIndex::refresh);
+		executionContext -> sceneGraph_changed ()    .removeInterest (this, &NodeIndex::refresh);
 	}
 
 	X3D::X3DPtr <X3D::X3DScene> scene (executionContext);
@@ -262,7 +270,11 @@ NodeIndex::set_executionContext ()
 	executionContext -> namedNodes_changed ()    .addInterest (this, &NodeIndex::refresh);
 	executionContext -> importedNodes_changed () .addInterest (this, &NodeIndex::refresh);
 
+	if (index == TYPE_INDEX)
+		executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
+
 	scene = executionContext;
+	node  = nullptr;
 
 	if (scene)
 		scene -> exportedNodes_changed () .addInterest (this, &NodeIndex::refresh);
@@ -273,7 +285,9 @@ NodeIndex::set_executionContext ()
 void
 NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	const X3D::MFNode selection = { nodes [path .front ()] };
+	node = nodes [path .front ()];
+
+	const X3D::MFNode selection = { node };
 
 	getBrowser () -> getSelection () -> setChildren (selection);
 	getBrowserWindow () -> expandNodes (selection);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -336,7 +336,7 @@ X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field,
 		const size_t size = field .size ();
 
 		using resize = void (X3D::MFNode::*) (const X3D::MFNode::size_type);
-	
+
 		undoStep -> addUndoFunction ((resize) &X3D::MFNode::resize, std::ref (field), size);
 
 		// Imported scene
@@ -1091,8 +1091,8 @@ X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContex
 		if (inlineNode and inlineNode -> load ())
 			inlineNodes .emplace (inlineNode);
 	}
-	
-	removeImportedNodes (executionContext, inlineNodes, undoStep);				
+
+	removeImportedNodes (executionContext, inlineNodes, undoStep);
 	removeNamedNodes (executionContext, nodes, undoStep);
 
 	// If it is previously known that the node isn't in the scene graph anymore, it must not removed.
@@ -1236,7 +1236,7 @@ void
 X3DBrowserEditor::removeImportedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::InlinePtr> & inlineNodes, const UndoStepPtr & undoStep)
 {
 	// Remove nodes imported from node
-	
+
 	std::set <X3D::InlinePtr> immediateNodes;
 
 	for (const auto & pair : X3D::ImportedNodeIndex (executionContext -> getImportedNodes ()))
@@ -2379,7 +2379,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 
 	if (string not_eq *cdata)
 	{
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit CDATA Field"));
+		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
 
 		undoStep -> addObjects (node);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, getBrowserWindow () -> getOutlineTreeView ());

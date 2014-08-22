@@ -78,13 +78,11 @@ private:
 
 	///  @name Event handlers
 	
-	virtual
 	void
-	on_map () final override;
+	on_map ();
 
-	virtual
 	void
-	on_unmap () final override;
+	on_unmap ();
 
 	virtual
 	void
@@ -103,7 +101,7 @@ private:
 	///  @name Members
 
 	bool mapped;
-	bool enabled;
+	bool follow;
 
 };
 

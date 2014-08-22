@@ -167,8 +167,8 @@ Script::requestImmediateLoad ()
 		{
 			try
 			{
-				javaScript .set (getBrowser () -> getJavaScriptEngine (scheme) -> createContext (this, ecmascript, getWorldURL ()));
-
+				X3DPtr <X3DJavaScriptContext> javaScript (getBrowser () -> getJavaScriptEngine (scheme) -> createContext (this, ecmascript, getWorldURL ()));
+				
 				// Initialize.
 
 				isLive () .addInterest (javaScript -> isLive ());
@@ -176,6 +176,7 @@ Script::requestImmediateLoad ()
 				javaScript -> isLive () = isLive ();
 				javaScript -> setup ();
 
+				this -> javaScript = std::move (javaScript);
 				setLoadState (COMPLETE_STATE);
 				break;
 			}

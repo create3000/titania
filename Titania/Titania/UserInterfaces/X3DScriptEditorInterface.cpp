@@ -47,44 +47,58 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DNodeIndexInterface.h"
+#include "X3DScriptEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DNodeIndexInterface::m_widgetName = "NodeIndex";
+const std::string X3DScriptEditorInterface::m_widgetName = "ScriptEditor";
 
 void
-X3DNodeIndexInterface::create (const std::string & filename)
+X3DScriptEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_ListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_TextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
-	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
-	m_HeaderBox -> set_name ("HeaderBox");
-	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_ScrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_TreeView -> set_name ("TreeView");
-	m_builder -> get_widget ("FooterBox", m_FooterBox);
-	m_FooterBox -> set_name ("FooterBox");
+	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
+	m_ScriptEditor -> set_name ("ScriptEditor");
+	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
+	m_NodeIndexBox -> set_name ("NodeIndexBox");
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_NameBox -> set_name ("NameBox");
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_NameEntry -> set_name ("NameEntry");
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_RenameButton -> set_name ("RenameButton");
+	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
+	m_ScriptEditorBox -> set_name ("ScriptEditorBox");
+	m_builder -> get_widget ("TextView", m_TextView);
+	m_TextView -> set_name ("TextView");
+	m_builder -> get_widget ("SaveButton", m_SaveButton);
+	m_SaveButton -> set_name ("SaveButton");
+	m_builder -> get_widget ("LoadStateButton", m_LoadStateButton);
+	m_LoadStateButton -> set_name ("LoadStateButton");
 
-	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
+
+	// Connect object Gtk::ToolButton with id 'SaveButton'.
+	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_save_clicked));
+	m_LoadStateButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_loadState_clicked));
 
 	// Call construct handler of base class.
 	construct ();
 }
 
-X3DNodeIndexInterface::~X3DNodeIndexInterface ()
+X3DScriptEditorInterface::~X3DScriptEditorInterface ()
 {
 	delete m_Window;
 }
