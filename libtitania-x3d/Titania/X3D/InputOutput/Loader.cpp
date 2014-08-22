@@ -55,6 +55,8 @@
 #include "../Execution/Scene.h"
 #include "../Miscellaneous/GoldenGate.h"
 
+#include <Titania/String/to_string.h>
+
 namespace titania {
 namespace X3D {
 
@@ -207,7 +209,7 @@ throw (Error <INVALID_URL>,
 		error << string .str ();
 
 	if (url .size () == 1)
-		throw Error <URL_UNAVAILABLE> ("Couldn't load URL " + url .toString () + ":\n" + error .str ());
+		throw Error <URL_UNAVAILABLE> (error .str ());
 
 	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + ":\n" + error .str ());
 }
@@ -304,10 +306,16 @@ throw (Error <INVALID_URL>,
 		}
 	}
 
-	//std::clog << "Failed." << std::endl;
-	std::clog << "Couldn't load URL '" + transformedURL + "': " + istream .reason () << std::endl;
+	std::ostringstream osstream;
+	
+	osstream
+		<< "Couldn't load URL '" << transformedURL << "'." << std::endl
+		<< "Reason: " << istream .reason () << std::endl
+		<< "Status: " << basic::to_string (istream .status ()) << std::endl;
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'.\n" + istream .reason ());
+	std::clog << osstream .str ();
+
+	throw Error <URL_UNAVAILABLE> (osstream .str ());
 }
 
 } // X3D

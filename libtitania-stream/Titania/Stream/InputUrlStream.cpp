@@ -74,20 +74,22 @@ iurlstream::open (const basic::uri & url, size_t timeout)
 {
 	clear ();
 
-	if (not buf -> open (url, timeout))
-		setstate (std::ios::failbit);
+	if (buf -> open (url, timeout))
+		return;
+
+	setstate (std::ios::failbit);
 }
 
 void
 iurlstream::send ()
 {
-	if (buf -> send (request_headers_map))
-	{
-		while (parse_status_line ())
-			parse_response_headers ();
+	const bool ok = buf -> send (request_headers_map);
 
+	while (parse_status_line ())
+		parse_response_headers ();
+
+	if (ok)
 		return;
-	}
 
 	setstate (std::ios::failbit);
 }
