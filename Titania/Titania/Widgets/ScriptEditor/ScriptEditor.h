@@ -88,6 +88,11 @@ private:
 	void
 	on_map () final override;
 
+	///  @name Member access
+
+	void
+	setTabs (const size_t);
+
 	///  @name Event handlers
 
 	void

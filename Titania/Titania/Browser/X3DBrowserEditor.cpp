@@ -2311,9 +2311,9 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 		<< "/**" << std::endl
 		<< " * " << node -> getTypeName () << " " << name << std::endl
 		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields. Each SFString value is enclosed inside a CDATA") << std::endl
-		<< " * " << _ ("section.  A CDATA section starts with \"<![CDATA[javascript:\" and ends with \"]]>\".") << std::endl
+		<< " * " << _ ("section.  A CDATA section starts with \"<![CDATA[\" and ends with \"]]>\".") << std::endl
 		<< " * " << std::endl
-		<< " * " << _ ("If this is a Script node, a inline script must be enclosed in \"<![CDATA[javascript: your program here ]]>\".") << std::endl
+		<< " * " << _ ("If this is a Script node, a inline script must be enclosed in \"<![CDATA[ecmascript: your program here ]]>\".") << std::endl
 		<< " * " << _ ("If this is a shader, it must be enclosed in \"<![CDATA[data:text/plain, your shader here ]]>\".  Just save") << std::endl
 		<< " * " << _ ("this file to apply changes.") << std::endl
 		<< " **/" << std::endl;
@@ -2394,7 +2394,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 		addUndoStep (undoStep);
 	}
 
-	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", _ ("Script saved."));
+	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 }
 
 void

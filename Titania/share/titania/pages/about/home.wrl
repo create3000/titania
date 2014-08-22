@@ -1,21 +1,21 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.3
 
 META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:home"
 
 EXTERNPROTO Rotor [
-  inputOutput SFBool     enabled
-  inputOutput SFTime     cycleInterval
-  inputOutput SFVec3f    axis
-  inputOutput SFFloat    angle
-  inputOutput SFBool     loop
-  inputOutput SFTime     startTime
-  inputOutput SFTime     pauseTime
-  inputOutput SFTime     resumeTime
-  inputOutput SFTime     stopTime
-  outputOnly  SFBool     isActive
-  outputOnly  SFTime     cycleTime
-  outputOnly  SFRotation rotation_changed
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFVec3f    axis
+  exposedField SFFloat    angle
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     pauseTime
+  exposedField SFTime     resumeTime
+  exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
+  eventOut     SFTime     cycleTime
+  eventOut     SFRotation rotation_changed
 ]
 "library/Rotor.wrl"
 
@@ -29,7 +29,7 @@ DEF White Background {
 
 DEF Home Viewpoint {
   description "Home"
-  position 0 0 0.5
+  position 0 0 34
 }
 
 DEF Fastener Rotor {
@@ -45,6 +45,7 @@ DEF Slower Rotor {
 
 DEF _1 TimeSensor {
   cycleInterval 40
+  startTime 1408738676.4655
 }
 
 DEF _2 ScalarInterpolator {
@@ -103,6 +104,7 @@ DEF Titania Transform {
 }
 
 DEF Small Transform {
+  rotation 0 0 -1 5.73428
   scale 0.222222 0.222222 1
   children DEF loops Inline {
     url "library/red.orange.yellow.wrl"
@@ -114,6 +116,7 @@ DEF Medium Transform {
 }
 
 DEF Large Transform {
+  rotation 0 0 1 4.65809
   scale 4.5 4.5 1
   children USE loops
 }
@@ -123,7 +126,7 @@ DEF _5 LoadSensor {
 }
 
 Script {
-  url "javascript:
+  url "ecmascript:
 function initialize ()
 {
 	Browser .setBrowserOption ('Dashboard', false);

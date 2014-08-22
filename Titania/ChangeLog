@@ -1,5 +1,12 @@
 2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* home.wrl:
+	* X3DBrowserEditor.cpp:
+	* ScriptEditor.h:
+	* ScriptEditor.cpp: 
+
+2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* style.css:

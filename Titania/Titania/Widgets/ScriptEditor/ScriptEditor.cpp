@@ -73,6 +73,8 @@ void
 ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
+	
+	setTabs (3);
 
 	nodeIndex -> getNode () .addInterest (this, &ScriptEditor::set_node);
 	nodeIndex -> getHeaderBox () .set_visible (false);
@@ -91,6 +93,20 @@ void
 ScriptEditor::on_map ()
 {
 	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Script Editor"));
+}
+
+void
+ScriptEditor::setTabs (const size_t width)
+{
+   const auto layout     = getTextView () .create_pango_layout ("A");
+   int        charWidth  = 0;
+   int        charHeight = 0;
+
+   layout -> get_pixel_size (charWidth, charHeight);   
+
+	Pango::TabArray tabs (1, true);
+	tabs .set_tab (0, Pango::TAB_LEFT, width * charWidth);
+	getTextView () .set_tabs (tabs);
 }
 
 void
@@ -147,8 +163,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 void
 ScriptEditor::on_save_clicked ()
 {
-	__LOG__ << std::endl;
-
 	if (not node)
 		return;
 
@@ -170,6 +184,7 @@ ScriptEditor::on_save_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 	return;
 }
 
@@ -178,7 +193,11 @@ ScriptEditor::set_cdata ()
 {
 	const auto cdata = node -> getCDATA ();
 
-	getTextBuffer () -> set_text (cdata -> get1Value (0));
+	if (cdata -> get1Value (0) .empty ())
+		getTextBuffer () -> set_text ("ecmascript:\n");
+
+	else
+		getTextBuffer () -> set_text (cdata -> get1Value (0));
 }
 
 void
