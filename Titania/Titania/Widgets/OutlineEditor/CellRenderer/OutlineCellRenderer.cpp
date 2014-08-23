@@ -515,13 +515,16 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 			minimum_width += minimum;
 			natural_width += natural;
 
-			minimum_width += ROUTE_WIDTH + ROUTE_CURVE_WIDTH + RIGHT_PAD;
-			natural_width += ROUTE_WIDTH + ROUTE_CURVE_WIDTH + RIGHT_PAD;
+			minimum_width += ROUTE_WIDTH;
+			natural_width += ROUTE_WIDTH;
 			break;
 		}
 		default:
 			break;
 	}
+
+	minimum_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
+	natural_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
 }
 
 void
@@ -675,13 +678,16 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 			minimum_width += minimum;
 			natural_width += natural;
 
-			minimum_width += ROUTE_WIDTH + ROUTE_CURVE_WIDTH + RIGHT_PAD;
-			natural_width += ROUTE_WIDTH + ROUTE_CURVE_WIDTH + RIGHT_PAD;
+			minimum_width += ROUTE_WIDTH;
+			natural_width += ROUTE_WIDTH;
 			break;
 		}
 		default:
 			break;
 	}
+
+	minimum_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
+	natural_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
 }
 
 Gtk::CellEditable*
