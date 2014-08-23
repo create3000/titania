@@ -112,6 +112,12 @@ private:
 
 	///  @name Event handlers
 
+	bool
+	on_focus_in_event (GdkEventFocus*);
+
+	bool
+	on_focus_out_event (GdkEventFocus*);
+
 	virtual
 	void
 	on_save_clicked () final override;

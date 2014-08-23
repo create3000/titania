@@ -187,7 +187,7 @@ ShaderProgram::requestImmediateLoad ()
 
 			Loader            loader (getExecutionContext ());
 			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = preProcessShaderSource (getExecutionContext (), document, loader .getWorldURL ());
+			const std::string shaderSource = preProcessShaderSource (this, document, loader .getWorldURL ());
 			const char*       string       = shaderSource .c_str ();
 
 			programId = glCreateShaderProgramv (getShaderType (), 1, &string);

@@ -87,6 +87,9 @@ ScriptEditor::initialize ()
 	getTextBuffer () -> set_highlight_matching_brackets (true);
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("tango"));
 
+	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
+	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
+
 	setTabs (3);
 	getTextView () .set_show_right_margin (true);
 	getTextView () .set_right_margin_position (100);
@@ -188,6 +191,20 @@ ScriptEditor::setTabs (const size_t width)
 
 	getTextView () .set_tabs (tabs);
 	getTextView () .set_indent_width (width);
+}
+
+bool
+ScriptEditor::on_focus_in_event (GdkEventFocus*)
+{
+	getBrowserWindow () -> hasShortcuts (false);
+	return false;
+}
+
+bool
+ScriptEditor::on_focus_out_event (GdkEventFocus*)
+{
+	getBrowserWindow () -> hasShortcuts (true);
+	return false;
 }
 
 void

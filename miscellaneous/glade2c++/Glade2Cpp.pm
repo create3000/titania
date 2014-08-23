@@ -694,3 +694,5 @@ hide
   virtual void on_hide();
 show_menu
   virtual void on_show_menu();
+focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* event);

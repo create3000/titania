@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
+preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -78,7 +78,7 @@ throw (Error <INVALID_URL>,
 	size_t      lineNumber = 1;
 	std::string line;
 	
-	output << "#line "<< lineNumber << " \"" << worldURL << "\""  << std::endl;
+	output << "#line "<< lineNumber << " \"" << worldURL << "#" << node -> getName () << "\""  << std::endl;
 
 	while (std::getline (input, line))
 	{
@@ -86,8 +86,8 @@ throw (Error <INVALID_URL>,
 
 		if (include .FullMatch (line, &filename))
 		{
-			Loader loader (executionContext);
-			output << preProcessShaderSource (executionContext, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
+			Loader loader (node -> getExecutionContext ());
+			output << preProcessShaderSource (node, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
 			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
 		}
 		else
@@ -102,13 +102,13 @@ throw (Error <INVALID_URL>,
 }
 
 std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, const size_t level)
+preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
 	std::set <basic::uri> files;
 	
-	return preProcessShaderSource (executionContext, string, worldURL, level, files);
+	return preProcessShaderSource (node, string, worldURL, level, files);
 }
 
 } // X3D
