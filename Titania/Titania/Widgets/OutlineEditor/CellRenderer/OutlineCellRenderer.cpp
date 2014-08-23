@@ -80,8 +80,8 @@ static constexpr double OUTPUT_PAD       = 7;    // Depends on image (one pixel 
 static constexpr double INPUT_OUTPUT_PAD = 9;    // Depends on image (one pixel less)
 static constexpr double CONNECTOR_WIDTH  = 6;    // Depends on image (two pixel more)
 
-static constexpr double ROUTE_WIDTH       = 16;
-static constexpr double ROUTE_CURVE_WIDTH = 16;
+static constexpr double ROUTE_WIDTH       = 8;
+static constexpr double ROUTE_CURVE_WIDTH = 8.5;
 static constexpr double ROUTE_RADIUS      = 8.5;
 static constexpr double ROUTE_INPUT_PAD   = 14;
 static constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image

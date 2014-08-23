@@ -97,7 +97,7 @@ ScriptEditor::initialize ()
 	setTabs (3);
 	getTextView () .set_show_right_margin (true);
 	getTextView () .set_right_margin_position (100);
-	getTextView () .set_highlight_current_line (true);
+	//getTextView () .set_highlight_current_line (true);
 	getTextView () .set_show_line_numbers (true);
 	getTextView () .set_show_line_marks (true);
 	getTextView () .set_auto_indent (true);
@@ -352,7 +352,7 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 		}
 		case X3D::COMPLETE_STATE:
 		{
-			getLoadStateButton () .set_stock_id (Gtk::StockID ("gtk-ok"));
+			getLoadStateButton () .set_stock_id (Gtk::StockID ("gtk-yes"));
 			break;
 		}
 		case X3D::FAILED_STATE:
