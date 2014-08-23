@@ -672,6 +672,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton2">
@@ -763,6 +764,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton9">
@@ -846,12 +848,14 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">False</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkBox" id="box10">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">2</property>
                             <child>
                               <object class="GtkSpinButton" id="spinbutton5">
                                 <property name="visible">True</property>
@@ -1001,6 +1005,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton13">
@@ -1092,6 +1097,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton16">
@@ -1175,12 +1181,14 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">False</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkBox" id="box9">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">2</property>
                             <child>
                               <object class="GtkSpinButton" id="spinbutton19">
                                 <property name="visible">True</property>
@@ -1272,6 +1280,8 @@
                   <object class="GtkGrid" id="OrthoViewpointFieldOfViewBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="row_spacing">2</property>
+                    <property name="column_spacing">2</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton12">
                         <property name="visible">True</property>
@@ -1560,6 +1570,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton27">
@@ -1651,6 +1662,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton30">
@@ -1734,12 +1746,14 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">False</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkBox" id="box13">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">2</property>
                             <child>
                               <object class="GtkSpinButton" id="spinbutton33">
                                 <property name="visible">True</property>

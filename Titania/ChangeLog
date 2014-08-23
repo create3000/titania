@@ -1,5 +1,16 @@
 2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* LODEditor.xml:
+	* url_error.wrl:
+	* TextEditor.xml:
+	* LightEditor.xml:
+	* InlineEditor.xml:
+	* TextureEditor.xml:
+	* ViewpointEditor.xml:
+	* NodePropertiesEditor.xml: 
+
+2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Console.xml:
 	* Console.h:
 	* Console.cpp:

@@ -586,6 +586,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
                         <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkSpinButton" id="DirectionalLightDirectionXSpinButton">
@@ -698,6 +699,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="PointLightLocationXSpinButton">
@@ -789,6 +791,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
+                    <property name="spacing">2</property>
                     <child>
                       <object class="GtkSpinButton" id="PointLightAttenuationXSpinButton">
                         <property name="visible">True</property>
@@ -928,6 +931,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
+                    <property name="spacing">2</property>
                     <child>
                       <object class="GtkSpinButton" id="SpotLightAttenuationXSpinButton">
                         <property name="visible">True</property>
@@ -1008,6 +1012,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="SpotLightLocationXSpinButton">
@@ -1191,6 +1196,7 @@
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
                         <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkSpinButton" id="SpotLightDirectionXSpinButton">

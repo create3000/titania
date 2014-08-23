@@ -133,6 +133,7 @@
         <child>
           <object class="GtkBox" id="box1">
             <property name="can_focus">False</property>
+            <property name="spacing">16</property>
             <child>
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
@@ -281,6 +282,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="BBoxSizeXSpinButton">
@@ -344,6 +346,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="BBoxCenterXSpinButton">
@@ -499,6 +502,7 @@
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="orientation">vertical</property>
+                    <property name="spacing">2</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow1">
                         <property name="height_request">96</property>
@@ -557,6 +561,7 @@
                       <object class="GtkBox" id="box5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkButton" id="URLAddButton">
                             <property name="visible">True</property>

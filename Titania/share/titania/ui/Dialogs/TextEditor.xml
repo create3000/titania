@@ -696,6 +696,7 @@
                       <object class="GtkBox" id="box5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkToggleButton" id="FontStyleBoldToggleButton">
                             <property name="visible">True</property>
@@ -752,6 +753,7 @@
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow2">
                             <property name="height_request">96</property>
@@ -814,19 +816,25 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButtonBox" id="buttonbox1">
+                          <object class="GtkBox" id="box7">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="layout_style">start</property>
+                            <property name="spacing">2</property>
                             <child>
                               <object class="GtkButton" id="FontStyleAddFamilyButton">
-                                <property name="label">gtk-add</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="clicked" handler="on_add_family_clicked" swapped="no"/>
+                                <child>
+                                  <object class="GtkImage" id="image6">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-add</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -836,14 +844,20 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="FontStyleRemoveFamilyButton">
-                                <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="clicked" handler="on_remove_family_clicked" swapped="no"/>
+                                <child>
+                                  <object class="GtkImage" id="image7">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-remove</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>

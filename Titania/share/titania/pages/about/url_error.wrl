@@ -118,10 +118,10 @@ LayerSet {
               geometry DEF _2 Text {
                 string [
                   "Couldn't load URL 'http://www.web3d.org/x3d/content/examples/ConformanceNist/App",
-                  "earance/FontStyle/serif_family.x3dv'.",
+                  "earance/FontStyle/next_family.x3dv'.",
                   "Status: 301, Moved Permanently",
                   "Location: 'http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/A",
-                  "ppearance/FontStyle/serif_family.x3dv'",
+                  "ppearance/FontStyle/next_family.x3dv'",
                   ""
                 ]
                 fontStyle DEF _3 ScreenFontStyle {
@@ -141,7 +141,7 @@ LayerSet {
           }
           DEF Location_1 Anchor {
             description "New Location"
-            url "http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/Appearance/FontStyle/serif_family.x3dv'"
+            url "http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/Appearance/FontStyle/next_family.x3dv'"
             children DEF Location Transform {
               translation 0 -94 0
               children [
@@ -154,7 +154,7 @@ LayerSet {
                   geometry DEF _4 Text {
                     string [
                       "Try: 'http://www.web3d.org/x3d-resources/content/examples/ConformanceNist/Appear",
-                      "ance/FontStyle/serif_family.x3dv'"
+                      "ance/FontStyle/next_family.x3dv'"
                     ]
                     fontStyle ScreenFontStyle {
                       family [
@@ -174,7 +174,7 @@ LayerSet {
                   eventIn  SFVec2f set_textBounds
                   eventOut SFVec3f translation_changed
 
-                  url "javascript:
+                  url "ecmascript:
 
 function set_textBounds (value)
 {
@@ -195,7 +195,7 @@ function set_textBounds (value)
         eventOut MFString location_changed
         field    SFNode   screenFontStyle USE _3
 
-        url "vrmlscript:
+        url "ecmascript:
 
 function initialize ()
 {
@@ -204,14 +204,14 @@ function initialize ()
 	var match = worldURL .match (/type=(.*?)(;|$)/)
 	var type  = unescape (match [1]);
 
-	var match     = worldURL .match (/what=(.*?)(;|$)/)
-	var what      = unescape (match [1]) .split ('\\n');
-	var url       = [ ];
-	var locations = getLocations (what, url);
+	var match       = worldURL .match (/what=(.*?)(;|$)/)
+	var what        = unescape (match [1]) .split ('\\n');
+	var locationURL = [ ];
+	var locations   = getLocations (what, locationURL);
 
 	type_changed        = getType (parseInt (type));
 	error_changed       = toMFString (breakLines (what, 80));
-	locationURL_changed = toMFString (url);
+	locationURL_changed = toMFString (locationURL);
 	location_changed    = toMFString (breakLines (locations, 80))
 }
 

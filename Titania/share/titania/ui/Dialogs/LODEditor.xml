@@ -212,6 +212,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="LODBBoxCenterXSpinButton">
@@ -275,6 +276,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="LODBBoxSizeXSpinButton">
@@ -413,6 +415,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <property name="spacing">2</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="LODCenterXSpinButton">

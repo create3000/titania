@@ -1,22 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="95" Column="10" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="66" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="104" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="136" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="113" Column="5" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="144" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="193" Column="1" />
+      <File FileName="Titania/run.pl" Line="26" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="475" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="154" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
               <Node name="Scripting" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Basic" expanded="True" />
+              <Node name="Shaders" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-stream" expanded="True">
@@ -27,6 +32,9 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="shaders" expanded="True">
+                  <Node name="ParticleSystems" expanded="True" />
+                </Node>
                 <Node name="tools" expanded="True" />
               </Node>
             </Node>
@@ -36,21 +44,26 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Grouping" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="Scripting" expanded="True" />
                   <Node name="Shaders" expanded="True" />
-                  <Node name="Shape" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
+                <Node name="Miscellaneous" expanded="True" />
+                <Node name="Parser" expanded="True" />
                 <Node name="Prototype" expanded="True" />
-                <Node name="Routing" expanded="True" />
+                <Node name="Thread" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
+                </Node>
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -72,16 +85,24 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="ComposedWidgets" expanded="True" />
+              <Node name="Dialogs" expanded="True">
+                <Node name="NodeIndex" expanded="True" />
+              </Node>
               <Node name="Editors" expanded="True">
                 <Node name="AppearanceEditor" expanded="True" />
-                <Node name="InlineEditor" expanded="True">
-                  <Node name="InlineEditor.cpp" selected="True" />
-                </Node>
+                <Node name="InlineEditor" expanded="True" />
+                <Node name="LightEditor" expanded="True" />
+                <Node name="NodePropertiesEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="Console" expanded="True" />
-                <Node name="ScriptEditor" expanded="True" />
+                <Node name="OutlineEditor" expanded="True" />
+                <Node name="ScriptEditor" expanded="True">
+                  <Node name="ScriptEditor.cpp" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
