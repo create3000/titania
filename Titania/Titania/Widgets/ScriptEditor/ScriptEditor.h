@@ -53,7 +53,9 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
-#include <Titania/X3D.h>
+
+#include <gtksourceviewmm/buffer.h>
+#include <gtksourceviewmm/view.h>
 
 namespace titania {
 namespace puck {
@@ -69,6 +71,18 @@ public:
 	///  @name Construction
 
 	ScriptEditor (BrowserWindow* const);
+
+	const Glib::RefPtr <Gsv::Buffer> &
+	getTextBuffer () const
+	{ return textBuffer; }
+
+	Gsv::View &
+	getTextView ()
+	{ return textView; }
+
+	const Gsv::View &
+	getTextView () const
+	{ return textView; }
 
 	///  @name Destruction
 
@@ -88,6 +102,9 @@ private:
 	void
 	on_map () final override;
 
+	void
+	set_node (const X3D::SFNode &);
+
 	///  @name Member access
 
 	void
@@ -95,12 +112,23 @@ private:
 
 	///  @name Event handlers
 
-	void
-	set_node (const X3D::SFNode &);
-
 	virtual
 	void
 	on_save_clicked () final override;
+
+	virtual
+	void
+	on_undo_clicked () final override;
+
+	void
+	on_can_undo_changed ();
+
+	void
+	on_can_redo_changed ();
+
+	virtual
+	void
+	on_redo_clicked () final override;
 
 	void
 	set_cdata ();
@@ -116,6 +144,8 @@ private:
 
 	///  @name Members
 
+	Glib::RefPtr <Gsv::Buffer>  textBuffer;
+	Gsv::View                   textView;
 	std::unique_ptr <NodeIndex> nodeIndex;
 	NameEntry                   nodeName;
 	X3D::SFNode                 node;

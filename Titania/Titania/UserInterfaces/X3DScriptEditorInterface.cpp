@@ -61,7 +61,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_TextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -80,10 +79,14 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_RenameButton -> set_name ("RenameButton");
 	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
 	m_ScriptEditorBox -> set_name ("ScriptEditorBox");
-	m_builder -> get_widget ("TextView", m_TextView);
-	m_TextView -> set_name ("TextView");
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("SaveButton", m_SaveButton);
 	m_SaveButton -> set_name ("SaveButton");
+	m_builder -> get_widget ("UndoButton", m_UndoButton);
+	m_UndoButton -> set_name ("UndoButton");
+	m_builder -> get_widget ("RedoButton", m_RedoButton);
+	m_RedoButton -> set_name ("RedoButton");
 	m_builder -> get_widget ("LoadStateButton", m_LoadStateButton);
 	m_LoadStateButton -> set_name ("LoadStateButton");
 
@@ -92,6 +95,8 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'SaveButton'.
 	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_save_clicked));
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
 	m_LoadStateButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_loadState_clicked));
 
 	// Call construct handler of base class.

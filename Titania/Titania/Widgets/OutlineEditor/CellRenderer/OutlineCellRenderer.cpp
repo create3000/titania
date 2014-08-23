@@ -307,6 +307,7 @@ OutlineCellRenderer::get_object () const
 	return property_data () .get_value () -> get_object ();
 }
 
+// XXX: not used any more
 bool
 OutlineCellRenderer::is_expanded () const
 {
@@ -501,7 +502,7 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (is_full_expanded () and is_expanded ())
+			if (is_full_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -556,7 +557,7 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (is_full_expanded () and is_expanded ())
+			if (is_full_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -606,7 +607,7 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (is_full_expanded () and is_expanded ())
+			if (is_full_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -661,7 +662,7 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (is_full_expanded () and is_expanded ())
+			if (is_full_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -880,7 +881,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (is_full_expanded () and is_expanded ())
+			if (is_full_expanded ())
 			{
 				return OutlineCellContent::NONE;
 			}
@@ -1101,7 +1102,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		{
 			case OutlineIterType::X3DField:
 			{
-				if (is_full_expanded () and is_expanded ())
+				if (is_full_expanded ())
 					break;
 			}
 			case OutlineIterType::X3DInputRoute:
@@ -1137,7 +1138,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		{
 			case OutlineIterType::X3DField:
 			{
-				if (is_full_expanded () and is_expanded ())
+				if (is_full_expanded ())
 					break;
 
 				if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
@@ -1209,7 +1210,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		{
 			case OutlineIterType::X3DField:
 			{
-				if (is_full_expanded () and is_expanded ())
+				if (is_full_expanded ())
 					break;
 			}
 			case OutlineIterType::X3DInputRoute:

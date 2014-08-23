@@ -95,10 +95,6 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::TextBuffer> &
-	getTextBuffer () const
-	{ return m_TextBuffer; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -131,13 +127,21 @@ public:
 	getScriptEditorBox () const
 	{ return *m_ScriptEditorBox; }
 
-	Gtk::TextView &
-	getTextView () const
-	{ return *m_TextView; }
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
 
 	Gtk::ToolButton &
 	getSaveButton () const
 	{ return *m_SaveButton; }
+
+	Gtk::ToolButton &
+	getUndoButton () const
+	{ return *m_UndoButton; }
+
+	Gtk::ToolButton &
+	getRedoButton () const
+	{ return *m_RedoButton; }
 
 	Gtk::ToolButton &
 	getLoadStateButton () const
@@ -150,6 +154,14 @@ public:
 	virtual
 	void
 	on_save_clicked () = 0;
+
+	virtual
+	void
+	on_undo_clicked () = 0;
+
+	virtual
+	void
+	on_redo_clicked () = 0;
 
 	virtual
 	void
@@ -166,20 +178,21 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::TextBuffer> m_TextBuffer;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Paned*                    m_ScriptEditor;
-	Gtk::Box*                      m_NodeIndexBox;
-	Gtk::Box*                      m_NameBox;
-	Gtk::Entry*                    m_NameEntry;
-	Gtk::Button*                   m_RenameButton;
-	Gtk::Box*                      m_ScriptEditorBox;
-	Gtk::TextView*                 m_TextView;
-	Gtk::ToolButton*               m_SaveButton;
-	Gtk::ToolButton*               m_LoadStateButton;
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::Paned*                 m_ScriptEditor;
+	Gtk::Box*                   m_NodeIndexBox;
+	Gtk::Box*                   m_NameBox;
+	Gtk::Entry*                 m_NameEntry;
+	Gtk::Button*                m_RenameButton;
+	Gtk::Box*                   m_ScriptEditorBox;
+	Gtk::ScrolledWindow*        m_ScrolledWindow;
+	Gtk::ToolButton*            m_SaveButton;
+	Gtk::ToolButton*            m_UndoButton;
+	Gtk::ToolButton*            m_RedoButton;
+	Gtk::ToolButton*            m_LoadStateButton;
 
 };
 

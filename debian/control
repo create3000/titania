@@ -3,7 +3,8 @@ Section: gnome
 Priority: extra
 Maintainer: Holger Seelig <holger.seelig@yahoo.de>
 Build-Depends: debhelper (>= 5),
-               libgtkmm-3.0-dev, 
+               libgtkmm-3.0-dev,
+               libgtksourceviewmm-3.0-dev,
                libgconfmm-2.6-dev, 
                libglu1-mesa-dev, 
                libglew-dev, 
@@ -29,7 +30,8 @@ Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          debhelper (>= 5), 
-         libgtkmm-3.0-1, 
+         libgtkmm-3.0-1,
+         libgtksourceviewmm-3.0-0,
          libgconfmm-2.6-1c2, 
          libglu1-mesa, 
          libglew1.10, 

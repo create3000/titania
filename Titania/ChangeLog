@@ -1,5 +1,17 @@
 2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Console.h:
+	* ScriptEditor.xml:
+	* BrowserWindow.xml:
+	* ScriptEditor.h:
+	* ScriptEditor.cpp:
+	* X3DScriptEditorInterface.h:
+	* X3DScriptEditorInterface.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UserData.h:
 	* MagicImport.h:
 	* MagicImport.cpp:

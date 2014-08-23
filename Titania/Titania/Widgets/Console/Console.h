@@ -52,7 +52,6 @@
 #define __TITANIA_CONSOLE_CONSOLE_H__
 
 #include "../../UserInterfaces/X3DConsoleInterface.h"
-#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {

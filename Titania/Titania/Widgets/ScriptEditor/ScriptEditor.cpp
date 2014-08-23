@@ -55,6 +55,9 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 #include <Titania/String.h>
+#include <gtksourceviewmm/init.h>
+#include <gtksourceviewmm/languagemanager.h>
+#include <gtksourceviewmm/styleschememanager.h>
 
 namespace titania {
 namespace puck {
@@ -62,10 +65,13 @@ namespace puck {
 ScriptEditor::ScriptEditor (BrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
+	              textBuffer (Gsv::Buffer::create ()),
+	                textView (textBuffer),
 	               nodeIndex (new NodeIndex (browserWindow)),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    node ()
 {
+	Gsv::init ();
 	setup ();
 }
 
@@ -73,8 +79,26 @@ void
 ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
-	
+
+	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
+	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
+
+	getTextBuffer () -> set_highlight_syntax (true);
+	getTextBuffer () -> set_highlight_matching_brackets (true);
+	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("tango"));
+
 	setTabs (3);
+	getTextView () .set_show_right_margin (true);
+	getTextView () .set_right_margin_position (100);
+	getTextView () .set_highlight_current_line (true);
+	getTextView () .set_show_line_numbers (true);
+	getTextView () .set_show_line_marks (true);
+	getTextView () .set_auto_indent (true);
+	getTextView () .set_insert_spaces_instead_of_tabs (false);
+	getTextView () .set_indent_on_tab (true);
+	getTextView () .show ();
+
+	getScrolledWindow () .add (getTextView ());
 
 	nodeIndex -> getNode () .addInterest (this, &ScriptEditor::set_node);
 	nodeIndex -> getHeaderBox () .set_visible (false);
@@ -93,20 +117,6 @@ void
 ScriptEditor::on_map ()
 {
 	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Script Editor"));
-}
-
-void
-ScriptEditor::setTabs (const size_t width)
-{
-   const auto layout     = getTextView () .create_pango_layout ("A");
-   int        charWidth  = 0;
-   int        charHeight = 0;
-
-   layout -> get_pixel_size (charWidth, charHeight);   
-
-	Pango::TabArray tabs (1, true);
-	tabs .set_tab (0, Pango::TAB_LEFT, width * charWidth);
-	getTextView () .set_tabs (tabs);
 }
 
 void
@@ -155,9 +165,29 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	{
 		on_map ();
 		getScriptEditorBox () .set_sensitive (false);
+
+		getTextBuffer () -> begin_not_undoable_action ();
 		getTextBuffer () -> set_text ("");
+		getTextBuffer () -> end_not_undoable_action ();
+		
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
+}
+
+void
+ScriptEditor::setTabs (const size_t width)
+{
+   const auto layout     = getTextView () .create_pango_layout ("A");
+   int        charWidth  = 0;
+   int        charHeight = 0;
+
+   layout -> get_pixel_size (charWidth, charHeight);   
+
+	Pango::TabArray tabs (1, true);
+	tabs .set_tab (0, Pango::TAB_LEFT, width * charWidth);
+
+	getTextView () .set_tabs (tabs);
+	getTextView () .set_indent_width (width);
 }
 
 void
@@ -189,36 +219,69 @@ ScriptEditor::on_save_clicked ()
 }
 
 void
+ScriptEditor::on_undo_clicked ()
+{
+	getTextBuffer () -> undo ();
+}
+
+void
+ScriptEditor::on_redo_clicked ()
+{
+	getTextBuffer () -> redo ();
+}
+
+void
+ScriptEditor::on_can_undo_changed ()
+{
+	getUndoButton () .set_sensitive (getTextBuffer () -> can_undo ());
+}
+
+void
+ScriptEditor::on_can_redo_changed ()
+{
+	getRedoButton () .set_sensitive (getTextBuffer () -> can_redo ());
+}
+
+void
 ScriptEditor::set_cdata ()
 {
+	getTextBuffer () -> begin_not_undoable_action ();
+
 	const auto cdata = node -> getCDATA ();
 
-	if (cdata -> get1Value (0) .empty ())
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
-		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+		switch (type)
 		{
-			switch (type)
+			case X3D::X3DConstants::Script:
 			{
-				case X3D::X3DConstants::Script:
-				{
-					getTextBuffer () -> set_text ("ecmascript:\n");
-					break;
-				}
-				case X3D::X3DConstants::ShaderPart:
-				case X3D::X3DConstants::ShaderProgram:
-				{
-					getTextBuffer () -> set_text ("data:text/plain,\n");
-					break;
-				}
-				default:
-					continue;
-			}
+				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
-			break;
+				if (cdata -> get1Value (0) .empty ())
+					getTextBuffer () -> set_text ("ecmascript:\n");
+				else
+					getTextBuffer () -> set_text (cdata -> get1Value (0));
+				break;
+			}
+			case X3D::X3DConstants::ShaderPart:
+			case X3D::X3DConstants::ShaderProgram:
+			{
+				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "text/x-c"));
+
+				if (cdata -> get1Value (0) .empty ())
+					getTextBuffer () -> set_text ("data:text/plain,\n");
+				else
+					getTextBuffer () -> set_text (cdata -> get1Value (0));
+				break;
+			}
+			default:
+				continue;
 		}
+
+		break;
 	}
-	else
-		getTextBuffer () -> set_text (cdata -> get1Value (0));
+
+	getTextBuffer () -> end_not_undoable_action ();
 }
 
 void
