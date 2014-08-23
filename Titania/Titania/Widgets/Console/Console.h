@@ -77,11 +77,9 @@ private:
 
 	///  @name Event handlers
 	
+	virtual
 	void
-	on_map ();
-
-	void
-	on_unmap ();
+	on_map () final override;
 
 	virtual
 	void
@@ -96,11 +94,6 @@ private:
 
 	void
 	set_string (const X3D::MFString & value);
-
-	///  @name Members
-
-	bool mapped;
-	bool follow;
 
 };
 

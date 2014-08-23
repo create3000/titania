@@ -1,5 +1,15 @@
 2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Console.xml:
+	* Console.h:
+	* Console.cpp:
+	* ScriptEditor.h:
+	* X3DConsoleInterface.h:
+	* ScriptEditor.cpp:
+	* X3DConsoleInterface.cpp: 
+
+2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:

@@ -125,7 +125,20 @@ ScriptEditor::initialize ()
 void
 ScriptEditor::on_map ()
 {
-	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Script Editor"));
+	set_label ();
+}
+
+void
+ScriptEditor::set_label ()
+{
+	if (not getWidget () .get_mapped ())
+		return;
+
+	if (node)
+		getBrowserWindow () -> getFooterLabel () .set_text (basic::sprintf (_ ("Script Editor »%s«"), node -> getName () .c_str ()));
+
+	else
+		getBrowserWindow () -> getFooterLabel () .set_text (_ ("Script Editor"));
 }
 
 void
@@ -149,10 +162,10 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	nodeName .setNode (node);
 
+	set_label ();
+
 	if (node)
 	{
-		getBrowserWindow () -> getFooterLabel () .set_text (basic::sprintf (_ ("Script Editor »%s«"), node -> getName () .c_str ()));
-
 		const auto cdata = node -> getCDATA ();
 
 		cdata -> addInterest (this, &ScriptEditor::set_cdata);
