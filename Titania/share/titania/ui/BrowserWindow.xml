@@ -34,6 +34,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">document-import</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="FlyViewerImage">
     <property name="visible">True</property>
@@ -128,6 +129,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">visualization</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
@@ -145,6 +147,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-clear</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">768</property>
@@ -171,6 +174,7 @@
           <object class="GtkMenuBar" id="MenuBar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <signal name="button-press-event" handler="on_menubar_button_press_event" after="yes" swapped="no"/>
             <child>
               <object class="GtkMenuItem" id="FileMenuItem">
                 <property name="visible">True</property>

@@ -469,6 +469,13 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 	return false;
 }
 
+bool
+BrowserWindow::on_menubar_button_press_event (GdkEventButton* event)
+{
+	getWidget () .grab_focus ();
+	return false;
+}
+
 // File menu
 
 void

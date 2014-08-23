@@ -149,7 +149,11 @@ private:
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey*) final override;
+	on_key_release_event (GdkEventKey*);
+
+	virtual
+	bool
+	on_menubar_button_press_event (GdkEventButton*) final override;
 
 	/// @name File menu
 
