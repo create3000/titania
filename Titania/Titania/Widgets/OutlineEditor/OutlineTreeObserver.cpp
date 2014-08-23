@@ -100,7 +100,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			executionContext -> prototypes_changed ()    .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
 			executionContext -> externProtos_changed ()  .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
 
-			const auto scene = dynamic_cast <X3D::Scene*> (executionContext);
+			const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext);
 
 			if (scene)
 				scene -> exportedNodes_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
@@ -277,7 +277,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			executionContext -> prototypes_changed ()    .removeInterest (this, &OutlineTreeObserver::toggle_path);
 			executionContext -> externProtos_changed ()  .removeInterest (this, &OutlineTreeObserver::toggle_path);
 
-			const auto scene = dynamic_cast <X3D::Scene*> (executionContext);
+			const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext);
 
 			if (scene)
 				scene -> exportedNodes_changed () .removeInterest (this, &OutlineTreeObserver::toggle_path);

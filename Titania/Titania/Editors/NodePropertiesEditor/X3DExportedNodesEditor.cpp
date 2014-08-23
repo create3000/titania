@@ -261,25 +261,25 @@ X3DExportedNodesEditor::connectExportedNodes (const X3D::SFTime & field)
 }
 
 void
-X3DExportedNodesEditor::updateExportedNode (const X3D::X3DPtr <X3D::X3DScene> & scene, const std::string & exportedName, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DExportedNodesEditor::updateExportedNode (const X3D::X3DScenePtr & scene, const std::string & exportedName, const X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
 	try
 	{
 		const auto & exportedNode = scene -> getExportedNodes () .at (exportedName);
 
-		undoStep -> addUndoFunction (&X3D::Scene::updateExportedNode,
+		undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode,
 		                             scene,
 		                             exportedNode -> getExportedName (),
 		                             exportedNode -> getLocalNode ());
 	}
 	catch (...)
 	{
-		undoStep -> addUndoFunction (&X3D::Scene::removeExportedNode,
+		undoStep -> addUndoFunction (&X3D::X3DScene::removeExportedNode,
 		                             scene,
 		                             exportedName);
 	}
 
-	undoStep -> addRedoFunction (&X3D::Scene::updateExportedNode,
+	undoStep -> addRedoFunction (&X3D::X3DScene::updateExportedNode,
 	                             scene,
 	                             exportedName,
 	                             node);
@@ -288,13 +288,13 @@ X3DExportedNodesEditor::updateExportedNode (const X3D::X3DPtr <X3D::X3DScene> & 
 }
 
 void
-X3DExportedNodesEditor::removeExportedNode (const X3D::X3DPtr <X3D::X3DScene> & scene, const std::string & exportedName, const UndoStepPtr & undoStep)
+X3DExportedNodesEditor::removeExportedNode (const X3D::X3DScenePtr & scene, const std::string & exportedName, const UndoStepPtr & undoStep)
 {
 	try
 	{
 		const auto & exportedNode = scene -> getExportedNodes () .at (exportedName);
 
-		undoStep -> addUndoFunction (&X3D::Scene::updateExportedNode,
+		undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode,
 		                             scene,
 		                             exportedNode -> getExportedName (),
 		                             exportedNode -> getLocalNode ());
@@ -302,7 +302,7 @@ X3DExportedNodesEditor::removeExportedNode (const X3D::X3DPtr <X3D::X3DScene> & 
 	catch (...)
 	{ }
 
-	undoStep -> addRedoFunction (&X3D::Scene::removeExportedNode,
+	undoStep -> addRedoFunction (&X3D::X3DScene::removeExportedNode,
 	                             scene,
 	                             exportedName);
 

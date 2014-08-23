@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DSCENE_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DSCENE_H__
 
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 #include "jsX3DExecutionContext.h"
 #include <jsapi.h>
 

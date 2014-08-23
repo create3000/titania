@@ -84,10 +84,10 @@ public:
 	importURL (const std::vector <basic::uri> &, const bool, const UndoStepPtr & undoStep);
 
 	X3D::MFNode
-	importScene (const X3D::ScenePtr &, X3D::MFNode &, const UndoStepPtr &);
+	importScene (const X3D::X3DScenePtr &, X3D::MFNode &, const UndoStepPtr &);
 
 	std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>>
-	getImportedRoutes (const X3D::X3DExecutionContextPtr &, const X3D::ScenePtr &) const;
+	getImportedRoutes (const X3D::X3DExecutionContextPtr &, const X3D::X3DScenePtr &) const;
 
 	virtual
 	void
@@ -321,7 +321,7 @@ private:
 	
 	static
 	void
-	removeExportedNodes (const X3D::X3DPtr <X3D::X3DScene> &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
+	removeExportedNodes (const X3D::X3DScenePtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 
 	static
 	void

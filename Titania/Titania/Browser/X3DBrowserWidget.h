@@ -68,7 +68,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const X3D::ScenePtr &
+	const X3D::X3DScenePtr &
 	getScene () const final override
 	{ return scene; }
 
@@ -166,7 +166,7 @@ private:
 
 	///  @name Members
 	
-	X3D::ScenePtr               scene;
+	X3D::X3DScenePtr            scene;
 	X3D::X3DExecutionContextPtr executionContext;
 	double                      loadTime;
 	sigc::connection            timeout;

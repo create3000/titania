@@ -233,7 +233,7 @@ NodeIndex::getExportedNodes () const
 {
 	std::set <X3D::SFNode> exportedNodes;
 
-	X3D::X3DPtr <X3D::X3DScene> scene (getExecutionContext ());
+	X3D::X3DScenePtr scene (getExecutionContext ());
 
 	if (not scene)
 		return exportedNodes;
@@ -261,7 +261,7 @@ NodeIndex::set_executionContext ()
 		executionContext -> sceneGraph_changed ()    .removeInterest (this, &NodeIndex::refresh);
 	}
 
-	X3D::X3DPtr <X3D::X3DScene> scene (executionContext);
+	X3D::X3DScenePtr scene (executionContext);
 
 	if (scene)
 		scene -> exportedNodes_changed () .removeInterest (this, &NodeIndex::refresh);

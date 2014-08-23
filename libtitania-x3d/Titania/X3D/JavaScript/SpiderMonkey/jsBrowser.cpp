@@ -236,7 +236,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 		try
 		{
 			if (JSVAL_IS_NULL (argv [0]))
-				script -> getBrowser () -> replaceWorld (ScenePtr ());
+				script -> getBrowser () -> replaceWorld (X3DScenePtr ());
 
 			else
 			{
@@ -246,7 +246,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 				if (JS_InstanceOfError (context, scene, jsX3DScene::getClass ()))
 					return JS_FALSE;
 
-				script -> getBrowser () -> replaceWorld (ScenePtr (static_cast <Scene*> (JS_GetPrivate (context, scene))));
+				script -> getBrowser () -> replaceWorld (X3DScenePtr (static_cast <X3DScene*> (JS_GetPrivate (context, scene))));
 			}
 		}
 		catch (const X3DError & error)
@@ -281,8 +281,8 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			const ScenePtr scene = Loader (script -> getExecutionContext (),
-			                               script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, x3dSyntax));
+			const X3DScenePtr scene = Loader (script -> getExecutionContext (),
+			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, x3dSyntax));
 
 			return jsX3DScene::create (context, scene, vp);
 		}
@@ -338,8 +338,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 							{
 								try
 								{
-									const ScenePtr scene = Loader (script -> getExecutionContext (),
-									                               script -> getWorldURL ()) .createX3DFromURL (*url);
+									const X3DScenePtr scene = Loader (script -> getExecutionContext (),
+									                                  script -> getWorldURL ()) .createX3DFromURL (*url);
 
 									field -> set (scene -> getRootNodes ());
 									field -> addEvent ();
@@ -377,8 +377,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 			{
 				try
 				{
-					const ScenePtr scene = Loader (script -> getExecutionContext (),
-					                               script -> getWorldURL ()) .createX3DFromURL (*url);
+					const X3DScenePtr scene = Loader (script -> getExecutionContext (),
+					                                  script -> getWorldURL ()) .createX3DFromURL (*url);
 
 					if (argc == 2)
 						onode = javaScript -> getGlobal ();
@@ -411,8 +411,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		{
 			try
 			{
-				const ScenePtr scene = Loader (script -> getExecutionContext (),
-				                               script -> getWorldURL ()) .createX3DFromURL (*url);
+				const X3DScenePtr scene = Loader (script -> getExecutionContext (),
+				                                  script -> getWorldURL ()) .createX3DFromURL (*url);
 
 				return jsX3DScene::create (context, scene, vp);
 			}
@@ -815,8 +815,8 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			const ScenePtr scene = Loader (script -> getExecutionContext (),
-			                               script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, vrmlSyntax));
+			const X3DScenePtr scene = Loader (script -> getExecutionContext (),
+			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return jsMFNode::create (context, new MFNode (scene -> getRootNodes ()), &JS_RVAL (context, vp));
 		}
@@ -909,7 +909,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsBrowser::setSceneAsync (const SFNode & script, const SFNode & node, MFNode* const field, ScenePtr && scene)
+jsBrowser::setSceneAsync (const SFNode & script, const SFNode & node, MFNode* const field, X3DScenePtr && scene)
 {
 	if (scene)
 	{

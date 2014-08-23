@@ -1,3 +1,45 @@
+2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBase.h:
+	* Parser.h:
+	* Traverse.h:
+	* X3DInput.h:
+	* World.h:
+	* X3DBrowser.h:
+	* SceneLoader.h:
+	* Loader.h:
+	* X3DPtrArray.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* Loader.cpp:
+	* SceneLoader.cpp:
+	* X3DBrowser.cpp:
+	* Notification.cpp:
+	* X3DNode.h:
+	* X3DFieldDefinition.h:
+	* X3DToolObject.h:
+	* InlineTool.h:
+	* GeoLOD.h:
+	* Inline.h:
+	* RenderingProperties.cpp:
+	* X3DExecutionContext.h:
+	* GeoLOD.cpp:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* ExternProtoDeclaration.h:
+	* jsBrowser.h:
+	* GeoOrigin.cpp:
+	* jsX3DScene.h:
+	* ExternProtoDeclaration.cpp:
+	* jsBrowser.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DNetworkingContext.h:
+	* X3DViewpointNode.cpp:
+	* jsSFNode.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:

@@ -52,7 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Types/Geometry.h"
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 
 #include <Titania/Geospatial/Interpolation.h>
 

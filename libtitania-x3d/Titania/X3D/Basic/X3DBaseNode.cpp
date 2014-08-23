@@ -403,6 +403,9 @@ X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (value == executionContext)
+		return;
+
 	executionContext -> removeParent (this);
 
 	executionContext = value;

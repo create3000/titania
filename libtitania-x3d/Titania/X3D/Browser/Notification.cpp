@@ -99,7 +99,7 @@ Notification::set_string ()
 
 	if (not world)
 	{
-		ScenePtr scene;
+		X3DScenePtr scene;
 
 		try
 		{

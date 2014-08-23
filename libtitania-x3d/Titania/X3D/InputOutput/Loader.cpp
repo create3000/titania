@@ -52,7 +52,7 @@
 
 #include "../../X3D.h"
 #include "../Browser/X3DBrowser.h"
-#include "../Execution/Scene.h"
+#include "../Execution/X3DScene.h"
 #include "../Miscellaneous/GoldenGate.h"
 
 #include <Titania/String/to_string.h>
@@ -74,7 +74,7 @@ Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & 
 
 //  X3D Creation Handling
 
-ScenePtr
+X3DScenePtr
 Loader::createX3DFromString (const std::string & string)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -86,7 +86,7 @@ throw (Error <INVALID_X3D>,
 	return createX3DFromStream (istream);
 }
 
-ScenePtr
+X3DScenePtr
 Loader::createX3DFromStream (basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -96,14 +96,14 @@ throw (Error <INVALID_X3D>,
 	return createX3DFromStream (referer, istream);
 }
 
-ScenePtr
+X3DScenePtr
 Loader::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const ScenePtr scene = executionContext -> getBrowser () -> createScene ();
+	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene ();
 
 	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
 
@@ -120,12 +120,12 @@ throw (Error <INVALID_X3D>,
 	return scene;
 }
 
-ScenePtr
+X3DScenePtr
 Loader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	const ScenePtr scene = executionContext -> getBrowser () -> createScene ();
+	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene ();
 
 	parseIntoScene (scene, url);
 

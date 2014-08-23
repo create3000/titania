@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class Scene;
+class X3DScene;
 
 class X3DGeospatialObject :
 	virtual public X3DBaseNode

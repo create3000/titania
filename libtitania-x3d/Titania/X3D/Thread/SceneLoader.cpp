@@ -51,7 +51,7 @@
 #include "SceneLoader.h"
 
 #include "../Browser/X3DBrowser.h"
-#include "../Execution/Scene.h"
+#include "../Execution/X3DScene.h"
 #include "../InputOutput/Loader.h"
 
 namespace titania {
@@ -82,20 +82,20 @@ SceneLoader::wait ()
 	}
 }
 
-std::future <ScenePtr> 
+std::future <X3DScenePtr> 
 SceneLoader::getFuture (const MFString & url)
 {
 	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
 }
 
-ScenePtr
+X3DScenePtr
 SceneLoader::loadAsync (const MFString & url)
 {
 	if (running)
 	{
 		std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-		ScenePtr scene;
+		X3DScenePtr scene;
 
 		if (running)
 			scene = browser -> createScene ();
@@ -150,7 +150,7 @@ SceneLoader::dispose ()
 		
 		// Clear the bound callback arguments.
 
-		callback = [ ] (ScenePtr &&) { };
+		callback = [ ] (X3DScenePtr &&) { };
 	}
 }
 

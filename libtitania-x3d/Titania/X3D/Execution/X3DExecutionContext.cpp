@@ -128,6 +128,8 @@ X3DExecutionContext::X3DExecutionContext () :
 void
 X3DExecutionContext::initialize ()
 {
+	sceneGraphOutput .addInterest (this, &X3DExecutionContext::set_sceneGraph);
+
 	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
 
 	if (not isProtoDeclaration ())
@@ -924,6 +926,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 
 	return prototypes;
+}
+
+// Root node handling
+
+void
+X3DExecutionContext::set_sceneGraph ()
+{
+	if (getExecutionContext () == this)
+		return;
+
+	const_cast <SFTime &> (getExecutionContext () -> sceneGraph_changed ()) = chrono::now ();
 }
 
 //	Dynamic route handling

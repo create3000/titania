@@ -89,7 +89,7 @@ public:
 	{ return browser; }
 
 	virtual
-	const X3D::ScenePtr &
+	const X3D::X3DScenePtr &
 	getScene () const;
 	
 	const X3D::WorldPtr &

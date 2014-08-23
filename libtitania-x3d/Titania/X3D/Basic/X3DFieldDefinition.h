@@ -72,7 +72,9 @@ public:
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	virtual
 	X3DFieldDefinition*
@@ -101,7 +103,9 @@ public:
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
 
-	///  @name Comparators
+	/***
+	 *  @name Comparators
+	 */
 
 	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
 	virtual
@@ -113,7 +117,9 @@ public:
 	bool
 	operator not_eq (const X3DFieldDefinition &) const = 0;
 
-	///  @name
+	/***
+	 *  @name
+	 */
 
 	virtual
 	bool
@@ -124,7 +130,9 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet &) override;
 
-	///  @name Member access
+	/***
+	 *  @name Member access
+	 */
 
 	virtual
 	X3DConstants::FieldType
@@ -156,7 +164,9 @@ public:
 	bool
 	isDefaultValue () const = 0;
 
-	///  @name Reference handling
+	/***
+	 *  @name Reference handling
+	 */
 
 	void
 	addIsReference (X3DFieldDefinition* const);
@@ -171,7 +181,9 @@ public:
 	getIsReferences () const
 	{ realize (); return io -> references; }
 
-	///  @name Route handling
+	/***
+	 *  @name Route handling
+	 */
 
 	void
 	addInputRoute (Route* const route)
@@ -197,7 +209,9 @@ public:
 	getOutputRoutes () const
 	{ realize (); return io -> outputRoutes; }
 
-	///  @name Interest handling
+	/***
+	 *  @name Interest handling
+	 */
 
 	void
 	addInterest (X3DFieldDefinition* const) const;
@@ -217,42 +231,57 @@ public:
 	getInterests () const
 	{ realize (); return io -> outputInterests; }
 
-	///  @name Event handling
+	/***
+	 *  @name Event handling
+	 */
 
 	virtual
 	void
 	processEvent (const EventPtr &) override;
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 */
 
+	///  Disposed this object.  For X3DFieldDefinitions it is save to call this function function directly.
 	virtual
 	void
 	dispose () override;
 
+	///  Destructs this object.
 	virtual
 	~X3DFieldDefinition ();
 
 
 protected:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
+	///  Constructs new X3DFieldDefinition.
 	X3DFieldDefinition ();
 
 
 private:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	void
 	realize () const;
 
-	///  @name Reference handling
+	/***
+	 *  @name Reference handling
+	 */
 
 	void
 	updateIsReference (X3DFieldDefinition* const);
 
-	///  @name Interest handling
+	/***
+	 *  @name Interest handling
+	 */
 
 	void
 	addInputInterest (const X3DFieldDefinition* const) const;
@@ -260,7 +289,9 @@ private:
 	void
 	removeInputInterest (const X3DFieldDefinition* const) const;
 
-	///  @name Members
+	/***
+	 *  @name Members
+	 */
 
 	struct IO
 	{

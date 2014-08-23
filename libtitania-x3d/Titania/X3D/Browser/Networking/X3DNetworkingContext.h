@@ -75,7 +75,7 @@ public:
 	getUserAgent () const
 	{ return userAgent; }
 
-	const ScenePtr &
+	const X3DScenePtr &
 	getEmptyScene () const
 	{ return emptyScene; }
 
@@ -122,7 +122,7 @@ private:
 
 	std::string userAgent;
 
-	ScenePtr emptyScene;
+	X3DScenePtr emptyScene;
 
 	size_t                  downloadMutexIndex;
 	std::deque <std::mutex> downloadMutexes;

@@ -124,7 +124,7 @@ public:
 	{ return getNode () -> getRootNodes (); }
 
 	virtual
-	const ScenePtr &
+	const X3DScenePtr &
 	getInternalScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override

@@ -261,7 +261,7 @@ X3DBrowserWidget::blank ()
 {
 	try
 	{
-		getBrowser () -> replaceWorld (X3D::ScenePtr ());
+		getBrowser () -> replaceWorld (X3D::X3DScenePtr ());
 		scene            = getBrowser () -> getExecutionContext ();
 		executionContext = getBrowser () -> getExecutionContext ();
 	}
@@ -460,7 +460,7 @@ X3DBrowserWidget::set_initialized ()
 {
 	if (getBrowser () -> getExecutionContext () not_eq executionContext)
 	{
-		if (X3D::ScenePtr (getBrowser () -> getExecutionContext ()))
+		if (X3D::X3DScenePtr (getBrowser () -> getExecutionContext ()))
 			scene = getBrowser () -> getExecutionContext ();
 
 		executionContext = getBrowser () -> getExecutionContext ();

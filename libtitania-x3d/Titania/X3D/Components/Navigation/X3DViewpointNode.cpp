@@ -53,7 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 #include "../Grouping/Group.h"
 #include "../Networking/X3DUrlObject.h"
 
@@ -160,7 +160,7 @@ public:
 	{ return scene -> getRootNodes (); }
 
 	virtual
-	const ScenePtr &
+	const X3DScenePtr &
 	getInternalScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -204,12 +204,12 @@ private:
 	///  @name Event handlers
 
 	void
-	setSceneAsync (ScenePtr &&);
+	setSceneAsync (X3DScenePtr &&);
 
 	void
-	setScene (ScenePtr &&);
+	setScene (X3DScenePtr &&);
 
-	const ScenePtr &
+	const X3DScenePtr &
 	accessScene () const
 	throw (Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -250,10 +250,10 @@ private:
 
 	Fields fields;
 
-	ScenePtr scene;
-	GroupPtr group;
-	SFTime   buffer;
-	bool     preventLoad;
+	X3DScenePtr scene;
+	GroupPtr    group;
+	SFTime      buffer;
+	bool        preventLoad;
 
 	std::unique_ptr <SceneLoader> future;
 

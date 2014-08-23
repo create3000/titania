@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-class Scene;
+class X3DScene;
 class X3DLayerNode;
 class NavigationInfo;
 class X3DViewpointNode;

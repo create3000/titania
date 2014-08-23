@@ -67,7 +67,7 @@ MagicImport::MagicImport (BrowserWindow* const browserWindow) :
 }
 
 bool
-MagicImport::import (X3D::MFNode & selection, const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
+MagicImport::import (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	if (selection .empty ())
 		return false;
@@ -89,7 +89,7 @@ MagicImport::import (X3D::MFNode & selection, const X3D::ScenePtr & scene, const
 }
 
 bool
-MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
+MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	// Find first material node in scene
 
@@ -134,7 +134,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::ScenePtr & scene, con
 }
 
 bool
-MagicImport::texture (X3D::MFNode & selection, const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
+MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	// Find first material node in scene
 

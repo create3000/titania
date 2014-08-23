@@ -139,18 +139,18 @@ private:
 
 	static
 	void
-	updateExportedNode (const X3D::X3DPtr <X3D::X3DScene> &, const std::string &, const X3D::SFNode &, const UndoStepPtr &);
+	updateExportedNode (const X3D::X3DScenePtr &, const std::string &, const X3D::SFNode &, const UndoStepPtr &);
 
 	static
 	void
-	removeExportedNode (const X3D::X3DPtr <X3D::X3DScene> &, const std::string &, const UndoStepPtr &);
+	removeExportedNode (const X3D::X3DScenePtr &, const std::string &, const UndoStepPtr &);
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::X3DScene> scene;
-	X3D::SFNode                 node;
-	Gtk::TreeModel::Path        selectedPath;
-	bool                        editing;
+	X3D::X3DScenePtr      scene;
+	X3D::SFNode           node;
+	Gtk::TreeModel::Path  selectedPath;
+	bool                  editing;
 
 };
 

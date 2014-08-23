@@ -120,7 +120,7 @@ Inline::initialize ()
 	{
 		if (X3D_PARALLEL)
 		{
-			setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
+			setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
 
 			if (load ())
 				requestAsyncLoad ();
@@ -131,7 +131,7 @@ Inline::initialize ()
 				requestImmediateLoad ();
 
 			else
-				setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
+				setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
 		}
 	}
 
@@ -147,13 +147,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	getExecutionContext () -> isLive () .removeInterest (this, &Inline::set_live);
 	executionContext -> isLive () .addInterest (this, &Inline::set_live);
 
+	if (checkLoadState () == COMPLETE_STATE)
+		scene -> setExecutionContext (executionContext);
+
 	X3DUrlObject::setExecutionContext (executionContext);
 
 	set_live ();
 }
 
 void
-Inline::setSceneAsync (ScenePtr && value)
+Inline::setSceneAsync (X3DScenePtr && value)
 {
 	if (value)
 	{
@@ -163,12 +166,12 @@ Inline::setSceneAsync (ScenePtr && value)
 	else
 	{
 		setLoadState (FAILED_STATE);
-		setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
+		setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
 	}
 }
 
 void
-Inline::setScene (ScenePtr && value)
+Inline::setScene (X3DScenePtr && value)
 {
 	if (scene)
 		scene -> getRootNodes () .removeInterest (group -> children ());
@@ -177,6 +180,7 @@ Inline::setScene (ScenePtr && value)
 
 	if (checkLoadState () == COMPLETE_STATE)
 	{
+		value -> setExecutionContext (getExecutionContext ());
 		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
 		value -> isPrivate (getRootContext () -> isPrivate ());
 		value -> getRootNodes () .addInterest (group -> children ());
@@ -195,7 +199,7 @@ Inline::setScene (ScenePtr && value)
 	group -> children () = scene -> getRootNodes ();
 }
 
-const ScenePtr &
+const X3DScenePtr &
 Inline::accessScene () const
 throw (Error <NODE_NOT_AVAILABLE>,
 	    Error <INVALID_OPERATION_TIMING>,
@@ -306,7 +310,7 @@ Inline::requestImmediateLoad ()
 	catch (const X3DError & error)
 	{
 		setLoadState (FAILED_STATE);
-		setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
+		setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
 
 		for (const auto & string : loader .getUrlError ())
 			getBrowser () -> println (string .str ());
@@ -325,7 +329,7 @@ Inline::requestUnload ()
 		future -> dispose ();
 
 	setLoadState (NOT_STARTED_STATE);
-	setScene (ScenePtr (getBrowser () -> getEmptyScene ()));
+	setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
 }
 
 void

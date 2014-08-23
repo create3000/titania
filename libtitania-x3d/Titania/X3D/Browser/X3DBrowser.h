@@ -149,18 +149,18 @@ public:
 
 	///  @name X3D Creation Handling
 
-	ScenePtr
+	X3DScenePtr
 	createScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createScene (const ProfileInfoPtr &, const ComponentInfoArray &) const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	replaceWorld (const ScenePtr &)
+	replaceWorld (const X3DScenePtr &)
 	throw (Error <INVALID_SCENE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
@@ -169,7 +169,7 @@ public:
 	throw (Error <INVALID_SCENE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	ScenePtr
+	X3DScenePtr
 	importDocument (/*const XML DOMNode &*/)
 	throw (Error <INVALID_DOCUMENT>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -188,28 +188,28 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromString (const std::string &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromStream (basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromStream (const basic::uri &, basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromURL (const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,

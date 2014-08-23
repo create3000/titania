@@ -84,8 +84,8 @@ ScriptEditor::initialize ()
 
 	nodeIndex -> setTypes ({
 	                          X3D::X3DConstants::Script,
-	                          X3D::X3DConstants::ShaderProgram,
-	                          X3D::X3DConstants::ShaderPart
+	                          X3D::X3DConstants::ShaderPart,
+	                          X3D::X3DConstants::ShaderProgram
 								  });
 }
 
@@ -194,8 +194,29 @@ ScriptEditor::set_cdata ()
 	const auto cdata = node -> getCDATA ();
 
 	if (cdata -> get1Value (0) .empty ())
-		getTextBuffer () -> set_text ("ecmascript:\n");
+	{
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::Script:
+				{
+					getTextBuffer () -> set_text ("ecmascript:\n");
+					break;
+				}
+				case X3D::X3DConstants::ShaderPart:
+				case X3D::X3DConstants::ShaderProgram:
+				{
+					getTextBuffer () -> set_text ("data:text/plain,\n");
+					break;
+				}
+				default:
+					continue;
+			}
 
+			break;
+		}
+	}
 	else
 		getTextBuffer () -> set_text (cdata -> get1Value (0));
 }

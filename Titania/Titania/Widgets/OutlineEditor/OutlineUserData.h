@@ -85,6 +85,11 @@ public:
 	int  selected;                             // Selected state
 
 	std::shared_ptr <OutlineUserData> user_data;
+	
+	virtual
+	void
+	dispose () final override;
+
 
 private:
 
@@ -100,7 +105,15 @@ private:
 
 };
 
-typedef std::shared_ptr <OutlineUserData> OutlineUserDataPtr;
+inline
+void
+OutlineUserData::dispose ()
+{
+	if (user_data)
+		user_data -> dispose ();
+}
+
+using OutlineUserDataPtr = std::shared_ptr <OutlineUserData>;
 
 } // puck
 } // titania

@@ -54,7 +54,7 @@
 #include "../../Bits/Error.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Networking/Inline.h"
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsSFNode.h"
 #include "jsComponentInfoArray.h"

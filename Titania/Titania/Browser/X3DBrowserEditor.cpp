@@ -327,7 +327,7 @@ X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool i
 }
 
 X3D::MFNode
-X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field, const UndoStepPtr & undoStep)
+X3DBrowserEditor::importScene (const X3D::X3DScenePtr & scene, X3D::MFNode & field, const UndoStepPtr & undoStep)
 {
 	const auto & executionContext = getExecutionContext ();
 
@@ -368,7 +368,7 @@ X3DBrowserEditor::importScene (const X3D::ScenePtr & scene, X3D::MFNode & field,
 }
 
 std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>>
-X3DBrowserEditor::getImportedRoutes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::ScenePtr & scene) const
+X3DBrowserEditor::getImportedRoutes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DScenePtr & scene) const
 {
 	std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>> routes;
 
@@ -1074,7 +1074,7 @@ X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContex
 {
 	// Remove node from scene graph
 
-	const X3D::X3DPtr <X3D::X3DScene> scene (executionContext);
+	const X3D::X3DScenePtr scene (executionContext);
 
 	if (scene)
 		removeExportedNodes (scene, nodes, undoStep);
@@ -1167,7 +1167,7 @@ X3DBrowserEditor::removeNodeFromSceneGraph (const X3D::X3DExecutionContextPtr & 
 }
 
 void
-X3DBrowserEditor::removeExportedNodes (const X3D::X3DPtr <X3D::X3DScene> & scene, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeExportedNodes (const X3D::X3DScenePtr & scene, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
 {
 	// Remove exported nodes
 
@@ -1180,8 +1180,8 @@ X3DBrowserEditor::removeExportedNodes (const X3D::X3DPtr <X3D::X3DScene> & scene
 
 			if (nodes .count (localNode))
 			{
-				undoStep -> addUndoFunction (&X3D::Scene::updateExportedNode, scene, exportedNode -> getExportedName (), localNode);
-				undoStep -> addRedoFunction (&X3D::Scene::removeExportedNode, scene, exportedNode -> getExportedName ());
+				undoStep -> addUndoFunction (&X3D::X3DScene::updateExportedNode, scene, exportedNode -> getExportedName (), localNode);
+				undoStep -> addRedoFunction (&X3D::X3DScene::removeExportedNode, scene, exportedNode -> getExportedName ());
 
 				scene -> removeExportedNode (exportedNode -> getExportedName ());
 			}
@@ -2144,13 +2144,13 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 			case X3D::X3DConstants::X3DBaseNode:
 				return false;
 			case X3D::X3DConstants::X3DNode:
-				goto NEXT;
-			default:
 				break;
+			default:
+				continue;
 		}
-	}
 
-NEXT:
+		break;
+	}
 
 	// Iterate over parents
 

@@ -69,7 +69,7 @@ X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3
 	assert (browser);
 }
 
-const X3D::ScenePtr &
+const X3D::X3DScenePtr &
 X3DBaseInterface::getScene () const
 {
 	return browserWindow -> getScene ();

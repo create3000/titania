@@ -164,7 +164,7 @@ RenderingProperties::set_enabled ()
 		{
 			// Visual display of RenderingProperties
 
-			ScenePtr scene;
+			X3DScenePtr scene;
 
 			try
 			{

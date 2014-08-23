@@ -435,7 +435,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	// Remove model.
 
-	X3D::ScenePtr scene (get_model () -> get_execution_context ());
+	X3D::X3DScenePtr scene (get_model () -> get_execution_context ());
 
 	for (const auto & child : get_model () -> children ())
 	{
@@ -552,7 +552,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	if (exportedNodes)
 	{
-		const auto scene = dynamic_cast <X3D::Scene*> (executionContext .getValue ());
+		const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext .getValue ());
 
 		if (scene)
 		{
@@ -850,7 +850,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			if (exportedNodes)
 			{
-				const auto scene = dynamic_cast <X3D::Scene*> (executionContext);
+				const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext);
 
 				if (scene)
 				{

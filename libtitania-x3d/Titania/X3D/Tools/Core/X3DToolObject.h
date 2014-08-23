@@ -53,7 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Components/Networking/Inline.h"
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 #include "../../Fields.h"
 
 namespace titania {

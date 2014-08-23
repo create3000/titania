@@ -53,7 +53,7 @@
 
 #include "../Base/X3DChildObject.h"
 #include "../Components/Core/X3DNode.h"
-#include "../Execution/Scene.h"
+#include "../Execution/X3DScene.h"
 
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"

@@ -79,20 +79,22 @@ class X3DExecutionContext :
 {
 public:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	void
 	realize ();
 
-	///  @name Scene handling
+	/***
+	 *  @name Member access
+	 */
 
 	virtual
 	bool
 	isRootContext () const
 	throw (Error <DISPOSED>)
 	{ return false; }
-
-	///  @name Member access
 
 	virtual
 	std::string
@@ -226,7 +228,9 @@ public:
 	       Error <DISPOSED>)
 	{ uninitializedNodes .emplace_back (uninitializedNode); }
 
-	///  @name Named node handling
+	/***
+	 *  @name Named node handling
+	 */
 
 	void
 	addNamedNode (const std::string &, const SFNode &)
@@ -273,7 +277,9 @@ public:
 	       Error <DISPOSED>)
 	{ return namedNodesOutput; }
 
-	///  @name Imported nodes handling
+	/***
+	 *  @name Imported nodes handling
+	 */
 
 	const ImportedNodePtr &
 	addImportedNode (const InlinePtr &, const std::string &, std::string = "")
@@ -323,7 +329,9 @@ public:
 	       Error <DISPOSED>)
 	{ return importedNodesOutput; }
 
-	///  @name Named/Imported node handling
+	/***
+	 *  @name Named/Imported node handling
+	 */
 
 	SFNode
 	getLocalNode (const std::string &) const
@@ -343,7 +351,9 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Proto declaration handling
+	/***
+	 *  @name Proto declaration handling
+	 */
 
 	virtual
 	bool
@@ -390,7 +400,9 @@ public:
 	       Error <DISPOSED>)
 	{ return prototypesOutput; }
 
-	///  @name Exterproto declaration handling
+	/***
+	 *  @name Exterproto declaration handling
+	 */
 
 	ExternProtoDeclarationPtr
 	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
@@ -433,7 +445,9 @@ public:
 	       Error <DISPOSED>)
 	{ return externProtosOutput; }
 
-	///  @name ProtoObject handling
+	/***
+	 *  @name ProtoObject handling
+	 */
 
 	virtual
 	X3DProtoDeclarationNode*
@@ -453,7 +467,9 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Root node handling
+	/***
+	 *  @name Root node handling
+	 */
 
 	MFNode &
 	getRootNodes ()
@@ -473,7 +489,9 @@ public:
 	       Error <DISPOSED>)
 	{ return sceneGraphOutput; }
 
-	///  @name Dynamic route node handling
+	/***
+	 *  @name Dynamic route node handling
+	 */
 
 	const RoutePtr &
 	addRoute (const SFNode &, const std::string &,
@@ -509,7 +527,9 @@ public:
 	       Error <DISPOSED>)
 	{ return routes; }
 
-	///  @name Viewpoint handling
+	/***
+	 *  @name Viewpoint handling
+	 */
 
 	void
 	changeViewpoint (const std::string &)
@@ -517,7 +537,9 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Import handling
+	/***
+	 *  @name Import handling
+	 */
 
 	virtual
 	void
@@ -527,7 +549,9 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	///  @name Input/Output
+	/***
+	 *  @name Input/Output
+	 */
 
 	virtual
 	void
@@ -545,7 +569,9 @@ public:
 	void
 	toXMLStream (std::ostream &) const override;
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 */
 
 	virtual
 	void
@@ -557,7 +583,9 @@ public:
 
 protected:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	X3DExecutionContext ();
 
@@ -565,13 +593,17 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Unit handling
+	/***
+	 *  @name Unit handling
+	 */
 
 	void
 	setUnits (const UnitArray & value)
 	{ units = value; }
 
-	///  @name Import handling
+	/***
+	 *  @name Import handling
+	 */
 
 	void
 	importExternProtos (const X3DExecutionContext* const)
@@ -601,9 +633,16 @@ protected:
 
 private:
 
+	/***
+	 *  @name Member types
+	 */
+
 	using ImportedNamesIndex = std::multimap <X3DBase*, std::string>;
 
-	///  @name Operations
+	/***
+	 *  @name Operations
+	 */
+
 	std::string
 	getUniqueName (X3DExecutionContext* const, std::string = "") const;
 
@@ -613,13 +652,18 @@ private:
 	void
 	removeImportedName (const ImportedNamesIndex::iterator &);
 
+	void
+	set_sceneGraph ();
+
 	RouteId
 	getRouteId (const SFNode &, const std::string &,
 	            const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	///  @name Import handling
+	/***
+	 *  @name Import handling
+	 */
 
 	void
 	updateNamedNodes (X3DExecutionContext* const) const
@@ -654,12 +698,16 @@ private:
 	void
 	importRoutes (X3DExecutionContext* const);
 
-	///  @name Static members
+	/***
+	 *  @name Static members
+	 */
 
 	static const UnitIndex unitCategories;
 	static const UnitArray standardUnits;
 
-	///  @name Members
+	/***
+	 *  @name Members
+	 */
 
 	std::string encoding;
 	std::string specificationVersion;

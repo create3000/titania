@@ -227,7 +227,7 @@ OutlineCellRenderer::on_data ()
 		case OutlineIterType::X3DExecutionContext:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object ());
-			const auto   scene  = dynamic_cast <X3D::Scene*> (sfnode .getValue ());
+			const auto   scene  = dynamic_cast <X3D::X3DScene*> (sfnode .getValue ());
 
 			if (scene)
 				property_markup () = "<i><b>Scene</b> »" + Glib::Markup::escape_text (scene -> getWorldURL () .basename ()) + "«</i>";

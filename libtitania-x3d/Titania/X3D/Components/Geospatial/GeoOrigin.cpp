@@ -51,7 +51,7 @@
 #include "GeoOrigin.h"
 
 #include "../../Bits/Geospatial.h"
-#include "../../Execution/Scene.h"
+#include "../../Execution/X3DScene.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {

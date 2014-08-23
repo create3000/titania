@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_EXECUTION_WORLD_H__
 
 #include "../Components/Layering/LayerSet.h"
-#include "../Execution/Scene.h"
+#include "../Execution/X3DScene.h"
 
 namespace titania {
 namespace X3D {

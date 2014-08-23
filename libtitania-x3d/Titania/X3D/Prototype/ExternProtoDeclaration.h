@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_H__
 
 #include "../Components/Networking/X3DUrlObject.h"
-#include "../Execution/Scene.h"
+#include "../Execution/X3DScene.h"
 #include "../Fields.h"
 #include "../Prototype/ProtoDeclaration.h"
 
@@ -127,7 +127,7 @@ public:
 	getProtoDeclaration () final override
 	{ return prototype; }
 
-	const ScenePtr &
+	const X3DScenePtr &
 	getInternalScene () const
 	{ return scene; }
 
@@ -190,7 +190,7 @@ private:
 
 	///  @name Members
 
-	ScenePtr scene;
+	X3DScenePtr         scene;
 	ProtoDeclarationPtr prototype;
 
 };

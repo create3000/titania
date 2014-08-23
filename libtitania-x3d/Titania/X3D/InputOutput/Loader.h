@@ -78,28 +78,28 @@ public:
 
 	///  @name X3D Creation Handling
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromString (const std::string & string)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromStream (basic::ifilestream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	ScenePtr
+	X3DScenePtr
 	createX3DFromURL (const MFString & url)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);

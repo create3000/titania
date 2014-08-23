@@ -1,3 +1,23 @@
+2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UserData.h:
+	* MagicImport.h:
+	* MagicImport.cpp:
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserWidget.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* NodeIndex.cpp:
+	* ScriptEditor.cpp:
+	* OutlineUserData.h:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp:
+	* X3DExportedNodesEditor.h:
+	* X3DExportedNodesEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
 2014-08-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* home.wrl:

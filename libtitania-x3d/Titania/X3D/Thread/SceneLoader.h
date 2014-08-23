@@ -63,14 +63,14 @@ namespace X3D {
 
 class X3DBrowser;
 class X3DExecutionContext;
-class Scene;
+class X3DScene;
 
 class SceneLoader :
 	public X3DInput
 {
 public:
 
-	typedef std::function <void (ScenePtr &&)> Callback;
+	typedef std::function <void (X3DScenePtr &&)> Callback;
 
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 
@@ -87,20 +87,20 @@ public:
 
 private:
 
-	std::future <ScenePtr>
+	std::future <X3DScenePtr>
 	getFuture (const MFString &);
 
-	ScenePtr
+	X3DScenePtr
 	loadAsync (const MFString &);
 
 	void
 	prepareEvents ();
 
-	X3DBrowser* const      browser;
-	const basic::uri       referer;
-	Callback               callback;
-	std::atomic <bool>     running;
-	std::future <ScenePtr> future;
+	X3DBrowser* const         browser;
+	const basic::uri          referer;
+	Callback                  callback;
+	std::atomic <bool>        running;
+	std::future <X3DScenePtr> future;
 
 };
 

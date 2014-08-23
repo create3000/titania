@@ -50,6 +50,7 @@
 
 #include "GeoLOD.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -78,7 +79,7 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	   X3DBoundedObject (),
 	X3DGeospatialObject (),
 	             fields (),
-	          rootGroup (new Group (executionContext)),
+	          rootGroup (new Group (getBrowser () -> getEmptyScene ())),
 	         rootInline (new Inline (executionContext)),
 	       child1Inline (new Inline (executionContext)),
 	       child2Inline (new Inline (executionContext)),
@@ -158,6 +159,55 @@ GeoLOD::initialize ()
 }
 
 void
+GeoLOD::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	rootInline   -> setExecutionContext (executionContext);
+	child1Inline -> setExecutionContext (executionContext);
+	child2Inline -> setExecutionContext (executionContext);
+	child3Inline -> setExecutionContext (executionContext);
+	child4Inline -> setExecutionContext (executionContext);
+
+	X3DChildNode::setExecutionContext (executionContext);
+}
+
+Box3f
+GeoLOD::getBBox () const
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		const size_t level = level_changed ();
+
+		switch (level)
+		{
+			case 0:
+			{
+				if (rootNode () .empty ())
+					return rootInline -> getBBox ();
+
+				return rootGroup -> getBBox ();
+			}
+			case 1:
+			{
+				Box3f bbox;
+				
+				bbox += child1Inline -> getBBox ();
+				bbox += child2Inline -> getBBox ();
+				bbox += child3Inline -> getBBox ();
+				bbox += child4Inline -> getBBox ();
+
+				return bbox;
+			}
+			default:
+				return Box3f ();
+		}
+	}
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
+void
 GeoLOD::set_rootLoadState ()
 {
 	if (level_changed () not_eq 0)
@@ -197,41 +247,6 @@ GeoLOD::set_childLoadState ()
 		children () .insert (children () .end (),
 		                     child4Inline -> getRootNodes () .begin (),
 		                     child4Inline -> getRootNodes () .end ());
-}
-
-Box3f
-GeoLOD::getBBox () const
-{
-	if (bboxSize () == Vector3f (-1, -1, -1))
-	{
-		const size_t level = level_changed ();
-
-		switch (level)
-		{
-			case 0:
-			{
-				if (rootNode () .empty ())
-					return rootInline -> getBBox ();
-
-				return rootGroup -> getBBox ();
-			}
-			case 1:
-			{
-				Box3f bbox;
-				
-				bbox += child1Inline -> getBBox ();
-				bbox += child2Inline -> getBBox ();
-				bbox += child3Inline -> getBBox ();
-				bbox += child4Inline -> getBBox ();
-
-				return bbox;
-			}
-			default:
-				return Box3f ();
-		}
-	}
-
-	return Box3f (bboxSize (), bboxCenter ());
 }
 
 size_t

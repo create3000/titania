@@ -279,6 +279,8 @@ public:
 private:
 
 	using X3DArrayField <X3DPtr <ValueType>> ::get;
+	using X3DArrayField <X3DPtr <ValueType>> ::addChild;
+	using X3DArrayField <X3DPtr <ValueType>> ::removeChildren;
 
 	/***
 	 *  @name Element handling

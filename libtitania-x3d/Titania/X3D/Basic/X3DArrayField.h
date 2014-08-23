@@ -586,13 +586,21 @@ protected:
 	 *  @name Element handling
 	 */
 
+	void
+	addChildren (const typename iterator::iterator_type &,
+	             const typename iterator::iterator_type &);
+
 	virtual
 	void
 	addChild (ValueType*);
-	
+
 	virtual
 	void
 	moveChild (X3DArrayField & other, ValueType*);
+
+	void
+	removeChildren (const typename iterator::iterator_type &,
+	                const typename iterator::iterator_type &);
 
 	virtual
 	void
@@ -606,21 +614,6 @@ protected:
 	virtual
 	void
 	reset () override;
-
-
-private:
-
-	/***
-	 *  @name Element handling
-	 */
-
-	void
-	addChildren (const typename iterator::iterator_type &,
-	             const typename iterator::iterator_type &);
-
-	void
-	removeChildren (const typename iterator::iterator_type &,
-	                const typename iterator::iterator_type &);
 
 };
 

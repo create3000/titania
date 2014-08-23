@@ -15,7 +15,7 @@ Transform {
           ]
 
           language "GLSL"
-          parts ShaderPart {
+          parts DEF NotValidFS ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
 #version 120
@@ -38,7 +38,7 @@ void main (void)
           ]
 
           language "GLSL"
-          parts ShaderPart {
+          parts DEF ValidFS ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
 #version 120
@@ -69,7 +69,7 @@ Transform {
 
         language "GLSL"
         parts [
-          ShaderPart {
+          DEF TextureVS ShaderPart {
             url "data:text/plain,
 #version 120
 
@@ -80,7 +80,7 @@ void main (void)
 }
 "
           }
-          ShaderPart {
+          DEF TextureFS ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
 #version 120
