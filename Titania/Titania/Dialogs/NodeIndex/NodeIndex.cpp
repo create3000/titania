@@ -136,6 +136,12 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	nodes = std::move (value);
 
+	if (node)
+	{
+		if (std::find (nodes .begin (), nodes .end (), node) == nodes .end ())
+			node = nullptr;
+	}
+
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&NodeIndex::set_adjustment), getTreeView () .get_hadjustment (), getTreeView () .get_hadjustment () -> get_value ()));
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&NodeIndex::set_adjustment), getTreeView () .get_vadjustment (), getTreeView () .get_vadjustment () -> get_value ()));
 
