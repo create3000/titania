@@ -169,7 +169,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	getExecutionContext () -> isLive () .removeInterest (this, &ExternProtoDeclaration::set_live);
 	executionContext -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
-	X3DProtoDeclarationNode::setExecutionContext (executionContext);
+	X3DUrlObject::setExecutionContext (executionContext);
 
 	set_live ();
 }
