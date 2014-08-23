@@ -95,6 +95,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::AccelGroup> &
+	getAccelGroup () const
+	{ return m_AccelGroup; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -104,8 +108,8 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Paned &
-	getScriptEditor () const
-	{ return *m_ScriptEditor; }
+	getPaned () const
+	{ return *m_Paned; }
 
 	Gtk::Box &
 	getNodeIndexBox () const
@@ -124,8 +128,8 @@ public:
 	{ return *m_RenameButton; }
 
 	Gtk::Box &
-	getScriptEditorBox () const
-	{ return *m_ScriptEditorBox; }
+	getScriptEditor () const
+	{ return *m_ScriptEditor; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
@@ -178,21 +182,22 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::Paned*                 m_ScriptEditor;
-	Gtk::Box*                   m_NodeIndexBox;
-	Gtk::Box*                   m_NameBox;
-	Gtk::Entry*                 m_NameEntry;
-	Gtk::Button*                m_RenameButton;
-	Gtk::Box*                   m_ScriptEditorBox;
-	Gtk::ScrolledWindow*        m_ScrolledWindow;
-	Gtk::ToolButton*            m_SaveButton;
-	Gtk::ToolButton*            m_UndoButton;
-	Gtk::ToolButton*            m_RedoButton;
-	Gtk::ToolButton*            m_LoadStateButton;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Paned*                    m_Paned;
+	Gtk::Box*                      m_NodeIndexBox;
+	Gtk::Box*                      m_NameBox;
+	Gtk::Entry*                    m_NameEntry;
+	Gtk::Button*                   m_RenameButton;
+	Gtk::Box*                      m_ScriptEditor;
+	Gtk::ScrolledWindow*           m_ScrolledWindow;
+	Gtk::ToolButton*               m_SaveButton;
+	Gtk::ToolButton*               m_UndoButton;
+	Gtk::ToolButton*               m_RedoButton;
+	Gtk::ToolButton*               m_LoadStateButton;
 
 };
 

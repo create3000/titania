@@ -61,14 +61,15 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_AccelGroup = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_Widget -> set_name ("Widget");
-	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
-	m_ScriptEditor -> set_name ("ScriptEditor");
+	m_builder -> get_widget ("Paned", m_Paned);
+	m_Paned -> set_name ("Paned");
 	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
 	m_NodeIndexBox -> set_name ("NodeIndexBox");
 	m_builder -> get_widget ("NameBox", m_NameBox);
@@ -77,8 +78,8 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_NameEntry -> set_name ("NameEntry");
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_RenameButton -> set_name ("RenameButton");
-	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
-	m_ScriptEditorBox -> set_name ("ScriptEditorBox");
+	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
+	m_ScriptEditor -> set_name ("ScriptEditor");
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("SaveButton", m_SaveButton);

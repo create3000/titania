@@ -155,6 +155,7 @@ private:
 	std::unique_ptr <NodeIndex> nodeIndex;
 	NameEntry                   nodeName;
 	X3D::SFNode                 node;
+	size_t                      index;
 
 };
 

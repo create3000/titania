@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
+  <object class="GtkAccelGroup" id="AccelGroup"/>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <property name="destroy_with_parent">True</property>
@@ -12,7 +13,7 @@
         <property name="can_focus">False</property>
         <signal name="map" handler="on_map" swapped="no"/>
         <child>
-          <object class="GtkPaned" id="ScriptEditor">
+          <object class="GtkPaned" id="Paned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="position">288</property>
@@ -81,7 +82,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="ScriptEditorBox">
+              <object class="GtkBox" id="ScriptEditor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -110,12 +111,22 @@
                       <object class="GtkToolButton" id="SaveButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Save current script or shader.</property>
+                        <property name="tooltip_text" translatable="yes">Apply current script or shader (Ctrl-S).</property>
                         <property name="label" translatable="yes">Save</property>
                         <property name="use_underline">True</property>
-                        <property name="stock_id">gtk-save</property>
+                        <property name="stock_id">gtk-apply</property>
                         <signal name="clicked" handler="on_save_clicked" swapped="no"/>
                         <accelerator key="s" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorToolItem" id="toolbutton1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -143,7 +154,7 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Z).</property>
+                        <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
                         <property name="label" translatable="yes">Redo</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-redo</property>
@@ -155,10 +166,20 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkSeparatorToolItem" id="toolbutton2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkToolButton" id="LoadStateButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Show Console.</property>
+                        <property name="tooltip_text" translatable="yes">Notifies you whether the script is valid and shows the Console on click.</property>
                         <property name="valign">start</property>
                         <property name="label" translatable="yes">Load State</property>
                         <property name="use_underline">True</property>

@@ -69,7 +69,8 @@ ScriptEditor::ScriptEditor (BrowserWindow* const browserWindow) :
 	                textView (textBuffer),
 	               nodeIndex (new NodeIndex (browserWindow)),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
-	                    node ()
+	                    node (),
+	                   index (0)
 {
 	Gsv::init ();
 	setup ();
@@ -79,6 +80,9 @@ void
 ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
+
+	if (getConfig () .hasItem ("paned"))
+		getPaned () .set_position (getConfig () .getInteger ("paned"));
 
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
@@ -114,6 +118,8 @@ ScriptEditor::initialize ()
 	                          X3D::X3DConstants::ShaderPart,
 	                          X3D::X3DConstants::ShaderProgram
 								  });
+
+	getSaveButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 }
 
 void
@@ -151,7 +157,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 		cdata -> addInterest (this, &ScriptEditor::set_cdata);
 
-		getScriptEditorBox () .set_sensitive (true);
+		getScriptEditor () .set_sensitive (true);
 		set_cdata ();
 	
 		// Load state
@@ -167,7 +173,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	else
 	{
 		on_map ();
-		getScriptEditorBox () .set_sensitive (false);
+		getScriptEditor () .set_sensitive (false);
 
 		getTextBuffer () -> begin_not_undoable_action ();
 		getTextBuffer () -> set_text ("");
@@ -197,12 +203,14 @@ bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
 	getBrowserWindow () -> hasShortcuts (false);
+	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	return false;
 }
 
 bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
+	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> hasShortcuts (true);
 	return false;
 }
@@ -216,7 +224,7 @@ ScriptEditor::on_save_clicked ()
 	const auto cdata = node -> getCDATA ();
 	const auto text  = getTextBuffer () -> get_text ();
 
-	if (text == cdata -> get1Value (0))
+	if (text == cdata -> get1Value (index))
 		return;
 
 	cdata -> removeInterest (this, &ScriptEditor::set_cdata);
@@ -227,7 +235,7 @@ ScriptEditor::on_save_clicked ()
 	undoStep -> addObjects (node);
 
 	undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
-	cdata -> set1Value (0, text);
+	cdata -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -274,10 +282,10 @@ ScriptEditor::set_cdata ()
 			{
 				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
-				if (cdata -> get1Value (0) .empty ())
+				if (cdata -> get1Value (index) .empty ())
 					getTextBuffer () -> set_text ("ecmascript:\n");
 				else
-					getTextBuffer () -> set_text (cdata -> get1Value (0));
+					getTextBuffer () -> set_text (cdata -> get1Value (index));
 				break;
 			}
 			case X3D::X3DConstants::ShaderPart:
@@ -285,10 +293,10 @@ ScriptEditor::set_cdata ()
 			{
 				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "text/x-c"));
 
-				if (cdata -> get1Value (0) .empty ())
+				if (cdata -> get1Value (index) .empty ())
 					getTextBuffer () -> set_text ("data:text/plain,\n");
 				else
-					getTextBuffer () -> set_text (cdata -> get1Value (0));
+					getTextBuffer () -> set_text (cdata -> get1Value (index));
 				break;
 			}
 			default:
@@ -344,6 +352,7 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 
 ScriptEditor::~ScriptEditor ()
 {
+	getConfig () .setItem ("paned", getPaned () .get_position ());
 	dispose ();
 }
 

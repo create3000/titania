@@ -184,9 +184,9 @@ X3DUserInterface::removeDialogImpl (const std::shared_ptr <DialogIndex> & dialog
 void
 X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 {
+	getWindow () .set_transient_for (window);
 	getWidget () .unparent ();
 
-	getWindow () .set_transient_for (window);
 	box .pack_start (getWidget (), true, true);
 }
 

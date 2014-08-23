@@ -1,5 +1,14 @@
 2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ScriptEditor.xml:
+	* X3DUserInterface.cpp:
+	* ScriptEditor.h:
+	* ScriptEditor.cpp:
+	* X3DScriptEditorInterface.h:
+	* X3DScriptEditorInterface.cpp: 
+
+2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NodeIndex.cpp: 
 
 2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
