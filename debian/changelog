@@ -1,3 +1,11 @@
+titania (0.7.4) trusty; urgency=medium
+
+  * Added Script Editor
+  * Added Appearance Editor
+  * Fixes some bugs
+
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 24 Aug 2014 18:36:00 +0200
+
 titania (0.7.3) trusty; urgency=medium
 
   * Fixes some bugs
