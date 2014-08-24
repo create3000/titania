@@ -1682,7 +1682,7 @@
                                     <property name="tooltip_text" translatable="yes">Selects the immediate parent of the current selection.</property>
                                     <property name="label" translatable="yes">Select Parent</property>
                                     <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-sort-descending</property>
+                                    <property name="stock_id">gtk-go-up</property>
                                     <signal name="clicked" handler="on_select_parent_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>
@@ -1696,7 +1696,7 @@
                                     <property name="tooltip_text" translatable="yes">Selects the next lower children objects within the selected group in the hierarchy.</property>
                                     <property name="label" translatable="yes">Select Children</property>
                                     <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-sort-ascending</property>
+                                    <property name="stock_id">gtk-go-down</property>
                                     <signal name="clicked" handler="on_select_children_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>

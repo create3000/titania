@@ -73,25 +73,25 @@ Layout::Fields::Fields () :
 { }
 
 Layout::Layout (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DLayoutNode (),
-	           fields (),
-	           alignX (HorizontalAlignType::CENTER),
-	           alignY (VerticalAlignType::CENTER),
-	      offsetUnitX (SizeUnitType::WORLD),
-	      offsetUnitY (SizeUnitType::WORLD),
-	          offsetX (0),
-	          offsetY (0),
-	        sizeUnitX (SizeUnitType::WORLD),
-	        sizeUnitY (SizeUnitType::WORLD),
-	            sizeX (1),
-	            sizeY (1),
-	       scaleModeX (ScaleModeType::NONE),
-	       scaleModeY (ScaleModeType::NONE),
-	           parent (nullptr),
-	         viewport (),
-	  rectangleCenter (),
-	    rectangleSize ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DLayoutNode (),
+	         fields (),
+	         alignX (HorizontalAlignType::CENTER),
+	         alignY (VerticalAlignType::CENTER),
+	    offsetUnitX (SizeUnitType::WORLD),
+	    offsetUnitY (SizeUnitType::WORLD),
+	        offsetX (0),
+	        offsetY (0),
+	      sizeUnitX (SizeUnitType::WORLD),
+	      sizeUnitY (SizeUnitType::WORLD),
+	          sizeX (1),
+	          sizeY (1),
+	     scaleModeX (ScaleModeType::NONE),
+	     scaleModeY (ScaleModeType::NONE),
+	         parent (nullptr),
+	       viewport (), /// XXX: not used
+	rectangleCenter (),
+	  rectangleSize ()
 {
 	addType (X3DConstants::Layout);
 
@@ -195,10 +195,10 @@ Layout::getScaleModeX () const
 {
 	if (parent)
 		return scaleModeX;
-	
+
 	if (scaleModeX == ScaleModeType::NONE)
 		return ScaleModeType::FRACTION;
-	
+
 	return scaleModeX;
 }
 
@@ -210,7 +210,7 @@ Layout::getScaleModeY () const
 
 	if (scaleModeY == ScaleModeType::NONE)
 		return ScaleModeType::FRACTION;
-	
+
 	return scaleModeY;
 }
 
@@ -430,18 +430,18 @@ Layout::transform (const TraverseType type)
 
 	// OrthoViewpoint
 
-	OrthoViewpoint* const viewpoint = dynamic_cast <OrthoViewpoint*> (getCurrentViewpoint ());
+	const auto viewpoint = dynamic_cast <OrthoViewpoint*> (getCurrentViewpoint ());
 
 	if (viewpoint)
 	{
 		// Calculate rectangleSize
 
-		viewport = Viewport4i ();
-		const int viewportWidth  = viewport [2];
-		const int viewportHeight = viewport [3];
+		const auto viewport      = Viewport4i ();                                                    // in pixel
+		const auto viewportPixel = Vector2i (viewport [2], viewport [3]);                            // in pixel
 
-		const Vector2d viewportSize        = viewpoint -> getViewportSize (viewport);
-		const Vector2d parentRectangleSize = parent ? parent -> getRectangleSize () : viewportSize;
+		const Vector2d viewportMeter       = viewpoint -> getViewportSize (viewport);                // in meter
+		const Vector2d parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter; // in meter
+		const Vector2d pixelSize           = viewportMeter / Vector2d (viewportPixel);               // size of one pixel in meter
 
 		switch (getSizeUnitX ())
 		{
@@ -449,7 +449,7 @@ Layout::transform (const TraverseType type)
 				rectangleSize .x (sizeX * parentRectangleSize .x ());
 				break;
 			case SizeUnitType::PIXEL:
-				rectangleSize .x (sizeX * viewportSize .x () / viewportWidth);
+				rectangleSize .x (sizeX * pixelSize .x ());
 				break;
 			default:
 				break;
@@ -461,7 +461,7 @@ Layout::transform (const TraverseType type)
 				rectangleSize .y (sizeY * parentRectangleSize .y ());
 				break;
 			case SizeUnitType::PIXEL:
-				rectangleSize .y (sizeY * viewportSize .y () / viewportHeight);
+				rectangleSize .y (sizeY * pixelSize .y ());
 				break;
 			default:
 				break;
@@ -470,15 +470,17 @@ Layout::transform (const TraverseType type)
 		// Calculate translation
 
 		Vector3d translation;
-		
+
 		switch (getAlignX ())
 		{
 			case HorizontalAlignType::LEFT:
 				translation .x (-(parentRectangleSize .x () - rectangleSize .x ()) / 2);
 				break;
 			case HorizontalAlignType::CENTER:
-				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportWidth))
-					translation .x (-0.5 * viewportSize .x () / viewportWidth);
+
+				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportPixel .x ()))
+					translation .x (-pixelSize .x () / 2);
+
 				break;
 			case HorizontalAlignType::RIGHT:
 				translation .x ((parentRectangleSize .x () - rectangleSize .x ()) / 2);
@@ -491,8 +493,10 @@ Layout::transform (const TraverseType type)
 				translation .y (-(parentRectangleSize .y () - rectangleSize .y ()) / 2);
 				break;
 			case VerticalAlignType::CENTER:
-				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportHeight))
-					translation .y (-0.5 * viewportSize .y () / viewportHeight);
+
+				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportPixel .y ()))
+					translation .y (-pixelSize .y () / 2);
+
 				break;
 			case VerticalAlignType::TOP:
 				translation .y ((parentRectangleSize .y () - rectangleSize .y ()) / 2);
@@ -501,7 +505,7 @@ Layout::transform (const TraverseType type)
 
 		// Calculate offset
 
-		Vector3d offset;	
+		Vector3d offset;
 
 		switch (getOffsetUnitX ())
 		{
@@ -509,7 +513,7 @@ Layout::transform (const TraverseType type)
 				offset .x (offsetX * parentRectangleSize .x ());
 				break;
 			case SizeUnitType::PIXEL:
-				offset .x (offsetX * viewportSize .x () / viewportWidth);
+				offset .x (offsetX * viewportMeter .x () / viewportPixel .x ());
 				break;
 			default:
 				break;
@@ -521,7 +525,7 @@ Layout::transform (const TraverseType type)
 				offset .y (offsetY * parentRectangleSize .y ());
 				break;
 			case SizeUnitType::PIXEL:
-				offset .y (offsetY * viewportSize .y () / viewportHeight);
+				offset .y (offsetY * viewportMeter .y () / viewportPixel .y ());
 				break;
 			default:
 				break;
@@ -530,7 +534,7 @@ Layout::transform (const TraverseType type)
 		// Calculate scale
 
 		Vector3d scale (1, 1, 1);
-	
+
 		Vector3d   currentTranslation, currentScale;
 		Rotation4d currentRotation;
 
@@ -548,7 +552,7 @@ Layout::transform (const TraverseType type)
 			case ScaleModeType::STRETCH:
 				break;
 			case ScaleModeType::PIXEL:
-				scale .x (viewportSize .x () / viewportWidth);
+				scale .x (viewportMeter .x () / viewportPixel .x ());
 				break;
 		}
 
@@ -563,7 +567,7 @@ Layout::transform (const TraverseType type)
 			case ScaleModeType::STRETCH:
 				break;
 			case ScaleModeType::PIXEL:
-				scale .y (viewportSize .y () / viewportHeight);
+				scale .y (viewportMeter .y () / viewportPixel .y ());
 				break;
 		}
 

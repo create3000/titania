@@ -137,8 +137,9 @@ OrthoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
 	const double height = viewport [3];
 	const double sizeX  = getSizeX ();
 	const double sizeY  = getSizeY ();
+	const double aspect = width / height;
 
-	if (width / height > sizeX / sizeY)
+	if (aspect > sizeX / sizeY)
 	{
 		const double s = getSizeY () / height;
 
@@ -159,7 +160,7 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 	const double sizeY  = getSizeY ();
 	const double aspect = width / height;
 
-	if (width / height > sizeX / sizeY)
+	if (aspect > sizeX / sizeY)
 		return Vector2d (getSizeY () * aspect, getSizeY ());
 
 	return Vector2d (getSizeX (), getSizeX () / aspect);

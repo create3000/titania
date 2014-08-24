@@ -1,3 +1,11 @@
+2014-08-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ScriptEditor.xml:
+	* BrowserWindow.xml:
+	* url_error.wrl:
+	* ScriptEditor.h:
+	* ScriptEditor.cpp: 
+
 2014-08-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineCellRenderer.cpp: 

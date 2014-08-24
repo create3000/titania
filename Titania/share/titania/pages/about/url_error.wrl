@@ -8,6 +8,10 @@ LayerSet {
   order 1
   layers LayoutLayer {
     layout Layout {
+      align [
+        "MIDDLE",
+        "TOP"
+      ]
       offsetUnits [
         "PIXEL",
         "PIXEL"
@@ -15,6 +19,10 @@ LayerSet {
       sizeUnits [
         "PIXEL",
         "PIXEL"
+      ]
+      size [
+        0,
+        0
       ]
       scaleMode [
         "PIXEL",
@@ -32,7 +40,7 @@ LayerSet {
         skyColor 1 1 1
       }
       DEF DialogErrorImage Transform {
-        translation -265 181 0
+        translation -225 -59 0
         scale 16 16 1
         children Shape {
           appearance Appearance {
@@ -80,7 +88,7 @@ LayerSet {
         }
       }
       DEF Type Transform {
-        translation -237 167 0
+        translation -197 -73 0
         children Shape {
           appearance Appearance {
             material Material {
@@ -106,7 +114,7 @@ LayerSet {
         }
       }
       DEF Message Transform {
-        translation -280 144 0
+        translation -240 -96 0
         children [
           DEF Error Transform {
             children Shape {

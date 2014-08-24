@@ -108,11 +108,6 @@ private:
 	void
 	set_node (const X3D::SFNode &);
 
-	///  @name Member access
-
-	void
-	setTabs (const size_t);
-
 	///  @name Event handlers
 
 	bool

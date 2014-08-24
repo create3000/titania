@@ -94,14 +94,15 @@ ScriptEditor::initialize ()
 	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
 	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
 
-	setTabs (3);
 	getTextView () .set_show_right_margin (true);
 	getTextView () .set_right_margin_position (100);
 	//getTextView () .set_highlight_current_line (true);
 	getTextView () .set_show_line_numbers (true);
 	getTextView () .set_show_line_marks (true);
-	getTextView () .set_auto_indent (true);
+	getTextView () .property_tab_width () = 3;
+	getTextView () .set_indent_width (3);
 	getTextView () .set_insert_spaces_instead_of_tabs (false);
+	getTextView () .set_auto_indent (true);
 	getTextView () .set_indent_on_tab (true);
 	getTextView () .show ();
 
@@ -194,22 +195,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
-}
-
-void
-ScriptEditor::setTabs (const size_t width)
-{
-   const auto layout     = getTextView () .create_pango_layout ("A");
-   int        charWidth  = 0;
-   int        charHeight = 0;
-
-   layout -> get_pixel_size (charWidth, charHeight);   
-
-	Pango::TabArray tabs (1, true);
-	tabs .set_tab (0, Pango::TAB_LEFT, width * charWidth);
-
-	getTextView () .set_tabs (tabs);
-	getTextView () .set_indent_width (width);
 }
 
 bool
