@@ -80,12 +80,11 @@ static constexpr double OUTPUT_PAD       = 7;    // Depends on image (one pixel 
 static constexpr double INPUT_OUTPUT_PAD = 9;    // Depends on image (one pixel less)
 static constexpr double CONNECTOR_WIDTH  = 6;    // Depends on image (two pixel more)
 
-static constexpr double ROUTE_WIDTH       = 16;
-static constexpr double ROUTE_CURVE_WIDTH = 16;
-static constexpr double ROUTE_RADIUS      = 8.5;
-static constexpr double ROUTE_INPUT_PAD   = 14;
-static constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
-static constexpr double RIGHT_PAD         = 8;
+static constexpr double ROUTE_LENGTH     = 8;
+static constexpr double ROUTE_RADIUS     = 8.5;
+static constexpr double ROUTE_INPUT_PAD  = 14;
+static constexpr double ROUTE_Y_PAD      = 3.5; // Depends on image
+static constexpr double RIGHT_PAD        = 8;
 
 OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
@@ -471,12 +470,12 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	minimum_width = 0;
 	natural_width = 0;
 
-	int minimum = 0;
-	int natural = 0;
-
 	// Icon
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		minimum_width += ICON_X_PAD;
 		natural_width += ICON_X_PAD;
 
@@ -488,6 +487,9 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	// Name or value
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		minimum_width += NAME_X_PAD;
 		natural_width += NAME_X_PAD;
 
@@ -508,6 +510,9 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		{
+			int minimum = 0;
+			int natural = 0;
+
 			minimum_width += ACCESS_TYPE_X_PAD;
 			natural_width += ACCESS_TYPE_X_PAD;
 
@@ -515,16 +520,16 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 			minimum_width += minimum;
 			natural_width += natural;
 
-			minimum_width += ROUTE_WIDTH;
-			natural_width += ROUTE_WIDTH;
+			minimum_width += ROUTE_LENGTH;
+			natural_width += ROUTE_LENGTH;
 			break;
 		}
 		default:
 			break;
 	}
 
-	minimum_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
-	natural_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
+	minimum_width += ROUTE_RADIUS + RIGHT_PAD;
+	natural_width += ROUTE_RADIUS + RIGHT_PAD;
 }
 
 void
@@ -535,12 +540,12 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 	minimum_height = diameter;
 	natural_height = diameter;
 
-	int minimum = 0;
-	int natural = 0;
-
 	// Icon
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
@@ -549,6 +554,9 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 	// Name or value
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		Gtk::CellRendererText::get_preferred_height_for_width_vfunc (widget, width, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
@@ -566,10 +574,12 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		{
+			int minimum = 0;
+			int natural = 0;
+
 			cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
 			minimum_height = std::max (minimum, minimum_height);
 			natural_height = std::max (natural, natural_height);
-
 			break;
 		}
 		default:
@@ -585,12 +595,12 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 	minimum_height = diameter;
 	natural_height = diameter;
 
-	int minimum = 0;
-	int natural = 0;
-
 	// Icon
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		cellrenderer_icon .get_preferred_height (widget, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
@@ -599,6 +609,9 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 	// Name or value
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		Gtk::CellRendererText::get_preferred_height_vfunc (widget, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
@@ -616,10 +629,12 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		{
+			int minimum = 0;
+			int natural = 0;
+
 			cellrenderer_access_type_icon .get_preferred_height (widget, minimum, natural);
 			minimum_height = std::max (minimum, minimum_height);
 			natural_height = std::max (natural, natural_height);
-
 			break;
 		}
 		default:
@@ -634,12 +649,12 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	minimum_width = 0;
 	natural_width = 0;
 
-	int minimum = 0;
-	int natural = 0;
-
 	// Icon
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		minimum_width += ICON_X_PAD;
 		natural_width += ICON_X_PAD;
 
@@ -651,6 +666,9 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	// Name or value
 
 	{
+		int minimum = 0;
+		int natural = 0;
+
 		minimum_width += NAME_X_PAD;
 		natural_width += NAME_X_PAD;
 
@@ -671,6 +689,9 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
 		{
+			int minimum = 0;
+			int natural = 0;
+
 			minimum_width += ACCESS_TYPE_X_PAD;
 			natural_width += ACCESS_TYPE_X_PAD;
 
@@ -678,16 +699,16 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 			minimum_width += minimum;
 			natural_width += natural;
 
-			minimum_width += ROUTE_WIDTH;
-			natural_width += ROUTE_WIDTH;
+			minimum_width += ROUTE_LENGTH;
+			natural_width += ROUTE_LENGTH;
 			break;
 		}
 		default:
 			break;
 	}
 
-	minimum_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
-	natural_width += ROUTE_CURVE_WIDTH + RIGHT_PAD;
+	minimum_width += ROUTE_RADIUS + RIGHT_PAD;
+	natural_width += ROUTE_RADIUS + RIGHT_PAD;
 }
 
 Gtk::CellEditable*
@@ -1253,7 +1274,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 {
 	const int x      = cell_area .get_x ();
 	const int y      = background_area .get_y ();
-	const int width  = cell_area .get_width () - ROUTE_CURVE_WIDTH;
+	const int width  = cell_area .get_width () - int (ROUTE_RADIUS);
 	const int height = background_area .get_height ();
 	const int y_pad  = (height - minimum_height) / 2;
 
