@@ -172,9 +172,6 @@ OutlineTreeViewEditor::set_motion_notify_event (GdkEventMotion* event)
 bool
 OutlineTreeViewEditor::select_field_value (const double x, const double y)
 {
-	if (inPrototypeInstance ())
-		return false;
-
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
@@ -184,6 +181,9 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 
 		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
 		{
+			if (inPrototypeInstance ())
+				return true;
+
 			Gtk::TreePath parentPath (path);
 			parentPath .up ();
 			parentPath .up ();

@@ -169,6 +169,9 @@ NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 	// Find nodes
 
 	X3D::MFNode nodes;
+	
+	if (inPrototypeInstance ())
+		return nodes;
 
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
@@ -204,6 +207,9 @@ NodeIndex::getNodes ()
 	// Find nodes
 
 	X3D::MFNode nodes;
+	
+	if (inPrototypeInstance ())
+		return nodes;
 
 	for (const auto pair : getExecutionContext () -> getNamedNodes ())
 		nodes .emplace_back (pair .second -> getLocalNode ());
