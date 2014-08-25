@@ -1,3 +1,10 @@
+2014-08-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.cpp:
+	* Generator.h:
+	* Generator.cpp:
+	* X3DPrototypeInstance.cpp: 
+
 2014-08-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp: 

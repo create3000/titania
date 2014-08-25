@@ -494,6 +494,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_StandardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size));
 	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info));
 
+	// Connect object Gtk::Box with id 'ToolBar'.
+	m_ToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
+
 	// Connect object Gtk::Toolbar with id 'FileToolBar'.
 	m_FileToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
@@ -507,11 +510,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
 	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
-
-	// Connect object Gtk::Toolbar with id 'EditToolBar'.
-	m_EditToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
-
-	// Connect object Gtk::ToolButton with id 'UndoButton'.
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
 	m_NodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor_clicked));

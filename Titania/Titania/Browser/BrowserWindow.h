@@ -96,7 +96,7 @@ public:
 	/// @name Menu
 
 	void
-	hasShortcuts (const bool);
+	setAccelerators (const bool);
 
 	void
 	expandNodes (const X3D::MFNode &);

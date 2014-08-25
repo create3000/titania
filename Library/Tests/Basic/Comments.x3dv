@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V0.7.0
+#X3D V3.3 utf8 Titania V0.7.4
 
 # Scene Comment
 # Scene Comment2
@@ -13,8 +13,8 @@ UNIT mass pound 0.45359237
 META "comment" "World of Titania"
 META "created" "Sun, 15 Jun 2014 05:33:26 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.0, http://titania.create3000.de"
-META "modified" "Sun, 15 Jun 2014 05:33:26 GMT"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 25 Aug 2014 06:55:59 GMT"
 META "title" "Comments"
 META "utf8" "äöü'\\\\\"áóú<&\\>"
 
@@ -75,7 +75,7 @@ PROTO Test-utf8-<äöü&> [
     isActive IS isBound
   }
 
-  Script {
+  DEF Script Script {
     # Field with utf8 name and special characters
     inputOnly      SFBool   set_utf8-is-gorgeous-&-nice!-<utf8-ist-älegant-&-schön!>
     # Multiple IS statements on user defined field
@@ -93,6 +93,8 @@ PROTO Test-utf8-<äöü&> [
     ]
     # User defined field with reference value
     initializeOnly SFNode   node USE Meta
+    # Circular reference
+    initializeOnly SFNode   self USE Script
 
     # Build in field
     url "javascript:
@@ -105,6 +107,9 @@ function initialize ()
 
 	var q  = 'A string that\\'s single quoted';
 	string = \"A string that's single quoted with special characters \\\"<\\n\\r\\t>\\\"\";
+
+	// Generate node with cirular reference and IS references on fields.
+	print (self .toVRMLString ());
 }
 "
     directOutput TRUE

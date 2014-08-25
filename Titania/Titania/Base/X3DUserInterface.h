@@ -94,9 +94,6 @@ public:
 	void
 	reparent (Gtk::Box &, Gtk::Window &);
 
-	void
-	toggleWidget (Gtk::Widget &, bool);
-
 	///  @name Destruction
 
 	virtual

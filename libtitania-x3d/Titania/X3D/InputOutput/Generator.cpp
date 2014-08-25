@@ -428,7 +428,7 @@ const Generator::NodeTypeIndex   Generator::NodeTypes;
 Generator::StyleType Generator::style   = NICEST;
 VersionType          Generator::version = LATEST_VERSION;
 
-Generator::ExecutionContextStack Generator::executionContextStack;
+Generator::ExecutionContextStack Generator::executionContextStack (1);
 size_t                           Generator::level = 0;
 Generator::LocalNodeSet          Generator::exportedNodesIndex;
 Generator::LocalNodeSet          Generator::importedNodesIndex;
@@ -562,11 +562,11 @@ Generator::PopExecutionContext ()
 {
 	executionContextStack .pop_back ();
 
-	if (executionContextStack .empty ())
-	{
-		exportedNodesIndex .clear ();
-		importedNodesIndex .clear ();
-	}
+	if (executionContextStack .back ())
+		return;
+
+	exportedNodesIndex .clear ();
+	importedNodesIndex .clear ();
 }
 
 void
@@ -627,10 +627,10 @@ Generator::setImportedNodes (const ImportedNodeIndex & importedNodes)
 bool
 Generator::IsSharedNode (const X3DBaseNode* const baseNode)
 {
-	if (executionContextStack .empty ())
-		return false;
+	if (executionContextStack .back ())
+		return executionContextStack .back () not_eq baseNode -> getExecutionContext ();
 
-	return executionContextStack .back () not_eq baseNode -> getExecutionContext ();
+	return false;
 }
 
 bool

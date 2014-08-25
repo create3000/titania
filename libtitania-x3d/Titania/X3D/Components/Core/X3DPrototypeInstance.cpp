@@ -398,25 +398,31 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			bool mustOutputValue = false;
 
-			if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
+			if (Generator::GetExecutionContext () and not Generator::IsSharedNode (this))
 			{
-				bool initializableReference = false;
-
-				for (const auto & reference : field -> getIsReferences ())
-					initializableReference |= reference -> isInitializable ();
-
-				try
+				if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
 				{
-					if (not initializableReference)
-						mustOutputValue = not isDefaultValue (field);
-				}
-				catch (const X3DError &)
-				{
-					mustOutputValue = false;
+					bool initializableReference = false;
+
+					for (const auto & reference : field -> getIsReferences ())
+						initializableReference |= reference -> isInitializable ();
+
+					try
+					{
+						if (not initializableReference)
+							mustOutputValue = not isDefaultValue (field);
+					}
+					catch (const X3DError &)
+					{
+						mustOutputValue = false;
+					}
 				}
 			}
 
-			if (field -> getIsReferences () .empty () or mustOutputValue)
+			// If we have no execution context we are not in a proto and must not generate IS references the same is true
+			// if the node is a shared node as the node does not belong to the execution context.
+
+			if ((field -> getIsReferences () .empty () or not Generator::GetExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);

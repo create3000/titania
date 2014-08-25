@@ -1060,7 +1060,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::ForceBreak;
 	}
 
-	if (field -> getIsReferences () .empty ())
+	if (field -> getIsReferences () .empty () or not Generator::GetExecutionContext () or Generator::IsSharedNode (this))
 	{
 		// Output build in field
 
@@ -1142,7 +1142,10 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< Generator::ForceBreak;
 	}
 
-	if (field -> getIsReferences () .empty ())
+	// If we have no execution context we are not in a proto and must not generate IS references the same is true
+	// if the node is a shared node as the node does not belong to the execution context.
+
+	if (field -> getIsReferences () .empty () or not Generator::GetExecutionContext () or Generator::IsSharedNode (this))
 	{
 		// Output user defined field
 
@@ -1344,25 +1347,31 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		bool mustOutputValue = false;
 
-		if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
+		if (Generator::GetExecutionContext () and not Generator::IsSharedNode (this))
 		{
-			bool initializableReference = false;
-
-			for (const auto & reference : field -> getIsReferences ())
-				initializableReference |= reference -> isInitializable ();
-
-			try
+			if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
 			{
-				if (not initializableReference)
-					mustOutputValue = not isDefaultValue (field);
-			}
-			catch (const X3DError &)
-			{
-				mustOutputValue = false;
+				bool initializableReference = false;
+
+				for (const auto & reference : field -> getIsReferences ())
+					initializableReference |= reference -> isInitializable ();
+
+				try
+				{
+					if (not initializableReference)
+						mustOutputValue = not isDefaultValue (field);
+				}
+				catch (const X3DError &)
+				{
+					mustOutputValue = false;
+				}
 			}
 		}
 
-		if (field -> getIsReferences () .empty () or mustOutputValue)
+		// If we have no execution context we are not in a proto and must not generate IS references the same is true
+		// if the node is a shared node as the node does not belong to the execution context.
+
+		if ((field -> getIsReferences () .empty () or not Generator::GetExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
 		{
 			if (mustOutputValue)
 				references .emplace_back (field);
@@ -1449,9 +1458,9 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						mustOutputValue = not field -> isDefaultValue ();
 				}
 
-				if (field -> getIsReferences () .empty () or mustOutputValue)
+				if ((field -> getIsReferences () .empty () or not Generator::GetExecutionContext ()) or mustOutputValue)
 				{
-					if (mustOutputValue)
+					if (mustOutputValue and Generator::GetExecutionContext ())
 						references .emplace_back (field);
 
 					if (not field -> isInitializable () or field -> isDefaultValue ())
@@ -1503,7 +1512,8 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				}
 				else
 				{
-					references .emplace_back (field);
+					if (Generator::GetExecutionContext ())
+						references .emplace_back (field);
 
 					ostream
 						<< "/>"

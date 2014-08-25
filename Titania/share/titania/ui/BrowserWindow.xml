@@ -1235,6 +1235,7 @@
         <child>
           <object class="GtkBox" id="ToolBar">
             <property name="can_focus">False</property>
+            <signal name="drag-data-received" handler="on_toolbar_drag_data_received" swapped="no"/>
             <child>
               <object class="GtkToolbar" id="FileToolBar">
                 <property name="visible">True</property>
@@ -1339,7 +1340,6 @@
                 <property name="can_focus">False</property>
                 <property name="toolbar_style">icons</property>
                 <property name="icon_size">1</property>
-                <signal name="drag-data-received" handler="on_toolbar_drag_data_received" swapped="no"/>
                 <child>
                   <object class="GtkSeparatorToolItem" id="SeparatorToolItem1">
                     <property name="visible">True</property>

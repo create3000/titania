@@ -200,7 +200,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
-	getBrowserWindow () -> hasShortcuts (false);
+	getBrowserWindow () -> setAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	return false;
 }
@@ -209,7 +209,7 @@ bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
-	getBrowserWindow () -> hasShortcuts (true);
+	getBrowserWindow () -> setAccelerators (true);
 	return false;
 }
 

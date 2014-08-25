@@ -190,7 +190,7 @@ BrowserWindow::loadStyles () const
 // Menu
 
 void
-BrowserWindow::hasShortcuts (bool value)
+BrowserWindow::setAccelerators (bool value)
 {
 	shortcuts = value;
 
@@ -941,21 +941,21 @@ void
 BrowserWindow::on_toolBar_toggled ()
 {
 	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
-	toggleWidget (getToolBar (), getToolBarMenuItem () .get_active ());
+	getToolBar () .set_visible (getToolBarMenuItem () .get_active ());
 }
 
 void
 BrowserWindow::on_sideBar_toggled ()
 {
 	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
-	toggleWidget (getSideBar (), getSideBarMenuItem () .get_active ());
+	getSideBar () .set_visible (getSideBarMenuItem () .get_active ());
 }
 
 void
 BrowserWindow::on_footer_toggled ()
 {
 	getConfig () .setItem ("footer", getFooterMenuItem  () .get_active ());
-	toggleWidget (getFooter (), getFooterMenuItem () .get_active ());
+	getFooter () .set_visible (getFooterMenuItem () .get_active ());
 }
 
 void

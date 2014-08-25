@@ -189,6 +189,11 @@ public:
 	PopExecutionContext ();
 
 	static
+	const X3DExecutionContext*
+	GetExecutionContext ()
+	{ return executionContextStack .back (); }
+
+	static
 	void
 	PushContext ();
 

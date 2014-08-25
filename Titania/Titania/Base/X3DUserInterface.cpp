@@ -191,16 +191,6 @@ X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 }
 
 void
-X3DUserInterface::toggleWidget (Gtk::Widget & widget, bool active)
-{
-	if (active)
-		widget .show ();
-
-	else
-		widget .hide ();
-}
-
-void
 X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position
