@@ -167,7 +167,7 @@ NormalTool::set_initialized ()
 
 	try
 	{
-		browser -> loadURL ({ get_ui ("Dialogs/RotationTool.x3dv") });
+		browser -> loadURL ({ get_ui ("Dialogs/NormalTool.x3dv") });
 
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 

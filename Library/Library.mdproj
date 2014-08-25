@@ -2461,6 +2461,7 @@
     <None Include="Tests\Handles\InlineDragon.x3d" />
     <None Include="Tests\Handles\InlineDragon2.x3d" />
     <None Include="Tests\Handles\MaterialEditor.x3dv" />
+    <None Include="Tests\Handles\AngleLayoutTool.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

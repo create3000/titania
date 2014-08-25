@@ -1,5 +1,9 @@
 2014-08-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DRouterObject.cpp: 
+
+2014-08-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* Generator.h:
 	* Generator.cpp:

@@ -440,7 +440,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 	for (const auto & child : get_model () -> children ())
 	{
 		routeGraph -> collapse_tree (child);
-		treeObserver -> unwatch_tree (child);
+		treeObserver -> unwatch_tree (child, false);
 	}
 
 	get_model () -> get_execution_context () -> getRootNodes ()          .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -482,7 +482,7 @@ X3DOutlineTreeView::set_rootNodes ()
 	for (const auto & child : get_model () -> children ())
 	{
 		routeGraph -> collapse_tree (child);
-		treeObserver -> unwatch_tree (child);
+		treeObserver -> unwatch_tree (child, false);
 	}
 
 	// Fill model.

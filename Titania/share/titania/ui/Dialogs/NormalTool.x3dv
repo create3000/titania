@@ -1,0 +1,96 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 25 Aug 2014 16:36:18 GMT"
+
+DEF Gray Background {
+  skyColor 0.381966 0.381966 0.381966
+}
+
+NavigationInfo {
+  type "NONE"
+  headlight FALSE
+}
+
+Viewpoint {
+  position 0 0 38.1966
+  fieldOfView 0.1
+}
+
+DEF GlobalLight DirectionalLight {
+  intensity 0.382184
+}
+
+DEF _1 SphereSensor { }
+
+DEF _2 Transform {
+  scaleOrientation 0.707716 -0.687129 0.16429 0.327699
+  children [
+    DEF Vector Transform {
+      translation 0 0 1.38197
+      scale 0.381966 0.381966 0.381966
+      children [
+        DEF Cylinder Transform {
+          translation 0 0 2
+          rotation 1 3.62543e-06 -1.04112e-09 4.71239
+          scale 0.381966 1 0.381966
+          children Shape {
+            appearance DEF _3 Appearance {
+              material Material {
+                diffuseColor 0.16 0.8 0.8
+              }
+            }
+            geometry Cylinder { }
+          }
+        }
+        DEF Cone Transform {
+          translation 0 0.000199281 0.0113441
+          rotation 1 3.62607e-06 -3.07409e-10 4.71239
+          scaleOrientation -0.679707 -0.296295 -0.670975 1.08482
+          children Shape {
+            appearance USE _3
+            geometry Cone { }
+          }
+        }
+      ]
+    }
+    DEF Sphere Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.618 0.618 0.618
+            specularColor 0.382 0.382 0.382
+            shininess 0.62
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    DEF LocalLight DirectionalLight { }
+  ]
+}
+
+DEF PrimitiveQuality Script {
+  url "vrmlscript:
+function initialize ()
+{
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+}
+"
+  directOutput TRUE
+}
+
+DEF Tool Script {
+  inputOutput SFRotation inputRotation 0 0 1 0
+  inputOutput SFRotation outputRotation 0 0 1 0
+
+  directOutput TRUE
+}
+
+ROUTE _1.rotation_changed TO _2.set_rotation
+ROUTE Tool.inputRotation_changed TO _1.set_offset
+ROUTE Tool.inputRotation_changed TO _2.set_rotation
+ROUTE _1.rotation_changed TO Tool.set_outputRotation

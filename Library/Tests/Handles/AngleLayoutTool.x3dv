@@ -1,0 +1,611 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 25 Aug 2014 18:00:38 GMT"
+
+PROTO Grid [
+  inputOutput    SFInt32 xDimension 10
+  inputOutput    SFFloat xSpacing 1
+  inputOutput    SFInt32 zDimension 10
+  inputOutput    SFFloat zSpacing 1
+  inputOutput    SFColor color 1 0.5 0
+  inputOutput    SFFloat transparency 0.61803
+  initializeOnly SFBool  solid TRUE
+]
+{
+  Transform {
+    children [
+      DEF Plane Transform {
+        rotation -3.09087e-08 0.707105 0.707108 3.14159
+        scale 10 10 1
+        children Shape {
+          appearance Appearance {
+            material DEF Material2 Material {
+              diffuseColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+            solid IS solid
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material DEF Material3 Material {
+              emissiveColor IS color
+              transparency 0.697039
+            }
+          }
+          geometry DEF Axis IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                -5.25 0 0,
+                5.25 0 0,
+                0 0 -5.25,
+                0 0 5.25
+              ]
+            }
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            material DEF Material1 Material {
+              emissiveColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry DEF Grid IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1,
+              4,
+              5,
+              -1,
+              6,
+              7,
+              -1,
+              8,
+              9,
+              -1,
+              10,
+              11,
+              -1,
+              12,
+              13,
+              -1,
+              14,
+              15,
+              -1,
+              16,
+              17,
+              -1,
+              18,
+              19,
+              -1,
+              20,
+              21,
+              -1,
+              22,
+              23,
+              -1,
+              24,
+              25,
+              -1,
+              26,
+              27,
+              -1,
+              28,
+              29,
+              -1,
+              30,
+              31,
+              -1,
+              32,
+              33,
+              -1,
+              34,
+              35,
+              -1,
+              36,
+              37,
+              -1,
+              38,
+              39,
+              -1,
+              40,
+              41,
+              -1,
+              42,
+              43,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                -5 0 -5,
+                -5 0 5,
+                -4 0 -5,
+                -4 0 5,
+                -3 0 -5,
+                -3 0 5,
+                -2 0 -5,
+                -2 0 5,
+                -1 0 -5,
+                -1 0 5,
+                0 0 -5,
+                0 0 5,
+                1 0 -5,
+                1 0 5,
+                2 0 -5,
+                2 0 5,
+                3 0 -5,
+                3 0 5,
+                4 0 -5,
+                4 0 5,
+                5 0 -5,
+                5 0 5,
+                -5 0 -5,
+                5 0 -5,
+                -5 0 -4,
+                5 0 -4,
+                -5 0 -3,
+                5 0 -3,
+                -5 0 -2,
+                5 0 -2,
+                -5 0 -1,
+                5 0 -1,
+                -5 0 0,
+                5 0 0,
+                -5 0 1,
+                5 0 1,
+                -5 0 2,
+                5 0 2,
+                -5 0 3,
+                5 0 3,
+                -5 0 4,
+                5 0 4,
+                -5 0 5,
+                5 0 5
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+
+  DEF GridScript Script {
+    inputOutput    SFInt32 xDimension IS xDimension
+    inputOutput    SFFloat xSpacing IS xSpacing
+    inputOutput    SFInt32 zDimension IS zDimension
+    inputOutput    SFFloat zSpacing IS zSpacing
+    inputOutput    SFFloat transparency IS transparency
+    initializeOnly SFNode  plane USE Plane
+    initializeOnly SFNode  axis USE Axis
+    initializeOnly SFNode  grid USE Grid
+    initializeOnly SFNode  axisMaterial USE Material3
+
+    url "vrmlscript:
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	// Plane
+
+	plane .scale = new SFVec3f (xDimension * xSpacing, zDimension * zSpacing, 1);
+
+	// Axis
+
+	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - xSpacing / 4, 0, 0),
+	                                  new SFVec3f ( plane .scale .x / 2 + xSpacing / 4, 0, 0),
+	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - zSpacing / 4),
+	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + zSpacing / 4));
+
+	axisMaterial .transparency = Math .pow (transparency, 3 / 4);
+
+	// Grid
+
+	var coordIndex     = new MFInt32 ();
+	coordIndex .length = 3 * (xDimension + zDimension);
+
+	var point     = grid .coord .point;
+	point .length = 2 * (xDimension + zDimension);
+
+	var i = 0;
+
+	for (; i < xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + xSpacing * i, 0, -plane .scale .y / 2);
+		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + xSpacing * i, 0,  plane .scale .y / 2);
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+
+	for (; i < zDimension + 1 + xDimension + 1; ++ i)
+	{
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + zSpacing * (i - xDimension - 1));
+		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + zSpacing * (i - xDimension - 1));
+		coordIndex [3 * i]     = 2 * i;
+		coordIndex [3 * i + 1] = 2 * i + 1;
+		coordIndex [3 * i + 2] = -1;
+	}
+
+	grid .set_coordIndex = coordIndex;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
+}
+
+PROTO AngleGrid [
+  inputOutput    SFInt32 dimension 5
+  inputOutput    SFFloat spacing 1
+  inputOutput    SFFloat angle 0.392699
+  inputOutput    SFColor color 1 0.5 0
+  inputOutput    SFFloat transparency 0.61803
+  initializeOnly SFBool  solid TRUE
+]
+{
+  Group {
+    children [
+      DEF Disk_1 Transform {
+        rotation -1.30008e-13 0.707105 0.707108 3.14159
+        scale 10 10 1
+        children Shape {
+          appearance Appearance {
+            material DEF Material2_1 Material {
+              diffuseColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry Disk2D {
+            outerRadius 0.5
+            solid IS solid
+          }
+        }
+      }
+      DEF Rays_1 Shape {
+        appearance DEF _1 Appearance {
+          material DEF Material1_1 Material {
+            emissiveColor IS color
+            transparency IS transparency
+          }
+        }
+        geometry DEF Grid_1 IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1,
+            2,
+            3,
+            -1,
+            4,
+            5,
+            -1,
+            6,
+            7,
+            -1,
+            8,
+            9,
+            -1,
+            10,
+            11,
+            -1,
+            12,
+            13,
+            -1,
+            14,
+            15,
+            -1,
+            16,
+            17,
+            -1,
+            18,
+            19,
+            -1,
+            20,
+            21,
+            -1,
+            22,
+            23,
+            -1,
+            24,
+            25,
+            -1,
+            26,
+            27,
+            -1,
+            28,
+            29,
+            -1,
+            30,
+            31,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              0 0 0,
+              0 0 5,
+              0 0 0,
+              1.91342 0 4.6194,
+              0 0 0,
+              3.53553 0 3.53553,
+              0 0 0,
+              4.6194 0 1.91342,
+              0 0 0,
+              5 0 1.78814e-06,
+              0 0 0,
+              4.6194 0 -1.91342,
+              0 0 0,
+              3.53554 0 -3.53553,
+              0 0 0,
+              1.91342 0 -4.6194,
+              0 0 0,
+              3.13916e-06 0 -5,
+              0 0 0,
+              -1.91341 0 -4.6194,
+              0 0 0,
+              -3.53553 0 -3.53554,
+              0 0 0,
+              -4.6194 0 -1.91342,
+              0 0 0,
+              -5 0 -4.61936e-06,
+              0 0 0,
+              -4.6194 0 1.91341,
+              0 0 0,
+              -3.53554 0 3.53553,
+              0 0 0,
+              -1.91342 0 4.61939
+            ]
+          }
+        }
+      }
+      DEF Circles_1 Transform {
+        rotation -2.99471e-22 0.707105 0.707108 3.14159
+        scaleOrientation -1 7.70153e-07 1.47364e-06 0.785396
+        children [
+          Shape {
+            appearance USE _1
+          }
+          Shape {
+            appearance USE _1
+          }
+          Shape {
+            appearance USE _1
+          }
+          Shape {
+            appearance USE _1
+          }
+          Shape {
+            appearance USE _1
+          }
+        ]
+      }
+      DEF Axis_1 Shape {
+        appearance Appearance {
+          material DEF Material1_2 Material {
+            emissiveColor IS color
+            transparency 0.742741
+          }
+        }
+        geometry DEF Axis_2 IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              0 0 0,
+              0 0 5.25
+            ]
+          }
+        }
+      }
+    ]
+  }
+
+  DEF AngleGridScript_1 Script {
+    inputOutput    SFInt32 dimension IS dimension
+    inputOutput    SFFloat spacing IS spacing
+    inputOutput    SFFloat angle IS angle
+    inputOutput    SFFloat transparency IS transparency
+    initializeOnly SFNode  axis USE Axis_2
+    initializeOnly SFNode  disk USE Disk_1
+    initializeOnly SFNode  grid USE Grid_1
+    initializeOnly SFNode  circles USE Circles_1
+    initializeOnly SFNode  appearance USE _1
+    initializeOnly SFNode  axisMaterial USE Material1_2
+
+    url "javascript:
+
+Math .PHI = 1.61803;
+var EPS = 0.0001;
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var radius = dimension * spacing;
+
+	// Plane
+
+	disk .scale = new SFVec3f (2 * radius, 2 * radius, 1);
+	
+	// Axis
+
+	axis .coord .point [1] = new SFVec3f (0, 0, disk .scale .y /2 + spacing/4);
+	
+	axisMaterial .transparency = Math .pow (transparency, Math .PHI - 1);
+
+	// Grid
+
+	// Radien
+
+	var coordIndex = new MFInt32 ();
+
+	var point     = grid .coord .point;
+	point .length = 0;
+
+	for (var a = 0, i = 0; a < 2 * Math .PI - EPS; a += angle, i += 2)
+	{
+		var r = new SFRotation (0, 1, 0, a);
+
+		point [i]     = new SFVec3f (0, 0, 0);
+		point [i + 1] = r .multVec (new SFVec3f (0, 0, radius));
+	}
+
+	for (var i = 0, p = 0; p < point .length; i += 3)
+	{
+		coordIndex [i]     = p ++;
+		coordIndex [i + 1] = p ++;
+		coordIndex [i + 2] = -1;
+	}
+
+	grid .set_coordIndex = coordIndex;
+	
+	// Circles
+	
+	circles .children .length = 0;
+	
+	var scene = Browser .currentScene;
+	
+	for (var i = 0; i < dimension; ++ i)
+	{
+		var shape  = scene .createNode (\"Shape\");
+		var circle = Browser .createVrmlFromString (\"Circle2D { radius \" + (spacing * (i + 1)) + \" }\") [0];
+		
+		shape .appearance = appearance;
+		shape .geometry   = circle;
+		circles .children [i] = shape;
+	}
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+}
+
+DEF _2 AngleGrid {
+  angle 0.3
+}
+
+DEF Center_1 Transform {
+  children [
+    PlaneSensor {
+      axisRotation 1 0 0 1.5708
+      offset 0.16405 -9.48725e-07 0.261744
+    }
+    Transform {
+      children ScreenGroup {
+        children DEF Sphere_1 Transform {
+          scale 6 6 6
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 0.50076 0
+              }
+            }
+            geometry Sphere { }
+          }
+        }
+      }
+    }
+  ]
+}
+
+DEF AngleHandle Group {
+  children [
+    DEF _3 CylinderSensor {
+      diskAngle 1.2
+      offset 0.3
+    }
+    DEF Handle Transform {
+      rotation 0 1 0 0.3
+      scale 0.05 0.05 1
+      children DEF _4 Transform {
+        translation 0 0 4.5
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 1 0.498039 0
+            }
+          }
+          geometry Box {
+            size 1 1 1
+          }
+        }
+      }
+    }
+  ]
+}
+
+DEF AngleScript Script {
+  inputOnly   SFRotation set_rotation
+  inputOutput SFInt32    dimension 5
+  inputOutput SFFloat    spacing 1
+  inputOutput SFFloat    angle 0.3
+  outputOnly  SFVec3f    translation_changed
+  outputOnly  SFRotation rotation_changed
+
+  url "javascript:
+
+var yAxis = new SFVec3f (0, 1, 0);
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_rotation (value)
+{
+	var sign = value .getAxis () .dot (yAxis) > 0;
+
+	if (sign)
+		angle = value .angle;
+	else
+		angle = 2 * Math .PI - value .angle;
+}
+
+function eventsProcessed (value)
+{
+	translation_changed = new SFVec3f (0, 0, dimension * spacing - spacing/2);
+	rotation_changed    = new SFRotation (0, 1, 0, angle);
+}
+"
+}
+
+ROUTE AngleScript.rotation_changed TO Handle.set_rotation
+ROUTE AngleScript.angle_changed TO _2.set_angle
+ROUTE AngleScript.translation_changed TO _4.set_translation
+ROUTE _3.rotation_changed TO AngleScript.set_rotation
+ROUTE AngleScript.angle_changed TO _3.set_offset

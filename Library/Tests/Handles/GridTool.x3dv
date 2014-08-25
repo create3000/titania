@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.2
+#X3D V3.3 utf8 Titania V0.7.4
 
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.2, http://titania.create3000.de"
-META "modified" "Wed, 06 Aug 2014 08:04:45 GMT"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 25 Aug 2014 17:37:00 GMT"
 
 PROTO Grid [
   inputOutput    SFInt32 xDimension 10
@@ -16,17 +16,6 @@ PROTO Grid [
   initializeOnly SFBool  solid TRUE
 ]
 {
-  PROTO Fields [
-    inputOutput SFInt32 xDimension 10
-    inputOutput SFFloat xSpacing 1
-    inputOutput SFInt32 zDimension 10
-    inputOutput SFFloat zSpacing 1
-    inputOutput SFFloat transparency 0.61803
-  ]
-  {
-    Group { }
-  }
-
   Transform {
     children [
       DEF Plane Transform {
@@ -280,10 +269,7 @@ Viewpoint {
 }
 
 DEF Grid_1 Transform {
-  children DEF _1 Grid {
-    xDimension 12
-    zDimension 12
-  }
+  children DEF _1 Grid { }
 }
 
 DEF Edge_1 Transform {
@@ -291,10 +277,10 @@ DEF Edge_1 Transform {
     DEF _2 PlaneSensor {
       axisRotation 1 0 0 1.5708
       autoOffset FALSE
-      offset 6 0 6
+      offset 5 0 5
     }
     DEF Edge Transform {
-      translation 6 0 6
+      translation 5 0 5
       children [
         DEF Box Transform {
           translation -0.475 0 0
@@ -340,9 +326,9 @@ DEF Center Transform {
 }
 
 DEF ScaleScript Script {
-  inputOutput SFInt32 xDimension 12
+  inputOutput SFInt32 xDimension 10
   inputOutput SFFloat xSpacing 1
-  inputOutput SFInt32 zDimension 12
+  inputOutput SFInt32 zDimension 10
   inputOutput SFFloat zSpacing 1
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed
@@ -375,9 +361,7 @@ function eventsProcessed ()
 }
 
 DEF MoveScript Script {
-  inputOutput SFInt32 xDimension 10
   inputOutput SFFloat xSpacing 1
-  inputOutput SFInt32 zDimension 10
   inputOutput SFFloat zSpacing 1
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed

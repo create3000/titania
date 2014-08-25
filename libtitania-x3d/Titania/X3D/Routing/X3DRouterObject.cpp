@@ -125,6 +125,7 @@ X3DRouterObject::processEvents ()
 		{
 			for (const auto & event : getTaintedChildren ())
 			{
+//				__LOG__ << event .first -> getTypeName () << " : " << event .first -> getName () << std::endl;
 				event .first -> processEvent (event .second);
 			}
 		}
