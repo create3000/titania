@@ -50,6 +50,7 @@
 
 #include "X3DOutlineTreeView.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
@@ -61,36 +62,6 @@
 
 namespace titania {
 namespace puck {
-
-class AdjustmentObject
-{
-public:
-
-	AdjustmentObject () :
-		connection ()
-	{ }
-
-	void
-	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
-	{
-		connection .disconnect ();
-		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, adjustment -> get_value ()), false);
-
-		Glib::signal_idle () .connect_once (sigc::mem_fun (connection, &sigc::connection::disconnect));
-	}
-
-private:
-
-	void
-	block (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
-	{
-		adjustment -> set_value (value);
-		adjustment -> signal_changed () .emission_stop ();
-	}
-
-	sigc::connection connection;
-
-};
 
 X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & executionContext) :
 	        X3DBaseInterface (),

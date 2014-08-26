@@ -1,13 +1,25 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.4
 
 META "title" "Text"
 
 PROTO LineRectangle2D [ ]
 {
   IndexedLineSet {
-    coordIndex [ 0, 1, 2, 3, 0, -1 ]
+    coordIndex [
+      0,
+      1,
+      2,
+      3,
+      0,
+      -1
+    ]
     coord Coordinate {
-      point [ -0.5 -0.5 0, 0.5 -0.5 0, 0.5 0.5 0, -0.5 0.5 0 ]
+      point [
+        -0.5 -0.5 0,
+        0.5 -0.5 0,
+        0.5 0.5 0,
+        -0.5 0.5 0
+      ]
     }
   }
 }
@@ -53,13 +65,23 @@ DEF Text_1 Transform {
       }
     }
     geometry DEF Text Text {
-      string [ "Read", "somig", "Text", "today!" ]
+      string [
+        "R e a d",
+        "s o m i g",
+        "T e x t",
+        "t o d a y !"
+      ]
       fontStyle FontStyle {
-        family [ "SANS", "Ubuntu Mono" ]
+        family [
+          "SANS",
+          "Ubuntu Mono"
+        ]
         style "BOLDITALIC"
         spacing 2
-        horizontal FALSE
-        justify [ "END", "BEGIN" ]
+        justify [
+          "BEGIN",
+          "FIRST"
+        ]
       }
     }
   }
@@ -127,34 +149,33 @@ DEF YellowBox Transform {
 }
 
 DEF LineBounds Transform {
-  translation 0 5.44181 0
+  translation 0 0.478083 0
   children [
     BBox2 {
-      translation 0 -1.98309 0
-      scale 1.21122 3.59448 1
+      scale 2.39051 0.487029 1
       color 1 0 0
     }
     BBox2 {
-      translation 1.21122 -1.08946 0
-      scale 2 4.48811 1
+      translation 0 -0.487029 0
+      scale 2.95177 2 1
       color 0 1 0
     }
     BBox2 {
-      translation 3.21122 -1.98309 0
-      scale 2 3.59448 1
+      translation 0 -2.48703 0
+      scale 2.2053 2 1
       color 0 0 1
     }
     BBox2 {
-      translation 5.21122 0 0
-      scale 2 5.57757 1
+      translation 0 -4.48703 0
+      scale 3.31207 2 1
       color 1 1 0
     }
   ]
 }
 
 DEF TextBounds Transform {
-  translation 0 5.44181 0
-  scale 6.37373 5.57757 1
+  translation 0 0.478083 0
+  scale 3.31207 7.30692 1
   children BBox2 { }
 }
 
@@ -164,7 +185,14 @@ DEF Bounds Script {
   eventOut SFVec3f translation_changed
   eventOut SFVec3f scale_changed
   field    SFNode  lineBounds USE LineBounds
-  field    MFColor color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+  field    MFColor color [
+    1 0 0,
+    0 1 0,
+    0 0 1,
+    1 1 0,
+    0 1 1,
+    1 0 1
+  ]
   field    SFNode  text USE Text
 
   url "vrmlscript:

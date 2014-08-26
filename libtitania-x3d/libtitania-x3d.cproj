@@ -1351,6 +1351,7 @@
     <Folder Include="Titania\X3D\PeaseBlossom\Objects\" />
     <Folder Include="Titania\X3D\Tools\Lighting\" />
     <Folder Include="Titania\X3D\Tools\Geospatial\" />
+    <Folder Include="Titania\Moth\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -1,3 +1,9 @@
+2014-08-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AdjustmentObject.h:
+	* RotationTool.x3dv:
+	* X3DOutlineTreeView.cpp: 
+
 2014-08-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ViewpointEditor.xml:

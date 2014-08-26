@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 25 Aug 2014 16:35:42 GMT"
+META "modified" "Tue, 26 Aug 2014 21:58:05 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -42,6 +42,7 @@ DEF _1 SphereSensor { }
 
 DEF Objects Transform {
   children [
+    DEF LocalLight DirectionalLight { }
     DEF CenterPoint_1 ScreenGroup {
       children Shape {
         appearance Appearance {
@@ -158,7 +159,6 @@ DEF Objects Transform {
         geometry Sphere { }
       }
     }
-    DEF LocalLight DirectionalLight { }
   ]
 }
 
@@ -175,11 +175,70 @@ function initialize ()
 DEF Tool Script {
   inputOutput SFRotation inputRotation 0 0 1 0
   inputOutput SFRotation outputRotation 0 0 1 0
+  outputOnly  SFRotation axisRotation_changed
 
+  url "javascript:
+
+function set_inputRotation (value)
+{
+	axisRotation_changed = new SFRotation (new SFVec3f (0, 0, 1), value .getAxis ());
+}
+
+function set_outputRotation (value)
+{
+	axisRotation_changed = new SFRotation (new SFVec3f (0, 0, 1), value .getAxis ());
+}
+
+"
   directOutput TRUE
+}
+
+DEF Axis_1 Transform {
+  children [
+    DEF AxisHandle Transform {
+      translation 0 0 1
+      children ScreenGroup {
+        children Transform {
+          translation 0 0 6
+          rotation 1 0 0 1.5708
+          children Shape {
+            appearance DEF White Appearance {
+              shaders ToolShader {
+                diffuseColor 1 1 1
+              }
+            }
+            geometry DEF Arrow Cone {
+              height 12
+              bottomRadius 4
+            }
+          }
+        }
+      }
+    }
+    DEF Axis Shape {
+      geometry IndexedLineSet {
+        colorPerVertex FALSE
+        coordIndex [
+          0,
+          1,
+          -1
+        ]
+        color Color {
+          color 1 1 1
+        }
+        coord DEF AxesCoord Coordinate {
+          point [
+            0 0 -1,
+            0 0 1
+          ]
+        }
+      }
+    }
+  ]
 }
 
 ROUTE _1.rotation_changed TO Objects.set_rotation
 ROUTE Tool.inputRotation_changed TO _1.set_offset
 ROUTE Tool.inputRotation_changed TO Objects.set_rotation
 ROUTE _1.rotation_changed TO Tool.set_outputRotation
+ROUTE Tool.axisRotation_changed TO Axis_1.set_rotation
