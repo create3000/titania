@@ -1,0 +1,167 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Tue, 26 Aug 2014 08:15:56 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Tue, 26 Aug 2014 08:56:02 GMT"
+META "title" "CheckButtonGroup"
+
+EXTERNPROTO Button [
+  inputOutput    SFBool   enabled
+  inputOutput    SFString description
+  outputOnly     SFBool   isOver
+  outputOnly     SFBool   isActive
+  outputOnly     SFTime   touchTime
+  initializeOnly SFVec3f  bboxSize
+  initializeOnly SFVec3f  bboxCenter
+  inputOnly      MFNode   addChildren
+  inputOnly      MFNode   removeChildren
+  inputOutput    MFNode   children
+]
+[
+  "../../../Prototypes/0.1/Widgets/Button.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
+]
+
+EXTERNPROTO CheckButton [
+  inputOutput    SFBool  enabled
+  outputOnly     SFBool  isActive
+  outputOnly     SFTime  enterTime
+  outputOnly     SFTime  exitTime
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+[
+  "../../../Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv"
+]
+
+EXTERNPROTO CheckButtonGroup [
+  inputOutput    MFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+[
+  "../../../Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv"
+]
+
+DEF _1 CheckButtonGroup {
+  whichChoice [
+    TRUE,
+    TRUE,
+    TRUE
+  ]
+  children [
+    DEF _2 CheckButton {
+      enabled TRUE
+      children [
+        DEF _3 Button {
+          children DEF _4 Transform {
+            translation -2.5 0 0
+            children DEF Default Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Box { }
+            }
+          }
+        }
+        DEF _5 Button {
+          children DEF _6 Transform {
+            translation -2.5 0 0
+            children DEF Active Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.4 0.4 0.4
+                }
+              }
+              geometry Box { }
+            }
+          }
+        }
+      ]
+    }
+    DEF _7 CheckButton {
+      enabled TRUE
+      children [
+        DEF _8 Button {
+          children DEF _9 Transform {
+            children USE Default
+          }
+        }
+        DEF _10 Button {
+          children DEF _11 Transform {
+            children USE Active
+          }
+        }
+      ]
+    }
+    DEF _12 CheckButton {
+      enabled TRUE
+      children [
+        DEF _13 Button {
+          children DEF _14 Transform {
+            translation 2.5 0 0
+            children USE Default
+          }
+        }
+        DEF _15 Button {
+          children DEF _16 Transform {
+            translation 2.5 0 0
+            children USE Active
+          }
+        }
+      ]
+    }
+  ]
+}
+
+DEF _17 CADLayer {
+  visible [
+    TRUE,
+    TRUE,
+    TRUE
+  ]
+  children [
+    DEF Box_1 Transform {
+      translation -2.5 2.33984 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
+    DEF Cone_1 Transform {
+      translation 0 2.33984 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Cone { }
+      }
+    }
+    DEF Cylinder_1 Transform {
+      translation 2.5 2.33984 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Cylinder { }
+      }
+    }
+  ]
+}
+
+ROUTE _1.whichChoice_changed TO _17.set_visible

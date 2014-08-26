@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#X3D V3.3 utf8 Titania V0.7.4
 
 META "title" "CheckButton"
 
@@ -11,7 +11,7 @@ EXTERNPROTO Button [
   eventIn      MFNode removeChildren
   exposedField MFNode children
 ]
-"../Button/Button.wrl"
+"../Button/Button.x3dv"
 
 EXTERNPROTO CheckButton [
   exposedField SFBool enabled
@@ -22,7 +22,7 @@ EXTERNPROTO CheckButton [
   eventIn      MFNode removeChildren
   exposedField MFNode children
 ]
-"CheckButton.wrl"
+"CheckButton.x3dv"
 
 CheckButton {
   children [

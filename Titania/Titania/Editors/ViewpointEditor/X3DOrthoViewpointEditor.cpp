@@ -50,6 +50,8 @@
 
 #include "X3DOrthoViewpointEditor.h"
 
+#include "../../ComposedWidgets/RotationTool.h"
+
 namespace titania {
 namespace puck {
 
@@ -68,6 +70,7 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 	                             getOrthoViewpointOrientationAAdjustment (),
 	                             getOrthoViewpointOrientationBox (),
 	                             "orientation"),
+	            orientationTool (new RotationTool (getBrowserWindow (), getOthoViewpointOrientationToolBox (), "orientation")),
 	           centerOfRotation (getBrowserWindow (),
 	                             getOrthoViewpointCenterOfRotationXAdjustment (),
 	                             getOrthoViewpointCenterOfRotationYAdjustment (),
@@ -86,7 +89,7 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 void
 X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
 {
-	X3D::X3DPtr <X3D::OrthoViewpoint> orthoViewpoint (viewpointNode);
+	const X3D::X3DPtr <X3D::OrthoViewpoint> orthoViewpoint (viewpointNode);
 
 	if (orthoViewpoint and orthoViewpoint -> fieldOfView () .size () < 4)
 	{
@@ -106,6 +109,8 @@ X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpoint
 	orientation      .setNodes (orthoViewpoints);
 	centerOfRotation .setNodes (orthoViewpoints);
 	fieldOfView      .setNodes (orthoViewpoints);
+
+	orientationTool -> setNodes (orthoViewpoints);
 }
 
 X3DOrthoViewpointEditor::~X3DOrthoViewpointEditor ()

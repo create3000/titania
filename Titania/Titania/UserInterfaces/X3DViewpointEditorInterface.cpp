@@ -137,6 +137,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_PerspectiveViewpointCenterOfRotationBox -> set_name ("PerspectiveViewpointCenterOfRotationBox");
 	m_builder -> get_widget ("PerspectiveViewpointOrientationBox", m_PerspectiveViewpointOrientationBox);
 	m_PerspectiveViewpointOrientationBox -> set_name ("PerspectiveViewpointOrientationBox");
+	m_builder -> get_widget ("PerspectiveViewpointOrientationToolBox", m_PerspectiveViewpointOrientationToolBox);
+	m_PerspectiveViewpointOrientationToolBox -> set_name ("PerspectiveViewpointOrientationToolBox");
 	m_builder -> get_widget ("OrthoViewpointExpander", m_OrthoViewpointExpander);
 	m_OrthoViewpointExpander -> set_name ("OrthoViewpointExpander");
 	m_builder -> get_widget ("OrthoViewpointPositionBox", m_OrthoViewpointPositionBox);
@@ -145,6 +147,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_OrthoViewpointCenterOfRotationBox -> set_name ("OrthoViewpointCenterOfRotationBox");
 	m_builder -> get_widget ("OrthoViewpointOrientationBox", m_OrthoViewpointOrientationBox);
 	m_OrthoViewpointOrientationBox -> set_name ("OrthoViewpointOrientationBox");
+	m_builder -> get_widget ("OthoViewpointOrientationToolBox", m_OthoViewpointOrientationToolBox);
+	m_OthoViewpointOrientationToolBox -> set_name ("OthoViewpointOrientationToolBox");
 	m_builder -> get_widget ("OrthoViewpointFieldOfViewBox", m_OrthoViewpointFieldOfViewBox);
 	m_OrthoViewpointFieldOfViewBox -> set_name ("OrthoViewpointFieldOfViewBox");
 	m_builder -> get_widget ("GeoViewpointExpander", m_GeoViewpointExpander);
@@ -157,6 +161,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_GeoViewpointCenterOfRotationBox -> set_name ("GeoViewpointCenterOfRotationBox");
 	m_builder -> get_widget ("GeoViewpointOrientationBox", m_GeoViewpointOrientationBox);
 	m_GeoViewpointOrientationBox -> set_name ("GeoViewpointOrientationBox");
+	m_builder -> get_widget ("GeoViewpointOrientationToolBox", m_GeoViewpointOrientationToolBox);
+	m_GeoViewpointOrientationToolBox -> set_name ("GeoViewpointOrientationToolBox");
 	m_builder -> get_widget ("GeoViewpointSpeedFactorSpinButton", m_GeoViewpointSpeedFactorSpinButton);
 	m_GeoViewpointSpeedFactorSpinButton -> set_name ("GeoViewpointSpeedFactorSpinButton");
 	m_builder -> get_widget ("GeoViewpointCoordinateSystemComboBoxText", m_GeoViewpointCoordinateSystemComboBoxText);

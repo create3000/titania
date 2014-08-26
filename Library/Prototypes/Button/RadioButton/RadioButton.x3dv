@@ -1,38 +1,45 @@
-#VRML V2.0 utf8
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 PROTO RadioButton [
-  exposedField SFInt32 whichChoice -1
-  eventIn      MFNode  addChildren
-  eventIn      MFNode  removeChildren
-  exposedField MFNode  children [ ]
+  inputOutput    SFInt32 whichChoice -1
+  initializeOnly SFVec3f bboxSize -1 -1 -1
+  initializeOnly SFVec3f bboxCenter 0 0 0
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children [ ]
 ]
 {
   PROTO Fields [
-    exposedField SFInt32 whichChoice -1
+    inputOutput SFInt32 whichChoice -1
   ]
   {
     Group { }
   }
 
   DEF Buttons Group {
+    bboxSize IS bboxSize
+    bboxCenter IS bboxCenter
     addChildren IS addChildren
     removeChildren IS removeChildren
     children IS children
   }
 
-  DEF RadioButton Script {
-    eventIn SFInt32 set_whichChoice
-    eventIn SFTime  set_touchTime
-    eventIn MFNode  set_children
-    field   SFInt32 whichChoice -1
-    field   MFNode  children [ ]
-    field   SFNode  buttons USE Buttons
-    field   SFNode  fields DEF Fields Fields {
+  DEF RadioButtonScript Script {
+    inputOnly      SFInt32 set_whichChoice
+    inputOnly      SFTime  set_touchTime
+    inputOnly      MFNode  set_children
+    initializeOnly SFInt32 whichChoice -1
+    initializeOnly MFNode  children [ ]
+    initializeOnly SFNode  buttons USE Buttons
+    initializeOnly SFNode  fields DEF Fields Fields {
       whichChoice IS whichChoice
     }
-    field   SFNode  self USE RadioButton
+    initializeOnly SFNode  self USE RadioButtonScript
 
-    url "vrmlscript:
+    url "javascript:
+
 function initialize ()
 {
 	set_children (buttons .children);
@@ -54,6 +61,16 @@ function set_whichChoice (value)
 		var checkButton = buttons .children [whichChoice];
 		checkButton .enabled = TRUE;
 		checkButton .children [1] .enabled = FALSE;
+	}
+	else
+	{
+		// Disable all buttons
+
+		for each (var checkButton in buttons .children)
+		{
+			checkButton .enabled = FALSE;
+			checkButton .children [1] .enabled = TRUE;
+		}
 	}
 }
 
@@ -87,8 +104,7 @@ function set_children (value)
     directOutput TRUE
   }
 
-  ROUTE Buttons.children_changed TO RadioButton.set_children
-  ROUTE Fields.whichChoice_changed TO RadioButton.set_whichChoice
+  ROUTE Buttons.children_changed TO RadioButtonScript.set_children
+  ROUTE Fields.whichChoice_changed TO RadioButtonScript.set_whichChoice
 }
-
 

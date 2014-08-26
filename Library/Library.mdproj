@@ -1943,12 +1943,6 @@
     <None Include="Tests\EnvironmentalEffects\ImageBackground.wrl" />
     <None Include="Tests\Sound\AudioClip.wrl" />
     <None Include="Tests\Sound\04. Like A Virgin.mp3" />
-    <None Include="Prototypes\Button\Button\Button.wrl" />
-    <None Include="Prototypes\Button\Button\example.wrl" />
-    <None Include="Prototypes\Button\RadioButton\RadioButton.wrl" />
-    <None Include="Prototypes\Button\RadioButton\example.wrl" />
-    <None Include="Prototypes\Button\CheckButton\example.wrl" />
-    <None Include="Prototypes\Button\CheckButton\CheckButton.wrl" />
     <None Include="Tests\Basic\SelfReference.wrl" />
     <None Include="Tests\Basic\Comments.wrl" />
     <None Include="Examples\Dolphin\stage\DolphinPROTO.wrl" />
@@ -2462,6 +2456,16 @@
     <None Include="Tests\Handles\InlineDragon2.x3d" />
     <None Include="Tests\Handles\MaterialEditor.x3dv" />
     <None Include="Tests\Handles\AngleLayoutTool.x3dv" />
+    <None Include="Prototypes\Button\CheckButtonGroup\example.x3dv" />
+    <None Include="Prototypes\Button\CheckButtonGroup\CheckButtonGroup.x3dv" />
+    <None Include="Prototypes\Button\CheckButton\CheckButton.x3dv" />
+    <None Include="Prototypes\Button\CheckButton\examplex.3dv" />
+    <None Include="Prototypes\Button\RadioButton\example.x3dv" />
+    <None Include="Prototypes\Button\RadioButton\RadioButton.x3dv" />
+    <None Include="Prototypes\Button\Button\example.x3dv" />
+    <None Include="Prototypes\Button\Button\Button.x3dv" />
+    <None Include="Prototypes\Button\DiskSensor.x3dv" />
+    <None Include="Prototypes\Button\ScrolledWindow\example.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2596,6 +2600,8 @@
     <Folder Include="Tests\Geospatial\" />
     <Folder Include="Tests\Layering\home1\" />
     <Folder Include="Tests\Scripting\pb\" />
+    <Folder Include="Prototypes\Button\CheckButtonGroup\" />
+    <Folder Include="Prototypes\Button\ScrolledWindow\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

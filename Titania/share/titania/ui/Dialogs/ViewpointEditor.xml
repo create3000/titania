@@ -829,8 +829,9 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="box5">
+                      <object class="GtkBox" id="PerspectiveViewpointOrientationToolBox">
                         <property name="width_request">96</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
@@ -1162,8 +1163,9 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="box7">
+                      <object class="GtkBox" id="OthoViewpointOrientationToolBox">
                         <property name="width_request">96</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
@@ -1727,8 +1729,9 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="box11">
+                      <object class="GtkBox" id="GeoViewpointOrientationToolBox">
                         <property name="width_request">96</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>

@@ -323,6 +323,10 @@ public:
 	getPerspectiveViewpointOrientationBox () const
 	{ return *m_PerspectiveViewpointOrientationBox; }
 
+	Gtk::Box &
+	getPerspectiveViewpointOrientationToolBox () const
+	{ return *m_PerspectiveViewpointOrientationToolBox; }
+
 	Gtk::Expander &
 	getOrthoViewpointExpander () const
 	{ return *m_OrthoViewpointExpander; }
@@ -338,6 +342,10 @@ public:
 	Gtk::Box &
 	getOrthoViewpointOrientationBox () const
 	{ return *m_OrthoViewpointOrientationBox; }
+
+	Gtk::Box &
+	getOthoViewpointOrientationToolBox () const
+	{ return *m_OthoViewpointOrientationToolBox; }
 
 	Gtk::Grid &
 	getOrthoViewpointFieldOfViewBox () const
@@ -362,6 +370,10 @@ public:
 	Gtk::Box &
 	getGeoViewpointOrientationBox () const
 	{ return *m_GeoViewpointOrientationBox; }
+
+	Gtk::Box &
+	getGeoViewpointOrientationToolBox () const
+	{ return *m_GeoViewpointOrientationToolBox; }
 
 	Gtk::SpinButton &
 	getGeoViewpointSpeedFactorSpinButton () const
@@ -469,16 +481,19 @@ private:
 	Gtk::Box*                      m_PerspectiveViewpointPositionBox;
 	Gtk::Box*                      m_PerspectiveViewpointCenterOfRotationBox;
 	Gtk::Box*                      m_PerspectiveViewpointOrientationBox;
+	Gtk::Box*                      m_PerspectiveViewpointOrientationToolBox;
 	Gtk::Expander*                 m_OrthoViewpointExpander;
 	Gtk::Box*                      m_OrthoViewpointPositionBox;
 	Gtk::Box*                      m_OrthoViewpointCenterOfRotationBox;
 	Gtk::Box*                      m_OrthoViewpointOrientationBox;
+	Gtk::Box*                      m_OthoViewpointOrientationToolBox;
 	Gtk::Grid*                     m_OrthoViewpointFieldOfViewBox;
 	Gtk::Expander*                 m_GeoViewpointExpander;
 	Gtk::Box*                      m_GeoViewpointFieldOfViewBox;
 	Gtk::Box*                      m_GeoViewpointPositionBox;
 	Gtk::Box*                      m_GeoViewpointCenterOfRotationBox;
 	Gtk::Box*                      m_GeoViewpointOrientationBox;
+	Gtk::Box*                      m_GeoViewpointOrientationToolBox;
 	Gtk::SpinButton*               m_GeoViewpointSpeedFactorSpinButton;
 	Gtk::ComboBoxText*             m_GeoViewpointCoordinateSystemComboBoxText;
 	Gtk::Box*                      m_GeoViewpointEllipsoidBox;

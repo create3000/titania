@@ -73,7 +73,7 @@ X3DPointLightEditor::X3DPointLightEditor () :
 void
 X3DPointLightEditor::setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	X3D::X3DPtr <X3D::PointLight> pointLight (lightNode);
+	const X3D::X3DPtr <X3D::PointLight> pointLight (lightNode);
 
 	getPointLightExpander () .set_visible (pointLight);
 

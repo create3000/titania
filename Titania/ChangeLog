@@ -1,3 +1,25 @@
+2014-08-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* RotationTool.h:
+	* MFStringGeoSystem.h:
+	* ViewpointEditor.xml:
+	* X3DSpotLightEditor.h:
+	* Button.x3dv:
+	* X3DSpotLightEditor.cpp:
+	* X3DPointLightEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditor.h:
+	* CheckButton.x3dv:
+	* X3DViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DGeoViewpointEditor.h:
+	* X3DGeoViewpointEditor.cpp:
+	* X3DOrthoViewpointEditor.h:
+	* X3DDirectionalLightEditor.cpp:
+	* CheckButtonGroup.x3dv:
+	* X3DOrthoViewpointEditor.cpp:
+	* CheckButtonGroup.x3dv: 
+
 2014-08-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* NormalTool.h:

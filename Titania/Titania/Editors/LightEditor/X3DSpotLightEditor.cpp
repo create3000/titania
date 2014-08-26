@@ -89,7 +89,7 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 void
 X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	X3D::X3DPtr <X3D::SpotLight> spotLight (lightNode);
+	const X3D::X3DPtr <X3D::SpotLight> spotLight (lightNode);
 
 	getSpotLightExpander () .set_visible (spotLight);
 

@@ -50,6 +50,8 @@
 
 #include "X3DViewpointEditor.h"
 
+#include "../../ComposedWidgets/RotationTool.h"
+
 namespace titania {
 namespace puck {
 
@@ -68,6 +70,7 @@ X3DViewpointEditor::X3DViewpointEditor () :
 	                             getPerspectiveViewpointOrientationAAdjustment (),
 	                             getPerspectiveViewpointOrientationBox (),
 	                             "orientation"),
+	            orientationTool (new RotationTool (getBrowserWindow (), getPerspectiveViewpointOrientationToolBox (), "orientation")),
 	           centerOfRotation (getBrowserWindow (),
 	                             getPerspectiveViewpointCenterOfRotationXAdjustment (),
 	                             getPerspectiveViewpointCenterOfRotationYAdjustment (),
@@ -85,7 +88,7 @@ X3DViewpointEditor::X3DViewpointEditor () :
 void
 X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
 {
-	X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
+	const X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
 
 	getPerspectiveViewpointExpander () .set_visible (viewpoint);
 
@@ -95,6 +98,8 @@ X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & vi
 	orientation      .setNodes (viewpoints);
 	centerOfRotation .setNodes (viewpoints);
 	fieldOfView      .setNodes (viewpoints);
+
+	orientationTool -> setNodes (viewpoints);
 }
 
 X3DViewpointEditor::~X3DViewpointEditor ()

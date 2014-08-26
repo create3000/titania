@@ -1,17 +1,22 @@
-#VRML V2.0 utf8
+#X3D V3.3 utf8 Titania V0.7.4
 
+META "comment" "World of Titania"
+META "created" "Tue, 26 Aug 2014 08:21:57 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Tue, 26 Aug 2014 08:21:57 GMT"
 META "title" "Button"
 
 EXTERNPROTO Button [
-  exposedField SFBool enabled
-  eventOut     SFBool isOver
-  eventOut     SFBool isActive
-  eventOut     SFTime touchTime
-  eventIn      MFNode addChildren
-  eventIn      MFNode removeChildren
-  exposedField MFNode children
+  inputOutput SFBool enabled
+  outputOnly  SFBool isOver
+  outputOnly  SFBool isActive
+  outputOnly  SFTime touchTime
+  inputOnly   MFNode addChildren
+  inputOnly   MFNode removeChildren
+  inputOutput MFNode children
 ]
-"Button.wrl"
+"Button.x3dv"
 
 Button {
   children [
@@ -40,4 +45,3 @@ Button {
     USE Default
   ]
 }
-
