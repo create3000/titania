@@ -107,10 +107,7 @@ private:
 	on_row_changed_impl (const Glib::RefPtr <Gtk::TreeModel> &, const Gtk::TreeModel::Path &);
 
 	void
-	update_path (const Gtk::TreeModel::Path &);
-
-	void
-	toggle_path (const Gtk::TreeModel::Path &, bool);
+	toggle_path (const Gtk::TreeModel::Path &);
 
 	///  @name Members
 

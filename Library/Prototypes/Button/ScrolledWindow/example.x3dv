@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V0.7.3
 
 META "comment" "World of Titania"
 META "created" "Tue, 26 Aug 2014 09:04:51 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 26 Aug 2014 09:58:31 GMT"
+META "generator" "Titania V0.7.3, http://titania.create3000.de"
+META "modified" "Tue, 26 Aug 2014 15:54:01 GMT"
 
 EXTERNPROTO Button [
   inputOutput    SFBool   enabled
@@ -24,12 +24,13 @@ EXTERNPROTO Button [
   "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
 ]
 
-DEF _1 Viewpoint {
+Viewpoint {
+  description "Home"
   position 4.45594 -3.10772 10
   centerOfRotation 4.45594 -3.10772 0
 }
 
-DEF _2 SpotLight {
+SpotLight {
   color 1 0 0
   location 0 0 1.5
   direction 0.440958 -0.26191 -0.858463
@@ -90,7 +91,7 @@ Group {
 
 Group {
   children [
-    DEF _3 PlaneSensor {
+    DEF _1 PlaneSensor {
       offset 0 -0.0526839 0
       maxPosition 0 -1
     }
@@ -109,4 +110,4 @@ Group {
   ]
 }
 
-ROUTE _3.translation_changed TO YHandle.set_translation
+ROUTE _1.translation_changed TO YHandle.set_translation

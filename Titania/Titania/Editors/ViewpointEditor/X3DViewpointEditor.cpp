@@ -86,10 +86,11 @@ X3DViewpointEditor::X3DViewpointEditor () :
 }
 
 void
-X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
 {
 	const X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
 
+	getPerspectiveViewpointBox () .set_sensitive (inScene);
 	getPerspectiveViewpointExpander () .set_visible (viewpoint);
 
 	const auto viewpoints = viewpoint ? X3D::MFNode ({ viewpoint }) : X3D::MFNode ();

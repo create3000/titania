@@ -66,6 +66,7 @@ class OutlineRouteGraph;
 class OutlineSelection;
 class OutlineTreeModel;
 class OutlineTreeObserver;
+class AdjustmentObject;
 
 class X3DOutlineTreeView :
 	virtual public X3DBaseInterface,
@@ -180,16 +181,13 @@ public:
 	get_path_at_position (const double, const double, Gtk::TreeViewColumn* &) const;
 
 	void
-	update (X3D::X3DChildObject* const);
-
-	void
-	update_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
 	expand_to (X3D::X3DChildObject* const);
 
 	void
 	collapse_row (const Gtk::TreeModel::Path &);
+	
+	void
+	preserve_adjustments ();
 
 	///  @name Destruction
 
@@ -318,6 +316,9 @@ private:
 	bool expandExternProtos;
 	bool expandPrototypeInstances;
 	bool expandInlineNodes;
+
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 

@@ -87,7 +87,7 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 { }
 
 void
-X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
 {
 	const X3D::X3DPtr <X3D::OrthoViewpoint> orthoViewpoint (viewpointNode);
 
@@ -101,6 +101,7 @@ X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpoint
 		};
 	}
 
+	getOrthoViewpointBox () .set_sensitive (inScene);
 	getOrthoViewpointExpander () .set_visible (orthoViewpoint);
 
 	const auto orthoViewpoints = orthoViewpoint ? X3D::MFNode ({ orthoViewpoint }) : X3D::MFNode ();

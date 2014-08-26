@@ -307,6 +307,10 @@ public:
 	getPerspectiveViewpointExpander () const
 	{ return *m_PerspectiveViewpointExpander; }
 
+	Gtk::Grid &
+	getPerspectiveViewpointBox () const
+	{ return *m_PerspectiveViewpointBox; }
+
 	Gtk::Box &
 	getPerspectiveViewpointFieldOfViewBox () const
 	{ return *m_PerspectiveViewpointFieldOfViewBox; }
@@ -331,6 +335,10 @@ public:
 	getOrthoViewpointExpander () const
 	{ return *m_OrthoViewpointExpander; }
 
+	Gtk::Grid &
+	getOrthoViewpointBox () const
+	{ return *m_OrthoViewpointBox; }
+
 	Gtk::Box &
 	getOrthoViewpointPositionBox () const
 	{ return *m_OrthoViewpointPositionBox; }
@@ -354,6 +362,10 @@ public:
 	Gtk::Expander &
 	getGeoViewpointExpander () const
 	{ return *m_GeoViewpointExpander; }
+
+	Gtk::Grid &
+	getGeoViewpointBox () const
+	{ return *m_GeoViewpointBox; }
 
 	Gtk::Box &
 	getGeoViewpointFieldOfViewBox () const
@@ -477,18 +489,21 @@ private:
 	Gtk::TextView*                 m_ViewpointDescriptionTextView;
 	Gtk::Button*                   m_UpdateViewpointButton;
 	Gtk::Expander*                 m_PerspectiveViewpointExpander;
+	Gtk::Grid*                     m_PerspectiveViewpointBox;
 	Gtk::Box*                      m_PerspectiveViewpointFieldOfViewBox;
 	Gtk::Box*                      m_PerspectiveViewpointPositionBox;
 	Gtk::Box*                      m_PerspectiveViewpointCenterOfRotationBox;
 	Gtk::Box*                      m_PerspectiveViewpointOrientationBox;
 	Gtk::Box*                      m_PerspectiveViewpointOrientationToolBox;
 	Gtk::Expander*                 m_OrthoViewpointExpander;
+	Gtk::Grid*                     m_OrthoViewpointBox;
 	Gtk::Box*                      m_OrthoViewpointPositionBox;
 	Gtk::Box*                      m_OrthoViewpointCenterOfRotationBox;
 	Gtk::Box*                      m_OrthoViewpointOrientationBox;
 	Gtk::Box*                      m_OthoViewpointOrientationToolBox;
 	Gtk::Grid*                     m_OrthoViewpointFieldOfViewBox;
 	Gtk::Expander*                 m_GeoViewpointExpander;
+	Gtk::Grid*                     m_GeoViewpointBox;
 	Gtk::Box*                      m_GeoViewpointFieldOfViewBox;
 	Gtk::Box*                      m_GeoViewpointPositionBox;
 	Gtk::Box*                      m_GeoViewpointCenterOfRotationBox;

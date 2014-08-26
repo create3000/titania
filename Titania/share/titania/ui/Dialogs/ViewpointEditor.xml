@@ -539,7 +539,7 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="grid3">
+              <object class="GtkGrid" id="PerspectiveViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">4</property>
@@ -967,7 +967,7 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="grid1">
+              <object class="GtkGrid" id="OrthoViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">4</property>
@@ -1439,7 +1439,7 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="grid2">
+              <object class="GtkGrid" id="GeoViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">4</property>

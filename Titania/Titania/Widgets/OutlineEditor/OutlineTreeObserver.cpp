@@ -72,8 +72,8 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 
 			if (treeView -> is_full_expanded (iter))
 			{
-				field -> getInputRoutes ()  .addInterest (this, &OutlineTreeObserver::toggle_path, path, true);
-				field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::toggle_path, path, true);
+				field -> getInputRoutes ()  .addInterest (this, &OutlineTreeObserver::toggle_path, path);
+				field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 			}
 
 			switch (field -> getType ())
@@ -81,7 +81,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 				case X3D::X3DConstants::SFNode:
 				case X3D::X3DConstants::MFNode:
 				{
-					field -> addInterest (this, &OutlineTreeObserver::update_path, path);
+					field -> addInterest (this, &OutlineTreeObserver::toggle_path, path);
 					break;
 				}
 				default:
@@ -95,15 +95,15 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode .getValue ());
 
-			executionContext -> getRootNodes ()          .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
-			executionContext -> importedNodes_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
-			executionContext -> prototypes_changed ()    .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
-			executionContext -> externProtos_changed ()  .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
+			executionContext -> getRootNodes ()          .addInterest (this, &OutlineTreeObserver::toggle_path, path);
+			executionContext -> importedNodes_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
+			executionContext -> prototypes_changed ()    .addInterest (this, &OutlineTreeObserver::toggle_path, path);
+			executionContext -> externProtos_changed ()  .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 
 			const auto scene = dynamic_cast <X3D::X3DScene*> (executionContext);
 
 			if (scene)
-				scene -> exportedNodes_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
+				scene -> exportedNodes_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 
 			break;
 		}
@@ -113,10 +113,10 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
 			if (sfnode)
-				sfnode -> fields_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path, false);
+				sfnode -> fields_changed () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 
 			if (inlineNode)
-				inlineNode -> getInternalScene () .addInterest (this, &OutlineTreeObserver::update_path, path);
+				inlineNode -> getInternalScene () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 
 			break;
 		}
@@ -125,7 +125,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 
-			externProto -> getInternalScene () .addInterest (this, &OutlineTreeObserver::update_path, path);
+			externProto -> getInternalScene () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 			break;
 		}
 		default:
@@ -244,12 +244,12 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			{
 				case X3D::X3DConstants::SFNode:
 				{
-					field -> removeInterest (this, &OutlineTreeObserver::update_path);
+					field -> removeInterest (this, &OutlineTreeObserver::toggle_path);
 					break;
 				}
 				case X3D::X3DConstants::MFNode:
 				{
-					field -> removeInterest (this, &OutlineTreeObserver::update_path);
+					field -> removeInterest (this, &OutlineTreeObserver::toggle_path);
 
 					if (not root)
 					{
@@ -289,8 +289,8 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
 
-			externProto -> name_changed ()     .removeInterest (this, &OutlineTreeObserver::update_path);
-			externProto -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::update_path);
+			externProto -> name_changed ()     .removeInterest (this, &OutlineTreeObserver::toggle_path);
+			externProto -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::toggle_path);
 
 			clear_open_path (iter);
 			break;
@@ -322,7 +322,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			}
 
 			if (inlineNode)
-				inlineNode -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::update_path);
+				inlineNode -> getInternalScene () .removeInterest (this, &OutlineTreeObserver::toggle_path);
 
 			clear_open_path (iter);
 			break;
@@ -373,31 +373,23 @@ OutlineTreeObserver::on_row_changed_impl (const Glib::RefPtr <Gtk::TreeModel> & 
 }
 
 void
-OutlineTreeObserver::update_path (const Gtk::TreeModel::Path & path)
-{
-	//__LOG__ << path .to_string () << std::endl;
-
-	const Gtk::TreeModel::iterator iter = treeView -> get_model () -> get_iter (path);
-
-	treeView -> update_row (iter, path);
-}
-
-void
-OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path, bool expand_full)
+OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
+	if (not treeView -> row_expanded (path))
+		return;
+
 	Gtk::TreeModel::iterator iter = treeView -> get_model () -> get_iter (path);
 
-	expand_full |= treeView -> is_full_expanded (iter);
+	const bool full_expanded = treeView -> is_full_expanded (iter);
+
+	treeView -> preserve_adjustments ();
 	treeView -> collapse_row (path);
 	treeView -> get_model () -> row_has_child_toggled (path, iter);
 
 	treeView -> disable_shift_key ();
-
-	if (expand_full)
-		treeView -> is_full_expanded (iter, true);
-
+	treeView -> is_full_expanded (iter, full_expanded);
 	treeView -> expand_row (path, false);
 	treeView -> enable_shift_key ();
 }

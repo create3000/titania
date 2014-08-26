@@ -110,9 +110,9 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & view
 {
 	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getExecutionContext () and not inPrototypeInstance ());
 
-	setViewpoint (viewpointNode);
-	setOrthoViewpoint (viewpointNode);
-	setGeoViewpoint (viewpointNode);
+	setViewpoint (viewpointNode, inScene);
+	setOrthoViewpoint (viewpointNode, inScene);
+	setGeoViewpoint (viewpointNode, inScene);
 
 	const auto viewpointNodes = viewpointNode ? X3D::MFNode ({ viewpointNode }) : X3D::MFNode ();
 

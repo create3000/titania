@@ -82,7 +82,7 @@ protected:
 	{ }
 
 	void
-	setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);
+	setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &, const bool);
 
 
 private:

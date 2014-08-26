@@ -890,6 +890,10 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
 
+		treeView -> get_hadjustment () -> set_value (std::get <1> (item));
+		treeView -> get_vadjustment () -> set_value (std::get <2> (item));
+		treeView -> preserve_adjustments ();
+
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
 	}
 	catch (...)

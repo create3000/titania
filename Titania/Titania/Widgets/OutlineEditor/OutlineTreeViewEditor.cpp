@@ -770,12 +770,10 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		}
 		default:
 		{
+			preserve_adjustments ();
 			collapse_row (path);
-
 			is_full_expanded (get_model () -> get_iter (path), true);
-
 			expand_row (path, false);
-
 			return;
 		}
 	}

@@ -1,5 +1,24 @@
 2014-08-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewpointEditor.xml:
+	* OutlineEditor.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeObserver.h:
+	* ViewpointEditor.cpp:
+	* X3DOutlineTreeView.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditor.h:
+	* OutlineTreeObserver.cpp:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DViewpointEditor.cpp:
+	* OutlineTreeViewEditor.cpp:
+	* X3DGeoViewpointEditor.h:
+	* X3DOrthoViewpointEditor.h:
+	* X3DGeoViewpointEditor.cpp:
+	* X3DOrthoViewpointEditor.cpp: 
+
+2014-08-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* RotationTool.h:
 	* MFStringGeoSystem.h:
 	* ViewpointEditor.xml:

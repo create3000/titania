@@ -101,10 +101,11 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 }
 
 void
-X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
 {
 	const X3D::X3DPtr <X3D::GeoViewpoint> geoViewpoint (viewpointNode);
 
+	getGeoViewpointBox () .set_sensitive (inScene);
 	getGeoViewpointExpander () .set_visible (geoViewpoint);
 
 	const auto geoViewpoints = geoViewpoint ? X3D::MFNode ({ geoViewpoint }) : X3D::MFNode ();

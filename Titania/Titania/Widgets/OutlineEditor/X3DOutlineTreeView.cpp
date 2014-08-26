@@ -62,6 +62,36 @@
 namespace titania {
 namespace puck {
 
+class AdjustmentObject
+{
+public:
+
+	AdjustmentObject () :
+		connection ()
+	{ }
+
+	void
+	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
+	{
+		connection .disconnect ();
+		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, adjustment -> get_value ()), false);
+
+		Glib::signal_idle () .connect_once (sigc::mem_fun (connection, &sigc::connection::disconnect));
+	}
+
+private:
+
+	void
+	block (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+	{
+		adjustment -> set_value (value);
+		adjustment -> signal_changed () .emission_stop ();
+	}
+
+	sigc::connection connection;
+
+};
+
 X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & executionContext) :
 	        X3DBaseInterface (),
 	           Gtk::TreeView (),
@@ -77,7 +107,9 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	           exportedNodes (false),
 	      expandExternProtos (false),
 	expandPrototypeInstances (false),
-	       expandInlineNodes (false)
+	       expandInlineNodes (false),
+	             hadjustment (new AdjustmentObject ()),
+	             vadjustment (new AdjustmentObject ())
 {
 	// Options
 
@@ -143,41 +175,6 @@ X3DOutlineTreeView::get_path_at_position (const double x, const double y, Gtk::T
 	get_path_at_pos (x, y, path, column, cell_x, cell_y);
 
 	return path;
-}
-
-void
-X3DOutlineTreeView::update (X3D::X3DChildObject* const object)
-{
-	const auto iters = get_iters (object);
-
-	if (iters .empty ())
-		return;
-
-	const auto open_path = get_open_path (iters .front ());
-	const auto iter      = get_model () -> get_iter (open_path);
-
-	if (get_model () -> iter_is_valid (iter))
-		update_row (iter, open_path);
-}
-
-void
-X3DOutlineTreeView::update_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-{
-	if (not row_expanded (path))
-		return;
-
-	const bool full_expanded = is_full_expanded (iter);
-
-	collapse_row (path);
-
-	get_model () -> row_has_child_toggled (path, iter);
-
-	disable_shift_key ();
-
-	is_full_expanded (iter, full_expanded);
-	expand_row (path, false);
-
-	enable_shift_key ();
 }
 
 void
@@ -302,6 +299,13 @@ X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 	Gtk::TreeView::set_model (value);
 
 	model = value;
+}
+
+void
+X3DOutlineTreeView::preserve_adjustments ()
+{
+	hadjustment -> preserve (get_hadjustment ());
+	vadjustment -> preserve (get_vadjustment ());
 }
 
 std::vector <Gtk::TreeModel::iterator>
@@ -432,6 +436,9 @@ void
 X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & executionContext)
 {
 	//__LOG__ << std::endl;
+	
+	get_hadjustment () -> set_value (0);
+	get_vadjustment () -> set_value (0);
 
 	// Remove model.
 
@@ -476,6 +483,8 @@ void
 X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
+
+	preserve_adjustments ();
 
 	// Unwatch model.
 
@@ -528,7 +537,7 @@ X3DOutlineTreeView::set_rootNodes ()
 		for (auto & rootNode : executionContext -> getRootNodes ())
 		{
 			Gtk::TreeModel::iterator iter;
-		
+
 			if (rootNode)
 				iter = get_model () -> append (OutlineIterType::X3DBaseNode, rootNode, i ++);
 			else
@@ -565,7 +574,7 @@ X3DOutlineTreeView::set_rootNodes ()
 			}
 		}
 	}
-	
+
 	// Add at least one child!!!
 	if (not get_model () -> children () .size ())
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Empty Scene")));
@@ -749,7 +758,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					}
 					else
 						get_model () -> append (iter, OutlineIterType::NULL_, field);
-					
+
 					break;
 				}
 				case X3D::X3DConstants::MFNode:
@@ -875,7 +884,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
-			
+
 			// X3DPrototypeInstance handling
 
 			if (expandPrototypeInstances)
@@ -883,7 +892,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 				const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 
 				if (instance)
-					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, instance);	
+					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, instance);
 			}
 
 			// Inline handling
@@ -1112,11 +1121,11 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode  :
-					case OutlineIterType::ExternProtoDeclaration  :
-					case OutlineIterType::ProtoDeclaration    :
-					case OutlineIterType::ImportedNode :
-					case OutlineIterType::ExportedNode :
+					case OutlineIterType::X3DBaseNode            :
+					case OutlineIterType::ExternProtoDeclaration :
+					case OutlineIterType::ProtoDeclaration       :
+					case OutlineIterType::ImportedNode           :
+					case OutlineIterType::ExportedNode           :
 						{
 							if (is_expanded (child))
 							{
@@ -1147,7 +1156,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 				switch (get_data_type (child))
 				{
 					case OutlineIterType::X3DExecutionContext :
-					case OutlineIterType::ProtoDeclaration           :
+					case OutlineIterType::ProtoDeclaration    :
 						{
 							if (is_expanded (child))
 								expand_row (Gtk::TreePath (child), false);

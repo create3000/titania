@@ -129,6 +129,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_UpdateViewpointButton -> set_name ("UpdateViewpointButton");
 	m_builder -> get_widget ("PerspectiveViewpointExpander", m_PerspectiveViewpointExpander);
 	m_PerspectiveViewpointExpander -> set_name ("PerspectiveViewpointExpander");
+	m_builder -> get_widget ("PerspectiveViewpointBox", m_PerspectiveViewpointBox);
+	m_PerspectiveViewpointBox -> set_name ("PerspectiveViewpointBox");
 	m_builder -> get_widget ("PerspectiveViewpointFieldOfViewBox", m_PerspectiveViewpointFieldOfViewBox);
 	m_PerspectiveViewpointFieldOfViewBox -> set_name ("PerspectiveViewpointFieldOfViewBox");
 	m_builder -> get_widget ("PerspectiveViewpointPositionBox", m_PerspectiveViewpointPositionBox);
@@ -141,6 +143,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_PerspectiveViewpointOrientationToolBox -> set_name ("PerspectiveViewpointOrientationToolBox");
 	m_builder -> get_widget ("OrthoViewpointExpander", m_OrthoViewpointExpander);
 	m_OrthoViewpointExpander -> set_name ("OrthoViewpointExpander");
+	m_builder -> get_widget ("OrthoViewpointBox", m_OrthoViewpointBox);
+	m_OrthoViewpointBox -> set_name ("OrthoViewpointBox");
 	m_builder -> get_widget ("OrthoViewpointPositionBox", m_OrthoViewpointPositionBox);
 	m_OrthoViewpointPositionBox -> set_name ("OrthoViewpointPositionBox");
 	m_builder -> get_widget ("OrthoViewpointCenterOfRotationBox", m_OrthoViewpointCenterOfRotationBox);
@@ -153,6 +157,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_OrthoViewpointFieldOfViewBox -> set_name ("OrthoViewpointFieldOfViewBox");
 	m_builder -> get_widget ("GeoViewpointExpander", m_GeoViewpointExpander);
 	m_GeoViewpointExpander -> set_name ("GeoViewpointExpander");
+	m_builder -> get_widget ("GeoViewpointBox", m_GeoViewpointBox);
+	m_GeoViewpointBox -> set_name ("GeoViewpointBox");
 	m_builder -> get_widget ("GeoViewpointFieldOfViewBox", m_GeoViewpointFieldOfViewBox);
 	m_GeoViewpointFieldOfViewBox -> set_name ("GeoViewpointFieldOfViewBox");
 	m_builder -> get_widget ("GeoViewpointPositionBox", m_GeoViewpointPositionBox);
