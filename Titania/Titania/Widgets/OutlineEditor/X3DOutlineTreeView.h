@@ -189,6 +189,9 @@ public:
 	void
 	preserve_adjustments ();
 
+	void
+	set_adjustments (const double, const double);
+
 	///  @name Destruction
 
 	virtual

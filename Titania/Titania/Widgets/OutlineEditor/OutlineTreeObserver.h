@@ -102,9 +102,8 @@ private:
 	void
 	on_row_changed (const Gtk::TreeModel::Path &);
 
-	static
 	void
-	on_row_changed_impl (const Glib::RefPtr <Gtk::TreeModel> &, const Gtk::TreeModel::Path &);
+	on_row_changed_impl (const Gtk::TreeModel::Path &);
 
 	void
 	toggle_path (const Gtk::TreeModel::Path &);

@@ -275,8 +275,14 @@ X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 void
 X3DOutlineTreeView::preserve_adjustments ()
 {
-	hadjustment -> preserve (get_hadjustment ());
-	vadjustment -> preserve (get_vadjustment ());
+	set_adjustments (get_hadjustment () -> get_value () , get_vadjustment () -> get_value ());
+}
+
+void
+X3DOutlineTreeView::set_adjustments (const double h, const double v)
+{
+	hadjustment -> preserve (get_hadjustment (), h);
+	vadjustment -> preserve (get_vadjustment (), v);
 }
 
 std::vector <Gtk::TreeModel::iterator>
