@@ -1,5 +1,11 @@
 2014-08-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DViewpointNode.cpp:
+	* EaseInEaseOut.cpp:
+	* X3DInterpolatorNode.cpp: 
+
+2014-08-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj: 
 
 2014-08-25  Holger Seelig  <holger.seelig@yahoo.de>

@@ -244,11 +244,6 @@ X3DViewpointNode::straighten (const bool horizon)
 	scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
 	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
 
-	//positionInterpolator         -> value_changed () .addInterest (positionOffset ());
-	//orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
-	//scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
-	//scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
-
 	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
 	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (getOrientation () * rotation) - getCenterOfRotation ();
@@ -387,11 +382,6 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 			orientationInterpolator      -> keyValue () = { startOrientation, endOrientation };
 			scaleInterpolator            -> keyValue () = { startScale, endScale };
 			scaleOrientationInterpolator -> keyValue () = { startScaleOrientation, endScaleOrientation };
-
-			//positionInterpolator         -> value_changed () .addInterest (positionOffset ());
-			//orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
-			//scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
-			//scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 		}
 		else
 		{
@@ -428,24 +418,14 @@ X3DViewpointNode::set_isActive (const bool value)
 		for (const auto & layer : getLayers ())
 			layer -> getNavigationInfo () -> transitionComplete () = true;
 
-		//positionInterpolator         -> value_changed () .removeInterest (positionOffset ());
-		//orientationInterpolator      -> value_changed () .removeInterest (orientationOffset ());
-		//scaleInterpolator            -> value_changed () .removeInterest (scaleOffset ());
-		//scaleOrientationInterpolator -> value_changed () .removeInterest (scaleOrientationOffset ());
-
-		positionOffset ()         = positionInterpolator         -> keyValue () .back ();
-		orientationOffset ()      = orientationInterpolator      -> keyValue () .back ();
-		scaleOffset ()            = scaleInterpolator            -> keyValue () .back ();
-		scaleOrientationOffset () = scaleOrientationInterpolator -> keyValue () .back ();
+		easeInEaseOut -> set_fraction () = 1;
 	}
 }
 
 void
 X3DViewpointNode::set_bind_ ()
 {
-	if (set_bind ())
-;
-	else
+	if (not isBound ())
 		timeSensor -> stopTime () = getCurrentTime ();
 }
 

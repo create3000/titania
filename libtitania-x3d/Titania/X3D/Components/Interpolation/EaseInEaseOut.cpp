@@ -102,9 +102,9 @@ EaseInEaseOut::set_keyValue ()
 void
 EaseInEaseOut::interpolate (size_t index0, size_t index1, const float weight)
 {
-	float easeOut = easeInEaseOut () [index0] .getY ();
-	float easeIn  = easeInEaseOut () [index1] .getX ();
-	float sum     = easeOut + easeIn;
+	float       easeOut = easeInEaseOut () [index0] .getY ();
+	float       easeIn  = easeInEaseOut () [index1] .getX ();
+	const float sum     = easeOut + easeIn;
 
 	if (sum < 0)
 		modifiedFraction_changed () = weight;
@@ -117,13 +117,13 @@ EaseInEaseOut::interpolate (size_t index0, size_t index1, const float weight)
 			easeOut /= sum;
 		}
 
-		float t = 1 / (2 - easeOut - easeIn);
+		const float t = 1 / (2 - easeOut - easeIn);
 
 		if (weight < easeOut)
 		{
 			modifiedFraction_changed () = (t / easeOut) * math::sqr (weight);
 		}
-		else if (weight < 1 - easeIn)
+		else if (weight <= 1 - easeIn) // Spec says (weight < 1 - easeIn), but then we get a NaN below if easeIn == 0.
 		{
 			modifiedFraction_changed () = t * (2 * weight - easeOut);
 		}
