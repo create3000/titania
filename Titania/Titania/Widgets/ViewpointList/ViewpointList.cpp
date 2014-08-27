@@ -50,6 +50,7 @@
 
 #include "ViewpointList.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -79,7 +80,9 @@ ViewpointList::ViewpointList (BrowserWindow* const browserWindow, const bool lab
 	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
 	                    label (label),
 	           userViewpoints (true),
-	              activeLayer ()
+	              activeLayer (),
+	              hadjustment (new AdjustmentObject ()),
+	              vadjustment (new AdjustmentObject ())
 {
 	setup ();
 }
@@ -164,9 +167,10 @@ ViewpointList::set_viewpoints ()
 {
 	// Clear
 
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&ViewpointList::set_adjustment), getTreeView () .get_hadjustment (), getTreeView () .get_hadjustment () -> get_value ()));
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&ViewpointList::set_adjustment), getTreeView () .get_vadjustment (), getTreeView () .get_vadjustment () -> get_value ()));
+	hadjustment -> preserve (getTreeView () .get_hadjustment ());
+	vadjustment -> preserve (getTreeView () .get_vadjustment ());
 
+	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
 	// Fill the TreeView's model
@@ -201,6 +205,9 @@ ViewpointList::set_viewpoints ()
 
 		++ index;
 	}
+
+	getTreeView () .set_model (getListStore ());
+	getTreeView () .set_search_column (Columns::DESCRIPTION);
 
 	processInterests ();
 }

@@ -58,6 +58,8 @@
 namespace titania {
 namespace puck {
 
+class AdjustmentObject;
+
 class ViewpointList :
 	public X3DViewpointListInterface
 {
@@ -129,6 +131,9 @@ private:
 	bool                 label;
 	bool                 userViewpoints;
 	X3D::X3DLayerNodePtr activeLayer;
+
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 

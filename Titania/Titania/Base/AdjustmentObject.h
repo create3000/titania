@@ -69,6 +69,12 @@ public:
 	{ }
 
 	void
+	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
+	{
+		preserve (adjustment, adjustment -> get_value ());
+	}
+
+	void
 	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
 		connection .disconnect ();
