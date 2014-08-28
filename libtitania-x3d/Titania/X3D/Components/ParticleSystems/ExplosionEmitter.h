@@ -100,6 +100,10 @@ public:
 	///  @name Operations
 
 	virtual
+	Box3f
+	getBBox (const ParticleSystem* const) final override;
+
+	virtual
 	bool
 	isExplosive () final override
 	{ return true; }

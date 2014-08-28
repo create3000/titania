@@ -87,6 +87,12 @@ PointEmitter::create (X3DExecutionContext* const executionContext) const
 	return new PointEmitter (executionContext);
 }
 
+Box3f
+PointEmitter::getBBox (const ParticleSystem* const)
+{
+	return Box3f (Vector3f (1, 1, 1), Vector3f (0, 0, 0));
+}
+
 MFString
 PointEmitter::getShaderUrl () const
 {

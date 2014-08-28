@@ -53,9 +53,12 @@
 
 #include "../Core/X3DNode.h"
 #include "../Shaders/ComposedShader.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
+
+class ParticleSystem;
 
 class X3DParticleEmitterNode :
 	virtual public X3DNode
@@ -97,6 +100,10 @@ public:
 	{ return *fields .surfaceArea; }
 
 	///  @name Operations
+
+	virtual
+	Box3f
+	getBBox (const ParticleSystem* const) = 0;
 
 	virtual
 	bool

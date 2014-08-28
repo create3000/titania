@@ -148,6 +148,55 @@ VolumeEmitter::initialize ()
 	set_geometry ();
 }
 
+Box3f
+VolumeEmitter::getBBox (const ParticleSystem* const)
+{
+	if (coord ())
+		return surfaceNode -> getBBox ();
+
+	return Box3f ();
+}
+
+MFString
+VolumeEmitter::getShaderUrl () const
+{
+	return { get_shader ("ParticleSystems/VolumeEmitter.vs") .str () };
+}
+
+void
+VolumeEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::addShaderFields (shader);
+
+	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
+	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f (normalize (direction () .getValue ())));
+}
+
+void
+VolumeEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
+{
+	shader -> setTextureBuffer ("normalMap",       normalMapId);
+	shader -> setTextureBuffer ("surfaceMap",      surfaceMapId);
+	shader -> setTextureBuffer ("surfaceAreaMap",  surfaceAreaMapId);
+	shader -> setTextureBuffer ("volumeMap",       volumeMapId);
+}
+
+void
+VolumeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
+{
+	try
+	{
+		X3DParticleEmitterNode::setShaderFields (shader);
+
+		shader -> setField <SFBool>  ("pointEmitter", pointEmitter, true);
+		shader -> setField <SFVec3f> ("direction",    normalize (direction () .getValue ()), true);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
 void
 VolumeEmitter::set_geometry ()
 {
@@ -207,46 +256,6 @@ VolumeEmitter::set_geometry ()
 
 	glBindTexture (GL_TEXTURE_BUFFER, 0);
 	glBindBuffer (GL_TEXTURE_BUFFER, 0);
-}
-
-MFString
-VolumeEmitter::getShaderUrl () const
-{
-	return { get_shader ("ParticleSystems/VolumeEmitter.vs") .str () };
-}
-
-void
-VolumeEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
-{
-	X3DParticleEmitterNode::addShaderFields (shader);
-
-	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
-	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f (normalize (direction () .getValue ())));
-}
-
-void
-VolumeEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
-{
-	shader -> setTextureBuffer ("normalMap",       normalMapId);
-	shader -> setTextureBuffer ("surfaceMap",      surfaceMapId);
-	shader -> setTextureBuffer ("surfaceAreaMap",  surfaceAreaMapId);
-	shader -> setTextureBuffer ("volumeMap",       volumeMapId);
-}
-
-void
-VolumeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
-{
-	try
-	{
-		X3DParticleEmitterNode::setShaderFields (shader);
-
-		shader -> setField <SFBool>  ("pointEmitter", pointEmitter, true);
-		shader -> setField <SFVec3f> ("direction",    normalize (direction () .getValue ()), true);
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
 }
 
 void

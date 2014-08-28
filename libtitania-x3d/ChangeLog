@@ -1,3 +1,20 @@
+2014-08-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ConeEmitter.h:
+	* PointEmitter.h:
+	* ConeEmitter.cpp:
+	* VolumeEmitter.h:
+	* SurfaceEmitter.h:
+	* PointEmitter.cpp:
+	* PolylineEmitter.h:
+	* VolumeEmitter.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* ExplosionEmitter.h:
+	* PolylineEmitter.cpp:
+	* ExplosionEmitter.cpp:
+	* X3DParticleEmitterNode.h: 
+
 2014-08-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DViewpointNode.cpp:

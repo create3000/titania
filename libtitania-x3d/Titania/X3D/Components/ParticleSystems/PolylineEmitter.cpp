@@ -132,6 +132,15 @@ PolylineEmitter::initialize ()
 	set_polyline ();
 }
 
+Box3f
+PolylineEmitter::getBBox (const ParticleSystem* const)
+{
+	if (coord ())
+		return polylineNode -> getBBox ();
+
+	return Box3f ();
+}
+
 MFString
 PolylineEmitter::getShaderUrl () const
 {

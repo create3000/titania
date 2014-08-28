@@ -101,6 +101,10 @@ public:
 	///  @name Operations
 
 	virtual
+	Box3f
+	getBBox (const ParticleSystem* const) final override;
+
+	virtual
 	MFString
 	getShaderUrl () const final override;
 

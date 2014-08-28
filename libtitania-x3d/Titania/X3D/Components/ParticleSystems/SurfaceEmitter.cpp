@@ -130,6 +130,54 @@ SurfaceEmitter::initialize ()
 	set_geometry ();
 }
 
+Box3f
+SurfaceEmitter::getBBox (const ParticleSystem* const)
+{
+	if (surfaceNode)
+		return surfaceNode -> getBBox ();
+
+	return Box3f ();
+}
+
+MFString
+SurfaceEmitter::getShaderUrl () const
+{
+	return { get_shader ("ParticleSystems/SurfaceEmitter.vs") .str () };
+}
+
+void
+SurfaceEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::addShaderFields (shader);
+
+	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
+	shader -> addUserDefinedField (inputOutput, "solid",        new SFBool (solid));
+}
+
+void
+SurfaceEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
+{
+	shader -> setTextureBuffer ("normalMap",      normalMapId);
+	shader -> setTextureBuffer ("surfaceMap",     surfaceMapId);
+	shader -> setTextureBuffer ("surfaceAreaMap", surfaceAreaMapId);
+}
+
+void
+SurfaceEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
+{
+	try
+	{
+		X3DParticleEmitterNode::setShaderFields (shader);
+
+		shader -> setField <SFBool> ("pointEmitter", pointEmitter, true);
+		shader -> setField <SFBool> ("solid",        solid,        true);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
 void
 SurfaceEmitter::set_surface ()
 {
@@ -206,45 +254,6 @@ SurfaceEmitter::set_geometry ()
 
 	glBindTexture (GL_TEXTURE_BUFFER, 0);
 	glBindBuffer (GL_TEXTURE_BUFFER, 0);
-}
-
-MFString
-SurfaceEmitter::getShaderUrl () const
-{
-	return { get_shader ("ParticleSystems/SurfaceEmitter.vs") .str () };
-}
-
-void
-SurfaceEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
-{
-	X3DParticleEmitterNode::addShaderFields (shader);
-
-	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
-	shader -> addUserDefinedField (inputOutput, "solid",        new SFBool (solid));
-}
-
-void
-SurfaceEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
-{
-	shader -> setTextureBuffer ("normalMap",      normalMapId);
-	shader -> setTextureBuffer ("surfaceMap",     surfaceMapId);
-	shader -> setTextureBuffer ("surfaceAreaMap", surfaceAreaMapId);
-}
-
-void
-SurfaceEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
-{
-	try
-	{
-		X3DParticleEmitterNode::setShaderFields (shader);
-
-		shader -> setField <SFBool> ("pointEmitter", pointEmitter, true);
-		shader -> setField <SFBool> ("solid",        solid,        true);
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
 }
 
 void

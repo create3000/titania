@@ -86,6 +86,12 @@ ExplosionEmitter::create (X3DExecutionContext* const executionContext) const
 	return new ExplosionEmitter (executionContext);
 }
 
+Box3f
+ExplosionEmitter::getBBox (const ParticleSystem* const)
+{
+	return Box3f (Vector3f (1, 1, 1), Vector3f (0, 0, 0));
+}
+
 MFString
 ExplosionEmitter::getShaderUrl () const
 {
