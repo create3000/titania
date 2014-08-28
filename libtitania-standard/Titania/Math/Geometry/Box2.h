@@ -191,17 +191,27 @@ public:
 	///  Translate this box by @a translation.
 	void
 	translate (const vector2 <Type> & translation)
-	{ value .translate (translation); }
+	{
+		matrix3 <Type> t;
+
+		t .translate (translation);
+		value *= t;
+	}
 
 	///  Rotate this box by @a rotation.
 	void
 	rotate (const Type & rotation)
-	{ value .rotate (rotation); }
+	{ value *= matrix3 <Type> (rotation); }
 
 	///  Scale this box by @a scaleFactor.
 	void
 	scale (const vector2 <Type> & scaleFactor)
-	{ value .scale (scaleFactor); }
+	{
+		matrix3 <Type> s;
+
+		s .scale (scaleFactor);
+		value *= s;
+	}
 
 	///  @name Intersection
 

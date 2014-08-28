@@ -496,7 +496,7 @@ ParticleSystem::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		return emitterNode -> getBBox (this);
+		return emitterNode -> getBBox ();
 	}
 
 	return Box3f (bboxSize (), bboxCenter ());

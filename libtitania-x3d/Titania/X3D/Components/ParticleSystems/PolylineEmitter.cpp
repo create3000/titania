@@ -133,7 +133,7 @@ PolylineEmitter::initialize ()
 }
 
 Box3f
-PolylineEmitter::getBBox (const ParticleSystem* const)
+PolylineEmitter::getBBox ()
 {
 	if (coord ())
 		return polylineNode -> getBBox ();

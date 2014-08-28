@@ -88,9 +88,9 @@ PointEmitter::create (X3DExecutionContext* const executionContext) const
 }
 
 Box3f
-PointEmitter::getBBox (const ParticleSystem* const)
+PointEmitter::getBBox ()
 {
-	return Box3f (Vector3f (1, 1, 1), Vector3f (0, 0, 0));
+	return Box3f (Vector3f (1, 1, 1), position ());
 }
 
 MFString

@@ -2,6 +2,24 @@
 
 	* ConeEmitter.h:
 	* PointEmitter.h:
+	* VolumeEmitter.h:
+	* ConeEmitter.cpp:
+	* ParticleSystem.h:
+	* PointEmitter.cpp:
+	* SurfaceEmitter.h:
+	* PolylineEmitter.h:
+	* VolumeEmitter.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* ExplosionEmitter.h:
+	* PolylineEmitter.cpp:
+	* ExplosionEmitter.cpp:
+	* X3DParticleEmitterNode.h: 
+
+2014-08-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ConeEmitter.h:
+	* PointEmitter.h:
 	* ConeEmitter.cpp:
 	* VolumeEmitter.h:
 	* SurfaceEmitter.h:

@@ -149,7 +149,7 @@ VolumeEmitter::initialize ()
 }
 
 Box3f
-VolumeEmitter::getBBox (const ParticleSystem* const)
+VolumeEmitter::getBBox ()
 {
 	if (coord ())
 		return surfaceNode -> getBBox ();

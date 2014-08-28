@@ -131,7 +131,7 @@ SurfaceEmitter::initialize ()
 }
 
 Box3f
-SurfaceEmitter::getBBox (const ParticleSystem* const)
+SurfaceEmitter::getBBox ()
 {
 	if (surfaceNode)
 		return surfaceNode -> getBBox ();

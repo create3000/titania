@@ -420,6 +420,7 @@ private:
 	X3DPtr <X3DParticleEmitterNode>           emitterNode;
 	X3DPtr <X3DColorNode>                     colorRampNode;
 	X3DPtr <X3DTextureCoordinateNode>         texCoordRampNode;
+	X3DPtr <X3DGeometryNode>                  geometryNode;
 	size_t                                    numColors;
 	size_t                                    numTexCoord;
 	X3DPtrArray <X3DParticlePhysicsModelNode> physicsModelNodes;

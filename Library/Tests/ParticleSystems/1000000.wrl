@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.4
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
@@ -9,26 +9,38 @@ Viewpoint {
   position 0 0 80
 }
 
-ParticleSystem {
-  geometryType "POINT"
-  maxParticles 1048576
-  particleLifetime 10
-  lifetimeVariation 0.01
-  particleSize 0.1 0.1
-  colorKey [ 0, 0.1, 0.4, 1 ]
-  emitter PointEmitter {
-    direction 0 0 0
-    speed 3
-    variation 0
-    mass 0.1
-    surfaceArea 0.1
-  }
-  colorRamp ColorRGBA {
-    color [ 1 0.38 0 0, 1 0.58 0.06 0.1, 1 0.37 0 1, 1 0.05 0 1 ]
-  }
-  appearance Appearance {
-    lineProperties LineProperties {
-      linewidthScaleFactor 1
+DEF _1 Transform {
+  children ParticleSystem {
+    geometryType "POINT"
+    maxParticles 1048576
+    particleLifetime 10
+    lifetimeVariation 0.01
+    particleSize 0.1 0.1
+    colorKey [
+      0,
+      0.1,
+      0.4,
+      1
+    ]
+    emitter PointEmitter {
+      direction 0 0 0
+      speed 3
+      variation 0
+      mass 0.1
+      surfaceArea 0.1
+    }
+    colorRamp ColorRGBA {
+      color [
+        1 0.38 0 0,
+        1 0.58 0.06 0.1,
+        1 0.37 0 1,
+        1 0.05 0 1
+      ]
+    }
+    appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 1
+      }
     }
   }
 }

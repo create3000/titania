@@ -306,15 +306,22 @@ main (int argc, char** argv)
 	#endif
 
 
-	std::istringstream isstream ("0.5");
-	
-	float f = 0;
+	//	std::istringstream isstream ("0.5");
+	//	
+	//	float f = 0;
+	//
+	//	isstream .imbue (std::locale (""));
+	//	isstream >> f;
+	//	
+	//	__LOG__ << bool (isstream) << std::endl;
+	//	__LOG__ << f << std::endl;
 
-	isstream .imbue (std::locale (""));
-	isstream >> f;
-	
-	__LOG__ << bool (isstream) << std::endl;
-	__LOG__ << f << std::endl;
+
+	Box3f b (Vector3f (0.2,0.2,0.2), Vector3f ());
+
+	b .translate (Vector3f (1,0,0));
+
+	__LOG__ << b << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -103,7 +103,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox (const ParticleSystem* const) = 0;
+	getBBox () = 0;
 
 	virtual
 	bool

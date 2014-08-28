@@ -118,7 +118,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox (const ParticleSystem* const) final override;
+	getBBox () final override;
 
 	virtual
 	MFString
