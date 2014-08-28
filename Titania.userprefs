@@ -1,76 +1,35 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Prototypes/Button/CheckButtonGroup/example.x3dv">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="110" Column="1" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="282" Column="1" />
-      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="1" Column="1" />
-      <File FileName="Library/Tests/Handles/Rotor.wrl" Line="35" Column="4" />
-      <File FileName="Library/Prototypes/Button/CheckButtonGroup/CheckButtonGroup.x3dv" Line="1" Column="1" />
-      <File FileName="Library/Prototypes/Button/CheckButtonGroup/example.x3dv" Line="31" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h" Line="64" Column="2" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="106" Column="2" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="99" Column="46" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="112" Column="3" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DViewpointEditor.h" Line="95" Column="1" />
+      <File FileName="Titania/Titania/Editors/LightEditor/LightEditor.cpp" Line="88" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/X3DRouterObject.cpp" Line="130" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
-          <Node name="Library" expanded="True">
-            <Node name="Prototypes" expanded="True">
-              <Node name="Button" expanded="True">
-                <Node name="Button" expanded="True" />
-                <Node name="CheckButton" expanded="True" />
-                <Node name="CheckButtonGroup" expanded="True" />
-                <Node name="RadioButton" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="Handles" expanded="True" />
-              <Node name="Scripting" expanded="True" />
-              <Node name="Shaders" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-stream" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
-            </Node>
-          </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="shaders" expanded="True">
-                  <Node name="ParticleSystems" expanded="True" />
-                </Node>
                 <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Networking" expanded="True" />
-                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Layout" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
-                  <Node name="Shaders" expanded="True" />
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
                 <Node name="Routing" expanded="True" />
-                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -78,9 +37,9 @@
             <Node name="config" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="Prototypes" expanded="True">
-                  <Node name="0.1" expanded="True">
-                    <Node name="Widgets" expanded="True" selected="True" />
+                <Node name="Library" expanded="True">
+                  <Node name="Prototypes" expanded="True">
+                    <Node name="Widgets" expanded="True" />
                   </Node>
                 </Node>
                 <Node name="ui" expanded="True">
@@ -89,13 +48,22 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
+              <Node name="Dialogs" expanded="True">
+                <Node name="NodeIndex" expanded="True" />
+              </Node>
+              <Node name="Editors" expanded="True">
+                <Node name="LightEditor" expanded="True" />
+                <Node name="PrecisionPlacementPanel" expanded="True">
+                  <Node name="PrecisionPlacementPanel.cpp" selected="True" />
+                </Node>
+                <Node name="ViewpointEditor" expanded="True" />
+              </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="HistoryView" expanded="True" />
-                <Node name="LibraryView" expanded="True" />
-                <Node name="OutlineEditor" expanded="True" />
-                <Node name="ScriptEditor" expanded="True" />
+                <Node name="ViewpointList" expanded="True" />
               </Node>
             </Node>
           </Node>

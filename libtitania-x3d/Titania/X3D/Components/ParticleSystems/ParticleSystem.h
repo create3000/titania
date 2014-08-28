@@ -79,7 +79,7 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Common members
 
@@ -101,114 +101,142 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
 
+	virtual
 	const SFBool &
 	enabled () const
 	{ return *fields .enabled; }
 
+	virtual
 	SFString &
 	geometryType ()
 	{ return *fields .geometryType; }
 
+	virtual
 	const SFString &
 	geometryType () const
 	{ return *fields .geometryType; }
 
+	virtual
 	SFBool &
 	createParticles ()
 	{ return *fields .createParticles; }
 
+	virtual
 	const SFBool &
 	createParticles () const
 	{ return *fields .createParticles; }
 
+	virtual
 	SFInt32 &
 	maxParticles ()
 	{ return *fields .maxParticles; }
 
+	virtual
 	const SFInt32 &
 	maxParticles () const
 	{ return *fields .maxParticles; }
 
+	virtual
 	SFFloat &
 	particleLifetime ()
 	{ return *fields .particleLifetime; }
 
+	virtual
 	const SFFloat &
 	particleLifetime () const
 	{ return *fields .particleLifetime; }
 
+	virtual
 	SFFloat &
 	lifetimeVariation ()
 	{ return *fields .lifetimeVariation; }
 
+	virtual
 	const SFFloat &
 	lifetimeVariation () const
 	{ return *fields .lifetimeVariation; }
 
+	virtual
 	SFVec2f &
 	particleSize ()
 	{ return *fields .particleSize; }
 
+	virtual
 	const SFVec2f &
 	particleSize () const
 	{ return *fields .particleSize; }
 
+	virtual
 	MFFloat &
 	colorKey ()
 	{ return *fields .colorKey; }
 
+	virtual
 	const MFFloat &
 	colorKey () const
 	{ return *fields .colorKey; }
 
+	virtual
 	MFFloat &
 	texCoordKey ()
 	{ return *fields .texCoordKey; }
 
+	virtual
 	const MFFloat &
 	texCoordKey () const
 	{ return *fields .texCoordKey; }
 
+	virtual
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
 
+	virtual
 	const SFBool &
 	isActive () const
 	{ return *fields .isActive; }
 
+	virtual
 	SFNode &
 	emitter ()
 	{ return *fields .emitter; }
 
+	virtual
 	const SFNode &
 	emitter () const
 	{ return *fields .emitter; }
 
+	virtual
 	SFNode &
 	colorRamp ()
 	{ return *fields .colorRamp; }
 
+	virtual
 	const SFNode &
 	colorRamp () const
 	{ return *fields .colorRamp; }
 
+	virtual
 	SFNode &
 	texCoordRamp ()
 	{ return *fields .texCoordRamp; }
 
+	virtual
 	const SFNode &
 	texCoordRamp () const
 	{ return *fields .texCoordRamp; }
 
+	virtual
 	MFNode &
 	physics ()
 	{ return *fields .physics; }
 
+	virtual
 	const MFNode &
 	physics () const
 	{ return *fields .physics; }
@@ -217,36 +245,49 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const override;
 
 	///  @name Member access
 
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	bool
-	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) final override;
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) override;
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
 
 	virtual
 	void
-	drawCollision () final override;
+	drawCollision () override;
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 	virtual
 	~ParticleSystem ();
+
+
+protected:
+
+	///  @name Constuction
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
@@ -265,12 +306,6 @@ private:
 		SPRITE,
 		GEOMETRY,
 	};
-
-	///  @name Constuction
-
-	virtual
-	void
-	initialize () final override;
 
 	///  @name Tests
 

@@ -56,6 +56,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
 #include "../../Miscellaneous/Random.h"
+#include "../../Tools/ParticleSystems/ParticleSystemTool.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -1651,6 +1652,12 @@ ParticleSystem::dispose ()
 	// Dispose base
 
 	X3DShapeNode::dispose ();
+}
+
+void
+ParticleSystem::addTool ()
+{
+	X3DShapeNode::addTool (new ParticleSystemTool (this));
 }
 
 ParticleSystem::~ParticleSystem ()

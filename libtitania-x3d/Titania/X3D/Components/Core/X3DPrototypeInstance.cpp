@@ -562,10 +562,10 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 void
 X3DPrototypeInstance::dispose ()
 {
+	removeChildren (getRootNodes ());
+
 	X3DExecutionContext::dispose ();
 	X3DNode::dispose ();
-
-	removeChildren (getRootNodes ());
 }
 
 } // X3D

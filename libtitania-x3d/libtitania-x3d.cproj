@@ -766,6 +766,7 @@
     <None Include="Titania\X3D\Tools\Navigation\OrthoViewpointTool.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
     <None Include="Titania\X3D\Tools\Networking\X3DUrlObjectTool.h" />
+    <None Include="Titania\X3D\Tools\ParticleSystems\ParticleSystemTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1285,6 +1286,7 @@
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
+    <Compile Include="Titania\X3D\Tools\ParticleSystems\ParticleSystemTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1352,6 +1354,7 @@
     <Folder Include="Titania\X3D\Tools\Lighting\" />
     <Folder Include="Titania\X3D\Tools\Geospatial\" />
     <Folder Include="Titania\Moth\" />
+    <Folder Include="Titania\X3D\Tools\ParticleSystems\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

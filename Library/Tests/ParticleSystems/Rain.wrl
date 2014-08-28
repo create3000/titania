@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.4
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
@@ -15,15 +15,28 @@ ParticleSystem {
   particleLifetime 3
   lifetimeVariation 0.01
   particleSize 0.1 0.1
+  bboxSize 20 9.7 20
+  bboxCenter 0 -4.75 0
   emitter SurfaceEmitter {
     speed 0.2
     mass 0.01
     surfaceArea 0.01
     surface IndexedFaceSet {
       ccw FALSE
-      coordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
       coord Coordinate {
-        point [ -10 0 10, 10 0 10, 10 0 -10, -10 0 -10 ]
+        point [
+          -10 0 10,
+          10 0 10,
+          10 0 -10,
+          -10 0 -10
+        ]
       }
     }
   }

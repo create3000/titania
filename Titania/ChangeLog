@@ -1,3 +1,22 @@
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* PrecisionPlacementPanel.xml:
+	* X3DTransformEditor.h:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DTransformEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* PrecisionPlacementPanel.h:
+	* PrecisionPlacementPanel.cpp: 
+
 2014-08-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* AdjustmentObject.h:

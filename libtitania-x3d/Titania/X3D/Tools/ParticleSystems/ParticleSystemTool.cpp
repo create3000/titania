@@ -48,138 +48,21 @@
  *
  ******************************************************************************/
 
-#include "X3DRouterObject.h"
+#include "ParticleSystemTool.h"
 
-#include <Titania/Chrono.h>
-#include <cassert>
+#include "../../Components/Rendering/X3DGeometryNode.h"
+#include "../../Components/Shape/Appearance.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
-X3DRouterObject::X3DRouterObject () :
-	 X3DBaseNode (),
-	    children (),
-	     parents (),
-	childrenTime (chrono::now ()),
-	  parentTime (chrono::now ())
+ParticleSystemTool::ParticleSystemTool (ParticleSystem* const node) :
+	                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	     X3DBaseTool <ParticleSystem> (node),
+	X3DShapeNodeTool <ParticleSystem> (ToolColors::ORANGE)
 {
-	addType (X3DConstants::X3DRouterObject);
-}
-
-ChildId
-X3DRouterObject::addTaintedChild (X3DChildObject* const child, const EventPtr & event)
-{
-	children .emplace_back (child, event);
-
-	return ChildId { childrenTime, -- children .end () };
-}
-
-void
-X3DRouterObject::removeTaintedChild (const ChildId & childId)
-{
-	if (childId .time == childrenTime)
-		children .erase (childId .iter);
-}
-
-ChildrenList
-X3DRouterObject::getTaintedChildren ()
-{
-	// Invalidate all iterators
-
-	childrenTime = chrono::now ();
-
-	return std::move (children);
-}
-
-ParentId
-X3DRouterObject::addTaintedParent (X3DParentObject* const parent)
-{
-	parents .emplace_back (parent);
-
-	return ParentId { parentTime, -- parents .end () };
-}
-
-void
-X3DRouterObject::removeTaintedParent (const ParentId & parentId)
-{
-	if (parentId .time == parentTime)
-		parents .erase (parentId .iter);
-}
-
-ParentList
-X3DRouterObject::getTaintedParents ()
-{
-	// Invalidate all iterators
-
-	parentTime = chrono::now ();
-
-	return std::move (parents);
-}
-
-void
-X3DRouterObject::processEvents ()
-{
-	do
-	{
-		do
-		{
-			for (const auto & event : getTaintedChildren ())
-			{
-				event .first -> processEvent (event .second);
-			}
-		}
-		while (not empty ());
-
-		eventsProcessed ();
-	}
-	while (not empty ());
-}
-
-void
-X3DRouterObject::eventsProcessed ()
-{
-	do
-	{
-		for (const auto & parent : getTaintedParents ())
-			parent -> eventsProcessed ();
-	}
-	while (not parents .empty () and empty ());
-}
-
-bool
-X3DRouterObject::empty () const
-{
-	return children .empty ();
-}
-
-size_t
-X3DRouterObject::size () const
-{
-	return children .size ();
-}
-
-void
-X3DRouterObject::debugRouter () const
-{
-	for (auto & event : children)
-	{
-		const auto field = dynamic_cast <X3DFieldDefinition*> (event .first);
-
-		if (field)
-			__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
-
-		for (const auto & parent : event .first -> getParents ())
-		{
-			const auto node = dynamic_cast <X3DBaseNode*> (parent);
-
-			if (node)
-			{
-				__LOG__ << "\t" << node -> getTypeName () << std::endl;
-			}
-		}
-	}
-
-	assert (empty ());
+	//addType (X3DConstants::ParticleSystemTool);
 }
 
 } // X3D

@@ -1526,6 +1526,21 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkToolButton" id="PrecisionPlacementPanelButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Show Precision Placement Panel.</property>
+                    <property name="label" translatable="yes">Precision Placement Panel</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-goto-bottom</property>
+                    <signal name="clicked" handler="on_precision_placement_panel_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkToolButton" id="CreatePrototypeInstanceButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>

@@ -543,6 +543,10 @@ private:
 
 	virtual
 	void
+	on_precision_placement_panel_clicked () final override;
+
+	virtual
+	void
 	on_prototype_instance_dialog_clicked () final override;
 
 	virtual

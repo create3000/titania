@@ -587,10 +587,10 @@ X3DBrowser::dispose ()
 	supportedFields .dispose ();
 	supportedNodes  .dispose ();
 
+	removeChildren (getRootNodes ());
+
 	X3DBrowserContext::dispose ();
 	X3DBaseNode::dispose ();
-
-	removeChildren (getRootNodes ());
 
 	unlock ();
 

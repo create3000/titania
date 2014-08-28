@@ -1650,6 +1650,12 @@ BrowserWindow::on_inline_editor_clicked ()
 }
 
 void
+BrowserWindow::on_precision_placement_panel_clicked ()
+{
+	addDialog ("PrecisionPlacementPanel");
+}
+
+void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
 	std::dynamic_pointer_cast <PrototypeInstanceDialog> (addDialog ("PrototypeInstanceDialog", false)) -> run ();

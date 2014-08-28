@@ -123,7 +123,7 @@ X3DParentObject::addEvent (X3DChildObject* const object)
 void
 X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
-	//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+//	__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
 
 	getBrowser () -> addEvent ();
 
@@ -207,12 +207,12 @@ X3DParentObject::dispose ()
 {
 	X3DReferenceObject::dispose ();
 
-	removeEvents ();
-
 	for (const auto & child : children)
 		child -> dispose ();
 
 	children .clear ();
+
+	removeEvents ();
 }
 
 /***

@@ -464,10 +464,9 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ProtoDeclaration::dispose ()
 {
+	removeChildren (getRootNodes ());
 	X3DExecutionContext::dispose ();
 	X3DProtoDeclarationNode::dispose ();
-
-	removeChildren (getRootNodes ());
 }
 
 } // X3D

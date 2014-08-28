@@ -784,11 +784,13 @@ X3DBaseNode::isPrivate (const bool value)
 void
 X3DBaseNode::addClones (const size_t count)
 {
+	if (count == 0)
+		return;
+	
 	cloneCount += count;
 
 	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
-	if (count)
-		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = chrono::now ();
+	const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = chrono::now ();
 }
 
 /***
@@ -797,11 +799,13 @@ X3DBaseNode::addClones (const size_t count)
 void
 X3DBaseNode::removeClones (const size_t count)
 {
+	if (count == 0)
+		return;
+	
 	cloneCount -= count;
 
 	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
-	if (count)
-		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = chrono::now ();
+	const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = chrono::now ();
 }
 
 /***

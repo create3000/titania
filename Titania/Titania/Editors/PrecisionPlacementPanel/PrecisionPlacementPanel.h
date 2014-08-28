@@ -48,28 +48,63 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_SHAPE_SHAPE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_SHAPE_SHAPE_TOOL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
 
-#include "../Shape/X3DShapeNodeTool.h"
-
-#include "../../Components/Shape/Shape.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include "X3DTransformEditor.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class ShapeTool :
-	public X3DShapeNodeTool <Shape>
+class PrecisionPlacementPanel :
+	virtual public X3DPrecisionPlacementPanelInterface,
+	public X3DTransformEditor
 {
 public:
 
 	///  @name Construction
 
-	ShapeTool (Shape* const);
+	PrecisionPlacementPanel (BrowserWindow* const);
 
+	///  @name Destruction
+
+	virtual
+	~PrecisionPlacementPanel ();
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_selection (const X3D::MFNode &);
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_index_clicked () final override;
+
+	virtual
+	void
+	on_fill_bounding_box_fields_clicked () final override;
+
+	///  @name Members
+
+	NameEntry                          nodeName;
+	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
+	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
+
+	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

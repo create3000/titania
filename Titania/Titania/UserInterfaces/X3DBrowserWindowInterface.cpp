@@ -311,6 +311,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LODEditorButton -> set_name ("LODEditorButton");
 	m_builder -> get_widget ("InlineEditorButton", m_InlineEditorButton);
 	m_InlineEditorButton -> set_name ("InlineEditorButton");
+	m_builder -> get_widget ("PrecisionPlacementPanelButton", m_PrecisionPlacementPanelButton);
+	m_PrecisionPlacementPanelButton -> set_name ("PrecisionPlacementPanelButton");
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
 	m_CreatePrototypeInstanceButton -> set_name ("CreatePrototypeInstanceButton");
 	m_builder -> get_widget ("NodeIndexButton", m_NodeIndexButton);
@@ -521,6 +523,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LightEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_light_editor_clicked));
 	m_LODEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lod_editor_clicked));
 	m_InlineEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_inline_editor_clicked));
+	m_PrecisionPlacementPanelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_precision_placement_panel_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
 	m_NodeIndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_index_clicked));
 

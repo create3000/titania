@@ -67,6 +67,7 @@
 #include "../Editors/LODEditor/LODEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
+#include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
 #include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 
@@ -96,6 +97,7 @@ public:
 		            std::make_pair ("LODEditor",                constructDialog <LODEditor>),
 		            std::make_pair ("LightEditor",              constructDialog <LightEditor>),
 		            std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
+		            std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		            std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>)
 		            //std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)
 				   })

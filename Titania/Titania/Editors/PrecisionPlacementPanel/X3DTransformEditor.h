@@ -48,28 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_SHAPE_SHAPE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_SHAPE_SHAPE_TOOL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DTRANSFORM_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DTRANSFORM_EDITOR_H__
 
-#include "../Shape/X3DShapeNodeTool.h"
-
-#include "../../Components/Shape/Shape.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class ShapeTool :
-	public X3DShapeNodeTool <Shape>
+class RotationTool;
+
+class X3DTransformEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
+	///  @name Destruction
+
+	virtual
+	~X3DTransformEditor ();
+
+
+protected:
+
 	///  @name Construction
 
-	ShapeTool (Shape* const);
+	X3DTransformEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_selection (const X3D::MFNode &);
+
+	///  @name Members
+
+	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
+	X3DFieldAdjustment4 <X3D::SFRotation> rotation;
+	std::unique_ptr <RotationTool>        rotationTool;	
+	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
+	X3DFieldAdjustment4 <X3D::SFRotation> scaleOrientation;
+	std::unique_ptr <RotationTool>        scaleOrientationTool;	
+	X3DFieldAdjustment3 <X3D::SFVec3f>    center;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

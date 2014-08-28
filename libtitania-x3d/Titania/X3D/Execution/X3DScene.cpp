@@ -695,10 +695,9 @@ X3DScene::dispose ()
 	metadatas     .clear ();
 	exportedNodes .clear ();
 
+	removeChildren (getRootNodes ());
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();
-	
-	removeChildren (getRootNodes ());
 }
 
 X3DScene::~X3DScene ()

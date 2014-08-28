@@ -1,3 +1,21 @@
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* ShapeTool.h:
+	* X3DParentObject.cpp:
+	* X3DRouterObject.cpp:
+	* ProtoDeclaration.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DPrototypeInstance.cpp:
+	* ParticleSystemTool.h:
+	* ParticleSystem.h:
+	* ParticleSystemTool.cpp:
+	* ParticleSystem.cpp: 
+
 2014-08-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ConeEmitter.h:

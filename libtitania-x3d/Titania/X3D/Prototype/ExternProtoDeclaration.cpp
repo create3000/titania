@@ -523,10 +523,10 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
+	removeChildren (url ());
+
 	X3DUrlObject::dispose ();
 	X3DProtoDeclarationNode::dispose ();
-
-	removeChildren (url ());
 }
 
 ExternProtoDeclaration::~ExternProtoDeclaration ()
