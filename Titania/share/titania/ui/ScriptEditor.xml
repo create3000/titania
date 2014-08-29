@@ -83,6 +83,7 @@
             </child>
             <child>
               <object class="GtkBox" id="ScriptEditor">
+                <property name="name">ScriptEditor</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>

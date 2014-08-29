@@ -1,5 +1,62 @@
 2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* style.css:
+	* Console.xml:
+	* ScriptEditor.xml:
+	* OutlineEditor.xml:
+	* X3DConsoleInterface.h:
+	* X3DLODEditorInterface.h:
+	* X3DNodeIndexInterface.h:
+	* X3DConsoleInterface.cpp:
+	* X3DTextEditorInterface.h:
+	* X3DLODEditorInterface.cpp:
+	* X3DLightEditorInterface.h:
+	* X3DHistoryViewInterface.h:
+	* X3DLibraryViewInterface.h:
+	* X3DNodeIndexInterface.cpp:
+	* X3DTextEditorInterface.cpp:
+	* X3DInlineEditorInterface.h:
+	* X3DScriptEditorInterface.h:
+	* X3DOutlineEditorInterface.h:
+	* X3DViewpointListInterface.h:
+	* X3DTextureEditorInterface.h:
+	* X3DHistoryViewInterface.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DLibraryViewInterface.cpp:
+	* X3DLightEditorInterface.cpp:
+	* X3DFileSaveDialogInterface.h:
+	* X3DFileOpenDialogInterface.h:
+	* X3DScriptEditorInterface.cpp:
+	* X3DInlineEditorInterface.cpp:
+	* X3DTextureEditorInterface.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointListInterface.cpp:
+	* X3DOutlineEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DFileOpenDialogInterface.cpp:
+	* X3DFileSaveDialogInterface.cpp:
+	* X3DAppearanceEditorInterface.h:
+	* X3DMotionBlurEditorInterface.h:
+	* X3DFileImportDialogInterface.h:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DOpenLocationDialogInterface.h:
+	* X3DMotionBlurEditorInterface.cpp:
+	* X3DFileImportDialogInterface.cpp:
+	* X3DAppearanceEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DOpenLocationDialogInterface.cpp:
+	* X3DFileSaveWarningDialogInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp:
+	* X3DFileSaveWarningDialogInterface.cpp:
+	* X3DPrototypeInstanceDialogInterface.h:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DPrototypeInstanceDialogInterface.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* X3DGeometryPropertiesEditorInterface.cpp: 
+
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTransformEditor.cpp:
 	* PrecisionPlacementPanel.cpp: 
 

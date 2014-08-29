@@ -69,11 +69,8 @@ X3DFileImportDialogInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("ImportImage", m_ImportImage);
-	m_ImportImage -> set_name ("ImportImage");
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 
 	// Call construct handler of base class.
 	construct ();

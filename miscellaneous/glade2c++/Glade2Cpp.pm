@@ -248,7 +248,6 @@ sub cpp_get_widgets
 	return if not isWidget ($attributes {class});
 	
 	say $file "m_builder -> get_widget (\"$attributes{id}\", m_" . $attributes {id} . ");";
-	say $file "m_" . $attributes {id} . " -> set_name (\"" . $attributes {id} . "\");";
 }
 
 sub cpp_signals
@@ -436,7 +435,6 @@ sub generate
 	say OUT "  {";
 	say OUT "      Type* widget = nullptr;";
 	say OUT "      m_builder -> get_widget (name, widget);";
-	say OUT "      widget -> set_name (name);";
 	say OUT "      return widget;";
 	say OUT "  }";
 	say OUT "";

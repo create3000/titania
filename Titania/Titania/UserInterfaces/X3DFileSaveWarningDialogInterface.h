@@ -91,7 +91,6 @@ public:
 		Type* widget = nullptr;
 
 		m_builder -> get_widget (name, widget);
-		widget -> set_name (name);
 		return widget;
 	}
 

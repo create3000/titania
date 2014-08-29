@@ -1289,7 +1289,6 @@
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geospatial\GeoLODTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

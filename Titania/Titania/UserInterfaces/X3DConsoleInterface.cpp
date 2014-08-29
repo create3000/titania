@@ -65,17 +65,11 @@ X3DConsoleInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("Console", m_Console);
-	m_Console -> set_name ("Console");
 	m_builder -> get_widget ("TextView", m_TextView);
-	m_TextView -> set_name ("TextView");
 	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
-	m_SuspendButton -> set_name ("SuspendButton");
 	m_builder -> get_widget ("ClearButton", m_ClearButton);
-	m_ClearButton -> set_name ("ClearButton");
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map));

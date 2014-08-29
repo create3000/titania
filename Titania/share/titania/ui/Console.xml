@@ -14,6 +14,7 @@
         <signal name="map" handler="on_map" swapped="no"/>
         <child>
           <object class="GtkScrolledWindow" id="Console">
+            <property name="name">Console</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>

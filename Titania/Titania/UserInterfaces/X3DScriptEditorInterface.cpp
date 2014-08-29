@@ -65,31 +65,18 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("Paned", m_Paned);
-	m_Paned -> set_name ("Paned");
 	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
-	m_NodeIndexBox -> set_name ("NodeIndexBox");
 	m_builder -> get_widget ("NameBox", m_NameBox);
-	m_NameBox -> set_name ("NameBox");
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
-	m_NameEntry -> set_name ("NameEntry");
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
-	m_RenameButton -> set_name ("RenameButton");
 	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
-	m_ScriptEditor -> set_name ("ScriptEditor");
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("SaveButton", m_SaveButton);
-	m_SaveButton -> set_name ("SaveButton");
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
-	m_UndoButton -> set_name ("UndoButton");
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
-	m_RedoButton -> set_name ("RedoButton");
 	m_builder -> get_widget ("LoadStateButton", m_LoadStateButton);
-	m_LoadStateButton -> set_name ("LoadStateButton");
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));

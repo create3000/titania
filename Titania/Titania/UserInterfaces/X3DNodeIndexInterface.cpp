@@ -65,17 +65,11 @@ X3DNodeIndexInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
-	m_HeaderBox -> set_name ("HeaderBox");
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_TreeView -> set_name ("TreeView");
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
-	m_FooterBox -> set_name ("FooterBox");
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));

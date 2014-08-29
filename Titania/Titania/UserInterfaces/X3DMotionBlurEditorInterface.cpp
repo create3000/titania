@@ -64,13 +64,9 @@ X3DMotionBlurEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("Intensity", m_Intensity);
-	m_Intensity -> set_name ("Intensity");
 	m_builder -> get_widget ("Enabled", m_Enabled);
-	m_Enabled -> set_name ("Enabled");
 
 	// Connect object Gtk::HScale with id 'Intensity'.
 	m_Intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorInterface::on_intensity_changed));

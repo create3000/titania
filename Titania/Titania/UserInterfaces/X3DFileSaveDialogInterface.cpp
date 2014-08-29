@@ -69,11 +69,8 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("SaveCompressedButton", m_SaveCompressedButton);
-	m_SaveCompressedButton -> set_name ("SaveCompressedButton");
 
 	// Call construct handler of base class.
 	construct ();

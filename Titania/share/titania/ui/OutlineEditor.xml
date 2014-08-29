@@ -238,6 +238,7 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuButton" id="SceneMenuButton">
+                <property name="name">SceneMenuButton</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -289,6 +290,7 @@
             <child>
               <object class="GtkButton" id="PreviousSceneButton">
                 <property name="label" translatable="yes">◂</property>
+                <property name="name">PreviousSceneButton</property>
                 <property name="width_request">0</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
@@ -310,6 +312,7 @@
             <child>
               <object class="GtkButton" id="NextSceneButton">
                 <property name="label" translatable="yes">▸</property>
+                <property name="name">NextSceneButton</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>

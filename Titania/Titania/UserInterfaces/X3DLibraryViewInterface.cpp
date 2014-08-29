@@ -68,13 +68,9 @@ X3DLibraryViewInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_ScrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_TreeView -> set_name ("TreeView");
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_map));

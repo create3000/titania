@@ -65,23 +65,14 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
-	m_GeometryExpander -> set_name ("GeometryExpander");
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
-	m_SolidCheckButton -> set_name ("SolidCheckButton");
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
-	m_CCWCheckButton -> set_name ("CCWCheckButton");
 	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
-	m_ConvexCheckButton -> set_name ("ConvexCheckButton");
 	m_builder -> get_widget ("CreaseAngleBox", m_CreaseAngleBox);
-	m_CreaseAngleBox -> set_name ("CreaseAngleBox");
 	m_builder -> get_widget ("CreaseAngleScaleSpinButton", m_CreaseAngleScaleSpinButton);
-	m_CreaseAngleScaleSpinButton -> set_name ("CreaseAngleScaleSpinButton");
 	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
-	m_CreaseAngleScale -> set_name ("CreaseAngleScale");
 
 	// Call construct handler of base class.
 	construct ();

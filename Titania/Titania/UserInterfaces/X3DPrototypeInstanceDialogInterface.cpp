@@ -64,19 +64,12 @@ X3DPrototypeInstanceDialogInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
-	m_PrototypeMenu -> set_name ("PrototypeMenu");
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("OkButton", m_OkButton);
-	m_OkButton -> set_name ("OkButton");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
-	m_HeaderLabel -> set_name ("HeaderLabel");
 	m_builder -> get_widget ("MenuButton", m_MenuButton);
-	m_MenuButton -> set_name ("MenuButton");
 	m_builder -> get_widget ("PrototypeLabel", m_PrototypeLabel);
-	m_PrototypeLabel -> set_name ("PrototypeLabel");
 
 	// Call construct handler of base class.
 	construct ();

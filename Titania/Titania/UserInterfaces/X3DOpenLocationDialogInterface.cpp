@@ -64,13 +64,9 @@ X3DOpenLocationDialogInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
-	m_OpenLocationImage -> set_name ("OpenLocationImage");
 	m_builder -> get_widget ("Window", m_Window);
-	m_Window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_Widget -> set_name ("Widget");
 	m_builder -> get_widget ("LocationEntry", m_LocationEntry);
-	m_LocationEntry -> set_name ("LocationEntry");
 
 	// Connect object Gtk::Entry with id 'LocationEntry'.
 	m_LocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DOpenLocationDialogInterface::on_location_entry_changed));

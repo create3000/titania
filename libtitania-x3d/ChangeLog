@@ -2,6 +2,12 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* GeoLODTool.cpp: 
+
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* ToolColors.h:
 	* BoundingBox.x3dv:
 	* ViewpointTool.x3dv:
