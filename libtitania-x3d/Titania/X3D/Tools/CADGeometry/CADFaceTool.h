@@ -72,7 +72,7 @@ public:
 		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		                     X3DBaseTool <CADFace> (node),
 		X3DProductStructureChildNodeTool <CADFace> (),
-		            X3DBoundedObjectTool <CADFace> (ToolColors::BROWN, false)
+		            X3DBoundedObjectTool <CADFace> (ToolColors::BROWN)
 	{
 		//addType (X3DConstants::CADFaceTool);
 	}

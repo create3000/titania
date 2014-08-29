@@ -90,60 +90,79 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
 
+	virtual
 	const SFVec3f &
 	translation () const
 	{ return *fields .translation; }
 
+	virtual
 	SFRotation &
 	rotation ()
 	{ return *fields .rotation; }
 
+	virtual
 	const SFRotation &
 	rotation () const
 	{ return *fields .rotation; }
 
+	virtual
 	SFVec3f &
 	scale ()
 	{ return *fields .scale; }
 
+	virtual
 	const SFVec3f &
 	scale () const
 	{ return *fields .scale; }
 
+	virtual
 	SFRotation &
 	scaleOrientation ()
 	{ return *fields .scaleOrientation; }
 
+	virtual
 	const SFRotation &
 	scaleOrientation () const
 	{ return *fields .scaleOrientation; }
 
+	virtual
 	SFVec3d &
 	geoCenter ()
 	{ return *fields .geoCenter; }
 
+	virtual
 	const SFVec3d &
 	geoCenter () const
 	{ return *fields .geoCenter; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 

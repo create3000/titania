@@ -66,18 +66,22 @@ public:
 
 	///  @name Fields
 
+	virtual
 	MFString &
 	geoSystem ()
 	{ return *fields .geoSystem; }
 
+	virtual
 	const MFString &
 	geoSystem () const
 	{ return *fields .geoSystem; }
 
+	virtual
 	SFNode &
 	geoOrigin ()
 	{ return *fields .geoOrigin; }
 
+	virtual
 	const SFNode &
 	geoOrigin () const
 	{ return *fields .geoOrigin; }

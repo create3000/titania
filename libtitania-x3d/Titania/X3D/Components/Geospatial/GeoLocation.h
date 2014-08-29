@@ -90,28 +90,40 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3d &
 	geoCoords ()
 	{ return *fields .geoCoords; }
 
+	virtual
 	const SFVec3d &
 	geoCoords () const
 	{ return *fields .geoCoords; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
+
 
 	///  @name Event handlers
 

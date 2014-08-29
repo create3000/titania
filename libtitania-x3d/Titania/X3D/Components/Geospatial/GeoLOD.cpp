@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Geospatial/GeoLODTool.h"
 
 namespace titania {
 namespace X3D {
@@ -333,6 +334,12 @@ GeoLOD::traverse (const TraverseType type)
 			break;
 		}
 	}
+}
+
+void
+GeoLOD::addTool ()
+{
+	X3DChildNode::addTool (new GeoLODTool (this));
 }
 
 void

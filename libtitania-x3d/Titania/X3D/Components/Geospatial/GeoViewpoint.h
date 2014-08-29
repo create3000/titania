@@ -91,34 +91,42 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3d &
 	position ()
 	{ return *fields .position; }
 
+	virtual
 	const SFVec3d &
 	position () const
 	{ return *fields .position; }
 
+	virtual
 	SFVec3d &
 	centerOfRotation ()
 	{ return *fields .centerOfRotation; }
 
+	virtual
 	const SFVec3d &
 	centerOfRotation () const
 	{ return *fields .centerOfRotation; }
 
+	virtual
 	SFFloat &
 	fieldOfView ()
 	{ return *fields .fieldOfView; }
 
+	virtual
 	const SFFloat &
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
 
+	virtual
 	SFFloat &
 	speedFactor ()
 	{ return *fields .speedFactor; }
 
+	virtual
 	const SFFloat &
 	speedFactor () const
 	{ return *fields .speedFactor; }
@@ -178,11 +186,24 @@ public:
 	void
 	reshape (const double, const double) final override;
 
+	virtual
+	void
+	addTool () override;
+
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
@@ -204,12 +225,6 @@ private:
 	const SFBool &
 	headlight () const
 	{ return *fields .headlight; }
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
 
 	///  @name Event handlers
 

@@ -48,34 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
-#define __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_LOCATION_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_LOCATION_TOOL_H__
 
-#include "../Types/Numbers.h"
+#include "../Geospatial/X3DGeospatialObjectTool.h"
+#include "../Grouping/X3DTransformMatrix4DNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/Geospatial/GeoLocation.h"
 
 namespace titania {
 namespace X3D {
 
-namespace ToolColors {
+class GeoLocationTool :
+	public X3DTransformMatrix4DNodeTool <GeoLocation>,
+	public X3DGeospatialObjectTool <GeoLocation>
+{
+public:
 
-static constexpr Color3f GREEN  (0.35, 1, 0.7);   // Group
-static constexpr Color3f YELLOW (1, 1, 0.35);     // Switch
-static constexpr Color3f LILA   (0.7, 0.35, 1);   // Anchor
-static constexpr Color3f PINK   (1, 0.35, 0.7);   // Billboard
-static constexpr Color3f RED    (1, 0.35, 0.35);  // Collision
-static constexpr Color3f CYAN   (0.35, 1, 1);     // LOD
+	///  @name Construction
 
-static constexpr Color3f WHITE  (1, 1, 1);        // Inline
-static constexpr Color3f ORANGE (1, 0.7, 0.35);   // Shape
-static constexpr Color3f BLUE   (0.35, 0.35, 1);  // X3DPrototypeInstance
-static constexpr Color3f LIME   (0.35, 1, 0.35);  // ScreenGroup
+	GeoLocationTool (GeoLocation* const node) :
+		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                 X3DBaseTool <GeoLocation> (node),
+		X3DTransformMatrix4DNodeTool <GeoLocation> (ToolColors::DARK_GREEN),
+		     X3DGeospatialObjectTool <GeoLocation> ()
+	{
+		//addType (X3DConstants::GeoLocationTool);
+	}
 
-static constexpr Color3f DARK_GREEN  (0.175, 0.5, 0.35);    // CADAssembly
-static constexpr Color3f DARK_YELLOW (0.7, 0.7, 0.35);      // CADLayer
-static constexpr Color3f BROWN       (0.75, 0.525, 0.2625); // CADFace
-static constexpr Color3f DARK_CYAN   (0.35, 0.75, 0.75);    // GeoLOD
+	///  @name Fields
 
-}
+	virtual
+	SFVec3d &
+	geoCoords () final override
+	{ return getNode () -> geoCoords (); }
+
+	virtual
+	const SFVec3d &
+	geoCoords () const final override
+	{ return getNode () -> geoCoords (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{
+		X3DTransformMatrix4DNodeTool <GeoLocation>::traverse (type);
+		X3DGeospatialObjectTool <GeoLocation>::traverse (type);
+	}
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{
+		X3DGeospatialObjectTool <GeoLocation>::dispose ();
+		X3DTransformMatrix4DNodeTool <GeoLocation>::dispose ();
+	}
+
+private:
+
+	using X3DTransformMatrix4DNodeTool <GeoLocation>::getNode;
+
+	///  @name Destruction
+
+	virtual
+	void
+	initialize () final override
+	{
+		X3DTransformMatrix4DNodeTool <GeoLocation>::initialize ();
+		X3DGeospatialObjectTool <GeoLocation>::initialize ();
+	}
+
+};
 
 } // X3D
 } // titania

@@ -118,7 +118,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBoundedObjectTool (const Color3f &, const bool = false);
+	X3DBoundedObjectTool (const Color3f &);
 
 	virtual
 	void
@@ -130,21 +130,34 @@ protected:
 
 	///  @name Member acces
 
+	void
+	setDisplayCenter (const bool value)
+	{ displayCenter = value; }
+
+	void
+	setLinetype (const int32_t value)
+	{ linetype = value; }
+
 	virtual
 	const Matrix4f &
 	getMatrix () const
 	{ return matrix; }
 
 
-private:
+protected:
 
 	///  @name Operations
 
+	virtual
 	void
 	reshape ();
 
+
+private:
+
 	///  @name Members
 
+	int32_t  linetype;
 	bool     displayCenter;
 	Color3f  color;
 	Matrix4f matrix;
@@ -152,9 +165,10 @@ private:
 };
 
 template <class Type>
-X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color, const bool displayCenter) :
+X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color) :
 	X3DBaseTool <Type> (),
-	     displayCenter (displayCenter),
+	          linetype (3),
+	     displayCenter (false),
 	             color (color)
 {
 	addType (X3DConstants::X3DBoundedObjectTool);
@@ -174,9 +188,10 @@ X3DBoundedObjectTool <Type>::realize ()
 	try
 	{
 		const SFNode & tool = getToolNode ();
-	
+
 		tool -> setField <SFBool>  ("displayCenter", displayCenter);
 		tool -> setField <SFColor> ("color",         color);
+		tool -> setField <SFInt32> ("linetype",      linetype);
 	}
 	catch (const X3DError & error)
 	{ }

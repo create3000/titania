@@ -139,7 +139,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override;
+	traverse (const TraverseType type) override;
 
 	virtual
 	void
@@ -182,11 +182,16 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 	virtual
 	void
 	realize () final override;
+
+	virtual
+	void
+	reshape ()
+	{ }
 
 };
 
@@ -247,6 +252,9 @@ void
 X3DViewpointNodeTool <Type>::traverse (const TraverseType type)
 {
 	getNode () -> traverse (type);
+
+	if (type == TraverseType::DISPLAY) // Last chance to process events
+		reshape ();
 
 	// Tool
 

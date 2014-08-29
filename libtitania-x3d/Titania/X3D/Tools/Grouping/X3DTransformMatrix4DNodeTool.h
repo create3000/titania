@@ -48,34 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
-#define __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
+#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_TOOL_H__
 
-#include "../Types/Numbers.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-namespace ToolColors {
+template <class Type>
+class X3DTransformMatrix4DNodeTool :
+	public X3DGroupingNodeTool <Type>
+{
+public:
 
-static constexpr Color3f GREEN  (0.35, 1, 0.7);   // Group
-static constexpr Color3f YELLOW (1, 1, 0.35);     // Switch
-static constexpr Color3f LILA   (0.7, 0.35, 1);   // Anchor
-static constexpr Color3f PINK   (1, 0.35, 0.7);   // Billboard
-static constexpr Color3f RED    (1, 0.35, 0.35);  // Collision
-static constexpr Color3f CYAN   (0.35, 1, 1);     // LOD
+	///  @name Member access
 
-static constexpr Color3f WHITE  (1, 1, 1);        // Inline
-static constexpr Color3f ORANGE (1, 0.7, 0.35);   // Shape
-static constexpr Color3f BLUE   (0.35, 0.35, 1);  // X3DPrototypeInstance
-static constexpr Color3f LIME   (0.35, 1, 0.35);  // ScreenGroup
+	virtual
+	void
+	setMatrix (const Matrix4d & matrix) override
+	{ return getNode () -> setMatrix (matrix); }
 
-static constexpr Color3f DARK_GREEN  (0.175, 0.5, 0.35);    // CADAssembly
-static constexpr Color3f DARK_YELLOW (0.7, 0.7, 0.35);      // CADLayer
-static constexpr Color3f BROWN       (0.75, 0.525, 0.2625); // CADFace
-static constexpr Color3f DARK_CYAN   (0.35, 0.75, 0.75);    // GeoLOD
+	virtual
+	const Matrix4f &
+	getMatrix () const final override
+	{ return getNode () -> getMatrix (); }
 
-}
+
+protected:
+
+	using X3DGroupingNodeTool <Type>::getNode;
+
+	///  @name Construction
+
+	X3DTransformMatrix4DNodeTool (const Color3f & color) :
+		X3DGroupingNodeTool <Type> (color)
+	{
+		//addType (X3DConstants::X3DTransformMatrix4DNodeTool);
+	}
+
+};
 
 } // X3D
 } // titania

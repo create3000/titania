@@ -48,94 +48,122 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GROUPING_X3DGROUPING_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_TRANSFORM_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_TRANSFORM_TOOL_H__
 
-#include "../Core/X3DChildNodeTool.h"
-#include "../Grouping/X3DBoundedObjectTool.h"
+#include "../Geospatial/X3DGeospatialObjectTool.h"
+#include "../Grouping/X3DTransformMatrix4DNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/Geospatial/GeoTransform.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DGroupingNodeTool :
-	virtual public X3DChildNodeTool <Type>,
-	public X3DBoundedObjectTool <Type>
+class GeoTransformTool :
+	public X3DTransformMatrix4DNodeTool <GeoTransform>,
+	public X3DGeospatialObjectTool <GeoTransform>
 {
 public:
+
+	///  @name Construction
+
+	GeoTransformTool (GeoTransform* const node) :
+		                                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                 X3DBaseTool <GeoTransform> (node),
+		X3DTransformMatrix4DNodeTool <GeoTransform> (ToolColors::DARK_GREEN),
+		     X3DGeospatialObjectTool <GeoTransform> ()
+	{
+		//addType (X3DConstants::GeoTransformTool);
+
+		setLinetype (1);
+		setDisplayCenter (true);
+	}
 
 	///  @name Fields
 
 	virtual
-	MFNode &
-	addChildren () final override
-	{ return getNode () -> addChildren (); }
+	SFVec3f &
+	translation () final override
+	{ return getNode () -> translation (); }
 
 	virtual
-	const MFNode &
-	addChildren () const final override
-	{ return getNode () -> addChildren (); }
+	const SFVec3f &
+	translation () const final override
+	{ return getNode () -> translation (); }
 
 	virtual
-	MFNode &
-	removeChildren () final override
-	{ return getNode () -> removeChildren (); }
+	SFRotation &
+	rotation () final override
+	{ return getNode () -> rotation (); }
 
 	virtual
-	const MFNode &
-	removeChildren () const final override
-	{ return getNode () -> removeChildren (); }
+	const SFRotation &
+	rotation () const final override
+	{ return getNode () -> rotation (); }
 
 	virtual
-	MFNode &
-	children () final override
-	{ return getNode () -> children (); }
+	SFVec3f &
+	scale () final override
+	{ return getNode () -> scale (); }
 
 	virtual
-	const MFNode &
-	children () const final override
-	{ return getNode () -> children (); }
-
-	/// @name Operations
+	const SFVec3f &
+	scale () const final override
+	{ return getNode () -> scale (); }
 
 	virtual
-	void
-	traverse (const TraverseType type) override
-	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
-	}
-
-	/// @name Destruction
+	SFRotation &
+	scaleOrientation () final override
+	{ return getNode () -> scaleOrientation (); }
 
 	virtual
-	void
-	dispose () override
-	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
-	}
+	const SFRotation &
+	scaleOrientation () const final override
+	{ return getNode () -> scaleOrientation (); }
 
-protected:
+	virtual
+	SFVec3d &
+	geoCenter () final override
+	{ return getNode () -> geoCenter (); }
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
+	virtual
+	const SFVec3d &
+	geoCenter () const final override
+	{ return getNode () -> geoCenter (); }
 
-	///  @name Construction
-
-	X3DGroupingNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
-	{
-		addType (X3DConstants::X3DGroupingNodeTool);
-	}
+	///  @name Operations
 
 	virtual
 	void
-	initialize () override
+	traverse (const TraverseType type) final override
 	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
+		X3DTransformMatrix4DNodeTool <GeoTransform>::traverse (type);
+		X3DGeospatialObjectTool <GeoTransform>::traverse (type);
+	}
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{
+		X3DGeospatialObjectTool <GeoTransform>::dispose ();
+		X3DTransformMatrix4DNodeTool <GeoTransform>::dispose ();
+	}
+
+private:
+
+	using X3DTransformMatrix4DNodeTool <GeoTransform>::getNode;
+
+	///  @name Destruction
+
+	virtual
+	void
+	initialize () final override
+	{
+		X3DTransformMatrix4DNodeTool <GeoTransform>::initialize ();
+		X3DGeospatialObjectTool <GeoTransform>::initialize ();
 	}
 
 };

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 
-#include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix4DNodeTool.h"
 #include "../ToolColors.h"
 
 #include "../../Bits/config.h"
@@ -64,7 +64,7 @@ namespace X3D {
 
 template <class Type>
 class X3DTransformNodeTool :
-	public X3DGroupingNodeTool <Type>
+	public X3DTransformMatrix4DNodeTool <Type>
 {
 public:
 
@@ -130,11 +130,6 @@ public:
 	void
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
 
-	virtual
-	const Matrix4f &
-	getMatrix () const final override
-	{ return getNode () -> getMatrix (); }
-
 	///  @name Operatations
 
 	virtual
@@ -144,13 +139,14 @@ public:
 
 protected:
 
-	using X3DGroupingNodeTool <Type>::addType;
-	using X3DGroupingNodeTool <Type>::getBrowser;
-	using X3DGroupingNodeTool <Type>::getNode;
-	using X3DGroupingNodeTool <Type>::getToolNode;
-	using X3DGroupingNodeTool <Type>::getCameraSpaceMatrix;
-	using X3DGroupingNodeTool <Type>::getModelViewMatrix;
-	using X3DGroupingNodeTool <Type>::requestAsyncLoad;
+	using X3DTransformMatrix4DNodeTool <Type>::addType;
+	using X3DTransformMatrix4DNodeTool <Type>::getBrowser;
+	using X3DTransformMatrix4DNodeTool <Type>::getNode;
+	using X3DTransformMatrix4DNodeTool <Type>::getToolNode;
+	using X3DTransformMatrix4DNodeTool <Type>::getCameraSpaceMatrix;
+	using X3DTransformMatrix4DNodeTool <Type>::getModelViewMatrix;
+	using X3DTransformMatrix4DNodeTool <Type>::requestAsyncLoad;
+	using X3DTransformMatrix4DNodeTool <Type>::getMatrix;
 
 	///  @name Construction
 
@@ -190,10 +186,10 @@ private:
 
 template <class Type>
 X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
-	X3DGroupingNodeTool <Type> (ToolColors::GREEN),
-	              parentMatrix (),
-	                    matrix (),
-	            interestEvents (getNode () -> isTainted ())
+	X3DTransformMatrix4DNodeTool <Type> (ToolColors::GREEN),
+	                       parentMatrix (),
+	                             matrix (),
+	                     interestEvents (getNode () -> isTainted ())
 {
 	//addType (X3DConstants::X3DTransformNodeTool);
 }

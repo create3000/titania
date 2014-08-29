@@ -94,6 +94,7 @@ public:
 	void
 	addTool () override;
 
+
 private:
 
 	///  @name Static members

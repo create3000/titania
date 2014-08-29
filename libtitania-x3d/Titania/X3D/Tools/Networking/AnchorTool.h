@@ -52,16 +52,17 @@
 #define __TITANIA_X3D_TOOLS_NETWORKING_ANCHOR_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
-
-#include "../../Components/Networking/Anchor.h"
 #include "../Networking/X3DUrlObjectTool.h"
 #include "../ToolColors.h"
+
+#include "../../Components/Networking/Anchor.h"
 
 namespace titania {
 namespace X3D {
 
 class AnchorTool :
-	public X3DGroupingNodeTool <Anchor>, public X3DUrlObjectTool <Anchor>
+	public X3DGroupingNodeTool <Anchor>,
+	public X3DUrlObjectTool <Anchor>
 {
 public:
 

@@ -58,9 +58,11 @@ namespace X3D {
 BillboardTool::BillboardTool (Billboard* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <Billboard> (node),
-	X3DGroupingNodeTool <Billboard> (ToolColors::PINK, true)
+	X3DGroupingNodeTool <Billboard> (ToolColors::PINK)
 {
 	addType (X3DConstants::BillboardTool);
+	
+	setDisplayCenter (true);
 }
 
 void

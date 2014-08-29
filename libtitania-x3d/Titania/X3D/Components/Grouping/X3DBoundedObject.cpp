@@ -50,8 +50,6 @@
 
 #include "X3DBoundedObject.h"
 
-#include "../../Bits/Cast.h"
-
 namespace titania {
 namespace X3D {
 
@@ -66,32 +64,6 @@ X3DBoundedObject::X3DBoundedObject () :
 {
 	addType (X3DConstants::X3DBoundedObject);
 }
-
-void
-X3DBoundedObject::initialize ()
-{ }
-
-Box3f
-X3DBoundedObject::getBBox (const MFNode & boundedObjects)
-{
-	Box3f bbox;
-
-	// Add bounding boxes
-
-	for (const auto & node : boundedObjects)
-	{
-		const auto boundedObject = x3d_cast <X3DBoundedObject*> (node);
-
-		if (boundedObject)
-			bbox += boundedObject -> getBBox ();
-	}
-
-	return bbox;
-}
-
-void
-X3DBoundedObject::dispose ()
-{ }
 
 } // X3D
 } // titania

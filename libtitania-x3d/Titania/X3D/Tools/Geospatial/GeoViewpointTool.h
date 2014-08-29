@@ -48,120 +48,126 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_SHAPE_X3DSHAPE_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_SHAPE_X3DSHAPE_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_VIEWPOINT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_VIEWPOINT_TOOL_H__
 
-#include "../Core/X3DChildNodeTool.h"
-#include "../Grouping/X3DBoundedObjectTool.h"
-#include "../../Rendering/X3DCollectableObject.h"
+#include "../Geospatial/X3DGeospatialObjectTool.h"
+#include "../Navigation/X3DViewpointNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/Geospatial/GeoViewpoint.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DShapeNodeTool :
-	virtual public X3DChildNodeTool <Type>,
-	public X3DBoundedObjectTool <Type>
+class GeoViewpointTool :
+	public X3DViewpointNodeTool <GeoViewpoint>,
+	public X3DGeospatialObjectTool <GeoViewpoint>
 {
 public:
+
+	///  @name Construction
+
+	GeoViewpointTool (GeoViewpoint* const node) :
+		                           X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		            X3DBaseTool <GeoViewpoint> (node),
+		   X3DViewpointNodeTool <GeoViewpoint> (),
+		X3DGeospatialObjectTool <GeoViewpoint> ()
+	{
+		addType (X3DConstants::GeoViewpointTool);
+	}
 
 	///  @name Fields
 
 	virtual
-	SFNode &
-	appearance () final override
-	{ return getNode () -> appearance (); }
+	SFVec3d &
+	position () final override
+	{ return getNode () -> position (); }
 
 	virtual
-	const SFNode &
-	appearance () const final override
-	{ return getNode () -> appearance (); }
+	const SFVec3d &
+	position () const final override
+	{ return getNode () -> position (); }
 
 	virtual
-	SFNode &
-	geometry () final override
-	{ return getNode () -> geometry (); }
+	SFVec3d &
+	centerOfRotation () final override
+	{ return getNode () -> centerOfRotation (); }
 
 	virtual
-	const SFNode &
-	geometry () const final override
-	{ return getNode () -> geometry (); }
-	
-	///  @name Member access
-	
-	virtual
-	void
-	isHidden (const bool value) final override
-	{ getNode () -> isHidden (value); }
+	const SFVec3d &
+	centerOfRotation () const final override
+	{ return getNode () -> centerOfRotation (); }
 
 	virtual
-	bool
-	isHidden () const final override
-	{ return getNode () -> isHidden (); }
+	SFFloat &
+	fieldOfView () final override
+	{ return getNode () -> fieldOfView (); }
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return getNode () -> isTransparent (); }
+	const SFFloat &
+	fieldOfView () const final override
+	{ return getNode () -> fieldOfView (); }
 
 	virtual
-	bool
-	intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & collectableObjects) final override
-	{ return getNode () -> intersect (sphere, matrix, collectableObjects); }
+	SFFloat &
+	speedFactor () final override
+	{ return getNode () -> speedFactor (); }
 
-	/// @name Operations
+	virtual
+	const SFFloat &
+	speedFactor () const final override
+	{ return getNode () -> speedFactor (); }
+
+	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
+		X3DViewpointNodeTool <GeoViewpoint>::traverse (type);
+		X3DGeospatialObjectTool <GeoViewpoint>::traverse (type);
 	}
 
-	virtual
-	void
-	draw () final override
-	{ return getNode () -> draw (); }
-
-	virtual
-	void
-	drawCollision () final override
-	{ return getNode () -> drawCollision (); }
-
-	/// @name Destruction
+	///  @name Destruction
 
 	virtual
 	void
 	dispose () final override
 	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
+		X3DGeospatialObjectTool <GeoViewpoint>::dispose ();
+		X3DViewpointNodeTool <GeoViewpoint>::dispose ();
 	}
 
-protected:
+private:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-	using X3DBoundedObjectTool <Type>::setDisplayCenter;
+	using X3DViewpointNodeTool <GeoViewpoint>::getNode;
 
-	///  @name Construction
-
-	X3DShapeNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
-	{
-		addType (X3DConstants::X3DShapeNodeTool);
-
-		setDisplayCenter (true);
-	}
+	///  @name Destruction
 
 	virtual
 	void
 	initialize () final override
 	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
+		X3DViewpointNodeTool <GeoViewpoint>::initialize ();
+		X3DGeospatialObjectTool <GeoViewpoint>::initialize ();
+	}
+
+	virtual
+	void
+	reshape () final override
+	{
+		try
+		{
+			const SFNode & tool = getToolNode ();
+
+			tool -> setField <SFVec3f>    ("translation", getNode () -> getPosition (),    true);
+			tool -> setField <SFRotation> ("rotation",    getNode () -> getOrientation (), true);
+
+			getBrowser () -> processEvents ();
+		}
+		catch (const X3DError & error)
+		{ }
 	}
 
 };

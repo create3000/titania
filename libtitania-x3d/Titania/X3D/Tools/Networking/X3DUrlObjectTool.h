@@ -104,7 +104,9 @@ protected:
 
 	X3DUrlObjectTool () :
 		X3DBaseTool <Type> ()
-	{ }
+	{
+		//addType (X3DConstants::X3DUrlObjectTool);
+	}
 
 	virtual
 	void

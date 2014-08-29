@@ -58,9 +58,11 @@ namespace X3D {
 LODTool::LODTool (LOD* const node) :
 	              X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <LOD> (node),
-	X3DGroupingNodeTool <LOD> (ToolColors::CYAN, true)
+	X3DGroupingNodeTool <LOD> (ToolColors::CYAN)
 {
 	addType (X3DConstants::LODTool);
+
+	setDisplayCenter (true);
 }
 
 void

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DBOUNDED_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Bits/Cast.h"
 #include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
@@ -92,15 +93,17 @@ public:
 	Box3f
 	getBBox () const = 0;
 
+	template <class Type>
 	static
 	Box3f
-	getBBox (const MFNode &);
+	getBBox (const X3DPtrArray <Type> &);
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () override;
+	dispose () override
+	{ }
 
 
 protected:
@@ -111,7 +114,8 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	initialize () override
+	{ }
 
 
 private:
@@ -129,6 +133,25 @@ private:
 	Fields fields;
 
 };
+
+template <class Type>
+Box3f
+X3DBoundedObject::getBBox (const X3DPtrArray <Type> & nodes)
+{
+	Box3f bbox;
+
+	// Add bounding boxes
+
+	for (const auto & node : nodes)
+	{
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (node);
+
+		if (boundedObject)
+			bbox += boundedObject -> getBBox ();
+	}
+
+	return bbox;
+}
 
 } // X3D
 } // titania

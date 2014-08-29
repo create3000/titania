@@ -773,6 +773,12 @@
     <None Include="Titania\X3D\Tools\CADGeometry\CADFaceTool.h" />
     <None Include="Titania\X3D\Tools\CADGeometry\CADPartTool.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Geospatial\X3DGeospatialObjectTool.h" />
+    <None Include="Titania\X3D\Tools\Geospatial\GeoViewpointTool.h" />
+    <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix4DNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Geospatial\GeoLocationTool.h" />
+    <None Include="Titania\X3D\Tools\Geospatial\GeoTransformTool.h" />
+    <None Include="Titania\X3D\Tools\Geospatial\GeoLODTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1283,6 +1289,7 @@
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geospatial\GeoLODTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

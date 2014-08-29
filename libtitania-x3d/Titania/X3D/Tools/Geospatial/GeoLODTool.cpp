@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,36 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
-#define __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
+#include "GeoLODTool.h"
 
-#include "../Types/Numbers.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
-namespace ToolColors {
-
-static constexpr Color3f GREEN  (0.35, 1, 0.7);   // Group
-static constexpr Color3f YELLOW (1, 1, 0.35);     // Switch
-static constexpr Color3f LILA   (0.7, 0.35, 1);   // Anchor
-static constexpr Color3f PINK   (1, 0.35, 0.7);   // Billboard
-static constexpr Color3f RED    (1, 0.35, 0.35);  // Collision
-static constexpr Color3f CYAN   (0.35, 1, 1);     // LOD
-
-static constexpr Color3f WHITE  (1, 1, 1);        // Inline
-static constexpr Color3f ORANGE (1, 0.7, 0.35);   // Shape
-static constexpr Color3f BLUE   (0.35, 0.35, 1);  // X3DPrototypeInstance
-static constexpr Color3f LIME   (0.35, 1, 0.35);  // ScreenGroup
-
-static constexpr Color3f DARK_GREEN  (0.175, 0.5, 0.35);    // CADAssembly
-static constexpr Color3f DARK_YELLOW (0.7, 0.7, 0.35);      // CADLayer
-static constexpr Color3f BROWN       (0.75, 0.525, 0.2625); // CADFace
-static constexpr Color3f DARK_CYAN   (0.35, 0.75, 0.75);    // GeoLOD
-
-}
-
 } // X3D
 } // titania
-
-#endif

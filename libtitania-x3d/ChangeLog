@@ -3,6 +3,44 @@
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* ToolColors.h:
+	* BoundingBox.x3dv:
+	* ViewpointTool.x3dv:
+	* LODTool.cpp:
+	* AnchorTool.h:
+	* GeoLODTool.h:
+	* X3DShapeNodeTool.h:
+	* GeoLOD.h:
+	* CADFaceTool.h:
+	* GeoLODTool.cpp:
+	* GeoLOD.cpp:
+	* CADPart.h:
+	* GeoLocationTool.h:
+	* BillboardTool.cpp:
+	* GeoLocation.h:
+	* GeoViewpointTool.h:
+	* GeoTransformTool.h:
+	* X3DUrlObjectTool.h:
+	* X3DGroupingNodeTool.h:
+	* GeoTransform.h:
+	* GeoViewpoint.h:
+	* X3DBoundedObjectTool.h:
+	* GeoLocation.cpp:
+	* X3DTransformNodeTool.h:
+	* X3DBoundedObject.h:
+	* GeoTransform.cpp:
+	* GeoViewpoint.cpp:
+	* X3DViewpointNodeTool.h:
+	* X3DGroupingNode.cpp:
+	* X3DBoundedObject.cpp:
+	* X3DGeospatialObjectTool.h:
+	* X3DGeospatialObject.h:
+	* X3DTransformMatrix4DNodeTool.h: 
+
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* ToolColors.h:
 	* ShapeTool.h:
 	* ShapeTool.cpp:
 	* GroupTool.h:

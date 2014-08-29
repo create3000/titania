@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.1
+#X3D V3.3 utf8 Titania V0.7.4
 
 META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sun, 03 Aug 2014 23:08:40 GMT"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Fri, 29 Aug 2014 11:51:07 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -94,16 +94,7 @@ function set_orthoViewpoint ()
 
 function set_geoViewpoint ()
 {
-	//Browser .addRoute (viewpointNode, 'position',    self, 'geoTranslation');
-	//Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
-	//Browser .addRoute (viewpointNode, 'orientation', self, 'rotation');
-
-	//geoTranslation = viewpointNode .position;
-	//rotation       = viewpointNode .orientation;
-	//geoOrigin      = viewpointNode .geoOrigin; // XXX
-
-	//whichChoice  = 0;
-	//geoViewpoint = true;
+	whichChoice = 0;
 }
 "
 }
@@ -193,7 +184,7 @@ DEF _1 Transform {
             }
           ]
         }
-        DEF _4 Transform {
+        Transform {
           rotation 0 1 0 3.14159
           scale 8 8 8
           children [
@@ -201,8 +192,8 @@ DEF _1 Transform {
               translation 0 0.51224 0.129679
               rotation 6.52105e-10 -3.61947e-06 1 4.71239
               scaleOrientation -0.0108844 -0.0254524 -0.999617 0.785487
-              children DEF _5 Shape {
-                appearance DEF _6 Appearance {
+              children DEF _4 Shape {
+                appearance DEF _5 Appearance {
                   material Material {
                     diffuseColor 0.2 0.2 0.2
                     specularColor 1 1 1
@@ -216,13 +207,13 @@ DEF _1 Transform {
               rotation 8.0343e-10 -3.61898e-06 1 4.71239
               scale 0.999983 0.999983 1
               scaleOrientation 2.18251e-06 -2.04759e-06 -1 0.784907
-              children USE _5
+              children USE _4
             }
             DEF Box Transform {
               translation -2.8327e-21 -0.13107 -0.550901
               scale 1 1.22448 1.25897
               children Shape {
-                appearance USE _6
+                appearance USE _5
                 geometry Box { }
               }
             }
@@ -237,7 +228,7 @@ DEF _1 Transform {
                       scale 1.22447 1.22447 1.22447
                       scaleOrientation 0.997969 0.00164244 0.0636854 0.198092
                       children Shape {
-                        appearance USE _6
+                        appearance USE _5
                         geometry DEF Cube IndexedFaceSet {
                           solid FALSE
                           coordIndex [
@@ -274,8 +265,8 @@ DEF _1 Transform {
                       translation 1.1422e-21 -0.0999999 1.18352
                       scale 0.709888 0.709874 0.709874
                       scaleOrientation -1 2.68941e-08 -2.65378e-07 1.5708
-                      children DEF _7 Shape {
-                        appearance USE _6
+                      children DEF _6 Shape {
+                        appearance USE _5
                         geometry Rectangle2D { }
                       }
                     }
@@ -286,7 +277,7 @@ DEF _1 Transform {
                     DEF Box_1 Transform {
                       translation 5.50571e-21 -0.0862152 1.44525
                       children Shape {
-                        appearance USE _6
+                        appearance USE _5
                         geometry DEF Cube_1 IndexedFaceSet {
                           solid FALSE
                           coordIndex [
@@ -333,16 +324,16 @@ DEF _1 Transform {
                     }
                     DEF Rectangle2D_1 Transform {
                       translation -6.98802e-20 -0.0862152 1.46945
-                      children USE _7
+                      children USE _6
                     }
                   ]
                 }
               ]
             }
-            DEF _8 BooleanSwitch {
+            DEF _7 BooleanSwitch {
               whichChoice TRUE
               children [
-                DEF _9 Transform {
+                DEF _8 Transform {
                   scale 0.0833333 0.0833333 0.0833333
                 }
                 DEF Cylinder_2 Transform {
@@ -373,7 +364,7 @@ DEF _1 Transform {
 ROUTE Tool.translation_changed TO _1.set_translation
 ROUTE Tool.rotation_changed TO _1.set_rotation
 ROUTE Tool.whichChoice_changed TO Lenses.set_whichChoice
-ROUTE Tool.isBound_changed TO _8.set_whichChoice
+ROUTE Tool.isBound_changed TO _7.set_whichChoice
 ROUTE Tool.selected_changed TO _2.set_whichChoice
 
 EXPORT Tool

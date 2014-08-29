@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Geospatial/GeoViewpointTool.h"
 #include "../Layering/X3DLayerNode.h"
 
 #include <Titania/Math/Geometry/Camera.h>
@@ -290,6 +291,12 @@ GeoViewpoint::reshape (const double zNear, const double zFar)
 	glLoadMatrixd (perspective (getFieldOfView (), geoZNear, geoZFar, Viewport4i ()) .data ());
 
 	glMatrixMode (GL_MODELVIEW);
+}
+
+void
+GeoViewpoint::addTool ()
+{
+	X3DViewpointNode::addTool (new GeoViewpointTool (this));
 }
 
 void

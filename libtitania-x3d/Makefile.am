@@ -507,6 +507,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/Texture3DLoader.cpp \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geospatial/GeoLODTool.cpp \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
