@@ -169,7 +169,17 @@ LOD::traverse (const TraverseType type)
 		const int32_t level = getLevel (type);
 
 		if (level not_eq level_changed ())
-			level_changed () = level;
+		{
+			if (forceTransitions ())
+			{
+				if (level > level_changed ())
+					level_changed () += 1;
+				else
+					level_changed () -= 1;
+			}
+			else
+				level_changed () = level;
+		}
 	}
 
 	if ((size_t) level_changed () < children () .size ())

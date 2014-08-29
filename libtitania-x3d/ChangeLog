@@ -1,5 +1,9 @@
 2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* LOD.cpp: 
+
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* GeoLODTool.cpp: 
