@@ -93,16 +93,16 @@ PrecisionPlacementPanel::initialize ()
 void
 PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 {
-//	boundedObject = selection .empty () ? nullptr : selection .back ();
-//
-//	const X3D::MFNode boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();
-//
-//	nodeName   .setNode  (X3D::SFNode (boundedObject));
-//	bboxSize   .setNodes (boundedObjects);
-//	bboxCenter .setNodes (boundedObjects);
-//
-//	getFillBoundingBoxFieldsButton () .set_sensitive (boundedObject);
-//	getWindow () .resize (getWindow () .get_width (), 1);
+	boundedObject = selection .empty () ? nullptr : selection .back ();
+
+	const X3D::MFNode boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();
+
+	nodeName   .setNode  (X3D::SFNode (boundedObject));
+	bboxSize   .setNodes (boundedObjects);
+	bboxCenter .setNodes (boundedObjects);
+
+	getFillBoundingBoxFieldsButton () .set_sensitive (boundedObject);
+	getWindow () .resize (getWindow () .get_width (), 1);
 }
 
 void

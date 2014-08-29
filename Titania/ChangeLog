@@ -1,5 +1,10 @@
 2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DTransformEditor.cpp:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* DialogFactory.h:

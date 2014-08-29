@@ -107,16 +107,16 @@ X3DTransformEditor::set_selection (const X3D::MFNode & selection)
 	const X3D::X3DPtr <X3D::X3DTransformNode> transform (selection .empty () ? nullptr : selection .back ());
 	const X3D::MFNode                         transforms (transform ? X3D::MFNode ({ transform }) : X3D::MFNode ());
 
-//	getTransformExpander () .set_visible (transform);
+	getTransformExpander () .set_visible (transform);
 
-//	translation      .setNodes (transforms);
-//	rotation         .setNodes (transforms);
-//	scale            .setNodes (transforms);
-//	scaleOrientation .setNodes (transforms);
-//	center           .setNodes (transforms);
+	translation      .setNodes (transforms);
+	rotation         .setNodes (transforms);
+	scale            .setNodes (transforms);
+	scaleOrientation .setNodes (transforms);
+	center           .setNodes (transforms);
 
 	rotationTool -> setNodes (transforms);
-//	scaleOrientationTool -> setNodes (transforms);
+	scaleOrientationTool -> setNodes (transforms);
 }
 
 X3DTransformEditor::~X3DTransformEditor ()
