@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.4
 
 META "title" "CADLayer"
 
@@ -7,10 +7,17 @@ Background {
 }
 
 CADAssembly {
+  name "CADAssembly"
   children CADLayer {
-    visible [ TRUE, FALSE, TRUE ]
+    name "CADLayer"
+    visible [
+      TRUE,
+      FALSE,
+      TRUE
+    ]
     children [
       CADPart {
+        name "CADPart"
         translation -2 0 0
         children CADFace {
           shape Shape {
@@ -22,6 +29,7 @@ CADAssembly {
         }
       }
       CADPart {
+        name "CADPart"
         children CADFace {
           shape Shape {
             appearance Appearance {
@@ -32,8 +40,10 @@ CADAssembly {
         }
       }
       CADPart {
+        name "CADPart"
         translation 2 0 0
         children CADFace {
+          name "CADFace"
           shape Shape {
             appearance Appearance {
               material Material { }

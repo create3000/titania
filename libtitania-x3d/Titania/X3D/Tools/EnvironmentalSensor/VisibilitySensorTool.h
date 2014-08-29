@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_TOOL_H__
 
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/EnvironmentalSensor/VisibilitySensor.h"
 
@@ -65,7 +66,13 @@ public:
 
 	///  @name Construction
 
-	VisibilitySensorTool (VisibilitySensor* const);
+	VisibilitySensorTool (VisibilitySensor* const node) :
+		                                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                   X3DBaseTool <VisibilitySensor> (node),
+		X3DEnvironmentalSensorNodeTool <VisibilitySensor> (Color3f (1, 0, 0))
+	{
+		addType (X3DConstants::VisibilitySensorTool);
+	}
 
 };
 

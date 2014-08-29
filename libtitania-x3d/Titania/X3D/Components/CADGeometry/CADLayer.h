@@ -89,30 +89,43 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	name ()
 	{ return *fields .name; }
 
+	virtual
 	const SFString &
 	name () const
 	{ return *fields .name; }
 
+	virtual
 	MFBool &
 	visible ()
 	{ return *fields .visible; }
 
+	virtual
 	const MFBool &
 	visible () const
 	{ return *fields .visible; }
 
+	///  @name Operations
 
-private:
+	virtual
+	void
+	addTool () override;
+
+
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Static members
 

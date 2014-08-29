@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_GROUPING_SWITCH_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/Grouping/Switch.h"
 
@@ -64,8 +65,14 @@ class SwitchTool :
 public:
 
 	///  @name Construction
-
-	SwitchTool (Switch* const);
+	
+	SwitchTool (Switch* const node) :
+		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        X3DBaseTool <Switch> (node),
+		X3DGroupingNodeTool <Switch> (ToolColors::YELLOW)
+	{
+		addType (X3DConstants::SwitchTool);
+	}
 
 	///  @name Fields
 

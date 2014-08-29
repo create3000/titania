@@ -54,8 +54,10 @@
 #include "../Core/X3DChildNodeTool.h"
 #include "../Grouping/X3DBoundedObjectTool.h"
 #include "../Networking/X3DUrlObjectTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/Networking/Inline.h"
+#include "../../Thread/SceneLoader.h"
 
 namespace titania {
 namespace X3D {
@@ -67,7 +69,15 @@ public:
 
 	///  @name Construction
 
-	InlineTool (Inline* const);
+	InlineTool (Inline* const node) :
+		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		         X3DBaseTool <Inline> (node),
+		    X3DChildNodeTool <Inline> (),
+		X3DBoundedObjectTool <Inline> (ToolColors::WHITE),
+		    X3DUrlObjectTool <Inline> ()
+	{
+		X3DChildNodeTool <Inline>::addType (X3DConstants::InlineTool);
+	}
 
 	///  @name Fields
 
@@ -134,13 +144,23 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType type) final override
+	{
+		X3DChildNodeTool <Inline>::traverse (type);
+		X3DBoundedObjectTool <Inline>::traverse (type);
+		X3DUrlObjectTool <Inline>::traverse (type);
+	}
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () final override
+	{
+		X3DUrlObjectTool <Inline>::dispose ();
+		X3DBoundedObjectTool <Inline>::dispose ();
+		X3DChildNodeTool <Inline>::dispose ();
+	}
 
 
 private:
@@ -151,7 +171,12 @@ private:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () final override
+	{
+		X3DChildNodeTool <Inline>::initialize ();
+		X3DBoundedObjectTool <Inline>::initialize ();
+		X3DUrlObjectTool <Inline>::initialize ();
+	}
 
 };
 

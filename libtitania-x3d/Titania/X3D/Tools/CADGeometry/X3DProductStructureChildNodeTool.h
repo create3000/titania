@@ -48,20 +48,49 @@
  *
  ******************************************************************************/
 
-#include "VisibilitySensorTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CADGEOMETRY_X3DPRODUCT_STRUCTURE_CHILD_NODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CADGEOMETRY_X3DPRODUCT_STRUCTURE_CHILD_NODE_TOOL_H__
 
-#include "../ToolColors.h"
+#include "../Core/X3DChildNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-VisibilitySensorTool::VisibilitySensorTool (VisibilitySensor* const node) :
-	                                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	                   X3DBaseTool <VisibilitySensor> (node),
-	X3DEnvironmentalSensorNodeTool <VisibilitySensor> (Color3f (1, 0, 0))
+template <class Type>
+class X3DProductStructureChildNodeTool :
+	virtual public X3DChildNodeTool <Type>
 {
-	addType (X3DConstants::VisibilitySensorTool);
-}
+public:
+
+	///  @name Fields
+
+	virtual
+	SFString &
+	name () final override
+	{ return getNode () -> name (); }
+
+	virtual
+	const SFString &
+	name () const final override
+	{ return getNode () -> name (); }
+
+
+protected:
+
+	using X3DChildNodeTool <Type>::addType;
+	using X3DChildNodeTool <Type>::getNode;
+
+	///  @name Construction
+
+	X3DProductStructureChildNodeTool () :
+		X3DChildNodeTool <Type> ()
+	{
+		//addType (X3DConstants::X3DProductStructureChildNodeTool);
+	}
+
+};
 
 } // X3D
 } // titania
+
+#endif

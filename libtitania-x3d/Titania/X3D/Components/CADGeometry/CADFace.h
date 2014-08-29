@@ -90,10 +90,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFNode &
 	shape ()
 	{ return *fields .shape; }
 
+	virtual
 	const SFNode &
 	shape () const
 	{ return *fields .shape; }
@@ -102,28 +104,35 @@ public:
 
 	virtual
 	Box3f
-	getBBox () const final override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Static members
 

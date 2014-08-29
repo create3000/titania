@@ -48,42 +48,38 @@
  *
  ******************************************************************************/
 
-#include "AnchorTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CADGEOMETRY_CADASSEMBLY_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CADGEOMETRY_CADASSEMBLY_TOOL_H__
 
+#include "../CADGeometry/X3DProductStructureChildNodeTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
 #include "../ToolColors.h"
+
+#include "../../Components/CADGeometry/CADAssembly.h"
 
 namespace titania {
 namespace X3D {
 
-AnchorTool::AnchorTool (Anchor* const node) :
-	                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	        X3DBaseTool <Anchor> (node),
-	X3DGroupingNodeTool <Anchor> (ToolColors::LILA),
-	   X3DUrlObjectTool <Anchor> ()
+class CADAssemblyTool :
+	public X3DGroupingNodeTool <CADAssembly>,
+	public X3DProductStructureChildNodeTool <CADAssembly>
 {
-	addType (X3DConstants::AnchorTool);
-}
+public:
 
-void
-AnchorTool::initialize ()
-{
-	X3DGroupingNodeTool <Anchor>::initialize ();
-	X3DUrlObjectTool <Anchor>::initialize ();
-}
+	///  @name Construction
 
-void
-AnchorTool::traverse (const TraverseType type)
-{
-	X3DGroupingNodeTool <Anchor>::traverse (type);
-	X3DUrlObjectTool <Anchor>::traverse (type);
-}
+	CADAssemblyTool (CADAssembly* const node) :
+		                                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                     X3DBaseTool <CADAssembly> (node),
+		             X3DGroupingNodeTool <CADAssembly> (ToolColors::DARK_GREEN),
+		X3DProductStructureChildNodeTool <CADAssembly> ()
+	{
+		//addType (X3DConstants::CADAssemblyTool);
+	}
 
-void
-AnchorTool::dispose ()
-{
-	X3DUrlObjectTool <Anchor>::dispose ();
-	X3DGroupingNodeTool <Anchor>::dispose ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

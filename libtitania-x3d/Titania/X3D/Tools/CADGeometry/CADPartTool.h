@@ -48,22 +48,63 @@
  *
  ******************************************************************************/
 
-#include "ShapeTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CADGEOMETRY_CADPART_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CADGEOMETRY_CADPART_TOOL_H__
 
-#include "../../Components/Rendering/X3DGeometryNode.h"
-#include "../../Components/Shape/Appearance.h"
+#include "../CADGeometry/X3DProductStructureChildNodeTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 #include "../ToolColors.h"
+
+#include "../../Components/CADGeometry/CADPart.h"
 
 namespace titania {
 namespace X3D {
 
-ShapeTool::ShapeTool (Shape* const node) :
-	             X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	     X3DBaseTool <Shape> (node),
-	X3DShapeNodeTool <Shape> (ToolColors::ORANGE)
+class CADPartTool :
+	public X3DTransformNodeTool <CADPart>,
+	public X3DProductStructureChildNodeTool <CADPart>
 {
-	addType (X3DConstants::ShapeTool);
-}
+public:
+
+	///  @name Construction
+
+	CADPartTool (CADPart* const node) :
+		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                     X3DBaseTool <CADPart> (node),
+		            X3DTransformNodeTool <CADPart> (),
+		X3DProductStructureChildNodeTool <CADPart> ()
+	{
+		//addType (X3DConstants::CADPartTool);
+	}
+
+	/// @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ X3DTransformNodeTool <CADPart>::traverse (type); }
+
+	/// @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DTransformNodeTool <CADPart>::dispose (); }
+
+
+private:
+
+	using X3DProductStructureChildNodeTool <CADPart>::addType;
+	using X3DProductStructureChildNodeTool <CADPart>::getNode;
+
+	virtual
+	void
+	initialize () final override
+	{ X3DTransformNodeTool <CADPart>::initialize (); }
+
+};
 
 } // X3D
 } // titania
+
+#endif

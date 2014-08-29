@@ -2,6 +2,50 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* ToolColors.h:
+	* ShapeTool.h:
+	* ShapeTool.cpp:
+	* GroupTool.h:
+	* CADAssemblyTool.h:
+	* SwitchTool.h:
+	* GroupTool.cpp:
+	* InlineTool.h:
+	* AnchorTool.h:
+	* SwitchTool.cpp:
+	* TransformTool.h:
+	* ScreenGroupTool.h:
+	* CADFaceTool.h:
+	* AnchorTool.cpp:
+	* CADPartTool.h:
+	* InlineTool.cpp:
+	* ScreenGroupTool.cpp:
+	* CADLayerTool.h:
+	* CADPart.h:
+	* TransformTool.cpp:
+	* CADFace.h:
+	* CADLayer.h:
+	* CADPart.cpp:
+	* CADFace.cpp:
+	* CADAssemblyTool.h:
+	* CADLayer.cpp:
+	* CADAssembly.h:
+	* X3DGroupingNodeTool.h:
+	* X3DTransformNodeTool.h:
+	* CADAssembly.cpp:
+	* ParticleSystemTool.h:
+	* X3DProductStructureChildNodeTool.h:
+	* ParticleSystemTool.cpp:
+	* ProximitySensorTool.h:
+	* VisibilitySensorTool.h:
+	* ProximitySensorTool.cpp:
+	* VisibilitySensorTool.cpp:
+	* X3DProductStructureChildNodeTool.h:
+	* X3DProductStructureChildNode.h: 
+
+2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* X3DBaseNode.cpp:
 	* X3DScene.cpp:
 	* X3DBrowser.cpp:

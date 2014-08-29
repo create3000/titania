@@ -253,6 +253,7 @@
     <None Include="V8\v8X3DFieldDefinition.h" />
     <None Include="V8\v8X3DObject.h" />
     <None Include="V8.h" />
+    <None Include="xxx\TransformTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -282,6 +283,7 @@
     <Compile Include="V8\v8Globals.cpp" />
     <Compile Include="V8.cpp" />
     <Compile Include="xxx\TextEditor.cpp" />
+    <Compile Include="xxx\TransformTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CosmoWorlds\icons\Fields.xcf" />

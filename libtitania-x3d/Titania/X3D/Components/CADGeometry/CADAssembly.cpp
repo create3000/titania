@@ -51,6 +51,7 @@
 #include "CADAssembly.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/CADGeometry/CADAssemblyTool.h"
 
 namespace titania {
 namespace X3D {
@@ -79,6 +80,12 @@ X3DBaseNode*
 CADAssembly::create (X3DExecutionContext* const executionContext) const
 {
 	return new CADAssembly (executionContext);
+}
+
+void
+CADAssembly::addTool ()
+{
+	X3DGroupingNode::addTool (new CADAssemblyTool (this));
 }
 
 } // X3D

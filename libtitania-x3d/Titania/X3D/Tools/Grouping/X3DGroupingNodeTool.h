@@ -59,7 +59,8 @@ namespace X3D {
 
 template <class Type>
 class X3DGroupingNodeTool :
-	virtual public X3DChildNodeTool <Type>, public X3DBoundedObjectTool <Type>
+	virtual public X3DChildNodeTool <Type>,
+	public X3DBoundedObjectTool <Type>
 {
 public:
 

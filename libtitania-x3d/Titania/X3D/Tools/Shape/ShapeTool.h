@@ -54,6 +54,9 @@
 #include "../Shape/X3DShapeNodeTool.h"
 
 #include "../../Components/Shape/Shape.h"
+#include "../../Components/Rendering/X3DGeometryNode.h"
+#include "../../Components/Shape/Appearance.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
@@ -65,7 +68,13 @@ public:
 
 	///  @name Construction
 
-	ShapeTool (Shape* const);
+	ShapeTool (Shape* const node) :
+		             X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		     X3DBaseTool <Shape> (node),
+		X3DShapeNodeTool <Shape> (ToolColors::ORANGE)
+	{
+		addType (X3DConstants::ShapeTool);
+	}
 
 };
 

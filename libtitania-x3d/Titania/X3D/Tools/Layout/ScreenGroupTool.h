@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_LAYOUT_SCREEN_GROUP_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/Layout/ScreenGroup.h"
 
@@ -65,7 +66,13 @@ public:
 
 	///  @name Construction
 
-	ScreenGroupTool (ScreenGroup* const);
+	ScreenGroupTool (ScreenGroup* const node) :
+		                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        X3DBaseTool <ScreenGroup> (node),
+		X3DGroupingNodeTool <ScreenGroup> (ToolColors::LIME)
+	{
+		addType (X3DConstants::ScreenGroupTool);
+	}
 
 
 protected:

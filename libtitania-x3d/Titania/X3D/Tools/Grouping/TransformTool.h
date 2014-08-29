@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GROUPING_TRANSFORM_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GROUPING_TRANSFORM_TOOL_H__
 
-#include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 #include "../../Components/Grouping/Transform.h"
 
@@ -59,116 +59,19 @@ namespace titania {
 namespace X3D {
 
 class TransformTool :
-	public X3DGroupingNodeTool <Transform>
+	public X3DTransformNodeTool <Transform>
 {
 public:
 
 	///  @name Construction
 
-	TransformTool (Transform* const);
-
-	///  @name Fields
-
-	virtual
-	const SFVec3f &
-	translation () const final override
-	{ return getNode () -> translation (); }
-
-	virtual
-	SFVec3f &
-	translation () final override
-	{ return getNode () -> translation (); }
-
-	virtual
-	SFRotation &
-	rotation () final override
-	{ return getNode () -> rotation (); }
-
-	virtual
-	const SFRotation &
-	rotation () const final override
-	{ return getNode () -> rotation (); }
-
-	virtual
-	SFVec3f &
-	scale () final override
-	{ return getNode () -> scale (); }
-
-	virtual
-	const SFVec3f &
-	scale () const final override
-	{ return getNode () -> scale (); }
-
-	virtual
-	SFRotation &
-	scaleOrientation () final override
-	{ return getNode () -> scaleOrientation (); }
-
-	virtual
-	const SFRotation &
-	scaleOrientation () const final override
-	{ return getNode () -> scaleOrientation (); }
-
-	virtual
-	SFVec3f &
-	center () final override
-	{ return getNode () -> center (); }
-
-	virtual
-	const SFVec3f &
-	center () const final override
-	{ return getNode () -> center (); }
-
-	///  @name Member access
-
-	virtual
-	void
-	setMatrix (const Matrix4d &) final override;
-
-	virtual
-	void
-	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
-
-	virtual
-	const Matrix4f &
-	getMatrix () const final override
-	{ return getNode () -> getMatrix (); }
-
-	///  @name Operatations
-
-	virtual
-	void
-	traverse (const TraverseType type) final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	realize () final override;
-
-	void
-	eventsProcessed ();
-
-	///  @name Operatations
-
-	void
-	addAbsoluteMatrix (const Matrix4d &);
-
-	void
-	reshape ();
-
-	///  @name Members
-
-	Matrix4d parentMatrix;
-	Matrix4d matrix;
-	size_t   interestEvents;
+	TransformTool (Transform* const node) :
+		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		         X3DBaseTool <Transform> (node),
+		X3DTransformNodeTool <Transform> ()
+	{
+		addType (X3DConstants::TransformTool);
+	}
 
 };
 

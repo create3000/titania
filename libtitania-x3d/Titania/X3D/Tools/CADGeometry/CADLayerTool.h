@@ -48,22 +48,57 @@
  *
  ******************************************************************************/
 
-#include "ScreenGroupTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CADGEOMETRY_CADLAYER_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CADGEOMETRY_CADLAYER_TOOL_H__
 
+#include "../Grouping/X3DGroupingNodeTool.h"
 #include "../ToolColors.h"
+
+#include "../../Components/CADGeometry/CADLayer.h"
 
 namespace titania {
 namespace X3D {
 
-static constexpr Color3f LIME (0.35, 1, 0.35);
-
-ScreenGroupTool::ScreenGroupTool (ScreenGroup* const node) :
-	                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	        X3DBaseTool <ScreenGroup> (node),
-	X3DGroupingNodeTool <ScreenGroup> (LIME)
+class CADLayerTool :
+	public X3DGroupingNodeTool <CADLayer>
 {
-	addType (X3DConstants::ScreenGroupTool);
-}
+public:
+
+	///  @name Construction
+
+	CADLayerTool (CADLayer* const node) :
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        X3DBaseTool <CADLayer> (node),
+		X3DGroupingNodeTool <CADLayer> (ToolColors::DARK_YELLOW)
+	{
+		//addType (X3DConstants::CADLayerTool);
+	}
+
+	///  @name Fields
+
+	virtual
+	SFString &
+	name () final override
+	{ return getNode () -> name (); }
+
+	virtual
+	const SFString &
+	name () const final override
+	{ return getNode () -> name (); }
+
+	virtual
+	MFBool &
+	visible () final override
+	{ return getNode () -> visible (); }
+
+	virtual
+	const MFBool &
+	visible () const final override
+	{ return getNode () -> visible (); }
+
+};
 
 } // X3D
 } // titania
+
+#endif

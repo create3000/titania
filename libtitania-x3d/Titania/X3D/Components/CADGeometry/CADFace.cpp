@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/CADGeometry/CADFaceTool.h"
 
 namespace titania {
 namespace X3D {
@@ -113,6 +114,12 @@ CADFace::traverse (const TraverseType type)
 {
 	if (shape ())
 		shape () -> traverse (type);
+}
+
+void
+CADFace::addTool ()
+{
+	X3DProductStructureChildNode::addTool (new CADFaceTool (this));
 }
 
 void

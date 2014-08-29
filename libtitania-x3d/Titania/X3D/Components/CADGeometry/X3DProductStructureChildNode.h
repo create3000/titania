@@ -63,10 +63,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	name ()
 	{ return *fields .name; }
 
+	virtual
 	const SFString &
 	name () const
 	{ return *fields .name; }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,20 +48,84 @@
  *
  ******************************************************************************/
 
-#include "GroupTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CADGEOMETRY_CADFACE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CADGEOMETRY_CADFACE_TOOL_H__
 
+#include "../CADGeometry/X3DProductStructureChildNodeTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
 #include "../ToolColors.h"
+
+#include "../../Components/CADGeometry/CADFace.h"
 
 namespace titania {
 namespace X3D {
 
-GroupTool::GroupTool (Group* const node) :
-	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	        X3DBaseTool <Group> (node),
-	X3DGroupingNodeTool <Group> (ToolColors::GREEN)
+class CADFaceTool :
+	public X3DProductStructureChildNodeTool <CADFace>,
+	public X3DBoundedObjectTool <CADFace>
 {
-	addType (X3DConstants::GroupTool);
-}
+public:
+
+	///  @name Construction
+
+	CADFaceTool (CADFace* const node) :
+		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                     X3DBaseTool <CADFace> (node),
+		X3DProductStructureChildNodeTool <CADFace> (),
+		            X3DBoundedObjectTool <CADFace> (ToolColors::BROWN, false)
+	{
+		//addType (X3DConstants::CADFaceTool);
+	}
+
+	///  @name Fields
+
+	virtual
+	SFNode &
+	shape () final override
+	{ return getNode () -> shape (); }
+
+	virtual
+	const SFNode &
+	shape () const final override
+	{ return getNode () -> shape (); }
+
+	/// @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{
+		X3DProductStructureChildNodeTool <CADFace>::traverse (type);
+		X3DBoundedObjectTool <CADFace>::traverse (type);
+	}
+
+	/// @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{
+		X3DBoundedObjectTool <CADFace>::dispose ();
+		X3DProductStructureChildNodeTool <CADFace>::dispose ();
+	}
+
+
+private:
+
+	using X3DProductStructureChildNodeTool <CADFace>::addType;
+	using X3DProductStructureChildNodeTool <CADFace>::getNode;
+
+	virtual
+	void
+	initialize () final override
+	{
+		X3DProductStructureChildNodeTool <CADFace>::initialize ();
+		X3DBoundedObjectTool <CADFace>::initialize ();
+	}
+
+};
 
 } // X3D
 } // titania
+
+#endif

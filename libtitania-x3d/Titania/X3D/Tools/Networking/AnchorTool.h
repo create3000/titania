@@ -55,6 +55,7 @@
 
 #include "../../Components/Networking/Anchor.h"
 #include "../Networking/X3DUrlObjectTool.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
@@ -66,7 +67,14 @@ public:
 
 	///  @name Construction
 
-	AnchorTool (Anchor* const);
+	AnchorTool (Anchor* const node) :
+		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        X3DBaseTool <Anchor> (node),
+		X3DGroupingNodeTool <Anchor> (ToolColors::LILA),
+		   X3DUrlObjectTool <Anchor> ()
+	{
+		addType (X3DConstants::AnchorTool);
+	}
 
 	///  @name Fields
 
@@ -106,13 +114,21 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType type) final override
+	{
+		X3DGroupingNodeTool <Anchor>::traverse (type);
+		X3DUrlObjectTool <Anchor>::traverse (type);
+	}
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () final override
+	{
+		X3DUrlObjectTool <Anchor>::dispose ();
+		X3DGroupingNodeTool <Anchor>::dispose ();
+	}
 
 
 private:
@@ -123,7 +139,11 @@ private:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () final override
+	{
+		X3DGroupingNodeTool <Anchor>::initialize ();
+		X3DUrlObjectTool <Anchor>::initialize ();
+	}
 
 };
 

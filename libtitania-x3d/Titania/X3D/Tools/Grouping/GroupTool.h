@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_GROUPING_GROUP_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/Grouping/Group.h"
 
@@ -65,7 +66,13 @@ public:
 
 	///  @name Construction
 
-	GroupTool (Group* const);
+	GroupTool (Group* const node) :
+		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        X3DBaseTool <Group> (node),
+		X3DGroupingNodeTool <Group> (ToolColors::GREEN)
+	{
+		addType (X3DConstants::GroupTool);
+	}
 
 };
 

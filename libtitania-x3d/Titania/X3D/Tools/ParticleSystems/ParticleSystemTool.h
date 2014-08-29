@@ -54,6 +54,9 @@
 #include "../Shape/X3DShapeNodeTool.h"
 
 #include "../../Components/ParticleSystems/ParticleSystem.h"
+#include "../../Components/Rendering/X3DGeometryNode.h"
+#include "../../Components/Shape/Appearance.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
@@ -65,7 +68,13 @@ public:
 
 	///  @name Construction
 
-	ParticleSystemTool (ParticleSystem* const);
+	ParticleSystemTool (ParticleSystem* const node) :
+		                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		     X3DBaseTool <ParticleSystem> (node),
+		X3DShapeNodeTool <ParticleSystem> (ToolColors::ORANGE)
+	{
+		//addType (X3DConstants::ParticleSystemTool);
+	}
 
 	///  @name Fields
 

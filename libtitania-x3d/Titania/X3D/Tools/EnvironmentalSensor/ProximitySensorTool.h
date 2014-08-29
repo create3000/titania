@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_PROXIMITY_SENSOR_TOOL_H__
 
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/EnvironmentalSensor/ProximitySensor.h"
 
@@ -65,7 +66,13 @@ public:
 
 	///  @name Construction
 
-	ProximitySensorTool (ProximitySensor* const);
+	ProximitySensorTool (ProximitySensor* const node) :
+		                                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                   X3DBaseTool <ProximitySensor> (node),
+		X3DEnvironmentalSensorNodeTool <ProximitySensor> (Color3f (0.5, 0, 1))
+	{
+		addType (X3DConstants::ProximitySensorTool);
+	}
 
 	///  @name Fields
 
