@@ -29,6 +29,7 @@ PROTO CheckButton [
 
   DEF CheckButtonScript Script {
     inputOutput    SFBool enabled IS enabled
+    inputOutput    SFTime initialized 0
     inputOnly      SFTime set_disabled
     inputOnly      SFTime set_active
     inputOnly      MFNode set_children
@@ -44,7 +45,12 @@ PROTO CheckButton [
 function initialize ()
 {
 	set_children (button .children);
-	enabled = enabled;
+	initialized = 0;
+}
+
+function set_initialized (value, time)
+{
+	set_enabled (enabled, time);
 }
 
 function set_enabled (value, time)

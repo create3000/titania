@@ -1,5 +1,10 @@
 2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserWidget.cpp:
+	* CheckButton.x3dv: 
+
+2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* BrowserWindow.xml:
 	* X3DBrowserWidget.cpp:
