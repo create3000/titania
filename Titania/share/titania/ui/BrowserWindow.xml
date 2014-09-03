@@ -1622,6 +1622,7 @@
                               <object class="GtkNotebook" id="BrowserNotebook">
                                 <property name="can_focus">True</property>
                                 <property name="scrollable">True</property>
+                                <property name="enable_popup">True</property>
                                 <signal name="drag-data-received" handler="on_browser_drag_data_received" swapped="no"/>
                                 <signal name="page-reordered" handler="on_browser_reordered" swapped="no"/>
                                 <signal name="switch-page" handler="on_switch_browser" swapped="no"/>

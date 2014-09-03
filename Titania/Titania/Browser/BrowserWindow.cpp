@@ -152,8 +152,6 @@ BrowserWindow::loadStyles () const
 void
 BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
-	__LOG__ << std::endl;
-
 	getBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 

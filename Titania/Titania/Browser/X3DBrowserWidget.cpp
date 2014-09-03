@@ -328,7 +328,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 
 	getBrowserNotebook () .append_page (*browser, *box);
 	getBrowserNotebook () .set_tab_reorderable (*browser, true);
-	getBrowserNotebook () .set_menu_label_text (*getBrowser (), text);
+	getBrowserNotebook () .set_menu_label_text (*browser, text);
 
 	const auto userData = getUserData (browser);
 
@@ -528,7 +528,7 @@ X3DBrowserWidget::reload ()
 }
 
 void
-X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
+X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 {
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
@@ -577,8 +577,6 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 {
-	__LOG__ << pageNumber << std::endl;
-
 	setBrowser (browsers [pageNumber]);
 }
 

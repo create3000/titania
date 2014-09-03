@@ -1,6 +1,15 @@
 2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.cpp:
+	* PrototypeInstanceDialog.xml:
+	* PrototypeInstanceDialog.xml:
+	* X3DPrototypeInstanceDialogInterface.h: 
+
+2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
 	* X3DBrowserWidget.h:
 	* X3DBrowserWidget.cpp:
 	* BrowserSelection.cpp:
