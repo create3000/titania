@@ -73,8 +73,6 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 void
 BrowserSelection::set_browser ()
 {
-	__LOG__ << std::endl;
-
 	const auto & selection    = browser -> getSelection ();
 	const auto   enabled      = selection -> isEnabled ();
 	const auto   mode         = selection -> getMode ();

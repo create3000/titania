@@ -1,5 +1,12 @@
 2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPtr.h:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* jsBrowser.cpp: 
+
+2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* X3D.cpp:
 	* libtitania-x3d.cproj:

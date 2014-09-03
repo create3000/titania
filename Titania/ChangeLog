@@ -1,5 +1,13 @@
 2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* BrowserSelection.cpp:
+	* HistoryView.cpp: 
+
+2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* main.cpp:

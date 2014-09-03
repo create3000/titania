@@ -78,6 +78,10 @@ public:
 	getBrowser () const final override
 	{ return browser; }
 
+	static
+	std::shared_ptr <BrowserUserData>
+	getUserData (const X3D::BrowserPtr &);
+
 	virtual
 	const X3D::X3DScenePtr &
 	getScene () const final override
@@ -151,10 +155,6 @@ protected:
 	void
 	setBrowser (const X3D::BrowserPtr &);
 
-	static
-	std::shared_ptr <BrowserUserData>
-	getUserData (const X3D::BrowserPtr &);
-
 	void
 	setTitle (const bool) const;
 
@@ -204,9 +204,10 @@ private:
 	statistics ();
 
 	///  @name Members
-	
-	X3D::X3DPtrArray <X3D::Browser> browsers;
+
+	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;
+	X3D::X3DPtrArray <X3D::Browser> browsers;
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
 	double                          loadTime;

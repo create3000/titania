@@ -103,15 +103,8 @@ X3DBrowser::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		try
-		{
-			if (browserOptions -> splashScreen ())
-				executionContext .set (Loader (getEmptyScene ()) .createX3DFromURL (browserOptions -> splashScreenURL ()));
-		}
-		catch (const X3DError & error)
-		{
-			std::clog << error .what () << std::endl;
-		}
+		if (browserOptions -> splashScreen ())
+			Loader (getEmptyScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> splashScreenURL ());
 
 		replaceWorld (executionContext);
 
@@ -249,6 +242,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
+X3DBrowser::replaceWorld (const std::nullptr_t)
+throw (Error <INVALID_SCENE>,
+       Error <INVALID_OPERATION_TIMING>)
+{
+	replaceWorld (X3DExecutionContextPtr ());
+}
+
+void
 X3DBrowser::replaceWorld (const X3DScenePtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
@@ -359,35 +360,28 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	ContextLock lock (this);
+	// where parameter is "target=nameOfFrame"
 
-	if (lock)
+	Loader loader (this);
+
+	try
 	{
-		// where parameter is "target=nameOfFrame"
+		const X3DScenePtr scene = createScene ();
 
-		Loader loader (this);
+		loader .parseIntoScene (scene, url);
 
-		try
-		{
-			const X3DScenePtr scene = createScene ();
+		replaceWorld (scene);
 
-			loader .parseIntoScene (scene, url);
+		getClock () -> advance ();
 
-			replaceWorld (scene);
-
-			getClock () -> advance ();
-
-			return;
-		}
-		catch (const X3DError &)
-		{
-			urlError = loader .getUrlError ();
-
-			throw;
-		}
+		return;
 	}
+	catch (const X3DError &)
+	{
+		urlError = loader .getUrlError ();
 
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+		throw;
+	}
 }
 
 X3DScenePtr

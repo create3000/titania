@@ -160,6 +160,11 @@ public:
 	       Error <DISPOSED>);
 
 	void
+	replaceWorld (const std::nullptr_t)
+	throw (Error <INVALID_SCENE>,
+	       Error <INVALID_OPERATION_TIMING>);
+
+	void
 	replaceWorld (const X3DScenePtr &)
 	throw (Error <INVALID_SCENE>,
 	       Error <INVALID_OPERATION_TIMING>);

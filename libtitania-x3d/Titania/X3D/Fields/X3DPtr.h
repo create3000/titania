@@ -514,6 +514,7 @@ private:
 			other .get () -> replaceParent (&other, this);
 			other .get () -> addClones (cloneCount);
 			other .get () -> removeClones (other .cloneCount);
+			other .get () -> disposed () .removeInterest (other, &X3DPtr::set_disposed);
 			other .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
 			other .setObject (nullptr);
 			other .addEvent ();
@@ -531,6 +532,7 @@ private:
 			other .get () -> replaceParent (&other, this);
 			other .get () -> addClones (cloneCount);
 			other .get () -> removeClones (other .cloneCount);
+			other .get () -> disposed () .removeInterest (other, &X3DPtr <Up>::set_disposed);
 			other .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
 			other .setObject (nullptr);
 			other .addEvent ();

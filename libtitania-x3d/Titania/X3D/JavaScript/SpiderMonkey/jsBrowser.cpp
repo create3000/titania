@@ -236,7 +236,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 		try
 		{
 			if (JSVAL_IS_NULL (argv [0]))
-				script -> getBrowser () -> replaceWorld (X3DScenePtr ());
+				script -> getBrowser () -> replaceWorld (nullptr);
 
 			else
 			{

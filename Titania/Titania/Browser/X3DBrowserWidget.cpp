@@ -59,14 +59,16 @@
 #include <Titania/gzstream.h>
 
 #include <fstream>
+#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & browser_) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
-	                 browsers (),
+	            masterBrowser (browser_),
 	                  browser (browser_),
+	                 browsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (scene)
 {
@@ -120,12 +122,12 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
-	getBrowser () -> getBrowserOptions () -> splashScreen ()    = true;
-	getBrowser () -> getBrowserOptions () -> splashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
-	getBrowser () -> show ();
+	masterBrowser -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	masterBrowser -> getBrowserOptions () -> splashScreen ()    = true;
+	masterBrowser -> getBrowserOptions () -> splashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
+	masterBrowser -> show ();
 
-	getSplashBox () .pack_start (*getBrowser (), true, true, 0);
+	getSplashBox () .pack_start (*masterBrowser, true, true, 0);
 }
 
 void
@@ -371,7 +373,7 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 		{
 			try
 			{
-				browser -> replaceWorld (X3D::X3DScenePtr ());
+				browser -> replaceWorld (nullptr);
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -528,8 +530,6 @@ X3DBrowserWidget::reload ()
 void
 X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 {
-	const X3D::BrowserPtr browser = browser_; // The parameter could be getBrowser ().
-
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	getUserData (browser) -> dispose ();
@@ -546,7 +546,7 @@ bool
 X3DBrowserWidget::quit ()
 {
 	std::deque <std::string> worldURLs;
-
+	
 	for (const auto & browser : browsers)
 	{
 		const auto userData = getUserData (browser);

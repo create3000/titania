@@ -559,7 +559,7 @@ BrowserWindow::on_remove_unused_prototypes ()
 void
 BrowserWindow::on_close ()
 {
-	close (getBrowser ());
+	close (X3D::BrowserPtr (getBrowser ()));
 }
 
 void

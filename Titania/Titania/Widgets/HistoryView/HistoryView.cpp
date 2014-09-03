@@ -50,6 +50,7 @@
 
 #include "HistoryView.h"
 
+#include "../../Browser/BrowserUserData.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -151,7 +152,14 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 
 	const auto & browsers = getBrowserWindow () -> getBrowsers ();
 	const auto   iter     = std::find_if (browsers .begin (), browsers .end (), [&URL] (const X3D::BrowserPtr & browser)
-	                                      { return browser -> getExecutionContext () -> getMasterContext () -> getWorldURL () == URL; });
+	                                      {
+	                                         std::string worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+
+	                                         if (worldURL .empty ())
+															  worldURL = X3DBrowserWindow::getUserData (browser) -> URL;
+
+	                                         return worldURL == URL;
+													  });
 
 	if (iter not_eq browsers .end ())
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .begin ());
