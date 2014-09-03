@@ -356,14 +356,6 @@ X3DBackgroundNode::draw ()
 	if (hidden)
 		return;
 
-	//	if (isPrivate ())
-	//	{
-	//    Mix color with widget color.
-	//		glClearColor (skyColor .getR (), skyColor .getG (), skyColor .getB (), 1 - math::clamp <float> (transparency (), 0, 1));
-	//		glClear (GL_COLOR_BUFFER_BIT);
-	//		return;
-	//	}
-
 	PolygonMode polygonMode (GL_FILL);
 
 	// Scale background
@@ -371,23 +363,22 @@ X3DBackgroundNode::draw ()
 	const auto viewport = Viewport4i ();
 	auto       scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
 
-	scale *= double (viewport [2] > viewport [3] ? viewport [2] : viewport [3]);
+	scale *= std::max (viewport [2], viewport [3]);
 
 	getCurrentViewpoint () -> background (1, std::max (2.0, 2 * SIZE * scale .z ()));
 
-	glLoadIdentity ();
-	glScalef (scale .x (), scale .y (), scale .z ());
-
-	// Rotate background
+	// Rotate and scale background
 
 	Vector3d   translation;
 	Rotation4f rotation;
-	float      x, y, z, angle;
 
 	matrix .get (translation, rotation);
-	rotation .get (x, y, z, angle);
 
-	glRotatef (math::degrees (angle), x, y, z);
+	Matrix4f modelViewMatrix;
+	modelViewMatrix .scale (scale);
+	modelViewMatrix .rotate (rotation);
+
+	glLoadMatrixf (modelViewMatrix .data ());
 
 	// Draw
 
