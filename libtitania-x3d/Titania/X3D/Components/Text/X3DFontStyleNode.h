@@ -65,8 +65,6 @@ class X3DTextGeometry
 {
 public:
 
-	X3DTextGeometry ();
-
 	virtual
 	bool
 	isTransparent () const = 0;
@@ -90,6 +88,8 @@ public:
 
 
 protected:
+
+	X3DTextGeometry (const X3DFontStyleNode* const);
 
 	void
 	initialize (Text* const, const X3DFontStyleNode* const);
@@ -140,13 +140,13 @@ private:
 	void
 	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
 
-	Box3f bbox;
-
-	std::vector <double>   charSpacings;
-	Vector2d               bearing;
-	Vector2d               minorAlignment;
-	std::vector <Vector2d> translations;
-	GLuint                 listId;
+	const X3DFontStyleNode* const fontStyle;
+	Box3f                         bbox;
+	std::vector <double>          charSpacings;
+	Vector2d                      bearing;
+	Vector2d                      minorAlignment;
+	std::vector <Vector2d>        translations;
+	GLuint                        listId;
 
 };
 

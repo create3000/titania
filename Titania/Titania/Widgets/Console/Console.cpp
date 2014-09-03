@@ -50,13 +50,13 @@
 
 #include "Console.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-Console::Console (BrowserWindow* const browserWindow) :
+Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DConsoleInterface (get_ui ("Console.xml"), gconf_dir ())
 {
@@ -64,6 +64,12 @@ Console::Console (BrowserWindow* const browserWindow) :
 	getBrowserWindow () -> getFooterNotebook () .signal_unmap () .connect (sigc::mem_fun (*this, &Console::set_enabled));
 
 	setup ();
+}
+
+bool
+Console::isEnabled () const
+{
+	return not getSuspendButton () .get_active () and getBrowserWindow () -> getFooterNotebook () .get_mapped ();
 }
 
 void
@@ -85,17 +91,30 @@ Console::on_clear_button_clicked ()
 }
 
 void
+Console::set_browser (const X3D::BrowserPtr & browser)
+{
+	browser -> getUrlError () .addInterest (this, &Console::set_string);
+	browser -> getConsole () -> getString () .addInterest (this, &Console::set_string);	
+}
+
+void
 Console::set_enabled ()
 {
-	if (not getSuspendButton () .get_active () and getBrowserWindow () -> getFooterNotebook () .get_mapped ())
+	if (isEnabled ())
 	{
-		getBrowser () -> getUrlError () .addInterest (this, &Console::set_string);
-		getBrowser () -> getConsole () -> getString () .addInterest (this, &Console::set_string);
+		getBrowser () .addInterest (this, &Console::set_browser);
+
+		set_browser (getBrowser ());
 	}
 	else
 	{
-		getBrowser () -> getUrlError () .addInterest (this, &Console::set_string);
-		getBrowser () -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
+		getBrowser () .removeInterest (this, &Console::set_browser);
+
+		for (const auto & browser : getBrowserWindow () -> getBrowsers ())
+		{
+			browser -> getUrlError () .removeInterest (this, &Console::set_string);
+			browser -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
+		}
 	}
 }
 

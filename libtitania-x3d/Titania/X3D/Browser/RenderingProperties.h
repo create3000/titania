@@ -199,6 +199,22 @@ public:
 	textureMemory () const
 	{ return *fields .textureMemory; }
 
+	SFColorRGBA &
+	foregroundColor ()
+	{ return *fields .foregroundColor; }
+
+	const SFColorRGBA &
+	foregroundColor () const
+	{ return *fields .foregroundColor; }
+
+	SFColorRGBA &
+	backgroundColor ()
+	{ return *fields .backgroundColor; }
+
+	const SFColorRGBA &
+	backgroundColor () const
+	{ return *fields .backgroundColor; }
+
 	///  @name Member access
 
 	double
@@ -227,6 +243,9 @@ private:
 	initialize () final override;
 
 	///  @name Event handlers
+
+	void
+	prepareEvents ();
 
 	void
 	set_enabled ();
@@ -267,6 +286,9 @@ private:
 		SFBool* const antialiased;
 		SFInt32* const colorDepth;
 		SFDouble* const textureMemory;
+		SFColorRGBA* const foregroundColor;
+		SFColorRGBA* const backgroundColor;
+
 	};
 
 	Fields fields;

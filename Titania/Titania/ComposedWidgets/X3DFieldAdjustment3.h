@@ -51,20 +51,20 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT3_H__
 #define __TITANIA_COMPOSED_WIDGETS_X3DFIELD_ADJUSTMENT3_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
 template <class Type>
 class X3DFieldAdjustment3 :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	X3DFieldAdjustment3 (BrowserWindow* const,
+	X3DFieldAdjustment3 (X3DBrowserWindow* const,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
@@ -128,14 +128,14 @@ private:
 };
 
 template <class Type>
-X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (BrowserWindow* const browserWindow,
+X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBrowserWindow* const browserWindow,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment1,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment3,
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	     adjustment1 (adjustment1),
 	     adjustment2 (adjustment2),
 	     adjustment3 (adjustment3),

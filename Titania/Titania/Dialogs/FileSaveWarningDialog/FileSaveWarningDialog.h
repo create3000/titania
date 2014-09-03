@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	FileSaveWarningDialog (BrowserWindow* const);
+	FileSaveWarningDialog (X3DBrowserWindow* const);
 
 	int
 	run ();

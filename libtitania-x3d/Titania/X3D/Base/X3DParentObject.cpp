@@ -74,8 +74,49 @@ X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
 void
 X3DParentObject::setup ()
 {
+	browser -> addParent (this);
+
 	for (const auto & child : children)
 		child -> isTainted (false);
+}
+
+///  Set the browser this node belongs to.
+void
+X3DParentObject::setBrowser (X3DBrowser* const value)
+{
+	if (value == browser)
+		return;
+
+	// Collect and remove events.
+
+	std::vector <ChildrenList::value_type> objects;
+
+	for (const auto & event : events)
+	{
+		if (browser -> isValid (event))
+			objects .emplace_back (*event .iter);
+	}
+
+	const bool tainted = browser -> isValid (parentId);
+
+	removeEvents ();
+
+	// Replace browser.
+
+	browser -> removeParent (this);
+
+	browser = value;
+	browser -> addParent (this);
+
+	// Add events.
+	
+	isTainted (false);
+
+	for (const auto & object : objects)
+		addEvent (object .first, object .second);
+
+	if (tainted)
+		addEvent ();
 }
 
 /***
@@ -125,11 +166,11 @@ X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
 //	__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
 
-	getBrowser () -> addEvent ();
+	browser -> addEvent ();
 
 	// Register for processEvent
 
-	events .emplace_back (getBrowser () -> addTaintedChild (object, event));
+	events .emplace_back (browser -> addTaintedChild (object, event));
 
 	// Register for eventsProcessed
 
@@ -144,7 +185,7 @@ X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 	// Register always on every first event.
 
 	if (not parentId .time)
-		parentId = getBrowser () -> addTaintedParent (this);
+		parentId = browser -> addTaintedParent (this);
 }
 
 /***
@@ -158,9 +199,9 @@ X3DParentObject::addEvent ()
 		isTainted (true);
 
 		if (not parentId .time)
-			parentId = getBrowser () -> addTaintedParent (this);
+			parentId = browser -> addTaintedParent (this);
 
-		getBrowser () -> addEvent ();
+		browser -> addEvent ();
 	}
 }
 
@@ -188,13 +229,13 @@ void
 X3DParentObject::removeEvents ()
 {
 	for (const auto & event : events)
-		getBrowser () -> removeTaintedChild (event);
+		browser -> removeTaintedChild (event);
 
 	events .clear ();
 
 	if (parentId .time)
 	{
-		getBrowser () -> removeTaintedParent (parentId);
+		browser -> removeTaintedParent (parentId);
 		parentId .time = 0;
 	}
 }
@@ -213,6 +254,8 @@ X3DParentObject::dispose ()
 	children .clear ();
 
 	removeEvents ();
+
+	browser -> removeParent (this);
 }
 
 /***

@@ -138,6 +138,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="TextureExpander">
+                    <property name="name">TextureExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
@@ -800,6 +801,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="TexturePropertiesExpander">
+                    <property name="name">TexturePropertiesExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="spacing">8</property>
@@ -1312,6 +1314,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="TextureTransformExpander">
+                    <property name="name">TextureTransformExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="spacing">8</property>
@@ -1699,6 +1702,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="TextureCoordinateGeneratorExpander">
+                    <property name="name">TextureCoordinateGeneratorExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="spacing">8</property>

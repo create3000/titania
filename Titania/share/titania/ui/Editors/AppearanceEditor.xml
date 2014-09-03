@@ -343,6 +343,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="FrontExpander">
+                        <property name="name">FrontExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>
@@ -725,6 +726,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="BackExpander">
+                        <property name="name">BackExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>
@@ -1153,6 +1155,7 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkExpander" id="FillPropertiesExpander">
+                        <property name="name">FillPropertiesExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>
@@ -1436,6 +1439,7 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkExpander" id="LinePropertiesExpander">
+                        <property name="name">LinePropertiesExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>

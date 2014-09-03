@@ -89,6 +89,11 @@ public:
 	/***
 	 *  @name Member access
 	 */
+	
+	bool
+	isMasterContext () const
+	throw (Error <DISPOSED>)
+	{ return this == getExecutionContext (); }
 
 	virtual
 	bool

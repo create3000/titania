@@ -98,10 +98,6 @@ public:
 	getIconFactory () const
 	{ return m_IconFactory; }
 
-	const Glib::RefPtr <Gtk::AccelGroup> &
-	getMenuAccelGroup () const
-	{ return m_MenuAccelGroup; }
-
 	Gtk::Image &
 	getExamineViewerImage () const
 	{ return *m_ExamineViewerImage; }
@@ -209,6 +205,10 @@ public:
 	Gtk::ImageMenuItem &
 	getRemoveUnusedPrototypesMenuItem () const
 	{ return *m_RemoveUnusedPrototypesMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getCloseMenuItem () const
+	{ return *m_CloseMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getQuitMenuItem () const
@@ -615,8 +615,12 @@ public:
 	{ return *m_HPaned; }
 
 	Gtk::Box &
-	getSurfaceBox () const
-	{ return *m_SurfaceBox; }
+	getSplashBox () const
+	{ return *m_SplashBox; }
+
+	Gtk::Notebook &
+	getBrowserNotebook () const
+	{ return *m_BrowserNotebook; }
 
 	Gtk::Box &
 	getDashboard () const
@@ -801,6 +805,10 @@ public:
 	virtual
 	void
 	on_close () = 0;
+
+	virtual
+	void
+	on_quit () = 0;
 
 	virtual
 	void
@@ -1100,7 +1108,15 @@ public:
 
 	virtual
 	void
-	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
+	on_browser_reordered (Widget* page, guint page_num) = 0;
+
+	virtual
+	void
+	on_switch_browser (Widget* page, guint page_num) = 0;
 
 	virtual
 	void
@@ -1156,7 +1172,6 @@ private:
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
-	Glib::RefPtr <Gtk::AccelGroup>  m_MenuAccelGroup;
 	Gtk::Image*                     m_ExamineViewerImage;
 	Gtk::Image*                     m_FileImportImage;
 	Gtk::Image*                     m_FlyViewerImage;
@@ -1184,6 +1199,7 @@ private:
 	Gtk::ImageMenuItem*             m_SaveAsMenuItem;
 	Gtk::ImageMenuItem*             m_RevertMenuItem;
 	Gtk::ImageMenuItem*             m_RemoveUnusedPrototypesMenuItem;
+	Gtk::ImageMenuItem*             m_CloseMenuItem;
 	Gtk::ImageMenuItem*             m_QuitMenuItem;
 	Gtk::MenuItem*                  m_EditMenuItem;
 	Gtk::ImageMenuItem*             m_UndoMenuItem;
@@ -1285,7 +1301,8 @@ private:
 	Gtk::ToolButton*                m_NodeIndexButton;
 	Gtk::Paned*                     m_VPaned;
 	Gtk::Paned*                     m_HPaned;
-	Gtk::Box*                       m_SurfaceBox;
+	Gtk::Box*                       m_SplashBox;
+	Gtk::Notebook*                  m_BrowserNotebook;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
 	Gtk::RadioToolButton*           m_HandButton;

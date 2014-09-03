@@ -50,16 +50,16 @@
 
 #include "LightEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 namespace titania {
 namespace puck {
 
-LightEditor::LightEditor (BrowserWindow* const browserWindow) :
+LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	  X3DLightEditorInterface (get_ui ("Dialogs/LightEditor.xml"), gconf_dir ()),
+	  X3DLightEditorInterface (get_ui ("Editors/LightEditor.xml"), gconf_dir ()),
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),
 	       X3DSpotLightEditor (),
@@ -80,9 +80,9 @@ LightEditor::initialize ()
 	X3DPointLightEditor::initialize ();
 	X3DSpotLightEditor::initialize ();
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &LightEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &LightEditor::set_selection);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

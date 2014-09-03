@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	PrecisionPlacementPanel (BrowserWindow* const);
+	PrecisionPlacementPanel (X3DBrowserWindow* const);
 
 	///  @name Destruction
 

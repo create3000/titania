@@ -51,6 +51,7 @@
 #include "X3DTextureNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {
@@ -150,8 +151,13 @@ X3DTextureNode::draw (const GLenum target, const size_t components)
 void
 X3DTextureNode::dispose ()
 {
-	if (textureId)
-		glDeleteTextures (1, &textureId);
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+	{
+		if (textureId)
+			glDeleteTextures (1, &textureId);
+	}
 
 	X3DAppearanceChildNode::dispose ();
 }

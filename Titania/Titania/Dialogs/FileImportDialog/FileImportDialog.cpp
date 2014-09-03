@@ -51,6 +51,7 @@
 #include "FileImportDialog.h"
 
 #include "../../Browser/BrowserSelection.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -58,7 +59,7 @@
 namespace titania {
 namespace puck {
 
-FileImportDialog::FileImportDialog (BrowserWindow* const browserWindow) :
+FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.xml"), gconf_dir ())
 {

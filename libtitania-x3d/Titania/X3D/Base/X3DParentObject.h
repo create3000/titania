@@ -143,9 +143,9 @@ protected:
 	///  Constructs new X3DParentObject.
 	X3DParentObject (X3DBrowser* const);
 
+	///  Set the browser this node belongs to.
 	void
-	setBrowser (X3DBrowser* const value)
-	{ browser = value; }
+	setBrowser (X3DBrowser* const);
 
 	/***
 	 *  @name Children handling

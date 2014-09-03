@@ -54,7 +54,6 @@
 #include "../OutlineTreeData.h"
 #include "TextViewEditable.h"
 
-#include <Titania/X3D.h>
 #include <gtkmm.h>
 #include <memory>
 

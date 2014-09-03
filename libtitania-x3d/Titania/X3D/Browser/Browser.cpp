@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra?e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,21 +50,23 @@
 
 #include "Browser.h"
 
+#include "../Browser/ContextLock.h"
+#include "../Browser/KeyDeviceSensor/KeyDevice.h"
 #include "../Browser/Navigation/ExamineViewer.h"
 #include "../Browser/Navigation/FlyViewer.h"
-#include "../Browser/Navigation/NoneViewer.h"
-#include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/LookAtViewer.h"
+#include "../Browser/Navigation/NoneViewer.h"
 #include "../Browser/Navigation/PlaneViewer.h"
+#include "../Browser/Navigation/WalkViewer.h"
+#include "../Browser/Navigation/X3DViewer.h"
+#include "../Browser/PointingDeviceSensor/PointingDevice.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
-#include "../Browser/KeyDeviceSensor/KeyDevice.h"
-#include "../Browser/PointingDeviceSensor/PointingDevice.h"
-#include "../Browser/Navigation/X3DViewer.h"
 
 #include <glibmm/main.h>
+#include <gtkmm/container.h>
 
 #include <algorithm>
 #include <iomanip>
@@ -75,7 +77,7 @@ namespace titania {
 namespace X3D {
 
 Browser::Browser () :
-       X3DBaseNode (this, this),
+	    X3DBaseNode (this, this),
 	     X3DBrowser (),
 	opengl::Surface (),
 	        viewer  (new NoneViewer (this)),
@@ -85,11 +87,10 @@ Browser::Browser () :
 	addType (X3DConstants::Browser);
 }
 
-
-Browser::Browser (const Browser & sharingSurface) :
-       X3DBaseNode (this, this),
+Browser::Browser (const Browser & other) :
+	    X3DBaseNode (this, this),
 	     X3DBrowser (),
-	opengl::Surface (sharingSurface),
+	opengl::Surface (other),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this))
@@ -133,11 +134,54 @@ Browser::initialize ()
 	grab_focus ();
 }
 
+Color4f
+Browser::getForegroundColor () const
+{
+	const auto color = get_toplevel () -> get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+
+	return Color4f (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+}
+
+Color4f
+Browser::getBackgroundColor () const
+{
+	const auto color = get_toplevel () -> get_style_context () -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+
+	return Color4f (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+}
+
+void
+Browser::on_map ()
+{
+	opengl::Surface::on_map ();
+
+	if (isLive ())
+		getExecutionContext () -> beginUpdate ();
+
+	grab_focus ();
+}
+
+void
+Browser::on_unmap ()
+{
+	if (isLive ())
+	{
+		getExecutionContext () -> endUpdate ();
+
+		ContextLock lock (this);
+
+		if (lock)
+			processEvents ();
+	}
+
+	opengl::Surface::on_unmap ();
+}
+
 void
 Browser::set_changed ()
 {
 	//Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &Gtk::Widget::queue_draw));
-	
+
 	//queue_draw ();
 
 	//get_window () -> invalidate_rect (get_allocation (), false);
@@ -198,8 +242,11 @@ Browser::dispose ()
 	pointingDevice .reset ();
 
 	X3DBrowser::dispose ();
-	opengl::Surface::dispose (); /// XXX
+	opengl::Surface::dispose ();
 }
+
+Browser::~Browser ()
+{ }
 
 } // X3D
 } // titania

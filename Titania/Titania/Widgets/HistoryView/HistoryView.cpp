@@ -50,7 +50,7 @@
 
 #include "HistoryView.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -60,10 +60,10 @@ static constexpr int ICON_COLUMN      = 0;
 static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
-HistoryView::HistoryView (BrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
+	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ()),
-	                  history ()
+	                history ()
 {
 	setup ();
 
@@ -147,8 +147,17 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 {
 	// Open worldURL.
 
-	if (getBrowserWindow () -> isSaved ())
-		getBrowserWindow () -> open (history .getItemFromIndex (path .to_string ()) .at ("worldURL"));
+	const std::string URL = history .getItemFromIndex (path .to_string ()) .at ("worldURL");
+
+	const auto & browsers = getBrowserWindow () -> getBrowsers ();
+	const auto   iter     = std::find_if (browsers .begin (), browsers .end (), [&URL] (const X3D::BrowserPtr & browser)
+	                                      { return browser -> getExecutionContext () -> getMasterContext () -> getWorldURL () == URL; });
+
+	if (iter not_eq browsers .end ())
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .begin ());
+
+	else
+		getBrowserWindow () -> open (URL);
 }
 
 HistoryView::~HistoryView ()

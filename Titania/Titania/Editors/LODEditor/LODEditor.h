@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	LODEditor (BrowserWindow* const);
+	LODEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 

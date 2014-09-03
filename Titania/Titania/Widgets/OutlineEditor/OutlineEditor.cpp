@@ -50,7 +50,7 @@
 
 #include "OutlineEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "OutlineEditorDatabase.h"
 #include "OutlineTreeModel.h"
@@ -61,7 +61,7 @@
 namespace titania {
 namespace puck {
 
-OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
+OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.xml"), gconf_dir ()),
 	                 treeView (new OutlineTreeViewEditor (browserWindow, getExecutionContext ())),
@@ -111,7 +111,24 @@ OutlineEditor::initialize ()
 void
 OutlineEditor::set_scene ()
 {
-	addSceneMenuItem (X3D::X3DExecutionContextPtr (), X3D::X3DExecutionContextPtr (getScene ()));
+	// Restore scene menu.
+
+	std::vector <X3D::X3DExecutionContextPtr> executionContexts;
+	X3D::X3DExecutionContext*                 executionContext = getExecutionContext ();
+
+	do
+	{
+		executionContexts .emplace_back (executionContext);
+		executionContext = executionContext -> getExecutionContext ();
+	}
+	while (not executionContext -> isMasterContext ());
+
+	addSceneMenuItem (X3D::X3DExecutionContextPtr (), executionContext);
+
+	for (const auto & executionContext : basic::make_reverse_range (executionContexts))
+		addSceneMenuItem (executionContext, executionContext);
+
+	// Arrow buttons
 
 	getPreviousSceneButton () .set_sensitive (false);
 	getNextSceneButton ()     .set_sensitive (false);
@@ -299,31 +316,36 @@ std::pair <Gtk::RadioMenuItem*, size_t>
 OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScene, const X3D::X3DExecutionContextPtr & scene)
 {
 	const auto basename = scene -> getWorldURL () .basename ();
-	const auto iter     = sceneIndex .find (scene);
 
 	getSceneLabel () .set_markup ("<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
 	getSceneMenuButton () .set_tooltip_text (scene -> getWorldURL () .str ());
 
 	if (currentScene)
 	{
-		if (iter not_eq sceneIndex .end ())
-			return std::make_pair (scenes [iter -> second] .second, iter -> second);
+		// Return menu item if already created.
+		{
+			const auto iter = sceneIndex .find (scene);
+
+			if (sceneIndex .count (scene))
+				return std::make_pair (scenes [iter -> second] .second, iter -> second);
+		}
 
 		// Remove menu items.
-
-		const auto iter = sceneIndex .find (currentScene);
-
-		if (iter not_eq sceneIndex .end ())
 		{
-			const size_t first = iter -> second + 1;
+			const auto iter = sceneIndex .find (currentScene);
 
-			for (size_t i = first, size = scenes .size (); i < size; ++ i)
+			if (iter not_eq sceneIndex .end ())
 			{
-				sceneIndex .erase (scenes [i] .first);
-				getSceneMenu () .remove (*scenes [i] .second);
-			}
+				const size_t first = iter -> second + 1;
 
-			scenes .resize (first);
+				for (size_t i = first, size = scenes .size (); i < size; ++ i)
+				{
+					sceneIndex .erase (scenes [i] .first);
+					getSceneMenu () .remove (*scenes [i] .second);
+				}
+
+				scenes .resize (first);
+			}
 		}
 	}
 	else
@@ -466,11 +488,11 @@ OutlineEditor::on_unlink_clone_activate ()
 		if (not path .up ())
 			return;
 
-			const auto fieldIter = treeView -> get_model () -> get_iter (path);
+		const auto fieldIter = treeView -> get_model () -> get_iter (path);
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
-	
+
 		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 
 		if (not path .up ())
@@ -480,7 +502,7 @@ OutlineEditor::on_unlink_clone_activate ()
 
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
-	
+
 		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 		switch (field -> getType ())
@@ -548,12 +570,12 @@ OutlineEditor::on_remove_activate ()
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
-	
+
 		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 
 		if (not path .up ())
 			return;
-	
+
 		const auto parentIter = treeView -> get_model () -> get_iter (path);
 
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
@@ -733,7 +755,7 @@ OutlineEditor::selectField (const double x, const double y)
 		{
 			if (field -> getType () not_eq reference -> getType ())
 				continue;
-	
+
 			if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
 			{
 				if (field -> getIsReferences () .count (reference))

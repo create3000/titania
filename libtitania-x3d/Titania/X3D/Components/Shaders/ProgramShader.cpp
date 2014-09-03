@@ -51,6 +51,7 @@
 #include "ProgramShader.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderProgram.h"
@@ -212,8 +213,13 @@ ProgramShader::draw ()
 void
 ProgramShader::dispose ()
 {
-	if (pipelineId)
-		glDeleteProgramPipelines (1, &pipelineId);
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+	{
+		if (pipelineId)
+			glDeleteProgramPipelines (1, &pipelineId);
+	}
 
 	X3DShaderNode::dispose ();
 }

@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	ScriptEditor (BrowserWindow* const);
+	ScriptEditor (X3DBrowserWindow* const);
 
 	const Glib::RefPtr <Gsv::Buffer> &
 	getTextBuffer () const

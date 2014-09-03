@@ -1,62 +1,47 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Geospatial/GeoLODTool.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoTransform.h" Line="148" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoTransform.cpp" Line="129" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.h" Line="64" Column="54" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geospatial/GeoLODTool.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="182" Column="8" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="513" Column="58" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="375" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="67" Column="27" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="89" Column="45" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="562" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DParentObject.cpp" Line="206" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="205" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D.cpp" Line="111" Column="27" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
-          <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="tools" expanded="True" />
-              </Node>
-            </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="X3D" expanded="True">
-                <Node name="Components" expanded="True">
-                  <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Grouping" expanded="True">
-                    <Node name="X3DBoundedObject.cpp" selected="True" />
-                  </Node>
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Text" expanded="True" />
-                </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Prototype" expanded="True" />
-                <Node name="Routing" expanded="True" />
-                <Node name="Tools" expanded="True">
-                  <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Lighting" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                </Node>
+              <Node name="OpenGL" expanded="True">
+                <Node name="Context" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True" />
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Rendering" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Routing" expanded="True" />
+              </Node>
+              <Node name="X3D.cpp" selected="True" />
+            </Node>
+          </Node>
           <Node name="Titania" expanded="True">
-            <Node name="config" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="Library" expanded="True">
@@ -66,6 +51,7 @@
                 </Node>
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
+                  <Node name="Editors" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -73,25 +59,20 @@
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
-              <Node name="Configuration" expanded="True" />
               <Node name="Dialogs" expanded="True">
+                <Node name="FileImportDialog" expanded="True" />
+                <Node name="FileOpenDialog" expanded="True" />
+                <Node name="FileSaveDialog" expanded="True" />
+                <Node name="FileSaveWarningDialog" expanded="True" />
                 <Node name="NodeIndex" expanded="True" />
+                <Node name="OpenLocationDialog" expanded="True" />
               </Node>
               <Node name="Editors" expanded="True">
-                <Node name="LightEditor" expanded="True" />
-                <Node name="PrecisionPlacementPanel" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True" />
+                <Node name="PrototypeInstanceDialog" expanded="True" />
               </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="HistoryView" expanded="True" />
-                <Node name="ViewpointList" expanded="True" />
-              </Node>
+              <Node name="Widgets" expanded="True" />
             </Node>
           </Node>
-          <Node name="x3d2vrml" expanded="True">
-            <Node name="bin" expanded="True" />
-          </Node>
-          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

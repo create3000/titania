@@ -296,6 +296,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="TransformExpander">
+            <property name="name">TransformExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -831,6 +832,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="BoundingBoxExpander">
+            <property name="name">BoundingBoxExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>

@@ -87,6 +87,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="TextExpander">
+            <property name="name">TextExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -316,6 +317,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="FontStyleExpander">
+            <property name="name">FontStyleExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>

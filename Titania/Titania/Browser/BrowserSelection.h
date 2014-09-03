@@ -51,8 +51,8 @@
 #ifndef __TITANIA_BROWSER_BROWSER_SELECTION_H__
 #define __TITANIA_BROWSER_BROWSER_SELECTION_H__
 
-#include "../Undo/UndoStep.h"
 #include "../Base/X3DBaseInterface.h"
+#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -64,7 +64,47 @@ public:
 
 	///  @name Construction
 
-	BrowserSelection (BrowserWindow* const);
+	BrowserSelection (X3DBrowserWindow* const);
+
+	///  @name Member access
+
+	void
+	isEnabled (const bool value)
+	{ return browser -> getSelection () -> isEnabled (value); }
+
+	void
+	setMode (const X3D::Selection::SelectionType value)
+	{ return browser -> getSelection () -> setMode (value); }
+
+	void
+	setSelectLowest (const bool value)
+	{ return browser -> getSelection () -> setSelectLowest (value); }
+
+	const X3D::SFBool &
+	isOver () const
+	{ return over; }
+
+	const X3D::SFBool &
+	isActive () const
+	{ return active; }
+
+	const X3D::SFBool &
+	getPickedTime () const
+	{ return touchTime; }
+
+	bool
+	isSelected (const X3D::SFNode & node) const
+	{ return browser -> getSelection () -> isSelected (node); }
+
+	void
+	setChildren (const X3D::MFNode & children)
+	{ browser -> getSelection () -> setChildren (children); }
+
+	const X3D::MFNode &
+	getChildren () const
+	{ return children; }
+
+	///  @name Operations
 
 	void
 	addChildren (const X3D::MFNode &, const UndoStepPtr &) const;
@@ -88,6 +128,22 @@ public:
 
 	virtual
 	~BrowserSelection ();
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_browser ();
+
+	///  @name Members
+
+	X3D::SFBool     over;
+	X3D::SFBool     active;
+	X3D::SFBool     touchTime;
+	X3D::MFNode     children;
+	X3D::BrowserPtr browser;
 
 };
 

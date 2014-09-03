@@ -77,8 +77,14 @@ X3DRouterObject::addTaintedChild (X3DChildObject* const child, const EventPtr & 
 void
 X3DRouterObject::removeTaintedChild (const ChildId & childId)
 {
-	if (childId .time == childrenTime)
+	if (isValid (childId))
 		children .erase (childId .iter);
+}
+
+bool
+X3DRouterObject::isValid (const ChildId & childId) const
+{
+	return childId .time == childrenTime;
 }
 
 ChildrenList
@@ -102,8 +108,14 @@ X3DRouterObject::addTaintedParent (X3DParentObject* const parent)
 void
 X3DRouterObject::removeTaintedParent (const ParentId & parentId)
 {
-	if (parentId .time == parentTime)
+	if (isValid (parentId))
 		parents .erase (parentId .iter);
+}
+
+bool
+X3DRouterObject::isValid (const ParentId & parentId) const
+{
+	return parentId .time == parentTime;
 }
 
 ParentList

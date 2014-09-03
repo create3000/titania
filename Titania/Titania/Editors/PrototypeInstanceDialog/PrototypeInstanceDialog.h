@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	PrototypeInstanceDialog (BrowserWindow* const);
+	PrototypeInstanceDialog (X3DBrowserWindow* const);
 
 	void
 	run ();

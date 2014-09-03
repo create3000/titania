@@ -75,7 +75,7 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 void
 X3DLinePropertiesEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DLinePropertiesEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLinePropertiesEditor::set_selection);
 
 	set_selection ();
 }

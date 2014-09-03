@@ -53,12 +53,14 @@
 #include "BrowserWindow.h"
 #include "BrowserSelection.h"
 
+#include <Titania/X3D/Browser/ContextLock.h>
+
 namespace titania {
 namespace puck {
 
 using namespace std::placeholders;
 
-MagicImport::MagicImport (BrowserWindow* const browserWindow) :
+MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 importFunctions ({ std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3)),
 	                    std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3)) })
@@ -74,15 +76,15 @@ MagicImport::import (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, co
 
 	try
 	{
-		const std::string magic          = scene -> getMetaData ("titania magic");
-		const auto        importFunction = importFunctions .find (magic);
+		const std::string magic = scene -> getMetaData ("titania magic");
 
-		if (importFunction == importFunctions .end ())
-			return false;
-
-		return importFunction -> second (selection, scene, undoStep);
+		return importFunctions .at (magic) (selection, scene, undoStep);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{
+		return false;
+	}
+	catch (const std::out_of_range &)
 	{
 		return false;
 	}
@@ -91,6 +93,11 @@ MagicImport::import (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, co
 bool
 MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
+	X3D::ContextLock lock (getBrowser ());
+
+	if (not lock)
+		return false;
+
 	// Find first material node in scene
 
 	X3D::SFNode material;
@@ -101,11 +108,9 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
-	                     getBrowser () -> makeCurrent ();
-	                     
 	                     importProtoDeclaration (appearance -> material (), undoStep);
+	                     
 	                     material = appearance -> material () -> copy (getExecutionContext (), X3D::FLAT_COPY);
-
 	                     return false;
 							}
 
@@ -136,6 +141,11 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 bool
 MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
+	X3D::ContextLock lock (getBrowser ());
+
+	if (not lock)
+		return false;
+
 	// Find first material node in scene
 
 	X3D::SFNode texture;
@@ -146,11 +156,9 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
-	                     getBrowser () -> makeCurrent ();
-	                     
 	                     importProtoDeclaration (appearance -> texture (), undoStep);
+	                     
 	                     texture = appearance -> texture () -> copy (getExecutionContext (), X3D::FLAT_COPY);
-
 	                     return false;
 							}
 

@@ -99,10 +99,6 @@ createBrowser (const BrowserPtr &)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>);
 
-void
-removeBrowser (BrowserPtr &)
-noexcept (true);
-
 } // X3D
 } // titania
 

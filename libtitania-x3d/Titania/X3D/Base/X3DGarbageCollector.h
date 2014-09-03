@@ -65,13 +65,7 @@ class X3DChildObject;
 class X3DGarbageCollector :
 	virtual public X3DBase
 {
-protected:
-
-	///  @name Construction
-
-	X3DGarbageCollector () :
-		X3DBase ()
-	{ }
+public:
 
 	///  @name Operations
 
@@ -88,6 +82,16 @@ protected:
 
 		objects .insert (objects .end (), first, last);
 	}
+
+protected:
+
+	///  @name Construction
+
+	X3DGarbageCollector () :
+		X3DBase ()
+	{ }
+
+	///  @name Operations
 
 	static
 	void

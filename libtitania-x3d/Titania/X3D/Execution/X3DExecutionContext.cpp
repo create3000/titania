@@ -51,6 +51,7 @@
 #include "X3DExecutionContext.h"
 
 #include "../Bits/Cast.h"
+#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -139,7 +140,9 @@ X3DExecutionContext::initialize ()
 void
 X3DExecutionContext::realize ()
 {
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		while (not uninitializedNodes .empty ())
 		{
@@ -1117,7 +1120,9 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		if (executionContext -> getProfile () or not executionContext -> getComponents () .empty ())
 		{

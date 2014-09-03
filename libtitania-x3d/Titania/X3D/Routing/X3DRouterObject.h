@@ -74,11 +74,17 @@ public:
 	void
 	removeTaintedChild (const ChildId &);
 
+	bool
+	isValid (const ChildId &) const;
+
 	ParentId
 	addTaintedParent (X3DParentObject* const);
 
 	void
 	removeTaintedParent (const ParentId &);
+
+	bool
+	isValid (const ParentId &) const;
 
 	void
 	processEvents ();

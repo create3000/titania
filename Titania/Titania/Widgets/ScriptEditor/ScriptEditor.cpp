@@ -50,7 +50,7 @@
 
 #include "ScriptEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 
@@ -62,7 +62,7 @@
 namespace titania {
 namespace puck {
 
-ScriptEditor::ScriptEditor (BrowserWindow* const browserWindow) :
+ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
 	              textBuffer (Gsv::Buffer::create ()),
@@ -200,7 +200,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
-	getBrowserWindow () -> setAccelerators (false);
+	getBrowserWindow () -> hasAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	return false;
 }
@@ -209,7 +209,7 @@ bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
-	getBrowserWindow () -> setAccelerators (true);
+	getBrowserWindow () -> hasAccelerators (true);
 	return false;
 }
 

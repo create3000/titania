@@ -51,7 +51,7 @@
 #include "ViewpointList.h"
 
 #include "../../Base/AdjustmentObject.h"
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -75,12 +75,13 @@ static constexpr int BOLD   = 700;
 
 };
 
-ViewpointList::ViewpointList (BrowserWindow* const browserWindow, const bool label) :
+ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool label) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
-	                    label (label),
-	           userViewpoints (true),
+	                  browser (getBrowser ()),
 	              activeLayer (),
+	           userViewpoints (true),
+	                    label (label),
 	              hadjustment (new AdjustmentObject ()),
 	              vadjustment (new AdjustmentObject ())
 {
@@ -107,9 +108,9 @@ ViewpointList::initialize ()
 	getDescriptionCellRenderer () -> property_style_set () = true;
 	getTypeNameCellRenderer ()    -> property_style_set () = true;
 
-	getBrowser () -> getActiveLayer () .addInterest (this, &ViewpointList::set_activeLayer);
+	getBrowser () .addInterest (this, &ViewpointList::set_browser);
 
-	set_activeLayer ();
+	set_browser (getBrowser ());
 }
 
 void
@@ -140,6 +141,18 @@ ViewpointList::getUserViewpoints ()
 }
 
 void
+ViewpointList::set_browser (const X3D::BrowserPtr & value)
+{
+	browser -> getActiveLayer () .removeInterest (this, &ViewpointList::set_activeLayer);
+
+	browser = value;
+
+	browser -> getActiveLayer () .addInterest (this, &ViewpointList::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
 ViewpointList::set_activeLayer ()
 {
 	if (activeLayer)
@@ -148,7 +161,7 @@ ViewpointList::set_activeLayer ()
 		getViewpointStack () -> removeInterest (this, &ViewpointList::set_currentViewpoint);
 	}
 
-	activeLayer = getBrowser () -> getActiveLayer ();
+	activeLayer = browser -> getActiveLayer ();
 
 	if (activeLayer)
 	{

@@ -50,13 +50,13 @@
 
 #include "MotionBlurEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-MotionBlurEditor::MotionBlurEditor (BrowserWindow* const browserWindow) :
+MotionBlurEditor::MotionBlurEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.xml"), gconf_dir ())
 {

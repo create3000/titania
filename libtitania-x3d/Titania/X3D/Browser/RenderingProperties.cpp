@@ -79,18 +79,20 @@ const std::string RenderingProperties::typeName       = "RenderingProperties";
 const std::string RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	       enabled (),
-	 cycleInterval (1),
-	        vendor (new SFString ()),
-	      renderer (new SFString ()),
-	       version (new SFString ()),
-	       shading (new SFString ("GOURAUD")),
-	maxTextureSize (new SFInt32 ()),
-	  textureUnits (new SFInt32 ()),
-	     maxLights (new SFInt32 ()),
-	   antialiased (new SFBool ()),
-	    colorDepth (new SFInt32 ()),
-	 textureMemory (new SFDouble ())
+	        enabled (),
+	  cycleInterval (1),
+	         vendor (new SFString ()),
+	       renderer (new SFString ()),
+	        version (new SFString ()),
+	        shading (new SFString ("GOURAUD")),
+	 maxTextureSize (new SFInt32 ()),
+	   textureUnits (new SFInt32 ()),
+	      maxLights (new SFInt32 ()),
+	    antialiased (new SFBool ()),
+	     colorDepth (new SFInt32 ()),
+	  textureMemory (new SFDouble ()),
+	foregroundColor (new SFColorRGBA (1, 1, 1, 1)),
+	backgroundColor (new SFColorRGBA (0, 0, 0, 1))
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -111,6 +113,9 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "Antialiased",    antialiased ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
 	addField (outputOnly, "TextureMemory",  textureMemory ());
+
+	addField (outputOnly, "ForegroundColor",  foregroundColor ());
+	addField (outputOnly, "BackgroundColor",  backgroundColor ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
@@ -149,8 +154,22 @@ RenderingProperties::initialize ()
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 
-		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_enabled);
+		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepareEvents);
+		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::set_enabled);
 	}
+}
+
+void
+RenderingProperties::prepareEvents ()
+{
+	const auto fColor = getBrowser () -> getForegroundColor ();
+	const auto bColor = getBrowser () -> getBackgroundColor ();
+
+	if (fColor not_eq foregroundColor ())
+		foregroundColor () = fColor;
+
+	if (bColor not_eq backgroundColor ())
+		backgroundColor () = bColor;
 }
 
 void
@@ -181,7 +200,7 @@ RenderingProperties::set_enabled ()
 			world = new World (scene);
 			world -> setup ();
 		}
-	
+
 		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::reset);
 		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepare);
 		getBrowser () -> displayed ()     .addInterest (this, &RenderingProperties::display);
@@ -201,7 +220,7 @@ RenderingProperties::reset ()
 {
 	clock       .reset ();
 	renderClock .reset ();
-	
+
 	build ();
 }
 
@@ -236,10 +255,11 @@ static
 std::string
 format_time (const time_type & time, const size_t fractions = 0)
 {
-	auto t = std::floor (time);
+	auto       t = std::floor (time);
 	const auto f = std::floor ((t - time) * std::pow (10, fractions));
 
 	const int s = std::fmod (t, 60);
+
 	t = std::floor (t / 60);
 
 	const int m = std::fmod (t, 60);
@@ -266,7 +286,7 @@ RenderingProperties::build ()
 
 	size_t numOpaqueShapes      = 0;
 	size_t numTransparentShapes = 0;
-	
+
 	for (const auto & layer : getBrowser () -> getWorld () -> getLayerSet () -> getLayers ())
 	{
 		numOpaqueShapes      += layer -> getNumOpaqueShapes ();

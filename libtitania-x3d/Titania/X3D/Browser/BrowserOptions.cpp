@@ -50,6 +50,7 @@
 
 #include "BrowserOptions.h"
 
+#include "../Bits/config.h"
 #include "../Browser/Geometry2D/Arc2DOptions.h"
 #include "../Browser/Geometry2D/ArcClose2DOptions.h"
 #include "../Browser/Geometry2D/Circle2DOptions.h"
@@ -70,18 +71,19 @@ namespace X3D {
 
 // Table 9.2 — Browser options
 // Name                    Type/valid range                         Default                      Description
-// SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
+// SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup.
 // Dashboard               Boolean                                  False                        Specified by bound NavigationInfo in content. Display browser navigation user interface.
 // Rubberband              Boolean                                  True                         Specified by bound NavigationInfo in content. Display rubber band navigation hint.
 // EnableInlineViewpoints  Boolean                                  True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.
-// Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
-// TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
-// PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tessellation level) for Box, Cone, Cylinder, Sphere
-// QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   Render quality while camera is moving
-// Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
-// MotionBlur              Boolean                                  False                        Render animations with motion blur
+// Antialiased             Boolean                                  False                        Render using hardware antialiasing if available.
+// TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display.
+// PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tessellation level) for Box, Cone, Cylinder, Sphere.
+// QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   Render quality while camera is moving.
+// Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects.
+// MotionBlur              Boolean                                  False                        Render animations with motion blur.
 //
-// MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
+// SplashScreenURL         String Array                             Implementation-dependent     The url of the file that should be used as splash screen.
+// MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1).
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
@@ -91,6 +93,7 @@ const std::string BrowserOptions::containerField = "browserOptions";
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	          splashScreen (new SFBool (false)),
+	       splashScreenURL (new MFString ({ get_page ("about/splash.x3dv") .str () })),
 	             dashboard (new SFBool (true)),
 	            rubberBand (new SFBool (true)),
 	enableInlineViewpoints (new SFBool (true)),
@@ -121,6 +124,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlur",             motionBlur ());
 
 	// Non standard options
+	addField (inputOutput, "SplashScreenURL",        splashScreenURL ());
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
 	addField (inputOutput, "Gravity",                gravity ());

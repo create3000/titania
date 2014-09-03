@@ -77,7 +77,7 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 void
 X3DFillPropertiesEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DFillPropertiesEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DFillPropertiesEditor::set_selection);
 
 	set_selection ();
 }

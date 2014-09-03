@@ -52,6 +52,7 @@
 #define __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
 
 #include "../../UserInterfaces/X3DFileSaveDialogInterface.h"
+#include "../../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -63,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	FileSaveDialog (BrowserWindow* const);
+	FileSaveDialog (X3DBrowserWindow* const);
 
 	void
 	saveScene ();

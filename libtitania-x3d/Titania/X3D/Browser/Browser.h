@@ -79,6 +79,13 @@ public:
 	create (X3DExecutionContext* const) const;
 
 	///  @name Member access
+	virtual
+	Color4f
+	getForegroundColor () const final override;
+	
+	virtual
+	Color4f
+	getBackgroundColor () const final override;
 
 	void
 	setCursor (Gdk::CursorType cursor_type)
@@ -101,6 +108,9 @@ public:
 	virtual
 	void
 	dispose () final override;
+	
+	virtual
+	~Browser ();
 
 
 protected:
@@ -122,6 +132,14 @@ private:
 	{ setup (); }
 
 	///  @name Event handler
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_unmap () override;
 
 	void
 	set_changed ();
@@ -146,7 +164,6 @@ private:
 	std::unique_ptr <X3DViewer>      viewer;
 	std::unique_ptr <KeyDevice>      keyDevice;
 	std::unique_ptr <PointingDevice> pointingDevice;
-
 };
 
 } // X3D

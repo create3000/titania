@@ -72,7 +72,6 @@ X3DRenderingContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
-		glClearColor (0, 0, 0, 0);
 		glClearDepth (1);
 
 		glCullFace (GL_BACK);

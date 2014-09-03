@@ -65,6 +65,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="GeometryExpander">
+            <property name="name">GeometryExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>

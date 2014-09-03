@@ -51,19 +51,19 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_SFSTRING_ENTRY_H__
 #define __TITANIA_COMPOSED_WIDGETS_SFSTRING_ENTRY_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
 class SFStringTextView :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	SFStringTextView (BrowserWindow* const,
+	SFStringTextView (X3DBrowserWindow* const,
 	               Gtk::TextView &,
 	               const std::string &);
 
@@ -111,11 +111,11 @@ private:
 };
 
 inline
-SFStringTextView::SFStringTextView (BrowserWindow* const browserWindow,
+SFStringTextView::SFStringTextView (X3DBrowserWindow* const browserWindow,
                               Gtk::TextView & textView,
                               const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	        textView (textView),
 	           nodes (),
 	            name (name),

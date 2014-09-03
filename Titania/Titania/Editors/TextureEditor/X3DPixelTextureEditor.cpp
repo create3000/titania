@@ -50,6 +50,8 @@
 
 #include "X3DPixelTextureEditor.h"
 
+#include <Titania/X3D/Browser/ContextLock.h>
+
 namespace titania {
 namespace puck {
 
@@ -113,7 +115,9 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 void
 X3DPixelTextureEditor::assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode)
 {
-	if (not texture2DNode -> getBrowser () -> makeCurrent ())
+	X3D::ContextLock lock (texture2DNode -> getBrowser ());
+
+	if (not lock)
 		return;
 
 	const auto   width      = texture2DNode -> getWidth ();

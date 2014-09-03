@@ -214,8 +214,8 @@ Context::set_live ()
 		{
 			switch (field -> getAccessType ())
 			{
-				case inputOnly   :
-				case inputOutput :
+				case inputOnly:
+				case inputOutput:
 					{
 						if (program -> hasFunctionDeclaration (field -> getName ()))
 							field -> removeInterest (this, &Context::set_field);

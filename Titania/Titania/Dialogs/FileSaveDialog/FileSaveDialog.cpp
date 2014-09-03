@@ -50,6 +50,7 @@
 
 #include "FileSaveDialog.h"
 
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -57,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-FileSaveDialog::FileSaveDialog (BrowserWindow* const browserWindow) :
+FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.xml"), gconf_dir ())
 {

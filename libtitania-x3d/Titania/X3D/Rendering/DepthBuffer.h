@@ -53,6 +53,7 @@
 
 #include <vector>
 
+#include "../Browser/X3DBrowser.h"
 #include "../Rendering/OpenGL.h"
 
 namespace titania {
@@ -62,7 +63,7 @@ class DepthBuffer
 {
 public:
 
-	DepthBuffer (size_t, size_t);
+	DepthBuffer (X3DBrowser* const, const size_t, const size_t);
 
 	double
 	getDistance (const double, const double);
@@ -84,9 +85,9 @@ public:
 
 private:
 
-	size_t width;
-	size_t height;
-
+	X3DBrowser* const   browser;
+	size_t              width;
+	size_t              height;
 	GLuint              id;
 	GLuint              colorBuffer;
 	GLuint              depthBuffer;

@@ -70,7 +70,7 @@ class NodePropertiesEditor :
 {
 public:
 
-	NodePropertiesEditor (BrowserWindow* const);
+	NodePropertiesEditor (X3DBrowserWindow* const);
 
 	virtual
 	~NodePropertiesEditor ();

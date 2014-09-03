@@ -96,9 +96,9 @@ X3DTransformEditor::X3DTransformEditor () :
 void
 X3DTransformEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTransformEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTransformEditor::set_selection);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

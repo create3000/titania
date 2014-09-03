@@ -50,7 +50,7 @@
 
 #include "X3DMaterialEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -97,7 +97,7 @@ X3DMaterialEditor::initialize ()
 	preview -> show ();
 	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_initialized);
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DMaterialEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DMaterialEditor::set_selection);
 
 	set_selection ();
 }
@@ -109,7 +109,7 @@ X3DMaterialEditor::set_initialized ()
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Dialogs/MaterialEditorPreview.x3dv") });
+		preview -> loadURL ({ get_ui ("Editors/MaterialEditorPreview.x3dv") });
 
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}
@@ -516,8 +516,6 @@ X3DMaterialEditor::connectMaterial (const X3D::SFNode & field)
 
 X3DMaterialEditor::~X3DMaterialEditor ()
 {
-	X3D::removeBrowser (preview);
-
 	dispose ();
 }
 

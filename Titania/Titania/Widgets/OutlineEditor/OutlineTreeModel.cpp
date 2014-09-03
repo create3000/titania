@@ -50,7 +50,7 @@
 
 #include "OutlineTreeModel.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <cassert>

@@ -218,9 +218,7 @@ X3DTexture2DNodeEditor::set_preview ()
 }
 
 X3DTexture2DNodeEditor::~X3DTexture2DNodeEditor ()
-{
-	X3D::removeBrowser (preview);
-}
+{ }
 
 } // puck
 } // titania

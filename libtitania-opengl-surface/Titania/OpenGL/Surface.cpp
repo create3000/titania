@@ -82,8 +82,8 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	signal_unrealize () .connect (sigc::mem_fun (*this, &Surface::dispose));
 }
 
-Surface::Surface (const Surface & sharingSurface) :
-	Surface (sharingSurface .context)
+Surface::Surface (const Surface & other) :
+	Surface (other .sharingContext ? other .sharingContext : other .context)
 { }
 
 void
@@ -243,12 +243,6 @@ Surface::dispose ()
 
 	context .reset ();
 	sharingContext .reset ();
-}
-
-bool
-Surface::on_unmap_event (GdkEventAny*)
-{
-	return false; // Propagate the event further.
 }
 
 Surface::~Surface ()

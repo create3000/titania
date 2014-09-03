@@ -53,18 +53,9 @@
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
-#include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 #include "../Dialogs/NodeIndex/NodeIndex.h"
+#include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 #include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
-
-#include "../Widgets/Console/Console.h"
-#include "../Widgets/HistoryView/HistoryView.h"
-#include "../Widgets/LibraryView/LibraryView.h"
-#include "../Widgets/OutlineEditor/OutlineEditor.h"
-#include "../Widgets/OutlineEditor/OutlineTreeModel.h"
-#include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
-#include "../Widgets/ViewpointList/ViewpointList.h"
-#include "../Widgets/ScriptEditor/ScriptEditor.h"
 
 #include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
@@ -78,26 +69,17 @@
 namespace titania {
 namespace puck {
 
-BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, char** argv) :
-	X3DBaseInterface (this, browserSurface),
-	X3DBrowserEditor (argc, argv),
-	   viewpointList (new ViewpointList (this, true)),
-	   historyEditor (new HistoryView (this)),
-	     libraryView (new LibraryView (this)),
-	   outlineEditor (new OutlineEditor (this)),
-	         console (new Console (this)),
-	    scriptEditor (new ScriptEditor (this)),
-	            keys (),
-	       shortcuts (true),
+BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
+	X3DBaseInterface (this, browser),
+	X3DBrowserWindow (browser),
 	          toggle (true),
 	        changing (false),
-	          viewer (X3D::ViewerType::NONE),
-	    saveAsOutput ()
+	          viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
-		getBrowser () -> set_antialiasing (4);
+		browser -> set_antialiasing (4);
 
 	setup ();
 }
@@ -105,15 +87,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, 
 void
 BrowserWindow::initialize ()
 {
-	X3DBrowserEditor::initialize ();
-
-	// Sidebar
-	viewpointList -> reparent (getViewpointListBox (), getWindow ());
-	historyEditor -> reparent (getHistoryViewBox (),   getWindow ());
-	libraryView   -> reparent (getLibraryViewBox (),   getWindow ());
-	outlineEditor -> reparent (getOutlineEditorBox (), getWindow ());
-	console       -> reparent (getConsoleBox (),       getWindow ());
-	scriptEditor  -> reparent (getScriptEditorBox (),  getWindow ());
+	X3DBrowserWindow::initialize ();
 
 	loadStyles ();
 
@@ -124,8 +98,8 @@ BrowserWindow::initialize ()
 		Gtk::TargetEntry ("text/uri-list")
 	};
 
-	getToolBar ()    .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
-	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	getToolBar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Clipboard
 	// Gtk::Clipboard::get () -> set_can_store (); // not needed
@@ -136,26 +110,14 @@ BrowserWindow::initialize ()
 	getScene ()            .addInterest (this, &BrowserWindow::set_scene);
 	getExecutionContext () .addInterest (this, &BrowserWindow::set_executionContext);
 
-	getBrowser () -> getViewer ()               .addInterest (this, &BrowserWindow::set_viewer);
-	getBrowser () -> getAvailableViewers ()     .addInterest (this, &BrowserWindow::set_available_viewers);
+	getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
 
-	getBrowser () -> getBrowserOptions () -> dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getBrowserOptions () -> shading ()          .addInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
-
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	getWidget () .grab_focus ();
-}
-
-const std::shared_ptr <OutlineTreeViewEditor> &
-BrowserWindow::getOutlineTreeView () const
-{
-	return outlineEditor -> getTreeView ();
 }
 
 void
@@ -187,51 +149,36 @@ BrowserWindow::loadStyles () const
 	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider2, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
-// Menu
-
 void
-BrowserWindow::setAccelerators (bool value)
+BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
-	shortcuts = value;
+	__LOG__ << std::endl;
 
-	for (const auto & child : getMenuBar () .get_children ())
-	{
-		const auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
+	getBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
+	getBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
-		if (menuItem and menuItem -> get_visible ())
-		{
-			const auto menu = menuItem -> get_submenu ();
+	getBrowser () -> getBrowserOptions () -> dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
+	getBrowser () -> getBrowserOptions () -> shading ()          .removeInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
 
-			if (menu)
-				menu -> set_sensitive (shortcuts);
-		}
-	}
-}
+	X3DBrowserWindow::setBrowser (value);
 
-void
-BrowserWindow::expandNodes (const X3D::MFNode & nodes)
-{
-	if (getConfig () .getBoolean ("followPrimarySelection"))
-		getBrowser () -> finished () .addInterest (this, &BrowserWindow::expandNodesImpl, nodes);
-}
+	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
+	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 
-void
-BrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
-{
-	getBrowser () -> finished () .removeInterest (this, &BrowserWindow::expandNodesImpl);
+	getBrowser () -> getBrowserOptions () -> dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
+	getBrowser () -> getBrowserOptions () -> shading ()          .addInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
 
-	for (const auto & node : nodes)
-	{
-		getOutlineTreeView () -> expand_to (node);
+	set_viewer (getBrowser () -> getViewer ());
+	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
-		{
-			const auto path = getOutlineTreeView () -> get_model () -> get_path (iter);
-			
-			getOutlineTreeView () -> expand_row (path, false);
-			getOutlineTreeView () -> scroll_to_row (path);
-		}
-	}
+	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
+	set_shading (getBrowser () -> getBrowserOptions () -> shading ());
+	set_primitiveQuality (getBrowser () -> getBrowserOptions () -> primitiveQuality ());
+
+	getBrowser () -> getBrowserOptions () -> rubberBand ()   = getRubberbandMenuItem () .get_active ();
+	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
 }
 
 void
@@ -274,7 +221,7 @@ BrowserWindow::set_executionContext ()
 	getImportButton ()                  .set_sensitive (inScene);
 	getCreatePrototypeInstanceButton () .set_sensitive (inScene);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getSelection () -> getChildren ());
 }
 
 // Selection
@@ -282,10 +229,10 @@ BrowserWindow::set_executionContext ()
 void
 BrowserWindow::set_touchTime ()
 {
-	if (getBrowser () -> getSelection () -> getChildren () .empty ())
+	if (getSelection () -> getChildren () .empty ())
 		return;
 
-	expandNodes ({ getBrowser () -> getSelection () -> getChildren () .back () });
+	expandNodes ({ getSelection () -> getChildren () .back () });
 }
 
 void
@@ -376,84 +323,84 @@ BrowserWindow::on_focus_out_event (GdkEventFocus*)
 bool
 BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
-	if (shortcuts)
+	if (not hasAccelerators ())
+		return false;
+
+	getKeys () .press (event);
+
+	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
+
+	// Nudge selection.
+
+	if (not inPrototypeInstance () and not getSelection () -> getChildren () .empty ())
 	{
-		keys .press (event);
+		static constexpr float NUDGE_STEP   = 0.001;
+		static constexpr float NUDGE_FACTOR = 10;
 
-		getBrowser () -> getSelection () -> setMode (keys .shift () and not keys .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
-
-		// Nudge selection.
-
-		if (not inPrototypeInstance () and not getBrowser () -> getSelection () -> getChildren () .empty ())
-		{
-			static constexpr float NUDGE_STEP   = 0.001;
-			static constexpr float NUDGE_FACTOR = 10;
-
-			const float nudge           = NUDGE_STEP * (keys .shift () ? NUDGE_FACTOR : 1);
-			const bool  alongFrontPlane = false;
-
-			switch (event -> keyval)
-			{
-				case GDK_KEY_Up:
-				{
-					if (keys .control ())
-						translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
-					else
-						translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
-
-					return true;
-				}
-				case GDK_KEY_Down:
-				{
-					if (keys .control ())
-						translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
-					else
-						translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
-
-					return true;
-				}
-				case GDK_KEY_Left:
-				{
-					translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
-					return true;
-				}
-				case GDK_KEY_Right:
-				{
-					translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
-					return true;
-				}
-				default:
-					break;
-			}
-		}
-
-		// Change viewpoint.
+		const float nudge           = NUDGE_STEP * (getKeys () .shift () ? NUDGE_FACTOR : 1);
+		const bool  alongFrontPlane = false;
 
 		switch (event -> keyval)
 		{
-			case GDK_KEY_Home:
+			case GDK_KEY_Up:
 			{
-				getBrowser () -> firstViewpoint ();
+				if (getKeys () .control ())
+					translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
+				else
+					translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
+
 				return true;
 			}
-			case GDK_KEY_Page_Up:
+			case GDK_KEY_Down:
 			{
-				getBrowser () -> previousViewpoint ();
+				if (getKeys () .control ())
+					translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
+				else
+					translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
+
 				return true;
 			}
-			case GDK_KEY_Page_Down:
+			case GDK_KEY_Left:
 			{
-				getBrowser () -> nextViewpoint ();
+				translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
 				return true;
 			}
-			case GDK_KEY_End:
+			case GDK_KEY_Right:
 			{
-				getBrowser () -> lastViewpoint ();
+				translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
 				return true;
 			}
 			default:
 				break;
 		}
+	}
+
+	// Change viewpoint.
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Home:
+		{
+			getBrowser () -> firstViewpoint ();
+			return true;
+		}
+		case GDK_KEY_Page_Up:
+		{
+			getBrowser () -> previousViewpoint ();
+			return true;
+		}
+		case GDK_KEY_Page_Down:
+		{
+			getBrowser () -> nextViewpoint ();
+			return true;
+		}
+		case GDK_KEY_End:
+		{
+			getBrowser () -> lastViewpoint ();
+			return true;
+		}
+		default:
+			break;
 	}
 
 	return false;
@@ -462,9 +409,9 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 bool
 BrowserWindow::on_key_release_event (GdkEventKey* event)
 {
-	keys .release (event);
+	getKeys () .release (event);
 
-	getBrowser () -> getSelection () -> setMode (keys .shift () and not keys .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
+	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
 
 	return false;
 }
@@ -481,22 +428,19 @@ BrowserWindow::on_menubar_button_press_event (GdkEventButton* event)
 void
 BrowserWindow::on_new ()
 {
-	if (isSaved ())
-		blank ();
+	blank ();
 }
 
 void
 BrowserWindow::on_open ()
 {
-	if (isSaved ())
-		std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> loadURL ();
+	std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> loadURL ();
 }
 
 void
 BrowserWindow::on_open_location ()
 {
-	if (isSaved ())
-		std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog", false)) -> run ();
+	std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog", false)) -> run ();
 }
 
 void
@@ -506,7 +450,7 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
                                               guint info,
                                               guint time)
 {
-	dragDataHandling (context, selection_data, time, true);
+	on_drag_data_received (context, selection_data, time, true);
 }
 
 void
@@ -522,20 +466,20 @@ BrowserWindow::on_import_as_inline_toggled ()
 }
 
 void
-BrowserWindow::on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                                  int x, int y,
-                                                  const Gtk::SelectionData & selection_data,
-                                                  guint info,
-                                                  guint time)
+BrowserWindow::on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                              int x, int y,
+                                              const Gtk::SelectionData & selection_data,
+                                              guint info,
+                                              guint time)
 {
-	dragDataHandling (context, selection_data, time, getBrowserMenuItem () .get_active ());
+	on_drag_data_received (context, selection_data, time, getBrowserMenuItem () .get_active ());
 }
 
 void
-BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context,
-                                 const Gtk::SelectionData & selection_data,
-                                 const guint time,
-                                 const bool do_open)
+BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                      const Gtk::SelectionData & selection_data,
+                                      const guint time,
+                                      const bool do_open)
 {
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
@@ -547,6 +491,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 
 			for (const auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));         // ???
+
 		}
 
 		if (selection_data .get_data_type () == "STRING")
@@ -561,14 +506,13 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 		{
 			if (do_open)
 			{
-				if (isSaved ())
-					open (uris [0]);
+				open (uris [0]);
 			}
 			else
 			{
 				const auto undoStep = getConfig () .getBoolean ("importAsInline")
 				                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
-				                      : std::make_shared <UndoStep> (_ ("Import"));
+											 : std::make_shared <UndoStep> (_ ("Import"));
 
 				const auto nodes = importURL (uris, getConfig () .getBoolean ("importAsInline"), undoStep);
 
@@ -615,13 +559,19 @@ BrowserWindow::on_remove_unused_prototypes ()
 void
 BrowserWindow::on_close ()
 {
-	close ();
+	close (getBrowser ());
+}
+
+void
+BrowserWindow::on_quit ()
+{
+	quit ();
 }
 
 void
 BrowserWindow::on_revert_to_saved ()
 {
-	if (isSaved ())
+	if (isSaved (getBrowser ()))
 		reload ();
 }
 
@@ -650,7 +600,7 @@ BrowserWindow::on_clipboard_owner_change (GdkEventOwnerChange*)
 void
 BrowserWindow::on_cut_nodes_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -669,7 +619,7 @@ BrowserWindow::on_cut_nodes_activate ()
 void
 BrowserWindow::on_copy_nodes_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -680,7 +630,7 @@ BrowserWindow::on_copy_nodes_activate ()
 void
 BrowserWindow::on_paste_nodes_activate ()
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
 
@@ -694,7 +644,7 @@ BrowserWindow::on_paste_nodes_activate ()
 void
 BrowserWindow::on_delete_nodes_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -711,7 +661,7 @@ BrowserWindow::on_delete_nodes_activate ()
 void
 BrowserWindow::on_create_clone_activate ()
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	if (selection .size () < 2)
 		return;
@@ -731,7 +681,7 @@ BrowserWindow::on_create_clone_activate ()
 void
 BrowserWindow::on_unlink_clone_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -748,7 +698,7 @@ BrowserWindow::on_unlink_clone_activate ()
 void
 BrowserWindow::on_group_selected_nodes_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -767,7 +717,7 @@ BrowserWindow::on_group_selected_nodes_activate ()
 void
 BrowserWindow::on_ungroup_node_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -783,7 +733,7 @@ BrowserWindow::on_ungroup_node_activate ()
 void
 BrowserWindow::on_add_to_group_activate ()
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	if (selection .size () < 2)
 		return;
@@ -806,7 +756,7 @@ BrowserWindow::on_add_to_group_activate ()
 void
 BrowserWindow::on_detach_from_group_activate ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -908,7 +858,7 @@ BrowserWindow::on_create_parent_cad_layer_activate ()
 void
 BrowserWindow::on_create_parent (const std::string & typeName)
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -967,7 +917,7 @@ BrowserWindow::on_browser_toggled ()
 
 		isLive (true);
 
-		enableEditor (false);
+		isEditor (false);
 
 		if (not getBackgroundsMenuItem () .get_active ())
 			getBackgroundsMenuItem () .set_active (true);
@@ -998,12 +948,12 @@ BrowserWindow::on_editor_toggled ()
 	{
 		getConfig () .setItem ("workspace", "EDITOR");
 
-		enableEditor (true);
+		isEditor (true);
 	}
 }
 
 void
-BrowserWindow::enableEditor (const bool enabled)
+BrowserWindow::isEditor (const bool enabled)
 {
 	getImportMenuItem ()                       .set_visible (enabled);
 	getImportAsInlineMenuItem ()               .set_visible (enabled);
@@ -1035,6 +985,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
 	getScriptEditorBox ()  .set_visible (enabled);
+	getBrowserNotebook ()  .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
 
 	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);
@@ -1260,7 +1211,7 @@ BrowserWindow::on_lights_toggled ()
 			                  {
 			                     if (type == X3D::X3DConstants::X3DLightNodeTool)
 			                     {
-			                        if (not getBrowser () -> getSelection () -> isSelected (node))
+			                        if (not getSelection () -> isSelected (node))
 												node -> removeTool (true);
 
 			                        break;
@@ -1302,7 +1253,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 			               {
 			                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
 
-			                  if (tool and not getBrowser () -> getSelection () -> isSelected (node))
+			                  if (tool and not getSelection () -> isSelected (node))
 										tool -> removeTool (true);
 
 			                  return true;
@@ -1340,7 +1291,7 @@ BrowserWindow::on_visibility_sensors_toggled ()
 			               {
 			                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
 
-			                  if (tool and not getBrowser () -> getSelection () -> isSelected (node))
+			                  if (tool and not getSelection () -> isSelected (node))
 										tool -> removeTool (true);
 
 			                  return true;
@@ -1383,7 +1334,7 @@ BrowserWindow::on_viewpoints_toggled ()
 			                  {
 			                     if (type == X3D::X3DConstants::X3DViewpointNodeTool)
 			                     {
-			                        if (not getBrowser () -> getSelection () -> isSelected (node))
+			                        if (not getSelection () -> isSelected (node))
 												node -> removeTool (true);
 
 			                        break;
@@ -1471,7 +1422,7 @@ BrowserWindow::on_deselect_all_activate ()
 void
 BrowserWindow::on_hide_selected_objects_activate ()
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	               {
@@ -1490,7 +1441,7 @@ BrowserWindow::on_hide_unselected_objects_activate ()
 {
 	std::set <X3D::X3DShapeNode*> visibles;
 
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	X3D::traverse (selection, [&visibles] (X3D::SFNode & node)
 	               {
@@ -1521,7 +1472,7 @@ BrowserWindow::on_hide_unselected_objects_activate ()
 void
 BrowserWindow::on_show_selected_objects_activate ()
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getSelection () -> getChildren ();
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	               {
@@ -1555,7 +1506,7 @@ BrowserWindow::on_select_lowest_toggled ()
 {
 	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
 
-	getBrowser () -> getSelection () -> setSelectLowest (getSelectLowestMenuItem () .get_active ());
+	getSelection () -> setSelectLowest (getSelectLowestMenuItem () .get_active ());
 }
 
 void
@@ -1564,10 +1515,10 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
 
 	if (getFollowPrimarySelectionMenuItem () .get_active ())
-		getBrowser () -> getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
+		getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
 
 	else
-		getBrowser () -> getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_touchTime);
+		getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_touchTime);
 }
 
 // Layout
@@ -1583,8 +1534,7 @@ BrowserWindow::on_grid_tool_activate ()
 void
 BrowserWindow::on_info ()
 {
-	if (isSaved ())
-		open (get_page ("about/info.wrl"));
+	open (get_page ("about/info.wrl"));
 }
 
 void
@@ -1681,7 +1631,7 @@ BrowserWindow::on_hand_button_toggled ()
 	if (getHandButton () .get_active ())
 	{
 		getConfig () .setItem ("arrow", false);
-		getBrowser () -> getSelection () -> isEnabled (false);
+		getSelection () -> isEnabled (false);
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -1693,7 +1643,7 @@ BrowserWindow::on_arrow_button_toggled ()
 	if (getArrowButton () .get_active ())
 	{
 		getConfig () .setItem ("arrow", true);
-		getBrowser () -> getSelection () -> isEnabled (true);
+		getSelection () -> isEnabled (true);
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -1708,7 +1658,7 @@ BrowserWindow::on_play_pause_button_clicked ()
 void
 BrowserWindow::on_select_parent_button_clicked ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -1806,14 +1756,14 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 	// Select and expand.
 
-	getBrowser () -> getSelection () -> setChildren (parents);
+	getSelection () -> setChildren (parents);
 	expandNodes (parents);
 }
 
 void
 BrowserWindow::on_select_children_button_clicked ()
 {
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;
@@ -1831,7 +1781,7 @@ BrowserWindow::on_select_children_button_clicked ()
 			children .insert (children .end (), nodes .begin (), nodes .end ());
 	}
 
-	getBrowser () -> getSelection () -> setChildren (children);
+	getSelection () -> setChildren (children);
 	expandNodes (children);
 }
 
@@ -2210,7 +2160,7 @@ BrowserWindow::on_look_at_selection_clicked ()
 	if (not getBrowser () -> getActiveLayer ())
 		return;
 
-	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto & selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return;

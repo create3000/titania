@@ -50,6 +50,7 @@
 
 #include "ShaderPart.h"
 
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
@@ -201,8 +202,13 @@ ShaderPart::set_url ()
 void
 ShaderPart::dispose ()
 {
-	if (shaderId)
-		glDeleteShader (shaderId);
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+	{
+		if (shaderId)
+			glDeleteShader (shaderId);
+	}
 
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();

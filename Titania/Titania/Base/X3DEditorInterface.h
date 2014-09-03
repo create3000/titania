@@ -63,6 +63,26 @@ class X3DEditorInterface :
 {
 public:
 
+	///  @name Construction
+	
+	virtual
+	void
+	setup () override
+	{
+		X3DDialogInterface::setup ();
+		X3DEditorObject::setup ();
+	}
+
+	///  @name Destruction
+	
+	virtual
+	void
+	dispose () override
+	{
+		X3DEditorObject::dispose ();
+		X3DDialogInterface::dispose ();
+	}
+
 	virtual
 	~X3DEditorInterface ()
 	{ }

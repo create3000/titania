@@ -50,7 +50,7 @@
 
 #include "X3DBaseInterface.h"
 
-#include "../Browser/BrowserWindow.h"
+#include "../Browser/X3DBrowserWindow.h"
 
 #include <cassert>
 
@@ -59,14 +59,26 @@ namespace puck {
 
 const std::string X3DBaseInterface::typeName = "X3DBaseInterface";
 
-X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3D::BrowserPtr & browser) :
+X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::Browser* const browser) :
 	     sigc::trackable (),
 	X3D::X3DParentObject (browser),
-	       browserWindow (browserWindow),
-	             browser (browser)
+	       browserWindow (browserWindow)
 {
 	assert (browserWindow);
-	assert (browser);
+}
+
+void
+X3DBaseInterface::setup ()
+{
+	X3D::X3DParentObject::setup ();
+
+	browserWindow -> getBrowser () .addInterest (this, &X3DBaseInterface::set_browser);
+}
+
+const X3D::BrowserPtr &
+X3DBaseInterface::getBrowser () const
+{
+	return browserWindow -> getBrowser ();
 }
 
 const X3D::X3DScenePtr &
@@ -92,11 +104,15 @@ X3DBaseInterface::inPrototypeInstance () const
 {
 	return dynamic_cast <X3D::X3DPrototypeInstance*> (getExecutionContext () .getValue ());
 }
+	 
+void
+X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
+{
+	setBrowser (value);
+}
 
 X3DBaseInterface::~X3DBaseInterface ()
-{
-	X3D::removeBrowser (browser);
-}
+{ }
 
 } // puck
 } // titania

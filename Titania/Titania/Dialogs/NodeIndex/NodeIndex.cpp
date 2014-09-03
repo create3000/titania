@@ -51,6 +51,7 @@
 #include "NodeIndex.h"
 
 #include "../../Base/AdjustmentObject.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -68,7 +69,7 @@ static constexpr int EXPORTED_NODES = 3;
 
 };
 
-NodeIndex::NodeIndex (BrowserWindow* const browserWindow) :
+NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ()),
 	     executionContext (),
@@ -308,7 +309,7 @@ NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewCol
 
 	const X3D::MFNode selection = { node };
 
-	getBrowser () -> getSelection () -> setChildren (selection);
+	node -> getBrowser () -> getSelection () -> setChildren (selection);
 	getBrowserWindow () -> expandNodes (selection);
 }
 

@@ -330,6 +330,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="ViewpointExpander">
+            <property name="name">ViewpointExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -534,6 +535,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="PerspectiveViewpointExpander">
+            <property name="name">PerspectiveViewpointExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
@@ -962,6 +964,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="OrthoViewpointExpander">
+            <property name="name">OrthoViewpointExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
@@ -1434,6 +1437,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="GeoViewpointExpander">
+            <property name="name">GeoViewpointExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>

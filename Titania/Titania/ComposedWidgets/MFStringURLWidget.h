@@ -51,7 +51,7 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 #include "../Base/X3DUserInterface.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 class MFStringWidget :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
@@ -194,7 +194,7 @@ MFStringWidget::MFStringWidget (Gtk::TreeView & treeView,
                                 Gtk::Button & removeButton,
                                 const std::string & name,
                                 const Glib::ustring & defaultValue) :
-	X3DEditorObject (),
+	X3DComposedWidget (),
 	       treeView (treeView),
 	        columns (),
 	      listStore (Gtk::ListStore::create (columns)),

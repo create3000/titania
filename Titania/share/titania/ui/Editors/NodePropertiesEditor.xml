@@ -711,6 +711,7 @@
                     <property name="spacing">8</property>
                     <child>
                       <object class="GtkExpander" id="NodePropertiesExpander">
+                        <property name="name">NodePropertiesExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>
@@ -823,6 +824,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="CommonPropertiesExpander">
+                        <property name="name">CommonPropertiesExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>
@@ -909,6 +911,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="UserDefinedFieldsExpander">
+                        <property name="name">UserDefinedFieldsExpander</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>
                         <child>
@@ -1049,6 +1052,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="CDATAFieldExpander">
+                        <property name="name">CDATAFieldExpander</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>
                         <child>
@@ -1078,6 +1082,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="ImportedNodesExpander">
+                        <property name="name">ImportedNodesExpander</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>
                         <child>
@@ -1173,6 +1178,7 @@
                     </child>
                     <child>
                       <object class="GtkExpander" id="ExportedNodesExpander">
+                        <property name="name">ExportedNodesExpander</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>

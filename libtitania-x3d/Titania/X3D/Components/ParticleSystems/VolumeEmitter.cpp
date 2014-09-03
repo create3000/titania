@@ -51,6 +51,7 @@
 #include "VolumeEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
@@ -263,29 +264,34 @@ VolumeEmitter::dispose ()
 {
 	// Surface map
 
-	if (normalMapId)
-		glDeleteTextures (1, &normalMapId);
+	ContextLock lock (getBrowser ());
 
-	if (normalBufferId)
-		glDeleteBuffers (1, &normalBufferId);
+	if (lock)
+	{
+		if (normalMapId)
+			glDeleteTextures (1, &normalMapId);
 
-	if (surfaceMapId)
-		glDeleteTextures (1, &surfaceMapId);
+		if (normalBufferId)
+			glDeleteBuffers (1, &normalBufferId);
 
-	if (surfaceBufferId)
-		glDeleteBuffers (1, &surfaceBufferId);
+		if (surfaceMapId)
+			glDeleteTextures (1, &surfaceMapId);
 
-	if (surfaceAreaMapId)
-		glDeleteTextures (1, &surfaceAreaMapId);
+		if (surfaceBufferId)
+			glDeleteBuffers (1, &surfaceBufferId);
 
-	if (surfaceAreaBufferId)
-		glDeleteBuffers (1, &surfaceAreaBufferId);
+		if (surfaceAreaMapId)
+			glDeleteTextures (1, &surfaceAreaMapId);
 
-	if (volumeMapId)
-		glDeleteTextures (1, &volumeMapId);
+		if (surfaceAreaBufferId)
+			glDeleteBuffers (1, &surfaceAreaBufferId);
 
-	if (volumeBufferId)
-		glDeleteBuffers (1, &volumeBufferId);
+		if (volumeMapId)
+			glDeleteTextures (1, &volumeMapId);
+
+		if (volumeBufferId)
+			glDeleteBuffers (1, &volumeBufferId);
+	}
 
 	// Dispose base
 

@@ -120,8 +120,7 @@ public:
 	///  @name Member access
 
 	void
-	isLayer0 (bool value)
-	{ layer0 = value; }
+	isLayer0 (const bool);
 
 	bool
 	isLayer0 () const

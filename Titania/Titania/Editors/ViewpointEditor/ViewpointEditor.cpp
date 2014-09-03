@@ -50,19 +50,20 @@
 
 #include "ViewpointEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Widgets/ViewpointList/ViewpointList.h"
 
 namespace titania {
 namespace puck {
 
-ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
+ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DViewpointEditorInterface (get_ui ("Dialogs/ViewpointEditor.xml"), gconf_dir ()),
+	X3DViewpointEditorInterface (get_ui ("Editors/ViewpointEditor.xml"), gconf_dir ()),
 	         X3DViewpointEditor (),
 	    X3DOrthoViewpointEditor (),
 	      X3DGeoViewpointEditor (),
+	                    browser (getBrowser ()),
 	              viewpointList (new ViewpointList (browserWindow)),
 	                   nodeName (getBrowserWindow (), getViewpointNameEntry (), getViewpointRenameButton ()),
 	                description (getBrowserWindow (), getViewpointDescriptionTextView (), "description"),
@@ -86,7 +87,19 @@ ViewpointEditor::initialize ()
 	X3DOrthoViewpointEditor::initialize ();
 	X3DGeoViewpointEditor::initialize ();
 
-	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ViewpointEditor::set_active_viewpoint);
+	getBrowser () .addInterest (this, &ViewpointEditor::set_browser);
+
+	set_browser (getBrowser ());
+}
+
+void
+ViewpointEditor::set_browser (const X3D::BrowserPtr & value)
+{
+	browser -> getActiveViewpointEvent () .removeInterest (this, &ViewpointEditor::set_active_viewpoint);
+
+	browser = value;
+
+	browser -> getActiveViewpointEvent () .addInterest (this, &ViewpointEditor::set_active_viewpoint);
 
 	// We shouldn't store the viewpoint in X3DPtr better would be a X3DWeakPtr inbeteen we use:
 

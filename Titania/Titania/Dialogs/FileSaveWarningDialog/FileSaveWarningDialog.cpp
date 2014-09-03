@@ -50,12 +50,15 @@
 
 #include "FileSaveWarningDialog.h"
 
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+
+#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace puck {
 
-FileSaveWarningDialog::FileSaveWarningDialog (BrowserWindow* const browserWindow) :
+FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWindow) :
 	                 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.xml"), gconf_dir ())
 {

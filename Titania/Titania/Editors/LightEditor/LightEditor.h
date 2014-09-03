@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	LightEditor (BrowserWindow* const);
+	LightEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 

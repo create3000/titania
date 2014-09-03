@@ -51,19 +51,19 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_COMBO_BOX_TEXT_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_COMBO_BOX_TEXT_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
 class MFStringComboBoxText :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	MFStringComboBoxText (BrowserWindow* const,
+	MFStringComboBoxText (X3DBrowserWindow* const,
 	                      Gtk::ComboBoxText &,
 	                      const std::string &,
 	                      const size_t,
@@ -119,13 +119,13 @@ private:
 };
 
 inline
-MFStringComboBoxText::MFStringComboBoxText (BrowserWindow* const browserWindow,
+MFStringComboBoxText::MFStringComboBoxText (X3DBrowserWindow* const browserWindow,
                                             Gtk::ComboBoxText & comboBoxText,
                                             const std::string & name,
                                             const size_t index,
                                             const std::string & defaultValue) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	    comboBoxText (comboBoxText),
 	           nodes (),
 	            name (name),

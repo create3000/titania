@@ -53,6 +53,7 @@
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
+#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/ExportedNode.h"
 #include "../Parser/Parser.h"
@@ -95,12 +96,15 @@ X3DScene::getTitle () const
 {
 	try
 	{
-		return getMetaData ("title");
+		const auto & title = getMetaData ("title");
+
+		if (not title .empty ())
+			return title;
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{
-		return getWorldURL () .basename ();
-	}
+	{ }
+
+	return getWorldURL () .basename ();
 }
 
 // MetaData handling
@@ -270,7 +274,9 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		//importMetaData (executionContext);
 

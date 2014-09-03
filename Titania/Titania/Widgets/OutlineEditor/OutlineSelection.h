@@ -68,7 +68,7 @@ class OutlineSelection :
 {
 public:
 
-	OutlineSelection (BrowserWindow* const browserWindow, X3DOutlineTreeView* const);
+	OutlineSelection (X3DBrowserWindow* const browserWindow, X3DOutlineTreeView* const);
 
 	///  @name Operations
 

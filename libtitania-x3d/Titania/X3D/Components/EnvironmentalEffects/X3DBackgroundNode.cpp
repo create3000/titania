@@ -356,6 +356,14 @@ X3DBackgroundNode::draw ()
 	if (hidden)
 		return;
 
+	//	if (isPrivate ())
+	//	{
+	//    Mix color with widget color.
+	//		glClearColor (skyColor .getR (), skyColor .getG (), skyColor .getB (), 1 - math::clamp <float> (transparency (), 0, 1));
+	//		glClear (GL_COLOR_BUFFER_BIT);
+	//		return;
+	//	}
+
 	PolygonMode polygonMode (GL_FILL);
 
 	// Scale background

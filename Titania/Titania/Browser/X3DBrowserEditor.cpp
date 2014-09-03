@@ -50,7 +50,7 @@
 
 #include "BrowserWindow.h"
 
-#include "../Browser/BrowserSelection.h"
+#include "../Browser/BrowserUserData.h"
 #include "../Browser/MagicImport.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
@@ -63,16 +63,12 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserEditor::X3DBrowserEditor (int argc, char** argv) :
-	X3DBrowserWidget (argc, argv),
-	        modified (false),
-	   saveConfirmed (false),
+X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
+	X3DBrowserWidget (browser),
 	    currentScene (),
 	       selection (new BrowserSelection (getBrowserWindow ())),
 	     magicImport (new MagicImport (getBrowserWindow ())),
-	     undoHistory (),
-	    undoMatrices (),
-	    fileMonitors ()
+	    undoMatrices ()
 { }
 
 void
@@ -80,15 +76,8 @@ X3DBrowserEditor::initialize ()
 {
 	X3DBrowserWidget::initialize ();
 
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
-	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
-
-	getBrowser () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
-
-	undoHistory .addInterest (this, &X3DBrowserEditor::set_undoHistory);
-
-	set_undoHistory ();
+	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
 }
 
 void
@@ -118,10 +107,28 @@ X3DBrowserEditor::restoreSession ()
 }
 
 void
+X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
+{
+	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserEditor::set_initialized);
+	getBrowser () -> shutdown ()    .removeInterest (this, &X3DBrowserEditor::set_shutdown);
+	getUndoHistory (getBrowser ())  .removeInterest (this, &X3DBrowserEditor::set_undoHistory);
+
+	X3DBrowserWidget::setBrowser (value);
+	
+	currentScene = getBrowser () -> getExecutionContext ();
+
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
+	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
+	getUndoHistory (getBrowser ())  .addInterest (this, &X3DBrowserEditor::set_undoHistory);
+
+	set_undoHistory ();
+}
+
+void
 X3DBrowserEditor::set_initialized ()
 {
 	if (getExecutionContext () not_eq currentScene)
-		isModified (false);
+		isModified (getBrowser (), false);
 
 	currentScene = getExecutionContext ();
 }
@@ -129,8 +136,8 @@ X3DBrowserEditor::set_initialized ()
 void
 X3DBrowserEditor::set_shutdown ()
 {
-	if (isSaved ())
-		shutdown ();
+	if (isSaved (getBrowser ()))
+		getUserData (getBrowser ()) -> dispose ();
 
 	else                                     // Cancel shutdown
 		setExecutionContext (getExecutionContext ());
@@ -141,7 +148,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 {
 	if (value)
 	{
-		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
+		for (const auto & child : getSelection () -> getChildren ())
 		{
 			const X3D::X3DTransformNodePtr transform (child);
 
@@ -157,7 +164,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 
 		getSelection () -> redoRestoreSelection (undoStep);
 
-		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
+		for (const auto & child :getSelection () -> getChildren ())
 		{
 			const X3D::X3DTransformNodePtr transform (child);
 
@@ -224,13 +231,22 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 }
 
 bool
-X3DBrowserEditor::isSaved ()
+X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 {
-	if (saveConfirmed)
+	const auto userData = getUserData (browser);
+
+	if (userData -> saveConfirmed)
 		return true;
 
-	if (isModified ())
+	if (isModified (browser))
 	{
+		const auto pageNumber = getBrowserNotebook () .page_num (*browser);
+		
+		if (pageNumber < 0)
+			return true;
+	
+		getBrowserNotebook () .set_current_page (pageNumber);
+
 		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (addDialog ("FileSaveWarningDialog", false)) -> run ();
 
 		switch (responseId)
@@ -238,8 +254,8 @@ X3DBrowserEditor::isSaved ()
 			case Gtk::RESPONSE_OK:
 			{
 				on_save ();
-				saveConfirmed = not isModified ();
-				return saveConfirmed;
+				userData -> saveConfirmed = not isModified (browser);
+				return userData -> saveConfirmed;
 			}
 			case Gtk::RESPONSE_CANCEL:
 			case Gtk::RESPONSE_DELETE_EVENT:
@@ -251,20 +267,26 @@ X3DBrowserEditor::isSaved ()
 		}
 	}
 
-	saveConfirmed = true;
+	userData -> saveConfirmed = true;
 	return true;
 }
 
 void
-X3DBrowserEditor::isModified (const bool value)
+X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser, const bool value)
 {
-	modified      = value;
-	saveConfirmed = false;
+	getUserData (browser) -> modified      = value;
+	getUserData (browser) -> saveConfirmed = false;
 
-	updateTitle (value);
+	setTitle (value);
 
 	if (not value)
-		undoHistory .setSaved ();
+		getUndoHistory (browser) .setSaved ();
+}
+
+bool
+X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser) const
+{
+	return getUserData (browser) -> modified;
 }
 
 // File operations
@@ -302,7 +324,7 @@ X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool i
 	// Import into scene graph
 
 	X3D::MFNode nodes;
-	auto        selection = getBrowser () -> getSelection () -> getChildren ();
+	auto        selection = getSelection () -> getChildren ();
 
 	for (const auto & worldURL : uris)
 	{
@@ -426,7 +448,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed)
 {
 	X3DBrowserWidget::save (worldURL, compressed);
 
-	isModified (false);
+	isModified (getBrowser (), false);
 }
 
 std::string
@@ -673,26 +695,46 @@ X3DBrowserEditor::removeUsedPrototypes (X3D::X3DExecutionContext* const executio
 	               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
-bool
-X3DBrowserEditor::close ()
+void
+X3DBrowserEditor::close (const X3D::BrowserPtr & browser)
 {
 	getWidget () .grab_focus ();
 
-	if (isSaved ())
-	{
-		shutdown ();
-		return X3DBrowserWidget::close ();
-	}
+	if (isSaved (browser))
+		X3DBrowserWidget::close (browser);
+}
+
+bool
+X3DBrowserEditor::quit ()
+{
+	getWidget () .grab_focus ();
+
+	//if (isSaved ())
+	//{
+		return X3DBrowserWidget::quit ();
+	//}
 
 	return true;
 }
 
 // Undo/Redo operations
 
+UndoHistory &
+X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser)
+{
+   return getUserData (browser) -> undoHistory;
+}
+
+const UndoHistory &
+X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser) const
+{
+   return getUserData (browser) -> undoHistory;
+}
+
 void
 X3DBrowserEditor::addUndoStep (const UndoStepPtr & undoStep)
 {
-	undoHistory .addUndoStep (undoStep);
+	getUndoHistory (getBrowser ()) .addUndoStep (undoStep);
 }
 
 void
@@ -700,7 +742,7 @@ X3DBrowserEditor::undo ()
 {
 	getBrowser () -> grab_focus ();
 
-	undoHistory .undoChanges ();
+	getUndoHistory (getBrowser ()) .undoChanges ();
 }
 
 void
@@ -708,13 +750,14 @@ X3DBrowserEditor::redo ()
 {
 	getBrowser () -> grab_focus ();
 
-	undoHistory .redoChanges ();
+	getUndoHistory (getBrowser ()) .redoChanges ();
 }
 
 void
 X3DBrowserEditor::set_undoHistory ()
 {
-	const int index = undoHistory .getIndex ();
+	const auto & undoHistory = getUndoHistory (getBrowser ());
+	const int    index       = undoHistory .getIndex ();
 
 	if (index >= 0)
 	{
@@ -746,7 +789,7 @@ X3DBrowserEditor::set_undoHistory ()
 		getRedoButton ()   .set_sensitive (false);
 	}
 
-	isModified (undoHistory .isModified ());
+	isModified (getBrowser (), undoHistory .isModified ());
 }
 
 // Clipboard operations
@@ -2006,7 +2049,7 @@ X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 void
 X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const bool alongFrontPlane)
 {
-	for (const auto & node : basic::make_reverse_range (getBrowser () -> getSelection () -> getChildren ()))
+	for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
 	{
 		X3D::X3DTransformNodePtr transform (node);
 
@@ -2324,7 +2367,7 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
 
 	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserEditor::on_cdata_changed), node));
-	fileMonitors .emplace (file, fileMonitor);
+	getUserData (getBrowser ()) -> fileMonitors .emplace (file, fileMonitor);
 
 	try
 	{
@@ -2382,35 +2425,15 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
 
 		undoStep -> addObjects (node);
-		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, getBrowserWindow () -> getOutlineTreeView ());
 
 		undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
 		undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, string);
 		cdata -> setValue (string);
 
-		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, getBrowserWindow () -> getOutlineTreeView ());
-		getBrowserWindow () -> getOutlineTreeView () -> queue_draw ();
-
 		addUndoStep (undoStep);
 	}
 
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
-}
-
-void
-X3DBrowserEditor::shutdown ()
-{
-	getBrowser () -> makeCurrent ();
-
-	undoHistory  .clear ();
-
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
-
-	fileMonitors .clear ();
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

@@ -50,7 +50,7 @@
 
 #include "X3DUserDefinedFieldsEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -537,7 +537,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
          {
             const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
 
-            addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
+            addRoutes .emplace_back (std::bind (&X3DBrowserWindow::addRoute,
                                                 node -> getExecutionContext (),
                                                 route -> getSourceNode (),
                                                 selfConnection ? newField -> getName () : route -> getSourceField (),
@@ -553,7 +553,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
          {
             const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
 
-            addRoutes .emplace_back (std::bind (&BrowserWindow::addRoute,
+            addRoutes .emplace_back (std::bind (&X3DBrowserWindow::addRoute,
                                                 node -> getExecutionContext (),
                                                 node,
                                                 newField -> getName (),
@@ -660,22 +660,22 @@ X3DUserDefinedFieldsEditor::removeRoutes (X3D::X3DFieldDefinition* const field, 
 
    for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
    {
-      BrowserWindow::deleteRoute (route -> getExecutionContext (),
-                                  route -> getSourceNode (),
-                                  route -> getSourceField (),
-                                  route -> getDestinationNode (),
-                                  route -> getDestinationField (),
-                                  undoStep);
+      X3DBrowserWindow::deleteRoute (route -> getExecutionContext (),
+                                     route -> getSourceNode (),
+                                     route -> getSourceField (),
+                                     route -> getDestinationNode (),
+                                     route -> getDestinationField (),
+                                     undoStep);
    }
 
    for (const auto & route : X3D::RouteSet (field -> getOutputRoutes ()))
    {
-      BrowserWindow::deleteRoute (route -> getExecutionContext (),
-                                  route -> getSourceNode (),
-                                  route -> getSourceField (),
-                                  route -> getDestinationNode (),
-                                  route -> getDestinationField (),
-                                  undoStep);
+      X3DBrowserWindow::deleteRoute (route -> getExecutionContext (),
+                                     route -> getSourceNode (),
+                                     route -> getSourceField (),
+                                     route -> getDestinationNode (),
+                                     route -> getDestinationField (),
+                                     undoStep);
    }
 }
 

@@ -51,19 +51,19 @@
 #ifndef __TITANIA_EDITORS_LODEDITOR_LODRANGE_WIDGET_H__
 #define __TITANIA_EDITORS_LODEDITOR_LODRANGE_WIDGET_H__
 
-#include "../../Base/X3DEditorObject.h"
+#include "../../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
 class LODRangeWidget :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	LODRangeWidget (BrowserWindow* const,
+	LODRangeWidget (X3DBrowserWindow* const,
 	                const Glib::RefPtr <Gtk::Adjustment> &,
 	                const Glib::RefPtr <Gtk::Adjustment> &,
                    Gtk::SpinButton &,
@@ -124,7 +124,7 @@ private:
 };
 
 inline
-LODRangeWidget::LODRangeWidget (BrowserWindow* const browserWindow,
+LODRangeWidget::LODRangeWidget (X3DBrowserWindow* const browserWindow,
                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment1,
                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
                                 Gtk::SpinButton & spinButton1,
@@ -132,7 +132,7 @@ LODRangeWidget::LODRangeWidget (BrowserWindow* const browserWindow,
                                 Gtk::CheckButton & maxButton,
                                 Gtk::Widget & widget) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	     adjustment1 (adjustment1),
 	     adjustment2 (adjustment2),
 	     spinButton1 (spinButton1),

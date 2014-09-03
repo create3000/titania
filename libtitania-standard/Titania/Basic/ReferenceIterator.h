@@ -93,11 +93,11 @@ public:
 	{ return iter; }
 
 	reference
-	operator * ()
+	operator * () const
 	{ return **iter; }
 
 	pointer
-	operator -> ()
+	operator -> () const
 	{ return *iter; }
 
 	reference_iterator &
@@ -147,7 +147,7 @@ public:
 	}
 
 	reference
-	operator [ ] (const size_type i)
+	operator [ ] (const size_type i) const
 	{ return *iter [i]; }
 
 

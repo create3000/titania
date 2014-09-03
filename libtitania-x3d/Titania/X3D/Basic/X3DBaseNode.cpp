@@ -391,6 +391,7 @@ X3DBaseNode::setName (const std::string & value)
  */
 time_type
 X3DBaseNode::getCurrentTime () const
+throw (Error <DISPOSED>)
 {
 	return getBrowser () -> getClock () -> cycle ();
 }
@@ -415,17 +416,35 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 /***
- *  Returns the root execution context for this node.
+ *  Returns the master execution context for this node.  This is normaly the initial scene the node belongs to.
+ */
+X3DExecutionContext*
+X3DBaseNode::getMasterContext () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DExecutionContext* masterContext = getExecutionContext () -> getRootContext ();
+
+	while (not masterContext -> isMasterContext ())
+		masterContext = masterContext -> getRootContext ();
+
+	return masterContext;
+}
+
+/***
+ *  Returns the root execution context for this node.  This is normaly the scene the node belongs to.
  */
 X3DExecutionContext*
 X3DBaseNode::getRootContext () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	X3DExecutionContext* executionContext = getExecutionContext ();
+	X3DExecutionContext* rootContext = getExecutionContext ();
 
-	while (not executionContext -> isRootContext ())
-		executionContext = executionContext -> getExecutionContext ();
+	while (not rootContext -> isRootContext ())
+		rootContext = rootContext -> getExecutionContext ();
 
-	return executionContext;
+	return rootContext;
 }
 
 /***
@@ -683,6 +702,9 @@ X3DBaseNode::getPreDefinedFields () const
 
 	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
+		if (field -> getRealAccessType () & AccessType::HIDDEN)
+			continue;
+
 		try
 		{
 			getDeclaration () -> getField (field -> getName ());

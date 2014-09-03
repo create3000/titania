@@ -55,9 +55,9 @@
 namespace titania {
 namespace puck {
 
-GeometryPropertiesEditor::GeometryPropertiesEditor (BrowserWindow* const browserWindow) :
+GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DGeometryPropertiesEditorInterface (get_ui ("Dialogs/GeometryPropertiesEditor.xml"), gconf_dir ()),
+	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
 	                                solid (browserWindow, getSolidCheckButton (),  "solid"),
 	                                  ccw (browserWindow, getCCWCheckButton (),    "ccw"),
 	                               convex (browserWindow, getConvexCheckButton (), "convex"),
@@ -72,7 +72,7 @@ GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
 
 	set_selection ();
 }

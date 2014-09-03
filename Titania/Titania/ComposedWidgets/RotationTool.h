@@ -48,29 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_ROTATIONL_TOOL_H__
-#define __TITANIA_COMPOSED_WIDGETS_ROTATIONL_TOOL_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_ROTATION_TOOL_H__
+#define __TITANIA_COMPOSED_WIDGETS_ROTATION_TOOL_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 #include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
 class RotationTool :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	RotationTool (BrowserWindow* const,
+	RotationTool (X3DBrowserWindow* const,
 	              Gtk::Box &,
 	              const std::string &);
-
-	virtual
-	void
-	setup () final override;
 
 	///  @name Member access
 
@@ -123,40 +119,34 @@ private:
 };
 
 inline
-RotationTool::RotationTool (BrowserWindow* const browserWindow,
+RotationTool::RotationTool (X3DBrowserWindow* const browserWindow,
                             Gtk::Box & box,
                             const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
-	             box (box),
-	         browser (X3D::createBrowser (browserWindow -> getBrowser ())),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	          buffer ()
+	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DComposedWidget (),
+	              box (box),
+	          browser (X3D::createBrowser (browserWindow -> getBrowser ())),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	           buffer ()
 {
-	browser -> set_antialiasing (4);
-
 	// Buffer
 
 	addChildren (buffer);
 	buffer .addInterest (this, &RotationTool::set_buffer);
 
-	// Setup
-
-	setup ();
-}
-
-inline
-void
-RotationTool::setup ()
-{
-	X3DEditorObject::setup ();
+	// Browser
 
 	box .pack_start (*browser, true, true, 0);
 
+	browser -> set_antialiasing (4);
 	browser -> show ();
 	browser -> initialized () .addInterest (this, &RotationTool::set_initialized);
+
+	// Setup
+
+	setup ();
 }
 
 inline
@@ -167,7 +157,7 @@ RotationTool::set_initialized ()
 
 	try
 	{
-		browser -> loadURL ({ get_ui ("Dialogs/RotationTool.x3dv") });
+		browser -> loadURL ({ get_ui ("Editors/RotationTool.x3dv") });
 
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 
@@ -293,8 +283,6 @@ RotationTool::connect (const X3D::SFRotation & field)
 inline
 RotationTool::~RotationTool ()
 {
-	X3D::removeBrowser (browser);
-
 	dispose ();
 }
 

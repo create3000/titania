@@ -68,7 +68,7 @@ main (int argc, char** argv)
 	{
 		Gtk::Main kit (argc, argv);
 
-		BrowserWindow browserWindow (X3D::createBrowser (), argc, argv);
+		BrowserWindow browserWindow (X3D::createBrowser ());
 
 		browserWindow .getBrowser () -> isStrict (false);
 

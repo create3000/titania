@@ -50,15 +50,15 @@
 
 #include "AppearanceEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-AppearanceEditor::AppearanceEditor (BrowserWindow* const browserWindow) :
+AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DAppearanceEditorInterface (get_ui ("Dialogs/AppearanceEditor.xml"), gconf_dir ()),
+	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.xml"), gconf_dir ()),
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
 	     X3DLinePropertiesEditor ()

@@ -52,7 +52,7 @@
 #define __TITANIA_BASE_X3DEDITOR_OBJECT_H__
 
 #include "../Base/X3DBaseInterface.h"
-#include "../Browser/BrowserWindow.h"
+#include "../Browser/X3DBrowserWindow.h"
 #include "../Undo/UndoStep.h"
 
 #include <Titania/String/sprintf.h>
@@ -82,6 +82,10 @@ protected:
 		          fields (new X3D::FieldSet (getBrowser ())),
 		        undoSize (0)
 	{ }
+
+	virtual
+	void
+	setup () override;
 
 	///  @name Operations
 
@@ -138,8 +142,20 @@ protected:
 	void
 	addRedoFunction (FieldType &, UndoStepPtr &);
 
+	/// @name Destuction
+	
+	virtual
+	void
+	dispose () override
+	{ }
+
 
 private:
+
+	///  @name Event handlers
+	 
+	void
+	set_browser (const X3D::BrowserPtr &);
 
 	///  @name Operations
 
@@ -158,7 +174,7 @@ template <class NodeType>
 X3D::X3DPtrArray <NodeType>
 X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
 	return getNodes <NodeType> (selection, types);
 }

@@ -104,7 +104,7 @@ public:
 	{ }
 
 	std::shared_ptr <X3DUserInterface>
-	createDialog (const std::string & name, BrowserWindow* const browserWindow) const
+	createDialog (const std::string & name, X3DBrowserWindow* const browserWindow) const
 	throw (std::out_of_range)
 	{
 		return std::shared_ptr <X3DUserInterface> (dialogs .at (name) (browserWindow));
@@ -117,12 +117,12 @@ private:
 	template <class Dialog>
 	static
 	X3DUserInterface*
-	constructDialog (BrowserWindow* const browserWindow)
+	constructDialog (X3DBrowserWindow* const browserWindow)
 	{ return new Dialog (browserWindow); }
 
 	///  @name Members
 
-	std::map <std::string, std::function <X3DUserInterface* (BrowserWindow* const)>>  dialogs;
+	std::map <std::string, std::function <X3DUserInterface* (X3DBrowserWindow* const)>>  dialogs;
 
 };
 

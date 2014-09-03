@@ -50,7 +50,8 @@
 
 #include "X3DBrowserWidget.h"
 
-#include "../Browser/BrowserWindow.h"
+#include "../Browser/BrowserUserData.h"
+#include "../Browser/X3DBrowserWindow.h"
 #include "../Browser/Image.h"
 #include "../Configuration/config.h"
 
@@ -59,100 +60,92 @@
 
 #include <fstream>
 
-#include <gdk/gdkx.h>
-
 namespace titania {
 namespace puck {
 
-X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
+X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & browser_) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
-	                    scene (getBrowser () -> getExecutionContext ()),
+	                 browsers (),
+	                  browser (browser_),
+	                    scene (browser -> getExecutionContext ()),
 	         executionContext (scene)
 {
-	addChildren (scene, executionContext);
+	addChildren (browsers, browser, scene, executionContext);
 
-	parseOptions (argc, argv);
+	//parseOptions (argc, argv);
 }
 
-void
-X3DBrowserWidget::parseOptions (int argc, char** argv)
-{
-	// Create and intialize option parser.
-
-	// Add Remaining options to option group.
-
-	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
-
-	Glib::OptionEntry              remaining;
-	Glib::OptionGroup::vecustrings remainingOptions;
-
-	remaining .set_long_name (G_OPTION_REMAINING);
-	remaining .set_arg_description (G_OPTION_REMAINING);
-
-	mainGroup .add_entry (remaining, remainingOptions);
-
-	// Intialize OptionContext.
-
-	Glib::OptionContext optionContext;
-
-	optionContext .set_main_group (mainGroup);
-
-	// Parse options.
-
-	try
-	{
-		optionContext .parse (argc, argv);
-
-		if (remainingOptions .empty ())
-			getConfig () .setItem ("url", "");
-		else
-			getConfig () .setItem ("url", remainingOptions [0]);
-	}
-	catch (const Glib::Error & error)
-	{
-		std::clog << "Exception: " << error .what () << std::endl;
-	}
-}
+//void
+//X3DBrowserWidget::parseOptions (int argc, char** argv)
+//{
+//	// Create and intialize option parser.
+//
+//	// Add Remaining options to option group.
+//
+//	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
+//
+//	Glib::OptionEntry              remaining;
+//	Glib::OptionGroup::vecustrings remainingOptions;
+//
+//	remaining .set_long_name (G_OPTION_REMAINING);
+//	remaining .set_arg_description (G_OPTION_REMAINING);
+//
+//	mainGroup .add_entry (remaining, remainingOptions);
+//
+//	// Intialize OptionContext.
+//
+//	Glib::OptionContext optionContext;
+//
+//	optionContext .set_main_group (mainGroup);
+//
+//	// Parse options.
+//
+//	try
+//	{
+//		optionContext .parse (argc, argv);
+//
+//		if (remainingOptions .empty ())
+//			getConfig () .setItem ("url", "");
+//		else
+//			getConfig () .setItem ("url", remainingOptions [0]);
+//	}
+//	catch (const Glib::Error & error)
+//	{
+//		std::clog << "Exception: " << error .what () << std::endl;
+//	}
+//}
 
 void
 X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
-	// Enable splash screen.
-	getBrowser () -> getBrowserOptions () -> splashScreen () = true;
-
-	// Connect event handler.
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen);
-
-	// Insert Surface, this will initialize the Browser.
-	getSurfaceBox () .pack_start (*getBrowser (), true, true, 0);
-
-	// Show Surface and start the X3D Main Loop.
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> getBrowserOptions () -> splashScreen ()    = true;
+	getBrowser () -> getBrowserOptions () -> splashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
 	getBrowser () -> show ();
+
+	getSplashBox () .pack_start (*getBrowser (), true, true, 0);
 }
 
 void
-X3DBrowserWidget::set_splashScreen ()
+X3DBrowserWidget::set_initialized ()
 {
-	// Initialized
+	getSplashBox () .set_visible (false);
 
-	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	auto currentPage = getConfig () .getInteger ("currentPage");
+	auto worldURLs   = basic::split (getConfig () .getString ("worldURL"), "\n");
+	
+	if (worldURLs .empty ())
+		worldURLs .emplace_back (get_page ("about/home.wrl"));
+
+	for (const auto & worldURL : worldURLs)
+		append (X3D::createBrowser (getBrowser ()), worldURL);
+
+	getBrowserNotebook () .set_current_page (currentPage);
+	getBrowserNotebook () .set_visible (true);
+
 	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
-
-	if (getConfig () .getString ("url") .size ())
-	{
-		if (getConfig () .getString ("url") == "about:blank")
-			blank ();
-		else
-			open (getConfig () .getString ("url") .raw ());
-	}
-	else if (getConfig () .getString ("worldURL") .size ())
-		open (getConfig () .getString ("worldURL") .raw ());
-
-	else
-		open (get_page ("about/home.wrl"));
 }
 
 void
@@ -163,8 +156,7 @@ X3DBrowserWidget::restoreSession ()
 	// Restore Menu Configuration from Config
 
 	// ToolBar
-	if (getConfig () .hasItem ("toolBar"))
-		getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
+	getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar") or not getConfig () .hasItem ("toolBar"));
 
 	// SideBar
 	if (getConfig () .hasItem ("sideBar"))
@@ -208,19 +200,76 @@ X3DBrowserWidget::saveSession ()
 	getConfig () .setItem ("sideBarCurrentPage", getSideBarNotebook () .get_current_page ());
 	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook ()  .get_current_page ());
 
-	if (getScene () -> getWorldURL () .size ())
-		getConfig () .setItem ("worldURL", getScene () -> getWorldURL ());
-
 	X3DBrowserWindowInterface::saveSession ();
 }
 
-void
-X3DBrowserWidget::updateTitle (const bool edited) const
+std::shared_ptr <BrowserUserData>
+X3DBrowserWidget::getUserData (const X3D::BrowserPtr & browser)
 {
+	if (not browser -> getUserData ())
+		browser -> setUserData (X3D::UserDataPtr (new BrowserUserData ()));
+
+	return std::static_pointer_cast <BrowserUserData> (browser -> getUserData ());
+}
+
+void
+X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
+{
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_executionContext);
+
+	X3DBrowserWindowInterface::setBrowser (value);
+
+	browser          = value;
+	scene            = getBrowser () -> getExecutionContext () -> getMasterContext ();
+	executionContext = getBrowser () -> getExecutionContext ();
+
+	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
+}
+
+void
+X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value)
+{
+	try
+	{
+		executionContext = value;
+
+		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
+
+		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
+
+		getBrowser () -> replaceWorld (executionContext);
+		getBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
+
+		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
+		getScene () -> isLive () = getBrowser () -> isLive ();
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+X3DBrowserWidget::setTitle (const bool modified) const
+{
+	auto title = getScene () -> getTitle ();
+
+	if (title .empty ())
+		title = getUserData (getBrowser ()) -> URL .basename ();
+
+	if (title .empty ())
+		title = _ ("New Scene");
+		
+	if (modified)
+		title += "*";
+
+	getBrowserNotebook () .set_menu_label_text (*getBrowser (), title);
+
+	if (getUserData (getBrowser ()) -> label)
+		getUserData (getBrowser ()) -> label -> set_text (title);
+
 	getWindow () .set_title (getScene () -> getTitle ()
 	                         + " · "
 	                         + getScene () -> getWorldURL () .filename ()
-	                         + (edited ? "*" : "")
+	                         + (modified ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
 }
@@ -236,49 +285,74 @@ X3DBrowserWidget::isLive (const bool value)
 }
 
 void
-X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value)
-{
-	try
-	{
-		executionContext = value;
-
-		X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
-
-		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
-
-		getBrowser () -> replaceWorld (executionContext);
-		getBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
-
-		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
-		getScene () -> isLive () = getBrowser () -> isLive ();
-	}
-	catch (const X3D::X3DError &)
-	{ }
-}
-
-void
 X3DBrowserWidget::blank ()
 {
-	try
-	{
-		getBrowser () -> replaceWorld (X3D::X3DScenePtr ());
-		scene            = getBrowser () -> getExecutionContext ();
-		executionContext = getBrowser () -> getExecutionContext ();
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	append (X3D::createBrowser (getBrowser ()), "");
+	getBrowserNotebook () .set_current_page (browsers .size () - 1);
 }
 
 void
 X3DBrowserWidget::open (const basic::uri & worldURL)
 {
+	append (X3D::createBrowser (getBrowser ()), worldURL);
+	getBrowserNotebook () .set_current_page (browsers .size () - 1);
+}
+
+void
+X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & URL)
+{
+	browsers .emplace_back (browser);
+
+	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen, browser, URL);
+
+	browser -> getBrowserOptions () -> splashScreen () = URL .size ();
+	browser -> set_antialiasing (4);
+	browser -> show ();
+
+	const auto text   = URL .empty () ? _ ("New Scene") : URL .basename ();
+	const auto label  = Gtk::manage (new Gtk::Label (text));
+	const auto button = Gtk::manage (new Gtk::Button ());
+	const auto image  = Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+	const auto box    = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL, 4));
+
+	button -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWidget::close), browser));
+	button -> get_style_context () -> add_class ("titania-tab-close");
+	button -> set_image (*image);
+	button -> set_tooltip_text (_ ("Close Tab"));
+
+	box -> pack_start (*label,  true,  true, 0);
+	box -> pack_start (*button, false, true, 0);
+	box -> show_all ();
+
+	getBrowserNotebook () .append_page (*browser, *box);
+	getBrowserNotebook () .set_tab_reorderable (*browser, true);
+	getBrowserNotebook () .set_menu_label_text (*getBrowser (), text);
+
+	const auto userData = getUserData (browser);
+
+	userData -> URL   = URL;
+	userData -> label = label;
+}
+
+void
+X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
+{
 	loadTime = chrono::now ();
 
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+
+	load (browser, URL);
+}
+
+void
+X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
+{
 	try
 	{
-		getBrowser () -> loadURL ({ worldURL .str () });
-		scene            = getBrowser () -> getExecutionContext ();
-		executionContext = getBrowser () -> getExecutionContext ();
+		if (URL .empty ())
+			return;
+
+		browser -> loadURL ({ URL .str () });
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -291,13 +365,16 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 				<< "?type=" << basic::to_string (error .getType ())
 				<< ";what=" << Glib::uri_escape_string (error .what ());
 
-			getBrowser () -> loadURL ({ osstream .str () });
-			scene            = getBrowser () -> getExecutionContext ();
-			executionContext = getBrowser () -> getExecutionContext ();
+			browser -> loadURL ({ osstream .str () });
 		}
-		catch (const X3D::X3DError & error)
+		catch (const X3D::X3DError &)
 		{
-			blank ();
+			try
+			{
+				browser -> replaceWorld (X3D::X3DScenePtr ());
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
 	}
 }
@@ -445,18 +522,82 @@ X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & 
 void
 X3DBrowserWidget::reload ()
 {
-	open (getScene () -> getWorldURL ());
+	load (browser, getScene () -> getWorldURL ());
+}
+
+void
+X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
+{
+	const X3D::BrowserPtr browser = browser_; // The parameter could be getBrowser ().
+
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+
+	getUserData (browser) -> dispose ();
+
+	browsers .remove (browser);
+
+	if (browsers .empty ())
+		blank ();
+
+	getBrowserNotebook () .remove_page (*browser);
 }
 
 bool
-X3DBrowserWidget::close ()
+X3DBrowserWidget::quit ()
 {
-	X3DBrowserWindowInterface::close ();
+	std::deque <std::string> worldURLs;
+
+	for (const auto & browser : browsers)
+	{
+		const auto userData = getUserData (browser);
+
+		auto URL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+
+		if (URL .empty ())
+			URL = userData -> URL;
+
+		if (not URL .empty ())
+			worldURLs .emplace_back (URL);
+
+		userData -> dispose ();
+	}
+
+	auto currentPage = getBrowserNotebook () .get_current_page ();
+
+	if (browsers [currentPage] -> getExecutionContext () -> getMasterContext () -> getWorldURL () .empty ())
+		currentPage = 0;
+
+	getConfig () .setItem ("currentPage", currentPage);
+	getConfig () .setItem ("worldURL", basic::join (worldURLs, "\n"));
+
+	X3DBrowserWindowInterface::quit ();
 	return false;
 }
 
 void
-X3DBrowserWidget::set_initialized ()
+X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
+{
+	__LOG__ << pageNumber << std::endl;
+
+	setBrowser (browsers [pageNumber]);
+}
+
+void
+X3DBrowserWidget::on_browser_reordered (Widget* widget, guint pageNumber)
+{
+	const auto iter = std::find (browsers .begin (), browsers .end (), widget);
+
+	if (iter == browsers .end ())
+		return;
+
+	const auto browser = *iter;
+
+	browsers .erase (iter);
+	browsers .insert (browsers .begin () + pageNumber, browser);
+}
+
+void
+X3DBrowserWidget::set_executionContext ()
 {
 	if (getBrowser () -> getExecutionContext () not_eq executionContext)
 	{
@@ -476,15 +617,14 @@ X3DBrowserWidget::set_scene ()
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
 
 	loadIcon ();
-	updateTitle (false);
+	setTitle (getUserData (getBrowser ()) -> modified);
 }
 
 void
 X3DBrowserWidget::loadIcon ()
 {
-	const basic::uri & worldURL = getScene () -> getWorldURL ();
-
-	const Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
+	const basic::uri   & worldURL = getScene () -> getWorldURL ();
+	const Gtk::StockID   stockId  = Gtk::StockID (worldURL .str ());
 
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 

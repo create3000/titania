@@ -60,12 +60,23 @@
 namespace titania {
 namespace puck {
 
+class BrowserUserData;
+
 class X3DBrowserWidget :
 	public X3DBrowserWindowInterface
 {
 public:
 
 	///  @name Member access
+
+	const X3D::X3DPtrArray <X3D::Browser> &
+	getBrowsers () const
+	{ return browsers; }
+
+	virtual
+	const X3D::BrowserPtr &
+	getBrowser () const final override
+	{ return browser; }
 
 	virtual
 	const X3D::X3DScenePtr &
@@ -100,10 +111,6 @@ public:
 	void
 	reload ();
 
-	virtual
-	bool
-	close () override;
-
 	///  @name Destruction
 
 	virtual
@@ -114,7 +121,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowserWidget (int, char**);
+	X3DBrowserWidget (const X3D::BrowserPtr &);
 
 	virtual
 	void
@@ -124,14 +131,32 @@ protected:
 	void
 	restoreSession () override;
 
+	///  @name Destruction
+
 	virtual
 	void
 	saveSession () override;
 
+	virtual
+	void
+	close (const X3D::BrowserPtr &);
+
+	virtual
+	bool
+	quit () override;
+
 	///  @name Operations
 
+	virtual
 	void
-	updateTitle (const bool) const;
+	setBrowser (const X3D::BrowserPtr &);
+
+	static
+	std::shared_ptr <BrowserUserData>
+	getUserData (const X3D::BrowserPtr &);
+
+	void
+	setTitle (const bool) const;
 
 	void
 	isLive (const bool);
@@ -145,13 +170,27 @@ private:
 	///  @name Event handlers
 
 	void
-	parseOptions (int, char**);
-
-	void
-	set_splashScreen ();
-
-	void
 	set_initialized ();
+
+	void
+	append (const X3D::BrowserPtr &, const basic::uri &);
+
+	void
+	set_splashScreen (const X3D::BrowserPtr &, const basic::uri &);
+
+	void
+	load (const X3D::BrowserPtr &, const basic::uri &);
+
+	virtual
+	void
+	on_switch_browser (Gtk::Widget*, guint) final override;
+
+	virtual
+	void
+	on_browser_reordered (Widget* page, guint page_num) final override;
+
+	void
+	set_executionContext ();
 
 	void
 	set_scene ();
@@ -166,10 +205,12 @@ private:
 
 	///  @name Members
 	
-	X3D::X3DScenePtr            scene;
-	X3D::X3DExecutionContextPtr executionContext;
-	double                      loadTime;
-	sigc::connection            timeout;
+	X3D::X3DPtrArray <X3D::Browser> browsers;
+	X3D::BrowserPtr                 browser;
+	X3D::X3DScenePtr                scene;
+	X3D::X3DExecutionContextPtr     executionContext;
+	double                          loadTime;
+	sigc::connection                timeout;
 
 };
 

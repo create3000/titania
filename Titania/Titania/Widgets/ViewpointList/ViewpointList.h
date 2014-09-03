@@ -52,8 +52,6 @@
 #define __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
 
 #include "../../UserInterfaces/X3DViewpointListInterface.h"
-#include <Titania/X3D.h>
-#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
@@ -67,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	ViewpointList (BrowserWindow* const, const bool = false);
+	ViewpointList (X3DBrowserWindow* const, const bool = false);
 
 	///  @name Member acccess
 
@@ -110,6 +108,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_browser (const X3D::BrowserPtr &);
+
+	void
 	set_activeLayer ();
 
 	void
@@ -128,9 +129,10 @@ private:
 
 	///  @name Members
 
-	bool                 label;
-	bool                 userViewpoints;
+	X3D::BrowserPtr      browser;
 	X3D::X3DLayerNodePtr activeLayer;
+	bool                 userViewpoints;
+	bool                 label;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;

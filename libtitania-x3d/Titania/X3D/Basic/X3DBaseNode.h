@@ -139,7 +139,8 @@ public:
 
 	///  Returns the current browser time for this frame.
 	time_type
-	getCurrentTime () const;
+	getCurrentTime () const
+	throw (Error <DISPOSED>);
 
 	///  Sets the current excecution context to @a executionContext.
 	virtual
@@ -155,9 +156,17 @@ public:
 	       Error <DISPOSED>)
 	{ return executionContext; }
 
+	///  Returns a pointer to the master execution context this node belongs to.
+	X3DExecutionContext*
+	getMasterContext () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///  Returns a pointer to the root execution context this node belongs to.
 	X3DExecutionContext*
-	getRootContext () const;
+	getRootContext () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  Returns the component name this node belongs to.
 	virtual

@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	FileImportDialog (BrowserWindow* const);
+	FileImportDialog (X3DBrowserWindow* const);
 
 	void
 	run ();

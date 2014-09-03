@@ -60,9 +60,9 @@
 namespace titania {
 namespace puck {
 
-InlineEditor::InlineEditor (BrowserWindow* const browserWindow) :
+InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DInlineEditorInterface (get_ui ("Dialogs/InlineEditor.xml"), gconf_dir ()),
+	X3DInlineEditorInterface (get_ui ("Editors/InlineEditor.xml"), gconf_dir ()),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    load (browserWindow, getLoadCheckButton (),  "load"),
 	                     url (new MFStringURLWidget (this,
@@ -96,9 +96,9 @@ InlineEditor::initialize ()
 {
 	X3DInlineEditorInterface::initialize ();
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &InlineEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &InlineEditor::set_selection);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
@@ -149,12 +149,12 @@ InlineEditor::on_index_clicked ()
 void
 InlineEditor::on_convert_master_selection_clicked ()
 {
-	if (getBrowser () -> getSelection () -> getChildren () .empty ())
+	if (getBrowserWindow () -> getSelection () -> getChildren () .empty ())
 		return;
 
 	getWindow () .set_sensitive (false);
 
-	const auto & masterSelection  = getBrowser () -> getSelection () -> getChildren () .back ();
+	const auto & masterSelection  = getBrowserWindow () -> getSelection () -> getChildren () .back ();
 	X3D::MFNode  nodes            = { masterSelection };
 
 	const auto fileSaveDialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));

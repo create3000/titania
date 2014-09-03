@@ -64,7 +64,7 @@ class HistoryView :
 {
 public:
 
-	HistoryView (BrowserWindow* const);
+	HistoryView (X3DBrowserWindow* const);
 
 	virtual
 	~HistoryView ();

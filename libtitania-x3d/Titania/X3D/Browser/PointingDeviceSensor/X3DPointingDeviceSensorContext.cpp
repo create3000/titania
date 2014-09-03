@@ -55,6 +55,7 @@
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
+#include "../ContextLock.h"
 #include "../Selection.h"
 #include "../X3DBrowser.h"
 
@@ -106,7 +107,9 @@ X3DPointingDeviceSensorContext::pick (const double x, const double y)
 
 	// Pick.
 
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		//update (); // We cannot make an update here because of gravity.
 

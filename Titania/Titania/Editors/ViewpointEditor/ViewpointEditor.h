@@ -72,7 +72,7 @@ public:
 
 	///  @name Construction
 
-	ViewpointEditor (BrowserWindow* const);
+	ViewpointEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
@@ -89,6 +89,9 @@ private:
 	initialize () final override;
 
 	void
+	set_browser (const X3D::BrowserPtr &);
+
+	void
 	set_active_viewpoint ();
 
 	void
@@ -102,8 +105,8 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <ViewpointList> viewpointList;
-
+	X3D::BrowserPtr                    browser;
+	std::unique_ptr <ViewpointList>    viewpointList;
 	NameEntry                          nodeName;
 	SFStringTextView                   description;
 	X3DFieldToggleButton <X3D::SFBool> jump;

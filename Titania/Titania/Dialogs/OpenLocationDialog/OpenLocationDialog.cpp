@@ -50,6 +50,7 @@
 
 #include "OpenLocationDialog.h"
 
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -57,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-OpenLocationDialog::OpenLocationDialog (BrowserWindow* const browserWindow) :
+OpenLocationDialog::OpenLocationDialog (X3DBrowserWindow* const browserWindow) :
 	              X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DOpenLocationDialogInterface (get_ui ("Dialogs/OpenLocationDialog.xml"), gconf_dir ())
 {

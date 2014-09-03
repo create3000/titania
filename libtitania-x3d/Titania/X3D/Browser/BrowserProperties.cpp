@@ -86,14 +86,14 @@ BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContex
 {
 	addType (X3DConstants::BrowserProperties);
 
-	addField (initializeOnly, "ABSTRACT_NODES",        abstractNodes ());
-	addField (initializeOnly, "CONCRETE_NODES",        concreteNodes ());
-	addField (initializeOnly, "EXTERNAL_INTERACTIONS", externalInteractions ());
-	addField (initializeOnly, "PROTOTYPE_CREATE",      prototypeCreate ());
-	addField (initializeOnly, "DOM_IMPORT",            domImport ());
-	addField (initializeOnly, "XML_ENCODING",          xmlEncoding ());
-	addField (initializeOnly, "CLASSIC_VRML_ENCODING", classicVrmlEncoding ());
-	addField (initializeOnly, "BINARY_ENCODING",       binaryEncoding ());
+	addField (outputOnly, "ABSTRACT_NODES",        abstractNodes ());
+	addField (outputOnly, "CONCRETE_NODES",        concreteNodes ());
+	addField (outputOnly, "EXTERNAL_INTERACTIONS", externalInteractions ());
+	addField (outputOnly, "PROTOTYPE_CREATE",      prototypeCreate ());
+	addField (outputOnly, "DOM_IMPORT",            domImport ());
+	addField (outputOnly, "XML_ENCODING",          xmlEncoding ());
+	addField (outputOnly, "CLASSIC_VRML_ENCODING", classicVrmlEncoding ());
+	addField (outputOnly, "BINARY_ENCODING",       binaryEncoding ());
 }
 
 BrowserProperties*

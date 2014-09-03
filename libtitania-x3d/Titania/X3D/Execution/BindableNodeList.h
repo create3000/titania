@@ -174,14 +174,14 @@ public:
 		if (temp not_eq list)
 		{
 			for (auto & node : list)
-				node -> disposed () .removeInterest (this, &X3DBindableNodeList::erase);
+				node -> shutdown () .removeInterest (this, &X3DBindableNodeList::erase);
 
 			replace (temp);
 
 			list = std::move (temp);
 
 			for (auto & node : list)
-				node -> disposed () .addInterest (this, &X3DBindableNodeList::erase, node);
+				node -> shutdown () .addInterest (this, &X3DBindableNodeList::erase, node);
 
 			addEvent ();
 		}

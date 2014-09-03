@@ -51,55 +51,19 @@
 #ifndef __TITANIA_BROWSER_BROWSER_WINDOW_H__
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
-#include "../Browser/X3DBrowserEditor.h"
+#include "../Browser/X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
-class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-
 class BrowserWindow :
-	public X3DBrowserEditor
+	public X3DBrowserWindow
 {
 public:
 
 	/// @name Construction
 
-	BrowserWindow (const X3D::BrowserPtr &, int, char**);
-
-	/// @name Widgets
-
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
-
-	/// @name Member access
-
-	X3D::Keys &
-	getKeys ()
-	{ return keys; }
-
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
-
-	const X3D::Output &
-	saveAs () const
-	{ return saveAsOutput; }
-
-	/// @name Menu
-
-	void
-	setAccelerators (const bool);
-
-	void
-	expandNodes (const X3D::MFNode &);
+	BrowserWindow (const X3D::BrowserPtr &);
 
 	/// @name Destruction
 
@@ -118,10 +82,11 @@ private:
 	void
 	loadStyles () const;
 
-	void
-	expandNodesImpl (const X3D::MFNode &);
-
 	///  @name Scene handling
+
+	virtual
+	void
+	setBrowser (const X3D::BrowserPtr &) final override;
 
 	void
 	set_scene ();
@@ -183,10 +148,10 @@ private:
 
 	virtual
 	void
-	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
+	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	void
-	dragDataHandling (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, const guint, const bool);
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, const guint, const bool);
 
 	virtual
 	void
@@ -207,6 +172,10 @@ private:
 	virtual
 	void
 	on_close () final override;
+
+	virtual
+	void
+	on_quit () final override;
 
 	/// @name Undo/Redo
 
@@ -347,7 +316,7 @@ private:
 	on_editor_toggled () final override;
 
 	void
-	enableEditor (const bool);
+	isEditor (const bool);
 
 	/// @name Shading
 
@@ -636,21 +605,9 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <ViewpointList> viewpointList;
-	std::unique_ptr <HistoryView>   historyEditor;
-	std::unique_ptr <LibraryView>   libraryView;
-	std::unique_ptr <OutlineEditor> outlineEditor;
-	std::unique_ptr <Console>       console;
-	std::unique_ptr <ScriptEditor>  scriptEditor;
-
-	X3D::Keys keys;
-	bool      shortcuts;
-	bool      toggle;
-	bool      changing;
-
+	bool            toggle;
+	bool            changing;
 	X3D::ViewerType viewer;
-
-	X3D::Output saveAsOutput;
 
 };
 

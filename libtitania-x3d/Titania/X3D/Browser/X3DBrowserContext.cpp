@@ -51,10 +51,9 @@
 #include "X3DBrowserContext.h"
 
 #include "../Browser/Console.h"
+#include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Selection.h"
-
-#include <cassert>
 
 namespace titania {
 namespace X3D {
@@ -146,7 +145,9 @@ X3DBrowserContext::addEvent ()
 void
 X3DBrowserContext::reshape ()
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 		reshaped () .processInterests ();
 }
 
@@ -164,7 +165,9 @@ X3DBrowserContext::update ()
 {
 	try
 	{
-		if (makeCurrent ())
+		ContextLock lock (this);
+
+		if (lock)
 		{
 			// Prepare
 
@@ -186,7 +189,9 @@ X3DBrowserContext::update ()
 
 			// Display
 
-			glClearColor (0, 0, 0, 0);
+			const auto color = getBackgroundColor ();
+
+			glClearColor (color .r (), color .g (), color .b (), color .a ());
 			glClear (GL_COLOR_BUFFER_BIT);
 
 			getWorld () -> traverse (TraverseType::DISPLAY);
@@ -198,7 +203,7 @@ X3DBrowserContext::update ()
 
 			finished () .processInterests ();
 
-			GLenum errorNum = glGetError ();
+			const GLenum errorNum = glGetError ();
 
 			if (errorNum not_eq GL_NO_ERROR)
 				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;

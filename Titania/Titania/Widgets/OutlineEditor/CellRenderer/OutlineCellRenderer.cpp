@@ -50,7 +50,7 @@
 
 #include "OutlineCellRenderer.h"
 
-#include "../../../Browser/BrowserWindow.h"
+#include "../../../Browser/X3DBrowserWindow.h"
 #include "../../../Configuration/config.h"
 #include "../../../Undo/UndoStep.h"
 #include "../OutlineTreeModel.h"
@@ -418,6 +418,8 @@ OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 			break;
 		case X3D::inputOutput:
 			index = (std::min <size_t> (inputRoutes, 2) << 2) | (std::min <size_t> (outputRoutes, 2));
+			break;
+		default:
 			break;
 	}
 
@@ -1015,6 +1017,8 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 					break;
 				}
+				default:
+					break;
 			}
 
 			break;

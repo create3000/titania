@@ -65,7 +65,12 @@ public:
 
 	///  @name Construction
 	
-	Console (BrowserWindow* const);
+	Console (X3DBrowserWindow* const);
+
+	///  @name Member access
+
+	bool
+	isEnabled () const;
 
 	///  @name Destruction
 	
@@ -88,6 +93,9 @@ private:
 	virtual
 	void
 	on_clear_button_clicked () final override;
+
+	void
+	set_browser (const X3D::BrowserPtr &);
 
 	void
 	set_enabled ();

@@ -100,6 +100,7 @@ private:
 	const basic::uri          referer;
 	Callback                  callback;
 	std::atomic <bool>        running;
+	std::mutex                mutex;
 	std::future <X3DScenePtr> future;
 
 };

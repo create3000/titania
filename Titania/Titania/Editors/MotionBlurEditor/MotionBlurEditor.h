@@ -52,8 +52,6 @@
 #define __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
 
 #include "../../UserInterfaces/X3DMotionBlurEditorInterface.h"
-#include <Titania/X3D.h>
-#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
@@ -65,7 +63,7 @@ class MotionBlurEditor :
 {
 public:
 
-	MotionBlurEditor (BrowserWindow* const);
+	MotionBlurEditor (X3DBrowserWindow* const);
 
 	virtual
 	~MotionBlurEditor ();

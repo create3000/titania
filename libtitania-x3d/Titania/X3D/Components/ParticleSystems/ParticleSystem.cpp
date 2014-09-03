@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Bits/config.h"
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
@@ -1589,65 +1590,70 @@ ParticleSystem::disableTexCoord () const
 void
 ParticleSystem::dispose ()
 {
-	// Particle buffer
+	ContextLock lock (getBrowser ());
 
-	if (particleFeedbackId [0])
-		glDeleteTransformFeedbacks (2, particleFeedbackId .data ());
+	if (lock)
+	{
+		// Particle buffer
 
-	if (particleMapId)
-		glDeleteTextures (1, &particleMapId);
+		if (particleFeedbackId [0])
+			glDeleteTransformFeedbacks (2, particleFeedbackId .data ());
 
-	if (particleBufferId [0])
-		glDeleteBuffers (2, particleBufferId .data ());
+		if (particleMapId)
+			glDeleteTextures (1, &particleMapId);
 
-	// Vertex buffer
+		if (particleBufferId [0])
+			glDeleteBuffers (2, particleBufferId .data ());
 
-	if (vertexFeedbackId)
-		glDeleteTransformFeedbacks (1, &vertexFeedbackId);
+		// Vertex buffer
 
-	if (vertexBufferId)
-		glDeleteBuffers (1, &vertexBufferId);
+		if (vertexFeedbackId)
+			glDeleteTransformFeedbacks (1, &vertexFeedbackId);
 
-	// Primitive geometry buffer
+		if (vertexBufferId)
+			glDeleteBuffers (1, &vertexBufferId);
 
-	if (geometryBufferId)
-		glDeleteBuffers (1, &geometryBufferId);
+		// Primitive geometry buffer
 
-	// Color ramp texture buffer
+		if (geometryBufferId)
+			glDeleteBuffers (1, &geometryBufferId);
 
-	if (colorRampMapId [0])
-		glDeleteTextures (2, colorRampMapId .data ());
+		// Color ramp texture buffer
 
-	if (colorRampBufferId [0])
-		glDeleteBuffers (2, colorRampBufferId .data ());
+		if (colorRampMapId [0])
+			glDeleteTextures (2, colorRampMapId .data ());
 
-	// Color ramp texture buffer
+		if (colorRampBufferId [0])
+			glDeleteBuffers (2, colorRampBufferId .data ());
 
-	if (texCoordRampMapId [0])
-		glDeleteTextures (2, texCoordRampMapId .data ());
+		// Color ramp texture buffer
 
-	if (texCoordRampBufferId [0])
-		glDeleteBuffers (2, texCoordRampBufferId .data ());
+		if (texCoordRampMapId [0])
+			glDeleteTextures (2, texCoordRampMapId .data ());
 
-	// Bounded texture buffers
+		if (texCoordRampBufferId [0])
+			glDeleteBuffers (2, texCoordRampBufferId .data ());
 
-	if (boundedNormalMapId)
-		glDeleteTextures (1, &boundedNormalMapId);
+		// Bounded texture buffers
 
-	if (boundedNormalBufferId)
-		glDeleteBuffers (1, &boundedNormalBufferId);
+		if (boundedNormalMapId)
+			glDeleteTextures (1, &boundedNormalMapId);
 
-	if (boundedSurfaceMapId)
-		glDeleteTextures (1, &boundedSurfaceMapId);
+		if (boundedNormalBufferId)
+			glDeleteBuffers (1, &boundedNormalBufferId);
 
-	if (boundedSurfaceBufferId)
-		glDeleteBuffers (1, &boundedSurfaceBufferId);
+		if (boundedSurfaceMapId)
+			glDeleteTextures (1, &boundedSurfaceMapId);
 
-	if (boundedVolumeMapId)
-		glDeleteTextures (1, &boundedVolumeMapId);
+		if (boundedSurfaceBufferId)
+			glDeleteBuffers (1, &boundedSurfaceBufferId);
 
-	if (boundedVolumeBufferId)
-		glDeleteBuffers (1, &boundedVolumeBufferId);
+		if (boundedVolumeMapId)
+			glDeleteTextures (1, &boundedVolumeMapId);
+
+		if (boundedVolumeBufferId)
+			glDeleteBuffers (1, &boundedVolumeBufferId);
+	}
 
 	// Dispose base
 

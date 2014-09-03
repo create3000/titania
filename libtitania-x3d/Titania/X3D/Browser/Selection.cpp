@@ -52,6 +52,7 @@
 
 #include "../Bits/Cast.h"
 #include "../Bits/Traverse.h"
+#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Grouping/Transform.h"
 #include "../Components/Layering/LayerSet.h"
@@ -104,7 +105,9 @@ Selection::isSelected (const SFNode & node) const
 void
 Selection::addChildren (const MFNode & value)
 {
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		for (const auto & child : value)
 		{
@@ -126,7 +129,9 @@ Selection::addChildren (const MFNode & value)
 void
 Selection::removeChildren (const MFNode & value)
 {
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		for (const auto & child : value)
 		{

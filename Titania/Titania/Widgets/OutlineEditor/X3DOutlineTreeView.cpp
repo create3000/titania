@@ -51,7 +51,7 @@
 #include "X3DOutlineTreeView.h"
 
 #include "../../Base/AdjustmentObject.h"
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "CellRenderer/OutlineSeparator.h"

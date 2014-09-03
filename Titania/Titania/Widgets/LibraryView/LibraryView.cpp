@@ -50,7 +50,7 @@
 
 #include "LibraryView.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 
@@ -62,7 +62,7 @@ namespace puck {
 static constexpr int ICON_COLUMN = 0;
 static constexpr int NAME_COLUMN = 1;
 
-LibraryView::LibraryView (BrowserWindow* const browserWindow) :
+LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DLibraryViewInterface (get_ui ("LibraryView.xml"), gconf_dir ())
 {

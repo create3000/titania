@@ -54,6 +54,7 @@
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
 #include "../../Rendering/OpenGL.h"
+#include "../ContextLock.h"
 #include "../X3DBrowser.h"
 
 namespace titania {
@@ -119,7 +120,9 @@ X3DTexturingContext::initialize ()
 size_t
 X3DTexturingContext::getAvailableTextureMemory () const
 {
-	if (getBrowser () -> makeCurrent ())
+	ContextLock lock (getBrowser ());
+
+	if (lock)
 	{
 		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
 		{

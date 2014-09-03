@@ -66,6 +66,7 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	         referer (executionContext -> getWorldURL ()),
 	        callback (callback),
 	         running (true),
+	           mutex (),
 	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
 	browser -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
@@ -102,6 +103,8 @@ SceneLoader::loadAsync (const MFString & url)
 
 		if (running)
 			Loader (nullptr, referer) .parseIntoScene (scene, url);
+
+		//std::lock_guard <std::mutex> result (mutex);
 
 		if (running)
 			return scene;
@@ -142,6 +145,12 @@ SceneLoader::prepareEvents ()
 void
 SceneLoader::dispose ()
 {
+	//	std::lock_guard <std::mutex> result (mutex);
+	//	
+	//	callback = [ ] (X3DScenePtr &&) { };
+	//
+	//	prepareEvents ()
+
 	if (running)
 	{
 		running = false;

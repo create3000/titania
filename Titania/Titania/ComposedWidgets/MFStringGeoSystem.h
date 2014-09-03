@@ -51,7 +51,7 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_GEO_SYSTEM_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_GEO_SYSTEM_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 #include <Titania/String.h>
 
@@ -59,13 +59,13 @@ namespace titania {
 namespace puck {
 
 class MFStringGeoSystem :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	MFStringGeoSystem (BrowserWindow* const,
+	MFStringGeoSystem (X3DBrowserWindow* const,
 	                   Gtk::ComboBoxText &,
 	                   Gtk::ComboBoxText &,
 	                   Gtk::ComboBoxText &,
@@ -118,7 +118,7 @@ private:
 };
 
 inline
-MFStringGeoSystem::MFStringGeoSystem (BrowserWindow* const browserWindow,
+MFStringGeoSystem::MFStringGeoSystem (X3DBrowserWindow* const browserWindow,
                                       Gtk::ComboBoxText & coordinateSystem,
                                       Gtk::ComboBoxText & ellipsoid,
                                       Gtk::ComboBoxText & gdOrder,
@@ -128,21 +128,21 @@ MFStringGeoSystem::MFStringGeoSystem (BrowserWindow* const browserWindow,
                                       Gtk::Widget & ellipsoidBox,
                                       Gtk::Widget & gdBox,
                                       Gtk::Widget & utmBox) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
-	coordinateSystem (coordinateSystem),
-	       ellipsoid (ellipsoid),
-	         gdOrder (gdOrder),
-	            zone (zone),
-	      hemisphere (hemisphere),
-	        utmOrder (utmOrder),
-	    ellipsoidBox (ellipsoidBox),
-	           gdBox (gdBox),
-	          utmBox (utmBox),
-	            node (),
-	        undoStep (),
-	           input (-1),
-	        changing (false)
+	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DComposedWidget (),
+	 coordinateSystem (coordinateSystem),
+	        ellipsoid (ellipsoid),
+	          gdOrder (gdOrder),
+	             zone (zone),
+	       hemisphere (hemisphere),
+	         utmOrder (utmOrder),
+	     ellipsoidBox (ellipsoidBox),
+	            gdBox (gdBox),
+	           utmBox (utmBox),
+	             node (),
+	         undoStep (),
+	            input (-1),
+	         changing (false)
 {
 	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 0));
 	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 1));

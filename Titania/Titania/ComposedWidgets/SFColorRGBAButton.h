@@ -51,20 +51,20 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
 #define __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 #include "../ComposedWidgets/Cairo.h"
 
 namespace titania {
 namespace puck {
 
 class SFColorRGBAButton :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	SFColorRGBAButton (BrowserWindow* const,
+	SFColorRGBAButton (X3DBrowserWindow* const,
 	                   Gtk::Button &,
 	                   const Glib::RefPtr <Gtk::Adjustment> &,
 	                   Gtk::Widget &,
@@ -134,13 +134,13 @@ private:
 };
 
 inline
-SFColorRGBAButton::SFColorRGBAButton (BrowserWindow* const browserWindow,
+SFColorRGBAButton::SFColorRGBAButton (X3DBrowserWindow* const browserWindow,
                                       Gtk::Button & colorButton,
                                       const Glib::RefPtr <Gtk::Adjustment> & valueAdjustment,
                                       Gtk::Widget & widget,
                                       const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	     colorButton (colorButton),
 	 valueAdjustment (valueAdjustment),
 	          widget (widget),

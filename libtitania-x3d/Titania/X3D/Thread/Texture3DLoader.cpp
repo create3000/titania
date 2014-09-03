@@ -64,6 +64,7 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
 	         referer (executionContext -> getWorldURL ()),
 	        callback (callback),
 	         running (true),
+	           mutex (),
 	          future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	browser -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);

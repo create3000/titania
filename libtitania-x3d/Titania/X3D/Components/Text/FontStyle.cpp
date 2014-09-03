@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
-	X3DTextGeometry (),
+	X3DTextGeometry (fontStyle),
 	           text (text),
 	      fontStyle (fontStyle)
 {

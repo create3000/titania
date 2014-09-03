@@ -89,7 +89,7 @@ X3DRenderer::X3DRenderer () :
 void
 X3DRenderer::initialize ()
 {
-	depthBuffer .reset (new DepthBuffer (DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT));
+	depthBuffer .reset (new DepthBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT));
 }
 
 void

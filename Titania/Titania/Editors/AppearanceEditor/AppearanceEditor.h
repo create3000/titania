@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	AppearanceEditor (BrowserWindow* const);
+	AppearanceEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 

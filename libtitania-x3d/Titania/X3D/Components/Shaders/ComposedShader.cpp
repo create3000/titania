@@ -51,6 +51,7 @@
 #include "ComposedShader.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderPart.h"
@@ -251,8 +252,13 @@ ComposedShader::draw ()
 void
 ComposedShader::dispose ()
 {
-	if (programId)
-		glDeleteProgram (programId);
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+	{
+		if (programId)
+			glDeleteProgram (programId);
+	}
 
 	X3DProgrammableShaderObject::dispose ();
 	X3DShaderNode::dispose ();

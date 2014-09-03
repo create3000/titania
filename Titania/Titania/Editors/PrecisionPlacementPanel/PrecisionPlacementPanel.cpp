@@ -57,9 +57,9 @@
 namespace titania {
 namespace puck {
 
-PrecisionPlacementPanel::PrecisionPlacementPanel (BrowserWindow* const browserWindow) :
+PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DPrecisionPlacementPanelInterface (get_ui ("Dialogs/PrecisionPlacementPanel.xml"), gconf_dir ()),
+	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.xml"), gconf_dir ()),
 	                 X3DTransformEditor (),
 	                           nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                           bboxSize (getBrowserWindow (),
@@ -85,9 +85,9 @@ PrecisionPlacementPanel::initialize ()
 	X3DPrecisionPlacementPanelInterface::initialize ();
 	X3DTransformEditor::initialize ();
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

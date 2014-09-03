@@ -1,3 +1,72 @@
+2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3D.h:
+	* X3D.cpp:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* X3DConstants.h:
+	* X3DBaseNode.h:
+	* Browser.cpp:
+	* SceneLoader.h:
+	* Selection.cpp:
+	* ContextLock.h:
+	* X3DBaseNode.cpp:
+	* SceneLoader.cpp:
+	* TextureLoader.h:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* X3DParentObject.h:
+	* DepthBuffer.h:
+	* Texture3DLoader.h:
+	* TextureLoader.cpp:
+	* BrowserOptions.h:
+	* X3DParentObject.cpp:
+	* DepthBuffer.cpp:
+	* X3DRenderer.cpp:
+	* X3DRouterObject.h:
+	* splash.x3dv:
+	* Generator.cpp:
+	* X3DFieldDefinition.h:
+	* X3DGarbageCollector.h:
+	* BrowserOptions.cpp:
+	* Texture3DLoader.cpp:
+	* X3DRouterObject.cpp:
+	* BindableNodeList.h:
+	* RenderingProperties.h:
+	* BrowserProperties.cpp:
+	* FontStyle.cpp:
+	* X3DBrowserContext.cpp:
+	* BindableNodeStack.h:
+	* RenderingProperties.cpp:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DViewer.cpp:
+	* ShaderPart.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DFontStyleNode.h:
+	* X3DLayerNode.h:
+	* Context.cpp:
+	* X3DLayerNode.cpp:
+	* ExternProtoDeclaration.cpp:
+	* X3DFontStyleNode.cpp:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* ComposedShader.cpp:
+	* ScreenFontStyle.cpp:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* X3DTextureNode.cpp:
+	* X3DRenderingContext.h:
+	* X3DGeometryNode.cpp:
+	* X3DRenderingContext.cpp:
+	* X3DTexturingContext.cpp:
+	* VolumeEmitter.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* PolylineEmitter.cpp:
+	* X3DBackgroundNode.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-08-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* LOD.cpp: 

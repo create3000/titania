@@ -70,7 +70,7 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 void
 X3DTextureTransformNodeEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureTransformNodeEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureTransformNodeEditor::set_selection);
 
 	set_selection ();
 }

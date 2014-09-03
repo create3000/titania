@@ -50,7 +50,7 @@
 
 #include "OutlineTreeViewEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineDragDrop.h"
 #include "OutlineRouteGraph.h"
@@ -62,7 +62,7 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
+OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
@@ -196,7 +196,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 
 				if (field -> getAccessType () not_eq X3D::outputOnly)
 				{
-					getBrowserWindow () -> setAccelerators (false);
+					getBrowserWindow () -> hasAccelerators (false);
 					get_tree_observer () -> unwatch_tree (iter);
 					watch_motion (false);
 					set_cursor (path, *column, true);
@@ -255,7 +255,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 
 	get_tree_observer () -> watch_child (iter, path);
 
-	getBrowserWindow () -> setAccelerators (true);
+	getBrowserWindow () -> hasAccelerators (true);
 	watch_motion (true);
 }
 

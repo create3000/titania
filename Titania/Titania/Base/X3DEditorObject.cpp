@@ -53,6 +53,18 @@
 namespace titania {
 namespace puck {
 
+void
+X3DEditorObject::setup ()
+{
+	getBrowser () .addInterest (this, &X3DEditorObject::set_browser);
+}
+
+void
+X3DEditorObject::set_browser (const X3D::BrowserPtr & value)
+{
+	fields -> setExecutionContext (value);
+}
+
 /***********************************************************************************************************************
  *
  *  Validate Id

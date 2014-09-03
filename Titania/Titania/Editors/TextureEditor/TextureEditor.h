@@ -71,7 +71,7 @@ public:
 
 	///  @name Construction
 
-	TextureEditor (BrowserWindow* const);
+	TextureEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 

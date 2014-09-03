@@ -219,6 +219,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="LightExpander">
+            <property name="name">LightExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -532,6 +533,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="DirectionalLightExpander">
+            <property name="name">DirectionalLightExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
@@ -669,6 +671,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="PointLightExpander">
+            <property name="name">PointLightExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
@@ -887,6 +890,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="SpotLightExpander">
+            <property name="name">SpotLightExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>

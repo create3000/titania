@@ -53,7 +53,7 @@
 
 #include "../Undo/UndoStep.h"
 
-#include <Titania/X3D.h>
+#include <Titania/X3D/Base/X3DOutput.h>
 #include <memory>
 
 namespace titania {

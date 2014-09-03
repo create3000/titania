@@ -91,33 +91,5 @@ throw (Error <INVALID_NODE>,
 	return new Browser (*sharingBrowser);
 }
 
-void
-removeBrowser (BrowserPtr & browser)
-noexcept (true)
-{
-	if (not browser)
-		return;
-
-	const auto xDisplay  = glXGetCurrentDisplay ();
-	const auto xDrawable = glXGetCurrentDrawable ();
-	const auto xContext  = glXGetCurrentContext ();
-
-	browser -> makeCurrent ();
-
-	const auto referenceCount  = browser -> getReferenceCount ();
-	const auto xBrowserContext = glXGetCurrentContext ();
-
-	browser = nullptr;
-
-	if (xDisplay)
-	{
-		if (xContext not_eq xBrowserContext)
-			glXMakeCurrent (xDisplay, xDrawable, xContext);
-
-		else if (referenceCount == 1)
-			glXMakeCurrent (xDisplay, None, nullptr);
-	}
-}
-
 } // X3D
 } // titania

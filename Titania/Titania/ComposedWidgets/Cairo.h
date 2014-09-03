@@ -51,7 +51,8 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
 #define __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
 
-#include "../Base/X3DEditorObject.h"
+#include <cairomm/cairomm.h>
+#include <Titania/X3D/Types/Numbers.h>
 
 namespace titania {
 namespace puck {

@@ -107,10 +107,18 @@ enum LoadState : uint8_t
 
 enum AccessType : uint8_t
 {
-	initializeOnly = 1, // 0b001
-	inputOnly      = 2, // 0b010
-	outputOnly     = 4, // 0b100
-	inputOutput    = 7  // 0b111
+	initializeOnly = 1,          // 0b0001
+	inputOnly      = 2,          // 0b0010
+	outputOnly     = 4,          // 0b0100
+	inputOutput    = 7,          // 0b0111
+
+	// Access types for hidden fields
+
+	HIDDEN                 = 8,  // 0b1000
+	HIDDEN_INITIALIZE_ONLY = 9,  // 0b1001
+	HIDDEN_INPUT_ONLY      = 10, // 0b1010
+	HIDDEN_OUTPUT_ONLY     = 12, // 0b1100
+	HIDDEN_INPUT_OUTPUT    = 15  // 0b1111
 
 };
 

@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	OutlineTreeViewEditor (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
+	OutlineTreeViewEditor (X3DBrowserWindow* const, const X3D::X3DExecutionContextPtr &);
 
 	~OutlineTreeViewEditor ();
 

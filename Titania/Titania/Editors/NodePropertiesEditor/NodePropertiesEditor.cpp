@@ -50,7 +50,7 @@
 
 #include "NodePropertiesEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/Utility/Map.h>
@@ -74,9 +74,9 @@ namespace puck {
 //	return result;
 //}
 
-NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow) :
+NodePropertiesEditor::NodePropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DNodePropertiesEditorInterface (get_ui ("Dialogs/NodePropertiesEditor.xml"), gconf_dir ()),
+	X3DNodePropertiesEditorInterface (get_ui ("Editors/NodePropertiesEditor.xml"), gconf_dir ()),
 	      X3DUserDefinedFieldsEditor (),
 	          X3DImportedNodesEditor (),
 	          X3DExportedNodesEditor (),
@@ -95,9 +95,9 @@ NodePropertiesEditor::initialize ()
 	X3DImportedNodesEditor::initialize ();
 	X3DExportedNodesEditor::initialize ();
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &NodePropertiesEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &NodePropertiesEditor::set_selection);
 
-	set_selection (getBrowser () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

@@ -69,7 +69,7 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 void
 X3DTextureCoordinateGeneratorEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_selection);
 
 	set_selection ();
 }

@@ -50,6 +50,8 @@
 
 #include "X3DFontStyleNode.h"
 
+#include "../../Browser/ContextLock.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Text/Text.h"
 
@@ -59,7 +61,8 @@
 namespace titania {
 namespace X3D {
 
-X3DTextGeometry::X3DTextGeometry () :
+X3DTextGeometry::X3DTextGeometry (const X3DFontStyleNode* const fontStyle) :
+	     fontStyle (fontStyle),
 	          bbox (),
 	  charSpacings (),
 	       bearing (),
@@ -514,8 +517,13 @@ X3DTextGeometry::display ()
 
 X3DTextGeometry::~X3DTextGeometry ()
 {
-	if (listId)
-		glDeleteLists (listId, 1);
+	ContextLock lock (fontStyle -> getBrowser ());
+
+	if (lock)
+	{
+		if (listId)
+			glDeleteLists (listId, 1);
+	}
 }
 
 X3DFontStyleNode::Fields::Fields () :

@@ -108,6 +108,9 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	             fogs,
 	             viewpoints,
 	             group);
+
+	defaultBackground -> isHidden (true);
+	defaultFog        -> isHidden (true);
 }
 
 void
@@ -115,9 +118,6 @@ X3DLayerNode::initialize ()
 {
 	X3DNode::initialize ();
 	X3DRenderer::initialize ();
-
-	defaultBackground -> isHidden (true);
-	defaultFog        -> isHidden (true);
 
 	defaultNavigationInfo -> setup ();
 	defaultBackground     -> setup ();
@@ -144,6 +144,14 @@ X3DLayerNode::initialize ()
 	children ()       .addInterest (group -> children ());
 
 	set_viewport ();
+}
+
+void
+X3DLayerNode::isLayer0 (const bool value)
+{
+	layer0 = value;
+
+	defaultBackground -> isHidden (not value);
 }
 
 Box3f

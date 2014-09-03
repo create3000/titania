@@ -68,6 +68,13 @@ public:
 
 	///  @name Member access
 
+	///  Returns the type name of this object.
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return getWidgetName (); }
+
 	virtual
 	const std::string &
 	getWidgetName () const = 0;
@@ -148,7 +155,7 @@ protected:
 
 	virtual
 	bool
-	close ();
+	quit ();
 
 
 private:
@@ -179,9 +186,8 @@ private:
 	void
 	removeDialog (const std::string &);
 
-	static
 	void
-	removeDialogImpl (const std::shared_ptr <DialogIndex> &, const std::string &);
+	removeDialogImpl (const std::string &);
 
 	void
 	restoreInterface ();

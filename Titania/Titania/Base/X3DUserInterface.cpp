@@ -134,7 +134,7 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 bool
 X3DUserInterface::on_delete_event (GdkEventAny*)
 {
-	return close ();
+	return quit ();
 }
 
 bool
@@ -173,11 +173,11 @@ throw (std::out_of_range)
 void
 X3DUserInterface::removeDialog (const std::string & name)
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DUserInterface::removeDialogImpl), dialogs, name));
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialogImpl), name));
 }
 
 void
-X3DUserInterface::removeDialogImpl (const std::shared_ptr <DialogIndex> & dialogs, const std::string & name)
+X3DUserInterface::removeDialogImpl (const std::string & name)
 {
 	dialogs -> erase (name);
 }
@@ -269,13 +269,13 @@ X3DUserInterface::saveSession ()
 	// Close dialogs
 
 	for (const auto & pair : *dialogs)
-		pair .second -> close ();
+		pair .second -> quit ();
 
 	dialogs -> clear ();
 }
 
 bool
-X3DUserInterface::close ()
+X3DUserInterface::quit ()
 {
 	// Save sessions
 

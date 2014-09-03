@@ -52,6 +52,8 @@
 
 #include "ScreenFontStyle.h"
 
+#include "../../Browser/ContextLock.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Text/Text.h"
@@ -64,7 +66,7 @@ namespace X3D {
 static constexpr double M_POINT = M_INCH / 72;
 
 ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle) :
-	X3DTextGeometry (),
+	X3DTextGeometry (fontStyle),
 	           text (text),
 	      fontStyle (fontStyle),
 	        context (Cairo::Context::create (Cairo::ImageSurface::create (Cairo::FORMAT_RGB24, 0, 0))),
@@ -412,8 +414,13 @@ ScreenText::display ()
 
 ScreenText::~ScreenText ()
 {
-	if (textureId)
-		glDeleteTextures (1, &textureId);
+	ContextLock lock (fontStyle -> getBrowser ());
+
+	if (lock)
+	{
+		if (textureId)
+			glDeleteTextures (1, &textureId);
+	}
 }
 
 const std::string ScreenFontStyle::componentName  = "Layout";

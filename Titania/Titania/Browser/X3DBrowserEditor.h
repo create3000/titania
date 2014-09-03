@@ -51,6 +51,7 @@
 #ifndef __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
 #define __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
 
+#include "../Browser/BrowserSelection.h"
 #include "../Browser/X3DBrowserWidget.h"
 #include "../Undo/UndoHistory.h"
 
@@ -58,8 +59,6 @@ namespace titania {
 namespace puck {
 
 class MagicImport;
-class BrowserSelection;
-class X3DBrowserSelection;
 
 class X3DBrowserEditor :
 	public X3DBrowserWidget
@@ -69,14 +68,13 @@ public:
 	/// @name Tests
 
 	bool
-	isSaved ();
+	isSaved (const X3D::BrowserPtr &);
 
 	void
-	isModified (const bool);
+	isModified (const X3D::BrowserPtr &, const bool);
 
 	bool
-	isModified () const
-	{ return modified; }
+	isModified (const X3D::BrowserPtr &) const;
 
 	/// @name File operations
 
@@ -108,22 +106,24 @@ public:
 	void
 	removeUnusedPrototypes (const UndoStepPtr &);
 
-	virtual
-	bool
-	close () final override;
-
 	/// @name Undo/Redo operations
+
+	UndoHistory &
+	getUndoHistory (const X3D::BrowserPtr &);
+
+	const UndoHistory &
+	getUndoHistory (const X3D::BrowserPtr &) const;
 
 	void
 	addUndoStep (const UndoStepPtr &);
 	
 	void
 	removeUndoStep ()
-	{ undoHistory .removeUndoStep (); }
+	{ getUndoHistory (getBrowser ()) .removeUndoStep (); }
 
 	const std::shared_ptr <UndoStep> &
 	getUndoStep () const
-	{ return undoHistory .getUndoStep (); }
+	{ return getUndoHistory (getBrowser ()) .getUndoStep (); }
 
 	void
 	undo ();
@@ -246,7 +246,7 @@ protected:
 
 	/// @name Construction
 
-	X3DBrowserEditor (int, char**);
+	X3DBrowserEditor (const X3D::BrowserPtr &);
 
 	virtual
 	void
@@ -255,6 +255,18 @@ protected:
 	virtual
 	void
 	restoreSession () final override;
+
+	virtual
+	void
+	setBrowser (const X3D::BrowserPtr &) override;
+
+	virtual
+	void
+	close (const X3D::BrowserPtr & browser) final override;
+
+	virtual
+	bool
+	quit () final override;
 
 	/// @name Undo
 
@@ -361,26 +373,14 @@ private:
 	void
 	on_cdata_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode &);
 
-	///  @name Destruction
-
-	void
-	shutdown ();
-
 	///  @name Members
 
 	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
-	bool                        modified;
-	bool                        saveConfirmed;
-	int                         savedIndex;
-	X3D::X3DExecutionContextPtr currentScene;
-
+	X3D::X3DExecutionContextPtr        currentScene;
 	std::unique_ptr <BrowserSelection> selection;
 	std::unique_ptr <MagicImport>      magicImport;
-	UndoHistory                        undoHistory;
 	UndoMatrixIndex                    undoMatrices;
-
-	std::map <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>> fileMonitors;
 
 };
 

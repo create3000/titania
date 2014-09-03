@@ -89,6 +89,8 @@ Generator::X3DAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const fi
 		case inputOnly:      return array [1];
 		case outputOnly:     return array [2];
 		case inputOutput:    return array [3];
+		default:
+			break;
 	}
 
 	assert (false);
@@ -107,6 +109,8 @@ Generator::VrmlAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const f
 		case inputOnly:      return array [1];
 		case outputOnly:     return array [2];
 		case inputOutput:    return array [3];
+		default:
+			break;
 	}
 
 	assert (false);
@@ -114,7 +118,7 @@ Generator::VrmlAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const f
 
 Generator::NodeTypeIndex::NodeTypeIndex () :
 	array ({
-	          // Base node type
+	       // Base node type
 
 	          "X3DBaseNode",
 
@@ -423,7 +427,7 @@ Generator::NodeTypeIndex::operator [ ] (const X3DBaseNode* const baseNode) const
 const Generator::AccessTypesIndex     Generator::AccessTypes;
 const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
 const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
-const Generator::NodeTypeIndex   Generator::NodeTypes;
+const Generator::NodeTypeIndex        Generator::NodeTypes;
 
 Generator::StyleType Generator::style   = NICEST;
 VersionType          Generator::version = LATEST_VERSION;
@@ -696,7 +700,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 
 		try
 		{
-			for ( ; ;)
+			for (; ;)
 			{
 				names .at (newName);
 
@@ -752,7 +756,7 @@ Generator::getUniqueName ()
 {
 	std::string name;
 
-	for ( ; ;)
+	for (; ;)
 	{
 		name = '_' + basic::to_string (++ newName);
 

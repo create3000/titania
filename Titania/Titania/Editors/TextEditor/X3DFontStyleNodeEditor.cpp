@@ -87,7 +87,7 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 void
 X3DFontStyleNodeEditor::initialize ()
 {
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DFontStyleNodeEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DFontStyleNodeEditor::set_selection);
 
 	set_selection ();
 }

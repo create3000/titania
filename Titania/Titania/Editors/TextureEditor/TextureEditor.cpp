@@ -50,15 +50,15 @@
 
 #include "TextureEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
+TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	          X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.xml"), gconf_dir ()),
+	          X3DTextureEditorInterface (get_ui ("Editors/TextureEditor.xml"), gconf_dir ()),
 	               X3DTextureNodeEditor (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
 	      X3DTextureTransformNodeEditor (),
 	X3DTextureCoordinateGeneratorEditor ()

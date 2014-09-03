@@ -42,7 +42,6 @@
     <property name="stock">FlyViewer</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkImage" id="NoneViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -159,9 +158,6 @@
     <property name="default_width">768</property>
     <property name="default_height">480</property>
     <property name="has_resize_grip">False</property>
-    <accel-groups>
-      <group name="MenuAccelGroup"/>
-    </accel-groups>
     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
     <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
     <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
@@ -192,7 +188,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_new" swapped="no"/>
                         <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -205,7 +200,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_open" swapped="no"/>
                         <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -256,7 +250,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_save" swapped="no"/>
                       </object>
@@ -268,7 +261,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_save_as" swapped="no"/>
                         <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
@@ -287,7 +279,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
                         <accelerator key="F5" signal="activate"/>
@@ -317,15 +308,27 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="QuitMenuItem">
+                      <object class="GtkImageMenuItem" id="CloseMenuItem">
                         <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_close" swapped="no"/>
+                        <accelerator key="w" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="QuitMenuItem">
+                        <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="on_quit" swapped="no"/>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                   </object>
@@ -348,7 +351,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_undo" swapped="no"/>
                         <accelerator key="z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -361,7 +363,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_redo" swapped="no"/>
                         <accelerator key="z" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
@@ -380,7 +381,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_cut_nodes_activate" swapped="no"/>
                         <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -393,7 +393,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_copy_nodes_activate" swapped="no"/>
                         <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -406,7 +405,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_paste_nodes_activate" swapped="no"/>
                         <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -419,7 +417,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_delete_nodes_activate" swapped="no"/>
                         <accelerator key="Delete" signal="activate"/>
@@ -1038,7 +1035,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_fullscreen" swapped="no"/>
                         <accelerator key="F11" signal="activate"/>
@@ -1050,7 +1046,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_unfullscreen" swapped="no"/>
                         <accelerator key="F11" signal="activate"/>
@@ -1076,7 +1071,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_select_all_activate" swapped="no"/>
                         <accelerator key="a" signal="activate" modifiers="GDK_CONTROL_MASK"/>
@@ -1204,7 +1198,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_standard_size" swapped="no"/>
                       </object>
@@ -1216,7 +1209,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_info" swapped="no"/>
                       </object>
@@ -1394,7 +1386,7 @@
                   <object class="GtkToolButton" id="NodePropertiesEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Node Properties Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Node Properties Editor</property>
                     <property name="label" translatable="yes">Node Properties Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-edit</property>
@@ -1409,7 +1401,7 @@
                   <object class="GtkToolButton" id="AppearanceEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Appearance Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Appearance Editor</property>
                     <property name="label" translatable="yes">Appearance Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-select-color</property>
@@ -1424,7 +1416,7 @@
                   <object class="GtkToolButton" id="TextureEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Texture Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Texture Editor</property>
                     <property name="label" translatable="yes">Texture Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-orientation-landscape</property>
@@ -1439,7 +1431,7 @@
                   <object class="GtkToolButton" id="TextEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Text Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Text Editor</property>
                     <property name="label" translatable="yes">Text Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-select-font</property>
@@ -1454,7 +1446,7 @@
                   <object class="GtkToolButton" id="GeometryPropertiesEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Geometry Properties Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Geometry Properties Editor</property>
                     <property name="label" translatable="yes">Geometry Properties Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Geometry</property>
@@ -1469,7 +1461,7 @@
                   <object class="GtkToolButton" id="ViewpointEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Viewpoint Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
                     <property name="label" translatable="yes">Viewpoint Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Viewpoint</property>
@@ -1484,7 +1476,7 @@
                   <object class="GtkToolButton" id="LightEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Light Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Light Editor</property>
                     <property name="label" translatable="yes">Light Editor</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Light</property>
@@ -1499,7 +1491,7 @@
                   <object class="GtkToolButton" id="LODEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show LOD Editor</property>
+                    <property name="tooltip_text" translatable="yes">LOD Editor</property>
                     <property name="label" translatable="yes">LOD Editor</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">edit-copy</property>
@@ -1514,7 +1506,7 @@
                   <object class="GtkToolButton" id="InlineEditorButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Inline Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Inline Editor</property>
                     <property name="label" translatable="yes">Inline Editor</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">document-export</property>
@@ -1529,7 +1521,7 @@
                   <object class="GtkToolButton" id="PrecisionPlacementPanelButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Precision Placement Panel.</property>
+                    <property name="tooltip_text" translatable="yes">Precision Placement Panel</property>
                     <property name="label" translatable="yes">Precision Placement Panel</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-goto-bottom</property>
@@ -1544,7 +1536,7 @@
                   <object class="GtkToolButton" id="CreatePrototypeInstanceButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Prototype Editor.</property>
+                    <property name="tooltip_text" translatable="yes">Prototype Editor</property>
                     <property name="label" translatable="yes">Prototype Instance</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">Prototype</property>
@@ -1559,7 +1551,7 @@
                   <object class="GtkToolButton" id="NodeIndexButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Show Node Index.</property>
+                    <property name="tooltip_text" translatable="yes">Node Index</property>
                     <property name="label" translatable="yes">Node Index</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-index</property>
@@ -1605,12 +1597,12 @@
                       <object class="GtkBox" id="box1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkBox" id="SurfaceBox">
+                          <object class="GtkBox" id="SplashBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="double_buffered">False</property>
-                            <signal name="drag-data-received" handler="on_surface_box_drag_data_received" swapped="no"/>
+                            <property name="orientation">vertical</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1622,204 +1614,17 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="Dashboard">
+                          <object class="GtkBox" id="box2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="orientation">vertical</property>
+                            <property name="spacing">4</property>
                             <child>
-                              <object class="GtkToolbar" id="DashboardToolBar">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="orientation">vertical</property>
-                                <property name="toolbar_style">icons</property>
-                                <property name="icon_size">1</property>
-                                <child>
-                                  <object class="GtkRadioToolButton" id="HandButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Switch to browser mode.</property>
-                                    <property name="tooltip_text" translatable="yes">Switch to browser mode.</property>
-                                    <property name="label" translatable="yes">Hand Tool</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">Hand</property>
-                                    <property name="active">True</property>
-                                    <signal name="toggled" handler="on_hand_button_toggled" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkRadioToolButton" id="ArrowButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Switch to selection mode.</property>
-                                    <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
-                                    <property name="label" translatable="yes">Arrow Tool</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">Arrow</property>
-                                    <property name="group">HandButton</property>
-                                    <signal name="toggled" handler="on_arrow_button_toggled" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToolButton" id="PlayPauseButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Toggle live mode.</property>
-                                    <property name="label" translatable="yes">Play</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-media-play</property>
-                                    <signal name="clicked" handler="on_play_pause_button_clicked" swapped="no"/>
-                                    <accelerator key="AudioPlay" signal="clicked"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSeparatorToolItem" id="SelectSeparator">
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToolButton" id="SelectParentButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Selects the immediate parent of the current selection.</property>
-                                    <property name="label" translatable="yes">Select Parent</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-go-up</property>
-                                    <signal name="clicked" handler="on_select_parent_button_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToolButton" id="SelectChildrenButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Selects the next lower children objects within the selected group in the hierarchy.</property>
-                                    <property name="label" translatable="yes">Select Children</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-go-down</property>
-                                    <signal name="clicked" handler="on_select_children_button_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSeparatorToolItem" id="ViewerSeparator">
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkMenuToolButton" id="ViewerButton">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Activate viewer.</property>
-                                    <property name="tooltip_text" translatable="yes">Activate viewer.</property>
-                                    <property name="label" translatable="yes">Viewer Type</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">ExamineViewer</property>
-                                    <signal name="clicked" handler="on_viewer_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToolButton" id="StraightenButton">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Straighten camera.</property>
-                                    <property name="tooltip_text" translatable="yes">Straighten camera.</property>
-                                    <property name="label" translatable="yes">Straighten Camera</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">Straighten</property>
-                                    <signal name="clicked" handler="on_straighten_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSeparatorToolItem" id="LookAtSeparator">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">False</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToolButton" id="LookAtSelectionButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Look at selected objects.</property>
-                                    <property name="label" translatable="yes">Look At Selection</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-jump-to</property>
-                                    <signal name="clicked" handler="on_look_at_selection_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToolButton" id="LookAtAllButton">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Look at all objects in active layer.</property>
-                                    <property name="tooltip_text" translatable="yes">Look at all objects in active layer.</property>
-                                    <property name="label" translatable="yes">Look At All Objects</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-zoom-fit</property>
-                                    <signal name="clicked" handler="on_look_at_all_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToggleToolButton" id="LookAtButton">
-                                    <property name="can_focus">False</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Look at.</property>
-                                    <property name="tooltip_text" translatable="yes">Look at.</property>
-                                    <property name="label" translatable="yes">Look At</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="stock_id">gtk-zoom-in</property>
-                                    <signal name="toggled" handler="on_look_at_toggled" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
-                                  </packing>
-                                </child>
+                              <object class="GtkNotebook" id="BrowserNotebook">
+                                <property name="can_focus">True</property>
+                                <property name="scrollable">True</property>
+                                <signal name="drag-data-received" handler="on_browser_drag_data_received" swapped="no"/>
+                                <signal name="page-reordered" handler="on_browser_reordered" swapped="no"/>
+                                <signal name="switch-page" handler="on_switch_browser" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1827,9 +1632,222 @@
                                 <property name="position">0</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkBox" id="Dashboard">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkToolbar" id="DashboardToolBar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="toolbar_style">icons</property>
+                                    <property name="icon_size">1</property>
+                                    <child>
+                                      <object class="GtkRadioToolButton" id="HandButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="has_tooltip">True</property>
+                                        <property name="tooltip_markup" translatable="yes">Switch to browser mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Switch to browser mode.</property>
+                                        <property name="label" translatable="yes">Hand Tool</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">Hand</property>
+                                        <property name="active">True</property>
+                                        <signal name="toggled" handler="on_hand_button_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkRadioToolButton" id="ArrowButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="has_tooltip">True</property>
+                                        <property name="tooltip_markup" translatable="yes">Switch to selection mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
+                                        <property name="label" translatable="yes">Arrow Tool</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">Arrow</property>
+                                        <property name="group">HandButton</property>
+                                        <signal name="toggled" handler="on_arrow_button_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="PlayPauseButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle live mode.</property>
+                                        <property name="label" translatable="yes">Play</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-media-play</property>
+                                        <signal name="clicked" handler="on_play_pause_button_clicked" swapped="no"/>
+                                        <accelerator key="AudioPlay" signal="clicked"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorToolItem" id="SelectSeparator">
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="SelectParentButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Selects the immediate parent of the current selection.</property>
+                                        <property name="label" translatable="yes">Select Parent</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-go-up</property>
+                                        <signal name="clicked" handler="on_select_parent_button_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="SelectChildrenButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Selects the next lower children objects within the selected group in the hierarchy.</property>
+                                        <property name="label" translatable="yes">Select Children</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-go-down</property>
+                                        <signal name="clicked" handler="on_select_children_button_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorToolItem" id="ViewerSeparator">
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkMenuToolButton" id="ViewerButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
+                                        <property name="has_tooltip">True</property>
+                                        <property name="tooltip_markup" translatable="yes">Activate viewer.</property>
+                                        <property name="tooltip_text" translatable="yes">Activate viewer.</property>
+                                        <property name="label" translatable="yes">Viewer Type</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">ExamineViewer</property>
+                                        <signal name="clicked" handler="on_viewer_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="StraightenButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="has_tooltip">True</property>
+                                        <property name="tooltip_markup" translatable="yes">Straighten camera.</property>
+                                        <property name="tooltip_text" translatable="yes">Straighten camera.</property>
+                                        <property name="label" translatable="yes">Straighten Camera</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">Straighten</property>
+                                        <signal name="clicked" handler="on_straighten_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorToolItem" id="LookAtSeparator">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="LookAtSelectionButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Look at selected objects.</property>
+                                        <property name="label" translatable="yes">Look At Selection</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-jump-to</property>
+                                        <signal name="clicked" handler="on_look_at_selection_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="LookAtAllButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="has_tooltip">True</property>
+                                        <property name="tooltip_markup" translatable="yes">Look at all objects in active layer.</property>
+                                        <property name="tooltip_text" translatable="yes">Look at all objects in active layer.</property>
+                                        <property name="label" translatable="yes">Look At All Objects</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-zoom-fit</property>
+                                        <signal name="clicked" handler="on_look_at_all_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToggleToolButton" id="LookAtButton">
+                                        <property name="can_focus">False</property>
+                                        <property name="has_tooltip">True</property>
+                                        <property name="tooltip_markup" translatable="yes">Look at.</property>
+                                        <property name="tooltip_text" translatable="yes">Look at.</property>
+                                        <property name="label" translatable="yes">Look At</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-zoom-in</property>
+                                        <signal name="toggled" handler="on_look_at_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
@@ -1850,15 +1868,13 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkLabel" id="FooterLabel">
-                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="ypad">2</property>
                                 <property name="label" translatable="yes">Console</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                  <attribute name="scale" value="0.80000000000000004"/>
-                                </attributes>
+                                <style>
+                                  <class name="titania-small"/>
+                                </style>
                               </object>
                               <packing>
                                 <property name="expand">True</property>

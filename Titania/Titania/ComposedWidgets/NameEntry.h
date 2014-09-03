@@ -51,19 +51,19 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_NAME_ENTRY_H__
 #define __TITANIA_COMPOSED_WIDGETS_NAME_ENTRY_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
 class NameEntry :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	NameEntry (BrowserWindow* const browserWindow,
+	NameEntry (X3DBrowserWindow* const browserWindow,
 	           Gtk::Entry &,
 	           Gtk::Button &);
 
@@ -104,7 +104,7 @@ private:
 
 	static
 	void
-	updateNamedNode (BrowserWindow* const, const std::string &, const X3D::SFNode &);
+	updateNamedNode (X3DBrowserWindow* const, const std::string &, const X3D::SFNode &);
 
 	///  @name Members
 
@@ -115,11 +115,11 @@ private:
 };
 
 inline
-NameEntry::NameEntry (BrowserWindow* const browserWindow,
+NameEntry::NameEntry (X3DBrowserWindow* const browserWindow,
                       Gtk::Entry & entry,
                       Gtk::Button & button) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	           entry (entry),
 	          button (button),
 	            node ()
@@ -218,7 +218,7 @@ NameEntry::set_name ()
 
 inline
 void
-NameEntry::updateNamedNode (BrowserWindow* const browserWindow, const std::string & name, const X3D::SFNode & node)
+NameEntry::updateNamedNode (X3DBrowserWindow* const browserWindow, const std::string & name, const X3D::SFNode & node)
 {
 	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
 

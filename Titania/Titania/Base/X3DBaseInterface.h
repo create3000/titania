@@ -57,13 +57,21 @@
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+class X3DBrowserWindow;
 
 class X3DBaseInterface :
 	virtual public sigc::trackable,
 	public X3D::X3DParentObject
 {
 public:
+
+	/***
+	 *  @name Construction
+	 */
+
+	virtual
+	void
+	setup () override;
 
 	/***
 	 *  @name Common members
@@ -73,20 +81,20 @@ public:
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
+	throw (X3D::Error <X3D::DISPOSED>) override
 	{ return typeName; }
 
 	/***
 	 *  @name Member access
 	 */
 
-	BrowserWindow*
+	X3DBrowserWindow*
 	getBrowserWindow () const
 	{ return browserWindow; }
 
+	virtual
 	const X3D::BrowserPtr &
-	getBrowser () const
-	{ return browser; }
+	getBrowser () const;
 
 	virtual
 	const X3D::X3DScenePtr &
@@ -152,17 +160,31 @@ public:
 protected:
 
 	/***
+	 *  @name Friends
+	 */
+
+	friend class X3DBrowserWindow;
+
+	/***
 	 *  @name Construction
 	 */
 
-	X3DBaseInterface (BrowserWindow* const, const X3D::BrowserPtr &);
+	X3DBaseInterface (X3DBrowserWindow* const, X3D::Browser* const);
 
 	X3DBaseInterface () :
-		X3D::X3DParentObject (nullptr)
+		X3D::X3DParentObject (nullptr),
+		       browserWindow (nullptr)
 	{ }
 
 
 private:
+
+	/***
+	 *  @name Event handlers
+	 */
+	 
+	void
+	set_browser (const X3D::BrowserPtr &);
 
 	/***
 	 *  @name Static members
@@ -174,8 +196,7 @@ private:
 	 *  @name Members
 	 */
 
-	BrowserWindow*  browserWindow;
-	X3D::BrowserPtr browser;
+	X3DBrowserWindow* const browserWindow;
 
 };
 

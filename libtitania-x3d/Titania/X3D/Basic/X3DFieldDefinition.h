@@ -144,6 +144,10 @@ public:
 
 	AccessType
 	getAccessType () const
+	{ realize (); return AccessType (io -> accessType & ~AccessType::HIDDEN); }
+
+	AccessType
+	getRealAccessType () const
 	{ realize (); return io -> accessType; }
 
 	bool

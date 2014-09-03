@@ -50,6 +50,7 @@
 
 #include "X3DGeometryNode.h"
 
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
@@ -729,8 +730,13 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 void
 X3DGeometryNode::dispose ()
 {
-	if (not attribBuffers .empty ())
-		glDeleteBuffers (attribBuffers .size (), attribBuffers .data ()); // See clear.
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+	{
+		if (not attribBuffers .empty ())
+			glDeleteBuffers (attribBuffers .size (), attribBuffers .data ()); // See clear.
+	}
 
 	X3DNode::dispose ();
 }

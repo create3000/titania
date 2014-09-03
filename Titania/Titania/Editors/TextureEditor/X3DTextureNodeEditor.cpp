@@ -82,7 +82,7 @@ X3DTextureNodeEditor::initialize ()
 	preview -> show ();
 	preview -> initialized () .addInterest (this, &X3DTextureNodeEditor::set_initialized);
 
-	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureNodeEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureNodeEditor::set_selection);
 
 	set_selection ();
 }
@@ -94,7 +94,7 @@ X3DTextureNodeEditor::set_initialized ()
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Dialogs/TextureEditorPreview.x3dv") });
+		preview -> loadURL ({ get_ui ("Editors/TextureEditorPreview.x3dv") });
 
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}
@@ -302,9 +302,7 @@ X3DTextureNodeEditor::connectTexture (const X3D::SFNode & field)
 }
 
 X3DTextureNodeEditor::~X3DTextureNodeEditor ()
-{
-	X3D::removeBrowser (preview);
-}
+{ }
 
 } // puck
 } // titania

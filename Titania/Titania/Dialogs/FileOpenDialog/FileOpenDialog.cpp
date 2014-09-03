@@ -50,6 +50,7 @@
 
 #include "FileOpenDialog.h"
 
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -57,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-FileOpenDialog::FileOpenDialog (BrowserWindow* const browserWindow) :
+FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.xml"), gconf_dir ())
 {

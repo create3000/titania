@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	MagicImport (BrowserWindow* const);
+	MagicImport (X3DBrowserWindow* const);
 	
 	///  @name Operations
 

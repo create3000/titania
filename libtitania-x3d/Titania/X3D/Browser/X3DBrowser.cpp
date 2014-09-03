@@ -30,9 +30,9 @@
 
 #include "X3DBrowser.h"
 
-#include "../Bits/config.h"
 #include "../Browser/BrowserOptions.h"
 #include "../Browser/BrowserProperties.h"
+#include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/RenderingProperties.h"
 #include "../Execution/Scene.h"
@@ -84,6 +84,8 @@ X3DBrowser::X3DBrowser () :
 void
 X3DBrowser::initialize ()
 {
+	__LOG__ << "Initializing browser " << this << "." << std::endl;
+
 	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();
 
@@ -104,7 +106,7 @@ X3DBrowser::initialize ()
 		try
 		{
 			if (browserOptions -> splashScreen ())
-				executionContext .set (Loader (getEmptyScene ()) .createX3DFromURL ({ get_page ("about/splash.x3dv") .str () }));
+				executionContext .set (Loader (getEmptyScene ()) .createX3DFromURL (browserOptions -> splashScreenURL ()));
 		}
 		catch (const X3DError & error)
 		{
@@ -259,7 +261,9 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 	{
 		// Process shutdown.
 
@@ -355,7 +359,9 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 	{
 		// where parameter is "target=nameOfFrame"
 
@@ -391,7 +397,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 		return Loader (this) .createX3DFromString (string);
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
@@ -404,7 +412,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 		return Loader (this) .createX3DFromStream (istream);
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
@@ -417,7 +427,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 		return Loader (this) .createX3DFromStream (worldURL, istream);
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
@@ -429,7 +441,9 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	if (makeCurrent ())
+	ContextLock lock (this);
+
+	if (lock)
 	{
 		try
 		{

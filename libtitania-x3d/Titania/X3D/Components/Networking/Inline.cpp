@@ -397,7 +397,10 @@ void
 Inline::dispose ()
 {
 	if (future)
+	{
 		future -> dispose ();
+		future .reset (); // XXX: Put a mutex inside future and see JavaScript too.
+	}
 
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();

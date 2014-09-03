@@ -50,16 +50,16 @@
 
 #include "LODEditor.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 namespace titania {
 namespace puck {
 
-LODEditor::LODEditor (BrowserWindow* const browserWindow) :
+LODEditor::LODEditor (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DLODEditorInterface (get_ui ("Dialogs/LODEditor.xml"), gconf_dir ()),
+	X3DLODEditorInterface (get_ui ("Editors/LODEditor.xml"), gconf_dir ()),
 	         X3DLODEditor ()//,
 	    //X3DGeoLODEditor ()
 {

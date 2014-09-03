@@ -50,13 +50,16 @@
 
 #include "DepthBuffer.h"
 
+#include "../Browser/ContextLock.h"
+
 #include <Titania/LOG.h>
 #include <stdexcept>
 
 namespace titania {
 namespace X3D {
 
-DepthBuffer::DepthBuffer (size_t width, size_t height) :
+DepthBuffer::DepthBuffer (X3DBrowser* const browser, const size_t width, const size_t height) :
+	    browser (browser),
 	      width (width),
 	     height (height),
 	         id (0),
@@ -155,14 +158,19 @@ DepthBuffer::display ()
 
 DepthBuffer::~DepthBuffer ()
 {
-	if (colorBuffer)
-		glDeleteRenderbuffers (1, &colorBuffer);
+	ContextLock lock (browser);
 
-	if (depthBuffer)
-		glDeleteRenderbuffers (1, &depthBuffer);
+	if (lock)
+	{
+		if (colorBuffer)
+			glDeleteRenderbuffers (1, &colorBuffer);
 
-	if (id)
-		glDeleteFramebuffers (1, &id);
+		if (depthBuffer)
+			glDeleteRenderbuffers (1, &depthBuffer);
+
+		if (id)
+			glDeleteFramebuffers (1, &id);
+	}
 }
 
 } // X3D

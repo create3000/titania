@@ -50,7 +50,7 @@
 
 #include "OutlineDragDrop.h"
 
-#include "../../Browser/BrowserWindow.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "OutlineTreeModel.h"
 #include "OutlineTreeViewEditor.h"
 

@@ -70,6 +70,16 @@ class X3DRenderingContext :
 public:
 
 	///  @name Member access
+	
+	virtual
+	Color4f
+	getForegroundColor () const
+	{ return Color4f (1, 1, 1, 1); }
+
+	virtual
+	Color4f
+	getBackgroundColor () const
+	{ return Color4f (0, 0, 0, 1); }
 
 	size_t
 	getMaxClipPlanes () const

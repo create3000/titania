@@ -50,6 +50,7 @@
 
 #include "PrototypeInstanceDialog.h"
 
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -57,9 +58,9 @@
 namespace titania {
 namespace puck {
 
-PrototypeInstanceDialog::PrototypeInstanceDialog (BrowserWindow* const browserWindow) :
+PrototypeInstanceDialog::PrototypeInstanceDialog (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DPrototypeInstanceDialogInterface (get_ui ("Dialogs/PrototypeInstanceDialog.xml"), gconf_dir ())
+	X3DPrototypeInstanceDialogInterface (get_ui ("Editors/PrototypeInstanceDialog.xml"), gconf_dir ())
 {
 	getWindow () .set_modal (false);
 

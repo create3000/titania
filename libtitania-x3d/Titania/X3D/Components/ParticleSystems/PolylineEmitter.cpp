@@ -51,6 +51,7 @@
 #include "PolylineEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -231,19 +232,24 @@ PolylineEmitter::set_polyline ()
 void
 PolylineEmitter::dispose ()
 {
-	// Polyline map
+	ContextLock lock (getBrowser ());
 
-	if (polylineMapId)
-		glDeleteTextures (1, &polylineMapId);
+	if (lock)
+	{
+		// Polyline map
 
-	if (polylineBufferId)
-		glDeleteBuffers (1, &polylineBufferId);
+		if (polylineMapId)
+			glDeleteTextures (1, &polylineMapId);
 
-	if (lengthMapId)
-		glDeleteTextures (1, &lengthMapId);
+		if (polylineBufferId)
+			glDeleteBuffers (1, &polylineBufferId);
 
-	if (lengthBufferId)
-		glDeleteBuffers (1, &lengthBufferId);
+		if (lengthMapId)
+			glDeleteTextures (1, &lengthMapId);
+
+		if (lengthBufferId)
+			glDeleteBuffers (1, &lengthBufferId);
+	}
 
 	// Dispose base
 

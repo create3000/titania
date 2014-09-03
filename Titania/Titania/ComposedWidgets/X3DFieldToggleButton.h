@@ -51,20 +51,20 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_X3DFIELD_TOGGLE_BUTTON_H__
 #define __TITANIA_COMPOSED_WIDGETS_X3DFIELD_TOGGLE_BUTTON_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
 template <class Type>
 class X3DFieldToggleButton :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	X3DFieldToggleButton (BrowserWindow* const,
+	X3DFieldToggleButton (X3DBrowserWindow* const,
 	                      Gtk::ToggleButton &,
 	                      const std::string &);
 
@@ -116,11 +116,11 @@ private:
 };
 
 template <class Type>
-X3DFieldToggleButton <Type>::X3DFieldToggleButton (BrowserWindow* const browserWindow,
+X3DFieldToggleButton <Type>::X3DFieldToggleButton (X3DBrowserWindow* const browserWindow,
                                                    Gtk::ToggleButton & toggleButton,
                                                    const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	X3DComposedWidget (),
 	    toggleButton (toggleButton),
 	           nodes (),
 	            name (name),

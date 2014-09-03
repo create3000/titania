@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	TextEditor (BrowserWindow* const);
+	TextEditor (X3DBrowserWindow* const);
 	
 	virtual
 	~TextEditor ();

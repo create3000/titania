@@ -254,6 +254,8 @@ jsContext::setFields ()
 				defineProperty (context .get (), global, field, field -> getName () + "_changed", 0);
 				break;
 			}
+			default:
+				break;
 		}
 	}
 }
@@ -696,7 +698,10 @@ void
 jsContext::dispose ()
 {
 	if (future)
+	{
 		future -> dispose ();
+		future .reset (); // XXX: See Inline
+	}
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (context .get (), &field .second);

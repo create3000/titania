@@ -51,26 +51,22 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_NORMAL_TOOL_H__
 #define __TITANIA_COMPOSED_WIDGETS_NORMAL_TOOL_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 #include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
 class NormalTool :
-	public X3DEditorObject
+	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	NormalTool (BrowserWindow* const,
+	NormalTool (X3DBrowserWindow* const,
 	            Gtk::Box &,
 	            const std::string &);
-
-	virtual
-	void
-	setup () final override;
 
 	///  @name Member access
 
@@ -123,11 +119,11 @@ private:
 };
 
 inline
-NormalTool::NormalTool (BrowserWindow* const browserWindow,
+NormalTool::NormalTool (X3DBrowserWindow* const browserWindow,
                         Gtk::Box & box,
                         const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DEditorObject (),
+	 X3DComposedWidget (),
 	             box (box),
 	         browser (X3D::createBrowser (browserWindow -> getBrowser ())),
 	           nodes (),
@@ -135,28 +131,22 @@ NormalTool::NormalTool (BrowserWindow* const browserWindow,
 	        undoStep (),
 	          buffer ()
 {
-	browser -> set_antialiasing (4);
-
 	// Buffer
 
 	addChildren (buffer);
 	buffer .addInterest (this, &NormalTool::set_buffer);
 
-	// Setup
-
-	setup ();
-}
-
-inline
-void
-NormalTool::setup ()
-{
-	X3DEditorObject::setup ();
+	// Browser
 
 	box .pack_start (*browser, true, true, 0);
 
+	browser -> set_antialiasing (4);
 	browser -> show ();
 	browser -> initialized () .addInterest (this, &NormalTool::set_initialized);
+
+	// Setup
+
+	setup ();
 }
 
 inline
@@ -167,7 +157,7 @@ NormalTool::set_initialized ()
 
 	try
 	{
-		browser -> loadURL ({ get_ui ("Dialogs/NormalTool.x3dv") });
+		browser -> loadURL ({ get_ui ("Editors/NormalTool.x3dv") });
 
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 
@@ -295,8 +285,6 @@ NormalTool::connect (const X3D::SFVec3f & field)
 inline
 NormalTool::~NormalTool ()
 {
-	X3D::removeBrowser (browser);
-
 	dispose ();
 }
 
