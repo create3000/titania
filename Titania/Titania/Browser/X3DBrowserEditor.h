@@ -106,6 +106,14 @@ public:
 	void
 	removeUnusedPrototypes (const UndoStepPtr &);
 
+	virtual
+	void
+	close (const X3D::BrowserPtr & browser) final override;
+
+	virtual
+	bool
+	quit () final override;
+
 	/// @name Undo/Redo operations
 
 	UndoHistory &
@@ -259,14 +267,6 @@ protected:
 	virtual
 	void
 	setBrowser (const X3D::BrowserPtr &) override;
-
-	virtual
-	void
-	close (const X3D::BrowserPtr & browser) final override;
-
-	virtual
-	bool
-	quit () final override;
 
 	/// @name Undo
 

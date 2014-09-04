@@ -1,5 +1,14 @@
 2014-09-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserEditor.h:
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.cpp:
+	* MFStringURLWidget.h: 
+
+2014-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* BrowserWindow.xml:
 	* X3DBrowserWidget.cpp:

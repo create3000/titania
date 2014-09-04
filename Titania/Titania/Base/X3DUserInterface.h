@@ -101,7 +101,11 @@ public:
 	void
 	reparent (Gtk::Box &, Gtk::Window &);
 
-	///  @name Destruction
+	/// @name Destruction
+
+	virtual
+	bool
+	quit ();
 
 	virtual
 	~X3DUserInterface ();
@@ -150,12 +154,6 @@ protected:
 	const Configuration &
 	getConfig () const
 	{ return gconf; }
-
-	/// @name Destruction
-
-	virtual
-	bool
-	quit ();
 
 
 private:

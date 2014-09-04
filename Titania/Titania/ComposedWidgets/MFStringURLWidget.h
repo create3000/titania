@@ -544,6 +544,7 @@ MFStringURLWidget::on_add_clicked ()
 		append (URL .str ());
 	}
 
+	fileOpenDialog -> quit ();
 	fileOpenDialog .reset ();
 }
 
@@ -590,6 +591,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 		set1Value (path .front (), URL .str ());
 	}
 
+	fileOpenDialog -> quit ();
 	fileOpenDialog .reset ();
 	return true;
 }
@@ -599,7 +601,7 @@ void
 MFStringURLWidget::set_buffer ()
 {
 	if (fileOpenDialog)
-		fileOpenDialog -> getWindow () .hide ();
+		fileOpenDialog -> quit ();
 
 	MFStringWidget::set_buffer ();
 }

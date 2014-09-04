@@ -133,23 +133,36 @@ X3DBrowserWidget::initialize ()
 void
 X3DBrowserWidget::set_initialized ()
 {
+	// Restore browsers.
+
+	const auto empty     = browsers .empty ();
+	auto       worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
+
+	if (worldURLs .empty () and empty)
+		worldURLs .emplace_back (get_page ("about/home.wrl"));
+
+	for (const auto & worldURL : worldURLs)
+	{
+		if (getBrowser (worldURL) == browsers .cend ())
+			append (X3D::createBrowser (getBrowser ()), worldURL);
+	}
+
+	if (empty)
+	{
+		const size_t pageNumber = getConfig () .getInteger ("currentPage"); // Use size_t!!!
+
+		if (pageNumber < browsers .size ())
+			getBrowserNotebook () .set_current_page (pageNumber);
+	}
+	else
+		getBrowserNotebook () .set_current_page (0);
+
+	// Show notebook.
+
 	getSplashBox () .set_visible (false);
 	getBrowserNotebook () .set_visible (true);
 
 	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
-
-	if (not browsers .empty ())
-		return;
-
-	auto worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
-
-	if (worldURLs .empty ())
-		worldURLs .emplace_back (get_page ("about/home.wrl"));
-
-	for (const auto & worldURL : worldURLs)
-		append (X3D::createBrowser (getBrowser ()), worldURL);
-
-	getBrowserNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
 }
 
 void
@@ -232,6 +245,20 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	browser -> isLive () = getConfig () .getBoolean ("isLive");
 }
 
+X3D::X3DPtrArray <X3D::Browser>::const_iterator
+X3DBrowserWidget::getBrowser (const basic::uri & URL) const
+{
+	return std::find_if (browsers .cbegin (), browsers .cend (), [&URL] (const X3D::BrowserPtr & browser)
+	                     {
+	                        auto worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+
+	                        if (worldURL .empty ())
+										worldURL = X3DBrowserWindow::getUserData (browser) -> URL;
+
+	                        return worldURL == URL;
+								});
+}
+
 void
 X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value)
 {
@@ -300,18 +327,10 @@ X3DBrowserWidget::blank ()
 void
 X3DBrowserWidget::open (const basic::uri & URL)
 {
-	const auto iter = std::find_if (browsers .begin (), browsers .end (), [&URL] (const X3D::BrowserPtr & browser)
-	                                {
-	                                   auto worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+	const auto iter = getBrowser (URL);
 
-	                                   if (worldURL .empty ())
-													  worldURL = X3DBrowserWindow::getUserData (browser) -> URL;
-
-	                                   return worldURL == URL;
-											  });
-
-	if (iter not_eq browsers .end ())
-		getBrowserNotebook () .set_current_page (iter - browsers .begin ());
+	if (iter not_eq browsers .cend ())
+		getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
 
 	else
 	{

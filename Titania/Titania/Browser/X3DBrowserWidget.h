@@ -115,6 +115,14 @@ public:
 	void
 	reload ();
 
+	virtual
+	void
+	close (const X3D::BrowserPtr &);
+
+	virtual
+	bool
+	quit () override;
+
 	///  @name Destruction
 
 	virtual
@@ -141,14 +149,6 @@ protected:
 	void
 	saveSession () override;
 
-	virtual
-	void
-	close (const X3D::BrowserPtr &);
-
-	virtual
-	bool
-	quit () override;
-
 	///  @name Operations
 
 	virtual
@@ -166,6 +166,9 @@ protected:
 
 
 private:
+
+	X3D::X3DPtrArray <X3D::Browser>::const_iterator
+	getBrowser (const basic::uri &) const;
 
 	///  @name Event handlers
 
