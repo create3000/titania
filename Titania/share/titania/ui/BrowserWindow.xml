@@ -148,7 +148,7 @@
     <property name="stock">gtk-clear</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkWindow" id="Window">
+  <object class="GtkApplicationWindow" id="Window">
     <property name="width_request">768</property>
     <property name="height_request">480</property>
     <property name="can_focus">False</property>
@@ -157,6 +157,7 @@
     <property name="window_position">center</property>
     <property name="default_width">768</property>
     <property name="default_height">480</property>
+    <property name="icon_name">titania</property>
     <property name="has_resize_grip">False</property>
     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
     <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>

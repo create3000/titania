@@ -60,44 +60,68 @@ class BrowserApplication :
 {
 public:
 
+	///  @name Construction
+	
 	BrowserApplication (int & argc, char** & argv) :
 		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
-		   browserWindow (X3D::createBrowser ())
+		   browserWindow ()
 	{ }
 
-	virtual
-	void
-	on_activate () final
-	{
-		if (browserWindow .getWindow () .get_mapped ())
-			browserWindow .blank ();
-
-		else
-		{
-			browserWindow .getWindow () .show ();
-
-			add_window (browserWindow .getWindow ());
-		}
-	}
-
-	virtual
-	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final
-	{
-		for (const auto & file : files)
-			browserWindow .open (Glib::uri_unescape_string (file -> get_uri ()));
-	}
-
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final
-	{
-		quit ();
-	}
 
 private:
 
-	BrowserWindow browserWindow;
+	///  @name Operations
+	
+	void
+	realize ()
+	{
+		browserWindow .reset (new BrowserWindow (X3D::createBrowser ()));
+
+		add_window (browserWindow -> getWindow ());
+
+		browserWindow -> getWindow () .show ();	
+	}
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_activate () final override
+	{
+		__LOG__ << std::endl;
+
+		if (browserWindow)
+			browserWindow -> blank ();
+
+		else
+			realize ();
+	}
+
+	virtual
+	void
+	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override
+	{
+		__LOG__ << std::endl;
+
+		if (not browserWindow)
+			realize ();
+
+		for (const auto & file : files)
+			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
+	}
+
+	virtual
+	void
+	on_window_removed (Gtk::Window* window) final override
+	{
+		__LOG__ << std::endl;
+
+		quit ();
+	}	
+
+	///  @name Members
+
+	std::unique_ptr <BrowserWindow> browserWindow;
 
 };
 

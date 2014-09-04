@@ -154,7 +154,7 @@ public:
 	getWorkspacesImage () const
 	{ return *m_WorkspacesImage; }
 
-	Gtk::Window &
+	Gtk::ApplicationWindow &
 	getWindow () const
 	{ return *m_Window; }
 
@@ -1186,7 +1186,7 @@ private:
 	Gtk::ImageMenuItem*             m_PlaneViewerMenuItem;
 	Gtk::ImageMenuItem*             m_NoneViewerMenuItem;
 	Gtk::Image*                     m_WorkspacesImage;
-	Gtk::Window*                    m_Window;
+	Gtk::ApplicationWindow*         m_Window;
 	Gtk::Box*                       m_Widget;
 	Gtk::MenuBar*                   m_MenuBar;
 	Gtk::MenuItem*                  m_FileMenuItem;

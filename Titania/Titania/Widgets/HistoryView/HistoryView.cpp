@@ -150,22 +150,7 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 
 	const std::string URL = history .getItemFromIndex (path .to_string ()) .at ("worldURL");
 
-	const auto & browsers = getBrowserWindow () -> getBrowsers ();
-	const auto   iter     = std::find_if (browsers .begin (), browsers .end (), [&URL] (const X3D::BrowserPtr & browser)
-	                                      {
-	                                         std::string worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
-
-	                                         if (worldURL .empty ())
-															  worldURL = X3DBrowserWindow::getUserData (browser) -> URL;
-
-	                                         return worldURL == URL;
-													  });
-
-	if (iter not_eq browsers .end ())
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .begin ());
-
-	else
-		getBrowserWindow () -> open (URL);
+	getBrowserWindow () -> open (URL);
 }
 
 HistoryView::~HistoryView ()

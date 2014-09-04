@@ -51,15 +51,15 @@
 #include "X3DBrowserWidget.h"
 
 #include "../Browser/BrowserUserData.h"
-#include "../Browser/X3DBrowserWindow.h"
 #include "../Browser/Image.h"
+#include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
 
-#include <fstream>
 #include <Titania/Backtrace.h>
+#include <fstream>
 
 namespace titania {
 namespace puck {
@@ -134,20 +134,22 @@ void
 X3DBrowserWidget::set_initialized ()
 {
 	getSplashBox () .set_visible (false);
+	getBrowserNotebook () .set_visible (true);
 
-	auto currentPage = getConfig () .getInteger ("currentPage");
-	auto worldURLs   = basic::split (getConfig () .getString ("worldURL"), "\n");
-	
+	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
+
+	if (not browsers .empty ())
+		return;
+
+	auto worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
+
 	if (worldURLs .empty ())
 		worldURLs .emplace_back (get_page ("about/home.wrl"));
 
 	for (const auto & worldURL : worldURLs)
 		append (X3D::createBrowser (getBrowser ()), worldURL);
 
-	getBrowserNotebook () .set_current_page (currentPage);
-	getBrowserNotebook () .set_visible (true);
-
-	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
+	getBrowserNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
 }
 
 void
@@ -158,7 +160,8 @@ X3DBrowserWidget::restoreSession ()
 	// Restore Menu Configuration from Config
 
 	// ToolBar
-	getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar") or not getConfig () .hasItem ("toolBar"));
+	if (getConfig () .hasItem ("toolBar"))
+		getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
 
 	// SideBar
 	if (getConfig () .hasItem ("sideBar"))
@@ -260,7 +263,7 @@ X3DBrowserWidget::setTitle (const bool modified) const
 
 	if (title .empty ())
 		title = _ ("New Scene");
-		
+
 	if (modified)
 		title += "*";
 
@@ -295,10 +298,26 @@ X3DBrowserWidget::blank ()
 }
 
 void
-X3DBrowserWidget::open (const basic::uri & worldURL)
+X3DBrowserWidget::open (const basic::uri & URL)
 {
-	append (X3D::createBrowser (getBrowser ()), worldURL);
-	getBrowserNotebook () .set_current_page (browsers .size () - 1);
+	const auto iter = std::find_if (browsers .begin (), browsers .end (), [&URL] (const X3D::BrowserPtr & browser)
+	                                {
+	                                   auto worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+
+	                                   if (worldURL .empty ())
+													  worldURL = X3DBrowserWindow::getUserData (browser) -> URL;
+
+	                                   return worldURL == URL;
+											  });
+
+	if (iter not_eq browsers .end ())
+		getBrowserNotebook () .set_current_page (iter - browsers .begin ());
+
+	else
+	{
+		append (X3D::createBrowser (getBrowser ()), URL);
+		getBrowserNotebook () .set_current_page (browsers .size () - 1);
+	}
 }
 
 void
@@ -404,28 +423,28 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 	if (suffix == ".x3d" or suffix == ".xml")
 	{
-		if (executionContext -> getVersion () == X3D::VRML_V2_0)
-		{
-			executionContext -> setEncoding ("X3D");
-			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
-		}
+	if (executionContext -> getVersion () == X3D::VRML_V2_0)
+	{
+		executionContext -> setEncoding ("X3D");
+		executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+	}
 
-		if (compressed)
-		{
-			ogzstream file (worldURL .path ());
+	if (compressed)
+	{
+		ogzstream file (worldURL .path ());
 
-			file
-				<< X3D::SmallestStyle
-				<< X3D::XMLEncode (executionContext);
-		}
-		else
-		{
-			std::ofstream file (worldURL .path ());
+		file
+			<< X3D::SmallestStyle
+			<< X3D::XMLEncode (executionContext);
+	}
+	else
+	{
+		std::ofstream file (worldURL .path ());
 
-			file
-				<< X3D::CompactStyle
-				<< X3D::XMLEncode (executionContext);
-		}
+		file
+			<< X3D::CompactStyle
+			<< X3D::XMLEncode (executionContext);
+	}
 	}
 	else
 	{
@@ -480,12 +499,12 @@ X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & 
 					X3D::X3DPtr <X3D::Background> background (node);
 
 					undoStep -> addObjects (background);
-					undoStep -> addUndoFunction ((set) &MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
-					undoStep -> addUndoFunction ((set) &MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
-					undoStep -> addUndoFunction ((set) &MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
-					undoStep -> addUndoFunction ((set) &MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
-					undoStep -> addUndoFunction ((set) &MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
-					undoStep -> addUndoFunction ((set) &MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
 
 					X3D::X3DUrlObject::transform (background -> frontUrl (),  oldWorldURL, newWorldURL);
 					X3D::X3DUrlObject::transform (background -> backUrl (),   oldWorldURL, newWorldURL);
@@ -494,12 +513,12 @@ X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & 
 					X3D::X3DUrlObject::transform (background -> topUrl (),    oldWorldURL, newWorldURL);
 					X3D::X3DUrlObject::transform (background -> bottomUrl (), oldWorldURL, newWorldURL);
 
-					undoStep -> addRedoFunction ((set) &MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
-					undoStep -> addRedoFunction ((set) &MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
-					undoStep -> addRedoFunction ((set) &MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
-					undoStep -> addRedoFunction ((set) &MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
-					undoStep -> addRedoFunction ((set) &MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
-					undoStep -> addRedoFunction ((set) &MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
 					break;
 				}
 			case X3D::X3DConstants::X3DUrlObject:
@@ -507,11 +526,11 @@ X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & 
 				X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
 
 				undoStep -> addObjects (urlObject);
-				undoStep -> addUndoFunction ((set) &MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
+				undoStep -> addUndoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
 
 				X3D::X3DUrlObject::transform (urlObject -> url (), oldWorldURL, newWorldURL);
 
-				undoStep -> addRedoFunction ((set) &MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
+				undoStep -> addRedoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
 				break;
 			}
 			default:
@@ -547,7 +566,7 @@ bool
 X3DBrowserWidget::quit ()
 {
 	std::deque <std::string> worldURLs;
-	
+
 	for (const auto & browser : browsers)
 	{
 		const auto userData = getUserData (browser);
@@ -622,8 +641,8 @@ X3DBrowserWidget::set_scene ()
 void
 X3DBrowserWidget::loadIcon ()
 {
-	const basic::uri   & worldURL = getScene () -> getWorldURL ();
-	const Gtk::StockID   stockId  = Gtk::StockID (worldURL .str ());
+	const basic::uri & worldURL = getScene () -> getWorldURL ();
+	const Gtk::StockID stockId  = Gtk::StockID (worldURL .str ());
 
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
