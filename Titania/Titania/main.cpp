@@ -52,6 +52,58 @@
 
 #include <Titania/OS/env.h>
 
+namespace titania {
+namespace puck {
+
+class BrowserApplication :
+	public Gtk::Application
+{
+public:
+
+	BrowserApplication (int & argc, char** & argv) :
+		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
+		   browserWindow (X3D::createBrowser ())
+	{ }
+
+	virtual
+	void
+	on_activate () final
+	{
+		if (browserWindow .getWindow () .get_mapped ())
+			browserWindow .blank ();
+
+		else
+		{
+			browserWindow .getWindow () .show ();
+
+			add_window (browserWindow .getWindow ());
+		}
+	}
+
+	virtual
+	void
+	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final
+	{
+		for (const auto & file : files)
+			browserWindow .open (Glib::uri_unescape_string (file -> get_uri ()));
+	}
+
+	virtual
+	void
+	on_window_removed (Gtk::Window* window) final
+	{
+		quit ();
+	}
+
+private:
+
+	BrowserWindow browserWindow;
+
+};
+
+} // puck
+} // titania
+
 int
 main (int argc, char** argv)
 {
@@ -69,11 +121,11 @@ main (int argc, char** argv)
 	os::env ("LIBOVERLAY_SCROLLBAR", "0"); // XXX: This fixes the bug with modal windows.
 	os::env ("UBUNTU_MENUPROXY", "0");     // XXX: This fixes the bug with check button menu items.
 
-	Gtk::Main kit (argc, argv);
+	{
+		BrowserApplication browserApplication (argc, argv);
 
-	BrowserWindow browserWindow (X3D::createBrowser ());
-
-	Gtk::Main::run (browserWindow .getWindow ());
+		browserApplication .run ();
+	}
 
 	std::clog
 		<< std::endl
