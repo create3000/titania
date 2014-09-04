@@ -709,12 +709,19 @@ X3DBrowserEditor::quit ()
 {
 	getWidget () .grab_focus ();
 
-	//if (isSaved ())
-	//{
-		return X3DBrowserWidget::quit ();
-	//}
+	for (const auto & browser : getBrowsers ())
+	{
+		if (isSaved (browser))
+			continue;
 
-	return true;
+		for (const auto & browser : getBrowsers ())
+			getUserData (browser) -> saveConfirmed = false;
+
+		// Cancel quit.
+		return true;
+	}
+
+	return X3DBrowserWidget::quit ();
 }
 
 // Undo/Redo operations
