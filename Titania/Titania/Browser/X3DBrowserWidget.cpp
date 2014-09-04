@@ -134,6 +134,11 @@ void
 X3DBrowserWidget::set_initialized ()
 {
 	// Restore browsers.
+	
+	std::set <basic::uri> urlIndex;
+	
+	for (const auto & browser : browsers)
+		urlIndex .emplace (getUserData (browser) -> URL);
 
 	const auto empty     = browsers .empty ();
 	auto       worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
@@ -143,8 +148,12 @@ X3DBrowserWidget::set_initialized ()
 
 	for (const auto & worldURL : worldURLs)
 	{
-		if (getBrowser (worldURL) == browsers .cend ())
-			append (X3D::createBrowser (getBrowser ()), worldURL);
+		if (urlIndex .count (worldURL))
+			continue;
+
+		urlIndex .emplace (worldURL);
+
+		append (X3D::createBrowser (getBrowser ()), worldURL);
 	}
 
 	if (empty)
