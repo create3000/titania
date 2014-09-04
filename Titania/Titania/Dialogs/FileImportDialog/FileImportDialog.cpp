@@ -105,7 +105,7 @@ FileImportDialog::run ()
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 
-	getWindow () .hide ();
+	quit ();
 }
 
 FileImportDialog::~FileImportDialog ()

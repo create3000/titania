@@ -1,5 +1,33 @@
 2014-09-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* run.pl:
+	* main.cpp:
+	* X3DUserInterface.cpp:
+	* MFStringURLWidget.h:
+	* FileSaveDialog.xml:
+	* ViewpointEditor.xml:
+	* AppearanceEditor.xml:
+	* NodePropertiesEditor.xml:
+	* FileSaveDialog.cpp:
+	* FileOpenDialog.cpp:
+	* FileSaveWarningDialog.xml:
+	* PrecisionPlacementPanel.xml:
+	* FileImportDialog.cpp:
+	* X3DAppearanceEditorInterface.h:
+	* X3DAppearanceEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* OpenLocationDialog.cpp:
+	* X3DFileSaveWarningDialogInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp:
+	* X3DFileSaveWarningDialogInterface.cpp:
+	* X3DExportedNodesEditor.h:
+	* X3DExportedNodesEditor.cpp:
+	* FileSaveWarningDialog.cpp:
+	* X3DUserDefinedFieldsEditor.h:
+	* X3DUserDefinedFieldsEditor.cpp: 
+
+2014-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* FileSaveWarningDialog.xml: 
 
 2014-09-04  Holger Seelig  <holger.seelig@yahoo.de>

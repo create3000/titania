@@ -122,10 +122,6 @@ private:
 	void
 	on_exported_node_cancel_clicked () final override;
 
-	virtual
-	void
-	on_exported_node_hide () final override;
-
 	bool
 	validateExportedName (const std::string &);
 

@@ -160,10 +160,6 @@ private:
 	void
 	on_add_field_cancel_clicked () final override;
 
-	virtual
-	void
-	on_add_field_hide () final override;
-
 	void
 	addUserDefinedField (X3D::X3DFieldDefinition* const);
 

@@ -81,7 +81,6 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("EditMenuItem", m_EditMenuItem);
 	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
 	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);

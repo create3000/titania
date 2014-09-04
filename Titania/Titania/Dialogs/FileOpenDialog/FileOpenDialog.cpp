@@ -113,7 +113,7 @@ FileOpenDialog::run ()
 	const auto responseId = getWindow () .run ();
 
 	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
-	getWindow () .hide ();
+	quit ();
 
 	return responseId == Gtk::RESPONSE_OK;
 }

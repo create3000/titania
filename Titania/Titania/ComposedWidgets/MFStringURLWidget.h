@@ -528,23 +528,23 @@ inline
 void
 MFStringURLWidget::on_add_clicked ()
 {
-	userInterface -> getWindow () .set_sensitive (false);
+	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
-	FileOpenDialog fileOpenDialog (getBrowserWindow ());
+	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
+	fileOpenDialog -> getWindow () .set_modal (true);
+	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 
-	fileOpenDialog .getRelativePathBox () .set_visible (true);
-
-	if (fileOpenDialog .run ())
+	if (fileOpenDialog -> run ())
 	{
-		auto URL = fileOpenDialog .getURL ();
+		auto URL = fileOpenDialog -> getURL ();
 
-		if (fileOpenDialog .getRelativePathSwitch () .get_active ())
+		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
 
 		append (URL .str ());
 	}
 
-	userInterface -> getWindow () .set_sensitive (true);
+	fileOpenDialog .reset ();
 }
 
 inline
@@ -566,10 +566,10 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 	// Choose new URL
 	
-	userInterface -> getWindow () .set_sensitive (false);
-
 	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
+	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
+	fileOpenDialog -> getWindow () .set_modal (true);
 	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 
 	// Set URL
@@ -590,7 +590,6 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 		set1Value (path .front (), URL .str ());
 	}
 
-	userInterface -> getWindow () .set_sensitive (true);
 	fileOpenDialog .reset ();
 	return true;
 }

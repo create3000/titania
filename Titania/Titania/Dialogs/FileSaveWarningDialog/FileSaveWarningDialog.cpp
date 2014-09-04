@@ -74,7 +74,7 @@ FileSaveWarningDialog::run ()
 {
 	const auto responseId = getWindow () .run ();
 
-	getWindow () .hide ();
+	quit ();
 
 	return responseId;
 }

@@ -103,7 +103,7 @@ FileSaveDialog::saveScene ()
 		getBrowserWindow () -> saveAs () .processInterests ();
 	}
 
-	getWindow () .hide ();
+	quit ();
 }
 
 bool
@@ -122,7 +122,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const U
 		exportNodes (nodes, worldURL, saveCompressedButton -> get_active (), undoStep);
 	}
 
-	getWindow () .hide ();
+	quit ();
 
 	return responseId == Gtk::RESPONSE_OK;
 }

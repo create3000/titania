@@ -94,6 +94,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getListStore () const
+	{ return m_ListStore; }
+
 	Gtk::Dialog &
 	getWindow () const
 	{ return *m_Window; }
@@ -106,6 +110,14 @@ public:
 	getMessage () const
 	{ return *m_Message; }
 
+	Gtk::Box &
+	getFilesBox () const
+	{ return *m_FilesBox; }
+
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_TreeView; }
+
 	virtual
 	~X3DFileSaveWarningDialogInterface ();
 
@@ -117,11 +129,14 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Dialog*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::Label*                 m_Message;
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Gtk::Dialog*                  m_Window;
+	Gtk::Box*                     m_Widget;
+	Gtk::Label*                   m_Message;
+	Gtk::Box*                     m_FilesBox;
+	Gtk::TreeView*                m_TreeView;
 
 };
 

@@ -50,6 +50,8 @@
 
 #include "Browser/BrowserWindow.h"
 
+#include <Titania/OS/env.h>
+
 int
 main (int argc, char** argv)
 {
@@ -64,24 +66,14 @@ main (int argc, char** argv)
 
 	std::locale::global (std::locale (""));
 
-	try
-	{
-		Gtk::Main kit (argc, argv);
+	os::env ("LIBOVERLAY_SCROLLBAR", "0"); // XXX: This fixes the bug with modal windows.
+	os::env ("UBUNTU_MENUPROXY", "0");     // XXX: This fixes the bug with check button menu items.
 
-		BrowserWindow browserWindow (X3D::createBrowser ());
+	Gtk::Main kit (argc, argv);
 
-		browserWindow .getBrowser () -> isStrict (false);
+	BrowserWindow browserWindow (X3D::createBrowser ());
 
-		Gtk::Main::run (browserWindow .getWindow ());
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-	catch (const Glib::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	Gtk::Main::run (browserWindow .getWindow ());
 
 	std::clog
 		<< std::endl

@@ -166,10 +166,6 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::MenuItem &
-	getEditMenuItem () const
-	{ return *m_EditMenuItem; }
-
 	Gtk::ImageMenuItem &
 	getCopyMenuItem () const
 	{ return *m_CopyMenuItem; }
@@ -465,7 +461,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::MenuItem*                 m_EditMenuItem;
 	Gtk::ImageMenuItem*            m_CopyMenuItem;
 	Gtk::ImageMenuItem*            m_PasteMenuItem;
 	Gtk::Box*                      m_PreviewBox;

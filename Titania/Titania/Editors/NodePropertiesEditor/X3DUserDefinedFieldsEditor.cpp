@@ -239,7 +239,6 @@ X3DUserDefinedFieldsEditor::on_user_defined_field_activated (const Gtk::TreeMode
 		getFieldNameEntry () .set_text (userDefinedField -> getName ());
 		on_field_name_changed ();
 
-		getWindow () .set_sensitive (false);
 		getUserDefinedFieldDialog () .set_title (_ ("Edit User Defined Field"));
 		getUserDefinedFieldDialog () .present ();
 
@@ -259,7 +258,6 @@ X3DUserDefinedFieldsEditor::on_add_user_defined_field_clicked ()
 	getFieldNameEntry () .set_text ("");
 	on_field_name_changed ();
 
-	getWindow () .set_sensitive (false);
 	getUserDefinedFieldDialog () .set_title (_ ("Add User Defined Field"));
 	getUserDefinedFieldDialog () .present ();
 
@@ -428,12 +426,6 @@ void
 X3DUserDefinedFieldsEditor::on_add_field_cancel_clicked ()
 {
 	getUserDefinedFieldDialog () .hide ();
-}
-
-void
-X3DUserDefinedFieldsEditor::on_add_field_hide ()
-{
-	getWindow () .set_sensitive (true);
 }
 
 void

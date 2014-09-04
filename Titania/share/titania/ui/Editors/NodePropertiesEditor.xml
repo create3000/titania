@@ -44,7 +44,6 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="has_resize_grip">False</property>
-    <signal name="hide" handler="on_exported_node_hide" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox4">
         <property name="can_focus">False</property>
@@ -458,7 +457,6 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="has_resize_grip">False</property>
-    <signal name="hide" handler="on_add_field_hide" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox2">
         <property name="can_focus">False</property>

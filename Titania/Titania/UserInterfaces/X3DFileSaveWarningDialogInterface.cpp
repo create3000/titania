@@ -61,11 +61,14 @@ X3DFileSaveWarningDialogInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_ListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Message", m_Message);
+	m_builder -> get_widget ("FilesBox", m_FilesBox);
+	m_builder -> get_widget ("TreeView", m_TreeView);
 
 	// Call construct handler of base class.
 	construct ();

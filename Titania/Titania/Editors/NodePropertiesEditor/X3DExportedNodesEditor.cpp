@@ -108,7 +108,6 @@ X3DExportedNodesEditor::on_exported_node_activated (const Gtk::TreeModel::Path &
 	getExportedNameEntry () .set_text (exportedName);
 	on_exported_name_changed ();
 
-	getWindow () .set_sensitive (false);
 	getExportedNodeDialog () .set_title (_ ("Edit Exported Node"));
 	getExportedNodeDialog () .present ();
 }
@@ -121,7 +120,6 @@ X3DExportedNodesEditor::on_add_exported_node ()
 	getExportedNameEntry () .set_text (getNameEntry () .get_text ());
 	on_exported_name_changed ();
 
-	getWindow () .set_sensitive (false);
 	getExportedNodeDialog () .set_title (_ ("Add Exported Node"));
 	getExportedNodeDialog () .present ();
 }
@@ -216,12 +214,6 @@ void
 X3DExportedNodesEditor::on_exported_node_cancel_clicked ()
 {
 	getExportedNodeDialog () .hide ();
-}
-
-void
-X3DExportedNodesEditor::on_exported_node_hide ()
-{
-	getWindow () .set_sensitive (true);
 }
 
 bool

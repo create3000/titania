@@ -222,6 +222,9 @@ X3DUserInterface::saveInterfaces ()
 void
 X3DUserInterface::saveInterface ()
 {
+	if (not getWindow () .get_mapped ())
+		return;
+
 	if (not isMaximized () and not isFullscreen ())
 	{
 		int x, y, width, height;
