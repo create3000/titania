@@ -365,7 +365,7 @@ X3DBackgroundNode::draw ()
 
 	scale *= std::max (viewport [2], viewport [3]);
 
-	getCurrentViewpoint () -> background (1, std::max (2.0, 2 * SIZE * scale .z ()));
+	getCurrentViewpoint () -> background (1, std::max (2.0, 3 * SIZE * scale .z ()));
 
 	// Rotate and scale background
 
