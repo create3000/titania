@@ -98,11 +98,20 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
 	blank ();
 
+	virtual
 	void
-	open (const basic::uri &);
+	open (const basic::uri &, const bool = true);
+
+	virtual
+	void
+	load (const X3D::BrowserPtr &, const basic::uri &);
+
+	void
+	loadIcon (const basic::uri &, const std::string &);
 
 	virtual
 	void
@@ -112,6 +121,7 @@ public:
 	bool
 	transform (const basic::uri &, const basic::uri &, const UndoStepPtr &, X3D::SFNode &);
 
+	virtual
 	void
 	reload ();
 
@@ -164,6 +174,9 @@ protected:
 	void
 	setTransparent (const bool);
 
+	void
+	append (const X3D::BrowserPtr &, const basic::uri &, const bool = true);
+
 
 private:
 
@@ -176,13 +189,7 @@ private:
 	set_initialized ();
 
 	void
-	append (const X3D::BrowserPtr &, const basic::uri &);
-
-	void
 	set_splashScreen (const X3D::BrowserPtr &, const basic::uri &);
-
-	void
-	load (const X3D::BrowserPtr &, const basic::uri &);
 
 	virtual
 	void

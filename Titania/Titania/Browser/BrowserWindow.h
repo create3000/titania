@@ -94,6 +94,9 @@ private:
 	void
 	set_executionContext ();
 
+	void
+	set_browserHistory ();
+
 	///  @name Selection handling
 
 	void
@@ -473,6 +476,34 @@ private:
 	on_standard_size () final override;
 
 	/// Toolbar
+
+	virtual
+	void
+	on_home () final override;
+
+	virtual
+	void
+	on_previous_page () final override;
+
+	virtual
+	void
+	on_next_page () final override;
+
+	virtual
+	bool
+	on_previous_button_press_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_next_button_press_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_location_key_press_event (GdkEventKey*) final override;
+
+	virtual
+	void
+	on_location_icon_release (Gtk::EntryIconPosition, const GdkEventButton*) final override;
 
 	virtual
 	void

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,6 +58,7 @@
 #include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
 
 #include "../Browser/BrowserSelection.h"
+#include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
@@ -152,6 +153,8 @@ BrowserWindow::loadStyles () const
 void
 BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
+	// Disconnect
+
 	getBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
@@ -159,7 +162,13 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getBrowser () -> getBrowserOptions () -> shading ()          .removeInterest (this, &BrowserWindow::set_shading);
 	getBrowser () -> getBrowserOptions () -> primitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
 
+	getUserData (getBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
+
+	// Set browser
+
 	X3DBrowserWindow::setBrowser (value);
+
+	// Connect
 
 	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
@@ -168,12 +177,18 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getBrowser () -> getBrowserOptions () -> shading ()          .addInterest (this, &BrowserWindow::set_shading);
 	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
 
+	getUserData (getBrowser ()) -> browserHistory .addInterest (this, &BrowserWindow::set_browserHistory);
+
+	// Initialize
+
 	set_viewer (getBrowser () -> getViewer ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_shading (getBrowser () -> getBrowserOptions () -> shading ());
 	set_primitiveQuality (getBrowser () -> getBrowserOptions () -> primitiveQuality ());
+
+	set_browserHistory ();
 
 	getBrowser () -> getBrowserOptions () -> rubberBand ()   = getRubberbandMenuItem () .get_active ();
 	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
@@ -220,6 +235,30 @@ BrowserWindow::set_executionContext ()
 	getCreatePrototypeInstanceButton () .set_sensitive (inScene);
 
 	set_selection (getSelection () -> getChildren ());
+
+	changing = true;
+
+	getLocationEntry () .set_text (getExecutionContext () -> getWorldURL () .str ());
+	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getExecutionContext () -> getMasterContext () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
+
+	changing = false;
+}
+
+void
+BrowserWindow::set_browserHistory ()
+{
+	const auto & browserHistory = getUserData (getBrowser ()) -> browserHistory;
+	const int    index          = browserHistory .getIndex ();
+
+	if (index > 0)
+		getPreviousButton () .set_sensitive (true);
+	else
+		getPreviousButton () .set_sensitive (false);
+
+	if (index + 1 < (int) browserHistory .getSize ())
+		getNextButton () .set_sensitive (true);
+	else
+		getNextButton ().set_sensitive (false);
 }
 
 // Selection
@@ -569,8 +608,7 @@ BrowserWindow::on_quit ()
 void
 BrowserWindow::on_revert_to_saved ()
 {
-	if (isSaved (getBrowser ()))
-		reload ();
+	reload ();
 }
 
 // Undo/Redo
@@ -955,6 +993,7 @@ BrowserWindow::isEditor (const bool enabled)
 {
 	getImportMenuItem ()                       .set_visible (enabled);
 	getImportAsInlineMenuItem ()               .set_visible (enabled);
+	getSaveMenuItem ()                         .set_visible (enabled);
 	getRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
 	getEditMenuItem ()                         .set_visible (enabled);
 	getBrowserOptionsSeparator ()              .set_visible (enabled);
@@ -965,12 +1004,13 @@ BrowserWindow::isEditor (const bool enabled)
 	getSelectionMenuItem ()                    .set_visible (enabled);
 	getLayoutMenuItem ()                       .set_visible (enabled);
 
-	getImportButton () .set_visible (enabled);
-	getEditToolBar ()  .set_visible (enabled);
+	getLocationBar () .set_visible (not enabled);
+	getEditToolBar () .set_visible (enabled);
 
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
+	getTabToolButton ()         .set_visible (not enabled);
 	getHandButton ()            .set_visible (enabled);
 	getArrowButton ()           .set_visible (enabled);
 	getPlayPauseButton ()       .set_visible (enabled);
@@ -1532,7 +1572,7 @@ BrowserWindow::on_grid_tool_activate ()
 void
 BrowserWindow::on_info ()
 {
-	open (get_page ("about/info.wrl"));
+	X3DBrowserWidget::open (get_page ("about/info.x3dv"), false);
 }
 
 void
@@ -1542,6 +1582,112 @@ BrowserWindow::on_standard_size ()
 }
 
 /// Toolbar
+
+void
+BrowserWindow::on_home ()
+{
+	load (getBrowser (), get_page ("about/home.x3dv"));
+}
+
+void
+BrowserWindow::on_previous_page ()
+{
+	getUserData (getBrowser ()) -> browserHistory .previousPage ();
+}
+
+void
+BrowserWindow::on_next_page ()
+{
+	getUserData (getBrowser ()) -> browserHistory .nextPage ();
+}
+
+bool
+BrowserWindow::on_previous_button_press_event (GdkEventButton* event)
+{
+	if (event -> button not_eq 3)
+		return false;
+
+	auto & browserHistory = getUserData (getBrowser ()) -> browserHistory;
+
+	if (browserHistory .isEmpty ())
+		return false;
+
+	for (const auto & widget : getHistoryMenu () .get_children ())
+		getHistoryMenu () .remove (*widget);
+
+	const auto index   = browserHistory .getIndex ();
+	const auto current = browserHistory .getList () .begin () + index;
+	auto       first   = browserHistory .getList () .begin () + std::max (index - 5, 0);
+	const auto last    = browserHistory .getList () .begin () + std::min (index + 6, (int) browserHistory .getSize ());
+
+	for (; first not_eq last; ++ first)
+	{
+		Gtk::MenuItem* menuItem = nullptr;
+		const auto &   text     = first -> first;
+
+		if (first == current)
+		{
+			const auto label         = Gtk::manage (new Gtk::Label ());
+			const auto checkMenuItem = Gtk::manage (new Gtk::CheckMenuItem ());
+
+			label -> set_markup ("<b>" + Glib::Markup::escape_text (text) + "</b>");
+			label -> set_alignment (0, 0.5);
+			checkMenuItem -> add (*label);
+			checkMenuItem -> set_draw_as_radio (true);
+			checkMenuItem -> set_active (true);
+
+			menuItem = checkMenuItem;
+		}
+		else
+		{
+			const auto image         = Gtk::manage (new Gtk::Image (Gtk::StockID (first -> second .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+			const auto imageMenuItem = Gtk::manage (new Gtk::ImageMenuItem (text));
+
+			imageMenuItem -> set_image (*image);
+			imageMenuItem -> set_always_show_image (true);
+
+			menuItem = imageMenuItem;
+		}
+
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (browserHistory, &BrowserHistory::setIndex), first - browserHistory .getList () .begin ()));
+		getHistoryMenu () .prepend (*menuItem);
+	}
+
+	getHistoryMenu () .show_all ();
+	getHistoryMenu () .popup (event -> button, event -> time);
+	return true;
+}
+
+bool
+BrowserWindow::on_next_button_press_event (GdkEventButton* event)
+{
+	return on_previous_button_press_event (event);
+}
+
+bool
+BrowserWindow::on_location_key_press_event (GdkEventKey* event)
+{
+	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
+	{
+		load (getBrowser (), Glib::uri_unescape_string (getLocationEntry () .get_text ()));
+		return true;
+	}
+
+	return false;
+}
+
+void
+BrowserWindow::on_location_icon_release (Gtk::EntryIconPosition icon_position, const GdkEventButton* event)
+{
+	switch (icon_position)
+	{
+		case Gtk::ENTRY_ICON_PRIMARY:
+			break;
+		case Gtk::ENTRY_ICON_SECONDARY:
+			on_open ();
+			break;
+	}
+}
 
 void
 BrowserWindow::on_node_properties_editor_clicked ()

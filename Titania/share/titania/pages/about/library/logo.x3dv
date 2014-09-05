@@ -1,39 +1,21 @@
 #X3D V3.0 utf8 Titania
 
-META "title" "Titania ✩ Red, Orange & Yellow"
-
-EXTERNPROTO Rotor [
-  inputOutput SFBool     enabled
-  inputOutput SFTime     cycleInterval
-  inputOutput SFVec3f    axis
-  inputOutput SFFloat    angle
-  inputOutput SFBool     loop
-  inputOutput SFTime     startTime
-  inputOutput SFTime     pauseTime
-  inputOutput SFTime     resumeTime
-  inputOutput SFTime     stopTime
-  outputOnly  SFBool     isActive
-  outputOnly  SFTime     cycleTime
-  outputOnly  SFRotation rotation_changed
-]
-[
-  "Rotor.wrl",
-]
+META "title" "Logo"
 
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"Colors.wrl"
+"Colors.x3dv"
 
 EXTERNPROTO Orange [
   inputOutput SFFloat transparency
 ]
-"Colors.wrl"
+"Colors.x3dv"
 
 EXTERNPROTO Yellow [
   inputOutput SFFloat transparency
 ]
-"Colors.wrl"
+"Colors.x3dv"
 
 DEF Red Transform {
   children Shape {
@@ -76,25 +58,3 @@ DEF Yellow Transform {
     }
   }
 }
-
-DEF RedRotor Rotor {
-  cycleInterval 7
-  axis 0 0 -1
-  loop TRUE
-}
-
-DEF OrangeRotor Rotor {
-  cycleInterval 11
-  axis 0 0 -1
-  loop TRUE
-}
-
-DEF YellowRotor Rotor {
-  cycleInterval 17
-  axis 0 0 -1
-  loop TRUE
-}
-
-ROUTE RedRotor.rotation_changed TO Red.set_rotation
-ROUTE OrangeRotor.rotation_changed TO Orange.set_rotation
-ROUTE YellowRotor.rotation_changed TO Yellow.set_rotation

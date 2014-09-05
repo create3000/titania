@@ -99,7 +99,7 @@ OpenLocationDialog::on_location_entry_changed ()
 }
 
 bool
-OpenLocationDialog::on_location_entry_key_release_event (GdkEventKey* event)
+OpenLocationDialog::on_location_entry_key_press_event (GdkEventKey* event)
 {
 	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
 	{

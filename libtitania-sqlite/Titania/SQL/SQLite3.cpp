@@ -72,8 +72,8 @@ void
 sqlite3::open (const std::string & filename)
 throw (std::invalid_argument)
 {
-	if (c::sqlite3_open (filename .c_str (), &database))
-		error ("Can't open database: ", c::sqlite3_errmsg (database), "");
+	if (::sqlite3_open (filename .c_str (), &database))
+		error ("Can't open database: ", ::sqlite3_errmsg (database), "");
 }
 
 void
@@ -119,6 +119,58 @@ throw (std::invalid_argument)
 	return array_map;
 }
 
+// http://www.sqlite.org/cvstrac/wiki?p=BlobExample
+
+void
+sqlite3::write_blob (const std::string & statement, const std::string & value) const
+throw (std::invalid_argument)
+{
+	::sqlite3_stmt* prepared_statement;
+	int returnCode;
+
+	do
+	{
+		returnCode = ::sqlite3_prepare (database, statement .c_str (), statement .size (), &prepared_statement, 0);
+
+		if (returnCode not_eq SQLITE_OK)
+			throw std::invalid_argument ("sqlite3::write_blob in prepare: " + std::string (::sqlite3_errmsg (database)));
+
+		::sqlite3_bind_blob (prepared_statement, 1, value .c_str (), value .size (), SQLITE_STATIC);
+
+		returnCode = ::sqlite3_step (prepared_statement);
+
+		if (returnCode == SQLITE_ROW)
+			throw std::invalid_argument ("sqlite3::write_blob in step: " + std::string (::sqlite3_errmsg (database)));
+
+		returnCode = ::sqlite3_finalize (prepared_statement);
+	}
+	while (returnCode == SQLITE_SCHEMA);
+}
+
+void
+sqlite3::read_blob (const std::string & statement, std::string & value) const
+throw (std::invalid_argument)
+{
+	::sqlite3_stmt* prepared_statement;
+	int             returnCode;
+
+	do
+	{
+		returnCode = ::sqlite3_prepare (database, statement .c_str (), statement .size (), &prepared_statement, 0);
+
+		if (returnCode not_eq SQLITE_OK)
+			throw std::invalid_argument ("sqlite3::write_blob in prepare: " + std::string (::sqlite3_errmsg (database)));
+
+		returnCode = ::sqlite3_step (prepared_statement);
+
+		if (returnCode == SQLITE_ROW)
+			value = std::string ((const char*) ::sqlite3_column_blob (prepared_statement, 0), ::sqlite3_column_bytes (prepared_statement, 0));
+
+		returnCode = ::sqlite3_finalize (prepared_statement);
+	}
+	while (returnCode == SQLITE_SCHEMA);
+}
+
 const std::string &
 sqlite3::last_insert_rowid () const
 throw (std::out_of_range)
@@ -144,12 +196,12 @@ throw (std::invalid_argument)
 {
 	char* errorMessage = nullptr;
 
-	if (c::sqlite3_exec (database, statement .c_str (), callback, const_cast <sqlite3*> (this), &errorMessage) not_eq SQLITE_OK)
+	if (::sqlite3_exec (database, statement .c_str (), callback, const_cast <sqlite3*> (this), &errorMessage) not_eq SQLITE_OK)
 	{
 		std::string string = errorMessage ? errorMessage : "unknown error";
 
-		c::sqlite3_free (errorMessage);
-	
+		::sqlite3_free (errorMessage);
+
 		if (database)
 			error ("Can't exec query: ", string, statement);
 
@@ -224,7 +276,7 @@ throw (std::invalid_argument)
 
 sqlite3::~sqlite3 ()
 {
-	c::sqlite3_close (database);
+	::sqlite3_close (database);
 }
 
 } // sql

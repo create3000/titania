@@ -88,8 +88,6 @@ private:
 	void
 	on_activate () final override
 	{
-		__LOG__ << std::endl;
-
 		if (browserWindow)
 			browserWindow -> blank ();
 
@@ -101,8 +99,6 @@ private:
 	void
 	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override
 	{
-		__LOG__ << std::endl;
-
 		if (not browserWindow)
 			realize ();
 
@@ -114,8 +110,6 @@ private:
 	void
 	on_window_removed (Gtk::Window* window) final override
 	{
-		__LOG__ << std::endl;
-
 		quit ();
 	}	
 

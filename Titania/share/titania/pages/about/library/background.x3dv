@@ -8,17 +8,17 @@ META "title" "about:url_error"
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"Colors.wrl"
+"Colors.x3dv"
 
 EXTERNPROTO Orange [
   inputOutput SFFloat transparency
 ]
-"Colors.wrl"
+"Colors.x3dv"
 
 EXTERNPROTO Yellow [
   inputOutput SFFloat transparency
 ]
-"Colors.wrl"
+"Colors.x3dv"
 
 DEF EnterWorld VisibilitySensor { }
 

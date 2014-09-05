@@ -116,7 +116,7 @@ public:
 
 	virtual
 	bool
-	on_location_entry_key_release_event (GdkEventKey* event) = 0;
+	on_location_entry_key_press_event (GdkEventKey* event) = 0;
 
 	virtual
 	~X3DOpenLocationDialogInterface ();

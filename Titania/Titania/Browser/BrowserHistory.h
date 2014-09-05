@@ -48,73 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_USER_DATA_H__
-#define __TITANIA_BROWSER_BROWSER_USER_DATA_H__
+#ifndef __TITANIA_BROWSER_TAB_HISTORY_H__
+#define __TITANIA_BROWSER_TAB_HISTORY_H__
 
-#include "../Browser/BrowserHistory.h"
-#include "../Undo/UndoHistory.h"
-
-#include <Titania/X3D/Base/X3DBase.h>
-#include <gtkmm.h>
+#include <Titania/Basic/URI.h>
+#include <Titania/X3D/Base/X3DOutput.h>
+#include <Titania/X3D/Browser/X3DBrowser.h>
+#include <sigc++/trackable.h>
+#include <vector>
 
 namespace titania {
 namespace puck {
 
-class BrowserUserData :
-	public X3D::X3DBase
+class BrowserHistory :
+	public X3D::X3DOutput,
+	public sigc::trackable
 {
 public:
 
+	using Page = std::pair <std::string, basic::uri>;
+
 	///  @name Construction
 
-	BrowserUserData (X3D::X3DBrowser* const browser) :
-		           URL (),
-		         label (nullptr),
-		browserHistory (browser),
-		   undoHistory (),
-		      modified (false),
-		 saveConfirmed (false),
-		  fileMonitors ()
-	{ }
+	BrowserHistory (X3D::X3DBrowser* const);
+
+	///  @name Member access
+
+	int
+	getIndex () const
+	{ return index; }
+
+	void
+	setIndex (const int);
+
+	const std::vector <Page> &
+	getList () const
+	{ return list; }
+
+	void
+	previousPage ();
+
+	void
+	nextPage ();
+
+	bool
+	isEmpty () const
+	{ return list .empty (); }
+
+	size_t
+	getSize () const
+	{ return list .size (); }
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	set_splashScreen ();
+
+	void
+	set_initialized ();
+
+	///  @name Operations
+
+	void
+	addURL (const std::string &, const basic::uri &);
+
+	void
+	connect (const X3D::SFTime &);
 
 	///  @name Members
 
-	basic::uri  URL;   // Original URL
-	Gtk::Label* label; // Tab label
-
-	BrowserHistory browserHistory;
-	UndoHistory    undoHistory;
-	bool           modified;
-	bool           saveConfirmed;
-
-	std::map <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>  fileMonitors;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-	virtual
-	~BrowserUserData ()
-	{ }
+	X3D::X3DBrowser* const browser;
+	std::vector <Page>     list;
+	int                    index;
 
 };
-
-inline
-void
-BrowserUserData::dispose ()
-{
-	undoHistory  .clear ();
-
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
-
-	fileMonitors .clear ();
-}
 
 } // puck
 } // titania

@@ -1,23 +1,32 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#X3D V3.3 utf8 Titania V0.7.4
 
-META "icon" "../../ui/icons/icon-bw.svg"
+META "comment" "World of Titania"
+META "created" "Fri, 05 Sep 2014 01:58:48 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "icon" "../../ui/icons/favicon.png"
+META "modified" "Fri, 05 Sep 2014 02:00:16 GMT"
 META "title" "about:info"
 
 EXTERNPROTO Rotor [
-  exposedField SFBool     enabled
-  exposedField SFTime     cycleInterval
-  exposedField SFVec3f    axis
-  exposedField SFFloat    angle
-  exposedField SFBool     loop
-  exposedField SFTime     startTime
-  exposedField SFTime     pauseTime
-  exposedField SFTime     resumeTime
-  exposedField SFTime     stopTime
-  eventOut     SFBool     isActive
-  eventOut     SFTime     cycleTime
-  eventOut     SFRotation rotation_changed
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
 ]
-"library/Rotor.wrl"
+"library/Rotor.x3dv"
+
+NavigationInfo {
+  type "NONE"
+}
 
 DEF about:info_1 LayerSet {
   order 1
@@ -76,7 +85,7 @@ DEF about:info_1 LayerSet {
           children [
             DEF Image Switch {
               whichChoice 1
-              choice Shape {
+              children Shape {
                 appearance Appearance {
                   texture ImageTexture {
                     url "info/info.png"
@@ -139,10 +148,10 @@ DEF about:info_1 LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 -1 1.87781
+                      rotation 0 0 -1 6.13799
                       center 5.6 -5.9 0
                       children Inline {
-                        url "library/logo.wrl"
+                        url "library/logo.x3dv"
                       }
                     }
                   ]
@@ -267,7 +276,7 @@ DEF about:info_1 LayerSet {
                       }
                     }
                     geometry Text {
-                      string "© 2010 - 2012"
+                      string "© 2010 - 2014"
                       length 0.11
                       fontStyle FontStyle {
                         family [
@@ -290,7 +299,7 @@ DEF about:info_1 LayerSet {
                         }
                       }
                       geometry DEF VersionNumberText Text {
-                        string "0.7.10"
+                        string "0.7.4"
                         maxExtent 0.65
                         fontStyle FontStyle {
                           family [
@@ -303,7 +312,7 @@ DEF about:info_1 LayerSet {
                       }
                     }
                     DEF VersionNumberScript Script {
-                      field SFNode text USE VersionNumberText
+                      initializeOnly SFNode text USE VersionNumberText
 
                       url "vrmlscript:
 function initialize ()
@@ -321,6 +330,15 @@ function initialize ()
       }
     ]
   }
+}
+
+DEF EnterWorld Script {
+  url "ecmascript:
+function initialize ()
+{
+	Browser .setBrowserOption ('Dashboard', false);
+}
+"
 }
 
 ROUTE LogoRotor.rotation_changed TO Logo.set_rotation

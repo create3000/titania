@@ -67,6 +67,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExamineViewerImage", m_ExamineViewerImage);
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
 	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
+	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
 	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
 	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
@@ -168,13 +169,20 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("StandardSizeMenuItem", m_StandardSizeMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("ToolBar", m_ToolBar);
-	m_builder -> get_widget ("FileToolBar", m_FileToolBar);
+	m_builder -> get_widget ("LocationBar", m_LocationBar);
+	m_builder -> get_widget ("LocationBar1", m_LocationBar1);
+	m_builder -> get_widget ("HomeButton", m_HomeButton);
+	m_builder -> get_widget ("PreviousButton", m_PreviousButton);
+	m_builder -> get_widget ("NextButton", m_NextButton);
+	m_builder -> get_widget ("LocationEntry", m_LocationEntry);
+	m_builder -> get_widget ("LocationBar2", m_LocationBar2);
+	m_builder -> get_widget ("ReloadButton", m_ReloadButton);
+	m_builder -> get_widget ("EditToolBar", m_EditToolBar);
 	m_builder -> get_widget ("NewButton", m_NewButton);
 	m_builder -> get_widget ("OpenButton", m_OpenButton);
 	m_builder -> get_widget ("ImportButton", m_ImportButton);
 	m_builder -> get_widget ("SaveButton", m_SaveButton);
 	m_builder -> get_widget ("RefreshButton", m_RefreshButton);
-	m_builder -> get_widget ("EditToolBar", m_EditToolBar);
 	m_builder -> get_widget ("SeparatorToolItem1", m_SeparatorToolItem1);
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
@@ -197,6 +205,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserNotebook", m_BrowserNotebook);
 	m_builder -> get_widget ("Dashboard", m_Dashboard);
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
+	m_builder -> get_widget ("TabToolButton", m_TabToolButton);
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
 	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
@@ -345,10 +354,22 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::Box with id 'ToolBar'.
 	m_ToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
-	// Connect object Gtk::Toolbar with id 'FileToolBar'.
-	m_FileToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
+	// Connect object Gtk::Toolbar with id 'LocationBar1'.
+	m_LocationBar1 -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
-	// Connect object Gtk::ToolButton with id 'NewButton'.
+	// Connect object Gtk::ToolButton with id 'HomeButton'.
+	m_HomeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_home));
+	m_PreviousButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_button_press_event));
+	m_PreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_page));
+	m_NextButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_next_button_press_event));
+	m_NextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_next_page));
+
+	// Connect object Gtk::Entry with id 'LocationEntry'.
+	m_LocationEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_location_icon_release));
+	m_LocationEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_location_key_press_event), false);
+
+	// Connect object Gtk::ToolButton with id 'ReloadButton'.
+	m_ReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
 
 	// Connect object Gtk::MenuToolButton with id 'OpenButton'.

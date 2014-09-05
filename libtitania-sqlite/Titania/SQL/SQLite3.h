@@ -56,15 +56,13 @@
 #include <stdexcept>
 #include <string>
 
-namespace titania {
-namespace sql {
-
-namespace c {
 extern "C"
 {
 #include <sqlite3.h>
 }
-}
+
+namespace titania {
+namespace sql {
 
 class sqlite3
 {
@@ -102,6 +100,14 @@ public:
 
 	const assoc_type &
 	query_assoc (const std::string &) const
+	throw (std::invalid_argument);
+
+	void
+	write_blob (const std::string &, const std::string &) const
+	throw (std::invalid_argument);
+
+	void
+	read_blob (const std::string &, std::string &) const
 	throw (std::invalid_argument);
 
 	const std::string &
@@ -147,7 +153,7 @@ private:
 
 private:
 
-	c::sqlite3* database;
+	::sqlite3* database;
 
 	mutable array_type array;
 	mutable assoc_type array_map;

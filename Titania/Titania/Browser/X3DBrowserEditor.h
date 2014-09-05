@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,18 +65,19 @@ class X3DBrowserEditor :
 {
 public:
 
-	/// @name Tests
-
-	bool
-	isSaved (const X3D::BrowserPtr &);
-
-	void
-	isModified (const X3D::BrowserPtr &, const bool);
-
-	bool
-	isModified (const X3D::BrowserPtr &) const;
-
 	/// @name File operations
+
+	virtual
+	void
+	blank () final override;
+
+	virtual
+	void
+	open (const basic::uri &, const bool = true) final override;
+
+	virtual
+	void
+	load (const X3D::BrowserPtr &, const basic::uri &) final override;
 
 	X3D::MFNode
 	importURL (const std::vector <basic::uri> &, const bool, const UndoStepPtr & undoStep);
@@ -97,18 +98,16 @@ public:
 	void
 	exportNodes (std::ostream &, X3D::MFNode &) const;
 
-	std::vector <X3D::X3DProtoDeclarationNodePtr>
-	getUsedPrototypes (X3D::MFNode &) const;
-
-	std::vector <X3D::Route*>
-	getConnectedRouted (X3D::MFNode &) const;
+	virtual
+	void
+	reload () final override;
 
 	void
 	removeUnusedPrototypes (const UndoStepPtr &);
 
 	virtual
 	void
-	close (const X3D::BrowserPtr & browser) final override;
+	close (const X3D::BrowserPtr &) final override;
 
 	virtual
 	bool
@@ -292,6 +291,8 @@ protected:
 
 private:
 
+	// Event handler
+
 	void
 	set_initialized ();
 
@@ -305,6 +306,24 @@ private:
 	set_selection (const X3D::MFNode &);
 
 	// File
+
+	bool
+	isEditor () const;
+
+	bool
+	isSaved (const X3D::BrowserPtr &);
+
+	void
+	isModified (const X3D::BrowserPtr &, const bool);
+
+	bool
+	isModified (const X3D::BrowserPtr &) const;
+
+	std::vector <X3D::X3DProtoDeclarationNodePtr>
+	getUsedPrototypes (X3D::MFNode &) const;
+
+	std::vector <X3D::Route*>
+	getConnectedRoutes (X3D::MFNode &) const;
 
 	void
 	removeUsedPrototypes (X3D::X3DExecutionContext* const,

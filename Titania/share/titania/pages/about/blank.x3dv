@@ -1,0 +1,14 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Thu, 04 Sep 2014 15:24:22 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "icon" "../../ui/icons/favicon.png"
+META "modified" "Thu, 04 Sep 2014 15:33:04 GMT"
+META "title" "about:blank"
+
+Background {
+  skyColor 1 1 1
+  transparency 1
+}

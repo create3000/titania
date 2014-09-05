@@ -52,6 +52,7 @@
 
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/MagicImport.h"
+#include "../Configuration/config.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 
@@ -88,11 +89,10 @@ X3DBrowserEditor::restoreSession ()
 		getImportAsInlineMenuItem () .set_active (getConfig () .getBoolean ("importAsInline"));
 
 	// Workspace
-	if (getConfig () .getString ("workspace") == "BROWSER")
-		getBrowserMenuItem () .set_active (true);
-
-	else if (getConfig () .getString ("workspace") == "EDITOR")
+	if (isEditor ())
 		getEditorMenuItem () .set_active (true);
+	else
+		getBrowserMenuItem () .set_active (true);
 
 	// SelectLowest
 	if (getConfig () .hasItem ("selectLowest"))
@@ -231,6 +231,12 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 }
 
 bool
+X3DBrowserEditor::isEditor () const
+{
+	return getConfig () .getString ("workspace") == "EDITOR";
+}
+
+bool
 X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 {
 	const auto userData = getUserData (browser);
@@ -290,6 +296,35 @@ X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser) const
 }
 
 // File operations
+
+void
+X3DBrowserEditor::blank ()
+{
+	if (isEditor ())
+	{
+		append (X3D::createBrowser (getBrowser ()), "", false);
+		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
+	}
+	else
+		X3DBrowserWidget::blank ();
+}
+
+void
+X3DBrowserEditor::open (const basic::uri & URL, const bool splashScreen)
+{
+	if (isEditor ())
+		X3DBrowserWidget::open (URL, splashScreen);
+
+	else
+		load (getBrowser (), URL);
+}
+
+void
+X3DBrowserEditor::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
+{
+	if (isSaved (browser))
+		X3DBrowserWidget::load (browser, URL);
+}
 
 X3D::MFNode
 X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool importAsInline, const UndoStepPtr & undoStep)
@@ -468,7 +503,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 	// Find proto declarations
 
 	const auto protoNodes = getUsedPrototypes (nodes);
-	const auto routes     = getConnectedRouted (nodes);
+	const auto routes     = getConnectedRoutes (nodes);
 
 	// Generate text
 
@@ -556,7 +591,7 @@ X3DBrowserEditor::getUsedPrototypes (X3D::MFNode & nodes) const
 }
 
 std::vector <X3D::Route*>
-X3DBrowserEditor::getConnectedRouted (X3D::MFNode & nodes) const
+X3DBrowserEditor::getConnectedRoutes (X3D::MFNode & nodes) const
 {
 	// Create node index
 
@@ -595,6 +630,13 @@ X3DBrowserEditor::getConnectedRouted (X3D::MFNode & nodes) const
 						});
 
 	return routes;
+}
+
+void
+X3DBrowserEditor::reload ()
+{
+	if (isSaved (getBrowser ()))
+		X3DBrowserWidget::reload ();
 }
 
 void

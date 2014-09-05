@@ -48,75 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_USER_DATA_H__
-#define __TITANIA_BROWSER_BROWSER_USER_DATA_H__
-
-#include "../Browser/BrowserHistory.h"
-#include "../Undo/UndoHistory.h"
-
-#include <Titania/X3D/Base/X3DBase.h>
-#include <gtkmm.h>
+#include "BrowserHistory.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserUserData :
-	public X3D::X3DBase
+BrowserHistory::BrowserHistory (X3D::X3DBrowser* const browser) :
+	 X3D::X3DOutput (),
+	sigc::trackable (),
+	        browser (browser),
+	           list (),
+	          index (-1)
 {
-public:
+	browser -> initialized () .addInterest (this, &BrowserHistory::set_splashScreen);
+}
 
-	///  @name Construction
-
-	BrowserUserData (X3D::X3DBrowser* const browser) :
-		           URL (),
-		         label (nullptr),
-		browserHistory (browser),
-		   undoHistory (),
-		      modified (false),
-		 saveConfirmed (false),
-		  fileMonitors ()
-	{ }
-
-	///  @name Members
-
-	basic::uri  URL;   // Original URL
-	Gtk::Label* label; // Tab label
-
-	BrowserHistory browserHistory;
-	UndoHistory    undoHistory;
-	bool           modified;
-	bool           saveConfirmed;
-
-	std::map <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>  fileMonitors;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-	virtual
-	~BrowserUserData ()
-	{ }
-
-};
-
-inline
 void
-BrowserUserData::dispose ()
+BrowserHistory::set_splashScreen ()
 {
-	undoHistory  .clear ();
+	browser -> initialized () .removeInterest (this, &BrowserHistory::set_splashScreen);
+	browser -> initialized () .addInterest (this, &BrowserHistory::set_initialized);
+}
 
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
+void
+BrowserHistory::set_initialized ()
+{
+	addURL (browser -> getExecutionContext () -> getTitle (), browser -> getWorldURL ());
 
-	fileMonitors .clear ();
+	processInterests ();
+}
+
+void
+BrowserHistory::connect (const X3D::SFTime & initialized)
+{
+	initialized .removeInterest (this, &BrowserHistory::connect);
+	initialized .addInterest (this, &BrowserHistory::set_initialized);
+
+	processInterests ();
+}
+
+void
+BrowserHistory::addURL (const std::string & title, const basic::uri & URL)
+{
+	list .resize (index + 1);
+
+	list .emplace_back (title, URL);
+
+	++ index;
+}
+
+void
+BrowserHistory::setIndex (const int value)
+{
+	if (value < 0 or value >= (int) list .size ())
+		return;
+
+	index = value;
+
+	browser -> initialized () .removeInterest (this, &BrowserHistory::set_initialized);
+	browser -> initialized () .addInterest (this, &BrowserHistory::connect);
+
+	browser -> loadURL ({ list [index] .second .str () });
+}
+
+void
+BrowserHistory::previousPage ()
+{
+	setIndex (index - 1);
+}
+
+void
+BrowserHistory::nextPage ()
+{
+	setIndex (index + 1);
 }
 
 } // puck
 } // titania
-
-#endif

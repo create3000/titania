@@ -1,6 +1,6 @@
 #VRML V2.0 utf8 Titania V0.6.8
 
-META "icon" "../../ui/icons/icon-bw.svg"
+META "icon" "../../ui/icons/favicon.png"
 META "title" "about:date"
 
 DEF None NavigationInfo {
@@ -19,7 +19,7 @@ DEF Logo Transform {
   scale 1.00059 1.00059 1.00059
   center 0.00357008 -0.00325632 0
   children DEF Background Inline {
-    url "library/logo.wrl"
+    url "library/logo.x3dv"
   }
 }
 

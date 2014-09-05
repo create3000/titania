@@ -104,7 +104,18 @@ X3DBrowser::initialize ()
 	if (glXGetCurrentContext ())
 	{
 		if (browserOptions -> splashScreen ())
-			Loader (getEmptyScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> splashScreenURL ());
+		{
+			try
+			{
+				Loader (getEmptyScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> splashScreenURL ());
+			}
+			catch (const X3DError & error)
+			{
+				std::clog << error .what () << std::endl;
+
+				executionContext .set (createScene ());
+			}
+		}
 
 		replaceWorld (executionContext);
 

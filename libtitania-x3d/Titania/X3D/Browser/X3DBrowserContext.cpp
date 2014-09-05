@@ -212,7 +212,7 @@ X3DBrowserContext::update ()
 	catch (const std::exception & exception)
 	{
 		std::clog
-			<< getCurrentTime () << " Execution Error:" << std::endl
+			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << exception .what () << std::endl;
 	}
 }

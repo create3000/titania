@@ -77,46 +77,6 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & browser_) :
 	//parseOptions (argc, argv);
 }
 
-//void
-//X3DBrowserWidget::parseOptions (int argc, char** argv)
-//{
-//	// Create and intialize option parser.
-//
-//	// Add Remaining options to option group.
-//
-//	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
-//
-//	Glib::OptionEntry              remaining;
-//	Glib::OptionGroup::vecustrings remainingOptions;
-//
-//	remaining .set_long_name (G_OPTION_REMAINING);
-//	remaining .set_arg_description (G_OPTION_REMAINING);
-//
-//	mainGroup .add_entry (remaining, remainingOptions);
-//
-//	// Intialize OptionContext.
-//
-//	Glib::OptionContext optionContext;
-//
-//	optionContext .set_main_group (mainGroup);
-//
-//	// Parse options.
-//
-//	try
-//	{
-//		optionContext .parse (argc, argv);
-//
-//		if (remainingOptions .empty ())
-//			getConfig () .setItem ("url", "");
-//		else
-//			getConfig () .setItem ("url", remainingOptions [0]);
-//	}
-//	catch (const Glib::Error & error)
-//	{
-//		std::clog << "Exception: " << error .what () << std::endl;
-//	}
-//}
-
 void
 X3DBrowserWidget::initialize ()
 {
@@ -144,14 +104,12 @@ X3DBrowserWidget::set_initialized ()
 	auto       worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
 
 	if (worldURLs .empty () and empty)
-		worldURLs .emplace_back (get_page ("about/home.wrl"));
+		worldURLs .emplace_back (get_page ("about/home.x3dv"));
 
 	for (const auto & worldURL : worldURLs)
 	{
 		if (urlIndex .count (worldURL))
 			continue;
-
-		urlIndex .emplace (worldURL);
 
 		append (X3D::createBrowser (getBrowser ()), worldURL);
 	}
@@ -182,8 +140,10 @@ X3DBrowserWidget::restoreSession ()
 	// Restore Menu Configuration from Config
 
 	// ToolBar
-	if (getConfig () .hasItem ("toolBar"))
-		getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
+	if (not getConfig () .hasItem ("toolBar"))
+		getConfig () .setItem ("toolBar", true);
+
+	getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
 
 	// SideBar
 	if (getConfig () .hasItem ("sideBar"))
@@ -234,7 +194,7 @@ std::shared_ptr <BrowserUserData>
 X3DBrowserWidget::getUserData (const X3D::BrowserPtr & browser)
 {
 	if (not browser -> getUserData ())
-		browser -> setUserData (X3D::UserDataPtr (new BrowserUserData ()));
+		browser -> setUserData (X3D::UserDataPtr (new BrowserUserData (browser)));
 
 	return std::static_pointer_cast <BrowserUserData> (browser -> getUserData ());
 }
@@ -329,12 +289,12 @@ X3DBrowserWidget::isLive (const bool value)
 void
 X3DBrowserWidget::blank ()
 {
-	append (X3D::createBrowser (getBrowser ()), "");
+	append (X3D::createBrowser (getBrowser ()), get_page ("about/blank.x3dv"), false);
 	getBrowserNotebook () .set_current_page (browsers .size () - 1);
 }
 
 void
-X3DBrowserWidget::open (const basic::uri & URL)
+X3DBrowserWidget::open (const basic::uri & URL, const bool splashScreen)
 {
 	const auto iter = getBrowser (URL);
 
@@ -343,19 +303,21 @@ X3DBrowserWidget::open (const basic::uri & URL)
 
 	else
 	{
-		append (X3D::createBrowser (getBrowser ()), URL);
+		append (X3D::createBrowser (getBrowser ()), URL, splashScreen);
 		getBrowserNotebook () .set_current_page (browsers .size () - 1);
 	}
 }
 
 void
-X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & URL)
+X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & URL, const bool splashScreen)
 {
 	browsers .emplace_back (browser);
 
-	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen, browser, URL);
+	if (not splashScreen)
+		browser -> getBrowserOptions () -> splashScreenURL () = { get_page ("about/blank.x3dv") .str () };
 
-	browser -> getBrowserOptions () -> splashScreen () = URL .size ();
+	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen, browser, URL);
+	browser -> getBrowserOptions () -> splashScreen () = true;
 	browser -> set_antialiasing (4);
 	browser -> show ();
 
@@ -411,7 +373,7 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 			std::ostringstream osstream;
 
 			osstream
-				<< get_page ("about/url_error.wrl")
+				<< get_page ("about/url_error.x3dv")
 				<< "?type=" << basic::to_string (error .getType ())
 				<< ";what=" << Glib::uri_escape_string (error .what ());
 
@@ -670,14 +632,9 @@ void
 X3DBrowserWidget::loadIcon ()
 {
 	const basic::uri & worldURL = getScene () -> getWorldURL ();
-	const Gtk::StockID stockId  = Gtk::StockID (worldURL .str ());
-
-	Glib::RefPtr <Gtk::IconSet> iconSet;
 
 	try
 	{
-		// Create Stock Icon
-
 		basic::uri uri;
 
 		try
@@ -692,23 +649,48 @@ X3DBrowserWidget::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		const titania::Image icon (X3D::Loader (getScene ()) .loadDocument (uri));
-
-		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
-		                                                               Gdk::COLORSPACE_RGB,
-		                                                               icon .getTransparency (),
-		                                                               sizeof (Image::value_type) * 8,
-		                                                               icon .getWidth (),
-		                                                               icon .getHeight (),
-		                                                               icon .getWidth () * icon .getComponents ()) -> copy ());
+		loadIcon (worldURL, X3D::Loader (getScene ()) .loadDocument (uri));
 	}
 	catch (const std::exception & error)
 	{
-		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
+		loadIcon (worldURL, "");
+	}
+}
+
+void
+X3DBrowserWidget::loadIcon (const basic::uri & worldURL, const std::string & document)
+{
+	__LOG__ << not document .empty () << std::endl;
+
+	const Gtk::StockID stockId = Gtk::StockID (worldURL .filename () .str ());
+
+	Glib::RefPtr <Gtk::IconSet> iconSet;
+
+	if (not document .empty ())
+	{
+		try
+		{
+			const titania::Image icon (document);
+
+			iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
+			                                                               Gdk::COLORSPACE_RGB,
+			                                                               icon .getTransparency (),
+			                                                               sizeof (Image::value_type) * 8,
+			                                                               icon .getWidth (),
+			                                                               icon .getHeight (),
+			                                                               icon .getWidth () * icon .getComponents ()) -> copy ());
+		}
+		catch (const std::exception & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
 	}
 
+	if (not iconSet)
+		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
+
 	getIconFactory () -> add (stockId, iconSet);
-	Gtk::Stock::add (Gtk::StockItem (stockId, worldURL .str ()));
+	Gtk::Stock::add (Gtk::StockItem (stockId, worldURL .filename () .str ()));
 }
 
 void

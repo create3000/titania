@@ -110,6 +110,10 @@ public:
 	getFlyViewerImage () const
 	{ return *m_FlyViewerImage; }
 
+	Gtk::Menu &
+	getHistoryMenu () const
+	{ return *m_HistoryMenu; }
+
 	Gtk::Image &
 	getNoneViewerImage () const
 	{ return *m_NoneViewerImage; }
@@ -514,9 +518,41 @@ public:
 	getToolBar () const
 	{ return *m_ToolBar; }
 
+	Gtk::Box &
+	getLocationBar () const
+	{ return *m_LocationBar; }
+
 	Gtk::Toolbar &
-	getFileToolBar () const
-	{ return *m_FileToolBar; }
+	getLocationBar1 () const
+	{ return *m_LocationBar1; }
+
+	Gtk::ToolButton &
+	getHomeButton () const
+	{ return *m_HomeButton; }
+
+	Gtk::ToolButton &
+	getPreviousButton () const
+	{ return *m_PreviousButton; }
+
+	Gtk::ToolButton &
+	getNextButton () const
+	{ return *m_NextButton; }
+
+	Gtk::Entry &
+	getLocationEntry () const
+	{ return *m_LocationEntry; }
+
+	Gtk::Toolbar &
+	getLocationBar2 () const
+	{ return *m_LocationBar2; }
+
+	Gtk::ToolButton &
+	getReloadButton () const
+	{ return *m_ReloadButton; }
+
+	Gtk::Toolbar &
+	getEditToolBar () const
+	{ return *m_EditToolBar; }
 
 	Gtk::ToolButton &
 	getNewButton () const
@@ -537,10 +573,6 @@ public:
 	Gtk::ToolButton &
 	getRefreshButton () const
 	{ return *m_RefreshButton; }
-
-	Gtk::Toolbar &
-	getEditToolBar () const
-	{ return *m_EditToolBar; }
 
 	Gtk::SeparatorToolItem &
 	getSeparatorToolItem1 () const
@@ -629,6 +661,10 @@ public:
 	Gtk::Toolbar &
 	getDashboardToolBar () const
 	{ return *m_DashboardToolBar; }
+
+	Gtk::ToolButton &
+	getTabToolButton () const
+	{ return *m_TabToolButton; }
 
 	Gtk::RadioToolButton &
 	getHandButton () const
@@ -1060,6 +1096,34 @@ public:
 
 	virtual
 	void
+	on_home () = 0;
+
+	virtual
+	bool
+	on_previous_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_previous_page () = 0;
+
+	virtual
+	bool
+	on_next_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_next_page () = 0;
+
+	virtual
+	void
+	on_location_icon_release (EntryIconPosition icon_position, const GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_location_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	void
 	on_node_properties_editor_clicked () = 0;
 
 	virtual
@@ -1175,6 +1239,7 @@ private:
 	Gtk::Image*                     m_ExamineViewerImage;
 	Gtk::Image*                     m_FileImportImage;
 	Gtk::Image*                     m_FlyViewerImage;
+	Gtk::Menu*                      m_HistoryMenu;
 	Gtk::Image*                     m_NoneViewerImage;
 	Gtk::Image*                     m_OpenLocationImage;
 	Gtk::Image*                     m_PlaneViewerImage;
@@ -1276,13 +1341,20 @@ private:
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;
 	Gtk::Box*                       m_ToolBar;
-	Gtk::Toolbar*                   m_FileToolBar;
+	Gtk::Box*                       m_LocationBar;
+	Gtk::Toolbar*                   m_LocationBar1;
+	Gtk::ToolButton*                m_HomeButton;
+	Gtk::ToolButton*                m_PreviousButton;
+	Gtk::ToolButton*                m_NextButton;
+	Gtk::Entry*                     m_LocationEntry;
+	Gtk::Toolbar*                   m_LocationBar2;
+	Gtk::ToolButton*                m_ReloadButton;
+	Gtk::Toolbar*                   m_EditToolBar;
 	Gtk::ToolButton*                m_NewButton;
 	Gtk::MenuToolButton*            m_OpenButton;
 	Gtk::ToolButton*                m_ImportButton;
 	Gtk::ToolButton*                m_SaveButton;
 	Gtk::ToolButton*                m_RefreshButton;
-	Gtk::Toolbar*                   m_EditToolBar;
 	Gtk::SeparatorToolItem*         m_SeparatorToolItem1;
 	Gtk::ToolButton*                m_UndoButton;
 	Gtk::ToolButton*                m_RedoButton;
@@ -1305,6 +1377,7 @@ private:
 	Gtk::Notebook*                  m_BrowserNotebook;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
+	Gtk::ToolButton*                m_TabToolButton;
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
 	Gtk::ToolButton*                m_PlayPauseButton;

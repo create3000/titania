@@ -1,13 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserUserData.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="84" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="325" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="367" Column="26" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="723" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="321" Column="19" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="157" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="175" Column="53" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="322" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="76" Column="45" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="316" Column="44" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1538" Column="1" />
+      <File FileName="Titania/Titania/Undo/UndoHistory.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserHistory.cpp" Line="56" Column="55" />
+      <File FileName="Titania/Titania/Browser/BrowserHistory.h" Line="68" Column="40" />
+      <File FileName="Titania/Titania/Browser/BrowserUserData.h" Line="95" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,6 +22,7 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True" />
               </Node>
             </Node>
@@ -25,10 +30,24 @@
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
+                </Node>
                 <Node name="ui" expanded="True" />
               </Node>
             </Node>
-            <Node name="Titania" expanded="True" />
+            <Node name="Titania" expanded="True">
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserUserData.h" selected="True" />
+              </Node>
+              <Node name="Dialogs" expanded="True">
+                <Node name="OpenLocationDialog" expanded="True" />
+              </Node>
+              <Node name="Undo" expanded="True" />
+              <Node name="Widgets" expanded="True">
+                <Node name="HistoryView" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>

@@ -1,3 +1,54 @@
+2014-09-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* main.cpp:
+	* Image.h:
+	* UndoHistory.h:
+	* BrowserWindow.h:
+	* BrowserHistory.h:
+	* BrowserUserData.h:
+	* BrowserWindow.cpp:
+	* BrowserHistory.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* favicon.png:
+	* date.wrl:
+	* home.wrl:
+	* info.wrl:
+	* date.x3dv:
+	* home.x3dv:
+	* info.x3dv:
+	* blank.wrl:
+	* gears.wrl:
+	* blank.x3dv:
+	* gears.x3dv:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* History.h:
+	* History.cpp:
+	* url_error.wrl:
+	* url_error.x3dv:
+	* logo.wrl:
+	* logo.x3dv:
+	* HistoryView.cpp:
+	* Rotor.wrl:
+	* Colors.wrl:
+	* Rotor.x3dv:
+	* Colors.x3dv:
+	* OpenLocationDialog.xml:
+	* background.wrl:
+	* background.x3dv:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* red.orange.yellow.wrl:
+	* X3DOpenLocationDialogInterface.h:
+	* OpenLocationDialog.h:
+	* red.orange.yellow.x3dv:
+	* X3DOpenLocationDialogInterface.cpp:
+	* OpenLocationDialog.cpp: 
+
 2014-09-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserWidget.cpp: 

@@ -110,7 +110,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">•</property>
                 <signal name="changed" handler="on_location_entry_changed" swapped="no"/>
-                <signal name="key-release-event" handler="on_location_entry_key_release_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_location_entry_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

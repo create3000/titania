@@ -97,6 +97,7 @@ private:
 
 };
 
+inline
 Image::Image (const std::string & data)
 {
 	std::list <Magick::Image> images;
@@ -119,6 +120,7 @@ Image::Image (const std::string & data)
 	getBlob ();
 }
 
+inline
 void
 Image::getBlob ()
 {
@@ -127,38 +129,33 @@ Image::getBlob ()
 	switch (image .type ())
 	{
 		case Magick::GrayscaleType:
-
+		{
 			if (image .matte ())
 			{
-				image .colorSpace (Magick::RGBColorspace);
-				image .type (Magick::TrueColorMatteType);
 				components   = 4;
 				transparency = true,
 				magick       = "RGBA";
 			}
 			else
 			{
-				image .colorSpace (Magick::GRAYColorspace);
-				components   = 1;
+				components   = 3;
 				transparency = false,
-				magick       = "GRAY";
+				magick       = "RGB";
 			}
 
 			break;
-
+		}
 		case Magick::GrayscaleMatteType:
-			image .colorSpace (Magick::RGBColorspace);
+		{
 			components   = 4;
 			transparency = true,
 			magick       = "RGBA";
 			break;
-
+		}
 		case Magick::TrueColorType:
-			image .colorSpace (Magick::RGBColorspace);
-
+		{
 			if (image .matte ())
 			{
-				image .type (Magick::TrueColorMatteType);
 				components   = 4;
 				transparency = true,
 				magick       = "RGBA";
@@ -171,33 +168,31 @@ Image::getBlob ()
 			}
 
 			break;
-
+		}
 		case Magick::TrueColorMatteType:
-			image .colorSpace (Magick::RGBColorspace);
+		{
 			components   = 4;
 			transparency = true,
 			magick       = "RGBA";
 			break;
-
+		}
 		default:
-			image .colorSpace (Magick::RGBColorspace);
-
+		{
 			if (image .matte ())
 			{
-				image .type (Magick::TrueColorMatteType);
 				components   = 4;
 				transparency = true,
 				magick       = "RGBA";
 			}
 			else
 			{
-				image .type (Magick::TrueColorType);
 				components   = 3;
 				transparency = false,
 				magick       = "RGB";
 			}
 
 			break;
+		}
 	}
 
 	image .depth (8);
@@ -205,6 +200,7 @@ Image::getBlob ()
 	image .write (&blob);
 }
 
+inline
 Image::~Image ()
 { }
 

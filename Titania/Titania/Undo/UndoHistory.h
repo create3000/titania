@@ -70,7 +70,7 @@ public:
 
 	///  @name Member access
 	
-	size_t
+	int
 	getIndex () const
 	{ return index; }
 	

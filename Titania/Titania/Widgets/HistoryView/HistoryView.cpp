@@ -92,6 +92,8 @@ HistoryView::set_splashScreen ()
 void
 HistoryView::set_history ()
 {
+	__LOG__ << std::endl;
+
 	// Fill model.
 
 	//getTreeView () .unset_model (); // This will unset the sort column.
@@ -99,10 +101,14 @@ HistoryView::set_history ()
 
 	for (const auto & item : history .getItems ())
 	{
+		const auto & worldURL = item .at ("worldURL");
+	
+		getBrowserWindow () -> loadIcon (worldURL, history .getIcon (item .at ("id")));
+
 		const auto iter = getListStore () -> append ();
-		iter -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
+		iter -> set_value (ICON_COLUMN,      basic::uri (worldURL) .filename () .str ());
 		iter -> set_value (TITLE_COLUMN,     item .at ("title"));
-		iter -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
+		iter -> set_value (WORLD_URL_COLUMN, worldURL);
 	}
 
 	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
@@ -117,7 +123,7 @@ HistoryView::set_scene ()
 	if (worldURL .empty ())
 		return;
 
-	if (worldURL .filename () == get_page ("about/url_error.wrl"))
+	if (worldURL .filename () == get_page ("about/url_error.x3dv"))
 		return;
 
 	// Move row.
@@ -127,20 +133,40 @@ HistoryView::set_scene ()
 		getListStore () -> erase (getListStore () -> get_iter (history .getIndex (worldURL)));
 	}
 	catch (const std::out_of_range &)
-	{
-		__LOG__ << std::endl;
-	}
+	{ }
 
 	const auto iter = getListStore () -> prepend ();
-	iter -> set_value (ICON_COLUMN,      worldURL .str ());
+	iter -> set_value (ICON_COLUMN,      worldURL .filename () .str ());
 	iter -> set_value (TITLE_COLUMN,     title);
 	iter -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
 	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
 
+	// Get Icon
+
+	std::string image;
+	const auto  iconSet = Gtk::IconSet::lookup_default (Gtk::StockID (worldURL .filename () .str ()));
+
+	if (iconSet)
+	{
+		try
+		{
+			const auto pixbuf = iconSet -> render_icon_pixbuf (getTreeView () .get_style_context (), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+			gchar* buffer;
+			gsize  bufferSize;
+
+			pixbuf -> save_to_buffer (buffer, bufferSize);
+
+			image = std::string (buffer, bufferSize);
+		}
+		catch (const Glib::Exception &)
+		{ }
+	}
+
 	// Update history.
 
-	history .setItem (title, worldURL);
+	history .setItem (title, worldURL, image);
 }
 
 void

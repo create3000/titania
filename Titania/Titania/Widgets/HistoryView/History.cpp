@@ -81,9 +81,9 @@ History::History () :
 
 	if (not have_history)
 	{
-		setItem ("about:date",  get_page ("about/date.wrl"));
-		setItem ("about:gears", get_page ("about/gears.wrl"));
-		setItem ("about:home",  get_page ("about/home.wrl"));
+		setItem ("about:date",  get_page ("about/date.x3dv"),  "");
+		setItem ("about:gears", get_page ("about/gears.x3dv"), "");
+		setItem ("about:home",  get_page ("about/home.x3dv"),  "");
 	}
 
 	// Watch for changes
@@ -112,7 +112,7 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 }
 
 void
-History::setItem (const std::string & title, const std::string & worldURL)
+History::setItem (const std::string & title, const std::string & worldURL, const std::string & image)
 {
 	disconnect ();
 
@@ -124,6 +124,8 @@ History::setItem (const std::string & title, const std::string & worldURL)
 	{
 		insert (title, worldURL);
 	}
+
+	database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
 
 	connect ();
 }
@@ -149,7 +151,7 @@ throw (std::out_of_range)
 const sql::sqlite3::assoc_type &
 History::getItems () const
 {
-	return database .query_assoc ("SELECT title, worldURL FROM History ORDER BY lastAccess DESC");
+	return database .query_assoc ("SELECT id, title, worldURL FROM History ORDER BY lastAccess DESC");
 }
 
 const std::string &
@@ -168,6 +170,17 @@ throw (std::out_of_range)
 		throw std::out_of_range ("URL '" + worldURL + "' not found.");
 
 	return index;
+}
+
+std::string
+History::getIcon (const std::string & id) const
+throw (std::invalid_argument)
+{
+	std::string value;
+
+	database .read_blob ("SELECT icon FROM History WHERE id = " + id, value);
+
+	return value;
 }
 
 void

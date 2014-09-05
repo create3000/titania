@@ -1,6 +1,6 @@
 #VRML V2.0 utf8 Titania V0.7.3
 
-META "icon" "../../ui/icons/icon-bw.svg"
+META "icon" "../../ui/icons/favicon.png"
 META "title" "about:home"
 
 EXTERNPROTO Rotor [
@@ -17,7 +17,7 @@ EXTERNPROTO Rotor [
   eventOut     SFTime     cycleTime
   eventOut     SFRotation rotation_changed
 ]
-"library/Rotor.wrl"
+"library/Rotor.x3dv"
 
 DEF NavigationInfo NavigationInfo {
   type "NONE"
@@ -107,7 +107,7 @@ DEF Small Transform {
   rotation 0 0 -1 5.73428
   scale 0.222222 0.222222 1
   children DEF loops Inline {
-    url "library/red.orange.yellow.wrl"
+    url "library/red.orange.yellow.x3dv"
   }
 }
 

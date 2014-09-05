@@ -82,7 +82,7 @@ private:
 
 	virtual
 	bool
-	on_location_entry_key_release_event (GdkEventKey* ) final override;
+	on_location_entry_key_press_event (GdkEventKey* ) final override;
 
 };
 
