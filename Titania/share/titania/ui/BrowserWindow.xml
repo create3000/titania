@@ -1755,6 +1755,7 @@
                                     <child>
                                       <object class="GtkToolButton" id="TabToolButton">
                                         <property name="visible">True</property>
+                                        <property name="sensitive">False</property>
                                         <property name="can_focus">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">DotClear</property>
