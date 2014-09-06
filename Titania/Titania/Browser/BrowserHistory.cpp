@@ -50,8 +50,13 @@
 
 #include "BrowserHistory.h"
 
+#include <sstream>
+
 namespace titania {
 namespace puck {
+
+const io::character      BrowserHistory::Grammar::tab ('\t');
+const io::inverse_string BrowserHistory::Grammar::string ("\t");
 
 BrowserHistory::BrowserHistory (X3D::X3DBrowser* const browser) :
 	 X3D::X3DOutput (),
@@ -88,8 +93,18 @@ BrowserHistory::connect (const X3D::SFTime & initialized)
 }
 
 void
+BrowserHistory::assign (const int index, std::vector <Page> && list)
+{
+	this -> index = index;
+	this -> list  = std::move (list);
+}
+
+void
 BrowserHistory::addURL (const std::string & title, const basic::uri & URL)
 {
+	if (index >= 0 and list [index] .second == URL)
+		return;
+
 	list .resize (index + 1);
 
 	list .emplace_back (title, URL);
@@ -111,6 +126,18 @@ BrowserHistory::setIndex (const int value)
 	browser -> loadURL ({ list [index] .second .str () });
 }
 
+bool
+BrowserHistory::hasPreviousPage () const
+{
+	return index > 0;
+}
+
+bool
+BrowserHistory::hasNextPage () const
+{
+	return index + 1 < (int) list .size ();
+}
+
 void
 BrowserHistory::previousPage ()
 {
@@ -121,6 +148,75 @@ void
 BrowserHistory::nextPage ()
 {
 	setIndex (index + 1);
+}
+
+void
+BrowserHistory::fromString (const std::string & string)
+{
+	std::istringstream isstream (string);
+
+	isstream .imbue (std::locale::classic ());
+
+	fromStream (isstream);
+}
+
+void
+BrowserHistory::fromStream (std::istream & istream)
+{
+	int index = -1;
+
+	std::vector <Page> list;
+
+	if (not (istream >> index))
+		return;
+
+	if (index < -1)
+		return;
+
+	if (index == -1)
+	{
+		assign (index, std::move (list));
+		return;
+	}
+
+	if (not Grammar::tab (istream))
+		return;
+
+	while (istream)
+	{
+		std::pair <std::string, std::string> page;
+
+		if (not Grammar::string (istream, page .first))
+			return;
+
+		Grammar::string (istream, page .second);
+
+		list .emplace_back (std::move (page));
+	}
+
+	if (index < (int) list .size ())
+		assign (index, std::move (list));
+}
+
+std::string
+BrowserHistory::toString () const
+{
+	std::ostringstream osstream;
+
+	osstream .imbue (std::locale::classic ());
+
+	toStream (osstream);
+
+	return osstream .str ();
+}
+
+void
+BrowserHistory::toStream (std::ostream & ostream) const
+{
+	ostream << index;
+
+	for (const auto & pair : list)
+		ostream << Grammar::tab () << pair .first << Grammar::tab () << pair .second;
 }
 
 } // puck

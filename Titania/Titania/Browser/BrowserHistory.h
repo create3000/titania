@@ -48,10 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_TAB_HISTORY_H__
-#define __TITANIA_BROWSER_TAB_HISTORY_H__
+#ifndef __TITANIA_BROWSER_BROWSER_HISTORY_H__
+#define __TITANIA_BROWSER_BROWSER_HISTORY_H__
 
 #include <Titania/Basic/URI.h>
+#include <Titania/InputOutput/Character.h>
+#include <Titania/InputOutput/InverseString.h>
 #include <Titania/X3D/Base/X3DOutput.h>
 #include <Titania/X3D/Browser/X3DBrowser.h>
 #include <sigc++/trackable.h>
@@ -85,6 +87,12 @@ public:
 	getList () const
 	{ return list; }
 
+	bool
+	hasPreviousPage () const;
+
+	bool
+	hasNextPage () const;
+
 	void
 	previousPage ();
 
@@ -98,6 +106,20 @@ public:
 	size_t
 	getSize () const
 	{ return list .size (); }
+
+	///  @name Input/Output
+
+	void
+	fromString (const std::string &);
+
+	void
+	fromStream (std::istream &);
+
+	std::string
+	toString () const;
+
+	void
+	toStream (std::ostream &) const;
 
 
 private:
@@ -113,10 +135,21 @@ private:
 	///  @name Operations
 
 	void
+	assign (const int, std::vector <Page> &&);
+
+	void
 	addURL (const std::string &, const basic::uri &);
 
 	void
 	connect (const X3D::SFTime &);
+
+	///  @name Static members
+
+	struct Grammar
+	{
+		static const io::character      tab;
+		static const io::inverse_string string;
+	};
 
 	///  @name Members
 

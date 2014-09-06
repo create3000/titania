@@ -166,7 +166,7 @@ protected:
 	setBrowser (const X3D::BrowserPtr &);
 
 	void
-	setTitle (const bool) const;
+	setTitle () const;
 
 	void
 	isLive (const bool);

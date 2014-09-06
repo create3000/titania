@@ -248,17 +248,9 @@ void
 BrowserWindow::set_browserHistory ()
 {
 	const auto & browserHistory = getUserData (getBrowser ()) -> browserHistory;
-	const int    index          = browserHistory .getIndex ();
 
-	if (index > 0)
-		getPreviousButton () .set_sensitive (true);
-	else
-		getPreviousButton () .set_sensitive (false);
-
-	if (index + 1 < (int) browserHistory .getSize ())
-		getNextButton () .set_sensitive (true);
-	else
-		getNextButton ().set_sensitive (false);
+	getPreviousButton () .set_sensitive (browserHistory .hasPreviousPage ());
+	getNextButton ()     .set_sensitive (browserHistory .hasNextPage ());
 }
 
 // Selection
@@ -1426,6 +1418,7 @@ BrowserWindow::on_rendering_properties_toggled ()
 void
 BrowserWindow::on_fullscreen ()
 {
+	getMenuBar () .set_visible (false);
 	getFullScreenMenuItem ()   .set_visible (false);
 	getUnFullScreenMenuItem () .set_visible (true);
 	getWindow () .fullscreen ();
@@ -1434,6 +1427,7 @@ BrowserWindow::on_fullscreen ()
 void
 BrowserWindow::on_unfullscreen ()
 {
+	getMenuBar () .set_visible (true);
 	getFullScreenMenuItem ()   .set_visible (true);
 	getUnFullScreenMenuItem () .set_visible (false);
 	getWindow () .unfullscreen ();

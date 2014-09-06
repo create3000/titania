@@ -69,6 +69,7 @@ public:
 
 	BrowserUserData (X3D::X3DBrowser* const browser) :
 		           URL (),
+		          icon (nullptr),
 		         label (nullptr),
 		browserHistory (browser),
 		   undoHistory (),
@@ -80,6 +81,7 @@ public:
 	///  @name Members
 
 	basic::uri  URL;   // Original URL
+	Gtk::Image* icon;  // Favicon
 	Gtk::Label* label; // Tab label
 
 	BrowserHistory browserHistory;

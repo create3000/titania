@@ -283,7 +283,7 @@ X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser, const bool value)
 	getUserData (browser) -> modified      = value;
 	getUserData (browser) -> saveConfirmed = false;
 
-	setTitle (value);
+	setTitle ();
 
 	if (not value)
 		getUndoHistory (browser) .setSaved ();
@@ -806,9 +806,8 @@ void
 X3DBrowserEditor::set_undoHistory ()
 {
 	const auto & undoHistory = getUndoHistory (getBrowser ());
-	const int    index       = undoHistory .getIndex ();
 
-	if (index >= 0)
+	if (undoHistory .hasUndo ())
 	{
 		getUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
 		getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
@@ -823,7 +822,7 @@ X3DBrowserEditor::set_undoHistory ()
 		getUndoButton ()   .set_sensitive (false);
 	}
 
-	if (index + 1 < (int) undoHistory .getSize ())
+	if (undoHistory .hasRedo ())
 	{
 		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
 		getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());

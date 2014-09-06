@@ -114,6 +114,18 @@ UndoHistory::getUndoStep () const
 	return list [index];
 }
 
+bool
+UndoHistory::hasUndo () const
+{
+	return index >= 0;
+}
+
+bool
+UndoHistory::hasRedo () const
+{
+	return index + 1 < (int) list .size ();
+}
+
 void
 UndoHistory::undoChanges ()
 {

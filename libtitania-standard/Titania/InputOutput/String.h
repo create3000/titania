@@ -129,8 +129,12 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 	{
 		if (istream .peek () not_eq (int_type) value [i])
 		{
-			istream .seekg (-i, std::ios_base::cur);
-			istream .clear (state);
+			if (i)
+			{
+				istream .seekg (-i, std::ios_base::cur);
+				istream .clear (state);
+			}
+	
 			return false;
 		}
 		else

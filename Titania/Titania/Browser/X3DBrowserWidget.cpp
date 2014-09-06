@@ -102,16 +102,22 @@ X3DBrowserWidget::set_initialized ()
 
 	const auto empty     = browsers .empty ();
 	auto       worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
+	auto       histories = basic::split (getConfig () .getString ("history"), "\n");
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));
 
-	for (const auto & worldURL : worldURLs)
+	for (size_t i = 0; i < worldURLs .size (); ++ i)
 	{
-		if (urlIndex .count (worldURL))
+		if (urlIndex .count (worldURLs [i]))
 			continue;
 
-		append (X3D::createBrowser (getBrowser ()), worldURL);
+		const auto browser = X3D::createBrowser (getBrowser ());
+
+		if (i < histories .size ())
+			getUserData (browser) -> browserHistory .fromString (histories [i]);
+
+		append (browser, worldURLs [i]);
 	}
 
 	if (empty)
@@ -250,12 +256,15 @@ X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value
 }
 
 void
-X3DBrowserWidget::setTitle (const bool modified) const
+X3DBrowserWidget::setTitle () const
 {
+	const auto userData = getUserData (getBrowser ());
+	const bool modified = userData -> modified;
+
 	auto title = getScene () -> getTitle ();
 
 	if (title .empty ())
-		title = getUserData (getBrowser ()) -> URL .basename ();
+		title = userData -> URL .basename ();
 
 	if (title .empty ())
 		title = _ ("New Scene");
@@ -265,8 +274,11 @@ X3DBrowserWidget::setTitle (const bool modified) const
 
 	getBrowserNotebook () .set_menu_label_text (*getBrowser (), title);
 
-	if (getUserData (getBrowser ()) -> label)
-		getUserData (getBrowser ()) -> label -> set_text (title);
+	if (userData -> icon)
+		userData -> icon -> set (Gtk::StockID (getScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	if (userData -> label)
+		userData -> label -> set_text (title);
 
 	getWindow () .set_title (getScene () -> getTitle ()
 	                         + " · "
@@ -322,6 +334,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	browser -> show ();
 
 	const auto text   = URL .empty () ? _ ("New Scene") : URL .basename ();
+	const auto icon   = Gtk::manage (new Gtk::Image (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 	const auto label  = Gtk::manage (new Gtk::Label (text));
 	const auto button = Gtk::manage (new Gtk::Button ());
 	const auto image  = Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
@@ -332,6 +345,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	button -> set_image (*image);
 	button -> set_tooltip_text (_ ("Close Tab"));
 
+	box -> pack_start (*icon,   false, true, 0);
 	box -> pack_start (*label,  true,  true, 0);
 	box -> pack_start (*button, false, true, 0);
 	box -> show_all ();
@@ -343,6 +357,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	const auto userData = getUserData (browser);
 
 	userData -> URL   = URL;
+	userData -> icon  = icon;
 	userData -> label = label;
 }
 
@@ -556,6 +571,7 @@ bool
 X3DBrowserWidget::quit ()
 {
 	std::deque <std::string> worldURLs;
+	std::deque <std::string> browserHistories;
 
 	for (const auto & browser : browsers)
 	{
@@ -569,6 +585,8 @@ X3DBrowserWidget::quit ()
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);
 
+		browserHistories .emplace_back (userData -> browserHistory .toString ());
+
 		userData -> dispose ();
 	}
 
@@ -578,7 +596,8 @@ X3DBrowserWidget::quit ()
 		currentPage = 0;
 
 	getConfig () .setItem ("currentPage", currentPage);
-	getConfig () .setItem ("worldURL", basic::join (worldURLs, "\n"));
+	getConfig () .setItem ("worldURL",    basic::join (worldURLs, "\n"));
+	getConfig () .setItem ("history",     basic::join (browserHistories, "\n"));
 
 	X3DBrowserWindowInterface::quit ();
 	return false;
@@ -625,7 +644,7 @@ X3DBrowserWidget::set_scene ()
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
 
 	loadIcon ();
-	setTitle (getUserData (getBrowser ()) -> modified);
+	setTitle ();
 }
 
 void
@@ -660,8 +679,6 @@ X3DBrowserWidget::loadIcon ()
 void
 X3DBrowserWidget::loadIcon (const basic::uri & worldURL, const std::string & document)
 {
-	__LOG__ << not document .empty () << std::endl;
-
 	const Gtk::StockID stockId = Gtk::StockID (worldURL .filename () .str ());
 
 	Glib::RefPtr <Gtk::IconSet> iconSet;
@@ -681,9 +698,7 @@ X3DBrowserWidget::loadIcon (const basic::uri & worldURL, const std::string & doc
 			                                                               icon .getWidth () * icon .getComponents ()) -> copy ());
 		}
 		catch (const std::exception & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
+		{ }
 	}
 
 	if (not iconSet)

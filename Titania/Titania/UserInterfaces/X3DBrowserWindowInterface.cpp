@@ -359,9 +359,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'HomeButton'.
 	m_HomeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_home));
-	m_PreviousButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_button_press_event));
+	m_PreviousButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_button_press_event), false);
 	m_PreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_page));
-	m_NextButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_next_button_press_event));
+	m_NextButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_next_button_press_event), false);
 	m_NextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_next_page));
 
 	// Connect object Gtk::Entry with id 'LocationEntry'.

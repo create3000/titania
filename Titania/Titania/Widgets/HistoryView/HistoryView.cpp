@@ -92,8 +92,6 @@ HistoryView::set_splashScreen ()
 void
 HistoryView::set_history ()
 {
-	__LOG__ << std::endl;
-
 	// Fill model.
 
 	//getTreeView () .unset_model (); // This will unset the sort column.
@@ -159,6 +157,8 @@ HistoryView::set_scene ()
 			pixbuf -> save_to_buffer (buffer, bufferSize);
 
 			image = std::string (buffer, bufferSize);
+
+			g_free (buffer);
 		}
 		catch (const Glib::Exception &)
 		{ }

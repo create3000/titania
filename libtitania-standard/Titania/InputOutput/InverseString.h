@@ -59,20 +59,37 @@
 namespace titania {
 namespace io {
 
+/**
+ *  Template to represent a inverse string match agains a std::basic_istream.
+ *
+ *  Extern instantiations for char and wchar are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of characters.
+ *  @param  Traits  Character traits
+ */
 template <class CharT, class Traits = std::char_traits <CharT>> 
 class basic_inverse_string
 {
 public:
 
+	///  @name Construction
+
+	///  Constructs the io::basic_inverse_string from @a string.  A std::basic_istream can then be tested against the string.
 	constexpr
 	basic_inverse_string (const std::basic_string <CharT> & delimiter) :
 		delimiter (delimiter)
 	{ }
 
+	///  @name Member access
+
+	///  Returns the match string.
 	const std::basic_string <CharT> &
 	operator () () const
 	{ return delimiter (); }
 
+	///  Reads all characters into @a string until delimiter is found.  If delimiter is found it return true.  On EOF it
+	///  returns false.
 	bool
 	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
@@ -92,10 +109,10 @@ basic_inverse_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tr
 		if (delimiter (istream))
 			return true;
 
-		if (istream)
-			string .push_back (istream .get ());
+		string .push_back (istream .get ());
 	}
 
+	string .pop_back ();
 	return false;
 }
 

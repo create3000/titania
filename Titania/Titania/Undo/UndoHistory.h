@@ -103,6 +103,12 @@ public:
 	const std::shared_ptr <UndoStep> &
 	getUndoStep () const;
 
+	bool
+	hasUndo () const;
+
+	bool
+	hasRedo () const;
+
 	void
 	undoChanges ();
 

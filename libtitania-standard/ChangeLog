@@ -1,3 +1,8 @@
+2014-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* String.h:
+	* InverseString.h: 
+
 2014-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ReferenceIterator.h: 
