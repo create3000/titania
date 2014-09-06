@@ -81,6 +81,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
+	m_builder -> get_widget ("HeaderSubBox", m_HeaderSubBox);
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
 	m_builder -> get_widget ("FileMenuItem", m_FileMenuItem);
 	m_builder -> get_widget ("NewMenuItem", m_NewMenuItem);

@@ -1418,7 +1418,6 @@ BrowserWindow::on_rendering_properties_toggled ()
 void
 BrowserWindow::on_fullscreen ()
 {
-	getMenuBar () .set_visible (false);
 	getFullScreenMenuItem ()   .set_visible (false);
 	getUnFullScreenMenuItem () .set_visible (true);
 	getWindow () .fullscreen ();
@@ -1427,7 +1426,6 @@ BrowserWindow::on_fullscreen ()
 void
 BrowserWindow::on_unfullscreen ()
 {
-	getMenuBar () .set_visible (true);
 	getFullScreenMenuItem ()   .set_visible (true);
 	getUnFullScreenMenuItem () .set_visible (false);
 	getWindow () .unfullscreen ();

@@ -36,6 +36,7 @@ my %objects = ();
 $objects {$_} = true foreach qw(
 	Gtk::FileFilter
 	Gtk::AccelGroup
+	Gtk::ActionGroup
 	Gtk::Action
 	Gtk::Adjustment
 	Gtk::IconFactory
