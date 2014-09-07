@@ -54,9 +54,12 @@
 #include "../Browser/Image.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
+#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
+#include <Titania/OS/home.h>
+#include <Titania/OS/system.h>
 
 #include <Titania/Backtrace.h>
 #include <fstream>
@@ -301,7 +304,31 @@ X3DBrowserWidget::isLive (const bool value)
 void
 X3DBrowserWidget::blank ()
 {
-	append (X3D::createBrowser (getBrowser ()), get_page ("about/blank.x3dv"), false);
+	os::system ("mkdir", "-p", config_dir () + "/tab/");
+
+	History                   historyDB;
+	std::vector <std::string> history;
+	size_t                    i = 0;
+
+	for (const auto & item : historyDB .getItems (9))
+	{
+		history .emplace_back (item .at ("title") + "\t" + item .at ("worldURL"));
+
+		std::ofstream image (config_dir () + "/tab/image" + basic::to_string (i) + ".png");
+
+		image << historyDB .getIcon (item .at ("id"));
+		
+		++ i;
+	}
+
+	std::ostringstream URL;
+
+	URL
+		<< get_page ("about/tab.x3dv")
+		<< "?home=file://" << os::home ()
+		<< ";history=" << Glib::uri_escape_string (basic::join (history, "\n"));
+
+	append (X3D::createBrowser (getBrowser ()), URL .str (), false);
 	getBrowserNotebook () .set_current_page (browsers .size () - 1);
 }
 
@@ -325,11 +352,11 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 {
 	browsers .emplace_back (browser);
 
-	if (not splashScreen)
+	if (not splashScreen and not URL .empty ())
 		browser -> getBrowserOptions () -> splashScreenURL () = { get_page ("about/blank.x3dv") .str () };
 
 	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen, browser, URL);
-	browser -> getBrowserOptions () -> splashScreen () = true;
+	browser -> getBrowserOptions () -> splashScreen () = not URL .empty ();
 	browser -> set_antialiasing (4);
 	browser -> show ();
 
@@ -392,7 +419,11 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 				<< "?type=" << basic::to_string (error .getType ())
 				<< ";what=" << Glib::uri_escape_string (error .what ());
 
-			browser -> loadURL ({ osstream .str () });
+			const auto scene = browser -> createX3DFromURL ({ osstream .str () });
+			
+			scene -> setWorldURL (URL);
+
+			browser -> replaceWorld (scene);
 		}
 		catch (const X3D::X3DError &)
 		{

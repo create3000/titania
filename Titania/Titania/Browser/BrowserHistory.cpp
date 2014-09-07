@@ -50,6 +50,7 @@
 
 #include "BrowserHistory.h"
 
+#include <Titania/X3D/Execution/X3DScene.h>
 #include <sstream>
 
 namespace titania {
@@ -78,6 +79,16 @@ BrowserHistory::set_splashScreen ()
 void
 BrowserHistory::set_initialized ()
 {
+	try
+	{
+		const X3D::X3DScenePtr scene (browser -> getExecutionContext ());
+
+		if (scene and scene -> getMetaData ("history") == "false")
+			return;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
 	addURL (browser -> getExecutionContext () -> getTitle (), browser -> getWorldURL ());
 
 	processInterests ();

@@ -56,10 +56,16 @@ class Image
 {
 public:
 
+	///  @name Member types
+
 	typedef unsigned char value_type;
 	typedef size_t        size_type;
 
+	///  @name Construction
+
 	Image (const std::string &);
+
+	///  @name Member access
 
 	size_type
 	getWidth () const
@@ -81,13 +87,19 @@ public:
 	getData () const
 	{ return static_cast <const value_type*> (blob .data ()); }
 
+	///  @name Destructions
+
 	~Image ();
 
 
 private:
 
+	///  @name Operations
+
 	void
 	getBlob ();
+	
+	///  @name Members
 
 	Magick::Image image;
 	Magick::Blob  blob;
@@ -98,26 +110,35 @@ private:
 };
 
 inline
-Image::Image (const std::string & data)
+Image::Image (const std::string & data) :
+	       image (),
+	        blob (),
+	  components (0),
+	transparency (false)
 {
-	std::list <Magick::Image> images;
-	Magick::readImages (&images, Magick::Blob (data .c_str (), data .length ()));
-
-	switch (images .size ())
-	{
-		case 0:
-			break;
-
-		case 1:  // Image with one layer image.
-			image = images .back ();
-			break;
-
-		default: // Flatten image with more than one layer.
-			Magick::flattenImages (&image, images .begin (), images .end ());
-			break;
-	}
+	image .backgroundColor (Magick::Color (0, 0, 0, uint16_t (-1)));
+	image .read (Magick::Blob (data .c_str (), data .length ()));
 
 	getBlob ();
+
+	//	std::list <Magick::Image> images;
+	//	Magick::readImages (&images, Magick::Blob (data .c_str (), data .length ()));
+	//
+	//	switch (images .size ())
+	//	{
+	//		case 0:
+	//			break;
+	//
+	//		case 1:  // Image with one layer image.
+	//			image = images .back ();
+	//			break;
+	//
+	//		default: // Flatten image with more than one layer.
+	//			Magick::flattenImages (&image, images .begin (), images .end ());
+	//			break;
+	//	}
+	//
+	//	getBlob ();
 }
 
 inline

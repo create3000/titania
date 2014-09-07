@@ -121,8 +121,13 @@ HistoryView::set_scene ()
 	if (worldURL .empty ())
 		return;
 
-	if (worldURL .filename () == get_page ("about/url_error.x3dv"))
-		return;
+	try
+	{
+		if (getScene () -> getMetaData ("history") == "false")
+			return;
+	}
+	catch (const X3D::X3DError &)
+	{ }
 
 	// Move row.
 

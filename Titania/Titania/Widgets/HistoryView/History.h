@@ -81,7 +81,7 @@ public:
 	throw (std::out_of_range);
 
 	const sql::sqlite3::assoc_type &
-	getItems () const;
+	getItems (const size_t limit = 0) const;
 
 	const std::string &
 	getIndex (const std::string &) const

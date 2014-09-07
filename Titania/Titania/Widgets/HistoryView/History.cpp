@@ -51,7 +51,9 @@
 #include "History.h"
 
 #include "../../Configuration/config.h"
+
 #include <Titania/OS.h>
+#include <Titania/String/to_string.h>
 #include <iostream>
 
 namespace titania {
@@ -149,9 +151,10 @@ throw (std::out_of_range)
 }
 
 const sql::sqlite3::assoc_type &
-History::getItems () const
+History::getItems (const size_t limit) const
 {
-	return database .query_assoc ("SELECT id, title, worldURL FROM History ORDER BY lastAccess DESC");
+	return database .query_assoc ("SELECT id, title, worldURL FROM History ORDER BY lastAccess DESC " + 
+	                              (limit ? "LIMIT 0, " + basic::to_string (limit) : ""));
 }
 
 const std::string &

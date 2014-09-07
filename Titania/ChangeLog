@@ -1,3 +1,22 @@
+2014-09-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Image.h:
+	* tab.x3dv:
+	* BrowserHistory.cpp:
+	* date.x3dv:
+	* home.x3dv:
+	* info.x3dv:
+	* blank.x3dv:
+	* gears.x3dv:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* History.h:
+	* History.cpp:
+	* url_error.x3dv:
+	* HistoryView.cpp:
+	* X3DOutlineTreeView.cpp:
+	* PrecisionPlacementPanel.cpp: 
+
 2014-09-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Accelerators.rc:

@@ -1,6 +1,7 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.4
 
-Transform {
+DEF _1 Transform {
+  scale 1.76747 1 1
   children Shape {
     appearance Appearance {
       texture ImageTexture {

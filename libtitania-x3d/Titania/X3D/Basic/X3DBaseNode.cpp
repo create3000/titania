@@ -656,8 +656,13 @@ throw (Error <INVALID_NAME>,
 {
 	// Unfortunately this has to be done field by field as long as derived classes do not override this function.
 
+	std::vector <FieldPtr> roots;
+
 	for (const auto & field : getUserDefinedFields ())
+	{
+		roots .emplace_back (field);
 		removeUserDefinedField (field -> getName ());
+	}
 
 	for (const auto & field : userDefinedFields)
 		addUserDefinedField (field -> getAccessType (), field -> getName (), field);

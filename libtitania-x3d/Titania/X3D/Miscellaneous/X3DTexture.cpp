@@ -71,7 +71,7 @@ X3DTexture::X3DTexture (MagickImageArrayPtr && images) :
 MagickImageArrayPtr
 X3DTexture::readImages (const std::string & data)
 {
-	MagickImageArrayPtr images (new MagickImageArray);
+	MagickImageArrayPtr images (new MagickImageArray ());
 
 	Magick::readImages (images .get (), Magick::Blob (data .c_str (), data .length ()));
 
@@ -94,6 +94,8 @@ X3DTexture::refineImageFormats ()
 				components = 1;
 				break;
 			}
+
+			// Proceed with next step:
 		}
 		case Magick::GrayscaleMatteType:
 		{
@@ -112,6 +114,8 @@ X3DTexture::refineImageFormats ()
 				components = 3;
 				break;
 			}
+
+			// Proceed with next step:
 		}
 		case Magick::TrueColorMatteType:
 		{
@@ -128,12 +132,10 @@ X3DTexture::refineImageFormats ()
 				refineImageFormats ();
 				return;
 			}
-			else
-			{
-				image .type (Magick::GrayscaleType);
-				refineImageFormats ();
-				return;
-			}
+			
+			image .type (Magick::GrayscaleType);
+			refineImageFormats ();
+			return;
 		}
 		case Magick::UndefinedType:
 		case Magick::PaletteType:
@@ -149,12 +151,10 @@ X3DTexture::refineImageFormats ()
 				refineImageFormats ();
 				return;
 			}
-			else
-			{
-				image .type (Magick::TrueColorType);
-				refineImageFormats ();
-				return;
-			}
+
+			image .type (Magick::TrueColorType);
+			refineImageFormats ();
+			return;
 		}
 	}
 

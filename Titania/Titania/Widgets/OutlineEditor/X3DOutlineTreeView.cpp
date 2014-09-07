@@ -861,7 +861,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
-			model_expand_node (*static_cast <X3D::SFNode*> (get_object (iter)), iter);
+			model_expand_node (sfnode, iter);
 
 			// X3DPrototypeInstance handling
 

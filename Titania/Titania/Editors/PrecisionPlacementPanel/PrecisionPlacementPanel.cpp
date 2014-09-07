@@ -135,6 +135,8 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 	undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), boundedObject -> bboxCenter ());
 	undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter);
 	boundedObject -> bboxCenter () = bboxCenter;
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 PrecisionPlacementPanel::~PrecisionPlacementPanel ()

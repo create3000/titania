@@ -66,25 +66,32 @@ Texture::Texture (const std::string & document) :
 MagickImageArrayPtr
 Texture::readImages (const std::string & data)
 {
-	MagickImageArrayPtr images (X3DTexture::readImages (data));
-
-	switch (images -> size ())
-	{
-		case 0:
-			throw std::domain_error ("Image contains nothing.");
-
-		case 1:
-			return images;
-
-		default:
-		{
-			if (images -> front () .magick () not_eq "PSD")
-				Magick::flattenImages (&images -> front (), images -> begin (), images -> end ());
+	MagickImageArrayPtr images (new MagickImageArray ());
 	
-			images -> erase (++ images -> begin (), images -> end ());
-			return images;
-		}
-	}
+	images -> emplace_back ();
+	images -> front () .backgroundColor (Magick::Color (0, 0, 0, uint16_t (-1)));
+	images -> front () .read (Magick::Blob (data .c_str (), data .length ()));
+	return images;
+
+//	MagickImageArrayPtr images (X3DTexture::readImages (data));
+//
+//	switch (images -> size ())
+//	{
+//		case 0:
+//			throw std::domain_error ("Image contains nothing.");
+//
+//		case 1:
+//			return images;
+//
+//		default:
+//		{
+//			if (images -> front () .magick () not_eq "PSD")
+//				Magick::flattenImages (&images -> front (), images -> begin (), images -> end ());
+//	
+//			images -> erase (++ images -> begin (), images -> end ());
+//			return images;
+//		}
+//	}
 }
 
 } // X3D

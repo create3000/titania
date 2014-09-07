@@ -189,7 +189,7 @@ X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
 	X3DTransformMatrix4DNodeTool <Type> (ToolColors::GREEN),
 	                       parentMatrix (),
 	                             matrix (),
-	                     interestEvents (getNode () -> isTainted ())
+	                     interestEvents (0)
 {
 	//addType (X3DConstants::X3DTransformNodeTool);
 }

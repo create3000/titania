@@ -832,7 +832,7 @@ X3DBrowserEditor::set_undoHistory ()
 	else
 	{
 		getRedoMenuItem () .set_label (_ ("Redo"));
-		getRedoMenuItem () .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
+		getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
 		getRedoMenuItem () .set_sensitive (false);
 		getRedoButton ()   .set_sensitive (false);
 	}

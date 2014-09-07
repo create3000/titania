@@ -4,9 +4,10 @@ META "comment" "World of Titania"
 META "created" "Thu, 04 Sep 2014 15:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "icon" "../../ui/icons/favicon.png"
+META "icon" "../../ui/icons/icon-bw.svg"
 META "modified" "Thu, 04 Sep 2014 15:33:04 GMT"
 META "title" "about:blank"
+META "history" "false"
 
 Background {
   skyColor 1 1 1
