@@ -252,12 +252,12 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	if (not texture2DNode)
-		throw Error <INVALID_NODE> ("PixelTexture::assign: texture2DNode is NULL.");
+		throw Error <INVALID_NODE> ("Node is NULL.");
 
 	X3D::ContextLock lock (texture2DNode -> getBrowser ());
 
 	if (not lock)
-		throw Error <INVALID_OPERATION_TIMING> ("PixelTexture::assign: invalid operation timing.");
+		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 
 	const auto   width      = texture2DNode -> getWidth ();
 	const auto   height     = texture2DNode -> getHeight ();

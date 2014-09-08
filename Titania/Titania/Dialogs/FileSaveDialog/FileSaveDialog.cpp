@@ -53,8 +53,8 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/OS.h>
+#include <Titania/X3D/Browser/ContextLock.h>
 
 namespace titania {
 namespace puck {
@@ -142,7 +142,7 @@ FileSaveDialog::exportImage ()
 				                                                 getImageHeightAdjustment () -> get_value (),
 				                                                 getImageAlphaChannelSwitch () .get_active ()
 				                                                 ? X3D::Color4f ()
-				                                                 : getBrowser () -> getBackgroundColor (),
+																				 : getBrowser () -> getBackgroundColor (),
 				                                                 getImageAntialiasingAdjustment () -> get_value ());
 
 				if (not getImageAlphaChannelSwitch () .get_active ())
@@ -154,8 +154,12 @@ FileSaveDialog::exportImage ()
 				image -> quality (getImageCompressionAdjustment () -> get_value ());
 				image -> write (Glib::uri_unescape_string (getWindow () .get_filename ()));
 			}
-			catch (const X3D::X3DError &)
-			{ }
+			catch (const std::exception & error)
+			{
+				getMessageDialog () .set_secondary_text ("Could not generate image!\n"
+				                                         "Tip: try a smaller image size and/or less antialiasing.", false);
+				getMessageDialog () .run ();
+			}
 		}
 	}
 }

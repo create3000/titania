@@ -76,6 +76,7 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
 	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
 	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
+	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("CompressFileBox", m_CompressFileBox);
@@ -88,6 +89,7 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 X3DFileSaveDialogInterface::~X3DFileSaveDialogInterface ()
 {
 	delete m_ImageOptionsDialog;
+	delete m_MessageDialog;
 	delete m_Window;
 }
 

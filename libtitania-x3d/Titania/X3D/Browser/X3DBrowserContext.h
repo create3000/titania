@@ -172,7 +172,8 @@ public:
 
 	std::shared_ptr <Magick::Image>
 	getSnapshot (const size_t, const size_t, const Color4f &, const size_t) const
-	throw (Error <INVALID_OPERATION_TIMING>);
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       std::runtime_error);
 
 	///  @name Event handling
 

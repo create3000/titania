@@ -147,7 +147,8 @@ X3DBrowserContext::initialize ()
  */
 std::shared_ptr <Magick::Image>
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const Color4f & backgroundColor, const size_t antialiasing) const
-throw (Error <INVALID_OPERATION_TIMING>)
+throw (Error <INVALID_OPERATION_TIMING>,
+       std::runtime_error)
 {
 	ContextLock lock (this);
 
@@ -167,17 +168,15 @@ throw (Error <INVALID_OPERATION_TIMING>)
 		frameBuffer .unbind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
-		const auto image = std::make_shared <Magick::Image> ();
+		const auto image = std::make_shared <Magick::Image> (width, height, "RGBA", Magick::CharPixel, pixels .data ());
 
-		image -> depth (8);
-		image -> size (Magick::Geometry (width, height));
-		image -> magick ("RGBA");
-		image -> read (Magick::Blob (pixels .data (), pixels .size ()));
-		image -> type (Magick::TrueColorMatteType);
+		pixels .resize (0);
+		pixels .shrink_to_fit ();
 
 		image -> flip ();
 		image -> resolutionUnits (Magick::PixelsPerInchResolution);
 		image -> density (Magick::Geometry (72, 72));
+		image -> type (Magick::TrueColorMatteType);
 
 		return image;
 	}

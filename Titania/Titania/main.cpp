@@ -89,8 +89,10 @@ private:
 	on_activate () final override
 	{
 		if (browserWindow)
+		{
 			browserWindow -> blank ();
-
+			browserWindow -> getWindow () .raise ();
+		}
 		else
 			realize ();
 	}
@@ -105,7 +107,7 @@ private:
 		for (const auto & file : files)
 			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
 
-		browserWindow -> getWindow () .present ();
+		browserWindow -> getWindow () .raise ();
 	}
 
 	virtual

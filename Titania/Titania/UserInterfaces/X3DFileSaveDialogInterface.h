@@ -146,6 +146,10 @@ public:
 	getImageAntialiasingBox () const
 	{ return *m_ImageAntialiasingBox; }
 
+	Gtk::MessageDialog &
+	getMessageDialog () const
+	{ return *m_MessageDialog; }
+
 	Gtk::FileChooserDialog &
 	getWindow () const
 	{ return *m_Window; }
@@ -188,6 +192,7 @@ private:
 	Gtk::Dialog*                   m_ImageOptionsDialog;
 	Gtk::Switch*                   m_ImageAlphaChannelSwitch;
 	Gtk::Box*                      m_ImageAntialiasingBox;
+	Gtk::MessageDialog*            m_MessageDialog;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_CompressFileBox;
