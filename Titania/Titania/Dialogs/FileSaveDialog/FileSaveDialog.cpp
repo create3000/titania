@@ -138,13 +138,21 @@ FileSaveDialog::exportImage ()
 
 			try
 			{
-				auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
-				                                           getImageHeightAdjustment () -> get_value (),
-				                                           getImageAlphaChannelSwitch () .get_active (),
-				                                           getImageAntialiasingAdjustment () -> get_value ());
+				const auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+				                                                 getImageHeightAdjustment () -> get_value (),
+				                                                 getImageAlphaChannelSwitch () .get_active ()
+				                                                 ? X3D::Color4f ()
+				                                                 : getBrowser () -> getBackgroundColor (),
+				                                                 getImageAntialiasingAdjustment () -> get_value ());
 
-				image .quality (getImageCompressionAdjustment () -> get_value ());
-				image .write (Glib::uri_unescape_string (getWindow () .get_filename ()));
+				if (not getImageAlphaChannelSwitch () .get_active ())
+				{
+					image -> matte (false);
+					image -> type (Magick::TrueColorType);
+				}
+
+				image -> quality (getImageCompressionAdjustment () -> get_value ());
+				image -> write (Glib::uri_unescape_string (getWindow () .get_filename ()));
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -157,20 +165,9 @@ FileSaveDialog::imageOptions ()
 {
 	// First configure adjustments.
 
-	X3D::ContextLock lock (getBrowser ());
-
-	if (lock)
-	{
-		int32_t renderBufferSize = 0;
-		int32_t maxSamples       = 0;
-
-		glGetIntegerv (GL_MAX_RENDERBUFFER_SIZE, &renderBufferSize);
-		glGetIntegerv (GL_MAX_SAMPLES, &maxSamples);
-
-		getImageWidthAdjustment () -> set_upper (renderBufferSize);
-		getImageHeightAdjustment () -> set_upper (renderBufferSize);
-		getImageAntialiasingAdjustment () -> set_upper (maxSamples);
-	}
+	getImageWidthAdjustment () -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
+	getImageHeightAdjustment () -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
+	getImageAntialiasingAdjustment () -> set_upper (getBrowser () -> getMaxSamples ());
 
 	// Restore image options.
 

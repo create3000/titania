@@ -50,6 +50,7 @@
 
 #include "PixelTexture.h"
 
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -242,6 +243,164 @@ PixelTexture::update ()
 	setTexture (texture);
 
 	loadState = COMPLETE_STATE;
+}
+
+void
+PixelTexture::assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not texture2DNode)
+		throw Error <INVALID_NODE> ("PixelTexture::assign: texture2DNode is NULL.");
+
+	X3D::ContextLock lock (texture2DNode -> getBrowser ());
+
+	if (not lock)
+		throw Error <INVALID_OPERATION_TIMING> ("PixelTexture::assign: invalid operation timing.");
+
+	const auto   width      = texture2DNode -> getWidth ();
+	const auto   height     = texture2DNode -> getHeight ();
+	const auto   height_1   = height - 1;
+	const auto   components = texture2DNode -> getComponents ();
+	X3D::MFInt32 array;
+
+	switch (components)
+	{
+		case 1:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = 3;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					array .emplace_back (*p);
+				}
+			}
+
+			break;
+		}
+		case 2:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = 4;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					uint32_t point = *p << 8; // The value is in the red channel.
+					p     += 3;
+					point |= *p;
+
+					array .emplace_back (point);
+				}
+			}
+
+			break;
+		}
+		case 3:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = components;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					uint32_t point = *p ++ << 16;
+					point |= *p ++ << 8;
+					point |= *p;
+
+					array .emplace_back (point);
+				}
+			}
+
+			break;
+		}
+		case 4:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = components;
+			const auto rowStride = width * stride;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+
+			for (size_t h = 0; h < height; ++ h)
+			{
+				const auto row = (height_1 - h) * rowStride;
+
+				for (size_t w = 0; w < rowStride; w += stride)
+				{
+					auto p = first + (row + w);
+
+					uint32_t point = *p ++ << 24;
+					point |= *p ++ << 16;
+					point |= *p ++ << 8;
+					point |= *p;
+
+					array .emplace_back (point);
+				}
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	image () .setValue (width, height, components, std::move (array));
 }
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,6 +77,12 @@ public:
 	///  Returns true if OpenGL @a extensions is available, otherwise false.
 	bool
 	hasExtension (const std::string &) const;
+
+	size_t
+	getMaxRenderBufferSize () const;
+
+	size_t
+	getMaxSamples () const;
 
 	///  Returns the memory usage in bytes.
 	static

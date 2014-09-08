@@ -109,7 +109,7 @@ basic_split (const std::wstring &, const std::wstring  &);
 
 template <class StringT, template <class, class Compare = std::less <StringT>, class Allocator = std::allocator <StringT>> class ContainerType = std::set>
 ContainerType <StringT>
-basic_ssplit (const StringT & string, const StringT & delimiter)
+basic_set_split (const StringT & string, const StringT & delimiter)
 {
 	ContainerType <StringT> container;
 	
@@ -134,25 +134,25 @@ basic_ssplit (const StringT & string, const StringT & delimiter)
 
 inline
 std::set <std::string>
-ssplit (const std::string & string, const std::string & delimiter)
+set_split (const std::string & string, const std::string & delimiter)
 {
-	return basic_ssplit <std::string> (string, delimiter);
+	return basic_set_split <std::string> (string, delimiter);
 }
 
 inline
 std::set <std::wstring>
-wssplit (const std::wstring & string, const std::wstring & delimiter)
+wset_split (const std::wstring & string, const std::wstring & delimiter)
 {
-	return basic_ssplit <std::wstring> (string, delimiter);
+	return basic_set_split <std::wstring> (string, delimiter);
 }
 
 extern template
 std::set <std::string>
-basic_ssplit (const std::string &, const std::string  &);
+basic_set_split (const std::string &, const std::string  &);
 
 extern template
 std::set <std::wstring>
-basic_ssplit (const std::wstring &, const std::wstring  &);
+basic_set_split (const std::wstring &, const std::wstring  &);
 
 } // basic
 } // titania

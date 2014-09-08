@@ -86,11 +86,6 @@ protected:
 
 private:
 
-	///  @name Operations
-
-	void
-	assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> &);
-
 	///  @name Members
 
 	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;

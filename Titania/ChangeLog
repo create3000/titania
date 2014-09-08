@@ -1,5 +1,11 @@
 2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FileSaveDialog.cpp:
+	* X3DPixelTextureEditor.h:
+	* X3DPixelTextureEditor.cpp: 
+
+2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* home.x3dv:
 	* FileSaveDialog.xml:

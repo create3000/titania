@@ -1,5 +1,14 @@
 2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.h:
+	* X3DCoreContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DCoreContext.cpp:
+	* PixelTexture.h:
+	* PixelTexture.cpp: 
+
+2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* FrameBuffer.h:
 	* FrameBuffer.cpp:
 	* X3DRenderer.cpp:

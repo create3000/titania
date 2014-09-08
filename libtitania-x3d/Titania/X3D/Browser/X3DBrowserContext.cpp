@@ -135,12 +135,20 @@ X3DBrowserContext::initialize ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Magick::Image
-X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
+/***
+ *  Returns a snapshot of the current browser surface in the form of a Magick::Image.  Query for getMaxRenderBufferSize
+ *  to get the maximum width and height of the surface.  Query for getMaxSamples to get the maximum number of samples to
+ *  use for antialising.  Antialiasing is only available if the browser supports GL_EXT_framebuffer_multisample.
+ *
+ *  @param  width         Width of the image.
+ *  @param  height        Height of the image.
+ *  @param  alphaChannel  Whether or not the image should have a alpha channel.
+ *  @param  antialiasing  Number of samples used for antialising.
+ */
+std::shared_ptr <Magick::Image>
+X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const Color4f & backgroundColor, const size_t antialiasing) const
 throw (Error <INVALID_OPERATION_TIMING>)
 {
-	const auto color = alphaChannel ? Color4f (0, 0, 0, 0) : getBackgroundColor ();
-
 	ContextLock lock (this);
 
 	if (lock)
@@ -151,7 +159,7 @@ throw (Error <INVALID_OPERATION_TIMING>)
 		frameBuffer .bind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
-		glClearColor (color .r (), color .g (), color .b (), color .a ());
+		glClearColor (backgroundColor .r (), backgroundColor .g (), backgroundColor .b (), backgroundColor .a ());
 		glClear (GL_COLOR_BUFFER_BIT);
 		getWorld () -> traverse (TraverseType::DISPLAY);
 
@@ -159,26 +167,17 @@ throw (Error <INVALID_OPERATION_TIMING>)
 		frameBuffer .unbind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
-		Magick::Image image;
+		const auto image = std::make_shared <Magick::Image> ();
 
-		image .depth (8);
-		image .size (Magick::Geometry (width, height));
-		image .magick ("RGBA");
-		image .read (Magick::Blob (pixels .data (), pixels .size ()));
+		image -> depth (8);
+		image -> size (Magick::Geometry (width, height));
+		image -> magick ("RGBA");
+		image -> read (Magick::Blob (pixels .data (), pixels .size ()));
+		image -> type (Magick::TrueColorMatteType);
 
-		if (not alphaChannel)
-		{
-			image .matte (false);
-			image .type (Magick::TrueColorType);
-		}
-		else
-			image .type (Magick::TrueColorMatteType);
-
-		//image .filterType (Magick::LanczosFilter);
-		//image .zoom (Magick::Geometry (width, height));
-		image .flip ();
-		image .resolutionUnits (Magick::PixelsPerInchResolution);
-		image .density (Magick::Geometry (72, 72));
+		image -> flip ();
+		image -> resolutionUnits (Magick::PixelsPerInchResolution);
+		image -> density (Magick::Geometry (72, 72));
 
 		return image;
 	}

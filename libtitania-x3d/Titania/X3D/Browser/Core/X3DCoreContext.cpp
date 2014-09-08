@@ -50,6 +50,8 @@
 
 #include "X3DCoreContext.h"
 
+#include "../../Browser/ContextLock.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/String.h>
@@ -62,9 +64,9 @@ namespace titania {
 namespace X3D {
 
 X3DCoreContext::X3DCoreContext () :
-	X3DBaseNode (),
-	     strict (true),
-	 extensions ()
+	        X3DBaseNode (),
+	             strict (true),
+	         extensions ()
 {
 	addChildren (strict);
 
@@ -77,15 +79,39 @@ X3DCoreContext::initialize ()
 	XInitThreads ();
 
 	if (glXGetCurrentContext ())
-	{
-		extensions = basic::ssplit ((const char*) glGetString (GL_EXTENSIONS), " ");
-	}
+		extensions = basic::set_split ((const char*) glGetString (GL_EXTENSIONS), " ");
 }
 
 bool
 X3DCoreContext::hasExtension (const std::string & name) const
 {
 	return extensions .count (name);
+}
+
+size_t
+X3DCoreContext::getMaxRenderBufferSize () const
+{
+	int32_t maxRenderBufferSize = 0;
+
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+		glGetIntegerv (GL_MAX_RENDERBUFFER_SIZE, &maxRenderBufferSize);
+
+	return maxRenderBufferSize;
+}
+
+size_t
+X3DCoreContext::getMaxSamples () const
+{
+	int32_t maxSamples = 0;
+
+	ContextLock lock (getBrowser ());
+
+	if (lock)
+		glGetIntegerv (GL_MAX_SAMPLES, &maxSamples);
+
+	return maxSamples;
 }
 
 size_t
