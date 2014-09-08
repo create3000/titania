@@ -85,12 +85,8 @@ private:
 
 	///  @name Export image
 
-	void
+	bool
 	imageOptions ();
-
-	virtual
-	void
-	on_image_options_clicked () final override;
 
 	///  @name Export nodes
 

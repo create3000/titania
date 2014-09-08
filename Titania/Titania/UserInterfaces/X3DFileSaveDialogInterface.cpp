@@ -72,16 +72,14 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	m_ImageWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageWidthAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("AntialiasingSpinButton", m_AntialiasingSpinButton);
 	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
 	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
+	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("CompressFileBox", m_CompressFileBox);
 	m_builder -> get_widget ("CompressFileButton", m_CompressFileButton);
-	m_builder -> get_widget ("ImageOptionsButton", m_ImageOptionsButton);
-
-	// Connect object Gtk::Button with id 'ImageOptionsButton'.
-	m_ImageOptionsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DFileSaveDialogInterface::on_image_options_clicked));
 
 	// Call construct handler of base class.
 	construct ();

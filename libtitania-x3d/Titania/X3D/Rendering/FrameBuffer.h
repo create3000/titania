@@ -63,7 +63,7 @@ class FrameBuffer
 {
 public:
 
-	FrameBuffer (const X3DBrowserContext* const, const size_t, const size_t, const bool = true);
+	FrameBuffer (const X3DBrowserContext* const, const size_t, const size_t, const size_t, const bool = true);
 
 	double
 	getDistance (const double, const double);
@@ -91,9 +91,10 @@ private:
 	const X3DBrowserContext* const browser;
 	size_t                         width;
 	size_t                         height;
+	size_t                         samples;
 	GLuint                         id;
-	GLuint                         colorBuffer;
-	GLuint                         depthBuffer;
+	GLuint                         colorBufferId;
+	GLuint                         depthBufferId;
 	std::vector <float>            color;
 	std::vector <float>            depth;
 	GLint                          viewport [4];

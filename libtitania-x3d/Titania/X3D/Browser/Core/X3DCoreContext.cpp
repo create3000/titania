@@ -83,7 +83,7 @@ X3DCoreContext::initialize ()
 }
 
 bool
-X3DCoreContext::hasExtension (const std::string & name)
+X3DCoreContext::hasExtension (const std::string & name) const
 {
 	return extensions .count (name);
 }

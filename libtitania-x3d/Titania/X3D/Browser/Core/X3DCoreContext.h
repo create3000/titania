@@ -76,7 +76,7 @@ public:
 
 	///  Returns true if OpenGL @a extensions is available, otherwise false.
 	bool
-	hasExtension (const std::string &);
+	hasExtension (const std::string &) const;
 
 	///  Returns the memory usage in bytes.
 	static

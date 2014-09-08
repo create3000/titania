@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/OS.h>
 
 namespace titania {
@@ -119,36 +120,60 @@ FileSaveDialog::exportImage ()
 	getWindow () .add_filter (getFileFilterImage ());
 	getWindow () .set_filter (getFileFilterImage ());
 
-	getImageOptionsButton () .set_visible (true);
-
-	imageOptions ();
+	// Run dialog.
 
 	const auto responseId = getWindow () .run ();
+
+	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
 		getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
-		try
+		// Run image options dialog.
+
+		if (imageOptions ())
 		{
-			auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
-			                                           getImageHeightAdjustment () -> get_value (),
-			                                           getImageAlphaChannelSwitch () .get_active (),
-			                                           getImageAntialiasingAdjustment () -> get_value ());
+			// Save image.
 
-			image .quality (getImageCompressionAdjustment () -> get_value ());
-			image .write (Glib::uri_unescape_string (getWindow () .get_filename ()));
+			try
+			{
+				auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+				                                           getImageHeightAdjustment () -> get_value (),
+				                                           getImageAlphaChannelSwitch () .get_active (),
+				                                           getImageAntialiasingAdjustment () -> get_value ());
+
+				image .quality (getImageCompressionAdjustment () -> get_value ());
+				image .write (Glib::uri_unescape_string (getWindow () .get_filename ()));
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
 	}
-
-	quit ();
 }
 
-void
+bool
 FileSaveDialog::imageOptions ()
 {
+	// First configure adjustments.
+
+	X3D::ContextLock lock (getBrowser ());
+
+	if (lock)
+	{
+		int32_t renderBufferSize = 0;
+		int32_t maxSamples       = 0;
+
+		glGetIntegerv (GL_MAX_RENDERBUFFER_SIZE, &renderBufferSize);
+		glGetIntegerv (GL_MAX_SAMPLES, &maxSamples);
+
+		getImageWidthAdjustment () -> set_upper (renderBufferSize);
+		getImageHeightAdjustment () -> set_upper (renderBufferSize);
+		getImageAntialiasingAdjustment () -> set_upper (maxSamples);
+	}
+
+	// Restore image options.
+
 	if (getConfig () .hasItem ("imageWidth"))
 		getImageWidthAdjustment () -> set_value (getConfig () .getInteger ("imageWidth"));
 
@@ -162,11 +187,11 @@ FileSaveDialog::imageOptions ()
 
 	if (getConfig () .hasItem ("imageCompression"))
 		getImageCompressionAdjustment () -> set_value (getConfig () .getInteger ("imageCompression"));
-}
 
-void
-FileSaveDialog::on_image_options_clicked ()
-{
+	getImageAntialiasingBox () .set_sensitive (getBrowser () -> hasExtension ("GL_EXT_framebuffer_multisample"));
+
+	// Run image options dialog.
+
 	const auto responseId = getImageOptionsDialog () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
@@ -179,6 +204,8 @@ FileSaveDialog::on_image_options_clicked ()
 	}
 
 	getImageOptionsDialog () .hide ();
+
+	return responseId == Gtk::RESPONSE_OK;
 }
 
 // Export nodes

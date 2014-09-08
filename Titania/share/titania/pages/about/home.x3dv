@@ -25,6 +25,7 @@ DEF NavigationInfo NavigationInfo {
 
 DEF White Background {
   skyColor 1 1 1
+  transparency 1
 }
 
 DEF Home Viewpoint {

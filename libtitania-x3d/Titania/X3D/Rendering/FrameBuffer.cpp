@@ -58,16 +58,20 @@
 namespace titania {
 namespace X3D {
 
-FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const bool hasColorBuffer) :
-	    browser (browser),
-	      width (width),
-	     height (height),
-	         id (0),
-	colorBuffer (0),
-	depthBuffer (0),
-	      color (3 * width * height),  // DEBUG
-	      depth (width * height)
+FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool hasColorBuffer) :
+	      browser (browser),
+	        width (width),
+	       height (height),
+	      samples (samples_),
+	           id (0),
+	colorBufferId (0),
+	depthBufferId (0),
+	        color (3 * width * height),  // DEBUG
+	        depth (width * height)
 {
+	if (not browser -> hasExtension ("GL_EXT_framebuffer_multisample"))
+		samples = 0;
+
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
 	{
 		glGenFramebuffers (1, &id);
@@ -78,17 +82,27 @@ FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t w
 		// The color buffer
 		if (hasColorBuffer)
 		{
-			glGenRenderbuffers (1, &colorBuffer);
-			glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
-			glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
-			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
+			glGenRenderbuffers (1, &colorBufferId);
+			glBindRenderbuffer (GL_RENDERBUFFER, colorBufferId);
+
+			if (samples)
+				glRenderbufferStorageMultisample (GL_RENDERBUFFER, samples, GL_RGBA8, width, height);
+			else
+				glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
+
+			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBufferId);
 		}
 
 		// The depth buffer
-		glGenRenderbuffers (1, &depthBuffer);
-		glBindRenderbuffer (GL_RENDERBUFFER, depthBuffer);
-		glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+		glGenRenderbuffers (1, &depthBufferId);
+		glBindRenderbuffer (GL_RENDERBUFFER, depthBufferId);
+
+		if (samples)
+			glRenderbufferStorageMultisample (GL_RENDERBUFFER, samples, GL_DEPTH_COMPONENT, width, height);
+		else
+			glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
 
 		// Always check that our framebuffer is ok
 		if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
@@ -137,7 +151,20 @@ FrameBuffer::get (std::vector <uint8_t> & pixels) const
 {
 	pixels .resize (4 * width * height);
 
-	glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+	if (samples)
+	{
+		FrameBuffer frameBuffer (browser, width, height, 0, colorBufferId);
+
+		glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
+		glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
+		glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
+
+		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+		glBindFramebuffer (GL_FRAMEBUFFER_EXT, id);
+	}
+	else
+		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
 }
 
 // DEBUG
@@ -173,11 +200,11 @@ FrameBuffer::~FrameBuffer ()
 
 	if (lock)
 	{
-		if (colorBuffer)
-			glDeleteRenderbuffers (1, &colorBuffer);
+		if (colorBufferId)
+			glDeleteRenderbuffers (1, &colorBufferId);
 
-		if (depthBuffer)
-			glDeleteRenderbuffers (1, &depthBuffer);
+		if (depthBufferId)
+			glDeleteRenderbuffers (1, &depthBufferId);
 
 		if (id)
 			glDeleteFramebuffers (1, &id);

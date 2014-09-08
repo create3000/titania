@@ -56,6 +56,8 @@
 #include "../Browser/Selection.h"
 #include "../Rendering/FrameBuffer.h"
 
+#include "../Debug.h"
+
 namespace titania {
 namespace X3D {
 
@@ -137,16 +139,14 @@ Magick::Image
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
 throw (Error <INVALID_OPERATION_TIMING>)
 {
-	const size_t w     = width * antialiasing;
-	const size_t h     = height * antialiasing;
-	const auto   color = alphaChannel ? getBackgroundColor () : Color4f (0, 0, 0, 0);
+	const auto color = alphaChannel ? Color4f (0, 0, 0, 0) : getBackgroundColor ();
 
 	ContextLock lock (this);
 
 	if (lock)
 	{
 		std::vector <uint8_t> pixels;
-		FrameBuffer frameBuffer (this, w, h);
+		FrameBuffer           frameBuffer (this, width, height, antialiasing);
 
 		frameBuffer .bind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
@@ -162,7 +162,7 @@ throw (Error <INVALID_OPERATION_TIMING>)
 		Magick::Image image;
 
 		image .depth (8);
-		image .size (Magick::Geometry (w, h));
+		image .size (Magick::Geometry (width, height));
 		image .magick ("RGBA");
 		image .read (Magick::Blob (pixels .data (), pixels .size ()));
 
@@ -174,10 +174,10 @@ throw (Error <INVALID_OPERATION_TIMING>)
 		else
 			image .type (Magick::TrueColorMatteType);
 
-		image .filterType (Magick::LanczosFilter);
-		image .zoom (Magick::Geometry (width, height));
+		//image .filterType (Magick::LanczosFilter);
+		//image .zoom (Magick::Geometry (width, height));
 		image .flip ();
-		image .resolutionUnits (Magick::PixelsPerInchResolution); 
+		image .resolutionUnits (Magick::PixelsPerInchResolution);
 		image .density (Magick::Geometry (72, 72));
 
 		return image;

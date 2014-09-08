@@ -171,7 +171,7 @@ public:
 	///  @name Operations
 
 	Magick::Image
-	getSnapshot (const size_t, const size_t, const bool = false, const size_t = 2) const
+	getSnapshot (const size_t, const size_t, const bool, const size_t) const
 	throw (Error <INVALID_OPERATION_TIMING>);
 
 	///  @name Event handling

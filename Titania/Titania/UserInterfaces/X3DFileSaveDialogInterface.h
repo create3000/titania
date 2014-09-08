@@ -130,6 +130,10 @@ public:
 	getImageWidthAdjustment () const
 	{ return m_ImageWidthAdjustment; }
 
+	Gtk::SpinButton &
+	getAntialiasingSpinButton () const
+	{ return *m_AntialiasingSpinButton; }
+
 	Gtk::Dialog &
 	getImageOptionsDialog () const
 	{ return *m_ImageOptionsDialog; }
@@ -137,6 +141,10 @@ public:
 	Gtk::Switch &
 	getImageAlphaChannelSwitch () const
 	{ return *m_ImageAlphaChannelSwitch; }
+
+	Gtk::Box &
+	getImageAntialiasingBox () const
+	{ return *m_ImageAntialiasingBox; }
 
 	Gtk::FileChooserDialog &
 	getWindow () const
@@ -153,14 +161,6 @@ public:
 	Gtk::Switch &
 	getCompressFileButton () const
 	{ return *m_CompressFileButton; }
-
-	Gtk::Button &
-	getImageOptionsButton () const
-	{ return *m_ImageOptionsButton; }
-
-	virtual
-	void
-	on_image_options_clicked () = 0;
 
 	virtual
 	~X3DFileSaveDialogInterface ();
@@ -184,13 +184,14 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
+	Gtk::SpinButton*               m_AntialiasingSpinButton;
 	Gtk::Dialog*                   m_ImageOptionsDialog;
 	Gtk::Switch*                   m_ImageAlphaChannelSwitch;
+	Gtk::Box*                      m_ImageAntialiasingBox;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_CompressFileBox;
 	Gtk::Switch*                   m_CompressFileButton;
-	Gtk::Button*                   m_ImageOptionsButton;
 
 };
 
