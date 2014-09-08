@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "DepthBuffer.h"
+#include "FrameBuffer.h"
 
 #include "../Browser/ContextLock.h"
 
@@ -58,14 +58,14 @@
 namespace titania {
 namespace X3D {
 
-DepthBuffer::DepthBuffer (X3DBrowser* const browser, const size_t width, const size_t height) :
+FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const bool hasColorBuffer) :
 	    browser (browser),
 	      width (width),
 	     height (height),
 	         id (0),
 	colorBuffer (0),
 	depthBuffer (0),
-			color (3 * width * height), // DEBUG
+	      color (3 * width * height),  // DEBUG
 	      depth (width * height)
 {
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
@@ -75,11 +75,14 @@ DepthBuffer::DepthBuffer (X3DBrowser* const browser, const size_t width, const s
 		// Bind frame buffer.
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 
-		//		// DEBUG: The color buffer 1
-		//		glGenRenderbuffers (1, &colorBuffer);
-		//		glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
-		//		glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
-		//		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
+		// The color buffer
+		if (hasColorBuffer)
+		{
+			glGenRenderbuffers (1, &colorBuffer);
+			glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
+			glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
+			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
+		}
 
 		// The depth buffer
 		glGenRenderbuffers (1, &depthBuffer);
@@ -96,7 +99,7 @@ DepthBuffer::DepthBuffer (X3DBrowser* const browser, const size_t width, const s
 }
 
 double
-DepthBuffer::getDistance (const double zNear, const double zFar)
+FrameBuffer::getDistance (const double zNear, const double zFar)
 {
 	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 
@@ -106,7 +109,7 @@ DepthBuffer::getDistance (const double zNear, const double zFar)
 }
 
 void
-DepthBuffer::bind ()
+FrameBuffer::bind ()
 {
 	// Bind frame buffer.
 	glBindFramebuffer (GL_FRAMEBUFFER, id);
@@ -120,7 +123,7 @@ DepthBuffer::bind ()
 }
 
 void
-DepthBuffer::unbind ()
+FrameBuffer::unbind ()
 {
 	glDisable (GL_SCISSOR_TEST);
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
@@ -129,10 +132,18 @@ DepthBuffer::unbind ()
 	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
+void
+FrameBuffer::get (std::vector <uint8_t> & pixels) const
+{
+	pixels .resize (4 * width * height);
+
+	glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+}
+
 // DEBUG
 
 void
-DepthBuffer::save ()
+FrameBuffer::save ()
 {
 	glBindFramebuffer (GL_FRAMEBUFFER, id);
 	glReadPixels (0, 0, width, height, GL_RGB, GL_FLOAT, color .data ());
@@ -142,7 +153,7 @@ DepthBuffer::save ()
 // DEBUG
 
 void
-DepthBuffer::display ()
+FrameBuffer::display ()
 {
 	glWindowPos2i (0, 0);
 	glDrawPixels (width, height, GL_RGB, GL_FLOAT, color .data ());
@@ -156,7 +167,7 @@ DepthBuffer::display ()
 	//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
-DepthBuffer::~DepthBuffer ()
+FrameBuffer::~FrameBuffer ()
 {
 	ContextLock lock (browser);
 

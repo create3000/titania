@@ -222,6 +222,10 @@ public:
 	getImageTextureURLRemoveButton () const
 	{ return *m_ImageTextureURLRemoveButton; }
 
+	Gtk::Button &
+	getImageTextureURLReloadButton () const
+	{ return *m_ImageTextureURLReloadButton; }
+
 	Gtk::Box &
 	getPixelTextureBox () const
 	{ return *m_PixelTextureBox; }
@@ -245,6 +249,10 @@ public:
 	Gtk::Button &
 	getMovieTextureURLRemoveButton () const
 	{ return *m_MovieTextureURLRemoveButton; }
+
+	Gtk::Button &
+	getMovieTextureURLReloadButton () const
+	{ return *m_MovieTextureURLReloadButton; }
 
 	Gtk::Grid &
 	getTexture2DBox () const
@@ -428,6 +436,14 @@ public:
 
 	virtual
 	void
+	on_image_texture_reload_clicked () = 0;
+
+	virtual
+	void
+	on_movie_texture_reload_clicked () = 0;
+
+	virtual
+	void
 	on_textureProperties_toggled () = 0;
 
 	virtual
@@ -495,12 +511,14 @@ private:
 	Gtk::TreeView*                         m_ImageTextureURLTreeView;
 	Gtk::Button*                           m_ImageTextureURLAddButton;
 	Gtk::Button*                           m_ImageTextureURLRemoveButton;
+	Gtk::Button*                           m_ImageTextureURLReloadButton;
 	Gtk::Box*                              m_PixelTextureBox;
 	Gtk::Box*                              m_MovieTextureBox;
 	Gtk::Box*                              m_MovieTextureURLBox;
 	Gtk::TreeView*                         m_MovieTextureURLTreeView;
 	Gtk::Button*                           m_MovieTextureURLAddButton;
 	Gtk::Button*                           m_MovieTextureURLRemoveButton;
+	Gtk::Button*                           m_MovieTextureURLReloadButton;
 	Gtk::Grid*                             m_Texture2DBox;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;

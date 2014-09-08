@@ -166,6 +166,10 @@ private:
 
 	virtual
 	void
+	on_export () final override;
+
+	virtual
+	void
 	on_revert_to_saved () final override;
 
 	virtual

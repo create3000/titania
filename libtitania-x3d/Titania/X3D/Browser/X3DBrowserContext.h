@@ -75,6 +75,8 @@
 
 #include "../Types/Pointer.h"
 
+#include <Magick++.h>
+
 namespace titania {
 namespace X3D {
 
@@ -165,6 +167,12 @@ public:
 	const ConsolePtr &
 	getConsole () const
 	{ return console; }
+
+	///  @name Operations
+
+	Magick::Image
+	getSnapshot (const size_t, const size_t, const bool = false, const size_t = 2) const
+	throw (Error <INVALID_OPERATION_TIMING>);
 
 	///  @name Event handling
 

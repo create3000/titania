@@ -56,6 +56,7 @@
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Shape/Appearance.h"
+#include "../Rendering/FrameBuffer.h"
 
 #include <Titania/Utility/Range.h>
 #include <algorithm>
@@ -89,7 +90,7 @@ X3DRenderer::X3DRenderer () :
 void
 X3DRenderer::initialize ()
 {
-	depthBuffer .reset (new DepthBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT));
+	depthBuffer .reset (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, false));
 }
 
 void

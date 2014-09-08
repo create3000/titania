@@ -97,7 +97,7 @@ HistoryView::set_history ()
 	//getTreeView () .unset_model (); // This will unset the sort column.
 	getListStore () -> clear ();
 
-	for (const auto & item : history .getItems ())
+	for (const auto & item : history .getItems (2000))
 	{
 		const auto & worldURL = item .at ("worldURL");
 	
@@ -145,33 +145,9 @@ HistoryView::set_scene ()
 
 	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
 
-	// Get Icon
-
-	std::string image;
-	const auto  iconSet = Gtk::IconSet::lookup_default (Gtk::StockID (worldURL .filename () .str ()));
-
-	if (iconSet)
-	{
-		try
-		{
-			const auto pixbuf = iconSet -> render_icon_pixbuf (getTreeView () .get_style_context (), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-
-			gchar* buffer;
-			gsize  bufferSize;
-
-			pixbuf -> save_to_buffer (buffer, bufferSize);
-
-			image = std::string (buffer, bufferSize);
-
-			g_free (buffer);
-		}
-		catch (const Glib::Exception &)
-		{ }
-	}
-
 	// Update history.
 
-	history .setItem (title, worldURL, image);
+	history .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 }
 
 void

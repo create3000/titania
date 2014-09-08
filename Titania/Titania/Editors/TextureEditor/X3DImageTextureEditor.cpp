@@ -102,6 +102,12 @@ X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	return imageTexture;
 }
 
+void
+X3DImageTextureEditor::on_image_texture_reload_clicked ()
+{
+	imageTexture -> url () .addEvent ();
+}
+
 X3DImageTextureEditor::~X3DImageTextureEditor ()
 { }
 

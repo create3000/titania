@@ -61,16 +61,27 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FileFilterAll   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
-	m_FileFilterAudio = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
-	m_FileFilterImage = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
-	m_FileFilterVideo = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
-	m_FileFilterX3D   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
+	m_FileFilterAll               = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
+	m_FileFilterAudio             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_FileFilterImage             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
+	m_FileFilterVideo             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
+	m_FileFilterX3D               = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
+	m_ImageAntialiasingAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageAntialiasingAdjustment"));
+	m_ImageCompressionAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageCompressionAdjustment"));
+	m_ImageHeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageHeightAdjustment"));
+	m_ImageWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageWidthAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
+	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("SaveCompressedButton", m_SaveCompressedButton);
+	m_builder -> get_widget ("CompressFileBox", m_CompressFileBox);
+	m_builder -> get_widget ("CompressFileButton", m_CompressFileButton);
+	m_builder -> get_widget ("ImageOptionsButton", m_ImageOptionsButton);
+
+	// Connect object Gtk::Button with id 'ImageOptionsButton'.
+	m_ImageOptionsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DFileSaveDialogInterface::on_image_options_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -78,6 +89,7 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 
 X3DFileSaveDialogInterface::~X3DFileSaveDialogInterface ()
 {
+	delete m_ImageOptionsDialog;
 	delete m_Window;
 }
 

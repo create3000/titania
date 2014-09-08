@@ -55,7 +55,6 @@
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/CollisionArray.h"
 #include "../Rendering/CollisionShape.h"
-#include "../Rendering/DepthBuffer.h"
 #include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolume.h"
 #include "../Rendering/X3DCollectableObject.h"
@@ -67,6 +66,8 @@ namespace titania {
 namespace X3D {
 
 using ViewVolumeStack = std::stack <ViewVolume>;
+
+class FrameBuffer;
 
 class X3DRenderer :
 	virtual public X3DNode
@@ -168,7 +169,7 @@ private:
 	CollisionShapeArray      collisionShapes;
 	std::vector <Collision*> activeCollisions;
 
-	std::unique_ptr <DepthBuffer> depthBuffer;
+	std::unique_ptr <FrameBuffer> depthBuffer;
 	float                         speed;
 	float                         distance;
 

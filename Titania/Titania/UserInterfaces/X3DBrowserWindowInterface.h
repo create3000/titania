@@ -211,6 +211,10 @@ public:
 	{ return *m_SaveAsMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getExportMenuItem () const
+	{ return *m_ExportMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getRevertMenuItem () const
 	{ return *m_RevertMenuItem; }
 
@@ -671,8 +675,8 @@ public:
 	{ return *m_DashboardToolBar; }
 
 	Gtk::ToolButton &
-	getTabToolButton () const
-	{ return *m_TabToolButton; }
+	getAddTabButton () const
+	{ return *m_AddTabButton; }
 
 	Gtk::RadioToolButton &
 	getHandButton () const
@@ -837,6 +841,10 @@ public:
 	virtual
 	void
 	on_save_as () = 0;
+
+	virtual
+	void
+	on_export () = 0;
 
 	virtual
 	void
@@ -1272,6 +1280,7 @@ private:
 	Gtk::CheckMenuItem*             m_ImportAsInlineMenuItem;
 	Gtk::ImageMenuItem*             m_SaveMenuItem;
 	Gtk::ImageMenuItem*             m_SaveAsMenuItem;
+	Gtk::ImageMenuItem*             m_ExportMenuItem;
 	Gtk::ImageMenuItem*             m_RevertMenuItem;
 	Gtk::ImageMenuItem*             m_RemoveUnusedPrototypesMenuItem;
 	Gtk::ImageMenuItem*             m_CloseMenuItem;
@@ -1387,7 +1396,7 @@ private:
 	Gtk::Notebook*                  m_BrowserNotebook;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
-	Gtk::ToolButton*                m_TabToolButton;
+	Gtk::ToolButton*                m_AddTabButton;
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
 	Gtk::ToolButton*                m_PlayPauseButton;

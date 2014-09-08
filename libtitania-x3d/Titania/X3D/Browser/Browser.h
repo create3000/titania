@@ -79,6 +79,7 @@ public:
 	create (X3DExecutionContext* const) const;
 
 	///  @name Member access
+
 	virtual
 	Color4f
 	getForegroundColor () const final override;

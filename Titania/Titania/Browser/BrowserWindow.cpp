@@ -576,6 +576,12 @@ BrowserWindow::on_save_as ()
 }
 
 void
+BrowserWindow::on_export ()
+{
+	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> exportImage ();
+}
+
+void
 BrowserWindow::on_remove_unused_prototypes ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Prototypes"));
@@ -1002,7 +1008,7 @@ BrowserWindow::isEditor (const bool enabled)
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-	getTabToolButton ()         .set_visible (not enabled);
+	getAddTabButton ()          .set_visible (not enabled);
 	getHandButton ()            .set_visible (enabled);
 	getArrowButton ()           .set_visible (enabled);
 	getPlayPauseButton ()       .set_visible (enabled);

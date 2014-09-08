@@ -140,7 +140,7 @@ PixelTexture::update ()
 					pixels .emplace_back (array [row + w]);
 			}
 
-			Magick::Blob blob (pixels .data (), size);
+			Magick::Blob blob (pixels .data (), pixels .size ());
 			mimage .magick ("GRAY");
 			mimage .read (blob);
 			break;
@@ -170,7 +170,7 @@ PixelTexture::update ()
 				}
 			}
 
-			Magick::Blob blob (pixels .data (), size * components);
+			Magick::Blob blob (pixels .data (), pixels .size ());
 			mimage .magick ("RGBA");
 			mimage .read (blob);
 			break;
@@ -196,7 +196,7 @@ PixelTexture::update ()
 				}
 			}
 
-			Magick::Blob blob (pixels .data (), size * components);
+			Magick::Blob blob (pixels .data (), pixels .size ());
 			mimage .magick ("RGB");
 			mimage .read (blob);
 			break;
@@ -223,7 +223,7 @@ PixelTexture::update ()
 				}
 			}
 
-			Magick::Blob blob (pixels .data (), size * components);
+			Magick::Blob blob (pixels .data (), pixels .size ());
 			mimage .magick ("RGBA");
 			mimage .read (blob);
 			break;

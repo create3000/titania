@@ -87,6 +87,12 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_image_texture_reload_clicked () final override;
+
 	///  @name Members
 
 	std::unique_ptr <MFStringURLWidget> url;

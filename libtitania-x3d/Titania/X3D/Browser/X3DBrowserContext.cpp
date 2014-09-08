@@ -54,6 +54,7 @@
 #include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Selection.h"
+#include "../Rendering/FrameBuffer.h"
 
 namespace titania {
 namespace X3D {
@@ -131,6 +132,59 @@ X3DBrowserContext::initialize ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Magick::Image
+X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
+throw (Error <INVALID_OPERATION_TIMING>)
+{
+	const size_t w     = width * antialiasing;
+	const size_t h     = height * antialiasing;
+	const auto   color = alphaChannel ? getBackgroundColor () : Color4f (0, 0, 0, 0);
+
+	ContextLock lock (this);
+
+	if (lock)
+	{
+		std::vector <uint8_t> pixels;
+		FrameBuffer frameBuffer (this, w, h);
+
+		frameBuffer .bind ();
+		const_cast <X3DBrowserContext*> (this) -> reshape ();
+
+		glClearColor (color .r (), color .g (), color .b (), color .a ());
+		glClear (GL_COLOR_BUFFER_BIT);
+		getWorld () -> traverse (TraverseType::DISPLAY);
+
+		frameBuffer .get (pixels);
+		frameBuffer .unbind ();
+		const_cast <X3DBrowserContext*> (this) -> reshape ();
+
+		Magick::Image image;
+
+		image .depth (8);
+		image .size (Magick::Geometry (w, h));
+		image .magick ("RGBA");
+		image .read (Magick::Blob (pixels .data (), pixels .size ()));
+
+		if (not alphaChannel)
+		{
+			image .matte (false);
+			image .type (Magick::TrueColorType);
+		}
+		else
+			image .type (Magick::TrueColorMatteType);
+
+		image .filterType (Magick::LanczosFilter);
+		image .zoom (Magick::Geometry (width, height));
+		image .flip ();
+		image .resolutionUnits (Magick::PixelsPerInchResolution); 
+		image .density (Magick::Geometry (72, 72));
+
+		return image;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
 
 void
 X3DBrowserContext::addEvent ()

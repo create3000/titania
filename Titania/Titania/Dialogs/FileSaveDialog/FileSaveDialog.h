@@ -69,6 +69,9 @@ public:
 	void
 	saveScene ();
 
+	void
+	exportImage ();
+
 	bool
 	exportNodes (X3D::MFNode &, basic::uri &, const UndoStepPtr &);
 
@@ -79,6 +82,17 @@ public:
 
 
 private:
+
+	///  @name Export image
+
+	void
+	imageOptions ();
+
+	virtual
+	void
+	on_image_options_clicked () final override;
+
+	///  @name Export nodes
 
 	void
 	exportNodes (X3D::MFNode &, const basic::uri &, const bool, const UndoStepPtr &);

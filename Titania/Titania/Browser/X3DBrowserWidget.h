@@ -113,6 +113,9 @@ public:
 	void
 	loadIcon (const basic::uri &, const std::string &);
 
+	std::string
+	getIcon (const basic::uri &, const Gtk::IconSize &);
+
 	virtual
 	void
 	save (const basic::uri &, const bool);

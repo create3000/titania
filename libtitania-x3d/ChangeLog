@@ -1,3 +1,20 @@
+2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* Browser.cpp:
+	* FrameBuffer.h:
+	* X3DRenderer.h:
+	* DepthBuffer.h:
+	* FrameBuffer.cpp:
+	* DepthBuffer.cpp:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* PixelTexture.cpp:
+	* PixelTexture3D.cpp: 
+
 2014-09-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp:

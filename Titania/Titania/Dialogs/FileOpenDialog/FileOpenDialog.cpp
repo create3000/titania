@@ -110,12 +110,21 @@ FileOpenDialog::loadURL ()
 bool
 FileOpenDialog::run ()
 {
+	if (getConfig () .hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+	
 	const auto responseId = getWindow () .run ();
 
 	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
 	quit ();
 
-	return responseId == Gtk::RESPONSE_OK;
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+		return true;
+	}
+
+	return false;
 }
 
 FileOpenDialog::~FileOpenDialog ()

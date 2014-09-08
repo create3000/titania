@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_DEPTH_BUFFER_H__
-#define __TITANIA_X3D_RENDERING_DEPTH_BUFFER_H__
+#ifndef __TITANIA_X3D_RENDERING_FRAME_BUFFER_H__
+#define __TITANIA_X3D_RENDERING_FRAME_BUFFER_H__
 
 #include <vector>
 
@@ -59,11 +59,11 @@
 namespace titania {
 namespace X3D {
 
-class DepthBuffer
+class FrameBuffer
 {
 public:
 
-	DepthBuffer (X3DBrowser* const, const size_t, const size_t);
+	FrameBuffer (const X3DBrowserContext* const, const size_t, const size_t, const bool = true);
 
 	double
 	getDistance (const double, const double);
@@ -73,27 +73,30 @@ public:
 
 	void
 	unbind ();
-	
+
+	void
+	get (std::vector <uint8_t> &) const;
+
 	void
 	save ();
 
 	void
 	display ();
 
-	~DepthBuffer ();
+	~FrameBuffer ();
 
 
 private:
 
-	X3DBrowser* const   browser;
-	size_t              width;
-	size_t              height;
-	GLuint              id;
-	GLuint              colorBuffer;
-	GLuint              depthBuffer;
-	std::vector <float> color;
-	std::vector <float> depth;
-	GLint               viewport [4];
+	const X3DBrowserContext* const browser;
+	size_t                         width;
+	size_t                         height;
+	GLuint                         id;
+	GLuint                         colorBuffer;
+	GLuint                         depthBuffer;
+	std::vector <float>            color;
+	std::vector <float>            depth;
+	GLint                          viewport [4];
 
 };
 

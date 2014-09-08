@@ -68,9 +68,6 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterVideo () -> set_name (_ ("Videos"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	getWindow () .add_filter (getFileFilterX3D ());
-	getWindow () .set_filter (getFileFilterX3D ());
-
 	const auto worldURL = getRootContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
@@ -80,7 +77,7 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	{
 		if (worldURL .basename () .empty ())
 			getWindow () .set_filename (os::home () + _ ("scene.x3dv"));
-		
+
 		else
 			getWindow () .set_current_name (worldURL .basename ());
 	}
@@ -91,35 +88,122 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 void
 FileSaveDialog::saveScene ()
 {
-	const auto saveCompressedButton = getWidget <Gtk::Switch> ("SaveCompressedButton");
+	getWindow () .add_filter (getFileFilterX3D ());
+	getWindow () .set_filter (getFileFilterX3D ());
 
-	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
+	getCompressFileBox () .set_visible (true);
+	getCompressFileButton () .set_active (getRootContext () -> isCompressed ());
 
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), saveCompressedButton -> get_active ());
+		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), getCompressFileButton () .get_active ());
 		getBrowserWindow () -> saveAs () .processInterests ();
 	}
 
 	quit ();
 }
 
-bool
-FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const UndoStepPtr & undoStep)
-{
-	const auto saveCompressedButton = getWidget <Gtk::Switch> ("SaveCompressedButton");
+// Export image
 
-	saveCompressedButton -> set_active (getRootContext () -> isCompressed ());
+void
+FileSaveDialog::exportImage ()
+{
+	const auto worldURL = getExecutionContext () -> getWorldURL ();
+
+	if (getConfig () .hasItem ("exportFolder"))
+		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
+
+	getWindow () .set_current_name (worldURL .basename (false) + ".png");
+	getWindow () .add_filter (getFileFilterImage ());
+	getWindow () .set_filter (getFileFilterImage ());
+
+	getImageOptionsButton () .set_visible (true);
+
+	imageOptions ();
 
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
+		getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+
+		try
+		{
+			auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+			                                           getImageHeightAdjustment () -> get_value (),
+			                                           getImageAlphaChannelSwitch () .get_active (),
+			                                           getImageAntialiasingAdjustment () -> get_value ());
+
+			image .quality (getImageCompressionAdjustment () -> get_value ());
+			image .write (Glib::uri_unescape_string (getWindow () .get_filename ()));
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	quit ();
+}
+
+void
+FileSaveDialog::imageOptions ()
+{
+	if (getConfig () .hasItem ("imageWidth"))
+		getImageWidthAdjustment () -> set_value (getConfig () .getInteger ("imageWidth"));
+
+	if (getConfig () .hasItem ("imageHeight"))
+		getImageHeightAdjustment () -> set_value (getConfig () .getInteger ("imageHeight"));
+
+	getImageAlphaChannelSwitch () .set_active (getConfig () .getBoolean ("imageAlphaChannel"));
+
+	if (getConfig () .hasItem ("imageAntialiasing"))
+		getImageAntialiasingAdjustment () -> set_value (getConfig () .getInteger ("imageAntialiasing"));
+
+	if (getConfig () .hasItem ("imageCompression"))
+		getImageCompressionAdjustment () -> set_value (getConfig () .getInteger ("imageCompression"));
+}
+
+void
+FileSaveDialog::on_image_options_clicked ()
+{
+	const auto responseId = getImageOptionsDialog () .run ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		getConfig () .setItem ("imageWidth",        (int) getImageWidthAdjustment () -> get_value ());
+		getConfig () .setItem ("imageHeight",       (int) getImageHeightAdjustment () -> get_value ());
+		getConfig () .setItem ("imageAlphaChannel", getImageAlphaChannelSwitch () .get_active ());
+		getConfig () .setItem ("imageAntialiasing", (int) getImageAntialiasingAdjustment () -> get_value ());
+		getConfig () .setItem ("imageCompression",  (int) getImageCompressionAdjustment () -> get_value ());
+	}
+
+	getImageOptionsDialog () .hide ();
+}
+
+// Export nodes
+
+bool
+FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const UndoStepPtr & undoStep)
+{
+	if (getConfig () .hasItem ("exportFolder"))
+		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
+
+	getWindow () .add_filter (getFileFilterX3D ());
+	getWindow () .set_filter (getFileFilterX3D ());
+
+	getCompressFileBox () .set_visible (true);
+	getCompressFileButton () .set_active (getRootContext () -> isCompressed ());
+
+	const auto responseId = getWindow () .run ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+
 		worldURL = Glib::uri_unescape_string (getWindow () .get_uri ());
-	
-		exportNodes (nodes, worldURL, saveCompressedButton -> get_active (), undoStep);
+
+		exportNodes (nodes, worldURL, getCompressFileButton () .get_active (), undoStep);
 	}
 
 	quit ();

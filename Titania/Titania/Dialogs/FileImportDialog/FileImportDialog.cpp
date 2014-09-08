@@ -89,10 +89,15 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 void
 FileImportDialog::run ()
 {
+	if (getConfig () .hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+	
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
+		getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+
 		const auto undoStep = getBrowserWindow () -> getImportAsInlineMenuItem () .get_active ()
 		                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
 		                      : std::make_shared <UndoStep> (_ ("Import"));

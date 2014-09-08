@@ -1,3 +1,28 @@
+2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.cpp:
+	* TextureEditor.xml:
+	* HistoryView.cpp:
+	* FileSaveDialog.xml:
+	* FileSaveDialog.h:
+	* FileOpenDialog.cpp:
+	* FileSaveDialog.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DTextureEditorInterface.h:
+	* X3DFileSaveDialogInterface.h:
+	* X3DTextureEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DMovieTextureEditor.h:
+	* X3DImageTextureEditor.h:
+	* FileImportDialog.cpp:
+	* X3DFileSaveDialogInterface.cpp:
+	* X3DMovieTextureEditor.cpp:
+	* X3DImageTextureEditor.cpp: 
+
 2014-09-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Image.h:

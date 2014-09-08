@@ -505,7 +505,6 @@
     <None Include="Titania\X3D\Execution\ImportedNode.h" />
     <None Include="Titania\X3D\Execution\ExportedNode.h" />
     <None Include="Titania\X3D\Execution\World.h" />
-    <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Types\Set.h" />
@@ -780,6 +779,7 @@
     <None Include="Titania\X3D\Tools\Geospatial\GeoTransformTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoLODTool.h" />
     <None Include="Titania\X3D\Browser\ContextLock.h" />
+    <None Include="Titania\X3D\Rendering\FrameBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1165,7 +1165,6 @@
     <Compile Include="Titania\X3D\Execution\ImportedNode.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNode.cpp" />
     <Compile Include="Titania\X3D\Execution\World.cpp" />
-    <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.cpp" />
@@ -1290,6 +1289,7 @@
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
+    <Compile Include="Titania\X3D\Rendering\FrameBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

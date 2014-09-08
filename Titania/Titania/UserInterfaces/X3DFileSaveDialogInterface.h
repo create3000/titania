@@ -114,6 +114,30 @@ public:
 	getFileFilterX3D () const
 	{ return m_FileFilterX3D; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getImageAntialiasingAdjustment () const
+	{ return m_ImageAntialiasingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getImageCompressionAdjustment () const
+	{ return m_ImageCompressionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getImageHeightAdjustment () const
+	{ return m_ImageHeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getImageWidthAdjustment () const
+	{ return m_ImageWidthAdjustment; }
+
+	Gtk::Dialog &
+	getImageOptionsDialog () const
+	{ return *m_ImageOptionsDialog; }
+
+	Gtk::Switch &
+	getImageAlphaChannelSwitch () const
+	{ return *m_ImageAlphaChannelSwitch; }
+
 	Gtk::FileChooserDialog &
 	getWindow () const
 	{ return *m_Window; }
@@ -122,9 +146,21 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getCompressFileBox () const
+	{ return *m_CompressFileBox; }
+
 	Gtk::Switch &
-	getSaveCompressedButton () const
-	{ return *m_SaveCompressedButton; }
+	getCompressFileButton () const
+	{ return *m_CompressFileButton; }
+
+	Gtk::Button &
+	getImageOptionsButton () const
+	{ return *m_ImageOptionsButton; }
+
+	virtual
+	void
+	on_image_options_clicked () = 0;
 
 	virtual
 	~X3DFileSaveDialogInterface ();
@@ -144,9 +180,17 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
+	Glib::RefPtr <Gtk::Adjustment> m_ImageAntialiasingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
+	Gtk::Dialog*                   m_ImageOptionsDialog;
+	Gtk::Switch*                   m_ImageAlphaChannelSwitch;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::Switch*                   m_SaveCompressedButton;
+	Gtk::Box*                      m_CompressFileBox;
+	Gtk::Switch*                   m_CompressFileButton;
+	Gtk::Button*                   m_ImageOptionsButton;
 
 };
 

@@ -316,8 +316,8 @@ X3DBrowserWidget::blank ()
 
 		std::ofstream image (config_dir () + "/tab/image" + basic::to_string (i) + ".png");
 
-		image << historyDB .getIcon (item .at ("id"));
-		
+		image << getBrowserWindow () -> getIcon (item .at ("worldURL"), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+
 		++ i;
 	}
 
@@ -737,6 +737,40 @@ X3DBrowserWidget::loadIcon (const basic::uri & worldURL, const std::string & doc
 
 	getIconFactory () -> add (stockId, iconSet);
 	Gtk::Stock::add (Gtk::StockItem (stockId, worldURL .filename () .str ()));
+}
+
+std::string
+X3DBrowserWidget::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSize)
+{
+	std::string image;
+	auto        iconSet = Gtk::IconSet::lookup_default (Gtk::StockID (worldURL .filename () .str ()));
+
+	if (not iconSet)
+		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
+
+	if (iconSet)
+	{
+		try
+		{
+			const auto pixbuf = iconSet -> render_icon_pixbuf (getWidget () .get_style_context (), iconSize);
+
+			if (pixbuf)
+			{
+				gchar* buffer;
+				gsize  bufferSize;
+
+				pixbuf -> save_to_buffer (buffer, bufferSize);
+
+				image = std::string (buffer, bufferSize);
+
+				g_free (buffer);
+			}
+		}
+		catch (const Glib::Exception &)
+		{ }
+	}
+	
+	return image;
 }
 
 void
