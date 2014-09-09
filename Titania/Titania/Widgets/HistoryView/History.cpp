@@ -81,6 +81,8 @@ History::History () :
 	                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 	                 "PRIMARY KEY (id ASC))");
 
+	database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
+
 	if (not have_history)
 	{
 		setItem ("about:date",  get_page ("about/date.x3dv"),  "");
@@ -182,6 +184,33 @@ throw (std::invalid_argument)
 	std::string value;
 
 	database .read_blob ("SELECT icon FROM History WHERE id = " + id, value);
+
+	return value;
+}
+
+void
+History::setPreview (const std::string & worldURL, const std::string & image)
+throw (std::invalid_argument)
+{
+	disconnect ();
+
+	try
+	{
+		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL), image);
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	connect ();
+}
+
+std::string
+History::getPreview (const std::string & id) const
+throw (std::invalid_argument)
+{
+	std::string value;
+
+	database .read_blob ("SELECT preview FROM History WHERE id = " + id, value);
 
 	return value;
 }

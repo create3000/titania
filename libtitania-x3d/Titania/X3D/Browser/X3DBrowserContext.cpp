@@ -146,10 +146,12 @@ X3DBrowserContext::initialize ()
  *  @param  antialiasing  Number of samples used for antialising.
  */
 std::shared_ptr <Magick::Image>
-X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const Color4f & backgroundColor, const size_t antialiasing) const
+X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
 throw (Error <INVALID_OPERATION_TIMING>,
        std::runtime_error)
 {
+	const auto backgroundColor = alphaChannel ? X3D::Color4f () : getBrowser () -> getBackgroundColor ();
+
 	ContextLock lock (this);
 
 	if (lock)
@@ -173,10 +175,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		pixels .resize (0);
 		pixels .shrink_to_fit ();
 
+		if (alphaChannel)
+			image -> type (Magick::TrueColorMatteType);
+		else
+		{
+			image -> matte (false);
+			image -> type (Magick::TrueColorType);
+		}
+
 		image -> flip ();
 		image -> resolutionUnits (Magick::PixelsPerInchResolution);
 		image -> density (Magick::Geometry (72, 72));
-		image -> type (Magick::TrueColorMatteType);
 
 		return image;
 	}

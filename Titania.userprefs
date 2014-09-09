@@ -1,29 +1,52 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserUserData.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="175" Column="53" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="322" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="76" Column="45" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="316" Column="44" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1538" Column="1" />
-      <File FileName="Titania/Titania/Undo/UndoHistory.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserHistory.cpp" Line="56" Column="55" />
-      <File FileName="Titania/Titania/Browser/BrowserHistory.h" Line="68" Column="40" />
-      <File FileName="Titania/Titania/Browser/BrowserUserData.h" Line="95" Column="6" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="115" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="809" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
+          </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True" />
           </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="InputOutput" expanded="True" />
+              <Node name="Math" expanded="True" />
+              <Node name="String" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True" />
-                <Node name="Components" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="CubeMapTexturing" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                </Node>
+                <Node name="Fields" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Rendering" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -33,19 +56,24 @@
                 <Node name="pages" expanded="True">
                   <Node name="about" expanded="True" />
                 </Node>
-                <Node name="ui" expanded="True" />
+                <Node name="ui" expanded="True">
+                  <Node name="Dialogs" expanded="True" />
+                  <Node name="icons" expanded="True" />
+                </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True">
-                <Node name="BrowserUserData.h" selected="True" />
+                <Node name="X3DBrowserWidget.cpp" selected="True" />
               </Node>
               <Node name="Dialogs" expanded="True">
-                <Node name="OpenLocationDialog" expanded="True" />
+                <Node name="FileImportDialog" expanded="True" />
+                <Node name="FileOpenDialog" expanded="True" />
+                <Node name="FileSaveDialog" expanded="True" />
               </Node>
-              <Node name="Undo" expanded="True" />
-              <Node name="Widgets" expanded="True">
-                <Node name="HistoryView" expanded="True" />
+              <Node name="Editors" expanded="True">
+                <Node name="TextureEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

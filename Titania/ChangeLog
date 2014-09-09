@@ -1,3 +1,15 @@
+2014-09-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.h:
+	* tab.x3dv:
+	* X3DBrowserWidget.cpp:
+	* History.h:
+	* History.cpp:
+	* FileSaveDialog.cpp:
+	* X3DFileSaveDialogInterface.h:
+	* X3DFileSaveDialogInterface.cpp: 
+
 2014-09-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* main.cpp:

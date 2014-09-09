@@ -140,16 +140,8 @@ FileSaveDialog::exportImage ()
 			{
 				const auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
 				                                                 getImageHeightAdjustment () -> get_value (),
-				                                                 getImageAlphaChannelSwitch () .get_active ()
-				                                                 ? X3D::Color4f ()
-																				 : getBrowser () -> getBackgroundColor (),
+				                                                 getImageAlphaChannelSwitch () .get_active (),
 				                                                 getImageAntialiasingAdjustment () -> get_value ());
-
-				if (not getImageAlphaChannelSwitch () .get_active ())
-				{
-					image -> matte (false);
-					image -> type (Magick::TrueColorType);
-				}
 
 				image -> quality (getImageCompressionAdjustment () -> get_value ());
 				image -> write (Glib::uri_unescape_string (getWindow () .get_filename ()));

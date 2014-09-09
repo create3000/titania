@@ -1124,21 +1124,16 @@ throw (Error <INVALID_NAME>,
 
 	if (lock)
 	{
-		if (executionContext -> getProfile () or not executionContext -> getComponents () .empty ())
+		if (getProfile () or not getComponents () .empty ())
 		{
-			if (getProfile ())
+			if (executionContext -> getProfile ())
 			{
-				if (executionContext -> getProfile ())
-				{
-					for (const auto & component : executionContext -> getProfile () -> getComponents ())
-						addComponent (component);
-				}
-
-				for (const auto & component : executionContext -> getComponents ())
+				for (const auto & component : executionContext -> getProfile () -> getComponents ())
 					addComponent (component);
 			}
-			else
-				setProfile (getBrowser () -> getProfile ("Full"));
+
+			for (const auto & component : executionContext -> getComponents ())
+				addComponent (component);
 		}
 
 		updateNamedNodes (executionContext);

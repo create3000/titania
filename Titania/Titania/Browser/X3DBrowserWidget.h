@@ -213,6 +213,9 @@ private:
 	void
 	loadIcon ();
 
+	void
+	loadPreview (const X3D::BrowserPtr &);
+
 	bool
 	statistics ();
 

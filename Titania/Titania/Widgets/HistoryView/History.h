@@ -91,6 +91,14 @@ public:
 	getIcon (const std::string &) const
 	throw (std::invalid_argument);
 
+	void
+	setPreview (const std::string &, const std::string &)
+	throw (std::invalid_argument);
+
+	std::string
+	getPreview (const std::string &) const
+	throw (std::invalid_argument);
+
 
 private:
 
