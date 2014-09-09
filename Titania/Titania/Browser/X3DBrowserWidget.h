@@ -60,6 +60,7 @@
 namespace titania {
 namespace puck {
 
+class AboutTab;
 class BrowserUserData;
 
 class X3DBrowserWidget :
@@ -109,6 +110,9 @@ public:
 	virtual
 	void
 	load (const X3D::BrowserPtr &, const basic::uri &);
+
+	void
+	append (const X3D::BrowserPtr &, const basic::uri &, const bool = true);
 
 	void
 	loadIcon (const basic::uri &, const std::string &);
@@ -177,9 +181,6 @@ protected:
 	void
 	setTransparent (const bool);
 
-	void
-	append (const X3D::BrowserPtr &, const basic::uri &, const bool = true);
-
 
 private:
 
@@ -213,9 +214,6 @@ private:
 	void
 	loadIcon ();
 
-	void
-	loadPreview (const X3D::BrowserPtr &);
-
 	bool
 	statistics ();
 
@@ -226,6 +224,7 @@ private:
 	X3D::X3DPtrArray <X3D::Browser> browsers;
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
+	std::unique_ptr <AboutTab>      aboutTab;
 	double                          loadTime;
 	sigc::connection                timeout;
 

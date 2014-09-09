@@ -1,5 +1,15 @@
 2014-09-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* AboutTab.h:
+	* AboutTab.cpp:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.cpp: 
+
+2014-09-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* tab.x3dv: 
 
 2014-09-09  Holger Seelig  <holger.seelig@yahoo.de>

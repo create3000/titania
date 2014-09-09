@@ -9,6 +9,7 @@ titania_SOURCES =  \
 	Titania/Base/X3DDialogInterface.cpp \
 	Titania/Base/X3DEditorObject.cpp \
 	Titania/Base/X3DUserInterface.cpp \
+	Titania/Browser/AboutTab.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \

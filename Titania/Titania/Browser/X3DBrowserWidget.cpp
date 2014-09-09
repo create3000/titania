@@ -50,18 +50,14 @@
 
 #include "X3DBrowserWidget.h"
 
+#include "../Browser/AboutTab.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/Image.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
-#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
-#include <Titania/OS/home.h>
-#include <Titania/OS/system.h>
-
-#include <Titania/Backtrace.h>
 #include <fstream>
 
 namespace titania {
@@ -73,11 +69,10 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & browser_) :
 	                  browser (browser_),
 	                 browsers (),
 	                    scene (browser -> getExecutionContext ()),
-	         executionContext (scene)
+	         executionContext (scene),
+	                 aboutTab (new AboutTab (getBrowserWindow ()))
 {
 	addChildren (browsers, browser, scene, executionContext);
-
-	//parseOptions (argc, argv);
 }
 
 void
@@ -97,9 +92,9 @@ void
 X3DBrowserWidget::set_initialized ()
 {
 	// Restore browsers.
-	
+
 	std::set <basic::uri> urlIndex;
-	
+
 	for (const auto & browser : browsers)
 		urlIndex .emplace (getUserData (browser) -> URL);
 
@@ -304,47 +299,13 @@ X3DBrowserWidget::isLive (const bool value)
 void
 X3DBrowserWidget::blank ()
 {
-	loadPreview (getBrowser ());
-
-	os::system ("mkdir", "-p", "/tmp/titania/tab/");
-
-	History                   historyDB;
-	std::vector <std::string> history;
-	size_t                    i = 0;
-
-	for (const auto & item : historyDB .getItems (9))
-	{
-		try
-		{
-			const auto preview = historyDB .getPreview (item .at ("id"));
-
-			history .emplace_back (item .at ("title") + "\t" + item .at ("worldURL"));
-
-			std::ofstream image ("/tmp/titania/tab/image" + basic::to_string (i) + ".png");
-
-			image << preview;
-
-			++ i;
-		}
-		catch (...)
-		{ }
-	}
-
-	std::ostringstream URL;
-
-	URL
-		<< get_page ("about/tab.x3dv")
-		<< "?history=" << Glib::uri_escape_string (basic::join (history, "\n"));
-
-	append (X3D::createBrowser (getBrowser ()), URL .str (), false);
-	getBrowserNotebook () .set_current_page (browsers .size () - 1);
+	aboutTab -> loadPreview (getBrowser ());
+	aboutTab -> open ();
 }
 
 void
 X3DBrowserWidget::open (const basic::uri & URL, const bool splashScreen)
 {
-	loadPreview (getBrowser ());
-
 	const auto iter = getBrowser (URL);
 
 	if (iter not_eq browsers .cend ())
@@ -411,7 +372,7 @@ X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic
 void
 X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	loadPreview (getBrowser ());
+	aboutTab -> loadPreview (getBrowser ());
 
 	try
 	{
@@ -432,7 +393,7 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 				<< ";what=" << Glib::uri_escape_string (error .what ());
 
 			const auto scene = browser -> createX3DFromURL ({ osstream .str () });
-			
+
 			scene -> setWorldURL (URL);
 
 			browser -> replaceWorld (scene);
@@ -598,7 +559,7 @@ X3DBrowserWidget::reload ()
 void
 X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 {
-	loadPreview (browser);
+	aboutTab -> loadPreview (browser);
 
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
@@ -615,7 +576,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 bool
 X3DBrowserWidget::quit ()
 {
-	loadPreview (getBrowser ());
+	aboutTab -> loadPreview (getBrowser ());
 
 	std::deque <std::string> worldURLs;
 	std::deque <std::string> browserHistories;
@@ -653,7 +614,7 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 {
-	loadPreview (getBrowser ());
+	aboutTab -> loadPreview (getBrowser ());
 
 	setBrowser (browsers [pageNumber]);
 }
@@ -787,27 +748,8 @@ X3DBrowserWidget::getIcon (const basic::uri & worldURL, const Gtk::IconSize & ic
 		catch (const Glib::Exception &)
 		{ }
 	}
-	
+
 	return image;
-}
-
-void
-X3DBrowserWidget::loadPreview (const X3D::BrowserPtr & browser)
-{
-	try
-	{
-		const auto image = getBrowser () -> getSnapshot (256, 256, false, std::min <size_t> (16, getBrowser () -> getMaxSamples ()));
-
-		image -> quality (85);
-		image -> magick ("JPG");
-
-		Magick::Blob blob;
-		image -> write (&blob);
-
-		History () .setPreview (getBrowser () -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
-	}
-	catch (const std::exception & error)
-	{ }
 }
 
 void
