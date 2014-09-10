@@ -6,7 +6,7 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "history" "false"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Tue, 09 Sep 2014 06:17:17 GMT"
+META "modified" "Wed, 10 Sep 2014 04:36:20 GMT"
 META "title" "about:tab"
 
 EXTERNPROTO Rotor [
@@ -4834,6 +4834,7 @@ LayerSet {
             LoadSensor { }
           ]
         }
+        DEF _43 BooleanFilter { }
       ]
     }
   ]
@@ -4928,7 +4929,6 @@ function initialize ()
 }"
 }
 
-ROUTE _42.isLoaded TO Pespective.set_bind
 ROUTE AboutTab.image0_changed TO _5.set_url
 ROUTE AboutTab.image1_changed TO _12.set_url
 ROUTE AboutTab.image2_changed TO _16.set_url
@@ -4966,3 +4966,5 @@ ROUTE AboutTab.url5_changed TO _27.set_url
 ROUTE AboutTab.url6_changed TO _31.set_url
 ROUTE AboutTab.url7_changed TO _35.set_url
 ROUTE AboutTab.url8_changed TO _39.set_url
+ROUTE _42.isLoaded TO _43.set_boolean
+ROUTE _43.inputTrue TO Pespective.set_bind

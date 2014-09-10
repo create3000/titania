@@ -198,7 +198,7 @@ LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 				}
 				case IN_PROGRESS_STATE:
 				{
-					reset ();			
+					reset ();
 					break;
 				}
 				default:
@@ -210,10 +210,15 @@ LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 			switch (urlObject -> checkLoadState ())
 			{
 				case COMPLETE_STATE:
-				case FAILED_STATE:
 				{
 					start ();
 					set_loadState (urlObject);
+					break;
+				}
+				case FAILED_STATE:
+				{
+					start ();
+					abort ();
 					break;
 				}
 				case IN_PROGRESS_STATE:
@@ -271,7 +276,6 @@ LoadSensor::reset ()
 	if (enabled ())
 	{
 		startTime = 0;
-
 		loaded   .clear ();
 		complete .clear ();
 		
@@ -292,6 +296,9 @@ LoadSensor::reset ()
 			const auto urlObject = x3d_cast <X3DUrlObject*> (node);
 
 			set_loadState (urlObject);
+
+			if (not isActive ())
+				break;
 		}
 	}
 }
