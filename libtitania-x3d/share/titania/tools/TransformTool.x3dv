@@ -1256,6 +1256,7 @@ function eventsProcessed ()
     initializeOnly SFVec3f    center 0 0 0
     initializeOnly SFVec3f    distanceFromCenter 0 0 0
     initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    # Sensors below are not used anymore
     initializeOnly SFNode     sensor1 USE ScaleSensor1
     initializeOnly SFNode     sensor2 USE ScaleSensor2
     initializeOnly SFNode     sensor3 USE ScaleSensor3
@@ -1264,6 +1265,7 @@ function eventsProcessed ()
     initializeOnly SFNode     sensor6 USE ScaleSensor6
     initializeOnly SFNode     sensor7 USE ScaleSensor7
     initializeOnly SFNode     sensor8 USE ScaleSensor8
+    # Sensors above are not used anymore
     initializeOnly SFNode     lineProperties USE LineProperties
     initializeOnly SFNode     self USE ScaleScript
 
@@ -1351,56 +1353,56 @@ function set_zScale (value)
 function set_scale1 (value)
 {
 	set_scale (value,
-	           sgn (sensor1 .trackPoint_changed .x),
+	           sgn (value .x),
 	           new SFVec3f (-1, -1, -1));
 }
 
 function set_scale2 (value)
 {
 	set_scale (value,
-	           sgn (-sensor2 .trackPoint_changed .x),
+	           sgn (-value .x),
 	           new SFVec3f (1, -1, -1));
 }
 
 function set_scale3 (value)
 {
 	set_scale (value,
-	           sgn (-sensor3 .trackPoint_changed .x),
+	           sgn (-value .x),
 	           new SFVec3f (1, 1, -1));
 }
 
 function set_scale4 (value)
 {
 	set_scale (value,
-	           sgn (sensor4 .trackPoint_changed .x),
+	           sgn (value .x),
 	           new SFVec3f (-1, 1, -1));
 }
 
 function set_scale5 (value)
 {
 	set_scale (value,
-	           sgn (sensor5 .trackPoint_changed .x),
+	           sgn (value .x),
 	           new SFVec3f (-1, -1, 1));
 }
 
 function set_scale6 (value)
 {
 	set_scale (value,
-	           sgn (-sensor6 .trackPoint_changed .x),
+	           sgn (-value .x),
 	           new SFVec3f (1, -1, 1));
 }
 
 function set_scale7 (value)
 {
 	set_scale (value,
-	           sgn (-sensor7 .trackPoint_changed .x),
+	           sgn (-value .x),
 	           new SFVec3f (1, 1, 1));
 }
 
 function set_scale8 (value)
 {
 	set_scale (value,
-	           sgn (sensor8 .trackPoint_changed .x),
+	           sgn (value .x),
 	           new SFVec3f (-1, 1, 1));
 }
 
