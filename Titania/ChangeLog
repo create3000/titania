@@ -1,5 +1,10 @@
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* NodeIndex.xml: 
+
+2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* tab.x3dv:
 	* X3DNavigationInfoEditorInterface.h:
 	* NavigationInfoEditor.h:
