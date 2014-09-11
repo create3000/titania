@@ -1,5 +1,9 @@
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DViewpointNode.cpp: 
+
+2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* RenderingProperties.h:
 	* RenderingProperties.cpp:
 	* jsBrowser.cpp: 

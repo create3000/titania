@@ -348,7 +348,6 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 				case TransitionType::ANIMATE:
 				{
 					easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
-					easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 0), SFVec2f (0, 0) };
 					break;
 				}
 			}
