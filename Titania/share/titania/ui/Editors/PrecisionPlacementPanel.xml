@@ -319,6 +319,7 @@
                       <object class="GtkSpinButton" id="spinbutton2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformTranslationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -335,6 +336,7 @@
                       <object class="GtkSpinButton" id="spinbutton3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformTranslationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -351,6 +353,7 @@
                       <object class="GtkSpinButton" id="spinbutton4">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformTranslationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -410,6 +413,7 @@
                               <object class="GtkSpinButton" id="spinbutton5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">x-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformRotationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -426,6 +430,7 @@
                               <object class="GtkSpinButton" id="spinbutton6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">y-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformRotationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -442,6 +447,7 @@
                               <object class="GtkSpinButton" id="spinbutton7">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">z-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformRotationZAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -465,6 +471,7 @@
                           <object class="GtkSpinButton" id="spinbutton8">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Angle</property>
                             <property name="valign">end</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformRotationAAdjustment</property>
@@ -532,6 +539,7 @@
                               <object class="GtkSpinButton" id="spinbutton1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">x-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformScaleOrientationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -548,6 +556,7 @@
                               <object class="GtkSpinButton" id="spinbutton9">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">y-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformScaleOrientationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -564,6 +573,7 @@
                               <object class="GtkSpinButton" id="spinbutton10">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">z-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformScaleOrientationZAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -587,6 +597,7 @@
                           <object class="GtkSpinButton" id="spinbutton11">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Angle</property>
                             <property name="valign">end</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformScaleOrientationAAdjustment</property>
@@ -627,6 +638,7 @@
                       <object class="GtkSpinButton" id="spinbutton12">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformScaleXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -643,6 +655,7 @@
                       <object class="GtkSpinButton" id="spinbutton13">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformScaleYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -659,6 +672,7 @@
                       <object class="GtkSpinButton" id="spinbutton14">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformScaleZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -691,6 +705,7 @@
                       <object class="GtkSpinButton" id="spinbutton15">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -707,6 +722,7 @@
                       <object class="GtkSpinButton" id="spinbutton16">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -723,6 +739,7 @@
                       <object class="GtkSpinButton" id="spinbutton17">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -883,6 +900,7 @@
                       <object class="GtkSpinButton" id="BBoxSizeXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -899,6 +917,7 @@
                       <object class="GtkSpinButton" id="BBoxSizeYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -915,6 +934,7 @@
                       <object class="GtkSpinButton" id="BBoxSizeZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -947,6 +967,7 @@
                       <object class="GtkSpinButton" id="BBoxCenterXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -963,6 +984,7 @@
                       <object class="GtkSpinButton" id="BBoxCenterYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -979,6 +1001,7 @@
                       <object class="GtkSpinButton" id="BBoxCenterZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>

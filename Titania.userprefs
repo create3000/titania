@@ -1,9 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWidget.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="116" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="51" Column="5" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="551" Column="14" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="535" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1725" Column="1" />
+      <File FileName="Titania/Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.h" Line="91" Column="1" />
+      <File FileName="Titania/Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp" Line="55" Column="1" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.h" Line="93" Column="1" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="57" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -43,6 +49,7 @@
                 <Node name="Components" expanded="True">
                   <Node name="CubeMapTexturing" expanded="True" />
                   <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Texturing" expanded="True" />
@@ -73,24 +80,13 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True">
-                <Node name="X3DBrowserWidget.cpp" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
-              <Node name="Dialogs" expanded="True">
-                <Node name="FileImportDialog" expanded="True" />
-                <Node name="FileOpenDialog" expanded="True" />
-                <Node name="FileSaveDialog" expanded="True" />
-              </Node>
               <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True" />
-                <Node name="LightEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="HistoryView" expanded="True" />
-                <Node name="OutlineEditor" expanded="True">
-                  <Node name="CellRenderer" expanded="True" />
+                <Node name="InlineEditor" expanded="True">
+                  <Node name="InlineEditor.cpp" selected="True" />
                 </Node>
+                <Node name="NavigationInfoEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

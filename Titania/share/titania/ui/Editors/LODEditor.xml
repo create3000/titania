@@ -219,6 +219,7 @@
                       <object class="GtkSpinButton" id="LODBBoxCenterXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -235,6 +236,7 @@
                       <object class="GtkSpinButton" id="LODBBoxCenterYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -251,6 +253,7 @@
                       <object class="GtkSpinButton" id="LODBBoxCenterZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -283,6 +286,7 @@
                       <object class="GtkSpinButton" id="LODBBoxSizeXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxSizeXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -299,6 +303,7 @@
                       <object class="GtkSpinButton" id="LODBBoxSizeYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxSizeYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -315,6 +320,7 @@
                       <object class="GtkSpinButton" id="LODBBoxSizeZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxSizeZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -422,6 +428,7 @@
                       <object class="GtkSpinButton" id="LODCenterXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -438,6 +445,7 @@
                       <object class="GtkSpinButton" id="LODCenterYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -454,6 +462,7 @@
                       <object class="GtkSpinButton" id="LODCenterZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>

@@ -594,6 +594,7 @@
                           <object class="GtkSpinButton" id="DirectionalLightDirectionXSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">x-Axis</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -610,6 +611,7 @@
                           <object class="GtkSpinButton" id="DirectionalLightDirectionYSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">y-Axis</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -626,6 +628,7 @@
                           <object class="GtkSpinButton" id="DirectionalLightDirectionZSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">z-Axis</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -708,6 +711,7 @@
                       <object class="GtkSpinButton" id="PointLightLocationXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -724,6 +728,7 @@
                       <object class="GtkSpinButton" id="PointLightLocationYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -740,6 +745,7 @@
                       <object class="GtkSpinButton" id="PointLightLocationZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1022,6 +1028,7 @@
                       <object class="GtkSpinButton" id="SpotLightLocationXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1038,6 +1045,7 @@
                       <object class="GtkSpinButton" id="SpotLightLocationYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1054,6 +1062,7 @@
                       <object class="GtkSpinButton" id="SpotLightLocationZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">z-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1206,6 +1215,7 @@
                           <object class="GtkSpinButton" id="SpotLightDirectionXSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">x-Axis</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1222,6 +1232,7 @@
                           <object class="GtkSpinButton" id="SpotLightDirectionYSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">y-Axis</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1238,6 +1249,7 @@
                           <object class="GtkSpinButton" id="SpotLightDirectionZSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">z-Axis</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionZAdjustment</property>
                             <property name="climb_rate">0.01</property>

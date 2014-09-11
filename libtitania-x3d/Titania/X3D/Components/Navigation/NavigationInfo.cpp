@@ -183,16 +183,20 @@ NavigationInfo::getFarPlane (X3DViewpointNode* const viewpoint) const
 TransitionType
 NavigationInfo::getTransitionType () const
 {
+	static const std::map <std::string, TransitionType> transitionTypes = {
+		std::make_pair ("TELEPORT", TransitionType::TELEPORT),
+		std::make_pair ("LINEAR",   TransitionType::LINEAR),
+		std::make_pair ("ANIMATE",  TransitionType::ANIMATE)
+	};
+
 	for (const auto & type : transitionType ())
 	{
-		if (type == "TELEPORT")
-			return TransitionType::TELEPORT;
-
-		if (type == "LINEAR")
-			return TransitionType::LINEAR;
-
-		if (type == "ANIMATE")
-			return TransitionType::ANIMATE;
+		try
+		{
+			return transitionTypes .at (type);
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 	return TransitionType::LINEAR;

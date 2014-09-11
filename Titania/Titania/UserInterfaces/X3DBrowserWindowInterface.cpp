@@ -195,6 +195,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureEditorButton", m_TextureEditorButton);
 	m_builder -> get_widget ("TextEditorButton", m_TextEditorButton);
 	m_builder -> get_widget ("GeometryPropertiesEditorButton", m_GeometryPropertiesEditorButton);
+	m_builder -> get_widget ("NavigationInfoEditorButton", m_NavigationInfoEditorButton);
 	m_builder -> get_widget ("ViewpointEditorButton", m_ViewpointEditorButton);
 	m_builder -> get_widget ("LightEditorButton", m_LightEditorButton);
 	m_builder -> get_widget ("LODEditorButton", m_LODEditorButton);
@@ -390,6 +391,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));
 	m_TextEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_text_editor_clicked));
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
+	m_NavigationInfoEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_navigation_info_editor_clicked));
 	m_ViewpointEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoint_editor_clicked));
 	m_LightEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_light_editor_clicked));
 	m_LODEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lod_editor_clicked));

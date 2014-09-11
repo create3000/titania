@@ -1718,6 +1718,12 @@ BrowserWindow::on_geometry_properties_editor_clicked ()
 }
 
 void
+BrowserWindow::on_navigation_info_editor_clicked ()
+{
+	addDialog ("NavigationInfoEditor");
+}
+
+void
 BrowserWindow::on_viewpoint_editor_clicked ()
 {
 	addDialog ("ViewpointEditor");

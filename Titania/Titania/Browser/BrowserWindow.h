@@ -531,6 +531,10 @@ private:
 
 	virtual
 	void
+	on_navigation_info_editor_clicked () final override;
+
+	virtual
+	void
 	on_viewpoint_editor_clicked () final override;
 
 	virtual

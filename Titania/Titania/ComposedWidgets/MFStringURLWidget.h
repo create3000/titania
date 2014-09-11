@@ -51,7 +51,7 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 
-#include "../ComposedWidgets/X3DComposedWidget.h"
+#include "../ComposedWidgets/MFStringWidget.h"
 
 #include "../Base/X3DUserInterface.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
@@ -59,418 +59,8 @@
 namespace titania {
 namespace puck {
 
-class MFStringWidget :
-	public X3DComposedWidget
-{
-public:
-
-	///  @name Member access
-
-	void
-	setNodes (const X3D::MFNode &);
-
-	const X3D::MFNode &
-	getNodes ()
-	{ return nodes; }
-
-	///  @name Destruction
-
-	virtual
-	~MFStringWidget ()
-	{ dispose (); }
-
-
-protected:
-
-	///  @name Construction
-
-	MFStringWidget (Gtk::TreeView &,
-	                const Glib::RefPtr <Gtk::CellRendererText> &,
-	                Gtk::Button &,
-	                Gtk::Button &,
-	                const std::string &,
-	                const Glib::ustring &);
-
-	///  @name Member access
-
-	Gtk::TreeView &
-	getTreeView ()
-	{ return treeView; }
-
-	const Gtk::TreeView &
-	getTreeView () const
-	{ return treeView; }
-
-	void
-	set1Value (const size_t, const Glib::ustring &);
-
-	void
-	set1Value (const Gtk::TreePath &, const Glib::ustring &);
-	
-	const Glib::ustring &
-	get1Value (const size_t index)
-	{ return string .get1Value (index); }
-
-	///  @name Operations
-
-	void
-	append (const Glib::ustring &);
-
-	///  @name Event handler
-
-	virtual
-	void
-	on_add_clicked ();
-
-	virtual
-	void
-	set_buffer ();
-
-
-private:
-
-	class Columns :
-		public Gtk::TreeModel::ColumnRecord
-	{
-	public:
-
-		Columns ()
-		{
-			add (string);
-		}
-
-		Gtk::TreeModelColumn <Glib::ustring> string;
-
-	};
-
-	///  @name Event handler
-
-	void
-	on_selection_changed ();
-
-	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
-	                       int, int,
-	                       const Gtk::SelectionData &,
-	                       guint,
-	                       guint);
-
-	void
-	on_edited (const Glib::ustring &, const Glib::ustring &);
-
-	void
-	on_remove_clicked ();
-
-	void
-	on_string_changed ();
-
-	void
-	set_field ();
-
-	void
-	connect (const X3D::MFString &);
-
-	///  @name Members
-
-	Gtk::TreeView &                            treeView;
-	Columns                                    columns;
-	Glib::RefPtr <Gtk::ListStore>              listStore;
-	const Glib::RefPtr <Gtk::CellRendererText> cellRenderer;
-	Gtk::Button &                              addButton;
-	Gtk::Button &                              removeButton;
-	X3D::MFNode                                nodes;
-	const std::string                          name;
-	const Glib::ustring                        defaultValue;
-	X3D::MFString                              string;
-	UndoStepPtr                                undoStep;
-	X3D::SFTime                                buffer;
-
-};
-
-inline
-MFStringWidget::MFStringWidget (Gtk::TreeView & treeView,
-                                const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
-                                Gtk::Button & addButton,
-                                Gtk::Button & removeButton,
-                                const std::string & name,
-                                const Glib::ustring & defaultValue) :
-	X3DComposedWidget (),
-	       treeView (treeView),
-	        columns (),
-	      listStore (Gtk::ListStore::create (columns)),
-	   cellRenderer (cellRenderer),
-	      addButton (addButton),
-	   removeButton (removeButton),
-	          nodes (),
-	           name (name),
-	   defaultValue (defaultValue),
-	         string (),
-	       undoStep (),
-	         buffer ()
-{
-	addChildren (buffer);
-	buffer .addInterest (this, &MFStringWidget::set_buffer);
-
-	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (*this, &MFStringWidget::on_drag_data_received));
-	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (*this, &MFStringWidget::on_selection_changed));
-	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (*this, &MFStringWidget::on_edited));
-	addButton .signal_clicked ()                    .connect (sigc::mem_fun (*this, &MFStringWidget::on_add_clicked));
-	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (*this, &MFStringWidget::on_remove_clicked));
-
-	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	treeView .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
-	treeView .set_model (listStore);
-
-	setup ();
-}
-
-inline
-void
-MFStringWidget::setNodes (const X3D::MFNode & value)
-{
-	undoStep .reset ();
-
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			node -> getField <X3D::MFString> (name) .removeInterest (this, &MFStringWidget::set_field);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	nodes = value;
-
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			node -> getField <X3D::MFString> (name) .addInterest (this, &MFStringWidget::set_field);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	set_field ();
-}
-
-inline
-void
-MFStringWidget::set1Value (const size_t index, const Glib::ustring & text)
-{
-	Gtk::TreePath path;
-
-	path .push_back (index);
-
-	set1Value (path, text);
-}
-
-inline
-void
-MFStringWidget::set1Value (const Gtk::TreePath & path, const Glib::ustring & text)
-{
-	const auto & value = text .empty () ? defaultValue : text;
-
-	if (string .get1Value (path .front ()) == value)
-		return;
-
-	string .set1Value (path .front (), value);
-
-	// Update list store.
-
-	const auto iter = listStore -> get_iter (path);
-	(*iter) [columns .string] = value;
-
-	on_string_changed ();
-}
-
-inline
-void
-MFStringWidget::append (const Glib::ustring & value)
-{
-	const auto iter = listStore -> append ();
-
-	(*iter) [columns .string] = value;
-
-	string .emplace_back (value);
-
-	on_string_changed ();
-}
-
-inline
-void
-MFStringWidget::on_selection_changed ()
-{
-	removeButton .set_sensitive (not treeView .get_selection () -> get_selected_rows () .empty ());
-}
-
-inline
-void
-MFStringWidget::on_edited (const Glib::ustring & pathString, const Glib::ustring & text)
-{
-	const auto path = Gtk::TreePath (pathString);
-
-	set1Value (Gtk::TreePath (pathString), text);
-}
-
-inline
-void
-MFStringWidget::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                       int x, int y,
-                                       const Gtk::SelectionData & selection_data,
-                                       guint info,
-                                       guint time)
-{
-	const auto   selected = treeView .get_selection () -> get_selected ();
-	const size_t index    = listStore -> get_path (selected) .front ();
-
-	// Update list store.
-
-	Gtk::TreeModel::Path      destinationPath;
-	Gtk::TreeViewDropPosition position;
-	size_t                    dest = 0;
-
-	if (treeView .get_dest_row_at_pos (x, y, destinationPath, position))
-	{
-		auto destination = listStore -> get_iter (destinationPath);
-
-		dest = listStore -> get_path (destination) .front ();
-
-		switch (position)
-		{
-			case Gtk::TREE_VIEW_DROP_BEFORE:
-			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
-				listStore -> move (selected, destination);
-				break;
-			case Gtk::TREE_VIEW_DROP_AFTER:
-			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
-				listStore -> move (selected, ++ destination);
-				++ dest;
-				break;
-		}
-	}
-	else
-	{
-		const auto children = listStore -> children ();
-		listStore -> move (selected, children .end ());
-		dest = children .size ();
-	}
-
-	// Move value.
-
-	const auto value = string [index];
-
-	if (index < dest)
-	{
-		string .insert (string .begin () + dest, value);
-		string .erase (string .begin () + index);
-	}
-	else
-	{
-		string .erase (string .begin () + index);
-		string .insert (string .begin () + dest, value);
-	}
-
-	on_string_changed ();
-
-	context -> drag_finish (false, false, time);
-}
-
-inline
-void
-MFStringWidget::on_add_clicked ()
-{
-	append (defaultValue);
-}
-
-inline
-void
-MFStringWidget::on_remove_clicked ()
-{
-	const auto   selected = treeView .get_selection () -> get_selected ();
-	const size_t index    = listStore -> get_path (selected) .front ();
-
-	// Update list store.
-
-	listStore -> erase (selected);
-
-	// Remove value.
-
-	string .erase (string .begin () + index);
-
-	on_string_changed ();
-}
-
-inline
-void
-MFStringWidget::on_string_changed ()
-{
-	// Change node field
-
-	undoStep .reset ();
-
-	addUndoFunction <X3D::MFString> (nodes, name, undoStep);
-
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			auto & field = node -> getField <X3D::MFString> (name);
-
-			field .removeInterest (this, &MFStringWidget::set_field);
-			field .addInterest (this, &MFStringWidget::connect);
-
-			field = string;
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	addRedoFunction <X3D::MFString> (nodes, name, undoStep);
-}
-
-inline
-void
-MFStringWidget::set_field ()
-{
-	buffer .addEvent ();
-}
-
-inline
-void
-MFStringWidget::set_buffer ()
-{
-	const auto pair = getArray <X3D::MFString> (nodes, name);
-
-	string = pair .first;
-
-	listStore -> clear ();
-
-	if (pair .second > -2)
-	{
-		for (const auto & value : pair .first)
-		{
-			const auto iter = listStore -> append ();
-			(*iter) [columns .string] = value .getValue ();
-		}
-	}
-
-	treeView     .set_sensitive (pair .second not_eq -2);
-	addButton    .set_sensitive (pair .second not_eq -2);
-	removeButton .set_sensitive (false);
-}
-
-inline
-void
-MFStringWidget::connect (const X3D::MFString & field)
-{
-	field .removeInterest (this, &MFStringWidget::connect);
-	field .addInterest (this, &MFStringWidget::set_field);
-}
-
 class MFStringURLWidget :
-	public MFStringWidget
+	public X3DMFStringWidget
 {
 public:
 
@@ -481,8 +71,8 @@ public:
 	                   const Glib::RefPtr <Gtk::CellRendererText> &,
 	                   Gtk::Button &,
 	                   Gtk::Button &,
-                      const Glib::RefPtr <Gtk::TreeViewColumn> &,
- 	                   const std::string &);
+	                   const Glib::RefPtr <Gtk::TreeViewColumn> &,
+	                   const std::string &);
 
 
 private:
@@ -495,7 +85,7 @@ private:
 
 	bool
 	on_button_release_event (GdkEventButton*);
-	
+
 	virtual
 	void
 	set_buffer () final override;
@@ -505,6 +95,7 @@ private:
 	X3DUserInterface* const                  userInterface;
 	const Glib::RefPtr <Gtk::TreeViewColumn> URLChooserColumn;
 	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
+
 };
 
 inline
@@ -515,11 +106,11 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
                                       Gtk::Button & removeButton,
                                       const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
                                       const std::string & name) :
-	X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
-	  MFStringWidget (treeView, cellRenderer, addButton, removeButton, name, ""),
-	   userInterface (userInterface),
-	URLChooserColumn (URLChooserColumn),
-	  fileOpenDialog ()
+	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
+	X3DMFStringWidget (treeView, cellRenderer, addButton, removeButton, name, ""),
+	    userInterface (userInterface),
+	 URLChooserColumn (URLChooserColumn),
+	   fileOpenDialog ()
 {
 	treeView .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
 }
@@ -566,7 +157,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 		return false;
 
 	// Choose new URL
-	
+
 	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
 	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
@@ -576,7 +167,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 	// Set URL
 
 	basic::uri URL = getExecutionContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
-	
+
 	fileOpenDialog -> setURL (URL);
 
 	// Run
@@ -603,7 +194,7 @@ MFStringURLWidget::set_buffer ()
 	if (fileOpenDialog)
 		fileOpenDialog -> quit ();
 
-	MFStringWidget::set_buffer ();
+	X3DMFStringWidget::set_buffer ();
 }
 
 } // puck

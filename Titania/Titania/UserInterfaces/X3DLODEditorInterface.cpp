@@ -102,8 +102,6 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODNameBox", m_LODNameBox);
 	m_builder -> get_widget ("LODNameEntry", m_LODNameEntry);
 	m_builder -> get_widget ("LODRenameButton", m_LODRenameButton);
-
-	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.

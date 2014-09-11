@@ -1,5 +1,31 @@
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* tab.x3dv:
+	* LODEditor.xml:
+	* LightEditor.xml:
+	* MFStringWidget.h:
+	* InlineEditor.xml:
+	* TextureEditor.xml:
+	* MFStringURLWidget.h:
+	* ViewpointEditor.xml:
+	* X3DLODEditorInterface.cpp:
+	* X3DBrowserWindowInterface.h:
+	* PrecisionPlacementPanel.xml:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DNavigationInfoEditorInterface.h:
+	* X3DNavigationInfoEditorInterface.cpp:
+	* NavigationInfoEditor.h:
+	* NavigationInfoEditor.cpp: 
+
+2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* tab.x3dv:
 	* BrowserWindow.xml:
 	* X3DBrowserWidget.cpp: 
