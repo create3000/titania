@@ -351,6 +351,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	getBrowserNotebook () .append_page (*browser, *box);
 	getBrowserNotebook () .set_tab_reorderable (*browser, true);
 	getBrowserNotebook () .set_menu_label_text (*browser, text);
+	getBrowserNotebook () .set_show_tabs (browsers .size () > 1);
 
 	const auto userData = getUserData (browser);
 
@@ -571,6 +572,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 		X3DBrowserWidget::blank ();
 
 	getBrowserNotebook () .remove_page (*browser);
+	getBrowserNotebook () .set_show_tabs (browsers .size () > 1);
 }
 
 bool

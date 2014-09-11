@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWidget.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="115" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="809" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="116" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="51" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -28,11 +28,13 @@
                 <Node name="pages" expanded="True">
                   <Node name="about" expanded="True" />
                 </Node>
+                <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Layering" expanded="True" />
@@ -41,14 +43,21 @@
                 <Node name="Components" expanded="True">
                   <Node name="CubeMapTexturing" expanded="True" />
                   <Node name="Layering" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Texturing" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
+                <Node name="Miscellaneous" expanded="True" />
                 <Node name="Parser" expanded="True" />
-                <Node name="Rendering" expanded="True" />
                 <Node name="Types" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
@@ -67,13 +76,21 @@
               <Node name="Browser" expanded="True">
                 <Node name="X3DBrowserWidget.cpp" selected="True" />
               </Node>
+              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Dialogs" expanded="True">
                 <Node name="FileImportDialog" expanded="True" />
                 <Node name="FileOpenDialog" expanded="True" />
                 <Node name="FileSaveDialog" expanded="True" />
               </Node>
               <Node name="Editors" expanded="True">
-                <Node name="TextureEditor" expanded="True" />
+                <Node name="AppearanceEditor" expanded="True" />
+                <Node name="LightEditor" expanded="True" />
+              </Node>
+              <Node name="Widgets" expanded="True">
+                <Node name="HistoryView" expanded="True" />
+                <Node name="OutlineEditor" expanded="True">
+                  <Node name="CellRenderer" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>

@@ -6,7 +6,7 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "history" "false"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Wed, 10 Sep 2014 04:36:20 GMT"
+META "modified" "Wed, 10 Sep 2014 06:46:09 GMT"
 META "title" "about:tab"
 
 EXTERNPROTO Rotor [
@@ -4427,7 +4427,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _5 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4498,7 +4497,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _12 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4540,7 +4538,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _16 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4582,7 +4579,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _20 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4623,7 +4619,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _24 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4665,7 +4660,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _28 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4707,7 +4701,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _32 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4749,7 +4742,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _36 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
@@ -4791,7 +4783,6 @@ LayerSet {
                           children Shape {
                             appearance Appearance {
                               texture DEF _40 ImageTexture {
-                                url "../../ui/icons/dot-clear.png"
                                 repeatS FALSE
                                 repeatT FALSE
                               }
