@@ -61,6 +61,7 @@ namespace puck {
 NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.xml"), gconf_dir ()),
+	                        nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                            type (new MFStringWidget (browserWindow,
 	                                  getTypeTreeView (),
 	                                  getTypeCellRendererText (),
@@ -96,21 +97,23 @@ NavigationInfoEditor::initialize ()
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &NavigationInfoEditor::set_selection);
 
-	set_selection ();
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
-NavigationInfoEditor::set_selection ()
+NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
 {
-	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::NavigationInfo });
+	const auto navigationInfo  = selection .empty () ? nullptr : selection .back ();
+	const auto navigationInfos = navigationInfo ? X3D::MFNode ({ navigationInfo }) : X3D::MFNode ();
 
-	type ->           setNodes (nodes);
-	avatarSize       .setNodes (nodes);
-	speed            .setNodes (nodes);
-	headlight        .setNodes (nodes);
-	visibilityLimit  .setNodes (nodes);
-	transitionType -> setNodes (nodes);
-	transitionTime   .setNodes (nodes);
+	nodeName   .setNode  (navigationInfo);
+	type ->           setNodes (navigationInfos);
+	avatarSize       .setNodes (navigationInfos);
+	speed            .setNodes (navigationInfos);
+	headlight        .setNodes (navigationInfos);
+	visibilityLimit  .setNodes (navigationInfos);
+	transitionType -> setNodes (navigationInfos);
+	transitionTime   .setNodes (navigationInfos);
 }
 
 void

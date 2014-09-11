@@ -194,6 +194,18 @@ public:
 	getTransitionTypeRemoveButton () const
 	{ return *m_TransitionTypeRemoveButton; }
 
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
+
 	virtual
 	void
 	on_index_clicked () = 0;
@@ -236,6 +248,9 @@ private:
 	Gtk::TreeView*                       m_TransitionTypeTreeView;
 	Gtk::Button*                         m_TransitionTypeAddButton;
 	Gtk::Button*                         m_TransitionTypeRemoveButton;
+	Gtk::Box*                            m_NameBox;
+	Gtk::Entry*                          m_NameEntry;
+	Gtk::Button*                         m_RenameButton;
 
 };
 

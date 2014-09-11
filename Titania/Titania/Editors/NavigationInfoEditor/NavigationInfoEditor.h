@@ -83,7 +83,7 @@ private:
 	initialize () final override;
 
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode &);
 
 	///  @name Event handlers
 
@@ -93,6 +93,7 @@ private:
 
 	///  @name Members
 
+	NameEntry                          nodeName;
 	std::unique_ptr <MFStringWidget> type;
 	X3DFieldAdjustment3 <X3D::MFFloat> avatarSize;
 	X3DFieldAdjustment <X3D::SFFloat>  speed;

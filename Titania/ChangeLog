@@ -1,5 +1,13 @@
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* tab.x3dv:
+	* X3DNavigationInfoEditorInterface.h:
+	* NavigationInfoEditor.h:
+	* X3DNavigationInfoEditorInterface.cpp:
+	* NavigationInfoEditor.cpp: 
+
+2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* DialogFactory.h:

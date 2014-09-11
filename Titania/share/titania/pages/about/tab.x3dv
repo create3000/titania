@@ -6,7 +6,7 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "history" "false"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Thu, 11 Sep 2014 02:56:43 GMT"
+META "modified" "Thu, 11 Sep 2014 03:14:42 GMT"
 META "title" "about:tab"
 
 EXTERNPROTO Rotor [
@@ -25,7 +25,7 @@ EXTERNPROTO Rotor [
 ]
 "library/Rotor.x3dv"
 
-NavigationInfo {
+DEF Default NavigationInfo {
   type "NONE"
   headlight FALSE
 }
@@ -39,7 +39,8 @@ LayerSet {
   layers [
     Layer {
       children [
-        NavigationInfo {
+        DEF Background NavigationInfo {
+          type "NONE"
           headlight FALSE
           transitionTime 3
         }
@@ -60,7 +61,6 @@ LayerSet {
         }
         DEF Logo Transform {
           translation -8.37482 5.27347 -0.431105
-          rotation 0 0 -1 2.34039
           center 5.54 -5.84 0
           children Shape {
             appearance Appearance {
@@ -2458,7 +2458,7 @@ LayerSet {
     }
     Layer {
       children [
-        NavigationInfo {
+        DEF Animate NavigationInfo {
           type "NONE"
           headlight FALSE
           transitionType "ANIMATE"
