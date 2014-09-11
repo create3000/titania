@@ -101,11 +101,10 @@ public:
 
 	virtual
 	void
-	blank ();
-
-	virtual
-	void
 	open (const basic::uri &, const bool = true);
+
+	void
+	openRecent ();
 
 	virtual
 	void
@@ -175,6 +174,7 @@ protected:
 	void
 	setTitle () const;
 
+	virtual
 	void
 	isLive (const bool);
 

@@ -1,15 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="116" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="551" Column="14" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="535" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1725" Column="1" />
-      <File FileName="Titania/Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.h" Line="91" Column="1" />
-      <File FileName="Titania/Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp" Line="55" Column="1" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.h" Line="93" Column="1" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="57" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="211" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="648" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="988" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -39,24 +34,19 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="CubeMapTexturing" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
-                  <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True" />
+                </Node>
                 <Node name="Miscellaneous" expanded="True" />
                 <Node name="Parser" expanded="True" />
                 <Node name="Types" expanded="True" />
@@ -79,14 +69,21 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.cpp" selected="True" />
+              </Node>
               <Node name="ComposedWidgets" expanded="True" />
+              <Node name="Dialogs" expanded="True">
+                <Node name="FileOpenDialog" expanded="True" />
+              </Node>
               <Node name="Editors" expanded="True">
-                <Node name="InlineEditor" expanded="True">
-                  <Node name="InlineEditor.cpp" selected="True" />
-                </Node>
+                <Node name="InlineEditor" expanded="True" />
                 <Node name="NavigationInfoEditor" expanded="True" />
+                <Node name="PrecisionPlacementPanel" expanded="True" />
+              </Node>
+              <Node name="UserInterfaces" expanded="True" />
+              <Node name="Widgets" expanded="True">
+                <Node name="HistoryView" expanded="True" />
               </Node>
             </Node>
           </Node>

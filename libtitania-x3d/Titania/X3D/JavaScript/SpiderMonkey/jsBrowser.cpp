@@ -478,10 +478,10 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
 {
-	const auto script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
-
 	if (argc == 1)
 	{
+		const auto script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
+
 		JSString* name = nullptr;
 
 		jsval* const argv = JS_ARGV (context, vp);
@@ -500,10 +500,6 @@ jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
 			JS_ReportError (context, "Browser .getRenderingProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());
 		}
 	}
-	else if (argc == 0)
-	{
-		return jsSFNode::create (context, new SFNode (script -> getBrowser () -> getRenderingProperties ()), vp);
-	}
 	else
 		JS_ReportError (context, "Browser .getRenderingProperty: wrong number of arguments");
 
@@ -513,10 +509,10 @@ jsBrowser::getRenderingProperty (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
 {
-	const auto script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
-
 	if (argc == 1)
 	{
+		const auto script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
+
 		JSString* name = nullptr;
 
 		jsval* const argv = JS_ARGV (context, vp);
@@ -535,10 +531,6 @@ jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
 			JS_ReportError (context, "Browser .getBrowserProperty: unknown property '%s'.", JS_GetString (context, name) .c_str ());
 		}
 	}
-	else if (argc == 0)
-	{
-		return jsSFNode::create (context, new SFNode (script -> getBrowser () -> getBrowserProperties ()), vp);
-	}
 	else
 		JS_ReportError (context, "Browser .getBrowserProperty: wrong number of arguments");
 
@@ -548,10 +540,10 @@ jsBrowser::getBrowserProperty (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsBrowser::getBrowserOption (JSContext* context, uintN argc, jsval* vp)
 {
-	const auto script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
-
 	if (argc == 1)
 	{
+		const auto script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
+
 		JSString* name = nullptr;
 
 		jsval* const argv = JS_ARGV (context, vp);
@@ -569,10 +561,6 @@ jsBrowser::getBrowserOption (JSContext* context, uintN argc, jsval* vp)
 		{
 			JS_ReportError (context, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (context, name) .c_str ());
 		}
-	}
-	else if (argc == 0)
-	{
-		return jsSFNode::create (context, new SFNode (script -> getBrowser () -> getBrowserOptions ()), vp);
 	}
 	else
 		JS_ReportError (context, "Browser .getBrowserOption: wrong number of arguments");

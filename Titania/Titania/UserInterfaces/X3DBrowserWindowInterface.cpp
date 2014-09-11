@@ -433,7 +433,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 }
 
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
-{ }
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania

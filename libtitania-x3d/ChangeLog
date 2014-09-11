@@ -1,5 +1,11 @@
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* RenderingProperties.h:
+	* RenderingProperties.cpp:
+	* jsBrowser.cpp: 
+
+2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NavigationInfo.cpp: 
 
 2014-09-10  Holger Seelig  <holger.seelig@yahoo.de>

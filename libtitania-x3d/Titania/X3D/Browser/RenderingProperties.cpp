@@ -90,9 +90,7 @@ RenderingProperties::Fields::Fields () :
 	      maxLights (new SFInt32 ()),
 	    antialiased (new SFBool ()),
 	     colorDepth (new SFInt32 ()),
-	  textureMemory (new SFDouble ()),
-	foregroundColor (new SFColorRGBA (1, 1, 1, 1)),
-	backgroundColor (new SFColorRGBA (0, 0, 0, 1))
+	  textureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -113,9 +111,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "Antialiased",    antialiased ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
 	addField (outputOnly, "TextureMemory",  textureMemory ());
-
-	addField (outputOnly, "ForegroundColor",  foregroundColor ());
-	addField (outputOnly, "BackgroundColor",  backgroundColor ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
@@ -154,22 +149,8 @@ RenderingProperties::initialize ()
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 
-		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepareEvents);
 		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::set_enabled);
 	}
-}
-
-void
-RenderingProperties::prepareEvents ()
-{
-	const auto fColor = getBrowser () -> getForegroundColor ();
-	const auto bColor = getBrowser () -> getBackgroundColor ();
-
-	if (fColor not_eq foregroundColor ())
-		foregroundColor () = fColor;
-
-	if (bColor not_eq backgroundColor ())
-		backgroundColor () = bColor;
 }
 
 void

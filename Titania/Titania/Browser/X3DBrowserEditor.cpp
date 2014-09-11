@@ -306,7 +306,7 @@ X3DBrowserEditor::blank ()
 		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
 	}
 	else
-		X3DBrowserWidget::blank ();
+		openRecent ();
 }
 
 void

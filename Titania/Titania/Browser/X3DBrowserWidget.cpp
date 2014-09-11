@@ -293,11 +293,14 @@ X3DBrowserWidget::isLive (const bool value)
 
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
 
-	getBrowser () -> isLive () = value;
+	if (value)
+		getBrowser () -> beginUpdate ();
+	else
+		getBrowser () -> endUpdate ();
 }
 
 void
-X3DBrowserWidget::blank ()
+X3DBrowserWidget::openRecent ()
 {
 	aboutTab -> loadPreview (getBrowser ());
 	aboutTab -> open ();
@@ -569,7 +572,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 	browsers .remove (browser);
 
 	if (browsers .empty ())
-		X3DBrowserWidget::blank ();
+		openRecent ();
 
 	getBrowserNotebook () .remove_page (*browser);
 	getBrowserNotebook () .set_show_tabs (browsers .size () > 1);

@@ -92,7 +92,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Show Node Index.</property>
+                <property name="tooltip_text" translatable="yes">Node Index</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_index_clicked" swapped="no"/>
                 <child>
@@ -100,6 +100,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="stock">gtk-index</property>
+                    <property name="icon_size">1</property>
                   </object>
                 </child>
               </object>

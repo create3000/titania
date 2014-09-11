@@ -19,6 +19,7 @@ my %windows = ();
 
 $windows {$_} = true foreach qw(
 	Gtk::Window
+	Gtk::ApplicationWindow
 	Gtk::FileChooserDialog
 	Gtk::ColorChooserDialog
 	Gtk::FontChooserDialog
@@ -35,6 +36,8 @@ my %objects = ();
 
 $objects {$_} = true foreach qw(
 	Gtk::FileFilter
+	Gtk::RecentFilter
+	Gtk::RecentManager
 	Gtk::AccelGroup
 	Gtk::ActionGroup
 	Gtk::Action
@@ -695,3 +698,7 @@ show_menu
   virtual void on_show_menu();
 focus_in_event
   virtual bool on_focus_in_event(GdkEventFocus* event);
+item_activated
+  virtual void on_item_activated();
+selection_changed
+  virtual void on_selection_changed();

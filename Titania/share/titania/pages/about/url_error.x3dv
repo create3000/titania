@@ -2,7 +2,7 @@
 
 META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:url_error"
-META "history" "false"
+META "titania-history" "false"
 
 LayerSet {
   activeLayer 1

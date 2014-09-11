@@ -1,5 +1,23 @@
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserHistory.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.h:
+	* tab.x3dv:
+	* X3DBrowserWidget.h:
+	* blank.x3dv:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* LODEditor.xml:
+	* LightEditor.xml:
+	* url_error.x3dv:
+	* InlineEditor.xml:
+	* HistoryView.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* PrecisionPlacementPanel.xml: 
+
+2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.xml:
 	* NodeIndex.xml: 
 

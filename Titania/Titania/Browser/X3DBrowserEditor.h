@@ -67,9 +67,8 @@ public:
 
 	/// @name File operations
 
-	virtual
 	void
-	blank () final override;
+	blank ();
 
 	virtual
 	void
