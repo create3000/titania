@@ -87,6 +87,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FileMenuItem", m_FileMenuItem);
 	m_builder -> get_widget ("NewMenuItem", m_NewMenuItem);
 	m_builder -> get_widget ("OpenMenuItem", m_OpenMenuItem);
+	m_builder -> get_widget ("OpenRecentMenuItem", m_OpenRecentMenuItem);
 	m_builder -> get_widget ("OpenLocationMenuItem", m_OpenLocationMenuItem);
 	m_builder -> get_widget ("ImportMenuItem", m_ImportMenuItem);
 	m_builder -> get_widget ("ImportAsInlineMenuItem", m_ImportAsInlineMenuItem);
@@ -254,6 +255,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'NewMenuItem'.
 	m_NewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
 	m_OpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
+
+	// Connect object Gtk::MenuItem with id 'OpenRecentMenuItem'.
+	m_OpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent));
+
+	// Connect object Gtk::ImageMenuItem with id 'OpenLocationMenuItem'.
 	m_OpenLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location));
 	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 

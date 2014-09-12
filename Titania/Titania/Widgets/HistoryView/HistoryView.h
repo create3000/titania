@@ -64,7 +64,11 @@ class HistoryView :
 {
 public:
 
+	///  @name Construction
+
 	HistoryView (X3DBrowserWindow* const);
+
+	///  @name Destruction
 
 	virtual
 	~HistoryView ();
@@ -72,12 +76,15 @@ public:
 
 private:
 
+	///  @name Event handlers
+
 	virtual
 	void
 	on_map () final override;
 
+	virtual
 	void
-	set_splashScreen ();
+	on_unmap () final override;
 
 	void
 	set_history ();
@@ -88,6 +95,8 @@ private:
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	///  @name Members
 
 	History history;
 

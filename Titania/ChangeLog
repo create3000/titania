@@ -1,5 +1,23 @@
 2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* AboutTab.h:
+	* AboutTab.cpp:
+	* BrowserWindow.h:
+	* HistoryView.xml:
+	* BrowserWindow.cpp:
+	* tab.x3dv:
+	* BrowserWindow.xml:
+	* History.h:
+	* History.cpp:
+	* HistoryView.h:
+	* HistoryView.cpp:
+	* X3DHistoryViewInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DHistoryViewInterface.cpp:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* AboutTab.cpp:
 	* tab.x3dv:

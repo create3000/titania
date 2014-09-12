@@ -135,6 +135,10 @@ private:
 
 	virtual
 	void
+	on_open_recent () final override;
+
+	virtual
+	void
 	on_open_location () final override;
 
 	virtual

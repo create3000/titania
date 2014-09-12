@@ -5,7 +5,7 @@ META "created" "Thu, 04 Sep 2014 15:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Fri, 12 Sep 2014 06:59:43 GMT"
+META "modified" "Fri, 12 Sep 2014 09:47:58 GMT"
 META "titania-history" "false"
 META "title" "about:tab"
 
@@ -24,6 +24,26 @@ EXTERNPROTO Rotor [
   outputOnly  SFRotation rotation_changed
 ]
 "library/Rotor.x3dv"
+
+PROTO SFInt32 [
+  inputOnly   SFTime  set_triggerTime
+  inputOutput SFInt32 keyValue 0
+  outputOnly  SFInt32 value_changed
+]
+{
+  DEF SFInt32 Script {
+    inputOnly   SFTime  set_triggerTime IS set_triggerTime
+    inputOutput SFInt32 keyValue IS keyValue
+    outputOnly  SFInt32 value_changed IS value_changed
+
+    url "javascript:
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
 
 DEF Default NavigationInfo {
   type "NONE"
@@ -61,6 +81,7 @@ LayerSet {
         }
         DEF Logo Transform {
           translation -8.37482 5.27347 -0.431105
+          rotation 0 0 -1 3.03897
           center 5.54 -5.84 0
           children Shape {
             appearance Appearance {
@@ -4813,7 +4834,7 @@ LayerSet {
             }
           ]
         }
-        DEF _6 LoadSensor {
+        LoadSensor {
           watchList [
             USE Texture0
             USE Texture1
@@ -4827,96 +4848,104 @@ LayerSet {
             LoadSensor { }
           ]
         }
-        DEF _7 BooleanFilter { }
-        DEF PreviousButton Group {
-          children [
-            DEF PreviousTouch TouchSensor { }
-            Transform {
-              translation 4.75 0.4 0.0192773
-              rotation -2.47696e-08 -8.09367e-09 1 1.5708
-              scale 2.25 2.25 0.8
-              scaleOrientation 0.0536555 -0.89964 0.433323 0.0794526
-              center 0 0 -0.0137088
-              children DEF _8 Shape {
-                appearance Appearance {
-                  material Material {
-                    ambientIntensity 0.653913
-                    diffuseColor 0.244681 0 0
-                    specularColor 1 0.359185 0.359185
-                    shininess 0.148936
+        DEF _6 BooleanFilter { }
+        DEF PreviousSwitch Switch {
+          whichChoice 0
+          children DEF PreviousButton Group {
+            children [
+              Transform {
+                translation 4.75 0.4 0.0192773
+                rotation -2.47696e-08 -8.09367e-09 1 1.5708
+                scale 2.25 2.25 0.8
+                scaleOrientation 0.0536555 -0.89964 0.433323 0.0794526
+                center 0 0 -0.0137088
+                children DEF _7 Shape {
+                  appearance Appearance {
+                    material Material {
+                      ambientIntensity 0.653913
+                      diffuseColor 0.244681 0 0
+                      specularColor 1 0.359185 0.359185
+                      shininess 0.148936
+                    }
                   }
-                }
-                geometry IndexedFaceSet {
-                  coordIndex [
-                    2,
-                    0,
-                    4,
-                    5,
-                    -1,
-                    4,
-                    1,
-                    3,
-                    5,
-                    -1,
-                    7,
-                    6,
-                    8,
-                    -1,
-                    0,
-                    2,
-                    3,
-                    1,
-                    -1,
-                    5,
-                    3,
-                    2,
-                    -1,
-                    6,
-                    7,
-                    4,
-                    0,
-                    -1,
-                    8,
-                    6,
-                    0,
-                    1,
-                    -1,
-                    7,
-                    8,
-                    1,
-                    4,
-                    -1
-                  ]
-                  coord Coordinate {
-                    point [
-                      -0.116667 0.116667 0,
-                      -0.116667 -0.116667 0,
-                      -0.116667 0.116667 -0.116667,
-                      -0.116667 -0.116667 -0.116667,
-                      0.116667 0 0,
-                      0.116667 0 -0.116667,
-                      -0.108933 0.102479 0.0892494,
-                      0.09533 0.000347482 0.0892494,
-                      -0.108933 -0.101784 0.0892494
+                  geometry IndexedFaceSet {
+                    coordIndex [
+                      2,
+                      0,
+                      4,
+                      5,
+                      -1,
+                      4,
+                      1,
+                      3,
+                      5,
+                      -1,
+                      7,
+                      6,
+                      8,
+                      -1,
+                      0,
+                      2,
+                      3,
+                      1,
+                      -1,
+                      5,
+                      3,
+                      2,
+                      -1,
+                      6,
+                      7,
+                      4,
+                      0,
+                      -1,
+                      8,
+                      6,
+                      0,
+                      1,
+                      -1,
+                      7,
+                      8,
+                      1,
+                      4,
+                      -1
                     ]
+                    coord Coordinate {
+                      point [
+                        -0.116667 0.116667 0,
+                        -0.116667 -0.116667 0,
+                        -0.116667 0.116667 -0.116667,
+                        -0.116667 -0.116667 -0.116667,
+                        0.116667 0 0,
+                        0.116667 0 -0.116667,
+                        -0.108933 0.102479 0.0892494,
+                        0.09533 0.000347482 0.0892494,
+                        -0.108933 -0.101784 0.0892494
+                      ]
+                    }
                   }
                 }
               }
-            }
-          ]
+              DEF PreviousTouch TouchSensor { }
+              DEF PreviousPage SFInt32 { }
+            ]
+          }
         }
-        DEF NextButton Group {
-          children [
-            DEF NextTouch TouchSensor { }
-            Transform {
-              translation 4.75 -0.4 -0.0151683
-              rotation -3.70409e-06 3.58081e-06 -1 1.57079
-              scale 2.25 2.25 0.8
-              scaleOrientation 0.0267319 -0.686614 0.726531 0.104228
-              center 0 0 -0.0137088
-              children USE _8
-            }
-          ]
+        DEF NextSwitch Switch {
+          whichChoice 0
+          children DEF NextButton Group {
+            children [
+              Transform {
+                translation 4.75 -0.4 -0.0151683
+                rotation -3.70409e-06 3.58081e-06 -1 1.57079
+                scale 2.25 2.25 0.8
+                scaleOrientation 0.0267319 -0.686614 0.726531 0.104228
+                center 0 0 -0.0137088
+                children USE _7
+              }
+              DEF NextTouch TouchSensor { }
+              DEF NextPage SFInt32 { }
+            ]
+          }
         }
       ]
     }
@@ -4924,5 +4953,6 @@ LayerSet {
 }
 
 ROUTE _1.rotation_changed TO Logo.set_rotation
-ROUTE _6.isLoaded TO _7.set_boolean
-ROUTE _7.inputTrue TO Pespective.set_bind
+ROUTE _6.inputTrue TO Pespective.set_bind
+ROUTE PreviousTouch.touchTime TO PreviousPage.set_triggerTime
+ROUTE NextTouch.touchTime TO NextPage.set_triggerTime

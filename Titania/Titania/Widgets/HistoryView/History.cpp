@@ -115,50 +115,6 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 		processInterests ();
 }
 
-void
-History::setItem (const std::string & title, const std::string & worldURL, const std::string & image)
-{
-	disconnect ();
-
-	try
-	{
-		update (getId (worldURL), title);
-	}
-	catch (const std::out_of_range &)
-	{
-		insert (title, worldURL);
-	}
-
-	database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
-
-	connect ();
-}
-
-const sql::sqlite3::assoc_row_type &
-History::getItemFromIndex (const std::string & index) const
-throw (std::out_of_range)
-{
-	return database .query_assoc ("SELECT title, worldURL FROM History "
-	                              "ORDER BY lastAccess DESC "
-	                              "LIMIT " + index + ", 1") .at (0);
-}
-
-const sql::sqlite3::assoc_row_type &
-History::getItemFromURL (const std::string & worldURL) const
-throw (std::out_of_range)
-{
-	return database .query_assoc ("SELECT title, worldURL FROM History "
-	                              "WHERE worldURL = " + database .quote (worldURL) + " " +
-	                              "ORDER BY lastAccess DESC") .at (0);
-}
-
-const sql::sqlite3::assoc_type &
-History::getItems (const size_t limit) const
-{
-	return database .query_assoc ("SELECT id, title, worldURL FROM History ORDER BY lastAccess DESC " + 
-	                              (limit ? "LIMIT 0, " + basic::to_string (limit) : ""));
-}
-
 const std::string &
 History::getIndex (const std::string & worldURL) const
 throw (std::out_of_range)
@@ -213,6 +169,71 @@ throw (std::invalid_argument)
 	database .read_blob ("SELECT preview FROM History WHERE id = " + id, value);
 
 	return value;
+}
+
+void
+History::setItem (const std::string & title, const std::string & worldURL, const std::string & image)
+{
+	disconnect ();
+
+	try
+	{
+		update (getId (worldURL), title);
+	}
+	catch (const std::out_of_range &)
+	{
+		insert (title, worldURL);
+	}
+
+	database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
+
+	connect ();
+}
+
+const sql::sqlite3::assoc_row_type &
+History::getItemFromIndex (const std::string & index) const
+throw (std::out_of_range)
+{
+	return database .query_assoc ("SELECT title, worldURL FROM History "
+	                              "ORDER BY lastAccess DESC "
+	                              "LIMIT " + index + ", 1") .at (0);
+}
+
+const sql::sqlite3::assoc_row_type &
+History::getItemFromURL (const std::string & worldURL) const
+throw (std::out_of_range)
+{
+	return database .query_assoc ("SELECT title, worldURL FROM History "
+	                              "WHERE worldURL = " + database .quote (worldURL) + " " +
+	                              "ORDER BY lastAccess DESC") .at (0);
+}
+
+const sql::sqlite3::assoc_type &
+History::getItems (const size_t offset, const size_t size) const
+{
+	std::string limit;
+	
+	if (size)
+		limit = "LIMIT " + basic::to_string (size) + " OFFSET " + basic::to_string (offset);
+
+	return database .query_assoc ("SELECT id, title, worldURL FROM History ORDER BY lastAccess DESC " + limit);
+}
+
+size_t
+History::getSize () const
+{
+	size_t size = 0;
+
+	try
+	{
+		std::istringstream isstream (database .query_array ("SELECT COUNT (*) FROM History") .at (0) .at (0));
+		
+		isstream >> size;
+	}
+	catch (...)
+	{ }
+
+	return size;
 }
 
 void

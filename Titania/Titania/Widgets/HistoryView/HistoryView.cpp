@@ -66,27 +66,26 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ()),
 	                history ()
 {
+	getScene () .addInterest (this, &HistoryView::set_scene);
 	setup ();
-
-	getScene () .addInterest (this, &HistoryView::set_splashScreen);
-	history .addInterest (this, &HistoryView::set_history);
-
-	set_history ();
 }
 
 void
 HistoryView::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
+
+	history .addInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> saveAs () .addInterest (this, &HistoryView::set_scene);
+
+	set_history ();
 }
 
 void
-HistoryView::set_splashScreen ()
+HistoryView::on_unmap ()
 {
-	getScene () .removeInterest (this, &HistoryView::set_splashScreen);
-	getScene () .addInterest    (this, &HistoryView::set_scene);
-
-	getBrowserWindow () -> saveAs () .addInterest (this, &HistoryView::set_scene);
+	history .removeInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> saveAs () .removeInterest (this, &HistoryView::set_scene);
 }
 
 void
@@ -94,10 +93,10 @@ HistoryView::set_history ()
 {
 	// Fill model.
 
-	//getTreeView () .unset_model (); // This will unset the sort column.
+	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : history .getItems (2000))
+	for (const auto & item : history .getItems (0, 2000))
 	{
 		const auto & worldURL = item .at ("worldURL");
 	
@@ -109,6 +108,8 @@ HistoryView::set_history ()
 		iter -> set_value (WORLD_URL_COLUMN, worldURL);
 	}
 
+	getTreeView () .set_model (getListStore ());
+	getTreeView () .set_search_column (TITLE_COLUMN);
 	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
 }
 
@@ -129,6 +130,13 @@ HistoryView::set_scene ()
 	catch (const X3D::X3DError &)
 	{ }
 
+	// Update history.
+
+	history .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+
+	if (not getWidget () .get_mapped ())
+		return;
+
 	// Move row.
 
 	try
@@ -144,10 +152,6 @@ HistoryView::set_scene ()
 	iter -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
 	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
-
-	// Update history.
-
-	history .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 }
 
 void

@@ -69,20 +69,6 @@ public:
 
 	///  @name Operations
 
-	void
-	setItem (const std::string &, const std::string &, const std::string &);
-
-	const sql::sqlite3::assoc_row_type &
-	getItemFromIndex (const std::string &) const
-	throw (std::out_of_range);
-
-	const sql::sqlite3::assoc_row_type &
-	getItemFromURL (const std::string &) const
-	throw (std::out_of_range);
-
-	const sql::sqlite3::assoc_type &
-	getItems (const size_t limit = 0) const;
-
 	const std::string &
 	getIndex (const std::string &) const
 	throw (std::out_of_range);
@@ -98,6 +84,23 @@ public:
 	std::string
 	getPreview (const std::string &) const
 	throw (std::invalid_argument);
+
+	void
+	setItem (const std::string &, const std::string &, const std::string &);
+
+	const sql::sqlite3::assoc_row_type &
+	getItemFromIndex (const std::string &) const
+	throw (std::out_of_range);
+
+	const sql::sqlite3::assoc_row_type &
+	getItemFromURL (const std::string &) const
+	throw (std::out_of_range);
+
+	const sql::sqlite3::assoc_type &
+	getItems (const size_t offset, const size_t limit = 0) const;
+
+	size_t
+	getSize () const;
 
 
 private:

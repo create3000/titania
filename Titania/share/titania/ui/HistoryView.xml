@@ -26,6 +26,7 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
           <object class="GtkScrolledWindow" id="ScrolledWindow">
             <property name="visible">True</property>

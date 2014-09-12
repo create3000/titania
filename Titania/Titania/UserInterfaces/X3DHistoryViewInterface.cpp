@@ -77,6 +77,7 @@ X3DHistoryViewInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_unmap));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_row_activated));

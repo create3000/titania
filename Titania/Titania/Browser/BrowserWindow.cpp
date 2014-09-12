@@ -467,6 +467,12 @@ BrowserWindow::on_open ()
 }
 
 void
+BrowserWindow::on_open_recent ()
+{
+	openRecent ();
+}
+
+void
 BrowserWindow::on_open_location ()
 {
 	std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog", false)) -> run ();
@@ -989,6 +995,7 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::isEditor (const bool enabled)
 {
+	getOpenRecentMenuItem ()                   .set_visible (enabled);
 	getImportMenuItem ()                       .set_visible (enabled);
 	getImportAsInlineMenuItem ()               .set_visible (enabled);
 	getSaveMenuItem ()                         .set_visible (enabled);

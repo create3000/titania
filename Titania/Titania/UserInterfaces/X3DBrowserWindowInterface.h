@@ -190,6 +190,10 @@ public:
 	getOpenMenuItem () const
 	{ return *m_OpenMenuItem; }
 
+	Gtk::MenuItem &
+	getOpenRecentMenuItem () const
+	{ return *m_OpenRecentMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getOpenLocationMenuItem () const
 	{ return *m_OpenLocationMenuItem; }
@@ -828,6 +832,10 @@ public:
 
 	virtual
 	void
+	on_open_recent () = 0;
+
+	virtual
+	void
 	on_open_location () = 0;
 
 	virtual
@@ -1283,6 +1291,7 @@ private:
 	Gtk::MenuItem*                  m_FileMenuItem;
 	Gtk::ImageMenuItem*             m_NewMenuItem;
 	Gtk::ImageMenuItem*             m_OpenMenuItem;
+	Gtk::MenuItem*                  m_OpenRecentMenuItem;
 	Gtk::ImageMenuItem*             m_OpenLocationMenuItem;
 	Gtk::ImageMenuItem*             m_ImportMenuItem;
 	Gtk::CheckMenuItem*             m_ImportAsInlineMenuItem;

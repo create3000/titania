@@ -52,7 +52,6 @@
 
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
-#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/OS/home.h>
 #include <Titania/String.h>
@@ -61,13 +60,14 @@
 namespace titania {
 namespace puck {
 
-static constexpr size_t  PAGES           = 9;
+static constexpr size_t  ITEMS           = 9;
 static constexpr size_t  PREVIEW_SIZE    = 192;
-static constexpr size_t  PREVIEW_QUALITY = 85;
+static constexpr size_t  PREVIEW_QUALITY = 90;
 static const std::string PREVIEW_TYPE    = "JPG";
 
 AboutTab::AboutTab (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ())
+	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	         history ()
 {
 	// Don't use browserWindow here.
 	setup ();
@@ -105,7 +105,7 @@ AboutTab::loadPreview (const X3D::BrowserPtr & browser)
 		Magick::Blob blob;
 		image -> write (&blob);
 
-		History () .setPreview (getBrowser () -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
+		history .setPreview (getBrowser () -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
 	}
 	catch (const std::exception & error)
 	{ }
@@ -114,15 +114,57 @@ AboutTab::loadPreview (const X3D::BrowserPtr & browser)
 void
 AboutTab::set_scene ()
 {
-	if (getScene () -> getWorldURL () not_eq getURL ())
+	const auto & scene = getScene ();
+
+	if (scene -> getWorldURL () not_eq getURL ())
 		return;
 
-	const auto scene = getScene ();
+	set_page (scene, X3D::SFInt32 (0));
 
-	History history;
-	size_t  i = 0;
+	try
+	{
+		const auto   previousPage = scene -> getNamedNode ("PreviousPage");
+		const auto & field        = previousPage -> getField <X3D::SFInt32> ("value_changed");
 
-	for (const auto & item : history .getItems (PAGES))
+		field .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (field));
+	}
+	catch (...)
+	{ }
+
+	try
+	{
+		const auto   nextPage = scene -> getNamedNode ("NextPage");
+		const auto & field    = nextPage -> getField <X3D::SFInt32> ("value_changed");
+
+		field .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (field));
+	}
+	catch (...)
+	{ }
+}
+
+void
+AboutTab::set_page (X3D::X3DScene* const scene, const X3D::SFInt32 & page)
+{
+	if (page < 0)
+		return;
+
+	try
+	{
+		const auto previousPage = scene -> getNamedNode ("PreviousPage");
+		const auto nextPage     = scene -> getNamedNode ("NextPage");
+
+		previousPage -> getField <X3D::SFInt32> ("keyValue") = page - 1;
+		nextPage -> getField <X3D::SFInt32> ("keyValue")     = page + 1;
+
+		scene -> getNamedNode <X3D::Switch> ("PreviousSwitch") -> whichChoice () = (page - 1) < 0 ? -1 : 0;
+		scene -> getNamedNode <X3D::Switch> ("NextSwitch") -> whichChoice ()     = (page + 1) * ITEMS < history .getSize () ? 0 : -1;
+	}
+	catch (...)
+	{ }
+
+	size_t i = 0;
+
+	for (const auto & item : history .getItems (page * 9, ITEMS))
 	{
 		try
 		{
@@ -145,14 +187,16 @@ AboutTab::set_scene ()
 		{ }
 	}
 
-	for (; i < PAGES; ++ i)
+	for (; i < ITEMS; ++ i)
 	{
 		try
 		{
 			const auto number     = basic::to_string (i);
 			const auto switchNode = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
+			const auto texture    = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);
 
 			switchNode -> whichChoice () = 1;
+			texture -> url ()            = { "library/dot-clear.png" };
 		}
 		catch (...)
 		{ }

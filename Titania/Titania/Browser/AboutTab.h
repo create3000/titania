@@ -52,6 +52,7 @@
 #define __TITANIA_BROWSER_ABOUT_TAB_H__
 
 #include "../Base/X3DBaseInterface.h"
+#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/Basic/URI.h>
 
@@ -85,6 +86,11 @@ private:
 
 	void
 	set_scene ();
+
+	void
+	set_page (X3D::X3DScene* const, const X3D::SFInt32 &);
+
+	History history;
 
 };
 
