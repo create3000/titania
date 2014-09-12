@@ -64,6 +64,7 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	             fontStyle (),
 	       screenFontStyle (),
 	              undoStep (),
+	         styleUndoStep (),
 	              changing (false),
 	                family (new MFStringFamilyWidget (this,
 	                        getFontStyleFamilyTreeView (),
@@ -72,6 +73,14 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	                        getFontStyleFamilyRemoveButton (),
 	                        getFontStyleFamilyChooserColumn (),
 	                        "family")),
+	                  size (getBrowserWindow (),
+	                        getFontStyleSizeAdjustment (),
+	                        getFontStyleSizeSpinButton (),
+	                        "size"),
+	             pointSize (getBrowserWindow (),
+	                        getFontStylePointSizeAdjustment (),
+	                        getFontStylePointSizeSpinButton (),
+	                        "pointSize"),
 	               spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing"),
 	            horizontal (getBrowserWindow (), getFontStyleHorizontalCheckButton (),  "horizontal"),
 	           leftToRight (getBrowserWindow (), getFontStyleLeftToRightCheckButton (), "leftToRight"),
@@ -81,6 +90,9 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 {
 	addChildren (fontStyleNodeBuffer);
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
+	
+	getFontStyleSizeSpinButton ()      .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_size_sensitive_changed));
+	getFontStylePointSizeSpinButton () .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_point_size_sensitive_changed));
 }
 
 void
@@ -124,16 +136,6 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 {
 	getFontStyleNodeBox () .set_sensitive (getFontStyleComboBoxText () .get_active_row_number () > 0);
 
-	// Change size label.
-
-	if (getFontStyleComboBoxText () .get_active_row_number () == 2)
-		getSizeLabel () .set_text (_ ("Point Size:"));
-
-	else
-		getSizeLabel () .set_text (_ ("Size:"));
-
-	setupGridLabels (getWidget ());
-
 	if (changing)
 		return;
 
@@ -147,11 +149,13 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		{
 			case 1:
 			{
+				fontStyle -> size () = screenFontStyle -> pointSize ();
 				fontStyleNode = fontStyle;
 				break;
 			}
 			case 2:
 			{
+				screenFontStyle -> pointSize () = fontStyle -> size ();
 				fontStyleNode = screenFontStyle;
 				break;
 			}
@@ -162,7 +166,6 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		fontStyleNode -> language ()    = last -> language ();
 		fontStyleNode -> family ()      = last -> family ();
 		fontStyleNode -> style ()       = last -> style ();
-		fontStyleNode -> size ()        = last -> size ();
 		fontStyleNode -> spacing ()     = last -> spacing ();
 		fontStyleNode -> horizontal ()  = last -> horizontal ();
 		fontStyleNode -> leftToRight () = last -> leftToRight ();
@@ -209,10 +212,7 @@ void
 X3DFontStyleNodeEditor::set_node ()
 {
 	if (fontStyleNode)
-	{
 		fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
-		fontStyleNode -> size ()  .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
-	}
 
 	auto       pair     = getNode <X3D::X3DFontStyleNode> (texts, "fontStyle");
 	const int  active   = pair .second;
@@ -271,11 +271,8 @@ X3DFontStyleNodeEditor::set_node ()
 	changing = false;
 
 	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::set_style);
-	fontStyleNode -> size ()  .addInterest (this, &X3DFontStyleNodeEditor::set_size);
 
 	set_style ();
-	set_size ();
-
 	set_widgets ();
 }
 
@@ -285,6 +282,8 @@ X3DFontStyleNodeEditor::set_widgets ()
 	const X3D::MFNode nodes = { fontStyleNode };
 
 	family -> setNodes (nodes);
+	size           .setNodes (nodes);
+	pointSize      .setNodes (nodes);
 	spacing        .setNodes (nodes);
 	horizontal     .setNodes (nodes);
 	leftToRight    .setNodes (nodes);
@@ -312,7 +311,7 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 	if (changing)
 		return;
 
-	addUndoFunction (fontStyleNode, fontStyleNode -> style (), undoStep);
+	addUndoFunction (fontStyleNode, fontStyleNode -> style (), styleUndoStep);
 
 	fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::connectStyle);
@@ -343,7 +342,7 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 			break;
 	}
 
-	addRedoFunction (fontStyleNode -> style (), undoStep);
+	addRedoFunction (fontStyleNode -> style (), styleUndoStep);
 }
 
 void
@@ -366,41 +365,22 @@ X3DFontStyleNodeEditor::connectStyle (const X3D::SFString & field)
 
 /***********************************************************************************************************************
  *
- *  size or pointSize
+ *  Size
  *
  **********************************************************************************************************************/
 
 void
-X3DFontStyleNodeEditor::on_size_changed ()
+X3DFontStyleNodeEditor::on_size_sensitive_changed ()
 {
-	if (changing)
-		return;
-
-	addUndoFunction (fontStyleNode, fontStyleNode -> size (), undoStep);
-
-	fontStyleNode -> size () .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
-	fontStyleNode -> size () .addInterest (this, &X3DFontStyleNodeEditor::connectSize);
-
-	fontStyleNode -> size () = getFontStyleSizeAdjustment () -> get_value ();
-
-	addRedoFunction (fontStyleNode -> size (), undoStep);
+	getFontStyleSizeLabel ()      .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
+	getFontStyleSizeSpinButton () .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
 }
 
 void
-X3DFontStyleNodeEditor::set_size ()
+X3DFontStyleNodeEditor::on_point_size_sensitive_changed ()
 {
-	changing = true;
-
-	getFontStyleSizeAdjustment () -> set_value (fontStyleNode -> size ());
-
-	changing = false;
-}
-
-void
-X3DFontStyleNodeEditor::connectSize (const X3D::SFFloat & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectSize);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_size);
+	getFontStylePointSizeLabel ()      .set_visible (getFontStylePointSizeSpinButton () .get_sensitive ());
+	getFontStylePointSizeSpinButton () .set_visible (getFontStylePointSizeSpinButton () .get_sensitive ());
 }
 
 X3DFontStyleNodeEditor::~X3DFontStyleNodeEditor ()

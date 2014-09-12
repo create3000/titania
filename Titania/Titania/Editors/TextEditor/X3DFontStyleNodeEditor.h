@@ -121,16 +121,12 @@ private:
 	connectStyle (const X3D::SFString & field);
 
 	///  @name size
-
-	virtual
+	
 	void
-	on_size_changed () final override;
-
+	on_size_sensitive_changed ();
+	
 	void
-	set_size ();
-
-	void
-	connectSize (const X3D::SFFloat &);
+	on_point_size_sensitive_changed ();
 
 	///  @name Members
 
@@ -140,9 +136,12 @@ private:
 	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
 	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
 	UndoStepPtr                         undoStep;
+	UndoStepPtr                         styleUndoStep;
 	bool                                changing;
 
 	std::unique_ptr <MFStringFamilyWidget> family;
+	X3DFieldAdjustment <X3D::SFFloat>      size;
+	X3DFieldAdjustment <X3D::SFFloat>      pointSize;
 	X3DFieldAdjustment <X3D::SFFloat>      spacing;
 	X3DFieldToggleButton <X3D::SFBool>     horizontal;
 	X3DFieldToggleButton <X3D::SFBool>     leftToRight;

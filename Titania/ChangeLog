@@ -2,6 +2,14 @@
 
 	* TextEditor.xml:
 	* X3DTextEditorInterface.h:
+	* X3DTextEditorInterface.cpp:
+	* X3DFontStyleNodeEditor.h:
+	* X3DFontStyleNodeEditor.cpp: 
+
+2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TextEditor.xml:
+	* X3DTextEditorInterface.h:
 	* MFStringFamilyWidget.h:
 	* X3DTextEditorInterface.cpp:
 	* X3DFontStyleNodeEditor.h:

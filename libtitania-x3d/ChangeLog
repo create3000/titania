@@ -1,5 +1,11 @@
 2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FontStyle.h:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h: 
+
+2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ChangeLog:
 	* splash.x3dv: 
 

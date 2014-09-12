@@ -99,6 +99,10 @@ public:
 	{ return m_FontStyleFamilyListStore; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getFontStylePointSizeAdjustment () const
+	{ return m_FontStylePointSizeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getFontStyleSizeAdjustment () const
 	{ return m_FontStyleSizeAdjustment; }
 
@@ -187,8 +191,8 @@ public:
 	{ return *m_FontStyleNodeBox; }
 
 	Gtk::Label &
-	getSizeLabel () const
-	{ return *m_SizeLabel; }
+	getFontStyleSizeLabel () const
+	{ return *m_FontStyleSizeLabel; }
 
 	Gtk::SpinButton &
 	getFontStyleSizeSpinButton () const
@@ -238,13 +242,17 @@ public:
 	getFontStyleFamilyRemoveButton () const
 	{ return *m_FontStyleFamilyRemoveButton; }
 
+	Gtk::Label &
+	getFontStylePointSizeLabel () const
+	{ return *m_FontStylePointSizeLabel; }
+
+	Gtk::SpinButton &
+	getFontStylePointSizeSpinButton () const
+	{ return *m_FontStylePointSizeSpinButton; }
+
 	Gtk::FontChooserDialog &
 	getFamilyChooserDialog () const
 	{ return *m_FamilyChooserDialog; }
-
-	virtual
-	void
-	on_size_changed () = 0;
 
 	virtual
 	void
@@ -284,6 +292,7 @@ private:
 	std::string                          filename;
 	Glib::RefPtr <Gtk::Builder>          m_builder;
 	Glib::RefPtr <Gtk::ListStore>        m_FontStyleFamilyListStore;
+	Glib::RefPtr <Gtk::Adjustment>       m_FontStylePointSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_TextMaxExtentAdjustment;
@@ -306,7 +315,7 @@ private:
 	Gtk::ComboBoxText*                   m_FontStyleComboBoxText;
 	Gtk::Button*                         m_FontStyleUnlinkButton;
 	Gtk::Grid*                           m_FontStyleNodeBox;
-	Gtk::Label*                          m_SizeLabel;
+	Gtk::Label*                          m_FontStyleSizeLabel;
 	Gtk::SpinButton*                     m_FontStyleSizeSpinButton;
 	Gtk::SpinButton*                     m_FontStyleSpacingSpinButton;
 	Gtk::CheckButton*                    m_FontStyleHorizontalCheckButton;
@@ -319,6 +328,8 @@ private:
 	Gtk::TreeView*                       m_FontStyleFamilyTreeView;
 	Gtk::Button*                         m_FontStyleFamilyAddButton;
 	Gtk::Button*                         m_FontStyleFamilyRemoveButton;
+	Gtk::Label*                          m_FontStylePointSizeLabel;
+	Gtk::SpinButton*                     m_FontStylePointSizeSpinButton;
 	Gtk::FontChooserDialog*              m_FamilyChooserDialog;
 
 };

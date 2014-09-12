@@ -62,6 +62,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 
 	// Get objects.
 	m_FontStyleFamilyListStore        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyListStore"));
+	m_FontStylePointSizeAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStylePointSizeAdjustment"));
 	m_FontStyleSizeAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
 	m_FontStyleSpacingAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
 	m_TextMaxExtentAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
@@ -86,7 +87,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FontStyleComboBoxText", m_FontStyleComboBoxText);
 	m_builder -> get_widget ("FontStyleUnlinkButton", m_FontStyleUnlinkButton);
 	m_builder -> get_widget ("FontStyleNodeBox", m_FontStyleNodeBox);
-	m_builder -> get_widget ("SizeLabel", m_SizeLabel);
+	m_builder -> get_widget ("FontStyleSizeLabel", m_FontStyleSizeLabel);
 	m_builder -> get_widget ("FontStyleSizeSpinButton", m_FontStyleSizeSpinButton);
 	m_builder -> get_widget ("FontStyleSpacingSpinButton", m_FontStyleSpacingSpinButton);
 	m_builder -> get_widget ("FontStyleHorizontalCheckButton", m_FontStyleHorizontalCheckButton);
@@ -99,10 +100,9 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FontStyleFamilyTreeView", m_FontStyleFamilyTreeView);
 	m_builder -> get_widget ("FontStyleFamilyAddButton", m_FontStyleFamilyAddButton);
 	m_builder -> get_widget ("FontStyleFamilyRemoveButton", m_FontStyleFamilyRemoveButton);
+	m_builder -> get_widget ("FontStylePointSizeLabel", m_FontStylePointSizeLabel);
+	m_builder -> get_widget ("FontStylePointSizeSpinButton", m_FontStylePointSizeSpinButton);
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
-
-	// Connect object Gtk::Adjustment with id 'FontStyleSizeAdjustment'.
-	m_FontStyleSizeAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_size_changed));
 
 	// Connect object Gtk::TextBuffer with id 'TextStringTextBuffer'.
 	m_TextStringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));

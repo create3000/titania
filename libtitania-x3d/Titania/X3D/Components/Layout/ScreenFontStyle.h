@@ -167,16 +167,6 @@ public:
 	pointSize () const
 	{ return *fields .pointSize; }
 
-	virtual
-	SFFloat &
-	size () final override
-	{ return pointSize (); }
-
-	virtual
-	const SFFloat &
-	size () const final override
-	{ return pointSize (); }
-
 	///  @name Member access
 
 	virtual
