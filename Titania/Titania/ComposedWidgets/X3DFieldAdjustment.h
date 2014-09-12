@@ -223,7 +223,7 @@ X3DFieldAdjustment <Type>::set_buffer ()
 	}
 
 	if (not hasField)
-		adjustment -> set_value (adjustment -> get_lower ());
+		adjustment -> set_value (adjustment -> get_lower () / 2 + adjustment -> get_upper () / 2);
 
 	widget .set_sensitive (hasField);
 

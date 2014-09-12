@@ -5,6 +5,7 @@ lib_LTLIBRARIES =  \
 	libtitania-stream.la
 
 libtitania_stream_la_SOURCES =  \
+	Titania/Stream/Base64.cpp \
 	Titania/Stream/GZFilterBuf.cpp \
 	Titania/Stream/InputFileStream.cpp \
 	Titania/Stream/InputUrlStream.cpp \

@@ -1,38 +1,62 @@
-// /* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-// /*************************************************************************
-//  *
-//  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-//  *
-//  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
-//  *
-//  * Titania - a multi-platform office productivity suite
-//  *
-//  * This file is part of the Titania Project.
-//  *
-//  * Titania is free software: you can redistribute it and/or modify
-//  * it under the terms of the GNU Lesser General Public License version 3
-//  * only, as published by the Free Software Foundation.
-//  *
-//  * Titania is distributed in the hope that it will be useful,
-//  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  * GNU Lesser General Public License version 3 for more details
-//  * (a copy is included in the LICENSE file that accompanied this code).
-//  *
-//  * You should have received a copy of the GNU Lesser General Public License
-//  * version 3 along with Titania.  If not, see
-//  * <http://www.gnu.org/licenses/lgpl.html>
-//  * for a copy of the LGPLv3 License.
-//  *
-//  ************************************************************************/
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ *
+ * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * THIS IS UNPUBLISHED SOURCE CODE OF create3000.
+ *
+ * The copyright notice above does not evidence any actual of intended
+ * publication of such source code, and is an unpublished work by create3000.
+ * This material contains CONFIDENTIAL INFORMATION that is the property of
+ * create3000.
+ *
+ * No permission is granted to copy, distribute, or create derivative works from
+ * the contents of this software, in whole or in part, without the prior written
+ * permission of create3000.
+ *
+ * NON-MILITARY USE ONLY
+ *
+ * All create3000 software are effectively free software with a non-military use
+ * restriction. It is free. Well commented source is provided. You may reuse the
+ * source in any way you please with the exception anything that uses it must be
+ * marked to indicate is contains 'non-military use only' components.
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * This file is part of the Titania Project.
+ *
+ * Titania is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License version 3 only, as published by the
+ * Free Software Foundation.
+ *
+ * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
+ * details (a copy is included in the LICENSE file that accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+ * copy of the GPLv3 License.
+ *
+ * For Silvio, Joy and Adi.
+ *
+ ******************************************************************************/
 
 #include "InputFileStream.h"
+
+#include "Base64.h"
 
 #include <Titania/OS/is_file.h>
 #include <Titania/String/to_string.h>
 
-#include <glibmm/main.h>
 #include <giomm.h>
+#include <glibmm/main.h>
 #include <utility>
 
 #include <Titania/LOG.h>
@@ -42,20 +66,6 @@ namespace basic {
 
 const std::string ifilestream::reasons [2] = { "OK", "File not found." };
 const std::string ifilestream::empty_string;
-
-static
-std::string
-base64_decode (const std::string & string)
-{
-	gsize out_len = 0;
-	char* decoded = (char*) g_base64_decode (string .c_str (), &out_len);
-
-	std::string decoded_string = std::string (decoded, out_len);
-
-	g_free (decoded);
-
-	return decoded_string;
-}
 
 ifilestream::ifilestream () :
 	         std::istream (),
@@ -127,16 +137,14 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 
 	if (url () .scheme () == "data")
 	{
-		// data:[<MIME-Typ>][;charset="<Zeichensatz>"][;base64],<Daten>
+		// data:[<MIME-TYPE>][;charset=<CHAR-SET>][;base64],<DATA>
 
-		std::string::size_type first  = std::string::npos;
-		std::string::size_type length = 0;
-		std::string::size_type comma  = url () .path () .find (',');
+		std::string::size_type       first = url () .scheme () .size () + 1;
+		const std::string::size_type comma = url () .str () .find (',');
 
 		if (comma not_eq std::string::npos)
 		{
-			std::string header = url () .path () .substr (0, comma);
-			std::string content_type;
+			std::string header = url () .str () .substr (first, comma - first);
 			bool        base64 = false;
 
 			if (header .size () >= 6)
@@ -146,30 +154,29 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 					base64 = true;
 					header .resize (header .size () - 6);
 
-					if (header .size () and header [header .size () - 1] == ';')
-						header .resize (header .size () - 1);
+					if (not header .empty () and header .back () == ';')
+						header .pop_back ();
 				}
 			}
 
-			content_type = header;
+			// header
+
+			std::string::size_type semicolon = header .find (';');
+
+			if (not header .empty ())
+				file_response_headers .emplace ("Content-Type", header .substr (0, semicolon));
 
 			// data
 
-			first  = comma + 1;
-			length = url () .path () .size () - first;
+			first = comma + 1;
 
-			// header
+			const std::string data = base64
+			                         ? base64_decode (url () .str () .substr (first))
+											 : Glib::uri_unescape_string (url () .str () .substr (first));
 
-			if (not content_type .empty ())
-				file_response_headers .emplace ("Content-Type", content_type);
+			data_istream .reset (new std::istringstream (data));
 
-			file_response_headers .emplace ("Content-Length", basic::to_string (length));
-
-			// stream
-
-			data_istream .reset (new std::istringstream (base64
-			                                             ? base64_decode (url () .path () .substr (first))
-																		: Glib::uri_unescape_string (url () .path () .substr (first))));
+			file_response_headers .emplace ("Content-Length", basic::to_string (data .size ()));
 		}
 		else
 			data_istream .reset (new std::istringstream ());

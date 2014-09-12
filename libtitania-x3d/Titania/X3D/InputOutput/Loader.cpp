@@ -273,16 +273,16 @@ throw (Error <INVALID_URL>,
 {
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");
+	
+	const bool data = uri .scheme () == "data";
 
-	//if (uri .scheme () not_eq "data")
+	//if (not data)
 	//	std::clog << "Trying to load URI '" << uri << "': " << std::flush;
 
-	const basic::uri transformedURL = referer .transform (uri);
+	basic::ifilestream istream (data ? uri : referer .transform (uri), 15000);
 
-	//if (transformedURL .scheme () not_eq "data")
-	//	std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
-
-	basic::ifilestream istream (transformedURL, 15000);
+	//if (not data)
+	//	std::clog << "\tTransformed URL is '" << istream .url () << "'" << std::endl;
 
 	if (istream)
 	{
@@ -292,7 +292,7 @@ throw (Error <INVALID_URL>,
 
 		if (istream)
 		{
-			if (istream .url () .scheme () not_eq "data")
+			if (not data)
 			{
 				worldURL = istream .url ();
 
@@ -307,9 +307,9 @@ throw (Error <INVALID_URL>,
 	}
 
 	std::ostringstream osstream;
-	
+
 	osstream
-		<< "Couldn't load URL '" << transformedURL << "'." << std::endl
+		<< "Couldn't load URL '" << istream .url () << "'." << std::endl
 		<< "Status: " << basic::to_string (istream .status ()) << ", " << istream .reason () << std::endl;
 
 	switch (istream .status ())

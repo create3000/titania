@@ -257,8 +257,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 	if (not hasField)
 	{
-		adjustment1 -> set_value (adjustment1 -> get_lower ());
-		adjustment2 -> set_value (adjustment2 -> get_lower ());
+		adjustment1 -> set_value (adjustment1 -> get_lower () / 2 + adjustment1 -> get_upper () / 2);
+		adjustment2 -> set_value (adjustment2 -> get_lower () / 2 + adjustment2 -> get_upper () / 2);
 	}
 
 	widget .set_sensitive (hasField);

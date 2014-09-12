@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWidget.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="211" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="648" Column="1" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="988" Column="1" />
     </Files>
@@ -39,7 +39,9 @@
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="CubeMapTexturing" expanded="True" />
+                  <Node name="Interpolation" expanded="True" />
                   <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                   <Node name="Networking" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
@@ -70,7 +72,7 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True">
-                <Node name="BrowserWindow.cpp" selected="True" />
+                <Node name="X3DBrowserWidget.cpp" selected="True" />
               </Node>
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Dialogs" expanded="True">

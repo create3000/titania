@@ -48,47 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_ABOUT_TAB_H__
-#define __TITANIA_BROWSER_ABOUT_TAB_H__
+#include "Base64.h"
 
-#include "../Base/X3DBaseInterface.h"
-
-#include <Titania/Basic/URI.h>
+#include <glibmm/main.h>
 
 namespace titania {
-namespace puck {
+namespace basic {
 
-class AboutTab :
-	virtual public X3DBaseInterface
+std::string
+base64_encode (const std::string & string)
 {
-public:
+	size_t      size    = string .size ();
+	char* const encoded = (char*) g_base64_encode ((const guchar*) string .c_str (), size);
 
-	AboutTab (X3DBrowserWindow* const);
+	std::string encoded_string = std::string (encoded);
 
-	void
-	initialize ();
+	g_free (encoded);
 
-	void
-	open ();
+	return encoded_string;
+}
 
-	void
-	loadPreview (const X3D::BrowserPtr &);
+std::string
+base64_decode (const std::string & string)
+{
+	gsize       size    = 0;
+	char* const decoded = (char*) g_base64_decode (string .c_str (), &size);
 
-	virtual
-	~AboutTab ();
+	std::string decoded_string = std::string (decoded, size);
 
+	g_free (decoded);
 
-private:
+	return decoded_string;
+}
 
-	basic::uri
-	getURL () const;
-
-	void
-	set_scene ();
-
-};
-
-} // puck
+} // basic
 } // titania
-
-#endif

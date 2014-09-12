@@ -79,6 +79,8 @@ void
 X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
+	
+	aboutTab -> initialize ();
 
 	masterBrowser -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 	masterBrowser -> getBrowserOptions () -> splashScreen ()    = true;

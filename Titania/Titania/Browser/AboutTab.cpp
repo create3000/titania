@@ -55,52 +55,40 @@
 #include "../Widgets/HistoryView/History.h"
 
 #include <Titania/OS/home.h>
-#include <Titania/OS/system.h>
 #include <Titania/String.h>
+#include <Titania/Stream/Base64.h>
 
 namespace titania {
 namespace puck {
+
+static constexpr size_t  PAGES           = 9;
+static constexpr size_t  PREVIEW_SIZE    = 256;
+static constexpr size_t  PREVIEW_QUALITY = 85;
+static const std::string PREVIEW_TYPE    = "JPG";
 
 AboutTab::AboutTab (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ())
 {
 	// Don't use browserWindow here.
+	setup ();
+}
+
+void
+AboutTab::initialize ()
+{
+	getScene () .addInterest (this, &AboutTab::set_scene);
+}
+
+basic::uri
+AboutTab::getURL () const
+{
+	return get_page ("about/tab.x3dv");
 }
 
 void
 AboutTab::open ()
 {
-	os::system ("mkdir", "-p", "/tmp/titania/tab/");
-
-	History                   historyDB;
-	std::vector <std::string> history;
-	size_t                    i = 0;
-
-	for (const auto & item : historyDB .getItems (9))
-	{
-		try
-		{
-			const auto preview = historyDB .getPreview (item .at ("id"));
-
-			history .emplace_back (item .at ("title") + "\t" + item .at ("worldURL"));
-
-			std::ofstream image ("/tmp/titania/tab/image" + basic::to_string (i) + ".png");
-
-			image << preview;
-
-			++ i;
-		}
-		catch (...)
-		{ }
-	}
-
-	std::ostringstream URL;
-
-	URL
-		<< get_page ("about/tab.x3dv")
-		<< "?history=" << Glib::uri_escape_string (basic::join (history, "\n"));
-
-	getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), URL .str (), false);
+	getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), getURL (), false);
 	getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getBrowsers () .size () - 1);
 }
 
@@ -109,10 +97,10 @@ AboutTab::loadPreview (const X3D::BrowserPtr & browser)
 {
 	try
 	{
-		const auto image = getBrowser () -> getSnapshot (256, 256, false, std::min <size_t> (16, getBrowser () -> getMaxSamples ()));
+		const auto image = getBrowser () -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getBrowser () -> getMaxSamples ()));
 
-		image -> quality (85);
-		image -> magick ("JPG");
+		image -> quality (PREVIEW_QUALITY);
+		image -> magick (PREVIEW_TYPE);
 
 		Magick::Blob blob;
 		image -> write (&blob);
@@ -123,8 +111,58 @@ AboutTab::loadPreview (const X3D::BrowserPtr & browser)
 	{ }
 }
 
+void
+AboutTab::set_scene ()
+{
+	if (getScene () -> getWorldURL () not_eq getURL ())
+		return;
+
+	const auto scene = getScene ();
+
+	History history;
+	size_t  i = 0;
+
+	for (const auto & item : history .getItems (PAGES))
+	{
+		try
+		{
+			const auto number = basic::to_string (i);
+			const auto image  = basic::base64_encode (history .getPreview (item .at ("id")));
+
+			const auto switchNode = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
+			const auto texture    = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);
+			const auto text       = scene -> getNamedNode <X3D::Text> ("Text" + number);
+			const auto anchor     = scene -> getNamedNode <X3D::Anchor> ("Anchor" + number);
+
+			switchNode -> whichChoice () = 0;
+			texture -> url ()            = { "data:image/jpeg;charset=UTF-8;base64," + image, "library/dot-clear.png" };
+			text -> string ()            = { item .at ("title") };
+			anchor -> url ()             = { item .at ("worldURL") };
+
+			++ i;
+		}
+		catch (...)
+		{ }
+	}
+
+	for (; i < PAGES; ++ i)
+	{
+		try
+		{
+			const auto number     = basic::to_string (i);
+			const auto switchNode = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
+
+			switchNode -> whichChoice () = 1;
+		}
+		catch (...)
+		{ }
+	}
+}
+
 AboutTab::~AboutTab ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania

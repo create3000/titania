@@ -895,7 +895,6 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 		if (uri .value .scheme == DataSchemeId)
 		{
 			uri .value .local = true;
-			uri .value .path  = std::move (string .substr (first));
 			return;
 		}
 	}

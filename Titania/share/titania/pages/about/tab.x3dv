@@ -4,9 +4,9 @@ META "comment" "World of Titania"
 META "created" "Thu, 04 Sep 2014 15:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "titania-history" "false"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Thu, 11 Sep 2014 03:14:42 GMT"
+META "modified" "Fri, 12 Sep 2014 02:59:52 GMT"
+META "titania-history" "false"
 META "title" "about:tab"
 
 EXTERNPROTO Rotor [
@@ -2486,10 +2486,10 @@ LayerSet {
           children [
             Transform {
               translation -3 2.5 0
-              children DEF _2 Switch {
+              children DEF Switch0 Switch {
                 whichChoice 0
                 children [
-                  DEF _3 Anchor {
+                  DEF Anchor0 Anchor {
                     children DEF Button_1 Transform {
                       children [
                         DEF Box_1 Transform {
@@ -2502,7 +2502,7 @@ LayerSet {
                                     specularColor 0.529 0.529 0.529
                                   }
                                 }
-                                geometry DEF _4 IndexedFaceSet {
+                                geometry DEF _2 IndexedFaceSet {
                                   creaseAngle 3.14159
                                   coordIndex [
                                     0,
@@ -4428,12 +4428,12 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _5 ImageTexture {
+                              texture DEF Texture0 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry DEF _6 Rectangle2D {
+                            geometry DEF _3 Rectangle2D {
                               solid FALSE
                             }
                           }
@@ -4442,13 +4442,13 @@ LayerSet {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material DEF _7 Material {
+                              material DEF _4 Material {
                                 diffuseColor 0 0 0
                               }
                             }
-                            geometry DEF _8 Text {
+                            geometry DEF Text0 Text {
                               solid TRUE
-                              fontStyle DEF _9 FontStyle {
+                              fontStyle DEF _5 FontStyle {
                                 family [
                                   "Ubuntu",
                                   "SANS"
@@ -4475,7 +4475,7 @@ LayerSet {
                               specularColor 0.529 0.529 0.529
                             }
                           }
-                          geometry USE _4
+                          geometry USE _2
                         }
                       }
                       USE box-shadow_1
@@ -4486,10 +4486,10 @@ LayerSet {
             }
             Transform {
               translation 0 2.5 0
-              children DEF _10 Switch {
+              children DEF Switch1 Switch {
                 whichChoice 0
                 children [
-                  DEF _11 Anchor {
+                  DEF Anchor1 Anchor {
                     children DEF Button_2 Transform {
                       children [
                         USE Box_1
@@ -4498,23 +4498,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _12 ImageTexture {
+                              texture DEF Texture1 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_2 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _13 Text {
+                            geometry DEF Text1 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4527,10 +4527,10 @@ LayerSet {
             }
             Transform {
               translation 3 2.5 0
-              children DEF _14 Switch {
+              children DEF Switch2 Switch {
                 whichChoice 0
                 children [
-                  DEF _15 Anchor {
+                  DEF Anchor2 Anchor {
                     children DEF Button_3 Transform {
                       children [
                         USE Box_1
@@ -4539,23 +4539,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _16 ImageTexture {
+                              texture DEF Texture2 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_3 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _17 Text {
+                            geometry DEF Text2 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4568,10 +4568,10 @@ LayerSet {
             }
             Transform {
               translation -3 0 0
-              children DEF _18 Switch {
+              children DEF Switch3 Switch {
                 whichChoice 0
                 children [
-                  DEF _19 Anchor {
+                  DEF Anchor3 Anchor {
                     children DEF Button_4 Transform {
                       children [
                         USE Box_1
@@ -4580,23 +4580,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _20 ImageTexture {
+                              texture DEF Texture3 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_4 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _21 Text {
+                            geometry DEF Text3 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4608,10 +4608,10 @@ LayerSet {
               }
             }
             DEF Box4 Transform {
-              children DEF _22 Switch {
+              children DEF Switch4 Switch {
                 whichChoice 0
                 children [
-                  DEF _23 Anchor {
+                  DEF Anchor4 Anchor {
                     children DEF Button_5 Transform {
                       children [
                         USE Box_1
@@ -4620,23 +4620,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _24 ImageTexture {
+                              texture DEF Texture4 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _25 Text {
+                            geometry DEF Text4 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4649,10 +4649,10 @@ LayerSet {
             }
             Transform {
               translation 3 0 0
-              children DEF _26 Switch {
+              children DEF Switch5 Switch {
                 whichChoice 0
                 children [
-                  DEF _27 Anchor {
+                  DEF Anchor5 Anchor {
                     children DEF Button_6 Transform {
                       children [
                         USE Box_1
@@ -4661,23 +4661,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _28 ImageTexture {
+                              texture DEF Texture5 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_5 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _29 Text {
+                            geometry DEF Text5 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4690,10 +4690,10 @@ LayerSet {
             }
             Transform {
               translation -3 -2.5 0
-              children DEF _30 Switch {
+              children DEF Switch6 Switch {
                 whichChoice 0
                 children [
-                  DEF _31 Anchor {
+                  DEF Anchor6 Anchor {
                     children DEF Button_7 Transform {
                       children [
                         USE Box_1
@@ -4702,23 +4702,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _32 ImageTexture {
+                              texture DEF Texture6 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_6 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _33 Text {
+                            geometry DEF Text6 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4731,10 +4731,10 @@ LayerSet {
             }
             Transform {
               translation 0 -2.5 0
-              children DEF _34 Switch {
+              children DEF Switch7 Switch {
                 whichChoice 0
                 children [
-                  DEF _35 Anchor {
+                  DEF Anchor7 Anchor {
                     children DEF Button_8 Transform {
                       children [
                         USE Box_1
@@ -4743,23 +4743,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _36 ImageTexture {
+                              texture DEF Texture7 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_7 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _37 Text {
+                            geometry DEF Text7 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4772,10 +4772,10 @@ LayerSet {
             }
             Transform {
               translation 3 -2.5 0
-              children DEF _38 Switch {
+              children DEF Switch8 Switch {
                 whichChoice 0
                 children [
-                  DEF _39 Anchor {
+                  DEF Anchor8 Anchor {
                     children DEF Button Transform {
                       children [
                         USE Box_1
@@ -4784,23 +4784,23 @@ LayerSet {
                           scale 0.75 0.75 1
                           children Shape {
                             appearance Appearance {
-                              texture DEF _40 ImageTexture {
+                              texture DEF Texture8 ImageTexture {
                                 repeatS FALSE
                                 repeatT FALSE
                               }
                             }
-                            geometry USE _6
+                            geometry USE _3
                           }
                         }
                         DEF Text_8 Transform {
                           translation 0 -1.05 0
                           children Shape {
                             appearance Appearance {
-                              material USE _7
+                              material USE _4
                             }
-                            geometry DEF _41 Text {
+                            geometry DEF Text8 Text {
                               solid TRUE
-                              fontStyle USE _9
+                              fontStyle USE _5
                             }
                           }
                         }
@@ -4813,151 +4813,116 @@ LayerSet {
             }
           ]
         }
-        DEF _42 LoadSensor {
+        DEF _6 LoadSensor {
           watchList [
-            USE _5
-            USE _12
-            USE _16
-            USE _20
-            USE _24
-            USE _28
-            USE _32
-            USE _36
-            USE _40
+            USE Texture0
+            USE Texture1
+            USE Texture2
+            USE Texture3
+            USE Texture4
+            USE Texture5
+            USE Texture6
+            USE Texture7
+            USE Texture8
             LoadSensor { }
           ]
         }
-        DEF _43 BooleanFilter { }
+        DEF _7 BooleanFilter { }
+        DEF PreviousButton Group {
+          children [
+            DEF PreviousTouch TouchSensor { }
+            Transform {
+              translation 4.75 0.4 0.0192773
+              rotation -2.47696e-08 -8.09367e-09 1 1.5708
+              scale 2.25 2.25 0.8
+              scaleOrientation 0.0536555 -0.89964 0.433323 0.0794526
+              center 0 0 -0.0137088
+              children DEF _8 Shape {
+                appearance Appearance {
+                  material Material {
+                    ambientIntensity 0.653913
+                    diffuseColor 0.244681 0 0
+                    specularColor 1 0.359185 0.359185
+                    shininess 0.148936
+                  }
+                }
+                geometry IndexedFaceSet {
+                  coordIndex [
+                    2,
+                    0,
+                    4,
+                    5,
+                    -1,
+                    4,
+                    1,
+                    3,
+                    5,
+                    -1,
+                    7,
+                    6,
+                    8,
+                    -1,
+                    0,
+                    2,
+                    3,
+                    1,
+                    -1,
+                    5,
+                    3,
+                    2,
+                    -1,
+                    6,
+                    7,
+                    4,
+                    0,
+                    -1,
+                    8,
+                    6,
+                    0,
+                    1,
+                    -1,
+                    7,
+                    8,
+                    1,
+                    4,
+                    -1
+                  ]
+                  coord Coordinate {
+                    point [
+                      -0.116667 0.116667 0,
+                      -0.116667 -0.116667 0,
+                      -0.116667 0.116667 -0.116667,
+                      -0.116667 -0.116667 -0.116667,
+                      0.116667 0 0,
+                      0.116667 0 -0.116667,
+                      -0.108933 0.102479 0.0892494,
+                      0.09533 0.000347482 0.0892494,
+                      -0.108933 -0.101784 0.0892494
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+        DEF NextButton Group {
+          children [
+            DEF NextTouch TouchSensor { }
+            Transform {
+              translation 4.75 -0.4 -0.0151683
+              rotation -3.70409e-06 3.58081e-06 -1 1.57079
+              scale 2.25 2.25 0.8
+              scaleOrientation 0.0267319 -0.686614 0.726531 0.104228
+              center 0 0 -0.0137088
+              children USE _8
+            }
+          ]
+        }
       ]
     }
   ]
 }
 
-DEF AboutTab Script {
-  initializeOnly SFInt32  pages 9
-  initializeOnly SFInt32  titleLength 20
-  initializeOnly SFString dotURL "../../ui/icons/dot-clear.png"
-  outputOnly     MFString image0_changed
-  outputOnly     MFString image1_changed
-  outputOnly     MFString image2_changed
-  outputOnly     MFString image3_changed
-  outputOnly     MFString image4_changed
-  outputOnly     MFString image5_changed
-  outputOnly     MFString image6_changed
-  outputOnly     MFString image7_changed
-  outputOnly     MFString image8_changed
-  outputOnly     MFString title0_changed
-  outputOnly     MFString title1_changed
-  outputOnly     MFString title2_changed
-  outputOnly     MFString title3_changed
-  outputOnly     MFString title4_changed
-  outputOnly     MFString title5_changed
-  outputOnly     MFString title6_changed
-  outputOnly     MFString title7_changed
-  outputOnly     MFString title8_changed
-  outputOnly     MFString url0_changed
-  outputOnly     MFString url1_changed
-  outputOnly     MFString url2_changed
-  outputOnly     MFString url3_changed
-  outputOnly     MFString url4_changed
-  outputOnly     MFString url5_changed
-  outputOnly     MFString url6_changed
-  outputOnly     MFString url7_changed
-  outputOnly     MFString url8_changed
-  outputOnly     SFInt32  whichChoice0_changed
-  outputOnly     SFInt32  whichChoice1_changed
-  outputOnly     SFInt32  whichChoice2_changed
-  outputOnly     SFInt32  whichChoice3_changed
-  outputOnly     SFInt32  whichChoice4_changed
-  outputOnly     SFInt32  whichChoice5_changed
-  outputOnly     SFInt32  whichChoice6_changed
-  outputOnly     SFInt32  whichChoice7_changed
-  outputOnly     SFInt32  whichChoice8_changed
-
-  url "javascript:
-
-function initialize ()
-{
-	var worldURL = Browser .currentScene .worldURL;
-
-	var match   = worldURL .match (/history=(.*?)(;|$)/)
-	var history = [ ];
-
-	for each (var page in unescape (match [1]) .split (\"\\n\"))
-		history .push (page .split (\"\\t\"));
-		
-	var
-		whichChoice,
-		url,
-		image,
-		title;
-
-	for (var i = 0; i < pages; ++ i)
-	{
-		if (i < history .length)
-		{
-			whichChoice = 0;
-			url         = new MFString (history [i] [1]);
-			image       = new MFString (\"file:///tmp/titania/tab/image\" + i + \".png\", dotURL);
-			title       = history [i] [0] .substr (0, titleLength);
-
-			if (title .length < history [i] [0] .length)
-				title += \"...\";
-	
-			title = new MFString (title);
-		}
-		else
-		{
-			whichChoice = 1;
-			url         = new MFString ();
-			image       = new MFString (dotURL);
-			title       = new MFString ();
-		}
-		
-		this [\"whichChoice\" + i + \"_changed\"] = whichChoice;
-		this [\"url\" + i + \"_changed\"]         = url;
-		this [\"image\" + i + \"_changed\"]       = image;
-		this [\"title\" + i + \"_changed\"]       = title;
-	}
-}"
-}
-
-ROUTE AboutTab.image0_changed TO _5.set_url
-ROUTE AboutTab.image1_changed TO _12.set_url
-ROUTE AboutTab.image2_changed TO _16.set_url
-ROUTE AboutTab.image3_changed TO _20.set_url
-ROUTE AboutTab.image4_changed TO _24.set_url
-ROUTE AboutTab.image5_changed TO _28.set_url
-ROUTE AboutTab.image6_changed TO _32.set_url
-ROUTE AboutTab.image7_changed TO _36.set_url
-ROUTE AboutTab.image8_changed TO _40.set_url
-ROUTE AboutTab.title0_changed TO _8.set_string
-ROUTE AboutTab.title1_changed TO _13.set_string
-ROUTE AboutTab.title2_changed TO _17.set_string
-ROUTE AboutTab.title3_changed TO _21.set_string
-ROUTE AboutTab.title4_changed TO _25.set_string
-ROUTE AboutTab.title5_changed TO _29.set_string
-ROUTE AboutTab.title6_changed TO _33.set_string
-ROUTE AboutTab.title7_changed TO _37.set_string
-ROUTE AboutTab.title8_changed TO _41.set_string
-ROUTE AboutTab.whichChoice0_changed TO _2.set_whichChoice
-ROUTE AboutTab.whichChoice1_changed TO _10.set_whichChoice
-ROUTE AboutTab.whichChoice2_changed TO _14.set_whichChoice
-ROUTE AboutTab.whichChoice3_changed TO _18.set_whichChoice
-ROUTE AboutTab.whichChoice4_changed TO _22.set_whichChoice
-ROUTE AboutTab.whichChoice5_changed TO _26.set_whichChoice
-ROUTE AboutTab.whichChoice6_changed TO _30.set_whichChoice
-ROUTE AboutTab.whichChoice7_changed TO _34.set_whichChoice
-ROUTE AboutTab.whichChoice8_changed TO _38.set_whichChoice
 ROUTE _1.rotation_changed TO Logo.set_rotation
-ROUTE AboutTab.url0_changed TO _3.set_url
-ROUTE AboutTab.url1_changed TO _11.set_url
-ROUTE AboutTab.url2_changed TO _15.set_url
-ROUTE AboutTab.url3_changed TO _19.set_url
-ROUTE AboutTab.url4_changed TO _23.set_url
-ROUTE AboutTab.url5_changed TO _27.set_url
-ROUTE AboutTab.url6_changed TO _31.set_url
-ROUTE AboutTab.url7_changed TO _35.set_url
-ROUTE AboutTab.url8_changed TO _39.set_url
-ROUTE _42.isLoaded TO _43.set_boolean
-ROUTE _43.inputTrue TO Pespective.set_bind
+ROUTE _6.isLoaded TO _7.set_boolean
+ROUTE _7.inputTrue TO Pespective.set_bind

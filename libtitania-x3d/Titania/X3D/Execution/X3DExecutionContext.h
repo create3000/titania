@@ -265,6 +265,14 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	template <class Type>
+	X3DPtr <Type>
+	getNamedNode (const std::string &)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const NamedNodeIndex &
 	getNamedNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -739,6 +747,22 @@ private:
 	MFNode uninitializedNodes;
 
 };
+
+template <class Type>
+X3DPtr <Type>
+X3DExecutionContext::getNamedNode (const std::string & name)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DPtr <Type> node (getNamedNode (name));
+
+	if (node)
+		return node;
+
+	throw Error <INVALID_NODE> ("Invalid node: node '" + name + "' has other type.");
+}
 
 } // X3D
 } // titania

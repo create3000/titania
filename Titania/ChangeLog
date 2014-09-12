@@ -1,3 +1,16 @@
+2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AboutTab.h:
+	* AboutTab.cpp:
+	* tab.x3dv:
+	* X3DBrowserWidget.cpp:
+	* dot-clear.png:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment2.h:
+	* X3DFieldAdjustment3.h:
+	* X3DFieldAdjustment4.h:
+	* dot-clear.png: 
+
 2014-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserHistory.cpp:
