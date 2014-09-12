@@ -57,6 +57,8 @@
 namespace titania {
 namespace puck {
 
+class MFStringFamilyWidget;
+
 class X3DFontStyleNodeEditor :
 	virtual public X3DTextEditorInterface
 {
@@ -65,8 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFontStyleNodeEditor ()
-	{ }
+	~X3DFontStyleNodeEditor ();
 
 
 protected:
@@ -107,45 +108,6 @@ private:
 	void
 	connectFontStyle (const X3D::SFNode &);
 
-	///  @name family
-
-	virtual
-	void
-	on_family_changed () final override;
-
-	virtual
-	void
-	on_family_edited (const Glib::ustring &, const Glib::ustring &) final override;
-
-	virtual
-	bool
-	on_family_button_release_event (GdkEventButton*) final override;
-
-	virtual
-	void
-	on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
-	                              int, int,
-	                              const Gtk::SelectionData &,
-	                              guint,
-	                              guint) final override;
-
-	virtual
-	void
-	on_add_family_clicked () final override;
-
-	virtual
-	void
-	on_remove_family_clicked () final override;
-
-	void
-	openFontChooserDialog (const int);
-
-	void
-	set_family ();
-
-	void
-	connectFamily (const X3D::MFString &);
-
 	///  @name style
 
 	virtual
@@ -180,12 +142,13 @@ private:
 	UndoStepPtr                         undoStep;
 	bool                                changing;
 
-	X3DFieldAdjustment <X3D::SFFloat>  spacing;
-	X3DFieldToggleButton <X3D::SFBool> horizontal;
-	X3DFieldToggleButton <X3D::SFBool> leftToRight;
-	X3DFieldToggleButton <X3D::SFBool> topToBottom;
-	MFStringComboBoxText               majorAlignment;          
-	MFStringComboBoxText               minorAlignment;          
+	std::unique_ptr <MFStringFamilyWidget> family;
+	X3DFieldAdjustment <X3D::SFFloat>      spacing;
+	X3DFieldToggleButton <X3D::SFBool>     horizontal;
+	X3DFieldToggleButton <X3D::SFBool>     leftToRight;
+	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
+	MFStringComboBoxText                   majorAlignment;          
+	MFStringComboBoxText                   minorAlignment;          
 
 };
 

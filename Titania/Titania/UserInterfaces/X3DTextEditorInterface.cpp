@@ -61,16 +61,15 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FontStyleFamilyListStore              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyListStore"));
-	m_FontStyleSizeAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
-	m_FontStyleSpacingAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
-	m_TextMaxExtentAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
-	m_TextStringTextBuffer                  = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextStringTextBuffer"));
-	m_FontStyleFamilySelection              = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
-	m_FontStyleFamilyNameColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyNameColumn"));
-	m_FontStyleFamilyNameCellrendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyNameCellrendererText"));
-	m_FontStyleFamilyFontColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyFontColumn"));
-	m_FontStyleFamilyFontCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyFontCellrendererPixbuf"));
+	m_FontStyleFamilyListStore        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyListStore"));
+	m_FontStyleSizeAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
+	m_FontStyleSpacingAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
+	m_TextMaxExtentAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
+	m_TextStringTextBuffer            = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextStringTextBuffer"));
+	m_FontStyleFamilySelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
+	m_FontStyleFamilyColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyColumn"));
+	m_FontStyleFamilyCellrendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyCellrendererText"));
+	m_FontStyleFamilyChooserColumn    = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyChooserColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -98,8 +97,8 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FontStyleBoldToggleButton", m_FontStyleBoldToggleButton);
 	m_builder -> get_widget ("FontStyleItalicToggleButton", m_FontStyleItalicToggleButton);
 	m_builder -> get_widget ("FontStyleFamilyTreeView", m_FontStyleFamilyTreeView);
-	m_builder -> get_widget ("FontStyleAddFamilyButton", m_FontStyleAddFamilyButton);
-	m_builder -> get_widget ("FontStyleRemoveFamilyButton", m_FontStyleRemoveFamilyButton);
+	m_builder -> get_widget ("FontStyleFamilyAddButton", m_FontStyleFamilyAddButton);
+	m_builder -> get_widget ("FontStyleFamilyRemoveButton", m_FontStyleFamilyRemoveButton);
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 
 	// Connect object Gtk::Adjustment with id 'FontStyleSizeAdjustment'.
@@ -123,20 +122,6 @@ X3DTextEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ToggleButton with id 'FontStyleBoldToggleButton'.
 	m_FontStyleBoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
 	m_FontStyleItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
-
-	// Connect object Gtk::TreeView with id 'FontStyleFamilyTreeView'.
-	m_FontStyleFamilyTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_button_release_event));
-	m_FontStyleFamilyTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_drag_data_received));
-
-	// Connect object Gtk::TreeSelection with id 'FontStyleFamilySelection'.
-	m_FontStyleFamilySelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_changed));
-
-	// Connect object Gtk::CellRendererText with id 'FontStyleFamilyNameCellrendererText'.
-	m_FontStyleFamilyNameCellrendererText -> signal_edited () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_family_edited));
-
-	// Connect object Gtk::Button with id 'FontStyleAddFamilyButton'.
-	m_FontStyleAddFamilyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_add_family_clicked));
-	m_FontStyleRemoveFamilyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_remove_family_clicked));
 
 	// Call construct handler of base class.
 	construct ();

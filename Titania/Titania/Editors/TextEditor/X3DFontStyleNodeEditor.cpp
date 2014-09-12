@@ -50,16 +50,11 @@
 
 #include "X3DFontStyleNodeEditor.h"
 
+#include "MFStringFamilyWidget.h"
 #include <Titania/String.h>
 
 namespace titania {
 namespace puck {
-
-enum FamilyEditorColumns
-{
-	FAMILY_NAME
-
-};
 
 X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	X3DTextEditorInterface ("", ""),
@@ -70,6 +65,13 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	       screenFontStyle (),
 	              undoStep (),
 	              changing (false),
+	                family (new MFStringFamilyWidget (this,
+	                        getFontStyleFamilyTreeView (),
+	                        getFontStyleFamilyCellrendererText (),
+	                        getFontStyleFamilyAddButton (),
+	                        getFontStyleFamilyRemoveButton (),
+	                        getFontStyleFamilyChooserColumn (),
+	                        "family")),
 	               spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing"),
 	            horizontal (getBrowserWindow (), getFontStyleHorizontalCheckButton (),  "horizontal"),
 	           leftToRight (getBrowserWindow (), getFontStyleLeftToRightCheckButton (), "leftToRight"),
@@ -79,11 +81,6 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 {
 	addChildren (fontStyleNodeBuffer);
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
-
-	//  Drag & Drop
-
-	getFontStyleFamilyTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	getFontStyleFamilyTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
 }
 
 void
@@ -213,9 +210,8 @@ X3DFontStyleNodeEditor::set_node ()
 {
 	if (fontStyleNode)
 	{
-		fontStyleNode -> family ()      .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-		fontStyleNode -> style ()       .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
-		fontStyleNode -> size ()        .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
+		fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
+		fontStyleNode -> size ()  .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
 	}
 
 	auto       pair     = getNode <X3D::X3DFontStyleNode> (texts, "fontStyle");
@@ -274,11 +270,9 @@ X3DFontStyleNodeEditor::set_node ()
 
 	changing = false;
 
-	fontStyleNode -> family ()      .addInterest (this, &X3DFontStyleNodeEditor::set_family);
-	fontStyleNode -> style ()       .addInterest (this, &X3DFontStyleNodeEditor::set_style);
-	fontStyleNode -> size ()        .addInterest (this, &X3DFontStyleNodeEditor::set_size);
+	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::set_style);
+	fontStyleNode -> size ()  .addInterest (this, &X3DFontStyleNodeEditor::set_size);
 
-	set_family ();
 	set_style ();
 	set_size ();
 
@@ -290,6 +284,7 @@ X3DFontStyleNodeEditor::set_widgets ()
 {
 	const X3D::MFNode nodes = { fontStyleNode };
 
+	family -> setNodes (nodes);
 	spacing        .setNodes (nodes);
 	horizontal     .setNodes (nodes);
 	leftToRight    .setNodes (nodes);
@@ -303,273 +298,6 @@ X3DFontStyleNodeEditor::connectFontStyle (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
 	field .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
-}
-
-/***********************************************************************************************************************
- *
- *  family
- *
- **********************************************************************************************************************/
-
-void
-X3DFontStyleNodeEditor::on_family_changed ()
-{
-	getFontStyleRemoveFamilyButton () .set_sensitive (not getFontStyleFamilySelection () -> get_selected_rows () .empty ());
-}
-
-void
-X3DFontStyleNodeEditor::on_family_edited (const Glib::ustring & path, const Glib::ustring & familyName)
-{
-	auto &     field = fontStyleNode -> family ();
-	const auto value = familyName .empty () ? "SERIF" : familyName;
-
-	if (field .get1Value (Gtk::TreePath (path) .front ()) == value)
-		return;
-
-	// Update list store.
-
-	const auto iter = getFontStyleFamilyListStore () -> get_iter (Gtk::TreePath (path));
-	iter -> set_value (FAMILY_NAME, value);
-
-	// Change value.
-
-	undoStep .reset ();
-
-	addUndoFunction (fontStyleNode, field, undoStep);
-
-	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
-
-	field .set1Value (Gtk::TreePath (path) .front (), value);
-
-	addRedoFunction (field, undoStep);
-}
-
-bool
-X3DFontStyleNodeEditor::on_family_button_release_event (GdkEventButton* event)
-{
-	Gtk::TreeModel::Path path;
-	Gtk::TreeViewColumn* column = nullptr;
-	int                  cell_x = 0;
-	int                  cell_y = 0;
-
-	getFontStyleFamilyTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
-
-	if (path .size ())
-	{
-		if (column == getFontStyleFamilyFontColumn () .operator -> ())
-		{
-			openFontChooserDialog (path .front ());
-			return true;
-		}
-	}
-
-	return false;
-}
-
-void
-X3DFontStyleNodeEditor::on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                                      int x, int y,
-                                                      const Gtk::SelectionData & selection_data,
-                                                      guint info,
-                                                      guint time)
-{
-	const auto   selected = getFontStyleFamilySelection () -> get_selected ();
-	const size_t index    = getFontStyleFamilyListStore () -> get_path (selected) .front ();
-
-	// Update list store.
-
-	Gtk::TreeModel::Path      destinationPath;
-	Gtk::TreeViewDropPosition position;
-	size_t                    dest = 0;
-
-	if (getFontStyleFamilyTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
-	{
-		auto destination = getFontStyleFamilyListStore () -> get_iter (destinationPath);
-
-		dest = getFontStyleFamilyListStore () -> get_path (destination) .front ();
-
-		switch (position)
-		{
-			case Gtk::TREE_VIEW_DROP_BEFORE:
-			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
-				getFontStyleFamilyListStore () -> move (selected, destination);
-				break;
-			case Gtk::TREE_VIEW_DROP_AFTER:
-			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
-				getFontStyleFamilyListStore () -> move (selected, ++ destination);
-				++ dest;
-				break;
-		}
-	}
-	else
-	{
-		const auto children = getFontStyleFamilyListStore () -> children ();
-		getFontStyleFamilyListStore () -> move (selected, children .end ());
-		dest = children .size ();
-	}
-
-	// Move value.
-
-	auto &     field = fontStyleNode -> family ();
-	const auto value = field [index];
-
-	undoStep .reset ();
-
-	addUndoFunction (fontStyleNode, field, undoStep);
-
-	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
-
-	if (index < dest)
-	{
-		field .insert (field .begin () + dest, value);
-		field .erase (field .begin () + index);
-	}
-	else
-	{
-		field .erase (field .begin () + index);
-		field .insert (field .begin () + dest, value);
-	}
-
-	addRedoFunction (field, undoStep);
-
-	context -> drag_finish (false, false, time);
-}
-
-void
-X3DFontStyleNodeEditor::on_add_family_clicked ()
-{
-	openFontChooserDialog (-1);
-}
-
-void
-X3DFontStyleNodeEditor::on_remove_family_clicked ()
-{
-	const auto   selected = getFontStyleFamilySelection () -> get_selected ();
-	const size_t index    = getFontStyleFamilyListStore () -> get_path (selected) .front ();
-	auto &       field    = fontStyleNode -> family ();
-
-	// Update list store.
-
-	getFontStyleFamilyListStore () -> erase (selected);
-
-	// Remove value.
-
-	undoStep .reset ();
-
-	addUndoFunction (fontStyleNode, field, undoStep);
-
-	field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-	field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
-
-	field .erase (field .begin () + index);
-
-	addRedoFunction (field, undoStep);
-}
-
-void
-X3DFontStyleNodeEditor::openFontChooserDialog (const int index)
-{
-	// Create font description.
-
-	std::string family;
-
-	if (index == -1)
-		family = "SERIF";
-
-	else
-	{
-		const auto iter = getFontStyleFamilyListStore () -> get_iter (Gtk::TreePath (basic::to_string (index)));
-		iter -> get_value (FAMILY_NAME, family);
-	}
-
-	if (family .empty ())
-		family = "SERIF";
-
-	Pango::FontDescription fontDescription;
-
-	fontDescription .set_family (family);
-
-	// Run Dialog
-
-	updateWidget ("FamilyChooserDialog");
-	const auto familyChooserDialog = getWidget <Gtk::FontChooserDialog> ("FamilyChooserDialog");
-
-	familyChooserDialog -> set_font_desc (fontDescription);
-
-	getWindow () .set_sensitive (false);
-	const auto response_id = familyChooserDialog -> run ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-	{
-		auto &     field           = fontStyleNode -> family ();
-		const auto fontDescription = familyChooserDialog -> get_font_desc ();
-		const auto value           = fontDescription .get_family ();
-
-		if (index == -1)
-		{
-			// Update list store.
-
-			const auto iter = getFontStyleFamilyListStore () -> append ();
-			iter -> set_value (FAMILY_NAME, value);
-
-			// Append value.
-
-			undoStep .reset ();
-
-			addUndoFunction (fontStyleNode, field, undoStep);
-
-			field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-			field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
-
-			field .emplace_back (value);
-
-			addRedoFunction (field, undoStep);
-		}
-		else
-		{
-			// Update list store.
-
-			const auto iter = getFontStyleFamilyListStore () -> get_iter (Gtk::TreePath (basic::to_string (index)));
-			iter -> set_value (FAMILY_NAME, value);
-
-			// Change value.
-
-			undoStep .reset ();
-
-			addUndoFunction (fontStyleNode, field, undoStep);
-
-			field .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
-			field .addInterest (this, &X3DFontStyleNodeEditor::connectFamily);
-
-			field .set1Value (index, value);
-
-			addRedoFunction (field, undoStep);
-		}
-	}
-
-	delete familyChooserDialog;
-	getWindow () .set_sensitive (true);
-}
-
-void
-X3DFontStyleNodeEditor::set_family ()
-{
-	getFontStyleFamilyListStore () -> clear ();
-
-	for (const auto & familyName : fontStyleNode -> family ())
-	{
-		const auto iter = getFontStyleFamilyListStore () -> append ();
-		iter -> set_value (FAMILY_NAME, familyName .str ());
-	}
-}
-
-void
-X3DFontStyleNodeEditor::connectFamily (const X3D::MFString & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectFamily);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_family);
 }
 
 /***********************************************************************************************************************
@@ -674,6 +402,9 @@ X3DFontStyleNodeEditor::connectSize (const X3D::SFFloat & field)
 	field .removeInterest (this, &X3DFontStyleNodeEditor::connectSize);
 	field .addInterest (this, &X3DFontStyleNodeEditor::set_size);
 }
+
+X3DFontStyleNodeEditor::~X3DFontStyleNodeEditor ()
+{ }
 
 } // puck
 } // titania

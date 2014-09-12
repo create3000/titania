@@ -119,20 +119,16 @@ public:
 	{ return m_FontStyleFamilySelection; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getFontStyleFamilyNameColumn () const
-	{ return m_FontStyleFamilyNameColumn; }
+	getFontStyleFamilyColumn () const
+	{ return m_FontStyleFamilyColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getFontStyleFamilyNameCellrendererText () const
-	{ return m_FontStyleFamilyNameCellrendererText; }
+	getFontStyleFamilyCellrendererText () const
+	{ return m_FontStyleFamilyCellrendererText; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getFontStyleFamilyFontColumn () const
-	{ return m_FontStyleFamilyFontColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getFontStyleFamilyFontCellrendererPixbuf () const
-	{ return m_FontStyleFamilyFontCellrendererPixbuf; }
+	getFontStyleFamilyChooserColumn () const
+	{ return m_FontStyleFamilyChooserColumn; }
 
 	Gtk::Window &
 	getWindow () const
@@ -235,12 +231,12 @@ public:
 	{ return *m_FontStyleFamilyTreeView; }
 
 	Gtk::Button &
-	getFontStyleAddFamilyButton () const
-	{ return *m_FontStyleAddFamilyButton; }
+	getFontStyleFamilyAddButton () const
+	{ return *m_FontStyleFamilyAddButton; }
 
 	Gtk::Button &
-	getFontStyleRemoveFamilyButton () const
-	{ return *m_FontStyleRemoveFamilyButton; }
+	getFontStyleFamilyRemoveButton () const
+	{ return *m_FontStyleFamilyRemoveButton; }
 
 	Gtk::FontChooserDialog &
 	getFamilyChooserDialog () const
@@ -275,30 +271,6 @@ public:
 	on_style_toggled () = 0;
 
 	virtual
-	bool
-	on_family_button_release_event (GdkEventButton* event) = 0;
-
-	virtual
-	void
-	on_family_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
-
-	virtual
-	void
-	on_family_changed () = 0;
-
-	virtual
-	void
-	on_family_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
-
-	virtual
-	void
-	on_add_family_clicked () = 0;
-
-	virtual
-	void
-	on_remove_family_clicked () = 0;
-
-	virtual
 	~X3DTextEditorInterface ();
 
 
@@ -309,46 +281,45 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                            filename;
-	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::ListStore>          m_FontStyleFamilyListStore;
-	Glib::RefPtr <Gtk::Adjustment>         m_FontStyleSizeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>         m_FontStyleSpacingAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>         m_TextMaxExtentAdjustment;
-	Glib::RefPtr <Gtk::TextBuffer>         m_TextStringTextBuffer;
-	Glib::RefPtr <Gtk::TreeSelection>      m_FontStyleFamilySelection;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_FontStyleFamilyNameColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_FontStyleFamilyNameCellrendererText;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_FontStyleFamilyFontColumn;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_FontStyleFamilyFontCellrendererPixbuf;
-	Gtk::Window*                           m_Window;
-	Gtk::Box*                              m_Widget;
-	Gtk::Expander*                         m_TextExpander;
-	Gtk::CheckButton*                      m_TextCheckButton;
-	Gtk::Button*                           m_TextUnlinkButton;
-	Gtk::Grid*                             m_TextBox;
-	Gtk::SpinButton*                       m_TextMaxExtentSpinButton;
-	Gtk::TextView*                         m_TextStringTextView;
-	Gtk::Box*                              m_LenghtBox;
-	Gtk::Expander*                         m_FontStyleExpander;
-	Gtk::Box*                              m_FontStyleBox;
-	Gtk::ComboBoxText*                     m_FontStyleComboBoxText;
-	Gtk::Button*                           m_FontStyleUnlinkButton;
-	Gtk::Grid*                             m_FontStyleNodeBox;
-	Gtk::Label*                            m_SizeLabel;
-	Gtk::SpinButton*                       m_FontStyleSizeSpinButton;
-	Gtk::SpinButton*                       m_FontStyleSpacingSpinButton;
-	Gtk::CheckButton*                      m_FontStyleHorizontalCheckButton;
-	Gtk::CheckButton*                      m_FontStyleLeftToRightCheckButton;
-	Gtk::CheckButton*                      m_FontStyleTopToBottomCheckButton;
-	Gtk::ComboBoxText*                     m_FontStyleMajorAlignmentComboBoxText;
-	Gtk::ComboBoxText*                     m_FontStyleMinorAlignmentComboBoxText;
-	Gtk::ToggleButton*                     m_FontStyleBoldToggleButton;
-	Gtk::ToggleButton*                     m_FontStyleItalicToggleButton;
-	Gtk::TreeView*                         m_FontStyleFamilyTreeView;
-	Gtk::Button*                           m_FontStyleAddFamilyButton;
-	Gtk::Button*                           m_FontStyleRemoveFamilyButton;
-	Gtk::FontChooserDialog*                m_FamilyChooserDialog;
+	std::string                          filename;
+	Glib::RefPtr <Gtk::Builder>          m_builder;
+	Glib::RefPtr <Gtk::ListStore>        m_FontStyleFamilyListStore;
+	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSizeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_TextMaxExtentAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer>       m_TextStringTextBuffer;
+	Glib::RefPtr <Gtk::TreeSelection>    m_FontStyleFamilySelection;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_FontStyleFamilyColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_FontStyleFamilyCellrendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_FontStyleFamilyChooserColumn;
+	Gtk::Window*                         m_Window;
+	Gtk::Box*                            m_Widget;
+	Gtk::Expander*                       m_TextExpander;
+	Gtk::CheckButton*                    m_TextCheckButton;
+	Gtk::Button*                         m_TextUnlinkButton;
+	Gtk::Grid*                           m_TextBox;
+	Gtk::SpinButton*                     m_TextMaxExtentSpinButton;
+	Gtk::TextView*                       m_TextStringTextView;
+	Gtk::Box*                            m_LenghtBox;
+	Gtk::Expander*                       m_FontStyleExpander;
+	Gtk::Box*                            m_FontStyleBox;
+	Gtk::ComboBoxText*                   m_FontStyleComboBoxText;
+	Gtk::Button*                         m_FontStyleUnlinkButton;
+	Gtk::Grid*                           m_FontStyleNodeBox;
+	Gtk::Label*                          m_SizeLabel;
+	Gtk::SpinButton*                     m_FontStyleSizeSpinButton;
+	Gtk::SpinButton*                     m_FontStyleSpacingSpinButton;
+	Gtk::CheckButton*                    m_FontStyleHorizontalCheckButton;
+	Gtk::CheckButton*                    m_FontStyleLeftToRightCheckButton;
+	Gtk::CheckButton*                    m_FontStyleTopToBottomCheckButton;
+	Gtk::ComboBoxText*                   m_FontStyleMajorAlignmentComboBoxText;
+	Gtk::ComboBoxText*                   m_FontStyleMinorAlignmentComboBoxText;
+	Gtk::ToggleButton*                   m_FontStyleBoldToggleButton;
+	Gtk::ToggleButton*                   m_FontStyleItalicToggleButton;
+	Gtk::TreeView*                       m_FontStyleFamilyTreeView;
+	Gtk::Button*                         m_FontStyleFamilyAddButton;
+	Gtk::Button*                         m_FontStyleFamilyRemoveButton;
+	Gtk::FontChooserDialog*              m_FamilyChooserDialog;
 
 };
 

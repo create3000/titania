@@ -771,23 +771,18 @@
                                 <property name="enable_search">False</property>
                                 <property name="search_column">0</property>
                                 <property name="show_expanders">False</property>
-                                <signal name="button-release-event" handler="on_family_button_release_event" swapped="no"/>
-                                <signal name="drag-data-received" handler="on_family_drag_data_received" swapped="no"/>
                                 <child internal-child="selection">
-                                  <object class="GtkTreeSelection" id="FontStyleFamilySelection">
-                                    <signal name="changed" handler="on_family_changed" swapped="no"/>
-                                  </object>
+                                  <object class="GtkTreeSelection" id="FontStyleFamilySelection"/>
                                 </child>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyNameColumn">
+                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyColumn">
                                     <property name="sizing">autosize</property>
                                     <property name="title" translatable="yes">Family Name</property>
                                     <property name="expand">True</property>
                                     <property name="alignment">0.019999999552965164</property>
                                     <child>
-                                      <object class="GtkCellRendererText" id="FontStyleFamilyNameCellrendererText">
+                                      <object class="GtkCellRendererText" id="FontStyleFamilyCellrendererText">
                                         <property name="editable">True</property>
-                                        <signal name="edited" handler="on_family_edited" swapped="no"/>
                                       </object>
                                       <attributes>
                                         <attribute name="text">0</attribute>
@@ -796,10 +791,10 @@
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyFontColumn">
+                                  <object class="GtkTreeViewColumn" id="FontStyleFamilyChooserColumn">
                                     <property name="sizing">autosize</property>
                                     <child>
-                                      <object class="GtkCellRendererPixbuf" id="FontStyleFamilyFontCellrendererPixbuf">
+                                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1">
                                         <property name="stock_id">gtk-select-font</property>
                                         <property name="stock_size">1</property>
                                       </object>
@@ -821,12 +816,11 @@
                             <property name="can_focus">False</property>
                             <property name="spacing">2</property>
                             <child>
-                              <object class="GtkButton" id="FontStyleAddFamilyButton">
+                              <object class="GtkButton" id="FontStyleFamilyAddButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="on_add_family_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkImage" id="image6">
                                     <property name="visible">True</property>
@@ -843,13 +837,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="FontStyleRemoveFamilyButton">
+                              <object class="GtkButton" id="FontStyleFamilyRemoveButton">
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="on_remove_family_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkImage" id="image7">
                                     <property name="visible">True</property>

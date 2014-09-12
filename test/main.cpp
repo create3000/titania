@@ -55,8 +55,8 @@
 #include <set>
 #include <string>
 
-#include <Titania/X3D.h>
 #include <Titania/OS.h>
+#include <Titania/X3D.h>
 #include <gtkmm.h>
 
 //#include <Titania/X3D/JavaScript/PeaseBlossom/pbParser.h>
@@ -64,43 +64,40 @@
 using namespace titania;
 using namespace titania::X3D;
 
+Gtk::ApplicationWindow* window;
+Gtk::Button* button;
+Glib::RefPtr <Gtk::RecentManager> recentManager;
+
+void
+on_clicked ()
+{
+	recentManager -> add_item ("Item");
+}
+
+bool
+on_delete_event (GdkEventAny*)
+{
+	window -> hide ();
+	return false;
+}
+
 int
 main (int argc, char* argv [ ])
 {
 	std::clog << std::boolalpha << std::endl;
 	std::clog << "Test started ..." << std::endl << std::endl;
 
-//	try
-//	{
-//		static const std::string string =
-//			"true false null 1234.56789 0xabcdef"
-//			"\n"
-//			"0 - 1 + 2 * 3 % 4"
-//			"\n"
-//			"0 - 1 + 2 * 3 % 4 || true && false | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5 ? true : false"
-//			"\n"
-//			"0 instanceof 0"
-//			"\n"
-//			"0 in 0"
-//			"\n"
-//			"Browser"
-//		;
-//
-//		std::istringstream istream (string);
-//
-//		const auto scene = getBrowser () -> createScene ();
-//
-//		peaseblossom::Parser (istream, scene) .parseIntoContext ();
-//		
-//		__LOG__ << bool (istream) << std::endl;
-//		
-//		if (istream)
-//			__LOG__ << istream .rdbuf () << std::endl;
-//	}
-//	catch (const X3DError & error)
-//	{
-//		__LOG__ << error .what () << std::endl;
-//	}
+	Glib::RefPtr <Gtk::Application> app = Gtk::Application::create (argc, argv, "org.gtkmm.examples.base");
 
-	std::clog << "Test done ..." << std::endl;
+	const auto builder = Gtk::Builder::create_from_file ("/home/holger/Schreibtisch/recent.xml");
+
+	builder -> get_widget ("applicationwindow1", window);
+	window -> signal_delete_event () .connect (sigc::ptr_fun (&on_delete_event));
+
+	builder -> get_widget ("button1", button);
+	button -> signal_clicked () .connect (sigc::ptr_fun (&on_clicked));
+
+	recentManager = Glib::RefPtr <Gtk::RecentManager>::cast_dynamic (builder -> get_object ("recentmanager1"));
+
+	return app -> run (*window);
 }
