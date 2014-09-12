@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,6 @@
 #include "X3DImageTextureEditor.h"
 
 #include "../../ComposedWidgets/MFStringURLWidget.h"
-#include <Titania/Stream/Base64.h>
 
 namespace titania {
 namespace puck {
@@ -59,13 +58,13 @@ namespace puck {
 X3DImageTextureEditor::X3DImageTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface ("", ""),
-	                      url (new MFStringURLWidget (this,
-	                           getImageTextureURLTreeView (),
-	                           getImageTextureURLCellRendererText (),
-	                           getImageTextureURLAddButton (),
-	                           getImageTextureURLRemoveButton (),
-	                           getImageTextureURLChooserColumn (),
-	                           "url")),
+	                     url (new MFStringURLWidget (this,
+	                          getImageTextureURLTreeView (),
+	                          getImageTextureURLCellRendererText (),
+	                          getImageTextureURLAddButton (),
+	                          getImageTextureURLRemoveButton (),
+	                          getImageTextureURLChooserColumn (),
+	                          "url")),
 	             imageTexture ()
 { }
 
@@ -101,35 +100,6 @@ X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	}
 
 	return imageTexture;
-}
-
-void
-X3DImageTextureEditor::on_embed_image_clicked ()
-{
-	for (const auto & URL : imageTexture -> url ())
-	{
-		try
-		{
-			X3D::Loader       loader (imageTexture -> getExecutionContext ());
-			const std::string image = loader .loadDocument (URL);
-
-			bool        result_uncertain;
-			std::string contentType = Gio::content_type_guess (loader .getWorldURL () .path (), (guchar*) image .data (), image .size (), result_uncertain);
-
-			const auto  undoStep = std::make_shared <UndoStep> (_ ("Embed Image"));
-			std::string data     = "data:" + contentType + ";base64," + basic::base64_encode (image);
-
-			undoStep -> addObjects (imageTexture);
-			undoStep -> addUndoFunction (&X3D::MFString::setValue, std::ref (imageTexture -> url ()), imageTexture -> url ());
-			imageTexture -> url () .emplace_front (std::move (data));
-			undoStep -> addRedoFunction (&X3D::MFString::setValue, std::ref (imageTexture -> url ()), imageTexture -> url ());
-
-			getBrowserWindow () -> addUndoStep (undoStep);
-			return;
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
 }
 
 void

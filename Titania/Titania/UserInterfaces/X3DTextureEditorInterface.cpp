@@ -94,7 +94,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImageTextureURLBox", m_ImageTextureURLBox);
 	m_builder -> get_widget ("ImageTextureURLTreeView", m_ImageTextureURLTreeView);
 	m_builder -> get_widget ("ImageTextureURLAddButton", m_ImageTextureURLAddButton);
-	m_builder -> get_widget ("ImageTextureEmbedButton", m_ImageTextureEmbedButton);
 	m_builder -> get_widget ("ImageTextureURLRemoveButton", m_ImageTextureURLRemoveButton);
 	m_builder -> get_widget ("ImageTextureURLReloadButton", m_ImageTextureURLReloadButton);
 	m_builder -> get_widget ("PixelTextureBox", m_PixelTextureBox);
@@ -153,7 +152,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'TextureUnlinkButton'.
 	m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked));
-	m_ImageTextureEmbedButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_embed_image_clicked));
 	m_ImageTextureURLReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_image_texture_reload_clicked));
 	m_MovieTextureURLReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_movie_texture_reload_clicked));
 

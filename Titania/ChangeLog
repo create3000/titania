@@ -1,15 +1,5 @@
 2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* AboutTab.cpp:
-	* tab.x3dv:
-	* TextureEditor.xml:
-	* X3DTextureEditorInterface.h:
-	* X3DTextureEditorInterface.cpp:
-	* X3DImageTextureEditor.h:
-	* X3DImageTextureEditor.cpp: 
-
-2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
-
 	* AboutTab.h:
 	* AboutTab.cpp:
 	* tab.x3dv:

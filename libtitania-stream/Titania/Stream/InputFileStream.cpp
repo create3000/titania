@@ -161,7 +161,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 
 			// header
 
-			const std::string::size_type semicolon = header .find (';');
+			std::string::size_type semicolon = header .find (';');
 
 			if (not header .empty ())
 				file_response_headers .emplace ("Content-Type", header .substr (0, semicolon));

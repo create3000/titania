@@ -135,7 +135,7 @@ AboutTab::set_scene ()
 			const auto anchor     = scene -> getNamedNode <X3D::Anchor> ("Anchor" + number);
 
 			switchNode -> whichChoice () = 0;
-			texture -> url ()            = { "data:image/jpeg;base64," + image, "library/dot-clear.png" };
+			texture -> url ()            = { "data:image/jpeg;charset=UTF-8;base64," + image, "library/dot-clear.png" };
 			text -> string ()            = { item .at ("title") };
 			anchor -> url ()             = { item .at ("worldURL") };
 
