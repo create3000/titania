@@ -447,6 +447,28 @@
                                               </packing>
                                             </child>
                                             <child>
+                                              <object class="GtkButton" id="ImageTextureEmbedButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Embed image.</property>
+                                                <signal name="clicked" handler="on_embed_image_clicked" swapped="no"/>
+                                                <child>
+                                                  <object class="GtkImage" id="image12">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="icon_name">document-import</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
                                               <object class="GtkButton" id="ImageTextureURLRemoveButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
@@ -463,7 +485,7 @@
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">True</property>
-                                                <property name="position">1</property>
+                                                <property name="position">2</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -485,7 +507,7 @@
                                               <packing>
                                                 <property name="expand">True</property>
                                                 <property name="fill">True</property>
-                                                <property name="position">2</property>
+                                                <property name="position">3</property>
                                               </packing>
                                             </child>
                                           </object>

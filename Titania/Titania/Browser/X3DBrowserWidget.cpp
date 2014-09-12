@@ -565,7 +565,8 @@ X3DBrowserWidget::reload ()
 void
 X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 {
-	aboutTab -> loadPreview (browser);
+	if (browser == getBrowser ())
+		aboutTab -> loadPreview (browser);
 
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 

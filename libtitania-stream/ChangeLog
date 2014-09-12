@@ -1,5 +1,14 @@
 2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ChangeLog:
+	* InputFileStream.cpp: 
+
+2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* InputFileStream.cpp: 
+
+2014-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* Base64.h:
 	* libtitania-stream.cproj:
