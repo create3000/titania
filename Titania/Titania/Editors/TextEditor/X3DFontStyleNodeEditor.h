@@ -52,6 +52,7 @@
 #define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
+#include "../../ComposedWidgets/MFStringComboBoxText.h"
 #include "../../UserInterfaces/X3DTextEditorInterface.h"
 
 namespace titania {
@@ -170,18 +171,6 @@ private:
 	void
 	connectSize (const X3D::SFFloat &);
 
-	///  @name justify
-
-	virtual
-	void
-	on_justify_changed () final override;
-
-	void
-	set_justify ();
-
-	void
-	connectJustify (const X3D::MFString &);
-
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::Text>        texts;
@@ -196,6 +185,8 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> horizontal;
 	X3DFieldToggleButton <X3D::SFBool> leftToRight;
 	X3DFieldToggleButton <X3D::SFBool> topToBottom;
+	MFStringComboBoxText               majorAlignment;          
+	MFStringComboBoxText               minorAlignment;          
 
 };
 

@@ -73,7 +73,9 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	               spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing"),
 	            horizontal (getBrowserWindow (), getFontStyleHorizontalCheckButton (),  "horizontal"),
 	           leftToRight (getBrowserWindow (), getFontStyleLeftToRightCheckButton (), "leftToRight"),
-	           topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom")
+	           topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom"),
+	        majorAlignment (getBrowserWindow (), getFontStyleMajorAlignmentComboBoxText (), "justify", 0, "BEGIN"),
+	        minorAlignment (getBrowserWindow (), getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST")
 {
 	addChildren (fontStyleNodeBuffer);
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
@@ -214,7 +216,6 @@ X3DFontStyleNodeEditor::set_node ()
 		fontStyleNode -> family ()      .removeInterest (this, &X3DFontStyleNodeEditor::set_family);
 		fontStyleNode -> style ()       .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 		fontStyleNode -> size ()        .removeInterest (this, &X3DFontStyleNodeEditor::set_size);
-		fontStyleNode -> justify ()     .removeInterest (this, &X3DFontStyleNodeEditor::set_justify);
 	}
 
 	auto       pair     = getNode <X3D::X3DFontStyleNode> (texts, "fontStyle");
@@ -276,23 +277,25 @@ X3DFontStyleNodeEditor::set_node ()
 	fontStyleNode -> family ()      .addInterest (this, &X3DFontStyleNodeEditor::set_family);
 	fontStyleNode -> style ()       .addInterest (this, &X3DFontStyleNodeEditor::set_style);
 	fontStyleNode -> size ()        .addInterest (this, &X3DFontStyleNodeEditor::set_size);
-	fontStyleNode -> justify ()     .addInterest (this, &X3DFontStyleNodeEditor::set_justify);
 
 	set_family ();
 	set_style ();
 	set_size ();
-	set_justify ();
-	
+
 	set_widgets ();
 }
 
 void
 X3DFontStyleNodeEditor::set_widgets ()
 {
-	spacing     .setNodes ({ fontStyleNode });
-	horizontal  .setNodes ({ fontStyleNode });
-	leftToRight .setNodes ({ fontStyleNode });
-	topToBottom .setNodes ({ fontStyleNode });
+	const X3D::MFNode nodes = { fontStyleNode };
+
+	spacing        .setNodes (nodes);
+	horizontal     .setNodes (nodes);
+	leftToRight    .setNodes (nodes);
+	topToBottom    .setNodes (nodes);
+	majorAlignment .setNodes (nodes);
+	minorAlignment .setNodes (nodes);
 }
 
 void
@@ -670,69 +673,6 @@ X3DFontStyleNodeEditor::connectSize (const X3D::SFFloat & field)
 {
 	field .removeInterest (this, &X3DFontStyleNodeEditor::connectSize);
 	field .addInterest (this, &X3DFontStyleNodeEditor::set_size);
-}
-
-/***********************************************************************************************************************
- *
- *  justify
- *
- **********************************************************************************************************************/
-
-void
-X3DFontStyleNodeEditor::on_justify_changed ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (fontStyleNode, fontStyleNode -> justify (), undoStep);
-
-	fontStyleNode -> justify () .removeInterest (this, &X3DFontStyleNodeEditor::set_justify);
-	fontStyleNode -> justify () .addInterest (this, &X3DFontStyleNodeEditor::connectJustify);
-
-	fontStyleNode -> justify () .set1Value (0, getFontStyleMajorAlignmentComboBoxText () .get_active_text ());
-	fontStyleNode -> justify () .set1Value (1, getFontStyleMinorAlignmentComboBoxText () .get_active_text ());
-
-	addRedoFunction (fontStyleNode -> justify (), undoStep);
-}
-
-void
-X3DFontStyleNodeEditor::set_justify ()
-{
-	static const std::map <std::string, int> alignments = {
-		std::make_pair ("FIRST",  0),
-		std::make_pair ("BEGIN",  1),
-		std::make_pair ("MIDDLE", 2),
-		std::make_pair ("END",    3)
-	};
-
-	changing = true;
-
-	try
-	{
-		getFontStyleMajorAlignmentComboBoxText () .set_active (alignments .at (fontStyleNode -> justify () .at (0)));
-	}
-	catch (const std::out_of_range &)
-	{
-		getFontStyleMajorAlignmentComboBoxText () .set_active (1);
-	}
-
-	try
-	{
-		getFontStyleMinorAlignmentComboBoxText () .set_active (alignments .at (fontStyleNode -> justify () .at (1)));
-	}
-	catch (const std::out_of_range &)
-	{
-		getFontStyleMinorAlignmentComboBoxText () .set_active (0);
-	}
-
-	changing = false;
-}
-
-void
-X3DFontStyleNodeEditor::connectJustify (const X3D::MFString & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectJustify);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_justify);
 }
 
 } // puck

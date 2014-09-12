@@ -611,7 +611,6 @@
                           <item>MIDDLE</item>
                           <item>END</item>
                         </items>
-                        <signal name="changed" handler="on_justify_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -631,7 +630,6 @@
                           <item>MIDDLE</item>
                           <item>END</item>
                         </items>
-                        <signal name="changed" handler="on_justify_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
