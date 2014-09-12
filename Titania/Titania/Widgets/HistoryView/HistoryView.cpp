@@ -134,10 +134,10 @@ HistoryView::set_scene ()
 
 	history .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 
+	// Move row.
+
 	if (not getWidget () .get_mapped ())
 		return;
-
-	// Move row.
 
 	try
 	{
