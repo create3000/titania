@@ -272,10 +272,6 @@ public:
 
 	virtual
 	void
-	on_justify_changed () = 0;
-
-	virtual
-	void
 	on_style_toggled () = 0;
 
 	virtual

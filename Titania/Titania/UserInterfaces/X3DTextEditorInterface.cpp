@@ -120,10 +120,6 @@ X3DTextEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'FontStyleUnlinkButton'.
 	m_FontStyleUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_unlink_clicked));
 
-	// Connect object Gtk::ComboBoxText with id 'FontStyleMajorAlignmentComboBoxText'.
-	m_FontStyleMajorAlignmentComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
-	m_FontStyleMinorAlignmentComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_justify_changed));
-
 	// Connect object Gtk::ToggleButton with id 'FontStyleBoldToggleButton'.
 	m_FontStyleBoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
 	m_FontStyleItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));

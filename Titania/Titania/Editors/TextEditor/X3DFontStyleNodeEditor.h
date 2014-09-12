@@ -52,7 +52,6 @@
 #define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "../../ComposedWidgets/MFStringComboBoxText.h"
 #include "../../UserInterfaces/X3DTextEditorInterface.h"
 
 namespace titania {

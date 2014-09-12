@@ -51,6 +51,7 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_H__
 #define __TITANIA_COMPOSED_WIDGETS_H__
 
+#include "ComposedWidgets/MFStringComboBoxText.h"
 #include "ComposedWidgets/NameEntry.h"
 #include "ComposedWidgets/SFColorButton.h"
 #include "ComposedWidgets/SFColorRGBAButton.h"
