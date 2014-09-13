@@ -2,6 +2,16 @@
 
 	* AboutTab.h:
 	* AboutTab.cpp:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* tab.x3dv:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AboutTab.h:
+	* AboutTab.cpp:
 	* X3DBrowserWidget.cpp: 
 
 2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>

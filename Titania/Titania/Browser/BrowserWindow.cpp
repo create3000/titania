@@ -1017,7 +1017,7 @@ BrowserWindow::isEditor (const bool enabled)
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-	getAddTabButton ()          .set_visible (not enabled);
+	getTabButton ()             .set_visible (not enabled);
 	getHandButton ()            .set_visible (enabled);
 	getArrowButton ()           .set_visible (enabled);
 	getPlayPauseButton ()       .set_visible (enabled);

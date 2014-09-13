@@ -190,7 +190,7 @@ public:
 	getOpenMenuItem () const
 	{ return *m_OpenMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getOpenRecentMenuItem () const
 	{ return *m_OpenRecentMenuItem; }
 
@@ -543,6 +543,10 @@ public:
 	{ return *m_LocationBar1; }
 
 	Gtk::ToolButton &
+	getAddTabButton () const
+	{ return *m_AddTabButton; }
+
+	Gtk::ToolButton &
 	getHomeButton () const
 	{ return *m_HomeButton; }
 
@@ -683,8 +687,8 @@ public:
 	{ return *m_DashboardToolBar; }
 
 	Gtk::ToolButton &
-	getAddTabButton () const
-	{ return *m_AddTabButton; }
+	getTabButton () const
+	{ return *m_TabButton; }
 
 	Gtk::RadioToolButton &
 	getHandButton () const
@@ -1291,7 +1295,7 @@ private:
 	Gtk::MenuItem*                  m_FileMenuItem;
 	Gtk::ImageMenuItem*             m_NewMenuItem;
 	Gtk::ImageMenuItem*             m_OpenMenuItem;
-	Gtk::MenuItem*                  m_OpenRecentMenuItem;
+	Gtk::ImageMenuItem*             m_OpenRecentMenuItem;
 	Gtk::ImageMenuItem*             m_OpenLocationMenuItem;
 	Gtk::ImageMenuItem*             m_ImportMenuItem;
 	Gtk::CheckMenuItem*             m_ImportAsInlineMenuItem;
@@ -1379,6 +1383,7 @@ private:
 	Gtk::Box*                       m_ToolBar;
 	Gtk::Box*                       m_LocationBar;
 	Gtk::Toolbar*                   m_LocationBar1;
+	Gtk::ToolButton*                m_AddTabButton;
 	Gtk::ToolButton*                m_HomeButton;
 	Gtk::ToolButton*                m_PreviousButton;
 	Gtk::ToolButton*                m_NextButton;
@@ -1414,7 +1419,7 @@ private:
 	Gtk::Notebook*                  m_BrowserNotebook;
 	Gtk::Box*                       m_Dashboard;
 	Gtk::Toolbar*                   m_DashboardToolBar;
-	Gtk::ToolButton*                m_AddTabButton;
+	Gtk::ToolButton*                m_TabButton;
 	Gtk::RadioToolButton*           m_HandButton;
 	Gtk::RadioToolButton*           m_ArrowButton;
 	Gtk::ToolButton*                m_PlayPauseButton;

@@ -175,6 +175,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ToolBar", m_ToolBar);
 	m_builder -> get_widget ("LocationBar", m_LocationBar);
 	m_builder -> get_widget ("LocationBar1", m_LocationBar1);
+	m_builder -> get_widget ("AddTabButton", m_AddTabButton);
 	m_builder -> get_widget ("HomeButton", m_HomeButton);
 	m_builder -> get_widget ("PreviousButton", m_PreviousButton);
 	m_builder -> get_widget ("NextButton", m_NextButton);
@@ -210,7 +211,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserNotebook", m_BrowserNotebook);
 	m_builder -> get_widget ("Dashboard", m_Dashboard);
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
-	m_builder -> get_widget ("AddTabButton", m_AddTabButton);
+	m_builder -> get_widget ("TabButton", m_TabButton);
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
 	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
@@ -255,11 +256,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'NewMenuItem'.
 	m_NewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
 	m_OpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
-
-	// Connect object Gtk::MenuItem with id 'OpenRecentMenuItem'.
 	m_OpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent));
-
-	// Connect object Gtk::ImageMenuItem with id 'OpenLocationMenuItem'.
 	m_OpenLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location));
 	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 
@@ -368,7 +365,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::Toolbar with id 'LocationBar1'.
 	m_LocationBar1 -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
-	// Connect object Gtk::ToolButton with id 'HomeButton'.
+	// Connect object Gtk::ToolButton with id 'AddTabButton'.
+	m_AddTabButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
 	m_HomeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_home));
 	m_PreviousButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_button_press_event), false);
 	m_PreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_page));
@@ -410,9 +408,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_BrowserNotebook -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_drag_data_received));
 	m_BrowserNotebook -> signal_page_reordered () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_reordered));
 	m_BrowserNotebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_switch_browser));
-
-	// Connect object Gtk::ToolButton with id 'AddTabButton'.
-	m_AddTabButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hand_button_toggled));

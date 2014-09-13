@@ -52,6 +52,7 @@
 #define __TITANIA_BROWSER_ABOUT_TAB_H__
 
 #include "../Base/X3DBaseInterface.h"
+#include "../Configuration/Configuration.h"
 #include "../Widgets/HistoryView/History.h"
 
 #include <Titania/Basic/URI.h>
@@ -64,10 +65,14 @@ class AboutTab :
 {
 public:
 
+	///  @name Construction
+
 	AboutTab (X3DBrowserWindow* const);
 
 	void
 	initialize ();
+
+	///  @name Operations
 
 	void
 	open ();
@@ -75,14 +80,30 @@ public:
 	void
 	loadPreview (const X3D::BrowserPtr &);
 
+	///  @name Configuration handling
+
+	Configuration &
+	getConfig ()
+	{ return gconf; }
+
+	const Configuration &
+	getConfig () const
+	{ return gconf; }
+
+	///  @name Destruction
+
 	virtual
 	~AboutTab ();
 
 
 private:
 
+	///  @name Member access
+
 	basic::uri
 	getURL () const;
+
+	///  @name Event handlers
 
 	void
 	set_scene ();
@@ -93,7 +114,10 @@ private:
 	void
 	set_url (const X3D::SFString &);
 
-	History history;
+	///  @name Members
+
+	History       history;
+	Configuration gconf;
 
 };
 

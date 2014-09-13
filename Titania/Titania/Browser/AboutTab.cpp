@@ -67,7 +67,8 @@ static const std::string PREVIEW_TYPE    = "JPG";
 
 AboutTab::AboutTab (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	         history ()
+	         history (),
+	           gconf (gconf_dir (), "AboutTab")
 {
 	// Don't use browserWindow here.
 	setup ();
@@ -124,17 +125,15 @@ AboutTab::set_scene ()
 
 	try
 	{
-		const auto   currentPage          = scene -> getNamedNode ("CurrentPage");
 		const auto   previousPage         = scene -> getNamedNode ("PreviousPage");
 		const auto   nextPage             = scene -> getNamedNode ("NextPage");
-		const auto & currentPageValue     = currentPage -> getField <X3D::SFInt32> ("keyValue");
 		const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
 		const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
 
 		previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
 		nextPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
 
-		set_page (scene, currentPageValue);
+		set_page (scene, X3D::SFInt32 (getConfig () .getInteger ("currentPage")));
 	}
 	catch (...)
 	{ }
@@ -148,11 +147,10 @@ AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & 
 
 	try
 	{
-		const auto currentPage  = scene -> getNamedNode ("CurrentPage");
+		getConfig () .setItem ("currentPage", page);
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
 
-		currentPage -> getField <X3D::SFInt32> ("keyValue")  = page;
 		previousPage -> getField <X3D::SFInt32> ("keyValue") = page - 1;
 		nextPage -> getField <X3D::SFInt32> ("keyValue")     = page + 1;
 
