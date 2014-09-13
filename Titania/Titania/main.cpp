@@ -79,7 +79,7 @@ private:
 
 		add_window (browserWindow -> getWindow ());
 
-		browserWindow -> getWindow () .show ();	
+		browserWindow -> getWindow () .present ();	
 	}
 
 	///  @name Event handlers
@@ -91,7 +91,7 @@ private:
 		if (browserWindow)
 		{
 			browserWindow -> blank ();
-			browserWindow -> getWindow () .raise ();
+			browserWindow -> getWindow () .present ();
 		}
 		else
 			realize ();
@@ -107,7 +107,7 @@ private:
 		for (const auto & file : files)
 			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
 
-		browserWindow -> getWindow () .raise ();
+		browserWindow -> getWindow () .present ();
 	}
 
 	virtual
