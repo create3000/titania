@@ -94,7 +94,6 @@ private:
 	set_url (const X3D::SFString &);
 
 	History history;
-	bool    current;
 
 };
 

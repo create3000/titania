@@ -438,6 +438,7 @@ private:
 	size_t                                    numVertices;
 	int32_t                                   numParticles;
 	time_type                                 creationTime;
+	time_type                                 pauseTime;
 	size_t                                    readBuffer;
 	size_t                                    writeBuffer;
 	std::array <GLuint, 2>                    particleFeedbackId;

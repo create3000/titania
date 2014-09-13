@@ -278,6 +278,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	             numVertices (0),
 	            numParticles (0),
 	            creationTime (0),
+	               pauseTime (0),
 	              readBuffer (0),
 	             writeBuffer (1),
 	      particleFeedbackId ({ 0, 0 }),
@@ -513,6 +514,12 @@ ParticleSystem::set_live ()
 		{
 			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
 			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+
+			if (pauseTime)
+			{
+				creationTime += chrono::now () - pauseTime;
+				pauseTime = 0;
+			}
 		}
 	}
 	else
@@ -521,6 +528,9 @@ ParticleSystem::set_live ()
 		{
 			getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
 			getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+
+			if (pauseTime == 0)
+				pauseTime = chrono::now ();
 		}
 	}
 }
@@ -534,7 +544,10 @@ ParticleSystem::set_enabled ()
 		{
 			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
 			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+			pauseTime = 0;
 		}
+		else
+			pauseTime = chrono::now ();
 
 		isActive () = true;
 

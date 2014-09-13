@@ -67,8 +67,7 @@ static const std::string PREVIEW_TYPE    = "JPG";
 
 AboutTab::AboutTab (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	         history (),
-	         current (false)
+	         history ()
 {
 	// Don't use browserWindow here.
 	setup ();
@@ -117,41 +116,28 @@ AboutTab::set_scene ()
 {
 	const auto & scene = getScene ();
 
-	if (scene -> getWorldURL () == getURL ())
+	if (scene -> getWorldURL () not_eq getURL ())
+		return;
+
+	getBrowser () -> getSelection () -> isEnabled (false);
+	getBrowser () -> beginUpdate ();
+
+	try
 	{
-		current = true;
+		const auto   currentPage          = scene -> getNamedNode ("CurrentPage");
+		const auto   previousPage         = scene -> getNamedNode ("PreviousPage");
+		const auto   nextPage             = scene -> getNamedNode ("NextPage");
+		const auto & currentPageValue     = currentPage -> getField <X3D::SFInt32> ("keyValue");
+		const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
+		const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
 
-		getBrowser () -> getSelection () -> isEnabled (false);
-		getBrowser () -> beginUpdate ();
+		previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
+		nextPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
 
-		try
-		{
-			const auto   currentPage          = scene -> getNamedNode ("CurrentPage");
-			const auto   previousPage         = scene -> getNamedNode ("PreviousPage");
-			const auto   nextPage             = scene -> getNamedNode ("NextPage");
-			const auto & currentPageValue     = currentPage -> getField <X3D::SFInt32> ("keyValue");
-			const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
-			const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
-
-			previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
-			nextPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
-
-			set_page (scene, currentPageValue);
-		}
-		catch (...)
-		{ }
+		set_page (scene, currentPageValue);
 	}
-	else
-	{
-		if (current)
-		{
-			getBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
-
-			getBrowserWindow () -> isLive (getBrowserWindow () -> isLive ());
-		}
-
-		current = false;
-	}
+	catch (...)
+	{ }
 }
 
 void
