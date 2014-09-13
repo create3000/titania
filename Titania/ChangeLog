@@ -1,5 +1,10 @@
 2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* HistoryView.cpp: 
+
+2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* History.h:
 	* History.cpp:
 	* HistoryView.h:

@@ -82,7 +82,7 @@ HistoryView::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
 
-	//history .addInterest (this, &HistoryView::set_history);
+	history .addInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .addInterest (this, &HistoryView::set_scene);
 
 	set_history ();
@@ -91,7 +91,7 @@ HistoryView::on_map ()
 void
 HistoryView::on_unmap ()
 {
-	//history .removeInterest (this, &HistoryView::set_history);
+	history .removeInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .removeInterest (this, &HistoryView::set_scene);
 }
 
