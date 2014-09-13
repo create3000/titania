@@ -63,6 +63,18 @@ class History :
 {
 public:
 
+	///  @name Member types
+	
+	enum Columns {
+		TITLE,
+		LAST_ACCESS
+	};
+	
+	enum SortOrder {
+		DESC,
+		ASC
+	};
+
 	///  @name Construction
 
 	History ();
@@ -88,6 +100,9 @@ public:
 	void
 	setItem (const std::string &, const std::string &, const std::string &);
 
+	void
+	removeItem (const std::string &);
+
 	const sql::sqlite3::assoc_row_type &
 	getItemFromIndex (const std::string &) const
 	throw (std::out_of_range);
@@ -97,7 +112,7 @@ public:
 	throw (std::out_of_range);
 
 	const sql::sqlite3::assoc_type &
-	getItems (const size_t offset, const size_t limit = 0) const;
+	getItems (const size_t offset, const size_t limit, const Columns = LAST_ACCESS, const SortOrder = DESC) const;
 
 	size_t
 	getSize () const;

@@ -71,6 +71,13 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+HistoryView::initialize ()
+{
+	for (const auto & item : history .getItems (0, 1000))
+		getBrowserWindow () -> loadIcon (item .at ("worldURL"), history .getIcon (item .at ("id")));
+}
+
+void
 HistoryView::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
@@ -96,13 +103,11 @@ HistoryView::set_history ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : history .getItems (0, 2000))
+	for (const auto & item : history .getItems (0, 1000))
 	{
 		const auto & worldURL = item .at ("worldURL");
-	
-		getBrowserWindow () -> loadIcon (worldURL, history .getIcon (item .at ("id")));
+		const auto   iter     = getListStore () -> append ();
 
-		const auto iter = getListStore () -> append ();
 		iter -> set_value (ICON_COLUMN,      basic::uri (worldURL) .filename () .str ());
 		iter -> set_value (TITLE_COLUMN,     item .at ("title"));
 		iter -> set_value (WORLD_URL_COLUMN, worldURL);

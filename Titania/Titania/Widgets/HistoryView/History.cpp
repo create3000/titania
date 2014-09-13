@@ -82,6 +82,7 @@ History::History () :
 	                 "PRIMARY KEY (id ASC))");
 
 	database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
+	database .query ("DELETE FROM History WHERE lastAccess < date ('now','-6 month')");
 
 	if (not have_history)
 	{
@@ -199,6 +200,16 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 	connect ();
 }
 
+void
+History::removeItem (const std::string & id)
+{
+	disconnect ();
+
+	database .query ("DELETE FROM History WHERE id = " + id);
+
+	connect ();
+}
+
 const sql::sqlite3::assoc_row_type &
 History::getItemFromIndex (const std::string & index) const
 throw (std::out_of_range)
@@ -218,14 +229,36 @@ throw (std::out_of_range)
 }
 
 const sql::sqlite3::assoc_type &
-History::getItems (const size_t offset, const size_t size) const
+History::getItems (const size_t offset, const size_t size, const Columns column, const SortOrder sortOrder) const
 {
-	std::string limit;
+	std::string order;
 	
+	switch (column)
+	{
+		case TITLE:
+			order = "ORDER BY title";
+			break;
+		case LAST_ACCESS:
+			order = "ORDER BY lastAccess";
+			break;
+	}
+
+	switch (sortOrder)
+	{
+		case ASC:
+			order += " ASC";
+			break;
+		case DESC:
+			order += " DESC";
+			break;
+	}
+
+	std::string limit;
+
 	if (size)
 		limit = "LIMIT " + basic::to_string (size) + " OFFSET " + basic::to_string (offset);
 
-	return database .query_assoc ("SELECT id, title, worldURL FROM History ORDER BY lastAccess DESC " + limit);
+	return database .query_assoc ("SELECT id, title, worldURL FROM History " + order + " " + limit);
 }
 
 size_t
