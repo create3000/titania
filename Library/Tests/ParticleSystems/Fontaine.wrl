@@ -6,10 +6,11 @@ DEF Gray Background {
 
 Viewpoint {
   description "Viewpoint"
-  position 0 0 30
+  position 14.0399 1.67692 30
+  centerOfRotation 14.0399 1.67692 0
 }
 
-DEF _1 Transform {
+Transform {
   children ParticleSystem {
     geometryType "LINE"
     maxParticles 10000

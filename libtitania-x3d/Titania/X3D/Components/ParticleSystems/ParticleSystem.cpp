@@ -1262,9 +1262,10 @@ ParticleSystem::prepareEvents ()
 
 		// Update shader
 
-		const float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
+		const float dt        = 1 / getBrowser () -> getCurrentFrameRate ();
+		auto &      deltaTime = transformShader -> getField <SFFloat> ("deltaTime");
 
-		transformShader -> setField <SFFloat> ("deltaTime",         deltaTime);
+		deltaTime = (9 * deltaTime + dt) / 10;
 		transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
 		transformShader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
 
@@ -1446,7 +1447,8 @@ ParticleSystem::drawGeometry ()
 
 					glNormal3fv (rotation [2] .data ());
 
-					geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
+					if (getExecutionContext () -> isLive () and isLive ())
+						geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
 				}
 				catch (const std::exception &)
 				{ }
@@ -1524,7 +1526,8 @@ ParticleSystem::drawGeometry ()
 			}
 		}
 
-		transformShader -> setField <SFMatrix4f> ("modelViewMatrix", ModelViewMatrix4f ());
+		if (getExecutionContext () -> isLive () and isLive ())
+			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", ModelViewMatrix4f ());
 	}
 	catch (const X3DError & error)
 	{
