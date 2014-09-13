@@ -54,8 +54,8 @@
 #include "../Configuration/config.h"
 
 #include <Titania/OS/home.h>
-#include <Titania/String.h>
 #include <Titania/Stream/Base64.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -67,7 +67,8 @@ static const std::string PREVIEW_TYPE    = "JPG";
 
 AboutTab::AboutTab (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	         history ()
+	         history (),
+	         current (false)
 {
 	// Don't use browserWindow here.
 	setup ();
@@ -116,43 +117,56 @@ AboutTab::set_scene ()
 {
 	const auto & scene = getScene ();
 
-	if (scene -> getWorldURL () not_eq getURL ())
-		return;
-
-	set_page (scene, X3D::SFInt32 (0));
-
-	try
+	if (scene -> getWorldURL () == getURL ())
 	{
-		const auto   previousPage = scene -> getNamedNode ("PreviousPage");
-		const auto & field        = previousPage -> getField <X3D::SFInt32> ("value_changed");
+		current = true;
 
-		field .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (field));
+		getBrowser () -> getSelection () -> isEnabled (false);
+		getBrowser () -> beginUpdate ();
+
+		try
+		{
+			const auto   currentPage          = scene -> getNamedNode ("CurrentPage");
+			const auto   previousPage         = scene -> getNamedNode ("PreviousPage");
+			const auto   nextPage             = scene -> getNamedNode ("NextPage");
+			const auto & currentPageValue     = currentPage -> getField <X3D::SFInt32> ("keyValue");
+			const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
+			const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
+
+			previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
+			nextPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
+
+			set_page (scene, currentPageValue);
+		}
+		catch (...)
+		{ }
 	}
-	catch (...)
-	{ }
-
-	try
+	else
 	{
-		const auto   nextPage = scene -> getNamedNode ("NextPage");
-		const auto & field    = nextPage -> getField <X3D::SFInt32> ("value_changed");
+		if (current)
+		{
+			getBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
 
-		field .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (field));
+			getBrowserWindow () -> isLive (getBrowserWindow () -> isLive ());
+		}
+
+		current = false;
 	}
-	catch (...)
-	{ }
 }
 
 void
-AboutTab::set_page (X3D::X3DScene* const scene, const X3D::SFInt32 & page)
+AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & page)
 {
 	if (page < 0)
 		return;
 
 	try
 	{
+		const auto currentPage  = scene -> getNamedNode ("CurrentPage");
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
 
+		currentPage -> getField <X3D::SFInt32> ("keyValue")  = page;
 		previousPage -> getField <X3D::SFInt32> ("keyValue") = page - 1;
 		nextPage -> getField <X3D::SFInt32> ("keyValue")     = page + 1;
 
@@ -174,12 +188,13 @@ AboutTab::set_page (X3D::X3DScene* const scene, const X3D::SFInt32 & page)
 			const auto switchNode = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
 			const auto texture    = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);
 			const auto text       = scene -> getNamedNode <X3D::Text> ("Text" + number);
-			const auto anchor     = scene -> getNamedNode <X3D::Anchor> ("Anchor" + number);
+			const auto URL        = scene -> getNamedNode ("URL" + number);
 
-			switchNode -> whichChoice () = 0;
-			texture -> url ()            = { "data:image/jpeg;base64," + image, "library/dot-clear.png" };
-			text -> string ()            = { item .at ("title") };
-			anchor -> url ()             = { item .at ("worldURL") };
+			switchNode -> whichChoice ()                 = 0;
+			texture -> url ()                            = { "data:image/jpeg;base64," + image, "library/dot-clear.png" };
+			text -> string ()                            = { item .at ("title") };
+			URL -> getField <X3D::SFString> ("keyValue") = item .at ("worldURL");
+			URL -> getField <X3D::SFString> ("value_changed") .addInterest (this, &AboutTab::set_url);
 
 			++ i;
 		}
@@ -201,6 +216,12 @@ AboutTab::set_page (X3D::X3DScene* const scene, const X3D::SFInt32 & page)
 		catch (...)
 		{ }
 	}
+}
+
+void
+AboutTab::set_url (const X3D::SFString & URL)
+{
+	getBrowserWindow () -> open (URL .str ());
 }
 
 AboutTab::~AboutTab ()

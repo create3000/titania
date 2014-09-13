@@ -170,7 +170,7 @@ X3DBrowserWidget::restoreSession ()
 	if (not getConfig () .hasItem ("isLive"))
 		getConfig () .setItem ("isLive", true);
 
-	isLive (getConfig () .getBoolean ("isLive"));
+	isLive (isLive ());
 
 	// VPaned
 	if (getConfig () .hasItem ("vPaned"))
@@ -256,6 +256,25 @@ X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value
 }
 
 void
+X3DBrowserWidget::isLive (const bool value)
+{
+	getConfig () .setItem ("isLive", value);
+
+	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
+
+	if (value)
+		getBrowser () -> beginUpdate ();
+	else
+		getBrowser () -> endUpdate ();
+}
+
+bool
+X3DBrowserWidget::isLive () const
+{
+	return getConfig () .getBoolean ("isLive");
+}
+
+void
 X3DBrowserWidget::setTitle () const
 {
 	const auto userData = getUserData (getBrowser ());
@@ -286,19 +305,6 @@ X3DBrowserWidget::setTitle () const
 	                         + (modified ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
-}
-
-void
-X3DBrowserWidget::isLive (const bool value)
-{
-	getConfig () .setItem ("isLive", value);
-
-	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
-
-	if (value)
-		getBrowser () -> beginUpdate ();
-	else
-		getBrowser () -> endUpdate ();
 }
 
 void

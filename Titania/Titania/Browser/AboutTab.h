@@ -88,9 +88,13 @@ private:
 	set_scene ();
 
 	void
-	set_page (X3D::X3DScene* const, const X3D::SFInt32 &);
+	set_page (X3D::X3DExecutionContext* const, const X3D::SFInt32 &);
+
+	void
+	set_url (const X3D::SFString &);
 
 	History history;
+	bool    current;
 
 };
 

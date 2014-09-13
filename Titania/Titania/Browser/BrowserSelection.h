@@ -69,16 +69,22 @@ public:
 	///  @name Member access
 
 	void
-	isEnabled (const bool value)
-	{ return browser -> getSelection () -> isEnabled (value); }
+	isEnabled (const bool);
+
+	bool
+	isEnabled () const;
 
 	void
-	setMode (const X3D::Selection::SelectionType value)
-	{ return browser -> getSelection () -> setMode (value); }
+	setMode (const X3D::Selection::SelectionType);
+
+	const X3D::Selection::SelectionType
+	getMode () const;
 
 	void
-	setSelectLowest (const bool value)
-	{ return browser -> getSelection () -> setSelectLowest (value); }
+	setSelectLowest (const bool);
+
+	const bool
+	getSelectLowest () const;
 
 	const X3D::SFBool &
 	isOver () const

@@ -73,12 +73,11 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 void
 BrowserSelection::set_browser ()
 {
-	const auto & selection    = browser -> getSelection ();
-	const auto   enabled      = selection -> isEnabled ();
-	const auto   mode         = selection -> getMode ();
-	const auto   selectLowest = selection -> getSelectLowest ();
+	const auto mode = getMode ();
 
 	{
+		const auto & selection = browser -> getSelection ();
+
 		selection -> isOver ()        .removeInterest (over);
 		selection -> isActive ()      .removeInterest (active);
 		selection -> getPickedTime () .removeInterest (touchTime);
@@ -90,9 +89,9 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> isEnabled (enabled);
+		selection -> isEnabled (isEnabled ());
 		selection -> setMode (mode);
-		selection -> setSelectLowest (selectLowest);
+		selection -> setSelectLowest (getSelectLowest ());
 
 		selection -> isOver ()        .addInterest (over);
 		selection -> isActive ()      .addInterest (active);
@@ -101,6 +100,45 @@ BrowserSelection::set_browser ()
 
 		children = selection -> getChildren ();
 	}
+}
+
+void
+BrowserSelection::isEnabled (const bool value)
+{
+	getBrowserWindow () -> getConfig () .setItem ("selection", value);
+	browser -> getSelection () -> isEnabled (value);
+}
+
+bool
+BrowserSelection::isEnabled () const
+{
+	return getBrowserWindow () -> getConfig () .getBoolean ("selection");
+}
+
+void
+BrowserSelection::setMode (const X3D::Selection::SelectionType value)
+{
+	browser -> getSelection () -> setMode (value);
+}
+
+const X3D::Selection::SelectionType
+BrowserSelection::getMode () const
+{
+	return browser -> getSelection () -> getMode ();
+}
+
+void
+BrowserSelection::setSelectLowest (const bool value)
+{
+	getBrowserWindow () -> getConfig () .setItem ("selectLowest", value);
+
+	browser -> getSelection () -> setSelectLowest (value);
+}
+
+const bool
+BrowserSelection::getSelectLowest () const
+{
+	return getBrowserWindow () -> getConfig () .getBoolean ("selectLowest");
 }
 
 void

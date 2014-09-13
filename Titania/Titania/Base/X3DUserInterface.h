@@ -96,6 +96,16 @@ public:
 	addDialog (const std::string &, const bool = true)
 	throw (std::out_of_range);
 
+	///  @name Configuration handling
+
+	Configuration &
+	getConfig ()
+	{ return gconf; }
+
+	const Configuration &
+	getConfig () const
+	{ return gconf; }
+
 	///  @name Operations
 
 	void
@@ -146,14 +156,6 @@ protected:
 	bool
 	isFullscreen () const
 	{ return getConfig () .getBoolean ("fullscreen"); }
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
 
 
 private:

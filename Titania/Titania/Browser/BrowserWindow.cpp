@@ -440,7 +440,9 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 {
 	getKeys () .release (event);
 
-	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
+	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control ()
+	                            ? X3D::Selection::MULTIPLE
+	                            : X3D::Selection::SINGLE);
 
 	return false;
 }
@@ -1547,8 +1549,6 @@ BrowserWindow::on_show_all_objects_activate ()
 void
 BrowserWindow::on_select_lowest_toggled ()
 {
-	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
-
 	getSelection () -> setSelectLowest (getSelectLowestMenuItem () .get_active ());
 }
 
@@ -1784,10 +1784,7 @@ void
 BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
-	{
-		getConfig () .setItem ("arrow", false);
 		getSelection () -> isEnabled (false);
-	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }
@@ -1796,10 +1793,7 @@ void
 BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
-	{
-		getConfig () .setItem ("arrow", true);
 		getSelection () -> isEnabled (true);
-	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }
@@ -1807,7 +1801,7 @@ BrowserWindow::on_arrow_button_toggled ()
 void
 BrowserWindow::on_play_pause_button_clicked ()
 {
-	isLive (not getConfig () .getBoolean ("isLive"));
+	isLive (not isLive ());
 }
 
 void

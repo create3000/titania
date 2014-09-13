@@ -97,6 +97,13 @@ public:
 	getExecutionContext () const final override
 	{ return executionContext; }
 
+	virtual
+	void
+	isLive (const bool);
+
+	bool
+	isLive () const;
+
 	///  @name Operations
 
 	virtual
@@ -173,10 +180,6 @@ protected:
 
 	void
 	setTitle () const;
-
-	virtual
-	void
-	isLive (const bool);
 
 	void
 	setTransparent (const bool);
