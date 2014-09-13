@@ -57,7 +57,7 @@ namespace puck {
 
 X3DPixelTextureEditor::X3DPixelTextureEditor () :
 	         X3DBaseInterface (),
-	X3DTextureEditorInterface ("", ""),
+	X3DTextureEditorInterface (),
 	             pixelTexture ()
 { }
 

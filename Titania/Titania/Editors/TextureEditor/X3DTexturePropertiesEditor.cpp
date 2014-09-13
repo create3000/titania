@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
-	X3DTextureEditorInterface ("", ""),
+	X3DTextureEditorInterface (),
 	             textureNodes (),
 	        textureProperties (),
 	                 undoStep (),

@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 X3DSpotLightEditor::X3DSpotLightEditor () :
-	X3DLightEditorInterface ("", ""),
+	X3DLightEditorInterface (),
 	            attenuation (getBrowserWindow (),
 	                         getSpotLightAttenuationXAdjustment (),
 	                         getSpotLightAttenuationYAdjustment (),

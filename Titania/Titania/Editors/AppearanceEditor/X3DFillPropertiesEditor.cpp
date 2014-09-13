@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
-	X3DAppearanceEditorInterface ("", ""),
+	X3DAppearanceEditorInterface (),
 	                 appearances (),
 	              fillProperties (),
 	        fillPropertiesBuffer (),

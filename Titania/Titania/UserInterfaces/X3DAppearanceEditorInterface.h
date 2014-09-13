@@ -64,6 +64,10 @@ class X3DAppearanceEditorInterface :
 {
 public:
 
+	X3DAppearanceEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DAppearanceEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),

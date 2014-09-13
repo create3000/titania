@@ -64,6 +64,10 @@ class X3DTextEditorInterface :
 {
 public:
 
+	X3DTextEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DTextEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),

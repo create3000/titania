@@ -100,7 +100,7 @@ FileSaveDialog::saveScene ()
 	if (responseId == Gtk::RESPONSE_OK)
 	{
 		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), getCompressFileButton () .get_active ());
-		getBrowserWindow () -> saveAs () .processInterests ();
+		getBrowserWindow () -> worldURL_changed () .processInterests ();
 	}
 
 	quit ();

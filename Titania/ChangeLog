@@ -1,5 +1,58 @@
 2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DLODEditor.cpp:
+	* X3DConsoleInterface.h:
+	* X3DLODEditorInterface.h:
+	* X3DNodeIndexInterface.h:
+	* X3DTextEditorInterface.h:
+	* X3DLibraryViewInterface.h:
+	* X3DLightEditorInterface.h:
+	* X3DHistoryViewInterface.h:
+	* X3DInlineEditorInterface.h:
+	* X3DScriptEditorInterface.h:
+	* FileSaveDialog.cpp:
+	* X3DOutlineEditorInterface.h:
+	* X3DTextureEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DViewpointListInterface.h:
+	* X3DSpotLightEditor.cpp:
+	* X3DPointLightEditor.cpp:
+	* X3DFileOpenDialogInterface.h:
+	* X3DFileSaveDialogInterface.h:
+	* X3DViewpointEditorInterface.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DFileImportDialogInterface.h:
+	* X3DAppearanceEditorInterface.h:
+	* X3DMotionBlurEditorInterface.h:
+	* X3DMaterialEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DViewpointEditor.cpp:
+	* X3DOpenLocationDialogInterface.h:
+	* X3DPixelTextureEditor.cpp:
+	* X3DImageTextureEditor.cpp:
+	* X3DMovieTextureEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DGeoViewpointEditor.cpp:
+	* X3DNavigationInfoEditorInterface.h:
+	* X3DFileSaveWarningDialogInterface.h:
+	* X3DTextureTransformEditor.cpp:
+	* X3DOrthoViewpointEditor.cpp:
+	* X3DLinePropertiesEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DFillPropertiesEditor.cpp:
+	* X3DPrototypeInstanceDialogInterface.h:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DTransformEditor.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* X3DImportedNodesEditor.cpp:
+	* X3DExportedNodesEditor.cpp:
+	* X3DUserDefinedFieldsEditor.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
+2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AboutTab.cpp:
 	* X3DUserInterface.h:
 	* BrowserWindow.h:

@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
-	X3DViewpointEditorInterface ("", ""),
+	X3DViewpointEditorInterface (),
 	                  geoSystem (new MFStringGeoSystem (getBrowserWindow (),
 	                             getGeoViewpointCoordinateSystemComboBoxText (),
 	                             getGeoViewpointEllipsoidComboBoxText (),

@@ -64,6 +64,10 @@ class X3DOpenLocationDialogInterface :
 {
 public:
 
+	X3DOpenLocationDialogInterface () :
+		X3DDialogInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DOpenLocationDialogInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),

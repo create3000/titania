@@ -64,6 +64,10 @@ class X3DNodePropertiesEditorInterface :
 {
 public:
 
+	X3DNodePropertiesEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DNodePropertiesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),

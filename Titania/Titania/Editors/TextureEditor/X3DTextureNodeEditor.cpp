@@ -57,7 +57,7 @@ namespace puck {
 
 X3DTextureNodeEditor::X3DTextureNodeEditor (const X3D::BrowserPtr & preview) :
 	          X3DBaseInterface (),
-	 X3DTextureEditorInterface ("", ""),
+	 X3DTextureEditorInterface (),
 	    X3DTexture2DNodeEditor (preview),
 	X3DTexturePropertiesEditor (),
 	                   preview (preview),

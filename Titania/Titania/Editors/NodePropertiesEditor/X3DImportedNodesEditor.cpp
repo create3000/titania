@@ -65,7 +65,7 @@ enum ImportedNodesEditorColumns
 };
 
 X3DImportedNodesEditor::X3DImportedNodesEditor () :
-	X3DNodePropertiesEditorInterface ("", ""),
+	X3DNodePropertiesEditorInterface (),
 	                      inlineNode ()
 { }
 

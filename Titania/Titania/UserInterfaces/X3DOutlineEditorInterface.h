@@ -64,6 +64,10 @@ class X3DOutlineEditorInterface :
 {
 public:
 
+	X3DOutlineEditorInterface () :
+		X3DUserInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DOutlineEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),

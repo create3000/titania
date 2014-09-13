@@ -64,6 +64,10 @@ class X3DNodeIndexInterface :
 {
 public:
 
+	X3DNodeIndexInterface () :
+		X3DDialogInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DNodeIndexInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),

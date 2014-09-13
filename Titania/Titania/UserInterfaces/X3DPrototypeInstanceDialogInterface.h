@@ -64,6 +64,10 @@ class X3DPrototypeInstanceDialogInterface :
 {
 public:
 
+	X3DPrototypeInstanceDialogInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DPrototypeInstanceDialogInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),

@@ -64,6 +64,10 @@ class X3DConsoleInterface :
 {
 public:
 
+	X3DConsoleInterface () :
+		X3DUserInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DConsoleInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),

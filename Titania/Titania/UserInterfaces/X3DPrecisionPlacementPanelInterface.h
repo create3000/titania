@@ -64,6 +64,10 @@ class X3DPrecisionPlacementPanelInterface :
 {
 public:
 
+	X3DPrecisionPlacementPanelInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DPrecisionPlacementPanelInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),

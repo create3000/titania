@@ -64,6 +64,10 @@ class X3DInlineEditorInterface :
 {
 public:
 
+	X3DInlineEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DInlineEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),

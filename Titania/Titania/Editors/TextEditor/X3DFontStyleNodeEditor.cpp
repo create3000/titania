@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
-	X3DTextEditorInterface ("", ""),
+	X3DTextEditorInterface (),
 	                 texts (),
 	   fontStyleNodeBuffer (),
 	         fontStyleNode (),

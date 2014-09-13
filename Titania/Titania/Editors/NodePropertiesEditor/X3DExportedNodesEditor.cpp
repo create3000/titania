@@ -60,7 +60,7 @@ enum Columns
 };
 
 X3DExportedNodesEditor::X3DExportedNodesEditor () :
-	X3DNodePropertiesEditorInterface ("", ""),
+	X3DNodePropertiesEditorInterface (),
 	                           scene (),
 	                            node (),
 	                    selectedPath (),

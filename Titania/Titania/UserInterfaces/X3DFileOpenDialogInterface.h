@@ -64,6 +64,10 @@ class X3DFileOpenDialogInterface :
 {
 public:
 
+	X3DFileOpenDialogInterface () :
+		X3DDialogInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DFileOpenDialogInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),

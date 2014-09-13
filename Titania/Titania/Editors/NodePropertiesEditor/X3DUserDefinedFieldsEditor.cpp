@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 X3DUserDefinedFieldsEditor::X3DUserDefinedFieldsEditor () :
-	X3DNodePropertiesEditorInterface ("", ""),
+	X3DNodePropertiesEditorInterface (),
 	                            node (),
 	                         columns (),
 	      userDefinedFieldsListStore (Gtk::ListStore::create (columns)),

@@ -64,6 +64,10 @@ class X3DFileImportDialogInterface :
 {
 public:
 
+	X3DFileImportDialogInterface () :
+		X3DDialogInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DFileImportDialogInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),

@@ -64,6 +64,10 @@ class X3DBrowserWindowInterface :
 {
 public:
 
+	X3DBrowserWindowInterface () :
+		X3DUserInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DBrowserWindowInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),

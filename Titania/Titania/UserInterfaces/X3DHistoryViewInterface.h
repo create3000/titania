@@ -64,6 +64,10 @@ class X3DHistoryViewInterface :
 {
 public:
 
+	X3DHistoryViewInterface () :
+		X3DUserInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DHistoryViewInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),

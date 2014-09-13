@@ -64,6 +64,10 @@ class X3DFileSaveDialogInterface :
 {
 public:
 
+	X3DFileSaveDialogInterface () :
+		X3DDialogInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DFileSaveDialogInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),

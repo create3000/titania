@@ -64,6 +64,10 @@ class X3DViewpointListInterface :
 {
 public:
 
+	X3DViewpointListInterface () :
+		X3DUserInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DViewpointListInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),

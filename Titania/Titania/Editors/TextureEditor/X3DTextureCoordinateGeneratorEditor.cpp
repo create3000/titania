@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
-	       X3DTextureEditorInterface ("", ""),
+	       X3DTextureEditorInterface (),
 	                   geometryNodes (),
 	textureCoordinateGeneratorBuffer (),
 	      textureCoordinateGenerator (),

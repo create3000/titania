@@ -55,7 +55,7 @@ namespace puck {
 
 X3DTextureTransformEditor::X3DTextureTransformEditor () :
 	         X3DBaseInterface (),
-	X3DTextureEditorInterface ("", ""),
+	X3DTextureEditorInterface (),
 	         textureTransform (),
 	              translation (getBrowserWindow (),
 	                           getTextureTransformTranslationXAdjustment (),

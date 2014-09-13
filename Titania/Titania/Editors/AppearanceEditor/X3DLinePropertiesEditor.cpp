@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
-	X3DAppearanceEditorInterface ("", ""),
+	X3DAppearanceEditorInterface (),
 	                 appearances (),
 	              lineProperties (),
 	        linePropertiesBuffer (),

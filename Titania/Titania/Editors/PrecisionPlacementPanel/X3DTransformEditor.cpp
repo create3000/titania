@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 X3DTransformEditor::X3DTransformEditor () :
-	X3DPrecisionPlacementPanelInterface ("", ""),
+	X3DPrecisionPlacementPanelInterface (),
 	                        translation (getBrowserWindow (),
 	                                     getTransformTranslationXAdjustment (),
 	                                     getTransformTranslationYAdjustment (),

@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 X3DLODEditor::X3DLODEditor () :
-	X3DLODEditorInterface ("", ""),
+	X3DLODEditorInterface (),
 	             nodeName (getBrowserWindow (), getLODNameEntry (), getLODRenameButton ()),
 	     forceTransitions (getBrowserWindow (), getLODForceTransitionsCheckButton (),  "forceTransitions"),
 	               center (getBrowserWindow (),

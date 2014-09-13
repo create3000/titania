@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 X3DMaterialEditor::X3DMaterialEditor () :
-	X3DAppearanceEditorInterface ("", ""),
+	X3DAppearanceEditorInterface (),
 	                     preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
 	                 appearances (),
 	                materialNode (),

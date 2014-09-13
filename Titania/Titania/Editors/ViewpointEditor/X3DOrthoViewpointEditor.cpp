@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
-	X3DViewpointEditorInterface ("", ""),
+	X3DViewpointEditorInterface (),
 	                   position (getBrowserWindow (),
 	                             getOrthoViewpointPositionXAdjustment (),
 	                             getOrthoViewpointPositionYAdjustment (),

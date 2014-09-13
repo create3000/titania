@@ -64,6 +64,10 @@ class X3DTextureEditorInterface :
 {
 public:
 
+	X3DTextureEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
 	template <class ... Arguments>
 	X3DTextureEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),
