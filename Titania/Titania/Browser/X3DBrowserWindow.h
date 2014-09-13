@@ -88,8 +88,8 @@ public:
 	{ return accelerators; }
 
 	const X3D::Output &
-	saveAs () const
-	{ return saveAsOutput; }
+	worldURL_changed () const
+	{ return worldURLOutput; }
 
 	/// @name Operations
 
@@ -111,10 +111,6 @@ protected:
 	virtual
 	void
 	initialize ();
-
-	virtual
-	void
-	setBrowser (const X3D::BrowserPtr &) override;
 
 
 private:
@@ -141,7 +137,7 @@ private:
 	X3D::Keys keys;
 	bool      accelerators;
 
-	X3D::Output saveAsOutput;
+	X3D::Output worldURLOutput;
 
 };
 

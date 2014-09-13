@@ -63,10 +63,10 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & browser_) :
-	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
-	            masterBrowser (browser_),
-	                  browser (browser_),
+X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser) :
+	X3DBrowserWindowInterface (),
+	            masterBrowser (masterBrowser),
+	                  browser (masterBrowser),
 	                 browsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (scene),
@@ -82,12 +82,12 @@ X3DBrowserWidget::initialize ()
 	
 	aboutTab -> initialize ();
 
-	masterBrowser -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
-	masterBrowser -> getBrowserOptions () -> splashScreen ()    = true;
-	masterBrowser -> getBrowserOptions () -> splashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
-	masterBrowser -> show ();
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> getBrowserOptions () -> splashScreen ()    = true;
+	getBrowser () -> getBrowserOptions () -> splashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
+	getBrowser () -> show ();
 
-	getSplashBox () .pack_start (*masterBrowser, true, true, 0);
+	getSplashBox () .pack_start (*getBrowser (), true, true, 0);
 }
 
 void
@@ -384,7 +384,8 @@ X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic
 void
 X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	aboutTab -> loadPreview (getBrowser ());
+	if (browser == getBrowser ())
+		aboutTab -> loadPreview (getBrowser ());
 
 	try
 	{

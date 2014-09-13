@@ -64,7 +64,7 @@ class AboutTab;
 class BrowserUserData;
 
 class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+	virtual public X3DBrowserWindowInterface
 {
 public:
 

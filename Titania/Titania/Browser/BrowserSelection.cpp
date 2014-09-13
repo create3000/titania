@@ -50,13 +50,16 @@
 
 #include "BrowserSelection.h"
 
-#include "BrowserWindow.h"
+#include "X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
 BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	         enabled (getBrowser () -> getSelection () -> isEnabled ()),  
+	            mode (getBrowser () -> getSelection () -> getMode ()),
+	    selectLowest (getBrowser () -> getSelection () -> getSelectLowest ()),
 	            over (),
 	          active (),
 	       touchTime (),
@@ -73,8 +76,6 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 void
 BrowserSelection::set_browser ()
 {
-	const auto mode = getMode ();
-
 	{
 		const auto & selection = browser -> getSelection ();
 
@@ -89,9 +90,9 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> isEnabled (isEnabled ());
+		selection -> isEnabled (enabled);
 		selection -> setMode (mode);
-		selection -> setSelectLowest (getSelectLowest ());
+		selection -> setSelectLowest (selectLowest);
 
 		selection -> isOver ()        .addInterest (over);
 		selection -> isActive ()      .addInterest (active);
@@ -105,40 +106,22 @@ BrowserSelection::set_browser ()
 void
 BrowserSelection::isEnabled (const bool value)
 {
-	getBrowserWindow () -> getConfig () .setItem ("selection", value);
+	enabled = value;
 	browser -> getSelection () -> isEnabled (value);
-}
-
-bool
-BrowserSelection::isEnabled () const
-{
-	return getBrowserWindow () -> getConfig () .getBoolean ("selection");
 }
 
 void
 BrowserSelection::setMode (const X3D::Selection::SelectionType value)
 {
+	mode = value;
 	browser -> getSelection () -> setMode (value);
-}
-
-const X3D::Selection::SelectionType
-BrowserSelection::getMode () const
-{
-	return browser -> getSelection () -> getMode ();
 }
 
 void
 BrowserSelection::setSelectLowest (const bool value)
 {
-	getBrowserWindow () -> getConfig () .setItem ("selectLowest", value);
-
+	selectLowest = value;
 	browser -> getSelection () -> setSelectLowest (value);
-}
-
-const bool
-BrowserSelection::getSelectLowest () const
-{
-	return getBrowserWindow () -> getConfig () .getBoolean ("selectLowest");
 }
 
 void

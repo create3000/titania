@@ -54,6 +54,8 @@
 #include "DialogFactory.h"
 
 #include <Titania/String.h>
+#include <Titania/String.h>
+#include <cassert>
 
 namespace titania {
 namespace puck {
@@ -78,6 +80,12 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 };
 
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
+
+X3DUserInterface::X3DUserInterface () :
+	gconf ("", "")
+{
+	assert (false);
+}
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
 	      X3DBaseInterface (),

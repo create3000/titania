@@ -61,6 +61,8 @@ class BrowserWindow :
 {
 public:
 
+	using X3DBrowserWindow::isEditor;
+
 	/// @name Construction
 
 	BrowserWindow (const X3D::BrowserPtr &);
@@ -87,6 +89,9 @@ private:
 	virtual
 	void
 	setBrowser (const X3D::BrowserPtr &) final override;
+
+	void
+	set_browsers ();
 
 	void
 	set_scene ();

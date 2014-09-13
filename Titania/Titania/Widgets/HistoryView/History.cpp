@@ -98,6 +98,15 @@ History::History () :
 void
 History::connect ()
 {
+	// Use:
+	// http://www.sqlite.org/c3ref/update_hook.html
+	//
+	//	void *sqlite3_update_hook (
+	//		sqlite3*, 
+	//		void(*)(void *,int ,char const *,char const *,sqlite3_int64),
+	//		void*
+	//	);
+
 	fileMonitor = Gio::File::create_for_path (filename) -> monitor_file ();
 	fileMonitor -> signal_changed () .connect (sigc::mem_fun (*this, &History::on_history_changed));
 }

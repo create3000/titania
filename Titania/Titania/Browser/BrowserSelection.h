@@ -72,19 +72,22 @@ public:
 	isEnabled (const bool);
 
 	bool
-	isEnabled () const;
+	isEnabled () const
+	{ return enabled; }
 
 	void
 	setMode (const X3D::Selection::SelectionType);
 
 	const X3D::Selection::SelectionType
-	getMode () const;
+	getMode () const
+	{ return mode; }
 
 	void
 	setSelectLowest (const bool);
 
 	const bool
-	getSelectLowest () const;
+	getSelectLowest () const
+	{ return selectLowest; }
 
 	const X3D::SFBool &
 	isOver () const
@@ -144,6 +147,10 @@ private:
 	set_browser ();
 
 	///  @name Members
+
+	bool                          enabled;
+	X3D::Selection::SelectionType mode;
+	bool                          selectLowest;
 
 	X3D::SFBool     over;
 	X3D::SFBool     active;

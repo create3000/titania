@@ -65,11 +65,11 @@ namespace titania {
 namespace puck {
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
-	X3DBrowserWidget (browser),
-	    currentScene (),
-	       selection (new BrowserSelection (getBrowserWindow ())),
-	     magicImport (new MagicImport (getBrowserWindow ())),
-	    undoMatrices ()
+	         X3DBrowserWidget (browser),
+	             currentScene (),
+	                selection (new BrowserSelection (getBrowserWindow ())),
+	              magicImport (new MagicImport (getBrowserWindow ())),
+	             undoMatrices ()
 { }
 
 void

@@ -92,6 +92,9 @@ protected:
 
 	/// @name Construction
 
+	X3DEditorInterface ()
+	{ }
+
 	X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
 		X3DDialogInterface (widgetName, configKey),
 		   X3DEditorObject ()

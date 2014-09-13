@@ -3,6 +3,7 @@
 echo "Generating Interfaces\n"
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
+-e \
 -v \
 -n titania -n puck \
 -p X3D \
@@ -12,6 +13,7 @@ echo "Generating Interfaces\n"
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -maxdepth 1 -name \*.xml;`
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
+-e \
 -v \
 -n titania -n puck \
 -p X3D \
@@ -21,6 +23,7 @@ echo "Generating Interfaces\n"
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Dialogs/ -maxdepth 1 -name \*.xml;`
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
+-e \
 -v \
 -n titania -n puck \
 -p X3D \

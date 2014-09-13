@@ -71,11 +71,12 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
-	X3DBaseInterface (this, browser),
-	X3DBrowserWindow (browser),
-	          toggle (true),
-	        changing (false),
-	          viewer (X3D::ViewerType::NONE)
+	         X3DBaseInterface (this, browser),
+	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
+	         X3DBrowserWindow (browser),
+	                   toggle (true),
+	                 changing (false),
+	                   viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
@@ -108,6 +109,7 @@ BrowserWindow::initialize ()
 	updatePasteStatus ();
 
 	// Browser Events
+	getBrowsers ()         .addInterest (this, &BrowserWindow::set_browsers);
 	getScene ()            .addInterest (this, &BrowserWindow::set_scene);
 	getExecutionContext () .addInterest (this, &BrowserWindow::set_executionContext);
 
@@ -192,6 +194,12 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	getBrowser () -> getBrowserOptions () -> rubberBand ()   = getRubberbandMenuItem () .get_active ();
 	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
+}
+
+void
+BrowserWindow::set_browsers ()
+{
+	getTabButton () .set_visible (getBrowsers () .size () > 1 and not isEditor ());
 }
 
 void
@@ -1549,6 +1557,8 @@ BrowserWindow::on_show_all_objects_activate ()
 void
 BrowserWindow::on_select_lowest_toggled ()
 {
+	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
+
 	getSelection () -> setSelectLowest (getSelectLowestMenuItem () .get_active ());
 }
 
@@ -1784,7 +1794,10 @@ void
 BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
+	{
+		getConfig () .setItem ("arrow", false);
 		getSelection () -> isEnabled (false);
+	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }
@@ -1793,7 +1806,10 @@ void
 BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
+	{
+		getConfig () .setItem ("arrow", true);
 		getSelection () -> isEnabled (true);
+	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }

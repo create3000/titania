@@ -51,13 +51,19 @@
 #include "X3DBaseInterface.h"
 
 #include "../Browser/X3DBrowserWindow.h"
-
 #include <cassert>
 
 namespace titania {
 namespace puck {
 
 const std::string X3DBaseInterface::typeName = "X3DBaseInterface";
+
+X3DBaseInterface::X3DBaseInterface () :
+	X3D::X3DParentObject (nullptr),
+	       browserWindow (nullptr)
+{
+	assert (false);
+}
 
 X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::Browser* const browser) :
 	     sigc::trackable (),

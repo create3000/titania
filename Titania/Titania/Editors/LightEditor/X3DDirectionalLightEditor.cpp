@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
-	X3DLightEditorInterface ("", ""),
+	X3DLightEditorInterface (),
 	              direction (getBrowserWindow (),
 	                         getDirectionalLightDirectionXAdjustment (),
 	                         getDirectionalLightDirectionYAdjustment (),

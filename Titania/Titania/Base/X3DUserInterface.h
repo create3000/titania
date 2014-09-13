@@ -96,16 +96,6 @@ public:
 	addDialog (const std::string &, const bool = true)
 	throw (std::out_of_range);
 
-	///  @name Configuration handling
-
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
-	getConfig () const
-	{ return gconf; }
-
 	///  @name Operations
 
 	void
@@ -124,6 +114,8 @@ public:
 protected:
 
 	/// @name Construction
+
+	X3DUserInterface ();
 
 	X3DUserInterface (const std::string &, const std::string &);
 
@@ -146,6 +138,16 @@ protected:
 	bool
 	isInitialized () const
 	{ return not constructed_connection .connected (); }
+
+	///  @name Configuration handling
+
+	Configuration &
+	getConfig ()
+	{ return gconf; }
+
+	const Configuration &
+	getConfig () const
+	{ return gconf; }
 
 	/// @name Member access
 	

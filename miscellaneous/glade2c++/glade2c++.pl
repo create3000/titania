@@ -3,6 +3,14 @@ use strict;
 use warnings;
 use v5.10.0;
 
+# -e  generate empty constructor
+# -v  pure virtual functions
+# -n  namespaces, can be use multiple times
+# -p  class prefix
+# -s  class suffix
+# -b  path to base class
+# -o  output directory
+
 BEGIN {
 	use File::Basename qw (dirname);
 	push @INC, dirname ($0);
@@ -11,12 +19,13 @@ BEGIN {
 use Glade2Cpp;
 use Getopt::Long;
 
-my @namespaces       = ();
-my $base_class       = "";
-my $class_prefix     = "";
-my $class_suffix     = "";
-my $pure_virtual     = 0;
-my $output_directory = $ENV {HOME};
+my @namespaces        = ();
+my $base_class        = "";
+my $class_prefix      = "";
+my $class_suffix      = "";
+my $empty_constructor = 0;
+my $pure_virtual      = 0;
+my $output_directory  = $ENV {HOME};
 
 sub main
 {
@@ -26,14 +35,16 @@ sub main
 	            "base-class=s"   => \$base_class,
 	            "prefix=s"       => \$class_prefix,
 	            "suffix=s"       => \$class_suffix,
+	            "empty"          => \$empty_constructor,
 	            "virtual"        => \$pure_virtual,
 	            "output=s"       => \$output_directory);
  
-	my $glade2cpp = new Glade2Cpp ({ namespaces   => [ split /,/, join ',', @namespaces ],
-                                    base_class   => $base_class,
-                                    class_prefix => $class_prefix,
-                                    class_suffix => $class_suffix,
-	                                 pure_virtual => $pure_virtual });
+	my $glade2cpp = new Glade2Cpp ({ namespaces        => [ split /,/, join ',', @namespaces ],
+                                    base_class        => $base_class,
+                                    class_prefix      => $class_prefix,
+                                    class_suffix      => $class_suffix,
+                                    empty_constructor => $empty_constructor,
+	                                 pure_virtual      => $pure_virtual });
 
 	$glade2cpp -> generate ($_, $output_directory) foreach @ARGV;
 

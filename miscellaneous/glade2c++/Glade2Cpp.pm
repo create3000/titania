@@ -66,7 +66,8 @@ sub new
 		class_prefix       => exists $options -> {class_prefix} ? $options -> {class_prefix} : "",
 		class_suffix       => exists $options -> {class_suffix} ? $options -> {class_suffix} : "",
 		suffixes           => [ qw (.glade .ui .xml) ],
-		pure_virtual       =>  exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
+		empty_constructor  => $options -> {empty_constructor},
+		pure_virtual       => exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
 		h_signal_handler   => { },
 		cpp_signal_handler => { },
 		class              => "",
@@ -401,19 +402,30 @@ sub generate
 	# Public section
 	say OUT "public:";
 
-	# Constructor
+	# Empty constructor
+	if ($self->{empty_constructor})
+	{
+		say OUT "  $self->{class_name} () :";
+
+		# Call base class construtor if any.
+		if ($base_class_name) {
+			say OUT "  $base_class_name ()";
+			say OUT "  { }";
+		}
+	}
+
 	say OUT "  template <class ... Arguments>";
 	say OUT "  $self->{class_name} (const std::string & filename, const Arguments & ... arguments) :";
 	
 	# Call base class construtor if any.
 	if ($base_class_name) {
-		say OUT "   $base_class_name (m_widgetName, arguments ...),";
+		say OUT "  $base_class_name (m_widgetName, arguments ...),";
 	}
 	
-	say OUT "filename (filename)";
+	say OUT "   filename (filename)";
 
 	# Constructor end begin body
-	say OUT "{ create (filename); }";
+	say OUT "  { create (filename); }";
 	say OUT "";
 
 	# Builder

@@ -65,7 +65,12 @@ class X3DBrowserEditor :
 {
 public:
 
-	/// @name File operations
+	/// @name Member access
+
+	bool
+	isEditor () const;
+
+	/// @name Operations
 
 	void
 	blank ();
@@ -305,9 +310,6 @@ private:
 	set_selection (const X3D::MFNode &);
 
 	// File
-
-	bool
-	isEditor () const;
 
 	bool
 	isSaved (const X3D::BrowserPtr &);

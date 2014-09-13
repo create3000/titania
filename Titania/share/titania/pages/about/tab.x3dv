@@ -5,7 +5,7 @@ META "created" "Thu, 04 Sep 2014 15:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Sat, 13 Sep 2014 08:02:28 GMT"
+META "modified" "Sat, 13 Sep 2014 08:07:57 GMT"
 META "titania-history" "false"
 META "title" "about:tab"
 
@@ -101,7 +101,6 @@ LayerSet {
         }
         DEF Logo Transform {
           translation -8.37482 5.27347 -0.431105
-          rotation 0 0 -1 3.20173
           center 5.54 -5.84 0
           children Shape {
             appearance Appearance {
@@ -4502,7 +4501,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _6 TouchSensor { }
+                      DEF TouchSensor0 TouchSensor { }
                       DEF URL0 SFString { }
                     ]
                   }
@@ -4560,7 +4559,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _7 TouchSensor { }
+                      DEF TouchSensor1 TouchSensor { }
                       DEF URL1 SFString { }
                     ]
                   }
@@ -4603,7 +4602,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _8 TouchSensor { }
+                      DEF TouchSensor2 TouchSensor { }
                       DEF URL2 SFString { }
                     ]
                   }
@@ -4646,7 +4645,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _9 TouchSensor { }
+                      DEF TouchSensor3 TouchSensor { }
                       DEF URL3 SFString { }
                     ]
                   }
@@ -4688,7 +4687,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _10 TouchSensor { }
+                      DEF TouchSensor4 TouchSensor { }
                       DEF URL4 SFString { }
                     ]
                   }
@@ -4731,7 +4730,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _11 TouchSensor { }
+                      DEF TouchSensor5 TouchSensor { }
                       DEF URL5 SFString { }
                     ]
                   }
@@ -4774,7 +4773,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _12 TouchSensor { }
+                      DEF TouchSensor6 TouchSensor { }
                       DEF URL6 SFString { }
                     ]
                   }
@@ -4817,7 +4816,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _13 TouchSensor { }
+                      DEF TouchSensor7 TouchSensor { }
                       DEF URL7 SFString { }
                     ]
                   }
@@ -4860,7 +4859,7 @@ LayerSet {
                           }
                         }
                       }
-                      DEF _14 TouchSensor { }
+                      DEF TouchSensor8 TouchSensor { }
                       DEF URL8 SFString { }
                     ]
                   }
@@ -4882,7 +4881,7 @@ LayerSet {
                 scale 2.25 2.25 0.8
                 scaleOrientation 0.0536555 -0.89964 0.433323 0.0794526
                 center 0 0 -0.0137088
-                children DEF _15 Shape {
+                children DEF _6 Shape {
                   appearance Appearance {
                     material Material {
                       ambientIntensity 0.653913
@@ -4963,7 +4962,7 @@ LayerSet {
                 scale 2.25 2.25 0.8
                 scaleOrientation 0.0267319 -0.686614 0.726531 0.104228
                 center 0 0 -0.0137088
-                children USE _15
+                children USE _6
               }
               DEF NextTouch TouchSensor { }
               DEF NextPage SFInt32 { }
@@ -4978,12 +4977,12 @@ LayerSet {
 ROUTE _1.rotation_changed TO Logo.set_rotation
 ROUTE PreviousTouch.touchTime TO PreviousPage.set_triggerTime
 ROUTE NextTouch.touchTime TO NextPage.set_triggerTime
-ROUTE _6.touchTime TO URL0.set_triggerTime
-ROUTE _7.touchTime TO URL1.set_triggerTime
-ROUTE _8.touchTime TO URL2.set_triggerTime
-ROUTE _9.touchTime TO URL3.set_triggerTime
-ROUTE _10.touchTime TO URL4.set_triggerTime
-ROUTE _11.touchTime TO URL5.set_triggerTime
-ROUTE _12.touchTime TO URL6.set_triggerTime
-ROUTE _13.touchTime TO URL7.set_triggerTime
-ROUTE _14.touchTime TO URL8.set_triggerTime
+ROUTE TouchSensor0.touchTime TO URL0.set_triggerTime
+ROUTE TouchSensor1.touchTime TO URL1.set_triggerTime
+ROUTE TouchSensor2.touchTime TO URL2.set_triggerTime
+ROUTE TouchSensor3.touchTime TO URL3.set_triggerTime
+ROUTE TouchSensor4.touchTime TO URL4.set_triggerTime
+ROUTE TouchSensor5.touchTime TO URL5.set_triggerTime
+ROUTE TouchSensor6.touchTime TO URL6.set_triggerTime
+ROUTE TouchSensor7.touchTime TO URL7.set_triggerTime
+ROUTE TouchSensor8.touchTime TO URL8.set_triggerTime

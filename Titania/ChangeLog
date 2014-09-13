@@ -1,5 +1,29 @@
 2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* AboutTab.cpp:
+	* X3DUserInterface.h:
+	* BrowserWindow.h:
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* X3DEditorInterface.h:
+	* X3DUserInterface.cpp:
+	* X3DDialogInterface.h:
+	* BrowserWindow.cpp:
+	* BrowserSelection.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWidget.h:
+	* tab.x3dv:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWindow.cpp:
+	* BrowserSelection.cpp:
+	* History.cpp:
+	* HistoryView.cpp:
+	* X3DDirectionalLightEditor.cpp: 
+
+2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AboutTab.h:
 	* AboutTab.cpp:
 	* BrowserWindow.cpp:

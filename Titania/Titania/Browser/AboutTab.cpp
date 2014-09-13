@@ -169,14 +169,16 @@ AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & 
 			const auto number = basic::to_string (i);
 			const auto image  = basic::base64_encode (history .getPreview (item .at ("id")));
 
-			const auto switchNode = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
-			const auto texture    = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);
-			const auto text       = scene -> getNamedNode <X3D::Text> ("Text" + number);
-			const auto URL        = scene -> getNamedNode ("URL" + number);
+			const auto switchNode  = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
+			const auto texture     = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);
+			const auto text        = scene -> getNamedNode <X3D::Text> ("Text" + number);
+			const auto touchSensor = scene -> getNamedNode <X3D::TouchSensor> ("TouchSensor" + number);
+			const auto URL         = scene -> getNamedNode ("URL" + number);
 
 			switchNode -> whichChoice ()                 = 0;
 			texture -> url ()                            = { "data:image/jpeg;base64," + image, "library/dot-clear.png" };
 			text -> string ()                            = { item .at ("title") };
+			touchSensor -> description ()                = item .at ("worldURL");
 			URL -> getField <X3D::SFString> ("keyValue") = item .at ("worldURL");
 			URL -> getField <X3D::SFString> ("value_changed") .addInterest (this, &AboutTab::set_url);
 

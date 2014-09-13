@@ -63,16 +63,16 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
-	X3DBrowserEditor (browser),
-	   viewpointList (new ViewpointList (this, true)),
-	   historyEditor (new HistoryView (this)),
-	     libraryView (new LibraryView (this)),
-	   outlineEditor (new OutlineEditor (this)),
-	         console (new Console (this)),
-	    scriptEditor (new ScriptEditor (this)),
-	            keys (),
-	    accelerators (true),
-	    saveAsOutput ()
+	         X3DBrowserEditor (browser),
+	            viewpointList (new ViewpointList (this, true)),
+	            historyEditor (new HistoryView (this)),
+	              libraryView (new LibraryView (this)),
+	            outlineEditor (new OutlineEditor (this)),
+	                  console (new Console (this)),
+	             scriptEditor (new ScriptEditor (this)),
+	                     keys (),
+	             accelerators (true),
+	           worldURLOutput ()
 { }
 
 void
@@ -86,12 +86,6 @@ X3DBrowserWindow::initialize ()
 	outlineEditor -> reparent (getOutlineEditorBox (), getWindow ());
 	console       -> reparent (getConsoleBox (),       getWindow ());
 	scriptEditor  -> reparent (getScriptEditorBox (),  getWindow ());
-}
-
-void
-X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
-{
-	X3DBrowserEditor::setBrowser (value);
 }
 
 const std::shared_ptr <OutlineTreeViewEditor> &

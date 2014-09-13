@@ -150,12 +150,12 @@ X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const b
 throw (Error <INVALID_OPERATION_TIMING>,
        std::runtime_error)
 {
-	const auto backgroundColor = alphaChannel ? X3D::Color4f () : getBrowser () -> getBackgroundColor ();
-
 	ContextLock lock (this);
 
-	if (lock)
+	if (getWorld () and lock)
 	{
+		const auto backgroundColor = alphaChannel ? X3D::Color4f () : getBrowser () -> getBackgroundColor ();
+
 		std::vector <uint8_t> pixels;
 		FrameBuffer           frameBuffer (this, width, height, antialiasing);
 

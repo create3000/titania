@@ -169,12 +169,9 @@ protected:
 	 *  @name Construction
 	 */
 
-	X3DBaseInterface (X3DBrowserWindow* const, X3D::Browser* const);
+	X3DBaseInterface ();
 
-	X3DBaseInterface () :
-		X3D::X3DParentObject (nullptr),
-		       browserWindow (nullptr)
-	{ }
+	X3DBaseInterface (X3DBrowserWindow* const, X3D::Browser* const);
 
 
 private:
