@@ -1262,10 +1262,12 @@ ParticleSystem::prepareEvents ()
 
 		// Update shader
 
+		constexpr float DELAY = 15; // Delay in frames when dt full applys.
+
 		const float dt        = 1 / getBrowser () -> getCurrentFrameRate ();
 		auto &      deltaTime = transformShader -> getField <SFFloat> ("deltaTime");
 
-		deltaTime = (9 * deltaTime + dt) / 10;
+		deltaTime = ((DELAY - 1) * deltaTime + dt) / DELAY; // Moving average about DELAY frames.
 		transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
 		transformShader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
 
