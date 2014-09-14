@@ -13,7 +13,7 @@
   <Task file="" description="Text node display list not created???" completed="True" />
   <Task file="" description="Exception in addUserDefinedField wenn Name leer hinzufügen." />
   <Task file="" description="getType bei X3DBaseNode ändern." completed="True" />
-  <Task file="" description="Colors in Material Editor insensitive rastern" />
+  <Task file="" description="Colors in Material Editor insensitive rastern" completed="True" />
   <Task file="" description="Tasten für rotate und scale tool" />
   <Task file="" description="BBox stimmt nicht bei Text when maxExtent &lt; maxCharWidth" />
   <Task file="" description="Library expanded speichern" completed="True" />

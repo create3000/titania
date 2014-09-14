@@ -48,135 +48,111 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_GROUP_H__
-#define __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_GROUP_H__
+#ifndef __TITANIA_X3D_TOOLS_LAYOUT_LAYOUT_GROUP_H__
+#define __TITANIA_X3D_TOOLS_LAYOUT_LAYOUT_GROUP_H__
 
-#include "../../Types/Pointer.h"
-#include "../Grouping/X3DGroupingNode.h"
-#include "../Layering/X3DViewportNode.h"
-#include "../Layout/X3DLayoutNode.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/Layout/LayoutGroup.h"
 
 namespace titania {
 namespace X3D {
 
-class LayoutGroup :
-	public X3DGroupingNode
+class LayoutGroupTool :
+	public X3DGroupingNodeTool <LayoutGroup>
 {
 public:
 
 	///  @name Construction
 
-	LayoutGroup (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	LayoutGroupTool (LayoutGroup* const node) :
+		                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        X3DBaseTool <LayoutGroup> (node),
+		X3DGroupingNodeTool <LayoutGroup> (ToolColors::DARK_GREEN)
+	{
+		//addType (X3DConstants::LayoutGroupTool);
+	}
 
 	///  @name Fields
 
 	virtual
 	SFNode &
-	viewport ()
-	{ return *fields .viewport; }
+	viewport () final override
+	{ return getNode () -> viewport (); }
 
 	virtual
 	const SFNode &
-	viewport () const
-	{ return *fields .viewport; }
+	viewport () const final override
+	{ return getNode () -> viewport (); }
 
 	virtual
 	SFNode &
-	layout ()
-	{ return *fields .layout; }
+	layout () final override
+	{ return getNode () -> layout (); }
 
 	virtual
 	const SFNode &
-	layout () const
-	{ return *fields .layout; }
-
-	///  @name Member access
-
-	virtual
-	Box3f
-	getBBox () const override;
-
-	Box3f
-	getRectangleBBox () const;
-
-	const Matrix4f &
-	getMatrix () const;
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) override;
-
-	virtual
-	void
-	addTool () override;
+	layout () const final override
+	{ return getNode () -> layout (); }
 
 
 protected:
 
 	virtual
+	const Matrix4f &
+	getMatrix () const final override
+	{ return getNode () -> getMatrix (); }
+
+
+protected:
+
+	///  @name Operations
+
+	virtual
 	void
-	initialize () override;
+	realize () final override;
 
-
-private:
-
-	///  @name Event handler
-
+	virtual
 	void
-	set_viewport ();
-
-	void
-	set_layout ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFNode* const viewport;
-		SFNode* const layout;
-	};
-
-	Fields fields;
-
-	X3DViewportNodePtr viewportNode;
-	X3DLayoutNodePtr   layoutNode;
-	Matrix4f           modelViewMatrix;
-	Matrix4f           screenMatrix;
-	Matrix4f           matrix;
+	reshape () final override;
 
 };
+
+inline
+void
+LayoutGroupTool::realize ()
+{
+	try
+	{
+		const SFNode & tool = getToolNode ();
+
+		tool -> setField <SFInt32> ("rectangle", 0);
+	}
+	catch (const X3DError & error)
+	{ }
+
+	X3DGroupingNodeTool <LayoutGroup>::realize ();
+}
+
+inline
+void
+LayoutGroupTool::reshape ()
+{
+	try
+	{
+		const SFNode & tool = getToolNode ();
+	
+		const auto bbox = getNode () -> getRectangleBBox () * ~getMatrix ();
+
+		tool -> setField <SFVec3f> ("rectangleBBoxSize",   bbox .size (),   true);
+		tool -> setField <SFVec3f> ("rectangleBBoxCenter", bbox .center (), true);
+	}
+	catch (const X3DError & error)
+	{ }
+
+	X3DGroupingNodeTool <LayoutGroup>::reshape ();
+}
 
 } // X3D
 } // titania

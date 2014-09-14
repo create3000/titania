@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layout/Layout.h"
+#include "../../Tools/Layout/LayoutGroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -72,7 +73,10 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields (),
 	   viewportNode (),
-	     layoutNode ()
+	     layoutNode (),
+	modelViewMatrix (),
+	   screenMatrix (),
+	         matrix ()
 {
 	addType (X3DConstants::LayoutGroup);
 
@@ -110,7 +114,37 @@ LayoutGroup::initialize ()
 Box3f
 LayoutGroup::getBBox () const
 {
+	return X3DGroupingNode::getBBox () * getMatrix ();
+}
+
+Box3f
+LayoutGroup::getRectangleBBox () const
+{
+	if (layoutNode)
+	{
+		const auto & size   = layoutNode -> getRectangleSize ();
+		const auto & center = layoutNode -> getRectangleCenter ();
+
+		Vector3f t, s;
+		Rotation4f r;
+		
+		modelViewMatrix .get (t, r, s);
+
+		return Box3f (Vector3f (size .x (), size .y (), 0) / s, Vector3f (center .x (), center .y (), 0) / s);
+	}
+
 	return Box3f ();
+}
+
+const Matrix4f &
+LayoutGroup::getMatrix () const
+{
+	if (layoutNode)
+		const_cast <LayoutGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
+	else
+		const_cast <LayoutGroup*> (this) -> matrix = Matrix4f ();
+
+	return matrix;
 }
 
 void
@@ -141,7 +175,11 @@ LayoutGroup::traverse (const TraverseType type)
 			{
 				getModelViewMatrix () .push ();
 
+				modelViewMatrix = getModelViewMatrix (type);
+
 				layoutNode -> transform (type);
+				
+				screenMatrix = layoutNode -> getMatrix ();
 
 				getBrowser () -> getLayouts () .push (layoutNode);
 
@@ -162,6 +200,12 @@ LayoutGroup::traverse (const TraverseType type)
 		default:
 			break;
 	}
+}
+
+void
+LayoutGroup::addTool ()
+{
+	X3DGroupingNode::addTool (new LayoutGroupTool (this));
 }
 
 } // X3D

@@ -780,6 +780,7 @@
     <None Include="Titania\X3D\Tools\Geospatial\GeoLODTool.h" />
     <None Include="Titania\X3D\Browser\ContextLock.h" />
     <None Include="Titania\X3D\Rendering\FrameBuffer.h" />
+    <None Include="Titania\X3D\Tools\Layout\LayoutGroupTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

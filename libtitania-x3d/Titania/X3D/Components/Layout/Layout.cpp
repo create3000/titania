@@ -91,7 +91,8 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	         parent (nullptr),
 	       viewport (), /// XXX: not used
 	rectangleCenter (),
-	  rectangleSize ()
+	  rectangleSize (),
+	         matrix ()
 {
 	addType (X3DConstants::Layout);
 
@@ -439,9 +440,9 @@ Layout::transform (const TraverseType type)
 		const auto viewport      = Viewport4i ();                                                    // in pixel
 		const auto viewportPixel = Vector2i (viewport [2], viewport [3]);                            // in pixel
 
-		const Vector2d viewportMeter       = viewpoint -> getViewportSize (viewport);                // in meter
-		const Vector2d parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter; // in meter
-		const Vector2d pixelSize           = viewportMeter / Vector2d (viewportPixel);               // size of one pixel in meter
+		const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport);                // in meter
+		const Vector2d & parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter; // in meter
+		const Vector2d   pixelSize           = viewportMeter / Vector2d (viewportPixel);               // size of one pixel in meter
 
 		switch (getSizeUnitX ())
 		{
@@ -595,10 +596,14 @@ Layout::transform (const TraverseType type)
 			scale .y (scale .x ());
 
 		// Transform
+		
+		const auto position = translation + offset;
 
-		Matrix4d matrix;
+		rectangleCenter .x (currentTranslation .x () + position .x ());
+		rectangleCenter .y (currentTranslation .x () + position .y ());
+
 		matrix .set (currentTranslation, currentRotation);
-		matrix .translate (translation + offset);
+		matrix .translate (position);
 		matrix .scale (scale);
 
 		getModelViewMatrix () .set (matrix);

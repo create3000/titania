@@ -267,7 +267,7 @@ public:
 
 	template <class Type>
 	X3DPtr <Type>
-	getNamedNode (const std::string &)
+	getNamedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -326,7 +326,7 @@ public:
 
 	template <class Type>
 	X3DPtr <Type>
-	getImportedNode (const std::string &)
+	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -758,7 +758,7 @@ private:
 
 template <class Type>
 X3DPtr <Type>
-X3DExecutionContext::getNamedNode (const std::string & name)
+X3DExecutionContext::getNamedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
@@ -774,7 +774,7 @@ throw (Error <INVALID_NAME>,
 
 template <class Type>
 X3DPtr <Type>
-X3DExecutionContext::getImportedNode (const std::string & name)
+X3DExecutionContext::getImportedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,

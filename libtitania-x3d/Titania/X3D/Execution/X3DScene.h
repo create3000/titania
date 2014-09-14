@@ -149,7 +149,7 @@ public:
 
 	template <class Type>
 	X3DPtr <Type>
-	getExportedNode (const std::string &)
+	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -263,7 +263,7 @@ private:
 
 template <class Type>
 X3DPtr <Type>
-X3DScene::getExportedNode (const std::string & name)
+X3DScene::getExportedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,

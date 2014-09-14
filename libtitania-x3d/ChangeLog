@@ -1,5 +1,18 @@
 2014-09-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* X3DScene.h:
+	* BoundingBox.x3dv:
+	* Layout.h:
+	* Layout.cpp:
+	* LayoutGroupTool.h:
+	* X3DExecutionContext.h:
+	* LayoutGroup.h:
+	* X3DLayoutNode.h:
+	* LayoutGroup.cpp: 
+
+2014-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.h:
 	* X3DExecutionContext.h: 
 

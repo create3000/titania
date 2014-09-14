@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 29 Aug 2014 13:13:27 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 29 Aug 2014 13:13:27 GMT"
+META "modified" "Sun, 14 Sep 2014 08:40:57 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -24,6 +24,9 @@ PROTO Interface [
   inputOutput SFVec3f axisOfRotation 0 0 0
   inputOutput SFInt32 linetype 3
   inputOutput SFColor color 0.35 1 0.7
+  inputOutput SFInt32 rectangle -1
+  inputOutput SFVec3f rectangleBBoxSize 1 1 1
+  inputOutput SFVec3f rectangleBBoxCenter 0 0 0
   inputOutput SFVec3f bboxSize 1 1 1
   inputOutput SFVec3f bboxCenter 0 0 0
 ]
@@ -49,21 +52,75 @@ Collision {
             }
           }
           geometry IndexedLineSet {
-            coordIndex [ 0, 1, 2, 3, 0, -1, 4, 5, 6, 7, 4, -1, 0, 4, -1, 3, 7, -1, 1, 5, -1, 2, 6, -1 ]
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              0,
+              -1,
+              4,
+              5,
+              6,
+              7,
+              4,
+              -1,
+              0,
+              4,
+              -1,
+              3,
+              7,
+              -1,
+              1,
+              5,
+              -1,
+              2,
+              6,
+              -1
+            ]
             coord DEF BBox Coordinate {
-              point [ -0.5 0.5 0.5, -0.5 -0.5 0.5, 0.5 -0.5 0.5, 0.5 0.5 0.5, -0.5 0.5 -0.5, -0.5 -0.5 -0.5, 0.5 -0.5 -0.5, 0.5 0.5 -0.5 ]
+              point [
+                -0.5 0.5 0.5,
+                -0.5 -0.5 0.5,
+                0.5 -0.5 0.5,
+                0.5 0.5 0.5,
+                -0.5 0.5 -0.5,
+                -0.5 -0.5 -0.5,
+                0.5 -0.5 -0.5,
+                0.5 0.5 -0.5
+              ]
             }
           }
         }
         DEF Axes_1 Shape {
           geometry IndexedLineSet {
             colorPerVertex FALSE
-            coordIndex [ 0, 1, -1, 0, 2, -1, 0, 3, -1 ]
+            coordIndex [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              -1,
+              0,
+              3,
+              -1
+            ]
             color Color {
-              color [ 1 0 0, 0 1 0, 0 0 1 ]
+              color [
+                1 0 0,
+                0 1 0,
+                0 0 1
+              ]
             }
             coord DEF AxesCoord Coordinate {
-              point [ 0 0 0, 0.5 0 0, 0 0.5 0, 0 0 0.5, 0 0 0 ]
+              point [
+                0 0 0,
+                0.5 0 0,
+                0 0.5 0,
+                0 0 0.5,
+                0 0 0
+              ]
             }
           }
         }
@@ -142,12 +199,22 @@ Collision {
                 }
               }
               geometry DEF CenterIndexedLineSet IndexedLineSet {
-                coordIndex [ 0, 1, -1 ]
+                coordIndex [
+                  0,
+                  1,
+                  -1
+                ]
                 color Color {
-                  color [ 1 1 0, 1 1 0 ]
+                  color [
+                    1 1 0,
+                    1 1 0
+                  ]
                 }
                 coord DEF CenterLineCoord Coordinate {
-                  point [ 0 0 0, 0 0 0 ]
+                  point [
+                    0 0 0,
+                    0 0 0
+                  ]
                 }
               }
             }
@@ -175,11 +242,46 @@ Collision {
         }
       ]
     }
+    DEF Rectangle Switch {
+      children DEF _3 Transform {
+        children DEF Box_1 Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 2
+            }
+            material DEF BBoxMaterial_1 Material {
+              emissiveColor 0 1 0
+            }
+          }
+          geometry IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              0,
+              -1
+            ]
+            coord DEF RectangleBBox Coordinate {
+              point [
+                -0.5 0.5 0,
+                -0.5 -0.5 0,
+                0.5 -0.5 0,
+                0.5 0.5 0
+              ]
+            }
+          }
+        }
+      }
+    }
   ]
 }
 
 DEF BBoxScript Script {
+  inputOutput    SFInt32 rectangle -1
+  inputOutput    SFVec3f rectangleBBoxSize 1 1 1
   inputOutput    SFVec3f bboxSize 1 1 1
+  initializeOnly SFNode  rectangleBBox USE RectangleBBox
   initializeOnly SFNode  bbox USE BBox
   initializeOnly SFNode  axes USE AxesCoord
 
@@ -207,6 +309,18 @@ function eventsProcessed ()
 	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
 	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
 	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z));
+	
+	if (rectangle == 0)
+	{
+		var bboxSize1_2 = rectangleBBoxSize .divide (2);
+
+		// BBox
+
+		rectangleBBox .point = new MFVec3f (new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  0),
+		                                    new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  0), 
+		                                    new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  0), 
+		                                    new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  0));
+	}
 }
 "
   directOutput TRUE
@@ -295,5 +409,9 @@ ROUTE CenterScript.whichChoice_changed TO Center.set_whichChoice
 ROUTE Tool.linetype_changed TO _1.set_linetype
 ROUTE Tool.center_changed TO _2.set_translation
 ROUTE Tool.axisOfRotation_changed TO AxisOfRotationScript.set_vector
+ROUTE Tool.rectangle_changed TO BBoxScript.set_rectangle
+ROUTE Tool.rectangle_changed TO Rectangle.set_whichChoice
+ROUTE Tool.rectangleBBoxSize_changed TO BBoxScript.set_rectangleBBoxSize
+ROUTE Tool.rectangleBBoxCenter_changed TO _3.set_translation
 
 EXPORT Tool

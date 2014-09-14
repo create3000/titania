@@ -121,12 +121,16 @@ public:
 	getSizeUnitY () const = 0;
 
 	virtual
-	Vector2d
+	const Vector2d &
 	getRectangleCenter () const = 0;
 
 	virtual
-	Vector2d
+	const Vector2d &
 	getRectangleSize () const = 0;
+
+	virtual
+	const Matrix4d &
+	getMatrix () const = 0;
 
 	///  @name Operations
 

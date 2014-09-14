@@ -187,13 +187,20 @@ public:
 	ScaleModeType
 	getScaleModeY () const;
 
-	Vector2d
-	getRectangleCenter () const
+	virtual
+	const Vector2d &
+	getRectangleCenter () const final override
 	{ return rectangleCenter; }
 
-	Vector2d
-	getRectangleSize () const
+	virtual
+	const Vector2d &
+	getRectangleSize () const final override
 	{ return rectangleSize; }
+
+	virtual
+	const Matrix4d &
+	getMatrix () const final override
+	{ return matrix; }
 
 	///  @name Operations
 
@@ -270,6 +277,7 @@ private:
 	Vector4i       viewport;
 	Vector2d       rectangleCenter;   // In m
 	Vector2d       rectangleSize;     // In m
+	Matrix4d       matrix;
 
 };
 
