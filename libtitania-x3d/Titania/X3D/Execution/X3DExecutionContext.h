@@ -324,6 +324,14 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	template <class Type>
+	X3DPtr <Type>
+	getImportedNode (const std::string &)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const ImportedNodeIndex &
 	getImportedNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -757,6 +765,22 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	X3DPtr <Type> node (getNamedNode (name));
+
+	if (node)
+		return node;
+
+	throw Error <INVALID_NODE> ("Invalid node: node '" + name + "' has other type.");
+}
+
+template <class Type>
+X3DPtr <Type>
+X3DExecutionContext::getImportedNode (const std::string & name)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DPtr <Type> node (getImportedNode (name));
 
 	if (node)
 		return node;

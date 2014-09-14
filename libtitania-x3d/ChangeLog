@@ -1,3 +1,8 @@
+2014-09-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DScene.h:
+	* X3DExecutionContext.h: 
+
 2014-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.cpp: 
