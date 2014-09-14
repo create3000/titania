@@ -89,7 +89,6 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	     scaleModeX (ScaleModeType::NONE),
 	     scaleModeY (ScaleModeType::NONE),
 	         parent (nullptr),
-	       viewport (), /// XXX: not used
 	rectangleCenter (),
 	  rectangleSize (),
 	         matrix ()

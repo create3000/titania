@@ -274,7 +274,6 @@ private:
 	ScaleModeType       scaleModeY;
 
 	X3DLayoutNode* parent;
-	Vector4i       viewport;
 	Vector2d       rectangleCenter;   // In m
 	Vector2d       rectangleSize;     // In m
 	Matrix4d       matrix;
