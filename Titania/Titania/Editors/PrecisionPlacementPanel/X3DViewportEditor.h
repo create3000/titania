@@ -48,138 +48,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_X3DRENDERER_H__
-#define __TITANIA_X3D_RENDERING_X3DRENDERER_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DVIEWPORT_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DVIEWPORT_EDITOR_H__
 
-#include "../Base/Output.h"
-#include "../Components/Core/X3DNode.h"
-#include "../Rendering/CollisionArray.h"
-#include "../Rendering/CollisionShape.h"
-#include "../Rendering/ShapeContainer.h"
-#include "../Rendering/ViewVolume.h"
-#include "../Rendering/X3DCollectableObject.h"
-
-#include <memory>
-#include <stack>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-using ViewVolumeStack = std::vector <ViewVolume>;
-
-class FrameBuffer;
-
-class X3DRenderer :
-	virtual public X3DNode
+class X3DViewportEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
-	float
-	getDistance () const
-	{ return distance; }
-
-	ViewVolumeStack &
-	getViewVolumeStack ()
-	{ return viewVolumeStack; }
-
-	CollectableObjectArray &
-	getGlobalObjects ()
-	{ return globalObjects; }
-
-	CollectableObjectArray &
-	getLocalObjects ()
-	{ return localObjects; }
-
-	CollisionArray &
-	getCollisions ()
-	{ return collisions; }
-
-	size_t
-	getNumOpaqueShapes () const
-	{ return numOpaqueShapes; }
-
-	size_t
-	getNumTransparentShapes () const
-	{ return numTransparentShapes; }
-
-	void
-	addShape (X3DShapeNode* const);
-
-	void
-	addCollision (X3DShapeNode* const);
-
-	void
-	render (const TraverseType);
-
-	void
-	gravite ();
+	///  @name Destruction
 
 	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DRenderer ();
+	~X3DViewportEditor ();
 
 
 protected:
 
-	X3DRenderer ();
+	///  @name Construction
+
+	X3DViewportEditor ();
 
 	virtual
 	void
 	initialize () override;
 
-	virtual
-	X3DFogObject*
-	getFog () const = 0;
-
 
 private:
 
-	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>> ;
-	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>> ;
+	///  @name Construction
 
 	virtual
 	void
-	collect (const TraverseType) = 0;
+	on_viewport_toggled () final override;
 
 	void
-	draw ();
+	set_viewport ();
 
 	void
-	navigation ();
+	set_node ();
 
 	void
-	collide ();
-
-	bool
-	stepUp ();
+	set_widgets ();
 
 	void
-	addStepUp ();
+	connectViewport (const X3D::SFNode &);
 
-	ViewVolumeStack        viewVolumeStack;
-	CollectableObjectArray globalObjects;
-	CollectableObjectArray localObjects;
-	CollisionArray         collisions;
+	///  @name Members
 
-	ShapeContainerArray      shapes;
-	ShapeContainerArray      transparentShapes;
-	CollisionShapeArray      collisionShapes;
-	std::vector <Collision*> activeCollisions;
+	X3D::MFNode                 nodes;
+	X3D::SFTime                 viewportBuffer;
+	X3D::X3DPtr <X3D::Viewport> viewport;
+	UndoStepPtr                 undoStep;
+	bool                        changing;
 
-	std::unique_ptr <FrameBuffer> depthBuffer;
-	float                         speed;
-	float                         distance;
-
-	size_t numOpaqueShapes;
-	size_t numTransparentShapes;
-	size_t numCollisionShapes;
+	X3DFieldAdjustment4 <X3D::MFFloat> clipBoundary;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

@@ -129,23 +129,7 @@ Viewport::traverse (const TraverseType type)
 {
 	push (type);
 
-	switch (type)
-	{
-		case TraverseType::PICKING:
-		{
-			viewports .back () -> enable ();
-
-			X3DGroupingNode::traverse (type);
-
-			viewports .back () -> disable ();
-			break;
-		}
-		default:
-		{
-			X3DGroupingNode::traverse (type);
-			break;
-		}
-	}
+	X3DGroupingNode::traverse (type);
 
 	pop (type);
 }
@@ -155,7 +139,7 @@ Viewport::push (const TraverseType)
 {
 	viewports .emplace_back (new ViewportContainer (this));
 
-	getCurrentLayer () -> getViewVolumeStack () .emplace (ProjectionMatrix4d (), getRectangle ());
+	getCurrentLayer () -> getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), getRectangle ());
 	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back ());
 }
 
@@ -165,7 +149,7 @@ Viewport::pop (const TraverseType)
 	viewports .pop_back ();
 
 	getCurrentLayer () -> getLocalObjects () .pop_back ();
-	getCurrentLayer () -> getViewVolumeStack () .pop ();
+	getCurrentLayer () -> getViewVolumeStack () .pop_back ();
 }
 
 void

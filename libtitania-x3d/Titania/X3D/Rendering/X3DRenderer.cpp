@@ -103,7 +103,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 
 	if (min < 0)
 	{
-		if (viewVolumeStack .top () .intersect (bbox))
+		if (viewVolumeStack .back () .intersect (bbox))
 		{
 			if (shape -> isTransparent ())
 			{
@@ -139,7 +139,7 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 
 	if (min < 0)
 	{
-		if (viewVolumeStack .top () .intersect (bbox))
+		if (viewVolumeStack .back () .intersect (bbox))
 		{
 			if (numCollisionShapes < collisionShapes .size ())
 				collisionShapes [numCollisionShapes] -> assign (shape, getCollisions (), getLocalObjects (), getModelViewMatrix () .get (), center);

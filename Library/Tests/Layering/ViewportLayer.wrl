@@ -1,32 +1,45 @@
-#X3D V3.0 utf8 Titania 0.1
+#VRML V2.0 utf8 Titania V0.7.4
 
 EXTERNPROTO Rotor [
-  inputOutput SFBool     enabled
-  inputOutput SFTime     cycleInterval
-  inputOutput SFVec3f    axis
-  inputOutput SFFloat    angle
-  inputOutput SFBool     loop
-  inputOutput SFTime     startTime
-  inputOutput SFTime     pauseTime
-  inputOutput SFTime     resumeTime
-  inputOutput SFTime     stopTime
-  outputOnly  SFRotation rotation_changed
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFVec3f    axis
+  exposedField SFFloat    angle
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     pauseTime
+  exposedField SFTime     resumeTime
+  exposedField SFTime     stopTime
+  eventOut     SFRotation rotation_changed
 ]
-[ "../../../Titania/share/titania/Prototypes/0.1/Engines/Rotor.x3dv", "file:///usr/share/titania/Prototypes/0.1/Engines/Rotor.x3dv" ]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Engines/Rotor.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Engines/Rotor.x3dv"
+]
 
 LayerSet {
   activeLayer 2
-  order [ 1, 2, 3, 4 ]
+  order [
+    1,
+    2,
+    3,
+    4
+  ]
   layers [
     DEF NE Layer {
       viewport Viewport {
-        clipBoundary [ 0.5, 1, 0.5, 1 ]
+        clipBoundary [
+          0.51,
+          1,
+          0.51,
+          1
+        ]
       }
       children [
         Viewpoint { }
         Transform {
           children DEF Beethoven Transform {
-            rotation 0 -1 0 1.59771
+            rotation 0 -1 0 2.14691
             children Inline {
               url "../Geometry3D/Beethoven.wrl"
             }
@@ -39,7 +52,12 @@ LayerSet {
     }
     DEF SE Layer {
       viewport Viewport {
-        clipBoundary [ 0.5, 1, 0, 0.5 ]
+        clipBoundary [
+          0.51,
+          1,
+          0,
+          0.49
+        ]
       }
       children [
         Viewpoint {
@@ -57,7 +75,12 @@ LayerSet {
     }
     DEF SW Layer {
       viewport Viewport {
-        clipBoundary [ 0, 0.5, 0, 0.5 ]
+        clipBoundary [
+          0,
+          0.49,
+          0,
+          0.49
+        ]
       }
       children [
         Viewpoint {
@@ -74,7 +97,12 @@ LayerSet {
     }
     DEF NW Layer {
       viewport Viewport {
-        clipBoundary [ 0, 0.5, 0.5, 1 ]
+        clipBoundary [
+          0,
+          0.49,
+          0.51,
+          1
+        ]
       }
       children [
         Viewpoint {

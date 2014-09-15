@@ -55,6 +55,7 @@
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 #include "X3DLayoutEditor.h"
 #include "X3DTransformEditor.h"
+#include "X3DViewportEditor.h"
 
 namespace titania {
 namespace puck {
@@ -62,7 +63,8 @@ namespace puck {
 class PrecisionPlacementPanel :
 	virtual public X3DPrecisionPlacementPanelInterface,
 	public X3DTransformEditor,
-	public X3DLayoutEditor
+	public X3DLayoutEditor,
+	public X3DViewportEditor
 {
 public:
 

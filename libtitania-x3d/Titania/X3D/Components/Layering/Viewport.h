@@ -104,6 +104,18 @@ public:
 
 	///  @name Member access
 
+	float
+	getLeft () const;
+
+	float
+	getRight () const;
+
+	float
+	getBottom () const;
+
+	float
+	getTop () const;
+
 	virtual
 	Vector4i
 	getRectangle (const int, const int) const final override;
@@ -122,28 +134,16 @@ public:
 	void
 	disable () final override;
 
+	virtual
+	void
+	push (const TraverseType) final override;
+
+	virtual
+	void
+	pop (const TraverseType) final override;
+
 
 private:
-
-	///  @name Member access
-
-	float
-	getLeft () const;
-
-	float
-	getRight () const;
-
-	float
-	getBottom () const;
-
-	float
-	getTop () const;
-
-	void
-	push (const TraverseType);
-
-	void
-	pop (const TraverseType);
 
 	///  @name Static members
 

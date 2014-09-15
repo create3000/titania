@@ -1,14 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/LayoutGroup.cpp" Line="133" Column="68" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp" Line="608" Column="39" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="111" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.h" Line="276" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/X3DLayoutNode.h" Line="74" Column="10" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.h" Line="90" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.cpp" Line="96" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/Viewport.cpp" Line="57" Column="16" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.h" Line="109" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp" Line="186" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.h" Line="97" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp" Line="87" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h" Line="66" Column="25" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="117" Column="39" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -37,13 +37,13 @@
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True">
-                    <Node name="Layout.cpp" selected="True" />
-                  </Node>
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Layout" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="ParticleSystems" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Rendering" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Grouping" expanded="True" />
@@ -54,10 +54,19 @@
           </Node>
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="ui" expanded="True">
+                  <Node name="Editors" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="Editors" expanded="True">
                 <Node name="PrecisionPlacementPanel" expanded="True" />
+                <Node name="ViewpointEditor" expanded="True">
+                  <Node name="X3DOrthoViewpointEditor.cpp" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>

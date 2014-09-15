@@ -94,16 +94,6 @@ public:
 
 	virtual
 	SFNode &
-	viewport ()
-	{ return *fields .viewport; }
-
-	virtual
-	const SFNode &
-	viewport () const
-	{ return *fields .viewport; }
-
-	virtual
-	SFNode &
 	layout ()
 	{ return *fields .layout; }
 
@@ -111,6 +101,16 @@ public:
 	const SFNode &
 	layout () const
 	{ return *fields .layout; }
+
+	virtual
+	SFNode &
+	viewport ()
+	{ return *fields .viewport; }
+
+	virtual
+	const SFNode &
+	viewport () const
+	{ return *fields .viewport; }
 
 	///  @name Member access
 

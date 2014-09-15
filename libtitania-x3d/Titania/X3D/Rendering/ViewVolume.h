@@ -71,6 +71,10 @@ public:
 	ViewVolume &
 	operator = (const ViewVolume &) = default;
 
+	const Vector4i &
+	getViewport () const
+	{ return viewport; }
+
 	bool
 	intersect (const Box3f &) const;
 
@@ -102,6 +106,7 @@ private:
 	unProjectPoint (double, double, double, const Matrix4d &, const Vector4i &)
 	throw (std::domain_error);
 
+	const Vector4i        viewport;
 	std::vector <Plane3f> planes;
 	bool                  valid;
 

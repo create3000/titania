@@ -163,11 +163,11 @@ Shape::pick ()
 
 	if (getGeometry ())
 	{
-		if (getBrowser () -> isPointerInRectangle (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
+		if (getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getViewport ()))
 		{
 			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
 
-			if (getCurrentLayer () -> getViewVolumeStack () .top () .intersect (bbox))
+			if (getCurrentLayer () -> getViewVolumeStack () .back () .intersect (bbox))
 			{
 				const Line3f pickRay = getBrowser () -> getPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
 

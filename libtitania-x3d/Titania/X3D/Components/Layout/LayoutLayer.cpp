@@ -77,8 +77,8 @@ LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "isPickable",     isPickable ());
-	addField (inputOutput, "viewport",       viewport ());
 	addField (inputOutput, "layout",         layout ());
+	addField (inputOutput, "viewport",       viewport ());
 	addField (inputOnly,   "addChildren",    addChildren ());
 	addField (inputOnly,   "removeChildren", removeChildren ());
 	addField (inputOutput, "children",       children ());

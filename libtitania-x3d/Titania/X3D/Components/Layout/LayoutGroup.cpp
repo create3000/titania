@@ -81,8 +81,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::LayoutGroup);
 
 	addField (inputOutput,    "metadata",       metadata ());
-	addField (inputOutput,    "viewport",       viewport ());
 	addField (inputOutput,    "layout",         layout ());
+	addField (inputOutput,    "viewport",       viewport ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());

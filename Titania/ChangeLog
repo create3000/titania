@@ -2,6 +2,18 @@
 
 	* titania:
 	* Makefile.am:
+	* PrecisionPlacementPanel.xml:
+	* X3DViewportEditor.h:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DViewportEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* PrecisionPlacementPanel.h:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* NormalTool.h:
 	* RotationTool.h:
 	* SFColorButton.h:

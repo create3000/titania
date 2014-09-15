@@ -206,6 +206,22 @@ public:
 	getTransformTranslationZAdjustment () const
 	{ return m_TransformTranslationZAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getViewportClipBoundaryBottomAdjustment () const
+	{ return m_ViewportClipBoundaryBottomAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getViewportClipBoundaryLeftAdjustment () const
+	{ return m_ViewportClipBoundaryLeftAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getViewportClipBoundaryRightAdjustment () const
+	{ return m_ViewportClipBoundaryRightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getViewportClipBoundaryTopAdjustment () const
+	{ return m_ViewportClipBoundaryTopAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -339,6 +355,26 @@ public:
 	{ return *m_LayoutScaleModeYComboBoxText; }
 
 	Gtk::Expander &
+	getViewportExpander () const
+	{ return *m_ViewportExpander; }
+
+	Gtk::Grid &
+	getCreateViewportBox () const
+	{ return *m_CreateViewportBox; }
+
+	Gtk::CheckButton &
+	getViewportCheckButton () const
+	{ return *m_ViewportCheckButton; }
+
+	Gtk::Grid &
+	getViewportBox () const
+	{ return *m_ViewportBox; }
+
+	Gtk::Grid &
+	getViewportClipBoundaryBox () const
+	{ return *m_ViewportClipBoundaryBox; }
+
+	Gtk::Expander &
 	getBoundingBoxExpander () const
 	{ return *m_BoundingBoxExpander; }
 
@@ -392,6 +428,10 @@ public:
 
 	virtual
 	void
+	on_viewport_toggled () = 0;
+
+	virtual
+	void
 	on_fill_bounding_box_fields_clicked () = 0;
 
 	virtual
@@ -434,6 +474,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_TransformTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformTranslationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryBottomAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryLeftAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryRightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryTopAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Button*                   m_IndexButton;
@@ -467,6 +511,11 @@ private:
 	Gtk::ComboBoxText*             m_LayoutSizeUnitsYComboBoxText;
 	Gtk::ComboBoxText*             m_LayoutScaleModeXComboBoxText;
 	Gtk::ComboBoxText*             m_LayoutScaleModeYComboBoxText;
+	Gtk::Expander*                 m_ViewportExpander;
+	Gtk::Grid*                     m_CreateViewportBox;
+	Gtk::CheckButton*              m_ViewportCheckButton;
+	Gtk::Grid*                     m_ViewportBox;
+	Gtk::Grid*                     m_ViewportClipBoundaryBox;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;

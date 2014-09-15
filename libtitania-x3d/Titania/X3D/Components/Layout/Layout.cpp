@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Layering/X3DLayerNode.h"
 #include "../Navigation/OrthoViewpoint.h"
 
 #include <Titania/Math/Functional.h>
@@ -436,12 +437,12 @@ Layout::transform (const TraverseType type)
 	{
 		// Calculate rectangleSize
 
-		const auto viewport      = Viewport4i ();                                                    // in pixel
-		const auto viewportPixel = Vector2i (viewport [2], viewport [3]);                            // in pixel
+		const auto & viewport      = getCurrentLayer () -> getViewVolumeStack () .front () .getViewport (); // in pixel
+		const auto   viewportPixel = Vector2i (viewport [2], viewport [3]);                                 // in pixel
 
-		const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport);                // in meter
-		const Vector2d & parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter; // in meter
-		const Vector2d   pixelSize           = viewportMeter / Vector2d (viewportPixel);               // size of one pixel in meter
+		const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport);                     // in meter
+		const Vector2d & parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter;      // in meter
+		const Vector2d   pixelSize           = viewportMeter / Vector2d (viewportPixel);                    // size of one pixel in meter
 
 		switch (getSizeUnitX ())
 		{
@@ -595,7 +596,7 @@ Layout::transform (const TraverseType type)
 			scale .y (scale .x ());
 
 		// Transform
-		
+
 		const auto position = translation + offset;
 
 		rectangleCenter .x (position .x ());

@@ -62,6 +62,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.xml"), gconf_dir ()),
 	                 X3DTransformEditor (),
 	                    X3DLayoutEditor (),
+	                  X3DViewportEditor (),
 	                           nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                           bboxSize (getBrowserWindow (),
 	                                     getBBoxSizeXAdjustment (),
@@ -86,6 +87,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DPrecisionPlacementPanelInterface::initialize ();
 	X3DTransformEditor::initialize ();
 	X3DLayoutEditor::initialize ();
+	X3DViewportEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
 

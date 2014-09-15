@@ -88,6 +88,10 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_TransformTranslationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformTranslationXAdjustment"));
 	m_TransformTranslationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformTranslationYAdjustment"));
 	m_TransformTranslationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformTranslationZAdjustment"));
+	m_ViewportClipBoundaryBottomAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ViewportClipBoundaryBottomAdjustment"));
+	m_ViewportClipBoundaryLeftAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ViewportClipBoundaryLeftAdjustment"));
+	m_ViewportClipBoundaryRightAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ViewportClipBoundaryRightAdjustment"));
+	m_ViewportClipBoundaryTopAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ViewportClipBoundaryTopAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -123,6 +127,11 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayoutSizeUnitsYComboBoxText", m_LayoutSizeUnitsYComboBoxText);
 	m_builder -> get_widget ("LayoutScaleModeXComboBoxText", m_LayoutScaleModeXComboBoxText);
 	m_builder -> get_widget ("LayoutScaleModeYComboBoxText", m_LayoutScaleModeYComboBoxText);
+	m_builder -> get_widget ("ViewportExpander", m_ViewportExpander);
+	m_builder -> get_widget ("CreateViewportBox", m_CreateViewportBox);
+	m_builder -> get_widget ("ViewportCheckButton", m_ViewportCheckButton);
+	m_builder -> get_widget ("ViewportBox", m_ViewportBox);
+	m_builder -> get_widget ("ViewportClipBoundaryBox", m_ViewportClipBoundaryBox);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
@@ -138,6 +147,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
 	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
+	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
 	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));

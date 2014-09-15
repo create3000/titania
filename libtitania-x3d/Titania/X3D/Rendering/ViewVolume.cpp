@@ -70,13 +70,15 @@ namespace X3D {
  */
 
 ViewVolume::ViewVolume () :
-	planes (6),
-	 valid (false)
+   viewport (),
+	 planes (6),
+	  valid (false)
 { }
 
 ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & viewport) :
-	planes (),
-	 valid (true)
+	viewport (viewport),
+	  planes (),
+	   valid (true)
 {
 	try
 	{

@@ -47,6 +47,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \
 	Titania/Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \

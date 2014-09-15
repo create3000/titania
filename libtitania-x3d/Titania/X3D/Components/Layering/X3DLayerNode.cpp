@@ -389,11 +389,11 @@ X3DLayerNode::pick ()
 		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
 
-		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 		group -> traverse (TraverseType::PICKING);
 
-		getViewVolumeStack () .pop ();
+		getViewVolumeStack () .pop_back ();
 		getGlobalObjects () .clear ();
 	}
 }
@@ -409,11 +409,11 @@ X3DLayerNode::camera ()
 	defaultFog            -> traverse (TraverseType::CAMERA);
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	group -> traverse (TraverseType::CAMERA);
 
-	getViewVolumeStack () .pop ();
+	getViewVolumeStack () .pop_back ();
 
 	navigationInfos -> update ();
 	backgrounds     -> update ();
@@ -425,11 +425,11 @@ void
 X3DLayerNode::navigation ()
 {
 	// Render
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	render (TraverseType::NAVIGATION);
 
-	getViewVolumeStack () .pop ();
+	getViewVolumeStack () .pop_back ();
 }
 
 void
@@ -465,11 +465,11 @@ X3DLayerNode::collision ()
 		getModelViewMatrix () .set (modelViewMatrix);
 
 		// Render
-		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 		render (TraverseType::COLLISION);
 
-		getViewVolumeStack () .pop ();
+		getViewVolumeStack () .pop_back ();
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -487,11 +487,11 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+	getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
 	render (TraverseType::DISPLAY);
 
-	getViewVolumeStack () .pop ();
+	getViewVolumeStack () .pop_back ();
 	getNavigationInfo () -> disable ();
 }
 
