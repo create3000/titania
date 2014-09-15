@@ -199,32 +199,37 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width
 float
 X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, const float height, const Vector3f & direction)
 {
-	const double width1_2  = width / 2;
-	const double height1_2 = height / 2;
+	try
+	{
+		const double width1_2  = width / 2;
+		const double height1_2 = height / 2;
 
-	const double zNear = getNavigationInfo () -> getNearPlane ();
-	const double zFar  = getNavigationInfo () -> getFarPlane (getViewpoint ());
+		const double zNear = getNavigationInfo () -> getNearPlane ();
+		const double zFar  = getNavigationInfo () -> getFarPlane (getViewpoint ());
 
-	// Reshape camera
+		// Reshape camera
 
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (ortho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar) .data ());
-	glMatrixMode (GL_MODELVIEW);
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (ortho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar) .data ());
+		glMatrixMode (GL_MODELVIEW);
 
-	// Translate camera
+		// Translate camera
 
-	Rotation4f localOrientation = ~getViewpoint () -> orientation () * getViewpoint () -> getOrientation ();
-	Matrix4f   modelViewMatrix  = getViewpoint () -> getParentMatrix ();
+		Rotation4f localOrientation = ~getViewpoint () -> orientation () * getViewpoint () -> getOrientation ();
+		Matrix4f   modelViewMatrix  = getViewpoint () -> getParentMatrix ();
 
-	modelViewMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
-	modelViewMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction) * localOrientation);
-	modelViewMatrix .inverse ();
+		modelViewMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
+		modelViewMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction) * localOrientation);
+		modelViewMatrix .inverse ();
 
-	getModelViewMatrix () .set (modelViewMatrix);
+		getModelViewMatrix () .set (modelViewMatrix);
 
-	// Traverse and get distance
+		// Traverse and get distance
 
-	traverse (TraverseType::NAVIGATION);
+		traverse (TraverseType::NAVIGATION);
+	}
+	catch (const std::domain_error &)
+	{ }
 
 	return X3DRenderer::getDistance ();
 }
@@ -430,39 +435,44 @@ X3DLayerNode::navigation ()
 void
 X3DLayerNode::collision ()
 {
-	// Get NavigationInfo values
+	try
+	{
+		// Get NavigationInfo values
 
-	const auto navigationInfo = getNavigationInfo ();
+		const auto navigationInfo = getNavigationInfo ();
 
-	const double zNear           = navigationInfo -> getNearPlane ();
-	const double zFar            = navigationInfo -> getFarPlane (getViewpoint ());
-	const double collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
+		const double zNear           = navigationInfo -> getNearPlane ();
+		const double zFar            = navigationInfo -> getFarPlane (getViewpoint ());
+		const double collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
 
-	// Reshape viewpoint
+		// Reshape viewpoint
 
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar) .data ());
-	glMatrixMode (GL_MODELVIEW);
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar) .data ());
+		glMatrixMode (GL_MODELVIEW);
 
-	// Transform viewpoint
+		// Transform viewpoint
 
-	const auto viewpoint = getViewpoint ();
+		const auto viewpoint = getViewpoint ();
 
-	Matrix4f   modelViewMatrix = viewpoint -> getParentMatrix ();
-	Rotation4f down (Vector3f (0, 0, 1) * viewpoint -> getUserOrientation (), viewpoint -> getUpVector ());
+		Matrix4f   modelViewMatrix = viewpoint -> getParentMatrix ();
+		Rotation4f down (Vector3f (0, 0, 1) * viewpoint -> getUserOrientation (), viewpoint -> getUpVector ());
 
-	modelViewMatrix .translate (viewpoint -> getUserPosition ());
-	modelViewMatrix .rotate (viewpoint -> getUserOrientation () * down);
-	modelViewMatrix .inverse ();
+		modelViewMatrix .translate (viewpoint -> getUserPosition ());
+		modelViewMatrix .rotate (viewpoint -> getUserOrientation () * down);
+		modelViewMatrix .inverse ();
 
-	getModelViewMatrix () .set (modelViewMatrix);
+		getModelViewMatrix () .set (modelViewMatrix);
 
-	// Render
-	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		// Render
+		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getRectangle ());
 
-	render (TraverseType::COLLISION);
+		render (TraverseType::COLLISION);
 
-	getViewVolumeStack () .pop ();
+		getViewVolumeStack () .pop ();
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

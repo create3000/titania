@@ -1,3 +1,14 @@
+2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Layout.cpp:
+	* LayoutGroupTool.h:
+	* LayoutGroup.cpp:
+	* ScreenGroup.cpp:
+	* X3DLayerNode.cpp:
+	* X3DBoundedObjectTool.h:
+	* X3DTransformNodeTool.h:
+	* ScreenFontStyle.cpp: 
+
 2014-09-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Layout.h:

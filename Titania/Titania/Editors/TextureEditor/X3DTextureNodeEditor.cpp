@@ -62,12 +62,14 @@ X3DTextureNodeEditor::X3DTextureNodeEditor (const X3D::BrowserPtr & preview) :
 	X3DTexturePropertiesEditor (),
 	                   preview (preview),
 	               appearances (),
+	             textureBuffer (),
 	               textureNode (),
 	                  undoStep (),
 	                  changing (false)
 {
-	addChildren (textureNode);
-	textureNode .addInterest (this, &X3DTextureNodeEditor::set_preview);
+	addChildren (textureBuffer, textureNode);
+	textureBuffer .addInterest (this, &X3DTextureNodeEditor::set_node);
+	textureNode   .addInterest (this, &X3DTextureNodeEditor::set_preview);
 
 	preview -> set_antialiasing (4);
 }
@@ -108,8 +110,6 @@ X3DTextureNodeEditor::set_initialized ()
 void
 X3DTextureNodeEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & appearance : appearances)
 		appearance -> texture () .removeInterest (this, &X3DTextureNodeEditor::set_texture);
 
@@ -235,6 +235,14 @@ X3DTextureNodeEditor::on_texture_changed ()
 void
 X3DTextureNodeEditor::set_texture ()
 {
+	textureBuffer .addEvent ();
+}
+
+void
+X3DTextureNodeEditor::set_node ()
+{
+	undoStep .reset ();
+
 	enum {
 		NULL_TEXTURE,
 		IMAGE_TEXTURE,

@@ -134,8 +134,6 @@ inline
 void
 SFStringComboBoxText::setNodes (const X3D::MFNode & value)
 {
-	undoStep .reset ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -199,6 +197,8 @@ inline
 void
 SFStringComboBoxText::set_buffer ()
 {
+	undoStep .reset ();
+
 	changing = true;
 
 	const auto pair = getArray <X3D::SFString> (nodes, name);

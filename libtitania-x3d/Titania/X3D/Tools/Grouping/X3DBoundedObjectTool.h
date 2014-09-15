@@ -201,18 +201,27 @@ template <class Type>
 void
 X3DBoundedObjectTool <Type>::reshape ()
 {
+	Box3f bbox = getNode () -> getBBox ();
+	
+	try
+	{
+		bbox *= ~getMatrix ();
+	}
+	catch (const std::domain_error &)
+	{
+		bbox = Box3f (Vector3f (), Vector3f ());
+	}
+
 	try
 	{
 		const SFNode & tool = getToolNode ();
-	
-		const auto bbox = getNode () -> getBBox () * ~getMatrix ();
 
 		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 
 		getBrowser () -> processEvents ();
 	}
-	catch (const X3DError & error)
+	catch (const X3DError &)
 	{ }
 }
 

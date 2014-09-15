@@ -99,11 +99,15 @@ private:
 	set_textureProperties ();
 
 	void
+	set_node ();
+
+	void
 	connectTextureProperties (const X3D::SFNode &);
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DTextureNode> textureNodes;
+	X3D::SFTime                            texturePropertiesBuffer;
 	X3D::X3DPtr <X3D::TextureProperties>   textureProperties;
 	UndoStepPtr                            undoStep;
 	bool                                   changing;

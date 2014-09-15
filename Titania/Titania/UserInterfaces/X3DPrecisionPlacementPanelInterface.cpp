@@ -67,6 +67,10 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_BBoxSizeXAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeXAdjustment"));
 	m_BBoxSizeYAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeYAdjustment"));
 	m_BBoxSizeZAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeZAdjustment"));
+	m_LayoutOffsetXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetXAdjustment"));
+	m_LayoutOffsetYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetYAdjustment"));
+	m_LayoutSizeXAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeXAdjustment"));
+	m_LayoutSizeYAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeYAdjustment"));
 	m_TransformCenterXAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterXAdjustment"));
 	m_TransformCenterYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterYAdjustment"));
 	m_TransformCenterZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterZAdjustment"));
@@ -101,6 +105,24 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TransformScaleOrientationToolBox", m_TransformScaleOrientationToolBox);
 	m_builder -> get_widget ("TransformScaleBox", m_TransformScaleBox);
 	m_builder -> get_widget ("TransformCenterBox", m_TransformCenterBox);
+	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
+	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
+	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);
+	m_builder -> get_widget ("LayoutBox", m_LayoutBox);
+	m_builder -> get_widget ("LayoutOffsetBox", m_LayoutOffsetBox);
+	m_builder -> get_widget ("LayoutOffsetXSpinButton", m_LayoutOffsetXSpinButton);
+	m_builder -> get_widget ("LayoutOffsetYSpinButton", m_LayoutOffsetYSpinButton);
+	m_builder -> get_widget ("LayoutSizeBox", m_LayoutSizeBox);
+	m_builder -> get_widget ("LayoutSizeXSpinButton", m_LayoutSizeXSpinButton);
+	m_builder -> get_widget ("LayoutSizeYSpinButton", m_LayoutSizeYSpinButton);
+	m_builder -> get_widget ("LayoutAlignXComboBoxText", m_LayoutAlignXComboBoxText);
+	m_builder -> get_widget ("LayoutAlignYComboBoxText", m_LayoutAlignYComboBoxText);
+	m_builder -> get_widget ("LayoutOffsetUnitsXComboBoxText", m_LayoutOffsetUnitsXComboBoxText);
+	m_builder -> get_widget ("LayoutOffsetUnitsYComboBoxText", m_LayoutOffsetUnitsYComboBoxText);
+	m_builder -> get_widget ("LayoutSizeUnitsXComboBoxText", m_LayoutSizeUnitsXComboBoxText);
+	m_builder -> get_widget ("LayoutSizeUnitsYComboBoxText", m_LayoutSizeUnitsYComboBoxText);
+	m_builder -> get_widget ("LayoutScaleModeXComboBoxText", m_LayoutScaleModeXComboBoxText);
+	m_builder -> get_widget ("LayoutScaleModeYComboBoxText", m_LayoutScaleModeYComboBoxText);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
@@ -113,6 +135,11 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
+
+	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
+	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
+
+	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
 	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));
 
 	// Call construct handler of base class.

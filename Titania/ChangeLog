@@ -1,3 +1,41 @@
+2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* NormalTool.h:
+	* RotationTool.h:
+	* SFColorButton.h:
+	* SFStringEntry.h:
+	* MFStringWidget.h:
+	* TextEditor.cpp:
+	* SFStringTextView.h:
+	* MFStringGeoSystem.h:
+	* SFColorRGBAButton.h:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment4.h:
+	* X3DFieldAdjustment2.h:
+	* X3DFieldAdjustment3.h:
+	* X3DFieldToggleButton.h:
+	* SFStringComboBoxText.h:
+	* MFStringComboBoxText.h:
+	* PrecisionPlacementPanel.xml:
+	* X3DTextureNodeEditor.h:
+	* X3DFontStyleNodeEditor.cpp:
+	* X3DMaterialEditor.cpp:
+	* X3DTextureNodeEditor.cpp:
+	* X3DLayoutEditor.h:
+	* X3DTexturePropertiesEditor.h:
+	* X3DLayoutEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DFillPropertiesEditor.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DLinePropertiesEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* PrecisionPlacementPanel.h:
+	* PrecisionPlacementPanel.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
 2014-09-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.cpp: 

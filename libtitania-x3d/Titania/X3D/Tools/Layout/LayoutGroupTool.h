@@ -139,16 +139,25 @@ inline
 void
 LayoutGroupTool::reshape ()
 {
+	Box3f bbox = getNode () -> getRectangleBBox ();
+	
+	try
+	{
+		bbox *= ~getMatrix ();
+	}
+	catch (const std::domain_error &)
+	{
+		bbox = Box3f (Vector3f (), Vector3f ());
+	}
+
 	try
 	{
 		const SFNode & tool = getToolNode ();
-	
-		const auto bbox = getNode () -> getRectangleBBox () * ~getMatrix ();
 
 		tool -> setField <SFVec3f> ("rectangleBBoxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("rectangleBBoxCenter", bbox .center (), true);
 	}
-	catch (const X3DError & error)
+	catch (const X3DError &)
 	{ }
 
 	X3DGroupingNodeTool <LayoutGroup>::reshape ();

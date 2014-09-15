@@ -53,6 +53,7 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include "X3DLayoutEditor.h"
 #include "X3DTransformEditor.h"
 
 namespace titania {
@@ -60,7 +61,8 @@ namespace puck {
 
 class PrecisionPlacementPanel :
 	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor
+	public X3DTransformEditor,
+	public X3DLayoutEditor
 {
 public:
 
@@ -102,6 +104,7 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
 	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
+
 };
 
 } // puck

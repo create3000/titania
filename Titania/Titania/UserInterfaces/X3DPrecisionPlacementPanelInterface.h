@@ -123,6 +123,22 @@ public:
 	{ return m_BBoxSizeZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getLayoutOffsetXAdjustment () const
+	{ return m_LayoutOffsetXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLayoutOffsetYAdjustment () const
+	{ return m_LayoutOffsetYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLayoutSizeXAdjustment () const
+	{ return m_LayoutSizeXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLayoutSizeYAdjustment () const
+	{ return m_LayoutSizeYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransformCenterXAdjustment () const
 	{ return m_TransformCenterXAdjustment; }
 
@@ -251,6 +267,78 @@ public:
 	{ return *m_TransformCenterBox; }
 
 	Gtk::Expander &
+	getLayoutExpander () const
+	{ return *m_LayoutExpander; }
+
+	Gtk::Grid &
+	getCreateLayoutBox () const
+	{ return *m_CreateLayoutBox; }
+
+	Gtk::CheckButton &
+	getLayoutCheckButton () const
+	{ return *m_LayoutCheckButton; }
+
+	Gtk::Grid &
+	getLayoutBox () const
+	{ return *m_LayoutBox; }
+
+	Gtk::Box &
+	getLayoutOffsetBox () const
+	{ return *m_LayoutOffsetBox; }
+
+	Gtk::SpinButton &
+	getLayoutOffsetXSpinButton () const
+	{ return *m_LayoutOffsetXSpinButton; }
+
+	Gtk::SpinButton &
+	getLayoutOffsetYSpinButton () const
+	{ return *m_LayoutOffsetYSpinButton; }
+
+	Gtk::Box &
+	getLayoutSizeBox () const
+	{ return *m_LayoutSizeBox; }
+
+	Gtk::SpinButton &
+	getLayoutSizeXSpinButton () const
+	{ return *m_LayoutSizeXSpinButton; }
+
+	Gtk::SpinButton &
+	getLayoutSizeYSpinButton () const
+	{ return *m_LayoutSizeYSpinButton; }
+
+	Gtk::ComboBoxText &
+	getLayoutAlignXComboBoxText () const
+	{ return *m_LayoutAlignXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutAlignYComboBoxText () const
+	{ return *m_LayoutAlignYComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutOffsetUnitsXComboBoxText () const
+	{ return *m_LayoutOffsetUnitsXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutOffsetUnitsYComboBoxText () const
+	{ return *m_LayoutOffsetUnitsYComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutSizeUnitsXComboBoxText () const
+	{ return *m_LayoutSizeUnitsXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutSizeUnitsYComboBoxText () const
+	{ return *m_LayoutSizeUnitsYComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutScaleModeXComboBoxText () const
+	{ return *m_LayoutScaleModeXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutScaleModeYComboBoxText () const
+	{ return *m_LayoutScaleModeYComboBoxText; }
+
+	Gtk::Expander &
 	getBoundingBoxExpander () const
 	{ return *m_BoundingBoxExpander; }
 
@@ -300,6 +388,10 @@ public:
 
 	virtual
 	void
+	on_layout_toggled () = 0;
+
+	virtual
+	void
 	on_fill_bounding_box_fields_clicked () = 0;
 
 	virtual
@@ -321,6 +413,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterZAdjustment;
@@ -353,6 +449,24 @@ private:
 	Gtk::Box*                      m_TransformScaleOrientationToolBox;
 	Gtk::Box*                      m_TransformScaleBox;
 	Gtk::Box*                      m_TransformCenterBox;
+	Gtk::Expander*                 m_LayoutExpander;
+	Gtk::Grid*                     m_CreateLayoutBox;
+	Gtk::CheckButton*              m_LayoutCheckButton;
+	Gtk::Grid*                     m_LayoutBox;
+	Gtk::Box*                      m_LayoutOffsetBox;
+	Gtk::SpinButton*               m_LayoutOffsetXSpinButton;
+	Gtk::SpinButton*               m_LayoutOffsetYSpinButton;
+	Gtk::Box*                      m_LayoutSizeBox;
+	Gtk::SpinButton*               m_LayoutSizeXSpinButton;
+	Gtk::SpinButton*               m_LayoutSizeYSpinButton;
+	Gtk::ComboBoxText*             m_LayoutAlignXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutAlignYComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutOffsetUnitsXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutOffsetUnitsYComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutSizeUnitsXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutSizeUnitsYComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutScaleModeXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutScaleModeYComboBoxText;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;

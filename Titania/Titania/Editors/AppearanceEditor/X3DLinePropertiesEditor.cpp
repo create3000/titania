@@ -83,8 +83,6 @@ X3DLinePropertiesEditor::initialize ()
 void
 X3DLinePropertiesEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & appearance : appearances)
 		appearance -> lineProperties () .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
 
@@ -145,6 +143,8 @@ X3DLinePropertiesEditor::set_lineProperties ()
 void
 X3DLinePropertiesEditor::set_node ()
 {
+	undoStep .reset ();
+
 	auto       pair     = getNode <X3D::LineProperties> (appearances, "lineProperties");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

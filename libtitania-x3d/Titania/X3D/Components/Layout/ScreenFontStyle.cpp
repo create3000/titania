@@ -383,25 +383,30 @@ ScreenText::getBBox () const
 void
 ScreenText::scale ()
 {
-	const auto modelViewMatrix = ModelViewMatrix4d ();
+	try
+	{
+		const auto modelViewMatrix = ModelViewMatrix4d ();
 
-	Vector3d   translation, scale;
-	Rotation4d rotation;
+		Vector3d   translation, scale;
+		Rotation4d rotation;
 
-	modelViewMatrix .get (translation, rotation, scale);
+		modelViewMatrix .get (translation, rotation, scale);
 
-	const double   distance    = math::abs (modelViewMatrix .origin ());
-	const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+		const double   distance    = math::abs (modelViewMatrix .origin ());
+		const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
-	Matrix4d screenMatrix;
+		Matrix4d screenMatrix;
 
-	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+		                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
-	glLoadMatrixd (screenMatrix .data ());
+		glLoadMatrixd (screenMatrix .data ());
 
-	matrix = screenMatrix * inverse (modelViewMatrix);
+		matrix = screenMatrix * inverse (modelViewMatrix);
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

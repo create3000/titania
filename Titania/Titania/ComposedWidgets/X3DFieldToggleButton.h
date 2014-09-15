@@ -140,8 +140,6 @@ template <class Type>
 void
 X3DFieldToggleButton <Type>::setNodes (const X3D::MFNode & value)
 {
-	undoStep .reset ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -207,6 +205,8 @@ template <class Type>
 void
 X3DFieldToggleButton <Type>::set_buffer ()
 {
+	undoStep .reset ();
+
 	changing = true;
 
 	const int  active   = getBoolean (nodes, name);

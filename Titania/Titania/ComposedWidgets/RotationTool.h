@@ -173,8 +173,6 @@ inline
 void
 RotationTool::setNodes (const X3D::MFNode & value)
 {
-	undoStep .reset ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -235,6 +233,8 @@ inline
 void
 RotationTool::set_buffer ()
 {
+	undoStep .reset ();
+
 	bool hasField = false;
 
 	for (const auto & node : basic::make_reverse_range (nodes))

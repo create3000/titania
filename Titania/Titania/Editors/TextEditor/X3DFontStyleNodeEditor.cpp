@@ -106,8 +106,6 @@ X3DFontStyleNodeEditor::initialize ()
 void
 X3DFontStyleNodeEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & text : texts)
 		text -> fontStyle () .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
 
@@ -211,6 +209,8 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 void
 X3DFontStyleNodeEditor::set_node ()
 {
+	undoStep .reset ();
+
 	if (fontStyleNode)
 		fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 

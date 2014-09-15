@@ -90,8 +90,6 @@ TextEditor::initialize ()
 void
 TextEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_text);
 
@@ -162,6 +160,8 @@ TextEditor::set_text ()
 void
 TextEditor::set_node ()
 {
+	undoStep .reset ();
+
 	if (text)
 		text -> string () .removeInterest (this, &TextEditor::set_string);
 

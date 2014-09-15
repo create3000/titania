@@ -139,10 +139,15 @@ LayoutGroup::getRectangleBBox () const
 const Matrix4f &
 LayoutGroup::getMatrix () const
 {
-	if (layoutNode)
-		const_cast <LayoutGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
-	else
-		const_cast <LayoutGroup*> (this) -> matrix = Matrix4f ();
+	try
+	{
+		if (layoutNode)
+			const_cast <LayoutGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
+		else
+			const_cast <LayoutGroup*> (this) -> matrix = Matrix4f ();
+	}
+	catch (const std::domain_error &)
+	{ }
 
 	return matrix;
 }

@@ -159,8 +159,6 @@ inline
 void
 MFStringGeoSystem::setNode (const X3D::SFNode & value)
 {
-	undoStep .reset ();
-
 	if (node)
 		node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
 
@@ -173,6 +171,8 @@ MFStringGeoSystem::setNode (const X3D::SFNode & value)
 	}
 	else
 	{
+		undoStep .reset ();
+
 		changing = true;
 
 		coordinateSystem .set_active (0);
@@ -251,6 +251,8 @@ inline
 void
 MFStringGeoSystem::set_field ()
 {
+	undoStep .reset ();
+
 	changing = true;
 
 	coordinateSystem .set_sensitive (true);

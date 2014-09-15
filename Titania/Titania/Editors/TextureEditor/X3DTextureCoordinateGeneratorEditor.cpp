@@ -77,8 +77,6 @@ X3DTextureCoordinateGeneratorEditor::initialize ()
 void
 X3DTextureCoordinateGeneratorEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & geometry : geometryNodes)
 	{
 		try
@@ -159,6 +157,8 @@ X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator ()
 void
 X3DTextureCoordinateGeneratorEditor::set_node ()
 {
+	undoStep .reset ();
+
 	auto       pair     = getNode <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

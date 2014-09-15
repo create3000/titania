@@ -48,31 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DLAYOUT_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DLAYOUT_EDITOR_H__
 
-#include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "X3DTexture2DNodeEditor.h"
-#include "X3DTexturePropertiesEditor.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DTextureNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DTexture2DNodeEditor,
-	public X3DTexturePropertiesEditor
+class X3DLayoutEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
-	~X3DTextureNodeEditor ();
+	///  @name Destruction
+
+	virtual
+	~X3DLayoutEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DTextureNodeEditor (const X3D::BrowserPtr &);
+	X3DLayoutEditor ();
 
 	virtual
 	void
@@ -83,45 +83,40 @@ private:
 
 	///  @name Construction
 
-	void
-	set_initialized ();
-
-	void
-	set_selection ();
-
-	///  @name Preview
-
-	void
-	set_preview ();
-
-	///  @name textureTransform
-
 	virtual
 	void
-	on_texture_unlink_clicked () final override;
-
-	virtual
-	void
-	on_texture_changed () final override;
+	on_layout_toggled () final override;
 
 	void
-	set_texture ();
+	set_layout ();
 
 	void
 	set_node ();
 
 	void
-	connectTexture (const X3D::SFNode &);
+	set_widgets ();
+
+	void
+	connectLayout (const X3D::SFNode &);
 
 	///  @name Members
 
-	X3D::BrowserPtr                    preview;
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::SFTime                        textureBuffer;
-	X3D::X3DPtr <X3D::X3DTextureNode>  textureNode;
-	UndoStepPtr                        undoStep;
-	bool                               changing;
+	X3D::MFNode               nodes;
+	X3D::SFTime               layoutBuffer;
+	X3D::X3DPtr <X3D::Layout> layout;
+	UndoStepPtr               undoStep;
+	bool                      changing;
 
+	MFStringComboBoxText               alignX;          
+	MFStringComboBoxText               alignY;          
+	MFStringComboBoxText               offsetUnitsX;          
+	MFStringComboBoxText               offsetUnitsY;          
+	X3DFieldAdjustment2 <X3D::MFFloat> offset;
+	MFStringComboBoxText               sizeUnitsX;          
+	MFStringComboBoxText               sizeUnitsY;          
+	X3DFieldAdjustment2 <X3D::MFFloat> size;
+	MFStringComboBoxText               scaleModeX;          
+	MFStringComboBoxText               scaleModeY;          
 };
 
 } // puck

@@ -191,8 +191,6 @@ inline
 void
 SFColorButton::setNodes (const X3D::MFNode & value)
 {
-	undoStep .reset ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -300,6 +298,8 @@ inline
 void
 SFColorButton::set_buffer ()
 {
+	undoStep .reset ();
+
 	changing = true;
 
 	// Find last field.

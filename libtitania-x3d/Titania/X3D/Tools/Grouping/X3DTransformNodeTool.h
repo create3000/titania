@@ -231,9 +231,14 @@ template <class Type>
 void
 X3DTransformNodeTool <Type>::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
 {
-	++ interestEvents;
+	try
+	{
+		++ interestEvents;
 
-	getNode () -> setMatrix (Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix);
+		getNode () -> setMatrix (Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix);
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 template <class Type>
@@ -258,24 +263,29 @@ template <class Type>
 void
 X3DTransformNodeTool <Type>::eventsProcessed ()
 {
-	if (interestEvents)
-		-- interestEvents;
-
-	else
+	try
 	{
-		const auto differenceMatrix = ~(matrix * parentMatrix) * Matrix4d (getMatrix ()) * parentMatrix;
+		if (interestEvents)
+			-- interestEvents;
 
-		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
+		else
 		{
-			if (node == this)
-				continue;
+			const auto differenceMatrix = ~(matrix * parentMatrix) * Matrix4d (getMatrix ()) * parentMatrix;
 
-			const auto tool = dynamic_cast <X3DTransformNodeTool*> (node .getValue ());
+			for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
+			{
+				if (node == this)
+					continue;
 
-			if (tool)
-				tool -> addAbsoluteMatrix (differenceMatrix);
+				const auto tool = dynamic_cast <X3DTransformNodeTool*> (node .getValue ());
+
+				if (tool)
+					tool -> addAbsoluteMatrix (differenceMatrix);
+			}
 		}
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 // Traverse

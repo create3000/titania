@@ -56,6 +56,7 @@ namespace puck {
 X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	X3DTextureEditorInterface (),
 	             textureNodes (),
+	  texturePropertiesBuffer (),
 	        textureProperties (),
 	                 undoStep (),
 	                 changing (false),
@@ -70,7 +71,10 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	            boundaryModeR (getBrowserWindow (), getTexturePropertiesBoundaryModeRComboBoxText (), "boundaryModeR"),
 	       textureCompression (getBrowserWindow (), getTexturePropertiesTextureCompressionComboBoxText (), "textureCompression"),
 	          texturePriority (getBrowserWindow (), getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority")
-{ }
+{
+	addChildren (texturePropertiesBuffer);
+	texturePropertiesBuffer .addInterest (this, &X3DTexturePropertiesEditor::set_node);
+}
 
 void
 X3DTexturePropertiesEditor::initialize ()
@@ -83,8 +87,6 @@ X3DTexturePropertiesEditor::initialize ()
 void
 X3DTexturePropertiesEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & textureNode : textureNodes)
 	{
 		try
@@ -168,6 +170,14 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 void
 X3DTexturePropertiesEditor::set_textureProperties ()
 {
+	texturePropertiesBuffer .addEvent ();
+}
+
+void
+X3DTexturePropertiesEditor::set_node ()
+{
+	undoStep .reset ();
+
 	auto       pair     = getNode <X3D::TextureProperties> (textureNodes, "textureProperties");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

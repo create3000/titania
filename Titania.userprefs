@@ -1,12 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Layout/LayoutGroupTool.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layout/LayoutGroupTool.h" Line="58" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Group.h" Line="95" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Group.cpp" Line="55" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/LayoutGroup.h" Line="99" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/LayoutGroup.cpp" Line="58" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/LayoutGroup.cpp" Line="133" Column="68" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp" Line="608" Column="39" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="111" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.h" Line="276" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/X3DLayoutNode.h" Line="74" Column="10" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.h" Line="90" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.cpp" Line="96" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,20 +23,31 @@
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="tools" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
+                  <Node name="Layout" expanded="True">
+                    <Node name="Layout.cpp" selected="True" />
+                  </Node>
+                  <Node name="Navigation" expanded="True" />
                   <Node name="ParticleSystems" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True">
-                    <Node name="LayoutGroupTool.h" selected="True" />
-                  </Node>
+                  <Node name="Layout" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -42,7 +55,11 @@
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True" />
-            <Node name="Titania" expanded="True" />
+            <Node name="Titania" expanded="True">
+              <Node name="Editors" expanded="True">
+                <Node name="PrecisionPlacementPanel" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>

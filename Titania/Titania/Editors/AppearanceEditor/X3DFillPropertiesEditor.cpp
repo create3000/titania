@@ -85,8 +85,6 @@ X3DFillPropertiesEditor::initialize ()
 void
 X3DFillPropertiesEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & appearance : appearances)
 		appearance -> fillProperties () .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
 
@@ -147,6 +145,8 @@ X3DFillPropertiesEditor::set_fillProperties ()
 void
 X3DFillPropertiesEditor::set_node ()
 {
+	undoStep .reset ();
+
 	auto       pair     = getNode <X3D::FillProperties> (appearances, "fillProperties");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

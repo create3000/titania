@@ -93,7 +93,13 @@ ScreenGroup::getBBox () const
 const Matrix4f &
 ScreenGroup::getMatrix () const
 {
-	const_cast <ScreenGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
+	try
+	{
+		const_cast <ScreenGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
+	}
+	catch (const std::domain_error &)
+	{ }
+	
 	return matrix;
 }
 

@@ -598,11 +598,11 @@ Layout::transform (const TraverseType type)
 		
 		const auto position = translation + offset;
 
-		rectangleCenter .x (currentTranslation .x () + position .x ());
-		rectangleCenter .y (currentTranslation .x () + position .y ());
+		rectangleCenter .x (position .x ());
+		rectangleCenter .y (position .y ());
 
 		matrix .set (currentTranslation, currentRotation);
-		matrix .translate (position);
+		matrix .translate (translation + offset);
 		matrix .scale (scale);
 
 		getModelViewMatrix () .set (matrix);

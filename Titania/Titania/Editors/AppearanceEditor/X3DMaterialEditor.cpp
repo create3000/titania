@@ -123,8 +123,6 @@ X3DMaterialEditor::set_initialized ()
 void
 X3DMaterialEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & appearance : appearances)
 		appearance -> material () .removeInterest (this, &X3DMaterialEditor::set_material);
 
@@ -423,6 +421,8 @@ X3DMaterialEditor::set_material ()
 void
 X3DMaterialEditor::set_node ()
 {
+	undoStep .reset ();
+
 	auto       pair     = getNode <X3D::X3DMaterialNode> (appearances, "material");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

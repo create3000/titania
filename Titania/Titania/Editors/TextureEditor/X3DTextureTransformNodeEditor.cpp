@@ -78,8 +78,6 @@ X3DTextureTransformNodeEditor::initialize ()
 void
 X3DTextureTransformNodeEditor::set_selection ()
 {
-	undoStep .reset ();
-
 	for (const auto & appearance : appearances)
 		appearance -> textureTransform () .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
 
@@ -174,6 +172,8 @@ X3DTextureTransformNodeEditor::set_textureTransform ()
 void
 X3DTextureTransformNodeEditor::set_node ()
 {
+	undoStep .reset ();
+
 	auto       pair     = getNode <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);

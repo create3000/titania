@@ -225,8 +225,6 @@ inline
 void
 X3DMFStringWidget::setNodes (const X3D::MFNode & value)
 {
-	undoStep .reset ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -438,6 +436,8 @@ inline
 void
 X3DMFStringWidget::set_buffer ()
 {
+	undoStep .reset ();
+
 	const auto pair = getArray <X3D::MFString> (nodes, name);
 
 	string = pair .first;

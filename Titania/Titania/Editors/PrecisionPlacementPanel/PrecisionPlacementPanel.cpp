@@ -61,6 +61,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.xml"), gconf_dir ()),
 	                 X3DTransformEditor (),
+	                    X3DLayoutEditor (),
 	                           nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                           bboxSize (getBrowserWindow (),
 	                                     getBBoxSizeXAdjustment (),
@@ -84,6 +85,7 @@ PrecisionPlacementPanel::initialize ()
 {
 	X3DPrecisionPlacementPanelInterface::initialize ();
 	X3DTransformEditor::initialize ();
+	X3DLayoutEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
 
@@ -110,7 +112,7 @@ PrecisionPlacementPanel::on_index_clicked ()
 {
 	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
 
-	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DBoundedObject });
+	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DBoundedObject, X3D::X3DConstants::LayoutLayer });
 }
 
 void

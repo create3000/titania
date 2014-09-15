@@ -161,8 +161,6 @@ template <class Type>
 void
 X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 {
-	undoStep .reset ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -240,6 +238,8 @@ template <class Type>
 void
 X3DFieldAdjustment3 <Type>::set_buffer ()
 {
+	undoStep .reset ();
+
 	changing = true;
 
 	// Find last »creaseAngle« field.
