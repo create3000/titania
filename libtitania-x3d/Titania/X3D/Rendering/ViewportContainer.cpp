@@ -65,12 +65,17 @@ ViewportContainer::ViewportContainer (Viewport* const node) :
 void
 ViewportContainer::apply ()
 {
-	const Vector4i viewport = node -> getRectangle ();
+	const auto viewport = node -> getRectangle ();
 
 	glViewport (viewport [0],
 	            viewport [1],
 	            viewport [2],
 	            viewport [3]);
+
+	glScissor (viewport [0],
+	           viewport [1],
+	           viewport [2],
+	           viewport [3]);
 }
 
 void
@@ -80,28 +85,41 @@ ViewportContainer::restore ()
 	            viewport [1],
 	            viewport [2],
 	            viewport [3]);
+
+	glScissor (viewport [0],
+	           viewport [1],
+	           viewport [2],
+	           viewport [3]);
 }
 
 void
 ViewportContainer::enable ()
 {
-	const Vector4i scissor = node -> getRectangle ();
+	const auto scissor   = Scissor4i ();
+	const auto rectangle = node -> getRectangle ();
 
-	if (scissor not_eq viewport)
-	{
-		glScissor (scissor [0],
-		           scissor [1],
-		           scissor [2],
-		           scissor [3]);
+	const auto left   = std::max (rectangle [0], scissor [0]);
+	const auto bottom = std::max (rectangle [1], scissor [1]);
+	const auto right  = std::min (rectangle [0] + rectangle [2], scissor [0] + scissor [2]);
+	const auto top    = std::min (rectangle [1] + rectangle [3], scissor [1] + scissor [3]);
 
-		glEnable (GL_SCISSOR_TEST);
-	}
+	glScissor (left,
+	           bottom,
+	           std::max (0, right - left),
+	           std::max (0, top - bottom));
+
+	glEnable (GL_SCISSOR_TEST);
 }
 
 void
 ViewportContainer::disable ()
 {
 	glDisable (GL_SCISSOR_TEST);
+
+	glScissor (viewport [0],
+	           viewport [1],
+	           viewport [2],
+	           viewport [3]);
 }
 
 } // X3D
