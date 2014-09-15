@@ -70,24 +70,25 @@ namespace X3D {
  */
 
 ViewVolume::ViewVolume () :
-   viewport (),
+   scissor (),
 	 planes (6),
 	  valid (false)
 { }
 
-ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & viewport) :
-	viewport (viewport),
+ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & scissor) :
+	 scissor (scissor),
 	  planes (),
 	   valid (true)
 {
 	try
 	{
-		const int x1 = viewport [0];
-		const int x2 = viewport [0] + viewport [2];
-		const int y1 = viewport [1];
-		const int y2 = viewport [1] + viewport [3];
+		const int x1 = scissor [0];
+		const int x2 = scissor [0] + scissor [2];
+		const int y1 = scissor [1];
+		const int y2 = scissor [1] + scissor [3];
 
-		const Matrix4d matrix = ~projection;
+		const Matrix4d matrix   = ~projection;
+		const Vector4i viewport = Viewport4i ();
 
 		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
 		Vector3f p2 = unProjectPoint (x1, y1, 1, matrix, viewport);

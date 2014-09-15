@@ -69,6 +69,7 @@ public:
 	CollisionShape (X3DShapeNode* const,
 	                const CollisionArray &,
 	                const CollectableObjectArray &,
+	                const Vector4i &,
 	                const Matrix4f &,
 	                const float);
 
@@ -76,6 +77,7 @@ public:
 	assign (X3DShapeNode* const,
 	        const CollisionArray &,
 	        const CollectableObjectArray &,
+	        const Vector4i &,
 	        const Matrix4f &,
 	        const float);
 
@@ -99,9 +101,9 @@ private:
 	X3DShapeNode*          shape;
 	CollisionArray         collisions;
 	CollectableObjectArray localObjects;
-
-	Matrix4f matrix;
-	float    distance;
+	Matrix4f               matrix;
+	Vector4i               scissor;
+	float                  distance;
 
 };
 

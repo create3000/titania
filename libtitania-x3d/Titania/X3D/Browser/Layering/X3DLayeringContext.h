@@ -75,13 +75,13 @@ public:
 	getLayers ()
 	{ return layers; }
 
-	const Vector4i &
-	getViewportRectangle () const
-	{ return viewportRectangle; }
-
 	const X3DPtr <X3DViewportNode> &
 	getViewport () const
 	{ return viewport; }
+
+	const Vector4i &
+	getRectangle () const
+	{ return rectangle; }
 
 	///  @name Destruction
 
@@ -115,7 +115,7 @@ private:
 	///  @name Members
 
 	LayerStack layers;
-	Vector4i   viewportRectangle;
+	Vector4i   rectangle;
 
 	X3DPtr <X3DViewportNode> viewport;
 

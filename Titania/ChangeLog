@@ -1,5 +1,10 @@
 2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DViewportEditor.cpp:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* PrecisionPlacementPanel.xml:

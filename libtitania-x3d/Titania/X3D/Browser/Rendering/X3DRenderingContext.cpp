@@ -72,6 +72,7 @@ X3DRenderingContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
+		glEnable (GL_SCISSOR_TEST);
 		glClearDepth (1);
 
 		glCullFace (GL_BACK);

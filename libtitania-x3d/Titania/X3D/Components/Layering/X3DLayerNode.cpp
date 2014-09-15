@@ -389,11 +389,10 @@ X3DLayerNode::pick ()
 		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
 
-		getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
-
+		currentViewport -> push (TraverseType::PICKING);
 		group -> traverse (TraverseType::PICKING);
+		currentViewport -> pop (TraverseType::PICKING);
 
-		getViewVolumeStack () .pop_back ();
 		getGlobalObjects () .clear ();
 	}
 }
@@ -409,11 +408,9 @@ X3DLayerNode::camera ()
 	defaultFog            -> traverse (TraverseType::CAMERA);
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
-	getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
-
+	currentViewport -> push (TraverseType::CAMERA);
 	group -> traverse (TraverseType::CAMERA);
-
-	getViewVolumeStack () .pop_back ();
+	currentViewport -> pop (TraverseType::CAMERA);
 
 	navigationInfos -> update ();
 	backgrounds     -> update ();
@@ -425,11 +422,9 @@ void
 X3DLayerNode::navigation ()
 {
 	// Render
-	getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
-
+	currentViewport -> enable ();
 	render (TraverseType::NAVIGATION);
-
-	getViewVolumeStack () .pop_back ();
+	currentViewport -> disable ();
 }
 
 void
@@ -465,11 +460,9 @@ X3DLayerNode::collision ()
 		getModelViewMatrix () .set (modelViewMatrix);
 
 		// Render
-		getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
-
+		currentViewport -> push (TraverseType::COLLISION);
 		render (TraverseType::COLLISION);
-
-		getViewVolumeStack () .pop_back ();
+		currentViewport -> pop (TraverseType::COLLISION);
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -487,11 +480,10 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
-	getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), currentViewport -> getRectangle ());
-
+	currentViewport -> push (TraverseType::DISPLAY);
 	render (TraverseType::DISPLAY);
+	currentViewport -> pop (TraverseType::DISPLAY);
 
-	getViewVolumeStack () .pop_back ();
 	getNavigationInfo () -> disable ();
 }
 

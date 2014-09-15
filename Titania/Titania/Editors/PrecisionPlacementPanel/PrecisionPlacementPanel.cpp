@@ -114,7 +114,7 @@ PrecisionPlacementPanel::on_index_clicked ()
 {
 	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
 
-	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DBoundedObject, X3D::X3DConstants::LayoutLayer });
+	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DBoundedObject, X3D::X3DConstants::X3DLayerNode });
 }
 
 void

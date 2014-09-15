@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
 
-#include "../../Rendering/ViewportContainer.h"
 #include "../Layering/X3DViewportNode.h"
 
 #include <memory>
@@ -161,8 +160,6 @@ private:
 	};
 
 	Fields fields;
-
-	std::vector <std::shared_ptr <ViewportContainer>>  viewports;
 
 };
 

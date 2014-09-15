@@ -74,8 +74,7 @@ public:
 		addType (X3DConstants::ScreenGroupTool);
 	}
 
-
-protected:
+	///  @name Member access
 
 	virtual
 	const Matrix4f &

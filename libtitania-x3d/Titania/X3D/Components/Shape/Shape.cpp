@@ -163,7 +163,7 @@ Shape::pick ()
 
 	if (getGeometry ())
 	{
-		if (getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getViewport ()))
+		if (getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ()))
 		{
 			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
 

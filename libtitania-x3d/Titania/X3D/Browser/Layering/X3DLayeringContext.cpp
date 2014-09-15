@@ -57,10 +57,10 @@ namespace titania {
 namespace X3D {
 
 X3DLayeringContext::X3DLayeringContext () :
-	      X3DBaseNode (),
-	           layers (),
-	viewportRectangle (),
-	         viewport (new Viewport (getExecutionContext ()))
+	X3DBaseNode (),
+	     layers (),
+	  rectangle (),
+	   viewport (new Viewport (getExecutionContext ()))
 {
 	addChildren (viewport);
 }
@@ -78,7 +78,7 @@ X3DLayeringContext::initialize ()
 void
 X3DLayeringContext::set_reshaped ()
 {
-	viewportRectangle = Viewport4i ();
+	rectangle = Viewport4i ();
 }
 
 X3DLayeringContext::~X3DLayeringContext ()

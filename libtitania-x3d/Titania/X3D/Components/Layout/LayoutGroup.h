@@ -118,6 +118,7 @@ public:
 	Box3f
 	getBBox () const override;
 
+	virtual
 	Box3f
 	getRectangleBBox () const;
 

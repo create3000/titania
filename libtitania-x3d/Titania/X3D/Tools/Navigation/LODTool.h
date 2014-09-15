@@ -123,6 +123,8 @@ public:
 
 
 private:
+	
+	///  @name Operations
 
 	virtual
 	void

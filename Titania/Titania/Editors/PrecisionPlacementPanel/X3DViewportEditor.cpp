@@ -72,6 +72,11 @@ X3DViewportEditor::X3DViewportEditor () :
 {
 	addChildren (viewportBuffer);
 	viewportBuffer .addInterest (this, &X3DViewportEditor::set_node);
+
+	getViewportClipBoundaryLeftAdjustment ()   -> set_step_increment (0.001);
+	getViewportClipBoundaryRightAdjustment ()  -> set_step_increment (0.001);
+	getViewportClipBoundaryBottomAdjustment () -> set_step_increment (0.001);
+	getViewportClipBoundaryTopAdjustment ()    -> set_step_increment (0.001);
 }
 
 void

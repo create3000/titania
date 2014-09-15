@@ -437,7 +437,7 @@ Layout::transform (const TraverseType type)
 	{
 		// Calculate rectangleSize
 
-		const auto & viewport      = getCurrentLayer () -> getViewVolumeStack () .front () .getViewport (); // in pixel
+		const auto & viewport      = getCurrentLayer () -> getViewVolumeStack () .front () .getScissor ();  // in pixel
 		const auto   viewportPixel = Vector2i (viewport [2], viewport [3]);                                 // in pixel
 
 		const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport);                     // in meter

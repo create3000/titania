@@ -1,5 +1,35 @@
 2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* ViewVolume.h:
+	* ViewVolume.cpp:
+	* X3DRenderer.cpp:
+	* FrameBuffer.cpp:
+	* ShapeContainer.h:
+	* Shape.cpp:
+	* LODTool.h:
+	* CollisionShape.h:
+	* Layout.cpp:
+	* CollisionShape.cpp:
+	* ShapeContainer.cpp:
+	* ViewportContainer.h:
+	* ScreenGroupTool.h:
+	* Viewport.h:
+	* LayoutGroupTool.h:
+	* ViewportContainer.cpp:
+	* LayoutGroup.h:
+	* CollisionTool.h:
+	* Viewport.cpp:
+	* BillboardTool.h:
+	* X3DLayerNode.cpp:
+	* X3DLayeringContext.h:
+	* X3DViewportNode.cpp:
+	* X3DLayeringContext.cpp:
+	* X3DRenderingContext.cpp: 
+
+2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewportContainer.cpp: 
 
 2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>

@@ -78,18 +78,22 @@ public:
 	const SFVec3f &
 	axisOfRotation () const final override
 	{ return getNode () -> axisOfRotation (); }
-	
 
-private:
-
-	virtual
-	void
-	realize () final override;
+	///  @name Member access
 
 	virtual
 	const Matrix4f &
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
+
+
+private:
+
+	///  @name Operations
+
+	virtual
+	void
+	realize () final override;
 
 };
 

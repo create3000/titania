@@ -58,11 +58,13 @@ namespace X3D {
 ShapeContainer::ShapeContainer (X3DShapeNode* const shape,
                                 X3DFogObject* const fog,
                                 const CollectableObjectArray & localObjects,
+                                const Vector4i & scissor,
                                 const Matrix4f & matrix,
                                 const float distance) :
 	       shape (shape),
 	         fog (fog),
 	localObjects (localObjects),
+	     scissor (scissor),
 	      matrix (matrix),
 	    distance (distance)
 { }
@@ -71,12 +73,14 @@ void
 ShapeContainer::assign (X3DShapeNode* const shape,
                         X3DFogObject* const fog,
                         const CollectableObjectArray & localObjects,
+                        const Vector4i & scissor,
                         const Matrix4f & matrix,
                         const float distance)
 {
 	this -> shape        = shape;
 	this -> fog          = fog;
 	this -> localObjects = localObjects;
+	this -> scissor      = scissor;
 	this -> matrix       = matrix;
 	this -> distance     = distance;
 }
@@ -84,6 +88,11 @@ ShapeContainer::assign (X3DShapeNode* const shape,
 void
 ShapeContainer::draw ()
 {
+	glScissor (scissor [0],
+	           scissor [1],
+	           scissor [2],
+	           scissor [3]);
+
 	for (const auto & object : localObjects)
 		object -> enable ();
 

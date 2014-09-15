@@ -103,25 +103,27 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 
 	if (min < 0)
 	{
-		if (viewVolumeStack .back () .intersect (bbox))
+		const auto & viewVolume = viewVolumeStack .back ();
+	
+		if (viewVolume .intersect (bbox))
 		{
 			if (shape -> isTransparent ())
 			{
 				if (numTransparentShapes < transparentShapes .size ())
-					transparentShapes [numTransparentShapes] -> assign (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center);
+					transparentShapes [numTransparentShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center);
 
 				else
-					transparentShapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center));
+					transparentShapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center));
 
 				++ numTransparentShapes;
 			}
 			else
 			{
 				if (numOpaqueShapes < shapes .size ())
-					shapes [numOpaqueShapes] -> assign (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center);
+					shapes [numOpaqueShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center);
 
 				else
-					shapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center));
+					shapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center));
 
 				++ numOpaqueShapes;
 			}
@@ -139,13 +141,15 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 
 	if (min < 0)
 	{
-		if (viewVolumeStack .back () .intersect (bbox))
+		const auto & viewVolume = viewVolumeStack .back ();
+	
+		if (viewVolume .intersect (bbox))
 		{
 			if (numCollisionShapes < collisionShapes .size ())
-				collisionShapes [numCollisionShapes] -> assign (shape, getCollisions (), getLocalObjects (), getModelViewMatrix () .get (), center);
+				collisionShapes [numCollisionShapes] -> assign (shape, getCollisions (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center);
 
 			else
-				collisionShapes .emplace_back (new CollisionShape (shape, getCollisions (), getLocalObjects (), getModelViewMatrix () .get (), center));
+				collisionShapes .emplace_back (new CollisionShape (shape, getCollisions (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center));
 
 			++ numCollisionShapes;
 		}

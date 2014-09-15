@@ -67,8 +67,7 @@ Viewport::Fields::Fields () :
 Viewport::Viewport (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DViewportNode (),
-	         fields (),
-	      viewports ()
+	         fields ()
 {
 	addType (X3DConstants::Viewport);
 
@@ -92,12 +91,29 @@ Viewport::getRectangle (const int width, const int height) const
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	const int left   = width  * getLeft ();
-	const int right  = width  * getRight ();
-	const int bottom = height * getBottom ();
-	const int top    = height * getTop ();
+	if (getCurrentLayer () -> getViewVolumeStack () .empty ())
+	{
+		const int left   = width  * getLeft ();
+		const int right  = width  * getRight ();
+		const int bottom = height * getBottom ();
+		const int top    = height * getTop ();
 
-	return Vector4i (left, bottom, right - left, top - bottom);
+		return Vector4i (left,
+		                 bottom,
+		                 std::max (0, right - left),
+		                 std::max (0, top - bottom));
+	}
+
+	const auto parent = getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ();
+	const int  left   = std::max (int (width  * getLeft ()),   parent [0]);
+	const int  right  = std::min (int (width  * getRight ()),  parent [0] + parent [2]);
+	const int  bottom = std::max (int (height * getBottom ()), parent [1]);
+	const int  top    = std::min (int (height * getTop ()),    parent [1] + parent [3]);
+
+	return Vector4i (left,
+	                 bottom,
+	                 std::max (0, right - left),
+	                 std::max (0, top - bottom));
 }
 
 float
@@ -137,33 +153,45 @@ Viewport::traverse (const TraverseType type)
 void
 Viewport::push (const TraverseType)
 {
-	viewports .emplace_back (new ViewportContainer (this));
-
 	getCurrentLayer () -> getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), getRectangle ());
-	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back ());
 }
 
 void
 Viewport::pop (const TraverseType)
 {
-	viewports .pop_back ();
-
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
 	getCurrentLayer () -> getViewVolumeStack () .pop_back ();
 }
 
 void
 Viewport::enable ()
 {
-	viewports .emplace_back (new ViewportContainer (this));
-	viewports .back () -> apply ();
+	const auto viewport = getRectangle ();
+
+	glViewport (viewport [0],
+	            viewport [1],
+	            viewport [2],
+	            viewport [3]);
+
+	glScissor (viewport [0],
+	           viewport [1],
+	           viewport [2],
+	           viewport [3]);
 }
 
 void
 Viewport::disable ()
 {
-	viewports .back () -> restore ();
-	viewports .pop_back ();
+	const auto viewport = getBrowser () -> getRectangle ();
+
+	glViewport (viewport [0],
+	            viewport [1],
+	            viewport [2],
+	            viewport [3]);
+
+	glScissor (viewport [0],
+	           viewport [1],
+	           viewport [2],
+	           viewport [3]);
 }
 
 } // X3D

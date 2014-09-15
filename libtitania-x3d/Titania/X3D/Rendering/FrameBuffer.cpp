@@ -131,7 +131,6 @@ FrameBuffer::bind ()
 	glGetIntegerv (GL_VIEWPORT, viewport);
 	glViewport (0, 0, width, height);
 	glScissor  (0, 0, width, height);
-	glEnable (GL_SCISSOR_TEST);
 	glClear (GL_DEPTH_BUFFER_BIT);
 	// glClear (GL_COLOR_BUFFER_BIT); // DEBUG
 }
@@ -139,7 +138,6 @@ FrameBuffer::bind ()
 void
 FrameBuffer::unbind ()
 {
-	glDisable (GL_SCISSOR_TEST);
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 
 	// Bind frame buffer.

@@ -551,7 +551,6 @@
     <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
     <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
-    <None Include="Titania\X3D\Rendering\ViewportContainer.h" />
     <None Include="Titania\X3D\Components\Followers\ScalarDamper.h" />
     <None Include="Titania\X3D\Components\Node.txt" />
     <None Include="Titania\X3D\Bits\HatchStyles.xcf" />
@@ -1191,7 +1190,6 @@
     <Compile Include="Titania\X3D\Thread\SceneLoader.cpp" />
     <Compile Include="Titania\X3D\Thread\TextureLoader.cpp" />
     <Compile Include="Titania\X3D\Rendering\ClipPlaneContainer.cpp" />
-    <Compile Include="Titania\X3D\Rendering\ViewportContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\ScalarDamper.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\ColorChaser.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\CoordinateChaser.cpp" />

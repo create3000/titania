@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,6 +70,7 @@ public:
 	ShapeContainer (X3DShapeNode* const,
 	                X3DFogObject* const,
 	                const CollectableObjectArray &,
+	                const Vector4i &,
 	                const Matrix4f &,
 	                const float);
 
@@ -77,6 +78,7 @@ public:
 	assign (X3DShapeNode* const,
 	        X3DFogObject* const,
 	        const CollectableObjectArray &,
+	        const Vector4i &,
 	        const Matrix4f &,
 	        const float);
 
@@ -93,9 +95,9 @@ private:
 	X3DShapeNode*          shape;
 	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;
-
-	Matrix4f matrix;
-	float    distance;
+	Vector4i               scissor;
+	Matrix4f               matrix;
+	float                  distance;
 
 };
 

@@ -496,7 +496,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
-	Titania/X3D/Rendering/ViewportContainer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
 	Titania/X3D/Rendering/X3DRenderer.cpp \
 	Titania/X3D/Routing/Route.cpp \

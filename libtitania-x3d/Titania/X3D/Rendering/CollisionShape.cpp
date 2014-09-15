@@ -58,12 +58,14 @@ namespace X3D {
 CollisionShape::CollisionShape (X3DShapeNode* const shape,
                                 const CollisionArray & collisions,
                                 const CollectableObjectArray & localObjects,
+                                const Vector4i & scissor,
                                 const Matrix4f & matrix,
                                 const float distance) :
 	       shape (shape),
 	  collisions (collisions),
 	localObjects (localObjects),
 	      matrix (matrix),
+	     scissor (scissor),
 	    distance (distance)
 { }
 
@@ -71,12 +73,14 @@ void
 CollisionShape::assign (X3DShapeNode* const shape,
                         const CollisionArray & collisions,
                         const CollectableObjectArray & localObjects,
+                        const Vector4i & scissor,
                         const Matrix4f & matrix,
                         const float distance)
 {
 	this -> shape        = shape;
 	this -> collisions   = collisions;
 	this -> localObjects = localObjects;
+	this -> scissor      = scissor;
 	this -> matrix       = matrix;
 	this -> distance     = distance;
 }
@@ -93,6 +97,11 @@ CollisionShape::intersect (const Sphere3f & sphere) const
 void
 CollisionShape::draw ()
 {
+	glScissor (scissor [0],
+	           scissor [1],
+	           scissor [2],
+	           scissor [3]);
+
 	for (const auto & object : localObjects)
 		object -> enable ();
 

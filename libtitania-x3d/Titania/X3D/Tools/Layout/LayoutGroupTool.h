@@ -95,9 +95,13 @@ public:
 	const SFNode &
 	layout () const final override
 	{ return getNode () -> layout (); }
+	
+	///  @name Member access
 
-
-protected:
+	virtual
+	Box3f
+	getRectangleBBox () const final override
+	{ return getNode () -> getRectangleBBox (); }
 
 	virtual
 	const Matrix4f &
@@ -105,7 +109,7 @@ protected:
 	{ return getNode () -> getMatrix (); }
 
 
-protected:
+private:
 
 	///  @name Operations
 
