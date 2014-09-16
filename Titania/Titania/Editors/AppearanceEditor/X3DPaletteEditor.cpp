@@ -135,12 +135,19 @@ X3DPaletteEditor::set_initialized ()
 		return;
 	}
 
-	getPaletteComboBoxText () .set_active (0);
+	const size_t index = getConfig () .getInteger ("palette");
+
+	if (index < folders .size ())
+		getPaletteComboBoxText () .set_active (index);
+	else
+		getPaletteComboBoxText () .set_active (0);
 }
 
 void
 X3DPaletteEditor::setCurrentFolder (const size_t index)
 {
+	getConfig () .setItem ("palette", index);
+
 	getPalettePreviousButton () .set_sensitive (index > 0);
 	getPaletteNextButton ()     .set_sensitive (index + 1 < folders .size ());
 
