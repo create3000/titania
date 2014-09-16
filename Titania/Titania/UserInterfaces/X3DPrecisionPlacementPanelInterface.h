@@ -139,6 +139,78 @@ public:
 	{ return m_GeoLocationZoneAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformGeoCenterXAdjustment () const
+	{ return m_GeoTransformGeoCenterXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformGeoCenterYAdjustment () const
+	{ return m_GeoTransformGeoCenterYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformGeoCenterZAdjustment () const
+	{ return m_GeoTransformGeoCenterZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationAAdjustment () const
+	{ return m_GeoTransformRotationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationXAdjustment () const
+	{ return m_GeoTransformRotationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationYAdjustment () const
+	{ return m_GeoTransformRotationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationZAdjustment () const
+	{ return m_GeoTransformRotationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationAAdjustment () const
+	{ return m_GeoTransformScaleOrientationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationXAdjustment () const
+	{ return m_GeoTransformScaleOrientationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationYAdjustment () const
+	{ return m_GeoTransformScaleOrientationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationZAdjustment () const
+	{ return m_GeoTransformScaleOrientationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleXAdjustment () const
+	{ return m_GeoTransformScaleXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleYAdjustment () const
+	{ return m_GeoTransformScaleYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleZAdjustment () const
+	{ return m_GeoTransformScaleZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformTranslationXAdjustment () const
+	{ return m_GeoTransformTranslationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformTranslationYAdjustment () const
+	{ return m_GeoTransformTranslationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformTranslationZAdjustment () const
+	{ return m_GeoTransformTranslationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformZoneAdjustment () const
+	{ return m_GeoTransformZoneAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getLayoutOffsetXAdjustment () const
 	{ return m_LayoutOffsetXAdjustment; }
 
@@ -391,6 +463,82 @@ public:
 	{ return *m_ViewportClipBoundaryBox; }
 
 	Gtk::Expander &
+	getGeoTransformExpander () const
+	{ return *m_GeoTransformExpander; }
+
+	Gtk::Grid &
+	getGeoTransformBox () const
+	{ return *m_GeoTransformBox; }
+
+	Gtk::Box &
+	getGeoTransformTranslationBox () const
+	{ return *m_GeoTransformTranslationBox; }
+
+	Gtk::Box &
+	getGeoTransformRotationBox () const
+	{ return *m_GeoTransformRotationBox; }
+
+	Gtk::Box &
+	getGeoTransformRotationToolBox () const
+	{ return *m_GeoTransformRotationToolBox; }
+
+	Gtk::Box &
+	getGeoTransformScaleOrientationBox () const
+	{ return *m_GeoTransformScaleOrientationBox; }
+
+	Gtk::Box &
+	getGeoTransformScaleOrientationToolBox () const
+	{ return *m_GeoTransformScaleOrientationToolBox; }
+
+	Gtk::Box &
+	getGeoTransformScaleBox () const
+	{ return *m_GeoTransformScaleBox; }
+
+	Gtk::Box &
+	getGeoTransformGeoCenterBox () const
+	{ return *m_GeoTransformGeoCenterBox; }
+
+	Gtk::SpinButton &
+	getGeoTransformGeoCenterXSpinButton () const
+	{ return *m_GeoTransformGeoCenterXSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoTransformGeoCenterYSpinButton () const
+	{ return *m_GeoTransformGeoCenterYSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoTransformGeoCenterZSpinButton () const
+	{ return *m_GeoTransformGeoCenterZSpinButton; }
+
+	Gtk::ComboBoxText &
+	getGeoTransformCoordinateSystemComboBoxText () const
+	{ return *m_GeoTransformCoordinateSystemComboBoxText; }
+
+	Gtk::Box &
+	getGeoTransformEllipsoidBox () const
+	{ return *m_GeoTransformEllipsoidBox; }
+
+	Gtk::ComboBoxText &
+	getGeoTransformEllipsoidComboBoxText () const
+	{ return *m_GeoTransformEllipsoidComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getGeoTransformGDOrderComboBoxText () const
+	{ return *m_GeoTransformGDOrderComboBoxText; }
+
+	Gtk::Box &
+	getGeoTransformGeoSystemUTMBox () const
+	{ return *m_GeoTransformGeoSystemUTMBox; }
+
+	Gtk::ComboBoxText &
+	getGeoTransformHemisphereComboBoxText () const
+	{ return *m_GeoTransformHemisphereComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getGeoTransformUTMOrderComboBoxText () const
+	{ return *m_GeoTransformUTMOrderComboBoxText; }
+
+	Gtk::Expander &
 	getGeoLocationExpander () const
 	{ return *m_GeoLocationExpander; }
 
@@ -429,6 +577,18 @@ public:
 	Gtk::Box &
 	getGeoLocationGeoCoordsBox () const
 	{ return *m_GeoLocationGeoCoordsBox; }
+
+	Gtk::SpinButton &
+	getGeoLocationGeoCoordsXSpinButton () const
+	{ return *m_GeoLocationGeoCoordsXSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoLocationGeoCoordsYSpinButton () const
+	{ return *m_GeoLocationGeoCoordsYSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoLocationGeoCoordsZSpinButton () const
+	{ return *m_GeoLocationGeoCoordsZSpinButton; }
 
 	Gtk::Expander &
 	getBoundingBoxExpander () const
@@ -513,6 +673,24 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationZoneAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformGeoCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformGeoCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformGeoCenterZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
@@ -576,6 +754,25 @@ private:
 	Gtk::CheckButton*              m_ViewportCheckButton;
 	Gtk::Grid*                     m_ViewportBox;
 	Gtk::Grid*                     m_ViewportClipBoundaryBox;
+	Gtk::Expander*                 m_GeoTransformExpander;
+	Gtk::Grid*                     m_GeoTransformBox;
+	Gtk::Box*                      m_GeoTransformTranslationBox;
+	Gtk::Box*                      m_GeoTransformRotationBox;
+	Gtk::Box*                      m_GeoTransformRotationToolBox;
+	Gtk::Box*                      m_GeoTransformScaleOrientationBox;
+	Gtk::Box*                      m_GeoTransformScaleOrientationToolBox;
+	Gtk::Box*                      m_GeoTransformScaleBox;
+	Gtk::Box*                      m_GeoTransformGeoCenterBox;
+	Gtk::SpinButton*               m_GeoTransformGeoCenterXSpinButton;
+	Gtk::SpinButton*               m_GeoTransformGeoCenterYSpinButton;
+	Gtk::SpinButton*               m_GeoTransformGeoCenterZSpinButton;
+	Gtk::ComboBoxText*             m_GeoTransformCoordinateSystemComboBoxText;
+	Gtk::Box*                      m_GeoTransformEllipsoidBox;
+	Gtk::ComboBoxText*             m_GeoTransformEllipsoidComboBoxText;
+	Gtk::ComboBoxText*             m_GeoTransformGDOrderComboBoxText;
+	Gtk::Box*                      m_GeoTransformGeoSystemUTMBox;
+	Gtk::ComboBoxText*             m_GeoTransformHemisphereComboBoxText;
+	Gtk::ComboBoxText*             m_GeoTransformUTMOrderComboBoxText;
 	Gtk::Expander*                 m_GeoLocationExpander;
 	Gtk::Grid*                     m_GeoLocationBox;
 	Gtk::ComboBoxText*             m_GeoLocationCoordinateSystemComboBoxText;
@@ -586,6 +783,9 @@ private:
 	Gtk::ComboBoxText*             m_GeoLocationHemisphereComboBoxText;
 	Gtk::ComboBoxText*             m_GeoLocationUTMOrderComboBoxText;
 	Gtk::Box*                      m_GeoLocationGeoCoordsBox;
+	Gtk::SpinButton*               m_GeoLocationGeoCoordsXSpinButton;
+	Gtk::SpinButton*               m_GeoLocationGeoCoordsYSpinButton;
+	Gtk::SpinButton*               m_GeoLocationGeoCoordsZSpinButton;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;

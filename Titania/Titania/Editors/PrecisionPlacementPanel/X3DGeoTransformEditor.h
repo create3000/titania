@@ -48,53 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DVIEWPORT_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_LAYERING_X3DVIEWPORT_NODE_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DGEO_TRANSFORM_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DGEO_TRANSFORM_EDITOR_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class X3DViewportNode :
-	public X3DGroupingNode
+class RotationTool;
+class MFStringGeoSystem;
+
+class X3DGeoTransformEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
-	///  @name Operations
-
-	Vector4i
-	getRectangle () const;
+	///  @name Destruction
 
 	virtual
-	Vector4i
-	getRectangle (const int, const int) const = 0;
-
-	Vector4i
-	getScissor () const;
-
-	virtual
-	Vector4i
-	getScissor (const int, const int) const = 0;
-
-	virtual
-	void
-	enable () = 0;
-
-	virtual
-	void
-	disable () = 0;
+	~X3DGeoTransformEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DViewportNode ();
+	X3DGeoTransformEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_selection (const X3D::MFNode &);
+
+	///  @name Members
+
+	std::unique_ptr <MFStringGeoSystem>   geoSystem;
+	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
+	X3DFieldAdjustment4 <X3D::SFRotation> rotation;
+	std::unique_ptr <RotationTool>        rotationTool;
+	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
+	X3DFieldAdjustment4 <X3D::SFRotation> scaleOrientation;
+	std::unique_ptr <RotationTool>        scaleOrientationTool;
+	X3DFieldAdjustment3 <X3D::SFVec3d>    geoCenter;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

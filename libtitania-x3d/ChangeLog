@@ -1,5 +1,13 @@
 2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Viewport.h:
+	* X3DViewer.cpp:
+	* Viewport.cpp:
+	* X3DViewportNode.h:
+	* X3DViewportNode.cpp: 
+
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LayoutGroupTool.h:
 	* LayoutLayer.h:
 	* LayoutLayer.cpp: 

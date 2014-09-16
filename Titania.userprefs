@@ -1,14 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/Viewport.cpp" Line="57" Column="16" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.h" Line="109" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp" Line="186" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.h" Line="97" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp" Line="87" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h" Line="66" Column="25" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="117" Column="39" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLocation.cpp" Line="66" Column="12" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h" Line="67" Column="25" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="93" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.h" Line="92" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp" Line="93" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -34,19 +32,15 @@
                 <Node name="Browser" expanded="True">
                   <Node name="Layering" expanded="True" />
                   <Node name="Layout" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Tools" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
                   <Node name="Layout" expanded="True" />
                 </Node>
               </Node>
@@ -62,11 +56,12 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="ComposedWidgets" expanded="True">
+                <Node name="MFStringGeoSystem.h" selected="True" />
+              </Node>
               <Node name="Editors" expanded="True">
                 <Node name="PrecisionPlacementPanel" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True">
-                  <Node name="X3DOrthoViewpointEditor.cpp" selected="True" />
-                </Node>
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

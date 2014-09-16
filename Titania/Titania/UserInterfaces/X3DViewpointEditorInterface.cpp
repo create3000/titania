@@ -133,7 +133,13 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoViewpointBox", m_GeoViewpointBox);
 	m_builder -> get_widget ("GeoViewpointFieldOfViewBox", m_GeoViewpointFieldOfViewBox);
 	m_builder -> get_widget ("GeoViewpointPositionBox", m_GeoViewpointPositionBox);
+	m_builder -> get_widget ("GeoViewpointPositionXSpinButton", m_GeoViewpointPositionXSpinButton);
+	m_builder -> get_widget ("GeoViewpointPositionYSpinButton", m_GeoViewpointPositionYSpinButton);
+	m_builder -> get_widget ("GeoViewpointPositionZSpinButton", m_GeoViewpointPositionZSpinButton);
 	m_builder -> get_widget ("GeoViewpointCenterOfRotationBox", m_GeoViewpointCenterOfRotationBox);
+	m_builder -> get_widget ("GeoViewpointCenterOfRotationXSpinButton", m_GeoViewpointCenterOfRotationXSpinButton);
+	m_builder -> get_widget ("GeoViewpointCenterOfRotationYSpinButton", m_GeoViewpointCenterOfRotationYSpinButton);
+	m_builder -> get_widget ("GeoViewpointCenterOfRotationZSpinButton", m_GeoViewpointCenterOfRotationZSpinButton);
 	m_builder -> get_widget ("GeoViewpointOrientationBox", m_GeoViewpointOrientationBox);
 	m_builder -> get_widget ("GeoViewpointOrientationToolBox", m_GeoViewpointOrientationToolBox);
 	m_builder -> get_widget ("GeoViewpointSpeedFactorSpinButton", m_GeoViewpointSpeedFactorSpinButton);

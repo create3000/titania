@@ -97,6 +97,30 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	                             getGeoViewpointSpeedFactorSpinButton (),
 	                             "speedFactor")
 {
+	getGeoViewpointPositionXAdjustment () -> set_step_increment (1e-7);
+	getGeoViewpointPositionYAdjustment () -> set_step_increment (1e-7);
+	getGeoViewpointPositionZAdjustment () -> set_step_increment (1e-2);
+
+	getGeoViewpointPositionXAdjustment () -> set_page_increment (1e-4);
+	getGeoViewpointPositionYAdjustment () -> set_page_increment (1e-4);
+	getGeoViewpointPositionZAdjustment () -> set_page_increment (1);
+
+	getGeoViewpointPositionXSpinButton () .property_climb_rate () = 1e-6;
+	getGeoViewpointPositionYSpinButton () .property_climb_rate () = 1e-6;
+	getGeoViewpointPositionZSpinButton () .property_climb_rate () = 1e-1;
+
+	getGeoViewpointCenterOfRotationXAdjustment () -> set_step_increment (1e-7);
+	getGeoViewpointCenterOfRotationYAdjustment () -> set_step_increment (1e-7);
+	getGeoViewpointCenterOfRotationZAdjustment () -> set_step_increment (1e-2);
+
+	getGeoViewpointCenterOfRotationXAdjustment () -> set_page_increment (1e-4);
+	getGeoViewpointCenterOfRotationYAdjustment () -> set_page_increment (1e-4);
+	getGeoViewpointCenterOfRotationZAdjustment () -> set_page_increment (1);
+
+	getGeoViewpointCenterOfRotationXSpinButton () .property_climb_rate () = 1e-6;
+	getGeoViewpointCenterOfRotationYSpinButton () .property_climb_rate () = 1e-6;
+	getGeoViewpointCenterOfRotationZSpinButton () .property_climb_rate () = 1e-1;
+
 	getGeoViewpointFieldOfViewAdjustment () -> set_upper (M_PI); // getExecutionContext () -> fromRadiant (M_PI);
 }
 

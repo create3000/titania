@@ -378,9 +378,33 @@ public:
 	getGeoViewpointPositionBox () const
 	{ return *m_GeoViewpointPositionBox; }
 
+	Gtk::SpinButton &
+	getGeoViewpointPositionXSpinButton () const
+	{ return *m_GeoViewpointPositionXSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoViewpointPositionYSpinButton () const
+	{ return *m_GeoViewpointPositionYSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoViewpointPositionZSpinButton () const
+	{ return *m_GeoViewpointPositionZSpinButton; }
+
 	Gtk::Box &
 	getGeoViewpointCenterOfRotationBox () const
 	{ return *m_GeoViewpointCenterOfRotationBox; }
+
+	Gtk::SpinButton &
+	getGeoViewpointCenterOfRotationXSpinButton () const
+	{ return *m_GeoViewpointCenterOfRotationXSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoViewpointCenterOfRotationYSpinButton () const
+	{ return *m_GeoViewpointCenterOfRotationYSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoViewpointCenterOfRotationZSpinButton () const
+	{ return *m_GeoViewpointCenterOfRotationZSpinButton; }
 
 	Gtk::Box &
 	getGeoViewpointOrientationBox () const
@@ -509,7 +533,13 @@ private:
 	Gtk::Grid*                     m_GeoViewpointBox;
 	Gtk::Box*                      m_GeoViewpointFieldOfViewBox;
 	Gtk::Box*                      m_GeoViewpointPositionBox;
+	Gtk::SpinButton*               m_GeoViewpointPositionXSpinButton;
+	Gtk::SpinButton*               m_GeoViewpointPositionYSpinButton;
+	Gtk::SpinButton*               m_GeoViewpointPositionZSpinButton;
 	Gtk::Box*                      m_GeoViewpointCenterOfRotationBox;
+	Gtk::SpinButton*               m_GeoViewpointCenterOfRotationXSpinButton;
+	Gtk::SpinButton*               m_GeoViewpointCenterOfRotationYSpinButton;
+	Gtk::SpinButton*               m_GeoViewpointCenterOfRotationZSpinButton;
 	Gtk::Box*                      m_GeoViewpointOrientationBox;
 	Gtk::Box*                      m_GeoViewpointOrientationToolBox;
 	Gtk::SpinButton*               m_GeoViewpointSpeedFactorSpinButton;

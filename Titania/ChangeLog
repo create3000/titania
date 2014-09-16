@@ -2,6 +2,23 @@
 
 	* titania:
 	* Makefile.am:
+	* ViewpointEditor.xml:
+	* PrecisionPlacementPanel.xml:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DGeoViewpointEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* X3DGeoTransformEditor.h:
+	* X3DGeoLocationEditor.cpp:
+	* PrecisionPlacementPanel.h:
+	* X3DGeoTransformEditor.cpp:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* MFStringGeoSystem.h:
 	* PrecisionPlacementPanel.xml:
 	* X3DPrecisionPlacementPanelInterface.h:

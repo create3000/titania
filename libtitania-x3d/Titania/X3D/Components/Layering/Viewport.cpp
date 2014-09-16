@@ -91,18 +91,22 @@ Viewport::getRectangle (const int width, const int height) const
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	if (getCurrentLayer () -> getViewVolumeStack () .empty ())
-	{
-		const int left   = width  * getLeft ();
-		const int right  = width  * getRight ();
-		const int bottom = height * getBottom ();
-		const int top    = height * getTop ();
+	const int left   = width  * getLeft ();
+	const int right  = width  * getRight ();
+	const int bottom = height * getBottom ();
+	const int top    = height * getTop ();
 
-		return Vector4i (left,
-		                 bottom,
-		                 std::max (0, right - left),
-		                 std::max (0, top - bottom));
-	}
+	return Vector4i (left,
+	                 bottom,
+	                 std::max (0, right - left),
+	                 std::max (0, top - bottom));
+}
+
+Vector4i
+Viewport::getScissor (const int width, const int height) const
+{
+	if (getCurrentLayer () -> getViewVolumeStack () .empty ())
+		return getRectangle (width, height);
 
 	const auto parent = getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ();
 	const int  left   = std::max (int (width  * getLeft ()),   parent [0]);
@@ -153,7 +157,7 @@ Viewport::traverse (const TraverseType type)
 void
 Viewport::push (const TraverseType)
 {
-	getCurrentLayer () -> getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), getRectangle ());
+	getCurrentLayer () -> getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), getScissor ());
 }
 
 void

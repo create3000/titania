@@ -69,5 +69,13 @@ X3DViewportNode::getRectangle () const
 	return getRectangle (rectangle [2], rectangle [3]);
 }
 
+Vector4i
+X3DViewportNode::getScissor () const
+{
+	const auto & rectangle = getBrowser () -> getRectangle ();
+
+	return getScissor (rectangle [2], rectangle [3]);
+}
+
 } // X3D
 } // titania

@@ -73,7 +73,19 @@ X3DGeoLocationEditor::X3DGeoLocationEditor () :
 	                                     getGeoLocationGeoCoordsZAdjustment (),
 	                                     getGeoLocationGeoCoordsBox (),
 	                                     "geoCoords")
-{ }
+{
+	getGeoLocationGeoCoordsXAdjustment () -> set_step_increment (1e-7);
+	getGeoLocationGeoCoordsYAdjustment () -> set_step_increment (1e-7);
+	getGeoLocationGeoCoordsZAdjustment () -> set_step_increment (1e-2);
+
+	getGeoLocationGeoCoordsXAdjustment () -> set_page_increment (1e-4);
+	getGeoLocationGeoCoordsYAdjustment () -> set_page_increment (1e-4);
+	getGeoLocationGeoCoordsZAdjustment () -> set_page_increment (1);
+
+	getGeoLocationGeoCoordsXSpinButton () .property_climb_rate () = 1e-6;
+	getGeoLocationGeoCoordsYSpinButton () .property_climb_rate () = 1e-6;
+	getGeoLocationGeoCoordsZSpinButton () .property_climb_rate () = 1e-1;
+}
 
 void
 X3DGeoLocationEditor::initialize ()
