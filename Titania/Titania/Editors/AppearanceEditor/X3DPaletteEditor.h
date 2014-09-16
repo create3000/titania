@@ -48,46 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "X3DMaterialEditor.h"
-#include "X3DFillPropertiesEditor.h"
-#include "X3DLinePropertiesEditor.h"
-#include "X3DPaletteEditor.h"
+#include "../../Undo/UndoStep.h"
+#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserWindow;
 
-class AppearanceEditor :
-	public X3DMaterialEditor,
-	public X3DFillPropertiesEditor,
-	public X3DLinePropertiesEditor,
-	public X3DPaletteEditor
+class X3DPaletteEditor :
+	virtual public X3DAppearanceEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	AppearanceEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~AppearanceEditor ();
+	~X3DPaletteEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DPaletteEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
 	///  @name Construction
 
+	void
+	set_initialized ();
+
+	void
+	setCurrentFolder (const size_t);
+
+	void
+	addMaterial (const size_t, const std::string &);
+
+	void
+	disable ();
+
+	///  @name Event handlers
+	
 	virtual
 	void
-	initialize () final override;
+	on_palette_previous_clicked () final override;
+	
+	virtual
+	void
+	on_palette_next_clicked () final override;
+	
+	virtual
+	void
+	on_palette_changed () final override;
 
+	void
+	set_touchTime (const size_t);
+
+	///  @name Members
+
+	X3D::BrowserPtr           preview;
+	std::vector <std::string> folders;
+	std::vector <std::string> files;
 };
 
 } // puck

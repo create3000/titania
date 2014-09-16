@@ -67,6 +67,10 @@ public:
 
 	LibraryView (X3DBrowserWindow* const);
 
+	static
+	std::vector <Glib::RefPtr <Gio::FileInfo>>
+	getChildren (const Glib::RefPtr <Gio::File> &);
+
 	///  @name Destruction
 
 	virtual
@@ -90,9 +94,6 @@ private:
 
 	std::string
 	getFilename (Gtk::TreeModel::Path path) const;
-
-	std::vector <Glib::RefPtr <Gio::FileInfo>>
-	children (const Glib::RefPtr <Gio::File> &) const;
 
 	void
 	append (const std::string &) const;

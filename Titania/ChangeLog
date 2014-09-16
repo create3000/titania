@@ -1,5 +1,22 @@
 2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* LibraryView.h:
+	* LibraryView.cpp:
+	* AppearanceEditor.xml:
+	* AppearanceEditor.h:
+	* X3DPaletteEditor.h:
+	* Default.x3dv:
+	* X3DAppearanceEditorInterface.h:
+	* X3DPaletteEditor.cpp:
+	* AppearanceEditor.cpp:
+	* X3DMaterialEditor.cpp:
+	* X3DAppearanceEditorInterface.cpp:
+	* NoMaterial.x3dv: 
+
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LOD.svg:
 	* Text.svg:
 	* Light.svg:

@@ -394,6 +394,26 @@ public:
 	getLinePropertiesLinewidthScaleFactorSpinButton () const
 	{ return *m_LinePropertiesLinewidthScaleFactorSpinButton; }
 
+	Gtk::Box &
+	getPaletteBox () const
+	{ return *m_PaletteBox; }
+
+	Gtk::Box &
+	getPalettePreviewBox () const
+	{ return *m_PalettePreviewBox; }
+
+	Gtk::ComboBoxText &
+	getPaletteComboBoxText () const
+	{ return *m_PaletteComboBoxText; }
+
+	Gtk::Button &
+	getPalettePreviousButton () const
+	{ return *m_PalettePreviousButton; }
+
+	Gtk::Button &
+	getPaletteNextButton () const
+	{ return *m_PaletteNextButton; }
+
 	virtual
 	void
 	on_copy () = 0;
@@ -433,6 +453,18 @@ public:
 	virtual
 	void
 	on_lineProperties_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_palette_changed () = 0;
+
+	virtual
+	void
+	on_palette_previous_clicked () = 0;
+
+	virtual
+	void
+	on_palette_next_clicked () = 0;
 
 	virtual
 	~X3DAppearanceEditorInterface ();
@@ -521,6 +553,11 @@ private:
 	Gtk::CheckButton*              m_LinePropertiesFilledCheckButton;
 	Gtk::SpinButton*               m_LinePropertiesLinetypeSpinButton;
 	Gtk::SpinButton*               m_LinePropertiesLinewidthScaleFactorSpinButton;
+	Gtk::Box*                      m_PaletteBox;
+	Gtk::Box*                      m_PalettePreviewBox;
+	Gtk::ComboBoxText*             m_PaletteComboBoxText;
+	Gtk::Button*                   m_PalettePreviousButton;
+	Gtk::Button*                   m_PaletteNextButton;
 
 };
 

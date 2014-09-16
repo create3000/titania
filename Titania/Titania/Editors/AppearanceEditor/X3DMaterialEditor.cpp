@@ -85,8 +85,6 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
 
 	preview -> set_antialiasing (4);
-
-	setup ();
 }
 
 void
@@ -515,9 +513,7 @@ X3DMaterialEditor::connectMaterial (const X3D::SFNode & field)
 }
 
 X3DMaterialEditor::~X3DMaterialEditor ()
-{
-	dispose ();
-}
+{ }
 
 } // puck
 } // titania

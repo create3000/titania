@@ -75,15 +75,9 @@ create_data_directories ();
 
 std::string
 find_data_file (const std::string & file)
+//throw (std::ios_base::failure)
 {
-	try
-	{
-		return find_file (file, get_data_directories ()) -> get_path ();
-	}
-	catch (const std::ios_base::failure & exception)
-	{
-		throw std::ios_base::failure (exception);
-	}
+	return find_file (file, get_data_directories ()) -> get_path ();
 }
 
 static

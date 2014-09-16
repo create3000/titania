@@ -137,6 +137,11 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LinePropertiesFilledCheckButton", m_LinePropertiesFilledCheckButton);
 	m_builder -> get_widget ("LinePropertiesLinetypeSpinButton", m_LinePropertiesLinetypeSpinButton);
 	m_builder -> get_widget ("LinePropertiesLinewidthScaleFactorSpinButton", m_LinePropertiesLinewidthScaleFactorSpinButton);
+	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
+	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
+	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
+	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
+	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
@@ -163,6 +168,13 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'LinePropertiesUnlinkButton'.
 	m_LinePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_lineProperties_unlink_clicked));
+
+	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
+	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_changed));
+
+	// Connect object Gtk::Button with id 'PalettePreviousButton'.
+	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_previous_clicked));
+	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_next_clicked));
 
 	// Call construct handler of base class.
 	construct ();

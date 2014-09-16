@@ -78,9 +78,16 @@ LibraryView::on_map ()
 void
 LibraryView::initialize ()
 {
-	append (getRoot ());
+	try
+	{
+		append (getRoot ());
 
-	restoreExpanded ();
+		restoreExpanded ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 std::string
@@ -110,7 +117,7 @@ LibraryView::getFilename (Gtk::TreeModel::Path path) const
 }
 
 std::vector <Glib::RefPtr <Gio::FileInfo>>
-LibraryView::children (const Glib::RefPtr <Gio::File> & directory) const
+LibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
 {
 	std::vector <Glib::RefPtr <Gio::FileInfo>> fileInfos;
 
@@ -148,7 +155,7 @@ LibraryView::append (const std::string & path) const
 	{
 		const Glib::RefPtr <Gio::File> directory = Gio::File::create_for_path (path);
 
-		for (const auto & fileInfo : children (directory))
+		for (const auto & fileInfo : getChildren (directory))
 		{
 			switch (fileInfo -> get_file_type ())
 			{
@@ -182,7 +189,7 @@ LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio:
 {
 	try
 	{
-		for (const auto & fileInfo : children (directory))
+		for (const auto & fileInfo : getChildren (directory))
 		{
 			switch (fileInfo -> get_file_type ())
 			{

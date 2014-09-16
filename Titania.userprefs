@@ -1,12 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/AppearanceEditor/X3DPaletteEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLocation.cpp" Line="66" Column="12" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h" Line="67" Column="25" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="93" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.h" Line="92" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp" Line="93" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DPaletteEditor.h" Line="97" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DPaletteEditor.cpp" Line="139" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.h" Line="69" Column="25" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="81" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,23 +19,27 @@
               <Node name="images" expanded="True" />
             </Node>
           </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OS" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="mime" expanded="True">
+                  <Node name="model" expanded="True" />
+                </Node>
                 <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Rendering" expanded="True" />
@@ -45,6 +48,9 @@
                 </Node>
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
@@ -56,12 +62,23 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="ComposedWidgets" expanded="True">
-                <Node name="MFStringGeoSystem.h" selected="True" />
+              <Node name="Browser" expanded="True" />
+              <Node name="ComposedWidgets" expanded="True" />
+              <Node name="Dialogs" expanded="True">
+                <Node name="FileImportDialog" expanded="True" />
+                <Node name="FileOpenDialog" expanded="True" />
               </Node>
               <Node name="Editors" expanded="True">
+                <Node name="AppearanceEditor" expanded="True" />
+                <Node name="LightEditor" expanded="True" />
                 <Node name="PrecisionPlacementPanel" expanded="True" />
+                <Node name="TextEditor" expanded="True" />
                 <Node name="ViewpointEditor" expanded="True" />
+              </Node>
+              <Node name="Widgets" expanded="True">
+                <Node name="LibraryView" expanded="True">
+                  <Node name="LibraryView.cpp" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>

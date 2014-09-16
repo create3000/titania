@@ -61,7 +61,8 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.xml"), gconf_dir ()),
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
-	     X3DLinePropertiesEditor ()
+	     X3DLinePropertiesEditor (),
+	            X3DPaletteEditor ()
 {
 	getAppearanceChildNotebook () .set_current_page (getConfig () .getInteger ("appearanceChild"));
 
@@ -75,6 +76,7 @@ AppearanceEditor::initialize ()
 	X3DMaterialEditor::initialize ();
 	X3DFillPropertiesEditor::initialize ();
 	X3DLinePropertiesEditor::initialize ();
+	X3DPaletteEditor::initialize ();
 }
 
 AppearanceEditor::~AppearanceEditor ()
