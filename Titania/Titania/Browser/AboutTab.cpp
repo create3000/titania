@@ -130,11 +130,14 @@ AboutTab::set_scene ()
 
 	try
 	{
+		const auto   beginTouch           = scene -> getNamedNode ("BeginTouch");
 		const auto   previousPage         = scene -> getNamedNode ("PreviousPage");
 		const auto   nextPage             = scene -> getNamedNode ("NextPage");
+		const auto & beginTime            = beginTouch -> getField <X3D::SFTime> ("touchTime");
 		const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
 		const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
 
+		beginTime .addInterest (this, &AboutTab::set_page, scene .getValue (), X3D::SFInt32 (0));
 		previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
 		nextPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
 
