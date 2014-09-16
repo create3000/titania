@@ -1,15 +1,20 @@
-#X3D V3.3 utf8 Titania
+#X3D V3.3 utf8 Titania V0.7.4
 
+META "comment" "World of Titania"
+META "created" "Tue, 16 Sep 2014 17:40:14 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Tue, 16 Sep 2014 17:40:14 GMT"
 META "titania magic" "Material"
 
 Transform {
   children Shape {
     appearance Appearance {
       material DEF Artdeco4 Material {
-        ambientIntensity 0.240838
-        diffuseColor 0.876873 0.14715 0.00856049
-        specularColor 0.193878 0.0294159 0.0294159
-        shininess 0.0765306
+        ambientIntensity 0.248649
+        diffuseColor 1 0.452381 0.40339
+        specularColor 0.686486 0.396903 0.419275
+        shininess 0.902703
       }
     }
     geometry Sphere { }

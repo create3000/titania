@@ -1,13 +1,18 @@
-#X3D V3.3 utf8 Titania
+#X3D V3.3 utf8 Titania V0.7.4
 
+META "comment" "World of Titania"
+META "created" "Tue, 16 Sep 2014 17:43:15 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Tue, 16 Sep 2014 17:43:15 GMT"
 META "titania magic" "Material"
 
 Transform {
   children Shape {
     appearance Appearance {
       material DEF Tropical5 Material {
-        ambientIntensity 0.25
-        diffuseColor 0.904409 0.0469471 0.496108
+        ambientIntensity 0.226102
+        diffuseColor 0.904409 0.412258 0
         specularColor 0.0955906 0.0955906 0.0955906
         shininess 0.078125
       }

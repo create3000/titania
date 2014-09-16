@@ -5,27 +5,44 @@ use strict;
 use warnings;
 use v5.10.0;
 
-my $materials = "/home/holger/Projekte/Titania/Library/Materials";
-my $library   = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Materials";
+use List::Util qw (max);
+
+my $materials = "/home/holger/X3D/development/data/materials";
+#my $library   = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Materials";
+my $library   = "/home/holger/Schreibtisch/Materials";
 
 foreach my $filename (`ls -C1 '$materials'`)
 {
 	print $filename;	
 	chomp $filename;
 
-	$filename =~ /(.*?)\.(?:wrl|x3dv)$/sgo;
-	my $collection = ucfirst ($1);
+	my $collection = ucfirst ($filename);
 
 	say $collection;
 	system "mkdir", "-p", "$library/$collection";
-
-	my $file      = join "", `cat '$materials/$filename'`;
-	my @materials = ( $file =~ /(Material\s*{.*?\})/sgo );
 	
-	my $i = 1;
-	
-	foreach my $material (@materials)
+	foreach my $material (`ls -C1 '$materials/$filename'`)
 	{
+		chomp $material;
+
+		$material =~ /.*?\.(\d+)/sgo;
+		my $i = $1 + 1;
+
+		my $file = join "", `cat '$materials/$filename/$material'`;
+
+		say $file;
+
+		$file =~ /\{(.*?)\}/sgo;
+		my $values = $1;
+		
+		
+		if ($values =~ /ambientColor\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)/sgo)
+		{
+			my $ambientIntensity = max ($1, $2, $3);
+		
+			$values =~ s/ambientColor.*?\n/ambientIntensity $ambientIntensity/sgo;
+		}
+
 		my $filename = "$library/$collection/$collection$i.x3dv";
 	
 		open FILE, ">", $filename;
@@ -37,7 +54,9 @@ META \"titania magic\" \"Material\"
 Transform {
   children Shape {
     appearance Appearance {
-    material DEF $collection$i $material
+    material DEF $collection$i Material {
+      $values
+    }
   }
   geometry Sphere { }
   }

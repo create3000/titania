@@ -50,6 +50,7 @@
 
 #include "X3DPaletteEditor.h"
 
+#include "../../Browser/MagicImport.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Widgets/LibraryView/LibraryView.h"
@@ -226,10 +227,21 @@ X3DPaletteEditor::on_palette_changed ()
 void
 X3DPaletteEditor::set_touchTime (const size_t i)
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Material From Palette"));
+	try
+	{
+		auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
-	getBrowserWindow () -> importURL ({ files [i] }, false, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
+		if (selection .empty ())
+			return;
+
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Material From Palette"));
+		const auto scene    = getBrowser () -> createX3DFromURL ({ files [i] });
+
+		if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
+			getBrowserWindow () -> addUndoStep (undoStep);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 X3DPaletteEditor::~X3DPaletteEditor ()
