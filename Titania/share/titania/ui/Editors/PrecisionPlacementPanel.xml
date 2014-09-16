@@ -357,7 +357,7 @@
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">gtk-goto-bottom</property>
+                <property name="stock">Placement</property>
               </object>
               <packing>
                 <property name="expand">False</property>

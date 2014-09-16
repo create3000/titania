@@ -63,7 +63,7 @@
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="icon_name">document-export</property>
+                <property name="stock">Inline</property>
               </object>
               <packing>
                 <property name="expand">False</property>

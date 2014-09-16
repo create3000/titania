@@ -32,12 +32,12 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="5.12"
-     inkscape:cx="-9.546417"
-     inkscape:cy="43.726039"
+     inkscape:cx="26.293427"
+     inkscape:cy="44.507289"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g8814"
+     inkscape:current-layer="layer11"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="false"
@@ -114,7 +114,7 @@
        id="filter8810"
        inkscape:label="Blur">
       <feGaussianBlur
-         stdDeviation="3"
+         stdDeviation="5"
          id="feGaussianBlur8812" />
     </filter>
   </defs>
@@ -199,7 +199,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Viewpoint"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <g
        id="g8814"
        style="fill:#1e1e1e;fill-opacity:1;filter:url(#filter4926-8-3)">

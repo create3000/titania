@@ -32,7 +32,7 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="5.6568543"
-     inkscape:cx="42.595605"
+     inkscape:cx="11.394519"
      inkscape:cy="46.865341"
      inkscape:window-x="65"
      inkscape:window-y="24"
@@ -110,7 +110,7 @@
        id="filter10776"
        inkscape:label="Blur">
       <feGaussianBlur
-         stdDeviation="3"
+         stdDeviation="5"
          id="feGaussianBlur10778" />
     </filter>
   </defs>
@@ -244,7 +244,7 @@
          sodipodi:cy="79.5"
          sodipodi:cx="56.25"
          id="path4267"
-         style="fill:#1e1e1e;fill-opacity:1;stroke:#1e1e1e;stroke-width:5.05902623999999967;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         style="fill:#1e1e1e;fill-opacity:1;stroke:#1e1e1e;stroke-width:5.05902624;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
          sodipodi:type="arc" />
       <path
          sodipodi:nodetypes="cc"

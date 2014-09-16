@@ -59,7 +59,7 @@
               <object class="GtkImage" id="image5">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">gtk-select-font</property>
+                <property name="stock">Text</property>
               </object>
               <packing>
                 <property name="expand">False</property>

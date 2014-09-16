@@ -33,12 +33,12 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="3.6203867"
-     inkscape:cx="-12.254633"
+     inkscape:cx="-61.006331"
      inkscape:cy="34.018525"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer9"
+     inkscape:current-layer="layer4"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="true"
@@ -116,7 +116,7 @@
        id="filter11405"
        inkscape:label="Blur">
       <feGaussianBlur
-         stdDeviation="3"
+         stdDeviation="5"
          id="feGaussianBlur11407" />
     </filter>
     <linearGradient
@@ -267,53 +267,8 @@
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer8"
-     inkscape:label="Version 1 Shadow"
-     style="display:none"
-     sodipodi:insensitive="true">
-    <rect
-       style="fill:none;stroke:#ffffff;stroke-width:12.00000095;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter11405)"
-       id="rect11410-0"
-       width="48"
-       height="48"
-       x="24.999998"
-       y="25" />
-    <rect
-       style="fill:none;stroke:#ffffff;stroke-width:12;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter11405)"
-       id="rect11410-3-7"
-       width="50.91169"
-       height="50.91169"
-       x="-25.455845"
-       y="43.840622"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer7"
-     inkscape:label="Version 1 Prototype"
-     style="display:none"
-     sodipodi:insensitive="true">
-    <rect
-       style="fill:none;stroke:#1e1e1e;stroke-width:12.00000095;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter4926-8-3-4)"
-       id="rect11410"
-       width="48"
-       height="48"
-       x="24"
-       y="24" />
-    <rect
-       style="fill:none;stroke:#cfcfcf;stroke-width:12;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter4926-8-3-4)"
-       id="rect11410-3"
-       width="50.91169"
-       height="50.91169"
-       x="-25.455845"
-       y="42.426407"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="Shadow"
-     sodipodi:insensitive="true">
+     inkscape:label="Shadow">
     <g
        style="display:inline"
        id="g5040-0"
@@ -393,7 +348,8 @@
      inkscape:groupmode="layer"
      id="layer9"
      inkscape:label="Extern Shadow"
-     style="display:none">
+     style="display:none"
+     sodipodi:insensitive="true">
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter11405)"
        d="M 1,25 25,25 25,1 z"

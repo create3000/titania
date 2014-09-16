@@ -1,5 +1,21 @@
 2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* LOD.svg:
+	* Text.svg:
+	* Light.svg:
+	* Texture.svg:
+	* BrowserWindow.xml:
+	* Geometry.svg:
+	* Viewpoint.svg:
+	* LODEditor.xml:
+	* TextEditor.xml:
+	* InlineEditor.xml:
+	* TextureEditor.xml:
+	* Prototype.96.svg:
+	* PrecisionPlacementPanel.xml: 
+
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AboutTab.cpp:
 	* tab.x3dv: 
 
