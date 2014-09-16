@@ -123,6 +123,22 @@ public:
 	{ return m_BBoxSizeZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoLocationGeoCoordsXAdjustment () const
+	{ return m_GeoLocationGeoCoordsXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoLocationGeoCoordsYAdjustment () const
+	{ return m_GeoLocationGeoCoordsYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoLocationGeoCoordsZAdjustment () const
+	{ return m_GeoLocationGeoCoordsZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoLocationZoneAdjustment () const
+	{ return m_GeoLocationZoneAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getLayoutOffsetXAdjustment () const
 	{ return m_LayoutOffsetXAdjustment; }
 
@@ -375,6 +391,46 @@ public:
 	{ return *m_ViewportClipBoundaryBox; }
 
 	Gtk::Expander &
+	getGeoLocationExpander () const
+	{ return *m_GeoLocationExpander; }
+
+	Gtk::Grid &
+	getGeoLocationBox () const
+	{ return *m_GeoLocationBox; }
+
+	Gtk::ComboBoxText &
+	getGeoLocationCoordinateSystemComboBoxText () const
+	{ return *m_GeoLocationCoordinateSystemComboBoxText; }
+
+	Gtk::Box &
+	getGeoLocationEllipsoidBox () const
+	{ return *m_GeoLocationEllipsoidBox; }
+
+	Gtk::ComboBoxText &
+	getGeoLocationEllipsoidComboBoxText () const
+	{ return *m_GeoLocationEllipsoidComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getGeoLocationGDOrderComboBoxText () const
+	{ return *m_GeoLocationGDOrderComboBoxText; }
+
+	Gtk::Box &
+	getGeoLocationGeoSystemUTMBox () const
+	{ return *m_GeoLocationGeoSystemUTMBox; }
+
+	Gtk::ComboBoxText &
+	getGeoLocationHemisphereComboBoxText () const
+	{ return *m_GeoLocationHemisphereComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getGeoLocationUTMOrderComboBoxText () const
+	{ return *m_GeoLocationUTMOrderComboBoxText; }
+
+	Gtk::Box &
+	getGeoLocationGeoCoordsBox () const
+	{ return *m_GeoLocationGeoCoordsBox; }
+
+	Gtk::Expander &
 	getBoundingBoxExpander () const
 	{ return *m_BoundingBoxExpander; }
 
@@ -453,6 +509,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
@@ -516,6 +576,16 @@ private:
 	Gtk::CheckButton*              m_ViewportCheckButton;
 	Gtk::Grid*                     m_ViewportBox;
 	Gtk::Grid*                     m_ViewportClipBoundaryBox;
+	Gtk::Expander*                 m_GeoLocationExpander;
+	Gtk::Grid*                     m_GeoLocationBox;
+	Gtk::ComboBoxText*             m_GeoLocationCoordinateSystemComboBoxText;
+	Gtk::Box*                      m_GeoLocationEllipsoidBox;
+	Gtk::ComboBoxText*             m_GeoLocationEllipsoidComboBoxText;
+	Gtk::ComboBoxText*             m_GeoLocationGDOrderComboBoxText;
+	Gtk::Box*                      m_GeoLocationGeoSystemUTMBox;
+	Gtk::ComboBoxText*             m_GeoLocationHemisphereComboBoxText;
+	Gtk::ComboBoxText*             m_GeoLocationUTMOrderComboBoxText;
+	Gtk::Box*                      m_GeoLocationGeoCoordsBox;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;

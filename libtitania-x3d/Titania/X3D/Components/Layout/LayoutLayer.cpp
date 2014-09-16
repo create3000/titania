@@ -102,5 +102,21 @@ LayoutLayer::initialize ()
 	group -> layout () = layout ();
 }
 
+void
+LayoutLayer::addTool ()
+{
+	LayoutGroup* const group = dynamic_cast <LayoutGroup*> (getGroup () .getValue ());
+
+	group -> addTool ();
+}
+
+void
+LayoutLayer::removeTool (const bool really)
+{
+	LayoutGroup* const group = dynamic_cast <LayoutGroup*> (getGroup () .getValue ());
+
+	group -> removeTool (really);
+}
+
 } // X3D
 } // titania

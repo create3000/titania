@@ -1,3 +1,9 @@
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* LayoutGroupTool.h:
+	* LayoutLayer.h:
+	* LayoutLayer.cpp: 
+
 2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

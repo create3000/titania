@@ -1,3 +1,16 @@
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* MFStringGeoSystem.h:
+	* PrecisionPlacementPanel.xml:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DGeoLocationEditor.h:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* X3DGeoLocationEditor.cpp:
+	* PrecisionPlacementPanel.h:
+	* PrecisionPlacementPanel.cpp: 
+
 2014-09-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DViewportEditor.cpp:

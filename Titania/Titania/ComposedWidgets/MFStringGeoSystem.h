@@ -208,10 +208,16 @@ MFStringGeoSystem::on_changed (const int id)
 
 	node -> geoSystem () .clear ();
 
+	gdBox  .set_visible (false);
+	utmBox .set_visible (false);
+
 	switch (coordinateSystem .get_active_row_number ())
 	{
 		case 0:
 		{
+			ellipsoidBox .set_visible (true);
+			gdBox        .set_visible (true);
+
 			node -> geoSystem () .emplace_back ("GD");
 			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
 
@@ -222,6 +228,9 @@ MFStringGeoSystem::on_changed (const int id)
 		}
 		case 1:
 		{
+			ellipsoidBox .set_visible (true);
+			utmBox       .set_visible (true);
+
 			node -> geoSystem () .emplace_back ("UTM");
 			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
 			node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value ()));
@@ -236,6 +245,8 @@ MFStringGeoSystem::on_changed (const int id)
 		}
 		case 2:
 		{
+			ellipsoidBox .set_visible (false);
+
 			node -> geoSystem () = { "GC" };
 			break;
 		}

@@ -67,6 +67,10 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_BBoxSizeXAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeXAdjustment"));
 	m_BBoxSizeYAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeYAdjustment"));
 	m_BBoxSizeZAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeZAdjustment"));
+	m_GeoLocationGeoCoordsXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsXAdjustment"));
+	m_GeoLocationGeoCoordsYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsYAdjustment"));
+	m_GeoLocationGeoCoordsZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsZAdjustment"));
+	m_GeoLocationZoneAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationZoneAdjustment"));
 	m_LayoutOffsetXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetXAdjustment"));
 	m_LayoutOffsetYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetYAdjustment"));
 	m_LayoutSizeXAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeXAdjustment"));
@@ -132,6 +136,16 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ViewportCheckButton", m_ViewportCheckButton);
 	m_builder -> get_widget ("ViewportBox", m_ViewportBox);
 	m_builder -> get_widget ("ViewportClipBoundaryBox", m_ViewportClipBoundaryBox);
+	m_builder -> get_widget ("GeoLocationExpander", m_GeoLocationExpander);
+	m_builder -> get_widget ("GeoLocationBox", m_GeoLocationBox);
+	m_builder -> get_widget ("GeoLocationCoordinateSystemComboBoxText", m_GeoLocationCoordinateSystemComboBoxText);
+	m_builder -> get_widget ("GeoLocationEllipsoidBox", m_GeoLocationEllipsoidBox);
+	m_builder -> get_widget ("GeoLocationEllipsoidComboBoxText", m_GeoLocationEllipsoidComboBoxText);
+	m_builder -> get_widget ("GeoLocationGDOrderComboBoxText", m_GeoLocationGDOrderComboBoxText);
+	m_builder -> get_widget ("GeoLocationGeoSystemUTMBox", m_GeoLocationGeoSystemUTMBox);
+	m_builder -> get_widget ("GeoLocationHemisphereComboBoxText", m_GeoLocationHemisphereComboBoxText);
+	m_builder -> get_widget ("GeoLocationUTMOrderComboBoxText", m_GeoLocationUTMOrderComboBoxText);
+	m_builder -> get_widget ("GeoLocationGeoCoordsBox", m_GeoLocationGeoCoordsBox);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);

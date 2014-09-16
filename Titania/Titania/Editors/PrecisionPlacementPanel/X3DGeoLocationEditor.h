@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,95 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_LAYER_H__
-#define __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_LAYER_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DGEO_LOCATION_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DGEO_LOCATION_EDITOR_H__
 
-#include "../Layering/X3DLayerNode.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class LayoutLayer :
-	public X3DLayerNode
+class MFStringGeoSystem;
+
+class X3DGeoLocationEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
+	///  @name Destruction
+
+	virtual
+	~X3DGeoLocationEditor ();
+
+
+protected:
+
 	///  @name Construction
 
-	LayoutLayer (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFNode &
-	layout ()
-	{ return *fields .layout; }
-
-	const SFNode &
-	layout () const
-	{ return *fields .layout; }
-
-	///  @name Operations
+	X3DGeoLocationEditor ();
 
 	virtual
 	void
-	addTool () final override;
-
-	virtual
-	void
-	removeTool (const bool = false) final override;
+	initialize () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
 	void
-	initialize () final override;
-
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
+	set_selection (const X3D::MFNode &);
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFNode* const layout;
-	};
-
-	Fields fields;
+	std::unique_ptr <MFStringGeoSystem> geoSystem;
+	X3DFieldAdjustment3 <X3D::SFVec3d>  geoCoords;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

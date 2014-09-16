@@ -158,6 +158,7 @@ LayoutGroupTool::reshape ()
 	{
 		const SFNode & tool = getToolNode ();
 
+		tool -> setField <SFInt32> ("rectangle", bbox .empty () ? -1 : 0, true);
 		tool -> setField <SFVec3f> ("rectangleBBoxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("rectangleBBoxCenter", bbox .center (), true);
 	}

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,95 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_LAYER_H__
-#define __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_LAYER_H__
+#include "X3DGeoLocationEditor.h"
 
-#include "../Layering/X3DLayerNode.h"
+#include "../../ComposedWidgets/MFStringGeoSystem.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class LayoutLayer :
-	public X3DLayerNode
+X3DGeoLocationEditor::X3DGeoLocationEditor () :
+	X3DPrecisionPlacementPanelInterface (),
+	                          geoSystem (new MFStringGeoSystem (getBrowserWindow (),
+	                                     getGeoLocationCoordinateSystemComboBoxText (),
+	                                     getGeoLocationEllipsoidComboBoxText (),
+	                                     getGeoLocationGDOrderComboBoxText (),
+	                                     getGeoLocationZoneAdjustment (),
+	                                     getGeoLocationHemisphereComboBoxText (),
+	                                     getGeoLocationUTMOrderComboBoxText (),
+	                                     getGeoLocationEllipsoidBox (),
+	                                     getGeoLocationGDOrderComboBoxText (),
+	                                     getGeoLocationGeoSystemUTMBox ())),
+	                          geoCoords (getBrowserWindow (),
+	                                     getGeoLocationGeoCoordsXAdjustment (),
+	                                     getGeoLocationGeoCoordsYAdjustment (),
+	                                     getGeoLocationGeoCoordsZAdjustment (),
+	                                     getGeoLocationGeoCoordsBox (),
+	                                     "geoCoords")
+{ }
+
+void
+X3DGeoLocationEditor::initialize ()
 {
-public:
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DGeoLocationEditor::set_selection);
 
-	///  @name Construction
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+}
 
-	LayoutLayer (X3DExecutionContext* const);
+void
+X3DGeoLocationEditor::set_selection (const X3D::MFNode & selection)
+{
+	const X3D::X3DPtr <X3D::GeoLocation> geoLocation (selection .empty () ? nullptr : selection .back ());
+	const X3D::MFNode                    geoLocations (geoLocation ? X3D::MFNode ({ geoLocation }) : X3D::MFNode ());
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	getGeoLocationExpander () .set_visible (geoLocation);
 
-	///  @name Common members
+	geoSystem -> setNode (X3D::SFNode (geoLocation));
+	geoCoords .setNodes (geoLocations);
+}
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+X3DGeoLocationEditor::~X3DGeoLocationEditor ()
+{ }
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFNode &
-	layout ()
-	{ return *fields .layout; }
-
-	const SFNode &
-	layout () const
-	{ return *fields .layout; }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override;
-
-	virtual
-	void
-	removeTool (const bool = false) final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFNode* const layout;
-	};
-
-	Fields fields;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif
