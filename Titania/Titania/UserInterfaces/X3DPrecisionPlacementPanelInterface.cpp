@@ -67,6 +67,9 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_BBoxSizeXAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeXAdjustment"));
 	m_BBoxSizeYAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeYAdjustment"));
 	m_BBoxSizeZAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BBoxSizeZAdjustment"));
+	m_BillboardAxisOfRotationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationXAdjustment"));
+	m_BillboardAxisOfRotationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationYAdjustment"));
+	m_BillboardAxisOfRotationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationZAdjustment"));
 	m_GeoLocationGeoCoordsXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsXAdjustment"));
 	m_GeoLocationGeoCoordsYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsYAdjustment"));
 	m_GeoLocationGeoCoordsZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsZAdjustment"));
@@ -131,6 +134,11 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TransformScaleOrientationToolBox", m_TransformScaleOrientationToolBox);
 	m_builder -> get_widget ("TransformScaleBox", m_TransformScaleBox);
 	m_builder -> get_widget ("TransformCenterBox", m_TransformCenterBox);
+	m_builder -> get_widget ("BillboardExpander", m_BillboardExpander);
+	m_builder -> get_widget ("BillboardBox", m_BillboardBox);
+	m_builder -> get_widget ("BillboardAxisOfRotationToolBox", m_BillboardAxisOfRotationToolBox);
+	m_builder -> get_widget ("BillboardAxisOfRotationBox", m_BillboardAxisOfRotationBox);
+	m_builder -> get_widget ("BillboardAxisOfRotationComboBoxText", m_BillboardAxisOfRotationComboBoxText);
 	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
 	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
 	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);
@@ -198,6 +206,9 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
+
+	// Connect object Gtk::ComboBoxText with id 'BillboardAxisOfRotationComboBoxText'.
+	m_BillboardAxisOfRotationComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_axisOfRotation_changed));
 
 	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
 	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));

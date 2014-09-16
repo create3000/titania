@@ -2,6 +2,18 @@
 
 	* titania:
 	* Makefile.am:
+	* PrecisionPlacementPanel.xml:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DBillboardEditor.h:
+	* X3DBillboardEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* PrecisionPlacementPanel.h:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
 	* ViewpointEditor.xml:
 	* PrecisionPlacementPanel.xml:
 	* X3DViewpointEditorInterface.h:

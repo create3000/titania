@@ -123,6 +123,18 @@ public:
 	{ return m_BBoxSizeZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getBillboardAxisOfRotationXAdjustment () const
+	{ return m_BillboardAxisOfRotationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBillboardAxisOfRotationYAdjustment () const
+	{ return m_BillboardAxisOfRotationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBillboardAxisOfRotationZAdjustment () const
+	{ return m_BillboardAxisOfRotationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoLocationGeoCoordsXAdjustment () const
 	{ return m_GeoLocationGeoCoordsXAdjustment; }
 
@@ -369,6 +381,26 @@ public:
 	Gtk::Box &
 	getTransformCenterBox () const
 	{ return *m_TransformCenterBox; }
+
+	Gtk::Expander &
+	getBillboardExpander () const
+	{ return *m_BillboardExpander; }
+
+	Gtk::Grid &
+	getBillboardBox () const
+	{ return *m_BillboardBox; }
+
+	Gtk::Box &
+	getBillboardAxisOfRotationToolBox () const
+	{ return *m_BillboardAxisOfRotationToolBox; }
+
+	Gtk::Box &
+	getBillboardAxisOfRotationBox () const
+	{ return *m_BillboardAxisOfRotationBox; }
+
+	Gtk::ComboBoxText &
+	getBillboardAxisOfRotationComboBoxText () const
+	{ return *m_BillboardAxisOfRotationComboBoxText; }
 
 	Gtk::Expander &
 	getLayoutExpander () const
@@ -640,6 +672,10 @@ public:
 
 	virtual
 	void
+	on_axisOfRotation_changed () = 0;
+
+	virtual
+	void
 	on_layout_toggled () = 0;
 
 	virtual
@@ -669,6 +705,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxSizeZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsZAdjustment;
@@ -731,6 +770,11 @@ private:
 	Gtk::Box*                      m_TransformScaleOrientationToolBox;
 	Gtk::Box*                      m_TransformScaleBox;
 	Gtk::Box*                      m_TransformCenterBox;
+	Gtk::Expander*                 m_BillboardExpander;
+	Gtk::Grid*                     m_BillboardBox;
+	Gtk::Box*                      m_BillboardAxisOfRotationToolBox;
+	Gtk::Box*                      m_BillboardAxisOfRotationBox;
+	Gtk::ComboBoxText*             m_BillboardAxisOfRotationComboBoxText;
 	Gtk::Expander*                 m_LayoutExpander;
 	Gtk::Grid*                     m_CreateLayoutBox;
 	Gtk::CheckButton*              m_LayoutCheckButton;

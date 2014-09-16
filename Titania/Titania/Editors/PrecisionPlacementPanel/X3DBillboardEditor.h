@@ -48,70 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DBILLBOARD_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DBILLBOARD_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DLayoutEditor.h"
-#include "X3DTransformEditor.h"
-#include "X3DBillboardEditor.h"
-#include "X3DViewportEditor.h"
-#include "X3DGeoLocationEditor.h"
-#include "X3DGeoTransformEditor.h"
 
 namespace titania {
 namespace puck {
 
-class PrecisionPlacementPanel :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor,
-	public X3DBillboardEditor,
-	public X3DLayoutEditor,
-	public X3DViewportEditor,
-	public X3DGeoTransformEditor,
-	public X3DGeoLocationEditor
+class NormalTool;
+
+class X3DBillboardEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
-
-	///  @name Construction
-
-	PrecisionPlacementPanel (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~PrecisionPlacementPanel ();
+	~X3DBillboardEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBillboardEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
 	void
 	set_selection (const X3D::MFNode &);
 
-	///  @name Event handlers
+	///  @name axisOfRotation
 
 	virtual
 	void
-	on_index_clicked () final override;
+	on_axisOfRotation_changed () final override;
 
-	virtual
 	void
-	on_fill_bounding_box_fields_clicked () final override;
+	set_axisOfRotation ();
+
+	void
+	connectAxisOfRotation (const X3D::SFVec3f & field);
 
 	///  @name Members
 
-	NameEntry                          nodeName;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
+	X3DFieldAdjustment3 <X3D::SFVec3f> axisOfRotation;
+	std::unique_ptr <NormalTool>       axisOfRotationTool;
 
-	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
+	X3D::X3DPtr <X3D::Billboard> billboard;
+	UndoStepPtr                  undoStep;
+	bool                         changing;
 
 };
 
