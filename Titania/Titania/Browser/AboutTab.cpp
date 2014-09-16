@@ -89,8 +89,13 @@ AboutTab::getURL () const
 void
 AboutTab::open ()
 {
-	getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), getURL (), false);
-	getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getBrowsers () .size () - 1);
+	if (getBrowserWindow () -> isEditor ())
+		getBrowserWindow () -> X3DBrowserWidget::open (getURL (), false);
+	else
+	{
+		getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), getURL (), false);
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getBrowsers () .size () - 1);
+	}
 }
 
 void
