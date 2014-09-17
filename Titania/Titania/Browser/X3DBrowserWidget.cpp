@@ -445,28 +445,28 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 	if (suffix == ".x3d" or suffix == ".xml")
 	{
-	if (executionContext -> getVersion () == X3D::VRML_V2_0)
-	{
-		executionContext -> setEncoding ("X3D");
-		executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
-	}
+		if (executionContext -> getVersion () == X3D::VRML_V2_0)
+		{
+			executionContext -> setEncoding ("X3D");
+			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+		}
 
-	if (compressed)
-	{
-		ogzstream file (worldURL .path ());
+		if (compressed)
+		{
+			ogzstream file (worldURL .path ());
 
-		file
-			<< X3D::SmallestStyle
-			<< X3D::XMLEncode (executionContext);
-	}
-	else
-	{
-		std::ofstream file (worldURL .path ());
+			file
+				<< X3D::SmallestStyle
+				<< X3D::XMLEncode (executionContext);
+		}
+		else
+		{
+			std::ofstream file (worldURL .path ());
 
-		file
-			<< X3D::CompactStyle
-			<< X3D::XMLEncode (executionContext);
-	}
+			file
+				<< X3D::CompactStyle
+				<< X3D::XMLEncode (executionContext);
+		}
 	}
 	else
 	{

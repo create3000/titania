@@ -105,6 +105,15 @@ X3DBaseInterface::getExecutionContext () const
 	return browserWindow -> getExecutionContext ();
 }
 
+X3D::X3DExecutionContext*
+X3DBaseInterface::getRootContext () const
+{
+	if (getExecutionContext () -> isRootContext ())
+		return getExecutionContext ();
+
+	return getExecutionContext () -> getRootContext ();
+}
+
 bool
 X3DBaseInterface::inPrototypeInstance () const
 {

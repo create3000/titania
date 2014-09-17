@@ -1,5 +1,11 @@
 2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserWidget.cpp: 
+
+2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* History.svg: 
 
 2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>

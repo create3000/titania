@@ -113,8 +113,7 @@ public:
 	getExecutionContext () const;
 
 	X3D::X3DExecutionContext*
-	getRootContext () const
-	{ return getExecutionContext () -> getRootContext (); }
+	getRootContext () const;
 
 	bool
 	inProtoDeclaration () const
