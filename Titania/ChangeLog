@@ -1,3 +1,19 @@
+2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Index.svg:
+	* Library.svg:
+	* BrowserWindow.xml:
+	* Appearance.svg:
+	* LODEditor.xml:
+	* NodeIndex.xml:
+	* LightEditor.xml:
+	* InlineEditor.xml:
+	* AppearanceEditor.xml:
+	* NULL.x3dv:
+	* PrecisionPlacementPanel.xml:
+	* AppearanceEditor.cpp:
+	* X3DPaletteEditor.cpp: 
+
 2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DPaletteEditor.cpp: 

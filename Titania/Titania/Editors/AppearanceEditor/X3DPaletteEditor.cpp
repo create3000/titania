@@ -56,23 +56,6 @@
 #include "../../Widgets/LibraryView/LibraryView.h"
 
 namespace titania {
-namespace X3D {
-
-template <class Type>
-X3DPtr <Type>
-createNode (X3DExecutionContext* const executionContext)
-{
-	const X3DPtr <Type> node = new Type (executionContext);
-
-	executionContext -> addUninitializedNode (node);
-
-	return node;
-}
-
-}
-}
-
-namespace titania {
 namespace puck {
 
 static constexpr size_t COLUMNS   = 6;

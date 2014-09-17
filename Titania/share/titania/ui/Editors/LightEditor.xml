@@ -200,7 +200,7 @@
                   <object class="GtkImage" id="image2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="stock">gtk-index</property>
+                    <property name="stock">Index</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>

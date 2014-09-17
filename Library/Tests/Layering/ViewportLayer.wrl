@@ -39,7 +39,7 @@ LayerSet {
         Viewpoint { }
         Transform {
           children DEF Beethoven Transform {
-            rotation 0 -1 0 2.14691
+            rotation 0 -1 0 0.805843
             children Inline {
               url "../Geometry3D/Beethoven.wrl"
             }

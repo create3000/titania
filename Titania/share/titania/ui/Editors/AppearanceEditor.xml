@@ -252,7 +252,7 @@
                       <object class="GtkImage" id="image4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="stock">gtk-select-color</property>
+                        <property name="stock">Appearance</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
