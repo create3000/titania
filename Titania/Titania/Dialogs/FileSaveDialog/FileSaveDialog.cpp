@@ -98,10 +98,7 @@ FileSaveDialog::saveScene ()
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
-	{
 		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), getCompressFileButton () .get_active ());
-		getBrowserWindow () -> worldURL_changed () .processInterests ();
-	}
 
 	quit ();
 }
@@ -148,9 +145,11 @@ FileSaveDialog::exportImage ()
 			}
 			catch (const std::exception & error)
 			{
-				getMessageDialog () .set_secondary_text ("Could not generate image!\n"
-				                                         "Tip: try a smaller image size and/or less antialiasing.", false);
+				getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
+				getMessageDialog () .set_message (_ ("<big><b>Could not generate image!</b></big>"), true);
+				getMessageDialog () .set_secondary_text (_ ("Tip: try a smaller image size and/or less antialiasing."), false);
 				getMessageDialog () .run ();
+				getMessageDialog () .hide ();
 			}
 		}
 	}

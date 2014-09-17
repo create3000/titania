@@ -1,5 +1,19 @@
 2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserWindow.h:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* FileSaveDialog.xml:
+	* FileSaveDialog.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseInterface.h:
 	* X3DBaseInterface.cpp:
 	* X3DBrowserWidget.cpp: 

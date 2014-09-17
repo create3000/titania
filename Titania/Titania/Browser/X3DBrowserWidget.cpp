@@ -70,6 +70,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser) :
 	                 browsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (scene),
+	           worldURLOutput (),
 	                 aboutTab (new AboutTab (getBrowserWindow ()))
 {
 	addChildren (browsers, browser, scene, executionContext);
@@ -423,23 +424,13 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 	}
 }
 
-void
-X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
+bool
+X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 {
 	const auto suffix           = worldURL .suffix ();
 	const auto executionContext = X3D::X3DExecutionContextPtr (getRootContext ());
 
-	using namespace std::placeholders;
-
-	X3D::traverse (executionContext,
-	               std::bind (&X3DBrowserWidget::transform, executionContext -> getWorldURL (), worldURL, std::make_shared <UndoStep> (""), _1),
-	               true,
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS |
-	               X3D::TRAVERSE_ROOT_NODES);
-
-	executionContext -> setWorldURL (worldURL);
-	executionContext -> isCompressed (compressed);
+	executionContext -> isCompressed (compress);
 
 	// Save
 
@@ -451,21 +442,37 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
 		}
 
-		if (compressed)
+		if (compress)
 		{
 			ogzstream file (worldURL .path ());
 
-			file
-				<< X3D::SmallestStyle
-				<< X3D::XMLEncode (executionContext);
+			if (file)
+			{
+				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+
+				file
+					<< X3D::SmallestStyle
+					<< X3D::XMLEncode (executionContext);
+				
+				if (file)
+					return true;
+			}
 		}
 		else
 		{
 			std::ofstream file (worldURL .path ());
 
-			file
-				<< X3D::CompactStyle
-				<< X3D::XMLEncode (executionContext);
+			if (file)
+			{
+				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+
+				file
+					<< X3D::CompactStyle
+					<< X3D::XMLEncode (executionContext);
+
+				if (file)
+					return true;
+			}
 		}
 	}
 	else
@@ -487,23 +494,67 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 			}
 		}
 
-		if (compressed)
+		if (compress)
 		{
 			ogzstream file (worldURL .path ());
 
-			file
-				<< X3D::SmallestStyle
-				<< executionContext;
+			if (file)
+			{
+				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+
+				file
+					<< X3D::SmallestStyle
+					<< executionContext;
+
+				if (file)
+					return true;
+			}
 		}
 		else
 		{
 			std::ofstream file (worldURL .path ());
 
-			file
-				<< X3D::NicestStyle
-				<< executionContext;
+			if (file)
+			{
+				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+
+				file
+					<< X3D::NicestStyle
+					<< executionContext;
+
+				if (file)
+					return true;
+			}
 		}
 	}
+
+	getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
+	getMessageDialog () .set_message ("<big><b>Couldn't save file!</b></big>", true);
+	getMessageDialog () .set_secondary_text ("Tip: check file and folder permissions.", false);
+	getMessageDialog () .run ();
+	getMessageDialog () .hide ();
+
+	return false;
+}
+
+void
+X3DBrowserWidget::setWorldURL (const X3D::X3DExecutionContextPtr & executionContext, const basic::uri & worldURL, const UndoStepPtr & undoStep)
+{
+	if (worldURL == executionContext -> getWorldURL ())
+		return;
+
+	using namespace std::placeholders;
+
+	X3D::traverse (executionContext,
+	               std::bind (&X3DBrowserWidget::transform, executionContext -> getWorldURL (), worldURL, undoStep, _1),
+	               true,
+	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATIONS |
+	               X3D::TRAVERSE_ROOT_NODES);
+
+	executionContext -> setWorldURL (worldURL);
+
+	worldURL_changed () .processInterests ();
 }
 
 bool

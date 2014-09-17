@@ -71,8 +71,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	                  console (new Console (this)),
 	             scriptEditor (new ScriptEditor (this)),
 	                     keys (),
-	             accelerators (true),
-	           worldURLOutput ()
+	             accelerators (true)
 { }
 
 void

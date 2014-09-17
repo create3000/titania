@@ -97,6 +97,10 @@ public:
 	getExecutionContext () const final override
 	{ return executionContext; }
 
+	const X3D::Output &
+	worldURL_changed () const
+	{ return worldURLOutput; }
+
 	virtual
 	void
 	isLive (const bool);
@@ -127,7 +131,7 @@ public:
 	getIcon (const basic::uri &, const Gtk::IconSize &);
 
 	virtual
-	void
+	bool
 	save (const basic::uri &, const bool);
 
 	static
@@ -213,6 +217,9 @@ private:
 	set_scene ();
 
 	///  @name Operations
+	
+	void
+	setWorldURL (const X3D::X3DExecutionContextPtr &, const basic::uri &, const UndoStepPtr &);
 
 	void
 	loadIcon ();
@@ -227,6 +234,7 @@ private:
 	X3D::X3DPtrArray <X3D::Browser> browsers;
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
+	X3D::Output                     worldURLOutput;
 	std::unique_ptr <AboutTab>      aboutTab;
 	double                          loadTime;
 	sigc::connection                timeout;

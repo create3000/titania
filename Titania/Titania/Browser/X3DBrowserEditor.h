@@ -93,7 +93,7 @@ public:
 	getImportedRoutes (const X3D::X3DExecutionContextPtr &, const X3D::X3DScenePtr &) const;
 
 	virtual
-	void
+	bool
 	save (const basic::uri &, const bool) final override;
 
 	std::string

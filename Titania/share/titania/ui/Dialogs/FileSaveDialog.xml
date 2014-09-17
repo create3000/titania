@@ -546,23 +546,17 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
-    <property name="message_type">error</property>
-    <property name="text" translatable="yes">&lt;big&gt;&lt;b&gt;Error&lt;/b&gt;&lt;/big&gt;</property>
+    <property name="text" translatable="yes">&lt;big&gt;&lt;b&gt;Message&lt;/b&gt;&lt;/big&gt;</property>
     <property name="use_markup">True</property>
-    <property name="secondary_text" translatable="yes">Message
-Message</property>
     <child internal-child="vbox">
-      <object class="GtkBox" id="messagedialog-vbox1">
+      <object class="GtkBox" id="messagedialog-vbox">
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
-          <object class="GtkButtonBox" id="messagedialog-action_area1">
+          <object class="GtkButtonBox" id="messagedialog-action_area">
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
-            <child>
-              <placeholder/>
-            </child>
             <child>
               <object class="GtkButton" id="button3">
                 <property name="label">gtk-ok</property>
@@ -579,6 +573,9 @@ Message</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>

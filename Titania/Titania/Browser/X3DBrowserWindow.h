@@ -87,10 +87,6 @@ public:
 	hasAccelerators ()
 	{ return accelerators; }
 
-	const X3D::Output &
-	worldURL_changed () const
-	{ return worldURLOutput; }
-
 	/// @name Operations
 
 	void
@@ -136,8 +132,6 @@ private:
 
 	X3D::Keys keys;
 	bool      accelerators;
-
-	X3D::Output worldURLOutput;
 
 };
 

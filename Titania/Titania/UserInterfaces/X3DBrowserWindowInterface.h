@@ -118,6 +118,10 @@ public:
 	getHistoryMenu () const
 	{ return *m_HistoryMenu; }
 
+	Gtk::MessageDialog &
+	getMessageDialog () const
+	{ return *m_MessageDialog; }
+
 	Gtk::Image &
 	getNoneViewerImage () const
 	{ return *m_NoneViewerImage; }
@@ -1280,6 +1284,7 @@ private:
 	Gtk::Image*                     m_FileImportImage;
 	Gtk::Image*                     m_FlyViewerImage;
 	Gtk::Menu*                      m_HistoryMenu;
+	Gtk::MessageDialog*             m_MessageDialog;
 	Gtk::Image*                     m_NoneViewerImage;
 	Gtk::Image*                     m_OpenLocationImage;
 	Gtk::Image*                     m_PlaneViewerImage;

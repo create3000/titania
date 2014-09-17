@@ -68,6 +68,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
 	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
 	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
+	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
 	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
@@ -435,6 +436,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 {
+	delete m_MessageDialog;
 	delete m_Window;
 }
 
