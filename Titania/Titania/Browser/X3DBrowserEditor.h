@@ -399,7 +399,6 @@ private:
 
 	X3D::X3DExecutionContextPtr        currentScene;
 	std::unique_ptr <BrowserSelection> selection;
-	std::unique_ptr <MagicImport>      magicImport;
 	UndoMatrixIndex                    undoMatrices;
 
 };

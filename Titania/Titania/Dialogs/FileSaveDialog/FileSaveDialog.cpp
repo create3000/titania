@@ -143,6 +143,14 @@ FileSaveDialog::exportImage ()
 				image -> quality (getImageCompressionAdjustment () -> get_value ());
 				image -> write (Glib::uri_unescape_string (getWindow () .get_filename ()));
 			}
+			catch (const Magick::Exception & error)
+			{
+				getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
+				getMessageDialog () .set_message (_ ("<big><b>Could not save image!</b></big>"), true);
+				getMessageDialog () .set_secondary_text (_ ("Tip: check file and folder permissions."), false);
+				getMessageDialog () .run ();
+				getMessageDialog () .hide ();
+			}
 			catch (const std::exception & error)
 			{
 				getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
