@@ -63,6 +63,7 @@
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
+#include <Titania/X3D/Tools/Grids/GridLayoutTool.h>
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -1580,6 +1581,10 @@ void
 BrowserWindow::on_grid_tool_activate ()
 {
 	__LOG__ << std::endl;
+	
+	setGrid (X3D::createNode <X3D::GridLayoutTool> (getBrowser ()) .getValue ());
+
+	getBrowser () -> X3D::X3DBrowser::realize ();
 }
 
 // Help menu

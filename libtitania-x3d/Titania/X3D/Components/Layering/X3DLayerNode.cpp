@@ -90,7 +90,8 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	                 fogs (new FogList (getExecutionContext ())),
 	           viewpoints (new ViewpointList (getExecutionContext ())),
 	            localFogs (),
-	                group (layerGroup_)
+	                group (layerGroup_),
+	              friends ()
 {
 	addType (X3DConstants::X3DLayerNode);
 
@@ -107,7 +108,8 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	             backgrounds,
 	             fogs,
 	             viewpoints,
-	             group);
+	             group,
+	             friends);
 
 	defaultBackground -> isHidden (true);
 	defaultFog        -> isHidden (true);
@@ -390,7 +392,9 @@ X3DLayerNode::pick ()
 		getViewpoint () -> transform ();
 
 		currentViewport -> push (TraverseType::PICKING);
-		group -> traverse (TraverseType::PICKING);
+
+		collect (TraverseType::PICKING);
+		
 		currentViewport -> pop (TraverseType::PICKING);
 
 		getGlobalObjects () .clear ();
@@ -409,7 +413,9 @@ X3DLayerNode::camera ()
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
 	currentViewport -> push (TraverseType::CAMERA);
-	group -> traverse (TraverseType::CAMERA);
+
+	collect (TraverseType::CAMERA);
+
 	currentViewport -> pop (TraverseType::CAMERA);
 
 	navigationInfos -> update ();
@@ -491,6 +497,9 @@ void
 X3DLayerNode::collect (const TraverseType type)
 {
 	group -> traverse (type);
+
+	for (const auto & friendNode : friends)
+		friendNode -> traverse (type);
 }
 
 void

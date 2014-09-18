@@ -1,11 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/AppearanceEditor/X3DPaletteEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Tools/GridLayoutTool.h">
     <Files>
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DPaletteEditor.h" Line="97" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DPaletteEditor.cpp" Line="139" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.h" Line="69" Column="25" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="81" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="201" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="504" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="259" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Tools/GridLayoutTool.h" Line="52" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Tools/GridLayoutTool.cpp" Line="51" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,13 +17,16 @@
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Materials" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="images" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="OS" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Numbers" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -37,9 +42,15 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Text" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Tools" expanded="True" selected="True" />
+                </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
+                  <Node name="Shape" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Rendering" expanded="True" />
@@ -54,31 +65,27 @@
           </Node>
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
+            <Node name="scripts" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True">
+                  <Node name="Materials" expanded="True" />
+                  <Node name="Primitives" expanded="True" />
+                </Node>
                 <Node name="ui" expanded="True">
-                  <Node name="Editors" expanded="True" />
+                  <Node name="Dialogs" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
-              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Dialogs" expanded="True">
                 <Node name="FileImportDialog" expanded="True" />
                 <Node name="FileOpenDialog" expanded="True" />
-              </Node>
-              <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True" />
-                <Node name="LightEditor" expanded="True" />
-                <Node name="PrecisionPlacementPanel" expanded="True" />
-                <Node name="TextEditor" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True" />
+                <Node name="FileSaveDialog" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
-                <Node name="LibraryView" expanded="True">
-                  <Node name="LibraryView.cpp" selected="True" />
-                </Node>
+                <Node name="LibraryView" expanded="True" />
               </Node>
             </Node>
           </Node>

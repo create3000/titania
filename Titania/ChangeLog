@@ -1,3 +1,45 @@
+2014-09-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* Velvet2.x3dv:
+	* Velvet9.x3dv:
+	* Velvet3.x3dv:
+	* Velvet4.x3dv:
+	* Velvet5.x3dv:
+	* Velvet6.x3dv:
+	* Velvet7.x3dv:
+	* Velvet8.x3dv:
+	* Velvet1.x3dv:
+	* Velvet17.x3dv:
+	* Velvet34.x3dv:
+	* Velvet33.x3dv:
+	* Velvet32.x3dv:
+	* Velvet31.x3dv:
+	* Velvet30.x3dv:
+	* Velvet35.x3dv:
+	* Velvet36.x3dv:
+	* Velvet13.x3dv:
+	* Velvet12.x3dv:
+	* Velvet11.x3dv:
+	* Velvet10.x3dv:
+	* Velvet14.x3dv:
+	* Velvet22.x3dv:
+	* Velvet21.x3dv:
+	* Velvet20.x3dv:
+	* Velvet16.x3dv:
+	* Velvet19.x3dv:
+	* Velvet18.x3dv:
+	* Velvet23.x3dv:
+	* Velvet29.x3dv:
+	* Velvet28.x3dv:
+	* Velvet27.x3dv:
+	* Velvet26.x3dv:
+	* Velvet25.x3dv:
+	* Velvet15.x3dv:
+	* Velvet24.x3dv: 
+
 2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.h:

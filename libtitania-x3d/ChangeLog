@@ -1,3 +1,15 @@
+2014-09-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* GridLayoutTool.h:
+	* GridLayoutTool.h:
+	* GridLayoutTool.cpp:
+	* GridLayoutTool.cpp:
+	* X3DGridLayoutTool.h:
+	* X3DLayerNode.h:
+	* X3DLayerNode.cpp: 
+
 2014-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3D.h: 

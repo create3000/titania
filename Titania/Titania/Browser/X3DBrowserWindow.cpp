@@ -59,6 +59,8 @@
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 #include "../Widgets/ViewpointList/ViewpointList.h"
 
+#include <Titania/X3D/Tools/Grids/X3DGridLayoutTool.h>
+
 namespace titania {
 namespace puck {
 
@@ -70,6 +72,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	            outlineEditor (new OutlineEditor (this)),
 	                  console (new Console (this)),
 	             scriptEditor (new ScriptEditor (this)),
+	                     grid (),
 	                     keys (),
 	             accelerators (true)
 { }
@@ -85,6 +88,15 @@ X3DBrowserWindow::initialize ()
 	outlineEditor -> reparent (getOutlineEditorBox (), getWindow ());
 	console       -> reparent (getConsoleBox (),       getWindow ());
 	scriptEditor  -> reparent (getScriptEditorBox (),  getWindow ());
+}
+
+void
+X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
+{
+	X3DBrowserEditor::setBrowser (value);
+
+	if (grid)
+		grid -> setExecutionContext (value);
 }
 
 const std::shared_ptr <OutlineTreeViewEditor> &

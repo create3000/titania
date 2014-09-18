@@ -48,115 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#include "GridLayoutTool.h"
 
-#include "../Browser/X3DBrowserEditor.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGridLayoutTool;
+const std::string GridLayoutTool::componentName  = "Tools";
+const std::string GridLayoutTool::typeName       = "GridLayoutTool";
+const std::string GridLayoutTool::containerField = "children";
+
+GridLayoutTool::GridLayoutTool (X3DExecutionContext* const executionContext) :
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGridLayoutTool ()
+{ }
+
+X3DBaseNode*
+GridLayoutTool::create (X3DExecutionContext* const executionContext) const
+{
+	return new GridLayoutTool (executionContext);
+}
+
+void
+GridLayoutTool::initialize ()
+{
+	X3DGridLayoutTool::initialize ();
+}
 
 } // X3D
 } // titania
-
-namespace titania {
-namespace puck {
-
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
-class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-
-class X3DBrowserWindow :
-	public X3DBrowserEditor
-{
-public:
-
-	/// @name Member access
-
-	X3D::Keys &
-	getKeys ()
-	{ return keys; }
-
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
-
-	void
-	hasAccelerators (const bool);
-
-	bool
-	hasAccelerators ()
-	{ return accelerators; }
-	
-	const X3D::X3DPtr <X3D::X3DGridLayoutTool> &
-	getGrid () const
-	{ return grid; }
-	
-	void
-	setGrid (const X3D::X3DPtr <X3D::X3DGridLayoutTool> & value)
-	{ grid = value; }
-
-	/// @name Operations
-
-	void
-	expandNodes (const X3D::MFNode &);
-
-	///  @name Destruction
-
-	virtual
-	~X3DBrowserWindow ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DBrowserWindow (const X3D::BrowserPtr &);
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	setBrowser (const X3D::BrowserPtr &) override;
-
-
-private:
-
-	/// @name Member access
-
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
-
-	/// @name Operations
-
-	void
-	expandNodesImpl (const X3D::MFNode &);
-
-	///  @name Members
-
-	std::unique_ptr <ViewpointList>      viewpointList;
-	std::unique_ptr <HistoryView>        historyEditor;
-	std::unique_ptr <LibraryView>        libraryView;
-	std::unique_ptr <OutlineEditor>      outlineEditor;
-	std::unique_ptr <Console>            console;
-	std::unique_ptr <ScriptEditor>       scriptEditor;
-	X3D::X3DPtr <X3D::X3DGridLayoutTool> grid;
-
-	X3D::Keys keys;
-	bool      accelerators;
-
-};
-
-} // puck
-} // titania
-
-#endif

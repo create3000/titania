@@ -189,6 +189,16 @@ public:
 	getLocalFogs ()
 	{ return localFogs; }
 
+	///  @name Friends handling
+
+	MFNode &
+	getFriends ()
+	{ return friends; }
+
+	const MFNode &
+	getFriends () const
+	{ return friends; }
+
 	///  @name Operations
 
 	Vector3f
@@ -303,6 +313,7 @@ private:
 	LocalFogStack  localFogs;
 
 	X3DPtr <X3DGroupingNode> group;
+	MFNode                   friends;
 
 };
 
