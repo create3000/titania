@@ -53,9 +53,6 @@
 
 #include "../Grids/X3DGridTool.h"
 
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Networking/Inline.h"
-
 namespace titania {
 namespace X3D {
 

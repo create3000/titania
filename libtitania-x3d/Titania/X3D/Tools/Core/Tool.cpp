@@ -48,36 +48,41 @@
  *
  ******************************************************************************/
 
-#include "AngleTool.h"
+#include "Tool.h"
 
-#include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string AngleTool::componentName  = "Grids";
-const std::string AngleTool::typeName       = "AngleTool";
-const std::string AngleTool::containerField = "children";
+const std::string Tool::componentName  = "Tools";
+const std::string Tool::typeName       = "Tool";
+const std::string Tool::containerField = "friends";
 
-AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool ()
+Tool::Tool (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DNode (),
+	X3DToolObject ()
 { }
 
 X3DBaseNode*
-AngleTool::create (X3DExecutionContext* const executionContext) const
+Tool::create (X3DExecutionContext* const executionContext) const
 {
-	return new AngleTool (executionContext);
+	return new Tool (executionContext);
 }
 
 void
-AngleTool::initialize ()
+Tool::initialize ()
 {
-	X3DGridTool::initialize ();
+	X3DNode::initialize ();
+	X3DToolObject::initialize ();
+}
 
-	getInlineNode () -> url ()  = { get_tool ("AngleTool.x3dv") .str () };
-	getInlineNode () -> load () = true;
+void
+Tool::dispose ()
+{
+	X3DToolObject::dispose ();
+	X3DNode::dispose ();
 }
 
 } // X3D

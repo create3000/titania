@@ -76,7 +76,8 @@ GridTool::initialize ()
 {
 	X3DGridTool::initialize ();
 
-	getInlineNode () -> url () = { get_tool ("GridTool.x3dv") .str () };
+	getInlineNode () -> url ()  = { get_tool ("GridTool.x3dv") .str () };
+	getInlineNode () -> load () = true;
 }
 
 } // X3D

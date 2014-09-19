@@ -78,6 +78,17 @@ X3DToolObject::initialize ()
 	inlineNode -> setup ();
 }
 
+void
+X3DToolObject::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+
+{
+	inlineNode -> setExecutionContext (value -> getBrowser () -> getEmptyScene ());
+
+	X3DNode::setExecutionContext (value);
+}
+
 const SFNode &
 X3DToolObject::getToolNode () const
 throw (Error <DISPOSED>)

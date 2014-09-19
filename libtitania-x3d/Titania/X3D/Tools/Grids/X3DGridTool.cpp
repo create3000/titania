@@ -57,10 +57,10 @@ namespace X3D {
 
 X3DGridTool::X3DGridTool () :
 	    X3DNode (),
-	 inlineNode (new Inline (getBrowser () -> getEmptyScene ())),
+	       tool (new Tool (getBrowser ())),
 	activeLayer ()
 {
-	addChildren (inlineNode, activeLayer);
+	addChildren (tool, activeLayer);
 }
 
 void
@@ -68,7 +68,7 @@ X3DGridTool::initialize ()
 {
 	X3DNode::initialize ();
 
-	inlineNode -> setup ();
+	tool -> setup ();
 
 	getBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::set_activeLayer);
 
@@ -81,11 +81,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 
 {
-	__LOG__ << std::endl;
-
 	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::set_activeLayer);
 
-	inlineNode -> setExecutionContext (value -> getBrowser () -> getEmptyScene ());
+	tool -> setExecutionContext (value -> getBrowser ());
 
 	X3DNode::setExecutionContext (value);
 
@@ -97,24 +95,20 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DGridTool::set_activeLayer ()
 {
-	__LOG__ << std::endl;
-
 	if (activeLayer)
-		activeLayer -> getFriends () .remove (inlineNode .getValue ());
+		activeLayer -> getFriends () .remove (tool .getValue ());
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
-		activeLayer -> getFriends () .emplace_back (inlineNode);
+		activeLayer -> getFriends () .emplace_back (tool);
 }
 
 void
 X3DGridTool::dispose ()
 {
-	__LOG__ << std::endl;
-
 	if (activeLayer)
-		activeLayer -> getFriends () .remove (inlineNode .getValue ());
+		activeLayer -> getFriends () .remove (tool .getValue ());
 
 	X3DNode::dispose ();
 }

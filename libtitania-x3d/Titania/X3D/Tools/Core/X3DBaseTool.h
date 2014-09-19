@@ -237,7 +237,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getNode () -> setExecutionContext (value);
-	X3DBaseNode::setExecutionContext (value);
+
+	X3DToolObject::setExecutionContext (value);
 }
 
 template <class Type>

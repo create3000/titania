@@ -129,7 +129,7 @@ HistoryView::set_scene ()
 
 	try
 	{
-		if (getScene () -> getMetaData ("titania-history") == "false")
+		if (getScene () -> getMetaData ("titania-history") == "FALSE")
 			return;
 	}
 	catch (const X3D::X3DError &)

@@ -6,7 +6,7 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
 META "modified" "Tue, 16 Sep 2014 09:42:47 GMT"
-META "titania-history" "false"
+META "titania-history" "FALSE"
 META "title" "about:tab"
 
 EXTERNPROTO Rotor [

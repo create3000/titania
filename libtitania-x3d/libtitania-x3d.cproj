@@ -785,6 +785,7 @@
     <None Include="share\titania\tools\GridTool.x3dv" />
     <None Include="share\titania\tools\AngleTool.x3dv" />
     <None Include="Titania\X3D\Tools\Grids\AngleTool.h" />
+    <None Include="Titania\X3D\Tools\Core\Tool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1297,6 +1298,7 @@
     <Compile Include="Titania\X3D\Tools\Grids\GridTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\X3DGridTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\AngleTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Core\Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

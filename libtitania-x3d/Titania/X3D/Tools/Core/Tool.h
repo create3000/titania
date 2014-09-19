@@ -48,37 +48,71 @@
  *
  ******************************************************************************/
 
-#include "AngleTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CORE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CORE_TOOL_H__
 
-#include "../../Bits/config.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Core/X3DNode.h"
+#include "../Core/X3DToolObject.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string AngleTool::componentName  = "Grids";
-const std::string AngleTool::typeName       = "AngleTool";
-const std::string AngleTool::containerField = "children";
-
-AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool ()
-{ }
-
-X3DBaseNode*
-AngleTool::create (X3DExecutionContext* const executionContext) const
+class Tool :
+	virtual public X3DNode,
+	virtual public X3DToolObject
 {
-	return new AngleTool (executionContext);
-}
+public:
 
-void
-AngleTool::initialize ()
-{
-	X3DGridTool::initialize ();
+	///  @name Construction
 
-	getInlineNode () -> url ()  = { get_tool ("AngleTool.x3dv") .str () };
-	getInlineNode () -> load () = true;
-}
+	Tool (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+};
 
 } // X3D
 } // titania
+
+#endif

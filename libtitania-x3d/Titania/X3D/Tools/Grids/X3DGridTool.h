@@ -53,7 +53,7 @@
 
 #include "../../Components/Core/X3DNode.h"
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Networking/Inline.h"
+#include "../Core/Tool.h"
 
 namespace titania {
 namespace X3D {
@@ -92,7 +92,7 @@ protected:
 
 	const X3DPtr <Inline> &
 	getInlineNode () const
-	{ return inlineNode; }
+	{ return tool -> getInlineNode (); }
 
 
 private:
@@ -104,7 +104,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <Inline>       inlineNode;
+	X3DPtr <Tool>         tool;
 	X3DPtr <X3DLayerNode> activeLayer;
 
 };

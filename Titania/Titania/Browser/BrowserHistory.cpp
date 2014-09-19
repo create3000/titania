@@ -83,7 +83,7 @@ BrowserHistory::set_initialized ()
 	{
 		const X3D::X3DScenePtr scene (browser -> getExecutionContext ());
 
-		if (scene and scene -> getMetaData ("titania-history") == "false")
+		if (scene and scene -> getMetaData ("titania-history") == "FALSE")
 			return;
 	}
 	catch (const X3D::X3DError &)
