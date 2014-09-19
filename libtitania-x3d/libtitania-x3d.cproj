@@ -780,8 +780,9 @@
     <None Include="Titania\X3D\Browser\ContextLock.h" />
     <None Include="Titania\X3D\Rendering\FrameBuffer.h" />
     <None Include="Titania\X3D\Tools\Layout\LayoutGroupTool.h" />
-    <None Include="Titania\X3D\Tools\Grids\GridLayoutTool.h" />
-    <None Include="Titania\X3D\Tools\Grids\X3DGridLayoutTool.h" />
+    <None Include="Titania\X3D\Tools\Grids\X3DGridTool.h" />
+    <None Include="Titania\X3D\Tools\Grids\GridTool.h" />
+    <None Include="share\titania\tools\GridTool.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1291,7 +1292,8 @@
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
     <Compile Include="Titania\X3D\Rendering\FrameBuffer.cpp" />
-    <Compile Include="Titania\X3D\Tools\Grids\GridLayoutTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grids\GridTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grids\X3DGridTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

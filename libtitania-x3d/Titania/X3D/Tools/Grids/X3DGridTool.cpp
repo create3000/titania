@@ -48,28 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_LAYOUT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_LAYOUT_TOOL_H__
-
-#include "../../Components/Core/X3DChildNode.h"
+#include "X3DGridTool.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGridLayoutTool :
-	public X3DChildNode
-{
-protected:
-
-	///  @name Construction
-
-	X3DGridLayoutTool () :
-		X3DChildNode ()
-	{ }
-
-};
+X3DGridTool::X3DGridTool () :
+	X3DChildNode ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

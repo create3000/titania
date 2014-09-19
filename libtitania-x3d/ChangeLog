@@ -1,5 +1,24 @@
 2014-09-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* GridTool.x3dv:
+	* X3DBaseNode.cpp:
+	* GridTool.h:
+	* GridTool.cpp:
+	* X3DGridTool.h:
+	* X3DGridTool.cpp:
+	* ProtoDeclaration.h:
+	* GridLayoutTool.h:
+	* ProtoDeclaration.cpp:
+	* GridLayoutTool.cpp:
+	* X3DExecutionContext.h:
+	* X3DGridLayoutTool.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-09-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPtrArray.h: 
 
 2014-09-18  Holger Seelig  <holger.seelig@yahoo.de>

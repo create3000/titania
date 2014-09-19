@@ -68,7 +68,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
 	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
 	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
-	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
 	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
@@ -238,6 +237,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HistoryViewBox", m_HistoryViewBox);
 	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
+	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 
 	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
 	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
@@ -436,8 +436,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 {
-	delete m_MessageDialog;
 	delete m_Window;
+	delete m_MessageDialog;
 }
 
 } // puck

@@ -118,10 +118,6 @@ public:
 	getHistoryMenu () const
 	{ return *m_HistoryMenu; }
 
-	Gtk::MessageDialog &
-	getMessageDialog () const
-	{ return *m_MessageDialog; }
-
 	Gtk::Image &
 	getNoneViewerImage () const
 	{ return *m_NoneViewerImage; }
@@ -798,6 +794,10 @@ public:
 	getOutlineEditorBox () const
 	{ return *m_OutlineEditorBox; }
 
+	Gtk::MessageDialog &
+	getMessageDialog () const
+	{ return *m_MessageDialog; }
+
 	virtual
 	void
 	on_examine_viewer_activate () = 0;
@@ -1284,7 +1284,6 @@ private:
 	Gtk::Image*                     m_FileImportImage;
 	Gtk::Image*                     m_FlyViewerImage;
 	Gtk::Menu*                      m_HistoryMenu;
-	Gtk::MessageDialog*             m_MessageDialog;
 	Gtk::Image*                     m_NoneViewerImage;
 	Gtk::Image*                     m_OpenLocationImage;
 	Gtk::Image*                     m_PlaneViewerImage;
@@ -1454,6 +1453,7 @@ private:
 	Gtk::Box*                       m_HistoryViewBox;
 	Gtk::Box*                       m_LibraryViewBox;
 	Gtk::Box*                       m_OutlineEditorBox;
+	Gtk::MessageDialog*             m_MessageDialog;
 
 };
 

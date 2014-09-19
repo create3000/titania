@@ -48,115 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#ifndef __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
 
-#include "../Browser/X3DBrowserEditor.h"
+#include "../Grids/X3DGridTool.h"
+
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGridTool;
-
-} // X3D
-} // titania
-
-namespace titania {
-namespace puck {
-
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
-class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-
-class X3DBrowserWindow :
-	public X3DBrowserEditor
+class GridTool :
+	public X3DGridTool
 {
 public:
 
-	/// @name Member access
+	///  @name Construction
 
-	X3D::Keys &
-	getKeys ()
-	{ return keys; }
+	GridTool (X3DExecutionContext* const);
 
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	virtual
 	void
-	hasAccelerators (const bool);
-
-	bool
-	hasAccelerators ()
-	{ return accelerators; }
-
-	const X3D::X3DPtr <X3D::X3DGridTool> &
-	getGrid () const
-	{ return grid; }
-
-	void
-	setGrid (const X3D::X3DPtr <X3D::X3DGridTool> & value)
-	{ grid = value; }
-
-	/// @name Operations
-
-	void
-	expandNodes (const X3D::MFNode &);
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserWindow ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DBrowserWindow (const X3D::BrowserPtr &);
-
-	virtual
 	void
-	initialize ();
-
-	virtual
-	void
-	setBrowser (const X3D::BrowserPtr &) override;
+	dispose () final override;
 
 
 private:
 
-	/// @name Member access
+	///  @name Construction
 
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
+	virtual
+	void
+	initialize () final override;
 
-	/// @name Operations
+	///  @name Event handlers
 
 	void
-	expandNodesImpl (const X3D::MFNode &);
+	set_activeLayer ();
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
 
 	///  @name Members
 
-	std::unique_ptr <ViewpointList> viewpointList;
-	std::unique_ptr <HistoryView>   historyEditor;
-	std::unique_ptr <LibraryView>   libraryView;
-	std::unique_ptr <OutlineEditor> outlineEditor;
-	std::unique_ptr <Console>       console;
-	std::unique_ptr <ScriptEditor>  scriptEditor;
-	X3D::X3DPtr <X3D::X3DGridTool>  grid;
-
-	X3D::Keys keys;
-	bool      accelerators;
+	X3DPtr <Inline>       inlineNode;
+	X3DPtr <X3DLayerNode> activeLayer;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

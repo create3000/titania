@@ -48,61 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GRIDS_GRID_LAYOUT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GRIDS_GRID_LAYOUT_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_TOOL_H__
 
-#include "../Grids/X3DGridLayoutTool.h"
+#include "../../Components/Core/X3DChildNode.h"
 
 namespace titania {
 namespace X3D {
 
-class GridLayoutTool :
-	public X3DGridLayoutTool
+class X3DGridTool :
+	public X3DChildNode
 {
-public:
+protected:
 
 	///  @name Construction
 
-	GridLayoutTool (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
+	X3DGridTool ();
 
 };
 

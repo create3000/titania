@@ -138,6 +138,28 @@ X3DExecutionContext::initialize ()
 }
 
 void
+X3DExecutionContext::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DBaseNode::setExecutionContext (value);
+
+	for (auto & parent : ChildObjectSet (getParents ()))
+	{
+		const auto node = dynamic_cast <X3DBaseNode*> (parent);
+		
+		if (not node)
+			continue;
+
+		if (node == this)
+			continue;
+
+		// Reset executionContext to set browser.
+		node -> setExecutionContext (this);
+	}
+}
+
+void
 X3DExecutionContext::realize ()
 {
 	ContextLock lock (getBrowser ());
@@ -1209,7 +1231,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		if (not node)
 			continue;
 
-		if (node == node -> getExecutionContext ())
+		if (node == executionContext)
 			continue;
 
 		node -> setExecutionContext (this);

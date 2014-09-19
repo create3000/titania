@@ -176,7 +176,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	getExecutionContext () -> isLive () .removeInterest (this, &X3DPrototypeInstance::set_live);
 	executionContext -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
 
-	X3DNode::setExecutionContext (executionContext);
+	X3DExecutionContext::setExecutionContext (executionContext);
 
 	set_live ();
 }

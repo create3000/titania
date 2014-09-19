@@ -170,6 +170,14 @@ ProtoDeclaration::initialize ()
 }
 
 void
+ProtoDeclaration::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DExecutionContext::setExecutionContext (executionContext);
+}
+
+void
 ProtoDeclaration::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());

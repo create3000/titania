@@ -110,6 +110,11 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Tests
 
 	virtual
