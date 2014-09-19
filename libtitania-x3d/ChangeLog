@@ -3,6 +3,20 @@
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Tool.h:
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* X3DGridTool.h:
+	* X3DToolObject.h:
+	* X3DFriendTool.h:
+	* X3DGridTool.cpp:
+	* X3DToolObject.cpp:
+	* X3DFriendTool.cpp: 
+
+2014-09-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Tool.h:
 	* Tool.cpp:
 	* GridTool.h:
 	* GridTool.cpp:

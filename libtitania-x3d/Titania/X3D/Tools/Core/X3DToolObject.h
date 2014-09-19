@@ -116,6 +116,7 @@ protected:
 
 	///  @name Operations
 
+	virtual
 	void
 	requestAsyncLoad (const MFString &);
 

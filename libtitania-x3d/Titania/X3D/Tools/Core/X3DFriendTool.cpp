@@ -48,14 +48,70 @@
  *
  ******************************************************************************/
 
-#include "X3DGridTool.h"
+#include "X3DFriendTool.h"
+
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-X3DGridTool::X3DGridTool () :
-	X3DFriendTool ()
-{ }
+X3DFriendTool::X3DFriendTool () :
+	    X3DNode (),
+	       tool (new Tool (getBrowser ())),
+	activeLayer ()
+{
+	addChildren (tool, activeLayer);
+}
+
+void
+X3DFriendTool::initialize ()
+{
+	X3DNode::initialize ();
+
+	tool -> setup ();
+
+	getBrowser () -> getActiveLayer () .addInterest (this, &X3DFriendTool::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+X3DFriendTool::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+
+{
+	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DFriendTool::set_activeLayer);
+
+	tool -> setExecutionContext (value -> getBrowser ());
+
+	X3DNode::setExecutionContext (value);
+
+	getBrowser () -> getActiveLayer () .addInterest (this, &X3DFriendTool::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+X3DFriendTool::set_activeLayer ()
+{
+	if (activeLayer)
+		activeLayer -> getFriends () .remove (tool .getValue ());
+
+	activeLayer = getBrowser () -> getActiveLayer ();
+
+	if (activeLayer)
+		activeLayer -> getFriends () .emplace_back (tool);
+}
+
+void
+X3DFriendTool::dispose ()
+{
+	if (activeLayer)
+		activeLayer -> getFriends () .remove (tool .getValue ());
+
+	X3DNode::dispose ();
+}
 
 } // X3D
 } // titania

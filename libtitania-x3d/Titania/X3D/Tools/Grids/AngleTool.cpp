@@ -76,8 +76,7 @@ AngleTool::initialize ()
 {
 	X3DGridTool::initialize ();
 
-	getInlineNode () -> url ()  = { get_tool ("AngleTool.x3dv") .str () };
-	getInlineNode () -> load () = true;
+	requestAsyncLoad ({ get_tool ("AngleTool.x3dv") .str () });
 }
 
 } // X3D

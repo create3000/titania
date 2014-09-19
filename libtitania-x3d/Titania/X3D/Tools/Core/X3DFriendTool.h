@@ -48,14 +48,74 @@
  *
  ******************************************************************************/
 
-#include "X3DGridTool.h"
+#ifndef __TITANIA_X3D_TOOLS_CORE_X3DFRIEND_TOOL_H__
+#define __TITANIA_X3D_TOOLS_CORE_X3DFRIEND_TOOL_H__
+
+#include "../../Components/Core/X3DNode.h"
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../Core/Tool.h"
 
 namespace titania {
 namespace X3D {
 
-X3DGridTool::X3DGridTool () :
-	X3DFriendTool ()
-{ }
+class X3DFriendTool :
+	public X3DNode
+{
+public:
+
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DFriendTool ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+
+	const X3DPtr <Inline> &
+	getInlineNode () const
+	{ return tool -> getInlineNode (); }
+
+	///  @name Operations
+
+	void
+	requestAsyncLoad (const MFString & url)
+	{ tool -> requestAsyncLoad (url); }
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_activeLayer ();
+
+	///  @name Members
+
+	X3DPtr <Tool>         tool;
+	X3DPtr <X3DLayerNode> activeLayer;
+
+};
 
 } // X3D
 } // titania
+
+#endif

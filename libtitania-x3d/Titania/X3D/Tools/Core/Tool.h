@@ -89,6 +89,13 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Operations
+
+	virtual
+	void
+	requestAsyncLoad (const MFString & url) final override
+	{ X3DToolObject::requestAsyncLoad (url); }
+
 	///  @name Destruction
 
 	virtual

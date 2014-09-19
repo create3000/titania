@@ -139,6 +139,13 @@ X3DToolObject::set_loadState (const LoadState loadState)
 void
 X3DToolObject::traverse (const TraverseType type)
 {
+	int framebuffer;
+
+	glGetIntegerv (GL_FRAMEBUFFER_BINDING, &framebuffer);
+
+	if (framebuffer)
+		return;
+
 	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 
 	inlineNode -> traverse (type);
