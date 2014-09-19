@@ -51,19 +51,61 @@
 #ifndef __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_TOOL_H__
 
-#include "../../Components/Core/X3DChildNode.h"
+#include "../../Components/Core/X3DNode.h"
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DGridTool :
-	public X3DChildNode
+	public X3DNode
 {
+public:
+
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+
 protected:
 
 	///  @name Construction
 
 	X3DGridTool ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+
+	const X3DPtr <Inline> &
+	getInlineNode () const
+	{ return inlineNode; }
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_activeLayer ();
+
+	///  @name Members
+
+	X3DPtr <Inline>       inlineNode;
+	X3DPtr <X3DLayerNode> activeLayer;
 
 };
 

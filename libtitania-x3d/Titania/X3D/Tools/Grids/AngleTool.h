@@ -48,25 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GRIDS_ANGLE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GRIDS_ANGLE_TOOL_H__
 
 #include "../Grids/X3DGridTool.h"
-
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
 
-class GridTool :
+class AngleTool :
 	public X3DGridTool
 {
 public:
 
 	///  @name Construction
 
-	GridTool (X3DExecutionContext* const);
+	AngleTool (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

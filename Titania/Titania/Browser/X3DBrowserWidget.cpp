@@ -555,6 +555,8 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DExecutionContextPtr & executionCont
 	executionContext -> setWorldURL (worldURL);
 
 	worldURL_changed () .processInterests ();
+
+	aboutTab -> loadPreview (executionContext -> getBrowser ());
 }
 
 bool

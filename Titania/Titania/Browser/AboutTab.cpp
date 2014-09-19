@@ -99,11 +99,11 @@ AboutTab::open ()
 }
 
 void
-AboutTab::loadPreview (const X3D::BrowserPtr & browser)
+AboutTab::loadPreview (X3D::X3DBrowser* const browser)
 {
 	try
 	{
-		const auto image = getBrowser () -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getBrowser () -> getMaxSamples ()));
+		const auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getBrowser () -> getMaxSamples ()));
 
 		image -> quality (PREVIEW_QUALITY);
 		image -> magick (PREVIEW_TYPE);
@@ -111,7 +111,7 @@ AboutTab::loadPreview (const X3D::BrowserPtr & browser)
 		Magick::Blob blob;
 		image -> write (&blob);
 
-		history .setPreview (getBrowser () -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
+		history .setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
 	}
 	catch (const std::exception & error)
 	{ }

@@ -50,12 +50,74 @@
 
 #include "X3DGridTool.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
 X3DGridTool::X3DGridTool () :
-	X3DChildNode ()
-{ }
+	    X3DNode (),
+	 inlineNode (new Inline (getBrowser () -> getEmptyScene ())),
+	activeLayer ()
+{
+	addChildren (inlineNode, activeLayer);
+}
+
+void
+X3DGridTool::initialize ()
+{
+	X3DNode::initialize ();
+
+	inlineNode -> setup ();
+
+	getBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+X3DGridTool::setExecutionContext (X3DExecutionContext* const value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+
+{
+	__LOG__ << std::endl;
+
+	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::set_activeLayer);
+
+	inlineNode -> setExecutionContext (value -> getBrowser () -> getEmptyScene ());
+
+	X3DNode::setExecutionContext (value);
+
+	getBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+X3DGridTool::set_activeLayer ()
+{
+	__LOG__ << std::endl;
+
+	if (activeLayer)
+		activeLayer -> getFriends () .remove (inlineNode .getValue ());
+
+	activeLayer = getBrowser () -> getActiveLayer ();
+
+	if (activeLayer)
+		activeLayer -> getFriends () .emplace_back (inlineNode);
+}
+
+void
+X3DGridTool::dispose ()
+{
+	__LOG__ << std::endl;
+
+	if (activeLayer)
+		activeLayer -> getFriends () .remove (inlineNode .getValue ());
+
+	X3DNode::dispose ();
+}
 
 } // X3D
 } // titania

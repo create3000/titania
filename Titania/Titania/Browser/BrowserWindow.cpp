@@ -63,6 +63,7 @@
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
+#include <Titania/X3D/Tools/Grids/AngleTool.h>
 #include <Titania/X3D/Tools/Grids/GridTool.h>
 
 #include <Titania/OS.h>
@@ -1578,11 +1579,51 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 // Layout
 
 void
-BrowserWindow::on_grid_tool_activate ()
+BrowserWindow::on_grid_layout_tool_toggled ()
 {
-	setGrid (X3D::createNode <X3D::GridTool> (getBrowser ()) .getValue ());
+	if (changing)
+		return;
 
-	getBrowser () -> X3D::X3DBrowser::realize ();
+	changing = true;
+
+	getAngleLayoutToolMenuItem () .set_active (false);
+
+	changing = false;
+
+	//
+
+	if (getGridLayoutToolMenuItem () .get_active ())
+	{
+		setGrid (X3D::createNode <X3D::GridTool> (getBrowser ()) .getValue ());
+
+		getBrowser () -> X3D::X3DBrowser::realize ();
+	}
+	else
+		setGrid (nullptr);
+}
+
+void
+BrowserWindow::on_angle_layout_tool_toggled ()
+{
+	if (changing)
+		return;
+
+	changing = true;
+
+	getGridLayoutToolMenuItem () .set_active (false);
+
+	changing = false;
+
+	//
+
+	if (getAngleLayoutToolMenuItem () .get_active ())
+	{
+		setGrid (X3D::createNode <X3D::AngleTool> (getBrowser ()) .getValue ());
+
+		getBrowser () -> X3D::X3DBrowser::realize ();
+	}
+	else
+		setGrid (nullptr);
 }
 
 // Help menu

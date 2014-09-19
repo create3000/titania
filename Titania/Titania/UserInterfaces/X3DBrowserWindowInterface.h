@@ -518,9 +518,13 @@ public:
 	getLayoutMenuItem () const
 	{ return *m_LayoutMenuItem; }
 
-	Gtk::MenuItem &
-	getGridToolMenuItem () const
-	{ return *m_GridToolMenuItem; }
+	Gtk::CheckMenuItem &
+	getGridLayoutToolMenuItem () const
+	{ return *m_GridLayoutToolMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAngleLayoutToolMenuItem () const
+	{ return *m_AngleLayoutToolMenuItem; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const
@@ -1120,7 +1124,11 @@ public:
 
 	virtual
 	void
-	on_grid_tool_activate () = 0;
+	on_grid_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_angle_layout_tool_toggled () = 0;
 
 	virtual
 	void
@@ -1384,7 +1392,8 @@ private:
 	Gtk::CheckMenuItem*             m_SelectLowestMenuItem;
 	Gtk::CheckMenuItem*             m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                  m_LayoutMenuItem;
-	Gtk::MenuItem*                  m_GridToolMenuItem;
+	Gtk::CheckMenuItem*             m_GridLayoutToolMenuItem;
+	Gtk::CheckMenuItem*             m_AngleLayoutToolMenuItem;
 	Gtk::MenuItem*                  m_HelpMenuItem;
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;

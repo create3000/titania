@@ -78,7 +78,7 @@ public:
 	open ();
 
 	void
-	loadPreview (const X3D::BrowserPtr &);
+	loadPreview (X3D::X3DBrowser* const);
 
 	///  @name Configuration handling
 

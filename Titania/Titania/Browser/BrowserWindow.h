@@ -476,7 +476,11 @@ private:
 
 	virtual
 	void
-	on_grid_tool_activate () final override;
+	on_grid_layout_tool_toggled () final override;
+
+	virtual
+	void
+	on_angle_layout_tool_toggled () final override;
 
 	///  @name Help menu
 

@@ -51,7 +51,6 @@
 #include "GridTool.h"
 
 #include "../../Bits/config.h"
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -63,14 +62,8 @@ const std::string GridTool::containerField = "children";
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool (),
-	 inlineNode (new Inline (getBrowser () -> getEmptyScene ())),
-	activeLayer ()
-{
-	__LOG__ << getBrowser () << std::endl;
-
-	addChildren (inlineNode, activeLayer);
-}
+	X3DGridTool ()
+{ }
 
 X3DBaseNode*
 GridTool::create (X3DExecutionContext* const executionContext) const
@@ -83,56 +76,7 @@ GridTool::initialize ()
 {
 	X3DGridTool::initialize ();
 
-	inlineNode -> url () = { get_tool ("GridTool.x3dv") .str () };
-	inlineNode -> setup ();
-
-	getBrowser () -> getActiveLayer () .addInterest (this, &GridTool::set_activeLayer);
-
-	set_activeLayer ();
-}
-
-void
-GridTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-
-{
-	__LOG__ << std::endl;
-
-	getBrowser () -> getActiveLayer () .removeInterest (this, &GridTool::set_activeLayer);
-
-	inlineNode -> setExecutionContext (value -> getBrowser () -> getEmptyScene ());
-
-	X3DGridTool::setExecutionContext (value);
-
-	getBrowser () -> getActiveLayer () .addInterest (this, &GridTool::set_activeLayer);
-
-	set_activeLayer ();
-}
-
-void
-GridTool::set_activeLayer ()
-{
-	__LOG__ << std::endl;
-
-	if (activeLayer)
-		activeLayer -> getFriends () .remove (inlineNode .getValue ());
-
-	activeLayer = getBrowser () -> getActiveLayer ();
-
-	if (activeLayer)
-		activeLayer -> getFriends () .emplace_back (inlineNode);
-}
-
-void
-GridTool::dispose ()
-{
-	__LOG__ << std::endl;
-
-	if (activeLayer)
-		activeLayer -> getFriends () .remove (inlineNode .getValue ());
-
-	X3DGridTool::dispose ();
+	getInlineNode () -> url () = { get_tool ("GridTool.x3dv") .str () };
 }
 
 } // X3D
