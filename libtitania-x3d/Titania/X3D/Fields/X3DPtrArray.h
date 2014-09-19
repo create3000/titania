@@ -352,7 +352,7 @@ X3DPtrArray <ValueType>::X3DPtrArray (X3DPtrArray <Up> && field) :
 
 	for (; first not_eq last; ++ first)
 	{
-		ValueType* const field = new ValueType (std::move (*first));
+		const auto field = new X3DPtr <ValueType> (std::move (*first));
 
 		get () .emplace_back (field);
 
@@ -451,7 +451,7 @@ X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && field)
 
 		for (; first not_eq last; ++ first)
 		{
-			ValueType* const field = new ValueType (std::move (*first));
+			const auto field = new X3DPtr <ValueType> (std::move (*first));
 
 			get () .emplace_back (field);
 
