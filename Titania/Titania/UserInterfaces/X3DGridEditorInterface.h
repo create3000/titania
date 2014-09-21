@@ -118,6 +118,22 @@ public:
 	getGridTransparencyAdjustment () const
 	{ return m_GridTransparencyAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridXDimensionAdjustment () const
+	{ return m_GridXDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridXSpacingAdjustment () const
+	{ return m_GridXSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridZDimensionAdjustment () const
+	{ return m_GridZDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridZSpacingAdjustment () const
+	{ return m_GridZSpacingAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -154,6 +170,22 @@ public:
 	getGridTranslationBox () const
 	{ return *m_GridTranslationBox; }
 
+	Gtk::SpinButton &
+	getGridXDimensionSpinButton () const
+	{ return *m_GridXDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getGridZDimensionSpinButton () const
+	{ return *m_GridZDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getGridXSpacingSpinButton () const
+	{ return *m_GridXSpacingSpinButton; }
+
+	Gtk::SpinButton &
+	getGridZSpacingSpinButton () const
+	{ return *m_GridZSpacingSpinButton; }
+
 	virtual
 	void
 	on_grid_plane_changed () = 0;
@@ -176,6 +208,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTransparencyAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridXSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridZDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridZSpacingAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_GridExpander;
@@ -185,6 +221,10 @@ private:
 	Gtk::Button*                   m_GridColorButton;
 	Gtk::Box*                      m_GridTransparencyBox;
 	Gtk::Box*                      m_GridTranslationBox;
+	Gtk::SpinButton*               m_GridXDimensionSpinButton;
+	Gtk::SpinButton*               m_GridZDimensionSpinButton;
+	Gtk::SpinButton*               m_GridXSpacingSpinButton;
+	Gtk::SpinButton*               m_GridZSpacingSpinButton;
 
 };
 

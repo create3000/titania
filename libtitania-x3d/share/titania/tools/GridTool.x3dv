@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 21 Sep 2014 18:03:55 GMT"
+META "modified" "Sun, 21 Sep 2014 18:48:52 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -345,8 +345,8 @@ DEF GridTool Transform {
 
 DEF ScaleScript Script {
   inputOutput SFInt32 xDimension 10
-  inputOutput SFFloat xSpacing 1
   inputOutput SFInt32 zDimension 10
+  inputOutput SFFloat xSpacing 1
   inputOutput SFFloat zSpacing 1
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed
@@ -402,6 +402,10 @@ function set_translation (value)
 DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
+  inputOutput SFInt32    xDimension 0
+  inputOutput SFInt32    zDimension 0
+  inputOutput SFFloat    xSpacing 0
+  inputOutput SFFloat    zSpacing 0
   inputOutput SFColor    color 0 0 0
   inputOutput SFFloat    transparency 0
 
@@ -424,5 +428,13 @@ ROUTE Tool.rotation_changed TO GridTool.set_rotation
 ROUTE Tool.transparency_changed TO _1.set_transparency
 ROUTE Tool.color_changed TO _1.set_color
 ROUTE Tool.color_changed TO _5.set_diffuseColor
+ROUTE Tool.xDimension_changed TO ScaleScript.set_xDimension
+ROUTE Tool.zDimension_changed TO ScaleScript.set_zDimension
+ROUTE Tool.xSpacing_changed TO ScaleScript.set_xSpacing
+ROUTE Tool.zSpacing_changed TO ScaleScript.set_zSpacing
+ROUTE Tool.xSpacing_changed TO MoveScript.set_xSpacing
+ROUTE Tool.zSpacing_changed TO MoveScript.set_zSpacing
+ROUTE ScaleScript.xDimension_changed TO Tool.set_xDimension
+ROUTE ScaleScript.zDimension_changed TO Tool.set_zDimension
 
 EXPORT Tool

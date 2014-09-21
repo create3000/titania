@@ -66,6 +66,10 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_GridTranslationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationYAdjustment"));
 	m_GridTranslationZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationZAdjustment"));
 	m_GridTransparencyAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTransparencyAdjustment"));
+	m_GridXDimensionAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridXDimensionAdjustment"));
+	m_GridXSpacingAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridXSpacingAdjustment"));
+	m_GridZDimensionAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridZDimensionAdjustment"));
+	m_GridZSpacingAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridZSpacingAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -77,6 +81,10 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
 	m_builder -> get_widget ("GridTransparencyBox", m_GridTransparencyBox);
 	m_builder -> get_widget ("GridTranslationBox", m_GridTranslationBox);
+	m_builder -> get_widget ("GridXDimensionSpinButton", m_GridXDimensionSpinButton);
+	m_builder -> get_widget ("GridZDimensionSpinButton", m_GridZDimensionSpinButton);
+	m_builder -> get_widget ("GridXSpacingSpinButton", m_GridXSpacingSpinButton);
+	m_builder -> get_widget ("GridZSpacingSpinButton", m_GridZSpacingSpinButton);
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.
 	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_plane_changed));

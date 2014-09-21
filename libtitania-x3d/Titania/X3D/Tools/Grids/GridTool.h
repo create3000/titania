@@ -89,6 +89,38 @@ public:
 
 	///  @name Fields
 
+	SFInt32 &
+	xDimension ()
+	{ return *fields .xDimension; }
+
+	const SFInt32 &
+	xDimension () const
+	{ return *fields .xDimension; }
+
+	SFInt32 &
+	zDimension ()
+	{ return *fields .zDimension; }
+
+	const SFInt32 &
+	zDimension () const
+	{ return *fields .zDimension; }
+
+	SFFloat &
+	xSpacing ()
+	{ return *fields .xSpacing; }
+
+	const SFFloat &
+	xSpacing () const
+	{ return *fields .xSpacing; }
+
+	SFFloat &
+	zSpacing ()
+	{ return *fields .zSpacing; }
+
+	const SFFloat &
+	zSpacing () const
+	{ return *fields .zSpacing; }
+
 
 private:
 
@@ -113,6 +145,11 @@ private:
 	struct Fields
 	{
 		Fields ();
+
+		SFInt32* const xDimension;
+		SFInt32* const zDimension;
+		SFFloat* const xSpacing;
+		SFFloat* const zSpacing;
 	};
 
 	Fields fields;

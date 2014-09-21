@@ -65,6 +65,22 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridTranslationZAdjustment (),
 	                        getGridTranslationBox (),
 	                        "translation"),
+	            xDimension (getBrowserWindow (),
+	                        getGridXDimensionAdjustment (),
+	                        getGridXDimensionSpinButton (),
+	                        "xDimension"),
+	            zDimension (getBrowserWindow (),
+	                        getGridZDimensionAdjustment (),
+	                        getGridZDimensionSpinButton (),
+	                        "zDimension"),
+	              xSpacing (getBrowserWindow (),
+	                        getGridXSpacingAdjustment (),
+	                        getGridXSpacingSpinButton (),
+	                        "xSpacing"),
+	              zSpacing (getBrowserWindow (),
+	                        getGridZSpacingAdjustment (),
+	                        getGridZSpacingSpinButton (),
+	                        "zSpacing"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -76,6 +92,10 @@ X3DGridEditor::X3DGridEditor () :
 	                        "transparency")
 {
 	translation  .setUndo (false);
+	xDimension   .setUndo (false);
+	zDimension   .setUndo (false);
+	xSpacing     .setUndo (false);
+	zSpacing     .setUndo (false);
 	color        .setUndo (false);
 	transparency .setUndo (false);
 }
@@ -92,6 +112,10 @@ void
 X3DGridEditor::initialize ()
 {
 	translation  .setNodes ({ getBrowserWindow () -> getGridTool () });
+	xDimension   .setNodes ({ getBrowserWindow () -> getGridTool () });
+	zDimension   .setNodes ({ getBrowserWindow () -> getGridTool () });
+	xSpacing     .setNodes ({ getBrowserWindow () -> getGridTool () });
+	zSpacing     .setNodes ({ getBrowserWindow () -> getGridTool () });
 	color        .setNodes ({ getBrowserWindow () -> getGridTool () });
 	transparency .setNodes ({ getBrowserWindow () -> getGridTool () });
 }
