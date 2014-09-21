@@ -1,5 +1,15 @@
 2014-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* Configuration.h:
+	* GridEditor.xml:
+	* X3DGridEditor.h:
+	* X3DGridEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* X3DGridEditorInterface.cpp: 
+
+2014-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* DialogFactory.h:

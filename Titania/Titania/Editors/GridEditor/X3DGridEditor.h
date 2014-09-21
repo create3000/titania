@@ -114,7 +114,9 @@ private:
 
 	///  @name Members
 
-	SFColorRGBAButton color;
+	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
+	SFColorButton                      color;
+	X3DFieldAdjustment <X3D::SFFloat>  transparency;
 
 };
 

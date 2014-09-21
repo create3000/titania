@@ -59,16 +59,26 @@ namespace puck {
 
 X3DGridEditor::X3DGridEditor () :
 	X3DGridEditorInterface (),
+	           translation (getBrowserWindow (),
+	                        getGridTranslationXAdjustment (),
+	                        getGridTranslationYAdjustment (),
+	                        getGridTranslationZAdjustment (),
+	                        getGridTranslationBox (),
+	                        "translation"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
 	                        getGridColorBox (),
-	                        "color")
-{ }
-
-void
-X3DGridEditor::initialize ()
-{ }
+	                        "color"),
+	          transparency (getBrowserWindow (),
+	                        getGridTransparencyAdjustment (),
+	                        getGridTransparencyBox (),
+	                        "transparency")
+{
+	translation  .setUndo (false);
+	color        .setUndo (false);
+	transparency .setUndo (false);
+}
 
 void
 X3DGridEditor::setup (const X3D::X3DPtr <X3D::GridTool> & grid)
@@ -76,6 +86,14 @@ X3DGridEditor::setup (const X3D::X3DPtr <X3D::GridTool> & grid)
 	Configuration config (gconf_dir (), "GridEditor");
 
 	setPlane (grid, config .hasItem ("Grid.plane") ? config .getInteger ("Grid.plane") : 1);
+}
+
+void
+X3DGridEditor::initialize ()
+{
+	translation  .setNodes ({ getBrowserWindow () -> getGridTool () });
+	color        .setNodes ({ getBrowserWindow () -> getGridTool () });
+	transparency .setNodes ({ getBrowserWindow () -> getGridTool () });
 }
 
 void

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 21 Sep 2014 02:33:13 GMT"
+META "modified" "Sun, 21 Sep 2014 18:04:30 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -403,18 +403,23 @@ PROTO AngleGrid [
         children [
           Shape {
             appearance USE _1
+            geometry NULL
           }
           Shape {
             appearance USE _1
+            geometry NULL
           }
           Shape {
             appearance USE _1
+            geometry NULL
           }
           Shape {
             appearance USE _1
+            geometry NULL
           }
           Shape {
             appearance USE _1
+            geometry NULL
           }
         ]
       }
@@ -540,7 +545,7 @@ DEF AngleTool Transform {
               scale 6 6 6
               children Shape {
                 appearance DEF _4 Appearance {
-                  shaders ToolShader {
+                  shaders DEF _5 ToolShader {
                     diffuseColor 1 0.5 0
                   }
                 }
@@ -553,20 +558,20 @@ DEF AngleTool Transform {
     }
     DEF AngleGrid Transform {
       children [
-        DEF _5 AngleGrid {
+        DEF _6 AngleGrid {
           angle 0.370273
           transparency 0.75
         }
         DEF AngleHandle Group {
           children [
-            DEF _6 CylinderSensor {
+            DEF _7 CylinderSensor {
               diskAngle 1.2
               offset 0.370273
             }
             DEF Handle Transform {
               rotation 0 1 0 0.370273
               scale 0.05 0.05 1
-              children DEF _7 Transform {
+              children DEF _8 Transform {
                 translation 0 0 4.5
                 children Shape {
                   appearance USE _4
@@ -580,12 +585,12 @@ DEF AngleTool Transform {
         }
         DEF ScaleHandle Group {
           children [
-            DEF _8 PlaneSensor {
+            DEF _9 PlaneSensor {
               axisRotation 0 1 0 1.5708
               offset -4.91129e-08 0 4.98645
               maxPosition -1 0
             }
-            DEF _9 Transform {
+            DEF _10 Transform {
               translation -4.91129e-08 0 4.98645
               children ScreenGroup {
                 children DEF Sphere Transform {
@@ -650,17 +655,18 @@ DEF Tool_1 Script {
 }
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
-ROUTE AngleScript.angle_changed TO _5.set_angle
-ROUTE AngleScript.translation_changed TO _7.set_translation
-ROUTE _6.rotation_changed TO AngleScript.set_rotation
-ROUTE AngleScript.angle_changed TO _6.set_offset
-ROUTE _8.translation_changed TO _9.set_translation
+ROUTE AngleScript.angle_changed TO _6.set_angle
+ROUTE AngleScript.translation_changed TO _8.set_translation
+ROUTE _7.rotation_changed TO AngleScript.set_rotation
+ROUTE AngleScript.angle_changed TO _7.set_offset
+ROUTE _9.translation_changed TO _10.set_translation
 ROUTE Tool_1.translation_changed TO AngleGrid.set_translation
 ROUTE Tool_1.translation_changed TO _3.set_translation
 ROUTE _2.translation_changed TO Tool_1.set_translation
 ROUTE Tool_1.translation_changed TO _2.set_offset
 ROUTE Tool_1.rotation_changed TO AngleTool.set_rotation
-ROUTE Tool_1.transparency_changed TO _5.set_transparency
-ROUTE Tool_1.color_changed TO _5.set_color
+ROUTE Tool_1.transparency_changed TO _6.set_transparency
+ROUTE Tool_1.color_changed TO _6.set_color
+ROUTE Tool_1.color_changed TO _5.set_diffuseColor
 
 EXPORT Tool_1 AS Tool

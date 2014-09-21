@@ -65,6 +65,14 @@ class X3DEditorObject :
 {
 public:
 
+	void
+	setUndo (const bool value)
+	{ undo = value; }
+
+	bool
+	getUndo () const
+	{ return undo; }
+
 	///  @name Destruction
 
 	virtual
@@ -78,6 +86,7 @@ protected:
 
 	X3DEditorObject () :
 		X3DBaseInterface (),
+		            undo (true),
 		    currentField (),
 		          fields (new X3D::FieldSet (getBrowser ())),
 		        undoSize (0)
@@ -164,6 +173,7 @@ private:
 
 	///  @name Members
 
+	bool                        undo;
 	std::string                 currentField;
 	X3D::X3DPtr <X3D::FieldSet> fields;
 	size_t                      undoSize;
@@ -363,6 +373,9 @@ template <class FieldType, class NodeType>
 void
 X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
 {
+	if (not undo)
+		return;
+
 	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
@@ -455,6 +468,9 @@ template <class FieldType, class NodeType>
 void
 X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
 {
+	if (not undo)
+		return;
+
 	// Test if there is no change.
 
 	for (const auto & node : nodes)
@@ -503,6 +519,9 @@ template <class FieldType, class NodeType>
 void
 X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, UndoStepPtr & undoStep)
 {
+	if (not undo)
+		return;
+
 	const auto fieldName    = node -> getTypeName () + "." + field .getName ();
 	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
 
@@ -541,6 +560,9 @@ template <class FieldType>
 void
 X3DEditorObject::addRedoFunction (FieldType & field, UndoStepPtr & undoStep)
 {
+	if (not undo)
+		return;
+
 	if (fields -> template getField <FieldType> (currentField) == field)
 	{
 		// No change.

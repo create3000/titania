@@ -102,6 +102,22 @@ public:
 	getGridColorAdjustment () const
 	{ return m_GridColorAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridTranslationXAdjustment () const
+	{ return m_GridTranslationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridTranslationYAdjustment () const
+	{ return m_GridTranslationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridTranslationZAdjustment () const
+	{ return m_GridTranslationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridTransparencyAdjustment () const
+	{ return m_GridTransparencyAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -130,9 +146,13 @@ public:
 	getGridColorButton () const
 	{ return *m_GridColorButton; }
 
-	Gtk::Scale &
-	getGridColorScale () const
-	{ return *m_GridColorScale; }
+	Gtk::Box &
+	getGridTransparencyBox () const
+	{ return *m_GridTransparencyBox; }
+
+	Gtk::Box &
+	getGridTranslationBox () const
+	{ return *m_GridTranslationBox; }
 
 	virtual
 	void
@@ -152,6 +172,10 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_GridColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridTransparencyAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_GridExpander;
@@ -159,7 +183,8 @@ private:
 	Gtk::ComboBoxText*             m_GridPlaneComboBoxText;
 	Gtk::Box*                      m_GridColorBox;
 	Gtk::Button*                   m_GridColorButton;
-	Gtk::Scale*                    m_GridColorScale;
+	Gtk::Box*                      m_GridTransparencyBox;
+	Gtk::Box*                      m_GridTranslationBox;
 
 };
 

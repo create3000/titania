@@ -53,6 +53,7 @@
 
 #include <gconfmm.h>
 #include <string>
+#include <sstream>
 
 namespace titania {
 namespace puck {
@@ -100,6 +101,10 @@ public:
 	void
 	setItem (const std::string &, const std::string &);
 
+	template <class Type>
+	void
+	set (const std::string &, const Type &);
+
 	/// @name Get configuration value
 
 	bool
@@ -110,6 +115,10 @@ public:
 
 	Glib::ustring
 	getString (const std::string &) const;
+
+	template <class Type>
+	Type
+	get (const std::string &) const;
 
 	/// @name Directory handling
 
@@ -134,6 +143,34 @@ private:
 	std::string                        key;
 
 };
+
+template <class Type>
+void
+Configuration::set (const std::string & name, const Type & value)
+{
+	std::ostringstream osstream;
+	
+	osstream .imbue (std::locale::classic ());
+
+	osstream << value;	
+
+	client -> set (getKey (name), osstream .str ());
+}
+
+template <class Type>
+Type
+Configuration::get (const std::string & name) const
+{
+	std::istringstream isstream (client -> get_string (getKey (name)));
+
+	isstream .imbue (std::locale::classic ());
+
+	Type value;
+
+	isstream >> value;
+
+	return value;
+}
 
 } // puck
 } // titania
